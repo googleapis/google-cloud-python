@@ -2,13 +2,15 @@
 # source: google/cloud/tasks_v2beta2/proto/target.proto
 
 import sys
-_b=sys.version_info[0]<3 and (lambda x:x) or (lambda x:x.encode('latin1'))
+
+_b = sys.version_info[0] < 3 and (lambda x: x) or (lambda x: x.encode("latin1"))
 from google.protobuf.internal import enum_type_wrapper
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
 from google.protobuf import descriptor_pb2
+
 # @@protoc_insertion_point(imports)
 
 _sym_db = _symbol_database.Default()
@@ -19,48 +21,47 @@ from google.protobuf import duration_pb2 as google_dot_protobuf_dot_duration__pb
 
 
 DESCRIPTOR = _descriptor.FileDescriptor(
-  name='google/cloud/tasks_v2beta2/proto/target.proto',
-  package='google.cloud.tasks.v2beta2',
-  syntax='proto3',
-  serialized_pb=_b('\n-google/cloud/tasks_v2beta2/proto/target.proto\x12\x1agoogle.cloud.tasks.v2beta2\x1a\x1cgoogle/api/annotations.proto\x1a\x1egoogle/protobuf/duration.proto\"\x0c\n\nPullTarget\"+\n\x0bPullMessage\x12\x0f\n\x07payload\x18\x01 \x01(\x0c\x12\x0b\n\x03tag\x18\x02 \x01(\t\"h\n\x13\x41ppEngineHttpTarget\x12Q\n\x1b\x61pp_engine_routing_override\x18\x01 \x01(\x0b\x32,.google.cloud.tasks.v2beta2.AppEngineRouting\"\xc4\x02\n\x14\x41ppEngineHttpRequest\x12;\n\x0bhttp_method\x18\x01 \x01(\x0e\x32&.google.cloud.tasks.v2beta2.HttpMethod\x12H\n\x12\x61pp_engine_routing\x18\x02 \x01(\x0b\x32,.google.cloud.tasks.v2beta2.AppEngineRouting\x12\x14\n\x0crelative_url\x18\x03 \x01(\t\x12N\n\x07headers\x18\x04 \x03(\x0b\x32=.google.cloud.tasks.v2beta2.AppEngineHttpRequest.HeadersEntry\x12\x0f\n\x07payload\x18\x05 \x01(\x0c\x1a.\n\x0cHeadersEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"T\n\x10\x41ppEngineRouting\x12\x0f\n\x07service\x18\x01 \x01(\t\x12\x0f\n\x07version\x18\x02 \x01(\t\x12\x10\n\x08instance\x18\x03 \x01(\t\x12\x0c\n\x04host\x18\x04 \x01(\t*[\n\nHttpMethod\x12\x1b\n\x17HTTP_METHOD_UNSPECIFIED\x10\x00\x12\x08\n\x04POST\x10\x01\x12\x07\n\x03GET\x10\x02\x12\x08\n\x04HEAD\x10\x03\x12\x07\n\x03PUT\x10\x04\x12\n\n\x06\x44\x45LETE\x10\x05\x42p\n\x1e\x63om.google.cloud.tasks.v2beta2B\x0bTargetProtoP\x01Z?google.golang.org/genproto/googleapis/cloud/tasks/v2beta2;tasksb\x06proto3')
-  ,
-  dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR,google_dot_protobuf_dot_duration__pb2.DESCRIPTOR,])
+    name="google/cloud/tasks_v2beta2/proto/target.proto",
+    package="google.cloud.tasks.v2beta2",
+    syntax="proto3",
+    serialized_pb=_b(
+        '\n-google/cloud/tasks_v2beta2/proto/target.proto\x12\x1agoogle.cloud.tasks.v2beta2\x1a\x1cgoogle/api/annotations.proto\x1a\x1egoogle/protobuf/duration.proto"\x0c\n\nPullTarget"+\n\x0bPullMessage\x12\x0f\n\x07payload\x18\x01 \x01(\x0c\x12\x0b\n\x03tag\x18\x02 \x01(\t"h\n\x13\x41ppEngineHttpTarget\x12Q\n\x1b\x61pp_engine_routing_override\x18\x01 \x01(\x0b\x32,.google.cloud.tasks.v2beta2.AppEngineRouting"\xc4\x02\n\x14\x41ppEngineHttpRequest\x12;\n\x0bhttp_method\x18\x01 \x01(\x0e\x32&.google.cloud.tasks.v2beta2.HttpMethod\x12H\n\x12\x61pp_engine_routing\x18\x02 \x01(\x0b\x32,.google.cloud.tasks.v2beta2.AppEngineRouting\x12\x14\n\x0crelative_url\x18\x03 \x01(\t\x12N\n\x07headers\x18\x04 \x03(\x0b\x32=.google.cloud.tasks.v2beta2.AppEngineHttpRequest.HeadersEntry\x12\x0f\n\x07payload\x18\x05 \x01(\x0c\x1a.\n\x0cHeadersEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01"T\n\x10\x41ppEngineRouting\x12\x0f\n\x07service\x18\x01 \x01(\t\x12\x0f\n\x07version\x18\x02 \x01(\t\x12\x10\n\x08instance\x18\x03 \x01(\t\x12\x0c\n\x04host\x18\x04 \x01(\t*[\n\nHttpMethod\x12\x1b\n\x17HTTP_METHOD_UNSPECIFIED\x10\x00\x12\x08\n\x04POST\x10\x01\x12\x07\n\x03GET\x10\x02\x12\x08\n\x04HEAD\x10\x03\x12\x07\n\x03PUT\x10\x04\x12\n\n\x06\x44\x45LETE\x10\x05\x42p\n\x1e\x63om.google.cloud.tasks.v2beta2B\x0bTargetProtoP\x01Z?google.golang.org/genproto/googleapis/cloud/tasks/v2beta2;tasksb\x06proto3'
+    ),
+    dependencies=[
+        google_dot_api_dot_annotations__pb2.DESCRIPTOR,
+        google_dot_protobuf_dot_duration__pb2.DESCRIPTOR,
+    ],
+)
 
 _HTTPMETHOD = _descriptor.EnumDescriptor(
-  name='HttpMethod',
-  full_name='google.cloud.tasks.v2beta2.HttpMethod',
-  filename=None,
-  file=DESCRIPTOR,
-  values=[
-    _descriptor.EnumValueDescriptor(
-      name='HTTP_METHOD_UNSPECIFIED', index=0, number=0,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='POST', index=1, number=1,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='GET', index=2, number=2,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='HEAD', index=3, number=3,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='PUT', index=4, number=4,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='DELETE', index=5, number=5,
-      options=None,
-      type=None),
-  ],
-  containing_type=None,
-  options=None,
-  serialized_start=717,
-  serialized_end=808,
+    name="HttpMethod",
+    full_name="google.cloud.tasks.v2beta2.HttpMethod",
+    filename=None,
+    file=DESCRIPTOR,
+    values=[
+        _descriptor.EnumValueDescriptor(
+            name="HTTP_METHOD_UNSPECIFIED", index=0, number=0, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="POST", index=1, number=1, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="GET", index=2, number=2, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="HEAD", index=3, number=3, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="PUT", index=4, number=4, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="DELETE", index=5, number=5, options=None, type=None
+        ),
+    ],
+    containing_type=None,
+    options=None,
+    serialized_start=717,
+    serialized_end=808,
 )
 _sym_db.RegisterEnumDescriptor(_HTTPMETHOD)
 
@@ -73,275 +74,420 @@ PUT = 4
 DELETE = 5
 
 
-
 _PULLTARGET = _descriptor.Descriptor(
-  name='PullTarget',
-  full_name='google.cloud.tasks.v2beta2.PullTarget',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=139,
-  serialized_end=151,
+    name="PullTarget",
+    full_name="google.cloud.tasks.v2beta2.PullTarget",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=139,
+    serialized_end=151,
 )
 
 
 _PULLMESSAGE = _descriptor.Descriptor(
-  name='PullMessage',
-  full_name='google.cloud.tasks.v2beta2.PullMessage',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='payload', full_name='google.cloud.tasks.v2beta2.PullMessage.payload', index=0,
-      number=1, type=12, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b(""),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='tag', full_name='google.cloud.tasks.v2beta2.PullMessage.tag', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=153,
-  serialized_end=196,
+    name="PullMessage",
+    full_name="google.cloud.tasks.v2beta2.PullMessage",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="payload",
+            full_name="google.cloud.tasks.v2beta2.PullMessage.payload",
+            index=0,
+            number=1,
+            type=12,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b(""),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="tag",
+            full_name="google.cloud.tasks.v2beta2.PullMessage.tag",
+            index=1,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=153,
+    serialized_end=196,
 )
 
 
 _APPENGINEHTTPTARGET = _descriptor.Descriptor(
-  name='AppEngineHttpTarget',
-  full_name='google.cloud.tasks.v2beta2.AppEngineHttpTarget',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='app_engine_routing_override', full_name='google.cloud.tasks.v2beta2.AppEngineHttpTarget.app_engine_routing_override', index=0,
-      number=1, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=198,
-  serialized_end=302,
+    name="AppEngineHttpTarget",
+    full_name="google.cloud.tasks.v2beta2.AppEngineHttpTarget",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="app_engine_routing_override",
+            full_name="google.cloud.tasks.v2beta2.AppEngineHttpTarget.app_engine_routing_override",
+            index=0,
+            number=1,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        )
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=198,
+    serialized_end=302,
 )
 
 
 _APPENGINEHTTPREQUEST_HEADERSENTRY = _descriptor.Descriptor(
-  name='HeadersEntry',
-  full_name='google.cloud.tasks.v2beta2.AppEngineHttpRequest.HeadersEntry',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='key', full_name='google.cloud.tasks.v2beta2.AppEngineHttpRequest.HeadersEntry.key', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='value', full_name='google.cloud.tasks.v2beta2.AppEngineHttpRequest.HeadersEntry.value', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=_descriptor._ParseOptions(descriptor_pb2.MessageOptions(), _b('8\001')),
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=583,
-  serialized_end=629,
+    name="HeadersEntry",
+    full_name="google.cloud.tasks.v2beta2.AppEngineHttpRequest.HeadersEntry",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="key",
+            full_name="google.cloud.tasks.v2beta2.AppEngineHttpRequest.HeadersEntry.key",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="value",
+            full_name="google.cloud.tasks.v2beta2.AppEngineHttpRequest.HeadersEntry.value",
+            index=1,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=_descriptor._ParseOptions(descriptor_pb2.MessageOptions(), _b("8\001")),
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=583,
+    serialized_end=629,
 )
 
 _APPENGINEHTTPREQUEST = _descriptor.Descriptor(
-  name='AppEngineHttpRequest',
-  full_name='google.cloud.tasks.v2beta2.AppEngineHttpRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='http_method', full_name='google.cloud.tasks.v2beta2.AppEngineHttpRequest.http_method', index=0,
-      number=1, type=14, cpp_type=8, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='app_engine_routing', full_name='google.cloud.tasks.v2beta2.AppEngineHttpRequest.app_engine_routing', index=1,
-      number=2, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='relative_url', full_name='google.cloud.tasks.v2beta2.AppEngineHttpRequest.relative_url', index=2,
-      number=3, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='headers', full_name='google.cloud.tasks.v2beta2.AppEngineHttpRequest.headers', index=3,
-      number=4, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='payload', full_name='google.cloud.tasks.v2beta2.AppEngineHttpRequest.payload', index=4,
-      number=5, type=12, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b(""),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[_APPENGINEHTTPREQUEST_HEADERSENTRY, ],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=305,
-  serialized_end=629,
+    name="AppEngineHttpRequest",
+    full_name="google.cloud.tasks.v2beta2.AppEngineHttpRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="http_method",
+            full_name="google.cloud.tasks.v2beta2.AppEngineHttpRequest.http_method",
+            index=0,
+            number=1,
+            type=14,
+            cpp_type=8,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="app_engine_routing",
+            full_name="google.cloud.tasks.v2beta2.AppEngineHttpRequest.app_engine_routing",
+            index=1,
+            number=2,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="relative_url",
+            full_name="google.cloud.tasks.v2beta2.AppEngineHttpRequest.relative_url",
+            index=2,
+            number=3,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="headers",
+            full_name="google.cloud.tasks.v2beta2.AppEngineHttpRequest.headers",
+            index=3,
+            number=4,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="payload",
+            full_name="google.cloud.tasks.v2beta2.AppEngineHttpRequest.payload",
+            index=4,
+            number=5,
+            type=12,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b(""),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[_APPENGINEHTTPREQUEST_HEADERSENTRY],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=305,
+    serialized_end=629,
 )
 
 
 _APPENGINEROUTING = _descriptor.Descriptor(
-  name='AppEngineRouting',
-  full_name='google.cloud.tasks.v2beta2.AppEngineRouting',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='service', full_name='google.cloud.tasks.v2beta2.AppEngineRouting.service', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='version', full_name='google.cloud.tasks.v2beta2.AppEngineRouting.version', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='instance', full_name='google.cloud.tasks.v2beta2.AppEngineRouting.instance', index=2,
-      number=3, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='host', full_name='google.cloud.tasks.v2beta2.AppEngineRouting.host', index=3,
-      number=4, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=631,
-  serialized_end=715,
+    name="AppEngineRouting",
+    full_name="google.cloud.tasks.v2beta2.AppEngineRouting",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="service",
+            full_name="google.cloud.tasks.v2beta2.AppEngineRouting.service",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="version",
+            full_name="google.cloud.tasks.v2beta2.AppEngineRouting.version",
+            index=1,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="instance",
+            full_name="google.cloud.tasks.v2beta2.AppEngineRouting.instance",
+            index=2,
+            number=3,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="host",
+            full_name="google.cloud.tasks.v2beta2.AppEngineRouting.host",
+            index=3,
+            number=4,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=631,
+    serialized_end=715,
 )
 
-_APPENGINEHTTPTARGET.fields_by_name['app_engine_routing_override'].message_type = _APPENGINEROUTING
+_APPENGINEHTTPTARGET.fields_by_name[
+    "app_engine_routing_override"
+].message_type = _APPENGINEROUTING
 _APPENGINEHTTPREQUEST_HEADERSENTRY.containing_type = _APPENGINEHTTPREQUEST
-_APPENGINEHTTPREQUEST.fields_by_name['http_method'].enum_type = _HTTPMETHOD
-_APPENGINEHTTPREQUEST.fields_by_name['app_engine_routing'].message_type = _APPENGINEROUTING
-_APPENGINEHTTPREQUEST.fields_by_name['headers'].message_type = _APPENGINEHTTPREQUEST_HEADERSENTRY
-DESCRIPTOR.message_types_by_name['PullTarget'] = _PULLTARGET
-DESCRIPTOR.message_types_by_name['PullMessage'] = _PULLMESSAGE
-DESCRIPTOR.message_types_by_name['AppEngineHttpTarget'] = _APPENGINEHTTPTARGET
-DESCRIPTOR.message_types_by_name['AppEngineHttpRequest'] = _APPENGINEHTTPREQUEST
-DESCRIPTOR.message_types_by_name['AppEngineRouting'] = _APPENGINEROUTING
-DESCRIPTOR.enum_types_by_name['HttpMethod'] = _HTTPMETHOD
+_APPENGINEHTTPREQUEST.fields_by_name["http_method"].enum_type = _HTTPMETHOD
+_APPENGINEHTTPREQUEST.fields_by_name[
+    "app_engine_routing"
+].message_type = _APPENGINEROUTING
+_APPENGINEHTTPREQUEST.fields_by_name[
+    "headers"
+].message_type = _APPENGINEHTTPREQUEST_HEADERSENTRY
+DESCRIPTOR.message_types_by_name["PullTarget"] = _PULLTARGET
+DESCRIPTOR.message_types_by_name["PullMessage"] = _PULLMESSAGE
+DESCRIPTOR.message_types_by_name["AppEngineHttpTarget"] = _APPENGINEHTTPTARGET
+DESCRIPTOR.message_types_by_name["AppEngineHttpRequest"] = _APPENGINEHTTPREQUEST
+DESCRIPTOR.message_types_by_name["AppEngineRouting"] = _APPENGINEROUTING
+DESCRIPTOR.enum_types_by_name["HttpMethod"] = _HTTPMETHOD
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
-PullTarget = _reflection.GeneratedProtocolMessageType('PullTarget', (_message.Message,), dict(
-  DESCRIPTOR = _PULLTARGET,
-  __module__ = 'google.cloud.tasks_v2beta2.proto.target_pb2'
-  ,
-  __doc__ = """Pull target.
+PullTarget = _reflection.GeneratedProtocolMessageType(
+    "PullTarget",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_PULLTARGET,
+        __module__="google.cloud.tasks_v2beta2.proto.target_pb2",
+        __doc__="""Pull target.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.tasks.v2beta2.PullTarget)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.tasks.v2beta2.PullTarget)
+    ),
+)
 _sym_db.RegisterMessage(PullTarget)
 
-PullMessage = _reflection.GeneratedProtocolMessageType('PullMessage', (_message.Message,), dict(
-  DESCRIPTOR = _PULLMESSAGE,
-  __module__ = 'google.cloud.tasks_v2beta2.proto.target_pb2'
-  ,
-  __doc__ = """The pull message contains data that can be used by the caller of
+PullMessage = _reflection.GeneratedProtocolMessageType(
+    "PullMessage",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_PULLMESSAGE,
+        __module__="google.cloud.tasks_v2beta2.proto.target_pb2",
+        __doc__="""The pull message contains data that can be used by the caller of
   [LeaseTasks][google.cloud.tasks.v2beta2.CloudTasks.LeaseTasks] to
   process the task.
   
@@ -370,15 +516,18 @@ PullMessage = _reflection.GeneratedProtocolMessageType('PullMessage', (_message.
           Tasks. If a tag isn't UTF-8 encoded, the tag will be empty
           when the task is returned by Cloud Tasks.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.tasks.v2beta2.PullMessage)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.tasks.v2beta2.PullMessage)
+    ),
+)
 _sym_db.RegisterMessage(PullMessage)
 
-AppEngineHttpTarget = _reflection.GeneratedProtocolMessageType('AppEngineHttpTarget', (_message.Message,), dict(
-  DESCRIPTOR = _APPENGINEHTTPTARGET,
-  __module__ = 'google.cloud.tasks_v2beta2.proto.target_pb2'
-  ,
-  __doc__ = """App Engine HTTP target.
+AppEngineHttpTarget = _reflection.GeneratedProtocolMessageType(
+    "AppEngineHttpTarget",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_APPENGINEHTTPTARGET,
+        __module__="google.cloud.tasks_v2beta2.proto.target_pb2",
+        __doc__="""App Engine HTTP target.
   
   The task will be delivered to the App Engine application hostname
   specified by its
@@ -407,22 +556,27 @@ AppEngineHttpTarget = _reflection.GeneratedProtocolMessageType('AppEngineHttpTar
           level app\_engine\_routing][google.cloud.tasks.v2beta2.AppEngi
           neHttpRequest.app\_engine\_routing].
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.tasks.v2beta2.AppEngineHttpTarget)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.tasks.v2beta2.AppEngineHttpTarget)
+    ),
+)
 _sym_db.RegisterMessage(AppEngineHttpTarget)
 
-AppEngineHttpRequest = _reflection.GeneratedProtocolMessageType('AppEngineHttpRequest', (_message.Message,), dict(
-
-  HeadersEntry = _reflection.GeneratedProtocolMessageType('HeadersEntry', (_message.Message,), dict(
-    DESCRIPTOR = _APPENGINEHTTPREQUEST_HEADERSENTRY,
-    __module__ = 'google.cloud.tasks_v2beta2.proto.target_pb2'
-    # @@protoc_insertion_point(class_scope:google.cloud.tasks.v2beta2.AppEngineHttpRequest.HeadersEntry)
-    ))
-  ,
-  DESCRIPTOR = _APPENGINEHTTPREQUEST,
-  __module__ = 'google.cloud.tasks_v2beta2.proto.target_pb2'
-  ,
-  __doc__ = """App Engine HTTP request.
+AppEngineHttpRequest = _reflection.GeneratedProtocolMessageType(
+    "AppEngineHttpRequest",
+    (_message.Message,),
+    dict(
+        HeadersEntry=_reflection.GeneratedProtocolMessageType(
+            "HeadersEntry",
+            (_message.Message,),
+            dict(
+                DESCRIPTOR=_APPENGINEHTTPREQUEST_HEADERSENTRY,
+                __module__="google.cloud.tasks_v2beta2.proto.target_pb2"
+                # @@protoc_insertion_point(class_scope:google.cloud.tasks.v2beta2.AppEngineHttpRequest.HeadersEntry)
+            ),
+        ),
+        DESCRIPTOR=_APPENGINEHTTPREQUEST,
+        __module__="google.cloud.tasks_v2beta2.proto.target_pb2",
+        __doc__="""App Engine HTTP request.
   
   The message defines the HTTP request that is sent to an App Engine app
   when the task is dispatched.
@@ -539,16 +693,19 @@ AppEngineHttpRequest = _reflection.GeneratedProtocolMessageType('AppEngineHttpRe
           a task with an incompatible
           [HttpMethod][google.cloud.tasks.v2beta2.HttpMethod].
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.tasks.v2beta2.AppEngineHttpRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.tasks.v2beta2.AppEngineHttpRequest)
+    ),
+)
 _sym_db.RegisterMessage(AppEngineHttpRequest)
 _sym_db.RegisterMessage(AppEngineHttpRequest.HeadersEntry)
 
-AppEngineRouting = _reflection.GeneratedProtocolMessageType('AppEngineRouting', (_message.Message,), dict(
-  DESCRIPTOR = _APPENGINEROUTING,
-  __module__ = 'google.cloud.tasks_v2beta2.proto.target_pb2'
-  ,
-  __doc__ = """App Engine Routing.
+AppEngineRouting = _reflection.GeneratedProtocolMessageType(
+    "AppEngineRouting",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_APPENGINEROUTING,
+        __module__="google.cloud.tasks_v2beta2.proto.target_pb2",
+        __doc__="""App Engine Routing.
   
   For more information about services, versions, and instances see `An
   Overview of App
@@ -663,13 +820,21 @@ AppEngineRouting = _reflection.GeneratedProtocolMessageType('AppEngineRouting', 
           invalid, then the task will be sent to the default version of
           the default service when the task is attempted.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.tasks.v2beta2.AppEngineRouting)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.tasks.v2beta2.AppEngineRouting)
+    ),
+)
 _sym_db.RegisterMessage(AppEngineRouting)
 
 
 DESCRIPTOR.has_options = True
-DESCRIPTOR._options = _descriptor._ParseOptions(descriptor_pb2.FileOptions(), _b('\n\036com.google.cloud.tasks.v2beta2B\013TargetProtoP\001Z?google.golang.org/genproto/googleapis/cloud/tasks/v2beta2;tasks'))
+DESCRIPTOR._options = _descriptor._ParseOptions(
+    descriptor_pb2.FileOptions(),
+    _b(
+        "\n\036com.google.cloud.tasks.v2beta2B\013TargetProtoP\001Z?google.golang.org/genproto/googleapis/cloud/tasks/v2beta2;tasks"
+    ),
+)
 _APPENGINEHTTPREQUEST_HEADERSENTRY.has_options = True
-_APPENGINEHTTPREQUEST_HEADERSENTRY._options = _descriptor._ParseOptions(descriptor_pb2.MessageOptions(), _b('8\001'))
+_APPENGINEHTTPREQUEST_HEADERSENTRY._options = _descriptor._ParseOptions(
+    descriptor_pb2.MessageOptions(), _b("8\001")
+)
 # @@protoc_insertion_point(module_scope)

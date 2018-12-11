@@ -51,6 +51,7 @@ class Project(object):
     :type labels: dict
     :param labels: A list of labels associated with the project.
     """
+
     def __init__(self, project_id, client, name=None, labels=None):
         self._client = client
         self.project_id = project_id
@@ -61,7 +62,7 @@ class Project(object):
         self.parent = None
 
     def __repr__(self):
-        return '<Project: %r (%r)>' % (self.name, self.project_id)
+        return "<Project: %r (%r)>" % (self.name, self.project_id)
 
     @classmethod
     def from_api_repr(cls, resource, client):
@@ -76,30 +77,30 @@ class Project(object):
         :rtype: :class:`google.cloud.resource_manager.project.Project`
         :returns: The project created.
         """
-        project = cls(project_id=resource['projectId'], client=client)
+        project = cls(project_id=resource["projectId"], client=client)
         project.set_properties_from_api_repr(resource)
         return project
 
     def set_properties_from_api_repr(self, resource):
         """Update specific properties from its API representation."""
-        self.name = resource.get('name')
-        self.number = resource['projectNumber']
-        self.labels = resource.get('labels', {})
-        self.status = resource['lifecycleState']
-        if 'parent' in resource:
-            self.parent = resource['parent']
+        self.name = resource.get("name")
+        self.number = resource["projectNumber"]
+        self.labels = resource.get("labels", {})
+        self.status = resource["lifecycleState"]
+        if "parent" in resource:
+            self.parent = resource["parent"]
 
     @property
     def full_name(self):
         """Fully-qualified name (ie, ``'projects/purple-spaceship-123'``)."""
         if not self.project_id:
-            raise ValueError('Missing project ID.')
-        return 'projects/%s' % (self.project_id)
+            raise ValueError("Missing project ID.")
+        return "projects/%s" % (self.project_id)
 
     @property
     def path(self):
         """URL for the project (ie, ``'/projects/purple-spaceship-123'``)."""
-        return '/%s' % (self.full_name)
+        return "/%s" % (self.full_name)
 
     def _require_client(self, client):
         """Check client or verify over-ride.
@@ -129,13 +130,10 @@ class Project(object):
         """
         client = self._require_client(client)
 
-        data = {
-            'projectId': self.project_id,
-            'name': self.name,
-            'labels': self.labels,
-        }
-        resp = client._connection.api_request(method='POST', path='/projects',
-                                              data=data)
+        data = {"projectId": self.project_id, "name": self.name, "labels": self.labels}
+        resp = client._connection.api_request(
+            method="POST", path="/projects", data=data
+        )
         self.set_properties_from_api_repr(resource=resp)
 
     def reload(self, client=None):
@@ -164,7 +162,7 @@ class Project(object):
 
         # We assume the project exists. If it doesn't it will raise a NotFound
         # exception.
-        resp = client._connection.api_request(method='GET', path=self.path)
+        resp = client._connection.api_request(method="GET", path=self.path)
         self.set_properties_from_api_repr(resource=resp)
 
     def exists(self, client=None):
@@ -186,7 +184,7 @@ class Project(object):
         try:
             # Note that we have to request the entire resource as the API
             # doesn't provide a way tocheck for existence only.
-            client._connection.api_request(method='GET', path=self.path)
+            client._connection.api_request(method="GET", path=self.path)
         except NotFound:
             return False
         else:
@@ -205,14 +203,9 @@ class Project(object):
         """
         client = self._require_client(client)
 
-        data = {
-            'name': self.name,
-            'labels': self.labels,
-            'parent': self.parent,
-        }
+        data = {"name": self.name, "labels": self.labels, "parent": self.parent}
 
-        resp = client._connection.api_request(
-            method='PUT', path=self.path, data=data)
+        resp = client._connection.api_request(method="PUT", path=self.path, data=data)
         self.set_properties_from_api_repr(resp)
 
     def delete(self, client=None, reload_data=False):
@@ -240,7 +233,7 @@ class Project(object):
                             Default: :data:`False`.
         """
         client = self._require_client(client)
-        client._connection.api_request(method='DELETE', path=self.path)
+        client._connection.api_request(method="DELETE", path=self.path)
 
         # If the reload flag is set, reload the project.
         if reload_data:
@@ -270,8 +263,7 @@ class Project(object):
                             Default: :data:`False`.
         """
         client = self._require_client(client)
-        client._connection.api_request(
-            method='POST', path=self.path + ':undelete')
+        client._connection.api_request(method="POST", path=self.path + ":undelete")
 
         # If the reload flag is set, reload the project.
         if reload_data:

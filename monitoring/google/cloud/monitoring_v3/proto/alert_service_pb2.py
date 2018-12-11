@@ -2,285 +2,437 @@
 # source: google/cloud/monitoring_v3/proto/alert_service.proto
 
 import sys
-_b=sys.version_info[0]<3 and (lambda x:x) or (lambda x:x.encode('latin1'))
+
+_b = sys.version_info[0] < 3 and (lambda x: x) or (lambda x: x.encode("latin1"))
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
 from google.protobuf import descriptor_pb2
+
 # @@protoc_insertion_point(imports)
 
 _sym_db = _symbol_database.Default()
 
 
 from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
-from google.cloud.monitoring_v3.proto import alert_pb2 as google_dot_cloud_dot_monitoring__v3_dot_proto_dot_alert__pb2
+from google.cloud.monitoring_v3.proto import (
+    alert_pb2 as google_dot_cloud_dot_monitoring__v3_dot_proto_dot_alert__pb2,
+)
 from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 from google.protobuf import field_mask_pb2 as google_dot_protobuf_dot_field__mask__pb2
 
 
 DESCRIPTOR = _descriptor.FileDescriptor(
-  name='google/cloud/monitoring_v3/proto/alert_service.proto',
-  package='google.monitoring.v3',
-  syntax='proto3',
-  serialized_pb=_b('\n4google/cloud/monitoring_v3/proto/alert_service.proto\x12\x14google.monitoring.v3\x1a\x1cgoogle/api/annotations.proto\x1a,google/cloud/monitoring_v3/proto/alert.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto\"a\n\x18\x43reateAlertPolicyRequest\x12\x0c\n\x04name\x18\x03 \x01(\t\x12\x37\n\x0c\x61lert_policy\x18\x02 \x01(\x0b\x32!.google.monitoring.v3.AlertPolicy\"%\n\x15GetAlertPolicyRequest\x12\x0c\n\x04name\x18\x03 \x01(\t\"q\n\x18ListAlertPoliciesRequest\x12\x0c\n\x04name\x18\x04 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x05 \x01(\t\x12\x10\n\x08order_by\x18\x06 \x01(\t\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t\"o\n\x19ListAlertPoliciesResponse\x12\x39\n\x0e\x61lert_policies\x18\x03 \x03(\x0b\x32!.google.monitoring.v3.AlertPolicy\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\"\x84\x01\n\x18UpdateAlertPolicyRequest\x12/\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMask\x12\x37\n\x0c\x61lert_policy\x18\x03 \x01(\x0b\x32!.google.monitoring.v3.AlertPolicy\"(\n\x18\x44\x65leteAlertPolicyRequest\x12\x0c\n\x04name\x18\x03 \x01(\t2\xae\x06\n\x12\x41lertPolicyService\x12\xa1\x01\n\x11ListAlertPolicies\x12..google.monitoring.v3.ListAlertPoliciesRequest\x1a/.google.monitoring.v3.ListAlertPoliciesResponse\"+\x82\xd3\xe4\x93\x02%\x12#/v3/{name=projects/*}/alertPolicies\x12\x8f\x01\n\x0eGetAlertPolicy\x12+.google.monitoring.v3.GetAlertPolicyRequest\x1a!.google.monitoring.v3.AlertPolicy\"-\x82\xd3\xe4\x93\x02\'\x12%/v3/{name=projects/*/alertPolicies/*}\x12\xa1\x01\n\x11\x43reateAlertPolicy\x12..google.monitoring.v3.CreateAlertPolicyRequest\x1a!.google.monitoring.v3.AlertPolicy\"9\x82\xd3\xe4\x93\x02\x33\"#/v3/{name=projects/*}/alertPolicies:\x0c\x61lert_policy\x12\x8a\x01\n\x11\x44\x65leteAlertPolicy\x12..google.monitoring.v3.DeleteAlertPolicyRequest\x1a\x16.google.protobuf.Empty\"-\x82\xd3\xe4\x93\x02\'*%/v3/{name=projects/*/alertPolicies/*}\x12\xb0\x01\n\x11UpdateAlertPolicy\x12..google.monitoring.v3.UpdateAlertPolicyRequest\x1a!.google.monitoring.v3.AlertPolicy\"H\x82\xd3\xe4\x93\x02\x42\x32\x32/v3/{alert_policy.name=projects/*/alertPolicies/*}:\x0c\x61lert_policyB\xa9\x01\n\x18\x63om.google.monitoring.v3B\x11\x41lertServiceProtoP\x01Z>google.golang.org/genproto/googleapis/monitoring/v3;monitoring\xaa\x02\x1aGoogle.Cloud.Monitoring.V3\xca\x02\x1aGoogle\\Cloud\\Monitoring\\V3b\x06proto3')
-  ,
-  dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR,google_dot_cloud_dot_monitoring__v3_dot_proto_dot_alert__pb2.DESCRIPTOR,google_dot_protobuf_dot_empty__pb2.DESCRIPTOR,google_dot_protobuf_dot_field__mask__pb2.DESCRIPTOR,])
-
-
+    name="google/cloud/monitoring_v3/proto/alert_service.proto",
+    package="google.monitoring.v3",
+    syntax="proto3",
+    serialized_pb=_b(
+        '\n4google/cloud/monitoring_v3/proto/alert_service.proto\x12\x14google.monitoring.v3\x1a\x1cgoogle/api/annotations.proto\x1a,google/cloud/monitoring_v3/proto/alert.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto"a\n\x18\x43reateAlertPolicyRequest\x12\x0c\n\x04name\x18\x03 \x01(\t\x12\x37\n\x0c\x61lert_policy\x18\x02 \x01(\x0b\x32!.google.monitoring.v3.AlertPolicy"%\n\x15GetAlertPolicyRequest\x12\x0c\n\x04name\x18\x03 \x01(\t"q\n\x18ListAlertPoliciesRequest\x12\x0c\n\x04name\x18\x04 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x05 \x01(\t\x12\x10\n\x08order_by\x18\x06 \x01(\t\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t"o\n\x19ListAlertPoliciesResponse\x12\x39\n\x0e\x61lert_policies\x18\x03 \x03(\x0b\x32!.google.monitoring.v3.AlertPolicy\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"\x84\x01\n\x18UpdateAlertPolicyRequest\x12/\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMask\x12\x37\n\x0c\x61lert_policy\x18\x03 \x01(\x0b\x32!.google.monitoring.v3.AlertPolicy"(\n\x18\x44\x65leteAlertPolicyRequest\x12\x0c\n\x04name\x18\x03 \x01(\t2\xae\x06\n\x12\x41lertPolicyService\x12\xa1\x01\n\x11ListAlertPolicies\x12..google.monitoring.v3.ListAlertPoliciesRequest\x1a/.google.monitoring.v3.ListAlertPoliciesResponse"+\x82\xd3\xe4\x93\x02%\x12#/v3/{name=projects/*}/alertPolicies\x12\x8f\x01\n\x0eGetAlertPolicy\x12+.google.monitoring.v3.GetAlertPolicyRequest\x1a!.google.monitoring.v3.AlertPolicy"-\x82\xd3\xe4\x93\x02\'\x12%/v3/{name=projects/*/alertPolicies/*}\x12\xa1\x01\n\x11\x43reateAlertPolicy\x12..google.monitoring.v3.CreateAlertPolicyRequest\x1a!.google.monitoring.v3.AlertPolicy"9\x82\xd3\xe4\x93\x02\x33"#/v3/{name=projects/*}/alertPolicies:\x0c\x61lert_policy\x12\x8a\x01\n\x11\x44\x65leteAlertPolicy\x12..google.monitoring.v3.DeleteAlertPolicyRequest\x1a\x16.google.protobuf.Empty"-\x82\xd3\xe4\x93\x02\'*%/v3/{name=projects/*/alertPolicies/*}\x12\xb0\x01\n\x11UpdateAlertPolicy\x12..google.monitoring.v3.UpdateAlertPolicyRequest\x1a!.google.monitoring.v3.AlertPolicy"H\x82\xd3\xe4\x93\x02\x42\x32\x32/v3/{alert_policy.name=projects/*/alertPolicies/*}:\x0c\x61lert_policyB\xa9\x01\n\x18\x63om.google.monitoring.v3B\x11\x41lertServiceProtoP\x01Z>google.golang.org/genproto/googleapis/monitoring/v3;monitoring\xaa\x02\x1aGoogle.Cloud.Monitoring.V3\xca\x02\x1aGoogle\\Cloud\\Monitoring\\V3b\x06proto3'
+    ),
+    dependencies=[
+        google_dot_api_dot_annotations__pb2.DESCRIPTOR,
+        google_dot_cloud_dot_monitoring__v3_dot_proto_dot_alert__pb2.DESCRIPTOR,
+        google_dot_protobuf_dot_empty__pb2.DESCRIPTOR,
+        google_dot_protobuf_dot_field__mask__pb2.DESCRIPTOR,
+    ],
+)
 
 
 _CREATEALERTPOLICYREQUEST = _descriptor.Descriptor(
-  name='CreateAlertPolicyRequest',
-  full_name='google.monitoring.v3.CreateAlertPolicyRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='name', full_name='google.monitoring.v3.CreateAlertPolicyRequest.name', index=0,
-      number=3, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='alert_policy', full_name='google.monitoring.v3.CreateAlertPolicyRequest.alert_policy', index=1,
-      number=2, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=217,
-  serialized_end=314,
+    name="CreateAlertPolicyRequest",
+    full_name="google.monitoring.v3.CreateAlertPolicyRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="name",
+            full_name="google.monitoring.v3.CreateAlertPolicyRequest.name",
+            index=0,
+            number=3,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="alert_policy",
+            full_name="google.monitoring.v3.CreateAlertPolicyRequest.alert_policy",
+            index=1,
+            number=2,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=217,
+    serialized_end=314,
 )
 
 
 _GETALERTPOLICYREQUEST = _descriptor.Descriptor(
-  name='GetAlertPolicyRequest',
-  full_name='google.monitoring.v3.GetAlertPolicyRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='name', full_name='google.monitoring.v3.GetAlertPolicyRequest.name', index=0,
-      number=3, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=316,
-  serialized_end=353,
+    name="GetAlertPolicyRequest",
+    full_name="google.monitoring.v3.GetAlertPolicyRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="name",
+            full_name="google.monitoring.v3.GetAlertPolicyRequest.name",
+            index=0,
+            number=3,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        )
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=316,
+    serialized_end=353,
 )
 
 
 _LISTALERTPOLICIESREQUEST = _descriptor.Descriptor(
-  name='ListAlertPoliciesRequest',
-  full_name='google.monitoring.v3.ListAlertPoliciesRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='name', full_name='google.monitoring.v3.ListAlertPoliciesRequest.name', index=0,
-      number=4, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='filter', full_name='google.monitoring.v3.ListAlertPoliciesRequest.filter', index=1,
-      number=5, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='order_by', full_name='google.monitoring.v3.ListAlertPoliciesRequest.order_by', index=2,
-      number=6, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='page_size', full_name='google.monitoring.v3.ListAlertPoliciesRequest.page_size', index=3,
-      number=2, type=5, cpp_type=1, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='page_token', full_name='google.monitoring.v3.ListAlertPoliciesRequest.page_token', index=4,
-      number=3, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=355,
-  serialized_end=468,
+    name="ListAlertPoliciesRequest",
+    full_name="google.monitoring.v3.ListAlertPoliciesRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="name",
+            full_name="google.monitoring.v3.ListAlertPoliciesRequest.name",
+            index=0,
+            number=4,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="filter",
+            full_name="google.monitoring.v3.ListAlertPoliciesRequest.filter",
+            index=1,
+            number=5,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="order_by",
+            full_name="google.monitoring.v3.ListAlertPoliciesRequest.order_by",
+            index=2,
+            number=6,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="page_size",
+            full_name="google.monitoring.v3.ListAlertPoliciesRequest.page_size",
+            index=3,
+            number=2,
+            type=5,
+            cpp_type=1,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="page_token",
+            full_name="google.monitoring.v3.ListAlertPoliciesRequest.page_token",
+            index=4,
+            number=3,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=355,
+    serialized_end=468,
 )
 
 
 _LISTALERTPOLICIESRESPONSE = _descriptor.Descriptor(
-  name='ListAlertPoliciesResponse',
-  full_name='google.monitoring.v3.ListAlertPoliciesResponse',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='alert_policies', full_name='google.monitoring.v3.ListAlertPoliciesResponse.alert_policies', index=0,
-      number=3, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='next_page_token', full_name='google.monitoring.v3.ListAlertPoliciesResponse.next_page_token', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=470,
-  serialized_end=581,
+    name="ListAlertPoliciesResponse",
+    full_name="google.monitoring.v3.ListAlertPoliciesResponse",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="alert_policies",
+            full_name="google.monitoring.v3.ListAlertPoliciesResponse.alert_policies",
+            index=0,
+            number=3,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="next_page_token",
+            full_name="google.monitoring.v3.ListAlertPoliciesResponse.next_page_token",
+            index=1,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=470,
+    serialized_end=581,
 )
 
 
 _UPDATEALERTPOLICYREQUEST = _descriptor.Descriptor(
-  name='UpdateAlertPolicyRequest',
-  full_name='google.monitoring.v3.UpdateAlertPolicyRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='update_mask', full_name='google.monitoring.v3.UpdateAlertPolicyRequest.update_mask', index=0,
-      number=2, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='alert_policy', full_name='google.monitoring.v3.UpdateAlertPolicyRequest.alert_policy', index=1,
-      number=3, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=584,
-  serialized_end=716,
+    name="UpdateAlertPolicyRequest",
+    full_name="google.monitoring.v3.UpdateAlertPolicyRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="update_mask",
+            full_name="google.monitoring.v3.UpdateAlertPolicyRequest.update_mask",
+            index=0,
+            number=2,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="alert_policy",
+            full_name="google.monitoring.v3.UpdateAlertPolicyRequest.alert_policy",
+            index=1,
+            number=3,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=584,
+    serialized_end=716,
 )
 
 
 _DELETEALERTPOLICYREQUEST = _descriptor.Descriptor(
-  name='DeleteAlertPolicyRequest',
-  full_name='google.monitoring.v3.DeleteAlertPolicyRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='name', full_name='google.monitoring.v3.DeleteAlertPolicyRequest.name', index=0,
-      number=3, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=718,
-  serialized_end=758,
+    name="DeleteAlertPolicyRequest",
+    full_name="google.monitoring.v3.DeleteAlertPolicyRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="name",
+            full_name="google.monitoring.v3.DeleteAlertPolicyRequest.name",
+            index=0,
+            number=3,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        )
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=718,
+    serialized_end=758,
 )
 
-_CREATEALERTPOLICYREQUEST.fields_by_name['alert_policy'].message_type = google_dot_cloud_dot_monitoring__v3_dot_proto_dot_alert__pb2._ALERTPOLICY
-_LISTALERTPOLICIESRESPONSE.fields_by_name['alert_policies'].message_type = google_dot_cloud_dot_monitoring__v3_dot_proto_dot_alert__pb2._ALERTPOLICY
-_UPDATEALERTPOLICYREQUEST.fields_by_name['update_mask'].message_type = google_dot_protobuf_dot_field__mask__pb2._FIELDMASK
-_UPDATEALERTPOLICYREQUEST.fields_by_name['alert_policy'].message_type = google_dot_cloud_dot_monitoring__v3_dot_proto_dot_alert__pb2._ALERTPOLICY
-DESCRIPTOR.message_types_by_name['CreateAlertPolicyRequest'] = _CREATEALERTPOLICYREQUEST
-DESCRIPTOR.message_types_by_name['GetAlertPolicyRequest'] = _GETALERTPOLICYREQUEST
-DESCRIPTOR.message_types_by_name['ListAlertPoliciesRequest'] = _LISTALERTPOLICIESREQUEST
-DESCRIPTOR.message_types_by_name['ListAlertPoliciesResponse'] = _LISTALERTPOLICIESRESPONSE
-DESCRIPTOR.message_types_by_name['UpdateAlertPolicyRequest'] = _UPDATEALERTPOLICYREQUEST
-DESCRIPTOR.message_types_by_name['DeleteAlertPolicyRequest'] = _DELETEALERTPOLICYREQUEST
+_CREATEALERTPOLICYREQUEST.fields_by_name[
+    "alert_policy"
+].message_type = (
+    google_dot_cloud_dot_monitoring__v3_dot_proto_dot_alert__pb2._ALERTPOLICY
+)
+_LISTALERTPOLICIESRESPONSE.fields_by_name[
+    "alert_policies"
+].message_type = (
+    google_dot_cloud_dot_monitoring__v3_dot_proto_dot_alert__pb2._ALERTPOLICY
+)
+_UPDATEALERTPOLICYREQUEST.fields_by_name[
+    "update_mask"
+].message_type = google_dot_protobuf_dot_field__mask__pb2._FIELDMASK
+_UPDATEALERTPOLICYREQUEST.fields_by_name[
+    "alert_policy"
+].message_type = (
+    google_dot_cloud_dot_monitoring__v3_dot_proto_dot_alert__pb2._ALERTPOLICY
+)
+DESCRIPTOR.message_types_by_name["CreateAlertPolicyRequest"] = _CREATEALERTPOLICYREQUEST
+DESCRIPTOR.message_types_by_name["GetAlertPolicyRequest"] = _GETALERTPOLICYREQUEST
+DESCRIPTOR.message_types_by_name["ListAlertPoliciesRequest"] = _LISTALERTPOLICIESREQUEST
+DESCRIPTOR.message_types_by_name[
+    "ListAlertPoliciesResponse"
+] = _LISTALERTPOLICIESRESPONSE
+DESCRIPTOR.message_types_by_name["UpdateAlertPolicyRequest"] = _UPDATEALERTPOLICYREQUEST
+DESCRIPTOR.message_types_by_name["DeleteAlertPolicyRequest"] = _DELETEALERTPOLICYREQUEST
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
-CreateAlertPolicyRequest = _reflection.GeneratedProtocolMessageType('CreateAlertPolicyRequest', (_message.Message,), dict(
-  DESCRIPTOR = _CREATEALERTPOLICYREQUEST,
-  __module__ = 'google.cloud.monitoring_v3.proto.alert_service_pb2'
-  ,
-  __doc__ = """The protocol for the ``CreateAlertPolicy`` request.
+CreateAlertPolicyRequest = _reflection.GeneratedProtocolMessageType(
+    "CreateAlertPolicyRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_CREATEALERTPOLICYREQUEST,
+        __module__="google.cloud.monitoring_v3.proto.alert_service_pb2",
+        __doc__="""The protocol for the ``CreateAlertPolicy`` request.
   
   
   Attributes:
@@ -298,15 +450,18 @@ CreateAlertPolicyRequest = _reflection.GeneratedProtocolMessageType('CreateAlert
           field in this policy. The name will be returned in the new
           policy, including a new [ALERT\_POLICY\_ID] value.
   """,
-  # @@protoc_insertion_point(class_scope:google.monitoring.v3.CreateAlertPolicyRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:google.monitoring.v3.CreateAlertPolicyRequest)
+    ),
+)
 _sym_db.RegisterMessage(CreateAlertPolicyRequest)
 
-GetAlertPolicyRequest = _reflection.GeneratedProtocolMessageType('GetAlertPolicyRequest', (_message.Message,), dict(
-  DESCRIPTOR = _GETALERTPOLICYREQUEST,
-  __module__ = 'google.cloud.monitoring_v3.proto.alert_service_pb2'
-  ,
-  __doc__ = """The protocol for the ``GetAlertPolicy`` request.
+GetAlertPolicyRequest = _reflection.GeneratedProtocolMessageType(
+    "GetAlertPolicyRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_GETALERTPOLICYREQUEST,
+        __module__="google.cloud.monitoring_v3.proto.alert_service_pb2",
+        __doc__="""The protocol for the ``GetAlertPolicy`` request.
   
   
   Attributes:
@@ -314,15 +469,18 @@ GetAlertPolicyRequest = _reflection.GeneratedProtocolMessageType('GetAlertPolicy
           The alerting policy to retrieve. The format is  ::
           projects/[PROJECT_ID]/alertPolicies/[ALERT_POLICY_ID]
   """,
-  # @@protoc_insertion_point(class_scope:google.monitoring.v3.GetAlertPolicyRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:google.monitoring.v3.GetAlertPolicyRequest)
+    ),
+)
 _sym_db.RegisterMessage(GetAlertPolicyRequest)
 
-ListAlertPoliciesRequest = _reflection.GeneratedProtocolMessageType('ListAlertPoliciesRequest', (_message.Message,), dict(
-  DESCRIPTOR = _LISTALERTPOLICIESREQUEST,
-  __module__ = 'google.cloud.monitoring_v3.proto.alert_service_pb2'
-  ,
-  __doc__ = """The protocol for the ``ListAlertPolicies`` request.
+ListAlertPoliciesRequest = _reflection.GeneratedProtocolMessageType(
+    "ListAlertPoliciesRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_LISTALERTPOLICIESREQUEST,
+        __module__="google.cloud.monitoring_v3.proto.alert_service_pb2",
+        __doc__="""The protocol for the ``ListAlertPolicies`` request.
   
   
   Attributes:
@@ -352,15 +510,18 @@ ListAlertPoliciesRequest = _reflection.GeneratedProtocolMessageType('ListAlertPo
           method. Using this field causes the method to return more
           results from the previous method call.
   """,
-  # @@protoc_insertion_point(class_scope:google.monitoring.v3.ListAlertPoliciesRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:google.monitoring.v3.ListAlertPoliciesRequest)
+    ),
+)
 _sym_db.RegisterMessage(ListAlertPoliciesRequest)
 
-ListAlertPoliciesResponse = _reflection.GeneratedProtocolMessageType('ListAlertPoliciesResponse', (_message.Message,), dict(
-  DESCRIPTOR = _LISTALERTPOLICIESRESPONSE,
-  __module__ = 'google.cloud.monitoring_v3.proto.alert_service_pb2'
-  ,
-  __doc__ = """The protocol for the ``ListAlertPolicies`` response.
+ListAlertPoliciesResponse = _reflection.GeneratedProtocolMessageType(
+    "ListAlertPoliciesResponse",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_LISTALERTPOLICIESRESPONSE,
+        __module__="google.cloud.monitoring_v3.proto.alert_service_pb2",
+        __doc__="""The protocol for the ``ListAlertPolicies`` response.
   
   
   Attributes:
@@ -372,15 +533,18 @@ ListAlertPoliciesResponse = _reflection.GeneratedProtocolMessageType('ListAlertP
           results, use that value as ``pageToken`` in the next call to
           this method.
   """,
-  # @@protoc_insertion_point(class_scope:google.monitoring.v3.ListAlertPoliciesResponse)
-  ))
+        # @@protoc_insertion_point(class_scope:google.monitoring.v3.ListAlertPoliciesResponse)
+    ),
+)
 _sym_db.RegisterMessage(ListAlertPoliciesResponse)
 
-UpdateAlertPolicyRequest = _reflection.GeneratedProtocolMessageType('UpdateAlertPolicyRequest', (_message.Message,), dict(
-  DESCRIPTOR = _UPDATEALERTPOLICYREQUEST,
-  __module__ = 'google.cloud.monitoring_v3.proto.alert_service_pb2'
-  ,
-  __doc__ = """The protocol for the ``UpdateAlertPolicy`` request.
+UpdateAlertPolicyRequest = _reflection.GeneratedProtocolMessageType(
+    "UpdateAlertPolicyRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_UPDATEALERTPOLICYREQUEST,
+        __module__="google.cloud.monitoring_v3.proto.alert_service_pb2",
+        __doc__="""The protocol for the ``UpdateAlertPolicy`` request.
   
   
   Attributes:
@@ -411,15 +575,18 @@ UpdateAlertPolicyRequest = _reflection.GeneratedProtocolMessageType('UpdateAlert
           is not empty, any fields in this policy that are not in
           ``update_mask`` are ignored.
   """,
-  # @@protoc_insertion_point(class_scope:google.monitoring.v3.UpdateAlertPolicyRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:google.monitoring.v3.UpdateAlertPolicyRequest)
+    ),
+)
 _sym_db.RegisterMessage(UpdateAlertPolicyRequest)
 
-DeleteAlertPolicyRequest = _reflection.GeneratedProtocolMessageType('DeleteAlertPolicyRequest', (_message.Message,), dict(
-  DESCRIPTOR = _DELETEALERTPOLICYREQUEST,
-  __module__ = 'google.cloud.monitoring_v3.proto.alert_service_pb2'
-  ,
-  __doc__ = """The protocol for the ``DeleteAlertPolicy`` request.
+DeleteAlertPolicyRequest = _reflection.GeneratedProtocolMessageType(
+    "DeleteAlertPolicyRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_DELETEALERTPOLICYREQUEST,
+        __module__="google.cloud.monitoring_v3.proto.alert_service_pb2",
+        __doc__="""The protocol for the ``DeleteAlertPolicy`` request.
   
   
   Attributes:
@@ -429,71 +596,97 @@ DeleteAlertPolicyRequest = _reflection.GeneratedProtocolMessageType('DeleteAlert
           more information, see
           [AlertPolicy][google.monitoring.v3.AlertPolicy].
   """,
-  # @@protoc_insertion_point(class_scope:google.monitoring.v3.DeleteAlertPolicyRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:google.monitoring.v3.DeleteAlertPolicyRequest)
+    ),
+)
 _sym_db.RegisterMessage(DeleteAlertPolicyRequest)
 
 
 DESCRIPTOR.has_options = True
-DESCRIPTOR._options = _descriptor._ParseOptions(descriptor_pb2.FileOptions(), _b('\n\030com.google.monitoring.v3B\021AlertServiceProtoP\001Z>google.golang.org/genproto/googleapis/monitoring/v3;monitoring\252\002\032Google.Cloud.Monitoring.V3\312\002\032Google\\Cloud\\Monitoring\\V3'))
+DESCRIPTOR._options = _descriptor._ParseOptions(
+    descriptor_pb2.FileOptions(),
+    _b(
+        "\n\030com.google.monitoring.v3B\021AlertServiceProtoP\001Z>google.golang.org/genproto/googleapis/monitoring/v3;monitoring\252\002\032Google.Cloud.Monitoring.V3\312\002\032Google\\Cloud\\Monitoring\\V3"
+    ),
+)
 
 _ALERTPOLICYSERVICE = _descriptor.ServiceDescriptor(
-  name='AlertPolicyService',
-  full_name='google.monitoring.v3.AlertPolicyService',
-  file=DESCRIPTOR,
-  index=0,
-  options=None,
-  serialized_start=761,
-  serialized_end=1575,
-  methods=[
-  _descriptor.MethodDescriptor(
-    name='ListAlertPolicies',
-    full_name='google.monitoring.v3.AlertPolicyService.ListAlertPolicies',
+    name="AlertPolicyService",
+    full_name="google.monitoring.v3.AlertPolicyService",
+    file=DESCRIPTOR,
     index=0,
-    containing_service=None,
-    input_type=_LISTALERTPOLICIESREQUEST,
-    output_type=_LISTALERTPOLICIESRESPONSE,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002%\022#/v3/{name=projects/*}/alertPolicies')),
-  ),
-  _descriptor.MethodDescriptor(
-    name='GetAlertPolicy',
-    full_name='google.monitoring.v3.AlertPolicyService.GetAlertPolicy',
-    index=1,
-    containing_service=None,
-    input_type=_GETALERTPOLICYREQUEST,
-    output_type=google_dot_cloud_dot_monitoring__v3_dot_proto_dot_alert__pb2._ALERTPOLICY,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002\'\022%/v3/{name=projects/*/alertPolicies/*}')),
-  ),
-  _descriptor.MethodDescriptor(
-    name='CreateAlertPolicy',
-    full_name='google.monitoring.v3.AlertPolicyService.CreateAlertPolicy',
-    index=2,
-    containing_service=None,
-    input_type=_CREATEALERTPOLICYREQUEST,
-    output_type=google_dot_cloud_dot_monitoring__v3_dot_proto_dot_alert__pb2._ALERTPOLICY,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\0023\"#/v3/{name=projects/*}/alertPolicies:\014alert_policy')),
-  ),
-  _descriptor.MethodDescriptor(
-    name='DeleteAlertPolicy',
-    full_name='google.monitoring.v3.AlertPolicyService.DeleteAlertPolicy',
-    index=3,
-    containing_service=None,
-    input_type=_DELETEALERTPOLICYREQUEST,
-    output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002\'*%/v3/{name=projects/*/alertPolicies/*}')),
-  ),
-  _descriptor.MethodDescriptor(
-    name='UpdateAlertPolicy',
-    full_name='google.monitoring.v3.AlertPolicyService.UpdateAlertPolicy',
-    index=4,
-    containing_service=None,
-    input_type=_UPDATEALERTPOLICYREQUEST,
-    output_type=google_dot_cloud_dot_monitoring__v3_dot_proto_dot_alert__pb2._ALERTPOLICY,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002B22/v3/{alert_policy.name=projects/*/alertPolicies/*}:\014alert_policy')),
-  ),
-])
+    options=None,
+    serialized_start=761,
+    serialized_end=1575,
+    methods=[
+        _descriptor.MethodDescriptor(
+            name="ListAlertPolicies",
+            full_name="google.monitoring.v3.AlertPolicyService.ListAlertPolicies",
+            index=0,
+            containing_service=None,
+            input_type=_LISTALERTPOLICIESREQUEST,
+            output_type=_LISTALERTPOLICIESRESPONSE,
+            options=_descriptor._ParseOptions(
+                descriptor_pb2.MethodOptions(),
+                _b("\202\323\344\223\002%\022#/v3/{name=projects/*}/alertPolicies"),
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="GetAlertPolicy",
+            full_name="google.monitoring.v3.AlertPolicyService.GetAlertPolicy",
+            index=1,
+            containing_service=None,
+            input_type=_GETALERTPOLICYREQUEST,
+            output_type=google_dot_cloud_dot_monitoring__v3_dot_proto_dot_alert__pb2._ALERTPOLICY,
+            options=_descriptor._ParseOptions(
+                descriptor_pb2.MethodOptions(),
+                _b("\202\323\344\223\002'\022%/v3/{name=projects/*/alertPolicies/*}"),
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="CreateAlertPolicy",
+            full_name="google.monitoring.v3.AlertPolicyService.CreateAlertPolicy",
+            index=2,
+            containing_service=None,
+            input_type=_CREATEALERTPOLICYREQUEST,
+            output_type=google_dot_cloud_dot_monitoring__v3_dot_proto_dot_alert__pb2._ALERTPOLICY,
+            options=_descriptor._ParseOptions(
+                descriptor_pb2.MethodOptions(),
+                _b(
+                    '\202\323\344\223\0023"#/v3/{name=projects/*}/alertPolicies:\014alert_policy'
+                ),
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="DeleteAlertPolicy",
+            full_name="google.monitoring.v3.AlertPolicyService.DeleteAlertPolicy",
+            index=3,
+            containing_service=None,
+            input_type=_DELETEALERTPOLICYREQUEST,
+            output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
+            options=_descriptor._ParseOptions(
+                descriptor_pb2.MethodOptions(),
+                _b("\202\323\344\223\002'*%/v3/{name=projects/*/alertPolicies/*}"),
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="UpdateAlertPolicy",
+            full_name="google.monitoring.v3.AlertPolicyService.UpdateAlertPolicy",
+            index=4,
+            containing_service=None,
+            input_type=_UPDATEALERTPOLICYREQUEST,
+            output_type=google_dot_cloud_dot_monitoring__v3_dot_proto_dot_alert__pb2._ALERTPOLICY,
+            options=_descriptor._ParseOptions(
+                descriptor_pb2.MethodOptions(),
+                _b(
+                    "\202\323\344\223\002B22/v3/{alert_policy.name=projects/*/alertPolicies/*}:\014alert_policy"
+                ),
+            ),
+        ),
+    ],
+)
 _sym_db.RegisterServiceDescriptor(_ALERTPOLICYSERVICE)
 
-DESCRIPTOR.services_by_name['AlertPolicyService'] = _ALERTPOLICYSERVICE
+DESCRIPTOR.services_by_name["AlertPolicyService"] = _ALERTPOLICYSERVICE
 
 # @@protoc_insertion_point(module_scope)

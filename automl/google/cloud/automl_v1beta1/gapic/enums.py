@@ -27,6 +27,7 @@ class ClassificationType(enum.IntEnum):
       MULTICLASS (int): At most one label is allowed per example.
       MULTILABEL (int): Multiple labels are allowed for one example.
     """
+
     CLASSIFICATION_TYPE_UNSPECIFIED = 0
     MULTICLASS = 1
     MULTILABEL = 2
@@ -42,6 +43,7 @@ class Model(object):
           DEPLOYED (int): Model is deployed.
           UNDEPLOYED (int): Model is not deployed.
         """
+
         DEPLOYMENT_STATE_UNSPECIFIED = 0
         DEPLOYED = 1
         UNDEPLOYED = 2

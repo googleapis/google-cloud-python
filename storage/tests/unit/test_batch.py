@@ -25,7 +25,7 @@ def _make_credentials():
     return mock.Mock(spec=google.auth.credentials.Credentials)
 
 
-def _make_response(status=http_client.OK, content=b'', headers={}):
+def _make_response(status=http_client.OK, content=b"", headers={}):
     response = requests.Response()
     response.status_code = status
     response._content = content
@@ -41,7 +41,6 @@ def _make_requests_session(responses):
 
 
 class TestMIMEApplicationHTTP(unittest.TestCase):
-
     @staticmethod
     def _get_target_class():
         from google.cloud.storage.batch import MIMEApplicationHTTP
@@ -52,21 +51,18 @@ class TestMIMEApplicationHTTP(unittest.TestCase):
         return self._get_target_class()(*args, **kw)
 
     def test_ctor_body_None(self):
-        METHOD = 'DELETE'
-        PATH = '/path/to/api'
-        LINES = [
-            "DELETE /path/to/api HTTP/1.1",
-            "",
-        ]
+        METHOD = "DELETE"
+        PATH = "/path/to/api"
+        LINES = ["DELETE /path/to/api HTTP/1.1", ""]
         mah = self._make_one(METHOD, PATH, {}, None)
-        self.assertEqual(mah.get_content_type(), 'application/http')
+        self.assertEqual(mah.get_content_type(), "application/http")
         self.assertEqual(mah.get_payload().splitlines(), LINES)
 
     def test_ctor_body_str(self):
-        METHOD = 'GET'
-        PATH = '/path/to/api'
-        BODY = 'ABC'
-        HEADERS = {'Content-Length': len(BODY), 'Content-Type': 'text/plain'}
+        METHOD = "GET"
+        PATH = "/path/to/api"
+        BODY = "ABC"
+        HEADERS = {"Content-Length": len(BODY), "Content-Type": "text/plain"}
         LINES = [
             "GET /path/to/api HTTP/1.1",
             "Content-Length: 3",
@@ -78,15 +74,15 @@ class TestMIMEApplicationHTTP(unittest.TestCase):
         self.assertEqual(mah.get_payload().splitlines(), LINES)
 
     def test_ctor_body_dict(self):
-        METHOD = 'GET'
-        PATH = '/path/to/api'
-        BODY = {'foo': 'bar'}
+        METHOD = "GET"
+        PATH = "/path/to/api"
+        BODY = {"foo": "bar"}
         HEADERS = {}
         LINES = [
-            'GET /path/to/api HTTP/1.1',
-            'Content-Length: 14',
-            'Content-Type: application/json',
-            '',
+            "GET /path/to/api HTTP/1.1",
+            "Content-Length: 14",
+            "Content-Type: application/json",
+            "",
             '{"foo": "bar"}',
         ]
         mah = self._make_one(METHOD, PATH, HEADERS, BODY)
@@ -94,7 +90,6 @@ class TestMIMEApplicationHTTP(unittest.TestCase):
 
 
 class TestBatch(unittest.TestCase):
-
     @staticmethod
     def _get_target_class():
         from google.cloud.storage.batch import Batch
@@ -116,7 +111,7 @@ class TestBatch(unittest.TestCase):
     def test_current(self):
         from google.cloud.storage.client import Client
 
-        project = 'PROJECT'
+        project = "PROJECT"
         credentials = _make_credentials()
         client = Client(project=project, credentials=credentials)
         batch1 = self._make_one(client)
@@ -132,13 +127,13 @@ class TestBatch(unittest.TestCase):
     def test__make_request_GET_normal(self):
         from google.cloud.storage.batch import _FutureDict
 
-        url = 'http://example.com/api'
+        url = "http://example.com/api"
         http = _make_requests_session([])
         connection = _Connection(http=http)
         batch = self._make_one(connection)
         target = _MockObject()
 
-        response = batch._make_request('GET', url, target_object=target)
+        response = batch._make_request("GET", url, target_object=target)
 
         # Check the respone
         self.assertEqual(response.status_code, 204)
@@ -153,22 +148,23 @@ class TestBatch(unittest.TestCase):
         self.assertEqual(len(batch._requests), 1)
         request = batch._requests[0]
         request_method, request_url, _, request_data = request
-        self.assertEqual(request_method, 'GET')
+        self.assertEqual(request_method, "GET")
         self.assertEqual(request_url, url)
         self.assertIsNone(request_data)
 
     def test__make_request_POST_normal(self):
         from google.cloud.storage.batch import _FutureDict
 
-        url = 'http://example.com/api'
+        url = "http://example.com/api"
         http = _make_requests_session([])
         connection = _Connection(http=http)
         batch = self._make_one(connection)
-        data = {'foo': 1}
+        data = {"foo": 1}
         target = _MockObject()
 
         response = batch._make_request(
-            'POST', url, data={'foo': 1}, target_object=target)
+            "POST", url, data={"foo": 1}, target_object=target
+        )
 
         self.assertEqual(response.status_code, 204)
         self.assertIsInstance(response.content, _FutureDict)
@@ -179,22 +175,23 @@ class TestBatch(unittest.TestCase):
 
         request = batch._requests[0]
         request_method, request_url, _, request_data = request
-        self.assertEqual(request_method, 'POST')
+        self.assertEqual(request_method, "POST")
         self.assertEqual(request_url, url)
         self.assertEqual(request_data, data)
 
     def test__make_request_PATCH_normal(self):
         from google.cloud.storage.batch import _FutureDict
 
-        url = 'http://example.com/api'
+        url = "http://example.com/api"
         http = _make_requests_session([])
         connection = _Connection(http=http)
         batch = self._make_one(connection)
-        data = {'foo': 1}
+        data = {"foo": 1}
         target = _MockObject()
 
         response = batch._make_request(
-            'PATCH', url, data={'foo': 1}, target_object=target)
+            "PATCH", url, data={"foo": 1}, target_object=target
+        )
 
         self.assertEqual(response.status_code, 204)
         self.assertIsInstance(response.content, _FutureDict)
@@ -205,20 +202,20 @@ class TestBatch(unittest.TestCase):
 
         request = batch._requests[0]
         request_method, request_url, _, request_data = request
-        self.assertEqual(request_method, 'PATCH')
+        self.assertEqual(request_method, "PATCH")
         self.assertEqual(request_url, url)
         self.assertEqual(request_data, data)
 
     def test__make_request_DELETE_normal(self):
         from google.cloud.storage.batch import _FutureDict
 
-        url = 'http://example.com/api'
+        url = "http://example.com/api"
         http = _make_requests_session([])
         connection = _Connection(http=http)
         batch = self._make_one(connection)
         target = _MockObject()
 
-        response = batch._make_request('DELETE', url, target_object=target)
+        response = batch._make_request("DELETE", url, target_object=target)
 
         # Check the respone
         self.assertEqual(response.status_code, 204)
@@ -232,21 +229,21 @@ class TestBatch(unittest.TestCase):
         self.assertEqual(len(batch._requests), 1)
         request = batch._requests[0]
         request_method, request_url, _, request_data = request
-        self.assertEqual(request_method, 'DELETE')
+        self.assertEqual(request_method, "DELETE")
         self.assertEqual(request_url, url)
         self.assertIsNone(request_data)
 
     def test__make_request_POST_too_many_requests(self):
-        url = 'http://example.com/api'
+        url = "http://example.com/api"
         http = _make_requests_session([])
         connection = _Connection(http=http)
         batch = self._make_one(connection)
 
         batch._MAX_BATCH_SIZE = 1
-        batch._requests.append(('POST', url, {}, {'bar': 2}))
+        batch._requests.append(("POST", url, {}, {"bar": 2}))
 
         with self.assertRaises(ValueError):
-            batch._make_request('POST', url, data={'foo': 1})
+            batch._make_request("POST", url, data={"foo": 1})
 
     def test_finish_empty(self):
         http = _make_requests_session([])
@@ -257,7 +254,7 @@ class TestBatch(unittest.TestCase):
             batch.finish()
 
     def _get_payload_chunks(self, boundary, payload):
-        divider = '--' + boundary[len('boundary="'):-1]
+        divider = "--" + boundary[len('boundary="') : -1]
         chunks = payload.split(divider)[1:-1]  # discard prolog / epilog
         return chunks
 
@@ -265,13 +262,13 @@ class TestBatch(unittest.TestCase):
         lines = chunk.splitlines()
         # blank + 2 headers + blank + request + blank + blank
         self.assertEqual(len(lines), 7)
-        self.assertEqual(lines[0], '')
-        self.assertEqual(lines[1], 'Content-Type: application/http')
-        self.assertEqual(lines[2], 'MIME-Version: 1.0')
-        self.assertEqual(lines[3], '')
-        self.assertEqual(lines[4], '%s %s HTTP/1.1' % (method, url))
-        self.assertEqual(lines[5], '')
-        self.assertEqual(lines[6], '')
+        self.assertEqual(lines[0], "")
+        self.assertEqual(lines[1], "Content-Type: application/http")
+        self.assertEqual(lines[2], "MIME-Version: 1.0")
+        self.assertEqual(lines[3], "")
+        self.assertEqual(lines[4], "%s %s HTTP/1.1" % (method, url))
+        self.assertEqual(lines[5], "")
+        self.assertEqual(lines[6], "")
 
     def _check_subrequest_payload(self, chunk, method, url, payload):
         import json
@@ -279,148 +276,153 @@ class TestBatch(unittest.TestCase):
         lines = chunk.splitlines()
         # blank + 2 headers + blank + request + 2 headers + blank + body
         payload_str = json.dumps(payload)
-        self.assertEqual(lines[0], '')
-        self.assertEqual(lines[1], 'Content-Type: application/http')
-        self.assertEqual(lines[2], 'MIME-Version: 1.0')
-        self.assertEqual(lines[3], '')
-        self.assertEqual(lines[4], '%s %s HTTP/1.1' % (method, url))
-        if method == 'GET':
+        self.assertEqual(lines[0], "")
+        self.assertEqual(lines[1], "Content-Type: application/http")
+        self.assertEqual(lines[2], "MIME-Version: 1.0")
+        self.assertEqual(lines[3], "")
+        self.assertEqual(lines[4], "%s %s HTTP/1.1" % (method, url))
+        if method == "GET":
             self.assertEqual(len(lines), 7)
-            self.assertEqual(lines[5], '')
-            self.assertEqual(lines[6], '')
+            self.assertEqual(lines[5], "")
+            self.assertEqual(lines[6], "")
         else:
             self.assertEqual(len(lines), 9)
-            self.assertEqual(lines[5], 'Content-Length: %d' % len(payload_str))
-            self.assertEqual(lines[6], 'Content-Type: application/json')
-            self.assertEqual(lines[7], '')
+            self.assertEqual(lines[5], "Content-Length: %d" % len(payload_str))
+            self.assertEqual(lines[6], "Content-Type: application/json")
+            self.assertEqual(lines[7], "")
             self.assertEqual(json.loads(lines[8]), payload)
 
     def _get_mutlipart_request(self, http):
         request_call = http.request.mock_calls[0][2]
-        request_headers = request_call['headers']
-        request_body = request_call['data']
+        request_headers = request_call["headers"]
+        request_body = request_call["data"]
         content_type, boundary = [
-            value.strip() for value in
-            request_headers['Content-Type'].split(';')]
+            value.strip() for value in request_headers["Content-Type"].split(";")
+        ]
 
         return request_headers, request_body, content_type, boundary
 
     def test_finish_nonempty(self):
-        url = 'http://api.example.com/other_api'
+        url = "http://api.example.com/other_api"
         expected_response = _make_response(
             content=_THREE_PART_MIME_RESPONSE,
-            headers={'content-type': 'multipart/mixed; boundary="DEADBEEF="'})
+            headers={"content-type": 'multipart/mixed; boundary="DEADBEEF="'},
+        )
         http = _make_requests_session([expected_response])
         connection = _Connection(http=http)
         client = _Client(connection)
         batch = self._make_one(client)
-        batch.API_BASE_URL = 'http://api.example.com'
+        batch.API_BASE_URL = "http://api.example.com"
 
-        batch._do_request('POST', url, {}, {'foo': 1, 'bar': 2}, None)
-        batch._do_request('PATCH', url, {}, {'bar': 3}, None)
-        batch._do_request('DELETE', url, {}, None, None)
+        batch._do_request("POST", url, {}, {"foo": 1, "bar": 2}, None)
+        batch._do_request("PATCH", url, {}, {"bar": 3}, None)
+        batch._do_request("DELETE", url, {}, None, None)
         result = batch.finish()
 
         self.assertEqual(len(result), len(batch._requests))
 
         response1, response2, response3 = result
 
-        self.assertEqual(response1.headers, {
-            'Content-Length': '20',
-            'Content-Type': 'application/json; charset=UTF-8',
-        })
-        self.assertEqual(response1.json(), {'foo': 1, 'bar': 2})
+        self.assertEqual(
+            response1.headers,
+            {"Content-Length": "20", "Content-Type": "application/json; charset=UTF-8"},
+        )
+        self.assertEqual(response1.json(), {"foo": 1, "bar": 2})
 
-        self.assertEqual(response2.headers, {
-            'Content-Length': '20',
-            'Content-Type': 'application/json; charset=UTF-8',
-        })
-        self.assertEqual(response2.json(), {'foo': 1, 'bar': 3})
+        self.assertEqual(
+            response2.headers,
+            {"Content-Length": "20", "Content-Type": "application/json; charset=UTF-8"},
+        )
+        self.assertEqual(response2.json(), {"foo": 1, "bar": 3})
 
-        self.assertEqual(response3.headers, {'Content-Length': '0'})
+        self.assertEqual(response3.headers, {"Content-Length": "0"})
         self.assertEqual(response3.status_code, http_client.NO_CONTENT)
 
-        expected_url = '{}/batch/storage/v1'.format(batch.API_BASE_URL)
+        expected_url = "{}/batch/storage/v1".format(batch.API_BASE_URL)
         http.request.assert_called_once_with(
-            method='POST', url=expected_url, headers=mock.ANY, data=mock.ANY)
+            method="POST", url=expected_url, headers=mock.ANY, data=mock.ANY
+        )
 
         request_info = self._get_mutlipart_request(http)
         request_headers, request_body, content_type, boundary = request_info
 
-        self.assertEqual(content_type, 'multipart/mixed')
+        self.assertEqual(content_type, "multipart/mixed")
         self.assertTrue(boundary.startswith('boundary="=='))
         self.assertTrue(boundary.endswith('=="'))
-        self.assertEqual(request_headers['MIME-Version'], '1.0')
+        self.assertEqual(request_headers["MIME-Version"], "1.0")
 
         chunks = self._get_payload_chunks(boundary, request_body)
         self.assertEqual(len(chunks), 3)
-        self._check_subrequest_payload(
-            chunks[0], 'POST', url, {'foo': 1, 'bar': 2})
-        self._check_subrequest_payload(chunks[1], 'PATCH', url, {'bar': 3})
-        self._check_subrequest_no_payload(chunks[2], 'DELETE', url)
+        self._check_subrequest_payload(chunks[0], "POST", url, {"foo": 1, "bar": 2})
+        self._check_subrequest_payload(chunks[1], "PATCH", url, {"bar": 3})
+        self._check_subrequest_no_payload(chunks[2], "DELETE", url)
 
     def test_finish_responses_mismatch(self):
-        url = 'http://api.example.com/other_api'
+        url = "http://api.example.com/other_api"
         expected_response = _make_response(
             content=_TWO_PART_MIME_RESPONSE_WITH_FAIL,
-            headers={'content-type': 'multipart/mixed; boundary="DEADBEEF="'})
+            headers={"content-type": 'multipart/mixed; boundary="DEADBEEF="'},
+        )
         http = _make_requests_session([expected_response])
         connection = _Connection(http=http)
         client = _Client(connection)
         batch = self._make_one(client)
-        batch.API_BASE_URL = 'http://api.example.com'
+        batch.API_BASE_URL = "http://api.example.com"
 
-        batch._requests.append(('GET', url, {}, None))
+        batch._requests.append(("GET", url, {}, None))
         with self.assertRaises(ValueError):
             batch.finish()
 
     def test_finish_nonempty_with_status_failure(self):
         from google.cloud.exceptions import NotFound
-        url = 'http://api.example.com/other_api'
+
+        url = "http://api.example.com/other_api"
         expected_response = _make_response(
             content=_TWO_PART_MIME_RESPONSE_WITH_FAIL,
-            headers={'content-type': 'multipart/mixed; boundary="DEADBEEF="'})
+            headers={"content-type": 'multipart/mixed; boundary="DEADBEEF="'},
+        )
         http = _make_requests_session([expected_response])
         connection = _Connection(http=http)
         client = _Client(connection)
         batch = self._make_one(client)
-        batch.API_BASE_URL = 'http://api.example.com'
+        batch.API_BASE_URL = "http://api.example.com"
         target1 = _MockObject()
         target2 = _MockObject()
 
-        batch._do_request('GET', url, {}, None, target1)
-        batch._do_request('GET', url, {}, None, target2)
+        batch._do_request("GET", url, {}, None, target1)
+        batch._do_request("GET", url, {}, None, target2)
 
         # Make sure futures are not populated.
-        self.assertEqual([future for future in batch._target_objects],
-                         [target1, target2])
+        self.assertEqual(
+            [future for future in batch._target_objects], [target1, target2]
+        )
         target2_future_before = target2._properties
 
         with self.assertRaises(NotFound):
             batch.finish()
 
-        self.assertEqual(target1._properties,
-                         {'foo': 1, 'bar': 2})
+        self.assertEqual(target1._properties, {"foo": 1, "bar": 2})
         self.assertIs(target2._properties, target2_future_before)
 
-        expected_url = '{}/batch/storage/v1'.format(batch.API_BASE_URL)
+        expected_url = "{}/batch/storage/v1".format(batch.API_BASE_URL)
         http.request.assert_called_once_with(
-            method='POST', url=expected_url, headers=mock.ANY, data=mock.ANY)
+            method="POST", url=expected_url, headers=mock.ANY, data=mock.ANY
+        )
 
         _, request_body, _, boundary = self._get_mutlipart_request(http)
 
         chunks = self._get_payload_chunks(boundary, request_body)
         self.assertEqual(len(chunks), 2)
-        self._check_subrequest_payload(chunks[0], 'GET', url, {})
-        self._check_subrequest_payload(chunks[1], 'GET', url, {})
+        self._check_subrequest_payload(chunks[0], "GET", url, {})
+        self._check_subrequest_payload(chunks[1], "GET", url, {})
 
     def test_finish_nonempty_non_multipart_response(self):
-        url = 'http://api.example.com/other_api'
+        url = "http://api.example.com/other_api"
         http = _make_requests_session([_make_response()])
         connection = _Connection(http=http)
         client = _Client(connection)
         batch = self._make_one(client)
-        batch._requests.append(('POST', url, {}, {'foo': 1, 'bar': 2}))
+        batch._requests.append(("POST", url, {}, {"foo": 1, "bar": 2}))
 
         with self.assertRaises(ValueError):
             batch.finish()
@@ -428,12 +430,13 @@ class TestBatch(unittest.TestCase):
     def test_as_context_mgr_wo_error(self):
         from google.cloud.storage.client import Client
 
-        url = 'http://example.com/api'
+        url = "http://example.com/api"
         expected_response = _make_response(
             content=_THREE_PART_MIME_RESPONSE,
-            headers={'content-type': 'multipart/mixed; boundary="DEADBEEF="'})
+            headers={"content-type": 'multipart/mixed; boundary="DEADBEEF="'},
+        )
         http = _make_requests_session([expected_response])
-        project = 'PROJECT'
+        project = "PROJECT"
         credentials = _make_credentials()
         client = Client(project=project, credentials=credentials)
         client._http_internal = http
@@ -446,32 +449,30 @@ class TestBatch(unittest.TestCase):
 
         with self._make_one(client) as batch:
             self.assertEqual(list(client._batch_stack), [batch])
-            batch._make_request('POST', url, {'foo': 1, 'bar': 2},
-                                target_object=target1)
-            batch._make_request('PATCH', url, {'bar': 3},
-                                target_object=target2)
-            batch._make_request('DELETE', url, target_object=target3)
+            batch._make_request(
+                "POST", url, {"foo": 1, "bar": 2}, target_object=target1
+            )
+            batch._make_request("PATCH", url, {"bar": 3}, target_object=target2)
+            batch._make_request("DELETE", url, target_object=target3)
 
         self.assertEqual(list(client._batch_stack), [])
         self.assertEqual(len(batch._requests), 3)
-        self.assertEqual(batch._requests[0][0], 'POST')
-        self.assertEqual(batch._requests[1][0], 'PATCH')
-        self.assertEqual(batch._requests[2][0], 'DELETE')
+        self.assertEqual(batch._requests[0][0], "POST")
+        self.assertEqual(batch._requests[1][0], "PATCH")
+        self.assertEqual(batch._requests[2][0], "DELETE")
         self.assertEqual(batch._target_objects, [target1, target2, target3])
-        self.assertEqual(target1._properties,
-                         {'foo': 1, 'bar': 2})
-        self.assertEqual(target2._properties,
-                         {'foo': 1, 'bar': 3})
-        self.assertEqual(target3._properties, b'')
+        self.assertEqual(target1._properties, {"foo": 1, "bar": 2})
+        self.assertEqual(target2._properties, {"foo": 1, "bar": 3})
+        self.assertEqual(target3._properties, b"")
 
     def test_as_context_mgr_w_error(self):
         from google.cloud.storage.batch import _FutureDict
         from google.cloud.storage.client import Client
 
-        URL = 'http://example.com/api'
+        URL = "http://example.com/api"
         http = _make_requests_session([])
         connection = _Connection(http=http)
-        project = 'PROJECT'
+        project = "PROJECT"
         credentials = _make_credentials()
         client = Client(project=project, credentials=credentials)
         client._base_connection = connection
@@ -484,11 +485,11 @@ class TestBatch(unittest.TestCase):
         try:
             with self._make_one(client) as batch:
                 self.assertEqual(list(client._batch_stack), [batch])
-                batch._make_request('POST', URL, {'foo': 1, 'bar': 2},
-                                    target_object=target1)
-                batch._make_request('PATCH', URL, {'bar': 3},
-                                    target_object=target2)
-                batch._make_request('DELETE', URL, target_object=target3)
+                batch._make_request(
+                    "POST", URL, {"foo": 1, "bar": 2}, target_object=target1
+                )
+                batch._make_request("PATCH", URL, {"bar": 3}, target_object=target2)
+                batch._make_request("DELETE", URL, target_object=target3)
                 raise ValueError()
         except ValueError:
             pass
@@ -505,7 +506,6 @@ class TestBatch(unittest.TestCase):
 
 
 class Test__unpack_batch_response(unittest.TestCase):
-
     def _call_fut(self, headers, content):
         from google.cloud.storage.batch import _unpack_batch_response
 
@@ -518,18 +518,18 @@ class Test__unpack_batch_response(unittest.TestCase):
         self.assertEqual(len(result), 3)
 
         self.assertEqual(result[0].status_code, http_client.OK)
-        self.assertEqual(result[0].json(), {u'bar': 2, u'foo': 1})
+        self.assertEqual(result[0].json(), {u"bar": 2, u"foo": 1})
         self.assertEqual(result[1].status_code, http_client.OK)
-        self.assertEqual(result[1].json(), {u'foo': 1, u'bar': 3})
+        self.assertEqual(result[1].json(), {u"foo": 1, u"bar": 3})
         self.assertEqual(result[2].status_code, http_client.NO_CONTENT)
 
     def test_bytes_headers(self):
-        RESPONSE = {'content-type': b'multipart/mixed; boundary="DEADBEEF="'}
+        RESPONSE = {"content-type": b'multipart/mixed; boundary="DEADBEEF="'}
         CONTENT = _THREE_PART_MIME_RESPONSE
         self._unpack_helper(RESPONSE, CONTENT)
 
     def test_unicode_headers(self):
-        RESPONSE = {'content-type': u'multipart/mixed; boundary="DEADBEEF="'}
+        RESPONSE = {"content-type": u'multipart/mixed; boundary="DEADBEEF="'}
         CONTENT = _THREE_PART_MIME_RESPONSE
         self._unpack_helper(RESPONSE, CONTENT)
 
@@ -591,7 +591,6 @@ Content-Length: 0
 
 
 class Test__FutureDict(unittest.TestCase):
-
     def _make_one(self, *args, **kw):
         from google.cloud.storage.batch import _FutureDict
 
@@ -616,14 +615,13 @@ class Test__FutureDict(unittest.TestCase):
 
 class _Connection(object):
 
-    project = 'TESTING'
+    project = "TESTING"
 
     def __init__(self, **kw):
         self.__dict__.update(kw)
 
     def _make_request(self, method, url, data=None, headers=None):
-        return self.http.request(url=url, method=method,
-                                 headers=headers, data=data)
+        return self.http.request(url=url, method=method, headers=headers, data=data)
 
 
 class _MockObject(object):
@@ -631,6 +629,5 @@ class _MockObject(object):
 
 
 class _Client(object):
-
     def __init__(self, connection):
         self._base_connection = connection

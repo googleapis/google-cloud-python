@@ -20,7 +20,7 @@ import nox
 
 
 LOCAL_DEPS = (
-    os.path.join('..', 'api_core'),
+    os.path.join('..', 'api_core[grpc]'),
     os.path.join('..', 'core'),
 )
 
@@ -40,9 +40,9 @@ def default(session):
 
     # Pyarrow does not support Python 3.7
     if session.python == '3.7':
-        dev_install = '.[pandas]'
+        dev_install = '.[bqstorage, pandas]'
     else:
-        dev_install = '.[pandas, pyarrow]'
+        dev_install = '.[bqstorage, pandas, pyarrow]'
     session.install('-e', dev_install)
 
     # IPython does not support Python 2 after version 5.x
@@ -108,9 +108,9 @@ def system(session):
 
 @nox.session(python=['2.7', '3.6'])
 def snippets(session):
-    """Run the system test suite."""
+    """Run the snippets test suite."""
 
-    # Sanity check: Only run system tests if the environment variable is set.
+    # Sanity check: Only run snippets tests if the environment variable is set.
     if not os.environ.get('GOOGLE_APPLICATION_CREDENTIALS', ''):
         session.skip('Credentials must be set via environment variable.')
 
@@ -122,9 +122,21 @@ def snippets(session):
     session.install('-e', os.path.join('..', 'test_utils'))
     session.install('-e', '.[pandas, pyarrow]')
 
-    # Run py.test against the system tests.
+    # Run py.test against the snippets tests.
     session.run(
         'py.test', os.path.join('docs', 'snippets.py'), *session.posargs)
+
+
+@nox.session(python='3.6')
+def cover(session):
+    """Run the final coverage report.
+
+    This outputs the coverage report aggregating coverage from the unit
+    test runs (not system test runs), and then erases coverage data.
+    """
+    session.install('coverage', 'pytest-cov')
+    session.run('coverage', 'report', '--show-missing', '--fail-under=100')
+    session.run('coverage', 'erase')
 
 
 @nox.session(python='3.6')
@@ -152,13 +164,16 @@ def lint_setup_py(session):
         'python', 'setup.py', 'check', '--restructuredtext', '--strict')
 
 
-@nox.session(python='3.6')
-def cover(session):
-    """Run the final coverage report.
 
-    This outputs the coverage report aggregating coverage from the unit
-    test runs (not system test runs), and then erases coverage data.
+@nox.session(python="3.6")
+def blacken(session):
+    """Run black.
+    Format code to uniform standard.
     """
-    session.install('coverage', 'pytest-cov')
-    session.run('coverage', 'report', '--show-missing', '--fail-under=100')
-    session.run('coverage', 'erase')
+    session.install("black")
+    session.run(
+        "black",
+        "google",
+        "tests",
+        "docs",
+    )

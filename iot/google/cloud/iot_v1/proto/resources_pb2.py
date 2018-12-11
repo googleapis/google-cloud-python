@@ -2,13 +2,15 @@
 # source: google/cloud/iot_v1/proto/resources.proto
 
 import sys
-_b=sys.version_info[0]<3 and (lambda x:x) or (lambda x:x.encode('latin1'))
+
+_b = sys.version_info[0] < 3 and (lambda x: x) or (lambda x: x.encode("latin1"))
 from google.protobuf.internal import enum_type_wrapper
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
 from google.protobuf import descriptor_pb2
+
 # @@protoc_insertion_point(imports)
 
 _sym_db = _symbol_database.Default()
@@ -20,214 +22,213 @@ from google.rpc import status_pb2 as google_dot_rpc_dot_status__pb2
 
 
 DESCRIPTOR = _descriptor.FileDescriptor(
-  name='google/cloud/iot_v1/proto/resources.proto',
-  package='google.cloud.iot.v1',
-  syntax='proto3',
-  serialized_pb=_b('\n)google/cloud/iot_v1/proto/resources.proto\x12\x13google.cloud.iot.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x17google/rpc/status.proto\"\xbb\x06\n\x06\x44\x65vice\x12\n\n\x02id\x18\x01 \x01(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x0e\n\x06num_id\x18\x03 \x01(\x04\x12:\n\x0b\x63redentials\x18\x0c \x03(\x0b\x32%.google.cloud.iot.v1.DeviceCredential\x12\x37\n\x13last_heartbeat_time\x18\x07 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x33\n\x0flast_event_time\x18\x08 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x33\n\x0flast_state_time\x18\x14 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x38\n\x14last_config_ack_time\x18\x0e \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x39\n\x15last_config_send_time\x18\x12 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x0f\n\x07\x62locked\x18\x13 \x01(\x08\x12\x33\n\x0flast_error_time\x18\n \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12-\n\x11last_error_status\x18\x0b \x01(\x0b\x32\x12.google.rpc.Status\x12\x31\n\x06\x63onfig\x18\r \x01(\x0b\x32!.google.cloud.iot.v1.DeviceConfig\x12/\n\x05state\x18\x10 \x01(\x0b\x32 .google.cloud.iot.v1.DeviceState\x12\x30\n\tlog_level\x18\x15 \x01(\x0e\x32\x1d.google.cloud.iot.v1.LogLevel\x12;\n\x08metadata\x18\x11 \x03(\x0b\x32).google.cloud.iot.v1.Device.MetadataEntry\x12:\n\x0egateway_config\x18\x18 \x01(\x0b\x32\".google.cloud.iot.v1.GatewayConfig\x1a/\n\rMetadataEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"\xee\x01\n\rGatewayConfig\x12\x36\n\x0cgateway_type\x18\x01 \x01(\x0e\x32 .google.cloud.iot.v1.GatewayType\x12\x43\n\x13gateway_auth_method\x18\x02 \x01(\x0e\x32&.google.cloud.iot.v1.GatewayAuthMethod\x12 \n\x18last_accessed_gateway_id\x18\x03 \x01(\t\x12>\n\x1alast_accessed_gateway_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\"\xa9\x03\n\x0e\x44\x65viceRegistry\x12\n\n\x02id\x18\x01 \x01(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\x12P\n\x1a\x65vent_notification_configs\x18\n \x03(\x0b\x32,.google.cloud.iot.v1.EventNotificationConfig\x12O\n\x19state_notification_config\x18\x07 \x01(\x0b\x32,.google.cloud.iot.v1.StateNotificationConfig\x12\x34\n\x0bmqtt_config\x18\x04 \x01(\x0b\x32\x1f.google.cloud.iot.v1.MqttConfig\x12\x34\n\x0bhttp_config\x18\t \x01(\x0b\x32\x1f.google.cloud.iot.v1.HttpConfig\x12\x30\n\tlog_level\x18\x0b \x01(\x0e\x32\x1d.google.cloud.iot.v1.LogLevel\x12<\n\x0b\x63redentials\x18\x08 \x03(\x0b\x32\'.google.cloud.iot.v1.RegistryCredential\"H\n\nMqttConfig\x12:\n\x12mqtt_enabled_state\x18\x01 \x01(\x0e\x32\x1e.google.cloud.iot.v1.MqttState\"H\n\nHttpConfig\x12:\n\x12http_enabled_state\x18\x01 \x01(\x0e\x32\x1e.google.cloud.iot.v1.HttpState\"O\n\x17\x45ventNotificationConfig\x12\x19\n\x11subfolder_matches\x18\x02 \x01(\t\x12\x19\n\x11pubsub_topic_name\x18\x01 \x01(\t\"4\n\x17StateNotificationConfig\x12\x19\n\x11pubsub_topic_name\x18\x01 \x01(\t\"o\n\x12RegistryCredential\x12K\n\x16public_key_certificate\x18\x01 \x01(\x0b\x32).google.cloud.iot.v1.PublicKeyCertificateH\x00\x42\x0c\n\ncredential\"\xd0\x01\n\x16X509CertificateDetails\x12\x0e\n\x06issuer\x18\x01 \x01(\t\x12\x0f\n\x07subject\x18\x02 \x01(\t\x12.\n\nstart_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12/\n\x0b\x65xpiry_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x1b\n\x13signature_algorithm\x18\x05 \x01(\t\x12\x17\n\x0fpublic_key_type\x18\x06 \x01(\t\"\xaf\x01\n\x14PublicKeyCertificate\x12?\n\x06\x66ormat\x18\x01 \x01(\x0e\x32/.google.cloud.iot.v1.PublicKeyCertificateFormat\x12\x13\n\x0b\x63\x65rtificate\x18\x02 \x01(\t\x12\x41\n\x0cx509_details\x18\x03 \x01(\x0b\x32+.google.cloud.iot.v1.X509CertificateDetails\"\x95\x01\n\x10\x44\x65viceCredential\x12>\n\npublic_key\x18\x02 \x01(\x0b\x32(.google.cloud.iot.v1.PublicKeyCredentialH\x00\x12\x33\n\x0f\x65xpiration_time\x18\x06 \x01(\x0b\x32\x1a.google.protobuf.TimestampB\x0c\n\ncredential\"X\n\x13PublicKeyCredential\x12\x34\n\x06\x66ormat\x18\x01 \x01(\x0e\x32$.google.cloud.iot.v1.PublicKeyFormat\x12\x0b\n\x03key\x18\x02 \x01(\t\"\xa0\x01\n\x0c\x44\x65viceConfig\x12\x0f\n\x07version\x18\x01 \x01(\x03\x12\x35\n\x11\x63loud_update_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x33\n\x0f\x64\x65vice_ack_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x13\n\x0b\x62inary_data\x18\x04 \x01(\x0c\"S\n\x0b\x44\x65viceState\x12/\n\x0bupdate_time\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x13\n\x0b\x62inary_data\x18\x02 \x01(\x0c*L\n\tMqttState\x12\x1a\n\x16MQTT_STATE_UNSPECIFIED\x10\x00\x12\x10\n\x0cMQTT_ENABLED\x10\x01\x12\x11\n\rMQTT_DISABLED\x10\x02*L\n\tHttpState\x12\x1a\n\x16HTTP_STATE_UNSPECIFIED\x10\x00\x12\x10\n\x0cHTTP_ENABLED\x10\x01\x12\x11\n\rHTTP_DISABLED\x10\x02*O\n\x08LogLevel\x12\x19\n\x15LOG_LEVEL_UNSPECIFIED\x10\x00\x12\x08\n\x04NONE\x10\n\x12\t\n\x05\x45RROR\x10\x14\x12\x08\n\x04INFO\x10\x1e\x12\t\n\x05\x44\x45\x42UG\x10(*I\n\x0bGatewayType\x12\x1c\n\x18GATEWAY_TYPE_UNSPECIFIED\x10\x00\x12\x0b\n\x07GATEWAY\x10\x01\x12\x0f\n\x0bNON_GATEWAY\x10\x02*\x91\x01\n\x11GatewayAuthMethod\x12#\n\x1fGATEWAY_AUTH_METHOD_UNSPECIFIED\x10\x00\x12\x14\n\x10\x41SSOCIATION_ONLY\x10\x01\x12\x1a\n\x16\x44\x45VICE_AUTH_TOKEN_ONLY\x10\x02\x12%\n!ASSOCIATION_AND_DEVICE_AUTH_TOKEN\x10\x03*e\n\x1aPublicKeyCertificateFormat\x12-\n)UNSPECIFIED_PUBLIC_KEY_CERTIFICATE_FORMAT\x10\x00\x12\x18\n\x14X509_CERTIFICATE_PEM\x10\x01*v\n\x0fPublicKeyFormat\x12!\n\x1dUNSPECIFIED_PUBLIC_KEY_FORMAT\x10\x00\x12\x0b\n\x07RSA_PEM\x10\x03\x12\x10\n\x0cRSA_X509_PEM\x10\x01\x12\r\n\tES256_PEM\x10\x02\x12\x12\n\x0e\x45S256_X509_PEM\x10\x04\x42\x66\n\x17\x63om.google.cloud.iot.v1B\x0eResourcesProtoP\x01Z6google.golang.org/genproto/googleapis/cloud/iot/v1;iot\xf8\x01\x01\x62\x06proto3')
-  ,
-  dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR,google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,google_dot_rpc_dot_status__pb2.DESCRIPTOR,])
+    name="google/cloud/iot_v1/proto/resources.proto",
+    package="google.cloud.iot.v1",
+    syntax="proto3",
+    serialized_pb=_b(
+        '\n)google/cloud/iot_v1/proto/resources.proto\x12\x13google.cloud.iot.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x17google/rpc/status.proto"\xbb\x06\n\x06\x44\x65vice\x12\n\n\x02id\x18\x01 \x01(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x0e\n\x06num_id\x18\x03 \x01(\x04\x12:\n\x0b\x63redentials\x18\x0c \x03(\x0b\x32%.google.cloud.iot.v1.DeviceCredential\x12\x37\n\x13last_heartbeat_time\x18\x07 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x33\n\x0flast_event_time\x18\x08 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x33\n\x0flast_state_time\x18\x14 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x38\n\x14last_config_ack_time\x18\x0e \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x39\n\x15last_config_send_time\x18\x12 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x0f\n\x07\x62locked\x18\x13 \x01(\x08\x12\x33\n\x0flast_error_time\x18\n \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12-\n\x11last_error_status\x18\x0b \x01(\x0b\x32\x12.google.rpc.Status\x12\x31\n\x06\x63onfig\x18\r \x01(\x0b\x32!.google.cloud.iot.v1.DeviceConfig\x12/\n\x05state\x18\x10 \x01(\x0b\x32 .google.cloud.iot.v1.DeviceState\x12\x30\n\tlog_level\x18\x15 \x01(\x0e\x32\x1d.google.cloud.iot.v1.LogLevel\x12;\n\x08metadata\x18\x11 \x03(\x0b\x32).google.cloud.iot.v1.Device.MetadataEntry\x12:\n\x0egateway_config\x18\x18 \x01(\x0b\x32".google.cloud.iot.v1.GatewayConfig\x1a/\n\rMetadataEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01"\xee\x01\n\rGatewayConfig\x12\x36\n\x0cgateway_type\x18\x01 \x01(\x0e\x32 .google.cloud.iot.v1.GatewayType\x12\x43\n\x13gateway_auth_method\x18\x02 \x01(\x0e\x32&.google.cloud.iot.v1.GatewayAuthMethod\x12 \n\x18last_accessed_gateway_id\x18\x03 \x01(\t\x12>\n\x1alast_accessed_gateway_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp"\xa9\x03\n\x0e\x44\x65viceRegistry\x12\n\n\x02id\x18\x01 \x01(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\x12P\n\x1a\x65vent_notification_configs\x18\n \x03(\x0b\x32,.google.cloud.iot.v1.EventNotificationConfig\x12O\n\x19state_notification_config\x18\x07 \x01(\x0b\x32,.google.cloud.iot.v1.StateNotificationConfig\x12\x34\n\x0bmqtt_config\x18\x04 \x01(\x0b\x32\x1f.google.cloud.iot.v1.MqttConfig\x12\x34\n\x0bhttp_config\x18\t \x01(\x0b\x32\x1f.google.cloud.iot.v1.HttpConfig\x12\x30\n\tlog_level\x18\x0b \x01(\x0e\x32\x1d.google.cloud.iot.v1.LogLevel\x12<\n\x0b\x63redentials\x18\x08 \x03(\x0b\x32\'.google.cloud.iot.v1.RegistryCredential"H\n\nMqttConfig\x12:\n\x12mqtt_enabled_state\x18\x01 \x01(\x0e\x32\x1e.google.cloud.iot.v1.MqttState"H\n\nHttpConfig\x12:\n\x12http_enabled_state\x18\x01 \x01(\x0e\x32\x1e.google.cloud.iot.v1.HttpState"O\n\x17\x45ventNotificationConfig\x12\x19\n\x11subfolder_matches\x18\x02 \x01(\t\x12\x19\n\x11pubsub_topic_name\x18\x01 \x01(\t"4\n\x17StateNotificationConfig\x12\x19\n\x11pubsub_topic_name\x18\x01 \x01(\t"o\n\x12RegistryCredential\x12K\n\x16public_key_certificate\x18\x01 \x01(\x0b\x32).google.cloud.iot.v1.PublicKeyCertificateH\x00\x42\x0c\n\ncredential"\xd0\x01\n\x16X509CertificateDetails\x12\x0e\n\x06issuer\x18\x01 \x01(\t\x12\x0f\n\x07subject\x18\x02 \x01(\t\x12.\n\nstart_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12/\n\x0b\x65xpiry_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x1b\n\x13signature_algorithm\x18\x05 \x01(\t\x12\x17\n\x0fpublic_key_type\x18\x06 \x01(\t"\xaf\x01\n\x14PublicKeyCertificate\x12?\n\x06\x66ormat\x18\x01 \x01(\x0e\x32/.google.cloud.iot.v1.PublicKeyCertificateFormat\x12\x13\n\x0b\x63\x65rtificate\x18\x02 \x01(\t\x12\x41\n\x0cx509_details\x18\x03 \x01(\x0b\x32+.google.cloud.iot.v1.X509CertificateDetails"\x95\x01\n\x10\x44\x65viceCredential\x12>\n\npublic_key\x18\x02 \x01(\x0b\x32(.google.cloud.iot.v1.PublicKeyCredentialH\x00\x12\x33\n\x0f\x65xpiration_time\x18\x06 \x01(\x0b\x32\x1a.google.protobuf.TimestampB\x0c\n\ncredential"X\n\x13PublicKeyCredential\x12\x34\n\x06\x66ormat\x18\x01 \x01(\x0e\x32$.google.cloud.iot.v1.PublicKeyFormat\x12\x0b\n\x03key\x18\x02 \x01(\t"\xa0\x01\n\x0c\x44\x65viceConfig\x12\x0f\n\x07version\x18\x01 \x01(\x03\x12\x35\n\x11\x63loud_update_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x33\n\x0f\x64\x65vice_ack_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x13\n\x0b\x62inary_data\x18\x04 \x01(\x0c"S\n\x0b\x44\x65viceState\x12/\n\x0bupdate_time\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x13\n\x0b\x62inary_data\x18\x02 \x01(\x0c*L\n\tMqttState\x12\x1a\n\x16MQTT_STATE_UNSPECIFIED\x10\x00\x12\x10\n\x0cMQTT_ENABLED\x10\x01\x12\x11\n\rMQTT_DISABLED\x10\x02*L\n\tHttpState\x12\x1a\n\x16HTTP_STATE_UNSPECIFIED\x10\x00\x12\x10\n\x0cHTTP_ENABLED\x10\x01\x12\x11\n\rHTTP_DISABLED\x10\x02*O\n\x08LogLevel\x12\x19\n\x15LOG_LEVEL_UNSPECIFIED\x10\x00\x12\x08\n\x04NONE\x10\n\x12\t\n\x05\x45RROR\x10\x14\x12\x08\n\x04INFO\x10\x1e\x12\t\n\x05\x44\x45\x42UG\x10(*I\n\x0bGatewayType\x12\x1c\n\x18GATEWAY_TYPE_UNSPECIFIED\x10\x00\x12\x0b\n\x07GATEWAY\x10\x01\x12\x0f\n\x0bNON_GATEWAY\x10\x02*\x91\x01\n\x11GatewayAuthMethod\x12#\n\x1fGATEWAY_AUTH_METHOD_UNSPECIFIED\x10\x00\x12\x14\n\x10\x41SSOCIATION_ONLY\x10\x01\x12\x1a\n\x16\x44\x45VICE_AUTH_TOKEN_ONLY\x10\x02\x12%\n!ASSOCIATION_AND_DEVICE_AUTH_TOKEN\x10\x03*e\n\x1aPublicKeyCertificateFormat\x12-\n)UNSPECIFIED_PUBLIC_KEY_CERTIFICATE_FORMAT\x10\x00\x12\x18\n\x14X509_CERTIFICATE_PEM\x10\x01*v\n\x0fPublicKeyFormat\x12!\n\x1dUNSPECIFIED_PUBLIC_KEY_FORMAT\x10\x00\x12\x0b\n\x07RSA_PEM\x10\x03\x12\x10\n\x0cRSA_X509_PEM\x10\x01\x12\r\n\tES256_PEM\x10\x02\x12\x12\n\x0e\x45S256_X509_PEM\x10\x04\x42\x66\n\x17\x63om.google.cloud.iot.v1B\x0eResourcesProtoP\x01Z6google.golang.org/genproto/googleapis/cloud/iot/v1;iot\xf8\x01\x01\x62\x06proto3'
+    ),
+    dependencies=[
+        google_dot_api_dot_annotations__pb2.DESCRIPTOR,
+        google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,
+        google_dot_rpc_dot_status__pb2.DESCRIPTOR,
+    ],
+)
 
 _MQTTSTATE = _descriptor.EnumDescriptor(
-  name='MqttState',
-  full_name='google.cloud.iot.v1.MqttState',
-  filename=None,
-  file=DESCRIPTOR,
-  values=[
-    _descriptor.EnumValueDescriptor(
-      name='MQTT_STATE_UNSPECIFIED', index=0, number=0,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='MQTT_ENABLED', index=1, number=1,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='MQTT_DISABLED', index=2, number=2,
-      options=None,
-      type=None),
-  ],
-  containing_type=None,
-  options=None,
-  serialized_start=2928,
-  serialized_end=3004,
+    name="MqttState",
+    full_name="google.cloud.iot.v1.MqttState",
+    filename=None,
+    file=DESCRIPTOR,
+    values=[
+        _descriptor.EnumValueDescriptor(
+            name="MQTT_STATE_UNSPECIFIED", index=0, number=0, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="MQTT_ENABLED", index=1, number=1, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="MQTT_DISABLED", index=2, number=2, options=None, type=None
+        ),
+    ],
+    containing_type=None,
+    options=None,
+    serialized_start=2928,
+    serialized_end=3004,
 )
 _sym_db.RegisterEnumDescriptor(_MQTTSTATE)
 
 MqttState = enum_type_wrapper.EnumTypeWrapper(_MQTTSTATE)
 _HTTPSTATE = _descriptor.EnumDescriptor(
-  name='HttpState',
-  full_name='google.cloud.iot.v1.HttpState',
-  filename=None,
-  file=DESCRIPTOR,
-  values=[
-    _descriptor.EnumValueDescriptor(
-      name='HTTP_STATE_UNSPECIFIED', index=0, number=0,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='HTTP_ENABLED', index=1, number=1,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='HTTP_DISABLED', index=2, number=2,
-      options=None,
-      type=None),
-  ],
-  containing_type=None,
-  options=None,
-  serialized_start=3006,
-  serialized_end=3082,
+    name="HttpState",
+    full_name="google.cloud.iot.v1.HttpState",
+    filename=None,
+    file=DESCRIPTOR,
+    values=[
+        _descriptor.EnumValueDescriptor(
+            name="HTTP_STATE_UNSPECIFIED", index=0, number=0, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="HTTP_ENABLED", index=1, number=1, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="HTTP_DISABLED", index=2, number=2, options=None, type=None
+        ),
+    ],
+    containing_type=None,
+    options=None,
+    serialized_start=3006,
+    serialized_end=3082,
 )
 _sym_db.RegisterEnumDescriptor(_HTTPSTATE)
 
 HttpState = enum_type_wrapper.EnumTypeWrapper(_HTTPSTATE)
 _LOGLEVEL = _descriptor.EnumDescriptor(
-  name='LogLevel',
-  full_name='google.cloud.iot.v1.LogLevel',
-  filename=None,
-  file=DESCRIPTOR,
-  values=[
-    _descriptor.EnumValueDescriptor(
-      name='LOG_LEVEL_UNSPECIFIED', index=0, number=0,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='NONE', index=1, number=10,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='ERROR', index=2, number=20,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='INFO', index=3, number=30,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='DEBUG', index=4, number=40,
-      options=None,
-      type=None),
-  ],
-  containing_type=None,
-  options=None,
-  serialized_start=3084,
-  serialized_end=3163,
+    name="LogLevel",
+    full_name="google.cloud.iot.v1.LogLevel",
+    filename=None,
+    file=DESCRIPTOR,
+    values=[
+        _descriptor.EnumValueDescriptor(
+            name="LOG_LEVEL_UNSPECIFIED", index=0, number=0, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="NONE", index=1, number=10, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="ERROR", index=2, number=20, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="INFO", index=3, number=30, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="DEBUG", index=4, number=40, options=None, type=None
+        ),
+    ],
+    containing_type=None,
+    options=None,
+    serialized_start=3084,
+    serialized_end=3163,
 )
 _sym_db.RegisterEnumDescriptor(_LOGLEVEL)
 
 LogLevel = enum_type_wrapper.EnumTypeWrapper(_LOGLEVEL)
 _GATEWAYTYPE = _descriptor.EnumDescriptor(
-  name='GatewayType',
-  full_name='google.cloud.iot.v1.GatewayType',
-  filename=None,
-  file=DESCRIPTOR,
-  values=[
-    _descriptor.EnumValueDescriptor(
-      name='GATEWAY_TYPE_UNSPECIFIED', index=0, number=0,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='GATEWAY', index=1, number=1,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='NON_GATEWAY', index=2, number=2,
-      options=None,
-      type=None),
-  ],
-  containing_type=None,
-  options=None,
-  serialized_start=3165,
-  serialized_end=3238,
+    name="GatewayType",
+    full_name="google.cloud.iot.v1.GatewayType",
+    filename=None,
+    file=DESCRIPTOR,
+    values=[
+        _descriptor.EnumValueDescriptor(
+            name="GATEWAY_TYPE_UNSPECIFIED", index=0, number=0, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="GATEWAY", index=1, number=1, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="NON_GATEWAY", index=2, number=2, options=None, type=None
+        ),
+    ],
+    containing_type=None,
+    options=None,
+    serialized_start=3165,
+    serialized_end=3238,
 )
 _sym_db.RegisterEnumDescriptor(_GATEWAYTYPE)
 
 GatewayType = enum_type_wrapper.EnumTypeWrapper(_GATEWAYTYPE)
 _GATEWAYAUTHMETHOD = _descriptor.EnumDescriptor(
-  name='GatewayAuthMethod',
-  full_name='google.cloud.iot.v1.GatewayAuthMethod',
-  filename=None,
-  file=DESCRIPTOR,
-  values=[
-    _descriptor.EnumValueDescriptor(
-      name='GATEWAY_AUTH_METHOD_UNSPECIFIED', index=0, number=0,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='ASSOCIATION_ONLY', index=1, number=1,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='DEVICE_AUTH_TOKEN_ONLY', index=2, number=2,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='ASSOCIATION_AND_DEVICE_AUTH_TOKEN', index=3, number=3,
-      options=None,
-      type=None),
-  ],
-  containing_type=None,
-  options=None,
-  serialized_start=3241,
-  serialized_end=3386,
+    name="GatewayAuthMethod",
+    full_name="google.cloud.iot.v1.GatewayAuthMethod",
+    filename=None,
+    file=DESCRIPTOR,
+    values=[
+        _descriptor.EnumValueDescriptor(
+            name="GATEWAY_AUTH_METHOD_UNSPECIFIED",
+            index=0,
+            number=0,
+            options=None,
+            type=None,
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="ASSOCIATION_ONLY", index=1, number=1, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="DEVICE_AUTH_TOKEN_ONLY", index=2, number=2, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="ASSOCIATION_AND_DEVICE_AUTH_TOKEN",
+            index=3,
+            number=3,
+            options=None,
+            type=None,
+        ),
+    ],
+    containing_type=None,
+    options=None,
+    serialized_start=3241,
+    serialized_end=3386,
 )
 _sym_db.RegisterEnumDescriptor(_GATEWAYAUTHMETHOD)
 
 GatewayAuthMethod = enum_type_wrapper.EnumTypeWrapper(_GATEWAYAUTHMETHOD)
 _PUBLICKEYCERTIFICATEFORMAT = _descriptor.EnumDescriptor(
-  name='PublicKeyCertificateFormat',
-  full_name='google.cloud.iot.v1.PublicKeyCertificateFormat',
-  filename=None,
-  file=DESCRIPTOR,
-  values=[
-    _descriptor.EnumValueDescriptor(
-      name='UNSPECIFIED_PUBLIC_KEY_CERTIFICATE_FORMAT', index=0, number=0,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='X509_CERTIFICATE_PEM', index=1, number=1,
-      options=None,
-      type=None),
-  ],
-  containing_type=None,
-  options=None,
-  serialized_start=3388,
-  serialized_end=3489,
+    name="PublicKeyCertificateFormat",
+    full_name="google.cloud.iot.v1.PublicKeyCertificateFormat",
+    filename=None,
+    file=DESCRIPTOR,
+    values=[
+        _descriptor.EnumValueDescriptor(
+            name="UNSPECIFIED_PUBLIC_KEY_CERTIFICATE_FORMAT",
+            index=0,
+            number=0,
+            options=None,
+            type=None,
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="X509_CERTIFICATE_PEM", index=1, number=1, options=None, type=None
+        ),
+    ],
+    containing_type=None,
+    options=None,
+    serialized_start=3388,
+    serialized_end=3489,
 )
 _sym_db.RegisterEnumDescriptor(_PUBLICKEYCERTIFICATEFORMAT)
 
-PublicKeyCertificateFormat = enum_type_wrapper.EnumTypeWrapper(_PUBLICKEYCERTIFICATEFORMAT)
+PublicKeyCertificateFormat = enum_type_wrapper.EnumTypeWrapper(
+    _PUBLICKEYCERTIFICATEFORMAT
+)
 _PUBLICKEYFORMAT = _descriptor.EnumDescriptor(
-  name='PublicKeyFormat',
-  full_name='google.cloud.iot.v1.PublicKeyFormat',
-  filename=None,
-  file=DESCRIPTOR,
-  values=[
-    _descriptor.EnumValueDescriptor(
-      name='UNSPECIFIED_PUBLIC_KEY_FORMAT', index=0, number=0,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='RSA_PEM', index=1, number=3,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='RSA_X509_PEM', index=2, number=1,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='ES256_PEM', index=3, number=2,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='ES256_X509_PEM', index=4, number=4,
-      options=None,
-      type=None),
-  ],
-  containing_type=None,
-  options=None,
-  serialized_start=3491,
-  serialized_end=3609,
+    name="PublicKeyFormat",
+    full_name="google.cloud.iot.v1.PublicKeyFormat",
+    filename=None,
+    file=DESCRIPTOR,
+    values=[
+        _descriptor.EnumValueDescriptor(
+            name="UNSPECIFIED_PUBLIC_KEY_FORMAT",
+            index=0,
+            number=0,
+            options=None,
+            type=None,
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="RSA_PEM", index=1, number=3, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="RSA_X509_PEM", index=2, number=1, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="ES256_PEM", index=3, number=2, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="ES256_X509_PEM", index=4, number=4, options=None, type=None
+        ),
+    ],
+    containing_type=None,
+    options=None,
+    serialized_start=3491,
+    serialized_end=3609,
 )
 _sym_db.RegisterEnumDescriptor(_PUBLICKEYFORMAT)
 
@@ -259,840 +260,1468 @@ ES256_PEM = 2
 ES256_X509_PEM = 4
 
 
-
 _DEVICE_METADATAENTRY = _descriptor.Descriptor(
-  name='MetadataEntry',
-  full_name='google.cloud.iot.v1.Device.MetadataEntry',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='key', full_name='google.cloud.iot.v1.Device.MetadataEntry.key', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='value', full_name='google.cloud.iot.v1.Device.MetadataEntry.value', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=_descriptor._ParseOptions(descriptor_pb2.MessageOptions(), _b('8\001')),
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=935,
-  serialized_end=982,
+    name="MetadataEntry",
+    full_name="google.cloud.iot.v1.Device.MetadataEntry",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="key",
+            full_name="google.cloud.iot.v1.Device.MetadataEntry.key",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="value",
+            full_name="google.cloud.iot.v1.Device.MetadataEntry.value",
+            index=1,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=_descriptor._ParseOptions(descriptor_pb2.MessageOptions(), _b("8\001")),
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=935,
+    serialized_end=982,
 )
 
 _DEVICE = _descriptor.Descriptor(
-  name='Device',
-  full_name='google.cloud.iot.v1.Device',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='id', full_name='google.cloud.iot.v1.Device.id', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='name', full_name='google.cloud.iot.v1.Device.name', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='num_id', full_name='google.cloud.iot.v1.Device.num_id', index=2,
-      number=3, type=4, cpp_type=4, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='credentials', full_name='google.cloud.iot.v1.Device.credentials', index=3,
-      number=12, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='last_heartbeat_time', full_name='google.cloud.iot.v1.Device.last_heartbeat_time', index=4,
-      number=7, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='last_event_time', full_name='google.cloud.iot.v1.Device.last_event_time', index=5,
-      number=8, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='last_state_time', full_name='google.cloud.iot.v1.Device.last_state_time', index=6,
-      number=20, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='last_config_ack_time', full_name='google.cloud.iot.v1.Device.last_config_ack_time', index=7,
-      number=14, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='last_config_send_time', full_name='google.cloud.iot.v1.Device.last_config_send_time', index=8,
-      number=18, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='blocked', full_name='google.cloud.iot.v1.Device.blocked', index=9,
-      number=19, type=8, cpp_type=7, label=1,
-      has_default_value=False, default_value=False,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='last_error_time', full_name='google.cloud.iot.v1.Device.last_error_time', index=10,
-      number=10, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='last_error_status', full_name='google.cloud.iot.v1.Device.last_error_status', index=11,
-      number=11, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='config', full_name='google.cloud.iot.v1.Device.config', index=12,
-      number=13, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='state', full_name='google.cloud.iot.v1.Device.state', index=13,
-      number=16, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='log_level', full_name='google.cloud.iot.v1.Device.log_level', index=14,
-      number=21, type=14, cpp_type=8, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='metadata', full_name='google.cloud.iot.v1.Device.metadata', index=15,
-      number=17, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='gateway_config', full_name='google.cloud.iot.v1.Device.gateway_config', index=16,
-      number=24, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[_DEVICE_METADATAENTRY, ],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=155,
-  serialized_end=982,
+    name="Device",
+    full_name="google.cloud.iot.v1.Device",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="id",
+            full_name="google.cloud.iot.v1.Device.id",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="name",
+            full_name="google.cloud.iot.v1.Device.name",
+            index=1,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="num_id",
+            full_name="google.cloud.iot.v1.Device.num_id",
+            index=2,
+            number=3,
+            type=4,
+            cpp_type=4,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="credentials",
+            full_name="google.cloud.iot.v1.Device.credentials",
+            index=3,
+            number=12,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="last_heartbeat_time",
+            full_name="google.cloud.iot.v1.Device.last_heartbeat_time",
+            index=4,
+            number=7,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="last_event_time",
+            full_name="google.cloud.iot.v1.Device.last_event_time",
+            index=5,
+            number=8,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="last_state_time",
+            full_name="google.cloud.iot.v1.Device.last_state_time",
+            index=6,
+            number=20,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="last_config_ack_time",
+            full_name="google.cloud.iot.v1.Device.last_config_ack_time",
+            index=7,
+            number=14,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="last_config_send_time",
+            full_name="google.cloud.iot.v1.Device.last_config_send_time",
+            index=8,
+            number=18,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="blocked",
+            full_name="google.cloud.iot.v1.Device.blocked",
+            index=9,
+            number=19,
+            type=8,
+            cpp_type=7,
+            label=1,
+            has_default_value=False,
+            default_value=False,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="last_error_time",
+            full_name="google.cloud.iot.v1.Device.last_error_time",
+            index=10,
+            number=10,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="last_error_status",
+            full_name="google.cloud.iot.v1.Device.last_error_status",
+            index=11,
+            number=11,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="config",
+            full_name="google.cloud.iot.v1.Device.config",
+            index=12,
+            number=13,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="state",
+            full_name="google.cloud.iot.v1.Device.state",
+            index=13,
+            number=16,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="log_level",
+            full_name="google.cloud.iot.v1.Device.log_level",
+            index=14,
+            number=21,
+            type=14,
+            cpp_type=8,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="metadata",
+            full_name="google.cloud.iot.v1.Device.metadata",
+            index=15,
+            number=17,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="gateway_config",
+            full_name="google.cloud.iot.v1.Device.gateway_config",
+            index=16,
+            number=24,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[_DEVICE_METADATAENTRY],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=155,
+    serialized_end=982,
 )
 
 
 _GATEWAYCONFIG = _descriptor.Descriptor(
-  name='GatewayConfig',
-  full_name='google.cloud.iot.v1.GatewayConfig',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='gateway_type', full_name='google.cloud.iot.v1.GatewayConfig.gateway_type', index=0,
-      number=1, type=14, cpp_type=8, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='gateway_auth_method', full_name='google.cloud.iot.v1.GatewayConfig.gateway_auth_method', index=1,
-      number=2, type=14, cpp_type=8, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='last_accessed_gateway_id', full_name='google.cloud.iot.v1.GatewayConfig.last_accessed_gateway_id', index=2,
-      number=3, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='last_accessed_gateway_time', full_name='google.cloud.iot.v1.GatewayConfig.last_accessed_gateway_time', index=3,
-      number=4, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=985,
-  serialized_end=1223,
+    name="GatewayConfig",
+    full_name="google.cloud.iot.v1.GatewayConfig",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="gateway_type",
+            full_name="google.cloud.iot.v1.GatewayConfig.gateway_type",
+            index=0,
+            number=1,
+            type=14,
+            cpp_type=8,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="gateway_auth_method",
+            full_name="google.cloud.iot.v1.GatewayConfig.gateway_auth_method",
+            index=1,
+            number=2,
+            type=14,
+            cpp_type=8,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="last_accessed_gateway_id",
+            full_name="google.cloud.iot.v1.GatewayConfig.last_accessed_gateway_id",
+            index=2,
+            number=3,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="last_accessed_gateway_time",
+            full_name="google.cloud.iot.v1.GatewayConfig.last_accessed_gateway_time",
+            index=3,
+            number=4,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=985,
+    serialized_end=1223,
 )
 
 
 _DEVICEREGISTRY = _descriptor.Descriptor(
-  name='DeviceRegistry',
-  full_name='google.cloud.iot.v1.DeviceRegistry',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='id', full_name='google.cloud.iot.v1.DeviceRegistry.id', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='name', full_name='google.cloud.iot.v1.DeviceRegistry.name', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='event_notification_configs', full_name='google.cloud.iot.v1.DeviceRegistry.event_notification_configs', index=2,
-      number=10, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='state_notification_config', full_name='google.cloud.iot.v1.DeviceRegistry.state_notification_config', index=3,
-      number=7, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='mqtt_config', full_name='google.cloud.iot.v1.DeviceRegistry.mqtt_config', index=4,
-      number=4, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='http_config', full_name='google.cloud.iot.v1.DeviceRegistry.http_config', index=5,
-      number=9, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='log_level', full_name='google.cloud.iot.v1.DeviceRegistry.log_level', index=6,
-      number=11, type=14, cpp_type=8, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='credentials', full_name='google.cloud.iot.v1.DeviceRegistry.credentials', index=7,
-      number=8, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=1226,
-  serialized_end=1651,
+    name="DeviceRegistry",
+    full_name="google.cloud.iot.v1.DeviceRegistry",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="id",
+            full_name="google.cloud.iot.v1.DeviceRegistry.id",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="name",
+            full_name="google.cloud.iot.v1.DeviceRegistry.name",
+            index=1,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="event_notification_configs",
+            full_name="google.cloud.iot.v1.DeviceRegistry.event_notification_configs",
+            index=2,
+            number=10,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="state_notification_config",
+            full_name="google.cloud.iot.v1.DeviceRegistry.state_notification_config",
+            index=3,
+            number=7,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="mqtt_config",
+            full_name="google.cloud.iot.v1.DeviceRegistry.mqtt_config",
+            index=4,
+            number=4,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="http_config",
+            full_name="google.cloud.iot.v1.DeviceRegistry.http_config",
+            index=5,
+            number=9,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="log_level",
+            full_name="google.cloud.iot.v1.DeviceRegistry.log_level",
+            index=6,
+            number=11,
+            type=14,
+            cpp_type=8,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="credentials",
+            full_name="google.cloud.iot.v1.DeviceRegistry.credentials",
+            index=7,
+            number=8,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=1226,
+    serialized_end=1651,
 )
 
 
 _MQTTCONFIG = _descriptor.Descriptor(
-  name='MqttConfig',
-  full_name='google.cloud.iot.v1.MqttConfig',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='mqtt_enabled_state', full_name='google.cloud.iot.v1.MqttConfig.mqtt_enabled_state', index=0,
-      number=1, type=14, cpp_type=8, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=1653,
-  serialized_end=1725,
+    name="MqttConfig",
+    full_name="google.cloud.iot.v1.MqttConfig",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="mqtt_enabled_state",
+            full_name="google.cloud.iot.v1.MqttConfig.mqtt_enabled_state",
+            index=0,
+            number=1,
+            type=14,
+            cpp_type=8,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        )
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=1653,
+    serialized_end=1725,
 )
 
 
 _HTTPCONFIG = _descriptor.Descriptor(
-  name='HttpConfig',
-  full_name='google.cloud.iot.v1.HttpConfig',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='http_enabled_state', full_name='google.cloud.iot.v1.HttpConfig.http_enabled_state', index=0,
-      number=1, type=14, cpp_type=8, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=1727,
-  serialized_end=1799,
+    name="HttpConfig",
+    full_name="google.cloud.iot.v1.HttpConfig",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="http_enabled_state",
+            full_name="google.cloud.iot.v1.HttpConfig.http_enabled_state",
+            index=0,
+            number=1,
+            type=14,
+            cpp_type=8,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        )
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=1727,
+    serialized_end=1799,
 )
 
 
 _EVENTNOTIFICATIONCONFIG = _descriptor.Descriptor(
-  name='EventNotificationConfig',
-  full_name='google.cloud.iot.v1.EventNotificationConfig',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='subfolder_matches', full_name='google.cloud.iot.v1.EventNotificationConfig.subfolder_matches', index=0,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='pubsub_topic_name', full_name='google.cloud.iot.v1.EventNotificationConfig.pubsub_topic_name', index=1,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=1801,
-  serialized_end=1880,
+    name="EventNotificationConfig",
+    full_name="google.cloud.iot.v1.EventNotificationConfig",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="subfolder_matches",
+            full_name="google.cloud.iot.v1.EventNotificationConfig.subfolder_matches",
+            index=0,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="pubsub_topic_name",
+            full_name="google.cloud.iot.v1.EventNotificationConfig.pubsub_topic_name",
+            index=1,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=1801,
+    serialized_end=1880,
 )
 
 
 _STATENOTIFICATIONCONFIG = _descriptor.Descriptor(
-  name='StateNotificationConfig',
-  full_name='google.cloud.iot.v1.StateNotificationConfig',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='pubsub_topic_name', full_name='google.cloud.iot.v1.StateNotificationConfig.pubsub_topic_name', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=1882,
-  serialized_end=1934,
+    name="StateNotificationConfig",
+    full_name="google.cloud.iot.v1.StateNotificationConfig",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="pubsub_topic_name",
+            full_name="google.cloud.iot.v1.StateNotificationConfig.pubsub_topic_name",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        )
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=1882,
+    serialized_end=1934,
 )
 
 
 _REGISTRYCREDENTIAL = _descriptor.Descriptor(
-  name='RegistryCredential',
-  full_name='google.cloud.iot.v1.RegistryCredential',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='public_key_certificate', full_name='google.cloud.iot.v1.RegistryCredential.public_key_certificate', index=0,
-      number=1, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-    _descriptor.OneofDescriptor(
-      name='credential', full_name='google.cloud.iot.v1.RegistryCredential.credential',
-      index=0, containing_type=None, fields=[]),
-  ],
-  serialized_start=1936,
-  serialized_end=2047,
+    name="RegistryCredential",
+    full_name="google.cloud.iot.v1.RegistryCredential",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="public_key_certificate",
+            full_name="google.cloud.iot.v1.RegistryCredential.public_key_certificate",
+            index=0,
+            number=1,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        )
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[
+        _descriptor.OneofDescriptor(
+            name="credential",
+            full_name="google.cloud.iot.v1.RegistryCredential.credential",
+            index=0,
+            containing_type=None,
+            fields=[],
+        )
+    ],
+    serialized_start=1936,
+    serialized_end=2047,
 )
 
 
 _X509CERTIFICATEDETAILS = _descriptor.Descriptor(
-  name='X509CertificateDetails',
-  full_name='google.cloud.iot.v1.X509CertificateDetails',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='issuer', full_name='google.cloud.iot.v1.X509CertificateDetails.issuer', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='subject', full_name='google.cloud.iot.v1.X509CertificateDetails.subject', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='start_time', full_name='google.cloud.iot.v1.X509CertificateDetails.start_time', index=2,
-      number=3, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='expiry_time', full_name='google.cloud.iot.v1.X509CertificateDetails.expiry_time', index=3,
-      number=4, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='signature_algorithm', full_name='google.cloud.iot.v1.X509CertificateDetails.signature_algorithm', index=4,
-      number=5, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='public_key_type', full_name='google.cloud.iot.v1.X509CertificateDetails.public_key_type', index=5,
-      number=6, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=2050,
-  serialized_end=2258,
+    name="X509CertificateDetails",
+    full_name="google.cloud.iot.v1.X509CertificateDetails",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="issuer",
+            full_name="google.cloud.iot.v1.X509CertificateDetails.issuer",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="subject",
+            full_name="google.cloud.iot.v1.X509CertificateDetails.subject",
+            index=1,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="start_time",
+            full_name="google.cloud.iot.v1.X509CertificateDetails.start_time",
+            index=2,
+            number=3,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="expiry_time",
+            full_name="google.cloud.iot.v1.X509CertificateDetails.expiry_time",
+            index=3,
+            number=4,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="signature_algorithm",
+            full_name="google.cloud.iot.v1.X509CertificateDetails.signature_algorithm",
+            index=4,
+            number=5,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="public_key_type",
+            full_name="google.cloud.iot.v1.X509CertificateDetails.public_key_type",
+            index=5,
+            number=6,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=2050,
+    serialized_end=2258,
 )
 
 
 _PUBLICKEYCERTIFICATE = _descriptor.Descriptor(
-  name='PublicKeyCertificate',
-  full_name='google.cloud.iot.v1.PublicKeyCertificate',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='format', full_name='google.cloud.iot.v1.PublicKeyCertificate.format', index=0,
-      number=1, type=14, cpp_type=8, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='certificate', full_name='google.cloud.iot.v1.PublicKeyCertificate.certificate', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='x509_details', full_name='google.cloud.iot.v1.PublicKeyCertificate.x509_details', index=2,
-      number=3, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=2261,
-  serialized_end=2436,
+    name="PublicKeyCertificate",
+    full_name="google.cloud.iot.v1.PublicKeyCertificate",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="format",
+            full_name="google.cloud.iot.v1.PublicKeyCertificate.format",
+            index=0,
+            number=1,
+            type=14,
+            cpp_type=8,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="certificate",
+            full_name="google.cloud.iot.v1.PublicKeyCertificate.certificate",
+            index=1,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="x509_details",
+            full_name="google.cloud.iot.v1.PublicKeyCertificate.x509_details",
+            index=2,
+            number=3,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=2261,
+    serialized_end=2436,
 )
 
 
 _DEVICECREDENTIAL = _descriptor.Descriptor(
-  name='DeviceCredential',
-  full_name='google.cloud.iot.v1.DeviceCredential',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='public_key', full_name='google.cloud.iot.v1.DeviceCredential.public_key', index=0,
-      number=2, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='expiration_time', full_name='google.cloud.iot.v1.DeviceCredential.expiration_time', index=1,
-      number=6, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-    _descriptor.OneofDescriptor(
-      name='credential', full_name='google.cloud.iot.v1.DeviceCredential.credential',
-      index=0, containing_type=None, fields=[]),
-  ],
-  serialized_start=2439,
-  serialized_end=2588,
+    name="DeviceCredential",
+    full_name="google.cloud.iot.v1.DeviceCredential",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="public_key",
+            full_name="google.cloud.iot.v1.DeviceCredential.public_key",
+            index=0,
+            number=2,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="expiration_time",
+            full_name="google.cloud.iot.v1.DeviceCredential.expiration_time",
+            index=1,
+            number=6,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[
+        _descriptor.OneofDescriptor(
+            name="credential",
+            full_name="google.cloud.iot.v1.DeviceCredential.credential",
+            index=0,
+            containing_type=None,
+            fields=[],
+        )
+    ],
+    serialized_start=2439,
+    serialized_end=2588,
 )
 
 
 _PUBLICKEYCREDENTIAL = _descriptor.Descriptor(
-  name='PublicKeyCredential',
-  full_name='google.cloud.iot.v1.PublicKeyCredential',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='format', full_name='google.cloud.iot.v1.PublicKeyCredential.format', index=0,
-      number=1, type=14, cpp_type=8, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='key', full_name='google.cloud.iot.v1.PublicKeyCredential.key', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=2590,
-  serialized_end=2678,
+    name="PublicKeyCredential",
+    full_name="google.cloud.iot.v1.PublicKeyCredential",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="format",
+            full_name="google.cloud.iot.v1.PublicKeyCredential.format",
+            index=0,
+            number=1,
+            type=14,
+            cpp_type=8,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="key",
+            full_name="google.cloud.iot.v1.PublicKeyCredential.key",
+            index=1,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=2590,
+    serialized_end=2678,
 )
 
 
 _DEVICECONFIG = _descriptor.Descriptor(
-  name='DeviceConfig',
-  full_name='google.cloud.iot.v1.DeviceConfig',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='version', full_name='google.cloud.iot.v1.DeviceConfig.version', index=0,
-      number=1, type=3, cpp_type=2, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='cloud_update_time', full_name='google.cloud.iot.v1.DeviceConfig.cloud_update_time', index=1,
-      number=2, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='device_ack_time', full_name='google.cloud.iot.v1.DeviceConfig.device_ack_time', index=2,
-      number=3, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='binary_data', full_name='google.cloud.iot.v1.DeviceConfig.binary_data', index=3,
-      number=4, type=12, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b(""),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=2681,
-  serialized_end=2841,
+    name="DeviceConfig",
+    full_name="google.cloud.iot.v1.DeviceConfig",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="version",
+            full_name="google.cloud.iot.v1.DeviceConfig.version",
+            index=0,
+            number=1,
+            type=3,
+            cpp_type=2,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="cloud_update_time",
+            full_name="google.cloud.iot.v1.DeviceConfig.cloud_update_time",
+            index=1,
+            number=2,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="device_ack_time",
+            full_name="google.cloud.iot.v1.DeviceConfig.device_ack_time",
+            index=2,
+            number=3,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="binary_data",
+            full_name="google.cloud.iot.v1.DeviceConfig.binary_data",
+            index=3,
+            number=4,
+            type=12,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b(""),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=2681,
+    serialized_end=2841,
 )
 
 
 _DEVICESTATE = _descriptor.Descriptor(
-  name='DeviceState',
-  full_name='google.cloud.iot.v1.DeviceState',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='update_time', full_name='google.cloud.iot.v1.DeviceState.update_time', index=0,
-      number=1, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='binary_data', full_name='google.cloud.iot.v1.DeviceState.binary_data', index=1,
-      number=2, type=12, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b(""),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=2843,
-  serialized_end=2926,
+    name="DeviceState",
+    full_name="google.cloud.iot.v1.DeviceState",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="update_time",
+            full_name="google.cloud.iot.v1.DeviceState.update_time",
+            index=0,
+            number=1,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="binary_data",
+            full_name="google.cloud.iot.v1.DeviceState.binary_data",
+            index=1,
+            number=2,
+            type=12,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b(""),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=2843,
+    serialized_end=2926,
 )
 
 _DEVICE_METADATAENTRY.containing_type = _DEVICE
-_DEVICE.fields_by_name['credentials'].message_type = _DEVICECREDENTIAL
-_DEVICE.fields_by_name['last_heartbeat_time'].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
-_DEVICE.fields_by_name['last_event_time'].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
-_DEVICE.fields_by_name['last_state_time'].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
-_DEVICE.fields_by_name['last_config_ack_time'].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
-_DEVICE.fields_by_name['last_config_send_time'].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
-_DEVICE.fields_by_name['last_error_time'].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
-_DEVICE.fields_by_name['last_error_status'].message_type = google_dot_rpc_dot_status__pb2._STATUS
-_DEVICE.fields_by_name['config'].message_type = _DEVICECONFIG
-_DEVICE.fields_by_name['state'].message_type = _DEVICESTATE
-_DEVICE.fields_by_name['log_level'].enum_type = _LOGLEVEL
-_DEVICE.fields_by_name['metadata'].message_type = _DEVICE_METADATAENTRY
-_DEVICE.fields_by_name['gateway_config'].message_type = _GATEWAYCONFIG
-_GATEWAYCONFIG.fields_by_name['gateway_type'].enum_type = _GATEWAYTYPE
-_GATEWAYCONFIG.fields_by_name['gateway_auth_method'].enum_type = _GATEWAYAUTHMETHOD
-_GATEWAYCONFIG.fields_by_name['last_accessed_gateway_time'].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
-_DEVICEREGISTRY.fields_by_name['event_notification_configs'].message_type = _EVENTNOTIFICATIONCONFIG
-_DEVICEREGISTRY.fields_by_name['state_notification_config'].message_type = _STATENOTIFICATIONCONFIG
-_DEVICEREGISTRY.fields_by_name['mqtt_config'].message_type = _MQTTCONFIG
-_DEVICEREGISTRY.fields_by_name['http_config'].message_type = _HTTPCONFIG
-_DEVICEREGISTRY.fields_by_name['log_level'].enum_type = _LOGLEVEL
-_DEVICEREGISTRY.fields_by_name['credentials'].message_type = _REGISTRYCREDENTIAL
-_MQTTCONFIG.fields_by_name['mqtt_enabled_state'].enum_type = _MQTTSTATE
-_HTTPCONFIG.fields_by_name['http_enabled_state'].enum_type = _HTTPSTATE
-_REGISTRYCREDENTIAL.fields_by_name['public_key_certificate'].message_type = _PUBLICKEYCERTIFICATE
-_REGISTRYCREDENTIAL.oneofs_by_name['credential'].fields.append(
-  _REGISTRYCREDENTIAL.fields_by_name['public_key_certificate'])
-_REGISTRYCREDENTIAL.fields_by_name['public_key_certificate'].containing_oneof = _REGISTRYCREDENTIAL.oneofs_by_name['credential']
-_X509CERTIFICATEDETAILS.fields_by_name['start_time'].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
-_X509CERTIFICATEDETAILS.fields_by_name['expiry_time'].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
-_PUBLICKEYCERTIFICATE.fields_by_name['format'].enum_type = _PUBLICKEYCERTIFICATEFORMAT
-_PUBLICKEYCERTIFICATE.fields_by_name['x509_details'].message_type = _X509CERTIFICATEDETAILS
-_DEVICECREDENTIAL.fields_by_name['public_key'].message_type = _PUBLICKEYCREDENTIAL
-_DEVICECREDENTIAL.fields_by_name['expiration_time'].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
-_DEVICECREDENTIAL.oneofs_by_name['credential'].fields.append(
-  _DEVICECREDENTIAL.fields_by_name['public_key'])
-_DEVICECREDENTIAL.fields_by_name['public_key'].containing_oneof = _DEVICECREDENTIAL.oneofs_by_name['credential']
-_PUBLICKEYCREDENTIAL.fields_by_name['format'].enum_type = _PUBLICKEYFORMAT
-_DEVICECONFIG.fields_by_name['cloud_update_time'].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
-_DEVICECONFIG.fields_by_name['device_ack_time'].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
-_DEVICESTATE.fields_by_name['update_time'].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
-DESCRIPTOR.message_types_by_name['Device'] = _DEVICE
-DESCRIPTOR.message_types_by_name['GatewayConfig'] = _GATEWAYCONFIG
-DESCRIPTOR.message_types_by_name['DeviceRegistry'] = _DEVICEREGISTRY
-DESCRIPTOR.message_types_by_name['MqttConfig'] = _MQTTCONFIG
-DESCRIPTOR.message_types_by_name['HttpConfig'] = _HTTPCONFIG
-DESCRIPTOR.message_types_by_name['EventNotificationConfig'] = _EVENTNOTIFICATIONCONFIG
-DESCRIPTOR.message_types_by_name['StateNotificationConfig'] = _STATENOTIFICATIONCONFIG
-DESCRIPTOR.message_types_by_name['RegistryCredential'] = _REGISTRYCREDENTIAL
-DESCRIPTOR.message_types_by_name['X509CertificateDetails'] = _X509CERTIFICATEDETAILS
-DESCRIPTOR.message_types_by_name['PublicKeyCertificate'] = _PUBLICKEYCERTIFICATE
-DESCRIPTOR.message_types_by_name['DeviceCredential'] = _DEVICECREDENTIAL
-DESCRIPTOR.message_types_by_name['PublicKeyCredential'] = _PUBLICKEYCREDENTIAL
-DESCRIPTOR.message_types_by_name['DeviceConfig'] = _DEVICECONFIG
-DESCRIPTOR.message_types_by_name['DeviceState'] = _DEVICESTATE
-DESCRIPTOR.enum_types_by_name['MqttState'] = _MQTTSTATE
-DESCRIPTOR.enum_types_by_name['HttpState'] = _HTTPSTATE
-DESCRIPTOR.enum_types_by_name['LogLevel'] = _LOGLEVEL
-DESCRIPTOR.enum_types_by_name['GatewayType'] = _GATEWAYTYPE
-DESCRIPTOR.enum_types_by_name['GatewayAuthMethod'] = _GATEWAYAUTHMETHOD
-DESCRIPTOR.enum_types_by_name['PublicKeyCertificateFormat'] = _PUBLICKEYCERTIFICATEFORMAT
-DESCRIPTOR.enum_types_by_name['PublicKeyFormat'] = _PUBLICKEYFORMAT
+_DEVICE.fields_by_name["credentials"].message_type = _DEVICECREDENTIAL
+_DEVICE.fields_by_name[
+    "last_heartbeat_time"
+].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
+_DEVICE.fields_by_name[
+    "last_event_time"
+].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
+_DEVICE.fields_by_name[
+    "last_state_time"
+].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
+_DEVICE.fields_by_name[
+    "last_config_ack_time"
+].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
+_DEVICE.fields_by_name[
+    "last_config_send_time"
+].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
+_DEVICE.fields_by_name[
+    "last_error_time"
+].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
+_DEVICE.fields_by_name[
+    "last_error_status"
+].message_type = google_dot_rpc_dot_status__pb2._STATUS
+_DEVICE.fields_by_name["config"].message_type = _DEVICECONFIG
+_DEVICE.fields_by_name["state"].message_type = _DEVICESTATE
+_DEVICE.fields_by_name["log_level"].enum_type = _LOGLEVEL
+_DEVICE.fields_by_name["metadata"].message_type = _DEVICE_METADATAENTRY
+_DEVICE.fields_by_name["gateway_config"].message_type = _GATEWAYCONFIG
+_GATEWAYCONFIG.fields_by_name["gateway_type"].enum_type = _GATEWAYTYPE
+_GATEWAYCONFIG.fields_by_name["gateway_auth_method"].enum_type = _GATEWAYAUTHMETHOD
+_GATEWAYCONFIG.fields_by_name[
+    "last_accessed_gateway_time"
+].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
+_DEVICEREGISTRY.fields_by_name[
+    "event_notification_configs"
+].message_type = _EVENTNOTIFICATIONCONFIG
+_DEVICEREGISTRY.fields_by_name[
+    "state_notification_config"
+].message_type = _STATENOTIFICATIONCONFIG
+_DEVICEREGISTRY.fields_by_name["mqtt_config"].message_type = _MQTTCONFIG
+_DEVICEREGISTRY.fields_by_name["http_config"].message_type = _HTTPCONFIG
+_DEVICEREGISTRY.fields_by_name["log_level"].enum_type = _LOGLEVEL
+_DEVICEREGISTRY.fields_by_name["credentials"].message_type = _REGISTRYCREDENTIAL
+_MQTTCONFIG.fields_by_name["mqtt_enabled_state"].enum_type = _MQTTSTATE
+_HTTPCONFIG.fields_by_name["http_enabled_state"].enum_type = _HTTPSTATE
+_REGISTRYCREDENTIAL.fields_by_name[
+    "public_key_certificate"
+].message_type = _PUBLICKEYCERTIFICATE
+_REGISTRYCREDENTIAL.oneofs_by_name["credential"].fields.append(
+    _REGISTRYCREDENTIAL.fields_by_name["public_key_certificate"]
+)
+_REGISTRYCREDENTIAL.fields_by_name[
+    "public_key_certificate"
+].containing_oneof = _REGISTRYCREDENTIAL.oneofs_by_name["credential"]
+_X509CERTIFICATEDETAILS.fields_by_name[
+    "start_time"
+].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
+_X509CERTIFICATEDETAILS.fields_by_name[
+    "expiry_time"
+].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
+_PUBLICKEYCERTIFICATE.fields_by_name["format"].enum_type = _PUBLICKEYCERTIFICATEFORMAT
+_PUBLICKEYCERTIFICATE.fields_by_name[
+    "x509_details"
+].message_type = _X509CERTIFICATEDETAILS
+_DEVICECREDENTIAL.fields_by_name["public_key"].message_type = _PUBLICKEYCREDENTIAL
+_DEVICECREDENTIAL.fields_by_name[
+    "expiration_time"
+].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
+_DEVICECREDENTIAL.oneofs_by_name["credential"].fields.append(
+    _DEVICECREDENTIAL.fields_by_name["public_key"]
+)
+_DEVICECREDENTIAL.fields_by_name[
+    "public_key"
+].containing_oneof = _DEVICECREDENTIAL.oneofs_by_name["credential"]
+_PUBLICKEYCREDENTIAL.fields_by_name["format"].enum_type = _PUBLICKEYFORMAT
+_DEVICECONFIG.fields_by_name[
+    "cloud_update_time"
+].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
+_DEVICECONFIG.fields_by_name[
+    "device_ack_time"
+].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
+_DEVICESTATE.fields_by_name[
+    "update_time"
+].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
+DESCRIPTOR.message_types_by_name["Device"] = _DEVICE
+DESCRIPTOR.message_types_by_name["GatewayConfig"] = _GATEWAYCONFIG
+DESCRIPTOR.message_types_by_name["DeviceRegistry"] = _DEVICEREGISTRY
+DESCRIPTOR.message_types_by_name["MqttConfig"] = _MQTTCONFIG
+DESCRIPTOR.message_types_by_name["HttpConfig"] = _HTTPCONFIG
+DESCRIPTOR.message_types_by_name["EventNotificationConfig"] = _EVENTNOTIFICATIONCONFIG
+DESCRIPTOR.message_types_by_name["StateNotificationConfig"] = _STATENOTIFICATIONCONFIG
+DESCRIPTOR.message_types_by_name["RegistryCredential"] = _REGISTRYCREDENTIAL
+DESCRIPTOR.message_types_by_name["X509CertificateDetails"] = _X509CERTIFICATEDETAILS
+DESCRIPTOR.message_types_by_name["PublicKeyCertificate"] = _PUBLICKEYCERTIFICATE
+DESCRIPTOR.message_types_by_name["DeviceCredential"] = _DEVICECREDENTIAL
+DESCRIPTOR.message_types_by_name["PublicKeyCredential"] = _PUBLICKEYCREDENTIAL
+DESCRIPTOR.message_types_by_name["DeviceConfig"] = _DEVICECONFIG
+DESCRIPTOR.message_types_by_name["DeviceState"] = _DEVICESTATE
+DESCRIPTOR.enum_types_by_name["MqttState"] = _MQTTSTATE
+DESCRIPTOR.enum_types_by_name["HttpState"] = _HTTPSTATE
+DESCRIPTOR.enum_types_by_name["LogLevel"] = _LOGLEVEL
+DESCRIPTOR.enum_types_by_name["GatewayType"] = _GATEWAYTYPE
+DESCRIPTOR.enum_types_by_name["GatewayAuthMethod"] = _GATEWAYAUTHMETHOD
+DESCRIPTOR.enum_types_by_name[
+    "PublicKeyCertificateFormat"
+] = _PUBLICKEYCERTIFICATEFORMAT
+DESCRIPTOR.enum_types_by_name["PublicKeyFormat"] = _PUBLICKEYFORMAT
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
-Device = _reflection.GeneratedProtocolMessageType('Device', (_message.Message,), dict(
-
-  MetadataEntry = _reflection.GeneratedProtocolMessageType('MetadataEntry', (_message.Message,), dict(
-    DESCRIPTOR = _DEVICE_METADATAENTRY,
-    __module__ = 'google.cloud.iot_v1.proto.resources_pb2'
-    # @@protoc_insertion_point(class_scope:google.cloud.iot.v1.Device.MetadataEntry)
-    ))
-  ,
-  DESCRIPTOR = _DEVICE,
-  __module__ = 'google.cloud.iot_v1.proto.resources_pb2'
-  ,
-  __doc__ = """The device resource.
+Device = _reflection.GeneratedProtocolMessageType(
+    "Device",
+    (_message.Message,),
+    dict(
+        MetadataEntry=_reflection.GeneratedProtocolMessageType(
+            "MetadataEntry",
+            (_message.Message,),
+            dict(
+                DESCRIPTOR=_DEVICE_METADATAENTRY,
+                __module__="google.cloud.iot_v1.proto.resources_pb2"
+                # @@protoc_insertion_point(class_scope:google.cloud.iot.v1.Device.MetadataEntry)
+            ),
+        ),
+        DESCRIPTOR=_DEVICE,
+        __module__="google.cloud.iot_v1.proto.resources_pb2",
+        __doc__="""The device resource.
   
   
   Attributes:
@@ -1184,16 +1813,19 @@ Device = _reflection.GeneratedProtocolMessageType('Device', (_message.Message,),
       gateway_config:
           Gateway-related configuration and state.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.iot.v1.Device)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.iot.v1.Device)
+    ),
+)
 _sym_db.RegisterMessage(Device)
 _sym_db.RegisterMessage(Device.MetadataEntry)
 
-GatewayConfig = _reflection.GeneratedProtocolMessageType('GatewayConfig', (_message.Message,), dict(
-  DESCRIPTOR = _GATEWAYCONFIG,
-  __module__ = 'google.cloud.iot_v1.proto.resources_pb2'
-  ,
-  __doc__ = """Gateway-related configuration and state.
+GatewayConfig = _reflection.GeneratedProtocolMessageType(
+    "GatewayConfig",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_GATEWAYCONFIG,
+        __module__="google.cloud.iot_v1.proto.resources_pb2",
+        __doc__="""Gateway-related configuration and state.
   
   
   Attributes:
@@ -1209,15 +1841,18 @@ GatewayConfig = _reflection.GeneratedProtocolMessageType('GatewayConfig', (_mess
           [Output only] The most recent time at which the device
           accessed the gateway specified in ``last_accessed_gateway``.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.iot.v1.GatewayConfig)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.iot.v1.GatewayConfig)
+    ),
+)
 _sym_db.RegisterMessage(GatewayConfig)
 
-DeviceRegistry = _reflection.GeneratedProtocolMessageType('DeviceRegistry', (_message.Message,), dict(
-  DESCRIPTOR = _DEVICEREGISTRY,
-  __module__ = 'google.cloud.iot_v1.proto.resources_pb2'
-  ,
-  __doc__ = """A container for a group of devices.
+DeviceRegistry = _reflection.GeneratedProtocolMessageType(
+    "DeviceRegistry",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_DEVICEREGISTRY,
+        __module__="google.cloud.iot_v1.proto.resources_pb2",
+        __doc__="""A container for a group of devices.
   
   
   Attributes:
@@ -1269,15 +1904,18 @@ DeviceRegistry = _reflection.GeneratedProtocolMessageType('DeviceRegistry', (_me
           connect even if its registry credentials are revoked, deleted,
           or modified.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.iot.v1.DeviceRegistry)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.iot.v1.DeviceRegistry)
+    ),
+)
 _sym_db.RegisterMessage(DeviceRegistry)
 
-MqttConfig = _reflection.GeneratedProtocolMessageType('MqttConfig', (_message.Message,), dict(
-  DESCRIPTOR = _MQTTCONFIG,
-  __module__ = 'google.cloud.iot_v1.proto.resources_pb2'
-  ,
-  __doc__ = """The configuration of MQTT for a device registry.
+MqttConfig = _reflection.GeneratedProtocolMessageType(
+    "MqttConfig",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_MQTTCONFIG,
+        __module__="google.cloud.iot_v1.proto.resources_pb2",
+        __doc__="""The configuration of MQTT for a device registry.
   
   
   Attributes:
@@ -1285,15 +1923,18 @@ MqttConfig = _reflection.GeneratedProtocolMessageType('MqttConfig', (_message.Me
           If enabled, allows connections using the MQTT protocol.
           Otherwise, MQTT connections to this registry will fail.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.iot.v1.MqttConfig)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.iot.v1.MqttConfig)
+    ),
+)
 _sym_db.RegisterMessage(MqttConfig)
 
-HttpConfig = _reflection.GeneratedProtocolMessageType('HttpConfig', (_message.Message,), dict(
-  DESCRIPTOR = _HTTPCONFIG,
-  __module__ = 'google.cloud.iot_v1.proto.resources_pb2'
-  ,
-  __doc__ = """The configuration of the HTTP bridge for a device registry.
+HttpConfig = _reflection.GeneratedProtocolMessageType(
+    "HttpConfig",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_HTTPCONFIG,
+        __module__="google.cloud.iot_v1.proto.resources_pb2",
+        __doc__="""The configuration of the HTTP bridge for a device registry.
   
   
   Attributes:
@@ -1302,15 +1943,18 @@ HttpConfig = _reflection.GeneratedProtocolMessageType('HttpConfig', (_message.Me
           protocol. Otherwise, any requests to DeviceService will fail
           for this registry.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.iot.v1.HttpConfig)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.iot.v1.HttpConfig)
+    ),
+)
 _sym_db.RegisterMessage(HttpConfig)
 
-EventNotificationConfig = _reflection.GeneratedProtocolMessageType('EventNotificationConfig', (_message.Message,), dict(
-  DESCRIPTOR = _EVENTNOTIFICATIONCONFIG,
-  __module__ = 'google.cloud.iot_v1.proto.resources_pb2'
-  ,
-  __doc__ = """The configuration for forwarding telemetry events.
+EventNotificationConfig = _reflection.GeneratedProtocolMessageType(
+    "EventNotificationConfig",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_EVENTNOTIFICATIONCONFIG,
+        __module__="google.cloud.iot_v1.proto.resources_pb2",
+        __doc__="""The configuration for forwarding telemetry events.
   
   
   Attributes:
@@ -1324,15 +1968,18 @@ EventNotificationConfig = _reflection.GeneratedProtocolMessageType('EventNotific
           A Cloud Pub/Sub topic name. For example,
           ``projects/myProject/topics/deviceEvents``.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.iot.v1.EventNotificationConfig)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.iot.v1.EventNotificationConfig)
+    ),
+)
 _sym_db.RegisterMessage(EventNotificationConfig)
 
-StateNotificationConfig = _reflection.GeneratedProtocolMessageType('StateNotificationConfig', (_message.Message,), dict(
-  DESCRIPTOR = _STATENOTIFICATIONCONFIG,
-  __module__ = 'google.cloud.iot_v1.proto.resources_pb2'
-  ,
-  __doc__ = """The configuration for notification of new states received from the
+StateNotificationConfig = _reflection.GeneratedProtocolMessageType(
+    "StateNotificationConfig",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_STATENOTIFICATIONCONFIG,
+        __module__="google.cloud.iot_v1.proto.resources_pb2",
+        __doc__="""The configuration for notification of new states received from the
   device.
   
   
@@ -1341,15 +1988,18 @@ StateNotificationConfig = _reflection.GeneratedProtocolMessageType('StateNotific
           A Cloud Pub/Sub topic name. For example,
           ``projects/myProject/topics/deviceEvents``.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.iot.v1.StateNotificationConfig)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.iot.v1.StateNotificationConfig)
+    ),
+)
 _sym_db.RegisterMessage(StateNotificationConfig)
 
-RegistryCredential = _reflection.GeneratedProtocolMessageType('RegistryCredential', (_message.Message,), dict(
-  DESCRIPTOR = _REGISTRYCREDENTIAL,
-  __module__ = 'google.cloud.iot_v1.proto.resources_pb2'
-  ,
-  __doc__ = """A server-stored registry credential used to validate device credentials.
+RegistryCredential = _reflection.GeneratedProtocolMessageType(
+    "RegistryCredential",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_REGISTRYCREDENTIAL,
+        __module__="google.cloud.iot_v1.proto.resources_pb2",
+        __doc__="""A server-stored registry credential used to validate device credentials.
   
   
   Attributes:
@@ -1359,15 +2009,18 @@ RegistryCredential = _reflection.GeneratedProtocolMessageType('RegistryCredentia
           A public key certificate used to verify the device
           credentials.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.iot.v1.RegistryCredential)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.iot.v1.RegistryCredential)
+    ),
+)
 _sym_db.RegisterMessage(RegistryCredential)
 
-X509CertificateDetails = _reflection.GeneratedProtocolMessageType('X509CertificateDetails', (_message.Message,), dict(
-  DESCRIPTOR = _X509CERTIFICATEDETAILS,
-  __module__ = 'google.cloud.iot_v1.proto.resources_pb2'
-  ,
-  __doc__ = """Details of an X.509 certificate. For informational purposes only.
+X509CertificateDetails = _reflection.GeneratedProtocolMessageType(
+    "X509CertificateDetails",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_X509CERTIFICATEDETAILS,
+        __module__="google.cloud.iot_v1.proto.resources_pb2",
+        __doc__="""Details of an X.509 certificate. For informational purposes only.
   
   
   Attributes:
@@ -1384,15 +2037,18 @@ X509CertificateDetails = _reflection.GeneratedProtocolMessageType('X509Certifica
       public_key_type:
           The type of public key in the certificate.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.iot.v1.X509CertificateDetails)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.iot.v1.X509CertificateDetails)
+    ),
+)
 _sym_db.RegisterMessage(X509CertificateDetails)
 
-PublicKeyCertificate = _reflection.GeneratedProtocolMessageType('PublicKeyCertificate', (_message.Message,), dict(
-  DESCRIPTOR = _PUBLICKEYCERTIFICATE,
-  __module__ = 'google.cloud.iot_v1.proto.resources_pb2'
-  ,
-  __doc__ = """A public key certificate format and data.
+PublicKeyCertificate = _reflection.GeneratedProtocolMessageType(
+    "PublicKeyCertificate",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_PUBLICKEYCERTIFICATE,
+        __module__="google.cloud.iot_v1.proto.resources_pb2",
+        __doc__="""A public key certificate format and data.
   
   
   Attributes:
@@ -1404,15 +2060,18 @@ PublicKeyCertificate = _reflection.GeneratedProtocolMessageType('PublicKeyCertif
           [Output only] The certificate details. Used only for X.509
           certificates.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.iot.v1.PublicKeyCertificate)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.iot.v1.PublicKeyCertificate)
+    ),
+)
 _sym_db.RegisterMessage(PublicKeyCertificate)
 
-DeviceCredential = _reflection.GeneratedProtocolMessageType('DeviceCredential', (_message.Message,), dict(
-  DESCRIPTOR = _DEVICECREDENTIAL,
-  __module__ = 'google.cloud.iot_v1.proto.resources_pb2'
-  ,
-  __doc__ = """A server-stored device credential used for authentication.
+DeviceCredential = _reflection.GeneratedProtocolMessageType(
+    "DeviceCredential",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_DEVICECREDENTIAL,
+        __module__="google.cloud.iot_v1.proto.resources_pb2",
+        __doc__="""A server-stored device credential used for authentication.
   
   
   Attributes:
@@ -1437,15 +2096,18 @@ DeviceCredential = _reflection.GeneratedProtocolMessageType('DeviceCredential', 
           requests after this timestamp; however, it will not be
           automatically deleted.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.iot.v1.DeviceCredential)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.iot.v1.DeviceCredential)
+    ),
+)
 _sym_db.RegisterMessage(DeviceCredential)
 
-PublicKeyCredential = _reflection.GeneratedProtocolMessageType('PublicKeyCredential', (_message.Message,), dict(
-  DESCRIPTOR = _PUBLICKEYCREDENTIAL,
-  __module__ = 'google.cloud.iot_v1.proto.resources_pb2'
-  ,
-  __doc__ = """A public key format and data.
+PublicKeyCredential = _reflection.GeneratedProtocolMessageType(
+    "PublicKeyCredential",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_PUBLICKEYCREDENTIAL,
+        __module__="google.cloud.iot_v1.proto.resources_pb2",
+        __doc__="""A public key format and data.
   
   
   Attributes:
@@ -1454,15 +2116,18 @@ PublicKeyCredential = _reflection.GeneratedProtocolMessageType('PublicKeyCredent
       key:
           The key data.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.iot.v1.PublicKeyCredential)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.iot.v1.PublicKeyCredential)
+    ),
+)
 _sym_db.RegisterMessage(PublicKeyCredential)
 
-DeviceConfig = _reflection.GeneratedProtocolMessageType('DeviceConfig', (_message.Message,), dict(
-  DESCRIPTOR = _DEVICECONFIG,
-  __module__ = 'google.cloud.iot_v1.proto.resources_pb2'
-  ,
-  __doc__ = """The device configuration. Eventually delivered to devices.
+DeviceConfig = _reflection.GeneratedProtocolMessageType(
+    "DeviceConfig",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_DEVICECONFIG,
+        __module__="google.cloud.iot_v1.proto.resources_pb2",
+        __doc__="""The device configuration. Eventually delivered to devices.
   
   
   Attributes:
@@ -1490,15 +2155,18 @@ DeviceConfig = _reflection.GeneratedProtocolMessageType('DeviceConfig', (_messag
       binary_data:
           The device configuration data.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.iot.v1.DeviceConfig)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.iot.v1.DeviceConfig)
+    ),
+)
 _sym_db.RegisterMessage(DeviceConfig)
 
-DeviceState = _reflection.GeneratedProtocolMessageType('DeviceState', (_message.Message,), dict(
-  DESCRIPTOR = _DEVICESTATE,
-  __module__ = 'google.cloud.iot_v1.proto.resources_pb2'
-  ,
-  __doc__ = """The device state, as reported by the device.
+DeviceState = _reflection.GeneratedProtocolMessageType(
+    "DeviceState",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_DEVICESTATE,
+        __module__="google.cloud.iot_v1.proto.resources_pb2",
+        __doc__="""The device state, as reported by the device.
   
   
   Attributes:
@@ -1508,13 +2176,21 @@ DeviceState = _reflection.GeneratedProtocolMessageType('DeviceState', (_message.
       binary_data:
           The device state data.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.iot.v1.DeviceState)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.iot.v1.DeviceState)
+    ),
+)
 _sym_db.RegisterMessage(DeviceState)
 
 
 DESCRIPTOR.has_options = True
-DESCRIPTOR._options = _descriptor._ParseOptions(descriptor_pb2.FileOptions(), _b('\n\027com.google.cloud.iot.v1B\016ResourcesProtoP\001Z6google.golang.org/genproto/googleapis/cloud/iot/v1;iot\370\001\001'))
+DESCRIPTOR._options = _descriptor._ParseOptions(
+    descriptor_pb2.FileOptions(),
+    _b(
+        "\n\027com.google.cloud.iot.v1B\016ResourcesProtoP\001Z6google.golang.org/genproto/googleapis/cloud/iot/v1;iot\370\001\001"
+    ),
+)
 _DEVICE_METADATAENTRY.has_options = True
-_DEVICE_METADATAENTRY._options = _descriptor._ParseOptions(descriptor_pb2.MessageOptions(), _b('8\001'))
+_DEVICE_METADATAENTRY._options = _descriptor._ParseOptions(
+    descriptor_pb2.MessageOptions(), _b("8\001")
+)
 # @@protoc_insertion_point(module_scope)

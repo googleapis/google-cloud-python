@@ -25,8 +25,7 @@ from google.cloud.firestore_v1beta1.proto import document_pb2
 from google.cloud.firestore_v1beta1.watch import Watch
 from google.cloud.firestore_v1beta1 import document
 
-_AUTO_ID_CHARS = (
-    'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789')
+_AUTO_ID_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
 
 
 class CollectionReference(object):
@@ -58,11 +57,11 @@ class CollectionReference(object):
     def __init__(self, *path, **kwargs):
         _helpers.verify_path(path, is_collection=True)
         self._path = path
-        self._client = kwargs.pop('client', None)
+        self._client = kwargs.pop("client", None)
         if kwargs:
             raise TypeError(
-                'Received unexpected arguments', kwargs,
-                'Only `client` is supported')
+                "Received unexpected arguments", kwargs, "Only `client` is supported"
+            )
 
     @property
     def id(self):
@@ -121,14 +120,12 @@ class CollectionReference(object):
         parent_doc = self.parent
         if parent_doc is None:
             parent_path = _helpers.DOCUMENT_PATH_DELIMITER.join(
-                (self._client._database_string, 'documents'),
+                (self._client._database_string, "documents")
             )
         else:
             parent_path = parent_doc._document_path
 
-        expected_prefix = _helpers.DOCUMENT_PATH_DELIMITER.join(
-            (parent_path, self.id),
-        )
+        expected_prefix = _helpers.DOCUMENT_PATH_DELIMITER.join((parent_path, self.id))
         return parent_path, expected_prefix
 
     def add(self, document_data, document_id=None):
@@ -158,15 +155,19 @@ class CollectionReference(object):
         if document_id is None:
             parent_path, expected_prefix = self._parent_info()
             document_pb = document_pb2.Document(
-                fields=_helpers.encode_dict(document_data))
+                fields=_helpers.encode_dict(document_data)
+            )
 
             created_document_pb = self._client._firestore_api.create_document(
-                parent_path, collection_id=self.id, document_id=None,
-                document=document_pb, mask=None,
-                metadata=self._client._rpc_metadata)
+                parent_path,
+                collection_id=self.id,
+                document_id=None,
+                document=document_pb,
+                mask=None,
+                metadata=self._client._rpc_metadata,
+            )
 
-            new_document_id = _helpers.get_doc_id(
-                created_document_pb, expected_prefix)
+            new_document_id = _helpers.get_doc_id(created_document_pb, expected_prefix)
             document_ref = self.document(new_document_id)
             return created_document_pb.update_time, document_ref
         else:
@@ -398,10 +399,12 @@ class CollectionReference(object):
             # Terminate this watch
             collection_watch.unsubscribe()
         """
-        return Watch.for_query(query_mod.Query(self),
-                               callback,
-                               document.DocumentSnapshot,
-                               document.DocumentReference)
+        return Watch.for_query(
+            query_mod.Query(self),
+            callback,
+            document.DocumentSnapshot,
+            document.DocumentReference,
+        )
 
 
 def _auto_id():
@@ -411,5 +414,4 @@ def _auto_id():
         str: A 20 character string composed of digits, uppercase and
         lowercase and letters.
     """
-    return ''.join(
-        random.choice(_AUTO_ID_CHARS) for _ in six.moves.xrange(20))
+    return "".join(random.choice(_AUTO_ID_CHARS) for _ in six.moves.xrange(20))

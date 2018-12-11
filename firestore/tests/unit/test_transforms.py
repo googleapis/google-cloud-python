@@ -16,7 +16,6 @@ import unittest
 
 
 class Test_ValueList(unittest.TestCase):
-
     @staticmethod
     def _get_target_class():
         from google.cloud.firestore_v1beta1.transforms import _ValueList
@@ -27,14 +26,7 @@ class Test_ValueList(unittest.TestCase):
         return self._get_target_class()(values)
 
     def test_ctor_w_non_list_non_tuple(self):
-        invalid_values = (
-            None,
-            u'phred',
-            b'DEADBEEF',
-            123,
-            {},
-            object(),
-        )
+        invalid_values = (None, u"phred", b"DEADBEEF", 123, {}, object())
         for invalid_value in invalid_values:
             with self.assertRaises(ValueError):
                 self._make_one(invalid_value)
@@ -44,11 +36,11 @@ class Test_ValueList(unittest.TestCase):
             self._make_one([])
 
     def test_ctor_w_non_empty_list(self):
-        values = ['phred', 'bharney']
+        values = ["phred", "bharney"]
         union = self._make_one(values)
         self.assertEqual(union.values, values)
 
     def test_ctor_w_non_empty_tuple(self):
-        values = ('phred', 'bharney')
+        values = ("phred", "bharney")
         union = self._make_one(values)
         self.assertEqual(union.values, list(values))

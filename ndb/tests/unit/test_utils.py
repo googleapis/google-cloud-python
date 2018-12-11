@@ -17,7 +17,6 @@ import threading
 import pytest
 
 from google.cloud.ndb import utils
-import tests.unit.utils
 
 
 def test___all__():

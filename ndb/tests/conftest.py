@@ -23,16 +23,20 @@ from google.cloud.ndb import model
 import pytest
 
 
-@pytest.fixture
-def property_clean_cache():
-    """Reset the ``_FIND_METHODS_CACHE`` class attribute on ``Property``
+@pytest.fixture(autouse=True)
+def reset_state():
+    """Reset module and class level runtime state.
 
-    This property is set at runtime (with calls to ``_find_methods()``), so
-    this fixture allows resetting the class to its original state.
+    To make sure that each test has the same starting conditions, we reset
+    module or class level datastructures that maintain runtime state.
+
+    This resets:
+
+    - ``model.Property._FIND_METHODS_CACHE``
+    - ``model.Model._kind_map``
     """
     assert model.Property._FIND_METHODS_CACHE == {}
-    try:
-        yield
-    finally:
-        assert model.Property._FIND_METHODS_CACHE != {}
-        model.Property._FIND_METHODS_CACHE.clear()
+    assert model.Model._kind_map == {}
+    yield
+    model.Property._FIND_METHODS_CACHE.clear()
+    model.Model._kind_map.clear()

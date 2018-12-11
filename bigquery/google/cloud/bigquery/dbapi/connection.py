@@ -24,6 +24,7 @@ class Connection(object):
     :type client: :class:`~google.cloud.bigquery.Client`
     :param client: A client used to connect to BigQuery.
     """
+
     def __init__(self, client):
         self._client = client
 

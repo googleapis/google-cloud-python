@@ -2,20 +2,26 @@
 # source: google/cloud/vision_v1p3beta1/proto/product_search_service.proto
 
 import sys
-_b=sys.version_info[0]<3 and (lambda x:x) or (lambda x:x.encode('latin1'))
+
+_b = sys.version_info[0] < 3 and (lambda x: x) or (lambda x: x.encode("latin1"))
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
 from google.protobuf import descriptor_pb2
+
 # @@protoc_insertion_point(imports)
 
 _sym_db = _symbol_database.Default()
 
 
 from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
-from google.cloud.vision_v1p3beta1.proto import geometry_pb2 as google_dot_cloud_dot_vision__v1p3beta1_dot_proto_dot_geometry__pb2
-from google.longrunning import operations_pb2 as google_dot_longrunning_dot_operations__pb2
+from google.cloud.vision_v1p3beta1.proto import (
+    geometry_pb2 as google_dot_cloud_dot_vision__v1p3beta1_dot_proto_dot_geometry__pb2,
+)
+from google.longrunning import (
+    operations_pb2 as google_dot_longrunning_dot_operations__pb2,
+)
 from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 from google.protobuf import field_mask_pb2 as google_dot_protobuf_dot_field__mask__pb2
 from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__pb2
@@ -23,1306 +29,2020 @@ from google.rpc import status_pb2 as google_dot_rpc_dot_status__pb2
 
 
 DESCRIPTOR = _descriptor.FileDescriptor(
-  name='google/cloud/vision_v1p3beta1/proto/product_search_service.proto',
-  package='google.cloud.vision.v1p3beta1',
-  syntax='proto3',
-  serialized_pb=_b('\n@google/cloud/vision_v1p3beta1/proto/product_search_service.proto\x12\x1dgoogle.cloud.vision.v1p3beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x32google/cloud/vision_v1p3beta1/proto/geometry.proto\x1a#google/longrunning/operations.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x17google/rpc/status.proto\"\xcd\x01\n\x07Product\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x02 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x03 \x01(\t\x12\x18\n\x10product_category\x18\x04 \x01(\t\x12G\n\x0eproduct_labels\x18\x05 \x03(\x0b\x32/.google.cloud.vision.v1p3beta1.Product.KeyValue\x1a&\n\x08KeyValue\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t\"\x89\x01\n\nProductSet\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x02 \x01(\t\x12.\n\nindex_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\'\n\x0bindex_error\x18\x04 \x01(\x0b\x32\x12.google.rpc.Status\"p\n\x0eReferenceImage\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0b\n\x03uri\x18\x02 \x01(\t\x12\x43\n\x0e\x62ounding_polys\x18\x03 \x03(\x0b\x32+.google.cloud.vision.v1p3beta1.BoundingPoly\"s\n\x14\x43reateProductRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x37\n\x07product\x18\x02 \x01(\x0b\x32&.google.cloud.vision.v1p3beta1.Product\x12\x12\n\nproduct_id\x18\x03 \x01(\t\"L\n\x13ListProductsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t\"i\n\x14ListProductsResponse\x12\x38\n\x08products\x18\x01 \x03(\x0b\x32&.google.cloud.vision.v1p3beta1.Product\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\"!\n\x11GetProductRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"\x80\x01\n\x14UpdateProductRequest\x12\x37\n\x07product\x18\x01 \x01(\x0b\x32&.google.cloud.vision.v1p3beta1.Product\x12/\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMask\"$\n\x14\x44\x65leteProductRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"\x81\x01\n\x17\x43reateProductSetRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12>\n\x0bproduct_set\x18\x02 \x01(\x0b\x32).google.cloud.vision.v1p3beta1.ProductSet\x12\x16\n\x0eproduct_set_id\x18\x03 \x01(\t\"O\n\x16ListProductSetsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t\"s\n\x17ListProductSetsResponse\x12?\n\x0cproduct_sets\x18\x01 \x03(\x0b\x32).google.cloud.vision.v1p3beta1.ProductSet\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\"$\n\x14GetProductSetRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"\x8a\x01\n\x17UpdateProductSetRequest\x12>\n\x0bproduct_set\x18\x01 \x01(\x0b\x32).google.cloud.vision.v1p3beta1.ProductSet\x12/\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMask\"\'\n\x17\x44\x65leteProductSetRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"\x91\x01\n\x1b\x43reateReferenceImageRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x46\n\x0freference_image\x18\x02 \x01(\x0b\x32-.google.cloud.vision.v1p3beta1.ReferenceImage\x12\x1a\n\x12reference_image_id\x18\x03 \x01(\t\"S\n\x1aListReferenceImagesRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t\"\x92\x01\n\x1bListReferenceImagesResponse\x12G\n\x10reference_images\x18\x01 \x03(\x0b\x32-.google.cloud.vision.v1p3beta1.ReferenceImage\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x17\n\x0fnext_page_token\x18\x03 \x01(\t\"(\n\x18GetReferenceImageRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"+\n\x1b\x44\x65leteReferenceImageRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\">\n\x1d\x41\x64\x64ProductToProductSetRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0f\n\x07product\x18\x02 \x01(\t\"C\n\"RemoveProductFromProductSetRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0f\n\x07product\x18\x02 \x01(\t\"V\n\x1fListProductsInProductSetRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t\"u\n ListProductsInProductSetResponse\x12\x38\n\x08products\x18\x01 \x03(\x0b\x32&.google.cloud.vision.v1p3beta1.Product\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\"2\n\x1aImportProductSetsGcsSource\x12\x14\n\x0c\x63sv_file_uri\x18\x01 \x01(\t\"y\n\x1cImportProductSetsInputConfig\x12O\n\ngcs_source\x18\x01 \x01(\x0b\x32\x39.google.cloud.vision.v1p3beta1.ImportProductSetsGcsSourceH\x00\x42\x08\n\x06source\"}\n\x18ImportProductSetsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12Q\n\x0cinput_config\x18\x02 \x01(\x0b\x32;.google.cloud.vision.v1p3beta1.ImportProductSetsInputConfig\"\x8a\x01\n\x19ImportProductSetsResponse\x12G\n\x10reference_images\x18\x01 \x03(\x0b\x32-.google.cloud.vision.v1p3beta1.ReferenceImage\x12$\n\x08statuses\x18\x02 \x03(\x0b\x32\x12.google.rpc.Status\"\x9e\x02\n\x16\x42\x61tchOperationMetadata\x12J\n\x05state\x18\x01 \x01(\x0e\x32;.google.cloud.vision.v1p3beta1.BatchOperationMetadata.State\x12/\n\x0bsubmit_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12,\n\x08\x65nd_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\"Y\n\x05State\x12\x15\n\x11STATE_UNSPECIFIED\x10\x00\x12\x0e\n\nPROCESSING\x10\x01\x12\x0e\n\nSUCCESSFUL\x10\x02\x12\n\n\x06\x46\x41ILED\x10\x03\x12\r\n\tCANCELLED\x10\x04\x32\x9f\x1b\n\rProductSearch\x12\xc2\x01\n\x10\x43reateProductSet\x12\x36.google.cloud.vision.v1p3beta1.CreateProductSetRequest\x1a).google.cloud.vision.v1p3beta1.ProductSet\"K\x82\xd3\xe4\x93\x02\x45\"6/v1p3beta1/{parent=projects/*/locations/*}/productSets:\x0bproduct_set\x12\xc0\x01\n\x0fListProductSets\x12\x35.google.cloud.vision.v1p3beta1.ListProductSetsRequest\x1a\x36.google.cloud.vision.v1p3beta1.ListProductSetsResponse\">\x82\xd3\xe4\x93\x02\x38\x12\x36/v1p3beta1/{parent=projects/*/locations/*}/productSets\x12\xaf\x01\n\rGetProductSet\x12\x33.google.cloud.vision.v1p3beta1.GetProductSetRequest\x1a).google.cloud.vision.v1p3beta1.ProductSet\">\x82\xd3\xe4\x93\x02\x38\x12\x36/v1p3beta1/{name=projects/*/locations/*/productSets/*}\x12\xce\x01\n\x10UpdateProductSet\x12\x36.google.cloud.vision.v1p3beta1.UpdateProductSetRequest\x1a).google.cloud.vision.v1p3beta1.ProductSet\"W\x82\xd3\xe4\x93\x02Q2B/v1p3beta1/{product_set.name=projects/*/locations/*/productSets/*}:\x0bproduct_set\x12\xa2\x01\n\x10\x44\x65leteProductSet\x12\x36.google.cloud.vision.v1p3beta1.DeleteProductSetRequest\x1a\x16.google.protobuf.Empty\">\x82\xd3\xe4\x93\x02\x38*6/v1p3beta1/{name=projects/*/locations/*/productSets/*}\x12\xb2\x01\n\rCreateProduct\x12\x33.google.cloud.vision.v1p3beta1.CreateProductRequest\x1a&.google.cloud.vision.v1p3beta1.Product\"D\x82\xd3\xe4\x93\x02>\"3/v1p3beta1/{parent=projects/*/locations/*}/products:\x07product\x12\xb4\x01\n\x0cListProducts\x12\x32.google.cloud.vision.v1p3beta1.ListProductsRequest\x1a\x33.google.cloud.vision.v1p3beta1.ListProductsResponse\";\x82\xd3\xe4\x93\x02\x35\x12\x33/v1p3beta1/{parent=projects/*/locations/*}/products\x12\xa3\x01\n\nGetProduct\x12\x30.google.cloud.vision.v1p3beta1.GetProductRequest\x1a&.google.cloud.vision.v1p3beta1.Product\";\x82\xd3\xe4\x93\x02\x35\x12\x33/v1p3beta1/{name=projects/*/locations/*/products/*}\x12\xba\x01\n\rUpdateProduct\x12\x33.google.cloud.vision.v1p3beta1.UpdateProductRequest\x1a&.google.cloud.vision.v1p3beta1.Product\"L\x82\xd3\xe4\x93\x02\x46\x32;/v1p3beta1/{product.name=projects/*/locations/*/products/*}:\x07product\x12\x99\x01\n\rDeleteProduct\x12\x33.google.cloud.vision.v1p3beta1.DeleteProductRequest\x1a\x16.google.protobuf.Empty\";\x82\xd3\xe4\x93\x02\x35*3/v1p3beta1/{name=projects/*/locations/*/products/*}\x12\xe1\x01\n\x14\x43reateReferenceImage\x12:.google.cloud.vision.v1p3beta1.CreateReferenceImageRequest\x1a-.google.cloud.vision.v1p3beta1.ReferenceImage\"^\x82\xd3\xe4\x93\x02X\"E/v1p3beta1/{parent=projects/*/locations/*/products/*}/referenceImages:\x0freference_image\x12\xb9\x01\n\x14\x44\x65leteReferenceImage\x12:.google.cloud.vision.v1p3beta1.DeleteReferenceImageRequest\x1a\x16.google.protobuf.Empty\"M\x82\xd3\xe4\x93\x02G*E/v1p3beta1/{name=projects/*/locations/*/products/*/referenceImages/*}\x12\xdb\x01\n\x13ListReferenceImages\x12\x39.google.cloud.vision.v1p3beta1.ListReferenceImagesRequest\x1a:.google.cloud.vision.v1p3beta1.ListReferenceImagesResponse\"M\x82\xd3\xe4\x93\x02G\x12\x45/v1p3beta1/{parent=projects/*/locations/*/products/*}/referenceImages\x12\xca\x01\n\x11GetReferenceImage\x12\x37.google.cloud.vision.v1p3beta1.GetReferenceImageRequest\x1a-.google.cloud.vision.v1p3beta1.ReferenceImage\"M\x82\xd3\xe4\x93\x02G\x12\x45/v1p3beta1/{name=projects/*/locations/*/products/*/referenceImages/*}\x12\xbc\x01\n\x16\x41\x64\x64ProductToProductSet\x12<.google.cloud.vision.v1p3beta1.AddProductToProductSetRequest\x1a\x16.google.protobuf.Empty\"L\x82\xd3\xe4\x93\x02\x46\"A/v1p3beta1/{name=projects/*/locations/*/productSets/*}:addProduct:\x01*\x12\xc9\x01\n\x1bRemoveProductFromProductSet\x12\x41.google.cloud.vision.v1p3beta1.RemoveProductFromProductSetRequest\x1a\x16.google.protobuf.Empty\"O\x82\xd3\xe4\x93\x02I\"D/v1p3beta1/{name=projects/*/locations/*/productSets/*}:removeProduct:\x01*\x12\xe4\x01\n\x18ListProductsInProductSet\x12>.google.cloud.vision.v1p3beta1.ListProductsInProductSetRequest\x1a?.google.cloud.vision.v1p3beta1.ListProductsInProductSetResponse\"G\x82\xd3\xe4\x93\x02\x41\x12?/v1p3beta1/{name=projects/*/locations/*/productSets/*}/products\x12\xb5\x01\n\x11ImportProductSets\x12\x37.google.cloud.vision.v1p3beta1.ImportProductSetsRequest\x1a\x1d.google.longrunning.Operation\"H\x82\xd3\xe4\x93\x02\x42\"=/v1p3beta1/{parent=projects/*/locations/*}/productSets:import:\x01*B\x88\x01\n!com.google.cloud.vision.v1p3beta1B\x19ProductSearchServiceProtoP\x01ZCgoogle.golang.org/genproto/googleapis/cloud/vision/v1p3beta1;vision\xf8\x01\x01\x62\x06proto3')
-  ,
-  dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR,google_dot_cloud_dot_vision__v1p3beta1_dot_proto_dot_geometry__pb2.DESCRIPTOR,google_dot_longrunning_dot_operations__pb2.DESCRIPTOR,google_dot_protobuf_dot_empty__pb2.DESCRIPTOR,google_dot_protobuf_dot_field__mask__pb2.DESCRIPTOR,google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,google_dot_rpc_dot_status__pb2.DESCRIPTOR,])
-
+    name="google/cloud/vision_v1p3beta1/proto/product_search_service.proto",
+    package="google.cloud.vision.v1p3beta1",
+    syntax="proto3",
+    serialized_pb=_b(
+        '\n@google/cloud/vision_v1p3beta1/proto/product_search_service.proto\x12\x1dgoogle.cloud.vision.v1p3beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x32google/cloud/vision_v1p3beta1/proto/geometry.proto\x1a#google/longrunning/operations.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x17google/rpc/status.proto"\xcd\x01\n\x07Product\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x02 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x03 \x01(\t\x12\x18\n\x10product_category\x18\x04 \x01(\t\x12G\n\x0eproduct_labels\x18\x05 \x03(\x0b\x32/.google.cloud.vision.v1p3beta1.Product.KeyValue\x1a&\n\x08KeyValue\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t"\x89\x01\n\nProductSet\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x02 \x01(\t\x12.\n\nindex_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\'\n\x0bindex_error\x18\x04 \x01(\x0b\x32\x12.google.rpc.Status"p\n\x0eReferenceImage\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0b\n\x03uri\x18\x02 \x01(\t\x12\x43\n\x0e\x62ounding_polys\x18\x03 \x03(\x0b\x32+.google.cloud.vision.v1p3beta1.BoundingPoly"s\n\x14\x43reateProductRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x37\n\x07product\x18\x02 \x01(\x0b\x32&.google.cloud.vision.v1p3beta1.Product\x12\x12\n\nproduct_id\x18\x03 \x01(\t"L\n\x13ListProductsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t"i\n\x14ListProductsResponse\x12\x38\n\x08products\x18\x01 \x03(\x0b\x32&.google.cloud.vision.v1p3beta1.Product\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"!\n\x11GetProductRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"\x80\x01\n\x14UpdateProductRequest\x12\x37\n\x07product\x18\x01 \x01(\x0b\x32&.google.cloud.vision.v1p3beta1.Product\x12/\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMask"$\n\x14\x44\x65leteProductRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"\x81\x01\n\x17\x43reateProductSetRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12>\n\x0bproduct_set\x18\x02 \x01(\x0b\x32).google.cloud.vision.v1p3beta1.ProductSet\x12\x16\n\x0eproduct_set_id\x18\x03 \x01(\t"O\n\x16ListProductSetsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t"s\n\x17ListProductSetsResponse\x12?\n\x0cproduct_sets\x18\x01 \x03(\x0b\x32).google.cloud.vision.v1p3beta1.ProductSet\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"$\n\x14GetProductSetRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"\x8a\x01\n\x17UpdateProductSetRequest\x12>\n\x0bproduct_set\x18\x01 \x01(\x0b\x32).google.cloud.vision.v1p3beta1.ProductSet\x12/\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMask"\'\n\x17\x44\x65leteProductSetRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"\x91\x01\n\x1b\x43reateReferenceImageRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x46\n\x0freference_image\x18\x02 \x01(\x0b\x32-.google.cloud.vision.v1p3beta1.ReferenceImage\x12\x1a\n\x12reference_image_id\x18\x03 \x01(\t"S\n\x1aListReferenceImagesRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t"\x92\x01\n\x1bListReferenceImagesResponse\x12G\n\x10reference_images\x18\x01 \x03(\x0b\x32-.google.cloud.vision.v1p3beta1.ReferenceImage\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x17\n\x0fnext_page_token\x18\x03 \x01(\t"(\n\x18GetReferenceImageRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"+\n\x1b\x44\x65leteReferenceImageRequest\x12\x0c\n\x04name\x18\x01 \x01(\t">\n\x1d\x41\x64\x64ProductToProductSetRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0f\n\x07product\x18\x02 \x01(\t"C\n"RemoveProductFromProductSetRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0f\n\x07product\x18\x02 \x01(\t"V\n\x1fListProductsInProductSetRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t"u\n ListProductsInProductSetResponse\x12\x38\n\x08products\x18\x01 \x03(\x0b\x32&.google.cloud.vision.v1p3beta1.Product\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"2\n\x1aImportProductSetsGcsSource\x12\x14\n\x0c\x63sv_file_uri\x18\x01 \x01(\t"y\n\x1cImportProductSetsInputConfig\x12O\n\ngcs_source\x18\x01 \x01(\x0b\x32\x39.google.cloud.vision.v1p3beta1.ImportProductSetsGcsSourceH\x00\x42\x08\n\x06source"}\n\x18ImportProductSetsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12Q\n\x0cinput_config\x18\x02 \x01(\x0b\x32;.google.cloud.vision.v1p3beta1.ImportProductSetsInputConfig"\x8a\x01\n\x19ImportProductSetsResponse\x12G\n\x10reference_images\x18\x01 \x03(\x0b\x32-.google.cloud.vision.v1p3beta1.ReferenceImage\x12$\n\x08statuses\x18\x02 \x03(\x0b\x32\x12.google.rpc.Status"\x9e\x02\n\x16\x42\x61tchOperationMetadata\x12J\n\x05state\x18\x01 \x01(\x0e\x32;.google.cloud.vision.v1p3beta1.BatchOperationMetadata.State\x12/\n\x0bsubmit_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12,\n\x08\x65nd_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp"Y\n\x05State\x12\x15\n\x11STATE_UNSPECIFIED\x10\x00\x12\x0e\n\nPROCESSING\x10\x01\x12\x0e\n\nSUCCESSFUL\x10\x02\x12\n\n\x06\x46\x41ILED\x10\x03\x12\r\n\tCANCELLED\x10\x04\x32\x9f\x1b\n\rProductSearch\x12\xc2\x01\n\x10\x43reateProductSet\x12\x36.google.cloud.vision.v1p3beta1.CreateProductSetRequest\x1a).google.cloud.vision.v1p3beta1.ProductSet"K\x82\xd3\xe4\x93\x02\x45"6/v1p3beta1/{parent=projects/*/locations/*}/productSets:\x0bproduct_set\x12\xc0\x01\n\x0fListProductSets\x12\x35.google.cloud.vision.v1p3beta1.ListProductSetsRequest\x1a\x36.google.cloud.vision.v1p3beta1.ListProductSetsResponse">\x82\xd3\xe4\x93\x02\x38\x12\x36/v1p3beta1/{parent=projects/*/locations/*}/productSets\x12\xaf\x01\n\rGetProductSet\x12\x33.google.cloud.vision.v1p3beta1.GetProductSetRequest\x1a).google.cloud.vision.v1p3beta1.ProductSet">\x82\xd3\xe4\x93\x02\x38\x12\x36/v1p3beta1/{name=projects/*/locations/*/productSets/*}\x12\xce\x01\n\x10UpdateProductSet\x12\x36.google.cloud.vision.v1p3beta1.UpdateProductSetRequest\x1a).google.cloud.vision.v1p3beta1.ProductSet"W\x82\xd3\xe4\x93\x02Q2B/v1p3beta1/{product_set.name=projects/*/locations/*/productSets/*}:\x0bproduct_set\x12\xa2\x01\n\x10\x44\x65leteProductSet\x12\x36.google.cloud.vision.v1p3beta1.DeleteProductSetRequest\x1a\x16.google.protobuf.Empty">\x82\xd3\xe4\x93\x02\x38*6/v1p3beta1/{name=projects/*/locations/*/productSets/*}\x12\xb2\x01\n\rCreateProduct\x12\x33.google.cloud.vision.v1p3beta1.CreateProductRequest\x1a&.google.cloud.vision.v1p3beta1.Product"D\x82\xd3\xe4\x93\x02>"3/v1p3beta1/{parent=projects/*/locations/*}/products:\x07product\x12\xb4\x01\n\x0cListProducts\x12\x32.google.cloud.vision.v1p3beta1.ListProductsRequest\x1a\x33.google.cloud.vision.v1p3beta1.ListProductsResponse";\x82\xd3\xe4\x93\x02\x35\x12\x33/v1p3beta1/{parent=projects/*/locations/*}/products\x12\xa3\x01\n\nGetProduct\x12\x30.google.cloud.vision.v1p3beta1.GetProductRequest\x1a&.google.cloud.vision.v1p3beta1.Product";\x82\xd3\xe4\x93\x02\x35\x12\x33/v1p3beta1/{name=projects/*/locations/*/products/*}\x12\xba\x01\n\rUpdateProduct\x12\x33.google.cloud.vision.v1p3beta1.UpdateProductRequest\x1a&.google.cloud.vision.v1p3beta1.Product"L\x82\xd3\xe4\x93\x02\x46\x32;/v1p3beta1/{product.name=projects/*/locations/*/products/*}:\x07product\x12\x99\x01\n\rDeleteProduct\x12\x33.google.cloud.vision.v1p3beta1.DeleteProductRequest\x1a\x16.google.protobuf.Empty";\x82\xd3\xe4\x93\x02\x35*3/v1p3beta1/{name=projects/*/locations/*/products/*}\x12\xe1\x01\n\x14\x43reateReferenceImage\x12:.google.cloud.vision.v1p3beta1.CreateReferenceImageRequest\x1a-.google.cloud.vision.v1p3beta1.ReferenceImage"^\x82\xd3\xe4\x93\x02X"E/v1p3beta1/{parent=projects/*/locations/*/products/*}/referenceImages:\x0freference_image\x12\xb9\x01\n\x14\x44\x65leteReferenceImage\x12:.google.cloud.vision.v1p3beta1.DeleteReferenceImageRequest\x1a\x16.google.protobuf.Empty"M\x82\xd3\xe4\x93\x02G*E/v1p3beta1/{name=projects/*/locations/*/products/*/referenceImages/*}\x12\xdb\x01\n\x13ListReferenceImages\x12\x39.google.cloud.vision.v1p3beta1.ListReferenceImagesRequest\x1a:.google.cloud.vision.v1p3beta1.ListReferenceImagesResponse"M\x82\xd3\xe4\x93\x02G\x12\x45/v1p3beta1/{parent=projects/*/locations/*/products/*}/referenceImages\x12\xca\x01\n\x11GetReferenceImage\x12\x37.google.cloud.vision.v1p3beta1.GetReferenceImageRequest\x1a-.google.cloud.vision.v1p3beta1.ReferenceImage"M\x82\xd3\xe4\x93\x02G\x12\x45/v1p3beta1/{name=projects/*/locations/*/products/*/referenceImages/*}\x12\xbc\x01\n\x16\x41\x64\x64ProductToProductSet\x12<.google.cloud.vision.v1p3beta1.AddProductToProductSetRequest\x1a\x16.google.protobuf.Empty"L\x82\xd3\xe4\x93\x02\x46"A/v1p3beta1/{name=projects/*/locations/*/productSets/*}:addProduct:\x01*\x12\xc9\x01\n\x1bRemoveProductFromProductSet\x12\x41.google.cloud.vision.v1p3beta1.RemoveProductFromProductSetRequest\x1a\x16.google.protobuf.Empty"O\x82\xd3\xe4\x93\x02I"D/v1p3beta1/{name=projects/*/locations/*/productSets/*}:removeProduct:\x01*\x12\xe4\x01\n\x18ListProductsInProductSet\x12>.google.cloud.vision.v1p3beta1.ListProductsInProductSetRequest\x1a?.google.cloud.vision.v1p3beta1.ListProductsInProductSetResponse"G\x82\xd3\xe4\x93\x02\x41\x12?/v1p3beta1/{name=projects/*/locations/*/productSets/*}/products\x12\xb5\x01\n\x11ImportProductSets\x12\x37.google.cloud.vision.v1p3beta1.ImportProductSetsRequest\x1a\x1d.google.longrunning.Operation"H\x82\xd3\xe4\x93\x02\x42"=/v1p3beta1/{parent=projects/*/locations/*}/productSets:import:\x01*B\x88\x01\n!com.google.cloud.vision.v1p3beta1B\x19ProductSearchServiceProtoP\x01ZCgoogle.golang.org/genproto/googleapis/cloud/vision/v1p3beta1;vision\xf8\x01\x01\x62\x06proto3'
+    ),
+    dependencies=[
+        google_dot_api_dot_annotations__pb2.DESCRIPTOR,
+        google_dot_cloud_dot_vision__v1p3beta1_dot_proto_dot_geometry__pb2.DESCRIPTOR,
+        google_dot_longrunning_dot_operations__pb2.DESCRIPTOR,
+        google_dot_protobuf_dot_empty__pb2.DESCRIPTOR,
+        google_dot_protobuf_dot_field__mask__pb2.DESCRIPTOR,
+        google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,
+        google_dot_rpc_dot_status__pb2.DESCRIPTOR,
+    ],
+)
 
 
 _BATCHOPERATIONMETADATA_STATE = _descriptor.EnumDescriptor(
-  name='State',
-  full_name='google.cloud.vision.v1p3beta1.BatchOperationMetadata.State',
-  filename=None,
-  file=DESCRIPTOR,
-  values=[
-    _descriptor.EnumValueDescriptor(
-      name='STATE_UNSPECIFIED', index=0, number=0,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='PROCESSING', index=1, number=1,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='SUCCESSFUL', index=2, number=2,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='FAILED', index=3, number=3,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='CANCELLED', index=4, number=4,
-      options=None,
-      type=None),
-  ],
-  containing_type=None,
-  options=None,
-  serialized_start=3307,
-  serialized_end=3396,
+    name="State",
+    full_name="google.cloud.vision.v1p3beta1.BatchOperationMetadata.State",
+    filename=None,
+    file=DESCRIPTOR,
+    values=[
+        _descriptor.EnumValueDescriptor(
+            name="STATE_UNSPECIFIED", index=0, number=0, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="PROCESSING", index=1, number=1, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="SUCCESSFUL", index=2, number=2, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="FAILED", index=3, number=3, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="CANCELLED", index=4, number=4, options=None, type=None
+        ),
+    ],
+    containing_type=None,
+    options=None,
+    serialized_start=3307,
+    serialized_end=3396,
 )
 _sym_db.RegisterEnumDescriptor(_BATCHOPERATIONMETADATA_STATE)
 
 
 _PRODUCT_KEYVALUE = _descriptor.Descriptor(
-  name='KeyValue',
-  full_name='google.cloud.vision.v1p3beta1.Product.KeyValue',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='key', full_name='google.cloud.vision.v1p3beta1.Product.KeyValue.key', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='value', full_name='google.cloud.vision.v1p3beta1.Product.KeyValue.value', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=507,
-  serialized_end=545,
+    name="KeyValue",
+    full_name="google.cloud.vision.v1p3beta1.Product.KeyValue",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="key",
+            full_name="google.cloud.vision.v1p3beta1.Product.KeyValue.key",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="value",
+            full_name="google.cloud.vision.v1p3beta1.Product.KeyValue.value",
+            index=1,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=507,
+    serialized_end=545,
 )
 
 _PRODUCT = _descriptor.Descriptor(
-  name='Product',
-  full_name='google.cloud.vision.v1p3beta1.Product',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='name', full_name='google.cloud.vision.v1p3beta1.Product.name', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='display_name', full_name='google.cloud.vision.v1p3beta1.Product.display_name', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='description', full_name='google.cloud.vision.v1p3beta1.Product.description', index=2,
-      number=3, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='product_category', full_name='google.cloud.vision.v1p3beta1.Product.product_category', index=3,
-      number=4, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='product_labels', full_name='google.cloud.vision.v1p3beta1.Product.product_labels', index=4,
-      number=5, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[_PRODUCT_KEYVALUE, ],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=340,
-  serialized_end=545,
+    name="Product",
+    full_name="google.cloud.vision.v1p3beta1.Product",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="name",
+            full_name="google.cloud.vision.v1p3beta1.Product.name",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="display_name",
+            full_name="google.cloud.vision.v1p3beta1.Product.display_name",
+            index=1,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="description",
+            full_name="google.cloud.vision.v1p3beta1.Product.description",
+            index=2,
+            number=3,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="product_category",
+            full_name="google.cloud.vision.v1p3beta1.Product.product_category",
+            index=3,
+            number=4,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="product_labels",
+            full_name="google.cloud.vision.v1p3beta1.Product.product_labels",
+            index=4,
+            number=5,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[_PRODUCT_KEYVALUE],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=340,
+    serialized_end=545,
 )
 
 
 _PRODUCTSET = _descriptor.Descriptor(
-  name='ProductSet',
-  full_name='google.cloud.vision.v1p3beta1.ProductSet',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='name', full_name='google.cloud.vision.v1p3beta1.ProductSet.name', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='display_name', full_name='google.cloud.vision.v1p3beta1.ProductSet.display_name', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='index_time', full_name='google.cloud.vision.v1p3beta1.ProductSet.index_time', index=2,
-      number=3, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='index_error', full_name='google.cloud.vision.v1p3beta1.ProductSet.index_error', index=3,
-      number=4, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=548,
-  serialized_end=685,
+    name="ProductSet",
+    full_name="google.cloud.vision.v1p3beta1.ProductSet",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="name",
+            full_name="google.cloud.vision.v1p3beta1.ProductSet.name",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="display_name",
+            full_name="google.cloud.vision.v1p3beta1.ProductSet.display_name",
+            index=1,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="index_time",
+            full_name="google.cloud.vision.v1p3beta1.ProductSet.index_time",
+            index=2,
+            number=3,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="index_error",
+            full_name="google.cloud.vision.v1p3beta1.ProductSet.index_error",
+            index=3,
+            number=4,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=548,
+    serialized_end=685,
 )
 
 
 _REFERENCEIMAGE = _descriptor.Descriptor(
-  name='ReferenceImage',
-  full_name='google.cloud.vision.v1p3beta1.ReferenceImage',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='name', full_name='google.cloud.vision.v1p3beta1.ReferenceImage.name', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='uri', full_name='google.cloud.vision.v1p3beta1.ReferenceImage.uri', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='bounding_polys', full_name='google.cloud.vision.v1p3beta1.ReferenceImage.bounding_polys', index=2,
-      number=3, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=687,
-  serialized_end=799,
+    name="ReferenceImage",
+    full_name="google.cloud.vision.v1p3beta1.ReferenceImage",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="name",
+            full_name="google.cloud.vision.v1p3beta1.ReferenceImage.name",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="uri",
+            full_name="google.cloud.vision.v1p3beta1.ReferenceImage.uri",
+            index=1,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="bounding_polys",
+            full_name="google.cloud.vision.v1p3beta1.ReferenceImage.bounding_polys",
+            index=2,
+            number=3,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=687,
+    serialized_end=799,
 )
 
 
 _CREATEPRODUCTREQUEST = _descriptor.Descriptor(
-  name='CreateProductRequest',
-  full_name='google.cloud.vision.v1p3beta1.CreateProductRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='parent', full_name='google.cloud.vision.v1p3beta1.CreateProductRequest.parent', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='product', full_name='google.cloud.vision.v1p3beta1.CreateProductRequest.product', index=1,
-      number=2, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='product_id', full_name='google.cloud.vision.v1p3beta1.CreateProductRequest.product_id', index=2,
-      number=3, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=801,
-  serialized_end=916,
+    name="CreateProductRequest",
+    full_name="google.cloud.vision.v1p3beta1.CreateProductRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="parent",
+            full_name="google.cloud.vision.v1p3beta1.CreateProductRequest.parent",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="product",
+            full_name="google.cloud.vision.v1p3beta1.CreateProductRequest.product",
+            index=1,
+            number=2,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="product_id",
+            full_name="google.cloud.vision.v1p3beta1.CreateProductRequest.product_id",
+            index=2,
+            number=3,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=801,
+    serialized_end=916,
 )
 
 
 _LISTPRODUCTSREQUEST = _descriptor.Descriptor(
-  name='ListProductsRequest',
-  full_name='google.cloud.vision.v1p3beta1.ListProductsRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='parent', full_name='google.cloud.vision.v1p3beta1.ListProductsRequest.parent', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='page_size', full_name='google.cloud.vision.v1p3beta1.ListProductsRequest.page_size', index=1,
-      number=2, type=5, cpp_type=1, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='page_token', full_name='google.cloud.vision.v1p3beta1.ListProductsRequest.page_token', index=2,
-      number=3, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=918,
-  serialized_end=994,
+    name="ListProductsRequest",
+    full_name="google.cloud.vision.v1p3beta1.ListProductsRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="parent",
+            full_name="google.cloud.vision.v1p3beta1.ListProductsRequest.parent",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="page_size",
+            full_name="google.cloud.vision.v1p3beta1.ListProductsRequest.page_size",
+            index=1,
+            number=2,
+            type=5,
+            cpp_type=1,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="page_token",
+            full_name="google.cloud.vision.v1p3beta1.ListProductsRequest.page_token",
+            index=2,
+            number=3,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=918,
+    serialized_end=994,
 )
 
 
 _LISTPRODUCTSRESPONSE = _descriptor.Descriptor(
-  name='ListProductsResponse',
-  full_name='google.cloud.vision.v1p3beta1.ListProductsResponse',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='products', full_name='google.cloud.vision.v1p3beta1.ListProductsResponse.products', index=0,
-      number=1, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='next_page_token', full_name='google.cloud.vision.v1p3beta1.ListProductsResponse.next_page_token', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=996,
-  serialized_end=1101,
+    name="ListProductsResponse",
+    full_name="google.cloud.vision.v1p3beta1.ListProductsResponse",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="products",
+            full_name="google.cloud.vision.v1p3beta1.ListProductsResponse.products",
+            index=0,
+            number=1,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="next_page_token",
+            full_name="google.cloud.vision.v1p3beta1.ListProductsResponse.next_page_token",
+            index=1,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=996,
+    serialized_end=1101,
 )
 
 
 _GETPRODUCTREQUEST = _descriptor.Descriptor(
-  name='GetProductRequest',
-  full_name='google.cloud.vision.v1p3beta1.GetProductRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='name', full_name='google.cloud.vision.v1p3beta1.GetProductRequest.name', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=1103,
-  serialized_end=1136,
+    name="GetProductRequest",
+    full_name="google.cloud.vision.v1p3beta1.GetProductRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="name",
+            full_name="google.cloud.vision.v1p3beta1.GetProductRequest.name",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        )
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=1103,
+    serialized_end=1136,
 )
 
 
 _UPDATEPRODUCTREQUEST = _descriptor.Descriptor(
-  name='UpdateProductRequest',
-  full_name='google.cloud.vision.v1p3beta1.UpdateProductRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='product', full_name='google.cloud.vision.v1p3beta1.UpdateProductRequest.product', index=0,
-      number=1, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='update_mask', full_name='google.cloud.vision.v1p3beta1.UpdateProductRequest.update_mask', index=1,
-      number=2, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=1139,
-  serialized_end=1267,
+    name="UpdateProductRequest",
+    full_name="google.cloud.vision.v1p3beta1.UpdateProductRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="product",
+            full_name="google.cloud.vision.v1p3beta1.UpdateProductRequest.product",
+            index=0,
+            number=1,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="update_mask",
+            full_name="google.cloud.vision.v1p3beta1.UpdateProductRequest.update_mask",
+            index=1,
+            number=2,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=1139,
+    serialized_end=1267,
 )
 
 
 _DELETEPRODUCTREQUEST = _descriptor.Descriptor(
-  name='DeleteProductRequest',
-  full_name='google.cloud.vision.v1p3beta1.DeleteProductRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='name', full_name='google.cloud.vision.v1p3beta1.DeleteProductRequest.name', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=1269,
-  serialized_end=1305,
+    name="DeleteProductRequest",
+    full_name="google.cloud.vision.v1p3beta1.DeleteProductRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="name",
+            full_name="google.cloud.vision.v1p3beta1.DeleteProductRequest.name",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        )
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=1269,
+    serialized_end=1305,
 )
 
 
 _CREATEPRODUCTSETREQUEST = _descriptor.Descriptor(
-  name='CreateProductSetRequest',
-  full_name='google.cloud.vision.v1p3beta1.CreateProductSetRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='parent', full_name='google.cloud.vision.v1p3beta1.CreateProductSetRequest.parent', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='product_set', full_name='google.cloud.vision.v1p3beta1.CreateProductSetRequest.product_set', index=1,
-      number=2, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='product_set_id', full_name='google.cloud.vision.v1p3beta1.CreateProductSetRequest.product_set_id', index=2,
-      number=3, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=1308,
-  serialized_end=1437,
+    name="CreateProductSetRequest",
+    full_name="google.cloud.vision.v1p3beta1.CreateProductSetRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="parent",
+            full_name="google.cloud.vision.v1p3beta1.CreateProductSetRequest.parent",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="product_set",
+            full_name="google.cloud.vision.v1p3beta1.CreateProductSetRequest.product_set",
+            index=1,
+            number=2,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="product_set_id",
+            full_name="google.cloud.vision.v1p3beta1.CreateProductSetRequest.product_set_id",
+            index=2,
+            number=3,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=1308,
+    serialized_end=1437,
 )
 
 
 _LISTPRODUCTSETSREQUEST = _descriptor.Descriptor(
-  name='ListProductSetsRequest',
-  full_name='google.cloud.vision.v1p3beta1.ListProductSetsRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='parent', full_name='google.cloud.vision.v1p3beta1.ListProductSetsRequest.parent', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='page_size', full_name='google.cloud.vision.v1p3beta1.ListProductSetsRequest.page_size', index=1,
-      number=2, type=5, cpp_type=1, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='page_token', full_name='google.cloud.vision.v1p3beta1.ListProductSetsRequest.page_token', index=2,
-      number=3, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=1439,
-  serialized_end=1518,
+    name="ListProductSetsRequest",
+    full_name="google.cloud.vision.v1p3beta1.ListProductSetsRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="parent",
+            full_name="google.cloud.vision.v1p3beta1.ListProductSetsRequest.parent",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="page_size",
+            full_name="google.cloud.vision.v1p3beta1.ListProductSetsRequest.page_size",
+            index=1,
+            number=2,
+            type=5,
+            cpp_type=1,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="page_token",
+            full_name="google.cloud.vision.v1p3beta1.ListProductSetsRequest.page_token",
+            index=2,
+            number=3,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=1439,
+    serialized_end=1518,
 )
 
 
 _LISTPRODUCTSETSRESPONSE = _descriptor.Descriptor(
-  name='ListProductSetsResponse',
-  full_name='google.cloud.vision.v1p3beta1.ListProductSetsResponse',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='product_sets', full_name='google.cloud.vision.v1p3beta1.ListProductSetsResponse.product_sets', index=0,
-      number=1, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='next_page_token', full_name='google.cloud.vision.v1p3beta1.ListProductSetsResponse.next_page_token', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=1520,
-  serialized_end=1635,
+    name="ListProductSetsResponse",
+    full_name="google.cloud.vision.v1p3beta1.ListProductSetsResponse",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="product_sets",
+            full_name="google.cloud.vision.v1p3beta1.ListProductSetsResponse.product_sets",
+            index=0,
+            number=1,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="next_page_token",
+            full_name="google.cloud.vision.v1p3beta1.ListProductSetsResponse.next_page_token",
+            index=1,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=1520,
+    serialized_end=1635,
 )
 
 
 _GETPRODUCTSETREQUEST = _descriptor.Descriptor(
-  name='GetProductSetRequest',
-  full_name='google.cloud.vision.v1p3beta1.GetProductSetRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='name', full_name='google.cloud.vision.v1p3beta1.GetProductSetRequest.name', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=1637,
-  serialized_end=1673,
+    name="GetProductSetRequest",
+    full_name="google.cloud.vision.v1p3beta1.GetProductSetRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="name",
+            full_name="google.cloud.vision.v1p3beta1.GetProductSetRequest.name",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        )
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=1637,
+    serialized_end=1673,
 )
 
 
 _UPDATEPRODUCTSETREQUEST = _descriptor.Descriptor(
-  name='UpdateProductSetRequest',
-  full_name='google.cloud.vision.v1p3beta1.UpdateProductSetRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='product_set', full_name='google.cloud.vision.v1p3beta1.UpdateProductSetRequest.product_set', index=0,
-      number=1, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='update_mask', full_name='google.cloud.vision.v1p3beta1.UpdateProductSetRequest.update_mask', index=1,
-      number=2, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=1676,
-  serialized_end=1814,
+    name="UpdateProductSetRequest",
+    full_name="google.cloud.vision.v1p3beta1.UpdateProductSetRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="product_set",
+            full_name="google.cloud.vision.v1p3beta1.UpdateProductSetRequest.product_set",
+            index=0,
+            number=1,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="update_mask",
+            full_name="google.cloud.vision.v1p3beta1.UpdateProductSetRequest.update_mask",
+            index=1,
+            number=2,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=1676,
+    serialized_end=1814,
 )
 
 
 _DELETEPRODUCTSETREQUEST = _descriptor.Descriptor(
-  name='DeleteProductSetRequest',
-  full_name='google.cloud.vision.v1p3beta1.DeleteProductSetRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='name', full_name='google.cloud.vision.v1p3beta1.DeleteProductSetRequest.name', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=1816,
-  serialized_end=1855,
+    name="DeleteProductSetRequest",
+    full_name="google.cloud.vision.v1p3beta1.DeleteProductSetRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="name",
+            full_name="google.cloud.vision.v1p3beta1.DeleteProductSetRequest.name",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        )
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=1816,
+    serialized_end=1855,
 )
 
 
 _CREATEREFERENCEIMAGEREQUEST = _descriptor.Descriptor(
-  name='CreateReferenceImageRequest',
-  full_name='google.cloud.vision.v1p3beta1.CreateReferenceImageRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='parent', full_name='google.cloud.vision.v1p3beta1.CreateReferenceImageRequest.parent', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='reference_image', full_name='google.cloud.vision.v1p3beta1.CreateReferenceImageRequest.reference_image', index=1,
-      number=2, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='reference_image_id', full_name='google.cloud.vision.v1p3beta1.CreateReferenceImageRequest.reference_image_id', index=2,
-      number=3, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=1858,
-  serialized_end=2003,
+    name="CreateReferenceImageRequest",
+    full_name="google.cloud.vision.v1p3beta1.CreateReferenceImageRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="parent",
+            full_name="google.cloud.vision.v1p3beta1.CreateReferenceImageRequest.parent",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="reference_image",
+            full_name="google.cloud.vision.v1p3beta1.CreateReferenceImageRequest.reference_image",
+            index=1,
+            number=2,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="reference_image_id",
+            full_name="google.cloud.vision.v1p3beta1.CreateReferenceImageRequest.reference_image_id",
+            index=2,
+            number=3,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=1858,
+    serialized_end=2003,
 )
 
 
 _LISTREFERENCEIMAGESREQUEST = _descriptor.Descriptor(
-  name='ListReferenceImagesRequest',
-  full_name='google.cloud.vision.v1p3beta1.ListReferenceImagesRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='parent', full_name='google.cloud.vision.v1p3beta1.ListReferenceImagesRequest.parent', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='page_size', full_name='google.cloud.vision.v1p3beta1.ListReferenceImagesRequest.page_size', index=1,
-      number=2, type=5, cpp_type=1, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='page_token', full_name='google.cloud.vision.v1p3beta1.ListReferenceImagesRequest.page_token', index=2,
-      number=3, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=2005,
-  serialized_end=2088,
+    name="ListReferenceImagesRequest",
+    full_name="google.cloud.vision.v1p3beta1.ListReferenceImagesRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="parent",
+            full_name="google.cloud.vision.v1p3beta1.ListReferenceImagesRequest.parent",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="page_size",
+            full_name="google.cloud.vision.v1p3beta1.ListReferenceImagesRequest.page_size",
+            index=1,
+            number=2,
+            type=5,
+            cpp_type=1,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="page_token",
+            full_name="google.cloud.vision.v1p3beta1.ListReferenceImagesRequest.page_token",
+            index=2,
+            number=3,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=2005,
+    serialized_end=2088,
 )
 
 
 _LISTREFERENCEIMAGESRESPONSE = _descriptor.Descriptor(
-  name='ListReferenceImagesResponse',
-  full_name='google.cloud.vision.v1p3beta1.ListReferenceImagesResponse',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='reference_images', full_name='google.cloud.vision.v1p3beta1.ListReferenceImagesResponse.reference_images', index=0,
-      number=1, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='page_size', full_name='google.cloud.vision.v1p3beta1.ListReferenceImagesResponse.page_size', index=1,
-      number=2, type=5, cpp_type=1, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='next_page_token', full_name='google.cloud.vision.v1p3beta1.ListReferenceImagesResponse.next_page_token', index=2,
-      number=3, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=2091,
-  serialized_end=2237,
+    name="ListReferenceImagesResponse",
+    full_name="google.cloud.vision.v1p3beta1.ListReferenceImagesResponse",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="reference_images",
+            full_name="google.cloud.vision.v1p3beta1.ListReferenceImagesResponse.reference_images",
+            index=0,
+            number=1,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="page_size",
+            full_name="google.cloud.vision.v1p3beta1.ListReferenceImagesResponse.page_size",
+            index=1,
+            number=2,
+            type=5,
+            cpp_type=1,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="next_page_token",
+            full_name="google.cloud.vision.v1p3beta1.ListReferenceImagesResponse.next_page_token",
+            index=2,
+            number=3,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=2091,
+    serialized_end=2237,
 )
 
 
 _GETREFERENCEIMAGEREQUEST = _descriptor.Descriptor(
-  name='GetReferenceImageRequest',
-  full_name='google.cloud.vision.v1p3beta1.GetReferenceImageRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='name', full_name='google.cloud.vision.v1p3beta1.GetReferenceImageRequest.name', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=2239,
-  serialized_end=2279,
+    name="GetReferenceImageRequest",
+    full_name="google.cloud.vision.v1p3beta1.GetReferenceImageRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="name",
+            full_name="google.cloud.vision.v1p3beta1.GetReferenceImageRequest.name",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        )
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=2239,
+    serialized_end=2279,
 )
 
 
 _DELETEREFERENCEIMAGEREQUEST = _descriptor.Descriptor(
-  name='DeleteReferenceImageRequest',
-  full_name='google.cloud.vision.v1p3beta1.DeleteReferenceImageRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='name', full_name='google.cloud.vision.v1p3beta1.DeleteReferenceImageRequest.name', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=2281,
-  serialized_end=2324,
+    name="DeleteReferenceImageRequest",
+    full_name="google.cloud.vision.v1p3beta1.DeleteReferenceImageRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="name",
+            full_name="google.cloud.vision.v1p3beta1.DeleteReferenceImageRequest.name",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        )
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=2281,
+    serialized_end=2324,
 )
 
 
 _ADDPRODUCTTOPRODUCTSETREQUEST = _descriptor.Descriptor(
-  name='AddProductToProductSetRequest',
-  full_name='google.cloud.vision.v1p3beta1.AddProductToProductSetRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='name', full_name='google.cloud.vision.v1p3beta1.AddProductToProductSetRequest.name', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='product', full_name='google.cloud.vision.v1p3beta1.AddProductToProductSetRequest.product', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=2326,
-  serialized_end=2388,
+    name="AddProductToProductSetRequest",
+    full_name="google.cloud.vision.v1p3beta1.AddProductToProductSetRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="name",
+            full_name="google.cloud.vision.v1p3beta1.AddProductToProductSetRequest.name",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="product",
+            full_name="google.cloud.vision.v1p3beta1.AddProductToProductSetRequest.product",
+            index=1,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=2326,
+    serialized_end=2388,
 )
 
 
 _REMOVEPRODUCTFROMPRODUCTSETREQUEST = _descriptor.Descriptor(
-  name='RemoveProductFromProductSetRequest',
-  full_name='google.cloud.vision.v1p3beta1.RemoveProductFromProductSetRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='name', full_name='google.cloud.vision.v1p3beta1.RemoveProductFromProductSetRequest.name', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='product', full_name='google.cloud.vision.v1p3beta1.RemoveProductFromProductSetRequest.product', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=2390,
-  serialized_end=2457,
+    name="RemoveProductFromProductSetRequest",
+    full_name="google.cloud.vision.v1p3beta1.RemoveProductFromProductSetRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="name",
+            full_name="google.cloud.vision.v1p3beta1.RemoveProductFromProductSetRequest.name",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="product",
+            full_name="google.cloud.vision.v1p3beta1.RemoveProductFromProductSetRequest.product",
+            index=1,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=2390,
+    serialized_end=2457,
 )
 
 
 _LISTPRODUCTSINPRODUCTSETREQUEST = _descriptor.Descriptor(
-  name='ListProductsInProductSetRequest',
-  full_name='google.cloud.vision.v1p3beta1.ListProductsInProductSetRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='name', full_name='google.cloud.vision.v1p3beta1.ListProductsInProductSetRequest.name', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='page_size', full_name='google.cloud.vision.v1p3beta1.ListProductsInProductSetRequest.page_size', index=1,
-      number=2, type=5, cpp_type=1, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='page_token', full_name='google.cloud.vision.v1p3beta1.ListProductsInProductSetRequest.page_token', index=2,
-      number=3, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=2459,
-  serialized_end=2545,
+    name="ListProductsInProductSetRequest",
+    full_name="google.cloud.vision.v1p3beta1.ListProductsInProductSetRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="name",
+            full_name="google.cloud.vision.v1p3beta1.ListProductsInProductSetRequest.name",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="page_size",
+            full_name="google.cloud.vision.v1p3beta1.ListProductsInProductSetRequest.page_size",
+            index=1,
+            number=2,
+            type=5,
+            cpp_type=1,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="page_token",
+            full_name="google.cloud.vision.v1p3beta1.ListProductsInProductSetRequest.page_token",
+            index=2,
+            number=3,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=2459,
+    serialized_end=2545,
 )
 
 
 _LISTPRODUCTSINPRODUCTSETRESPONSE = _descriptor.Descriptor(
-  name='ListProductsInProductSetResponse',
-  full_name='google.cloud.vision.v1p3beta1.ListProductsInProductSetResponse',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='products', full_name='google.cloud.vision.v1p3beta1.ListProductsInProductSetResponse.products', index=0,
-      number=1, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='next_page_token', full_name='google.cloud.vision.v1p3beta1.ListProductsInProductSetResponse.next_page_token', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=2547,
-  serialized_end=2664,
+    name="ListProductsInProductSetResponse",
+    full_name="google.cloud.vision.v1p3beta1.ListProductsInProductSetResponse",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="products",
+            full_name="google.cloud.vision.v1p3beta1.ListProductsInProductSetResponse.products",
+            index=0,
+            number=1,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="next_page_token",
+            full_name="google.cloud.vision.v1p3beta1.ListProductsInProductSetResponse.next_page_token",
+            index=1,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=2547,
+    serialized_end=2664,
 )
 
 
 _IMPORTPRODUCTSETSGCSSOURCE = _descriptor.Descriptor(
-  name='ImportProductSetsGcsSource',
-  full_name='google.cloud.vision.v1p3beta1.ImportProductSetsGcsSource',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='csv_file_uri', full_name='google.cloud.vision.v1p3beta1.ImportProductSetsGcsSource.csv_file_uri', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=2666,
-  serialized_end=2716,
+    name="ImportProductSetsGcsSource",
+    full_name="google.cloud.vision.v1p3beta1.ImportProductSetsGcsSource",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="csv_file_uri",
+            full_name="google.cloud.vision.v1p3beta1.ImportProductSetsGcsSource.csv_file_uri",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        )
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=2666,
+    serialized_end=2716,
 )
 
 
 _IMPORTPRODUCTSETSINPUTCONFIG = _descriptor.Descriptor(
-  name='ImportProductSetsInputConfig',
-  full_name='google.cloud.vision.v1p3beta1.ImportProductSetsInputConfig',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='gcs_source', full_name='google.cloud.vision.v1p3beta1.ImportProductSetsInputConfig.gcs_source', index=0,
-      number=1, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-    _descriptor.OneofDescriptor(
-      name='source', full_name='google.cloud.vision.v1p3beta1.ImportProductSetsInputConfig.source',
-      index=0, containing_type=None, fields=[]),
-  ],
-  serialized_start=2718,
-  serialized_end=2839,
+    name="ImportProductSetsInputConfig",
+    full_name="google.cloud.vision.v1p3beta1.ImportProductSetsInputConfig",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="gcs_source",
+            full_name="google.cloud.vision.v1p3beta1.ImportProductSetsInputConfig.gcs_source",
+            index=0,
+            number=1,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        )
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[
+        _descriptor.OneofDescriptor(
+            name="source",
+            full_name="google.cloud.vision.v1p3beta1.ImportProductSetsInputConfig.source",
+            index=0,
+            containing_type=None,
+            fields=[],
+        )
+    ],
+    serialized_start=2718,
+    serialized_end=2839,
 )
 
 
 _IMPORTPRODUCTSETSREQUEST = _descriptor.Descriptor(
-  name='ImportProductSetsRequest',
-  full_name='google.cloud.vision.v1p3beta1.ImportProductSetsRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='parent', full_name='google.cloud.vision.v1p3beta1.ImportProductSetsRequest.parent', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='input_config', full_name='google.cloud.vision.v1p3beta1.ImportProductSetsRequest.input_config', index=1,
-      number=2, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=2841,
-  serialized_end=2966,
+    name="ImportProductSetsRequest",
+    full_name="google.cloud.vision.v1p3beta1.ImportProductSetsRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="parent",
+            full_name="google.cloud.vision.v1p3beta1.ImportProductSetsRequest.parent",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="input_config",
+            full_name="google.cloud.vision.v1p3beta1.ImportProductSetsRequest.input_config",
+            index=1,
+            number=2,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=2841,
+    serialized_end=2966,
 )
 
 
 _IMPORTPRODUCTSETSRESPONSE = _descriptor.Descriptor(
-  name='ImportProductSetsResponse',
-  full_name='google.cloud.vision.v1p3beta1.ImportProductSetsResponse',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='reference_images', full_name='google.cloud.vision.v1p3beta1.ImportProductSetsResponse.reference_images', index=0,
-      number=1, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='statuses', full_name='google.cloud.vision.v1p3beta1.ImportProductSetsResponse.statuses', index=1,
-      number=2, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=2969,
-  serialized_end=3107,
+    name="ImportProductSetsResponse",
+    full_name="google.cloud.vision.v1p3beta1.ImportProductSetsResponse",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="reference_images",
+            full_name="google.cloud.vision.v1p3beta1.ImportProductSetsResponse.reference_images",
+            index=0,
+            number=1,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="statuses",
+            full_name="google.cloud.vision.v1p3beta1.ImportProductSetsResponse.statuses",
+            index=1,
+            number=2,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=2969,
+    serialized_end=3107,
 )
 
 
 _BATCHOPERATIONMETADATA = _descriptor.Descriptor(
-  name='BatchOperationMetadata',
-  full_name='google.cloud.vision.v1p3beta1.BatchOperationMetadata',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='state', full_name='google.cloud.vision.v1p3beta1.BatchOperationMetadata.state', index=0,
-      number=1, type=14, cpp_type=8, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='submit_time', full_name='google.cloud.vision.v1p3beta1.BatchOperationMetadata.submit_time', index=1,
-      number=2, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='end_time', full_name='google.cloud.vision.v1p3beta1.BatchOperationMetadata.end_time', index=2,
-      number=3, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-    _BATCHOPERATIONMETADATA_STATE,
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=3110,
-  serialized_end=3396,
+    name="BatchOperationMetadata",
+    full_name="google.cloud.vision.v1p3beta1.BatchOperationMetadata",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="state",
+            full_name="google.cloud.vision.v1p3beta1.BatchOperationMetadata.state",
+            index=0,
+            number=1,
+            type=14,
+            cpp_type=8,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="submit_time",
+            full_name="google.cloud.vision.v1p3beta1.BatchOperationMetadata.submit_time",
+            index=1,
+            number=2,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="end_time",
+            full_name="google.cloud.vision.v1p3beta1.BatchOperationMetadata.end_time",
+            index=2,
+            number=3,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[_BATCHOPERATIONMETADATA_STATE],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=3110,
+    serialized_end=3396,
 )
 
 _PRODUCT_KEYVALUE.containing_type = _PRODUCT
-_PRODUCT.fields_by_name['product_labels'].message_type = _PRODUCT_KEYVALUE
-_PRODUCTSET.fields_by_name['index_time'].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
-_PRODUCTSET.fields_by_name['index_error'].message_type = google_dot_rpc_dot_status__pb2._STATUS
-_REFERENCEIMAGE.fields_by_name['bounding_polys'].message_type = google_dot_cloud_dot_vision__v1p3beta1_dot_proto_dot_geometry__pb2._BOUNDINGPOLY
-_CREATEPRODUCTREQUEST.fields_by_name['product'].message_type = _PRODUCT
-_LISTPRODUCTSRESPONSE.fields_by_name['products'].message_type = _PRODUCT
-_UPDATEPRODUCTREQUEST.fields_by_name['product'].message_type = _PRODUCT
-_UPDATEPRODUCTREQUEST.fields_by_name['update_mask'].message_type = google_dot_protobuf_dot_field__mask__pb2._FIELDMASK
-_CREATEPRODUCTSETREQUEST.fields_by_name['product_set'].message_type = _PRODUCTSET
-_LISTPRODUCTSETSRESPONSE.fields_by_name['product_sets'].message_type = _PRODUCTSET
-_UPDATEPRODUCTSETREQUEST.fields_by_name['product_set'].message_type = _PRODUCTSET
-_UPDATEPRODUCTSETREQUEST.fields_by_name['update_mask'].message_type = google_dot_protobuf_dot_field__mask__pb2._FIELDMASK
-_CREATEREFERENCEIMAGEREQUEST.fields_by_name['reference_image'].message_type = _REFERENCEIMAGE
-_LISTREFERENCEIMAGESRESPONSE.fields_by_name['reference_images'].message_type = _REFERENCEIMAGE
-_LISTPRODUCTSINPRODUCTSETRESPONSE.fields_by_name['products'].message_type = _PRODUCT
-_IMPORTPRODUCTSETSINPUTCONFIG.fields_by_name['gcs_source'].message_type = _IMPORTPRODUCTSETSGCSSOURCE
-_IMPORTPRODUCTSETSINPUTCONFIG.oneofs_by_name['source'].fields.append(
-  _IMPORTPRODUCTSETSINPUTCONFIG.fields_by_name['gcs_source'])
-_IMPORTPRODUCTSETSINPUTCONFIG.fields_by_name['gcs_source'].containing_oneof = _IMPORTPRODUCTSETSINPUTCONFIG.oneofs_by_name['source']
-_IMPORTPRODUCTSETSREQUEST.fields_by_name['input_config'].message_type = _IMPORTPRODUCTSETSINPUTCONFIG
-_IMPORTPRODUCTSETSRESPONSE.fields_by_name['reference_images'].message_type = _REFERENCEIMAGE
-_IMPORTPRODUCTSETSRESPONSE.fields_by_name['statuses'].message_type = google_dot_rpc_dot_status__pb2._STATUS
-_BATCHOPERATIONMETADATA.fields_by_name['state'].enum_type = _BATCHOPERATIONMETADATA_STATE
-_BATCHOPERATIONMETADATA.fields_by_name['submit_time'].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
-_BATCHOPERATIONMETADATA.fields_by_name['end_time'].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
+_PRODUCT.fields_by_name["product_labels"].message_type = _PRODUCT_KEYVALUE
+_PRODUCTSET.fields_by_name[
+    "index_time"
+].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
+_PRODUCTSET.fields_by_name[
+    "index_error"
+].message_type = google_dot_rpc_dot_status__pb2._STATUS
+_REFERENCEIMAGE.fields_by_name[
+    "bounding_polys"
+].message_type = (
+    google_dot_cloud_dot_vision__v1p3beta1_dot_proto_dot_geometry__pb2._BOUNDINGPOLY
+)
+_CREATEPRODUCTREQUEST.fields_by_name["product"].message_type = _PRODUCT
+_LISTPRODUCTSRESPONSE.fields_by_name["products"].message_type = _PRODUCT
+_UPDATEPRODUCTREQUEST.fields_by_name["product"].message_type = _PRODUCT
+_UPDATEPRODUCTREQUEST.fields_by_name[
+    "update_mask"
+].message_type = google_dot_protobuf_dot_field__mask__pb2._FIELDMASK
+_CREATEPRODUCTSETREQUEST.fields_by_name["product_set"].message_type = _PRODUCTSET
+_LISTPRODUCTSETSRESPONSE.fields_by_name["product_sets"].message_type = _PRODUCTSET
+_UPDATEPRODUCTSETREQUEST.fields_by_name["product_set"].message_type = _PRODUCTSET
+_UPDATEPRODUCTSETREQUEST.fields_by_name[
+    "update_mask"
+].message_type = google_dot_protobuf_dot_field__mask__pb2._FIELDMASK
+_CREATEREFERENCEIMAGEREQUEST.fields_by_name[
+    "reference_image"
+].message_type = _REFERENCEIMAGE
+_LISTREFERENCEIMAGESRESPONSE.fields_by_name[
+    "reference_images"
+].message_type = _REFERENCEIMAGE
+_LISTPRODUCTSINPRODUCTSETRESPONSE.fields_by_name["products"].message_type = _PRODUCT
+_IMPORTPRODUCTSETSINPUTCONFIG.fields_by_name[
+    "gcs_source"
+].message_type = _IMPORTPRODUCTSETSGCSSOURCE
+_IMPORTPRODUCTSETSINPUTCONFIG.oneofs_by_name["source"].fields.append(
+    _IMPORTPRODUCTSETSINPUTCONFIG.fields_by_name["gcs_source"]
+)
+_IMPORTPRODUCTSETSINPUTCONFIG.fields_by_name[
+    "gcs_source"
+].containing_oneof = _IMPORTPRODUCTSETSINPUTCONFIG.oneofs_by_name["source"]
+_IMPORTPRODUCTSETSREQUEST.fields_by_name[
+    "input_config"
+].message_type = _IMPORTPRODUCTSETSINPUTCONFIG
+_IMPORTPRODUCTSETSRESPONSE.fields_by_name[
+    "reference_images"
+].message_type = _REFERENCEIMAGE
+_IMPORTPRODUCTSETSRESPONSE.fields_by_name[
+    "statuses"
+].message_type = google_dot_rpc_dot_status__pb2._STATUS
+_BATCHOPERATIONMETADATA.fields_by_name[
+    "state"
+].enum_type = _BATCHOPERATIONMETADATA_STATE
+_BATCHOPERATIONMETADATA.fields_by_name[
+    "submit_time"
+].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
+_BATCHOPERATIONMETADATA.fields_by_name[
+    "end_time"
+].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
 _BATCHOPERATIONMETADATA_STATE.containing_type = _BATCHOPERATIONMETADATA
-DESCRIPTOR.message_types_by_name['Product'] = _PRODUCT
-DESCRIPTOR.message_types_by_name['ProductSet'] = _PRODUCTSET
-DESCRIPTOR.message_types_by_name['ReferenceImage'] = _REFERENCEIMAGE
-DESCRIPTOR.message_types_by_name['CreateProductRequest'] = _CREATEPRODUCTREQUEST
-DESCRIPTOR.message_types_by_name['ListProductsRequest'] = _LISTPRODUCTSREQUEST
-DESCRIPTOR.message_types_by_name['ListProductsResponse'] = _LISTPRODUCTSRESPONSE
-DESCRIPTOR.message_types_by_name['GetProductRequest'] = _GETPRODUCTREQUEST
-DESCRIPTOR.message_types_by_name['UpdateProductRequest'] = _UPDATEPRODUCTREQUEST
-DESCRIPTOR.message_types_by_name['DeleteProductRequest'] = _DELETEPRODUCTREQUEST
-DESCRIPTOR.message_types_by_name['CreateProductSetRequest'] = _CREATEPRODUCTSETREQUEST
-DESCRIPTOR.message_types_by_name['ListProductSetsRequest'] = _LISTPRODUCTSETSREQUEST
-DESCRIPTOR.message_types_by_name['ListProductSetsResponse'] = _LISTPRODUCTSETSRESPONSE
-DESCRIPTOR.message_types_by_name['GetProductSetRequest'] = _GETPRODUCTSETREQUEST
-DESCRIPTOR.message_types_by_name['UpdateProductSetRequest'] = _UPDATEPRODUCTSETREQUEST
-DESCRIPTOR.message_types_by_name['DeleteProductSetRequest'] = _DELETEPRODUCTSETREQUEST
-DESCRIPTOR.message_types_by_name['CreateReferenceImageRequest'] = _CREATEREFERENCEIMAGEREQUEST
-DESCRIPTOR.message_types_by_name['ListReferenceImagesRequest'] = _LISTREFERENCEIMAGESREQUEST
-DESCRIPTOR.message_types_by_name['ListReferenceImagesResponse'] = _LISTREFERENCEIMAGESRESPONSE
-DESCRIPTOR.message_types_by_name['GetReferenceImageRequest'] = _GETREFERENCEIMAGEREQUEST
-DESCRIPTOR.message_types_by_name['DeleteReferenceImageRequest'] = _DELETEREFERENCEIMAGEREQUEST
-DESCRIPTOR.message_types_by_name['AddProductToProductSetRequest'] = _ADDPRODUCTTOPRODUCTSETREQUEST
-DESCRIPTOR.message_types_by_name['RemoveProductFromProductSetRequest'] = _REMOVEPRODUCTFROMPRODUCTSETREQUEST
-DESCRIPTOR.message_types_by_name['ListProductsInProductSetRequest'] = _LISTPRODUCTSINPRODUCTSETREQUEST
-DESCRIPTOR.message_types_by_name['ListProductsInProductSetResponse'] = _LISTPRODUCTSINPRODUCTSETRESPONSE
-DESCRIPTOR.message_types_by_name['ImportProductSetsGcsSource'] = _IMPORTPRODUCTSETSGCSSOURCE
-DESCRIPTOR.message_types_by_name['ImportProductSetsInputConfig'] = _IMPORTPRODUCTSETSINPUTCONFIG
-DESCRIPTOR.message_types_by_name['ImportProductSetsRequest'] = _IMPORTPRODUCTSETSREQUEST
-DESCRIPTOR.message_types_by_name['ImportProductSetsResponse'] = _IMPORTPRODUCTSETSRESPONSE
-DESCRIPTOR.message_types_by_name['BatchOperationMetadata'] = _BATCHOPERATIONMETADATA
+DESCRIPTOR.message_types_by_name["Product"] = _PRODUCT
+DESCRIPTOR.message_types_by_name["ProductSet"] = _PRODUCTSET
+DESCRIPTOR.message_types_by_name["ReferenceImage"] = _REFERENCEIMAGE
+DESCRIPTOR.message_types_by_name["CreateProductRequest"] = _CREATEPRODUCTREQUEST
+DESCRIPTOR.message_types_by_name["ListProductsRequest"] = _LISTPRODUCTSREQUEST
+DESCRIPTOR.message_types_by_name["ListProductsResponse"] = _LISTPRODUCTSRESPONSE
+DESCRIPTOR.message_types_by_name["GetProductRequest"] = _GETPRODUCTREQUEST
+DESCRIPTOR.message_types_by_name["UpdateProductRequest"] = _UPDATEPRODUCTREQUEST
+DESCRIPTOR.message_types_by_name["DeleteProductRequest"] = _DELETEPRODUCTREQUEST
+DESCRIPTOR.message_types_by_name["CreateProductSetRequest"] = _CREATEPRODUCTSETREQUEST
+DESCRIPTOR.message_types_by_name["ListProductSetsRequest"] = _LISTPRODUCTSETSREQUEST
+DESCRIPTOR.message_types_by_name["ListProductSetsResponse"] = _LISTPRODUCTSETSRESPONSE
+DESCRIPTOR.message_types_by_name["GetProductSetRequest"] = _GETPRODUCTSETREQUEST
+DESCRIPTOR.message_types_by_name["UpdateProductSetRequest"] = _UPDATEPRODUCTSETREQUEST
+DESCRIPTOR.message_types_by_name["DeleteProductSetRequest"] = _DELETEPRODUCTSETREQUEST
+DESCRIPTOR.message_types_by_name[
+    "CreateReferenceImageRequest"
+] = _CREATEREFERENCEIMAGEREQUEST
+DESCRIPTOR.message_types_by_name[
+    "ListReferenceImagesRequest"
+] = _LISTREFERENCEIMAGESREQUEST
+DESCRIPTOR.message_types_by_name[
+    "ListReferenceImagesResponse"
+] = _LISTREFERENCEIMAGESRESPONSE
+DESCRIPTOR.message_types_by_name["GetReferenceImageRequest"] = _GETREFERENCEIMAGEREQUEST
+DESCRIPTOR.message_types_by_name[
+    "DeleteReferenceImageRequest"
+] = _DELETEREFERENCEIMAGEREQUEST
+DESCRIPTOR.message_types_by_name[
+    "AddProductToProductSetRequest"
+] = _ADDPRODUCTTOPRODUCTSETREQUEST
+DESCRIPTOR.message_types_by_name[
+    "RemoveProductFromProductSetRequest"
+] = _REMOVEPRODUCTFROMPRODUCTSETREQUEST
+DESCRIPTOR.message_types_by_name[
+    "ListProductsInProductSetRequest"
+] = _LISTPRODUCTSINPRODUCTSETREQUEST
+DESCRIPTOR.message_types_by_name[
+    "ListProductsInProductSetResponse"
+] = _LISTPRODUCTSINPRODUCTSETRESPONSE
+DESCRIPTOR.message_types_by_name[
+    "ImportProductSetsGcsSource"
+] = _IMPORTPRODUCTSETSGCSSOURCE
+DESCRIPTOR.message_types_by_name[
+    "ImportProductSetsInputConfig"
+] = _IMPORTPRODUCTSETSINPUTCONFIG
+DESCRIPTOR.message_types_by_name["ImportProductSetsRequest"] = _IMPORTPRODUCTSETSREQUEST
+DESCRIPTOR.message_types_by_name[
+    "ImportProductSetsResponse"
+] = _IMPORTPRODUCTSETSRESPONSE
+DESCRIPTOR.message_types_by_name["BatchOperationMetadata"] = _BATCHOPERATIONMETADATA
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
-Product = _reflection.GeneratedProtocolMessageType('Product', (_message.Message,), dict(
-
-  KeyValue = _reflection.GeneratedProtocolMessageType('KeyValue', (_message.Message,), dict(
-    DESCRIPTOR = _PRODUCT_KEYVALUE,
-    __module__ = 'google.cloud.vision_v1p3beta1.proto.product_search_service_pb2'
-    ,
-    __doc__ = """A product label represented as a key-value pair.
+Product = _reflection.GeneratedProtocolMessageType(
+    "Product",
+    (_message.Message,),
+    dict(
+        KeyValue=_reflection.GeneratedProtocolMessageType(
+            "KeyValue",
+            (_message.Message,),
+            dict(
+                DESCRIPTOR=_PRODUCT_KEYVALUE,
+                __module__="google.cloud.vision_v1p3beta1.proto.product_search_service_pb2",
+                __doc__="""A product label represented as a key-value pair.
     
     
     Attributes:
@@ -1333,13 +2053,12 @@ Product = _reflection.GeneratedProtocolMessageType('Product', (_message.Message,
             The value of the label attached to the product. Cannot be
             empty and cannot exceed 128 bytes.
     """,
-    # @@protoc_insertion_point(class_scope:google.cloud.vision.v1p3beta1.Product.KeyValue)
-    ))
-  ,
-  DESCRIPTOR = _PRODUCT,
-  __module__ = 'google.cloud.vision_v1p3beta1.proto.product_search_service_pb2'
-  ,
-  __doc__ = """A Product contains ReferenceImages.
+                # @@protoc_insertion_point(class_scope:google.cloud.vision.v1p3beta1.Product.KeyValue)
+            ),
+        ),
+        DESCRIPTOR=_PRODUCT,
+        __module__="google.cloud.vision_v1p3beta1.proto.product_search_service_pb2",
+        __doc__="""A Product contains ReferenceImages.
   
   
   Attributes:
@@ -1366,16 +2085,19 @@ Product = _reflection.GeneratedProtocolMessageType('Product', (_message.Message,
           Multiple values can be assigned to the same key. One product
           may have up to 100 product\_labels.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.vision.v1p3beta1.Product)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.vision.v1p3beta1.Product)
+    ),
+)
 _sym_db.RegisterMessage(Product)
 _sym_db.RegisterMessage(Product.KeyValue)
 
-ProductSet = _reflection.GeneratedProtocolMessageType('ProductSet', (_message.Message,), dict(
-  DESCRIPTOR = _PRODUCTSET,
-  __module__ = 'google.cloud.vision_v1p3beta1.proto.product_search_service_pb2'
-  ,
-  __doc__ = """A ProductSet contains Products. A ProductSet can contain a maximum of 1
+ProductSet = _reflection.GeneratedProtocolMessageType(
+    "ProductSet",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_PRODUCTSET,
+        __module__="google.cloud.vision_v1p3beta1.proto.product_search_service_pb2",
+        __doc__="""A ProductSet contains Products. A ProductSet can contain a maximum of 1
   million reference images. If the limit is exceeded, periodic indexing
   will fail.
   
@@ -1398,15 +2120,18 @@ ProductSet = _reflection.GeneratedProtocolMessageType('ProductSet', (_message.Me
           set, the field is populated.  This field is ignored when
           creating a ProductSet.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.vision.v1p3beta1.ProductSet)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.vision.v1p3beta1.ProductSet)
+    ),
+)
 _sym_db.RegisterMessage(ProductSet)
 
-ReferenceImage = _reflection.GeneratedProtocolMessageType('ReferenceImage', (_message.Message,), dict(
-  DESCRIPTOR = _REFERENCEIMAGE,
-  __module__ = 'google.cloud.vision_v1p3beta1.proto.product_search_service_pb2'
-  ,
-  __doc__ = """A ``ReferenceImage`` represents a product image and its associated
+ReferenceImage = _reflection.GeneratedProtocolMessageType(
+    "ReferenceImage",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_REFERENCEIMAGE,
+        __module__="google.cloud.vision_v1p3beta1.proto.product_search_service_pb2",
+        __doc__="""A ``ReferenceImage`` represents a product image and its associated
   metadata, such as bounding boxes.
   
   
@@ -1428,15 +2153,18 @@ ReferenceImage = _reflection.GeneratedProtocolMessageType('ReferenceImage', (_me
           rectangle must be greater than or equal to 300 pixels. The
           aspect ratio must be 1:4 or less (i.e. 1:3 is ok; 1:5 is not).
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.vision.v1p3beta1.ReferenceImage)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.vision.v1p3beta1.ReferenceImage)
+    ),
+)
 _sym_db.RegisterMessage(ReferenceImage)
 
-CreateProductRequest = _reflection.GeneratedProtocolMessageType('CreateProductRequest', (_message.Message,), dict(
-  DESCRIPTOR = _CREATEPRODUCTREQUEST,
-  __module__ = 'google.cloud.vision_v1p3beta1.proto.product_search_service_pb2'
-  ,
-  __doc__ = """Request message for the ``CreateProduct`` method.
+CreateProductRequest = _reflection.GeneratedProtocolMessageType(
+    "CreateProductRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_CREATEPRODUCTREQUEST,
+        __module__="google.cloud.vision_v1p3beta1.proto.product_search_service_pb2",
+        __doc__="""Request message for the ``CreateProduct`` method.
   
   
   Attributes:
@@ -1452,15 +2180,18 @@ CreateProductRequest = _reflection.GeneratedProtocolMessageType('CreateProductRe
           ALREADY\_EXISTS. Must be at most 128 characters long. It
           cannot contain the character ``/``.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.vision.v1p3beta1.CreateProductRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.vision.v1p3beta1.CreateProductRequest)
+    ),
+)
 _sym_db.RegisterMessage(CreateProductRequest)
 
-ListProductsRequest = _reflection.GeneratedProtocolMessageType('ListProductsRequest', (_message.Message,), dict(
-  DESCRIPTOR = _LISTPRODUCTSREQUEST,
-  __module__ = 'google.cloud.vision_v1p3beta1.proto.product_search_service_pb2'
-  ,
-  __doc__ = """Request message for the ``ListProducts`` method.
+ListProductsRequest = _reflection.GeneratedProtocolMessageType(
+    "ListProductsRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_LISTPRODUCTSREQUEST,
+        __module__="google.cloud.vision_v1p3beta1.proto.product_search_service_pb2",
+        __doc__="""Request message for the ``ListProducts`` method.
   
   
   Attributes:
@@ -1474,15 +2205,18 @@ ListProductsRequest = _reflection.GeneratedProtocolMessageType('ListProductsRequ
           The next\_page\_token returned from a previous List request,
           if any.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.vision.v1p3beta1.ListProductsRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.vision.v1p3beta1.ListProductsRequest)
+    ),
+)
 _sym_db.RegisterMessage(ListProductsRequest)
 
-ListProductsResponse = _reflection.GeneratedProtocolMessageType('ListProductsResponse', (_message.Message,), dict(
-  DESCRIPTOR = _LISTPRODUCTSRESPONSE,
-  __module__ = 'google.cloud.vision_v1p3beta1.proto.product_search_service_pb2'
-  ,
-  __doc__ = """Response message for the ``ListProducts`` method.
+ListProductsResponse = _reflection.GeneratedProtocolMessageType(
+    "ListProductsResponse",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_LISTPRODUCTSRESPONSE,
+        __module__="google.cloud.vision_v1p3beta1.proto.product_search_service_pb2",
+        __doc__="""Response message for the ``ListProducts`` method.
   
   
   Attributes:
@@ -1492,15 +2226,18 @@ ListProductsResponse = _reflection.GeneratedProtocolMessageType('ListProductsRes
           Token to retrieve the next page of results, or empty if there
           are no more results in the list.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.vision.v1p3beta1.ListProductsResponse)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.vision.v1p3beta1.ListProductsResponse)
+    ),
+)
 _sym_db.RegisterMessage(ListProductsResponse)
 
-GetProductRequest = _reflection.GeneratedProtocolMessageType('GetProductRequest', (_message.Message,), dict(
-  DESCRIPTOR = _GETPRODUCTREQUEST,
-  __module__ = 'google.cloud.vision_v1p3beta1.proto.product_search_service_pb2'
-  ,
-  __doc__ = """Request message for the ``GetProduct`` method.
+GetProductRequest = _reflection.GeneratedProtocolMessageType(
+    "GetProductRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_GETPRODUCTREQUEST,
+        __module__="google.cloud.vision_v1p3beta1.proto.product_search_service_pb2",
+        __doc__="""Request message for the ``GetProduct`` method.
   
   
   Attributes:
@@ -1508,15 +2245,18 @@ GetProductRequest = _reflection.GeneratedProtocolMessageType('GetProductRequest'
           Resource name of the Product to get.  Format is:
           ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID``
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.vision.v1p3beta1.GetProductRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.vision.v1p3beta1.GetProductRequest)
+    ),
+)
 _sym_db.RegisterMessage(GetProductRequest)
 
-UpdateProductRequest = _reflection.GeneratedProtocolMessageType('UpdateProductRequest', (_message.Message,), dict(
-  DESCRIPTOR = _UPDATEPRODUCTREQUEST,
-  __module__ = 'google.cloud.vision_v1p3beta1.proto.product_search_service_pb2'
-  ,
-  __doc__ = """Request message for the ``UpdateProduct`` method.
+UpdateProductRequest = _reflection.GeneratedProtocolMessageType(
+    "UpdateProductRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_UPDATEPRODUCTREQUEST,
+        __module__="google.cloud.vision_v1p3beta1.proto.product_search_service_pb2",
+        __doc__="""Request message for the ``UpdateProduct`` method.
   
   
   Attributes:
@@ -1529,15 +2269,18 @@ UpdateProductRequest = _reflection.GeneratedProtocolMessageType('UpdateProductRe
           mutable fields are to be updated. Valid mask paths include
           ``product_labels``, ``display_name`` and ``description``.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.vision.v1p3beta1.UpdateProductRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.vision.v1p3beta1.UpdateProductRequest)
+    ),
+)
 _sym_db.RegisterMessage(UpdateProductRequest)
 
-DeleteProductRequest = _reflection.GeneratedProtocolMessageType('DeleteProductRequest', (_message.Message,), dict(
-  DESCRIPTOR = _DELETEPRODUCTREQUEST,
-  __module__ = 'google.cloud.vision_v1p3beta1.proto.product_search_service_pb2'
-  ,
-  __doc__ = """Request message for the ``DeleteProduct`` method.
+DeleteProductRequest = _reflection.GeneratedProtocolMessageType(
+    "DeleteProductRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_DELETEPRODUCTREQUEST,
+        __module__="google.cloud.vision_v1p3beta1.proto.product_search_service_pb2",
+        __doc__="""Request message for the ``DeleteProduct`` method.
   
   
   Attributes:
@@ -1545,15 +2288,18 @@ DeleteProductRequest = _reflection.GeneratedProtocolMessageType('DeleteProductRe
           Resource name of product to delete.  Format is:
           ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID``
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.vision.v1p3beta1.DeleteProductRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.vision.v1p3beta1.DeleteProductRequest)
+    ),
+)
 _sym_db.RegisterMessage(DeleteProductRequest)
 
-CreateProductSetRequest = _reflection.GeneratedProtocolMessageType('CreateProductSetRequest', (_message.Message,), dict(
-  DESCRIPTOR = _CREATEPRODUCTSETREQUEST,
-  __module__ = 'google.cloud.vision_v1p3beta1.proto.product_search_service_pb2'
-  ,
-  __doc__ = """Request message for the ``CreateProductSet`` method.
+CreateProductSetRequest = _reflection.GeneratedProtocolMessageType(
+    "CreateProductSetRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_CREATEPRODUCTSETREQUEST,
+        __module__="google.cloud.vision_v1p3beta1.proto.product_search_service_pb2",
+        __doc__="""Request message for the ``CreateProductSet`` method.
   
   
   Attributes:
@@ -1569,15 +2315,18 @@ CreateProductSetRequest = _reflection.GeneratedProtocolMessageType('CreateProduc
           ALREADY\_EXISTS. Must be at most 128 characters long. It
           cannot contain the character ``/``.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.vision.v1p3beta1.CreateProductSetRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.vision.v1p3beta1.CreateProductSetRequest)
+    ),
+)
 _sym_db.RegisterMessage(CreateProductSetRequest)
 
-ListProductSetsRequest = _reflection.GeneratedProtocolMessageType('ListProductSetsRequest', (_message.Message,), dict(
-  DESCRIPTOR = _LISTPRODUCTSETSREQUEST,
-  __module__ = 'google.cloud.vision_v1p3beta1.proto.product_search_service_pb2'
-  ,
-  __doc__ = """Request message for the ``ListProductSets`` method.
+ListProductSetsRequest = _reflection.GeneratedProtocolMessageType(
+    "ListProductSetsRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_LISTPRODUCTSETSREQUEST,
+        __module__="google.cloud.vision_v1p3beta1.proto.product_search_service_pb2",
+        __doc__="""Request message for the ``ListProductSets`` method.
   
   
   Attributes:
@@ -1591,15 +2340,18 @@ ListProductSetsRequest = _reflection.GeneratedProtocolMessageType('ListProductSe
           The next\_page\_token returned from a previous List request,
           if any.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.vision.v1p3beta1.ListProductSetsRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.vision.v1p3beta1.ListProductSetsRequest)
+    ),
+)
 _sym_db.RegisterMessage(ListProductSetsRequest)
 
-ListProductSetsResponse = _reflection.GeneratedProtocolMessageType('ListProductSetsResponse', (_message.Message,), dict(
-  DESCRIPTOR = _LISTPRODUCTSETSRESPONSE,
-  __module__ = 'google.cloud.vision_v1p3beta1.proto.product_search_service_pb2'
-  ,
-  __doc__ = """Response message for the ``ListProductSets`` method.
+ListProductSetsResponse = _reflection.GeneratedProtocolMessageType(
+    "ListProductSetsResponse",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_LISTPRODUCTSETSRESPONSE,
+        __module__="google.cloud.vision_v1p3beta1.proto.product_search_service_pb2",
+        __doc__="""Response message for the ``ListProductSets`` method.
   
   
   Attributes:
@@ -1609,15 +2361,18 @@ ListProductSetsResponse = _reflection.GeneratedProtocolMessageType('ListProductS
           Token to retrieve the next page of results, or empty if there
           are no more results in the list.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.vision.v1p3beta1.ListProductSetsResponse)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.vision.v1p3beta1.ListProductSetsResponse)
+    ),
+)
 _sym_db.RegisterMessage(ListProductSetsResponse)
 
-GetProductSetRequest = _reflection.GeneratedProtocolMessageType('GetProductSetRequest', (_message.Message,), dict(
-  DESCRIPTOR = _GETPRODUCTSETREQUEST,
-  __module__ = 'google.cloud.vision_v1p3beta1.proto.product_search_service_pb2'
-  ,
-  __doc__ = """Request message for the ``GetProductSet`` method.
+GetProductSetRequest = _reflection.GeneratedProtocolMessageType(
+    "GetProductSetRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_GETPRODUCTSETREQUEST,
+        __module__="google.cloud.vision_v1p3beta1.proto.product_search_service_pb2",
+        __doc__="""Request message for the ``GetProductSet`` method.
   
   
   Attributes:
@@ -1625,15 +2380,18 @@ GetProductSetRequest = _reflection.GeneratedProtocolMessageType('GetProductSetRe
           Resource name of the ProductSet to get.  Format is: ``projects
           /PROJECT_ID/locations/LOG_ID/productSets/PRODUCT_SET_ID``
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.vision.v1p3beta1.GetProductSetRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.vision.v1p3beta1.GetProductSetRequest)
+    ),
+)
 _sym_db.RegisterMessage(GetProductSetRequest)
 
-UpdateProductSetRequest = _reflection.GeneratedProtocolMessageType('UpdateProductSetRequest', (_message.Message,), dict(
-  DESCRIPTOR = _UPDATEPRODUCTSETREQUEST,
-  __module__ = 'google.cloud.vision_v1p3beta1.proto.product_search_service_pb2'
-  ,
-  __doc__ = """Request message for the ``UpdateProductSet`` method.
+UpdateProductSetRequest = _reflection.GeneratedProtocolMessageType(
+    "UpdateProductSetRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_UPDATEPRODUCTSETREQUEST,
+        __module__="google.cloud.vision_v1p3beta1.proto.product_search_service_pb2",
+        __doc__="""Request message for the ``UpdateProductSet`` method.
   
   
   Attributes:
@@ -1645,15 +2403,18 @@ UpdateProductSetRequest = _reflection.GeneratedProtocolMessageType('UpdateProduc
           mutable fields are to be updated. Valid mask path is
           ``display_name``.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.vision.v1p3beta1.UpdateProductSetRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.vision.v1p3beta1.UpdateProductSetRequest)
+    ),
+)
 _sym_db.RegisterMessage(UpdateProductSetRequest)
 
-DeleteProductSetRequest = _reflection.GeneratedProtocolMessageType('DeleteProductSetRequest', (_message.Message,), dict(
-  DESCRIPTOR = _DELETEPRODUCTSETREQUEST,
-  __module__ = 'google.cloud.vision_v1p3beta1.proto.product_search_service_pb2'
-  ,
-  __doc__ = """Request message for the ``DeleteProductSet`` method.
+DeleteProductSetRequest = _reflection.GeneratedProtocolMessageType(
+    "DeleteProductSetRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_DELETEPRODUCTSETREQUEST,
+        __module__="google.cloud.vision_v1p3beta1.proto.product_search_service_pb2",
+        __doc__="""Request message for the ``DeleteProductSet`` method.
   
   
   Attributes:
@@ -1661,15 +2422,18 @@ DeleteProductSetRequest = _reflection.GeneratedProtocolMessageType('DeleteProduc
           Resource name of the ProductSet to delete.  Format is: ``proje
           cts/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_ID``
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.vision.v1p3beta1.DeleteProductSetRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.vision.v1p3beta1.DeleteProductSetRequest)
+    ),
+)
 _sym_db.RegisterMessage(DeleteProductSetRequest)
 
-CreateReferenceImageRequest = _reflection.GeneratedProtocolMessageType('CreateReferenceImageRequest', (_message.Message,), dict(
-  DESCRIPTOR = _CREATEREFERENCEIMAGEREQUEST,
-  __module__ = 'google.cloud.vision_v1p3beta1.proto.product_search_service_pb2'
-  ,
-  __doc__ = """Request message for the ``CreateReferenceImage`` method.
+CreateReferenceImageRequest = _reflection.GeneratedProtocolMessageType(
+    "CreateReferenceImageRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_CREATEREFERENCEIMAGEREQUEST,
+        __module__="google.cloud.vision_v1p3beta1.proto.product_search_service_pb2",
+        __doc__="""Request message for the ``CreateReferenceImage`` method.
   
   
   Attributes:
@@ -1687,15 +2451,18 @@ CreateReferenceImageRequest = _reflection.GeneratedProtocolMessageType('CreateRe
           with code ALREADY\_EXISTS. Must be at most 128 characters
           long. It cannot contain the character ``/``.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.vision.v1p3beta1.CreateReferenceImageRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.vision.v1p3beta1.CreateReferenceImageRequest)
+    ),
+)
 _sym_db.RegisterMessage(CreateReferenceImageRequest)
 
-ListReferenceImagesRequest = _reflection.GeneratedProtocolMessageType('ListReferenceImagesRequest', (_message.Message,), dict(
-  DESCRIPTOR = _LISTREFERENCEIMAGESREQUEST,
-  __module__ = 'google.cloud.vision_v1p3beta1.proto.product_search_service_pb2'
-  ,
-  __doc__ = """Request message for the ``ListReferenceImages`` method.
+ListReferenceImagesRequest = _reflection.GeneratedProtocolMessageType(
+    "ListReferenceImagesRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_LISTREFERENCEIMAGESREQUEST,
+        __module__="google.cloud.vision_v1p3beta1.proto.product_search_service_pb2",
+        __doc__="""Request message for the ``ListReferenceImages`` method.
   
   
   Attributes:
@@ -1712,15 +2479,18 @@ ListReferenceImagesRequest = _reflection.GeneratedProtocolMessageType('ListRefer
           reference image list request.  Defaults to the first page if
           not specified.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.vision.v1p3beta1.ListReferenceImagesRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.vision.v1p3beta1.ListReferenceImagesRequest)
+    ),
+)
 _sym_db.RegisterMessage(ListReferenceImagesRequest)
 
-ListReferenceImagesResponse = _reflection.GeneratedProtocolMessageType('ListReferenceImagesResponse', (_message.Message,), dict(
-  DESCRIPTOR = _LISTREFERENCEIMAGESRESPONSE,
-  __module__ = 'google.cloud.vision_v1p3beta1.proto.product_search_service_pb2'
-  ,
-  __doc__ = """Response message for the ``ListReferenceImages`` method.
+ListReferenceImagesResponse = _reflection.GeneratedProtocolMessageType(
+    "ListReferenceImagesResponse",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_LISTREFERENCEIMAGESRESPONSE,
+        __module__="google.cloud.vision_v1p3beta1.proto.product_search_service_pb2",
+        __doc__="""Response message for the ``ListReferenceImages`` method.
   
   
   Attributes:
@@ -1733,15 +2503,18 @@ ListReferenceImagesResponse = _reflection.GeneratedProtocolMessageType('ListRefe
           The next\_page\_token returned from a previous List request,
           if any.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.vision.v1p3beta1.ListReferenceImagesResponse)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.vision.v1p3beta1.ListReferenceImagesResponse)
+    ),
+)
 _sym_db.RegisterMessage(ListReferenceImagesResponse)
 
-GetReferenceImageRequest = _reflection.GeneratedProtocolMessageType('GetReferenceImageRequest', (_message.Message,), dict(
-  DESCRIPTOR = _GETREFERENCEIMAGEREQUEST,
-  __module__ = 'google.cloud.vision_v1p3beta1.proto.product_search_service_pb2'
-  ,
-  __doc__ = """Request message for the ``GetReferenceImage`` method.
+GetReferenceImageRequest = _reflection.GeneratedProtocolMessageType(
+    "GetReferenceImageRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_GETREFERENCEIMAGEREQUEST,
+        __module__="google.cloud.vision_v1p3beta1.proto.product_search_service_pb2",
+        __doc__="""Request message for the ``GetReferenceImage`` method.
   
   
   Attributes:
@@ -1750,15 +2523,18 @@ GetReferenceImageRequest = _reflection.GeneratedProtocolMessageType('GetReferenc
           `projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID/refe
           renceImages/IMAGE_ID``.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.vision.v1p3beta1.GetReferenceImageRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.vision.v1p3beta1.GetReferenceImageRequest)
+    ),
+)
 _sym_db.RegisterMessage(GetReferenceImageRequest)
 
-DeleteReferenceImageRequest = _reflection.GeneratedProtocolMessageType('DeleteReferenceImageRequest', (_message.Message,), dict(
-  DESCRIPTOR = _DELETEREFERENCEIMAGEREQUEST,
-  __module__ = 'google.cloud.vision_v1p3beta1.proto.product_search_service_pb2'
-  ,
-  __doc__ = """Request message for the ``DeleteReferenceImage`` method.
+DeleteReferenceImageRequest = _reflection.GeneratedProtocolMessageType(
+    "DeleteReferenceImageRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_DELETEREFERENCEIMAGEREQUEST,
+        __module__="google.cloud.vision_v1p3beta1.proto.product_search_service_pb2",
+        __doc__="""Request message for the ``DeleteReferenceImage`` method.
   
   
   Attributes:
@@ -1767,15 +2543,18 @@ DeleteReferenceImageRequest = _reflection.GeneratedProtocolMessageType('DeleteRe
           is:  ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_I
           D/referenceImages/IMAGE_ID``
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.vision.v1p3beta1.DeleteReferenceImageRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.vision.v1p3beta1.DeleteReferenceImageRequest)
+    ),
+)
 _sym_db.RegisterMessage(DeleteReferenceImageRequest)
 
-AddProductToProductSetRequest = _reflection.GeneratedProtocolMessageType('AddProductToProductSetRequest', (_message.Message,), dict(
-  DESCRIPTOR = _ADDPRODUCTTOPRODUCTSETREQUEST,
-  __module__ = 'google.cloud.vision_v1p3beta1.proto.product_search_service_pb2'
-  ,
-  __doc__ = """Request message for the ``AddProductToProductSet`` method.
+AddProductToProductSetRequest = _reflection.GeneratedProtocolMessageType(
+    "AddProductToProductSetRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_ADDPRODUCTTOPRODUCTSETREQUEST,
+        __module__="google.cloud.vision_v1p3beta1.proto.product_search_service_pb2",
+        __doc__="""Request message for the ``AddProductToProductSet`` method.
   
   
   Attributes:
@@ -1788,15 +2567,18 @@ AddProductToProductSetRequest = _reflection.GeneratedProtocolMessageType('AddPro
           ProductSet.  Format is:
           ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID``
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.vision.v1p3beta1.AddProductToProductSetRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.vision.v1p3beta1.AddProductToProductSetRequest)
+    ),
+)
 _sym_db.RegisterMessage(AddProductToProductSetRequest)
 
-RemoveProductFromProductSetRequest = _reflection.GeneratedProtocolMessageType('RemoveProductFromProductSetRequest', (_message.Message,), dict(
-  DESCRIPTOR = _REMOVEPRODUCTFROMPRODUCTSETREQUEST,
-  __module__ = 'google.cloud.vision_v1p3beta1.proto.product_search_service_pb2'
-  ,
-  __doc__ = """Request message for the ``RemoveProductFromProductSet`` method.
+RemoveProductFromProductSetRequest = _reflection.GeneratedProtocolMessageType(
+    "RemoveProductFromProductSetRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_REMOVEPRODUCTFROMPRODUCTSETREQUEST,
+        __module__="google.cloud.vision_v1p3beta1.proto.product_search_service_pb2",
+        __doc__="""Request message for the ``RemoveProductFromProductSet`` method.
   
   
   Attributes:
@@ -1809,15 +2591,18 @@ RemoveProductFromProductSetRequest = _reflection.GeneratedProtocolMessageType('R
           ProductSet.  Format is:
           ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID``
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.vision.v1p3beta1.RemoveProductFromProductSetRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.vision.v1p3beta1.RemoveProductFromProductSetRequest)
+    ),
+)
 _sym_db.RegisterMessage(RemoveProductFromProductSetRequest)
 
-ListProductsInProductSetRequest = _reflection.GeneratedProtocolMessageType('ListProductsInProductSetRequest', (_message.Message,), dict(
-  DESCRIPTOR = _LISTPRODUCTSINPRODUCTSETREQUEST,
-  __module__ = 'google.cloud.vision_v1p3beta1.proto.product_search_service_pb2'
-  ,
-  __doc__ = """Request message for the ``ListProductsInProductSet`` method.
+ListProductsInProductSetRequest = _reflection.GeneratedProtocolMessageType(
+    "ListProductsInProductSetRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_LISTPRODUCTSINPRODUCTSETREQUEST,
+        __module__="google.cloud.vision_v1p3beta1.proto.product_search_service_pb2",
+        __doc__="""Request message for the ``ListProductsInProductSet`` method.
   
   
   Attributes:
@@ -1832,15 +2617,18 @@ ListProductsInProductSetRequest = _reflection.GeneratedProtocolMessageType('List
           The next\_page\_token returned from a previous List request,
           if any.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.vision.v1p3beta1.ListProductsInProductSetRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.vision.v1p3beta1.ListProductsInProductSetRequest)
+    ),
+)
 _sym_db.RegisterMessage(ListProductsInProductSetRequest)
 
-ListProductsInProductSetResponse = _reflection.GeneratedProtocolMessageType('ListProductsInProductSetResponse', (_message.Message,), dict(
-  DESCRIPTOR = _LISTPRODUCTSINPRODUCTSETRESPONSE,
-  __module__ = 'google.cloud.vision_v1p3beta1.proto.product_search_service_pb2'
-  ,
-  __doc__ = """Response message for the ``ListProductsInProductSet`` method.
+ListProductsInProductSetResponse = _reflection.GeneratedProtocolMessageType(
+    "ListProductsInProductSetResponse",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_LISTPRODUCTSINPRODUCTSETRESPONSE,
+        __module__="google.cloud.vision_v1p3beta1.proto.product_search_service_pb2",
+        __doc__="""Response message for the ``ListProductsInProductSet`` method.
   
   
   Attributes:
@@ -1850,15 +2638,18 @@ ListProductsInProductSetResponse = _reflection.GeneratedProtocolMessageType('Lis
           Token to retrieve the next page of results, or empty if there
           are no more results in the list.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.vision.v1p3beta1.ListProductsInProductSetResponse)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.vision.v1p3beta1.ListProductsInProductSetResponse)
+    ),
+)
 _sym_db.RegisterMessage(ListProductsInProductSetResponse)
 
-ImportProductSetsGcsSource = _reflection.GeneratedProtocolMessageType('ImportProductSetsGcsSource', (_message.Message,), dict(
-  DESCRIPTOR = _IMPORTPRODUCTSETSGCSSOURCE,
-  __module__ = 'google.cloud.vision_v1p3beta1.proto.product_search_service_pb2'
-  ,
-  __doc__ = """The Google Cloud Storage location for a csv file which preserves a list
+ImportProductSetsGcsSource = _reflection.GeneratedProtocolMessageType(
+    "ImportProductSetsGcsSource",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_IMPORTPRODUCTSETSGCSSOURCE,
+        __module__="google.cloud.vision_v1p3beta1.proto.product_search_service_pb2",
+        __doc__="""The Google Cloud Storage location for a csv file which preserves a list
   of ImportProductSetRequests in each line.
   
   
@@ -1905,15 +2696,18 @@ ImportProductSetsGcsSource = _reflection.GeneratedProtocolMessageType('ImportPro
           float values in [0, 1] should be used for normalized bounding
           polygons.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.vision.v1p3beta1.ImportProductSetsGcsSource)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.vision.v1p3beta1.ImportProductSetsGcsSource)
+    ),
+)
 _sym_db.RegisterMessage(ImportProductSetsGcsSource)
 
-ImportProductSetsInputConfig = _reflection.GeneratedProtocolMessageType('ImportProductSetsInputConfig', (_message.Message,), dict(
-  DESCRIPTOR = _IMPORTPRODUCTSETSINPUTCONFIG,
-  __module__ = 'google.cloud.vision_v1p3beta1.proto.product_search_service_pb2'
-  ,
-  __doc__ = """The input content for the ``ImportProductSets`` method.
+ImportProductSetsInputConfig = _reflection.GeneratedProtocolMessageType(
+    "ImportProductSetsInputConfig",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_IMPORTPRODUCTSETSINPUTCONFIG,
+        __module__="google.cloud.vision_v1p3beta1.proto.product_search_service_pb2",
+        __doc__="""The input content for the ``ImportProductSets`` method.
   
   
   Attributes:
@@ -1923,15 +2717,18 @@ ImportProductSetsInputConfig = _reflection.GeneratedProtocolMessageType('ImportP
           The Google Cloud Storage location for a csv file which
           preserves a list of ImportProductSetRequests in each line.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.vision.v1p3beta1.ImportProductSetsInputConfig)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.vision.v1p3beta1.ImportProductSetsInputConfig)
+    ),
+)
 _sym_db.RegisterMessage(ImportProductSetsInputConfig)
 
-ImportProductSetsRequest = _reflection.GeneratedProtocolMessageType('ImportProductSetsRequest', (_message.Message,), dict(
-  DESCRIPTOR = _IMPORTPRODUCTSETSREQUEST,
-  __module__ = 'google.cloud.vision_v1p3beta1.proto.product_search_service_pb2'
-  ,
-  __doc__ = """Request message for the ``ImportProductSets`` method.
+ImportProductSetsRequest = _reflection.GeneratedProtocolMessageType(
+    "ImportProductSetsRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_IMPORTPRODUCTSETSREQUEST,
+        __module__="google.cloud.vision_v1p3beta1.proto.product_search_service_pb2",
+        __doc__="""Request message for the ``ImportProductSets`` method.
   
   
   Attributes:
@@ -1941,15 +2738,18 @@ ImportProductSetsRequest = _reflection.GeneratedProtocolMessageType('ImportProdu
       input_config:
           The input content for the list of requests.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.vision.v1p3beta1.ImportProductSetsRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.vision.v1p3beta1.ImportProductSetsRequest)
+    ),
+)
 _sym_db.RegisterMessage(ImportProductSetsRequest)
 
-ImportProductSetsResponse = _reflection.GeneratedProtocolMessageType('ImportProductSetsResponse', (_message.Message,), dict(
-  DESCRIPTOR = _IMPORTPRODUCTSETSRESPONSE,
-  __module__ = 'google.cloud.vision_v1p3beta1.proto.product_search_service_pb2'
-  ,
-  __doc__ = """Response message for the ``ImportProductSets`` method.
+ImportProductSetsResponse = _reflection.GeneratedProtocolMessageType(
+    "ImportProductSetsResponse",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_IMPORTPRODUCTSETSRESPONSE,
+        __module__="google.cloud.vision_v1p3beta1.proto.product_search_service_pb2",
+        __doc__="""Response message for the ``ImportProductSets`` method.
   
   This message is returned by the
   [google.longrunning.Operations.GetOperation][google.longrunning.Operations.GetOperation]
@@ -1968,15 +2768,18 @@ ImportProductSetsResponse = _reflection.GeneratedProtocolMessageType('ImportProd
           stores the success or failure status of processing the i-th
           line of the csv, starting from line 0.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.vision.v1p3beta1.ImportProductSetsResponse)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.vision.v1p3beta1.ImportProductSetsResponse)
+    ),
+)
 _sym_db.RegisterMessage(ImportProductSetsResponse)
 
-BatchOperationMetadata = _reflection.GeneratedProtocolMessageType('BatchOperationMetadata', (_message.Message,), dict(
-  DESCRIPTOR = _BATCHOPERATIONMETADATA,
-  __module__ = 'google.cloud.vision_v1p3beta1.proto.product_search_service_pb2'
-  ,
-  __doc__ = """Metadata for the batch operations such as the current state.
+BatchOperationMetadata = _reflection.GeneratedProtocolMessageType(
+    "BatchOperationMetadata",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_BATCHOPERATIONMETADATA,
+        __module__="google.cloud.vision_v1p3beta1.proto.product_search_service_pb2",
+        __doc__="""Metadata for the batch operations such as the current state.
   
   This is included in the ``metadata`` field of the ``Operation`` returned
   by the ``GetOperation`` call of the ``google::longrunning::Operations``
@@ -1993,188 +2796,285 @@ BatchOperationMetadata = _reflection.GeneratedProtocolMessageType('BatchOperatio
           nning.Operation.done][google.longrunning.Operation.done] is
           set to true.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.vision.v1p3beta1.BatchOperationMetadata)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.vision.v1p3beta1.BatchOperationMetadata)
+    ),
+)
 _sym_db.RegisterMessage(BatchOperationMetadata)
 
 
 DESCRIPTOR.has_options = True
-DESCRIPTOR._options = _descriptor._ParseOptions(descriptor_pb2.FileOptions(), _b('\n!com.google.cloud.vision.v1p3beta1B\031ProductSearchServiceProtoP\001ZCgoogle.golang.org/genproto/googleapis/cloud/vision/v1p3beta1;vision\370\001\001'))
+DESCRIPTOR._options = _descriptor._ParseOptions(
+    descriptor_pb2.FileOptions(),
+    _b(
+        "\n!com.google.cloud.vision.v1p3beta1B\031ProductSearchServiceProtoP\001ZCgoogle.golang.org/genproto/googleapis/cloud/vision/v1p3beta1;vision\370\001\001"
+    ),
+)
 
 _PRODUCTSEARCH = _descriptor.ServiceDescriptor(
-  name='ProductSearch',
-  full_name='google.cloud.vision.v1p3beta1.ProductSearch',
-  file=DESCRIPTOR,
-  index=0,
-  options=None,
-  serialized_start=3399,
-  serialized_end=6886,
-  methods=[
-  _descriptor.MethodDescriptor(
-    name='CreateProductSet',
-    full_name='google.cloud.vision.v1p3beta1.ProductSearch.CreateProductSet',
+    name="ProductSearch",
+    full_name="google.cloud.vision.v1p3beta1.ProductSearch",
+    file=DESCRIPTOR,
     index=0,
-    containing_service=None,
-    input_type=_CREATEPRODUCTSETREQUEST,
-    output_type=_PRODUCTSET,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002E\"6/v1p3beta1/{parent=projects/*/locations/*}/productSets:\013product_set')),
-  ),
-  _descriptor.MethodDescriptor(
-    name='ListProductSets',
-    full_name='google.cloud.vision.v1p3beta1.ProductSearch.ListProductSets',
-    index=1,
-    containing_service=None,
-    input_type=_LISTPRODUCTSETSREQUEST,
-    output_type=_LISTPRODUCTSETSRESPONSE,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\0028\0226/v1p3beta1/{parent=projects/*/locations/*}/productSets')),
-  ),
-  _descriptor.MethodDescriptor(
-    name='GetProductSet',
-    full_name='google.cloud.vision.v1p3beta1.ProductSearch.GetProductSet',
-    index=2,
-    containing_service=None,
-    input_type=_GETPRODUCTSETREQUEST,
-    output_type=_PRODUCTSET,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\0028\0226/v1p3beta1/{name=projects/*/locations/*/productSets/*}')),
-  ),
-  _descriptor.MethodDescriptor(
-    name='UpdateProductSet',
-    full_name='google.cloud.vision.v1p3beta1.ProductSearch.UpdateProductSet',
-    index=3,
-    containing_service=None,
-    input_type=_UPDATEPRODUCTSETREQUEST,
-    output_type=_PRODUCTSET,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002Q2B/v1p3beta1/{product_set.name=projects/*/locations/*/productSets/*}:\013product_set')),
-  ),
-  _descriptor.MethodDescriptor(
-    name='DeleteProductSet',
-    full_name='google.cloud.vision.v1p3beta1.ProductSearch.DeleteProductSet',
-    index=4,
-    containing_service=None,
-    input_type=_DELETEPRODUCTSETREQUEST,
-    output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\0028*6/v1p3beta1/{name=projects/*/locations/*/productSets/*}')),
-  ),
-  _descriptor.MethodDescriptor(
-    name='CreateProduct',
-    full_name='google.cloud.vision.v1p3beta1.ProductSearch.CreateProduct',
-    index=5,
-    containing_service=None,
-    input_type=_CREATEPRODUCTREQUEST,
-    output_type=_PRODUCT,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002>\"3/v1p3beta1/{parent=projects/*/locations/*}/products:\007product')),
-  ),
-  _descriptor.MethodDescriptor(
-    name='ListProducts',
-    full_name='google.cloud.vision.v1p3beta1.ProductSearch.ListProducts',
-    index=6,
-    containing_service=None,
-    input_type=_LISTPRODUCTSREQUEST,
-    output_type=_LISTPRODUCTSRESPONSE,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\0025\0223/v1p3beta1/{parent=projects/*/locations/*}/products')),
-  ),
-  _descriptor.MethodDescriptor(
-    name='GetProduct',
-    full_name='google.cloud.vision.v1p3beta1.ProductSearch.GetProduct',
-    index=7,
-    containing_service=None,
-    input_type=_GETPRODUCTREQUEST,
-    output_type=_PRODUCT,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\0025\0223/v1p3beta1/{name=projects/*/locations/*/products/*}')),
-  ),
-  _descriptor.MethodDescriptor(
-    name='UpdateProduct',
-    full_name='google.cloud.vision.v1p3beta1.ProductSearch.UpdateProduct',
-    index=8,
-    containing_service=None,
-    input_type=_UPDATEPRODUCTREQUEST,
-    output_type=_PRODUCT,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002F2;/v1p3beta1/{product.name=projects/*/locations/*/products/*}:\007product')),
-  ),
-  _descriptor.MethodDescriptor(
-    name='DeleteProduct',
-    full_name='google.cloud.vision.v1p3beta1.ProductSearch.DeleteProduct',
-    index=9,
-    containing_service=None,
-    input_type=_DELETEPRODUCTREQUEST,
-    output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\0025*3/v1p3beta1/{name=projects/*/locations/*/products/*}')),
-  ),
-  _descriptor.MethodDescriptor(
-    name='CreateReferenceImage',
-    full_name='google.cloud.vision.v1p3beta1.ProductSearch.CreateReferenceImage',
-    index=10,
-    containing_service=None,
-    input_type=_CREATEREFERENCEIMAGEREQUEST,
-    output_type=_REFERENCEIMAGE,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002X\"E/v1p3beta1/{parent=projects/*/locations/*/products/*}/referenceImages:\017reference_image')),
-  ),
-  _descriptor.MethodDescriptor(
-    name='DeleteReferenceImage',
-    full_name='google.cloud.vision.v1p3beta1.ProductSearch.DeleteReferenceImage',
-    index=11,
-    containing_service=None,
-    input_type=_DELETEREFERENCEIMAGEREQUEST,
-    output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002G*E/v1p3beta1/{name=projects/*/locations/*/products/*/referenceImages/*}')),
-  ),
-  _descriptor.MethodDescriptor(
-    name='ListReferenceImages',
-    full_name='google.cloud.vision.v1p3beta1.ProductSearch.ListReferenceImages',
-    index=12,
-    containing_service=None,
-    input_type=_LISTREFERENCEIMAGESREQUEST,
-    output_type=_LISTREFERENCEIMAGESRESPONSE,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002G\022E/v1p3beta1/{parent=projects/*/locations/*/products/*}/referenceImages')),
-  ),
-  _descriptor.MethodDescriptor(
-    name='GetReferenceImage',
-    full_name='google.cloud.vision.v1p3beta1.ProductSearch.GetReferenceImage',
-    index=13,
-    containing_service=None,
-    input_type=_GETREFERENCEIMAGEREQUEST,
-    output_type=_REFERENCEIMAGE,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002G\022E/v1p3beta1/{name=projects/*/locations/*/products/*/referenceImages/*}')),
-  ),
-  _descriptor.MethodDescriptor(
-    name='AddProductToProductSet',
-    full_name='google.cloud.vision.v1p3beta1.ProductSearch.AddProductToProductSet',
-    index=14,
-    containing_service=None,
-    input_type=_ADDPRODUCTTOPRODUCTSETREQUEST,
-    output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002F\"A/v1p3beta1/{name=projects/*/locations/*/productSets/*}:addProduct:\001*')),
-  ),
-  _descriptor.MethodDescriptor(
-    name='RemoveProductFromProductSet',
-    full_name='google.cloud.vision.v1p3beta1.ProductSearch.RemoveProductFromProductSet',
-    index=15,
-    containing_service=None,
-    input_type=_REMOVEPRODUCTFROMPRODUCTSETREQUEST,
-    output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002I\"D/v1p3beta1/{name=projects/*/locations/*/productSets/*}:removeProduct:\001*')),
-  ),
-  _descriptor.MethodDescriptor(
-    name='ListProductsInProductSet',
-    full_name='google.cloud.vision.v1p3beta1.ProductSearch.ListProductsInProductSet',
-    index=16,
-    containing_service=None,
-    input_type=_LISTPRODUCTSINPRODUCTSETREQUEST,
-    output_type=_LISTPRODUCTSINPRODUCTSETRESPONSE,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002A\022?/v1p3beta1/{name=projects/*/locations/*/productSets/*}/products')),
-  ),
-  _descriptor.MethodDescriptor(
-    name='ImportProductSets',
-    full_name='google.cloud.vision.v1p3beta1.ProductSearch.ImportProductSets',
-    index=17,
-    containing_service=None,
-    input_type=_IMPORTPRODUCTSETSREQUEST,
-    output_type=google_dot_longrunning_dot_operations__pb2._OPERATION,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002B\"=/v1p3beta1/{parent=projects/*/locations/*}/productSets:import:\001*')),
-  ),
-])
+    options=None,
+    serialized_start=3399,
+    serialized_end=6886,
+    methods=[
+        _descriptor.MethodDescriptor(
+            name="CreateProductSet",
+            full_name="google.cloud.vision.v1p3beta1.ProductSearch.CreateProductSet",
+            index=0,
+            containing_service=None,
+            input_type=_CREATEPRODUCTSETREQUEST,
+            output_type=_PRODUCTSET,
+            options=_descriptor._ParseOptions(
+                descriptor_pb2.MethodOptions(),
+                _b(
+                    '\202\323\344\223\002E"6/v1p3beta1/{parent=projects/*/locations/*}/productSets:\013product_set'
+                ),
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="ListProductSets",
+            full_name="google.cloud.vision.v1p3beta1.ProductSearch.ListProductSets",
+            index=1,
+            containing_service=None,
+            input_type=_LISTPRODUCTSETSREQUEST,
+            output_type=_LISTPRODUCTSETSRESPONSE,
+            options=_descriptor._ParseOptions(
+                descriptor_pb2.MethodOptions(),
+                _b(
+                    "\202\323\344\223\0028\0226/v1p3beta1/{parent=projects/*/locations/*}/productSets"
+                ),
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="GetProductSet",
+            full_name="google.cloud.vision.v1p3beta1.ProductSearch.GetProductSet",
+            index=2,
+            containing_service=None,
+            input_type=_GETPRODUCTSETREQUEST,
+            output_type=_PRODUCTSET,
+            options=_descriptor._ParseOptions(
+                descriptor_pb2.MethodOptions(),
+                _b(
+                    "\202\323\344\223\0028\0226/v1p3beta1/{name=projects/*/locations/*/productSets/*}"
+                ),
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="UpdateProductSet",
+            full_name="google.cloud.vision.v1p3beta1.ProductSearch.UpdateProductSet",
+            index=3,
+            containing_service=None,
+            input_type=_UPDATEPRODUCTSETREQUEST,
+            output_type=_PRODUCTSET,
+            options=_descriptor._ParseOptions(
+                descriptor_pb2.MethodOptions(),
+                _b(
+                    "\202\323\344\223\002Q2B/v1p3beta1/{product_set.name=projects/*/locations/*/productSets/*}:\013product_set"
+                ),
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="DeleteProductSet",
+            full_name="google.cloud.vision.v1p3beta1.ProductSearch.DeleteProductSet",
+            index=4,
+            containing_service=None,
+            input_type=_DELETEPRODUCTSETREQUEST,
+            output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
+            options=_descriptor._ParseOptions(
+                descriptor_pb2.MethodOptions(),
+                _b(
+                    "\202\323\344\223\0028*6/v1p3beta1/{name=projects/*/locations/*/productSets/*}"
+                ),
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="CreateProduct",
+            full_name="google.cloud.vision.v1p3beta1.ProductSearch.CreateProduct",
+            index=5,
+            containing_service=None,
+            input_type=_CREATEPRODUCTREQUEST,
+            output_type=_PRODUCT,
+            options=_descriptor._ParseOptions(
+                descriptor_pb2.MethodOptions(),
+                _b(
+                    '\202\323\344\223\002>"3/v1p3beta1/{parent=projects/*/locations/*}/products:\007product'
+                ),
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="ListProducts",
+            full_name="google.cloud.vision.v1p3beta1.ProductSearch.ListProducts",
+            index=6,
+            containing_service=None,
+            input_type=_LISTPRODUCTSREQUEST,
+            output_type=_LISTPRODUCTSRESPONSE,
+            options=_descriptor._ParseOptions(
+                descriptor_pb2.MethodOptions(),
+                _b(
+                    "\202\323\344\223\0025\0223/v1p3beta1/{parent=projects/*/locations/*}/products"
+                ),
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="GetProduct",
+            full_name="google.cloud.vision.v1p3beta1.ProductSearch.GetProduct",
+            index=7,
+            containing_service=None,
+            input_type=_GETPRODUCTREQUEST,
+            output_type=_PRODUCT,
+            options=_descriptor._ParseOptions(
+                descriptor_pb2.MethodOptions(),
+                _b(
+                    "\202\323\344\223\0025\0223/v1p3beta1/{name=projects/*/locations/*/products/*}"
+                ),
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="UpdateProduct",
+            full_name="google.cloud.vision.v1p3beta1.ProductSearch.UpdateProduct",
+            index=8,
+            containing_service=None,
+            input_type=_UPDATEPRODUCTREQUEST,
+            output_type=_PRODUCT,
+            options=_descriptor._ParseOptions(
+                descriptor_pb2.MethodOptions(),
+                _b(
+                    "\202\323\344\223\002F2;/v1p3beta1/{product.name=projects/*/locations/*/products/*}:\007product"
+                ),
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="DeleteProduct",
+            full_name="google.cloud.vision.v1p3beta1.ProductSearch.DeleteProduct",
+            index=9,
+            containing_service=None,
+            input_type=_DELETEPRODUCTREQUEST,
+            output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
+            options=_descriptor._ParseOptions(
+                descriptor_pb2.MethodOptions(),
+                _b(
+                    "\202\323\344\223\0025*3/v1p3beta1/{name=projects/*/locations/*/products/*}"
+                ),
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="CreateReferenceImage",
+            full_name="google.cloud.vision.v1p3beta1.ProductSearch.CreateReferenceImage",
+            index=10,
+            containing_service=None,
+            input_type=_CREATEREFERENCEIMAGEREQUEST,
+            output_type=_REFERENCEIMAGE,
+            options=_descriptor._ParseOptions(
+                descriptor_pb2.MethodOptions(),
+                _b(
+                    '\202\323\344\223\002X"E/v1p3beta1/{parent=projects/*/locations/*/products/*}/referenceImages:\017reference_image'
+                ),
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="DeleteReferenceImage",
+            full_name="google.cloud.vision.v1p3beta1.ProductSearch.DeleteReferenceImage",
+            index=11,
+            containing_service=None,
+            input_type=_DELETEREFERENCEIMAGEREQUEST,
+            output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
+            options=_descriptor._ParseOptions(
+                descriptor_pb2.MethodOptions(),
+                _b(
+                    "\202\323\344\223\002G*E/v1p3beta1/{name=projects/*/locations/*/products/*/referenceImages/*}"
+                ),
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="ListReferenceImages",
+            full_name="google.cloud.vision.v1p3beta1.ProductSearch.ListReferenceImages",
+            index=12,
+            containing_service=None,
+            input_type=_LISTREFERENCEIMAGESREQUEST,
+            output_type=_LISTREFERENCEIMAGESRESPONSE,
+            options=_descriptor._ParseOptions(
+                descriptor_pb2.MethodOptions(),
+                _b(
+                    "\202\323\344\223\002G\022E/v1p3beta1/{parent=projects/*/locations/*/products/*}/referenceImages"
+                ),
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="GetReferenceImage",
+            full_name="google.cloud.vision.v1p3beta1.ProductSearch.GetReferenceImage",
+            index=13,
+            containing_service=None,
+            input_type=_GETREFERENCEIMAGEREQUEST,
+            output_type=_REFERENCEIMAGE,
+            options=_descriptor._ParseOptions(
+                descriptor_pb2.MethodOptions(),
+                _b(
+                    "\202\323\344\223\002G\022E/v1p3beta1/{name=projects/*/locations/*/products/*/referenceImages/*}"
+                ),
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="AddProductToProductSet",
+            full_name="google.cloud.vision.v1p3beta1.ProductSearch.AddProductToProductSet",
+            index=14,
+            containing_service=None,
+            input_type=_ADDPRODUCTTOPRODUCTSETREQUEST,
+            output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
+            options=_descriptor._ParseOptions(
+                descriptor_pb2.MethodOptions(),
+                _b(
+                    '\202\323\344\223\002F"A/v1p3beta1/{name=projects/*/locations/*/productSets/*}:addProduct:\001*'
+                ),
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="RemoveProductFromProductSet",
+            full_name="google.cloud.vision.v1p3beta1.ProductSearch.RemoveProductFromProductSet",
+            index=15,
+            containing_service=None,
+            input_type=_REMOVEPRODUCTFROMPRODUCTSETREQUEST,
+            output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
+            options=_descriptor._ParseOptions(
+                descriptor_pb2.MethodOptions(),
+                _b(
+                    '\202\323\344\223\002I"D/v1p3beta1/{name=projects/*/locations/*/productSets/*}:removeProduct:\001*'
+                ),
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="ListProductsInProductSet",
+            full_name="google.cloud.vision.v1p3beta1.ProductSearch.ListProductsInProductSet",
+            index=16,
+            containing_service=None,
+            input_type=_LISTPRODUCTSINPRODUCTSETREQUEST,
+            output_type=_LISTPRODUCTSINPRODUCTSETRESPONSE,
+            options=_descriptor._ParseOptions(
+                descriptor_pb2.MethodOptions(),
+                _b(
+                    "\202\323\344\223\002A\022?/v1p3beta1/{name=projects/*/locations/*/productSets/*}/products"
+                ),
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="ImportProductSets",
+            full_name="google.cloud.vision.v1p3beta1.ProductSearch.ImportProductSets",
+            index=17,
+            containing_service=None,
+            input_type=_IMPORTPRODUCTSETSREQUEST,
+            output_type=google_dot_longrunning_dot_operations__pb2._OPERATION,
+            options=_descriptor._ParseOptions(
+                descriptor_pb2.MethodOptions(),
+                _b(
+                    '\202\323\344\223\002B"=/v1p3beta1/{parent=projects/*/locations/*}/productSets:import:\001*'
+                ),
+            ),
+        ),
+    ],
+)
 _sym_db.RegisterServiceDescriptor(_PRODUCTSEARCH)
 
-DESCRIPTOR.services_by_name['ProductSearch'] = _PRODUCTSEARCH
+DESCRIPTOR.services_by_name["ProductSearch"] = _PRODUCTSEARCH
 
 # @@protoc_insertion_point(module_scope)

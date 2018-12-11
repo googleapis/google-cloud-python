@@ -32,8 +32,8 @@ class SchemaField(object):
         fields (Tuple[:class:`~google.cloud.bigquery.schema.SchemaField`]):
             subfields (requires ``field_type`` of 'RECORD').
     """
-    def __init__(self, name, field_type, mode='NULLABLE',
-                 description=None, fields=()):
+
+    def __init__(self, name, field_type, mode="NULLABLE", description=None, fields=()):
         self._name = name
         self._field_type = field_type
         self._mode = mode
@@ -54,15 +54,15 @@ class SchemaField(object):
                 The ``SchemaField`` object.
         """
         # Handle optional properties with default values
-        mode = api_repr.get('mode', 'NULLABLE')
-        description = api_repr.get('description')
-        fields = api_repr.get('fields', ())
+        mode = api_repr.get("mode", "NULLABLE")
+        description = api_repr.get("description")
+        fields = api_repr.get("fields", ())
         return cls(
-            field_type=api_repr['type'].upper(),
+            field_type=api_repr["type"].upper(),
             fields=[cls.from_api_repr(f) for f in fields],
             mode=mode.upper(),
             description=description,
-            name=api_repr['name'],
+            name=api_repr["name"],
         )
 
     @property
@@ -91,7 +91,7 @@ class SchemaField(object):
     @property
     def is_nullable(self):
         """bool: whether 'mode' is 'nullable'."""
-        return self._mode == 'NULLABLE'
+        return self._mode == "NULLABLE"
 
     @property
     def description(self):
@@ -115,16 +115,16 @@ class SchemaField(object):
         """
         # Put together the basic representation. See http://bit.ly/2hOAT5u.
         answer = {
-            'mode': self.mode.upper(),
-            'name': self.name,
-            'type': self.field_type.upper(),
-            'description': self.description,
+            "mode": self.mode.upper(),
+            "name": self.name,
+            "type": self.field_type.upper(),
+            "description": self.description,
         }
 
         # If this is a RECORD type, then sub-fields are also included,
         # add this to the serialized representation.
-        if self.field_type.upper() == 'RECORD':
-            answer['fields'] = [f.to_api_repr() for f in self.fields]
+        if self.field_type.upper() == "RECORD":
+            answer["fields"] = [f.to_api_repr() for f in self.fields]
 
         # Done; return the serialized dictionary.
         return answer
@@ -158,7 +158,7 @@ class SchemaField(object):
         return hash(self._key())
 
     def __repr__(self):
-        return 'SchemaField{}'.format(self._key())
+        return "SchemaField{}".format(self._key())
 
 
 def _parse_schema_resource(info):
@@ -171,18 +171,17 @@ def _parse_schema_resource(info):
         (Union[Sequence[:class:`google.cloud.bigquery.schema.SchemaField`],None])
             a list of parsed fields, or ``None`` if no "fields" key found.
     """
-    if 'fields' not in info:
+    if "fields" not in info:
         return ()
 
     schema = []
-    for r_field in info['fields']:
-        name = r_field['name']
-        field_type = r_field['type']
-        mode = r_field.get('mode', 'NULLABLE')
-        description = r_field.get('description')
+    for r_field in info["fields"]:
+        name = r_field["name"]
+        field_type = r_field["type"]
+        mode = r_field.get("mode", "NULLABLE")
+        description = r_field.get("description")
         sub_fields = _parse_schema_resource(r_field)
-        schema.append(
-            SchemaField(name, field_type, mode, description, sub_fields))
+        schema.append(SchemaField(name, field_type, mode, description, sub_fields))
     return schema
 
 

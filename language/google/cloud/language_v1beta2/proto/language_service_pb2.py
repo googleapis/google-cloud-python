@@ -2,59 +2,66 @@
 # source: google/cloud/language_v1beta2/proto/language_service.proto
 
 import sys
-_b=sys.version_info[0]<3 and (lambda x:x) or (lambda x:x.encode('latin1'))
+
+_b = sys.version_info[0] < 3 and (lambda x: x) or (lambda x: x.encode("latin1"))
 from google.protobuf.internal import enum_type_wrapper
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
 from google.protobuf import descriptor_pb2
+
 # @@protoc_insertion_point(imports)
 
 _sym_db = _symbol_database.Default()
 
 
 from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
-from google.longrunning import operations_pb2 as google_dot_longrunning_dot_operations__pb2
+from google.longrunning import (
+    operations_pb2 as google_dot_longrunning_dot_operations__pb2,
+)
 from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__pb2
 from google.rpc import status_pb2 as google_dot_rpc_dot_status__pb2
 
 
 DESCRIPTOR = _descriptor.FileDescriptor(
-  name='google/cloud/language_v1beta2/proto/language_service.proto',
-  package='google.cloud.language.v1beta2',
-  syntax='proto3',
-  serialized_pb=_b('\n:google/cloud/language_v1beta2/proto/language_service.proto\x12\x1dgoogle.cloud.language.v1beta2\x1a\x1cgoogle/api/annotations.proto\x1a#google/longrunning/operations.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x17google/rpc/status.proto\"\xc8\x01\n\x08\x44ocument\x12:\n\x04type\x18\x01 \x01(\x0e\x32,.google.cloud.language.v1beta2.Document.Type\x12\x11\n\x07\x63ontent\x18\x02 \x01(\tH\x00\x12\x19\n\x0fgcs_content_uri\x18\x03 \x01(\tH\x00\x12\x10\n\x08language\x18\x04 \x01(\t\"6\n\x04Type\x12\x14\n\x10TYPE_UNSPECIFIED\x10\x00\x12\x0e\n\nPLAIN_TEXT\x10\x01\x12\x08\n\x04HTML\x10\x02\x42\x08\n\x06source\"~\n\x08Sentence\x12\x35\n\x04text\x18\x01 \x01(\x0b\x32\'.google.cloud.language.v1beta2.TextSpan\x12;\n\tsentiment\x18\x02 \x01(\x0b\x32(.google.cloud.language.v1beta2.Sentiment\"\xd2\x03\n\x06\x45ntity\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x38\n\x04type\x18\x02 \x01(\x0e\x32*.google.cloud.language.v1beta2.Entity.Type\x12\x45\n\x08metadata\x18\x03 \x03(\x0b\x32\x33.google.cloud.language.v1beta2.Entity.MetadataEntry\x12\x10\n\x08salience\x18\x04 \x01(\x02\x12>\n\x08mentions\x18\x05 \x03(\x0b\x32,.google.cloud.language.v1beta2.EntityMention\x12;\n\tsentiment\x18\x06 \x01(\x0b\x32(.google.cloud.language.v1beta2.Sentiment\x1a/\n\rMetadataEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"y\n\x04Type\x12\x0b\n\x07UNKNOWN\x10\x00\x12\n\n\x06PERSON\x10\x01\x12\x0c\n\x08LOCATION\x10\x02\x12\x10\n\x0cORGANIZATION\x10\x03\x12\t\n\x05\x45VENT\x10\x04\x12\x0f\n\x0bWORK_OF_ART\x10\x05\x12\x11\n\rCONSUMER_GOOD\x10\x06\x12\t\n\x05OTHER\x10\x07\"\xda\x01\n\x05Token\x12\x35\n\x04text\x18\x01 \x01(\x0b\x32\'.google.cloud.language.v1beta2.TextSpan\x12\x43\n\x0epart_of_speech\x18\x02 \x01(\x0b\x32+.google.cloud.language.v1beta2.PartOfSpeech\x12\x46\n\x0f\x64\x65pendency_edge\x18\x03 \x01(\x0b\x32-.google.cloud.language.v1beta2.DependencyEdge\x12\r\n\x05lemma\x18\x04 \x01(\t\"-\n\tSentiment\x12\x11\n\tmagnitude\x18\x02 \x01(\x02\x12\r\n\x05score\x18\x03 \x01(\x02\"\xdf\x10\n\x0cPartOfSpeech\x12<\n\x03tag\x18\x01 \x01(\x0e\x32/.google.cloud.language.v1beta2.PartOfSpeech.Tag\x12\x42\n\x06\x61spect\x18\x02 \x01(\x0e\x32\x32.google.cloud.language.v1beta2.PartOfSpeech.Aspect\x12>\n\x04\x63\x61se\x18\x03 \x01(\x0e\x32\x30.google.cloud.language.v1beta2.PartOfSpeech.Case\x12>\n\x04\x66orm\x18\x04 \x01(\x0e\x32\x30.google.cloud.language.v1beta2.PartOfSpeech.Form\x12\x42\n\x06gender\x18\x05 \x01(\x0e\x32\x32.google.cloud.language.v1beta2.PartOfSpeech.Gender\x12>\n\x04mood\x18\x06 \x01(\x0e\x32\x30.google.cloud.language.v1beta2.PartOfSpeech.Mood\x12\x42\n\x06number\x18\x07 \x01(\x0e\x32\x32.google.cloud.language.v1beta2.PartOfSpeech.Number\x12\x42\n\x06person\x18\x08 \x01(\x0e\x32\x32.google.cloud.language.v1beta2.PartOfSpeech.Person\x12\x42\n\x06proper\x18\t \x01(\x0e\x32\x32.google.cloud.language.v1beta2.PartOfSpeech.Proper\x12L\n\x0breciprocity\x18\n \x01(\x0e\x32\x37.google.cloud.language.v1beta2.PartOfSpeech.Reciprocity\x12@\n\x05tense\x18\x0b \x01(\x0e\x32\x31.google.cloud.language.v1beta2.PartOfSpeech.Tense\x12@\n\x05voice\x18\x0c \x01(\x0e\x32\x31.google.cloud.language.v1beta2.PartOfSpeech.Voice\"\x8d\x01\n\x03Tag\x12\x0b\n\x07UNKNOWN\x10\x00\x12\x07\n\x03\x41\x44J\x10\x01\x12\x07\n\x03\x41\x44P\x10\x02\x12\x07\n\x03\x41\x44V\x10\x03\x12\x08\n\x04\x43ONJ\x10\x04\x12\x07\n\x03\x44\x45T\x10\x05\x12\x08\n\x04NOUN\x10\x06\x12\x07\n\x03NUM\x10\x07\x12\x08\n\x04PRON\x10\x08\x12\x07\n\x03PRT\x10\t\x12\t\n\x05PUNCT\x10\n\x12\x08\n\x04VERB\x10\x0b\x12\x05\n\x01X\x10\x0c\x12\t\n\x05\x41\x46\x46IX\x10\r\"O\n\x06\x41spect\x12\x12\n\x0e\x41SPECT_UNKNOWN\x10\x00\x12\x0e\n\nPERFECTIVE\x10\x01\x12\x10\n\x0cIMPERFECTIVE\x10\x02\x12\x0f\n\x0bPROGRESSIVE\x10\x03\"\xf8\x01\n\x04\x43\x61se\x12\x10\n\x0c\x43\x41SE_UNKNOWN\x10\x00\x12\x0e\n\nACCUSATIVE\x10\x01\x12\r\n\tADVERBIAL\x10\x02\x12\x11\n\rCOMPLEMENTIVE\x10\x03\x12\n\n\x06\x44\x41TIVE\x10\x04\x12\x0c\n\x08GENITIVE\x10\x05\x12\x10\n\x0cINSTRUMENTAL\x10\x06\x12\x0c\n\x08LOCATIVE\x10\x07\x12\x0e\n\nNOMINATIVE\x10\x08\x12\x0b\n\x07OBLIQUE\x10\t\x12\r\n\tPARTITIVE\x10\n\x12\x11\n\rPREPOSITIONAL\x10\x0b\x12\x12\n\x0eREFLEXIVE_CASE\x10\x0c\x12\x11\n\rRELATIVE_CASE\x10\r\x12\x0c\n\x08VOCATIVE\x10\x0e\"\xaf\x01\n\x04\x46orm\x12\x10\n\x0c\x46ORM_UNKNOWN\x10\x00\x12\x0c\n\x08\x41\x44NOMIAL\x10\x01\x12\r\n\tAUXILIARY\x10\x02\x12\x12\n\x0e\x43OMPLEMENTIZER\x10\x03\x12\x10\n\x0c\x46INAL_ENDING\x10\x04\x12\n\n\x06GERUND\x10\x05\x12\n\n\x06REALIS\x10\x06\x12\x0c\n\x08IRREALIS\x10\x07\x12\t\n\x05SHORT\x10\x08\x12\x08\n\x04LONG\x10\t\x12\t\n\x05ORDER\x10\n\x12\x0c\n\x08SPECIFIC\x10\x0b\"E\n\x06Gender\x12\x12\n\x0eGENDER_UNKNOWN\x10\x00\x12\x0c\n\x08\x46\x45MININE\x10\x01\x12\r\n\tMASCULINE\x10\x02\x12\n\n\x06NEUTER\x10\x03\"\x7f\n\x04Mood\x12\x10\n\x0cMOOD_UNKNOWN\x10\x00\x12\x14\n\x10\x43ONDITIONAL_MOOD\x10\x01\x12\x0e\n\nIMPERATIVE\x10\x02\x12\x0e\n\nINDICATIVE\x10\x03\x12\x11\n\rINTERROGATIVE\x10\x04\x12\x0b\n\x07JUSSIVE\x10\x05\x12\x0f\n\x0bSUBJUNCTIVE\x10\x06\"@\n\x06Number\x12\x12\n\x0eNUMBER_UNKNOWN\x10\x00\x12\x0c\n\x08SINGULAR\x10\x01\x12\n\n\x06PLURAL\x10\x02\x12\x08\n\x04\x44UAL\x10\x03\"T\n\x06Person\x12\x12\n\x0ePERSON_UNKNOWN\x10\x00\x12\t\n\x05\x46IRST\x10\x01\x12\n\n\x06SECOND\x10\x02\x12\t\n\x05THIRD\x10\x03\x12\x14\n\x10REFLEXIVE_PERSON\x10\x04\"8\n\x06Proper\x12\x12\n\x0ePROPER_UNKNOWN\x10\x00\x12\n\n\x06PROPER\x10\x01\x12\x0e\n\nNOT_PROPER\x10\x02\"J\n\x0bReciprocity\x12\x17\n\x13RECIPROCITY_UNKNOWN\x10\x00\x12\x0e\n\nRECIPROCAL\x10\x01\x12\x12\n\x0eNON_RECIPROCAL\x10\x02\"s\n\x05Tense\x12\x11\n\rTENSE_UNKNOWN\x10\x00\x12\x15\n\x11\x43ONDITIONAL_TENSE\x10\x01\x12\n\n\x06\x46UTURE\x10\x02\x12\x08\n\x04PAST\x10\x03\x12\x0b\n\x07PRESENT\x10\x04\x12\r\n\tIMPERFECT\x10\x05\x12\x0e\n\nPLUPERFECT\x10\x06\"B\n\x05Voice\x12\x11\n\rVOICE_UNKNOWN\x10\x00\x12\n\n\x06\x41\x43TIVE\x10\x01\x12\r\n\tCAUSATIVE\x10\x02\x12\x0b\n\x07PASSIVE\x10\x03\"\x9a\x08\n\x0e\x44\x65pendencyEdge\x12\x18\n\x10head_token_index\x18\x01 \x01(\x05\x12\x42\n\x05label\x18\x02 \x01(\x0e\x32\x33.google.cloud.language.v1beta2.DependencyEdge.Label\"\xa9\x07\n\x05Label\x12\x0b\n\x07UNKNOWN\x10\x00\x12\n\n\x06\x41\x42\x42REV\x10\x01\x12\t\n\x05\x41\x43OMP\x10\x02\x12\t\n\x05\x41\x44VCL\x10\x03\x12\n\n\x06\x41\x44VMOD\x10\x04\x12\x08\n\x04\x41MOD\x10\x05\x12\t\n\x05\x41PPOS\x10\x06\x12\x08\n\x04\x41TTR\x10\x07\x12\x07\n\x03\x41UX\x10\x08\x12\x0b\n\x07\x41UXPASS\x10\t\x12\x06\n\x02\x43\x43\x10\n\x12\t\n\x05\x43\x43OMP\x10\x0b\x12\x08\n\x04\x43ONJ\x10\x0c\x12\t\n\x05\x43SUBJ\x10\r\x12\r\n\tCSUBJPASS\x10\x0e\x12\x07\n\x03\x44\x45P\x10\x0f\x12\x07\n\x03\x44\x45T\x10\x10\x12\r\n\tDISCOURSE\x10\x11\x12\x08\n\x04\x44OBJ\x10\x12\x12\x08\n\x04\x45XPL\x10\x13\x12\x0c\n\x08GOESWITH\x10\x14\x12\x08\n\x04IOBJ\x10\x15\x12\x08\n\x04MARK\x10\x16\x12\x07\n\x03MWE\x10\x17\x12\x07\n\x03MWV\x10\x18\x12\x07\n\x03NEG\x10\x19\x12\x06\n\x02NN\x10\x1a\x12\x0c\n\x08NPADVMOD\x10\x1b\x12\t\n\x05NSUBJ\x10\x1c\x12\r\n\tNSUBJPASS\x10\x1d\x12\x07\n\x03NUM\x10\x1e\x12\n\n\x06NUMBER\x10\x1f\x12\x05\n\x01P\x10 \x12\r\n\tPARATAXIS\x10!\x12\x0b\n\x07PARTMOD\x10\"\x12\t\n\x05PCOMP\x10#\x12\x08\n\x04POBJ\x10$\x12\x08\n\x04POSS\x10%\x12\x0b\n\x07POSTNEG\x10&\x12\x0b\n\x07PRECOMP\x10\'\x12\x0b\n\x07PRECONJ\x10(\x12\n\n\x06PREDET\x10)\x12\x08\n\x04PREF\x10*\x12\x08\n\x04PREP\x10+\x12\t\n\x05PRONL\x10,\x12\x07\n\x03PRT\x10-\x12\x06\n\x02PS\x10.\x12\x0c\n\x08QUANTMOD\x10/\x12\t\n\x05RCMOD\x10\x30\x12\x0c\n\x08RCMODREL\x10\x31\x12\t\n\x05RDROP\x10\x32\x12\x07\n\x03REF\x10\x33\x12\x0b\n\x07REMNANT\x10\x34\x12\x0e\n\nREPARANDUM\x10\x35\x12\x08\n\x04ROOT\x10\x36\x12\x08\n\x04SNUM\x10\x37\x12\x08\n\x04SUFF\x10\x38\x12\x08\n\x04TMOD\x10\x39\x12\t\n\x05TOPIC\x10:\x12\x08\n\x04VMOD\x10;\x12\x0c\n\x08VOCATIVE\x10<\x12\t\n\x05XCOMP\x10=\x12\n\n\x06SUFFIX\x10>\x12\t\n\x05TITLE\x10?\x12\x0c\n\x08\x41\x44VPHMOD\x10@\x12\x0b\n\x07\x41UXCAUS\x10\x41\x12\t\n\x05\x41UXVV\x10\x42\x12\t\n\x05\x44TMOD\x10\x43\x12\x0b\n\x07\x46OREIGN\x10\x44\x12\x06\n\x02KW\x10\x45\x12\x08\n\x04LIST\x10\x46\x12\x08\n\x04NOMC\x10G\x12\x0c\n\x08NOMCSUBJ\x10H\x12\x10\n\x0cNOMCSUBJPASS\x10I\x12\x08\n\x04NUMC\x10J\x12\x07\n\x03\x43OP\x10K\x12\x0e\n\nDISLOCATED\x10L\x12\x07\n\x03\x41SP\x10M\x12\x08\n\x04GMOD\x10N\x12\x08\n\x04GOBJ\x10O\x12\n\n\x06INFMOD\x10P\x12\x07\n\x03MES\x10Q\x12\t\n\x05NCOMP\x10R\"\xf6\x01\n\rEntityMention\x12\x35\n\x04text\x18\x01 \x01(\x0b\x32\'.google.cloud.language.v1beta2.TextSpan\x12?\n\x04type\x18\x02 \x01(\x0e\x32\x31.google.cloud.language.v1beta2.EntityMention.Type\x12;\n\tsentiment\x18\x03 \x01(\x0b\x32(.google.cloud.language.v1beta2.Sentiment\"0\n\x04Type\x12\x10\n\x0cTYPE_UNKNOWN\x10\x00\x12\n\n\x06PROPER\x10\x01\x12\n\n\x06\x43OMMON\x10\x02\"1\n\x08TextSpan\x12\x0f\n\x07\x63ontent\x18\x01 \x01(\t\x12\x14\n\x0c\x62\x65gin_offset\x18\x02 \x01(\x05\":\n\x16\x43lassificationCategory\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x12\n\nconfidence\x18\x02 \x01(\x02\"\x98\x01\n\x17\x41nalyzeSentimentRequest\x12\x39\n\x08\x64ocument\x18\x01 \x01(\x0b\x32\'.google.cloud.language.v1beta2.Document\x12\x42\n\rencoding_type\x18\x02 \x01(\x0e\x32+.google.cloud.language.v1beta2.EncodingType\"\xae\x01\n\x18\x41nalyzeSentimentResponse\x12\x44\n\x12\x64ocument_sentiment\x18\x01 \x01(\x0b\x32(.google.cloud.language.v1beta2.Sentiment\x12\x10\n\x08language\x18\x02 \x01(\t\x12:\n\tsentences\x18\x03 \x03(\x0b\x32\'.google.cloud.language.v1beta2.Sentence\"\x9e\x01\n\x1d\x41nalyzeEntitySentimentRequest\x12\x39\n\x08\x64ocument\x18\x01 \x01(\x0b\x32\'.google.cloud.language.v1beta2.Document\x12\x42\n\rencoding_type\x18\x02 \x01(\x0e\x32+.google.cloud.language.v1beta2.EncodingType\"k\n\x1e\x41nalyzeEntitySentimentResponse\x12\x37\n\x08\x65ntities\x18\x01 \x03(\x0b\x32%.google.cloud.language.v1beta2.Entity\x12\x10\n\x08language\x18\x02 \x01(\t\"\x97\x01\n\x16\x41nalyzeEntitiesRequest\x12\x39\n\x08\x64ocument\x18\x01 \x01(\x0b\x32\'.google.cloud.language.v1beta2.Document\x12\x42\n\rencoding_type\x18\x02 \x01(\x0e\x32+.google.cloud.language.v1beta2.EncodingType\"d\n\x17\x41nalyzeEntitiesResponse\x12\x37\n\x08\x65ntities\x18\x01 \x03(\x0b\x32%.google.cloud.language.v1beta2.Entity\x12\x10\n\x08language\x18\x02 \x01(\t\"\x95\x01\n\x14\x41nalyzeSyntaxRequest\x12\x39\n\x08\x64ocument\x18\x01 \x01(\x0b\x32\'.google.cloud.language.v1beta2.Document\x12\x42\n\rencoding_type\x18\x02 \x01(\x0e\x32+.google.cloud.language.v1beta2.EncodingType\"\x9b\x01\n\x15\x41nalyzeSyntaxResponse\x12:\n\tsentences\x18\x01 \x03(\x0b\x32\'.google.cloud.language.v1beta2.Sentence\x12\x34\n\x06tokens\x18\x02 \x03(\x0b\x32$.google.cloud.language.v1beta2.Token\x12\x10\n\x08language\x18\x03 \x01(\t\"P\n\x13\x43lassifyTextRequest\x12\x39\n\x08\x64ocument\x18\x01 \x01(\x0b\x32\'.google.cloud.language.v1beta2.Document\"a\n\x14\x43lassifyTextResponse\x12I\n\ncategories\x18\x01 \x03(\x0b\x32\x35.google.cloud.language.v1beta2.ClassificationCategory\"\xff\x02\n\x13\x41nnotateTextRequest\x12\x39\n\x08\x64ocument\x18\x01 \x01(\x0b\x32\'.google.cloud.language.v1beta2.Document\x12M\n\x08\x66\x65\x61tures\x18\x02 \x01(\x0b\x32;.google.cloud.language.v1beta2.AnnotateTextRequest.Features\x12\x42\n\rencoding_type\x18\x03 \x01(\x0e\x32+.google.cloud.language.v1beta2.EncodingType\x1a\x99\x01\n\x08\x46\x65\x61tures\x12\x16\n\x0e\x65xtract_syntax\x18\x01 \x01(\x08\x12\x18\n\x10\x65xtract_entities\x18\x02 \x01(\x08\x12\"\n\x1a\x65xtract_document_sentiment\x18\x03 \x01(\x08\x12 \n\x18\x65xtract_entity_sentiment\x18\x04 \x01(\x08\x12\x15\n\rclassify_text\x18\x06 \x01(\x08\"\xe4\x02\n\x14\x41nnotateTextResponse\x12:\n\tsentences\x18\x01 \x03(\x0b\x32\'.google.cloud.language.v1beta2.Sentence\x12\x34\n\x06tokens\x18\x02 \x03(\x0b\x32$.google.cloud.language.v1beta2.Token\x12\x37\n\x08\x65ntities\x18\x03 \x03(\x0b\x32%.google.cloud.language.v1beta2.Entity\x12\x44\n\x12\x64ocument_sentiment\x18\x04 \x01(\x0b\x32(.google.cloud.language.v1beta2.Sentiment\x12\x10\n\x08language\x18\x05 \x01(\t\x12I\n\ncategories\x18\x06 \x03(\x0b\x32\x35.google.cloud.language.v1beta2.ClassificationCategory*8\n\x0c\x45ncodingType\x12\x08\n\x04NONE\x10\x00\x12\x08\n\x04UTF8\x10\x01\x12\t\n\x05UTF16\x10\x02\x12\t\n\x05UTF32\x10\x03\x32\xbd\x08\n\x0fLanguageService\x12\xb3\x01\n\x10\x41nalyzeSentiment\x12\x36.google.cloud.language.v1beta2.AnalyzeSentimentRequest\x1a\x37.google.cloud.language.v1beta2.AnalyzeSentimentResponse\".\x82\xd3\xe4\x93\x02(\"#/v1beta2/documents:analyzeSentiment:\x01*\x12\xaf\x01\n\x0f\x41nalyzeEntities\x12\x35.google.cloud.language.v1beta2.AnalyzeEntitiesRequest\x1a\x36.google.cloud.language.v1beta2.AnalyzeEntitiesResponse\"-\x82\xd3\xe4\x93\x02\'\"\"/v1beta2/documents:analyzeEntities:\x01*\x12\xcb\x01\n\x16\x41nalyzeEntitySentiment\x12<.google.cloud.language.v1beta2.AnalyzeEntitySentimentRequest\x1a=.google.cloud.language.v1beta2.AnalyzeEntitySentimentResponse\"4\x82\xd3\xe4\x93\x02.\")/v1beta2/documents:analyzeEntitySentiment:\x01*\x12\xa7\x01\n\rAnalyzeSyntax\x12\x33.google.cloud.language.v1beta2.AnalyzeSyntaxRequest\x1a\x34.google.cloud.language.v1beta2.AnalyzeSyntaxResponse\"+\x82\xd3\xe4\x93\x02%\" /v1beta2/documents:analyzeSyntax:\x01*\x12\xa3\x01\n\x0c\x43lassifyText\x12\x32.google.cloud.language.v1beta2.ClassifyTextRequest\x1a\x33.google.cloud.language.v1beta2.ClassifyTextResponse\"*\x82\xd3\xe4\x93\x02$\"\x1f/v1beta2/documents:classifyText:\x01*\x12\xa3\x01\n\x0c\x41nnotateText\x12\x32.google.cloud.language.v1beta2.AnnotateTextRequest\x1a\x33.google.cloud.language.v1beta2.AnnotateTextResponse\"*\x82\xd3\xe4\x93\x02$\"\x1f/v1beta2/documents:annotateText:\x01*B\x82\x01\n!com.google.cloud.language.v1beta2B\x14LanguageServiceProtoP\x01ZEgoogle.golang.org/genproto/googleapis/cloud/language/v1beta2;languageb\x06proto3')
-  ,
-  dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR,google_dot_longrunning_dot_operations__pb2.DESCRIPTOR,google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,google_dot_rpc_dot_status__pb2.DESCRIPTOR,])
+    name="google/cloud/language_v1beta2/proto/language_service.proto",
+    package="google.cloud.language.v1beta2",
+    syntax="proto3",
+    serialized_pb=_b(
+        '\n:google/cloud/language_v1beta2/proto/language_service.proto\x12\x1dgoogle.cloud.language.v1beta2\x1a\x1cgoogle/api/annotations.proto\x1a#google/longrunning/operations.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x17google/rpc/status.proto"\xc8\x01\n\x08\x44ocument\x12:\n\x04type\x18\x01 \x01(\x0e\x32,.google.cloud.language.v1beta2.Document.Type\x12\x11\n\x07\x63ontent\x18\x02 \x01(\tH\x00\x12\x19\n\x0fgcs_content_uri\x18\x03 \x01(\tH\x00\x12\x10\n\x08language\x18\x04 \x01(\t"6\n\x04Type\x12\x14\n\x10TYPE_UNSPECIFIED\x10\x00\x12\x0e\n\nPLAIN_TEXT\x10\x01\x12\x08\n\x04HTML\x10\x02\x42\x08\n\x06source"~\n\x08Sentence\x12\x35\n\x04text\x18\x01 \x01(\x0b\x32\'.google.cloud.language.v1beta2.TextSpan\x12;\n\tsentiment\x18\x02 \x01(\x0b\x32(.google.cloud.language.v1beta2.Sentiment"\xd2\x03\n\x06\x45ntity\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x38\n\x04type\x18\x02 \x01(\x0e\x32*.google.cloud.language.v1beta2.Entity.Type\x12\x45\n\x08metadata\x18\x03 \x03(\x0b\x32\x33.google.cloud.language.v1beta2.Entity.MetadataEntry\x12\x10\n\x08salience\x18\x04 \x01(\x02\x12>\n\x08mentions\x18\x05 \x03(\x0b\x32,.google.cloud.language.v1beta2.EntityMention\x12;\n\tsentiment\x18\x06 \x01(\x0b\x32(.google.cloud.language.v1beta2.Sentiment\x1a/\n\rMetadataEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01"y\n\x04Type\x12\x0b\n\x07UNKNOWN\x10\x00\x12\n\n\x06PERSON\x10\x01\x12\x0c\n\x08LOCATION\x10\x02\x12\x10\n\x0cORGANIZATION\x10\x03\x12\t\n\x05\x45VENT\x10\x04\x12\x0f\n\x0bWORK_OF_ART\x10\x05\x12\x11\n\rCONSUMER_GOOD\x10\x06\x12\t\n\x05OTHER\x10\x07"\xda\x01\n\x05Token\x12\x35\n\x04text\x18\x01 \x01(\x0b\x32\'.google.cloud.language.v1beta2.TextSpan\x12\x43\n\x0epart_of_speech\x18\x02 \x01(\x0b\x32+.google.cloud.language.v1beta2.PartOfSpeech\x12\x46\n\x0f\x64\x65pendency_edge\x18\x03 \x01(\x0b\x32-.google.cloud.language.v1beta2.DependencyEdge\x12\r\n\x05lemma\x18\x04 \x01(\t"-\n\tSentiment\x12\x11\n\tmagnitude\x18\x02 \x01(\x02\x12\r\n\x05score\x18\x03 \x01(\x02"\xdf\x10\n\x0cPartOfSpeech\x12<\n\x03tag\x18\x01 \x01(\x0e\x32/.google.cloud.language.v1beta2.PartOfSpeech.Tag\x12\x42\n\x06\x61spect\x18\x02 \x01(\x0e\x32\x32.google.cloud.language.v1beta2.PartOfSpeech.Aspect\x12>\n\x04\x63\x61se\x18\x03 \x01(\x0e\x32\x30.google.cloud.language.v1beta2.PartOfSpeech.Case\x12>\n\x04\x66orm\x18\x04 \x01(\x0e\x32\x30.google.cloud.language.v1beta2.PartOfSpeech.Form\x12\x42\n\x06gender\x18\x05 \x01(\x0e\x32\x32.google.cloud.language.v1beta2.PartOfSpeech.Gender\x12>\n\x04mood\x18\x06 \x01(\x0e\x32\x30.google.cloud.language.v1beta2.PartOfSpeech.Mood\x12\x42\n\x06number\x18\x07 \x01(\x0e\x32\x32.google.cloud.language.v1beta2.PartOfSpeech.Number\x12\x42\n\x06person\x18\x08 \x01(\x0e\x32\x32.google.cloud.language.v1beta2.PartOfSpeech.Person\x12\x42\n\x06proper\x18\t \x01(\x0e\x32\x32.google.cloud.language.v1beta2.PartOfSpeech.Proper\x12L\n\x0breciprocity\x18\n \x01(\x0e\x32\x37.google.cloud.language.v1beta2.PartOfSpeech.Reciprocity\x12@\n\x05tense\x18\x0b \x01(\x0e\x32\x31.google.cloud.language.v1beta2.PartOfSpeech.Tense\x12@\n\x05voice\x18\x0c \x01(\x0e\x32\x31.google.cloud.language.v1beta2.PartOfSpeech.Voice"\x8d\x01\n\x03Tag\x12\x0b\n\x07UNKNOWN\x10\x00\x12\x07\n\x03\x41\x44J\x10\x01\x12\x07\n\x03\x41\x44P\x10\x02\x12\x07\n\x03\x41\x44V\x10\x03\x12\x08\n\x04\x43ONJ\x10\x04\x12\x07\n\x03\x44\x45T\x10\x05\x12\x08\n\x04NOUN\x10\x06\x12\x07\n\x03NUM\x10\x07\x12\x08\n\x04PRON\x10\x08\x12\x07\n\x03PRT\x10\t\x12\t\n\x05PUNCT\x10\n\x12\x08\n\x04VERB\x10\x0b\x12\x05\n\x01X\x10\x0c\x12\t\n\x05\x41\x46\x46IX\x10\r"O\n\x06\x41spect\x12\x12\n\x0e\x41SPECT_UNKNOWN\x10\x00\x12\x0e\n\nPERFECTIVE\x10\x01\x12\x10\n\x0cIMPERFECTIVE\x10\x02\x12\x0f\n\x0bPROGRESSIVE\x10\x03"\xf8\x01\n\x04\x43\x61se\x12\x10\n\x0c\x43\x41SE_UNKNOWN\x10\x00\x12\x0e\n\nACCUSATIVE\x10\x01\x12\r\n\tADVERBIAL\x10\x02\x12\x11\n\rCOMPLEMENTIVE\x10\x03\x12\n\n\x06\x44\x41TIVE\x10\x04\x12\x0c\n\x08GENITIVE\x10\x05\x12\x10\n\x0cINSTRUMENTAL\x10\x06\x12\x0c\n\x08LOCATIVE\x10\x07\x12\x0e\n\nNOMINATIVE\x10\x08\x12\x0b\n\x07OBLIQUE\x10\t\x12\r\n\tPARTITIVE\x10\n\x12\x11\n\rPREPOSITIONAL\x10\x0b\x12\x12\n\x0eREFLEXIVE_CASE\x10\x0c\x12\x11\n\rRELATIVE_CASE\x10\r\x12\x0c\n\x08VOCATIVE\x10\x0e"\xaf\x01\n\x04\x46orm\x12\x10\n\x0c\x46ORM_UNKNOWN\x10\x00\x12\x0c\n\x08\x41\x44NOMIAL\x10\x01\x12\r\n\tAUXILIARY\x10\x02\x12\x12\n\x0e\x43OMPLEMENTIZER\x10\x03\x12\x10\n\x0c\x46INAL_ENDING\x10\x04\x12\n\n\x06GERUND\x10\x05\x12\n\n\x06REALIS\x10\x06\x12\x0c\n\x08IRREALIS\x10\x07\x12\t\n\x05SHORT\x10\x08\x12\x08\n\x04LONG\x10\t\x12\t\n\x05ORDER\x10\n\x12\x0c\n\x08SPECIFIC\x10\x0b"E\n\x06Gender\x12\x12\n\x0eGENDER_UNKNOWN\x10\x00\x12\x0c\n\x08\x46\x45MININE\x10\x01\x12\r\n\tMASCULINE\x10\x02\x12\n\n\x06NEUTER\x10\x03"\x7f\n\x04Mood\x12\x10\n\x0cMOOD_UNKNOWN\x10\x00\x12\x14\n\x10\x43ONDITIONAL_MOOD\x10\x01\x12\x0e\n\nIMPERATIVE\x10\x02\x12\x0e\n\nINDICATIVE\x10\x03\x12\x11\n\rINTERROGATIVE\x10\x04\x12\x0b\n\x07JUSSIVE\x10\x05\x12\x0f\n\x0bSUBJUNCTIVE\x10\x06"@\n\x06Number\x12\x12\n\x0eNUMBER_UNKNOWN\x10\x00\x12\x0c\n\x08SINGULAR\x10\x01\x12\n\n\x06PLURAL\x10\x02\x12\x08\n\x04\x44UAL\x10\x03"T\n\x06Person\x12\x12\n\x0ePERSON_UNKNOWN\x10\x00\x12\t\n\x05\x46IRST\x10\x01\x12\n\n\x06SECOND\x10\x02\x12\t\n\x05THIRD\x10\x03\x12\x14\n\x10REFLEXIVE_PERSON\x10\x04"8\n\x06Proper\x12\x12\n\x0ePROPER_UNKNOWN\x10\x00\x12\n\n\x06PROPER\x10\x01\x12\x0e\n\nNOT_PROPER\x10\x02"J\n\x0bReciprocity\x12\x17\n\x13RECIPROCITY_UNKNOWN\x10\x00\x12\x0e\n\nRECIPROCAL\x10\x01\x12\x12\n\x0eNON_RECIPROCAL\x10\x02"s\n\x05Tense\x12\x11\n\rTENSE_UNKNOWN\x10\x00\x12\x15\n\x11\x43ONDITIONAL_TENSE\x10\x01\x12\n\n\x06\x46UTURE\x10\x02\x12\x08\n\x04PAST\x10\x03\x12\x0b\n\x07PRESENT\x10\x04\x12\r\n\tIMPERFECT\x10\x05\x12\x0e\n\nPLUPERFECT\x10\x06"B\n\x05Voice\x12\x11\n\rVOICE_UNKNOWN\x10\x00\x12\n\n\x06\x41\x43TIVE\x10\x01\x12\r\n\tCAUSATIVE\x10\x02\x12\x0b\n\x07PASSIVE\x10\x03"\x9a\x08\n\x0e\x44\x65pendencyEdge\x12\x18\n\x10head_token_index\x18\x01 \x01(\x05\x12\x42\n\x05label\x18\x02 \x01(\x0e\x32\x33.google.cloud.language.v1beta2.DependencyEdge.Label"\xa9\x07\n\x05Label\x12\x0b\n\x07UNKNOWN\x10\x00\x12\n\n\x06\x41\x42\x42REV\x10\x01\x12\t\n\x05\x41\x43OMP\x10\x02\x12\t\n\x05\x41\x44VCL\x10\x03\x12\n\n\x06\x41\x44VMOD\x10\x04\x12\x08\n\x04\x41MOD\x10\x05\x12\t\n\x05\x41PPOS\x10\x06\x12\x08\n\x04\x41TTR\x10\x07\x12\x07\n\x03\x41UX\x10\x08\x12\x0b\n\x07\x41UXPASS\x10\t\x12\x06\n\x02\x43\x43\x10\n\x12\t\n\x05\x43\x43OMP\x10\x0b\x12\x08\n\x04\x43ONJ\x10\x0c\x12\t\n\x05\x43SUBJ\x10\r\x12\r\n\tCSUBJPASS\x10\x0e\x12\x07\n\x03\x44\x45P\x10\x0f\x12\x07\n\x03\x44\x45T\x10\x10\x12\r\n\tDISCOURSE\x10\x11\x12\x08\n\x04\x44OBJ\x10\x12\x12\x08\n\x04\x45XPL\x10\x13\x12\x0c\n\x08GOESWITH\x10\x14\x12\x08\n\x04IOBJ\x10\x15\x12\x08\n\x04MARK\x10\x16\x12\x07\n\x03MWE\x10\x17\x12\x07\n\x03MWV\x10\x18\x12\x07\n\x03NEG\x10\x19\x12\x06\n\x02NN\x10\x1a\x12\x0c\n\x08NPADVMOD\x10\x1b\x12\t\n\x05NSUBJ\x10\x1c\x12\r\n\tNSUBJPASS\x10\x1d\x12\x07\n\x03NUM\x10\x1e\x12\n\n\x06NUMBER\x10\x1f\x12\x05\n\x01P\x10 \x12\r\n\tPARATAXIS\x10!\x12\x0b\n\x07PARTMOD\x10"\x12\t\n\x05PCOMP\x10#\x12\x08\n\x04POBJ\x10$\x12\x08\n\x04POSS\x10%\x12\x0b\n\x07POSTNEG\x10&\x12\x0b\n\x07PRECOMP\x10\'\x12\x0b\n\x07PRECONJ\x10(\x12\n\n\x06PREDET\x10)\x12\x08\n\x04PREF\x10*\x12\x08\n\x04PREP\x10+\x12\t\n\x05PRONL\x10,\x12\x07\n\x03PRT\x10-\x12\x06\n\x02PS\x10.\x12\x0c\n\x08QUANTMOD\x10/\x12\t\n\x05RCMOD\x10\x30\x12\x0c\n\x08RCMODREL\x10\x31\x12\t\n\x05RDROP\x10\x32\x12\x07\n\x03REF\x10\x33\x12\x0b\n\x07REMNANT\x10\x34\x12\x0e\n\nREPARANDUM\x10\x35\x12\x08\n\x04ROOT\x10\x36\x12\x08\n\x04SNUM\x10\x37\x12\x08\n\x04SUFF\x10\x38\x12\x08\n\x04TMOD\x10\x39\x12\t\n\x05TOPIC\x10:\x12\x08\n\x04VMOD\x10;\x12\x0c\n\x08VOCATIVE\x10<\x12\t\n\x05XCOMP\x10=\x12\n\n\x06SUFFIX\x10>\x12\t\n\x05TITLE\x10?\x12\x0c\n\x08\x41\x44VPHMOD\x10@\x12\x0b\n\x07\x41UXCAUS\x10\x41\x12\t\n\x05\x41UXVV\x10\x42\x12\t\n\x05\x44TMOD\x10\x43\x12\x0b\n\x07\x46OREIGN\x10\x44\x12\x06\n\x02KW\x10\x45\x12\x08\n\x04LIST\x10\x46\x12\x08\n\x04NOMC\x10G\x12\x0c\n\x08NOMCSUBJ\x10H\x12\x10\n\x0cNOMCSUBJPASS\x10I\x12\x08\n\x04NUMC\x10J\x12\x07\n\x03\x43OP\x10K\x12\x0e\n\nDISLOCATED\x10L\x12\x07\n\x03\x41SP\x10M\x12\x08\n\x04GMOD\x10N\x12\x08\n\x04GOBJ\x10O\x12\n\n\x06INFMOD\x10P\x12\x07\n\x03MES\x10Q\x12\t\n\x05NCOMP\x10R"\xf6\x01\n\rEntityMention\x12\x35\n\x04text\x18\x01 \x01(\x0b\x32\'.google.cloud.language.v1beta2.TextSpan\x12?\n\x04type\x18\x02 \x01(\x0e\x32\x31.google.cloud.language.v1beta2.EntityMention.Type\x12;\n\tsentiment\x18\x03 \x01(\x0b\x32(.google.cloud.language.v1beta2.Sentiment"0\n\x04Type\x12\x10\n\x0cTYPE_UNKNOWN\x10\x00\x12\n\n\x06PROPER\x10\x01\x12\n\n\x06\x43OMMON\x10\x02"1\n\x08TextSpan\x12\x0f\n\x07\x63ontent\x18\x01 \x01(\t\x12\x14\n\x0c\x62\x65gin_offset\x18\x02 \x01(\x05":\n\x16\x43lassificationCategory\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x12\n\nconfidence\x18\x02 \x01(\x02"\x98\x01\n\x17\x41nalyzeSentimentRequest\x12\x39\n\x08\x64ocument\x18\x01 \x01(\x0b\x32\'.google.cloud.language.v1beta2.Document\x12\x42\n\rencoding_type\x18\x02 \x01(\x0e\x32+.google.cloud.language.v1beta2.EncodingType"\xae\x01\n\x18\x41nalyzeSentimentResponse\x12\x44\n\x12\x64ocument_sentiment\x18\x01 \x01(\x0b\x32(.google.cloud.language.v1beta2.Sentiment\x12\x10\n\x08language\x18\x02 \x01(\t\x12:\n\tsentences\x18\x03 \x03(\x0b\x32\'.google.cloud.language.v1beta2.Sentence"\x9e\x01\n\x1d\x41nalyzeEntitySentimentRequest\x12\x39\n\x08\x64ocument\x18\x01 \x01(\x0b\x32\'.google.cloud.language.v1beta2.Document\x12\x42\n\rencoding_type\x18\x02 \x01(\x0e\x32+.google.cloud.language.v1beta2.EncodingType"k\n\x1e\x41nalyzeEntitySentimentResponse\x12\x37\n\x08\x65ntities\x18\x01 \x03(\x0b\x32%.google.cloud.language.v1beta2.Entity\x12\x10\n\x08language\x18\x02 \x01(\t"\x97\x01\n\x16\x41nalyzeEntitiesRequest\x12\x39\n\x08\x64ocument\x18\x01 \x01(\x0b\x32\'.google.cloud.language.v1beta2.Document\x12\x42\n\rencoding_type\x18\x02 \x01(\x0e\x32+.google.cloud.language.v1beta2.EncodingType"d\n\x17\x41nalyzeEntitiesResponse\x12\x37\n\x08\x65ntities\x18\x01 \x03(\x0b\x32%.google.cloud.language.v1beta2.Entity\x12\x10\n\x08language\x18\x02 \x01(\t"\x95\x01\n\x14\x41nalyzeSyntaxRequest\x12\x39\n\x08\x64ocument\x18\x01 \x01(\x0b\x32\'.google.cloud.language.v1beta2.Document\x12\x42\n\rencoding_type\x18\x02 \x01(\x0e\x32+.google.cloud.language.v1beta2.EncodingType"\x9b\x01\n\x15\x41nalyzeSyntaxResponse\x12:\n\tsentences\x18\x01 \x03(\x0b\x32\'.google.cloud.language.v1beta2.Sentence\x12\x34\n\x06tokens\x18\x02 \x03(\x0b\x32$.google.cloud.language.v1beta2.Token\x12\x10\n\x08language\x18\x03 \x01(\t"P\n\x13\x43lassifyTextRequest\x12\x39\n\x08\x64ocument\x18\x01 \x01(\x0b\x32\'.google.cloud.language.v1beta2.Document"a\n\x14\x43lassifyTextResponse\x12I\n\ncategories\x18\x01 \x03(\x0b\x32\x35.google.cloud.language.v1beta2.ClassificationCategory"\xff\x02\n\x13\x41nnotateTextRequest\x12\x39\n\x08\x64ocument\x18\x01 \x01(\x0b\x32\'.google.cloud.language.v1beta2.Document\x12M\n\x08\x66\x65\x61tures\x18\x02 \x01(\x0b\x32;.google.cloud.language.v1beta2.AnnotateTextRequest.Features\x12\x42\n\rencoding_type\x18\x03 \x01(\x0e\x32+.google.cloud.language.v1beta2.EncodingType\x1a\x99\x01\n\x08\x46\x65\x61tures\x12\x16\n\x0e\x65xtract_syntax\x18\x01 \x01(\x08\x12\x18\n\x10\x65xtract_entities\x18\x02 \x01(\x08\x12"\n\x1a\x65xtract_document_sentiment\x18\x03 \x01(\x08\x12 \n\x18\x65xtract_entity_sentiment\x18\x04 \x01(\x08\x12\x15\n\rclassify_text\x18\x06 \x01(\x08"\xe4\x02\n\x14\x41nnotateTextResponse\x12:\n\tsentences\x18\x01 \x03(\x0b\x32\'.google.cloud.language.v1beta2.Sentence\x12\x34\n\x06tokens\x18\x02 \x03(\x0b\x32$.google.cloud.language.v1beta2.Token\x12\x37\n\x08\x65ntities\x18\x03 \x03(\x0b\x32%.google.cloud.language.v1beta2.Entity\x12\x44\n\x12\x64ocument_sentiment\x18\x04 \x01(\x0b\x32(.google.cloud.language.v1beta2.Sentiment\x12\x10\n\x08language\x18\x05 \x01(\t\x12I\n\ncategories\x18\x06 \x03(\x0b\x32\x35.google.cloud.language.v1beta2.ClassificationCategory*8\n\x0c\x45ncodingType\x12\x08\n\x04NONE\x10\x00\x12\x08\n\x04UTF8\x10\x01\x12\t\n\x05UTF16\x10\x02\x12\t\n\x05UTF32\x10\x03\x32\xbd\x08\n\x0fLanguageService\x12\xb3\x01\n\x10\x41nalyzeSentiment\x12\x36.google.cloud.language.v1beta2.AnalyzeSentimentRequest\x1a\x37.google.cloud.language.v1beta2.AnalyzeSentimentResponse".\x82\xd3\xe4\x93\x02("#/v1beta2/documents:analyzeSentiment:\x01*\x12\xaf\x01\n\x0f\x41nalyzeEntities\x12\x35.google.cloud.language.v1beta2.AnalyzeEntitiesRequest\x1a\x36.google.cloud.language.v1beta2.AnalyzeEntitiesResponse"-\x82\xd3\xe4\x93\x02\'""/v1beta2/documents:analyzeEntities:\x01*\x12\xcb\x01\n\x16\x41nalyzeEntitySentiment\x12<.google.cloud.language.v1beta2.AnalyzeEntitySentimentRequest\x1a=.google.cloud.language.v1beta2.AnalyzeEntitySentimentResponse"4\x82\xd3\xe4\x93\x02.")/v1beta2/documents:analyzeEntitySentiment:\x01*\x12\xa7\x01\n\rAnalyzeSyntax\x12\x33.google.cloud.language.v1beta2.AnalyzeSyntaxRequest\x1a\x34.google.cloud.language.v1beta2.AnalyzeSyntaxResponse"+\x82\xd3\xe4\x93\x02%" /v1beta2/documents:analyzeSyntax:\x01*\x12\xa3\x01\n\x0c\x43lassifyText\x12\x32.google.cloud.language.v1beta2.ClassifyTextRequest\x1a\x33.google.cloud.language.v1beta2.ClassifyTextResponse"*\x82\xd3\xe4\x93\x02$"\x1f/v1beta2/documents:classifyText:\x01*\x12\xa3\x01\n\x0c\x41nnotateText\x12\x32.google.cloud.language.v1beta2.AnnotateTextRequest\x1a\x33.google.cloud.language.v1beta2.AnnotateTextResponse"*\x82\xd3\xe4\x93\x02$"\x1f/v1beta2/documents:annotateText:\x01*B\x82\x01\n!com.google.cloud.language.v1beta2B\x14LanguageServiceProtoP\x01ZEgoogle.golang.org/genproto/googleapis/cloud/language/v1beta2;languageb\x06proto3'
+    ),
+    dependencies=[
+        google_dot_api_dot_annotations__pb2.DESCRIPTOR,
+        google_dot_longrunning_dot_operations__pb2.DESCRIPTOR,
+        google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,
+        google_dot_rpc_dot_status__pb2.DESCRIPTOR,
+    ],
+)
 
 _ENCODINGTYPE = _descriptor.EnumDescriptor(
-  name='EncodingType',
-  full_name='google.cloud.language.v1beta2.EncodingType',
-  filename=None,
-  file=DESCRIPTOR,
-  values=[
-    _descriptor.EnumValueDescriptor(
-      name='NONE', index=0, number=0,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='UTF8', index=1, number=1,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='UTF16', index=2, number=2,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='UTF32', index=3, number=3,
-      options=None,
-      type=None),
-  ],
-  containing_type=None,
-  options=None,
-  serialized_start=6939,
-  serialized_end=6995,
+    name="EncodingType",
+    full_name="google.cloud.language.v1beta2.EncodingType",
+    filename=None,
+    file=DESCRIPTOR,
+    values=[
+        _descriptor.EnumValueDescriptor(
+            name="NONE", index=0, number=0, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="UTF8", index=1, number=1, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="UTF16", index=2, number=2, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="UTF32", index=3, number=3, options=None, type=None
+        ),
+    ],
+    containing_type=None,
+    options=None,
+    serialized_start=6939,
+    serialized_end=6995,
 )
 _sym_db.RegisterEnumDescriptor(_ENCODINGTYPE)
 
@@ -66,2094 +73,2674 @@ UTF32 = 3
 
 
 _DOCUMENT_TYPE = _descriptor.EnumDescriptor(
-  name='Type',
-  full_name='google.cloud.language.v1beta2.Document.Type',
-  filename=None,
-  file=DESCRIPTOR,
-  values=[
-    _descriptor.EnumValueDescriptor(
-      name='TYPE_UNSPECIFIED', index=0, number=0,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='PLAIN_TEXT', index=1, number=1,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='HTML', index=2, number=2,
-      options=None,
-      type=None),
-  ],
-  containing_type=None,
-  options=None,
-  serialized_start=355,
-  serialized_end=409,
+    name="Type",
+    full_name="google.cloud.language.v1beta2.Document.Type",
+    filename=None,
+    file=DESCRIPTOR,
+    values=[
+        _descriptor.EnumValueDescriptor(
+            name="TYPE_UNSPECIFIED", index=0, number=0, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="PLAIN_TEXT", index=1, number=1, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="HTML", index=2, number=2, options=None, type=None
+        ),
+    ],
+    containing_type=None,
+    options=None,
+    serialized_start=355,
+    serialized_end=409,
 )
 _sym_db.RegisterEnumDescriptor(_DOCUMENT_TYPE)
 
 _ENTITY_TYPE = _descriptor.EnumDescriptor(
-  name='Type',
-  full_name='google.cloud.language.v1beta2.Entity.Type',
-  filename=None,
-  file=DESCRIPTOR,
-  values=[
-    _descriptor.EnumValueDescriptor(
-      name='UNKNOWN', index=0, number=0,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='PERSON', index=1, number=1,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='LOCATION', index=2, number=2,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='ORGANIZATION', index=3, number=3,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='EVENT', index=4, number=4,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='WORK_OF_ART', index=5, number=5,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='CONSUMER_GOOD', index=6, number=6,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='OTHER', index=7, number=7,
-      options=None,
-      type=None),
-  ],
-  containing_type=None,
-  options=None,
-  serialized_start=895,
-  serialized_end=1016,
+    name="Type",
+    full_name="google.cloud.language.v1beta2.Entity.Type",
+    filename=None,
+    file=DESCRIPTOR,
+    values=[
+        _descriptor.EnumValueDescriptor(
+            name="UNKNOWN", index=0, number=0, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="PERSON", index=1, number=1, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="LOCATION", index=2, number=2, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="ORGANIZATION", index=3, number=3, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="EVENT", index=4, number=4, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="WORK_OF_ART", index=5, number=5, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="CONSUMER_GOOD", index=6, number=6, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="OTHER", index=7, number=7, options=None, type=None
+        ),
+    ],
+    containing_type=None,
+    options=None,
+    serialized_start=895,
+    serialized_end=1016,
 )
 _sym_db.RegisterEnumDescriptor(_ENTITY_TYPE)
 
 _PARTOFSPEECH_TAG = _descriptor.EnumDescriptor(
-  name='Tag',
-  full_name='google.cloud.language.v1beta2.PartOfSpeech.Tag',
-  filename=None,
-  file=DESCRIPTOR,
-  values=[
-    _descriptor.EnumValueDescriptor(
-      name='UNKNOWN', index=0, number=0,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='ADJ', index=1, number=1,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='ADP', index=2, number=2,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='ADV', index=3, number=3,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='CONJ', index=4, number=4,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='DET', index=5, number=5,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='NOUN', index=6, number=6,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='NUM', index=7, number=7,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='PRON', index=8, number=8,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='PRT', index=9, number=9,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='PUNCT', index=10, number=10,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='VERB', index=11, number=11,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='X', index=12, number=12,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='AFFIX', index=13, number=13,
-      options=None,
-      type=None),
-  ],
-  containing_type=None,
-  options=None,
-  serialized_start=2108,
-  serialized_end=2249,
+    name="Tag",
+    full_name="google.cloud.language.v1beta2.PartOfSpeech.Tag",
+    filename=None,
+    file=DESCRIPTOR,
+    values=[
+        _descriptor.EnumValueDescriptor(
+            name="UNKNOWN", index=0, number=0, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="ADJ", index=1, number=1, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="ADP", index=2, number=2, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="ADV", index=3, number=3, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="CONJ", index=4, number=4, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="DET", index=5, number=5, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="NOUN", index=6, number=6, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="NUM", index=7, number=7, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="PRON", index=8, number=8, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="PRT", index=9, number=9, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="PUNCT", index=10, number=10, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="VERB", index=11, number=11, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="X", index=12, number=12, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="AFFIX", index=13, number=13, options=None, type=None
+        ),
+    ],
+    containing_type=None,
+    options=None,
+    serialized_start=2108,
+    serialized_end=2249,
 )
 _sym_db.RegisterEnumDescriptor(_PARTOFSPEECH_TAG)
 
 _PARTOFSPEECH_ASPECT = _descriptor.EnumDescriptor(
-  name='Aspect',
-  full_name='google.cloud.language.v1beta2.PartOfSpeech.Aspect',
-  filename=None,
-  file=DESCRIPTOR,
-  values=[
-    _descriptor.EnumValueDescriptor(
-      name='ASPECT_UNKNOWN', index=0, number=0,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='PERFECTIVE', index=1, number=1,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='IMPERFECTIVE', index=2, number=2,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='PROGRESSIVE', index=3, number=3,
-      options=None,
-      type=None),
-  ],
-  containing_type=None,
-  options=None,
-  serialized_start=2251,
-  serialized_end=2330,
+    name="Aspect",
+    full_name="google.cloud.language.v1beta2.PartOfSpeech.Aspect",
+    filename=None,
+    file=DESCRIPTOR,
+    values=[
+        _descriptor.EnumValueDescriptor(
+            name="ASPECT_UNKNOWN", index=0, number=0, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="PERFECTIVE", index=1, number=1, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="IMPERFECTIVE", index=2, number=2, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="PROGRESSIVE", index=3, number=3, options=None, type=None
+        ),
+    ],
+    containing_type=None,
+    options=None,
+    serialized_start=2251,
+    serialized_end=2330,
 )
 _sym_db.RegisterEnumDescriptor(_PARTOFSPEECH_ASPECT)
 
 _PARTOFSPEECH_CASE = _descriptor.EnumDescriptor(
-  name='Case',
-  full_name='google.cloud.language.v1beta2.PartOfSpeech.Case',
-  filename=None,
-  file=DESCRIPTOR,
-  values=[
-    _descriptor.EnumValueDescriptor(
-      name='CASE_UNKNOWN', index=0, number=0,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='ACCUSATIVE', index=1, number=1,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='ADVERBIAL', index=2, number=2,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='COMPLEMENTIVE', index=3, number=3,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='DATIVE', index=4, number=4,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='GENITIVE', index=5, number=5,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='INSTRUMENTAL', index=6, number=6,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='LOCATIVE', index=7, number=7,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='NOMINATIVE', index=8, number=8,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='OBLIQUE', index=9, number=9,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='PARTITIVE', index=10, number=10,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='PREPOSITIONAL', index=11, number=11,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='REFLEXIVE_CASE', index=12, number=12,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='RELATIVE_CASE', index=13, number=13,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='VOCATIVE', index=14, number=14,
-      options=None,
-      type=None),
-  ],
-  containing_type=None,
-  options=None,
-  serialized_start=2333,
-  serialized_end=2581,
+    name="Case",
+    full_name="google.cloud.language.v1beta2.PartOfSpeech.Case",
+    filename=None,
+    file=DESCRIPTOR,
+    values=[
+        _descriptor.EnumValueDescriptor(
+            name="CASE_UNKNOWN", index=0, number=0, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="ACCUSATIVE", index=1, number=1, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="ADVERBIAL", index=2, number=2, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="COMPLEMENTIVE", index=3, number=3, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="DATIVE", index=4, number=4, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="GENITIVE", index=5, number=5, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="INSTRUMENTAL", index=6, number=6, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="LOCATIVE", index=7, number=7, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="NOMINATIVE", index=8, number=8, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="OBLIQUE", index=9, number=9, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="PARTITIVE", index=10, number=10, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="PREPOSITIONAL", index=11, number=11, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="REFLEXIVE_CASE", index=12, number=12, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="RELATIVE_CASE", index=13, number=13, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="VOCATIVE", index=14, number=14, options=None, type=None
+        ),
+    ],
+    containing_type=None,
+    options=None,
+    serialized_start=2333,
+    serialized_end=2581,
 )
 _sym_db.RegisterEnumDescriptor(_PARTOFSPEECH_CASE)
 
 _PARTOFSPEECH_FORM = _descriptor.EnumDescriptor(
-  name='Form',
-  full_name='google.cloud.language.v1beta2.PartOfSpeech.Form',
-  filename=None,
-  file=DESCRIPTOR,
-  values=[
-    _descriptor.EnumValueDescriptor(
-      name='FORM_UNKNOWN', index=0, number=0,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='ADNOMIAL', index=1, number=1,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='AUXILIARY', index=2, number=2,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='COMPLEMENTIZER', index=3, number=3,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='FINAL_ENDING', index=4, number=4,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='GERUND', index=5, number=5,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='REALIS', index=6, number=6,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='IRREALIS', index=7, number=7,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='SHORT', index=8, number=8,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='LONG', index=9, number=9,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='ORDER', index=10, number=10,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='SPECIFIC', index=11, number=11,
-      options=None,
-      type=None),
-  ],
-  containing_type=None,
-  options=None,
-  serialized_start=2584,
-  serialized_end=2759,
+    name="Form",
+    full_name="google.cloud.language.v1beta2.PartOfSpeech.Form",
+    filename=None,
+    file=DESCRIPTOR,
+    values=[
+        _descriptor.EnumValueDescriptor(
+            name="FORM_UNKNOWN", index=0, number=0, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="ADNOMIAL", index=1, number=1, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="AUXILIARY", index=2, number=2, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="COMPLEMENTIZER", index=3, number=3, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="FINAL_ENDING", index=4, number=4, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="GERUND", index=5, number=5, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="REALIS", index=6, number=6, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="IRREALIS", index=7, number=7, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="SHORT", index=8, number=8, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="LONG", index=9, number=9, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="ORDER", index=10, number=10, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="SPECIFIC", index=11, number=11, options=None, type=None
+        ),
+    ],
+    containing_type=None,
+    options=None,
+    serialized_start=2584,
+    serialized_end=2759,
 )
 _sym_db.RegisterEnumDescriptor(_PARTOFSPEECH_FORM)
 
 _PARTOFSPEECH_GENDER = _descriptor.EnumDescriptor(
-  name='Gender',
-  full_name='google.cloud.language.v1beta2.PartOfSpeech.Gender',
-  filename=None,
-  file=DESCRIPTOR,
-  values=[
-    _descriptor.EnumValueDescriptor(
-      name='GENDER_UNKNOWN', index=0, number=0,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='FEMININE', index=1, number=1,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='MASCULINE', index=2, number=2,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='NEUTER', index=3, number=3,
-      options=None,
-      type=None),
-  ],
-  containing_type=None,
-  options=None,
-  serialized_start=2761,
-  serialized_end=2830,
+    name="Gender",
+    full_name="google.cloud.language.v1beta2.PartOfSpeech.Gender",
+    filename=None,
+    file=DESCRIPTOR,
+    values=[
+        _descriptor.EnumValueDescriptor(
+            name="GENDER_UNKNOWN", index=0, number=0, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="FEMININE", index=1, number=1, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="MASCULINE", index=2, number=2, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="NEUTER", index=3, number=3, options=None, type=None
+        ),
+    ],
+    containing_type=None,
+    options=None,
+    serialized_start=2761,
+    serialized_end=2830,
 )
 _sym_db.RegisterEnumDescriptor(_PARTOFSPEECH_GENDER)
 
 _PARTOFSPEECH_MOOD = _descriptor.EnumDescriptor(
-  name='Mood',
-  full_name='google.cloud.language.v1beta2.PartOfSpeech.Mood',
-  filename=None,
-  file=DESCRIPTOR,
-  values=[
-    _descriptor.EnumValueDescriptor(
-      name='MOOD_UNKNOWN', index=0, number=0,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='CONDITIONAL_MOOD', index=1, number=1,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='IMPERATIVE', index=2, number=2,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='INDICATIVE', index=3, number=3,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='INTERROGATIVE', index=4, number=4,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='JUSSIVE', index=5, number=5,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='SUBJUNCTIVE', index=6, number=6,
-      options=None,
-      type=None),
-  ],
-  containing_type=None,
-  options=None,
-  serialized_start=2832,
-  serialized_end=2959,
+    name="Mood",
+    full_name="google.cloud.language.v1beta2.PartOfSpeech.Mood",
+    filename=None,
+    file=DESCRIPTOR,
+    values=[
+        _descriptor.EnumValueDescriptor(
+            name="MOOD_UNKNOWN", index=0, number=0, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="CONDITIONAL_MOOD", index=1, number=1, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="IMPERATIVE", index=2, number=2, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="INDICATIVE", index=3, number=3, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="INTERROGATIVE", index=4, number=4, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="JUSSIVE", index=5, number=5, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="SUBJUNCTIVE", index=6, number=6, options=None, type=None
+        ),
+    ],
+    containing_type=None,
+    options=None,
+    serialized_start=2832,
+    serialized_end=2959,
 )
 _sym_db.RegisterEnumDescriptor(_PARTOFSPEECH_MOOD)
 
 _PARTOFSPEECH_NUMBER = _descriptor.EnumDescriptor(
-  name='Number',
-  full_name='google.cloud.language.v1beta2.PartOfSpeech.Number',
-  filename=None,
-  file=DESCRIPTOR,
-  values=[
-    _descriptor.EnumValueDescriptor(
-      name='NUMBER_UNKNOWN', index=0, number=0,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='SINGULAR', index=1, number=1,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='PLURAL', index=2, number=2,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='DUAL', index=3, number=3,
-      options=None,
-      type=None),
-  ],
-  containing_type=None,
-  options=None,
-  serialized_start=2961,
-  serialized_end=3025,
+    name="Number",
+    full_name="google.cloud.language.v1beta2.PartOfSpeech.Number",
+    filename=None,
+    file=DESCRIPTOR,
+    values=[
+        _descriptor.EnumValueDescriptor(
+            name="NUMBER_UNKNOWN", index=0, number=0, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="SINGULAR", index=1, number=1, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="PLURAL", index=2, number=2, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="DUAL", index=3, number=3, options=None, type=None
+        ),
+    ],
+    containing_type=None,
+    options=None,
+    serialized_start=2961,
+    serialized_end=3025,
 )
 _sym_db.RegisterEnumDescriptor(_PARTOFSPEECH_NUMBER)
 
 _PARTOFSPEECH_PERSON = _descriptor.EnumDescriptor(
-  name='Person',
-  full_name='google.cloud.language.v1beta2.PartOfSpeech.Person',
-  filename=None,
-  file=DESCRIPTOR,
-  values=[
-    _descriptor.EnumValueDescriptor(
-      name='PERSON_UNKNOWN', index=0, number=0,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='FIRST', index=1, number=1,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='SECOND', index=2, number=2,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='THIRD', index=3, number=3,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='REFLEXIVE_PERSON', index=4, number=4,
-      options=None,
-      type=None),
-  ],
-  containing_type=None,
-  options=None,
-  serialized_start=3027,
-  serialized_end=3111,
+    name="Person",
+    full_name="google.cloud.language.v1beta2.PartOfSpeech.Person",
+    filename=None,
+    file=DESCRIPTOR,
+    values=[
+        _descriptor.EnumValueDescriptor(
+            name="PERSON_UNKNOWN", index=0, number=0, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="FIRST", index=1, number=1, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="SECOND", index=2, number=2, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="THIRD", index=3, number=3, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="REFLEXIVE_PERSON", index=4, number=4, options=None, type=None
+        ),
+    ],
+    containing_type=None,
+    options=None,
+    serialized_start=3027,
+    serialized_end=3111,
 )
 _sym_db.RegisterEnumDescriptor(_PARTOFSPEECH_PERSON)
 
 _PARTOFSPEECH_PROPER = _descriptor.EnumDescriptor(
-  name='Proper',
-  full_name='google.cloud.language.v1beta2.PartOfSpeech.Proper',
-  filename=None,
-  file=DESCRIPTOR,
-  values=[
-    _descriptor.EnumValueDescriptor(
-      name='PROPER_UNKNOWN', index=0, number=0,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='PROPER', index=1, number=1,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='NOT_PROPER', index=2, number=2,
-      options=None,
-      type=None),
-  ],
-  containing_type=None,
-  options=None,
-  serialized_start=3113,
-  serialized_end=3169,
+    name="Proper",
+    full_name="google.cloud.language.v1beta2.PartOfSpeech.Proper",
+    filename=None,
+    file=DESCRIPTOR,
+    values=[
+        _descriptor.EnumValueDescriptor(
+            name="PROPER_UNKNOWN", index=0, number=0, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="PROPER", index=1, number=1, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="NOT_PROPER", index=2, number=2, options=None, type=None
+        ),
+    ],
+    containing_type=None,
+    options=None,
+    serialized_start=3113,
+    serialized_end=3169,
 )
 _sym_db.RegisterEnumDescriptor(_PARTOFSPEECH_PROPER)
 
 _PARTOFSPEECH_RECIPROCITY = _descriptor.EnumDescriptor(
-  name='Reciprocity',
-  full_name='google.cloud.language.v1beta2.PartOfSpeech.Reciprocity',
-  filename=None,
-  file=DESCRIPTOR,
-  values=[
-    _descriptor.EnumValueDescriptor(
-      name='RECIPROCITY_UNKNOWN', index=0, number=0,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='RECIPROCAL', index=1, number=1,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='NON_RECIPROCAL', index=2, number=2,
-      options=None,
-      type=None),
-  ],
-  containing_type=None,
-  options=None,
-  serialized_start=3171,
-  serialized_end=3245,
+    name="Reciprocity",
+    full_name="google.cloud.language.v1beta2.PartOfSpeech.Reciprocity",
+    filename=None,
+    file=DESCRIPTOR,
+    values=[
+        _descriptor.EnumValueDescriptor(
+            name="RECIPROCITY_UNKNOWN", index=0, number=0, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="RECIPROCAL", index=1, number=1, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="NON_RECIPROCAL", index=2, number=2, options=None, type=None
+        ),
+    ],
+    containing_type=None,
+    options=None,
+    serialized_start=3171,
+    serialized_end=3245,
 )
 _sym_db.RegisterEnumDescriptor(_PARTOFSPEECH_RECIPROCITY)
 
 _PARTOFSPEECH_TENSE = _descriptor.EnumDescriptor(
-  name='Tense',
-  full_name='google.cloud.language.v1beta2.PartOfSpeech.Tense',
-  filename=None,
-  file=DESCRIPTOR,
-  values=[
-    _descriptor.EnumValueDescriptor(
-      name='TENSE_UNKNOWN', index=0, number=0,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='CONDITIONAL_TENSE', index=1, number=1,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='FUTURE', index=2, number=2,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='PAST', index=3, number=3,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='PRESENT', index=4, number=4,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='IMPERFECT', index=5, number=5,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='PLUPERFECT', index=6, number=6,
-      options=None,
-      type=None),
-  ],
-  containing_type=None,
-  options=None,
-  serialized_start=3247,
-  serialized_end=3362,
+    name="Tense",
+    full_name="google.cloud.language.v1beta2.PartOfSpeech.Tense",
+    filename=None,
+    file=DESCRIPTOR,
+    values=[
+        _descriptor.EnumValueDescriptor(
+            name="TENSE_UNKNOWN", index=0, number=0, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="CONDITIONAL_TENSE", index=1, number=1, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="FUTURE", index=2, number=2, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="PAST", index=3, number=3, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="PRESENT", index=4, number=4, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="IMPERFECT", index=5, number=5, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="PLUPERFECT", index=6, number=6, options=None, type=None
+        ),
+    ],
+    containing_type=None,
+    options=None,
+    serialized_start=3247,
+    serialized_end=3362,
 )
 _sym_db.RegisterEnumDescriptor(_PARTOFSPEECH_TENSE)
 
 _PARTOFSPEECH_VOICE = _descriptor.EnumDescriptor(
-  name='Voice',
-  full_name='google.cloud.language.v1beta2.PartOfSpeech.Voice',
-  filename=None,
-  file=DESCRIPTOR,
-  values=[
-    _descriptor.EnumValueDescriptor(
-      name='VOICE_UNKNOWN', index=0, number=0,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='ACTIVE', index=1, number=1,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='CAUSATIVE', index=2, number=2,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='PASSIVE', index=3, number=3,
-      options=None,
-      type=None),
-  ],
-  containing_type=None,
-  options=None,
-  serialized_start=3364,
-  serialized_end=3430,
+    name="Voice",
+    full_name="google.cloud.language.v1beta2.PartOfSpeech.Voice",
+    filename=None,
+    file=DESCRIPTOR,
+    values=[
+        _descriptor.EnumValueDescriptor(
+            name="VOICE_UNKNOWN", index=0, number=0, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="ACTIVE", index=1, number=1, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="CAUSATIVE", index=2, number=2, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="PASSIVE", index=3, number=3, options=None, type=None
+        ),
+    ],
+    containing_type=None,
+    options=None,
+    serialized_start=3364,
+    serialized_end=3430,
 )
 _sym_db.RegisterEnumDescriptor(_PARTOFSPEECH_VOICE)
 
 _DEPENDENCYEDGE_LABEL = _descriptor.EnumDescriptor(
-  name='Label',
-  full_name='google.cloud.language.v1beta2.DependencyEdge.Label',
-  filename=None,
-  file=DESCRIPTOR,
-  values=[
-    _descriptor.EnumValueDescriptor(
-      name='UNKNOWN', index=0, number=0,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='ABBREV', index=1, number=1,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='ACOMP', index=2, number=2,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='ADVCL', index=3, number=3,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='ADVMOD', index=4, number=4,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='AMOD', index=5, number=5,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='APPOS', index=6, number=6,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='ATTR', index=7, number=7,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='AUX', index=8, number=8,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='AUXPASS', index=9, number=9,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='CC', index=10, number=10,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='CCOMP', index=11, number=11,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='CONJ', index=12, number=12,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='CSUBJ', index=13, number=13,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='CSUBJPASS', index=14, number=14,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='DEP', index=15, number=15,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='DET', index=16, number=16,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='DISCOURSE', index=17, number=17,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='DOBJ', index=18, number=18,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='EXPL', index=19, number=19,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='GOESWITH', index=20, number=20,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='IOBJ', index=21, number=21,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='MARK', index=22, number=22,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='MWE', index=23, number=23,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='MWV', index=24, number=24,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='NEG', index=25, number=25,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='NN', index=26, number=26,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='NPADVMOD', index=27, number=27,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='NSUBJ', index=28, number=28,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='NSUBJPASS', index=29, number=29,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='NUM', index=30, number=30,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='NUMBER', index=31, number=31,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='P', index=32, number=32,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='PARATAXIS', index=33, number=33,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='PARTMOD', index=34, number=34,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='PCOMP', index=35, number=35,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='POBJ', index=36, number=36,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='POSS', index=37, number=37,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='POSTNEG', index=38, number=38,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='PRECOMP', index=39, number=39,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='PRECONJ', index=40, number=40,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='PREDET', index=41, number=41,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='PREF', index=42, number=42,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='PREP', index=43, number=43,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='PRONL', index=44, number=44,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='PRT', index=45, number=45,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='PS', index=46, number=46,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='QUANTMOD', index=47, number=47,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='RCMOD', index=48, number=48,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='RCMODREL', index=49, number=49,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='RDROP', index=50, number=50,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='REF', index=51, number=51,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='REMNANT', index=52, number=52,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='REPARANDUM', index=53, number=53,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='ROOT', index=54, number=54,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='SNUM', index=55, number=55,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='SUFF', index=56, number=56,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='TMOD', index=57, number=57,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='TOPIC', index=58, number=58,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='VMOD', index=59, number=59,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='VOCATIVE', index=60, number=60,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='XCOMP', index=61, number=61,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='SUFFIX', index=62, number=62,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='TITLE', index=63, number=63,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='ADVPHMOD', index=64, number=64,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='AUXCAUS', index=65, number=65,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='AUXVV', index=66, number=66,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='DTMOD', index=67, number=67,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='FOREIGN', index=68, number=68,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='KW', index=69, number=69,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='LIST', index=70, number=70,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='NOMC', index=71, number=71,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='NOMCSUBJ', index=72, number=72,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='NOMCSUBJPASS', index=73, number=73,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='NUMC', index=74, number=74,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='COP', index=75, number=75,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='DISLOCATED', index=76, number=76,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='ASP', index=77, number=77,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='GMOD', index=78, number=78,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='GOBJ', index=79, number=79,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='INFMOD', index=80, number=80,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='MES', index=81, number=81,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='NCOMP', index=82, number=82,
-      options=None,
-      type=None),
-  ],
-  containing_type=None,
-  options=None,
-  serialized_start=3546,
-  serialized_end=4483,
+    name="Label",
+    full_name="google.cloud.language.v1beta2.DependencyEdge.Label",
+    filename=None,
+    file=DESCRIPTOR,
+    values=[
+        _descriptor.EnumValueDescriptor(
+            name="UNKNOWN", index=0, number=0, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="ABBREV", index=1, number=1, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="ACOMP", index=2, number=2, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="ADVCL", index=3, number=3, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="ADVMOD", index=4, number=4, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="AMOD", index=5, number=5, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="APPOS", index=6, number=6, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="ATTR", index=7, number=7, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="AUX", index=8, number=8, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="AUXPASS", index=9, number=9, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="CC", index=10, number=10, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="CCOMP", index=11, number=11, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="CONJ", index=12, number=12, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="CSUBJ", index=13, number=13, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="CSUBJPASS", index=14, number=14, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="DEP", index=15, number=15, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="DET", index=16, number=16, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="DISCOURSE", index=17, number=17, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="DOBJ", index=18, number=18, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="EXPL", index=19, number=19, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="GOESWITH", index=20, number=20, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="IOBJ", index=21, number=21, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="MARK", index=22, number=22, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="MWE", index=23, number=23, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="MWV", index=24, number=24, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="NEG", index=25, number=25, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="NN", index=26, number=26, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="NPADVMOD", index=27, number=27, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="NSUBJ", index=28, number=28, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="NSUBJPASS", index=29, number=29, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="NUM", index=30, number=30, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="NUMBER", index=31, number=31, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="P", index=32, number=32, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="PARATAXIS", index=33, number=33, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="PARTMOD", index=34, number=34, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="PCOMP", index=35, number=35, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="POBJ", index=36, number=36, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="POSS", index=37, number=37, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="POSTNEG", index=38, number=38, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="PRECOMP", index=39, number=39, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="PRECONJ", index=40, number=40, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="PREDET", index=41, number=41, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="PREF", index=42, number=42, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="PREP", index=43, number=43, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="PRONL", index=44, number=44, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="PRT", index=45, number=45, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="PS", index=46, number=46, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="QUANTMOD", index=47, number=47, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="RCMOD", index=48, number=48, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="RCMODREL", index=49, number=49, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="RDROP", index=50, number=50, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="REF", index=51, number=51, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="REMNANT", index=52, number=52, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="REPARANDUM", index=53, number=53, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="ROOT", index=54, number=54, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="SNUM", index=55, number=55, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="SUFF", index=56, number=56, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="TMOD", index=57, number=57, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="TOPIC", index=58, number=58, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="VMOD", index=59, number=59, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="VOCATIVE", index=60, number=60, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="XCOMP", index=61, number=61, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="SUFFIX", index=62, number=62, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="TITLE", index=63, number=63, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="ADVPHMOD", index=64, number=64, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="AUXCAUS", index=65, number=65, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="AUXVV", index=66, number=66, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="DTMOD", index=67, number=67, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="FOREIGN", index=68, number=68, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="KW", index=69, number=69, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="LIST", index=70, number=70, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="NOMC", index=71, number=71, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="NOMCSUBJ", index=72, number=72, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="NOMCSUBJPASS", index=73, number=73, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="NUMC", index=74, number=74, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="COP", index=75, number=75, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="DISLOCATED", index=76, number=76, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="ASP", index=77, number=77, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="GMOD", index=78, number=78, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="GOBJ", index=79, number=79, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="INFMOD", index=80, number=80, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="MES", index=81, number=81, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="NCOMP", index=82, number=82, options=None, type=None
+        ),
+    ],
+    containing_type=None,
+    options=None,
+    serialized_start=3546,
+    serialized_end=4483,
 )
 _sym_db.RegisterEnumDescriptor(_DEPENDENCYEDGE_LABEL)
 
 _ENTITYMENTION_TYPE = _descriptor.EnumDescriptor(
-  name='Type',
-  full_name='google.cloud.language.v1beta2.EntityMention.Type',
-  filename=None,
-  file=DESCRIPTOR,
-  values=[
-    _descriptor.EnumValueDescriptor(
-      name='TYPE_UNKNOWN', index=0, number=0,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='PROPER', index=1, number=1,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='COMMON', index=2, number=2,
-      options=None,
-      type=None),
-  ],
-  containing_type=None,
-  options=None,
-  serialized_start=4684,
-  serialized_end=4732,
+    name="Type",
+    full_name="google.cloud.language.v1beta2.EntityMention.Type",
+    filename=None,
+    file=DESCRIPTOR,
+    values=[
+        _descriptor.EnumValueDescriptor(
+            name="TYPE_UNKNOWN", index=0, number=0, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="PROPER", index=1, number=1, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="COMMON", index=2, number=2, options=None, type=None
+        ),
+    ],
+    containing_type=None,
+    options=None,
+    serialized_start=4684,
+    serialized_end=4732,
 )
 _sym_db.RegisterEnumDescriptor(_ENTITYMENTION_TYPE)
 
 
 _DOCUMENT = _descriptor.Descriptor(
-  name='Document',
-  full_name='google.cloud.language.v1beta2.Document',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='type', full_name='google.cloud.language.v1beta2.Document.type', index=0,
-      number=1, type=14, cpp_type=8, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='content', full_name='google.cloud.language.v1beta2.Document.content', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='gcs_content_uri', full_name='google.cloud.language.v1beta2.Document.gcs_content_uri', index=2,
-      number=3, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='language', full_name='google.cloud.language.v1beta2.Document.language', index=3,
-      number=4, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-    _DOCUMENT_TYPE,
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-    _descriptor.OneofDescriptor(
-      name='source', full_name='google.cloud.language.v1beta2.Document.source',
-      index=0, containing_type=None, fields=[]),
-  ],
-  serialized_start=219,
-  serialized_end=419,
+    name="Document",
+    full_name="google.cloud.language.v1beta2.Document",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="type",
+            full_name="google.cloud.language.v1beta2.Document.type",
+            index=0,
+            number=1,
+            type=14,
+            cpp_type=8,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="content",
+            full_name="google.cloud.language.v1beta2.Document.content",
+            index=1,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="gcs_content_uri",
+            full_name="google.cloud.language.v1beta2.Document.gcs_content_uri",
+            index=2,
+            number=3,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="language",
+            full_name="google.cloud.language.v1beta2.Document.language",
+            index=3,
+            number=4,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[_DOCUMENT_TYPE],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[
+        _descriptor.OneofDescriptor(
+            name="source",
+            full_name="google.cloud.language.v1beta2.Document.source",
+            index=0,
+            containing_type=None,
+            fields=[],
+        )
+    ],
+    serialized_start=219,
+    serialized_end=419,
 )
 
 
 _SENTENCE = _descriptor.Descriptor(
-  name='Sentence',
-  full_name='google.cloud.language.v1beta2.Sentence',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='text', full_name='google.cloud.language.v1beta2.Sentence.text', index=0,
-      number=1, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='sentiment', full_name='google.cloud.language.v1beta2.Sentence.sentiment', index=1,
-      number=2, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=421,
-  serialized_end=547,
+    name="Sentence",
+    full_name="google.cloud.language.v1beta2.Sentence",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="text",
+            full_name="google.cloud.language.v1beta2.Sentence.text",
+            index=0,
+            number=1,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="sentiment",
+            full_name="google.cloud.language.v1beta2.Sentence.sentiment",
+            index=1,
+            number=2,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=421,
+    serialized_end=547,
 )
 
 
 _ENTITY_METADATAENTRY = _descriptor.Descriptor(
-  name='MetadataEntry',
-  full_name='google.cloud.language.v1beta2.Entity.MetadataEntry',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='key', full_name='google.cloud.language.v1beta2.Entity.MetadataEntry.key', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='value', full_name='google.cloud.language.v1beta2.Entity.MetadataEntry.value', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=_descriptor._ParseOptions(descriptor_pb2.MessageOptions(), _b('8\001')),
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=846,
-  serialized_end=893,
+    name="MetadataEntry",
+    full_name="google.cloud.language.v1beta2.Entity.MetadataEntry",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="key",
+            full_name="google.cloud.language.v1beta2.Entity.MetadataEntry.key",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="value",
+            full_name="google.cloud.language.v1beta2.Entity.MetadataEntry.value",
+            index=1,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=_descriptor._ParseOptions(descriptor_pb2.MessageOptions(), _b("8\001")),
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=846,
+    serialized_end=893,
 )
 
 _ENTITY = _descriptor.Descriptor(
-  name='Entity',
-  full_name='google.cloud.language.v1beta2.Entity',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='name', full_name='google.cloud.language.v1beta2.Entity.name', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='type', full_name='google.cloud.language.v1beta2.Entity.type', index=1,
-      number=2, type=14, cpp_type=8, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='metadata', full_name='google.cloud.language.v1beta2.Entity.metadata', index=2,
-      number=3, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='salience', full_name='google.cloud.language.v1beta2.Entity.salience', index=3,
-      number=4, type=2, cpp_type=6, label=1,
-      has_default_value=False, default_value=float(0),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='mentions', full_name='google.cloud.language.v1beta2.Entity.mentions', index=4,
-      number=5, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='sentiment', full_name='google.cloud.language.v1beta2.Entity.sentiment', index=5,
-      number=6, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[_ENTITY_METADATAENTRY, ],
-  enum_types=[
-    _ENTITY_TYPE,
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=550,
-  serialized_end=1016,
+    name="Entity",
+    full_name="google.cloud.language.v1beta2.Entity",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="name",
+            full_name="google.cloud.language.v1beta2.Entity.name",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="type",
+            full_name="google.cloud.language.v1beta2.Entity.type",
+            index=1,
+            number=2,
+            type=14,
+            cpp_type=8,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="metadata",
+            full_name="google.cloud.language.v1beta2.Entity.metadata",
+            index=2,
+            number=3,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="salience",
+            full_name="google.cloud.language.v1beta2.Entity.salience",
+            index=3,
+            number=4,
+            type=2,
+            cpp_type=6,
+            label=1,
+            has_default_value=False,
+            default_value=float(0),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="mentions",
+            full_name="google.cloud.language.v1beta2.Entity.mentions",
+            index=4,
+            number=5,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="sentiment",
+            full_name="google.cloud.language.v1beta2.Entity.sentiment",
+            index=5,
+            number=6,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[_ENTITY_METADATAENTRY],
+    enum_types=[_ENTITY_TYPE],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=550,
+    serialized_end=1016,
 )
 
 
 _TOKEN = _descriptor.Descriptor(
-  name='Token',
-  full_name='google.cloud.language.v1beta2.Token',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='text', full_name='google.cloud.language.v1beta2.Token.text', index=0,
-      number=1, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='part_of_speech', full_name='google.cloud.language.v1beta2.Token.part_of_speech', index=1,
-      number=2, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='dependency_edge', full_name='google.cloud.language.v1beta2.Token.dependency_edge', index=2,
-      number=3, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='lemma', full_name='google.cloud.language.v1beta2.Token.lemma', index=3,
-      number=4, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=1019,
-  serialized_end=1237,
+    name="Token",
+    full_name="google.cloud.language.v1beta2.Token",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="text",
+            full_name="google.cloud.language.v1beta2.Token.text",
+            index=0,
+            number=1,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="part_of_speech",
+            full_name="google.cloud.language.v1beta2.Token.part_of_speech",
+            index=1,
+            number=2,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="dependency_edge",
+            full_name="google.cloud.language.v1beta2.Token.dependency_edge",
+            index=2,
+            number=3,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="lemma",
+            full_name="google.cloud.language.v1beta2.Token.lemma",
+            index=3,
+            number=4,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=1019,
+    serialized_end=1237,
 )
 
 
 _SENTIMENT = _descriptor.Descriptor(
-  name='Sentiment',
-  full_name='google.cloud.language.v1beta2.Sentiment',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='magnitude', full_name='google.cloud.language.v1beta2.Sentiment.magnitude', index=0,
-      number=2, type=2, cpp_type=6, label=1,
-      has_default_value=False, default_value=float(0),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='score', full_name='google.cloud.language.v1beta2.Sentiment.score', index=1,
-      number=3, type=2, cpp_type=6, label=1,
-      has_default_value=False, default_value=float(0),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=1239,
-  serialized_end=1284,
+    name="Sentiment",
+    full_name="google.cloud.language.v1beta2.Sentiment",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="magnitude",
+            full_name="google.cloud.language.v1beta2.Sentiment.magnitude",
+            index=0,
+            number=2,
+            type=2,
+            cpp_type=6,
+            label=1,
+            has_default_value=False,
+            default_value=float(0),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="score",
+            full_name="google.cloud.language.v1beta2.Sentiment.score",
+            index=1,
+            number=3,
+            type=2,
+            cpp_type=6,
+            label=1,
+            has_default_value=False,
+            default_value=float(0),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=1239,
+    serialized_end=1284,
 )
 
 
 _PARTOFSPEECH = _descriptor.Descriptor(
-  name='PartOfSpeech',
-  full_name='google.cloud.language.v1beta2.PartOfSpeech',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='tag', full_name='google.cloud.language.v1beta2.PartOfSpeech.tag', index=0,
-      number=1, type=14, cpp_type=8, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='aspect', full_name='google.cloud.language.v1beta2.PartOfSpeech.aspect', index=1,
-      number=2, type=14, cpp_type=8, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='case', full_name='google.cloud.language.v1beta2.PartOfSpeech.case', index=2,
-      number=3, type=14, cpp_type=8, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='form', full_name='google.cloud.language.v1beta2.PartOfSpeech.form', index=3,
-      number=4, type=14, cpp_type=8, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='gender', full_name='google.cloud.language.v1beta2.PartOfSpeech.gender', index=4,
-      number=5, type=14, cpp_type=8, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='mood', full_name='google.cloud.language.v1beta2.PartOfSpeech.mood', index=5,
-      number=6, type=14, cpp_type=8, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='number', full_name='google.cloud.language.v1beta2.PartOfSpeech.number', index=6,
-      number=7, type=14, cpp_type=8, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='person', full_name='google.cloud.language.v1beta2.PartOfSpeech.person', index=7,
-      number=8, type=14, cpp_type=8, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='proper', full_name='google.cloud.language.v1beta2.PartOfSpeech.proper', index=8,
-      number=9, type=14, cpp_type=8, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='reciprocity', full_name='google.cloud.language.v1beta2.PartOfSpeech.reciprocity', index=9,
-      number=10, type=14, cpp_type=8, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='tense', full_name='google.cloud.language.v1beta2.PartOfSpeech.tense', index=10,
-      number=11, type=14, cpp_type=8, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='voice', full_name='google.cloud.language.v1beta2.PartOfSpeech.voice', index=11,
-      number=12, type=14, cpp_type=8, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-    _PARTOFSPEECH_TAG,
-    _PARTOFSPEECH_ASPECT,
-    _PARTOFSPEECH_CASE,
-    _PARTOFSPEECH_FORM,
-    _PARTOFSPEECH_GENDER,
-    _PARTOFSPEECH_MOOD,
-    _PARTOFSPEECH_NUMBER,
-    _PARTOFSPEECH_PERSON,
-    _PARTOFSPEECH_PROPER,
-    _PARTOFSPEECH_RECIPROCITY,
-    _PARTOFSPEECH_TENSE,
-    _PARTOFSPEECH_VOICE,
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=1287,
-  serialized_end=3430,
+    name="PartOfSpeech",
+    full_name="google.cloud.language.v1beta2.PartOfSpeech",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="tag",
+            full_name="google.cloud.language.v1beta2.PartOfSpeech.tag",
+            index=0,
+            number=1,
+            type=14,
+            cpp_type=8,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="aspect",
+            full_name="google.cloud.language.v1beta2.PartOfSpeech.aspect",
+            index=1,
+            number=2,
+            type=14,
+            cpp_type=8,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="case",
+            full_name="google.cloud.language.v1beta2.PartOfSpeech.case",
+            index=2,
+            number=3,
+            type=14,
+            cpp_type=8,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="form",
+            full_name="google.cloud.language.v1beta2.PartOfSpeech.form",
+            index=3,
+            number=4,
+            type=14,
+            cpp_type=8,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="gender",
+            full_name="google.cloud.language.v1beta2.PartOfSpeech.gender",
+            index=4,
+            number=5,
+            type=14,
+            cpp_type=8,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="mood",
+            full_name="google.cloud.language.v1beta2.PartOfSpeech.mood",
+            index=5,
+            number=6,
+            type=14,
+            cpp_type=8,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="number",
+            full_name="google.cloud.language.v1beta2.PartOfSpeech.number",
+            index=6,
+            number=7,
+            type=14,
+            cpp_type=8,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="person",
+            full_name="google.cloud.language.v1beta2.PartOfSpeech.person",
+            index=7,
+            number=8,
+            type=14,
+            cpp_type=8,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="proper",
+            full_name="google.cloud.language.v1beta2.PartOfSpeech.proper",
+            index=8,
+            number=9,
+            type=14,
+            cpp_type=8,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="reciprocity",
+            full_name="google.cloud.language.v1beta2.PartOfSpeech.reciprocity",
+            index=9,
+            number=10,
+            type=14,
+            cpp_type=8,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="tense",
+            full_name="google.cloud.language.v1beta2.PartOfSpeech.tense",
+            index=10,
+            number=11,
+            type=14,
+            cpp_type=8,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="voice",
+            full_name="google.cloud.language.v1beta2.PartOfSpeech.voice",
+            index=11,
+            number=12,
+            type=14,
+            cpp_type=8,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[
+        _PARTOFSPEECH_TAG,
+        _PARTOFSPEECH_ASPECT,
+        _PARTOFSPEECH_CASE,
+        _PARTOFSPEECH_FORM,
+        _PARTOFSPEECH_GENDER,
+        _PARTOFSPEECH_MOOD,
+        _PARTOFSPEECH_NUMBER,
+        _PARTOFSPEECH_PERSON,
+        _PARTOFSPEECH_PROPER,
+        _PARTOFSPEECH_RECIPROCITY,
+        _PARTOFSPEECH_TENSE,
+        _PARTOFSPEECH_VOICE,
+    ],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=1287,
+    serialized_end=3430,
 )
 
 
 _DEPENDENCYEDGE = _descriptor.Descriptor(
-  name='DependencyEdge',
-  full_name='google.cloud.language.v1beta2.DependencyEdge',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='head_token_index', full_name='google.cloud.language.v1beta2.DependencyEdge.head_token_index', index=0,
-      number=1, type=5, cpp_type=1, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='label', full_name='google.cloud.language.v1beta2.DependencyEdge.label', index=1,
-      number=2, type=14, cpp_type=8, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-    _DEPENDENCYEDGE_LABEL,
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=3433,
-  serialized_end=4483,
+    name="DependencyEdge",
+    full_name="google.cloud.language.v1beta2.DependencyEdge",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="head_token_index",
+            full_name="google.cloud.language.v1beta2.DependencyEdge.head_token_index",
+            index=0,
+            number=1,
+            type=5,
+            cpp_type=1,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="label",
+            full_name="google.cloud.language.v1beta2.DependencyEdge.label",
+            index=1,
+            number=2,
+            type=14,
+            cpp_type=8,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[_DEPENDENCYEDGE_LABEL],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=3433,
+    serialized_end=4483,
 )
 
 
 _ENTITYMENTION = _descriptor.Descriptor(
-  name='EntityMention',
-  full_name='google.cloud.language.v1beta2.EntityMention',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='text', full_name='google.cloud.language.v1beta2.EntityMention.text', index=0,
-      number=1, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='type', full_name='google.cloud.language.v1beta2.EntityMention.type', index=1,
-      number=2, type=14, cpp_type=8, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='sentiment', full_name='google.cloud.language.v1beta2.EntityMention.sentiment', index=2,
-      number=3, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-    _ENTITYMENTION_TYPE,
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=4486,
-  serialized_end=4732,
+    name="EntityMention",
+    full_name="google.cloud.language.v1beta2.EntityMention",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="text",
+            full_name="google.cloud.language.v1beta2.EntityMention.text",
+            index=0,
+            number=1,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="type",
+            full_name="google.cloud.language.v1beta2.EntityMention.type",
+            index=1,
+            number=2,
+            type=14,
+            cpp_type=8,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="sentiment",
+            full_name="google.cloud.language.v1beta2.EntityMention.sentiment",
+            index=2,
+            number=3,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[_ENTITYMENTION_TYPE],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=4486,
+    serialized_end=4732,
 )
 
 
 _TEXTSPAN = _descriptor.Descriptor(
-  name='TextSpan',
-  full_name='google.cloud.language.v1beta2.TextSpan',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='content', full_name='google.cloud.language.v1beta2.TextSpan.content', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='begin_offset', full_name='google.cloud.language.v1beta2.TextSpan.begin_offset', index=1,
-      number=2, type=5, cpp_type=1, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=4734,
-  serialized_end=4783,
+    name="TextSpan",
+    full_name="google.cloud.language.v1beta2.TextSpan",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="content",
+            full_name="google.cloud.language.v1beta2.TextSpan.content",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="begin_offset",
+            full_name="google.cloud.language.v1beta2.TextSpan.begin_offset",
+            index=1,
+            number=2,
+            type=5,
+            cpp_type=1,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=4734,
+    serialized_end=4783,
 )
 
 
 _CLASSIFICATIONCATEGORY = _descriptor.Descriptor(
-  name='ClassificationCategory',
-  full_name='google.cloud.language.v1beta2.ClassificationCategory',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='name', full_name='google.cloud.language.v1beta2.ClassificationCategory.name', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='confidence', full_name='google.cloud.language.v1beta2.ClassificationCategory.confidence', index=1,
-      number=2, type=2, cpp_type=6, label=1,
-      has_default_value=False, default_value=float(0),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=4785,
-  serialized_end=4843,
+    name="ClassificationCategory",
+    full_name="google.cloud.language.v1beta2.ClassificationCategory",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="name",
+            full_name="google.cloud.language.v1beta2.ClassificationCategory.name",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="confidence",
+            full_name="google.cloud.language.v1beta2.ClassificationCategory.confidence",
+            index=1,
+            number=2,
+            type=2,
+            cpp_type=6,
+            label=1,
+            has_default_value=False,
+            default_value=float(0),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=4785,
+    serialized_end=4843,
 )
 
 
 _ANALYZESENTIMENTREQUEST = _descriptor.Descriptor(
-  name='AnalyzeSentimentRequest',
-  full_name='google.cloud.language.v1beta2.AnalyzeSentimentRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='document', full_name='google.cloud.language.v1beta2.AnalyzeSentimentRequest.document', index=0,
-      number=1, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='encoding_type', full_name='google.cloud.language.v1beta2.AnalyzeSentimentRequest.encoding_type', index=1,
-      number=2, type=14, cpp_type=8, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=4846,
-  serialized_end=4998,
+    name="AnalyzeSentimentRequest",
+    full_name="google.cloud.language.v1beta2.AnalyzeSentimentRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="document",
+            full_name="google.cloud.language.v1beta2.AnalyzeSentimentRequest.document",
+            index=0,
+            number=1,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="encoding_type",
+            full_name="google.cloud.language.v1beta2.AnalyzeSentimentRequest.encoding_type",
+            index=1,
+            number=2,
+            type=14,
+            cpp_type=8,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=4846,
+    serialized_end=4998,
 )
 
 
 _ANALYZESENTIMENTRESPONSE = _descriptor.Descriptor(
-  name='AnalyzeSentimentResponse',
-  full_name='google.cloud.language.v1beta2.AnalyzeSentimentResponse',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='document_sentiment', full_name='google.cloud.language.v1beta2.AnalyzeSentimentResponse.document_sentiment', index=0,
-      number=1, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='language', full_name='google.cloud.language.v1beta2.AnalyzeSentimentResponse.language', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='sentences', full_name='google.cloud.language.v1beta2.AnalyzeSentimentResponse.sentences', index=2,
-      number=3, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=5001,
-  serialized_end=5175,
+    name="AnalyzeSentimentResponse",
+    full_name="google.cloud.language.v1beta2.AnalyzeSentimentResponse",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="document_sentiment",
+            full_name="google.cloud.language.v1beta2.AnalyzeSentimentResponse.document_sentiment",
+            index=0,
+            number=1,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="language",
+            full_name="google.cloud.language.v1beta2.AnalyzeSentimentResponse.language",
+            index=1,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="sentences",
+            full_name="google.cloud.language.v1beta2.AnalyzeSentimentResponse.sentences",
+            index=2,
+            number=3,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=5001,
+    serialized_end=5175,
 )
 
 
 _ANALYZEENTITYSENTIMENTREQUEST = _descriptor.Descriptor(
-  name='AnalyzeEntitySentimentRequest',
-  full_name='google.cloud.language.v1beta2.AnalyzeEntitySentimentRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='document', full_name='google.cloud.language.v1beta2.AnalyzeEntitySentimentRequest.document', index=0,
-      number=1, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='encoding_type', full_name='google.cloud.language.v1beta2.AnalyzeEntitySentimentRequest.encoding_type', index=1,
-      number=2, type=14, cpp_type=8, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=5178,
-  serialized_end=5336,
+    name="AnalyzeEntitySentimentRequest",
+    full_name="google.cloud.language.v1beta2.AnalyzeEntitySentimentRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="document",
+            full_name="google.cloud.language.v1beta2.AnalyzeEntitySentimentRequest.document",
+            index=0,
+            number=1,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="encoding_type",
+            full_name="google.cloud.language.v1beta2.AnalyzeEntitySentimentRequest.encoding_type",
+            index=1,
+            number=2,
+            type=14,
+            cpp_type=8,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=5178,
+    serialized_end=5336,
 )
 
 
 _ANALYZEENTITYSENTIMENTRESPONSE = _descriptor.Descriptor(
-  name='AnalyzeEntitySentimentResponse',
-  full_name='google.cloud.language.v1beta2.AnalyzeEntitySentimentResponse',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='entities', full_name='google.cloud.language.v1beta2.AnalyzeEntitySentimentResponse.entities', index=0,
-      number=1, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='language', full_name='google.cloud.language.v1beta2.AnalyzeEntitySentimentResponse.language', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=5338,
-  serialized_end=5445,
+    name="AnalyzeEntitySentimentResponse",
+    full_name="google.cloud.language.v1beta2.AnalyzeEntitySentimentResponse",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="entities",
+            full_name="google.cloud.language.v1beta2.AnalyzeEntitySentimentResponse.entities",
+            index=0,
+            number=1,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="language",
+            full_name="google.cloud.language.v1beta2.AnalyzeEntitySentimentResponse.language",
+            index=1,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=5338,
+    serialized_end=5445,
 )
 
 
 _ANALYZEENTITIESREQUEST = _descriptor.Descriptor(
-  name='AnalyzeEntitiesRequest',
-  full_name='google.cloud.language.v1beta2.AnalyzeEntitiesRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='document', full_name='google.cloud.language.v1beta2.AnalyzeEntitiesRequest.document', index=0,
-      number=1, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='encoding_type', full_name='google.cloud.language.v1beta2.AnalyzeEntitiesRequest.encoding_type', index=1,
-      number=2, type=14, cpp_type=8, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=5448,
-  serialized_end=5599,
+    name="AnalyzeEntitiesRequest",
+    full_name="google.cloud.language.v1beta2.AnalyzeEntitiesRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="document",
+            full_name="google.cloud.language.v1beta2.AnalyzeEntitiesRequest.document",
+            index=0,
+            number=1,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="encoding_type",
+            full_name="google.cloud.language.v1beta2.AnalyzeEntitiesRequest.encoding_type",
+            index=1,
+            number=2,
+            type=14,
+            cpp_type=8,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=5448,
+    serialized_end=5599,
 )
 
 
 _ANALYZEENTITIESRESPONSE = _descriptor.Descriptor(
-  name='AnalyzeEntitiesResponse',
-  full_name='google.cloud.language.v1beta2.AnalyzeEntitiesResponse',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='entities', full_name='google.cloud.language.v1beta2.AnalyzeEntitiesResponse.entities', index=0,
-      number=1, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='language', full_name='google.cloud.language.v1beta2.AnalyzeEntitiesResponse.language', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=5601,
-  serialized_end=5701,
+    name="AnalyzeEntitiesResponse",
+    full_name="google.cloud.language.v1beta2.AnalyzeEntitiesResponse",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="entities",
+            full_name="google.cloud.language.v1beta2.AnalyzeEntitiesResponse.entities",
+            index=0,
+            number=1,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="language",
+            full_name="google.cloud.language.v1beta2.AnalyzeEntitiesResponse.language",
+            index=1,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=5601,
+    serialized_end=5701,
 )
 
 
 _ANALYZESYNTAXREQUEST = _descriptor.Descriptor(
-  name='AnalyzeSyntaxRequest',
-  full_name='google.cloud.language.v1beta2.AnalyzeSyntaxRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='document', full_name='google.cloud.language.v1beta2.AnalyzeSyntaxRequest.document', index=0,
-      number=1, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='encoding_type', full_name='google.cloud.language.v1beta2.AnalyzeSyntaxRequest.encoding_type', index=1,
-      number=2, type=14, cpp_type=8, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=5704,
-  serialized_end=5853,
+    name="AnalyzeSyntaxRequest",
+    full_name="google.cloud.language.v1beta2.AnalyzeSyntaxRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="document",
+            full_name="google.cloud.language.v1beta2.AnalyzeSyntaxRequest.document",
+            index=0,
+            number=1,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="encoding_type",
+            full_name="google.cloud.language.v1beta2.AnalyzeSyntaxRequest.encoding_type",
+            index=1,
+            number=2,
+            type=14,
+            cpp_type=8,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=5704,
+    serialized_end=5853,
 )
 
 
 _ANALYZESYNTAXRESPONSE = _descriptor.Descriptor(
-  name='AnalyzeSyntaxResponse',
-  full_name='google.cloud.language.v1beta2.AnalyzeSyntaxResponse',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='sentences', full_name='google.cloud.language.v1beta2.AnalyzeSyntaxResponse.sentences', index=0,
-      number=1, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='tokens', full_name='google.cloud.language.v1beta2.AnalyzeSyntaxResponse.tokens', index=1,
-      number=2, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='language', full_name='google.cloud.language.v1beta2.AnalyzeSyntaxResponse.language', index=2,
-      number=3, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=5856,
-  serialized_end=6011,
+    name="AnalyzeSyntaxResponse",
+    full_name="google.cloud.language.v1beta2.AnalyzeSyntaxResponse",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="sentences",
+            full_name="google.cloud.language.v1beta2.AnalyzeSyntaxResponse.sentences",
+            index=0,
+            number=1,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="tokens",
+            full_name="google.cloud.language.v1beta2.AnalyzeSyntaxResponse.tokens",
+            index=1,
+            number=2,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="language",
+            full_name="google.cloud.language.v1beta2.AnalyzeSyntaxResponse.language",
+            index=2,
+            number=3,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=5856,
+    serialized_end=6011,
 )
 
 
 _CLASSIFYTEXTREQUEST = _descriptor.Descriptor(
-  name='ClassifyTextRequest',
-  full_name='google.cloud.language.v1beta2.ClassifyTextRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='document', full_name='google.cloud.language.v1beta2.ClassifyTextRequest.document', index=0,
-      number=1, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=6013,
-  serialized_end=6093,
+    name="ClassifyTextRequest",
+    full_name="google.cloud.language.v1beta2.ClassifyTextRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="document",
+            full_name="google.cloud.language.v1beta2.ClassifyTextRequest.document",
+            index=0,
+            number=1,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        )
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=6013,
+    serialized_end=6093,
 )
 
 
 _CLASSIFYTEXTRESPONSE = _descriptor.Descriptor(
-  name='ClassifyTextResponse',
-  full_name='google.cloud.language.v1beta2.ClassifyTextResponse',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='categories', full_name='google.cloud.language.v1beta2.ClassifyTextResponse.categories', index=0,
-      number=1, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=6095,
-  serialized_end=6192,
+    name="ClassifyTextResponse",
+    full_name="google.cloud.language.v1beta2.ClassifyTextResponse",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="categories",
+            full_name="google.cloud.language.v1beta2.ClassifyTextResponse.categories",
+            index=0,
+            number=1,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        )
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=6095,
+    serialized_end=6192,
 )
 
 
 _ANNOTATETEXTREQUEST_FEATURES = _descriptor.Descriptor(
-  name='Features',
-  full_name='google.cloud.language.v1beta2.AnnotateTextRequest.Features',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='extract_syntax', full_name='google.cloud.language.v1beta2.AnnotateTextRequest.Features.extract_syntax', index=0,
-      number=1, type=8, cpp_type=7, label=1,
-      has_default_value=False, default_value=False,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='extract_entities', full_name='google.cloud.language.v1beta2.AnnotateTextRequest.Features.extract_entities', index=1,
-      number=2, type=8, cpp_type=7, label=1,
-      has_default_value=False, default_value=False,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='extract_document_sentiment', full_name='google.cloud.language.v1beta2.AnnotateTextRequest.Features.extract_document_sentiment', index=2,
-      number=3, type=8, cpp_type=7, label=1,
-      has_default_value=False, default_value=False,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='extract_entity_sentiment', full_name='google.cloud.language.v1beta2.AnnotateTextRequest.Features.extract_entity_sentiment', index=3,
-      number=4, type=8, cpp_type=7, label=1,
-      has_default_value=False, default_value=False,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='classify_text', full_name='google.cloud.language.v1beta2.AnnotateTextRequest.Features.classify_text', index=4,
-      number=6, type=8, cpp_type=7, label=1,
-      has_default_value=False, default_value=False,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=6425,
-  serialized_end=6578,
+    name="Features",
+    full_name="google.cloud.language.v1beta2.AnnotateTextRequest.Features",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="extract_syntax",
+            full_name="google.cloud.language.v1beta2.AnnotateTextRequest.Features.extract_syntax",
+            index=0,
+            number=1,
+            type=8,
+            cpp_type=7,
+            label=1,
+            has_default_value=False,
+            default_value=False,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="extract_entities",
+            full_name="google.cloud.language.v1beta2.AnnotateTextRequest.Features.extract_entities",
+            index=1,
+            number=2,
+            type=8,
+            cpp_type=7,
+            label=1,
+            has_default_value=False,
+            default_value=False,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="extract_document_sentiment",
+            full_name="google.cloud.language.v1beta2.AnnotateTextRequest.Features.extract_document_sentiment",
+            index=2,
+            number=3,
+            type=8,
+            cpp_type=7,
+            label=1,
+            has_default_value=False,
+            default_value=False,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="extract_entity_sentiment",
+            full_name="google.cloud.language.v1beta2.AnnotateTextRequest.Features.extract_entity_sentiment",
+            index=3,
+            number=4,
+            type=8,
+            cpp_type=7,
+            label=1,
+            has_default_value=False,
+            default_value=False,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="classify_text",
+            full_name="google.cloud.language.v1beta2.AnnotateTextRequest.Features.classify_text",
+            index=4,
+            number=6,
+            type=8,
+            cpp_type=7,
+            label=1,
+            has_default_value=False,
+            default_value=False,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=6425,
+    serialized_end=6578,
 )
 
 _ANNOTATETEXTREQUEST = _descriptor.Descriptor(
-  name='AnnotateTextRequest',
-  full_name='google.cloud.language.v1beta2.AnnotateTextRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='document', full_name='google.cloud.language.v1beta2.AnnotateTextRequest.document', index=0,
-      number=1, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='features', full_name='google.cloud.language.v1beta2.AnnotateTextRequest.features', index=1,
-      number=2, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='encoding_type', full_name='google.cloud.language.v1beta2.AnnotateTextRequest.encoding_type', index=2,
-      number=3, type=14, cpp_type=8, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[_ANNOTATETEXTREQUEST_FEATURES, ],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=6195,
-  serialized_end=6578,
+    name="AnnotateTextRequest",
+    full_name="google.cloud.language.v1beta2.AnnotateTextRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="document",
+            full_name="google.cloud.language.v1beta2.AnnotateTextRequest.document",
+            index=0,
+            number=1,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="features",
+            full_name="google.cloud.language.v1beta2.AnnotateTextRequest.features",
+            index=1,
+            number=2,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="encoding_type",
+            full_name="google.cloud.language.v1beta2.AnnotateTextRequest.encoding_type",
+            index=2,
+            number=3,
+            type=14,
+            cpp_type=8,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[_ANNOTATETEXTREQUEST_FEATURES],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=6195,
+    serialized_end=6578,
 )
 
 
 _ANNOTATETEXTRESPONSE = _descriptor.Descriptor(
-  name='AnnotateTextResponse',
-  full_name='google.cloud.language.v1beta2.AnnotateTextResponse',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='sentences', full_name='google.cloud.language.v1beta2.AnnotateTextResponse.sentences', index=0,
-      number=1, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='tokens', full_name='google.cloud.language.v1beta2.AnnotateTextResponse.tokens', index=1,
-      number=2, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='entities', full_name='google.cloud.language.v1beta2.AnnotateTextResponse.entities', index=2,
-      number=3, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='document_sentiment', full_name='google.cloud.language.v1beta2.AnnotateTextResponse.document_sentiment', index=3,
-      number=4, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='language', full_name='google.cloud.language.v1beta2.AnnotateTextResponse.language', index=4,
-      number=5, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='categories', full_name='google.cloud.language.v1beta2.AnnotateTextResponse.categories', index=5,
-      number=6, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=6581,
-  serialized_end=6937,
+    name="AnnotateTextResponse",
+    full_name="google.cloud.language.v1beta2.AnnotateTextResponse",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="sentences",
+            full_name="google.cloud.language.v1beta2.AnnotateTextResponse.sentences",
+            index=0,
+            number=1,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="tokens",
+            full_name="google.cloud.language.v1beta2.AnnotateTextResponse.tokens",
+            index=1,
+            number=2,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="entities",
+            full_name="google.cloud.language.v1beta2.AnnotateTextResponse.entities",
+            index=2,
+            number=3,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="document_sentiment",
+            full_name="google.cloud.language.v1beta2.AnnotateTextResponse.document_sentiment",
+            index=3,
+            number=4,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="language",
+            full_name="google.cloud.language.v1beta2.AnnotateTextResponse.language",
+            index=4,
+            number=5,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="categories",
+            full_name="google.cloud.language.v1beta2.AnnotateTextResponse.categories",
+            index=5,
+            number=6,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=6581,
+    serialized_end=6937,
 )
 
-_DOCUMENT.fields_by_name['type'].enum_type = _DOCUMENT_TYPE
+_DOCUMENT.fields_by_name["type"].enum_type = _DOCUMENT_TYPE
 _DOCUMENT_TYPE.containing_type = _DOCUMENT
-_DOCUMENT.oneofs_by_name['source'].fields.append(
-  _DOCUMENT.fields_by_name['content'])
-_DOCUMENT.fields_by_name['content'].containing_oneof = _DOCUMENT.oneofs_by_name['source']
-_DOCUMENT.oneofs_by_name['source'].fields.append(
-  _DOCUMENT.fields_by_name['gcs_content_uri'])
-_DOCUMENT.fields_by_name['gcs_content_uri'].containing_oneof = _DOCUMENT.oneofs_by_name['source']
-_SENTENCE.fields_by_name['text'].message_type = _TEXTSPAN
-_SENTENCE.fields_by_name['sentiment'].message_type = _SENTIMENT
+_DOCUMENT.oneofs_by_name["source"].fields.append(_DOCUMENT.fields_by_name["content"])
+_DOCUMENT.fields_by_name["content"].containing_oneof = _DOCUMENT.oneofs_by_name[
+    "source"
+]
+_DOCUMENT.oneofs_by_name["source"].fields.append(
+    _DOCUMENT.fields_by_name["gcs_content_uri"]
+)
+_DOCUMENT.fields_by_name["gcs_content_uri"].containing_oneof = _DOCUMENT.oneofs_by_name[
+    "source"
+]
+_SENTENCE.fields_by_name["text"].message_type = _TEXTSPAN
+_SENTENCE.fields_by_name["sentiment"].message_type = _SENTIMENT
 _ENTITY_METADATAENTRY.containing_type = _ENTITY
-_ENTITY.fields_by_name['type'].enum_type = _ENTITY_TYPE
-_ENTITY.fields_by_name['metadata'].message_type = _ENTITY_METADATAENTRY
-_ENTITY.fields_by_name['mentions'].message_type = _ENTITYMENTION
-_ENTITY.fields_by_name['sentiment'].message_type = _SENTIMENT
+_ENTITY.fields_by_name["type"].enum_type = _ENTITY_TYPE
+_ENTITY.fields_by_name["metadata"].message_type = _ENTITY_METADATAENTRY
+_ENTITY.fields_by_name["mentions"].message_type = _ENTITYMENTION
+_ENTITY.fields_by_name["sentiment"].message_type = _SENTIMENT
 _ENTITY_TYPE.containing_type = _ENTITY
-_TOKEN.fields_by_name['text'].message_type = _TEXTSPAN
-_TOKEN.fields_by_name['part_of_speech'].message_type = _PARTOFSPEECH
-_TOKEN.fields_by_name['dependency_edge'].message_type = _DEPENDENCYEDGE
-_PARTOFSPEECH.fields_by_name['tag'].enum_type = _PARTOFSPEECH_TAG
-_PARTOFSPEECH.fields_by_name['aspect'].enum_type = _PARTOFSPEECH_ASPECT
-_PARTOFSPEECH.fields_by_name['case'].enum_type = _PARTOFSPEECH_CASE
-_PARTOFSPEECH.fields_by_name['form'].enum_type = _PARTOFSPEECH_FORM
-_PARTOFSPEECH.fields_by_name['gender'].enum_type = _PARTOFSPEECH_GENDER
-_PARTOFSPEECH.fields_by_name['mood'].enum_type = _PARTOFSPEECH_MOOD
-_PARTOFSPEECH.fields_by_name['number'].enum_type = _PARTOFSPEECH_NUMBER
-_PARTOFSPEECH.fields_by_name['person'].enum_type = _PARTOFSPEECH_PERSON
-_PARTOFSPEECH.fields_by_name['proper'].enum_type = _PARTOFSPEECH_PROPER
-_PARTOFSPEECH.fields_by_name['reciprocity'].enum_type = _PARTOFSPEECH_RECIPROCITY
-_PARTOFSPEECH.fields_by_name['tense'].enum_type = _PARTOFSPEECH_TENSE
-_PARTOFSPEECH.fields_by_name['voice'].enum_type = _PARTOFSPEECH_VOICE
+_TOKEN.fields_by_name["text"].message_type = _TEXTSPAN
+_TOKEN.fields_by_name["part_of_speech"].message_type = _PARTOFSPEECH
+_TOKEN.fields_by_name["dependency_edge"].message_type = _DEPENDENCYEDGE
+_PARTOFSPEECH.fields_by_name["tag"].enum_type = _PARTOFSPEECH_TAG
+_PARTOFSPEECH.fields_by_name["aspect"].enum_type = _PARTOFSPEECH_ASPECT
+_PARTOFSPEECH.fields_by_name["case"].enum_type = _PARTOFSPEECH_CASE
+_PARTOFSPEECH.fields_by_name["form"].enum_type = _PARTOFSPEECH_FORM
+_PARTOFSPEECH.fields_by_name["gender"].enum_type = _PARTOFSPEECH_GENDER
+_PARTOFSPEECH.fields_by_name["mood"].enum_type = _PARTOFSPEECH_MOOD
+_PARTOFSPEECH.fields_by_name["number"].enum_type = _PARTOFSPEECH_NUMBER
+_PARTOFSPEECH.fields_by_name["person"].enum_type = _PARTOFSPEECH_PERSON
+_PARTOFSPEECH.fields_by_name["proper"].enum_type = _PARTOFSPEECH_PROPER
+_PARTOFSPEECH.fields_by_name["reciprocity"].enum_type = _PARTOFSPEECH_RECIPROCITY
+_PARTOFSPEECH.fields_by_name["tense"].enum_type = _PARTOFSPEECH_TENSE
+_PARTOFSPEECH.fields_by_name["voice"].enum_type = _PARTOFSPEECH_VOICE
 _PARTOFSPEECH_TAG.containing_type = _PARTOFSPEECH
 _PARTOFSPEECH_ASPECT.containing_type = _PARTOFSPEECH
 _PARTOFSPEECH_CASE.containing_type = _PARTOFSPEECH
@@ -2166,67 +2753,79 @@ _PARTOFSPEECH_PROPER.containing_type = _PARTOFSPEECH
 _PARTOFSPEECH_RECIPROCITY.containing_type = _PARTOFSPEECH
 _PARTOFSPEECH_TENSE.containing_type = _PARTOFSPEECH
 _PARTOFSPEECH_VOICE.containing_type = _PARTOFSPEECH
-_DEPENDENCYEDGE.fields_by_name['label'].enum_type = _DEPENDENCYEDGE_LABEL
+_DEPENDENCYEDGE.fields_by_name["label"].enum_type = _DEPENDENCYEDGE_LABEL
 _DEPENDENCYEDGE_LABEL.containing_type = _DEPENDENCYEDGE
-_ENTITYMENTION.fields_by_name['text'].message_type = _TEXTSPAN
-_ENTITYMENTION.fields_by_name['type'].enum_type = _ENTITYMENTION_TYPE
-_ENTITYMENTION.fields_by_name['sentiment'].message_type = _SENTIMENT
+_ENTITYMENTION.fields_by_name["text"].message_type = _TEXTSPAN
+_ENTITYMENTION.fields_by_name["type"].enum_type = _ENTITYMENTION_TYPE
+_ENTITYMENTION.fields_by_name["sentiment"].message_type = _SENTIMENT
 _ENTITYMENTION_TYPE.containing_type = _ENTITYMENTION
-_ANALYZESENTIMENTREQUEST.fields_by_name['document'].message_type = _DOCUMENT
-_ANALYZESENTIMENTREQUEST.fields_by_name['encoding_type'].enum_type = _ENCODINGTYPE
-_ANALYZESENTIMENTRESPONSE.fields_by_name['document_sentiment'].message_type = _SENTIMENT
-_ANALYZESENTIMENTRESPONSE.fields_by_name['sentences'].message_type = _SENTENCE
-_ANALYZEENTITYSENTIMENTREQUEST.fields_by_name['document'].message_type = _DOCUMENT
-_ANALYZEENTITYSENTIMENTREQUEST.fields_by_name['encoding_type'].enum_type = _ENCODINGTYPE
-_ANALYZEENTITYSENTIMENTRESPONSE.fields_by_name['entities'].message_type = _ENTITY
-_ANALYZEENTITIESREQUEST.fields_by_name['document'].message_type = _DOCUMENT
-_ANALYZEENTITIESREQUEST.fields_by_name['encoding_type'].enum_type = _ENCODINGTYPE
-_ANALYZEENTITIESRESPONSE.fields_by_name['entities'].message_type = _ENTITY
-_ANALYZESYNTAXREQUEST.fields_by_name['document'].message_type = _DOCUMENT
-_ANALYZESYNTAXREQUEST.fields_by_name['encoding_type'].enum_type = _ENCODINGTYPE
-_ANALYZESYNTAXRESPONSE.fields_by_name['sentences'].message_type = _SENTENCE
-_ANALYZESYNTAXRESPONSE.fields_by_name['tokens'].message_type = _TOKEN
-_CLASSIFYTEXTREQUEST.fields_by_name['document'].message_type = _DOCUMENT
-_CLASSIFYTEXTRESPONSE.fields_by_name['categories'].message_type = _CLASSIFICATIONCATEGORY
+_ANALYZESENTIMENTREQUEST.fields_by_name["document"].message_type = _DOCUMENT
+_ANALYZESENTIMENTREQUEST.fields_by_name["encoding_type"].enum_type = _ENCODINGTYPE
+_ANALYZESENTIMENTRESPONSE.fields_by_name["document_sentiment"].message_type = _SENTIMENT
+_ANALYZESENTIMENTRESPONSE.fields_by_name["sentences"].message_type = _SENTENCE
+_ANALYZEENTITYSENTIMENTREQUEST.fields_by_name["document"].message_type = _DOCUMENT
+_ANALYZEENTITYSENTIMENTREQUEST.fields_by_name["encoding_type"].enum_type = _ENCODINGTYPE
+_ANALYZEENTITYSENTIMENTRESPONSE.fields_by_name["entities"].message_type = _ENTITY
+_ANALYZEENTITIESREQUEST.fields_by_name["document"].message_type = _DOCUMENT
+_ANALYZEENTITIESREQUEST.fields_by_name["encoding_type"].enum_type = _ENCODINGTYPE
+_ANALYZEENTITIESRESPONSE.fields_by_name["entities"].message_type = _ENTITY
+_ANALYZESYNTAXREQUEST.fields_by_name["document"].message_type = _DOCUMENT
+_ANALYZESYNTAXREQUEST.fields_by_name["encoding_type"].enum_type = _ENCODINGTYPE
+_ANALYZESYNTAXRESPONSE.fields_by_name["sentences"].message_type = _SENTENCE
+_ANALYZESYNTAXRESPONSE.fields_by_name["tokens"].message_type = _TOKEN
+_CLASSIFYTEXTREQUEST.fields_by_name["document"].message_type = _DOCUMENT
+_CLASSIFYTEXTRESPONSE.fields_by_name[
+    "categories"
+].message_type = _CLASSIFICATIONCATEGORY
 _ANNOTATETEXTREQUEST_FEATURES.containing_type = _ANNOTATETEXTREQUEST
-_ANNOTATETEXTREQUEST.fields_by_name['document'].message_type = _DOCUMENT
-_ANNOTATETEXTREQUEST.fields_by_name['features'].message_type = _ANNOTATETEXTREQUEST_FEATURES
-_ANNOTATETEXTREQUEST.fields_by_name['encoding_type'].enum_type = _ENCODINGTYPE
-_ANNOTATETEXTRESPONSE.fields_by_name['sentences'].message_type = _SENTENCE
-_ANNOTATETEXTRESPONSE.fields_by_name['tokens'].message_type = _TOKEN
-_ANNOTATETEXTRESPONSE.fields_by_name['entities'].message_type = _ENTITY
-_ANNOTATETEXTRESPONSE.fields_by_name['document_sentiment'].message_type = _SENTIMENT
-_ANNOTATETEXTRESPONSE.fields_by_name['categories'].message_type = _CLASSIFICATIONCATEGORY
-DESCRIPTOR.message_types_by_name['Document'] = _DOCUMENT
-DESCRIPTOR.message_types_by_name['Sentence'] = _SENTENCE
-DESCRIPTOR.message_types_by_name['Entity'] = _ENTITY
-DESCRIPTOR.message_types_by_name['Token'] = _TOKEN
-DESCRIPTOR.message_types_by_name['Sentiment'] = _SENTIMENT
-DESCRIPTOR.message_types_by_name['PartOfSpeech'] = _PARTOFSPEECH
-DESCRIPTOR.message_types_by_name['DependencyEdge'] = _DEPENDENCYEDGE
-DESCRIPTOR.message_types_by_name['EntityMention'] = _ENTITYMENTION
-DESCRIPTOR.message_types_by_name['TextSpan'] = _TEXTSPAN
-DESCRIPTOR.message_types_by_name['ClassificationCategory'] = _CLASSIFICATIONCATEGORY
-DESCRIPTOR.message_types_by_name['AnalyzeSentimentRequest'] = _ANALYZESENTIMENTREQUEST
-DESCRIPTOR.message_types_by_name['AnalyzeSentimentResponse'] = _ANALYZESENTIMENTRESPONSE
-DESCRIPTOR.message_types_by_name['AnalyzeEntitySentimentRequest'] = _ANALYZEENTITYSENTIMENTREQUEST
-DESCRIPTOR.message_types_by_name['AnalyzeEntitySentimentResponse'] = _ANALYZEENTITYSENTIMENTRESPONSE
-DESCRIPTOR.message_types_by_name['AnalyzeEntitiesRequest'] = _ANALYZEENTITIESREQUEST
-DESCRIPTOR.message_types_by_name['AnalyzeEntitiesResponse'] = _ANALYZEENTITIESRESPONSE
-DESCRIPTOR.message_types_by_name['AnalyzeSyntaxRequest'] = _ANALYZESYNTAXREQUEST
-DESCRIPTOR.message_types_by_name['AnalyzeSyntaxResponse'] = _ANALYZESYNTAXRESPONSE
-DESCRIPTOR.message_types_by_name['ClassifyTextRequest'] = _CLASSIFYTEXTREQUEST
-DESCRIPTOR.message_types_by_name['ClassifyTextResponse'] = _CLASSIFYTEXTRESPONSE
-DESCRIPTOR.message_types_by_name['AnnotateTextRequest'] = _ANNOTATETEXTREQUEST
-DESCRIPTOR.message_types_by_name['AnnotateTextResponse'] = _ANNOTATETEXTRESPONSE
-DESCRIPTOR.enum_types_by_name['EncodingType'] = _ENCODINGTYPE
+_ANNOTATETEXTREQUEST.fields_by_name["document"].message_type = _DOCUMENT
+_ANNOTATETEXTREQUEST.fields_by_name[
+    "features"
+].message_type = _ANNOTATETEXTREQUEST_FEATURES
+_ANNOTATETEXTREQUEST.fields_by_name["encoding_type"].enum_type = _ENCODINGTYPE
+_ANNOTATETEXTRESPONSE.fields_by_name["sentences"].message_type = _SENTENCE
+_ANNOTATETEXTRESPONSE.fields_by_name["tokens"].message_type = _TOKEN
+_ANNOTATETEXTRESPONSE.fields_by_name["entities"].message_type = _ENTITY
+_ANNOTATETEXTRESPONSE.fields_by_name["document_sentiment"].message_type = _SENTIMENT
+_ANNOTATETEXTRESPONSE.fields_by_name[
+    "categories"
+].message_type = _CLASSIFICATIONCATEGORY
+DESCRIPTOR.message_types_by_name["Document"] = _DOCUMENT
+DESCRIPTOR.message_types_by_name["Sentence"] = _SENTENCE
+DESCRIPTOR.message_types_by_name["Entity"] = _ENTITY
+DESCRIPTOR.message_types_by_name["Token"] = _TOKEN
+DESCRIPTOR.message_types_by_name["Sentiment"] = _SENTIMENT
+DESCRIPTOR.message_types_by_name["PartOfSpeech"] = _PARTOFSPEECH
+DESCRIPTOR.message_types_by_name["DependencyEdge"] = _DEPENDENCYEDGE
+DESCRIPTOR.message_types_by_name["EntityMention"] = _ENTITYMENTION
+DESCRIPTOR.message_types_by_name["TextSpan"] = _TEXTSPAN
+DESCRIPTOR.message_types_by_name["ClassificationCategory"] = _CLASSIFICATIONCATEGORY
+DESCRIPTOR.message_types_by_name["AnalyzeSentimentRequest"] = _ANALYZESENTIMENTREQUEST
+DESCRIPTOR.message_types_by_name["AnalyzeSentimentResponse"] = _ANALYZESENTIMENTRESPONSE
+DESCRIPTOR.message_types_by_name[
+    "AnalyzeEntitySentimentRequest"
+] = _ANALYZEENTITYSENTIMENTREQUEST
+DESCRIPTOR.message_types_by_name[
+    "AnalyzeEntitySentimentResponse"
+] = _ANALYZEENTITYSENTIMENTRESPONSE
+DESCRIPTOR.message_types_by_name["AnalyzeEntitiesRequest"] = _ANALYZEENTITIESREQUEST
+DESCRIPTOR.message_types_by_name["AnalyzeEntitiesResponse"] = _ANALYZEENTITIESRESPONSE
+DESCRIPTOR.message_types_by_name["AnalyzeSyntaxRequest"] = _ANALYZESYNTAXREQUEST
+DESCRIPTOR.message_types_by_name["AnalyzeSyntaxResponse"] = _ANALYZESYNTAXRESPONSE
+DESCRIPTOR.message_types_by_name["ClassifyTextRequest"] = _CLASSIFYTEXTREQUEST
+DESCRIPTOR.message_types_by_name["ClassifyTextResponse"] = _CLASSIFYTEXTRESPONSE
+DESCRIPTOR.message_types_by_name["AnnotateTextRequest"] = _ANNOTATETEXTREQUEST
+DESCRIPTOR.message_types_by_name["AnnotateTextResponse"] = _ANNOTATETEXTRESPONSE
+DESCRIPTOR.enum_types_by_name["EncodingType"] = _ENCODINGTYPE
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
-Document = _reflection.GeneratedProtocolMessageType('Document', (_message.Message,), dict(
-  DESCRIPTOR = _DOCUMENT,
-  __module__ = 'google.cloud.language_v1beta2.proto.language_service_pb2'
-  ,
-  __doc__ = """Represents the input to API methods.
+Document = _reflection.GeneratedProtocolMessageType(
+    "Document",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_DOCUMENT,
+        __module__="google.cloud.language_v1beta2.proto.language_service_pb2",
+        __doc__="""Represents the input to API methods.
   
   
   Attributes:
@@ -2254,15 +2853,18 @@ Document = _reflection.GeneratedProtocolMessageType('Document', (_message.Messag
           supported by the called API method, an ``INVALID_ARGUMENT``
           error is returned.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.language.v1beta2.Document)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.language.v1beta2.Document)
+    ),
+)
 _sym_db.RegisterMessage(Document)
 
-Sentence = _reflection.GeneratedProtocolMessageType('Sentence', (_message.Message,), dict(
-  DESCRIPTOR = _SENTENCE,
-  __module__ = 'google.cloud.language_v1beta2.proto.language_service_pb2'
-  ,
-  __doc__ = """Represents a sentence in the input document.
+Sentence = _reflection.GeneratedProtocolMessageType(
+    "Sentence",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_SENTENCE,
+        __module__="google.cloud.language_v1beta2.proto.language_service_pb2",
+        __doc__="""Represents a sentence in the input document.
   
   
   Attributes:
@@ -2275,22 +2877,27 @@ Sentence = _reflection.GeneratedProtocolMessageType('Sentence', (_message.Messag
           t] is set to true, this field will contain the sentiment for
           the sentence.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.language.v1beta2.Sentence)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.language.v1beta2.Sentence)
+    ),
+)
 _sym_db.RegisterMessage(Sentence)
 
-Entity = _reflection.GeneratedProtocolMessageType('Entity', (_message.Message,), dict(
-
-  MetadataEntry = _reflection.GeneratedProtocolMessageType('MetadataEntry', (_message.Message,), dict(
-    DESCRIPTOR = _ENTITY_METADATAENTRY,
-    __module__ = 'google.cloud.language_v1beta2.proto.language_service_pb2'
-    # @@protoc_insertion_point(class_scope:google.cloud.language.v1beta2.Entity.MetadataEntry)
-    ))
-  ,
-  DESCRIPTOR = _ENTITY,
-  __module__ = 'google.cloud.language_v1beta2.proto.language_service_pb2'
-  ,
-  __doc__ = """Represents a phrase in the text that is a known entity, such as a
+Entity = _reflection.GeneratedProtocolMessageType(
+    "Entity",
+    (_message.Message,),
+    dict(
+        MetadataEntry=_reflection.GeneratedProtocolMessageType(
+            "MetadataEntry",
+            (_message.Message,),
+            dict(
+                DESCRIPTOR=_ENTITY_METADATAENTRY,
+                __module__="google.cloud.language_v1beta2.proto.language_service_pb2"
+                # @@protoc_insertion_point(class_scope:google.cloud.language.v1beta2.Entity.MetadataEntry)
+            ),
+        ),
+        DESCRIPTOR=_ENTITY,
+        __module__="google.cloud.language_v1beta2.proto.language_service_pb2",
+        __doc__="""Represents a phrase in the text that is a known entity, such as a
   person, an organization, or location. The API associates information,
   such as salience and mentions, with entities.
   
@@ -2320,16 +2927,19 @@ Entity = _reflection.GeneratedProtocolMessageType('Entity', (_message.Message,),
           ent] is set to true, this field will contain the aggregate
           sentiment expressed for this entity in the provided document.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.language.v1beta2.Entity)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.language.v1beta2.Entity)
+    ),
+)
 _sym_db.RegisterMessage(Entity)
 _sym_db.RegisterMessage(Entity.MetadataEntry)
 
-Token = _reflection.GeneratedProtocolMessageType('Token', (_message.Message,), dict(
-  DESCRIPTOR = _TOKEN,
-  __module__ = 'google.cloud.language_v1beta2.proto.language_service_pb2'
-  ,
-  __doc__ = """Represents the smallest syntactic building block of the text.
+Token = _reflection.GeneratedProtocolMessageType(
+    "Token",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_TOKEN,
+        __module__="google.cloud.language_v1beta2.proto.language_service_pb2",
+        __doc__="""Represents the smallest syntactic building block of the text.
   
   
   Attributes:
@@ -2344,15 +2954,18 @@ Token = _reflection.GeneratedProtocolMessageType('Token', (_message.Message,), d
           <https://en.wikipedia.org/wiki/Lemma_%28morphology%29>`__ of
           the token.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.language.v1beta2.Token)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.language.v1beta2.Token)
+    ),
+)
 _sym_db.RegisterMessage(Token)
 
-Sentiment = _reflection.GeneratedProtocolMessageType('Sentiment', (_message.Message,), dict(
-  DESCRIPTOR = _SENTIMENT,
-  __module__ = 'google.cloud.language_v1beta2.proto.language_service_pb2'
-  ,
-  __doc__ = """Represents the feeling associated with the entire text or entities in
+Sentiment = _reflection.GeneratedProtocolMessageType(
+    "Sentiment",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_SENTIMENT,
+        __module__="google.cloud.language_v1beta2.proto.language_service_pb2",
+        __doc__="""Represents the feeling associated with the entire text or entities in
   the text.
   
   
@@ -2365,15 +2978,18 @@ Sentiment = _reflection.GeneratedProtocolMessageType('Sentiment', (_message.Mess
           Sentiment score between -1.0 (negative sentiment) and 1.0
           (positive sentiment).
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.language.v1beta2.Sentiment)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.language.v1beta2.Sentiment)
+    ),
+)
 _sym_db.RegisterMessage(Sentiment)
 
-PartOfSpeech = _reflection.GeneratedProtocolMessageType('PartOfSpeech', (_message.Message,), dict(
-  DESCRIPTOR = _PARTOFSPEECH,
-  __module__ = 'google.cloud.language_v1beta2.proto.language_service_pb2'
-  ,
-  __doc__ = """Represents part of speech information for a token.
+PartOfSpeech = _reflection.GeneratedProtocolMessageType(
+    "PartOfSpeech",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_PARTOFSPEECH,
+        __module__="google.cloud.language_v1beta2.proto.language_service_pb2",
+        __doc__="""Represents part of speech information for a token.
   
   
   Attributes:
@@ -2402,15 +3018,18 @@ PartOfSpeech = _reflection.GeneratedProtocolMessageType('PartOfSpeech', (_messag
       voice:
           The grammatical voice.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.language.v1beta2.PartOfSpeech)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.language.v1beta2.PartOfSpeech)
+    ),
+)
 _sym_db.RegisterMessage(PartOfSpeech)
 
-DependencyEdge = _reflection.GeneratedProtocolMessageType('DependencyEdge', (_message.Message,), dict(
-  DESCRIPTOR = _DEPENDENCYEDGE,
-  __module__ = 'google.cloud.language_v1beta2.proto.language_service_pb2'
-  ,
-  __doc__ = """Represents dependency parse tree information for a token.
+DependencyEdge = _reflection.GeneratedProtocolMessageType(
+    "DependencyEdge",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_DEPENDENCYEDGE,
+        __module__="google.cloud.language_v1beta2.proto.language_service_pb2",
+        __doc__="""Represents dependency parse tree information for a token.
   
   
   Attributes:
@@ -2423,15 +3042,18 @@ DependencyEdge = _reflection.GeneratedProtocolMessageType('DependencyEdge', (_me
       label:
           The parse label for the token.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.language.v1beta2.DependencyEdge)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.language.v1beta2.DependencyEdge)
+    ),
+)
 _sym_db.RegisterMessage(DependencyEdge)
 
-EntityMention = _reflection.GeneratedProtocolMessageType('EntityMention', (_message.Message,), dict(
-  DESCRIPTOR = _ENTITYMENTION,
-  __module__ = 'google.cloud.language_v1beta2.proto.language_service_pb2'
-  ,
-  __doc__ = """Represents a mention for an entity in the text. Currently, proper noun
+EntityMention = _reflection.GeneratedProtocolMessageType(
+    "EntityMention",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_ENTITYMENTION,
+        __module__="google.cloud.language_v1beta2.proto.language_service_pb2",
+        __doc__="""Represents a mention for an entity in the text. Currently, proper noun
   mentions are supported.
   
   
@@ -2448,15 +3070,18 @@ EntityMention = _reflection.GeneratedProtocolMessageType('EntityMention', (_mess
           expressed for this mention of the entity in the provided
           document.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.language.v1beta2.EntityMention)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.language.v1beta2.EntityMention)
+    ),
+)
 _sym_db.RegisterMessage(EntityMention)
 
-TextSpan = _reflection.GeneratedProtocolMessageType('TextSpan', (_message.Message,), dict(
-  DESCRIPTOR = _TEXTSPAN,
-  __module__ = 'google.cloud.language_v1beta2.proto.language_service_pb2'
-  ,
-  __doc__ = """Represents an output piece of text.
+TextSpan = _reflection.GeneratedProtocolMessageType(
+    "TextSpan",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_TEXTSPAN,
+        __module__="google.cloud.language_v1beta2.proto.language_service_pb2",
+        __doc__="""Represents an output piece of text.
   
   
   Attributes:
@@ -2468,15 +3093,18 @@ TextSpan = _reflection.GeneratedProtocolMessageType('TextSpan', (_message.Messag
           [EncodingType][google.cloud.language.v1beta2.EncodingType]
           specified in the API request.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.language.v1beta2.TextSpan)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.language.v1beta2.TextSpan)
+    ),
+)
 _sym_db.RegisterMessage(TextSpan)
 
-ClassificationCategory = _reflection.GeneratedProtocolMessageType('ClassificationCategory', (_message.Message,), dict(
-  DESCRIPTOR = _CLASSIFICATIONCATEGORY,
-  __module__ = 'google.cloud.language_v1beta2.proto.language_service_pb2'
-  ,
-  __doc__ = """Represents a category returned from the text classifier.
+ClassificationCategory = _reflection.GeneratedProtocolMessageType(
+    "ClassificationCategory",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_CLASSIFICATIONCATEGORY,
+        __module__="google.cloud.language_v1beta2.proto.language_service_pb2",
+        __doc__="""Represents a category returned from the text classifier.
   
   
   Attributes:
@@ -2487,15 +3115,18 @@ ClassificationCategory = _reflection.GeneratedProtocolMessageType('Classificatio
           how certain the classifier is that this category represents
           the given text.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.language.v1beta2.ClassificationCategory)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.language.v1beta2.ClassificationCategory)
+    ),
+)
 _sym_db.RegisterMessage(ClassificationCategory)
 
-AnalyzeSentimentRequest = _reflection.GeneratedProtocolMessageType('AnalyzeSentimentRequest', (_message.Message,), dict(
-  DESCRIPTOR = _ANALYZESENTIMENTREQUEST,
-  __module__ = 'google.cloud.language_v1beta2.proto.language_service_pb2'
-  ,
-  __doc__ = """The sentiment analysis request message.
+AnalyzeSentimentRequest = _reflection.GeneratedProtocolMessageType(
+    "AnalyzeSentimentRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_ANALYZESENTIMENTREQUEST,
+        __module__="google.cloud.language_v1beta2.proto.language_service_pb2",
+        __doc__="""The sentiment analysis request message.
   
   
   Attributes:
@@ -2505,15 +3136,18 @@ AnalyzeSentimentRequest = _reflection.GeneratedProtocolMessageType('AnalyzeSenti
           The encoding type used by the API to calculate sentence
           offsets for the sentence sentiment.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.language.v1beta2.AnalyzeSentimentRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.language.v1beta2.AnalyzeSentimentRequest)
+    ),
+)
 _sym_db.RegisterMessage(AnalyzeSentimentRequest)
 
-AnalyzeSentimentResponse = _reflection.GeneratedProtocolMessageType('AnalyzeSentimentResponse', (_message.Message,), dict(
-  DESCRIPTOR = _ANALYZESENTIMENTRESPONSE,
-  __module__ = 'google.cloud.language_v1beta2.proto.language_service_pb2'
-  ,
-  __doc__ = """The sentiment analysis response message.
+AnalyzeSentimentResponse = _reflection.GeneratedProtocolMessageType(
+    "AnalyzeSentimentResponse",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_ANALYZESENTIMENTRESPONSE,
+        __module__="google.cloud.language_v1beta2.proto.language_service_pb2",
+        __doc__="""The sentiment analysis response message.
   
   
   Attributes:
@@ -2528,15 +3162,18 @@ AnalyzeSentimentResponse = _reflection.GeneratedProtocolMessageType('AnalyzeSent
       sentences:
           The sentiment for all the sentences in the document.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.language.v1beta2.AnalyzeSentimentResponse)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.language.v1beta2.AnalyzeSentimentResponse)
+    ),
+)
 _sym_db.RegisterMessage(AnalyzeSentimentResponse)
 
-AnalyzeEntitySentimentRequest = _reflection.GeneratedProtocolMessageType('AnalyzeEntitySentimentRequest', (_message.Message,), dict(
-  DESCRIPTOR = _ANALYZEENTITYSENTIMENTREQUEST,
-  __module__ = 'google.cloud.language_v1beta2.proto.language_service_pb2'
-  ,
-  __doc__ = """The entity-level sentiment analysis request message.
+AnalyzeEntitySentimentRequest = _reflection.GeneratedProtocolMessageType(
+    "AnalyzeEntitySentimentRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_ANALYZEENTITYSENTIMENTREQUEST,
+        __module__="google.cloud.language_v1beta2.proto.language_service_pb2",
+        __doc__="""The entity-level sentiment analysis request message.
   
   
   Attributes:
@@ -2545,15 +3182,18 @@ AnalyzeEntitySentimentRequest = _reflection.GeneratedProtocolMessageType('Analyz
       encoding_type:
           The encoding type used by the API to calculate offsets.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.language.v1beta2.AnalyzeEntitySentimentRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.language.v1beta2.AnalyzeEntitySentimentRequest)
+    ),
+)
 _sym_db.RegisterMessage(AnalyzeEntitySentimentRequest)
 
-AnalyzeEntitySentimentResponse = _reflection.GeneratedProtocolMessageType('AnalyzeEntitySentimentResponse', (_message.Message,), dict(
-  DESCRIPTOR = _ANALYZEENTITYSENTIMENTRESPONSE,
-  __module__ = 'google.cloud.language_v1beta2.proto.language_service_pb2'
-  ,
-  __doc__ = """The entity-level sentiment analysis response message.
+AnalyzeEntitySentimentResponse = _reflection.GeneratedProtocolMessageType(
+    "AnalyzeEntitySentimentResponse",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_ANALYZEENTITYSENTIMENTRESPONSE,
+        __module__="google.cloud.language_v1beta2.proto.language_service_pb2",
+        __doc__="""The entity-level sentiment analysis response message.
   
   
   Attributes:
@@ -2567,15 +3207,18 @@ AnalyzeEntitySentimentResponse = _reflection.GeneratedProtocolMessageType('Analy
           e.cloud.language.v1beta2.Document.language] field for more
           details.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.language.v1beta2.AnalyzeEntitySentimentResponse)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.language.v1beta2.AnalyzeEntitySentimentResponse)
+    ),
+)
 _sym_db.RegisterMessage(AnalyzeEntitySentimentResponse)
 
-AnalyzeEntitiesRequest = _reflection.GeneratedProtocolMessageType('AnalyzeEntitiesRequest', (_message.Message,), dict(
-  DESCRIPTOR = _ANALYZEENTITIESREQUEST,
-  __module__ = 'google.cloud.language_v1beta2.proto.language_service_pb2'
-  ,
-  __doc__ = """The entity analysis request message.
+AnalyzeEntitiesRequest = _reflection.GeneratedProtocolMessageType(
+    "AnalyzeEntitiesRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_ANALYZEENTITIESREQUEST,
+        __module__="google.cloud.language_v1beta2.proto.language_service_pb2",
+        __doc__="""The entity analysis request message.
   
   
   Attributes:
@@ -2584,15 +3227,18 @@ AnalyzeEntitiesRequest = _reflection.GeneratedProtocolMessageType('AnalyzeEntiti
       encoding_type:
           The encoding type used by the API to calculate offsets.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.language.v1beta2.AnalyzeEntitiesRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.language.v1beta2.AnalyzeEntitiesRequest)
+    ),
+)
 _sym_db.RegisterMessage(AnalyzeEntitiesRequest)
 
-AnalyzeEntitiesResponse = _reflection.GeneratedProtocolMessageType('AnalyzeEntitiesResponse', (_message.Message,), dict(
-  DESCRIPTOR = _ANALYZEENTITIESRESPONSE,
-  __module__ = 'google.cloud.language_v1beta2.proto.language_service_pb2'
-  ,
-  __doc__ = """The entity analysis response message.
+AnalyzeEntitiesResponse = _reflection.GeneratedProtocolMessageType(
+    "AnalyzeEntitiesResponse",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_ANALYZEENTITIESRESPONSE,
+        __module__="google.cloud.language_v1beta2.proto.language_service_pb2",
+        __doc__="""The entity analysis response message.
   
   
   Attributes:
@@ -2605,15 +3251,18 @@ AnalyzeEntitiesResponse = _reflection.GeneratedProtocolMessageType('AnalyzeEntit
           e.cloud.language.v1beta2.Document.language] field for more
           details.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.language.v1beta2.AnalyzeEntitiesResponse)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.language.v1beta2.AnalyzeEntitiesResponse)
+    ),
+)
 _sym_db.RegisterMessage(AnalyzeEntitiesResponse)
 
-AnalyzeSyntaxRequest = _reflection.GeneratedProtocolMessageType('AnalyzeSyntaxRequest', (_message.Message,), dict(
-  DESCRIPTOR = _ANALYZESYNTAXREQUEST,
-  __module__ = 'google.cloud.language_v1beta2.proto.language_service_pb2'
-  ,
-  __doc__ = """The syntax analysis request message.
+AnalyzeSyntaxRequest = _reflection.GeneratedProtocolMessageType(
+    "AnalyzeSyntaxRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_ANALYZESYNTAXREQUEST,
+        __module__="google.cloud.language_v1beta2.proto.language_service_pb2",
+        __doc__="""The syntax analysis request message.
   
   
   Attributes:
@@ -2622,15 +3271,18 @@ AnalyzeSyntaxRequest = _reflection.GeneratedProtocolMessageType('AnalyzeSyntaxRe
       encoding_type:
           The encoding type used by the API to calculate offsets.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.language.v1beta2.AnalyzeSyntaxRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.language.v1beta2.AnalyzeSyntaxRequest)
+    ),
+)
 _sym_db.RegisterMessage(AnalyzeSyntaxRequest)
 
-AnalyzeSyntaxResponse = _reflection.GeneratedProtocolMessageType('AnalyzeSyntaxResponse', (_message.Message,), dict(
-  DESCRIPTOR = _ANALYZESYNTAXRESPONSE,
-  __module__ = 'google.cloud.language_v1beta2.proto.language_service_pb2'
-  ,
-  __doc__ = """The syntax analysis response message.
+AnalyzeSyntaxResponse = _reflection.GeneratedProtocolMessageType(
+    "AnalyzeSyntaxResponse",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_ANALYZESYNTAXRESPONSE,
+        __module__="google.cloud.language_v1beta2.proto.language_service_pb2",
+        __doc__="""The syntax analysis response message.
   
   
   Attributes:
@@ -2646,47 +3298,58 @@ AnalyzeSyntaxResponse = _reflection.GeneratedProtocolMessageType('AnalyzeSyntaxR
           e.cloud.language.v1beta2.Document.language] field for more
           details.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.language.v1beta2.AnalyzeSyntaxResponse)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.language.v1beta2.AnalyzeSyntaxResponse)
+    ),
+)
 _sym_db.RegisterMessage(AnalyzeSyntaxResponse)
 
-ClassifyTextRequest = _reflection.GeneratedProtocolMessageType('ClassifyTextRequest', (_message.Message,), dict(
-  DESCRIPTOR = _CLASSIFYTEXTREQUEST,
-  __module__ = 'google.cloud.language_v1beta2.proto.language_service_pb2'
-  ,
-  __doc__ = """The document classification request message.
+ClassifyTextRequest = _reflection.GeneratedProtocolMessageType(
+    "ClassifyTextRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_CLASSIFYTEXTREQUEST,
+        __module__="google.cloud.language_v1beta2.proto.language_service_pb2",
+        __doc__="""The document classification request message.
   
   
   Attributes:
       document:
           Input document.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.language.v1beta2.ClassifyTextRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.language.v1beta2.ClassifyTextRequest)
+    ),
+)
 _sym_db.RegisterMessage(ClassifyTextRequest)
 
-ClassifyTextResponse = _reflection.GeneratedProtocolMessageType('ClassifyTextResponse', (_message.Message,), dict(
-  DESCRIPTOR = _CLASSIFYTEXTRESPONSE,
-  __module__ = 'google.cloud.language_v1beta2.proto.language_service_pb2'
-  ,
-  __doc__ = """The document classification response message.
+ClassifyTextResponse = _reflection.GeneratedProtocolMessageType(
+    "ClassifyTextResponse",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_CLASSIFYTEXTRESPONSE,
+        __module__="google.cloud.language_v1beta2.proto.language_service_pb2",
+        __doc__="""The document classification response message.
   
   
   Attributes:
       categories:
           Categories representing the input document.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.language.v1beta2.ClassifyTextResponse)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.language.v1beta2.ClassifyTextResponse)
+    ),
+)
 _sym_db.RegisterMessage(ClassifyTextResponse)
 
-AnnotateTextRequest = _reflection.GeneratedProtocolMessageType('AnnotateTextRequest', (_message.Message,), dict(
-
-  Features = _reflection.GeneratedProtocolMessageType('Features', (_message.Message,), dict(
-    DESCRIPTOR = _ANNOTATETEXTREQUEST_FEATURES,
-    __module__ = 'google.cloud.language_v1beta2.proto.language_service_pb2'
-    ,
-    __doc__ = """All available features for sentiment, syntax, and semantic analysis.
+AnnotateTextRequest = _reflection.GeneratedProtocolMessageType(
+    "AnnotateTextRequest",
+    (_message.Message,),
+    dict(
+        Features=_reflection.GeneratedProtocolMessageType(
+            "Features",
+            (_message.Message,),
+            dict(
+                DESCRIPTOR=_ANNOTATETEXTREQUEST_FEATURES,
+                __module__="google.cloud.language_v1beta2.proto.language_service_pb2",
+                __doc__="""All available features for sentiment, syntax, and semantic analysis.
     Setting each one to true will enable that specific analysis for the
     input.
     
@@ -2703,13 +3366,12 @@ AnnotateTextRequest = _reflection.GeneratedProtocolMessageType('AnnotateTextRequ
         classify_text:
             Classify the full document into categories.
     """,
-    # @@protoc_insertion_point(class_scope:google.cloud.language.v1beta2.AnnotateTextRequest.Features)
-    ))
-  ,
-  DESCRIPTOR = _ANNOTATETEXTREQUEST,
-  __module__ = 'google.cloud.language_v1beta2.proto.language_service_pb2'
-  ,
-  __doc__ = """The request message for the text annotation API, which can perform
+                # @@protoc_insertion_point(class_scope:google.cloud.language.v1beta2.AnnotateTextRequest.Features)
+            ),
+        ),
+        DESCRIPTOR=_ANNOTATETEXTREQUEST,
+        __module__="google.cloud.language_v1beta2.proto.language_service_pb2",
+        __doc__="""The request message for the text annotation API, which can perform
   multiple analysis types (sentiment, entities, and syntax) in one call.
   
   
@@ -2721,16 +3383,19 @@ AnnotateTextRequest = _reflection.GeneratedProtocolMessageType('AnnotateTextRequ
       encoding_type:
           The encoding type used by the API to calculate offsets.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.language.v1beta2.AnnotateTextRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.language.v1beta2.AnnotateTextRequest)
+    ),
+)
 _sym_db.RegisterMessage(AnnotateTextRequest)
 _sym_db.RegisterMessage(AnnotateTextRequest.Features)
 
-AnnotateTextResponse = _reflection.GeneratedProtocolMessageType('AnnotateTextResponse', (_message.Message,), dict(
-  DESCRIPTOR = _ANNOTATETEXTRESPONSE,
-  __module__ = 'google.cloud.language_v1beta2.proto.language_service_pb2'
-  ,
-  __doc__ = """The text annotations response message.
+AnnotateTextResponse = _reflection.GeneratedProtocolMessageType(
+    "AnnotateTextResponse",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_ANNOTATETEXTRESPONSE,
+        __module__="google.cloud.language_v1beta2.proto.language_service_pb2",
+        __doc__="""The text annotations response message.
   
   
   Attributes:
@@ -2762,82 +3427,111 @@ AnnotateTextResponse = _reflection.GeneratedProtocolMessageType('AnnotateTextRes
       categories:
           Categories identified in the input document.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.language.v1beta2.AnnotateTextResponse)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.language.v1beta2.AnnotateTextResponse)
+    ),
+)
 _sym_db.RegisterMessage(AnnotateTextResponse)
 
 
 DESCRIPTOR.has_options = True
-DESCRIPTOR._options = _descriptor._ParseOptions(descriptor_pb2.FileOptions(), _b('\n!com.google.cloud.language.v1beta2B\024LanguageServiceProtoP\001ZEgoogle.golang.org/genproto/googleapis/cloud/language/v1beta2;language'))
+DESCRIPTOR._options = _descriptor._ParseOptions(
+    descriptor_pb2.FileOptions(),
+    _b(
+        "\n!com.google.cloud.language.v1beta2B\024LanguageServiceProtoP\001ZEgoogle.golang.org/genproto/googleapis/cloud/language/v1beta2;language"
+    ),
+)
 _ENTITY_METADATAENTRY.has_options = True
-_ENTITY_METADATAENTRY._options = _descriptor._ParseOptions(descriptor_pb2.MessageOptions(), _b('8\001'))
+_ENTITY_METADATAENTRY._options = _descriptor._ParseOptions(
+    descriptor_pb2.MessageOptions(), _b("8\001")
+)
 
 _LANGUAGESERVICE = _descriptor.ServiceDescriptor(
-  name='LanguageService',
-  full_name='google.cloud.language.v1beta2.LanguageService',
-  file=DESCRIPTOR,
-  index=0,
-  options=None,
-  serialized_start=6998,
-  serialized_end=8083,
-  methods=[
-  _descriptor.MethodDescriptor(
-    name='AnalyzeSentiment',
-    full_name='google.cloud.language.v1beta2.LanguageService.AnalyzeSentiment',
+    name="LanguageService",
+    full_name="google.cloud.language.v1beta2.LanguageService",
+    file=DESCRIPTOR,
     index=0,
-    containing_service=None,
-    input_type=_ANALYZESENTIMENTREQUEST,
-    output_type=_ANALYZESENTIMENTRESPONSE,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002(\"#/v1beta2/documents:analyzeSentiment:\001*')),
-  ),
-  _descriptor.MethodDescriptor(
-    name='AnalyzeEntities',
-    full_name='google.cloud.language.v1beta2.LanguageService.AnalyzeEntities',
-    index=1,
-    containing_service=None,
-    input_type=_ANALYZEENTITIESREQUEST,
-    output_type=_ANALYZEENTITIESRESPONSE,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002\'\"\"/v1beta2/documents:analyzeEntities:\001*')),
-  ),
-  _descriptor.MethodDescriptor(
-    name='AnalyzeEntitySentiment',
-    full_name='google.cloud.language.v1beta2.LanguageService.AnalyzeEntitySentiment',
-    index=2,
-    containing_service=None,
-    input_type=_ANALYZEENTITYSENTIMENTREQUEST,
-    output_type=_ANALYZEENTITYSENTIMENTRESPONSE,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002.\")/v1beta2/documents:analyzeEntitySentiment:\001*')),
-  ),
-  _descriptor.MethodDescriptor(
-    name='AnalyzeSyntax',
-    full_name='google.cloud.language.v1beta2.LanguageService.AnalyzeSyntax',
-    index=3,
-    containing_service=None,
-    input_type=_ANALYZESYNTAXREQUEST,
-    output_type=_ANALYZESYNTAXRESPONSE,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002%\" /v1beta2/documents:analyzeSyntax:\001*')),
-  ),
-  _descriptor.MethodDescriptor(
-    name='ClassifyText',
-    full_name='google.cloud.language.v1beta2.LanguageService.ClassifyText',
-    index=4,
-    containing_service=None,
-    input_type=_CLASSIFYTEXTREQUEST,
-    output_type=_CLASSIFYTEXTRESPONSE,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002$\"\037/v1beta2/documents:classifyText:\001*')),
-  ),
-  _descriptor.MethodDescriptor(
-    name='AnnotateText',
-    full_name='google.cloud.language.v1beta2.LanguageService.AnnotateText',
-    index=5,
-    containing_service=None,
-    input_type=_ANNOTATETEXTREQUEST,
-    output_type=_ANNOTATETEXTRESPONSE,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002$\"\037/v1beta2/documents:annotateText:\001*')),
-  ),
-])
+    options=None,
+    serialized_start=6998,
+    serialized_end=8083,
+    methods=[
+        _descriptor.MethodDescriptor(
+            name="AnalyzeSentiment",
+            full_name="google.cloud.language.v1beta2.LanguageService.AnalyzeSentiment",
+            index=0,
+            containing_service=None,
+            input_type=_ANALYZESENTIMENTREQUEST,
+            output_type=_ANALYZESENTIMENTRESPONSE,
+            options=_descriptor._ParseOptions(
+                descriptor_pb2.MethodOptions(),
+                _b('\202\323\344\223\002("#/v1beta2/documents:analyzeSentiment:\001*'),
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="AnalyzeEntities",
+            full_name="google.cloud.language.v1beta2.LanguageService.AnalyzeEntities",
+            index=1,
+            containing_service=None,
+            input_type=_ANALYZEENTITIESREQUEST,
+            output_type=_ANALYZEENTITIESRESPONSE,
+            options=_descriptor._ParseOptions(
+                descriptor_pb2.MethodOptions(),
+                _b('\202\323\344\223\002\'""/v1beta2/documents:analyzeEntities:\001*'),
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="AnalyzeEntitySentiment",
+            full_name="google.cloud.language.v1beta2.LanguageService.AnalyzeEntitySentiment",
+            index=2,
+            containing_service=None,
+            input_type=_ANALYZEENTITYSENTIMENTREQUEST,
+            output_type=_ANALYZEENTITYSENTIMENTRESPONSE,
+            options=_descriptor._ParseOptions(
+                descriptor_pb2.MethodOptions(),
+                _b(
+                    '\202\323\344\223\002.")/v1beta2/documents:analyzeEntitySentiment:\001*'
+                ),
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="AnalyzeSyntax",
+            full_name="google.cloud.language.v1beta2.LanguageService.AnalyzeSyntax",
+            index=3,
+            containing_service=None,
+            input_type=_ANALYZESYNTAXREQUEST,
+            output_type=_ANALYZESYNTAXRESPONSE,
+            options=_descriptor._ParseOptions(
+                descriptor_pb2.MethodOptions(),
+                _b('\202\323\344\223\002%" /v1beta2/documents:analyzeSyntax:\001*'),
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="ClassifyText",
+            full_name="google.cloud.language.v1beta2.LanguageService.ClassifyText",
+            index=4,
+            containing_service=None,
+            input_type=_CLASSIFYTEXTREQUEST,
+            output_type=_CLASSIFYTEXTRESPONSE,
+            options=_descriptor._ParseOptions(
+                descriptor_pb2.MethodOptions(),
+                _b('\202\323\344\223\002$"\037/v1beta2/documents:classifyText:\001*'),
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="AnnotateText",
+            full_name="google.cloud.language.v1beta2.LanguageService.AnnotateText",
+            index=5,
+            containing_service=None,
+            input_type=_ANNOTATETEXTREQUEST,
+            output_type=_ANNOTATETEXTRESPONSE,
+            options=_descriptor._ParseOptions(
+                descriptor_pb2.MethodOptions(),
+                _b('\202\323\344\223\002$"\037/v1beta2/documents:annotateText:\001*'),
+            ),
+        ),
+    ],
+)
 _sym_db.RegisterServiceDescriptor(_LANGUAGESERVICE)
 
-DESCRIPTOR.services_by_name['LanguageService'] = _LANGUAGESERVICE
+DESCRIPTOR.services_by_name["LanguageService"] = _LANGUAGESERVICE
 
 # @@protoc_insertion_point(module_scope)

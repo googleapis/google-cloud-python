@@ -37,35 +37,35 @@ _LOGGER = logging.getLogger(__name__)
 WATCH_TARGET_ID = 0x5079  # "Py"
 
 GRPC_STATUS_CODE = {
-    'OK': 0,
-    'CANCELLED': 1,
-    'UNKNOWN': 2,
-    'INVALID_ARGUMENT': 3,
-    'DEADLINE_EXCEEDED': 4,
-    'NOT_FOUND': 5,
-    'ALREADY_EXISTS': 6,
-    'PERMISSION_DENIED': 7,
-    'UNAUTHENTICATED': 16,
-    'RESOURCE_EXHAUSTED': 8,
-    'FAILED_PRECONDITION': 9,
-    'ABORTED': 10,
-    'OUT_OF_RANGE': 11,
-    'UNIMPLEMENTED': 12,
-    'INTERNAL': 13,
-    'UNAVAILABLE': 14,
-    'DATA_LOSS': 15,
-    'DO_NOT_USE': -1
+    "OK": 0,
+    "CANCELLED": 1,
+    "UNKNOWN": 2,
+    "INVALID_ARGUMENT": 3,
+    "DEADLINE_EXCEEDED": 4,
+    "NOT_FOUND": 5,
+    "ALREADY_EXISTS": 6,
+    "PERMISSION_DENIED": 7,
+    "UNAUTHENTICATED": 16,
+    "RESOURCE_EXHAUSTED": 8,
+    "FAILED_PRECONDITION": 9,
+    "ABORTED": 10,
+    "OUT_OF_RANGE": 11,
+    "UNIMPLEMENTED": 12,
+    "INTERNAL": 13,
+    "UNAVAILABLE": 14,
+    "DATA_LOSS": 15,
+    "DO_NOT_USE": -1,
 }
-_RPC_ERROR_THREAD_NAME = 'Thread-OnRpcTerminated'
+_RPC_ERROR_THREAD_NAME = "Thread-OnRpcTerminated"
 _RETRYABLE_STREAM_ERRORS = (
     exceptions.DeadlineExceeded,
     exceptions.ServiceUnavailable,
     exceptions.InternalServerError,
     exceptions.Unknown,
-    exceptions.GatewayTimeout
+    exceptions.GatewayTimeout,
 )
 
-DocTreeEntry = collections.namedtuple('DocTreeEntry', ['value', 'index'])
+DocTreeEntry = collections.namedtuple("DocTreeEntry", ["value", "index"])
 
 
 class WatchDocTree(object):
@@ -152,7 +152,7 @@ def _maybe_wrap_exception(exception):
 
 
 def document_watch_comparator(doc1, doc2):
-    assert doc1 == doc2, 'Document watches only support one document.'
+    assert doc1 == doc2, "Document watches only support one document."
     return 0
 
 
@@ -161,17 +161,18 @@ class Watch(object):
     BackgroundConsumer = BackgroundConsumer  # FBO unit tests
     ResumableBidiRpc = ResumableBidiRpc  # FBO unit tests
 
-    def __init__(self,
-                 document_reference,
-                 firestore,
-                 target,
-                 comparator,
-                 snapshot_callback,
-                 document_snapshot_cls,
-                 document_reference_cls,
-                 BackgroundConsumer=None,  # FBO unit testing
-                 ResumableBidiRpc=None,  # FBO unit testing
-                 ):
+    def __init__(
+        self,
+        document_reference,
+        firestore,
+        target,
+        comparator,
+        snapshot_callback,
+        document_snapshot_cls,
+        document_reference_cls,
+        BackgroundConsumer=None,  # FBO unit testing
+        ResumableBidiRpc=None,  # FBO unit testing
+    ):
         """
         Args:
             firestore:
@@ -203,21 +204,22 @@ class Watch(object):
 
         def should_recover(exc):  # pragma: NO COVER
             return (
-                isinstance(exc, grpc.RpcError) and
-                exc.code() == grpc.StatusCode.UNAVAILABLE)
+                isinstance(exc, grpc.RpcError)
+                and exc.code() == grpc.StatusCode.UNAVAILABLE
+            )
 
         initial_request = firestore_pb2.ListenRequest(
-            database=self._firestore._database_string,
-            add_target=self._targets
+            database=self._firestore._database_string, add_target=self._targets
         )
 
         if ResumableBidiRpc is None:
             ResumableBidiRpc = self.ResumableBidiRpc  # FBO unit tests
 
         self._rpc = ResumableBidiRpc(
-            self._api.transport._stubs['firestore_stub'].Listen,
+            self._api.transport._stubs["firestore_stub"].Listen,
             initial_request=initial_request,
-            should_recover=should_recover)
+            should_recover=should_recover,
+        )
 
         self._rpc.add_done_callback(self._on_rpc_done)
 
@@ -274,14 +276,14 @@ class Watch(object):
 
             # Stop consuming messages.
             if self.is_active:
-                _LOGGER.debug('Stopping consumer.')
+                _LOGGER.debug("Stopping consumer.")
                 self._consumer.stop()
             self._consumer = None
 
             self._rpc.close()
             self._rpc = None
             self._closed = True
-            _LOGGER.debug('Finished stopping manager.')
+            _LOGGER.debug("Finished stopping manager.")
 
         if reason:
             # Raise an exception if a reason is provided
@@ -301,13 +303,11 @@ class Watch(object):
         with shutting everything down. This is to prevent blocking in the
         background consumer and preventing it from being ``joined()``.
         """
-        _LOGGER.info(
-            'RPC termination has signaled manager shutdown.')
+        _LOGGER.info("RPC termination has signaled manager shutdown.")
         future = _maybe_wrap_exception(future)
         thread = threading.Thread(
-            name=_RPC_ERROR_THREAD_NAME,
-            target=self.close,
-            kwargs={'reason': future})
+            name=_RPC_ERROR_THREAD_NAME, target=self.close, kwargs={"reason": future}
+        )
         thread.daemon = True
         thread.start()
 
@@ -315,8 +315,13 @@ class Watch(object):
         self.close()
 
     @classmethod
-    def for_document(cls, document_ref, snapshot_callback,
-                     snapshot_class_instance, reference_class_instance):
+    def for_document(
+        cls,
+        document_ref,
+        snapshot_callback,
+        snapshot_class_instance,
+        reference_class_instance,
+    ):
         """
         Creates a watch snapshot listener for a document. snapshot_callback
         receives a DocumentChange object, but may also start to get
@@ -331,43 +336,42 @@ class Watch(object):
                 references
 
         """
-        return cls(document_ref,
-                   document_ref._client,
-                   {
-                       'documents': {
-                           'documents': [document_ref._document_path]},
-                       'target_id': WATCH_TARGET_ID
-                   },
-                   document_watch_comparator,
-                   snapshot_callback,
-                   snapshot_class_instance,
-                   reference_class_instance)
-
-    @classmethod
-    def for_query(cls, query, snapshot_callback, snapshot_class_instance,
-                  reference_class_instance):
-        query_target = firestore_pb2.Target.QueryTarget(
-            parent=query._client._database_string,
-            structured_query=query._to_protobuf(),
+        return cls(
+            document_ref,
+            document_ref._client,
+            {
+                "documents": {"documents": [document_ref._document_path]},
+                "target_id": WATCH_TARGET_ID,
+            },
+            document_watch_comparator,
+            snapshot_callback,
+            snapshot_class_instance,
+            reference_class_instance,
         )
 
-        return cls(query,
-                   query._client,
-                   {
-                       'query': query_target,
-                       'target_id': WATCH_TARGET_ID
-                   },
-                   query._comparator,
-                   snapshot_callback,
-                   snapshot_class_instance,
-                   reference_class_instance)
+    @classmethod
+    def for_query(
+        cls, query, snapshot_callback, snapshot_class_instance, reference_class_instance
+    ):
+        query_target = firestore_pb2.Target.QueryTarget(
+            parent=query._client._database_string, structured_query=query._to_protobuf()
+        )
+
+        return cls(
+            query,
+            query._client,
+            {"query": query_target, "target_id": WATCH_TARGET_ID},
+            query._comparator,
+            snapshot_callback,
+            snapshot_class_instance,
+            reference_class_instance,
+        )
 
     def _on_snapshot_target_change_no_change(self, proto):
-        _LOGGER.debug('on_snapshot: target change: NO_CHANGE')
+        _LOGGER.debug("on_snapshot: target change: NO_CHANGE")
         change = proto.target_change
 
-        no_target_ids = (change.target_ids is None or
-                         len(change.target_ids) == 0)
+        no_target_ids = change.target_ids is None or len(change.target_ids) == 0
         if no_target_ids and change.read_time and self.current:
             # TargetChange.CURRENT followed by TargetChange.NO_CHANGE
             # signals a consistent state. Invoke the onSnapshot
@@ -376,22 +380,23 @@ class Watch(object):
 
     def _on_snapshot_target_change_add(self, proto):
         _LOGGER.debug("on_snapshot: target change: ADD")
-        assert WATCH_TARGET_ID == proto.target_change.target_ids[0], \
-            'Unexpected target ID sent by server'
+        assert (
+            WATCH_TARGET_ID == proto.target_change.target_ids[0]
+        ), "Unexpected target ID sent by server"
 
     def _on_snapshot_target_change_remove(self, proto):
         _LOGGER.debug("on_snapshot: target change: REMOVE")
         change = proto.target_change
 
         code = 13
-        message = 'internal error'
+        message = "internal error"
         if change.cause:
             code = change.cause.code
             message = change.cause.message
 
         # TODO: Consider surfacing a code property on the exception.
         # TODO: Consider a more exact exception
-        raise Exception('Error %s:  %s' % (code, message))
+        raise Exception("Error %s:  %s" % (code, message))
 
     def _on_snapshot_target_change_reset(self, proto):
         # Whatever changes have happened so far no longer matter.
@@ -420,19 +425,20 @@ class Watch(object):
             TargetChange.REMOVE: self._on_snapshot_target_change_remove,
             TargetChange.RESET: self._on_snapshot_target_change_reset,
             TargetChange.CURRENT: self._on_snapshot_target_change_current,
-            }
+        }
 
         target_change = proto.target_change
         if str(target_change):
             target_change_type = target_change.target_change_type
-            _LOGGER.debug(
-                'on_snapshot: target change: ' + str(target_change_type))
+            _LOGGER.debug("on_snapshot: target change: " + str(target_change_type))
             meth = target_changetype_dispatch.get(target_change_type)
             if meth is None:
-                _LOGGER.info('on_snapshot: Unknown target change ' +
-                             str(target_change_type))
-                self.close(reason='Unknown target change type: %s ' %
-                           str(target_change_type))
+                _LOGGER.info(
+                    "on_snapshot: Unknown target change " + str(target_change_type)
+                )
+                self.close(
+                    reason="Unknown target change type: %s " % str(target_change_type)
+                )
             else:
                 try:
                     meth(proto)
@@ -445,7 +451,7 @@ class Watch(object):
             # in this version bidi rpc is just used and will control this.
 
         elif str(proto.document_change):
-            _LOGGER.debug('on_snapshot: document change')
+            _LOGGER.debug("on_snapshot: document change")
 
             # No other target_ids can show up here, but we still need to see
             # if the targetId was in the added list or removed list.
@@ -461,7 +467,7 @@ class Watch(object):
                 removed = True
 
             if changed:
-                _LOGGER.debug('on_snapshot: document change: CHANGED')
+                _LOGGER.debug("on_snapshot: document change: CHANGED")
 
                 # google.cloud.firestore_v1beta1.types.DocumentChange
                 document_change = proto.document_change
@@ -475,9 +481,9 @@ class Watch(object):
                 # fashion than self._document_reference
                 document_name = document.name
                 db_str = self._firestore._database_string
-                db_str_documents = db_str + '/documents/'
+                db_str_documents = db_str + "/documents/"
                 if document_name.startswith(db_str_documents):
-                    document_name = document_name[len(db_str_documents):]
+                    document_name = document_name[len(db_str_documents) :]
 
                 document_ref = self._firestore.document(document_name)
 
@@ -487,22 +493,23 @@ class Watch(object):
                     exists=True,
                     read_time=None,
                     create_time=document.create_time,
-                    update_time=document.update_time)
+                    update_time=document.update_time,
+                )
 
                 self.change_map[document.name] = snapshot
 
             elif removed:
-                _LOGGER.debug('on_snapshot: document change: REMOVED')
+                _LOGGER.debug("on_snapshot: document change: REMOVED")
                 document = proto.document_change.document
                 self.change_map[document.name] = ChangeType.REMOVED
 
-        elif (proto.document_delete or proto.document_remove):
-            _LOGGER.debug('on_snapshot: document change: DELETE/REMOVE')
+        elif proto.document_delete or proto.document_remove:
+            _LOGGER.debug("on_snapshot: document change: DELETE/REMOVE")
             name = (proto.document_delete or proto.document_remove).document
             self.change_map[name] = ChangeType.REMOVED
 
-        elif (proto.filter):
-            _LOGGER.debug('on_snapshot: filter update')
+        elif proto.filter:
+            _LOGGER.debug("on_snapshot: filter update")
             if proto.filter.count != self._current_size():
                 # We need to remove all the current results.
                 self._reset_docs()
@@ -512,8 +519,7 @@ class Watch(object):
 
         else:
             _LOGGER.debug("UNKNOWN TYPE. UHOH")
-            self.close(reason=ValueError(
-                       'Unknown listen response type: %s' % proto))
+            self.close(reason=ValueError("Unknown listen response type: %s" % proto))
 
     def push(self, read_time, next_resume_token):
         """
@@ -521,17 +527,11 @@ class Watch(object):
         the user's callback. Clears the current changes on completion.
         """
         deletes, adds, updates = Watch._extract_changes(
-            self.doc_map,
-            self.change_map,
-            read_time,
-            )
+            self.doc_map, self.change_map, read_time
+        )
 
         updated_tree, updated_map, appliedChanges = self._compute_snapshot(
-            self.doc_tree,
-            self.doc_map,
-            deletes,
-            adds,
-            updates,
+            self.doc_tree, self.doc_map, deletes, adds, updates
         )
 
         if not self.has_pushed or len(appliedChanges):
@@ -543,7 +543,7 @@ class Watch(object):
             self._snapshot_callback(
                 keys,
                 appliedChanges,
-                datetime.datetime.fromtimestamp(read_time.seconds, pytz.utc)
+                datetime.datetime.fromtimestamp(read_time.seconds, pytz.utc),
             )
             self.has_pushed = True
 
@@ -573,32 +573,34 @@ class Watch(object):
 
         return (deletes, adds, updates)
 
-    def _compute_snapshot(self, doc_tree, doc_map, delete_changes, add_changes,
-                          update_changes):
+    def _compute_snapshot(
+        self, doc_tree, doc_map, delete_changes, add_changes, update_changes
+    ):
         updated_tree = doc_tree
         updated_map = doc_map
 
-        assert len(doc_tree) == len(doc_map), \
-            'The document tree and document map should have the same ' + \
-            'number of entries.'
+        assert len(doc_tree) == len(doc_map), (
+            "The document tree and document map should have the same "
+            + "number of entries."
+        )
 
         def delete_doc(name, updated_tree, updated_map):
             """
             Applies a document delete to the document tree and document map.
             Returns the corresponding DocumentChange event.
             """
-            assert name in updated_map, 'Document to delete does not exist'
+            assert name in updated_map, "Document to delete does not exist"
             old_document = updated_map.get(name)
             # TODO: If a document doesn't exist this raises IndexError. Handle?
             existing = updated_tree.find(old_document)
             old_index = existing.index
             updated_tree = updated_tree.remove(old_document)
             del updated_map[name]
-            return (DocumentChange(ChangeType.REMOVED,
-                                   old_document,
-                                   old_index,
-                                   -1),
-                    updated_tree, updated_map)
+            return (
+                DocumentChange(ChangeType.REMOVED, old_document, old_index, -1),
+                updated_tree,
+                updated_map,
+            )
 
         def add_doc(new_document, updated_tree, updated_map):
             """
@@ -606,15 +608,15 @@ class Watch(object):
             Returns the corresponding DocumentChange event.
             """
             name = new_document.reference._document_path
-            assert name not in updated_map, 'Document to add already exists'
+            assert name not in updated_map, "Document to add already exists"
             updated_tree = updated_tree.insert(new_document, None)
             new_index = updated_tree.find(new_document).index
             updated_map[name] = new_document
-            return (DocumentChange(ChangeType.ADDED,
-                                   new_document,
-                                   -1,
-                                   new_index),
-                    updated_tree, updated_map)
+            return (
+                DocumentChange(ChangeType.ADDED, new_document, -1, new_index),
+                updated_tree,
+                updated_map,
+            )
 
         def modify_doc(new_document, updated_tree, updated_map):
             """
@@ -623,18 +625,25 @@ class Watch(object):
             Returns the DocumentChange event for successful modifications.
             """
             name = new_document.reference._document_path
-            assert name in updated_map, 'Document to modify does not exist'
+            assert name in updated_map, "Document to modify does not exist"
             old_document = updated_map.get(name)
             if old_document.update_time != new_document.update_time:
                 remove_change, updated_tree, updated_map = delete_doc(
-                    name, updated_tree, updated_map)
+                    name, updated_tree, updated_map
+                )
                 add_change, updated_tree, updated_map = add_doc(
-                    new_document, updated_tree, updated_map)
-                return (DocumentChange(ChangeType.MODIFIED,
-                                       new_document,
-                                       remove_change.old_index,
-                                       add_change.new_index),
-                        updated_tree, updated_map)
+                    new_document, updated_tree, updated_map
+                )
+                return (
+                    DocumentChange(
+                        ChangeType.MODIFIED,
+                        new_document,
+                        remove_change.old_index,
+                        add_change.new_index,
+                    ),
+                    updated_tree,
+                    updated_map,
+                )
 
             return None, updated_tree, updated_map
 
@@ -650,27 +659,31 @@ class Watch(object):
         delete_changes = sorted(delete_changes, key=key)
         for name in delete_changes:
             change, updated_tree, updated_map = delete_doc(
-                name, updated_tree, updated_map)
+                name, updated_tree, updated_map
+            )
             appliedChanges.append(change)
 
         add_changes = sorted(add_changes, key=key)
-        _LOGGER.debug('walk over add_changes')
+        _LOGGER.debug("walk over add_changes")
         for snapshot in add_changes:
-            _LOGGER.debug('in add_changes')
+            _LOGGER.debug("in add_changes")
             change, updated_tree, updated_map = add_doc(
-                snapshot, updated_tree, updated_map)
+                snapshot, updated_tree, updated_map
+            )
             appliedChanges.append(change)
 
         update_changes = sorted(update_changes, key=key)
         for snapshot in update_changes:
             change, updated_tree, updated_map = modify_doc(
-                snapshot, updated_tree, updated_map)
+                snapshot, updated_tree, updated_map
+            )
             if change is not None:
                 appliedChanges.append(change)
 
-        assert len(updated_tree) == len(updated_map), \
-            'The update document ' + \
-            'tree and document map should have the same number of entries.'
+        assert len(updated_tree) == len(updated_map), (
+            "The update document "
+            + "tree and document map should have the same number of entries."
+        )
         return (updated_tree, updated_map, appliedChanges)
 
     def _affects_target(self, target_ids, current_id):
@@ -684,9 +697,7 @@ class Watch(object):
         Returns the current count of all documents, including the changes from
         the current changeMap.
         """
-        deletes, adds, _ = Watch._extract_changes(
-            self.doc_map, self.change_map, None
-            )
+        deletes, adds, _ = Watch._extract_changes(self.doc_map, self.change_map, None)
         return len(self.doc_map) + len(adds) - len(deletes)
 
     def _reset_docs(self):

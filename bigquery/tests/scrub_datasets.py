@@ -8,8 +8,7 @@ from google.cloud.bigquery import Client
 def main(prefixes):
     client = Client()
 
-    pattern = re.compile(
-        '|'.join('^{}.*$'.format(prefix) for prefix in prefixes))
+    pattern = re.compile("|".join("^{}.*$".format(prefix) for prefix in prefixes))
 
     ds_items = list(client.list_datasets())
     for dataset in ds_items:
@@ -22,5 +21,5 @@ def main(prefixes):
                 print("   NOT FOUND")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main(sys.argv[1:])

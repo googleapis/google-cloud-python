@@ -1,4 +1,3 @@
-
 # Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,7 +18,6 @@ import mock
 
 
 class Test_should_retry(unittest.TestCase):
-
     def _call_fut(self, exc):
         from google.cloud.bigquery.retry import _should_retry
 
@@ -29,48 +27,43 @@ class Test_should_retry(unittest.TestCase):
         self.assertFalse(self._call_fut(object()))
 
     def test_w_empty_errors(self):
-        exc = mock.Mock(errors=[], spec=['errors'])
+        exc = mock.Mock(errors=[], spec=["errors"])
         self.assertFalse(self._call_fut(exc))
 
     def test_w_non_matching_reason(self):
-        exc = mock.Mock(
-            errors=[{'reason': 'bogus'}], spec=['errors'])
+        exc = mock.Mock(errors=[{"reason": "bogus"}], spec=["errors"])
         self.assertFalse(self._call_fut(exc))
 
     def test_w_backendError(self):
-        exc = mock.Mock(
-            errors=[{'reason': 'backendError'}], spec=['errors'])
+        exc = mock.Mock(errors=[{"reason": "backendError"}], spec=["errors"])
         self.assertTrue(self._call_fut(exc))
 
     def test_w_rateLimitExceeded(self):
-        exc = mock.Mock(
-            errors=[{'reason': 'rateLimitExceeded'}], spec=['errors'])
+        exc = mock.Mock(errors=[{"reason": "rateLimitExceeded"}], spec=["errors"])
         self.assertTrue(self._call_fut(exc))
 
     def test_w_unstructured_too_many_requests(self):
         from google.api_core.exceptions import TooManyRequests
 
-        exc = TooManyRequests('testing')
+        exc = TooManyRequests("testing")
         self.assertTrue(self._call_fut(exc))
 
     def test_w_internalError(self):
-        exc = mock.Mock(
-            errors=[{'reason': 'internalError'}], spec=['errors'])
+        exc = mock.Mock(errors=[{"reason": "internalError"}], spec=["errors"])
         self.assertTrue(self._call_fut(exc))
 
     def test_w_unstructured_internal_server_error(self):
         from google.api_core.exceptions import InternalServerError
 
-        exc = InternalServerError('testing')
+        exc = InternalServerError("testing")
         self.assertTrue(self._call_fut(exc))
 
     def test_w_badGateway(self):
-        exc = mock.Mock(
-            errors=[{'reason': 'badGateway'}], spec=['errors'])
+        exc = mock.Mock(errors=[{"reason": "badGateway"}], spec=["errors"])
         self.assertTrue(self._call_fut(exc))
 
     def test_w_unstructured_bad_gateway(self):
         from google.api_core.exceptions import BadGateway
 
-        exc = BadGateway('testing')
+        exc = BadGateway("testing")
         self.assertTrue(self._call_fut(exc))

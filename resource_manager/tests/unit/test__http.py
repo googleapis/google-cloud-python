@@ -18,7 +18,6 @@ import mock
 
 
 class TestConnection(unittest.TestCase):
-
     @staticmethod
     def _get_target_class():
         from google.cloud.resource_manager._http import Connection
@@ -30,25 +29,20 @@ class TestConnection(unittest.TestCase):
 
     def test_build_api_url_no_extra_query_params(self):
         conn = self._make_one(object())
-        URI = '/'.join([
-            conn.API_BASE_URL,
-            conn.API_VERSION,
-            'foo',
-        ])
-        self.assertEqual(conn.build_api_url('/foo'), URI)
+        URI = "/".join([conn.API_BASE_URL, conn.API_VERSION, "foo"])
+        self.assertEqual(conn.build_api_url("/foo"), URI)
 
     def test_build_api_url_w_extra_query_params(self):
         from six.moves.urllib.parse import parse_qsl
         from six.moves.urllib.parse import urlsplit
 
         conn = self._make_one(object())
-        uri = conn.build_api_url('/foo', {'bar': 'baz'})
+        uri = conn.build_api_url("/foo", {"bar": "baz"})
         scheme, netloc, path, qs, _ = urlsplit(uri)
-        self.assertEqual('%s://%s' % (scheme, netloc), conn.API_BASE_URL)
-        self.assertEqual(path,
-                         '/'.join(['', conn.API_VERSION, 'foo']))
+        self.assertEqual("%s://%s" % (scheme, netloc), conn.API_BASE_URL)
+        self.assertEqual(path, "/".join(["", conn.API_VERSION, "foo"]))
         parms = dict(parse_qsl(qs))
-        self.assertEqual(parms['bar'], 'baz')
+        self.assertEqual(parms["bar"], "baz")
 
     def test_extra_headers(self):
         import requests
@@ -59,26 +53,22 @@ class TestConnection(unittest.TestCase):
         http = mock.create_autospec(requests.Session, instance=True)
         response = requests.Response()
         response.status_code = 200
-        data = b'brent-spiner'
+        data = b"brent-spiner"
         response._content = data
         http.request.return_value = response
-        client = mock.Mock(_http=http, spec=['_http'])
+        client = mock.Mock(_http=http, spec=["_http"])
 
         conn = self._make_one(client)
-        req_data = 'req-data-boring'
-        result = conn.api_request(
-            'GET', '/rainbow', data=req_data, expect_json=False)
+        req_data = "req-data-boring"
+        result = conn.api_request("GET", "/rainbow", data=req_data, expect_json=False)
         self.assertEqual(result, data)
 
         expected_headers = {
-            'Accept-Encoding': 'gzip',
+            "Accept-Encoding": "gzip",
             base_http.CLIENT_INFO_HEADER: MUT._CLIENT_INFO,
-            'User-Agent': conn.USER_AGENT,
+            "User-Agent": conn.USER_AGENT,
         }
-        expected_uri = conn.build_api_url('/rainbow')
+        expected_uri = conn.build_api_url("/rainbow")
         http.request.assert_called_once_with(
-            data=req_data,
-            headers=expected_headers,
-            method='GET',
-            url=expected_uri,
+            data=req_data, headers=expected_headers, method="GET", url=expected_uri
         )

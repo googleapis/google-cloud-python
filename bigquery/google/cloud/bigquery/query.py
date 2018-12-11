@@ -35,6 +35,7 @@ class UDFResource(object):
     See
     https://cloud.google.com/bigquery/user-defined-functions#api
     """
+
     def __init__(self, udf_type, value):
         self.udf_type = udf_type
         self.value = value
@@ -42,9 +43,7 @@ class UDFResource(object):
     def __eq__(self, other):
         if not isinstance(other, UDFResource):
             return NotImplemented
-        return(
-            self.udf_type == other.udf_type
-            and self.value == other.value)
+        return self.udf_type == other.udf_type and self.value == other.value
 
     def __ne__(self, other):
         return not self == other
@@ -53,6 +52,7 @@ class UDFResource(object):
 class _AbstractQueryParameter(object):
     """Base class for named / positional query parameters.
     """
+
     @classmethod
     def from_api_repr(cls, resource):
         """Factory: construct parameter from JSON resource.
@@ -88,6 +88,7 @@ class ScalarQueryParameter(_AbstractQueryParameter):
                  :class:`datetime.datetime`, or :class:`datetime.date`.
     :param value: the scalar parameter value.
     """
+
     def __init__(self, name, type_, value):
         self.name = name
         self.type_ = type_
@@ -123,9 +124,9 @@ class ScalarQueryParameter(_AbstractQueryParameter):
         :rtype: :class:`~google.cloud.bigquery.query.ScalarQueryParameter`
         :returns: instance
         """
-        name = resource.get('name')
-        type_ = resource['parameterType']['type']
-        value = resource['parameterValue']['value']
+        name = resource.get("name")
+        type_ = resource["parameterType"]["type"]
+        value = resource["parameterValue"]["value"]
         converted = _QUERY_PARAMS_FROM_JSON[type_](value, None)
         return cls(name, type_, converted)
 
@@ -140,15 +141,11 @@ class ScalarQueryParameter(_AbstractQueryParameter):
         if converter is not None:
             value = converter(value)
         resource = {
-            'parameterType': {
-                'type': self.type_,
-            },
-            'parameterValue': {
-                'value': value,
-            },
+            "parameterType": {"type": self.type_},
+            "parameterValue": {"value": value},
         }
         if self.name is not None:
-            resource['name'] = self.name
+            resource["name"] = self.name
         return resource
 
     def _key(self):
@@ -160,11 +157,7 @@ class ScalarQueryParameter(_AbstractQueryParameter):
             tuple: The contents of this
                    :class:`~google.cloud.bigquery.query.ScalarQueryParameter`.
         """
-        return (
-            self.name,
-            self.type_.upper(),
-            self.value,
-        )
+        return (self.name, self.type_.upper(), self.value)
 
     def __eq__(self, other):
         if not isinstance(other, ScalarQueryParameter):
@@ -175,7 +168,7 @@ class ScalarQueryParameter(_AbstractQueryParameter):
         return not self == other
 
     def __repr__(self):
-        return 'ScalarQueryParameter{}'.format(self._key())
+        return "ScalarQueryParameter{}".format(self._key())
 
 
 class ArrayQueryParameter(_AbstractQueryParameter):
@@ -193,6 +186,7 @@ class ArrayQueryParameter(_AbstractQueryParameter):
     :type values: list of appropriate scalar type.
     :param values: the parameter array values.
     """
+
     def __init__(self, name, array_type, values):
         self.name = name
         self.array_type = array_type
@@ -217,32 +211,28 @@ class ArrayQueryParameter(_AbstractQueryParameter):
 
     @classmethod
     def _from_api_repr_struct(cls, resource):
-        name = resource.get('name')
+        name = resource.get("name")
         converted = []
         # We need to flatten the array to use the StructQueryParameter
         # parse code.
         resource_template = {
             # The arrayType includes all the types of the fields of the STRUCT
-            'parameterType': resource['parameterType']['arrayType']
+            "parameterType": resource["parameterType"]["arrayType"]
         }
-        for array_value in resource['parameterValue']['arrayValues']:
+        for array_value in resource["parameterValue"]["arrayValues"]:
             struct_resource = copy.deepcopy(resource_template)
-            struct_resource['parameterValue'] = array_value
+            struct_resource["parameterValue"] = array_value
             struct_value = StructQueryParameter.from_api_repr(struct_resource)
             converted.append(struct_value)
-        return cls(name, 'STRUCT', converted)
+        return cls(name, "STRUCT", converted)
 
     @classmethod
     def _from_api_repr_scalar(cls, resource):
-        name = resource.get('name')
-        array_type = resource['parameterType']['arrayType']['type']
-        values = [
-            value['value']
-            for value
-            in resource['parameterValue']['arrayValues']]
+        name = resource.get("name")
+        array_type = resource["parameterType"]["arrayType"]["type"]
+        values = [value["value"] for value in resource["parameterValue"]["arrayValues"]]
         converted = [
-            _QUERY_PARAMS_FROM_JSON[array_type](value, None)
-            for value in values
+            _QUERY_PARAMS_FROM_JSON[array_type](value, None) for value in values
         ]
         return cls(name, array_type, converted)
 
@@ -256,8 +246,8 @@ class ArrayQueryParameter(_AbstractQueryParameter):
         :rtype: :class:`~google.cloud.bigquery.query.ArrayQueryParameter`
         :returns: instance
         """
-        array_type = resource['parameterType']['arrayType']['type']
-        if array_type == 'STRUCT':
+        array_type = resource["parameterType"]["arrayType"]["type"]
+        if array_type == "STRUCT":
             return cls._from_api_repr_struct(resource)
         return cls._from_api_repr_scalar(resource)
 
@@ -268,27 +258,22 @@ class ArrayQueryParameter(_AbstractQueryParameter):
         :returns: JSON mapping
         """
         values = self.values
-        if self.array_type == 'RECORD' or self.array_type == 'STRUCT':
+        if self.array_type == "RECORD" or self.array_type == "STRUCT":
             reprs = [value.to_api_repr() for value in values]
-            a_type = reprs[0]['parameterType']
-            a_values = [repr_['parameterValue'] for repr_ in reprs]
+            a_type = reprs[0]["parameterType"]
+            a_values = [repr_["parameterValue"] for repr_ in reprs]
         else:
-            a_type = {'type': self.array_type}
+            a_type = {"type": self.array_type}
             converter = _SCALAR_VALUE_TO_JSON_PARAM.get(self.array_type)
             if converter is not None:
                 values = [converter(value) for value in values]
-            a_values = [{'value': value} for value in values]
+            a_values = [{"value": value} for value in values]
         resource = {
-            'parameterType': {
-                'type': 'ARRAY',
-                'arrayType': a_type,
-            },
-            'parameterValue': {
-                'arrayValues': a_values,
-            },
+            "parameterType": {"type": "ARRAY", "arrayType": a_type},
+            "parameterValue": {"arrayValues": a_values},
         }
         if self.name is not None:
-            resource['name'] = self.name
+            resource["name"] = self.name
         return resource
 
     def _key(self):
@@ -300,11 +285,7 @@ class ArrayQueryParameter(_AbstractQueryParameter):
             tuple: The contents of this
                    :class:`~google.cloud.bigquery.query.ArrayQueryParameter`.
         """
-        return (
-            self.name,
-            self.array_type.upper(),
-            self.values,
-        )
+        return (self.name, self.array_type.upper(), self.values)
 
     def __eq__(self, other):
         if not isinstance(other, ArrayQueryParameter):
@@ -315,7 +296,7 @@ class ArrayQueryParameter(_AbstractQueryParameter):
         return not self == other
 
     def __repr__(self):
-        return 'ArrayQueryParameter{}'.format(self._key())
+        return "ArrayQueryParameter{}".format(self._key())
 
 
 class StructQueryParameter(_AbstractQueryParameter):
@@ -331,16 +312,17 @@ class StructQueryParameter(_AbstractQueryParameter):
         :class:`~google.cloud.bigquery.query.StructQueryParameter`
     :param sub_params: the sub-parameters for the struct
     """
+
     def __init__(self, name, *sub_params):
         self.name = name
         types = self.struct_types = OrderedDict()
         values = self.struct_values = {}
         for sub in sub_params:
             if isinstance(sub, self.__class__):
-                types[sub.name] = 'STRUCT'
+                types[sub.name] = "STRUCT"
                 values[sub.name] = sub
             elif isinstance(sub, ArrayQueryParameter):
-                types[sub.name] = 'ARRAY'
+                types[sub.name] = "ARRAY"
                 values[sub.name] = sub
             else:
                 types[sub.name] = sub.type_
@@ -372,33 +354,33 @@ class StructQueryParameter(_AbstractQueryParameter):
         :rtype: :class:`~google.cloud.bigquery.query.StructQueryParameter`
         :returns: instance
         """
-        name = resource.get('name')
+        name = resource.get("name")
         instance = cls(name)
         type_resources = {}
         types = instance.struct_types
-        for item in resource['parameterType']['structTypes']:
-            types[item['name']] = item['type']['type']
-            type_resources[item['name']] = item['type']
-        struct_values = resource['parameterValue']['structValues']
+        for item in resource["parameterType"]["structTypes"]:
+            types[item["name"]] = item["type"]["type"]
+            type_resources[item["name"]] = item["type"]
+        struct_values = resource["parameterValue"]["structValues"]
         for key, value in struct_values.items():
             type_ = types[key]
             converted = None
-            if type_ == 'STRUCT':
+            if type_ == "STRUCT":
                 struct_resource = {
-                    'name': key,
-                    'parameterType': type_resources[key],
-                    'parameterValue': value,
+                    "name": key,
+                    "parameterType": type_resources[key],
+                    "parameterValue": value,
                 }
                 converted = StructQueryParameter.from_api_repr(struct_resource)
-            elif type_ == 'ARRAY':
+            elif type_ == "ARRAY":
                 struct_resource = {
-                    'name': key,
-                    'parameterType': type_resources[key],
-                    'parameterValue': value,
+                    "name": key,
+                    "parameterType": type_resources[key],
+                    "parameterValue": value,
                 }
                 converted = ArrayQueryParameter.from_api_repr(struct_resource)
             else:
-                value = value['value']
+                value = value["value"]
                 converted = _QUERY_PARAMS_FROM_JSON[type_](value, None)
             instance.struct_values[key] = converted
         return instance
@@ -413,28 +395,26 @@ class StructQueryParameter(_AbstractQueryParameter):
         values = {}
         for name, value in self.struct_values.items():
             type_ = self.struct_types[name]
-            if type_ in ('STRUCT', 'ARRAY'):
+            if type_ in ("STRUCT", "ARRAY"):
                 repr_ = value.to_api_repr()
-                s_types[name] = {'name': name, 'type': repr_['parameterType']}
-                values[name] = repr_['parameterValue']
+                s_types[name] = {"name": name, "type": repr_["parameterType"]}
+                values[name] = repr_["parameterValue"]
             else:
-                s_types[name] = {'name': name, 'type': {'type': type_}}
+                s_types[name] = {"name": name, "type": {"type": type_}}
                 converter = _SCALAR_VALUE_TO_JSON_PARAM.get(type_)
                 if converter is not None:
                     value = converter(value)
-                values[name] = {'value': value}
+                values[name] = {"value": value}
 
         resource = {
-            'parameterType': {
-                'type': 'STRUCT',
-                'structTypes': [s_types[key] for key in self.struct_types],
+            "parameterType": {
+                "type": "STRUCT",
+                "structTypes": [s_types[key] for key in self.struct_types],
             },
-            'parameterValue': {
-                'structValues': values,
-            },
+            "parameterValue": {"structValues": values},
         }
         if self.name is not None:
-            resource['name'] = self.name
+            resource["name"] = self.name
         return resource
 
     def _key(self):
@@ -446,11 +426,7 @@ class StructQueryParameter(_AbstractQueryParameter):
             tuple: The contents of this
                    :class:`~google.cloud.biquery.ArrayQueryParameter`.
         """
-        return (
-            self.name,
-            self.struct_types,
-            self.struct_values,
-        )
+        return (self.name, self.struct_types, self.struct_values)
 
     def __eq__(self, other):
         if not isinstance(other, StructQueryParameter):
@@ -461,7 +437,7 @@ class StructQueryParameter(_AbstractQueryParameter):
         return not self == other
 
     def __repr__(self):
-        return 'StructQueryParameter{}'.format(self._key())
+        return "StructQueryParameter{}".format(self._key())
 
 
 class _QueryResults(object):
@@ -486,7 +462,7 @@ class _QueryResults(object):
         :rtype: str
         :returns: the project that the query job is associated with.
         """
-        return self._properties.get('jobReference', {}).get('projectId')
+        return self._properties.get("jobReference", {}).get("projectId")
 
     @property
     def cache_hit(self):
@@ -499,7 +475,7 @@ class _QueryResults(object):
         :returns: True if the query results were served from cache (None
                   until set by the server).
         """
-        return self._properties.get('cacheHit')
+        return self._properties.get("cacheHit")
 
     @property
     def complete(self):
@@ -512,7 +488,7 @@ class _QueryResults(object):
         :returns: True if the query completed on the server (None
                   until set by the server).
         """
-        return self._properties.get('jobComplete')
+        return self._properties.get("jobComplete")
 
     @property
     def errors(self):
@@ -525,7 +501,7 @@ class _QueryResults(object):
         :returns: Mappings describing errors generated on the server (None
                   until set by the server).
         """
-        return self._properties.get('errors')
+        return self._properties.get("errors")
 
     @property
     def job_id(self):
@@ -537,7 +513,7 @@ class _QueryResults(object):
         :rtype: string
         :returns: Job ID of the query job.
         """
-        return self._properties.get('jobReference', {}).get('jobId')
+        return self._properties.get("jobReference", {}).get("jobId")
 
     @property
     def page_token(self):
@@ -549,7 +525,7 @@ class _QueryResults(object):
         :rtype: str, or ``NoneType``
         :returns: Token generated on the server (None until set by the server).
         """
-        return self._properties.get('pageToken')
+        return self._properties.get("pageToken")
 
     @property
     def total_rows(self):
@@ -561,7 +537,7 @@ class _QueryResults(object):
         :rtype: int, or ``NoneType``
         :returns: Count generated on the server (None until set by the server).
         """
-        total_rows = self._properties.get('totalRows')
+        total_rows = self._properties.get("totalRows")
         if total_rows is not None:
             return int(total_rows)
 
@@ -575,7 +551,7 @@ class _QueryResults(object):
         :rtype: int, or ``NoneType``
         :returns: Count generated on the server (None until set by the server).
         """
-        total_bytes_processed = self._properties.get('totalBytesProcessed')
+        total_bytes_processed = self._properties.get("totalBytesProcessed")
         if total_bytes_processed is not None:
             return int(total_bytes_processed)
 
@@ -589,7 +565,7 @@ class _QueryResults(object):
         :rtype: int, or ``NoneType``
         :returns: Count generated on the server (None until set by the server).
         """
-        num_dml_affected_rows = self._properties.get('numDmlAffectedRows')
+        num_dml_affected_rows = self._properties.get("numDmlAffectedRows")
         if num_dml_affected_rows is not None:
             return int(num_dml_affected_rows)
 
@@ -603,7 +579,7 @@ class _QueryResults(object):
         :rtype: list of :class:`~google.cloud.bigquery.table.Row`
         :returns: fields describing the schema (None until set by the server).
         """
-        return _rows_from_json(self._properties.get('rows', ()), self.schema)
+        return _rows_from_json(self._properties.get("rows", ()), self.schema)
 
     @property
     def schema(self):
@@ -615,7 +591,7 @@ class _QueryResults(object):
         :rtype: list of :class:`SchemaField`, or ``NoneType``
         :returns: fields describing the schema (None until set by the server).
         """
-        return _parse_schema_resource(self._properties.get('schema', {}))
+        return _parse_schema_resource(self._properties.get("schema", {}))
 
     def _set_properties(self, api_response):
         """Update properties from resource in body of ``api_response``
@@ -624,11 +600,12 @@ class _QueryResults(object):
         :param api_response: response returned from an API call
         """
         job_id_present = (
-            'jobReference' in api_response
-            and 'jobId' in api_response['jobReference']
-            and 'projectId' in api_response['jobReference'])
+            "jobReference" in api_response
+            and "jobId" in api_response["jobReference"]
+            and "projectId" in api_response["jobReference"]
+        )
         if not job_id_present:
-            raise ValueError('QueryResult requires a job reference')
+            raise ValueError("QueryResult requires a job reference")
 
         self._properties.clear()
         self._properties.update(copy.deepcopy(api_response))
@@ -636,10 +613,10 @@ class _QueryResults(object):
 
 def _query_param_from_api_repr(resource):
     """Helper:  construct concrete query parameter from JSON resource."""
-    qp_type = resource['parameterType']
-    if 'arrayType' in qp_type:
+    qp_type = resource["parameterType"]
+    if "arrayType" in qp_type:
         klass = ArrayQueryParameter
-    elif 'structTypes' in qp_type:
+    elif "structTypes" in qp_type:
         klass = StructQueryParameter
     else:
         klass = ScalarQueryParameter

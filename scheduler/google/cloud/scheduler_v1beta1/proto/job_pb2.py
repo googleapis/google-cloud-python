@@ -2,277 +2,506 @@
 # source: google/cloud/scheduler_v1beta1/proto/job.proto
 
 import sys
-_b=sys.version_info[0]<3 and (lambda x:x) or (lambda x:x.encode('latin1'))
+
+_b = sys.version_info[0] < 3 and (lambda x: x) or (lambda x: x.encode("latin1"))
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
 from google.protobuf import descriptor_pb2
+
 # @@protoc_insertion_point(imports)
 
 _sym_db = _symbol_database.Default()
 
 
 from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
-from google.cloud.scheduler_v1beta1.proto import target_pb2 as google_dot_cloud_dot_scheduler__v1beta1_dot_proto_dot_target__pb2
+from google.cloud.scheduler_v1beta1.proto import (
+    target_pb2 as google_dot_cloud_dot_scheduler__v1beta1_dot_proto_dot_target__pb2,
+)
 from google.protobuf import duration_pb2 as google_dot_protobuf_dot_duration__pb2
 from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__pb2
 from google.rpc import status_pb2 as google_dot_rpc_dot_status__pb2
 
 
 DESCRIPTOR = _descriptor.FileDescriptor(
-  name='google/cloud/scheduler_v1beta1/proto/job.proto',
-  package='google.cloud.scheduler.v1beta1',
-  syntax='proto3',
-  serialized_pb=_b('\n.google/cloud/scheduler_v1beta1/proto/job.proto\x12\x1egoogle.cloud.scheduler.v1beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x31google/cloud/scheduler_v1beta1/proto/target.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x17google/rpc/status.proto\"\xd3\x05\n\x03Job\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x02 \x01(\t\x12\x45\n\rpubsub_target\x18\x04 \x01(\x0b\x32,.google.cloud.scheduler.v1beta1.PubsubTargetH\x00\x12U\n\x16\x61pp_engine_http_target\x18\x05 \x01(\x0b\x32\x33.google.cloud.scheduler.v1beta1.AppEngineHttpTargetH\x00\x12\x41\n\x0bhttp_target\x18\x06 \x01(\x0b\x32*.google.cloud.scheduler.v1beta1.HttpTargetH\x00\x12\x10\n\x08schedule\x18\x14 \x01(\t\x12\x11\n\ttime_zone\x18\x15 \x01(\t\x12\x34\n\x10user_update_time\x18\t \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x38\n\x05state\x18\n \x01(\x0e\x32).google.cloud.scheduler.v1beta1.Job.State\x12\"\n\x06status\x18\x0b \x01(\x0b\x32\x12.google.rpc.Status\x12\x31\n\rschedule_time\x18\x11 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x35\n\x11last_attempt_time\x18\x12 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x41\n\x0cretry_config\x18\x13 \x01(\x0b\x32+.google.cloud.scheduler.v1beta1.RetryConfig\"X\n\x05State\x12\x15\n\x11STATE_UNSPECIFIED\x10\x00\x12\x0b\n\x07\x45NABLED\x10\x01\x12\n\n\x06PAUSED\x10\x02\x12\x0c\n\x08\x44ISABLED\x10\x03\x12\x11\n\rUPDATE_FAILED\x10\x04\x42\x08\n\x06target\"\xe2\x01\n\x0bRetryConfig\x12\x13\n\x0bretry_count\x18\x01 \x01(\x05\x12\x35\n\x12max_retry_duration\x18\x02 \x01(\x0b\x32\x19.google.protobuf.Duration\x12\x37\n\x14min_backoff_duration\x18\x03 \x01(\x0b\x32\x19.google.protobuf.Duration\x12\x37\n\x14max_backoff_duration\x18\x04 \x01(\x0b\x32\x19.google.protobuf.Duration\x12\x15\n\rmax_doublings\x18\x05 \x01(\x05\x42y\n\"com.google.cloud.scheduler.v1beta1B\x08JobProtoP\x01ZGgoogle.golang.org/genproto/googleapis/cloud/scheduler/v1beta1;schedulerb\x06proto3')
-  ,
-  dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR,google_dot_cloud_dot_scheduler__v1beta1_dot_proto_dot_target__pb2.DESCRIPTOR,google_dot_protobuf_dot_duration__pb2.DESCRIPTOR,google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,google_dot_rpc_dot_status__pb2.DESCRIPTOR,])
-
+    name="google/cloud/scheduler_v1beta1/proto/job.proto",
+    package="google.cloud.scheduler.v1beta1",
+    syntax="proto3",
+    serialized_pb=_b(
+        '\n.google/cloud/scheduler_v1beta1/proto/job.proto\x12\x1egoogle.cloud.scheduler.v1beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x31google/cloud/scheduler_v1beta1/proto/target.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x17google/rpc/status.proto"\xd3\x05\n\x03Job\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x02 \x01(\t\x12\x45\n\rpubsub_target\x18\x04 \x01(\x0b\x32,.google.cloud.scheduler.v1beta1.PubsubTargetH\x00\x12U\n\x16\x61pp_engine_http_target\x18\x05 \x01(\x0b\x32\x33.google.cloud.scheduler.v1beta1.AppEngineHttpTargetH\x00\x12\x41\n\x0bhttp_target\x18\x06 \x01(\x0b\x32*.google.cloud.scheduler.v1beta1.HttpTargetH\x00\x12\x10\n\x08schedule\x18\x14 \x01(\t\x12\x11\n\ttime_zone\x18\x15 \x01(\t\x12\x34\n\x10user_update_time\x18\t \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x38\n\x05state\x18\n \x01(\x0e\x32).google.cloud.scheduler.v1beta1.Job.State\x12"\n\x06status\x18\x0b \x01(\x0b\x32\x12.google.rpc.Status\x12\x31\n\rschedule_time\x18\x11 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x35\n\x11last_attempt_time\x18\x12 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x41\n\x0cretry_config\x18\x13 \x01(\x0b\x32+.google.cloud.scheduler.v1beta1.RetryConfig"X\n\x05State\x12\x15\n\x11STATE_UNSPECIFIED\x10\x00\x12\x0b\n\x07\x45NABLED\x10\x01\x12\n\n\x06PAUSED\x10\x02\x12\x0c\n\x08\x44ISABLED\x10\x03\x12\x11\n\rUPDATE_FAILED\x10\x04\x42\x08\n\x06target"\xe2\x01\n\x0bRetryConfig\x12\x13\n\x0bretry_count\x18\x01 \x01(\x05\x12\x35\n\x12max_retry_duration\x18\x02 \x01(\x0b\x32\x19.google.protobuf.Duration\x12\x37\n\x14min_backoff_duration\x18\x03 \x01(\x0b\x32\x19.google.protobuf.Duration\x12\x37\n\x14max_backoff_duration\x18\x04 \x01(\x0b\x32\x19.google.protobuf.Duration\x12\x15\n\rmax_doublings\x18\x05 \x01(\x05\x42y\n"com.google.cloud.scheduler.v1beta1B\x08JobProtoP\x01ZGgoogle.golang.org/genproto/googleapis/cloud/scheduler/v1beta1;schedulerb\x06proto3'
+    ),
+    dependencies=[
+        google_dot_api_dot_annotations__pb2.DESCRIPTOR,
+        google_dot_cloud_dot_scheduler__v1beta1_dot_proto_dot_target__pb2.DESCRIPTOR,
+        google_dot_protobuf_dot_duration__pb2.DESCRIPTOR,
+        google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,
+        google_dot_rpc_dot_status__pb2.DESCRIPTOR,
+    ],
+)
 
 
 _JOB_STATE = _descriptor.EnumDescriptor(
-  name='State',
-  full_name='google.cloud.scheduler.v1beta1.Job.State',
-  filename=None,
-  file=DESCRIPTOR,
-  values=[
-    _descriptor.EnumValueDescriptor(
-      name='STATE_UNSPECIFIED', index=0, number=0,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='ENABLED', index=1, number=1,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='PAUSED', index=2, number=2,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='DISABLED', index=3, number=3,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='UPDATE_FAILED', index=4, number=4,
-      options=None,
-      type=None),
-  ],
-  containing_type=None,
-  options=None,
-  serialized_start=879,
-  serialized_end=967,
+    name="State",
+    full_name="google.cloud.scheduler.v1beta1.Job.State",
+    filename=None,
+    file=DESCRIPTOR,
+    values=[
+        _descriptor.EnumValueDescriptor(
+            name="STATE_UNSPECIFIED", index=0, number=0, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="ENABLED", index=1, number=1, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="PAUSED", index=2, number=2, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="DISABLED", index=3, number=3, options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="UPDATE_FAILED", index=4, number=4, options=None, type=None
+        ),
+    ],
+    containing_type=None,
+    options=None,
+    serialized_start=879,
+    serialized_end=967,
 )
 _sym_db.RegisterEnumDescriptor(_JOB_STATE)
 
 
 _JOB = _descriptor.Descriptor(
-  name='Job',
-  full_name='google.cloud.scheduler.v1beta1.Job',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='name', full_name='google.cloud.scheduler.v1beta1.Job.name', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='description', full_name='google.cloud.scheduler.v1beta1.Job.description', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='pubsub_target', full_name='google.cloud.scheduler.v1beta1.Job.pubsub_target', index=2,
-      number=4, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='app_engine_http_target', full_name='google.cloud.scheduler.v1beta1.Job.app_engine_http_target', index=3,
-      number=5, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='http_target', full_name='google.cloud.scheduler.v1beta1.Job.http_target', index=4,
-      number=6, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='schedule', full_name='google.cloud.scheduler.v1beta1.Job.schedule', index=5,
-      number=20, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='time_zone', full_name='google.cloud.scheduler.v1beta1.Job.time_zone', index=6,
-      number=21, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='user_update_time', full_name='google.cloud.scheduler.v1beta1.Job.user_update_time', index=7,
-      number=9, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='state', full_name='google.cloud.scheduler.v1beta1.Job.state', index=8,
-      number=10, type=14, cpp_type=8, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='status', full_name='google.cloud.scheduler.v1beta1.Job.status', index=9,
-      number=11, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='schedule_time', full_name='google.cloud.scheduler.v1beta1.Job.schedule_time', index=10,
-      number=17, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='last_attempt_time', full_name='google.cloud.scheduler.v1beta1.Job.last_attempt_time', index=11,
-      number=18, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='retry_config', full_name='google.cloud.scheduler.v1beta1.Job.retry_config', index=12,
-      number=19, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-    _JOB_STATE,
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-    _descriptor.OneofDescriptor(
-      name='target', full_name='google.cloud.scheduler.v1beta1.Job.target',
-      index=0, containing_type=None, fields=[]),
-  ],
-  serialized_start=254,
-  serialized_end=977,
+    name="Job",
+    full_name="google.cloud.scheduler.v1beta1.Job",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="name",
+            full_name="google.cloud.scheduler.v1beta1.Job.name",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="description",
+            full_name="google.cloud.scheduler.v1beta1.Job.description",
+            index=1,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="pubsub_target",
+            full_name="google.cloud.scheduler.v1beta1.Job.pubsub_target",
+            index=2,
+            number=4,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="app_engine_http_target",
+            full_name="google.cloud.scheduler.v1beta1.Job.app_engine_http_target",
+            index=3,
+            number=5,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="http_target",
+            full_name="google.cloud.scheduler.v1beta1.Job.http_target",
+            index=4,
+            number=6,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="schedule",
+            full_name="google.cloud.scheduler.v1beta1.Job.schedule",
+            index=5,
+            number=20,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="time_zone",
+            full_name="google.cloud.scheduler.v1beta1.Job.time_zone",
+            index=6,
+            number=21,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="user_update_time",
+            full_name="google.cloud.scheduler.v1beta1.Job.user_update_time",
+            index=7,
+            number=9,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="state",
+            full_name="google.cloud.scheduler.v1beta1.Job.state",
+            index=8,
+            number=10,
+            type=14,
+            cpp_type=8,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="status",
+            full_name="google.cloud.scheduler.v1beta1.Job.status",
+            index=9,
+            number=11,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="schedule_time",
+            full_name="google.cloud.scheduler.v1beta1.Job.schedule_time",
+            index=10,
+            number=17,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="last_attempt_time",
+            full_name="google.cloud.scheduler.v1beta1.Job.last_attempt_time",
+            index=11,
+            number=18,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="retry_config",
+            full_name="google.cloud.scheduler.v1beta1.Job.retry_config",
+            index=12,
+            number=19,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[_JOB_STATE],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[
+        _descriptor.OneofDescriptor(
+            name="target",
+            full_name="google.cloud.scheduler.v1beta1.Job.target",
+            index=0,
+            containing_type=None,
+            fields=[],
+        )
+    ],
+    serialized_start=254,
+    serialized_end=977,
 )
 
 
 _RETRYCONFIG = _descriptor.Descriptor(
-  name='RetryConfig',
-  full_name='google.cloud.scheduler.v1beta1.RetryConfig',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='retry_count', full_name='google.cloud.scheduler.v1beta1.RetryConfig.retry_count', index=0,
-      number=1, type=5, cpp_type=1, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='max_retry_duration', full_name='google.cloud.scheduler.v1beta1.RetryConfig.max_retry_duration', index=1,
-      number=2, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='min_backoff_duration', full_name='google.cloud.scheduler.v1beta1.RetryConfig.min_backoff_duration', index=2,
-      number=3, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='max_backoff_duration', full_name='google.cloud.scheduler.v1beta1.RetryConfig.max_backoff_duration', index=3,
-      number=4, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='max_doublings', full_name='google.cloud.scheduler.v1beta1.RetryConfig.max_doublings', index=4,
-      number=5, type=5, cpp_type=1, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=980,
-  serialized_end=1206,
+    name="RetryConfig",
+    full_name="google.cloud.scheduler.v1beta1.RetryConfig",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="retry_count",
+            full_name="google.cloud.scheduler.v1beta1.RetryConfig.retry_count",
+            index=0,
+            number=1,
+            type=5,
+            cpp_type=1,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="max_retry_duration",
+            full_name="google.cloud.scheduler.v1beta1.RetryConfig.max_retry_duration",
+            index=1,
+            number=2,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="min_backoff_duration",
+            full_name="google.cloud.scheduler.v1beta1.RetryConfig.min_backoff_duration",
+            index=2,
+            number=3,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="max_backoff_duration",
+            full_name="google.cloud.scheduler.v1beta1.RetryConfig.max_backoff_duration",
+            index=3,
+            number=4,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="max_doublings",
+            full_name="google.cloud.scheduler.v1beta1.RetryConfig.max_doublings",
+            index=4,
+            number=5,
+            type=5,
+            cpp_type=1,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=980,
+    serialized_end=1206,
 )
 
-_JOB.fields_by_name['pubsub_target'].message_type = google_dot_cloud_dot_scheduler__v1beta1_dot_proto_dot_target__pb2._PUBSUBTARGET
-_JOB.fields_by_name['app_engine_http_target'].message_type = google_dot_cloud_dot_scheduler__v1beta1_dot_proto_dot_target__pb2._APPENGINEHTTPTARGET
-_JOB.fields_by_name['http_target'].message_type = google_dot_cloud_dot_scheduler__v1beta1_dot_proto_dot_target__pb2._HTTPTARGET
-_JOB.fields_by_name['user_update_time'].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
-_JOB.fields_by_name['state'].enum_type = _JOB_STATE
-_JOB.fields_by_name['status'].message_type = google_dot_rpc_dot_status__pb2._STATUS
-_JOB.fields_by_name['schedule_time'].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
-_JOB.fields_by_name['last_attempt_time'].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
-_JOB.fields_by_name['retry_config'].message_type = _RETRYCONFIG
+_JOB.fields_by_name[
+    "pubsub_target"
+].message_type = (
+    google_dot_cloud_dot_scheduler__v1beta1_dot_proto_dot_target__pb2._PUBSUBTARGET
+)
+_JOB.fields_by_name[
+    "app_engine_http_target"
+].message_type = (
+    google_dot_cloud_dot_scheduler__v1beta1_dot_proto_dot_target__pb2._APPENGINEHTTPTARGET
+)
+_JOB.fields_by_name[
+    "http_target"
+].message_type = (
+    google_dot_cloud_dot_scheduler__v1beta1_dot_proto_dot_target__pb2._HTTPTARGET
+)
+_JOB.fields_by_name[
+    "user_update_time"
+].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
+_JOB.fields_by_name["state"].enum_type = _JOB_STATE
+_JOB.fields_by_name["status"].message_type = google_dot_rpc_dot_status__pb2._STATUS
+_JOB.fields_by_name[
+    "schedule_time"
+].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
+_JOB.fields_by_name[
+    "last_attempt_time"
+].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
+_JOB.fields_by_name["retry_config"].message_type = _RETRYCONFIG
 _JOB_STATE.containing_type = _JOB
-_JOB.oneofs_by_name['target'].fields.append(
-  _JOB.fields_by_name['pubsub_target'])
-_JOB.fields_by_name['pubsub_target'].containing_oneof = _JOB.oneofs_by_name['target']
-_JOB.oneofs_by_name['target'].fields.append(
-  _JOB.fields_by_name['app_engine_http_target'])
-_JOB.fields_by_name['app_engine_http_target'].containing_oneof = _JOB.oneofs_by_name['target']
-_JOB.oneofs_by_name['target'].fields.append(
-  _JOB.fields_by_name['http_target'])
-_JOB.fields_by_name['http_target'].containing_oneof = _JOB.oneofs_by_name['target']
-_RETRYCONFIG.fields_by_name['max_retry_duration'].message_type = google_dot_protobuf_dot_duration__pb2._DURATION
-_RETRYCONFIG.fields_by_name['min_backoff_duration'].message_type = google_dot_protobuf_dot_duration__pb2._DURATION
-_RETRYCONFIG.fields_by_name['max_backoff_duration'].message_type = google_dot_protobuf_dot_duration__pb2._DURATION
-DESCRIPTOR.message_types_by_name['Job'] = _JOB
-DESCRIPTOR.message_types_by_name['RetryConfig'] = _RETRYCONFIG
+_JOB.oneofs_by_name["target"].fields.append(_JOB.fields_by_name["pubsub_target"])
+_JOB.fields_by_name["pubsub_target"].containing_oneof = _JOB.oneofs_by_name["target"]
+_JOB.oneofs_by_name["target"].fields.append(
+    _JOB.fields_by_name["app_engine_http_target"]
+)
+_JOB.fields_by_name["app_engine_http_target"].containing_oneof = _JOB.oneofs_by_name[
+    "target"
+]
+_JOB.oneofs_by_name["target"].fields.append(_JOB.fields_by_name["http_target"])
+_JOB.fields_by_name["http_target"].containing_oneof = _JOB.oneofs_by_name["target"]
+_RETRYCONFIG.fields_by_name[
+    "max_retry_duration"
+].message_type = google_dot_protobuf_dot_duration__pb2._DURATION
+_RETRYCONFIG.fields_by_name[
+    "min_backoff_duration"
+].message_type = google_dot_protobuf_dot_duration__pb2._DURATION
+_RETRYCONFIG.fields_by_name[
+    "max_backoff_duration"
+].message_type = google_dot_protobuf_dot_duration__pb2._DURATION
+DESCRIPTOR.message_types_by_name["Job"] = _JOB
+DESCRIPTOR.message_types_by_name["RetryConfig"] = _RETRYCONFIG
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
-Job = _reflection.GeneratedProtocolMessageType('Job', (_message.Message,), dict(
-  DESCRIPTOR = _JOB,
-  __module__ = 'google.cloud.scheduler_v1beta1.proto.job_pb2'
-  ,
-  __doc__ = """Configuration for a job. The maximum allowed size for a job is 100KB.
+Job = _reflection.GeneratedProtocolMessageType(
+    "Job",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_JOB,
+        __module__="google.cloud.scheduler_v1beta1.proto.job_pb2",
+        __doc__="""Configuration for a job. The maximum allowed size for a job is 100KB.
   
   
   Attributes:
@@ -349,15 +578,18 @@ Job = _reflection.GeneratedProtocolMessageType('Job', (_message.Message,), dict(
       retry_config:
           Settings that determine the retry behavior.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.scheduler.v1beta1.Job)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.scheduler.v1beta1.Job)
+    ),
+)
 _sym_db.RegisterMessage(Job)
 
-RetryConfig = _reflection.GeneratedProtocolMessageType('RetryConfig', (_message.Message,), dict(
-  DESCRIPTOR = _RETRYCONFIG,
-  __module__ = 'google.cloud.scheduler_v1beta1.proto.job_pb2'
-  ,
-  __doc__ = """Settings that determine the retry behavior.
+RetryConfig = _reflection.GeneratedProtocolMessageType(
+    "RetryConfig",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_RETRYCONFIG,
+        __module__="google.cloud.scheduler_v1beta1.proto.job_pb2",
+        __doc__="""Settings that determine the retry behavior.
   
   By default, if a job does not complete successfully (meaning that an
   acknowledgement is not received from the handler, then it will be
@@ -414,11 +646,17 @@ RetryConfig = _reflection.GeneratedProtocolMessageType('RetryConfig', (_message.
           requests will retry at 10s, 20s, 40s, 80s, 160s, 240s, 300s,
           300s, ....  The default value of this field is 5.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.scheduler.v1beta1.RetryConfig)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.scheduler.v1beta1.RetryConfig)
+    ),
+)
 _sym_db.RegisterMessage(RetryConfig)
 
 
 DESCRIPTOR.has_options = True
-DESCRIPTOR._options = _descriptor._ParseOptions(descriptor_pb2.FileOptions(), _b('\n\"com.google.cloud.scheduler.v1beta1B\010JobProtoP\001ZGgoogle.golang.org/genproto/googleapis/cloud/scheduler/v1beta1;scheduler'))
+DESCRIPTOR._options = _descriptor._ParseOptions(
+    descriptor_pb2.FileOptions(),
+    _b(
+        '\n"com.google.cloud.scheduler.v1beta1B\010JobProtoP\001ZGgoogle.golang.org/genproto/googleapis/cloud/scheduler/v1beta1;scheduler'
+    ),
+)
 # @@protoc_insertion_point(module_scope)

@@ -46,27 +46,29 @@ def scalar_to_query_parameter(value, name=None):
     parameter_type = None
 
     if isinstance(value, bool):
-        parameter_type = 'BOOL'
+        parameter_type = "BOOL"
     elif isinstance(value, numbers.Integral):
-        parameter_type = 'INT64'
+        parameter_type = "INT64"
     elif isinstance(value, numbers.Real):
-        parameter_type = 'FLOAT64'
+        parameter_type = "FLOAT64"
     elif isinstance(value, decimal.Decimal):
-        parameter_type = 'NUMERIC'
+        parameter_type = "NUMERIC"
     elif isinstance(value, six.text_type):
-        parameter_type = 'STRING'
+        parameter_type = "STRING"
     elif isinstance(value, six.binary_type):
-        parameter_type = 'BYTES'
+        parameter_type = "BYTES"
     elif isinstance(value, datetime.datetime):
-        parameter_type = 'DATETIME' if value.tzinfo is None else 'TIMESTAMP'
+        parameter_type = "DATETIME" if value.tzinfo is None else "TIMESTAMP"
     elif isinstance(value, datetime.date):
-        parameter_type = 'DATE'
+        parameter_type = "DATE"
     elif isinstance(value, datetime.time):
-        parameter_type = 'TIME'
+        parameter_type = "TIME"
     else:
         raise exceptions.ProgrammingError(
-            'encountered parameter {} with value {} of unexpected type'.format(
-                name, value))
+            "encountered parameter {} with value {} of unexpected type".format(
+                name, value
+            )
+        )
     return bigquery.ScalarQueryParameter(name, parameter_type, value)
 
 
@@ -93,8 +95,8 @@ def to_query_parameters_dict(parameters):
     """
     return [
         scalar_to_query_parameter(value, name=name)
-        for name, value
-        in six.iteritems(parameters)]
+        for name, value in six.iteritems(parameters)
+    ]
 
 
 def to_query_parameters(parameters):

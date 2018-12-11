@@ -2,733 +2,1099 @@
 # source: google/cloud/websecurityscanner_v1alpha/proto/web_security_scanner.proto
 
 import sys
-_b=sys.version_info[0]<3 and (lambda x:x) or (lambda x:x.encode('latin1'))
+
+_b = sys.version_info[0] < 3 and (lambda x: x) or (lambda x: x.encode("latin1"))
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
 from google.protobuf import descriptor_pb2
+
 # @@protoc_insertion_point(imports)
 
 _sym_db = _symbol_database.Default()
 
 
 from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
-from google.cloud.websecurityscanner_v1alpha.proto import crawled_url_pb2 as google_dot_cloud_dot_websecurityscanner__v1alpha_dot_proto_dot_crawled__url__pb2
-from google.cloud.websecurityscanner_v1alpha.proto import finding_pb2 as google_dot_cloud_dot_websecurityscanner__v1alpha_dot_proto_dot_finding__pb2
-from google.cloud.websecurityscanner_v1alpha.proto import finding_type_stats_pb2 as google_dot_cloud_dot_websecurityscanner__v1alpha_dot_proto_dot_finding__type__stats__pb2
-from google.cloud.websecurityscanner_v1alpha.proto import scan_config_pb2 as google_dot_cloud_dot_websecurityscanner__v1alpha_dot_proto_dot_scan__config__pb2
-from google.cloud.websecurityscanner_v1alpha.proto import scan_run_pb2 as google_dot_cloud_dot_websecurityscanner__v1alpha_dot_proto_dot_scan__run__pb2
+from google.cloud.websecurityscanner_v1alpha.proto import (
+    crawled_url_pb2 as google_dot_cloud_dot_websecurityscanner__v1alpha_dot_proto_dot_crawled__url__pb2,
+)
+from google.cloud.websecurityscanner_v1alpha.proto import (
+    finding_pb2 as google_dot_cloud_dot_websecurityscanner__v1alpha_dot_proto_dot_finding__pb2,
+)
+from google.cloud.websecurityscanner_v1alpha.proto import (
+    finding_type_stats_pb2 as google_dot_cloud_dot_websecurityscanner__v1alpha_dot_proto_dot_finding__type__stats__pb2,
+)
+from google.cloud.websecurityscanner_v1alpha.proto import (
+    scan_config_pb2 as google_dot_cloud_dot_websecurityscanner__v1alpha_dot_proto_dot_scan__config__pb2,
+)
+from google.cloud.websecurityscanner_v1alpha.proto import (
+    scan_run_pb2 as google_dot_cloud_dot_websecurityscanner__v1alpha_dot_proto_dot_scan__run__pb2,
+)
 from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 from google.protobuf import field_mask_pb2 as google_dot_protobuf_dot_field__mask__pb2
 
 
 DESCRIPTOR = _descriptor.FileDescriptor(
-  name='google/cloud/websecurityscanner_v1alpha/proto/web_security_scanner.proto',
-  package='google.cloud.websecurityscanner.v1alpha',
-  syntax='proto3',
-  serialized_pb=_b('\nHgoogle/cloud/websecurityscanner_v1alpha/proto/web_security_scanner.proto\x12\'google.cloud.websecurityscanner.v1alpha\x1a\x1cgoogle/api/annotations.proto\x1a?google/cloud/websecurityscanner_v1alpha/proto/crawled_url.proto\x1a;google/cloud/websecurityscanner_v1alpha/proto/finding.proto\x1a\x46google/cloud/websecurityscanner_v1alpha/proto/finding_type_stats.proto\x1a?google/cloud/websecurityscanner_v1alpha/proto/scan_config.proto\x1a<google/cloud/websecurityscanner_v1alpha/proto/scan_run.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto\"s\n\x17\x43reateScanConfigRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12H\n\x0bscan_config\x18\x02 \x01(\x0b\x32\x33.google.cloud.websecurityscanner.v1alpha.ScanConfig\"\'\n\x17\x44\x65leteScanConfigRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"$\n\x14GetScanConfigRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"O\n\x16ListScanConfigsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x12\n\npage_token\x18\x02 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05\"\x94\x01\n\x17UpdateScanConfigRequest\x12H\n\x0bscan_config\x18\x02 \x01(\x0b\x32\x33.google.cloud.websecurityscanner.v1alpha.ScanConfig\x12/\n\x0bupdate_mask\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.FieldMask\"}\n\x17ListScanConfigsResponse\x12I\n\x0cscan_configs\x18\x01 \x03(\x0b\x32\x33.google.cloud.websecurityscanner.v1alpha.ScanConfig\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\"#\n\x13StartScanRunRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"!\n\x11GetScanRunRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"L\n\x13ListScanRunsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x12\n\npage_token\x18\x02 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05\"t\n\x14ListScanRunsResponse\x12\x43\n\tscan_runs\x18\x01 \x03(\x0b\x32\x30.google.cloud.websecurityscanner.v1alpha.ScanRun\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\"\"\n\x12StopScanRunRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"O\n\x16ListCrawledUrlsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x12\n\npage_token\x18\x02 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05\"}\n\x17ListCrawledUrlsResponse\x12I\n\x0c\x63rawled_urls\x18\x01 \x03(\x0b\x32\x33.google.cloud.websecurityscanner.v1alpha.CrawledUrl\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\"!\n\x11GetFindingRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"\\\n\x13ListFindingsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x02 \x01(\t\x12\x12\n\npage_token\x18\x03 \x01(\t\x12\x11\n\tpage_size\x18\x04 \x01(\x05\"s\n\x14ListFindingsResponse\x12\x42\n\x08\x66indings\x18\x01 \x03(\x0b\x32\x30.google.cloud.websecurityscanner.v1alpha.Finding\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\"-\n\x1bListFindingTypeStatsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\"u\n\x1cListFindingTypeStatsResponse\x12U\n\x12\x66inding_type_stats\x18\x01 \x03(\x0b\x32\x39.google.cloud.websecurityscanner.v1alpha.FindingTypeStats2\xd0\x14\n\x12WebSecurityScanner\x12\xc8\x01\n\x10\x43reateScanConfig\x12@.google.cloud.websecurityscanner.v1alpha.CreateScanConfigRequest\x1a\x33.google.cloud.websecurityscanner.v1alpha.ScanConfig\"=\x82\xd3\xe4\x93\x02\x37\"(/v1alpha/{parent=projects/*}/scanConfigs:\x0bscan_config\x12\x9e\x01\n\x10\x44\x65leteScanConfig\x12@.google.cloud.websecurityscanner.v1alpha.DeleteScanConfigRequest\x1a\x16.google.protobuf.Empty\"0\x82\xd3\xe4\x93\x02**(/v1alpha/{name=projects/*/scanConfigs/*}\x12\xb5\x01\n\rGetScanConfig\x12=.google.cloud.websecurityscanner.v1alpha.GetScanConfigRequest\x1a\x33.google.cloud.websecurityscanner.v1alpha.ScanConfig\"0\x82\xd3\xe4\x93\x02*\x12(/v1alpha/{name=projects/*/scanConfigs/*}\x12\xc6\x01\n\x0fListScanConfigs\x12?.google.cloud.websecurityscanner.v1alpha.ListScanConfigsRequest\x1a@.google.cloud.websecurityscanner.v1alpha.ListScanConfigsResponse\"0\x82\xd3\xe4\x93\x02*\x12(/v1alpha/{parent=projects/*}/scanConfigs\x12\xd4\x01\n\x10UpdateScanConfig\x12@.google.cloud.websecurityscanner.v1alpha.UpdateScanConfigRequest\x1a\x33.google.cloud.websecurityscanner.v1alpha.ScanConfig\"I\x82\xd3\xe4\x93\x02\x43\x32\x34/v1alpha/{scan_config.name=projects/*/scanConfigs/*}:\x0bscan_config\x12\xb9\x01\n\x0cStartScanRun\x12<.google.cloud.websecurityscanner.v1alpha.StartScanRunRequest\x1a\x30.google.cloud.websecurityscanner.v1alpha.ScanRun\"9\x82\xd3\xe4\x93\x02\x33\"./v1alpha/{name=projects/*/scanConfigs/*}:start:\x01*\x12\xb7\x01\n\nGetScanRun\x12:.google.cloud.websecurityscanner.v1alpha.GetScanRunRequest\x1a\x30.google.cloud.websecurityscanner.v1alpha.ScanRun\";\x82\xd3\xe4\x93\x02\x35\x12\x33/v1alpha/{name=projects/*/scanConfigs/*/scanRuns/*}\x12\xc8\x01\n\x0cListScanRuns\x12<.google.cloud.websecurityscanner.v1alpha.ListScanRunsRequest\x1a=.google.cloud.websecurityscanner.v1alpha.ListScanRunsResponse\";\x82\xd3\xe4\x93\x02\x35\x12\x33/v1alpha/{parent=projects/*/scanConfigs/*}/scanRuns\x12\xc1\x01\n\x0bStopScanRun\x12;.google.cloud.websecurityscanner.v1alpha.StopScanRunRequest\x1a\x30.google.cloud.websecurityscanner.v1alpha.ScanRun\"C\x82\xd3\xe4\x93\x02=\"8/v1alpha/{name=projects/*/scanConfigs/*/scanRuns/*}:stop:\x01*\x12\xdf\x01\n\x0fListCrawledUrls\x12?.google.cloud.websecurityscanner.v1alpha.ListCrawledUrlsRequest\x1a@.google.cloud.websecurityscanner.v1alpha.ListCrawledUrlsResponse\"I\x82\xd3\xe4\x93\x02\x43\x12\x41/v1alpha/{parent=projects/*/scanConfigs/*/scanRuns/*}/crawledUrls\x12\xc2\x01\n\nGetFinding\x12:.google.cloud.websecurityscanner.v1alpha.GetFindingRequest\x1a\x30.google.cloud.websecurityscanner.v1alpha.Finding\"F\x82\xd3\xe4\x93\x02@\x12>/v1alpha/{name=projects/*/scanConfigs/*/scanRuns/*/findings/*}\x12\xd3\x01\n\x0cListFindings\x12<.google.cloud.websecurityscanner.v1alpha.ListFindingsRequest\x1a=.google.cloud.websecurityscanner.v1alpha.ListFindingsResponse\"F\x82\xd3\xe4\x93\x02@\x12>/v1alpha/{parent=projects/*/scanConfigs/*/scanRuns/*}/findings\x12\xf3\x01\n\x14ListFindingTypeStats\x12\x44.google.cloud.websecurityscanner.v1alpha.ListFindingTypeStatsRequest\x1a\x45.google.cloud.websecurityscanner.v1alpha.ListFindingTypeStatsResponse\"N\x82\xd3\xe4\x93\x02H\x12\x46/v1alpha/{parent=projects/*/scanConfigs/*/scanRuns/*}/findingTypeStatsB\xa3\x01\n+com.google.cloud.websecurityscanner.v1alphaB\x17WebSecurityScannerProtoP\x01ZYgoogle.golang.org/genproto/googleapis/cloud/websecurityscanner/v1alpha;websecurityscannerb\x06proto3')
-  ,
-  dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR,google_dot_cloud_dot_websecurityscanner__v1alpha_dot_proto_dot_crawled__url__pb2.DESCRIPTOR,google_dot_cloud_dot_websecurityscanner__v1alpha_dot_proto_dot_finding__pb2.DESCRIPTOR,google_dot_cloud_dot_websecurityscanner__v1alpha_dot_proto_dot_finding__type__stats__pb2.DESCRIPTOR,google_dot_cloud_dot_websecurityscanner__v1alpha_dot_proto_dot_scan__config__pb2.DESCRIPTOR,google_dot_cloud_dot_websecurityscanner__v1alpha_dot_proto_dot_scan__run__pb2.DESCRIPTOR,google_dot_protobuf_dot_empty__pb2.DESCRIPTOR,google_dot_protobuf_dot_field__mask__pb2.DESCRIPTOR,])
-
-
+    name="google/cloud/websecurityscanner_v1alpha/proto/web_security_scanner.proto",
+    package="google.cloud.websecurityscanner.v1alpha",
+    syntax="proto3",
+    serialized_pb=_b(
+        '\nHgoogle/cloud/websecurityscanner_v1alpha/proto/web_security_scanner.proto\x12\'google.cloud.websecurityscanner.v1alpha\x1a\x1cgoogle/api/annotations.proto\x1a?google/cloud/websecurityscanner_v1alpha/proto/crawled_url.proto\x1a;google/cloud/websecurityscanner_v1alpha/proto/finding.proto\x1a\x46google/cloud/websecurityscanner_v1alpha/proto/finding_type_stats.proto\x1a?google/cloud/websecurityscanner_v1alpha/proto/scan_config.proto\x1a<google/cloud/websecurityscanner_v1alpha/proto/scan_run.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto"s\n\x17\x43reateScanConfigRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12H\n\x0bscan_config\x18\x02 \x01(\x0b\x32\x33.google.cloud.websecurityscanner.v1alpha.ScanConfig"\'\n\x17\x44\x65leteScanConfigRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"$\n\x14GetScanConfigRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"O\n\x16ListScanConfigsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x12\n\npage_token\x18\x02 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05"\x94\x01\n\x17UpdateScanConfigRequest\x12H\n\x0bscan_config\x18\x02 \x01(\x0b\x32\x33.google.cloud.websecurityscanner.v1alpha.ScanConfig\x12/\n\x0bupdate_mask\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.FieldMask"}\n\x17ListScanConfigsResponse\x12I\n\x0cscan_configs\x18\x01 \x03(\x0b\x32\x33.google.cloud.websecurityscanner.v1alpha.ScanConfig\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"#\n\x13StartScanRunRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"!\n\x11GetScanRunRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"L\n\x13ListScanRunsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x12\n\npage_token\x18\x02 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05"t\n\x14ListScanRunsResponse\x12\x43\n\tscan_runs\x18\x01 \x03(\x0b\x32\x30.google.cloud.websecurityscanner.v1alpha.ScanRun\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t""\n\x12StopScanRunRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"O\n\x16ListCrawledUrlsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x12\n\npage_token\x18\x02 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05"}\n\x17ListCrawledUrlsResponse\x12I\n\x0c\x63rawled_urls\x18\x01 \x03(\x0b\x32\x33.google.cloud.websecurityscanner.v1alpha.CrawledUrl\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"!\n\x11GetFindingRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"\\\n\x13ListFindingsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x02 \x01(\t\x12\x12\n\npage_token\x18\x03 \x01(\t\x12\x11\n\tpage_size\x18\x04 \x01(\x05"s\n\x14ListFindingsResponse\x12\x42\n\x08\x66indings\x18\x01 \x03(\x0b\x32\x30.google.cloud.websecurityscanner.v1alpha.Finding\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"-\n\x1bListFindingTypeStatsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t"u\n\x1cListFindingTypeStatsResponse\x12U\n\x12\x66inding_type_stats\x18\x01 \x03(\x0b\x32\x39.google.cloud.websecurityscanner.v1alpha.FindingTypeStats2\xd0\x14\n\x12WebSecurityScanner\x12\xc8\x01\n\x10\x43reateScanConfig\x12@.google.cloud.websecurityscanner.v1alpha.CreateScanConfigRequest\x1a\x33.google.cloud.websecurityscanner.v1alpha.ScanConfig"=\x82\xd3\xe4\x93\x02\x37"(/v1alpha/{parent=projects/*}/scanConfigs:\x0bscan_config\x12\x9e\x01\n\x10\x44\x65leteScanConfig\x12@.google.cloud.websecurityscanner.v1alpha.DeleteScanConfigRequest\x1a\x16.google.protobuf.Empty"0\x82\xd3\xe4\x93\x02**(/v1alpha/{name=projects/*/scanConfigs/*}\x12\xb5\x01\n\rGetScanConfig\x12=.google.cloud.websecurityscanner.v1alpha.GetScanConfigRequest\x1a\x33.google.cloud.websecurityscanner.v1alpha.ScanConfig"0\x82\xd3\xe4\x93\x02*\x12(/v1alpha/{name=projects/*/scanConfigs/*}\x12\xc6\x01\n\x0fListScanConfigs\x12?.google.cloud.websecurityscanner.v1alpha.ListScanConfigsRequest\x1a@.google.cloud.websecurityscanner.v1alpha.ListScanConfigsResponse"0\x82\xd3\xe4\x93\x02*\x12(/v1alpha/{parent=projects/*}/scanConfigs\x12\xd4\x01\n\x10UpdateScanConfig\x12@.google.cloud.websecurityscanner.v1alpha.UpdateScanConfigRequest\x1a\x33.google.cloud.websecurityscanner.v1alpha.ScanConfig"I\x82\xd3\xe4\x93\x02\x43\x32\x34/v1alpha/{scan_config.name=projects/*/scanConfigs/*}:\x0bscan_config\x12\xb9\x01\n\x0cStartScanRun\x12<.google.cloud.websecurityscanner.v1alpha.StartScanRunRequest\x1a\x30.google.cloud.websecurityscanner.v1alpha.ScanRun"9\x82\xd3\xe4\x93\x02\x33"./v1alpha/{name=projects/*/scanConfigs/*}:start:\x01*\x12\xb7\x01\n\nGetScanRun\x12:.google.cloud.websecurityscanner.v1alpha.GetScanRunRequest\x1a\x30.google.cloud.websecurityscanner.v1alpha.ScanRun";\x82\xd3\xe4\x93\x02\x35\x12\x33/v1alpha/{name=projects/*/scanConfigs/*/scanRuns/*}\x12\xc8\x01\n\x0cListScanRuns\x12<.google.cloud.websecurityscanner.v1alpha.ListScanRunsRequest\x1a=.google.cloud.websecurityscanner.v1alpha.ListScanRunsResponse";\x82\xd3\xe4\x93\x02\x35\x12\x33/v1alpha/{parent=projects/*/scanConfigs/*}/scanRuns\x12\xc1\x01\n\x0bStopScanRun\x12;.google.cloud.websecurityscanner.v1alpha.StopScanRunRequest\x1a\x30.google.cloud.websecurityscanner.v1alpha.ScanRun"C\x82\xd3\xe4\x93\x02="8/v1alpha/{name=projects/*/scanConfigs/*/scanRuns/*}:stop:\x01*\x12\xdf\x01\n\x0fListCrawledUrls\x12?.google.cloud.websecurityscanner.v1alpha.ListCrawledUrlsRequest\x1a@.google.cloud.websecurityscanner.v1alpha.ListCrawledUrlsResponse"I\x82\xd3\xe4\x93\x02\x43\x12\x41/v1alpha/{parent=projects/*/scanConfigs/*/scanRuns/*}/crawledUrls\x12\xc2\x01\n\nGetFinding\x12:.google.cloud.websecurityscanner.v1alpha.GetFindingRequest\x1a\x30.google.cloud.websecurityscanner.v1alpha.Finding"F\x82\xd3\xe4\x93\x02@\x12>/v1alpha/{name=projects/*/scanConfigs/*/scanRuns/*/findings/*}\x12\xd3\x01\n\x0cListFindings\x12<.google.cloud.websecurityscanner.v1alpha.ListFindingsRequest\x1a=.google.cloud.websecurityscanner.v1alpha.ListFindingsResponse"F\x82\xd3\xe4\x93\x02@\x12>/v1alpha/{parent=projects/*/scanConfigs/*/scanRuns/*}/findings\x12\xf3\x01\n\x14ListFindingTypeStats\x12\x44.google.cloud.websecurityscanner.v1alpha.ListFindingTypeStatsRequest\x1a\x45.google.cloud.websecurityscanner.v1alpha.ListFindingTypeStatsResponse"N\x82\xd3\xe4\x93\x02H\x12\x46/v1alpha/{parent=projects/*/scanConfigs/*/scanRuns/*}/findingTypeStatsB\xa3\x01\n+com.google.cloud.websecurityscanner.v1alphaB\x17WebSecurityScannerProtoP\x01ZYgoogle.golang.org/genproto/googleapis/cloud/websecurityscanner/v1alpha;websecurityscannerb\x06proto3'
+    ),
+    dependencies=[
+        google_dot_api_dot_annotations__pb2.DESCRIPTOR,
+        google_dot_cloud_dot_websecurityscanner__v1alpha_dot_proto_dot_crawled__url__pb2.DESCRIPTOR,
+        google_dot_cloud_dot_websecurityscanner__v1alpha_dot_proto_dot_finding__pb2.DESCRIPTOR,
+        google_dot_cloud_dot_websecurityscanner__v1alpha_dot_proto_dot_finding__type__stats__pb2.DESCRIPTOR,
+        google_dot_cloud_dot_websecurityscanner__v1alpha_dot_proto_dot_scan__config__pb2.DESCRIPTOR,
+        google_dot_cloud_dot_websecurityscanner__v1alpha_dot_proto_dot_scan__run__pb2.DESCRIPTOR,
+        google_dot_protobuf_dot_empty__pb2.DESCRIPTOR,
+        google_dot_protobuf_dot_field__mask__pb2.DESCRIPTOR,
+    ],
+)
 
 
 _CREATESCANCONFIGREQUEST = _descriptor.Descriptor(
-  name='CreateScanConfigRequest',
-  full_name='google.cloud.websecurityscanner.v1alpha.CreateScanConfigRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='parent', full_name='google.cloud.websecurityscanner.v1alpha.CreateScanConfigRequest.parent', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='scan_config', full_name='google.cloud.websecurityscanner.v1alpha.CreateScanConfigRequest.scan_config', index=1,
-      number=2, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=535,
-  serialized_end=650,
+    name="CreateScanConfigRequest",
+    full_name="google.cloud.websecurityscanner.v1alpha.CreateScanConfigRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="parent",
+            full_name="google.cloud.websecurityscanner.v1alpha.CreateScanConfigRequest.parent",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="scan_config",
+            full_name="google.cloud.websecurityscanner.v1alpha.CreateScanConfigRequest.scan_config",
+            index=1,
+            number=2,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=535,
+    serialized_end=650,
 )
 
 
 _DELETESCANCONFIGREQUEST = _descriptor.Descriptor(
-  name='DeleteScanConfigRequest',
-  full_name='google.cloud.websecurityscanner.v1alpha.DeleteScanConfigRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='name', full_name='google.cloud.websecurityscanner.v1alpha.DeleteScanConfigRequest.name', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=652,
-  serialized_end=691,
+    name="DeleteScanConfigRequest",
+    full_name="google.cloud.websecurityscanner.v1alpha.DeleteScanConfigRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="name",
+            full_name="google.cloud.websecurityscanner.v1alpha.DeleteScanConfigRequest.name",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        )
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=652,
+    serialized_end=691,
 )
 
 
 _GETSCANCONFIGREQUEST = _descriptor.Descriptor(
-  name='GetScanConfigRequest',
-  full_name='google.cloud.websecurityscanner.v1alpha.GetScanConfigRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='name', full_name='google.cloud.websecurityscanner.v1alpha.GetScanConfigRequest.name', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=693,
-  serialized_end=729,
+    name="GetScanConfigRequest",
+    full_name="google.cloud.websecurityscanner.v1alpha.GetScanConfigRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="name",
+            full_name="google.cloud.websecurityscanner.v1alpha.GetScanConfigRequest.name",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        )
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=693,
+    serialized_end=729,
 )
 
 
 _LISTSCANCONFIGSREQUEST = _descriptor.Descriptor(
-  name='ListScanConfigsRequest',
-  full_name='google.cloud.websecurityscanner.v1alpha.ListScanConfigsRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='parent', full_name='google.cloud.websecurityscanner.v1alpha.ListScanConfigsRequest.parent', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='page_token', full_name='google.cloud.websecurityscanner.v1alpha.ListScanConfigsRequest.page_token', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='page_size', full_name='google.cloud.websecurityscanner.v1alpha.ListScanConfigsRequest.page_size', index=2,
-      number=3, type=5, cpp_type=1, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=731,
-  serialized_end=810,
+    name="ListScanConfigsRequest",
+    full_name="google.cloud.websecurityscanner.v1alpha.ListScanConfigsRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="parent",
+            full_name="google.cloud.websecurityscanner.v1alpha.ListScanConfigsRequest.parent",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="page_token",
+            full_name="google.cloud.websecurityscanner.v1alpha.ListScanConfigsRequest.page_token",
+            index=1,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="page_size",
+            full_name="google.cloud.websecurityscanner.v1alpha.ListScanConfigsRequest.page_size",
+            index=2,
+            number=3,
+            type=5,
+            cpp_type=1,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=731,
+    serialized_end=810,
 )
 
 
 _UPDATESCANCONFIGREQUEST = _descriptor.Descriptor(
-  name='UpdateScanConfigRequest',
-  full_name='google.cloud.websecurityscanner.v1alpha.UpdateScanConfigRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='scan_config', full_name='google.cloud.websecurityscanner.v1alpha.UpdateScanConfigRequest.scan_config', index=0,
-      number=2, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='update_mask', full_name='google.cloud.websecurityscanner.v1alpha.UpdateScanConfigRequest.update_mask', index=1,
-      number=3, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=813,
-  serialized_end=961,
+    name="UpdateScanConfigRequest",
+    full_name="google.cloud.websecurityscanner.v1alpha.UpdateScanConfigRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="scan_config",
+            full_name="google.cloud.websecurityscanner.v1alpha.UpdateScanConfigRequest.scan_config",
+            index=0,
+            number=2,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="update_mask",
+            full_name="google.cloud.websecurityscanner.v1alpha.UpdateScanConfigRequest.update_mask",
+            index=1,
+            number=3,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=813,
+    serialized_end=961,
 )
 
 
 _LISTSCANCONFIGSRESPONSE = _descriptor.Descriptor(
-  name='ListScanConfigsResponse',
-  full_name='google.cloud.websecurityscanner.v1alpha.ListScanConfigsResponse',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='scan_configs', full_name='google.cloud.websecurityscanner.v1alpha.ListScanConfigsResponse.scan_configs', index=0,
-      number=1, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='next_page_token', full_name='google.cloud.websecurityscanner.v1alpha.ListScanConfigsResponse.next_page_token', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=963,
-  serialized_end=1088,
+    name="ListScanConfigsResponse",
+    full_name="google.cloud.websecurityscanner.v1alpha.ListScanConfigsResponse",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="scan_configs",
+            full_name="google.cloud.websecurityscanner.v1alpha.ListScanConfigsResponse.scan_configs",
+            index=0,
+            number=1,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="next_page_token",
+            full_name="google.cloud.websecurityscanner.v1alpha.ListScanConfigsResponse.next_page_token",
+            index=1,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=963,
+    serialized_end=1088,
 )
 
 
 _STARTSCANRUNREQUEST = _descriptor.Descriptor(
-  name='StartScanRunRequest',
-  full_name='google.cloud.websecurityscanner.v1alpha.StartScanRunRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='name', full_name='google.cloud.websecurityscanner.v1alpha.StartScanRunRequest.name', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=1090,
-  serialized_end=1125,
+    name="StartScanRunRequest",
+    full_name="google.cloud.websecurityscanner.v1alpha.StartScanRunRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="name",
+            full_name="google.cloud.websecurityscanner.v1alpha.StartScanRunRequest.name",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        )
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=1090,
+    serialized_end=1125,
 )
 
 
 _GETSCANRUNREQUEST = _descriptor.Descriptor(
-  name='GetScanRunRequest',
-  full_name='google.cloud.websecurityscanner.v1alpha.GetScanRunRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='name', full_name='google.cloud.websecurityscanner.v1alpha.GetScanRunRequest.name', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=1127,
-  serialized_end=1160,
+    name="GetScanRunRequest",
+    full_name="google.cloud.websecurityscanner.v1alpha.GetScanRunRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="name",
+            full_name="google.cloud.websecurityscanner.v1alpha.GetScanRunRequest.name",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        )
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=1127,
+    serialized_end=1160,
 )
 
 
 _LISTSCANRUNSREQUEST = _descriptor.Descriptor(
-  name='ListScanRunsRequest',
-  full_name='google.cloud.websecurityscanner.v1alpha.ListScanRunsRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='parent', full_name='google.cloud.websecurityscanner.v1alpha.ListScanRunsRequest.parent', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='page_token', full_name='google.cloud.websecurityscanner.v1alpha.ListScanRunsRequest.page_token', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='page_size', full_name='google.cloud.websecurityscanner.v1alpha.ListScanRunsRequest.page_size', index=2,
-      number=3, type=5, cpp_type=1, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=1162,
-  serialized_end=1238,
+    name="ListScanRunsRequest",
+    full_name="google.cloud.websecurityscanner.v1alpha.ListScanRunsRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="parent",
+            full_name="google.cloud.websecurityscanner.v1alpha.ListScanRunsRequest.parent",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="page_token",
+            full_name="google.cloud.websecurityscanner.v1alpha.ListScanRunsRequest.page_token",
+            index=1,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="page_size",
+            full_name="google.cloud.websecurityscanner.v1alpha.ListScanRunsRequest.page_size",
+            index=2,
+            number=3,
+            type=5,
+            cpp_type=1,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=1162,
+    serialized_end=1238,
 )
 
 
 _LISTSCANRUNSRESPONSE = _descriptor.Descriptor(
-  name='ListScanRunsResponse',
-  full_name='google.cloud.websecurityscanner.v1alpha.ListScanRunsResponse',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='scan_runs', full_name='google.cloud.websecurityscanner.v1alpha.ListScanRunsResponse.scan_runs', index=0,
-      number=1, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='next_page_token', full_name='google.cloud.websecurityscanner.v1alpha.ListScanRunsResponse.next_page_token', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=1240,
-  serialized_end=1356,
+    name="ListScanRunsResponse",
+    full_name="google.cloud.websecurityscanner.v1alpha.ListScanRunsResponse",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="scan_runs",
+            full_name="google.cloud.websecurityscanner.v1alpha.ListScanRunsResponse.scan_runs",
+            index=0,
+            number=1,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="next_page_token",
+            full_name="google.cloud.websecurityscanner.v1alpha.ListScanRunsResponse.next_page_token",
+            index=1,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=1240,
+    serialized_end=1356,
 )
 
 
 _STOPSCANRUNREQUEST = _descriptor.Descriptor(
-  name='StopScanRunRequest',
-  full_name='google.cloud.websecurityscanner.v1alpha.StopScanRunRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='name', full_name='google.cloud.websecurityscanner.v1alpha.StopScanRunRequest.name', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=1358,
-  serialized_end=1392,
+    name="StopScanRunRequest",
+    full_name="google.cloud.websecurityscanner.v1alpha.StopScanRunRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="name",
+            full_name="google.cloud.websecurityscanner.v1alpha.StopScanRunRequest.name",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        )
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=1358,
+    serialized_end=1392,
 )
 
 
 _LISTCRAWLEDURLSREQUEST = _descriptor.Descriptor(
-  name='ListCrawledUrlsRequest',
-  full_name='google.cloud.websecurityscanner.v1alpha.ListCrawledUrlsRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='parent', full_name='google.cloud.websecurityscanner.v1alpha.ListCrawledUrlsRequest.parent', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='page_token', full_name='google.cloud.websecurityscanner.v1alpha.ListCrawledUrlsRequest.page_token', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='page_size', full_name='google.cloud.websecurityscanner.v1alpha.ListCrawledUrlsRequest.page_size', index=2,
-      number=3, type=5, cpp_type=1, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=1394,
-  serialized_end=1473,
+    name="ListCrawledUrlsRequest",
+    full_name="google.cloud.websecurityscanner.v1alpha.ListCrawledUrlsRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="parent",
+            full_name="google.cloud.websecurityscanner.v1alpha.ListCrawledUrlsRequest.parent",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="page_token",
+            full_name="google.cloud.websecurityscanner.v1alpha.ListCrawledUrlsRequest.page_token",
+            index=1,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="page_size",
+            full_name="google.cloud.websecurityscanner.v1alpha.ListCrawledUrlsRequest.page_size",
+            index=2,
+            number=3,
+            type=5,
+            cpp_type=1,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=1394,
+    serialized_end=1473,
 )
 
 
 _LISTCRAWLEDURLSRESPONSE = _descriptor.Descriptor(
-  name='ListCrawledUrlsResponse',
-  full_name='google.cloud.websecurityscanner.v1alpha.ListCrawledUrlsResponse',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='crawled_urls', full_name='google.cloud.websecurityscanner.v1alpha.ListCrawledUrlsResponse.crawled_urls', index=0,
-      number=1, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='next_page_token', full_name='google.cloud.websecurityscanner.v1alpha.ListCrawledUrlsResponse.next_page_token', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=1475,
-  serialized_end=1600,
+    name="ListCrawledUrlsResponse",
+    full_name="google.cloud.websecurityscanner.v1alpha.ListCrawledUrlsResponse",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="crawled_urls",
+            full_name="google.cloud.websecurityscanner.v1alpha.ListCrawledUrlsResponse.crawled_urls",
+            index=0,
+            number=1,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="next_page_token",
+            full_name="google.cloud.websecurityscanner.v1alpha.ListCrawledUrlsResponse.next_page_token",
+            index=1,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=1475,
+    serialized_end=1600,
 )
 
 
 _GETFINDINGREQUEST = _descriptor.Descriptor(
-  name='GetFindingRequest',
-  full_name='google.cloud.websecurityscanner.v1alpha.GetFindingRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='name', full_name='google.cloud.websecurityscanner.v1alpha.GetFindingRequest.name', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=1602,
-  serialized_end=1635,
+    name="GetFindingRequest",
+    full_name="google.cloud.websecurityscanner.v1alpha.GetFindingRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="name",
+            full_name="google.cloud.websecurityscanner.v1alpha.GetFindingRequest.name",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        )
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=1602,
+    serialized_end=1635,
 )
 
 
 _LISTFINDINGSREQUEST = _descriptor.Descriptor(
-  name='ListFindingsRequest',
-  full_name='google.cloud.websecurityscanner.v1alpha.ListFindingsRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='parent', full_name='google.cloud.websecurityscanner.v1alpha.ListFindingsRequest.parent', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='filter', full_name='google.cloud.websecurityscanner.v1alpha.ListFindingsRequest.filter', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='page_token', full_name='google.cloud.websecurityscanner.v1alpha.ListFindingsRequest.page_token', index=2,
-      number=3, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='page_size', full_name='google.cloud.websecurityscanner.v1alpha.ListFindingsRequest.page_size', index=3,
-      number=4, type=5, cpp_type=1, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=1637,
-  serialized_end=1729,
+    name="ListFindingsRequest",
+    full_name="google.cloud.websecurityscanner.v1alpha.ListFindingsRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="parent",
+            full_name="google.cloud.websecurityscanner.v1alpha.ListFindingsRequest.parent",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="filter",
+            full_name="google.cloud.websecurityscanner.v1alpha.ListFindingsRequest.filter",
+            index=1,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="page_token",
+            full_name="google.cloud.websecurityscanner.v1alpha.ListFindingsRequest.page_token",
+            index=2,
+            number=3,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="page_size",
+            full_name="google.cloud.websecurityscanner.v1alpha.ListFindingsRequest.page_size",
+            index=3,
+            number=4,
+            type=5,
+            cpp_type=1,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=1637,
+    serialized_end=1729,
 )
 
 
 _LISTFINDINGSRESPONSE = _descriptor.Descriptor(
-  name='ListFindingsResponse',
-  full_name='google.cloud.websecurityscanner.v1alpha.ListFindingsResponse',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='findings', full_name='google.cloud.websecurityscanner.v1alpha.ListFindingsResponse.findings', index=0,
-      number=1, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='next_page_token', full_name='google.cloud.websecurityscanner.v1alpha.ListFindingsResponse.next_page_token', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=1731,
-  serialized_end=1846,
+    name="ListFindingsResponse",
+    full_name="google.cloud.websecurityscanner.v1alpha.ListFindingsResponse",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="findings",
+            full_name="google.cloud.websecurityscanner.v1alpha.ListFindingsResponse.findings",
+            index=0,
+            number=1,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="next_page_token",
+            full_name="google.cloud.websecurityscanner.v1alpha.ListFindingsResponse.next_page_token",
+            index=1,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=1731,
+    serialized_end=1846,
 )
 
 
 _LISTFINDINGTYPESTATSREQUEST = _descriptor.Descriptor(
-  name='ListFindingTypeStatsRequest',
-  full_name='google.cloud.websecurityscanner.v1alpha.ListFindingTypeStatsRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='parent', full_name='google.cloud.websecurityscanner.v1alpha.ListFindingTypeStatsRequest.parent', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=1848,
-  serialized_end=1893,
+    name="ListFindingTypeStatsRequest",
+    full_name="google.cloud.websecurityscanner.v1alpha.ListFindingTypeStatsRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="parent",
+            full_name="google.cloud.websecurityscanner.v1alpha.ListFindingTypeStatsRequest.parent",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        )
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=1848,
+    serialized_end=1893,
 )
 
 
 _LISTFINDINGTYPESTATSRESPONSE = _descriptor.Descriptor(
-  name='ListFindingTypeStatsResponse',
-  full_name='google.cloud.websecurityscanner.v1alpha.ListFindingTypeStatsResponse',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='finding_type_stats', full_name='google.cloud.websecurityscanner.v1alpha.ListFindingTypeStatsResponse.finding_type_stats', index=0,
-      number=1, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=1895,
-  serialized_end=2012,
+    name="ListFindingTypeStatsResponse",
+    full_name="google.cloud.websecurityscanner.v1alpha.ListFindingTypeStatsResponse",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="finding_type_stats",
+            full_name="google.cloud.websecurityscanner.v1alpha.ListFindingTypeStatsResponse.finding_type_stats",
+            index=0,
+            number=1,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        )
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=1895,
+    serialized_end=2012,
 )
 
-_CREATESCANCONFIGREQUEST.fields_by_name['scan_config'].message_type = google_dot_cloud_dot_websecurityscanner__v1alpha_dot_proto_dot_scan__config__pb2._SCANCONFIG
-_UPDATESCANCONFIGREQUEST.fields_by_name['scan_config'].message_type = google_dot_cloud_dot_websecurityscanner__v1alpha_dot_proto_dot_scan__config__pb2._SCANCONFIG
-_UPDATESCANCONFIGREQUEST.fields_by_name['update_mask'].message_type = google_dot_protobuf_dot_field__mask__pb2._FIELDMASK
-_LISTSCANCONFIGSRESPONSE.fields_by_name['scan_configs'].message_type = google_dot_cloud_dot_websecurityscanner__v1alpha_dot_proto_dot_scan__config__pb2._SCANCONFIG
-_LISTSCANRUNSRESPONSE.fields_by_name['scan_runs'].message_type = google_dot_cloud_dot_websecurityscanner__v1alpha_dot_proto_dot_scan__run__pb2._SCANRUN
-_LISTCRAWLEDURLSRESPONSE.fields_by_name['crawled_urls'].message_type = google_dot_cloud_dot_websecurityscanner__v1alpha_dot_proto_dot_crawled__url__pb2._CRAWLEDURL
-_LISTFINDINGSRESPONSE.fields_by_name['findings'].message_type = google_dot_cloud_dot_websecurityscanner__v1alpha_dot_proto_dot_finding__pb2._FINDING
-_LISTFINDINGTYPESTATSRESPONSE.fields_by_name['finding_type_stats'].message_type = google_dot_cloud_dot_websecurityscanner__v1alpha_dot_proto_dot_finding__type__stats__pb2._FINDINGTYPESTATS
-DESCRIPTOR.message_types_by_name['CreateScanConfigRequest'] = _CREATESCANCONFIGREQUEST
-DESCRIPTOR.message_types_by_name['DeleteScanConfigRequest'] = _DELETESCANCONFIGREQUEST
-DESCRIPTOR.message_types_by_name['GetScanConfigRequest'] = _GETSCANCONFIGREQUEST
-DESCRIPTOR.message_types_by_name['ListScanConfigsRequest'] = _LISTSCANCONFIGSREQUEST
-DESCRIPTOR.message_types_by_name['UpdateScanConfigRequest'] = _UPDATESCANCONFIGREQUEST
-DESCRIPTOR.message_types_by_name['ListScanConfigsResponse'] = _LISTSCANCONFIGSRESPONSE
-DESCRIPTOR.message_types_by_name['StartScanRunRequest'] = _STARTSCANRUNREQUEST
-DESCRIPTOR.message_types_by_name['GetScanRunRequest'] = _GETSCANRUNREQUEST
-DESCRIPTOR.message_types_by_name['ListScanRunsRequest'] = _LISTSCANRUNSREQUEST
-DESCRIPTOR.message_types_by_name['ListScanRunsResponse'] = _LISTSCANRUNSRESPONSE
-DESCRIPTOR.message_types_by_name['StopScanRunRequest'] = _STOPSCANRUNREQUEST
-DESCRIPTOR.message_types_by_name['ListCrawledUrlsRequest'] = _LISTCRAWLEDURLSREQUEST
-DESCRIPTOR.message_types_by_name['ListCrawledUrlsResponse'] = _LISTCRAWLEDURLSRESPONSE
-DESCRIPTOR.message_types_by_name['GetFindingRequest'] = _GETFINDINGREQUEST
-DESCRIPTOR.message_types_by_name['ListFindingsRequest'] = _LISTFINDINGSREQUEST
-DESCRIPTOR.message_types_by_name['ListFindingsResponse'] = _LISTFINDINGSRESPONSE
-DESCRIPTOR.message_types_by_name['ListFindingTypeStatsRequest'] = _LISTFINDINGTYPESTATSREQUEST
-DESCRIPTOR.message_types_by_name['ListFindingTypeStatsResponse'] = _LISTFINDINGTYPESTATSRESPONSE
+_CREATESCANCONFIGREQUEST.fields_by_name[
+    "scan_config"
+].message_type = (
+    google_dot_cloud_dot_websecurityscanner__v1alpha_dot_proto_dot_scan__config__pb2._SCANCONFIG
+)
+_UPDATESCANCONFIGREQUEST.fields_by_name[
+    "scan_config"
+].message_type = (
+    google_dot_cloud_dot_websecurityscanner__v1alpha_dot_proto_dot_scan__config__pb2._SCANCONFIG
+)
+_UPDATESCANCONFIGREQUEST.fields_by_name[
+    "update_mask"
+].message_type = google_dot_protobuf_dot_field__mask__pb2._FIELDMASK
+_LISTSCANCONFIGSRESPONSE.fields_by_name[
+    "scan_configs"
+].message_type = (
+    google_dot_cloud_dot_websecurityscanner__v1alpha_dot_proto_dot_scan__config__pb2._SCANCONFIG
+)
+_LISTSCANRUNSRESPONSE.fields_by_name[
+    "scan_runs"
+].message_type = (
+    google_dot_cloud_dot_websecurityscanner__v1alpha_dot_proto_dot_scan__run__pb2._SCANRUN
+)
+_LISTCRAWLEDURLSRESPONSE.fields_by_name[
+    "crawled_urls"
+].message_type = (
+    google_dot_cloud_dot_websecurityscanner__v1alpha_dot_proto_dot_crawled__url__pb2._CRAWLEDURL
+)
+_LISTFINDINGSRESPONSE.fields_by_name[
+    "findings"
+].message_type = (
+    google_dot_cloud_dot_websecurityscanner__v1alpha_dot_proto_dot_finding__pb2._FINDING
+)
+_LISTFINDINGTYPESTATSRESPONSE.fields_by_name[
+    "finding_type_stats"
+].message_type = (
+    google_dot_cloud_dot_websecurityscanner__v1alpha_dot_proto_dot_finding__type__stats__pb2._FINDINGTYPESTATS
+)
+DESCRIPTOR.message_types_by_name["CreateScanConfigRequest"] = _CREATESCANCONFIGREQUEST
+DESCRIPTOR.message_types_by_name["DeleteScanConfigRequest"] = _DELETESCANCONFIGREQUEST
+DESCRIPTOR.message_types_by_name["GetScanConfigRequest"] = _GETSCANCONFIGREQUEST
+DESCRIPTOR.message_types_by_name["ListScanConfigsRequest"] = _LISTSCANCONFIGSREQUEST
+DESCRIPTOR.message_types_by_name["UpdateScanConfigRequest"] = _UPDATESCANCONFIGREQUEST
+DESCRIPTOR.message_types_by_name["ListScanConfigsResponse"] = _LISTSCANCONFIGSRESPONSE
+DESCRIPTOR.message_types_by_name["StartScanRunRequest"] = _STARTSCANRUNREQUEST
+DESCRIPTOR.message_types_by_name["GetScanRunRequest"] = _GETSCANRUNREQUEST
+DESCRIPTOR.message_types_by_name["ListScanRunsRequest"] = _LISTSCANRUNSREQUEST
+DESCRIPTOR.message_types_by_name["ListScanRunsResponse"] = _LISTSCANRUNSRESPONSE
+DESCRIPTOR.message_types_by_name["StopScanRunRequest"] = _STOPSCANRUNREQUEST
+DESCRIPTOR.message_types_by_name["ListCrawledUrlsRequest"] = _LISTCRAWLEDURLSREQUEST
+DESCRIPTOR.message_types_by_name["ListCrawledUrlsResponse"] = _LISTCRAWLEDURLSRESPONSE
+DESCRIPTOR.message_types_by_name["GetFindingRequest"] = _GETFINDINGREQUEST
+DESCRIPTOR.message_types_by_name["ListFindingsRequest"] = _LISTFINDINGSREQUEST
+DESCRIPTOR.message_types_by_name["ListFindingsResponse"] = _LISTFINDINGSRESPONSE
+DESCRIPTOR.message_types_by_name[
+    "ListFindingTypeStatsRequest"
+] = _LISTFINDINGTYPESTATSREQUEST
+DESCRIPTOR.message_types_by_name[
+    "ListFindingTypeStatsResponse"
+] = _LISTFINDINGTYPESTATSRESPONSE
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
-CreateScanConfigRequest = _reflection.GeneratedProtocolMessageType('CreateScanConfigRequest', (_message.Message,), dict(
-  DESCRIPTOR = _CREATESCANCONFIGREQUEST,
-  __module__ = 'google.cloud.websecurityscanner_v1alpha.proto.web_security_scanner_pb2'
-  ,
-  __doc__ = """Request for the ``CreateScanConfig`` method.
+CreateScanConfigRequest = _reflection.GeneratedProtocolMessageType(
+    "CreateScanConfigRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_CREATESCANCONFIGREQUEST,
+        __module__="google.cloud.websecurityscanner_v1alpha.proto.web_security_scanner_pb2",
+        __doc__="""Request for the ``CreateScanConfig`` method.
   
   
   Attributes:
@@ -739,15 +1105,18 @@ CreateScanConfigRequest = _reflection.GeneratedProtocolMessageType('CreateScanCo
       scan_config:
           Required. The ScanConfig to be created.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.websecurityscanner.v1alpha.CreateScanConfigRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.websecurityscanner.v1alpha.CreateScanConfigRequest)
+    ),
+)
 _sym_db.RegisterMessage(CreateScanConfigRequest)
 
-DeleteScanConfigRequest = _reflection.GeneratedProtocolMessageType('DeleteScanConfigRequest', (_message.Message,), dict(
-  DESCRIPTOR = _DELETESCANCONFIGREQUEST,
-  __module__ = 'google.cloud.websecurityscanner_v1alpha.proto.web_security_scanner_pb2'
-  ,
-  __doc__ = """Request for the ``DeleteScanConfig`` method.
+DeleteScanConfigRequest = _reflection.GeneratedProtocolMessageType(
+    "DeleteScanConfigRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_DELETESCANCONFIGREQUEST,
+        __module__="google.cloud.websecurityscanner_v1alpha.proto.web_security_scanner_pb2",
+        __doc__="""Request for the ``DeleteScanConfig`` method.
   
   
   Attributes:
@@ -756,15 +1125,18 @@ DeleteScanConfigRequest = _reflection.GeneratedProtocolMessageType('DeleteScanCo
           The name follows the format of
           'projects/{projectId}/scanConfigs/{scanConfigId}'.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.websecurityscanner.v1alpha.DeleteScanConfigRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.websecurityscanner.v1alpha.DeleteScanConfigRequest)
+    ),
+)
 _sym_db.RegisterMessage(DeleteScanConfigRequest)
 
-GetScanConfigRequest = _reflection.GeneratedProtocolMessageType('GetScanConfigRequest', (_message.Message,), dict(
-  DESCRIPTOR = _GETSCANCONFIGREQUEST,
-  __module__ = 'google.cloud.websecurityscanner_v1alpha.proto.web_security_scanner_pb2'
-  ,
-  __doc__ = """Request for the ``GetScanConfig`` method.
+GetScanConfigRequest = _reflection.GeneratedProtocolMessageType(
+    "GetScanConfigRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_GETSCANCONFIGREQUEST,
+        __module__="google.cloud.websecurityscanner_v1alpha.proto.web_security_scanner_pb2",
+        __doc__="""Request for the ``GetScanConfig`` method.
   
   
   Attributes:
@@ -773,15 +1145,18 @@ GetScanConfigRequest = _reflection.GeneratedProtocolMessageType('GetScanConfigRe
           The name follows the format of
           'projects/{projectId}/scanConfigs/{scanConfigId}'.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.websecurityscanner.v1alpha.GetScanConfigRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.websecurityscanner.v1alpha.GetScanConfigRequest)
+    ),
+)
 _sym_db.RegisterMessage(GetScanConfigRequest)
 
-ListScanConfigsRequest = _reflection.GeneratedProtocolMessageType('ListScanConfigsRequest', (_message.Message,), dict(
-  DESCRIPTOR = _LISTSCANCONFIGSREQUEST,
-  __module__ = 'google.cloud.websecurityscanner_v1alpha.proto.web_security_scanner_pb2'
-  ,
-  __doc__ = """Request for the ``ListScanConfigs`` method.
+ListScanConfigsRequest = _reflection.GeneratedProtocolMessageType(
+    "ListScanConfigsRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_LISTSCANCONFIGSREQUEST,
+        __module__="google.cloud.websecurityscanner_v1alpha.proto.web_security_scanner_pb2",
+        __doc__="""Request for the ``ListScanConfigs`` method.
   
   
   Attributes:
@@ -798,15 +1173,18 @@ ListScanConfigsRequest = _reflection.GeneratedProtocolMessageType('ListScanConfi
           server. If not specified or not positive, the implementation
           will select a reasonable value.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.websecurityscanner.v1alpha.ListScanConfigsRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.websecurityscanner.v1alpha.ListScanConfigsRequest)
+    ),
+)
 _sym_db.RegisterMessage(ListScanConfigsRequest)
 
-UpdateScanConfigRequest = _reflection.GeneratedProtocolMessageType('UpdateScanConfigRequest', (_message.Message,), dict(
-  DESCRIPTOR = _UPDATESCANCONFIGREQUEST,
-  __module__ = 'google.cloud.websecurityscanner_v1alpha.proto.web_security_scanner_pb2'
-  ,
-  __doc__ = """Request for the ``UpdateScanConfigRequest`` method.
+UpdateScanConfigRequest = _reflection.GeneratedProtocolMessageType(
+    "UpdateScanConfigRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_UPDATESCANCONFIGREQUEST,
+        __module__="google.cloud.websecurityscanner_v1alpha.proto.web_security_scanner_pb2",
+        __doc__="""Request for the ``UpdateScanConfigRequest`` method.
   
   
   Attributes:
@@ -820,15 +1198,18 @@ UpdateScanConfigRequest = _reflection.GeneratedProtocolMessageType('UpdateScanCo
           https://developers.google.com/protocol-
           buffers/docs/reference/google.protobuf#fieldmask
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.websecurityscanner.v1alpha.UpdateScanConfigRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.websecurityscanner.v1alpha.UpdateScanConfigRequest)
+    ),
+)
 _sym_db.RegisterMessage(UpdateScanConfigRequest)
 
-ListScanConfigsResponse = _reflection.GeneratedProtocolMessageType('ListScanConfigsResponse', (_message.Message,), dict(
-  DESCRIPTOR = _LISTSCANCONFIGSRESPONSE,
-  __module__ = 'google.cloud.websecurityscanner_v1alpha.proto.web_security_scanner_pb2'
-  ,
-  __doc__ = """Response for the ``ListScanConfigs`` method.
+ListScanConfigsResponse = _reflection.GeneratedProtocolMessageType(
+    "ListScanConfigsResponse",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_LISTSCANCONFIGSRESPONSE,
+        __module__="google.cloud.websecurityscanner_v1alpha.proto.web_security_scanner_pb2",
+        __doc__="""Response for the ``ListScanConfigs`` method.
   
   
   Attributes:
@@ -838,15 +1219,18 @@ ListScanConfigsResponse = _reflection.GeneratedProtocolMessageType('ListScanConf
           Token to retrieve the next page of results, or empty if there
           are no more results in the list.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.websecurityscanner.v1alpha.ListScanConfigsResponse)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.websecurityscanner.v1alpha.ListScanConfigsResponse)
+    ),
+)
 _sym_db.RegisterMessage(ListScanConfigsResponse)
 
-StartScanRunRequest = _reflection.GeneratedProtocolMessageType('StartScanRunRequest', (_message.Message,), dict(
-  DESCRIPTOR = _STARTSCANRUNREQUEST,
-  __module__ = 'google.cloud.websecurityscanner_v1alpha.proto.web_security_scanner_pb2'
-  ,
-  __doc__ = """Request for the ``StartScanRun`` method.
+StartScanRunRequest = _reflection.GeneratedProtocolMessageType(
+    "StartScanRunRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_STARTSCANRUNREQUEST,
+        __module__="google.cloud.websecurityscanner_v1alpha.proto.web_security_scanner_pb2",
+        __doc__="""Request for the ``StartScanRun`` method.
   
   
   Attributes:
@@ -855,15 +1239,18 @@ StartScanRunRequest = _reflection.GeneratedProtocolMessageType('StartScanRunRequ
           name follows the format of
           'projects/{projectId}/scanConfigs/{scanConfigId}'.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.websecurityscanner.v1alpha.StartScanRunRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.websecurityscanner.v1alpha.StartScanRunRequest)
+    ),
+)
 _sym_db.RegisterMessage(StartScanRunRequest)
 
-GetScanRunRequest = _reflection.GeneratedProtocolMessageType('GetScanRunRequest', (_message.Message,), dict(
-  DESCRIPTOR = _GETSCANRUNREQUEST,
-  __module__ = 'google.cloud.websecurityscanner_v1alpha.proto.web_security_scanner_pb2'
-  ,
-  __doc__ = """Request for the ``GetScanRun`` method.
+GetScanRunRequest = _reflection.GeneratedProtocolMessageType(
+    "GetScanRunRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_GETSCANRUNREQUEST,
+        __module__="google.cloud.websecurityscanner_v1alpha.proto.web_security_scanner_pb2",
+        __doc__="""Request for the ``GetScanRun`` method.
   
   
   Attributes:
@@ -872,15 +1259,18 @@ GetScanRunRequest = _reflection.GeneratedProtocolMessageType('GetScanRunRequest'
           name follows the format of 'projects/{projectId}/scanConfigs/{
           scanConfigId}/scanRuns/{scanRunId}'.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.websecurityscanner.v1alpha.GetScanRunRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.websecurityscanner.v1alpha.GetScanRunRequest)
+    ),
+)
 _sym_db.RegisterMessage(GetScanRunRequest)
 
-ListScanRunsRequest = _reflection.GeneratedProtocolMessageType('ListScanRunsRequest', (_message.Message,), dict(
-  DESCRIPTOR = _LISTSCANRUNSREQUEST,
-  __module__ = 'google.cloud.websecurityscanner_v1alpha.proto.web_security_scanner_pb2'
-  ,
-  __doc__ = """Request for the ``ListScanRuns`` method.
+ListScanRunsRequest = _reflection.GeneratedProtocolMessageType(
+    "ListScanRunsRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_LISTSCANRUNSREQUEST,
+        __module__="google.cloud.websecurityscanner_v1alpha.proto.web_security_scanner_pb2",
+        __doc__="""Request for the ``ListScanRuns`` method.
   
   
   Attributes:
@@ -898,15 +1288,18 @@ ListScanRunsRequest = _reflection.GeneratedProtocolMessageType('ListScanRunsRequ
           server. If not specified or not positive, the implementation
           will select a reasonable value.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.websecurityscanner.v1alpha.ListScanRunsRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.websecurityscanner.v1alpha.ListScanRunsRequest)
+    ),
+)
 _sym_db.RegisterMessage(ListScanRunsRequest)
 
-ListScanRunsResponse = _reflection.GeneratedProtocolMessageType('ListScanRunsResponse', (_message.Message,), dict(
-  DESCRIPTOR = _LISTSCANRUNSRESPONSE,
-  __module__ = 'google.cloud.websecurityscanner_v1alpha.proto.web_security_scanner_pb2'
-  ,
-  __doc__ = """Response for the ``ListScanRuns`` method.
+ListScanRunsResponse = _reflection.GeneratedProtocolMessageType(
+    "ListScanRunsResponse",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_LISTSCANRUNSRESPONSE,
+        __module__="google.cloud.websecurityscanner_v1alpha.proto.web_security_scanner_pb2",
+        __doc__="""Response for the ``ListScanRuns`` method.
   
   
   Attributes:
@@ -916,15 +1309,18 @@ ListScanRunsResponse = _reflection.GeneratedProtocolMessageType('ListScanRunsRes
           Token to retrieve the next page of results, or empty if there
           are no more results in the list.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.websecurityscanner.v1alpha.ListScanRunsResponse)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.websecurityscanner.v1alpha.ListScanRunsResponse)
+    ),
+)
 _sym_db.RegisterMessage(ListScanRunsResponse)
 
-StopScanRunRequest = _reflection.GeneratedProtocolMessageType('StopScanRunRequest', (_message.Message,), dict(
-  DESCRIPTOR = _STOPSCANRUNREQUEST,
-  __module__ = 'google.cloud.websecurityscanner_v1alpha.proto.web_security_scanner_pb2'
-  ,
-  __doc__ = """Request for the ``StopScanRun`` method.
+StopScanRunRequest = _reflection.GeneratedProtocolMessageType(
+    "StopScanRunRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_STOPSCANRUNREQUEST,
+        __module__="google.cloud.websecurityscanner_v1alpha.proto.web_security_scanner_pb2",
+        __doc__="""Request for the ``StopScanRun`` method.
   
   
   Attributes:
@@ -933,15 +1329,18 @@ StopScanRunRequest = _reflection.GeneratedProtocolMessageType('StopScanRunReques
           name follows the format of 'projects/{projectId}/scanConfigs/{
           scanConfigId}/scanRuns/{scanRunId}'.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.websecurityscanner.v1alpha.StopScanRunRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.websecurityscanner.v1alpha.StopScanRunRequest)
+    ),
+)
 _sym_db.RegisterMessage(StopScanRunRequest)
 
-ListCrawledUrlsRequest = _reflection.GeneratedProtocolMessageType('ListCrawledUrlsRequest', (_message.Message,), dict(
-  DESCRIPTOR = _LISTCRAWLEDURLSREQUEST,
-  __module__ = 'google.cloud.websecurityscanner_v1alpha.proto.web_security_scanner_pb2'
-  ,
-  __doc__ = """Request for the ``ListCrawledUrls`` method.
+ListCrawledUrlsRequest = _reflection.GeneratedProtocolMessageType(
+    "ListCrawledUrlsRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_LISTCRAWLEDURLSREQUEST,
+        __module__="google.cloud.websecurityscanner_v1alpha.proto.web_security_scanner_pb2",
+        __doc__="""Request for the ``ListCrawledUrls`` method.
   
   
   Attributes:
@@ -959,15 +1358,18 @@ ListCrawledUrlsRequest = _reflection.GeneratedProtocolMessageType('ListCrawledUr
           server. If not specified or not positive, the implementation
           will select a reasonable value.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.websecurityscanner.v1alpha.ListCrawledUrlsRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.websecurityscanner.v1alpha.ListCrawledUrlsRequest)
+    ),
+)
 _sym_db.RegisterMessage(ListCrawledUrlsRequest)
 
-ListCrawledUrlsResponse = _reflection.GeneratedProtocolMessageType('ListCrawledUrlsResponse', (_message.Message,), dict(
-  DESCRIPTOR = _LISTCRAWLEDURLSRESPONSE,
-  __module__ = 'google.cloud.websecurityscanner_v1alpha.proto.web_security_scanner_pb2'
-  ,
-  __doc__ = """Response for the ``ListCrawledUrls`` method.
+ListCrawledUrlsResponse = _reflection.GeneratedProtocolMessageType(
+    "ListCrawledUrlsResponse",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_LISTCRAWLEDURLSRESPONSE,
+        __module__="google.cloud.websecurityscanner_v1alpha.proto.web_security_scanner_pb2",
+        __doc__="""Response for the ``ListCrawledUrls`` method.
   
   
   Attributes:
@@ -977,15 +1379,18 @@ ListCrawledUrlsResponse = _reflection.GeneratedProtocolMessageType('ListCrawledU
           Token to retrieve the next page of results, or empty if there
           are no more results in the list.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.websecurityscanner.v1alpha.ListCrawledUrlsResponse)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.websecurityscanner.v1alpha.ListCrawledUrlsResponse)
+    ),
+)
 _sym_db.RegisterMessage(ListCrawledUrlsResponse)
 
-GetFindingRequest = _reflection.GeneratedProtocolMessageType('GetFindingRequest', (_message.Message,), dict(
-  DESCRIPTOR = _GETFINDINGREQUEST,
-  __module__ = 'google.cloud.websecurityscanner_v1alpha.proto.web_security_scanner_pb2'
-  ,
-  __doc__ = """Request for the ``GetFinding`` method.
+GetFindingRequest = _reflection.GeneratedProtocolMessageType(
+    "GetFindingRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_GETFINDINGREQUEST,
+        __module__="google.cloud.websecurityscanner_v1alpha.proto.web_security_scanner_pb2",
+        __doc__="""Request for the ``GetFinding`` method.
   
   
   Attributes:
@@ -994,15 +1399,18 @@ GetFindingRequest = _reflection.GeneratedProtocolMessageType('GetFindingRequest'
           name follows the format of 'projects/{projectId}/scanConfigs/{
           scanConfigId}/scanRuns/{scanRunId}/findings/{findingId}'.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.websecurityscanner.v1alpha.GetFindingRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.websecurityscanner.v1alpha.GetFindingRequest)
+    ),
+)
 _sym_db.RegisterMessage(GetFindingRequest)
 
-ListFindingsRequest = _reflection.GeneratedProtocolMessageType('ListFindingsRequest', (_message.Message,), dict(
-  DESCRIPTOR = _LISTFINDINGSREQUEST,
-  __module__ = 'google.cloud.websecurityscanner_v1alpha.proto.web_security_scanner_pb2'
-  ,
-  __doc__ = """Request for the ``ListFindings`` method.
+ListFindingsRequest = _reflection.GeneratedProtocolMessageType(
+    "ListFindingsRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_LISTFINDINGSREQUEST,
+        __module__="google.cloud.websecurityscanner_v1alpha.proto.web_security_scanner_pb2",
+        __doc__="""Request for the ``ListFindings`` method.
   
   
   Attributes:
@@ -1023,15 +1431,18 @@ ListFindingsRequest = _reflection.GeneratedProtocolMessageType('ListFindingsRequ
           server. If not specified or not positive, the implementation
           will select a reasonable value.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.websecurityscanner.v1alpha.ListFindingsRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.websecurityscanner.v1alpha.ListFindingsRequest)
+    ),
+)
 _sym_db.RegisterMessage(ListFindingsRequest)
 
-ListFindingsResponse = _reflection.GeneratedProtocolMessageType('ListFindingsResponse', (_message.Message,), dict(
-  DESCRIPTOR = _LISTFINDINGSRESPONSE,
-  __module__ = 'google.cloud.websecurityscanner_v1alpha.proto.web_security_scanner_pb2'
-  ,
-  __doc__ = """Response for the ``ListFindings`` method.
+ListFindingsResponse = _reflection.GeneratedProtocolMessageType(
+    "ListFindingsResponse",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_LISTFINDINGSRESPONSE,
+        __module__="google.cloud.websecurityscanner_v1alpha.proto.web_security_scanner_pb2",
+        __doc__="""Response for the ``ListFindings`` method.
   
   
   Attributes:
@@ -1041,15 +1452,18 @@ ListFindingsResponse = _reflection.GeneratedProtocolMessageType('ListFindingsRes
           Token to retrieve the next page of results, or empty if there
           are no more results in the list.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.websecurityscanner.v1alpha.ListFindingsResponse)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.websecurityscanner.v1alpha.ListFindingsResponse)
+    ),
+)
 _sym_db.RegisterMessage(ListFindingsResponse)
 
-ListFindingTypeStatsRequest = _reflection.GeneratedProtocolMessageType('ListFindingTypeStatsRequest', (_message.Message,), dict(
-  DESCRIPTOR = _LISTFINDINGTYPESTATSREQUEST,
-  __module__ = 'google.cloud.websecurityscanner_v1alpha.proto.web_security_scanner_pb2'
-  ,
-  __doc__ = """Request for the ``ListFindingTypeStats`` method.
+ListFindingTypeStatsRequest = _reflection.GeneratedProtocolMessageType(
+    "ListFindingTypeStatsRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_LISTFINDINGTYPESTATSREQUEST,
+        __module__="google.cloud.websecurityscanner_v1alpha.proto.web_security_scanner_pb2",
+        __doc__="""Request for the ``ListFindingTypeStats`` method.
   
   
   Attributes:
@@ -1058,158 +1472,231 @@ ListFindingTypeStatsRequest = _reflection.GeneratedProtocolMessageType('ListFind
           resource name in the format 'projects/{projectId}/scanConfigs/
           {scanConfigId}/scanRuns/{scanRunId}'.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.websecurityscanner.v1alpha.ListFindingTypeStatsRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.websecurityscanner.v1alpha.ListFindingTypeStatsRequest)
+    ),
+)
 _sym_db.RegisterMessage(ListFindingTypeStatsRequest)
 
-ListFindingTypeStatsResponse = _reflection.GeneratedProtocolMessageType('ListFindingTypeStatsResponse', (_message.Message,), dict(
-  DESCRIPTOR = _LISTFINDINGTYPESTATSRESPONSE,
-  __module__ = 'google.cloud.websecurityscanner_v1alpha.proto.web_security_scanner_pb2'
-  ,
-  __doc__ = """Response for the ``ListFindingTypeStats`` method.
+ListFindingTypeStatsResponse = _reflection.GeneratedProtocolMessageType(
+    "ListFindingTypeStatsResponse",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_LISTFINDINGTYPESTATSRESPONSE,
+        __module__="google.cloud.websecurityscanner_v1alpha.proto.web_security_scanner_pb2",
+        __doc__="""Response for the ``ListFindingTypeStats`` method.
   
   
   Attributes:
       finding_type_stats:
           The list of FindingTypeStats returned.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.websecurityscanner.v1alpha.ListFindingTypeStatsResponse)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.websecurityscanner.v1alpha.ListFindingTypeStatsResponse)
+    ),
+)
 _sym_db.RegisterMessage(ListFindingTypeStatsResponse)
 
 
 DESCRIPTOR.has_options = True
-DESCRIPTOR._options = _descriptor._ParseOptions(descriptor_pb2.FileOptions(), _b('\n+com.google.cloud.websecurityscanner.v1alphaB\027WebSecurityScannerProtoP\001ZYgoogle.golang.org/genproto/googleapis/cloud/websecurityscanner/v1alpha;websecurityscanner'))
+DESCRIPTOR._options = _descriptor._ParseOptions(
+    descriptor_pb2.FileOptions(),
+    _b(
+        "\n+com.google.cloud.websecurityscanner.v1alphaB\027WebSecurityScannerProtoP\001ZYgoogle.golang.org/genproto/googleapis/cloud/websecurityscanner/v1alpha;websecurityscanner"
+    ),
+)
 
 _WEBSECURITYSCANNER = _descriptor.ServiceDescriptor(
-  name='WebSecurityScanner',
-  full_name='google.cloud.websecurityscanner.v1alpha.WebSecurityScanner',
-  file=DESCRIPTOR,
-  index=0,
-  options=None,
-  serialized_start=2015,
-  serialized_end=4655,
-  methods=[
-  _descriptor.MethodDescriptor(
-    name='CreateScanConfig',
-    full_name='google.cloud.websecurityscanner.v1alpha.WebSecurityScanner.CreateScanConfig',
+    name="WebSecurityScanner",
+    full_name="google.cloud.websecurityscanner.v1alpha.WebSecurityScanner",
+    file=DESCRIPTOR,
     index=0,
-    containing_service=None,
-    input_type=_CREATESCANCONFIGREQUEST,
-    output_type=google_dot_cloud_dot_websecurityscanner__v1alpha_dot_proto_dot_scan__config__pb2._SCANCONFIG,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\0027\"(/v1alpha/{parent=projects/*}/scanConfigs:\013scan_config')),
-  ),
-  _descriptor.MethodDescriptor(
-    name='DeleteScanConfig',
-    full_name='google.cloud.websecurityscanner.v1alpha.WebSecurityScanner.DeleteScanConfig',
-    index=1,
-    containing_service=None,
-    input_type=_DELETESCANCONFIGREQUEST,
-    output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002**(/v1alpha/{name=projects/*/scanConfigs/*}')),
-  ),
-  _descriptor.MethodDescriptor(
-    name='GetScanConfig',
-    full_name='google.cloud.websecurityscanner.v1alpha.WebSecurityScanner.GetScanConfig',
-    index=2,
-    containing_service=None,
-    input_type=_GETSCANCONFIGREQUEST,
-    output_type=google_dot_cloud_dot_websecurityscanner__v1alpha_dot_proto_dot_scan__config__pb2._SCANCONFIG,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002*\022(/v1alpha/{name=projects/*/scanConfigs/*}')),
-  ),
-  _descriptor.MethodDescriptor(
-    name='ListScanConfigs',
-    full_name='google.cloud.websecurityscanner.v1alpha.WebSecurityScanner.ListScanConfigs',
-    index=3,
-    containing_service=None,
-    input_type=_LISTSCANCONFIGSREQUEST,
-    output_type=_LISTSCANCONFIGSRESPONSE,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002*\022(/v1alpha/{parent=projects/*}/scanConfigs')),
-  ),
-  _descriptor.MethodDescriptor(
-    name='UpdateScanConfig',
-    full_name='google.cloud.websecurityscanner.v1alpha.WebSecurityScanner.UpdateScanConfig',
-    index=4,
-    containing_service=None,
-    input_type=_UPDATESCANCONFIGREQUEST,
-    output_type=google_dot_cloud_dot_websecurityscanner__v1alpha_dot_proto_dot_scan__config__pb2._SCANCONFIG,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002C24/v1alpha/{scan_config.name=projects/*/scanConfigs/*}:\013scan_config')),
-  ),
-  _descriptor.MethodDescriptor(
-    name='StartScanRun',
-    full_name='google.cloud.websecurityscanner.v1alpha.WebSecurityScanner.StartScanRun',
-    index=5,
-    containing_service=None,
-    input_type=_STARTSCANRUNREQUEST,
-    output_type=google_dot_cloud_dot_websecurityscanner__v1alpha_dot_proto_dot_scan__run__pb2._SCANRUN,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\0023\"./v1alpha/{name=projects/*/scanConfigs/*}:start:\001*')),
-  ),
-  _descriptor.MethodDescriptor(
-    name='GetScanRun',
-    full_name='google.cloud.websecurityscanner.v1alpha.WebSecurityScanner.GetScanRun',
-    index=6,
-    containing_service=None,
-    input_type=_GETSCANRUNREQUEST,
-    output_type=google_dot_cloud_dot_websecurityscanner__v1alpha_dot_proto_dot_scan__run__pb2._SCANRUN,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\0025\0223/v1alpha/{name=projects/*/scanConfigs/*/scanRuns/*}')),
-  ),
-  _descriptor.MethodDescriptor(
-    name='ListScanRuns',
-    full_name='google.cloud.websecurityscanner.v1alpha.WebSecurityScanner.ListScanRuns',
-    index=7,
-    containing_service=None,
-    input_type=_LISTSCANRUNSREQUEST,
-    output_type=_LISTSCANRUNSRESPONSE,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\0025\0223/v1alpha/{parent=projects/*/scanConfigs/*}/scanRuns')),
-  ),
-  _descriptor.MethodDescriptor(
-    name='StopScanRun',
-    full_name='google.cloud.websecurityscanner.v1alpha.WebSecurityScanner.StopScanRun',
-    index=8,
-    containing_service=None,
-    input_type=_STOPSCANRUNREQUEST,
-    output_type=google_dot_cloud_dot_websecurityscanner__v1alpha_dot_proto_dot_scan__run__pb2._SCANRUN,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002=\"8/v1alpha/{name=projects/*/scanConfigs/*/scanRuns/*}:stop:\001*')),
-  ),
-  _descriptor.MethodDescriptor(
-    name='ListCrawledUrls',
-    full_name='google.cloud.websecurityscanner.v1alpha.WebSecurityScanner.ListCrawledUrls',
-    index=9,
-    containing_service=None,
-    input_type=_LISTCRAWLEDURLSREQUEST,
-    output_type=_LISTCRAWLEDURLSRESPONSE,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002C\022A/v1alpha/{parent=projects/*/scanConfigs/*/scanRuns/*}/crawledUrls')),
-  ),
-  _descriptor.MethodDescriptor(
-    name='GetFinding',
-    full_name='google.cloud.websecurityscanner.v1alpha.WebSecurityScanner.GetFinding',
-    index=10,
-    containing_service=None,
-    input_type=_GETFINDINGREQUEST,
-    output_type=google_dot_cloud_dot_websecurityscanner__v1alpha_dot_proto_dot_finding__pb2._FINDING,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002@\022>/v1alpha/{name=projects/*/scanConfigs/*/scanRuns/*/findings/*}')),
-  ),
-  _descriptor.MethodDescriptor(
-    name='ListFindings',
-    full_name='google.cloud.websecurityscanner.v1alpha.WebSecurityScanner.ListFindings',
-    index=11,
-    containing_service=None,
-    input_type=_LISTFINDINGSREQUEST,
-    output_type=_LISTFINDINGSRESPONSE,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002@\022>/v1alpha/{parent=projects/*/scanConfigs/*/scanRuns/*}/findings')),
-  ),
-  _descriptor.MethodDescriptor(
-    name='ListFindingTypeStats',
-    full_name='google.cloud.websecurityscanner.v1alpha.WebSecurityScanner.ListFindingTypeStats',
-    index=12,
-    containing_service=None,
-    input_type=_LISTFINDINGTYPESTATSREQUEST,
-    output_type=_LISTFINDINGTYPESTATSRESPONSE,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002H\022F/v1alpha/{parent=projects/*/scanConfigs/*/scanRuns/*}/findingTypeStats')),
-  ),
-])
+    options=None,
+    serialized_start=2015,
+    serialized_end=4655,
+    methods=[
+        _descriptor.MethodDescriptor(
+            name="CreateScanConfig",
+            full_name="google.cloud.websecurityscanner.v1alpha.WebSecurityScanner.CreateScanConfig",
+            index=0,
+            containing_service=None,
+            input_type=_CREATESCANCONFIGREQUEST,
+            output_type=google_dot_cloud_dot_websecurityscanner__v1alpha_dot_proto_dot_scan__config__pb2._SCANCONFIG,
+            options=_descriptor._ParseOptions(
+                descriptor_pb2.MethodOptions(),
+                _b(
+                    '\202\323\344\223\0027"(/v1alpha/{parent=projects/*}/scanConfigs:\013scan_config'
+                ),
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="DeleteScanConfig",
+            full_name="google.cloud.websecurityscanner.v1alpha.WebSecurityScanner.DeleteScanConfig",
+            index=1,
+            containing_service=None,
+            input_type=_DELETESCANCONFIGREQUEST,
+            output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
+            options=_descriptor._ParseOptions(
+                descriptor_pb2.MethodOptions(),
+                _b("\202\323\344\223\002**(/v1alpha/{name=projects/*/scanConfigs/*}"),
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="GetScanConfig",
+            full_name="google.cloud.websecurityscanner.v1alpha.WebSecurityScanner.GetScanConfig",
+            index=2,
+            containing_service=None,
+            input_type=_GETSCANCONFIGREQUEST,
+            output_type=google_dot_cloud_dot_websecurityscanner__v1alpha_dot_proto_dot_scan__config__pb2._SCANCONFIG,
+            options=_descriptor._ParseOptions(
+                descriptor_pb2.MethodOptions(),
+                _b(
+                    "\202\323\344\223\002*\022(/v1alpha/{name=projects/*/scanConfigs/*}"
+                ),
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="ListScanConfigs",
+            full_name="google.cloud.websecurityscanner.v1alpha.WebSecurityScanner.ListScanConfigs",
+            index=3,
+            containing_service=None,
+            input_type=_LISTSCANCONFIGSREQUEST,
+            output_type=_LISTSCANCONFIGSRESPONSE,
+            options=_descriptor._ParseOptions(
+                descriptor_pb2.MethodOptions(),
+                _b(
+                    "\202\323\344\223\002*\022(/v1alpha/{parent=projects/*}/scanConfigs"
+                ),
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="UpdateScanConfig",
+            full_name="google.cloud.websecurityscanner.v1alpha.WebSecurityScanner.UpdateScanConfig",
+            index=4,
+            containing_service=None,
+            input_type=_UPDATESCANCONFIGREQUEST,
+            output_type=google_dot_cloud_dot_websecurityscanner__v1alpha_dot_proto_dot_scan__config__pb2._SCANCONFIG,
+            options=_descriptor._ParseOptions(
+                descriptor_pb2.MethodOptions(),
+                _b(
+                    "\202\323\344\223\002C24/v1alpha/{scan_config.name=projects/*/scanConfigs/*}:\013scan_config"
+                ),
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="StartScanRun",
+            full_name="google.cloud.websecurityscanner.v1alpha.WebSecurityScanner.StartScanRun",
+            index=5,
+            containing_service=None,
+            input_type=_STARTSCANRUNREQUEST,
+            output_type=google_dot_cloud_dot_websecurityscanner__v1alpha_dot_proto_dot_scan__run__pb2._SCANRUN,
+            options=_descriptor._ParseOptions(
+                descriptor_pb2.MethodOptions(),
+                _b(
+                    '\202\323\344\223\0023"./v1alpha/{name=projects/*/scanConfigs/*}:start:\001*'
+                ),
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="GetScanRun",
+            full_name="google.cloud.websecurityscanner.v1alpha.WebSecurityScanner.GetScanRun",
+            index=6,
+            containing_service=None,
+            input_type=_GETSCANRUNREQUEST,
+            output_type=google_dot_cloud_dot_websecurityscanner__v1alpha_dot_proto_dot_scan__run__pb2._SCANRUN,
+            options=_descriptor._ParseOptions(
+                descriptor_pb2.MethodOptions(),
+                _b(
+                    "\202\323\344\223\0025\0223/v1alpha/{name=projects/*/scanConfigs/*/scanRuns/*}"
+                ),
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="ListScanRuns",
+            full_name="google.cloud.websecurityscanner.v1alpha.WebSecurityScanner.ListScanRuns",
+            index=7,
+            containing_service=None,
+            input_type=_LISTSCANRUNSREQUEST,
+            output_type=_LISTSCANRUNSRESPONSE,
+            options=_descriptor._ParseOptions(
+                descriptor_pb2.MethodOptions(),
+                _b(
+                    "\202\323\344\223\0025\0223/v1alpha/{parent=projects/*/scanConfigs/*}/scanRuns"
+                ),
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="StopScanRun",
+            full_name="google.cloud.websecurityscanner.v1alpha.WebSecurityScanner.StopScanRun",
+            index=8,
+            containing_service=None,
+            input_type=_STOPSCANRUNREQUEST,
+            output_type=google_dot_cloud_dot_websecurityscanner__v1alpha_dot_proto_dot_scan__run__pb2._SCANRUN,
+            options=_descriptor._ParseOptions(
+                descriptor_pb2.MethodOptions(),
+                _b(
+                    '\202\323\344\223\002="8/v1alpha/{name=projects/*/scanConfigs/*/scanRuns/*}:stop:\001*'
+                ),
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="ListCrawledUrls",
+            full_name="google.cloud.websecurityscanner.v1alpha.WebSecurityScanner.ListCrawledUrls",
+            index=9,
+            containing_service=None,
+            input_type=_LISTCRAWLEDURLSREQUEST,
+            output_type=_LISTCRAWLEDURLSRESPONSE,
+            options=_descriptor._ParseOptions(
+                descriptor_pb2.MethodOptions(),
+                _b(
+                    "\202\323\344\223\002C\022A/v1alpha/{parent=projects/*/scanConfigs/*/scanRuns/*}/crawledUrls"
+                ),
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="GetFinding",
+            full_name="google.cloud.websecurityscanner.v1alpha.WebSecurityScanner.GetFinding",
+            index=10,
+            containing_service=None,
+            input_type=_GETFINDINGREQUEST,
+            output_type=google_dot_cloud_dot_websecurityscanner__v1alpha_dot_proto_dot_finding__pb2._FINDING,
+            options=_descriptor._ParseOptions(
+                descriptor_pb2.MethodOptions(),
+                _b(
+                    "\202\323\344\223\002@\022>/v1alpha/{name=projects/*/scanConfigs/*/scanRuns/*/findings/*}"
+                ),
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="ListFindings",
+            full_name="google.cloud.websecurityscanner.v1alpha.WebSecurityScanner.ListFindings",
+            index=11,
+            containing_service=None,
+            input_type=_LISTFINDINGSREQUEST,
+            output_type=_LISTFINDINGSRESPONSE,
+            options=_descriptor._ParseOptions(
+                descriptor_pb2.MethodOptions(),
+                _b(
+                    "\202\323\344\223\002@\022>/v1alpha/{parent=projects/*/scanConfigs/*/scanRuns/*}/findings"
+                ),
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="ListFindingTypeStats",
+            full_name="google.cloud.websecurityscanner.v1alpha.WebSecurityScanner.ListFindingTypeStats",
+            index=12,
+            containing_service=None,
+            input_type=_LISTFINDINGTYPESTATSREQUEST,
+            output_type=_LISTFINDINGTYPESTATSRESPONSE,
+            options=_descriptor._ParseOptions(
+                descriptor_pb2.MethodOptions(),
+                _b(
+                    "\202\323\344\223\002H\022F/v1alpha/{parent=projects/*/scanConfigs/*/scanRuns/*}/findingTypeStats"
+                ),
+            ),
+        ),
+    ],
+)
 _sym_db.RegisterServiceDescriptor(_WEBSECURITYSCANNER)
 
-DESCRIPTOR.services_by_name['WebSecurityScanner'] = _WEBSECURITYSCANNER
+DESCRIPTOR.services_by_name["WebSecurityScanner"] = _WEBSECURITYSCANNER
 
 # @@protoc_insertion_point(module_scope)

@@ -22,6 +22,7 @@ try:
 except ImportError:  # pragma: NO COVER
     fastavro = None
 import google.api_core.exceptions
+
 try:
     import pandas
 except ImportError:  # pragma: NO COVER
@@ -54,13 +55,7 @@ class ReadRowsStream(object):
     method to parse all blocks into a :class:`pandas.DataFrame`.
     """
 
-    def __init__(
-            self,
-            wrapped,
-            client,
-            read_position,
-            read_rows_kwargs,
-    ):
+    def __init__(self, wrapped, client, read_position, read_rows_kwargs):
         """Construct a ReadRowsStream.
 
         Args:
@@ -132,7 +127,8 @@ class ReadRowsStream(object):
     def _reconnect(self):
         """Reconnect to the ReadRows stream using the most recent offset."""
         self._wrapped = self._client.read_rows(
-            _copy_stream_position(self._position), **self._read_rows_kwargs)
+            _copy_stream_position(self._position), **self._read_rows_kwargs
+        )
 
     def rows(self, read_session):
         """Iterate over all rows in the stream.

@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from google.cloud.iam import Policy as BasePolicy
+from google.api_core.iam import Policy as BasePolicy
 from google.cloud._helpers import _to_bytes
 
 """IAM roles supported by Bigtable Instance resource"""

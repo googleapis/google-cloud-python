@@ -19,16 +19,13 @@ See: `Speech Asynchronous Recognize`_
 
     >>> from google.cloud import speech
     >>> client = speech.SpeechClient()
-    >>> operation = client.long_running_recognize(
-    ...     audio=speech.types.RecognitionAudio(
-    ...         uri='gs://my-bucket/recording.flac',
-    ...     ),
-    ...     config=speech.types.RecognitionConfig(
-    ...         encoding='LINEAR16',
-    ...         language_code='en-US',
-    ...         sample_rate_hertz=44100,
-    ...     ),
-    ... )
+    >>> audio = speech.types.RecognitionAudio(
+    ...     uri='gs://my-bucket/recording.flac')
+    >>> config = speech.types.RecognitionConfig(
+    ...     encoding=speech.enums.RecognitionConfig.AudioEncoding.LINEAR16,
+    ...     language_code='en-US',
+    ...     sample_rate_hertz=44100)
+    >>> operation = client.long_running_recognize(config=config, audio=audio)
     >>> op_result = operation.result()
     >>> for result in op_result.results:
     ...     for alternative in result.alternatives:
@@ -53,16 +50,13 @@ Great Britain.
 
     >>> from google.cloud import speech
     >>> client = speech.SpeechClient()
-    >>> results = client.recognize(
-    ...     audio=speech.types.RecognitionAudio(
-    ...         uri='gs://my-bucket/recording.flac',
-    ...     ),
-    ...     config=speech.types.RecognitionConfig(
-    ...         encoding='LINEAR16',
-    ...         language_code='en-US',
-    ...         sample_rate_hertz=44100,
-    ...     ),
-    ... )
+    >>> audio = speech.types.RecognitionAudio(
+    ...     uri='gs://my-bucket/recording.flac')
+    >>> config = speech.types.RecognitionConfig(
+    ...     encoding=speech.enums.RecognitionConfig.AudioEncoding.LINEAR16,
+    ...     language_code='en-US',
+    ...     sample_rate_hertz=44100)
+    >>> results = client.recognize(config=config, audio=audio)
     >>> for result in results:
     ...     for alternative in result.alternatives:
     ...         print('=' * 20)
@@ -81,17 +75,14 @@ Example of using the profanity filter.
 
     >>> from google.cloud import speech
     >>> client = speech.SpeechClient()
-    >>> results = client.recognize(
-    ...     audio=speech.types.RecognitionAudio(
-    ...         uri='gs://my-bucket/recording.flac',
-    ...     ),
-    ...     config=speech.types.RecognitionConfig(
-    ...         encoding='LINEAR16',
-    ...         language_code='en-US',
-    ...         profanity_filter=True,
-    ...         sample_rate_hertz=44100,
-    ...     ),
-    ... )
+    >>> audio = speech.types.RecognitionAudio(
+    ...     uri='gs://my-bucket/recording.flac')
+    >>> config = speech.types.RecognitionConfig(
+    ...     encoding=speech.enums.RecognitionConfig.AudioEncoding.LINEAR16,
+    ...     language_code='en-US',
+    ...     sample_rate_hertz=44100,
+    ...     profanity_filter=True)
+    >>> results = client.recognize(config=config, audio=audio)
     >>> for result in results:
     ...     for alternative in result.alternatives:
     ...         print('=' * 20)
@@ -110,19 +101,16 @@ words to the vocabulary of the recognizer.
     >>> from google.cloud import speech
     >>> from google.cloud import speech
     >>> client = speech.SpeechClient()
-    >>> results = client.recognize(
-    ...     audio=speech.types.RecognitionAudio(
-    ...         uri='gs://my-bucket/recording.flac',
-    ...     ),
-    ...     config=speech.types.RecognitionConfig(
-    ...         encoding='LINEAR16',
-    ...         language_code='en-US',
-    ...         sample_rate_hertz=44100,
-    ...         speech_contexts=[speech.types.SpeechContext(
-    ...             phrases=['hi', 'good afternoon'],
-    ...         )],
-    ...     ),
-    ... )
+    >>> audio = speech.types.RecognitionAudio(
+    ...     uri='gs://my-bucket/recording.flac')
+    >>> config = speech.types.RecognitionConfig(
+    ...     encoding=speech.enums.RecognitionConfig.AudioEncoding.LINEAR16,
+    ...     language_code='en-US',
+    ...     sample_rate_hertz=44100,
+    ...     speech_contexts=[speech.types.SpeechContext(
+    ...         phrases=['hi', 'good afternoon'],
+    ...     )])
+    >>> results = client.recognize(config=config, audio=audio)
     >>> for result in results:
     ...     for alternative in result.alternatives:
     ...         print('=' * 20)
@@ -150,7 +138,7 @@ speech data to possible text alternatives on the fly.
     >>> from google.cloud import speech
     >>> client = speech.SpeechClient()
     >>> config = speech.types.RecognitionConfig(
-    ...     encoding='LINEAR16',
+    ...     encoding=speech.enums.RecognitionConfig.AudioEncoding.LINEAR16,
     ...     language_code='en-US',
     ...     sample_rate_hertz=44100,
     ... )
@@ -188,7 +176,7 @@ See: `Single Utterance`_
     >>> from google.cloud import speech
     >>> client = speech.SpeechClient()
     >>> config = speech.types.RecognitionConfig(
-    ...     encoding='LINEAR16',
+    ...     encoding=speech.enums.RecognitionConfig.AudioEncoding.LINEAR16,
     ...     language_code='en-US',
     ...     sample_rate_hertz=44100,
     ... )
@@ -226,7 +214,7 @@ If ``interim_results`` is set to :data:`True`, interim results
     >>> from google.cloud import speech
     >>> client = speech.SpeechClient()
     >>> config = speech.types.RecognitionConfig(
-    ...     encoding='LINEAR16',
+    ...     encoding=speech.enums.RecognitionConfig.AudioEncoding.LINEAR16,
     ...     language_code='en-US',
     ...     sample_rate_hertz=44100,
     ... )

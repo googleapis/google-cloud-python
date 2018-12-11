@@ -54,11 +54,11 @@ class DocumentReference(object):
     def __init__(self, *path, **kwargs):
         _helpers.verify_path(path, is_collection=False)
         self._path = path
-        self._client = kwargs.pop('client', None)
+        self._client = kwargs.pop("client", None)
         if kwargs:
             raise TypeError(
-                'Received unexpected arguments', kwargs,
-                'Only `client` is supported')
+                "Received unexpected arguments", kwargs, "Only `client` is supported"
+            )
 
     def __copy__(self):
         """Shallow copy the instance.
@@ -94,10 +94,7 @@ class DocumentReference(object):
             equal.
         """
         if isinstance(other, DocumentReference):
-            return (
-                self._client == other._client and
-                self._path == other._path
-            )
+            return self._client == other._client and self._path == other._path
         else:
             return NotImplemented
 
@@ -112,10 +109,7 @@ class DocumentReference(object):
             not equal.
         """
         if isinstance(other, DocumentReference):
-            return (
-                self._client != other._client or
-                self._path != other._path
-            )
+            return self._client != other._client or self._path != other._path
         else:
             return NotImplemented
 
@@ -136,9 +130,8 @@ class DocumentReference(object):
         """
         if self._document_path_internal is None:
             if self._client is None:
-                raise ValueError('A document reference requires a `client`.')
-            self._document_path_internal = _get_document_path(
-                self._client, self._path)
+                raise ValueError("A document reference requires a `client`.")
+            self._document_path_internal = _get_document_path(self._client, self._path)
 
         return self._document_path_internal
 
@@ -391,8 +384,11 @@ class DocumentReference(object):
         """
         write_pb = _helpers.pb_for_delete(self._document_path, option)
         commit_response = self._client._firestore_api.commit(
-            self._client._database_string, [write_pb], transaction=None,
-            metadata=self._client._rpc_metadata)
+            self._client._database_string,
+            [write_pb],
+            transaction=None,
+            metadata=self._client._rpc_metadata,
+        )
 
         return commit_response.commit_time
 
@@ -423,8 +419,7 @@ class DocumentReference(object):
                 `None` and `exists` will be `False`.
         """
         if isinstance(field_paths, six.string_types):
-            raise ValueError(
-                "'field_paths' must be a sequence of paths, not a string.")
+            raise ValueError("'field_paths' must be a sequence of paths, not a string.")
 
         if field_paths is not None:
             mask = common_pb2.DocumentMask(field_paths=sorted(field_paths))
@@ -437,7 +432,8 @@ class DocumentReference(object):
                 self._document_path,
                 mask=mask,
                 transaction=_helpers.get_transaction_id(transaction),
-                metadata=self._client._rpc_metadata)
+                metadata=self._client._rpc_metadata,
+            )
         except exceptions.NotFound:
             data = None
             exists = False
@@ -455,7 +451,8 @@ class DocumentReference(object):
             exists=exists,
             read_time=None,  # No server read_time available
             create_time=create_time,
-            update_time=update_time)
+            update_time=update_time,
+        )
 
     def collections(self, page_size=None):
         """List subcollections of the current document.
@@ -470,8 +467,10 @@ class DocumentReference(object):
                 iterator will be empty
         """
         iterator = self._client._firestore_api.list_collection_ids(
-            self._document_path, page_size=page_size,
-            metadata=self._client._rpc_metadata)
+            self._document_path,
+            page_size=page_size,
+            metadata=self._client._rpc_metadata,
+        )
         iterator.document = self
         iterator.item_to_value = _item_to_collection_ref
         return iterator
@@ -505,8 +504,7 @@ class DocumentReference(object):
             # Terminate this watch
             doc_watch.unsubscribe()
         """
-        return Watch.for_document(self, callback, DocumentSnapshot,
-                                  DocumentReference)
+        return Watch.for_document(self, callback, DocumentSnapshot, DocumentReference)
 
 
 class DocumentSnapshot(object):
@@ -535,9 +533,7 @@ class DocumentSnapshot(object):
             this document was last updated.
     """
 
-    def __init__(
-            self, reference, data, exists,
-            read_time, create_time, update_time):
+    def __init__(self, reference, data, exists, read_time, create_time, update_time):
         self._reference = reference
         # We want immutable data, so callers can't modify this value
         # out from under us.
@@ -687,7 +683,7 @@ def _get_document_path(client, path):
     Returns:
         str: The fully-qualified document path.
     """
-    parts = (client._database_string, 'documents') + path
+    parts = (client._database_string, "documents") + path
     return _helpers.DOCUMENT_PATH_DELIMITER.join(parts)
 
 
@@ -714,8 +710,10 @@ def _consume_single_get(response_iterator):
     all_responses = list(response_iterator)
     if len(all_responses) != 1:
         raise ValueError(
-            'Unexpected response from `BatchGetDocumentsResponse`',
-            all_responses, 'Expected only one result')
+            "Unexpected response from `BatchGetDocumentsResponse`",
+            all_responses,
+            "Expected only one result",
+        )
 
     return all_responses[0]
 
@@ -741,7 +739,7 @@ def _first_write_result(write_results):
             **never** occur, since the backend should be stable.
     """
     if not write_results:
-        raise ValueError('Expected at least one write result')
+        raise ValueError("Expected at least one write result")
 
     return write_results[0]
 

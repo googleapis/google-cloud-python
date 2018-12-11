@@ -23,7 +23,7 @@ from google.cloud.bigquery_datatransfer_v1.proto import datatransfer_pb2
 
 class TestSystemDataTransferService(object):
     def test_list_data_sources(self):
-        project_id = os.environ['PROJECT_ID']
+        project_id = os.environ["PROJECT_ID"]
 
         client = bigquery_datatransfer_v1.DataTransferServiceClient()
         parent = client.project_path(project_id)

@@ -22,7 +22,7 @@ import setuptools
 
 name = 'google-cloud-dns'
 description = 'Google Cloud DNS API client library'
-version = '0.29.0'
+version = '0.29.1'
 # Should be one of:
 # 'Development Status :: 3 - Alpha'
 # 'Development Status :: 4 - Beta'
@@ -30,7 +30,7 @@ version = '0.29.0'
 release_status = 'Development Status :: 3 - Alpha'
 dependencies = [
     'google-api-core >= 1.0.0, < 2.0.0dev',
-    'google-cloud-core >= 0.28.0, < 0.29dev',
+    'google-cloud-core >= 0.29.0, < 0.30dev',
 ]
 extras = {
 }

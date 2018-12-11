@@ -51,12 +51,11 @@ class Client(BaseClient):
                   change in the future.
     """
 
-    SCOPE = ('https://www.googleapis.com/auth/cloud-platform',)
+    SCOPE = ("https://www.googleapis.com/auth/cloud-platform",)
     """The scopes required for authenticating as a Resouce Manager consumer."""
 
     def __init__(self, credentials=None, _http=None):
-        super(Client, self).__init__(
-            credentials=credentials, _http=_http)
+        super(Client, self).__init__(credentials=credentials, _http=_http)
         self._connection = Connection(self)
 
     def new_project(self, project_id, name=None, labels=None):
@@ -85,8 +84,7 @@ class Client(BaseClient):
                   :class:`~google.cloud.resource_manager.project.Project`
                   **without** any metadata loaded.
         """
-        return Project(project_id=project_id,
-                       client=self, name=name, labels=labels)
+        return Project(project_id=project_id, client=self, name=name, labels=labels)
 
     def fetch_project(self, project_id):
         """Fetch an existing project and it's relevant metadata by ID.
@@ -160,21 +158,22 @@ class Client(BaseClient):
         extra_params = {}
 
         if page_size is not None:
-            extra_params['pageSize'] = page_size
+            extra_params["pageSize"] = page_size
 
         if filter_params is not None:
-            extra_params['filter'] = [
-                '{}:{}'.format(key, value)
+            extra_params["filter"] = [
+                "{}:{}".format(key, value)
                 for key, value in six.iteritems(filter_params)
             ]
 
         return page_iterator.HTTPIterator(
             client=self,
             api_request=self._connection.api_request,
-            path='/projects',
+            path="/projects",
             item_to_value=_item_to_project,
-            items_key='projects',
-            extra_params=extra_params)
+            items_key="projects",
+            extra_params=extra_params,
+        )
 
 
 def _item_to_project(iterator, resource):

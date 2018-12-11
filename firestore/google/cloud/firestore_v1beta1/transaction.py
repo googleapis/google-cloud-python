@@ -27,21 +27,19 @@ from google.cloud.firestore_v1beta1 import types
 
 MAX_ATTEMPTS = 5
 """int: Default number of transaction attempts (with retries)."""
-_CANT_BEGIN = (
-    'The transaction has already begun. Current transaction ID: {!r}.')
-_MISSING_ID_TEMPLATE = (
-    'The transaction has no transaction ID, so it cannot be {}.')
-_CANT_ROLLBACK = _MISSING_ID_TEMPLATE.format('rolled back')
-_CANT_COMMIT = _MISSING_ID_TEMPLATE.format('committed')
-_WRITE_READ_ONLY = 'Cannot perform write operation in read-only transaction.'
+_CANT_BEGIN = "The transaction has already begun. Current transaction ID: {!r}."
+_MISSING_ID_TEMPLATE = "The transaction has no transaction ID, so it cannot be {}."
+_CANT_ROLLBACK = _MISSING_ID_TEMPLATE.format("rolled back")
+_CANT_COMMIT = _MISSING_ID_TEMPLATE.format("committed")
+_WRITE_READ_ONLY = "Cannot perform write operation in read-only transaction."
 _INITIAL_SLEEP = 1.0
 """float: Initial "max" for sleep interval. To be used in :func:`_sleep`."""
 _MAX_SLEEP = 30.0
 """float: Eventual "max" sleep time. To be used in :func:`_sleep`."""
 _MULTIPLIER = 2.0
 """float: Multiplier for exponential backoff. To be used in :func:`_sleep`."""
-_EXCEED_ATTEMPTS_TEMPLATE = 'Failed to commit transaction in {:d} attempts.'
-_CANT_RETRY_READ_ONLY = 'Only read-write transactions can be retried.'
+_EXCEED_ATTEMPTS_TEMPLATE = "Failed to commit transaction in {:d} attempts."
+_CANT_RETRY_READ_ONLY = "Only read-write transactions can be retried."
 
 
 class Transaction(batch.WriteBatch):
@@ -105,12 +103,13 @@ class Transaction(batch.WriteBatch):
 
             return types.TransactionOptions(
                 read_write=types.TransactionOptions.ReadWrite(
-                    retry_transaction=retry_id,
-                ),
+                    retry_transaction=retry_id
+                )
             )
         elif self._read_only:
             return types.TransactionOptions(
-                read_only=types.TransactionOptions.ReadOnly())
+                read_only=types.TransactionOptions.ReadOnly()
+            )
         else:
             return None
 
@@ -150,7 +149,7 @@ class Transaction(batch.WriteBatch):
         transaction_response = self._client._firestore_api.begin_transaction(
             self._client._database_string,
             options_=self._options_protobuf(retry_id),
-            metadata=self._client._rpc_metadata
+            metadata=self._client._rpc_metadata,
         )
         self._id = transaction_response.transaction
 
@@ -174,8 +173,10 @@ class Transaction(batch.WriteBatch):
         try:
             # NOTE: The response is just ``google.protobuf.Empty``.
             self._client._firestore_api.rollback(
-                self._client._database_string, self._id,
-                metadata=self._client._rpc_metadata)
+                self._client._database_string,
+                self._id,
+                metadata=self._client._rpc_metadata,
+            )
         finally:
             self._clean_up()
 
@@ -195,8 +196,7 @@ class Transaction(batch.WriteBatch):
         if not self.in_progress:
             raise ValueError(_CANT_COMMIT)
 
-        commit_response = _commit_with_retry(
-            self._client, self._write_pbs, self._id)
+        commit_response = _commit_with_retry(self._client, self._write_pbs, self._id)
 
         self._clean_up()
         return list(commit_response.write_results)
@@ -372,9 +372,11 @@ def _commit_with_retry(client, write_pbs, transaction_id):
     while True:
         try:
             return client._firestore_api.commit(
-                client._database_string, write_pbs,
+                client._database_string,
+                write_pbs,
                 transaction=transaction_id,
-                metadata=client._rpc_metadata)
+                metadata=client._rpc_metadata,
+            )
         except exceptions.ServiceUnavailable:
             # Retry
             pass

@@ -2,419 +2,690 @@
 # source: google/cloud/monitoring_v3/proto/group_service.proto
 
 import sys
-_b=sys.version_info[0]<3 and (lambda x:x) or (lambda x:x.encode('latin1'))
+
+_b = sys.version_info[0] < 3 and (lambda x: x) or (lambda x: x.encode("latin1"))
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
 from google.protobuf import descriptor_pb2
+
 # @@protoc_insertion_point(imports)
 
 _sym_db = _symbol_database.Default()
 
 
 from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
-from google.api import monitored_resource_pb2 as google_dot_api_dot_monitored__resource__pb2
-from google.cloud.monitoring_v3.proto import common_pb2 as google_dot_cloud_dot_monitoring__v3_dot_proto_dot_common__pb2
-from google.cloud.monitoring_v3.proto import group_pb2 as google_dot_cloud_dot_monitoring__v3_dot_proto_dot_group__pb2
+from google.api import (
+    monitored_resource_pb2 as google_dot_api_dot_monitored__resource__pb2,
+)
+from google.cloud.monitoring_v3.proto import (
+    common_pb2 as google_dot_cloud_dot_monitoring__v3_dot_proto_dot_common__pb2,
+)
+from google.cloud.monitoring_v3.proto import (
+    group_pb2 as google_dot_cloud_dot_monitoring__v3_dot_proto_dot_group__pb2,
+)
 from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 
 
 DESCRIPTOR = _descriptor.FileDescriptor(
-  name='google/cloud/monitoring_v3/proto/group_service.proto',
-  package='google.monitoring.v3',
-  syntax='proto3',
-  serialized_pb=_b('\n4google/cloud/monitoring_v3/proto/group_service.proto\x12\x14google.monitoring.v3\x1a\x1cgoogle/api/annotations.proto\x1a#google/api/monitored_resource.proto\x1a-google/cloud/monitoring_v3/proto/common.proto\x1a,google/cloud/monitoring_v3/proto/group.proto\x1a\x1bgoogle/protobuf/empty.proto\"\xad\x01\n\x11ListGroupsRequest\x12\x0c\n\x04name\x18\x07 \x01(\t\x12\x1b\n\x11\x63hildren_of_group\x18\x02 \x01(\tH\x00\x12\x1c\n\x12\x61ncestors_of_group\x18\x03 \x01(\tH\x00\x12\x1e\n\x14\x64\x65scendants_of_group\x18\x04 \x01(\tH\x00\x12\x11\n\tpage_size\x18\x05 \x01(\x05\x12\x12\n\npage_token\x18\x06 \x01(\tB\x08\n\x06\x66ilter\"Y\n\x12ListGroupsResponse\x12*\n\x05group\x18\x01 \x03(\x0b\x32\x1b.google.monitoring.v3.Group\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\"\x1f\n\x0fGetGroupRequest\x12\x0c\n\x04name\x18\x03 \x01(\t\"e\n\x12\x43reateGroupRequest\x12\x0c\n\x04name\x18\x04 \x01(\t\x12*\n\x05group\x18\x02 \x01(\x0b\x32\x1b.google.monitoring.v3.Group\x12\x15\n\rvalidate_only\x18\x03 \x01(\x08\"W\n\x12UpdateGroupRequest\x12*\n\x05group\x18\x02 \x01(\x0b\x32\x1b.google.monitoring.v3.Group\x12\x15\n\rvalidate_only\x18\x03 \x01(\x08\"\"\n\x12\x44\x65leteGroupRequest\x12\x0c\n\x04name\x18\x03 \x01(\t\"\x94\x01\n\x17ListGroupMembersRequest\x12\x0c\n\x04name\x18\x07 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05\x12\x12\n\npage_token\x18\x04 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x05 \x01(\t\x12\x34\n\x08interval\x18\x06 \x01(\x0b\x32\".google.monitoring.v3.TimeInterval\"w\n\x18ListGroupMembersResponse\x12.\n\x07members\x18\x01 \x03(\x0b\x32\x1d.google.api.MonitoredResource\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\x12\x12\n\ntotal_size\x18\x03 \x01(\x05\x32\xbb\x06\n\x0cGroupService\x12\x85\x01\n\nListGroups\x12\'.google.monitoring.v3.ListGroupsRequest\x1a(.google.monitoring.v3.ListGroupsResponse\"$\x82\xd3\xe4\x93\x02\x1e\x12\x1c/v3/{name=projects/*}/groups\x12v\n\x08GetGroup\x12%.google.monitoring.v3.GetGroupRequest\x1a\x1b.google.monitoring.v3.Group\"&\x82\xd3\xe4\x93\x02 \x12\x1e/v3/{name=projects/*/groups/*}\x12\x81\x01\n\x0b\x43reateGroup\x12(.google.monitoring.v3.CreateGroupRequest\x1a\x1b.google.monitoring.v3.Group\"+\x82\xd3\xe4\x93\x02%\"\x1c/v3/{name=projects/*}/groups:\x05group\x12\x89\x01\n\x0bUpdateGroup\x12(.google.monitoring.v3.UpdateGroupRequest\x1a\x1b.google.monitoring.v3.Group\"3\x82\xd3\xe4\x93\x02-\x1a$/v3/{group.name=projects/*/groups/*}:\x05group\x12w\n\x0b\x44\x65leteGroup\x12(.google.monitoring.v3.DeleteGroupRequest\x1a\x16.google.protobuf.Empty\"&\x82\xd3\xe4\x93\x02 *\x1e/v3/{name=projects/*/groups/*}\x12\xa1\x01\n\x10ListGroupMembers\x12-.google.monitoring.v3.ListGroupMembersRequest\x1a..google.monitoring.v3.ListGroupMembersResponse\".\x82\xd3\xe4\x93\x02(\x12&/v3/{name=projects/*/groups/*}/membersB\xa9\x01\n\x18\x63om.google.monitoring.v3B\x11GroupServiceProtoP\x01Z>google.golang.org/genproto/googleapis/monitoring/v3;monitoring\xaa\x02\x1aGoogle.Cloud.Monitoring.V3\xca\x02\x1aGoogle\\Cloud\\Monitoring\\V3b\x06proto3')
-  ,
-  dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR,google_dot_api_dot_monitored__resource__pb2.DESCRIPTOR,google_dot_cloud_dot_monitoring__v3_dot_proto_dot_common__pb2.DESCRIPTOR,google_dot_cloud_dot_monitoring__v3_dot_proto_dot_group__pb2.DESCRIPTOR,google_dot_protobuf_dot_empty__pb2.DESCRIPTOR,])
-
-
+    name="google/cloud/monitoring_v3/proto/group_service.proto",
+    package="google.monitoring.v3",
+    syntax="proto3",
+    serialized_pb=_b(
+        '\n4google/cloud/monitoring_v3/proto/group_service.proto\x12\x14google.monitoring.v3\x1a\x1cgoogle/api/annotations.proto\x1a#google/api/monitored_resource.proto\x1a-google/cloud/monitoring_v3/proto/common.proto\x1a,google/cloud/monitoring_v3/proto/group.proto\x1a\x1bgoogle/protobuf/empty.proto"\xad\x01\n\x11ListGroupsRequest\x12\x0c\n\x04name\x18\x07 \x01(\t\x12\x1b\n\x11\x63hildren_of_group\x18\x02 \x01(\tH\x00\x12\x1c\n\x12\x61ncestors_of_group\x18\x03 \x01(\tH\x00\x12\x1e\n\x14\x64\x65scendants_of_group\x18\x04 \x01(\tH\x00\x12\x11\n\tpage_size\x18\x05 \x01(\x05\x12\x12\n\npage_token\x18\x06 \x01(\tB\x08\n\x06\x66ilter"Y\n\x12ListGroupsResponse\x12*\n\x05group\x18\x01 \x03(\x0b\x32\x1b.google.monitoring.v3.Group\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"\x1f\n\x0fGetGroupRequest\x12\x0c\n\x04name\x18\x03 \x01(\t"e\n\x12\x43reateGroupRequest\x12\x0c\n\x04name\x18\x04 \x01(\t\x12*\n\x05group\x18\x02 \x01(\x0b\x32\x1b.google.monitoring.v3.Group\x12\x15\n\rvalidate_only\x18\x03 \x01(\x08"W\n\x12UpdateGroupRequest\x12*\n\x05group\x18\x02 \x01(\x0b\x32\x1b.google.monitoring.v3.Group\x12\x15\n\rvalidate_only\x18\x03 \x01(\x08""\n\x12\x44\x65leteGroupRequest\x12\x0c\n\x04name\x18\x03 \x01(\t"\x94\x01\n\x17ListGroupMembersRequest\x12\x0c\n\x04name\x18\x07 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05\x12\x12\n\npage_token\x18\x04 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x05 \x01(\t\x12\x34\n\x08interval\x18\x06 \x01(\x0b\x32".google.monitoring.v3.TimeInterval"w\n\x18ListGroupMembersResponse\x12.\n\x07members\x18\x01 \x03(\x0b\x32\x1d.google.api.MonitoredResource\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\x12\x12\n\ntotal_size\x18\x03 \x01(\x05\x32\xbb\x06\n\x0cGroupService\x12\x85\x01\n\nListGroups\x12\'.google.monitoring.v3.ListGroupsRequest\x1a(.google.monitoring.v3.ListGroupsResponse"$\x82\xd3\xe4\x93\x02\x1e\x12\x1c/v3/{name=projects/*}/groups\x12v\n\x08GetGroup\x12%.google.monitoring.v3.GetGroupRequest\x1a\x1b.google.monitoring.v3.Group"&\x82\xd3\xe4\x93\x02 \x12\x1e/v3/{name=projects/*/groups/*}\x12\x81\x01\n\x0b\x43reateGroup\x12(.google.monitoring.v3.CreateGroupRequest\x1a\x1b.google.monitoring.v3.Group"+\x82\xd3\xe4\x93\x02%"\x1c/v3/{name=projects/*}/groups:\x05group\x12\x89\x01\n\x0bUpdateGroup\x12(.google.monitoring.v3.UpdateGroupRequest\x1a\x1b.google.monitoring.v3.Group"3\x82\xd3\xe4\x93\x02-\x1a$/v3/{group.name=projects/*/groups/*}:\x05group\x12w\n\x0b\x44\x65leteGroup\x12(.google.monitoring.v3.DeleteGroupRequest\x1a\x16.google.protobuf.Empty"&\x82\xd3\xe4\x93\x02 *\x1e/v3/{name=projects/*/groups/*}\x12\xa1\x01\n\x10ListGroupMembers\x12-.google.monitoring.v3.ListGroupMembersRequest\x1a..google.monitoring.v3.ListGroupMembersResponse".\x82\xd3\xe4\x93\x02(\x12&/v3/{name=projects/*/groups/*}/membersB\xa9\x01\n\x18\x63om.google.monitoring.v3B\x11GroupServiceProtoP\x01Z>google.golang.org/genproto/googleapis/monitoring/v3;monitoring\xaa\x02\x1aGoogle.Cloud.Monitoring.V3\xca\x02\x1aGoogle\\Cloud\\Monitoring\\V3b\x06proto3'
+    ),
+    dependencies=[
+        google_dot_api_dot_annotations__pb2.DESCRIPTOR,
+        google_dot_api_dot_monitored__resource__pb2.DESCRIPTOR,
+        google_dot_cloud_dot_monitoring__v3_dot_proto_dot_common__pb2.DESCRIPTOR,
+        google_dot_cloud_dot_monitoring__v3_dot_proto_dot_group__pb2.DESCRIPTOR,
+        google_dot_protobuf_dot_empty__pb2.DESCRIPTOR,
+    ],
+)
 
 
 _LISTGROUPSREQUEST = _descriptor.Descriptor(
-  name='ListGroupsRequest',
-  full_name='google.monitoring.v3.ListGroupsRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='name', full_name='google.monitoring.v3.ListGroupsRequest.name', index=0,
-      number=7, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='children_of_group', full_name='google.monitoring.v3.ListGroupsRequest.children_of_group', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='ancestors_of_group', full_name='google.monitoring.v3.ListGroupsRequest.ancestors_of_group', index=2,
-      number=3, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='descendants_of_group', full_name='google.monitoring.v3.ListGroupsRequest.descendants_of_group', index=3,
-      number=4, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='page_size', full_name='google.monitoring.v3.ListGroupsRequest.page_size', index=4,
-      number=5, type=5, cpp_type=1, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='page_token', full_name='google.monitoring.v3.ListGroupsRequest.page_token', index=5,
-      number=6, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-    _descriptor.OneofDescriptor(
-      name='filter', full_name='google.monitoring.v3.ListGroupsRequest.filter',
-      index=0, containing_type=None, fields=[]),
-  ],
-  serialized_start=268,
-  serialized_end=441,
+    name="ListGroupsRequest",
+    full_name="google.monitoring.v3.ListGroupsRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="name",
+            full_name="google.monitoring.v3.ListGroupsRequest.name",
+            index=0,
+            number=7,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="children_of_group",
+            full_name="google.monitoring.v3.ListGroupsRequest.children_of_group",
+            index=1,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="ancestors_of_group",
+            full_name="google.monitoring.v3.ListGroupsRequest.ancestors_of_group",
+            index=2,
+            number=3,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="descendants_of_group",
+            full_name="google.monitoring.v3.ListGroupsRequest.descendants_of_group",
+            index=3,
+            number=4,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="page_size",
+            full_name="google.monitoring.v3.ListGroupsRequest.page_size",
+            index=4,
+            number=5,
+            type=5,
+            cpp_type=1,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="page_token",
+            full_name="google.monitoring.v3.ListGroupsRequest.page_token",
+            index=5,
+            number=6,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[
+        _descriptor.OneofDescriptor(
+            name="filter",
+            full_name="google.monitoring.v3.ListGroupsRequest.filter",
+            index=0,
+            containing_type=None,
+            fields=[],
+        )
+    ],
+    serialized_start=268,
+    serialized_end=441,
 )
 
 
 _LISTGROUPSRESPONSE = _descriptor.Descriptor(
-  name='ListGroupsResponse',
-  full_name='google.monitoring.v3.ListGroupsResponse',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='group', full_name='google.monitoring.v3.ListGroupsResponse.group', index=0,
-      number=1, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='next_page_token', full_name='google.monitoring.v3.ListGroupsResponse.next_page_token', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=443,
-  serialized_end=532,
+    name="ListGroupsResponse",
+    full_name="google.monitoring.v3.ListGroupsResponse",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="group",
+            full_name="google.monitoring.v3.ListGroupsResponse.group",
+            index=0,
+            number=1,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="next_page_token",
+            full_name="google.monitoring.v3.ListGroupsResponse.next_page_token",
+            index=1,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=443,
+    serialized_end=532,
 )
 
 
 _GETGROUPREQUEST = _descriptor.Descriptor(
-  name='GetGroupRequest',
-  full_name='google.monitoring.v3.GetGroupRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='name', full_name='google.monitoring.v3.GetGroupRequest.name', index=0,
-      number=3, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=534,
-  serialized_end=565,
+    name="GetGroupRequest",
+    full_name="google.monitoring.v3.GetGroupRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="name",
+            full_name="google.monitoring.v3.GetGroupRequest.name",
+            index=0,
+            number=3,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        )
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=534,
+    serialized_end=565,
 )
 
 
 _CREATEGROUPREQUEST = _descriptor.Descriptor(
-  name='CreateGroupRequest',
-  full_name='google.monitoring.v3.CreateGroupRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='name', full_name='google.monitoring.v3.CreateGroupRequest.name', index=0,
-      number=4, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='group', full_name='google.monitoring.v3.CreateGroupRequest.group', index=1,
-      number=2, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='validate_only', full_name='google.monitoring.v3.CreateGroupRequest.validate_only', index=2,
-      number=3, type=8, cpp_type=7, label=1,
-      has_default_value=False, default_value=False,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=567,
-  serialized_end=668,
+    name="CreateGroupRequest",
+    full_name="google.monitoring.v3.CreateGroupRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="name",
+            full_name="google.monitoring.v3.CreateGroupRequest.name",
+            index=0,
+            number=4,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="group",
+            full_name="google.monitoring.v3.CreateGroupRequest.group",
+            index=1,
+            number=2,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="validate_only",
+            full_name="google.monitoring.v3.CreateGroupRequest.validate_only",
+            index=2,
+            number=3,
+            type=8,
+            cpp_type=7,
+            label=1,
+            has_default_value=False,
+            default_value=False,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=567,
+    serialized_end=668,
 )
 
 
 _UPDATEGROUPREQUEST = _descriptor.Descriptor(
-  name='UpdateGroupRequest',
-  full_name='google.monitoring.v3.UpdateGroupRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='group', full_name='google.monitoring.v3.UpdateGroupRequest.group', index=0,
-      number=2, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='validate_only', full_name='google.monitoring.v3.UpdateGroupRequest.validate_only', index=1,
-      number=3, type=8, cpp_type=7, label=1,
-      has_default_value=False, default_value=False,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=670,
-  serialized_end=757,
+    name="UpdateGroupRequest",
+    full_name="google.monitoring.v3.UpdateGroupRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="group",
+            full_name="google.monitoring.v3.UpdateGroupRequest.group",
+            index=0,
+            number=2,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="validate_only",
+            full_name="google.monitoring.v3.UpdateGroupRequest.validate_only",
+            index=1,
+            number=3,
+            type=8,
+            cpp_type=7,
+            label=1,
+            has_default_value=False,
+            default_value=False,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=670,
+    serialized_end=757,
 )
 
 
 _DELETEGROUPREQUEST = _descriptor.Descriptor(
-  name='DeleteGroupRequest',
-  full_name='google.monitoring.v3.DeleteGroupRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='name', full_name='google.monitoring.v3.DeleteGroupRequest.name', index=0,
-      number=3, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=759,
-  serialized_end=793,
+    name="DeleteGroupRequest",
+    full_name="google.monitoring.v3.DeleteGroupRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="name",
+            full_name="google.monitoring.v3.DeleteGroupRequest.name",
+            index=0,
+            number=3,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        )
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=759,
+    serialized_end=793,
 )
 
 
 _LISTGROUPMEMBERSREQUEST = _descriptor.Descriptor(
-  name='ListGroupMembersRequest',
-  full_name='google.monitoring.v3.ListGroupMembersRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='name', full_name='google.monitoring.v3.ListGroupMembersRequest.name', index=0,
-      number=7, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='page_size', full_name='google.monitoring.v3.ListGroupMembersRequest.page_size', index=1,
-      number=3, type=5, cpp_type=1, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='page_token', full_name='google.monitoring.v3.ListGroupMembersRequest.page_token', index=2,
-      number=4, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='filter', full_name='google.monitoring.v3.ListGroupMembersRequest.filter', index=3,
-      number=5, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='interval', full_name='google.monitoring.v3.ListGroupMembersRequest.interval', index=4,
-      number=6, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=796,
-  serialized_end=944,
+    name="ListGroupMembersRequest",
+    full_name="google.monitoring.v3.ListGroupMembersRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="name",
+            full_name="google.monitoring.v3.ListGroupMembersRequest.name",
+            index=0,
+            number=7,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="page_size",
+            full_name="google.monitoring.v3.ListGroupMembersRequest.page_size",
+            index=1,
+            number=3,
+            type=5,
+            cpp_type=1,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="page_token",
+            full_name="google.monitoring.v3.ListGroupMembersRequest.page_token",
+            index=2,
+            number=4,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="filter",
+            full_name="google.monitoring.v3.ListGroupMembersRequest.filter",
+            index=3,
+            number=5,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="interval",
+            full_name="google.monitoring.v3.ListGroupMembersRequest.interval",
+            index=4,
+            number=6,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=796,
+    serialized_end=944,
 )
 
 
 _LISTGROUPMEMBERSRESPONSE = _descriptor.Descriptor(
-  name='ListGroupMembersResponse',
-  full_name='google.monitoring.v3.ListGroupMembersResponse',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='members', full_name='google.monitoring.v3.ListGroupMembersResponse.members', index=0,
-      number=1, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='next_page_token', full_name='google.monitoring.v3.ListGroupMembersResponse.next_page_token', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='total_size', full_name='google.monitoring.v3.ListGroupMembersResponse.total_size', index=2,
-      number=3, type=5, cpp_type=1, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=946,
-  serialized_end=1065,
+    name="ListGroupMembersResponse",
+    full_name="google.monitoring.v3.ListGroupMembersResponse",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="members",
+            full_name="google.monitoring.v3.ListGroupMembersResponse.members",
+            index=0,
+            number=1,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="next_page_token",
+            full_name="google.monitoring.v3.ListGroupMembersResponse.next_page_token",
+            index=1,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="total_size",
+            full_name="google.monitoring.v3.ListGroupMembersResponse.total_size",
+            index=2,
+            number=3,
+            type=5,
+            cpp_type=1,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=946,
+    serialized_end=1065,
 )
 
-_LISTGROUPSREQUEST.oneofs_by_name['filter'].fields.append(
-  _LISTGROUPSREQUEST.fields_by_name['children_of_group'])
-_LISTGROUPSREQUEST.fields_by_name['children_of_group'].containing_oneof = _LISTGROUPSREQUEST.oneofs_by_name['filter']
-_LISTGROUPSREQUEST.oneofs_by_name['filter'].fields.append(
-  _LISTGROUPSREQUEST.fields_by_name['ancestors_of_group'])
-_LISTGROUPSREQUEST.fields_by_name['ancestors_of_group'].containing_oneof = _LISTGROUPSREQUEST.oneofs_by_name['filter']
-_LISTGROUPSREQUEST.oneofs_by_name['filter'].fields.append(
-  _LISTGROUPSREQUEST.fields_by_name['descendants_of_group'])
-_LISTGROUPSREQUEST.fields_by_name['descendants_of_group'].containing_oneof = _LISTGROUPSREQUEST.oneofs_by_name['filter']
-_LISTGROUPSRESPONSE.fields_by_name['group'].message_type = google_dot_cloud_dot_monitoring__v3_dot_proto_dot_group__pb2._GROUP
-_CREATEGROUPREQUEST.fields_by_name['group'].message_type = google_dot_cloud_dot_monitoring__v3_dot_proto_dot_group__pb2._GROUP
-_UPDATEGROUPREQUEST.fields_by_name['group'].message_type = google_dot_cloud_dot_monitoring__v3_dot_proto_dot_group__pb2._GROUP
-_LISTGROUPMEMBERSREQUEST.fields_by_name['interval'].message_type = google_dot_cloud_dot_monitoring__v3_dot_proto_dot_common__pb2._TIMEINTERVAL
-_LISTGROUPMEMBERSRESPONSE.fields_by_name['members'].message_type = google_dot_api_dot_monitored__resource__pb2._MONITOREDRESOURCE
-DESCRIPTOR.message_types_by_name['ListGroupsRequest'] = _LISTGROUPSREQUEST
-DESCRIPTOR.message_types_by_name['ListGroupsResponse'] = _LISTGROUPSRESPONSE
-DESCRIPTOR.message_types_by_name['GetGroupRequest'] = _GETGROUPREQUEST
-DESCRIPTOR.message_types_by_name['CreateGroupRequest'] = _CREATEGROUPREQUEST
-DESCRIPTOR.message_types_by_name['UpdateGroupRequest'] = _UPDATEGROUPREQUEST
-DESCRIPTOR.message_types_by_name['DeleteGroupRequest'] = _DELETEGROUPREQUEST
-DESCRIPTOR.message_types_by_name['ListGroupMembersRequest'] = _LISTGROUPMEMBERSREQUEST
-DESCRIPTOR.message_types_by_name['ListGroupMembersResponse'] = _LISTGROUPMEMBERSRESPONSE
+_LISTGROUPSREQUEST.oneofs_by_name["filter"].fields.append(
+    _LISTGROUPSREQUEST.fields_by_name["children_of_group"]
+)
+_LISTGROUPSREQUEST.fields_by_name[
+    "children_of_group"
+].containing_oneof = _LISTGROUPSREQUEST.oneofs_by_name["filter"]
+_LISTGROUPSREQUEST.oneofs_by_name["filter"].fields.append(
+    _LISTGROUPSREQUEST.fields_by_name["ancestors_of_group"]
+)
+_LISTGROUPSREQUEST.fields_by_name[
+    "ancestors_of_group"
+].containing_oneof = _LISTGROUPSREQUEST.oneofs_by_name["filter"]
+_LISTGROUPSREQUEST.oneofs_by_name["filter"].fields.append(
+    _LISTGROUPSREQUEST.fields_by_name["descendants_of_group"]
+)
+_LISTGROUPSREQUEST.fields_by_name[
+    "descendants_of_group"
+].containing_oneof = _LISTGROUPSREQUEST.oneofs_by_name["filter"]
+_LISTGROUPSRESPONSE.fields_by_name[
+    "group"
+].message_type = google_dot_cloud_dot_monitoring__v3_dot_proto_dot_group__pb2._GROUP
+_CREATEGROUPREQUEST.fields_by_name[
+    "group"
+].message_type = google_dot_cloud_dot_monitoring__v3_dot_proto_dot_group__pb2._GROUP
+_UPDATEGROUPREQUEST.fields_by_name[
+    "group"
+].message_type = google_dot_cloud_dot_monitoring__v3_dot_proto_dot_group__pb2._GROUP
+_LISTGROUPMEMBERSREQUEST.fields_by_name[
+    "interval"
+].message_type = (
+    google_dot_cloud_dot_monitoring__v3_dot_proto_dot_common__pb2._TIMEINTERVAL
+)
+_LISTGROUPMEMBERSRESPONSE.fields_by_name[
+    "members"
+].message_type = google_dot_api_dot_monitored__resource__pb2._MONITOREDRESOURCE
+DESCRIPTOR.message_types_by_name["ListGroupsRequest"] = _LISTGROUPSREQUEST
+DESCRIPTOR.message_types_by_name["ListGroupsResponse"] = _LISTGROUPSRESPONSE
+DESCRIPTOR.message_types_by_name["GetGroupRequest"] = _GETGROUPREQUEST
+DESCRIPTOR.message_types_by_name["CreateGroupRequest"] = _CREATEGROUPREQUEST
+DESCRIPTOR.message_types_by_name["UpdateGroupRequest"] = _UPDATEGROUPREQUEST
+DESCRIPTOR.message_types_by_name["DeleteGroupRequest"] = _DELETEGROUPREQUEST
+DESCRIPTOR.message_types_by_name["ListGroupMembersRequest"] = _LISTGROUPMEMBERSREQUEST
+DESCRIPTOR.message_types_by_name["ListGroupMembersResponse"] = _LISTGROUPMEMBERSRESPONSE
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
-ListGroupsRequest = _reflection.GeneratedProtocolMessageType('ListGroupsRequest', (_message.Message,), dict(
-  DESCRIPTOR = _LISTGROUPSREQUEST,
-  __module__ = 'google.cloud.monitoring_v3.proto.group_service_pb2'
-  ,
-  __doc__ = """The ``ListGroup`` request.
+ListGroupsRequest = _reflection.GeneratedProtocolMessageType(
+    "ListGroupsRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_LISTGROUPSREQUEST,
+        __module__="google.cloud.monitoring_v3.proto.group_service_pb2",
+        __doc__="""The ``ListGroup`` request.
   
   
   Attributes:
@@ -454,15 +725,18 @@ ListGroupsRequest = _reflection.GeneratedProtocolMessageType('ListGroupsRequest'
           method. Using this field causes the method to return
           additional results from the previous method call.
   """,
-  # @@protoc_insertion_point(class_scope:google.monitoring.v3.ListGroupsRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:google.monitoring.v3.ListGroupsRequest)
+    ),
+)
 _sym_db.RegisterMessage(ListGroupsRequest)
 
-ListGroupsResponse = _reflection.GeneratedProtocolMessageType('ListGroupsResponse', (_message.Message,), dict(
-  DESCRIPTOR = _LISTGROUPSRESPONSE,
-  __module__ = 'google.cloud.monitoring_v3.proto.group_service_pb2'
-  ,
-  __doc__ = """The ``ListGroups`` response.
+ListGroupsResponse = _reflection.GeneratedProtocolMessageType(
+    "ListGroupsResponse",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_LISTGROUPSRESPONSE,
+        __module__="google.cloud.monitoring_v3.proto.group_service_pb2",
+        __doc__="""The ``ListGroups`` response.
   
   
   Attributes:
@@ -474,15 +748,18 @@ ListGroupsResponse = _reflection.GeneratedProtocolMessageType('ListGroupsRespons
           results, use that value as ``pageToken`` in the next call to
           this method.
   """,
-  # @@protoc_insertion_point(class_scope:google.monitoring.v3.ListGroupsResponse)
-  ))
+        # @@protoc_insertion_point(class_scope:google.monitoring.v3.ListGroupsResponse)
+    ),
+)
 _sym_db.RegisterMessage(ListGroupsResponse)
 
-GetGroupRequest = _reflection.GeneratedProtocolMessageType('GetGroupRequest', (_message.Message,), dict(
-  DESCRIPTOR = _GETGROUPREQUEST,
-  __module__ = 'google.cloud.monitoring_v3.proto.group_service_pb2'
-  ,
-  __doc__ = """The ``GetGroup`` request.
+GetGroupRequest = _reflection.GeneratedProtocolMessageType(
+    "GetGroupRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_GETGROUPREQUEST,
+        __module__="google.cloud.monitoring_v3.proto.group_service_pb2",
+        __doc__="""The ``GetGroup`` request.
   
   
   Attributes:
@@ -490,15 +767,18 @@ GetGroupRequest = _reflection.GeneratedProtocolMessageType('GetGroupRequest', (_
           The group to retrieve. The format is
           ``"projects/{project_id_or_number}/groups/{group_id}"``.
   """,
-  # @@protoc_insertion_point(class_scope:google.monitoring.v3.GetGroupRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:google.monitoring.v3.GetGroupRequest)
+    ),
+)
 _sym_db.RegisterMessage(GetGroupRequest)
 
-CreateGroupRequest = _reflection.GeneratedProtocolMessageType('CreateGroupRequest', (_message.Message,), dict(
-  DESCRIPTOR = _CREATEGROUPREQUEST,
-  __module__ = 'google.cloud.monitoring_v3.proto.group_service_pb2'
-  ,
-  __doc__ = """The ``CreateGroup`` request.
+CreateGroupRequest = _reflection.GeneratedProtocolMessageType(
+    "CreateGroupRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_CREATEGROUPREQUEST,
+        __module__="google.cloud.monitoring_v3.proto.group_service_pb2",
+        __doc__="""The ``CreateGroup`` request.
   
   
   Attributes:
@@ -511,15 +791,18 @@ CreateGroupRequest = _reflection.GeneratedProtocolMessageType('CreateGroupReques
       validate_only:
           If true, validate this request but do not create the group.
   """,
-  # @@protoc_insertion_point(class_scope:google.monitoring.v3.CreateGroupRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:google.monitoring.v3.CreateGroupRequest)
+    ),
+)
 _sym_db.RegisterMessage(CreateGroupRequest)
 
-UpdateGroupRequest = _reflection.GeneratedProtocolMessageType('UpdateGroupRequest', (_message.Message,), dict(
-  DESCRIPTOR = _UPDATEGROUPREQUEST,
-  __module__ = 'google.cloud.monitoring_v3.proto.group_service_pb2'
-  ,
-  __doc__ = """The ``UpdateGroup`` request.
+UpdateGroupRequest = _reflection.GeneratedProtocolMessageType(
+    "UpdateGroupRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_UPDATEGROUPREQUEST,
+        __module__="google.cloud.monitoring_v3.proto.group_service_pb2",
+        __doc__="""The ``UpdateGroup`` request.
   
   
   Attributes:
@@ -531,15 +814,18 @@ UpdateGroupRequest = _reflection.GeneratedProtocolMessageType('UpdateGroupReques
           If true, validate this request but do not update the existing
           group.
   """,
-  # @@protoc_insertion_point(class_scope:google.monitoring.v3.UpdateGroupRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:google.monitoring.v3.UpdateGroupRequest)
+    ),
+)
 _sym_db.RegisterMessage(UpdateGroupRequest)
 
-DeleteGroupRequest = _reflection.GeneratedProtocolMessageType('DeleteGroupRequest', (_message.Message,), dict(
-  DESCRIPTOR = _DELETEGROUPREQUEST,
-  __module__ = 'google.cloud.monitoring_v3.proto.group_service_pb2'
-  ,
-  __doc__ = """The ``DeleteGroup`` request. You can only delete a group if it has no
+DeleteGroupRequest = _reflection.GeneratedProtocolMessageType(
+    "DeleteGroupRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_DELETEGROUPREQUEST,
+        __module__="google.cloud.monitoring_v3.proto.group_service_pb2",
+        __doc__="""The ``DeleteGroup`` request. You can only delete a group if it has no
   children.
   
   
@@ -548,15 +834,18 @@ DeleteGroupRequest = _reflection.GeneratedProtocolMessageType('DeleteGroupReques
           The group to delete. The format is
           ``"projects/{project_id_or_number}/groups/{group_id}"``.
   """,
-  # @@protoc_insertion_point(class_scope:google.monitoring.v3.DeleteGroupRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:google.monitoring.v3.DeleteGroupRequest)
+    ),
+)
 _sym_db.RegisterMessage(DeleteGroupRequest)
 
-ListGroupMembersRequest = _reflection.GeneratedProtocolMessageType('ListGroupMembersRequest', (_message.Message,), dict(
-  DESCRIPTOR = _LISTGROUPMEMBERSREQUEST,
-  __module__ = 'google.cloud.monitoring_v3.proto.group_service_pb2'
-  ,
-  __doc__ = """The ``ListGroupMembers`` request.
+ListGroupMembersRequest = _reflection.GeneratedProtocolMessageType(
+    "ListGroupMembersRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_LISTGROUPMEMBERSREQUEST,
+        __module__="google.cloud.monitoring_v3.proto.group_service_pb2",
+        __doc__="""The ``ListGroupMembers`` request.
   
   
   Attributes:
@@ -586,15 +875,18 @@ ListGroupMembersRequest = _reflection.GeneratedProtocolMessageType('ListGroupMem
           interval is provided then the group membership over the last
           minute is returned.
   """,
-  # @@protoc_insertion_point(class_scope:google.monitoring.v3.ListGroupMembersRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:google.monitoring.v3.ListGroupMembersRequest)
+    ),
+)
 _sym_db.RegisterMessage(ListGroupMembersRequest)
 
-ListGroupMembersResponse = _reflection.GeneratedProtocolMessageType('ListGroupMembersResponse', (_message.Message,), dict(
-  DESCRIPTOR = _LISTGROUPMEMBERSRESPONSE,
-  __module__ = 'google.cloud.monitoring_v3.proto.group_service_pb2'
-  ,
-  __doc__ = """The ``ListGroupMembers`` response.
+ListGroupMembersResponse = _reflection.GeneratedProtocolMessageType(
+    "ListGroupMembersResponse",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_LISTGROUPMEMBERSRESPONSE,
+        __module__="google.cloud.monitoring_v3.proto.group_service_pb2",
+        __doc__="""The ``ListGroupMembers`` response.
   
   
   Attributes:
@@ -608,80 +900,107 @@ ListGroupMembersResponse = _reflection.GeneratedProtocolMessageType('ListGroupMe
       total_size:
           The total number of elements matching this request.
   """,
-  # @@protoc_insertion_point(class_scope:google.monitoring.v3.ListGroupMembersResponse)
-  ))
+        # @@protoc_insertion_point(class_scope:google.monitoring.v3.ListGroupMembersResponse)
+    ),
+)
 _sym_db.RegisterMessage(ListGroupMembersResponse)
 
 
 DESCRIPTOR.has_options = True
-DESCRIPTOR._options = _descriptor._ParseOptions(descriptor_pb2.FileOptions(), _b('\n\030com.google.monitoring.v3B\021GroupServiceProtoP\001Z>google.golang.org/genproto/googleapis/monitoring/v3;monitoring\252\002\032Google.Cloud.Monitoring.V3\312\002\032Google\\Cloud\\Monitoring\\V3'))
+DESCRIPTOR._options = _descriptor._ParseOptions(
+    descriptor_pb2.FileOptions(),
+    _b(
+        "\n\030com.google.monitoring.v3B\021GroupServiceProtoP\001Z>google.golang.org/genproto/googleapis/monitoring/v3;monitoring\252\002\032Google.Cloud.Monitoring.V3\312\002\032Google\\Cloud\\Monitoring\\V3"
+    ),
+)
 
 _GROUPSERVICE = _descriptor.ServiceDescriptor(
-  name='GroupService',
-  full_name='google.monitoring.v3.GroupService',
-  file=DESCRIPTOR,
-  index=0,
-  options=None,
-  serialized_start=1068,
-  serialized_end=1895,
-  methods=[
-  _descriptor.MethodDescriptor(
-    name='ListGroups',
-    full_name='google.monitoring.v3.GroupService.ListGroups',
+    name="GroupService",
+    full_name="google.monitoring.v3.GroupService",
+    file=DESCRIPTOR,
     index=0,
-    containing_service=None,
-    input_type=_LISTGROUPSREQUEST,
-    output_type=_LISTGROUPSRESPONSE,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002\036\022\034/v3/{name=projects/*}/groups')),
-  ),
-  _descriptor.MethodDescriptor(
-    name='GetGroup',
-    full_name='google.monitoring.v3.GroupService.GetGroup',
-    index=1,
-    containing_service=None,
-    input_type=_GETGROUPREQUEST,
-    output_type=google_dot_cloud_dot_monitoring__v3_dot_proto_dot_group__pb2._GROUP,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002 \022\036/v3/{name=projects/*/groups/*}')),
-  ),
-  _descriptor.MethodDescriptor(
-    name='CreateGroup',
-    full_name='google.monitoring.v3.GroupService.CreateGroup',
-    index=2,
-    containing_service=None,
-    input_type=_CREATEGROUPREQUEST,
-    output_type=google_dot_cloud_dot_monitoring__v3_dot_proto_dot_group__pb2._GROUP,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002%\"\034/v3/{name=projects/*}/groups:\005group')),
-  ),
-  _descriptor.MethodDescriptor(
-    name='UpdateGroup',
-    full_name='google.monitoring.v3.GroupService.UpdateGroup',
-    index=3,
-    containing_service=None,
-    input_type=_UPDATEGROUPREQUEST,
-    output_type=google_dot_cloud_dot_monitoring__v3_dot_proto_dot_group__pb2._GROUP,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002-\032$/v3/{group.name=projects/*/groups/*}:\005group')),
-  ),
-  _descriptor.MethodDescriptor(
-    name='DeleteGroup',
-    full_name='google.monitoring.v3.GroupService.DeleteGroup',
-    index=4,
-    containing_service=None,
-    input_type=_DELETEGROUPREQUEST,
-    output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002 *\036/v3/{name=projects/*/groups/*}')),
-  ),
-  _descriptor.MethodDescriptor(
-    name='ListGroupMembers',
-    full_name='google.monitoring.v3.GroupService.ListGroupMembers',
-    index=5,
-    containing_service=None,
-    input_type=_LISTGROUPMEMBERSREQUEST,
-    output_type=_LISTGROUPMEMBERSRESPONSE,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002(\022&/v3/{name=projects/*/groups/*}/members')),
-  ),
-])
+    options=None,
+    serialized_start=1068,
+    serialized_end=1895,
+    methods=[
+        _descriptor.MethodDescriptor(
+            name="ListGroups",
+            full_name="google.monitoring.v3.GroupService.ListGroups",
+            index=0,
+            containing_service=None,
+            input_type=_LISTGROUPSREQUEST,
+            output_type=_LISTGROUPSRESPONSE,
+            options=_descriptor._ParseOptions(
+                descriptor_pb2.MethodOptions(),
+                _b("\202\323\344\223\002\036\022\034/v3/{name=projects/*}/groups"),
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="GetGroup",
+            full_name="google.monitoring.v3.GroupService.GetGroup",
+            index=1,
+            containing_service=None,
+            input_type=_GETGROUPREQUEST,
+            output_type=google_dot_cloud_dot_monitoring__v3_dot_proto_dot_group__pb2._GROUP,
+            options=_descriptor._ParseOptions(
+                descriptor_pb2.MethodOptions(),
+                _b("\202\323\344\223\002 \022\036/v3/{name=projects/*/groups/*}"),
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="CreateGroup",
+            full_name="google.monitoring.v3.GroupService.CreateGroup",
+            index=2,
+            containing_service=None,
+            input_type=_CREATEGROUPREQUEST,
+            output_type=google_dot_cloud_dot_monitoring__v3_dot_proto_dot_group__pb2._GROUP,
+            options=_descriptor._ParseOptions(
+                descriptor_pb2.MethodOptions(),
+                _b('\202\323\344\223\002%"\034/v3/{name=projects/*}/groups:\005group'),
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="UpdateGroup",
+            full_name="google.monitoring.v3.GroupService.UpdateGroup",
+            index=3,
+            containing_service=None,
+            input_type=_UPDATEGROUPREQUEST,
+            output_type=google_dot_cloud_dot_monitoring__v3_dot_proto_dot_group__pb2._GROUP,
+            options=_descriptor._ParseOptions(
+                descriptor_pb2.MethodOptions(),
+                _b(
+                    "\202\323\344\223\002-\032$/v3/{group.name=projects/*/groups/*}:\005group"
+                ),
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="DeleteGroup",
+            full_name="google.monitoring.v3.GroupService.DeleteGroup",
+            index=4,
+            containing_service=None,
+            input_type=_DELETEGROUPREQUEST,
+            output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
+            options=_descriptor._ParseOptions(
+                descriptor_pb2.MethodOptions(),
+                _b("\202\323\344\223\002 *\036/v3/{name=projects/*/groups/*}"),
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="ListGroupMembers",
+            full_name="google.monitoring.v3.GroupService.ListGroupMembers",
+            index=5,
+            containing_service=None,
+            input_type=_LISTGROUPMEMBERSREQUEST,
+            output_type=_LISTGROUPMEMBERSRESPONSE,
+            options=_descriptor._ParseOptions(
+                descriptor_pb2.MethodOptions(),
+                _b("\202\323\344\223\002(\022&/v3/{name=projects/*/groups/*}/members"),
+            ),
+        ),
+    ],
+)
 _sym_db.RegisterServiceDescriptor(_GROUPSERVICE)
 
-DESCRIPTOR.services_by_name['GroupService'] = _GROUPSERVICE
+DESCRIPTOR.services_by_name["GroupService"] = _GROUPSERVICE
 
 # @@protoc_insertion_point(module_scope)

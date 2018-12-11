@@ -21,20 +21,22 @@ from google.cloud.bigquery.dbapi import types
 
 class TestTypes(unittest.TestCase):
     def test_binary_type(self):
-        self.assertEqual('BYTES', types.BINARY)
-        self.assertEqual('RECORD', types.BINARY)
-        self.assertEqual('STRUCT', types.BINARY)
-        self.assertNotEqual('STRING', types.BINARY)
+        self.assertEqual("BYTES", types.BINARY)
+        self.assertEqual("RECORD", types.BINARY)
+        self.assertEqual("STRUCT", types.BINARY)
+        self.assertNotEqual("STRING", types.BINARY)
 
     def test_binary_constructor(self):
-        self.assertEqual(types.Binary(u'hello'), b'hello')
-        self.assertEqual(types.Binary(u'\u1f60'), u'\u1f60'.encode('utf-8'))
+        self.assertEqual(types.Binary(u"hello"), b"hello")
+        self.assertEqual(types.Binary(u"\u1f60"), u"\u1f60".encode("utf-8"))
 
     def test_timefromticks(self):
         somedatetime = datetime.datetime(
-            2017, 2, 18, 12, 47, 26, tzinfo=google.cloud._helpers.UTC)
+            2017, 2, 18, 12, 47, 26, tzinfo=google.cloud._helpers.UTC
+        )
         epoch = datetime.datetime(1970, 1, 1, tzinfo=google.cloud._helpers.UTC)
         ticks = (somedatetime - epoch).total_seconds()
         self.assertEqual(
             types.TimeFromTicks(ticks, google.cloud._helpers.UTC),
-            datetime.time(12, 47, 26, tzinfo=google.cloud._helpers.UTC))
+            datetime.time(12, 47, 26, tzinfo=google.cloud._helpers.UTC),
+        )

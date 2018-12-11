@@ -4,6 +4,24 @@
 
 [1]: https://pypi.org/project/google-api-core/#history
 
+## 1.6.0
+
+11-30-2018 12:45 PST
+
+
+### Implementation Changes
+- Import stdlib ABCs from 'collections.abc' rather than 'collections'. ([#6451](https://github.com/googleapis/google-cloud-python/pull/6451))
+
+### New Features
+- Move google.cloud.iam (core) to google.api_core.iam ([#6740](https://github.com/googleapis/google-cloud-python/pull/6740))
+- Add bidi support to api_core. ([#6191](https://github.com/googleapis/google-cloud-python/pull/6191))
+
+### Documentation
+- Fix typo ([#6532](https://github.com/googleapis/google-cloud-python/pull/6532))
+
+### Internal / Testing Changes
+- blacken api_core and core ([#6668](https://github.com/googleapis/google-cloud-python/pull/6668))
+
 ## 1.5.2
 
 11-09-2018 14:22 PST

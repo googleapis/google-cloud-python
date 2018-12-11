@@ -53,7 +53,8 @@ class Client(ClientWithProject):
         https://cloud.google.com/trace/docs/reference/v1/rpc/google.devtools.
         cloudtrace.v1
         """
-        self._trace_api = make_trace_api(self)
+        if self._trace_api is None:
+            self._trace_api = make_trace_api(self)
         return self._trace_api
 
     def patch_traces(self, traces, project_id=None):

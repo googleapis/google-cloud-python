@@ -39,7 +39,7 @@ def Binary(string):
     :rtype: bytes
     :returns: The UTF-8 encoded bytes representing the string.
     """
-    return string.encode('utf-8')
+    return string.encode("utf-8")
 
 
 def TimeFromTicks(ticks, tz=None):
@@ -76,9 +76,10 @@ class _DBAPITypeObject(object):
         return other in self.values
 
 
-STRING = 'STRING'
-BINARY = _DBAPITypeObject('BYTES', 'RECORD', 'STRUCT')
+STRING = "STRING"
+BINARY = _DBAPITypeObject("BYTES", "RECORD", "STRUCT")
 NUMBER = _DBAPITypeObject(
-    'INTEGER', 'INT64', 'FLOAT', 'FLOAT64', 'NUMERIC', 'BOOLEAN', 'BOOL')
-DATETIME = _DBAPITypeObject('TIMESTAMP', 'DATE', 'TIME', 'DATETIME')
-ROWID = 'ROWID'
+    "INTEGER", "INT64", "FLOAT", "FLOAT64", "NUMERIC", "BOOLEAN", "BOOL"
+)
+DATETIME = _DBAPITypeObject("TIMESTAMP", "DATE", "TIME", "DATETIME")
+ROWID = "ROWID"

@@ -51,7 +51,8 @@ class Client(ClientWithProject):
         https://cloud.google.com/trace/docs/reference/v2/rpc/google.devtools.
         cloudtrace.v2
         """
-        self._trace_api = make_trace_api(self)
+        if self._trace_api is None:
+            self._trace_api = make_trace_api(self)
         return self._trace_api
 
     def batch_write_spans(self, name, spans, retry=None, timeout=None):

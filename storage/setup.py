@@ -22,15 +22,15 @@ import setuptools
 
 name = 'google-cloud-storage'
 description = 'Google Cloud Storage API client library'
-version = '1.13.0'
+version = '1.13.1'
 # Should be one of:
 # 'Development Status :: 3 - Alpha'
 # 'Development Status :: 4 - Beta'
 # 'Development Status :: 5 - Production/Stable'
 release_status = 'Development Status :: 5 - Production/Stable'
 dependencies = [
-    'google-api-core >= 1.0.0, < 2.0.0dev',
-    'google-cloud-core >= 0.28.0, < 0.29dev',
+    'google-api-core >= 1.6.0, < 2.0.0dev',
+    'google-cloud-core >= 0.29.0, < 0.30dev',
     'google-resumable-media >= 0.3.1',
 ]
 extras = {

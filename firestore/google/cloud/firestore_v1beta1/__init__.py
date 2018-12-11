@@ -15,7 +15,8 @@
 """Python idiomatic client for Google Cloud Firestore."""
 
 from pkg_resources import get_distribution
-__version__ = get_distribution('google-cloud-firestore').version
+
+__version__ = get_distribution("google-cloud-firestore").version
 
 from google.cloud.firestore_v1beta1 import types
 from google.cloud.firestore_v1beta1._helpers import GeoPoint
@@ -40,25 +41,25 @@ from google.cloud.firestore_v1beta1.watch import Watch
 
 
 __all__ = [
-    '__version__',
-    'ArrayRemove',
-    'ArrayUnion',
-    'Client',
-    'CollectionReference',
-    'DELETE_FIELD',
-    'DocumentReference',
-    'DocumentSnapshot',
-    'enums',
-    'ExistsOption',
-    'GeoPoint',
-    'LastUpdateOption',
-    'Query',
-    'ReadAfterWriteError',
-    'SERVER_TIMESTAMP',
-    'Transaction',
-    'transactional',
-    'types',
-    'Watch',
-    'WriteBatch',
-    'WriteOption',
+    "__version__",
+    "ArrayRemove",
+    "ArrayUnion",
+    "Client",
+    "CollectionReference",
+    "DELETE_FIELD",
+    "DocumentReference",
+    "DocumentSnapshot",
+    "enums",
+    "ExistsOption",
+    "GeoPoint",
+    "LastUpdateOption",
+    "Query",
+    "ReadAfterWriteError",
+    "SERVER_TIMESTAMP",
+    "Transaction",
+    "transactional",
+    "types",
+    "Watch",
+    "WriteBatch",
+    "WriteOption",
 ]

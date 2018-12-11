@@ -28,8 +28,8 @@ from google.cloud.bigquery_storage_v1beta1.gapic import big_query_storage_client
 
 
 _SCOPES = (
-    'https://www.googleapis.com/auth/bigquery',
-    'https://www.googleapis.com/auth/cloud-platform',
+    "https://www.googleapis.com/auth/bigquery",
+    "https://www.googleapis.com/auth/cloud-platform",
 )
 
 
@@ -39,11 +39,13 @@ class BigQueryStorageClient(big_query_storage_client.BigQueryStorageClient):
     The BigQuery storage API can be used to read data stored in BigQuery.
     """
 
-    def read_rows(self,
-                  read_position,
-                  retry=google.api_core.gapic_v1.method.DEFAULT,
-                  timeout=google.api_core.gapic_v1.method.DEFAULT,
-                  metadata=None):
+    def read_rows(
+        self,
+        read_position,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Reads rows from the table in the format prescribed by the read
         session. Each response contains one or more table rows, up to a
@@ -114,18 +116,11 @@ class BigQueryStorageClient(big_query_storage_client.BigQueryStorageClient):
         """
         gapic_client = super(BigQueryStorageClient, self)
         stream = gapic_client.read_rows(
-            read_position,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
+            read_position, retry=retry, timeout=timeout, metadata=metadata
         )
         return reader.ReadRowsStream(
             stream,
             gapic_client,
             read_position,
-            {
-                'retry': retry,
-                'timeout': timeout,
-                'metadata': metadata,
-            },
+            {"retry": retry, "timeout": timeout, "metadata": metadata},
         )

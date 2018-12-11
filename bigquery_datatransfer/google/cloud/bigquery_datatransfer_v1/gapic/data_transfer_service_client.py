@@ -30,9 +30,13 @@ import google.api_core.page_iterator
 import google.api_core.path_template
 import grpc
 
-from google.cloud.bigquery_datatransfer_v1.gapic import data_transfer_service_client_config
+from google.cloud.bigquery_datatransfer_v1.gapic import (
+    data_transfer_service_client_config,
+)
 from google.cloud.bigquery_datatransfer_v1.gapic import enums
-from google.cloud.bigquery_datatransfer_v1.gapic.transports import data_transfer_service_grpc_transport
+from google.cloud.bigquery_datatransfer_v1.gapic.transports import (
+    data_transfer_service_grpc_transport,
+)
 from google.cloud.bigquery_datatransfer_v1.proto import datatransfer_pb2
 from google.cloud.bigquery_datatransfer_v1.proto import datatransfer_pb2_grpc
 from google.cloud.bigquery_datatransfer_v1.proto import transfer_pb2
@@ -41,7 +45,8 @@ from google.protobuf import field_mask_pb2
 from google.protobuf import timestamp_pb2
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
-    'google-cloud-bigquery-datatransfer', ).version
+    "google-cloud-bigquery-datatransfer"
+).version
 
 
 class DataTransferServiceClient(object):
@@ -52,12 +57,12 @@ class DataTransferServiceClient(object):
     frontend.
     """
 
-    SERVICE_ADDRESS = 'bigquerydatatransfer.googleapis.com:443'
+    SERVICE_ADDRESS = "bigquerydatatransfer.googleapis.com:443"
     """The default address of the service."""
 
     # The name of the interface for this client. This is the key used to
     # find the method configuration in the client_config dictionary.
-    _INTERFACE_NAME = 'google.cloud.bigquery.datatransfer.v1.DataTransferService'
+    _INTERFACE_NAME = "google.cloud.bigquery.datatransfer.v1.DataTransferService"
 
     @classmethod
     def from_service_account_file(cls, filename, *args, **kwargs):
@@ -73,9 +78,8 @@ class DataTransferServiceClient(object):
         Returns:
             DataTransferServiceClient: The constructed client.
         """
-        credentials = service_account.Credentials.from_service_account_file(
-            filename)
-        kwargs['credentials'] = credentials
+        credentials = service_account.Credentials.from_service_account_file(filename)
+        kwargs["credentials"] = credentials
         return cls(*args, **kwargs)
 
     from_service_account_json = from_service_account_file
@@ -84,7 +88,7 @@ class DataTransferServiceClient(object):
     def project_data_source_path(cls, project, data_source):
         """Return a fully-qualified project_data_source string."""
         return google.api_core.path_template.expand(
-            'projects/{project}/dataSources/{data_source}',
+            "projects/{project}/dataSources/{data_source}",
             project=project,
             data_source=data_source,
         )
@@ -93,15 +97,14 @@ class DataTransferServiceClient(object):
     def project_path(cls, project):
         """Return a fully-qualified project string."""
         return google.api_core.path_template.expand(
-            'projects/{project}',
-            project=project,
+            "projects/{project}", project=project
         )
 
     @classmethod
     def project_transfer_config_path(cls, project, transfer_config):
         """Return a fully-qualified project_transfer_config string."""
         return google.api_core.path_template.expand(
-            'projects/{project}/transferConfigs/{transfer_config}',
+            "projects/{project}/transferConfigs/{transfer_config}",
             project=project,
             transfer_config=transfer_config,
         )
@@ -110,18 +113,20 @@ class DataTransferServiceClient(object):
     def project_run_path(cls, project, transfer_config, run):
         """Return a fully-qualified project_run string."""
         return google.api_core.path_template.expand(
-            'projects/{project}/transferConfigs/{transfer_config}/runs/{run}',
+            "projects/{project}/transferConfigs/{transfer_config}/runs/{run}",
             project=project,
             transfer_config=transfer_config,
             run=run,
         )
 
-    def __init__(self,
-                 transport=None,
-                 channel=None,
-                 credentials=None,
-                 client_config=None,
-                 client_info=None):
+    def __init__(
+        self,
+        transport=None,
+        channel=None,
+        credentials=None,
+        client_config=None,
+        client_info=None,
+    ):
         """Constructor.
 
         Args:
@@ -155,18 +160,19 @@ class DataTransferServiceClient(object):
         # Raise deprecation warnings for things we want to go away.
         if client_config is not None:
             warnings.warn(
-                'The `client_config` argument is deprecated.',
+                "The `client_config` argument is deprecated.",
                 PendingDeprecationWarning,
-                stacklevel=2)
+                stacklevel=2,
+            )
         else:
             client_config = data_transfer_service_client_config.config
 
         if channel:
             warnings.warn(
-                'The `channel` argument is deprecated; use '
-                '`transport` instead.',
+                "The `channel` argument is deprecated; use " "`transport` instead.",
                 PendingDeprecationWarning,
-                stacklevel=2)
+                stacklevel=2,
+            )
 
         # Instantiate the transport.
         # The transport is responsible for handling serialization and
@@ -175,25 +181,24 @@ class DataTransferServiceClient(object):
             if callable(transport):
                 self.transport = transport(
                     credentials=credentials,
-                    default_class=data_transfer_service_grpc_transport.
-                    DataTransferServiceGrpcTransport,
+                    default_class=data_transfer_service_grpc_transport.DataTransferServiceGrpcTransport,
                 )
             else:
                 if credentials:
                     raise ValueError(
-                        'Received both a transport instance and '
-                        'credentials; these are mutually exclusive.')
+                        "Received both a transport instance and "
+                        "credentials; these are mutually exclusive."
+                    )
                 self.transport = transport
         else:
             self.transport = data_transfer_service_grpc_transport.DataTransferServiceGrpcTransport(
-                address=self.SERVICE_ADDRESS,
-                channel=channel,
-                credentials=credentials,
+                address=self.SERVICE_ADDRESS, channel=channel, credentials=credentials
             )
 
         if client_info is None:
             client_info = google.api_core.gapic_v1.client_info.ClientInfo(
-                gapic_version=_GAPIC_LIBRARY_VERSION, )
+                gapic_version=_GAPIC_LIBRARY_VERSION
+            )
         else:
             client_info.gapic_version = _GAPIC_LIBRARY_VERSION
         self._client_info = client_info
@@ -203,7 +208,8 @@ class DataTransferServiceClient(object):
         # (Ordinarily, these are the defaults specified in the `*_config.py`
         # file next to this one.)
         self._method_configs = google.api_core.gapic_v1.config.parse_method_configs(
-            client_config['interfaces'][self._INTERFACE_NAME], )
+            client_config["interfaces"][self._INTERFACE_NAME]
+        )
 
         # Save a dictionary of cached API call functions.
         # These are the actual callables which invoke the proper
@@ -212,11 +218,13 @@ class DataTransferServiceClient(object):
         self._inner_api_calls = {}
 
     # Service calls
-    def get_data_source(self,
-                        name,
-                        retry=google.api_core.gapic_v1.method.DEFAULT,
-                        timeout=google.api_core.gapic_v1.method.DEFAULT,
-                        metadata=None):
+    def get_data_source(
+        self,
+        name,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Retrieves a supported data source and returns its settings,
         which can be used for UI rendering.
@@ -253,38 +261,42 @@ class DataTransferServiceClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'get_data_source' not in self._inner_api_calls:
+        if "get_data_source" not in self._inner_api_calls:
             self._inner_api_calls[
-                'get_data_source'] = google.api_core.gapic_v1.method.wrap_method(
-                    self.transport.get_data_source,
-                    default_retry=self._method_configs['GetDataSource'].retry,
-                    default_timeout=self._method_configs['GetDataSource'].
-                    timeout,
-                    client_info=self._client_info,
-                )
+                "get_data_source"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.get_data_source,
+                default_retry=self._method_configs["GetDataSource"].retry,
+                default_timeout=self._method_configs["GetDataSource"].timeout,
+                client_info=self._client_info,
+            )
 
-        request = datatransfer_pb2.GetDataSourceRequest(name=name, )
+        request = datatransfer_pb2.GetDataSourceRequest(name=name)
         if metadata is None:
             metadata = []
         metadata = list(metadata)
         try:
-            routing_header = [('name', name)]
+            routing_header = [("name", name)]
         except AttributeError:
             pass
         else:
             routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                routing_header)
+                routing_header
+            )
             metadata.append(routing_metadata)
 
-        return self._inner_api_calls['get_data_source'](
-            request, retry=retry, timeout=timeout, metadata=metadata)
+        return self._inner_api_calls["get_data_source"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
 
-    def list_data_sources(self,
-                          parent,
-                          page_size=None,
-                          retry=google.api_core.gapic_v1.method.DEFAULT,
-                          timeout=google.api_core.gapic_v1.method.DEFAULT,
-                          metadata=None):
+    def list_data_sources(
+        self,
+        parent,
+        page_size=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Lists supported data sources and returns their settings,
         which can be used for UI rendering.
@@ -341,54 +353,56 @@ class DataTransferServiceClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'list_data_sources' not in self._inner_api_calls:
+        if "list_data_sources" not in self._inner_api_calls:
             self._inner_api_calls[
-                'list_data_sources'] = google.api_core.gapic_v1.method.wrap_method(
-                    self.transport.list_data_sources,
-                    default_retry=self._method_configs['ListDataSources'].
-                    retry,
-                    default_timeout=self._method_configs['ListDataSources'].
-                    timeout,
-                    client_info=self._client_info,
-                )
+                "list_data_sources"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.list_data_sources,
+                default_retry=self._method_configs["ListDataSources"].retry,
+                default_timeout=self._method_configs["ListDataSources"].timeout,
+                client_info=self._client_info,
+            )
 
         request = datatransfer_pb2.ListDataSourcesRequest(
-            parent=parent,
-            page_size=page_size,
+            parent=parent, page_size=page_size
         )
         if metadata is None:
             metadata = []
         metadata = list(metadata)
         try:
-            routing_header = [('parent', parent)]
+            routing_header = [("parent", parent)]
         except AttributeError:
             pass
         else:
             routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                routing_header)
+                routing_header
+            )
             metadata.append(routing_metadata)
 
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(
-                self._inner_api_calls['list_data_sources'],
+                self._inner_api_calls["list_data_sources"],
                 retry=retry,
                 timeout=timeout,
-                metadata=metadata),
+                metadata=metadata,
+            ),
             request=request,
-            items_field='data_sources',
-            request_token_field='page_token',
-            response_token_field='next_page_token',
+            items_field="data_sources",
+            request_token_field="page_token",
+            response_token_field="next_page_token",
         )
         return iterator
 
-    def create_transfer_config(self,
-                               parent,
-                               transfer_config,
-                               authorization_code=None,
-                               retry=google.api_core.gapic_v1.method.DEFAULT,
-                               timeout=google.api_core.gapic_v1.method.DEFAULT,
-                               metadata=None):
+    def create_transfer_config(
+        self,
+        parent,
+        transfer_config,
+        authorization_code=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Creates a new data transfer configuration.
 
@@ -451,16 +465,15 @@ class DataTransferServiceClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'create_transfer_config' not in self._inner_api_calls:
+        if "create_transfer_config" not in self._inner_api_calls:
             self._inner_api_calls[
-                'create_transfer_config'] = google.api_core.gapic_v1.method.wrap_method(
-                    self.transport.create_transfer_config,
-                    default_retry=self._method_configs['CreateTransferConfig'].
-                    retry,
-                    default_timeout=self.
-                    _method_configs['CreateTransferConfig'].timeout,
-                    client_info=self._client_info,
-                )
+                "create_transfer_config"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.create_transfer_config,
+                default_retry=self._method_configs["CreateTransferConfig"].retry,
+                default_timeout=self._method_configs["CreateTransferConfig"].timeout,
+                client_info=self._client_info,
+            )
 
         request = datatransfer_pb2.CreateTransferConfigRequest(
             parent=parent,
@@ -471,24 +484,28 @@ class DataTransferServiceClient(object):
             metadata = []
         metadata = list(metadata)
         try:
-            routing_header = [('parent', parent)]
+            routing_header = [("parent", parent)]
         except AttributeError:
             pass
         else:
             routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                routing_header)
+                routing_header
+            )
             metadata.append(routing_metadata)
 
-        return self._inner_api_calls['create_transfer_config'](
-            request, retry=retry, timeout=timeout, metadata=metadata)
+        return self._inner_api_calls["create_transfer_config"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
 
-    def update_transfer_config(self,
-                               transfer_config,
-                               update_mask,
-                               authorization_code=None,
-                               retry=google.api_core.gapic_v1.method.DEFAULT,
-                               timeout=google.api_core.gapic_v1.method.DEFAULT,
-                               metadata=None):
+    def update_transfer_config(
+        self,
+        transfer_config,
+        update_mask,
+        authorization_code=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Updates a data transfer configuration.
         All fields must be set, even if they are not updated.
@@ -552,16 +569,15 @@ class DataTransferServiceClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'update_transfer_config' not in self._inner_api_calls:
+        if "update_transfer_config" not in self._inner_api_calls:
             self._inner_api_calls[
-                'update_transfer_config'] = google.api_core.gapic_v1.method.wrap_method(
-                    self.transport.update_transfer_config,
-                    default_retry=self._method_configs['UpdateTransferConfig'].
-                    retry,
-                    default_timeout=self.
-                    _method_configs['UpdateTransferConfig'].timeout,
-                    client_info=self._client_info,
-                )
+                "update_transfer_config"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.update_transfer_config,
+                default_retry=self._method_configs["UpdateTransferConfig"].retry,
+                default_timeout=self._method_configs["UpdateTransferConfig"].timeout,
+                client_info=self._client_info,
+            )
 
         request = datatransfer_pb2.UpdateTransferConfigRequest(
             transfer_config=transfer_config,
@@ -572,22 +588,26 @@ class DataTransferServiceClient(object):
             metadata = []
         metadata = list(metadata)
         try:
-            routing_header = [('transfer_config.name', transfer_config.name)]
+            routing_header = [("transfer_config.name", transfer_config.name)]
         except AttributeError:
             pass
         else:
             routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                routing_header)
+                routing_header
+            )
             metadata.append(routing_metadata)
 
-        return self._inner_api_calls['update_transfer_config'](
-            request, retry=retry, timeout=timeout, metadata=metadata)
+        return self._inner_api_calls["update_transfer_config"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
 
-    def delete_transfer_config(self,
-                               name,
-                               retry=google.api_core.gapic_v1.method.DEFAULT,
-                               timeout=google.api_core.gapic_v1.method.DEFAULT,
-                               metadata=None):
+    def delete_transfer_config(
+        self,
+        name,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Deletes a data transfer configuration,
         including any associated transfer runs and logs.
@@ -621,38 +641,41 @@ class DataTransferServiceClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'delete_transfer_config' not in self._inner_api_calls:
+        if "delete_transfer_config" not in self._inner_api_calls:
             self._inner_api_calls[
-                'delete_transfer_config'] = google.api_core.gapic_v1.method.wrap_method(
-                    self.transport.delete_transfer_config,
-                    default_retry=self._method_configs['DeleteTransferConfig'].
-                    retry,
-                    default_timeout=self.
-                    _method_configs['DeleteTransferConfig'].timeout,
-                    client_info=self._client_info,
-                )
+                "delete_transfer_config"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.delete_transfer_config,
+                default_retry=self._method_configs["DeleteTransferConfig"].retry,
+                default_timeout=self._method_configs["DeleteTransferConfig"].timeout,
+                client_info=self._client_info,
+            )
 
-        request = datatransfer_pb2.DeleteTransferConfigRequest(name=name, )
+        request = datatransfer_pb2.DeleteTransferConfigRequest(name=name)
         if metadata is None:
             metadata = []
         metadata = list(metadata)
         try:
-            routing_header = [('name', name)]
+            routing_header = [("name", name)]
         except AttributeError:
             pass
         else:
             routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                routing_header)
+                routing_header
+            )
             metadata.append(routing_metadata)
 
-        self._inner_api_calls['delete_transfer_config'](
-            request, retry=retry, timeout=timeout, metadata=metadata)
+        self._inner_api_calls["delete_transfer_config"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
 
-    def get_transfer_config(self,
-                            name,
-                            retry=google.api_core.gapic_v1.method.DEFAULT,
-                            timeout=google.api_core.gapic_v1.method.DEFAULT,
-                            metadata=None):
+    def get_transfer_config(
+        self,
+        name,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Returns information about a data transfer config.
 
@@ -688,40 +711,43 @@ class DataTransferServiceClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'get_transfer_config' not in self._inner_api_calls:
+        if "get_transfer_config" not in self._inner_api_calls:
             self._inner_api_calls[
-                'get_transfer_config'] = google.api_core.gapic_v1.method.wrap_method(
-                    self.transport.get_transfer_config,
-                    default_retry=self._method_configs['GetTransferConfig'].
-                    retry,
-                    default_timeout=self._method_configs['GetTransferConfig'].
-                    timeout,
-                    client_info=self._client_info,
-                )
+                "get_transfer_config"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.get_transfer_config,
+                default_retry=self._method_configs["GetTransferConfig"].retry,
+                default_timeout=self._method_configs["GetTransferConfig"].timeout,
+                client_info=self._client_info,
+            )
 
-        request = datatransfer_pb2.GetTransferConfigRequest(name=name, )
+        request = datatransfer_pb2.GetTransferConfigRequest(name=name)
         if metadata is None:
             metadata = []
         metadata = list(metadata)
         try:
-            routing_header = [('name', name)]
+            routing_header = [("name", name)]
         except AttributeError:
             pass
         else:
             routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                routing_header)
+                routing_header
+            )
             metadata.append(routing_metadata)
 
-        return self._inner_api_calls['get_transfer_config'](
-            request, retry=retry, timeout=timeout, metadata=metadata)
+        return self._inner_api_calls["get_transfer_config"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
 
-    def list_transfer_configs(self,
-                              parent,
-                              data_source_ids=None,
-                              page_size=None,
-                              retry=google.api_core.gapic_v1.method.DEFAULT,
-                              timeout=google.api_core.gapic_v1.method.DEFAULT,
-                              metadata=None):
+    def list_transfer_configs(
+        self,
+        parent,
+        data_source_ids=None,
+        page_size=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Returns information about all data transfers in the project.
 
@@ -778,55 +804,56 @@ class DataTransferServiceClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'list_transfer_configs' not in self._inner_api_calls:
+        if "list_transfer_configs" not in self._inner_api_calls:
             self._inner_api_calls[
-                'list_transfer_configs'] = google.api_core.gapic_v1.method.wrap_method(
-                    self.transport.list_transfer_configs,
-                    default_retry=self._method_configs['ListTransferConfigs'].
-                    retry,
-                    default_timeout=self.
-                    _method_configs['ListTransferConfigs'].timeout,
-                    client_info=self._client_info,
-                )
+                "list_transfer_configs"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.list_transfer_configs,
+                default_retry=self._method_configs["ListTransferConfigs"].retry,
+                default_timeout=self._method_configs["ListTransferConfigs"].timeout,
+                client_info=self._client_info,
+            )
 
         request = datatransfer_pb2.ListTransferConfigsRequest(
-            parent=parent,
-            data_source_ids=data_source_ids,
-            page_size=page_size,
+            parent=parent, data_source_ids=data_source_ids, page_size=page_size
         )
         if metadata is None:
             metadata = []
         metadata = list(metadata)
         try:
-            routing_header = [('parent', parent)]
+            routing_header = [("parent", parent)]
         except AttributeError:
             pass
         else:
             routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                routing_header)
+                routing_header
+            )
             metadata.append(routing_metadata)
 
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(
-                self._inner_api_calls['list_transfer_configs'],
+                self._inner_api_calls["list_transfer_configs"],
                 retry=retry,
                 timeout=timeout,
-                metadata=metadata),
+                metadata=metadata,
+            ),
             request=request,
-            items_field='transfer_configs',
-            request_token_field='page_token',
-            response_token_field='next_page_token',
+            items_field="transfer_configs",
+            request_token_field="page_token",
+            response_token_field="next_page_token",
         )
         return iterator
 
-    def schedule_transfer_runs(self,
-                               parent,
-                               start_time,
-                               end_time,
-                               retry=google.api_core.gapic_v1.method.DEFAULT,
-                               timeout=google.api_core.gapic_v1.method.DEFAULT,
-                               metadata=None):
+    def schedule_transfer_runs(
+        self,
+        parent,
+        start_time,
+        end_time,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Creates transfer runs for a time range [start\_time, end\_time]. For
         each date - or whatever granularity the data source supports - in the
@@ -881,42 +908,43 @@ class DataTransferServiceClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'schedule_transfer_runs' not in self._inner_api_calls:
+        if "schedule_transfer_runs" not in self._inner_api_calls:
             self._inner_api_calls[
-                'schedule_transfer_runs'] = google.api_core.gapic_v1.method.wrap_method(
-                    self.transport.schedule_transfer_runs,
-                    default_retry=self._method_configs['ScheduleTransferRuns'].
-                    retry,
-                    default_timeout=self.
-                    _method_configs['ScheduleTransferRuns'].timeout,
-                    client_info=self._client_info,
-                )
+                "schedule_transfer_runs"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.schedule_transfer_runs,
+                default_retry=self._method_configs["ScheduleTransferRuns"].retry,
+                default_timeout=self._method_configs["ScheduleTransferRuns"].timeout,
+                client_info=self._client_info,
+            )
 
         request = datatransfer_pb2.ScheduleTransferRunsRequest(
-            parent=parent,
-            start_time=start_time,
-            end_time=end_time,
+            parent=parent, start_time=start_time, end_time=end_time
         )
         if metadata is None:
             metadata = []
         metadata = list(metadata)
         try:
-            routing_header = [('parent', parent)]
+            routing_header = [("parent", parent)]
         except AttributeError:
             pass
         else:
             routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                routing_header)
+                routing_header
+            )
             metadata.append(routing_metadata)
 
-        return self._inner_api_calls['schedule_transfer_runs'](
-            request, retry=retry, timeout=timeout, metadata=metadata)
+        return self._inner_api_calls["schedule_transfer_runs"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
 
-    def get_transfer_run(self,
-                         name,
-                         retry=google.api_core.gapic_v1.method.DEFAULT,
-                         timeout=google.api_core.gapic_v1.method.DEFAULT,
-                         metadata=None):
+    def get_transfer_run(
+        self,
+        name,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Returns information about the particular transfer run.
 
@@ -952,37 +980,41 @@ class DataTransferServiceClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'get_transfer_run' not in self._inner_api_calls:
+        if "get_transfer_run" not in self._inner_api_calls:
             self._inner_api_calls[
-                'get_transfer_run'] = google.api_core.gapic_v1.method.wrap_method(
-                    self.transport.get_transfer_run,
-                    default_retry=self._method_configs['GetTransferRun'].retry,
-                    default_timeout=self._method_configs['GetTransferRun'].
-                    timeout,
-                    client_info=self._client_info,
-                )
+                "get_transfer_run"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.get_transfer_run,
+                default_retry=self._method_configs["GetTransferRun"].retry,
+                default_timeout=self._method_configs["GetTransferRun"].timeout,
+                client_info=self._client_info,
+            )
 
-        request = datatransfer_pb2.GetTransferRunRequest(name=name, )
+        request = datatransfer_pb2.GetTransferRunRequest(name=name)
         if metadata is None:
             metadata = []
         metadata = list(metadata)
         try:
-            routing_header = [('name', name)]
+            routing_header = [("name", name)]
         except AttributeError:
             pass
         else:
             routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                routing_header)
+                routing_header
+            )
             metadata.append(routing_metadata)
 
-        return self._inner_api_calls['get_transfer_run'](
-            request, retry=retry, timeout=timeout, metadata=metadata)
+        return self._inner_api_calls["get_transfer_run"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
 
-    def delete_transfer_run(self,
-                            name,
-                            retry=google.api_core.gapic_v1.method.DEFAULT,
-                            timeout=google.api_core.gapic_v1.method.DEFAULT,
-                            metadata=None):
+    def delete_transfer_run(
+        self,
+        name,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Deletes the specified transfer run.
 
@@ -1015,41 +1047,44 @@ class DataTransferServiceClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'delete_transfer_run' not in self._inner_api_calls:
+        if "delete_transfer_run" not in self._inner_api_calls:
             self._inner_api_calls[
-                'delete_transfer_run'] = google.api_core.gapic_v1.method.wrap_method(
-                    self.transport.delete_transfer_run,
-                    default_retry=self._method_configs['DeleteTransferRun'].
-                    retry,
-                    default_timeout=self._method_configs['DeleteTransferRun'].
-                    timeout,
-                    client_info=self._client_info,
-                )
+                "delete_transfer_run"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.delete_transfer_run,
+                default_retry=self._method_configs["DeleteTransferRun"].retry,
+                default_timeout=self._method_configs["DeleteTransferRun"].timeout,
+                client_info=self._client_info,
+            )
 
-        request = datatransfer_pb2.DeleteTransferRunRequest(name=name, )
+        request = datatransfer_pb2.DeleteTransferRunRequest(name=name)
         if metadata is None:
             metadata = []
         metadata = list(metadata)
         try:
-            routing_header = [('name', name)]
+            routing_header = [("name", name)]
         except AttributeError:
             pass
         else:
             routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                routing_header)
+                routing_header
+            )
             metadata.append(routing_metadata)
 
-        self._inner_api_calls['delete_transfer_run'](
-            request, retry=retry, timeout=timeout, metadata=metadata)
+        self._inner_api_calls["delete_transfer_run"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
 
-    def list_transfer_runs(self,
-                           parent,
-                           states=None,
-                           page_size=None,
-                           run_attempt=None,
-                           retry=google.api_core.gapic_v1.method.DEFAULT,
-                           timeout=google.api_core.gapic_v1.method.DEFAULT,
-                           metadata=None):
+    def list_transfer_runs(
+        self,
+        parent,
+        states=None,
+        page_size=None,
+        run_attempt=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Returns information about running and completed jobs.
 
@@ -1108,56 +1143,56 @@ class DataTransferServiceClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'list_transfer_runs' not in self._inner_api_calls:
+        if "list_transfer_runs" not in self._inner_api_calls:
             self._inner_api_calls[
-                'list_transfer_runs'] = google.api_core.gapic_v1.method.wrap_method(
-                    self.transport.list_transfer_runs,
-                    default_retry=self._method_configs['ListTransferRuns'].
-                    retry,
-                    default_timeout=self._method_configs['ListTransferRuns'].
-                    timeout,
-                    client_info=self._client_info,
-                )
+                "list_transfer_runs"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.list_transfer_runs,
+                default_retry=self._method_configs["ListTransferRuns"].retry,
+                default_timeout=self._method_configs["ListTransferRuns"].timeout,
+                client_info=self._client_info,
+            )
 
         request = datatransfer_pb2.ListTransferRunsRequest(
-            parent=parent,
-            states=states,
-            page_size=page_size,
-            run_attempt=run_attempt,
+            parent=parent, states=states, page_size=page_size, run_attempt=run_attempt
         )
         if metadata is None:
             metadata = []
         metadata = list(metadata)
         try:
-            routing_header = [('parent', parent)]
+            routing_header = [("parent", parent)]
         except AttributeError:
             pass
         else:
             routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                routing_header)
+                routing_header
+            )
             metadata.append(routing_metadata)
 
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(
-                self._inner_api_calls['list_transfer_runs'],
+                self._inner_api_calls["list_transfer_runs"],
                 retry=retry,
                 timeout=timeout,
-                metadata=metadata),
+                metadata=metadata,
+            ),
             request=request,
-            items_field='transfer_runs',
-            request_token_field='page_token',
-            response_token_field='next_page_token',
+            items_field="transfer_runs",
+            request_token_field="page_token",
+            response_token_field="next_page_token",
         )
         return iterator
 
-    def list_transfer_logs(self,
-                           parent,
-                           page_size=None,
-                           message_types=None,
-                           retry=google.api_core.gapic_v1.method.DEFAULT,
-                           timeout=google.api_core.gapic_v1.method.DEFAULT,
-                           metadata=None):
+    def list_transfer_logs(
+        self,
+        parent,
+        page_size=None,
+        message_types=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Returns user facing log messages for the data transfer run.
 
@@ -1215,53 +1250,54 @@ class DataTransferServiceClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'list_transfer_logs' not in self._inner_api_calls:
+        if "list_transfer_logs" not in self._inner_api_calls:
             self._inner_api_calls[
-                'list_transfer_logs'] = google.api_core.gapic_v1.method.wrap_method(
-                    self.transport.list_transfer_logs,
-                    default_retry=self._method_configs['ListTransferLogs'].
-                    retry,
-                    default_timeout=self._method_configs['ListTransferLogs'].
-                    timeout,
-                    client_info=self._client_info,
-                )
+                "list_transfer_logs"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.list_transfer_logs,
+                default_retry=self._method_configs["ListTransferLogs"].retry,
+                default_timeout=self._method_configs["ListTransferLogs"].timeout,
+                client_info=self._client_info,
+            )
 
         request = datatransfer_pb2.ListTransferLogsRequest(
-            parent=parent,
-            page_size=page_size,
-            message_types=message_types,
+            parent=parent, page_size=page_size, message_types=message_types
         )
         if metadata is None:
             metadata = []
         metadata = list(metadata)
         try:
-            routing_header = [('parent', parent)]
+            routing_header = [("parent", parent)]
         except AttributeError:
             pass
         else:
             routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                routing_header)
+                routing_header
+            )
             metadata.append(routing_metadata)
 
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(
-                self._inner_api_calls['list_transfer_logs'],
+                self._inner_api_calls["list_transfer_logs"],
                 retry=retry,
                 timeout=timeout,
-                metadata=metadata),
+                metadata=metadata,
+            ),
             request=request,
-            items_field='transfer_messages',
-            request_token_field='page_token',
-            response_token_field='next_page_token',
+            items_field="transfer_messages",
+            request_token_field="page_token",
+            response_token_field="next_page_token",
         )
         return iterator
 
-    def check_valid_creds(self,
-                          name,
-                          retry=google.api_core.gapic_v1.method.DEFAULT,
-                          timeout=google.api_core.gapic_v1.method.DEFAULT,
-                          metadata=None):
+    def check_valid_creds(
+        self,
+        name,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Returns true if valid credentials exist for the given data source and
         requesting user.
@@ -1302,29 +1338,30 @@ class DataTransferServiceClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'check_valid_creds' not in self._inner_api_calls:
+        if "check_valid_creds" not in self._inner_api_calls:
             self._inner_api_calls[
-                'check_valid_creds'] = google.api_core.gapic_v1.method.wrap_method(
-                    self.transport.check_valid_creds,
-                    default_retry=self._method_configs['CheckValidCreds'].
-                    retry,
-                    default_timeout=self._method_configs['CheckValidCreds'].
-                    timeout,
-                    client_info=self._client_info,
-                )
+                "check_valid_creds"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.check_valid_creds,
+                default_retry=self._method_configs["CheckValidCreds"].retry,
+                default_timeout=self._method_configs["CheckValidCreds"].timeout,
+                client_info=self._client_info,
+            )
 
-        request = datatransfer_pb2.CheckValidCredsRequest(name=name, )
+        request = datatransfer_pb2.CheckValidCredsRequest(name=name)
         if metadata is None:
             metadata = []
         metadata = list(metadata)
         try:
-            routing_header = [('name', name)]
+            routing_header = [("name", name)]
         except AttributeError:
             pass
         else:
             routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                routing_header)
+                routing_header
+            )
             metadata.append(routing_metadata)
 
-        return self._inner_api_calls['check_valid_creds'](
-            request, retry=retry, timeout=timeout, metadata=metadata)
+        return self._inner_api_calls["check_valid_creds"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )

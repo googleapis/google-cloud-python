@@ -138,7 +138,7 @@ try:
     from IPython import display
     from IPython.core import magic_arguments
 except ImportError:  # pragma: NO COVER
-    raise ImportError('This module can only be loaded in IPython.')
+    raise ImportError("This module can only be loaded in IPython.")
 
 import google.auth
 from google.cloud import bigquery
@@ -151,6 +151,7 @@ class Context(object):
     A Context object is initialized when the ``magics`` module is imported,
     and can be found at ``google.cloud.bigquery.magics.context``.
     """
+
     def __init__(self):
         self._credentials = None
         self._project = None
@@ -244,52 +245,68 @@ def _run_query(client, query, job_config=None):
     """
     start_time = time.time()
     query_job = client.query(query, job_config=job_config)
-    print('Executing query with job ID: {}'.format(query_job.job_id))
+    print("Executing query with job ID: {}".format(query_job.job_id))
 
     while True:
-        print('\rQuery executing: {:0.2f}s'.format(
-            time.time() - start_time), end='')
+        print("\rQuery executing: {:0.2f}s".format(time.time() - start_time), end="")
         try:
             query_job.result(timeout=0.5)
             break
         except futures.TimeoutError:
             continue
-    print('\nQuery complete after {:0.2f}s'.format(time.time() - start_time))
+    print("\nQuery complete after {:0.2f}s".format(time.time() - start_time))
     return query_job
 
 
 @magic_arguments.magic_arguments()
 @magic_arguments.argument(
-    'destination_var',
-    nargs='?',
-    help=('If provided, save the output to this variable in addition '
-          'to displaying it.'))
+    "destination_var",
+    nargs="?",
+    help=(
+        "If provided, save the output to this variable in addition " "to displaying it."
+    ),
+)
 @magic_arguments.argument(
-    '--project',
+    "--project",
     type=str,
     default=None,
-    help=('Project to use for executing this query. Defaults to the context '
-          'project.'))
+    help=(
+        "Project to use for executing this query. Defaults to the context " "project."
+    ),
+)
 @magic_arguments.argument(
-    '--use_legacy_sql', action='store_true', default=False,
-    help=('Sets query to use Legacy SQL instead of Standard SQL. Defaults to '
-          'Standard SQL if this argument is not used.'))
+    "--use_legacy_sql",
+    action="store_true",
+    default=False,
+    help=(
+        "Sets query to use Legacy SQL instead of Standard SQL. Defaults to "
+        "Standard SQL if this argument is not used."
+    ),
+)
 @magic_arguments.argument(
-    '--verbose', action='store_true', default=False,
-    help=('If set, print verbose output, including the query job ID and the '
-          'amount of time for the query to finish. By default, this '
-          'information will be displayed as the query runs, but will be '
-          'cleared after the query is finished.'))
+    "--verbose",
+    action="store_true",
+    default=False,
+    help=(
+        "If set, print verbose output, including the query job ID and the "
+        "amount of time for the query to finish. By default, this "
+        "information will be displayed as the query runs, but will be "
+        "cleared after the query is finished."
+    ),
+)
 @magic_arguments.argument(
-    '--params',
-    nargs='+',
+    "--params",
+    nargs="+",
     default=None,
-    help=('Parameters to format the query string. If present, the --params '
-          'flag should be followed by a string representation of a dictionary '
-          'in the format {\'param_name\': \'param_value\'} (ex. {"num": 17}), '
-          'or a reference to a dictionary in the same format. The dictionary '
-          'reference can be made by including a \'$\' before the variable '
-          'name (ex. $my_dict_var).'))
+    help=(
+        "Parameters to format the query string. If present, the --params "
+        "flag should be followed by a string representation of a dictionary "
+        "in the format {'param_name': 'param_value'} (ex. {\"num\": 17}), "
+        "or a reference to a dictionary in the same format. The dictionary "
+        "reference can be made by including a '$' before the variable "
+        "name (ex. $my_dict_var)."
+    ),
+)
 def _cell_magic(line, query):
     """Underlying function for bigquery cell magic
 
@@ -310,11 +327,13 @@ def _cell_magic(line, query):
     if args.params is not None:
         try:
             params = _helpers.to_query_parameters(
-                ast.literal_eval(''.join(args.params)))
+                ast.literal_eval("".join(args.params))
+            )
         except Exception:
             raise SyntaxError(
-                '--params is not a correctly formatted JSON string or a JSON '
-                'serializable dictionary')
+                "--params is not a correctly formatted JSON string or a JSON "
+                "serializable dictionary"
+            )
 
     project = args.project or context.project
     client = bigquery.Client(project=project, credentials=context.credentials)

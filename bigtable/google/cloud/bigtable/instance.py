@@ -473,7 +473,7 @@ class Instance(object):
     def _to_dict_from_policy_pb(self, policy):
         """Returns a dictionary representation of resource returned from
         the getIamPolicy API to use as parameter for
-        :meth: google.cloud.iam.Policy.from_api_repr
+        :meth: google.api_core.iam.Policy.from_api_repr
         """
         pb_dict = {}
         bindings = [

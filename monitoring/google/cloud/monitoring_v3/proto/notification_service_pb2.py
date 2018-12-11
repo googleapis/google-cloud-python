@@ -2,19 +2,23 @@
 # source: google/cloud/monitoring_v3/proto/notification_service.proto
 
 import sys
-_b=sys.version_info[0]<3 and (lambda x:x) or (lambda x:x.encode('latin1'))
+
+_b = sys.version_info[0] < 3 and (lambda x: x) or (lambda x: x.encode("latin1"))
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
 from google.protobuf import descriptor_pb2
+
 # @@protoc_insertion_point(imports)
 
 _sym_db = _symbol_database.Default()
 
 
 from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
-from google.cloud.monitoring_v3.proto import notification_pb2 as google_dot_cloud_dot_monitoring__v3_dot_proto_dot_notification__pb2
+from google.cloud.monitoring_v3.proto import (
+    notification_pb2 as google_dot_cloud_dot_monitoring__v3_dot_proto_dot_notification__pb2,
+)
 from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 from google.protobuf import field_mask_pb2 as google_dot_protobuf_dot_field__mask__pb2
 from google.protobuf import struct_pb2 as google_dot_protobuf_dot_struct__pb2
@@ -22,543 +26,858 @@ from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__
 
 
 DESCRIPTOR = _descriptor.FileDescriptor(
-  name='google/cloud/monitoring_v3/proto/notification_service.proto',
-  package='google.monitoring.v3',
-  syntax='proto3',
-  serialized_pb=_b('\n;google/cloud/monitoring_v3/proto/notification_service.proto\x12\x14google.monitoring.v3\x1a\x1cgoogle/api/annotations.proto\x1a\x33google/cloud/monitoring_v3/proto/notification.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto\x1a\x1cgoogle/protobuf/struct.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"`\n)ListNotificationChannelDescriptorsRequest\x12\x0c\n\x04name\x18\x04 \x01(\t\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t\"\x97\x01\n*ListNotificationChannelDescriptorsResponse\x12P\n\x13\x63hannel_descriptors\x18\x01 \x03(\x0b\x32\x33.google.monitoring.v3.NotificationChannelDescriptor\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\"7\n\'GetNotificationChannelDescriptorRequest\x12\x0c\n\x04name\x18\x03 \x01(\t\"y\n CreateNotificationChannelRequest\x12\x0c\n\x04name\x18\x03 \x01(\t\x12G\n\x14notification_channel\x18\x02 \x01(\x0b\x32).google.monitoring.v3.NotificationChannel\"x\n\x1fListNotificationChannelsRequest\x12\x0c\n\x04name\x18\x05 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x06 \x01(\t\x12\x10\n\x08order_by\x18\x07 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05\x12\x12\n\npage_token\x18\x04 \x01(\t\"\x85\x01\n ListNotificationChannelsResponse\x12H\n\x15notification_channels\x18\x03 \x03(\x0b\x32).google.monitoring.v3.NotificationChannel\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\"-\n\x1dGetNotificationChannelRequest\x12\x0c\n\x04name\x18\x03 \x01(\t\"\x9c\x01\n UpdateNotificationChannelRequest\x12/\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMask\x12G\n\x14notification_channel\x18\x03 \x01(\x0b\x32).google.monitoring.v3.NotificationChannel\"?\n DeleteNotificationChannelRequest\x12\x0c\n\x04name\x18\x03 \x01(\t\x12\r\n\x05\x66orce\x18\x05 \x01(\x08\">\n.SendNotificationChannelVerificationCodeRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"n\n-GetNotificationChannelVerificationCodeRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12/\n\x0b\x65xpire_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\"o\n.GetNotificationChannelVerificationCodeResponse\x12\x0c\n\x04\x63ode\x18\x01 \x01(\t\x12/\n\x0b\x65xpire_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\">\n VerifyNotificationChannelRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0c\n\x04\x63ode\x18\x02 \x01(\t2\xbb\x10\n\x1aNotificationChannelService\x12\xe5\x01\n\"ListNotificationChannelDescriptors\x12?.google.monitoring.v3.ListNotificationChannelDescriptorsRequest\x1a@.google.monitoring.v3.ListNotificationChannelDescriptorsResponse\"<\x82\xd3\xe4\x93\x02\x36\x12\x34/v3/{name=projects/*}/notificationChannelDescriptors\x12\xd6\x01\n GetNotificationChannelDescriptor\x12=.google.monitoring.v3.GetNotificationChannelDescriptorRequest\x1a\x33.google.monitoring.v3.NotificationChannelDescriptor\">\x82\xd3\xe4\x93\x02\x38\x12\x36/v3/{name=projects/*/notificationChannelDescriptors/*}\x12\xbd\x01\n\x18ListNotificationChannels\x12\x35.google.monitoring.v3.ListNotificationChannelsRequest\x1a\x36.google.monitoring.v3.ListNotificationChannelsResponse\"2\x82\xd3\xe4\x93\x02,\x12*/v3/{name=projects/*}/notificationChannels\x12\xae\x01\n\x16GetNotificationChannel\x12\x33.google.monitoring.v3.GetNotificationChannelRequest\x1a).google.monitoring.v3.NotificationChannel\"4\x82\xd3\xe4\x93\x02.\x12,/v3/{name=projects/*/notificationChannels/*}\x12\xc8\x01\n\x19\x43reateNotificationChannel\x12\x36.google.monitoring.v3.CreateNotificationChannelRequest\x1a).google.monitoring.v3.NotificationChannel\"H\x82\xd3\xe4\x93\x02\x42\"*/v3/{name=projects/*}/notificationChannels:\x14notification_channel\x12\xdf\x01\n\x19UpdateNotificationChannel\x12\x36.google.monitoring.v3.UpdateNotificationChannelRequest\x1a).google.monitoring.v3.NotificationChannel\"_\x82\xd3\xe4\x93\x02Y2A/v3/{notification_channel.name=projects/*/notificationChannels/*}:\x14notification_channel\x12\xa1\x01\n\x19\x44\x65leteNotificationChannel\x12\x36.google.monitoring.v3.DeleteNotificationChannelRequest\x1a\x16.google.protobuf.Empty\"4\x82\xd3\xe4\x93\x02.*,/v3/{name=projects/*/notificationChannels/*}\x12\xd5\x01\n\'SendNotificationChannelVerificationCode\x12\x44.google.monitoring.v3.SendNotificationChannelVerificationCodeRequest\x1a\x16.google.protobuf.Empty\"L\x82\xd3\xe4\x93\x02\x46\"A/v3/{name=projects/*/notificationChannels/*}:sendVerificationCode:\x01*\x12\x80\x02\n&GetNotificationChannelVerificationCode\x12\x43.google.monitoring.v3.GetNotificationChannelVerificationCodeRequest\x1a\x44.google.monitoring.v3.GetNotificationChannelVerificationCodeResponse\"K\x82\xd3\xe4\x93\x02\x45\"@/v3/{name=projects/*/notificationChannels/*}:getVerificationCode:\x01*\x12\xbe\x01\n\x19VerifyNotificationChannel\x12\x36.google.monitoring.v3.VerifyNotificationChannelRequest\x1a).google.monitoring.v3.NotificationChannel\">\x82\xd3\xe4\x93\x02\x38\"3/v3/{name=projects/*/notificationChannels/*}:verify:\x01*B\xb0\x01\n\x18\x63om.google.monitoring.v3B\x18NotificationServiceProtoP\x01Z>google.golang.org/genproto/googleapis/monitoring/v3;monitoring\xaa\x02\x1aGoogle.Cloud.Monitoring.V3\xca\x02\x1aGoogle\\Cloud\\Monitoring\\V3b\x06proto3')
-  ,
-  dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR,google_dot_cloud_dot_monitoring__v3_dot_proto_dot_notification__pb2.DESCRIPTOR,google_dot_protobuf_dot_empty__pb2.DESCRIPTOR,google_dot_protobuf_dot_field__mask__pb2.DESCRIPTOR,google_dot_protobuf_dot_struct__pb2.DESCRIPTOR,google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,])
-
-
+    name="google/cloud/monitoring_v3/proto/notification_service.proto",
+    package="google.monitoring.v3",
+    syntax="proto3",
+    serialized_pb=_b(
+        '\n;google/cloud/monitoring_v3/proto/notification_service.proto\x12\x14google.monitoring.v3\x1a\x1cgoogle/api/annotations.proto\x1a\x33google/cloud/monitoring_v3/proto/notification.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto\x1a\x1cgoogle/protobuf/struct.proto\x1a\x1fgoogle/protobuf/timestamp.proto"`\n)ListNotificationChannelDescriptorsRequest\x12\x0c\n\x04name\x18\x04 \x01(\t\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t"\x97\x01\n*ListNotificationChannelDescriptorsResponse\x12P\n\x13\x63hannel_descriptors\x18\x01 \x03(\x0b\x32\x33.google.monitoring.v3.NotificationChannelDescriptor\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"7\n\'GetNotificationChannelDescriptorRequest\x12\x0c\n\x04name\x18\x03 \x01(\t"y\n CreateNotificationChannelRequest\x12\x0c\n\x04name\x18\x03 \x01(\t\x12G\n\x14notification_channel\x18\x02 \x01(\x0b\x32).google.monitoring.v3.NotificationChannel"x\n\x1fListNotificationChannelsRequest\x12\x0c\n\x04name\x18\x05 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x06 \x01(\t\x12\x10\n\x08order_by\x18\x07 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05\x12\x12\n\npage_token\x18\x04 \x01(\t"\x85\x01\n ListNotificationChannelsResponse\x12H\n\x15notification_channels\x18\x03 \x03(\x0b\x32).google.monitoring.v3.NotificationChannel\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"-\n\x1dGetNotificationChannelRequest\x12\x0c\n\x04name\x18\x03 \x01(\t"\x9c\x01\n UpdateNotificationChannelRequest\x12/\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMask\x12G\n\x14notification_channel\x18\x03 \x01(\x0b\x32).google.monitoring.v3.NotificationChannel"?\n DeleteNotificationChannelRequest\x12\x0c\n\x04name\x18\x03 \x01(\t\x12\r\n\x05\x66orce\x18\x05 \x01(\x08">\n.SendNotificationChannelVerificationCodeRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"n\n-GetNotificationChannelVerificationCodeRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12/\n\x0b\x65xpire_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp"o\n.GetNotificationChannelVerificationCodeResponse\x12\x0c\n\x04\x63ode\x18\x01 \x01(\t\x12/\n\x0b\x65xpire_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp">\n VerifyNotificationChannelRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0c\n\x04\x63ode\x18\x02 \x01(\t2\xbb\x10\n\x1aNotificationChannelService\x12\xe5\x01\n"ListNotificationChannelDescriptors\x12?.google.monitoring.v3.ListNotificationChannelDescriptorsRequest\x1a@.google.monitoring.v3.ListNotificationChannelDescriptorsResponse"<\x82\xd3\xe4\x93\x02\x36\x12\x34/v3/{name=projects/*}/notificationChannelDescriptors\x12\xd6\x01\n GetNotificationChannelDescriptor\x12=.google.monitoring.v3.GetNotificationChannelDescriptorRequest\x1a\x33.google.monitoring.v3.NotificationChannelDescriptor">\x82\xd3\xe4\x93\x02\x38\x12\x36/v3/{name=projects/*/notificationChannelDescriptors/*}\x12\xbd\x01\n\x18ListNotificationChannels\x12\x35.google.monitoring.v3.ListNotificationChannelsRequest\x1a\x36.google.monitoring.v3.ListNotificationChannelsResponse"2\x82\xd3\xe4\x93\x02,\x12*/v3/{name=projects/*}/notificationChannels\x12\xae\x01\n\x16GetNotificationChannel\x12\x33.google.monitoring.v3.GetNotificationChannelRequest\x1a).google.monitoring.v3.NotificationChannel"4\x82\xd3\xe4\x93\x02.\x12,/v3/{name=projects/*/notificationChannels/*}\x12\xc8\x01\n\x19\x43reateNotificationChannel\x12\x36.google.monitoring.v3.CreateNotificationChannelRequest\x1a).google.monitoring.v3.NotificationChannel"H\x82\xd3\xe4\x93\x02\x42"*/v3/{name=projects/*}/notificationChannels:\x14notification_channel\x12\xdf\x01\n\x19UpdateNotificationChannel\x12\x36.google.monitoring.v3.UpdateNotificationChannelRequest\x1a).google.monitoring.v3.NotificationChannel"_\x82\xd3\xe4\x93\x02Y2A/v3/{notification_channel.name=projects/*/notificationChannels/*}:\x14notification_channel\x12\xa1\x01\n\x19\x44\x65leteNotificationChannel\x12\x36.google.monitoring.v3.DeleteNotificationChannelRequest\x1a\x16.google.protobuf.Empty"4\x82\xd3\xe4\x93\x02.*,/v3/{name=projects/*/notificationChannels/*}\x12\xd5\x01\n\'SendNotificationChannelVerificationCode\x12\x44.google.monitoring.v3.SendNotificationChannelVerificationCodeRequest\x1a\x16.google.protobuf.Empty"L\x82\xd3\xe4\x93\x02\x46"A/v3/{name=projects/*/notificationChannels/*}:sendVerificationCode:\x01*\x12\x80\x02\n&GetNotificationChannelVerificationCode\x12\x43.google.monitoring.v3.GetNotificationChannelVerificationCodeRequest\x1a\x44.google.monitoring.v3.GetNotificationChannelVerificationCodeResponse"K\x82\xd3\xe4\x93\x02\x45"@/v3/{name=projects/*/notificationChannels/*}:getVerificationCode:\x01*\x12\xbe\x01\n\x19VerifyNotificationChannel\x12\x36.google.monitoring.v3.VerifyNotificationChannelRequest\x1a).google.monitoring.v3.NotificationChannel">\x82\xd3\xe4\x93\x02\x38"3/v3/{name=projects/*/notificationChannels/*}:verify:\x01*B\xb0\x01\n\x18\x63om.google.monitoring.v3B\x18NotificationServiceProtoP\x01Z>google.golang.org/genproto/googleapis/monitoring/v3;monitoring\xaa\x02\x1aGoogle.Cloud.Monitoring.V3\xca\x02\x1aGoogle\\Cloud\\Monitoring\\V3b\x06proto3'
+    ),
+    dependencies=[
+        google_dot_api_dot_annotations__pb2.DESCRIPTOR,
+        google_dot_cloud_dot_monitoring__v3_dot_proto_dot_notification__pb2.DESCRIPTOR,
+        google_dot_protobuf_dot_empty__pb2.DESCRIPTOR,
+        google_dot_protobuf_dot_field__mask__pb2.DESCRIPTOR,
+        google_dot_protobuf_dot_struct__pb2.DESCRIPTOR,
+        google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,
+    ],
+)
 
 
 _LISTNOTIFICATIONCHANNELDESCRIPTORSREQUEST = _descriptor.Descriptor(
-  name='ListNotificationChannelDescriptorsRequest',
-  full_name='google.monitoring.v3.ListNotificationChannelDescriptorsRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='name', full_name='google.monitoring.v3.ListNotificationChannelDescriptorsRequest.name', index=0,
-      number=4, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='page_size', full_name='google.monitoring.v3.ListNotificationChannelDescriptorsRequest.page_size', index=1,
-      number=2, type=5, cpp_type=1, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='page_token', full_name='google.monitoring.v3.ListNotificationChannelDescriptorsRequest.page_token', index=2,
-      number=3, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=294,
-  serialized_end=390,
+    name="ListNotificationChannelDescriptorsRequest",
+    full_name="google.monitoring.v3.ListNotificationChannelDescriptorsRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="name",
+            full_name="google.monitoring.v3.ListNotificationChannelDescriptorsRequest.name",
+            index=0,
+            number=4,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="page_size",
+            full_name="google.monitoring.v3.ListNotificationChannelDescriptorsRequest.page_size",
+            index=1,
+            number=2,
+            type=5,
+            cpp_type=1,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="page_token",
+            full_name="google.monitoring.v3.ListNotificationChannelDescriptorsRequest.page_token",
+            index=2,
+            number=3,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=294,
+    serialized_end=390,
 )
 
 
 _LISTNOTIFICATIONCHANNELDESCRIPTORSRESPONSE = _descriptor.Descriptor(
-  name='ListNotificationChannelDescriptorsResponse',
-  full_name='google.monitoring.v3.ListNotificationChannelDescriptorsResponse',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='channel_descriptors', full_name='google.monitoring.v3.ListNotificationChannelDescriptorsResponse.channel_descriptors', index=0,
-      number=1, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='next_page_token', full_name='google.monitoring.v3.ListNotificationChannelDescriptorsResponse.next_page_token', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=393,
-  serialized_end=544,
+    name="ListNotificationChannelDescriptorsResponse",
+    full_name="google.monitoring.v3.ListNotificationChannelDescriptorsResponse",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="channel_descriptors",
+            full_name="google.monitoring.v3.ListNotificationChannelDescriptorsResponse.channel_descriptors",
+            index=0,
+            number=1,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="next_page_token",
+            full_name="google.monitoring.v3.ListNotificationChannelDescriptorsResponse.next_page_token",
+            index=1,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=393,
+    serialized_end=544,
 )
 
 
 _GETNOTIFICATIONCHANNELDESCRIPTORREQUEST = _descriptor.Descriptor(
-  name='GetNotificationChannelDescriptorRequest',
-  full_name='google.monitoring.v3.GetNotificationChannelDescriptorRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='name', full_name='google.monitoring.v3.GetNotificationChannelDescriptorRequest.name', index=0,
-      number=3, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=546,
-  serialized_end=601,
+    name="GetNotificationChannelDescriptorRequest",
+    full_name="google.monitoring.v3.GetNotificationChannelDescriptorRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="name",
+            full_name="google.monitoring.v3.GetNotificationChannelDescriptorRequest.name",
+            index=0,
+            number=3,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        )
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=546,
+    serialized_end=601,
 )
 
 
 _CREATENOTIFICATIONCHANNELREQUEST = _descriptor.Descriptor(
-  name='CreateNotificationChannelRequest',
-  full_name='google.monitoring.v3.CreateNotificationChannelRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='name', full_name='google.monitoring.v3.CreateNotificationChannelRequest.name', index=0,
-      number=3, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='notification_channel', full_name='google.monitoring.v3.CreateNotificationChannelRequest.notification_channel', index=1,
-      number=2, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=603,
-  serialized_end=724,
+    name="CreateNotificationChannelRequest",
+    full_name="google.monitoring.v3.CreateNotificationChannelRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="name",
+            full_name="google.monitoring.v3.CreateNotificationChannelRequest.name",
+            index=0,
+            number=3,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="notification_channel",
+            full_name="google.monitoring.v3.CreateNotificationChannelRequest.notification_channel",
+            index=1,
+            number=2,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=603,
+    serialized_end=724,
 )
 
 
 _LISTNOTIFICATIONCHANNELSREQUEST = _descriptor.Descriptor(
-  name='ListNotificationChannelsRequest',
-  full_name='google.monitoring.v3.ListNotificationChannelsRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='name', full_name='google.monitoring.v3.ListNotificationChannelsRequest.name', index=0,
-      number=5, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='filter', full_name='google.monitoring.v3.ListNotificationChannelsRequest.filter', index=1,
-      number=6, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='order_by', full_name='google.monitoring.v3.ListNotificationChannelsRequest.order_by', index=2,
-      number=7, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='page_size', full_name='google.monitoring.v3.ListNotificationChannelsRequest.page_size', index=3,
-      number=3, type=5, cpp_type=1, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='page_token', full_name='google.monitoring.v3.ListNotificationChannelsRequest.page_token', index=4,
-      number=4, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=726,
-  serialized_end=846,
+    name="ListNotificationChannelsRequest",
+    full_name="google.monitoring.v3.ListNotificationChannelsRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="name",
+            full_name="google.monitoring.v3.ListNotificationChannelsRequest.name",
+            index=0,
+            number=5,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="filter",
+            full_name="google.monitoring.v3.ListNotificationChannelsRequest.filter",
+            index=1,
+            number=6,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="order_by",
+            full_name="google.monitoring.v3.ListNotificationChannelsRequest.order_by",
+            index=2,
+            number=7,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="page_size",
+            full_name="google.monitoring.v3.ListNotificationChannelsRequest.page_size",
+            index=3,
+            number=3,
+            type=5,
+            cpp_type=1,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="page_token",
+            full_name="google.monitoring.v3.ListNotificationChannelsRequest.page_token",
+            index=4,
+            number=4,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=726,
+    serialized_end=846,
 )
 
 
 _LISTNOTIFICATIONCHANNELSRESPONSE = _descriptor.Descriptor(
-  name='ListNotificationChannelsResponse',
-  full_name='google.monitoring.v3.ListNotificationChannelsResponse',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='notification_channels', full_name='google.monitoring.v3.ListNotificationChannelsResponse.notification_channels', index=0,
-      number=3, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='next_page_token', full_name='google.monitoring.v3.ListNotificationChannelsResponse.next_page_token', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=849,
-  serialized_end=982,
+    name="ListNotificationChannelsResponse",
+    full_name="google.monitoring.v3.ListNotificationChannelsResponse",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="notification_channels",
+            full_name="google.monitoring.v3.ListNotificationChannelsResponse.notification_channels",
+            index=0,
+            number=3,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="next_page_token",
+            full_name="google.monitoring.v3.ListNotificationChannelsResponse.next_page_token",
+            index=1,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=849,
+    serialized_end=982,
 )
 
 
 _GETNOTIFICATIONCHANNELREQUEST = _descriptor.Descriptor(
-  name='GetNotificationChannelRequest',
-  full_name='google.monitoring.v3.GetNotificationChannelRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='name', full_name='google.monitoring.v3.GetNotificationChannelRequest.name', index=0,
-      number=3, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=984,
-  serialized_end=1029,
+    name="GetNotificationChannelRequest",
+    full_name="google.monitoring.v3.GetNotificationChannelRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="name",
+            full_name="google.monitoring.v3.GetNotificationChannelRequest.name",
+            index=0,
+            number=3,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        )
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=984,
+    serialized_end=1029,
 )
 
 
 _UPDATENOTIFICATIONCHANNELREQUEST = _descriptor.Descriptor(
-  name='UpdateNotificationChannelRequest',
-  full_name='google.monitoring.v3.UpdateNotificationChannelRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='update_mask', full_name='google.monitoring.v3.UpdateNotificationChannelRequest.update_mask', index=0,
-      number=2, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='notification_channel', full_name='google.monitoring.v3.UpdateNotificationChannelRequest.notification_channel', index=1,
-      number=3, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=1032,
-  serialized_end=1188,
+    name="UpdateNotificationChannelRequest",
+    full_name="google.monitoring.v3.UpdateNotificationChannelRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="update_mask",
+            full_name="google.monitoring.v3.UpdateNotificationChannelRequest.update_mask",
+            index=0,
+            number=2,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="notification_channel",
+            full_name="google.monitoring.v3.UpdateNotificationChannelRequest.notification_channel",
+            index=1,
+            number=3,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=1032,
+    serialized_end=1188,
 )
 
 
 _DELETENOTIFICATIONCHANNELREQUEST = _descriptor.Descriptor(
-  name='DeleteNotificationChannelRequest',
-  full_name='google.monitoring.v3.DeleteNotificationChannelRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='name', full_name='google.monitoring.v3.DeleteNotificationChannelRequest.name', index=0,
-      number=3, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='force', full_name='google.monitoring.v3.DeleteNotificationChannelRequest.force', index=1,
-      number=5, type=8, cpp_type=7, label=1,
-      has_default_value=False, default_value=False,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=1190,
-  serialized_end=1253,
+    name="DeleteNotificationChannelRequest",
+    full_name="google.monitoring.v3.DeleteNotificationChannelRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="name",
+            full_name="google.monitoring.v3.DeleteNotificationChannelRequest.name",
+            index=0,
+            number=3,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="force",
+            full_name="google.monitoring.v3.DeleteNotificationChannelRequest.force",
+            index=1,
+            number=5,
+            type=8,
+            cpp_type=7,
+            label=1,
+            has_default_value=False,
+            default_value=False,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=1190,
+    serialized_end=1253,
 )
 
 
 _SENDNOTIFICATIONCHANNELVERIFICATIONCODEREQUEST = _descriptor.Descriptor(
-  name='SendNotificationChannelVerificationCodeRequest',
-  full_name='google.monitoring.v3.SendNotificationChannelVerificationCodeRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='name', full_name='google.monitoring.v3.SendNotificationChannelVerificationCodeRequest.name', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=1255,
-  serialized_end=1317,
+    name="SendNotificationChannelVerificationCodeRequest",
+    full_name="google.monitoring.v3.SendNotificationChannelVerificationCodeRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="name",
+            full_name="google.monitoring.v3.SendNotificationChannelVerificationCodeRequest.name",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        )
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=1255,
+    serialized_end=1317,
 )
 
 
 _GETNOTIFICATIONCHANNELVERIFICATIONCODEREQUEST = _descriptor.Descriptor(
-  name='GetNotificationChannelVerificationCodeRequest',
-  full_name='google.monitoring.v3.GetNotificationChannelVerificationCodeRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='name', full_name='google.monitoring.v3.GetNotificationChannelVerificationCodeRequest.name', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='expire_time', full_name='google.monitoring.v3.GetNotificationChannelVerificationCodeRequest.expire_time', index=1,
-      number=2, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=1319,
-  serialized_end=1429,
+    name="GetNotificationChannelVerificationCodeRequest",
+    full_name="google.monitoring.v3.GetNotificationChannelVerificationCodeRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="name",
+            full_name="google.monitoring.v3.GetNotificationChannelVerificationCodeRequest.name",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="expire_time",
+            full_name="google.monitoring.v3.GetNotificationChannelVerificationCodeRequest.expire_time",
+            index=1,
+            number=2,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=1319,
+    serialized_end=1429,
 )
 
 
 _GETNOTIFICATIONCHANNELVERIFICATIONCODERESPONSE = _descriptor.Descriptor(
-  name='GetNotificationChannelVerificationCodeResponse',
-  full_name='google.monitoring.v3.GetNotificationChannelVerificationCodeResponse',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='code', full_name='google.monitoring.v3.GetNotificationChannelVerificationCodeResponse.code', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='expire_time', full_name='google.monitoring.v3.GetNotificationChannelVerificationCodeResponse.expire_time', index=1,
-      number=2, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=1431,
-  serialized_end=1542,
+    name="GetNotificationChannelVerificationCodeResponse",
+    full_name="google.monitoring.v3.GetNotificationChannelVerificationCodeResponse",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="code",
+            full_name="google.monitoring.v3.GetNotificationChannelVerificationCodeResponse.code",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="expire_time",
+            full_name="google.monitoring.v3.GetNotificationChannelVerificationCodeResponse.expire_time",
+            index=1,
+            number=2,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=1431,
+    serialized_end=1542,
 )
 
 
 _VERIFYNOTIFICATIONCHANNELREQUEST = _descriptor.Descriptor(
-  name='VerifyNotificationChannelRequest',
-  full_name='google.monitoring.v3.VerifyNotificationChannelRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='name', full_name='google.monitoring.v3.VerifyNotificationChannelRequest.name', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='code', full_name='google.monitoring.v3.VerifyNotificationChannelRequest.code', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=1544,
-  serialized_end=1606,
+    name="VerifyNotificationChannelRequest",
+    full_name="google.monitoring.v3.VerifyNotificationChannelRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="name",
+            full_name="google.monitoring.v3.VerifyNotificationChannelRequest.name",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="code",
+            full_name="google.monitoring.v3.VerifyNotificationChannelRequest.code",
+            index=1,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=1544,
+    serialized_end=1606,
 )
 
-_LISTNOTIFICATIONCHANNELDESCRIPTORSRESPONSE.fields_by_name['channel_descriptors'].message_type = google_dot_cloud_dot_monitoring__v3_dot_proto_dot_notification__pb2._NOTIFICATIONCHANNELDESCRIPTOR
-_CREATENOTIFICATIONCHANNELREQUEST.fields_by_name['notification_channel'].message_type = google_dot_cloud_dot_monitoring__v3_dot_proto_dot_notification__pb2._NOTIFICATIONCHANNEL
-_LISTNOTIFICATIONCHANNELSRESPONSE.fields_by_name['notification_channels'].message_type = google_dot_cloud_dot_monitoring__v3_dot_proto_dot_notification__pb2._NOTIFICATIONCHANNEL
-_UPDATENOTIFICATIONCHANNELREQUEST.fields_by_name['update_mask'].message_type = google_dot_protobuf_dot_field__mask__pb2._FIELDMASK
-_UPDATENOTIFICATIONCHANNELREQUEST.fields_by_name['notification_channel'].message_type = google_dot_cloud_dot_monitoring__v3_dot_proto_dot_notification__pb2._NOTIFICATIONCHANNEL
-_GETNOTIFICATIONCHANNELVERIFICATIONCODEREQUEST.fields_by_name['expire_time'].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
-_GETNOTIFICATIONCHANNELVERIFICATIONCODERESPONSE.fields_by_name['expire_time'].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
-DESCRIPTOR.message_types_by_name['ListNotificationChannelDescriptorsRequest'] = _LISTNOTIFICATIONCHANNELDESCRIPTORSREQUEST
-DESCRIPTOR.message_types_by_name['ListNotificationChannelDescriptorsResponse'] = _LISTNOTIFICATIONCHANNELDESCRIPTORSRESPONSE
-DESCRIPTOR.message_types_by_name['GetNotificationChannelDescriptorRequest'] = _GETNOTIFICATIONCHANNELDESCRIPTORREQUEST
-DESCRIPTOR.message_types_by_name['CreateNotificationChannelRequest'] = _CREATENOTIFICATIONCHANNELREQUEST
-DESCRIPTOR.message_types_by_name['ListNotificationChannelsRequest'] = _LISTNOTIFICATIONCHANNELSREQUEST
-DESCRIPTOR.message_types_by_name['ListNotificationChannelsResponse'] = _LISTNOTIFICATIONCHANNELSRESPONSE
-DESCRIPTOR.message_types_by_name['GetNotificationChannelRequest'] = _GETNOTIFICATIONCHANNELREQUEST
-DESCRIPTOR.message_types_by_name['UpdateNotificationChannelRequest'] = _UPDATENOTIFICATIONCHANNELREQUEST
-DESCRIPTOR.message_types_by_name['DeleteNotificationChannelRequest'] = _DELETENOTIFICATIONCHANNELREQUEST
-DESCRIPTOR.message_types_by_name['SendNotificationChannelVerificationCodeRequest'] = _SENDNOTIFICATIONCHANNELVERIFICATIONCODEREQUEST
-DESCRIPTOR.message_types_by_name['GetNotificationChannelVerificationCodeRequest'] = _GETNOTIFICATIONCHANNELVERIFICATIONCODEREQUEST
-DESCRIPTOR.message_types_by_name['GetNotificationChannelVerificationCodeResponse'] = _GETNOTIFICATIONCHANNELVERIFICATIONCODERESPONSE
-DESCRIPTOR.message_types_by_name['VerifyNotificationChannelRequest'] = _VERIFYNOTIFICATIONCHANNELREQUEST
+_LISTNOTIFICATIONCHANNELDESCRIPTORSRESPONSE.fields_by_name[
+    "channel_descriptors"
+].message_type = (
+    google_dot_cloud_dot_monitoring__v3_dot_proto_dot_notification__pb2._NOTIFICATIONCHANNELDESCRIPTOR
+)
+_CREATENOTIFICATIONCHANNELREQUEST.fields_by_name[
+    "notification_channel"
+].message_type = (
+    google_dot_cloud_dot_monitoring__v3_dot_proto_dot_notification__pb2._NOTIFICATIONCHANNEL
+)
+_LISTNOTIFICATIONCHANNELSRESPONSE.fields_by_name[
+    "notification_channels"
+].message_type = (
+    google_dot_cloud_dot_monitoring__v3_dot_proto_dot_notification__pb2._NOTIFICATIONCHANNEL
+)
+_UPDATENOTIFICATIONCHANNELREQUEST.fields_by_name[
+    "update_mask"
+].message_type = google_dot_protobuf_dot_field__mask__pb2._FIELDMASK
+_UPDATENOTIFICATIONCHANNELREQUEST.fields_by_name[
+    "notification_channel"
+].message_type = (
+    google_dot_cloud_dot_monitoring__v3_dot_proto_dot_notification__pb2._NOTIFICATIONCHANNEL
+)
+_GETNOTIFICATIONCHANNELVERIFICATIONCODEREQUEST.fields_by_name[
+    "expire_time"
+].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
+_GETNOTIFICATIONCHANNELVERIFICATIONCODERESPONSE.fields_by_name[
+    "expire_time"
+].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
+DESCRIPTOR.message_types_by_name[
+    "ListNotificationChannelDescriptorsRequest"
+] = _LISTNOTIFICATIONCHANNELDESCRIPTORSREQUEST
+DESCRIPTOR.message_types_by_name[
+    "ListNotificationChannelDescriptorsResponse"
+] = _LISTNOTIFICATIONCHANNELDESCRIPTORSRESPONSE
+DESCRIPTOR.message_types_by_name[
+    "GetNotificationChannelDescriptorRequest"
+] = _GETNOTIFICATIONCHANNELDESCRIPTORREQUEST
+DESCRIPTOR.message_types_by_name[
+    "CreateNotificationChannelRequest"
+] = _CREATENOTIFICATIONCHANNELREQUEST
+DESCRIPTOR.message_types_by_name[
+    "ListNotificationChannelsRequest"
+] = _LISTNOTIFICATIONCHANNELSREQUEST
+DESCRIPTOR.message_types_by_name[
+    "ListNotificationChannelsResponse"
+] = _LISTNOTIFICATIONCHANNELSRESPONSE
+DESCRIPTOR.message_types_by_name[
+    "GetNotificationChannelRequest"
+] = _GETNOTIFICATIONCHANNELREQUEST
+DESCRIPTOR.message_types_by_name[
+    "UpdateNotificationChannelRequest"
+] = _UPDATENOTIFICATIONCHANNELREQUEST
+DESCRIPTOR.message_types_by_name[
+    "DeleteNotificationChannelRequest"
+] = _DELETENOTIFICATIONCHANNELREQUEST
+DESCRIPTOR.message_types_by_name[
+    "SendNotificationChannelVerificationCodeRequest"
+] = _SENDNOTIFICATIONCHANNELVERIFICATIONCODEREQUEST
+DESCRIPTOR.message_types_by_name[
+    "GetNotificationChannelVerificationCodeRequest"
+] = _GETNOTIFICATIONCHANNELVERIFICATIONCODEREQUEST
+DESCRIPTOR.message_types_by_name[
+    "GetNotificationChannelVerificationCodeResponse"
+] = _GETNOTIFICATIONCHANNELVERIFICATIONCODERESPONSE
+DESCRIPTOR.message_types_by_name[
+    "VerifyNotificationChannelRequest"
+] = _VERIFYNOTIFICATIONCHANNELREQUEST
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
-ListNotificationChannelDescriptorsRequest = _reflection.GeneratedProtocolMessageType('ListNotificationChannelDescriptorsRequest', (_message.Message,), dict(
-  DESCRIPTOR = _LISTNOTIFICATIONCHANNELDESCRIPTORSREQUEST,
-  __module__ = 'google.cloud.monitoring_v3.proto.notification_service_pb2'
-  ,
-  __doc__ = """The ``ListNotificationChannelDescriptors`` request.
+ListNotificationChannelDescriptorsRequest = _reflection.GeneratedProtocolMessageType(
+    "ListNotificationChannelDescriptorsRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_LISTNOTIFICATIONCHANNELDESCRIPTORSREQUEST,
+        __module__="google.cloud.monitoring_v3.proto.notification_service_pb2",
+        __doc__="""The ``ListNotificationChannelDescriptors`` request.
   
   
   Attributes:
@@ -579,15 +898,18 @@ ListNotificationChannelDescriptorsRequest = _reflection.GeneratedProtocolMessage
           the ``next_page_token`` in a previous response to request the
           next set of results.
   """,
-  # @@protoc_insertion_point(class_scope:google.monitoring.v3.ListNotificationChannelDescriptorsRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:google.monitoring.v3.ListNotificationChannelDescriptorsRequest)
+    ),
+)
 _sym_db.RegisterMessage(ListNotificationChannelDescriptorsRequest)
 
-ListNotificationChannelDescriptorsResponse = _reflection.GeneratedProtocolMessageType('ListNotificationChannelDescriptorsResponse', (_message.Message,), dict(
-  DESCRIPTOR = _LISTNOTIFICATIONCHANNELDESCRIPTORSRESPONSE,
-  __module__ = 'google.cloud.monitoring_v3.proto.notification_service_pb2'
-  ,
-  __doc__ = """The ``ListNotificationChannelDescriptors`` response.
+ListNotificationChannelDescriptorsResponse = _reflection.GeneratedProtocolMessageType(
+    "ListNotificationChannelDescriptorsResponse",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_LISTNOTIFICATIONCHANNELDESCRIPTORSRESPONSE,
+        __module__="google.cloud.monitoring_v3.proto.notification_service_pb2",
+        __doc__="""The ``ListNotificationChannelDescriptors`` response.
   
   
   Attributes:
@@ -600,15 +922,18 @@ ListNotificationChannelDescriptorsResponse = _reflection.GeneratedProtocolMessag
           in a subsequent request to fetch the next set of results. If
           empty, all results have been returned.
   """,
-  # @@protoc_insertion_point(class_scope:google.monitoring.v3.ListNotificationChannelDescriptorsResponse)
-  ))
+        # @@protoc_insertion_point(class_scope:google.monitoring.v3.ListNotificationChannelDescriptorsResponse)
+    ),
+)
 _sym_db.RegisterMessage(ListNotificationChannelDescriptorsResponse)
 
-GetNotificationChannelDescriptorRequest = _reflection.GeneratedProtocolMessageType('GetNotificationChannelDescriptorRequest', (_message.Message,), dict(
-  DESCRIPTOR = _GETNOTIFICATIONCHANNELDESCRIPTORREQUEST,
-  __module__ = 'google.cloud.monitoring_v3.proto.notification_service_pb2'
-  ,
-  __doc__ = """The ``GetNotificationChannelDescriptor`` response.
+GetNotificationChannelDescriptorRequest = _reflection.GeneratedProtocolMessageType(
+    "GetNotificationChannelDescriptorRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_GETNOTIFICATIONCHANNELDESCRIPTORREQUEST,
+        __module__="google.cloud.monitoring_v3.proto.notification_service_pb2",
+        __doc__="""The ``GetNotificationChannelDescriptor`` response.
   
   
   Attributes:
@@ -617,15 +942,18 @@ GetNotificationChannelDescriptorRequest = _reflection.GeneratedProtocolMessageTy
           is ``projects/[PROJECT_ID]/notificationChannelDescriptors/{cha
           nnel_type}``.
   """,
-  # @@protoc_insertion_point(class_scope:google.monitoring.v3.GetNotificationChannelDescriptorRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:google.monitoring.v3.GetNotificationChannelDescriptorRequest)
+    ),
+)
 _sym_db.RegisterMessage(GetNotificationChannelDescriptorRequest)
 
-CreateNotificationChannelRequest = _reflection.GeneratedProtocolMessageType('CreateNotificationChannelRequest', (_message.Message,), dict(
-  DESCRIPTOR = _CREATENOTIFICATIONCHANNELREQUEST,
-  __module__ = 'google.cloud.monitoring_v3.proto.notification_service_pb2'
-  ,
-  __doc__ = """The ``CreateNotificationChannel`` request.
+CreateNotificationChannelRequest = _reflection.GeneratedProtocolMessageType(
+    "CreateNotificationChannelRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_CREATENOTIFICATIONCHANNELREQUEST,
+        __module__="google.cloud.monitoring_v3.proto.notification_service_pb2",
+        __doc__="""The ``CreateNotificationChannel`` request.
   
   
   Attributes:
@@ -640,15 +968,18 @@ CreateNotificationChannelRequest = _reflection.GeneratedProtocolMessageType('Cre
       notification_channel:
           The definition of the ``NotificationChannel`` to create.
   """,
-  # @@protoc_insertion_point(class_scope:google.monitoring.v3.CreateNotificationChannelRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:google.monitoring.v3.CreateNotificationChannelRequest)
+    ),
+)
 _sym_db.RegisterMessage(CreateNotificationChannelRequest)
 
-ListNotificationChannelsRequest = _reflection.GeneratedProtocolMessageType('ListNotificationChannelsRequest', (_message.Message,), dict(
-  DESCRIPTOR = _LISTNOTIFICATIONCHANNELSREQUEST,
-  __module__ = 'google.cloud.monitoring_v3.proto.notification_service_pb2'
-  ,
-  __doc__ = """The ``ListNotificationChannels`` request.
+ListNotificationChannelsRequest = _reflection.GeneratedProtocolMessageType(
+    "ListNotificationChannelsRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_LISTNOTIFICATIONCHANNELSREQUEST,
+        __module__="google.cloud.monitoring_v3.proto.notification_service_pb2",
+        __doc__="""The ``ListNotificationChannels`` request.
   
   
   Attributes:
@@ -680,15 +1011,18 @@ ListNotificationChannelsRequest = _reflection.GeneratedProtocolMessageType('List
           the ``next_page_token`` in a previous response to request the
           next set of results.
   """,
-  # @@protoc_insertion_point(class_scope:google.monitoring.v3.ListNotificationChannelsRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:google.monitoring.v3.ListNotificationChannelsRequest)
+    ),
+)
 _sym_db.RegisterMessage(ListNotificationChannelsRequest)
 
-ListNotificationChannelsResponse = _reflection.GeneratedProtocolMessageType('ListNotificationChannelsResponse', (_message.Message,), dict(
-  DESCRIPTOR = _LISTNOTIFICATIONCHANNELSRESPONSE,
-  __module__ = 'google.cloud.monitoring_v3.proto.notification_service_pb2'
-  ,
-  __doc__ = """The ``ListNotificationChannels`` response.
+ListNotificationChannelsResponse = _reflection.GeneratedProtocolMessageType(
+    "ListNotificationChannelsResponse",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_LISTNOTIFICATIONCHANNELSRESPONSE,
+        __module__="google.cloud.monitoring_v3.proto.notification_service_pb2",
+        __doc__="""The ``ListNotificationChannels`` response.
   
   
   Attributes:
@@ -700,15 +1034,18 @@ ListNotificationChannelsResponse = _reflection.GeneratedProtocolMessageType('Lis
           in a subsequent request to fetch the next set of results. If
           empty, all results have been returned.
   """,
-  # @@protoc_insertion_point(class_scope:google.monitoring.v3.ListNotificationChannelsResponse)
-  ))
+        # @@protoc_insertion_point(class_scope:google.monitoring.v3.ListNotificationChannelsResponse)
+    ),
+)
 _sym_db.RegisterMessage(ListNotificationChannelsResponse)
 
-GetNotificationChannelRequest = _reflection.GeneratedProtocolMessageType('GetNotificationChannelRequest', (_message.Message,), dict(
-  DESCRIPTOR = _GETNOTIFICATIONCHANNELREQUEST,
-  __module__ = 'google.cloud.monitoring_v3.proto.notification_service_pb2'
-  ,
-  __doc__ = """The ``GetNotificationChannel`` request.
+GetNotificationChannelRequest = _reflection.GeneratedProtocolMessageType(
+    "GetNotificationChannelRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_GETNOTIFICATIONCHANNELREQUEST,
+        __module__="google.cloud.monitoring_v3.proto.notification_service_pb2",
+        __doc__="""The ``GetNotificationChannel`` request.
   
   
   Attributes:
@@ -716,15 +1053,18 @@ GetNotificationChannelRequest = _reflection.GeneratedProtocolMessageType('GetNot
           The channel for which to execute the request. The format is
           ``projects/[PROJECT_ID]/notificationChannels/[CHANNEL_ID]``.
   """,
-  # @@protoc_insertion_point(class_scope:google.monitoring.v3.GetNotificationChannelRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:google.monitoring.v3.GetNotificationChannelRequest)
+    ),
+)
 _sym_db.RegisterMessage(GetNotificationChannelRequest)
 
-UpdateNotificationChannelRequest = _reflection.GeneratedProtocolMessageType('UpdateNotificationChannelRequest', (_message.Message,), dict(
-  DESCRIPTOR = _UPDATENOTIFICATIONCHANNELREQUEST,
-  __module__ = 'google.cloud.monitoring_v3.proto.notification_service_pb2'
-  ,
-  __doc__ = """The ``UpdateNotificationChannel`` request.
+UpdateNotificationChannelRequest = _reflection.GeneratedProtocolMessageType(
+    "UpdateNotificationChannelRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_UPDATENOTIFICATIONCHANNELREQUEST,
+        __module__="google.cloud.monitoring_v3.proto.notification_service_pb2",
+        __doc__="""The ``UpdateNotificationChannel`` request.
   
   
   Attributes:
@@ -736,15 +1076,18 @@ UpdateNotificationChannelRequest = _reflection.GeneratedProtocolMessageType('Upd
           definition for fields to be updated; the names of these fields
           should also be included in the ``update_mask``.
   """,
-  # @@protoc_insertion_point(class_scope:google.monitoring.v3.UpdateNotificationChannelRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:google.monitoring.v3.UpdateNotificationChannelRequest)
+    ),
+)
 _sym_db.RegisterMessage(UpdateNotificationChannelRequest)
 
-DeleteNotificationChannelRequest = _reflection.GeneratedProtocolMessageType('DeleteNotificationChannelRequest', (_message.Message,), dict(
-  DESCRIPTOR = _DELETENOTIFICATIONCHANNELREQUEST,
-  __module__ = 'google.cloud.monitoring_v3.proto.notification_service_pb2'
-  ,
-  __doc__ = """The ``DeleteNotificationChannel`` request.
+DeleteNotificationChannelRequest = _reflection.GeneratedProtocolMessageType(
+    "DeleteNotificationChannelRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_DELETENOTIFICATIONCHANNELREQUEST,
+        __module__="google.cloud.monitoring_v3.proto.notification_service_pb2",
+        __doc__="""The ``DeleteNotificationChannel`` request.
   
   
   Attributes:
@@ -758,30 +1101,36 @@ DeleteNotificationChannelRequest = _reflection.GeneratedProtocolMessageType('Del
           referenced by an existing alerting policy will fail to be
           deleted in a delete operation.
   """,
-  # @@protoc_insertion_point(class_scope:google.monitoring.v3.DeleteNotificationChannelRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:google.monitoring.v3.DeleteNotificationChannelRequest)
+    ),
+)
 _sym_db.RegisterMessage(DeleteNotificationChannelRequest)
 
-SendNotificationChannelVerificationCodeRequest = _reflection.GeneratedProtocolMessageType('SendNotificationChannelVerificationCodeRequest', (_message.Message,), dict(
-  DESCRIPTOR = _SENDNOTIFICATIONCHANNELVERIFICATIONCODEREQUEST,
-  __module__ = 'google.cloud.monitoring_v3.proto.notification_service_pb2'
-  ,
-  __doc__ = """The ``SendNotificationChannelVerificationCode`` request.
+SendNotificationChannelVerificationCodeRequest = _reflection.GeneratedProtocolMessageType(
+    "SendNotificationChannelVerificationCodeRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_SENDNOTIFICATIONCHANNELVERIFICATIONCODEREQUEST,
+        __module__="google.cloud.monitoring_v3.proto.notification_service_pb2",
+        __doc__="""The ``SendNotificationChannelVerificationCode`` request.
   
   
   Attributes:
       name:
           The notification channel to which to send a verification code.
   """,
-  # @@protoc_insertion_point(class_scope:google.monitoring.v3.SendNotificationChannelVerificationCodeRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:google.monitoring.v3.SendNotificationChannelVerificationCodeRequest)
+    ),
+)
 _sym_db.RegisterMessage(SendNotificationChannelVerificationCodeRequest)
 
-GetNotificationChannelVerificationCodeRequest = _reflection.GeneratedProtocolMessageType('GetNotificationChannelVerificationCodeRequest', (_message.Message,), dict(
-  DESCRIPTOR = _GETNOTIFICATIONCHANNELVERIFICATIONCODEREQUEST,
-  __module__ = 'google.cloud.monitoring_v3.proto.notification_service_pb2'
-  ,
-  __doc__ = """The ``GetNotificationChannelVerificationCode`` request.
+GetNotificationChannelVerificationCodeRequest = _reflection.GeneratedProtocolMessageType(
+    "GetNotificationChannelVerificationCodeRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_GETNOTIFICATIONCHANNELVERIFICATIONCODEREQUEST,
+        __module__="google.cloud.monitoring_v3.proto.notification_service_pb2",
+        __doc__="""The ``GetNotificationChannelVerificationCode`` request.
   
   
   Attributes:
@@ -803,15 +1152,18 @@ GetNotificationChannelVerificationCodeRequest = _reflection.GeneratedProtocolMes
           the API does impose an upper limit on the maximum expiration
           that is permitted).
   """,
-  # @@protoc_insertion_point(class_scope:google.monitoring.v3.GetNotificationChannelVerificationCodeRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:google.monitoring.v3.GetNotificationChannelVerificationCodeRequest)
+    ),
+)
 _sym_db.RegisterMessage(GetNotificationChannelVerificationCodeRequest)
 
-GetNotificationChannelVerificationCodeResponse = _reflection.GeneratedProtocolMessageType('GetNotificationChannelVerificationCodeResponse', (_message.Message,), dict(
-  DESCRIPTOR = _GETNOTIFICATIONCHANNELVERIFICATIONCODERESPONSE,
-  __module__ = 'google.cloud.monitoring_v3.proto.notification_service_pb2'
-  ,
-  __doc__ = """The ``GetNotificationChannelVerificationCode`` request.
+GetNotificationChannelVerificationCodeResponse = _reflection.GeneratedProtocolMessageType(
+    "GetNotificationChannelVerificationCodeResponse",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_GETNOTIFICATIONCHANNELVERIFICATIONCODERESPONSE,
+        __module__="google.cloud.monitoring_v3.proto.notification_service_pb2",
+        __doc__="""The ``GetNotificationChannelVerificationCode`` request.
   
   
   Attributes:
@@ -827,15 +1179,18 @@ GetNotificationChannelVerificationCodeResponse = _reflection.GeneratedProtocolMe
           is the minimum of the requested expiration in the request and
           the max permitted expiration.
   """,
-  # @@protoc_insertion_point(class_scope:google.monitoring.v3.GetNotificationChannelVerificationCodeResponse)
-  ))
+        # @@protoc_insertion_point(class_scope:google.monitoring.v3.GetNotificationChannelVerificationCodeResponse)
+    ),
+)
 _sym_db.RegisterMessage(GetNotificationChannelVerificationCodeResponse)
 
-VerifyNotificationChannelRequest = _reflection.GeneratedProtocolMessageType('VerifyNotificationChannelRequest', (_message.Message,), dict(
-  DESCRIPTOR = _VERIFYNOTIFICATIONCHANNELREQUEST,
-  __module__ = 'google.cloud.monitoring_v3.proto.notification_service_pb2'
-  ,
-  __doc__ = """The ``VerifyNotificationChannel`` request.
+VerifyNotificationChannelRequest = _reflection.GeneratedProtocolMessageType(
+    "VerifyNotificationChannelRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_VERIFYNOTIFICATIONCHANNELREQUEST,
+        __module__="google.cloud.monitoring_v3.proto.notification_service_pb2",
+        __doc__="""The ``VerifyNotificationChannel`` request.
   
   
   Attributes:
@@ -852,116 +1207,173 @@ VerifyNotificationChannelRequest = _reflection.GeneratedProtocolMessageType('Ver
           one should not make any assumptions regarding the structure or
           format of the code).
   """,
-  # @@protoc_insertion_point(class_scope:google.monitoring.v3.VerifyNotificationChannelRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:google.monitoring.v3.VerifyNotificationChannelRequest)
+    ),
+)
 _sym_db.RegisterMessage(VerifyNotificationChannelRequest)
 
 
 DESCRIPTOR.has_options = True
-DESCRIPTOR._options = _descriptor._ParseOptions(descriptor_pb2.FileOptions(), _b('\n\030com.google.monitoring.v3B\030NotificationServiceProtoP\001Z>google.golang.org/genproto/googleapis/monitoring/v3;monitoring\252\002\032Google.Cloud.Monitoring.V3\312\002\032Google\\Cloud\\Monitoring\\V3'))
+DESCRIPTOR._options = _descriptor._ParseOptions(
+    descriptor_pb2.FileOptions(),
+    _b(
+        "\n\030com.google.monitoring.v3B\030NotificationServiceProtoP\001Z>google.golang.org/genproto/googleapis/monitoring/v3;monitoring\252\002\032Google.Cloud.Monitoring.V3\312\002\032Google\\Cloud\\Monitoring\\V3"
+    ),
+)
 
 _NOTIFICATIONCHANNELSERVICE = _descriptor.ServiceDescriptor(
-  name='NotificationChannelService',
-  full_name='google.monitoring.v3.NotificationChannelService',
-  file=DESCRIPTOR,
-  index=0,
-  options=None,
-  serialized_start=1609,
-  serialized_end=3716,
-  methods=[
-  _descriptor.MethodDescriptor(
-    name='ListNotificationChannelDescriptors',
-    full_name='google.monitoring.v3.NotificationChannelService.ListNotificationChannelDescriptors',
+    name="NotificationChannelService",
+    full_name="google.monitoring.v3.NotificationChannelService",
+    file=DESCRIPTOR,
     index=0,
-    containing_service=None,
-    input_type=_LISTNOTIFICATIONCHANNELDESCRIPTORSREQUEST,
-    output_type=_LISTNOTIFICATIONCHANNELDESCRIPTORSRESPONSE,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\0026\0224/v3/{name=projects/*}/notificationChannelDescriptors')),
-  ),
-  _descriptor.MethodDescriptor(
-    name='GetNotificationChannelDescriptor',
-    full_name='google.monitoring.v3.NotificationChannelService.GetNotificationChannelDescriptor',
-    index=1,
-    containing_service=None,
-    input_type=_GETNOTIFICATIONCHANNELDESCRIPTORREQUEST,
-    output_type=google_dot_cloud_dot_monitoring__v3_dot_proto_dot_notification__pb2._NOTIFICATIONCHANNELDESCRIPTOR,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\0028\0226/v3/{name=projects/*/notificationChannelDescriptors/*}')),
-  ),
-  _descriptor.MethodDescriptor(
-    name='ListNotificationChannels',
-    full_name='google.monitoring.v3.NotificationChannelService.ListNotificationChannels',
-    index=2,
-    containing_service=None,
-    input_type=_LISTNOTIFICATIONCHANNELSREQUEST,
-    output_type=_LISTNOTIFICATIONCHANNELSRESPONSE,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002,\022*/v3/{name=projects/*}/notificationChannels')),
-  ),
-  _descriptor.MethodDescriptor(
-    name='GetNotificationChannel',
-    full_name='google.monitoring.v3.NotificationChannelService.GetNotificationChannel',
-    index=3,
-    containing_service=None,
-    input_type=_GETNOTIFICATIONCHANNELREQUEST,
-    output_type=google_dot_cloud_dot_monitoring__v3_dot_proto_dot_notification__pb2._NOTIFICATIONCHANNEL,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002.\022,/v3/{name=projects/*/notificationChannels/*}')),
-  ),
-  _descriptor.MethodDescriptor(
-    name='CreateNotificationChannel',
-    full_name='google.monitoring.v3.NotificationChannelService.CreateNotificationChannel',
-    index=4,
-    containing_service=None,
-    input_type=_CREATENOTIFICATIONCHANNELREQUEST,
-    output_type=google_dot_cloud_dot_monitoring__v3_dot_proto_dot_notification__pb2._NOTIFICATIONCHANNEL,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002B\"*/v3/{name=projects/*}/notificationChannels:\024notification_channel')),
-  ),
-  _descriptor.MethodDescriptor(
-    name='UpdateNotificationChannel',
-    full_name='google.monitoring.v3.NotificationChannelService.UpdateNotificationChannel',
-    index=5,
-    containing_service=None,
-    input_type=_UPDATENOTIFICATIONCHANNELREQUEST,
-    output_type=google_dot_cloud_dot_monitoring__v3_dot_proto_dot_notification__pb2._NOTIFICATIONCHANNEL,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002Y2A/v3/{notification_channel.name=projects/*/notificationChannels/*}:\024notification_channel')),
-  ),
-  _descriptor.MethodDescriptor(
-    name='DeleteNotificationChannel',
-    full_name='google.monitoring.v3.NotificationChannelService.DeleteNotificationChannel',
-    index=6,
-    containing_service=None,
-    input_type=_DELETENOTIFICATIONCHANNELREQUEST,
-    output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002.*,/v3/{name=projects/*/notificationChannels/*}')),
-  ),
-  _descriptor.MethodDescriptor(
-    name='SendNotificationChannelVerificationCode',
-    full_name='google.monitoring.v3.NotificationChannelService.SendNotificationChannelVerificationCode',
-    index=7,
-    containing_service=None,
-    input_type=_SENDNOTIFICATIONCHANNELVERIFICATIONCODEREQUEST,
-    output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002F\"A/v3/{name=projects/*/notificationChannels/*}:sendVerificationCode:\001*')),
-  ),
-  _descriptor.MethodDescriptor(
-    name='GetNotificationChannelVerificationCode',
-    full_name='google.monitoring.v3.NotificationChannelService.GetNotificationChannelVerificationCode',
-    index=8,
-    containing_service=None,
-    input_type=_GETNOTIFICATIONCHANNELVERIFICATIONCODEREQUEST,
-    output_type=_GETNOTIFICATIONCHANNELVERIFICATIONCODERESPONSE,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002E\"@/v3/{name=projects/*/notificationChannels/*}:getVerificationCode:\001*')),
-  ),
-  _descriptor.MethodDescriptor(
-    name='VerifyNotificationChannel',
-    full_name='google.monitoring.v3.NotificationChannelService.VerifyNotificationChannel',
-    index=9,
-    containing_service=None,
-    input_type=_VERIFYNOTIFICATIONCHANNELREQUEST,
-    output_type=google_dot_cloud_dot_monitoring__v3_dot_proto_dot_notification__pb2._NOTIFICATIONCHANNEL,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\0028\"3/v3/{name=projects/*/notificationChannels/*}:verify:\001*')),
-  ),
-])
+    options=None,
+    serialized_start=1609,
+    serialized_end=3716,
+    methods=[
+        _descriptor.MethodDescriptor(
+            name="ListNotificationChannelDescriptors",
+            full_name="google.monitoring.v3.NotificationChannelService.ListNotificationChannelDescriptors",
+            index=0,
+            containing_service=None,
+            input_type=_LISTNOTIFICATIONCHANNELDESCRIPTORSREQUEST,
+            output_type=_LISTNOTIFICATIONCHANNELDESCRIPTORSRESPONSE,
+            options=_descriptor._ParseOptions(
+                descriptor_pb2.MethodOptions(),
+                _b(
+                    "\202\323\344\223\0026\0224/v3/{name=projects/*}/notificationChannelDescriptors"
+                ),
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="GetNotificationChannelDescriptor",
+            full_name="google.monitoring.v3.NotificationChannelService.GetNotificationChannelDescriptor",
+            index=1,
+            containing_service=None,
+            input_type=_GETNOTIFICATIONCHANNELDESCRIPTORREQUEST,
+            output_type=google_dot_cloud_dot_monitoring__v3_dot_proto_dot_notification__pb2._NOTIFICATIONCHANNELDESCRIPTOR,
+            options=_descriptor._ParseOptions(
+                descriptor_pb2.MethodOptions(),
+                _b(
+                    "\202\323\344\223\0028\0226/v3/{name=projects/*/notificationChannelDescriptors/*}"
+                ),
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="ListNotificationChannels",
+            full_name="google.monitoring.v3.NotificationChannelService.ListNotificationChannels",
+            index=2,
+            containing_service=None,
+            input_type=_LISTNOTIFICATIONCHANNELSREQUEST,
+            output_type=_LISTNOTIFICATIONCHANNELSRESPONSE,
+            options=_descriptor._ParseOptions(
+                descriptor_pb2.MethodOptions(),
+                _b(
+                    "\202\323\344\223\002,\022*/v3/{name=projects/*}/notificationChannels"
+                ),
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="GetNotificationChannel",
+            full_name="google.monitoring.v3.NotificationChannelService.GetNotificationChannel",
+            index=3,
+            containing_service=None,
+            input_type=_GETNOTIFICATIONCHANNELREQUEST,
+            output_type=google_dot_cloud_dot_monitoring__v3_dot_proto_dot_notification__pb2._NOTIFICATIONCHANNEL,
+            options=_descriptor._ParseOptions(
+                descriptor_pb2.MethodOptions(),
+                _b(
+                    "\202\323\344\223\002.\022,/v3/{name=projects/*/notificationChannels/*}"
+                ),
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="CreateNotificationChannel",
+            full_name="google.monitoring.v3.NotificationChannelService.CreateNotificationChannel",
+            index=4,
+            containing_service=None,
+            input_type=_CREATENOTIFICATIONCHANNELREQUEST,
+            output_type=google_dot_cloud_dot_monitoring__v3_dot_proto_dot_notification__pb2._NOTIFICATIONCHANNEL,
+            options=_descriptor._ParseOptions(
+                descriptor_pb2.MethodOptions(),
+                _b(
+                    '\202\323\344\223\002B"*/v3/{name=projects/*}/notificationChannels:\024notification_channel'
+                ),
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="UpdateNotificationChannel",
+            full_name="google.monitoring.v3.NotificationChannelService.UpdateNotificationChannel",
+            index=5,
+            containing_service=None,
+            input_type=_UPDATENOTIFICATIONCHANNELREQUEST,
+            output_type=google_dot_cloud_dot_monitoring__v3_dot_proto_dot_notification__pb2._NOTIFICATIONCHANNEL,
+            options=_descriptor._ParseOptions(
+                descriptor_pb2.MethodOptions(),
+                _b(
+                    "\202\323\344\223\002Y2A/v3/{notification_channel.name=projects/*/notificationChannels/*}:\024notification_channel"
+                ),
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="DeleteNotificationChannel",
+            full_name="google.monitoring.v3.NotificationChannelService.DeleteNotificationChannel",
+            index=6,
+            containing_service=None,
+            input_type=_DELETENOTIFICATIONCHANNELREQUEST,
+            output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
+            options=_descriptor._ParseOptions(
+                descriptor_pb2.MethodOptions(),
+                _b(
+                    "\202\323\344\223\002.*,/v3/{name=projects/*/notificationChannels/*}"
+                ),
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="SendNotificationChannelVerificationCode",
+            full_name="google.monitoring.v3.NotificationChannelService.SendNotificationChannelVerificationCode",
+            index=7,
+            containing_service=None,
+            input_type=_SENDNOTIFICATIONCHANNELVERIFICATIONCODEREQUEST,
+            output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
+            options=_descriptor._ParseOptions(
+                descriptor_pb2.MethodOptions(),
+                _b(
+                    '\202\323\344\223\002F"A/v3/{name=projects/*/notificationChannels/*}:sendVerificationCode:\001*'
+                ),
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="GetNotificationChannelVerificationCode",
+            full_name="google.monitoring.v3.NotificationChannelService.GetNotificationChannelVerificationCode",
+            index=8,
+            containing_service=None,
+            input_type=_GETNOTIFICATIONCHANNELVERIFICATIONCODEREQUEST,
+            output_type=_GETNOTIFICATIONCHANNELVERIFICATIONCODERESPONSE,
+            options=_descriptor._ParseOptions(
+                descriptor_pb2.MethodOptions(),
+                _b(
+                    '\202\323\344\223\002E"@/v3/{name=projects/*/notificationChannels/*}:getVerificationCode:\001*'
+                ),
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="VerifyNotificationChannel",
+            full_name="google.monitoring.v3.NotificationChannelService.VerifyNotificationChannel",
+            index=9,
+            containing_service=None,
+            input_type=_VERIFYNOTIFICATIONCHANNELREQUEST,
+            output_type=google_dot_cloud_dot_monitoring__v3_dot_proto_dot_notification__pb2._NOTIFICATIONCHANNEL,
+            options=_descriptor._ParseOptions(
+                descriptor_pb2.MethodOptions(),
+                _b(
+                    '\202\323\344\223\0028"3/v3/{name=projects/*/notificationChannels/*}:verify:\001*'
+                ),
+            ),
+        ),
+    ],
+)
 _sym_db.RegisterServiceDescriptor(_NOTIFICATIONCHANNELSERVICE)
 
-DESCRIPTOR.services_by_name['NotificationChannelService'] = _NOTIFICATIONCHANNELSERVICE
+DESCRIPTOR.services_by_name["NotificationChannelService"] = _NOTIFICATIONCHANNELSERVICE
 
 # @@protoc_insertion_point(module_scope)

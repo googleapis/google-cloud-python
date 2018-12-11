@@ -357,10 +357,6 @@ class Key:
 
         return self._tuple() == other._tuple()
 
-    def __ne__(self, other):
-        """Inequality comparison operation."""
-        return not self == other
-
     def __lt__(self, other):
         """Less than ordering."""
         if not isinstance(other, Key):

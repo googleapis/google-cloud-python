@@ -22,15 +22,15 @@ import setuptools
 
 name = 'google-cloud-logging'
 description = 'Stackdriver Logging API client library'
-version = '1.8.0'
+version = '1.9.0'
 # Should be one of:
 # 'Development Status :: 3 - Alpha'
 # 'Development Status :: 4 - Beta'
 # 'Development Status :: 5 - Production/Stable'
 release_status = 'Development Status :: 5 - Production/Stable'
 dependencies = [
-    'google-api-core[grpc] >= 1.4.1, < 2.0.0dev',
-    'google-cloud-core >= 0.28.0, < 0.29dev',
+    'google-api-core[grpc] >= 1.6.0, < 2.0.0dev',
+    'google-cloud-core >= 0.29.0, < 0.30dev',
 ]
 extras = {
 }
@@ -64,7 +64,7 @@ setuptools.setup(
     author='Google LLC',
     author_email='googleapis-packages@google.com',
     license='Apache 2.0',
-    url='https://github.com/GoogleCloudPlatform/google-cloud-python',
+    url='https://github.com/googleapis/google-cloud-python',
     classifiers=[
         release_status,
         'Intended Audience :: Developers',

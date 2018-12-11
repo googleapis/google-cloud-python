@@ -2,103 +2,132 @@
 # source: google/devtools/clouderrorreporting_v1beta1/proto/error_group_service.proto
 
 import sys
-_b=sys.version_info[0]<3 and (lambda x:x) or (lambda x:x.encode('latin1'))
+
+_b = sys.version_info[0] < 3 and (lambda x: x) or (lambda x: x.encode("latin1"))
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
 from google.protobuf import descriptor_pb2
+
 # @@protoc_insertion_point(imports)
 
 _sym_db = _symbol_database.Default()
 
 
 from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
-from google.cloud.errorreporting_v1beta1.proto import common_pb2 as google_dot_devtools_dot_clouderrorreporting__v1beta1_dot_proto_dot_common__pb2
+from google.cloud.errorreporting_v1beta1.proto import (
+    common_pb2 as google_dot_devtools_dot_clouderrorreporting__v1beta1_dot_proto_dot_common__pb2,
+)
 
 
 DESCRIPTOR = _descriptor.FileDescriptor(
-  name='google/devtools/clouderrorreporting_v1beta1/proto/error_group_service.proto',
-  package='google.devtools.clouderrorreporting.v1beta1',
-  syntax='proto3',
-  serialized_pb=_b('\nKgoogle/devtools/clouderrorreporting_v1beta1/proto/error_group_service.proto\x12+google.devtools.clouderrorreporting.v1beta1\x1a\x1cgoogle/api/annotations.proto\x1a>google/devtools/clouderrorreporting_v1beta1/proto/common.proto\"%\n\x0fGetGroupRequest\x12\x12\n\ngroup_name\x18\x01 \x01(\t\"\\\n\x12UpdateGroupRequest\x12\x46\n\x05group\x18\x01 \x01(\x0b\x32\x37.google.devtools.clouderrorreporting.v1beta1.ErrorGroup2\x8e\x03\n\x11\x45rrorGroupService\x12\xb4\x01\n\x08GetGroup\x12<.google.devtools.clouderrorreporting.v1beta1.GetGroupRequest\x1a\x37.google.devtools.clouderrorreporting.v1beta1.ErrorGroup\"1\x82\xd3\xe4\x93\x02+\x12)/v1beta1/{group_name=projects/*/groups/*}\x12\xc1\x01\n\x0bUpdateGroup\x12?.google.devtools.clouderrorreporting.v1beta1.UpdateGroupRequest\x1a\x37.google.devtools.clouderrorreporting.v1beta1.ErrorGroup\"8\x82\xd3\xe4\x93\x02\x32\x1a)/v1beta1/{group.name=projects/*/groups/*}:\x05groupB\xf7\x01\n/com.google.devtools.clouderrorreporting.v1beta1B\x16\x45rrorGroupServiceProtoP\x01Z^google.golang.org/genproto/googleapis/devtools/clouderrorreporting/v1beta1;clouderrorreporting\xaa\x02#Google.Cloud.ErrorReporting.V1Beta1\xca\x02#Google\\Cloud\\ErrorReporting\\V1beta1b\x06proto3')
-  ,
-  dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR,google_dot_devtools_dot_clouderrorreporting__v1beta1_dot_proto_dot_common__pb2.DESCRIPTOR,])
-
-
+    name="google/devtools/clouderrorreporting_v1beta1/proto/error_group_service.proto",
+    package="google.devtools.clouderrorreporting.v1beta1",
+    syntax="proto3",
+    serialized_pb=_b(
+        '\nKgoogle/devtools/clouderrorreporting_v1beta1/proto/error_group_service.proto\x12+google.devtools.clouderrorreporting.v1beta1\x1a\x1cgoogle/api/annotations.proto\x1a>google/devtools/clouderrorreporting_v1beta1/proto/common.proto"%\n\x0fGetGroupRequest\x12\x12\n\ngroup_name\x18\x01 \x01(\t"\\\n\x12UpdateGroupRequest\x12\x46\n\x05group\x18\x01 \x01(\x0b\x32\x37.google.devtools.clouderrorreporting.v1beta1.ErrorGroup2\x8e\x03\n\x11\x45rrorGroupService\x12\xb4\x01\n\x08GetGroup\x12<.google.devtools.clouderrorreporting.v1beta1.GetGroupRequest\x1a\x37.google.devtools.clouderrorreporting.v1beta1.ErrorGroup"1\x82\xd3\xe4\x93\x02+\x12)/v1beta1/{group_name=projects/*/groups/*}\x12\xc1\x01\n\x0bUpdateGroup\x12?.google.devtools.clouderrorreporting.v1beta1.UpdateGroupRequest\x1a\x37.google.devtools.clouderrorreporting.v1beta1.ErrorGroup"8\x82\xd3\xe4\x93\x02\x32\x1a)/v1beta1/{group.name=projects/*/groups/*}:\x05groupB\xf7\x01\n/com.google.devtools.clouderrorreporting.v1beta1B\x16\x45rrorGroupServiceProtoP\x01Z^google.golang.org/genproto/googleapis/devtools/clouderrorreporting/v1beta1;clouderrorreporting\xaa\x02#Google.Cloud.ErrorReporting.V1Beta1\xca\x02#Google\\Cloud\\ErrorReporting\\V1beta1b\x06proto3'
+    ),
+    dependencies=[
+        google_dot_api_dot_annotations__pb2.DESCRIPTOR,
+        google_dot_devtools_dot_clouderrorreporting__v1beta1_dot_proto_dot_common__pb2.DESCRIPTOR,
+    ],
+)
 
 
 _GETGROUPREQUEST = _descriptor.Descriptor(
-  name='GetGroupRequest',
-  full_name='google.devtools.clouderrorreporting.v1beta1.GetGroupRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='group_name', full_name='google.devtools.clouderrorreporting.v1beta1.GetGroupRequest.group_name', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=218,
-  serialized_end=255,
+    name="GetGroupRequest",
+    full_name="google.devtools.clouderrorreporting.v1beta1.GetGroupRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="group_name",
+            full_name="google.devtools.clouderrorreporting.v1beta1.GetGroupRequest.group_name",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        )
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=218,
+    serialized_end=255,
 )
 
 
 _UPDATEGROUPREQUEST = _descriptor.Descriptor(
-  name='UpdateGroupRequest',
-  full_name='google.devtools.clouderrorreporting.v1beta1.UpdateGroupRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='group', full_name='google.devtools.clouderrorreporting.v1beta1.UpdateGroupRequest.group', index=0,
-      number=1, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=257,
-  serialized_end=349,
+    name="UpdateGroupRequest",
+    full_name="google.devtools.clouderrorreporting.v1beta1.UpdateGroupRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="group",
+            full_name="google.devtools.clouderrorreporting.v1beta1.UpdateGroupRequest.group",
+            index=0,
+            number=1,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            options=None,
+            file=DESCRIPTOR,
+        )
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=257,
+    serialized_end=349,
 )
 
-_UPDATEGROUPREQUEST.fields_by_name['group'].message_type = google_dot_devtools_dot_clouderrorreporting__v1beta1_dot_proto_dot_common__pb2._ERRORGROUP
-DESCRIPTOR.message_types_by_name['GetGroupRequest'] = _GETGROUPREQUEST
-DESCRIPTOR.message_types_by_name['UpdateGroupRequest'] = _UPDATEGROUPREQUEST
+_UPDATEGROUPREQUEST.fields_by_name[
+    "group"
+].message_type = (
+    google_dot_devtools_dot_clouderrorreporting__v1beta1_dot_proto_dot_common__pb2._ERRORGROUP
+)
+DESCRIPTOR.message_types_by_name["GetGroupRequest"] = _GETGROUPREQUEST
+DESCRIPTOR.message_types_by_name["UpdateGroupRequest"] = _UPDATEGROUPREQUEST
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
-GetGroupRequest = _reflection.GeneratedProtocolMessageType('GetGroupRequest', (_message.Message,), dict(
-  DESCRIPTOR = _GETGROUPREQUEST,
-  __module__ = 'google.devtools.clouderrorreporting_v1beta1.proto.error_group_service_pb2'
-  ,
-  __doc__ = """A request to return an individual group.
+GetGroupRequest = _reflection.GeneratedProtocolMessageType(
+    "GetGroupRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_GETGROUPREQUEST,
+        __module__="google.devtools.clouderrorreporting_v1beta1.proto.error_group_service_pb2",
+        __doc__="""A request to return an individual group.
   
   
   Attributes:
@@ -108,15 +137,18 @@ GetGroupRequest = _reflection.GeneratedProtocolMessageType('GetGroupRequest', (_
           return a list of groups belonging to this project.  Example:
           projects/my-project-123/groups/my-group
   """,
-  # @@protoc_insertion_point(class_scope:google.devtools.clouderrorreporting.v1beta1.GetGroupRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:google.devtools.clouderrorreporting.v1beta1.GetGroupRequest)
+    ),
+)
 _sym_db.RegisterMessage(GetGroupRequest)
 
-UpdateGroupRequest = _reflection.GeneratedProtocolMessageType('UpdateGroupRequest', (_message.Message,), dict(
-  DESCRIPTOR = _UPDATEGROUPREQUEST,
-  __module__ = 'google.devtools.clouderrorreporting_v1beta1.proto.error_group_service_pb2'
-  ,
-  __doc__ = """A request to replace the existing data for the given group.
+UpdateGroupRequest = _reflection.GeneratedProtocolMessageType(
+    "UpdateGroupRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_UPDATEGROUPREQUEST,
+        __module__="google.devtools.clouderrorreporting_v1beta1.proto.error_group_service_pb2",
+        __doc__="""A request to replace the existing data for the given group.
   
   
   Attributes:
@@ -124,44 +156,61 @@ UpdateGroupRequest = _reflection.GeneratedProtocolMessageType('UpdateGroupReques
           [Required] The group which replaces the resource on the
           server.
   """,
-  # @@protoc_insertion_point(class_scope:google.devtools.clouderrorreporting.v1beta1.UpdateGroupRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:google.devtools.clouderrorreporting.v1beta1.UpdateGroupRequest)
+    ),
+)
 _sym_db.RegisterMessage(UpdateGroupRequest)
 
 
 DESCRIPTOR.has_options = True
-DESCRIPTOR._options = _descriptor._ParseOptions(descriptor_pb2.FileOptions(), _b('\n/com.google.devtools.clouderrorreporting.v1beta1B\026ErrorGroupServiceProtoP\001Z^google.golang.org/genproto/googleapis/devtools/clouderrorreporting/v1beta1;clouderrorreporting\252\002#Google.Cloud.ErrorReporting.V1Beta1\312\002#Google\\Cloud\\ErrorReporting\\V1beta1'))
+DESCRIPTOR._options = _descriptor._ParseOptions(
+    descriptor_pb2.FileOptions(),
+    _b(
+        "\n/com.google.devtools.clouderrorreporting.v1beta1B\026ErrorGroupServiceProtoP\001Z^google.golang.org/genproto/googleapis/devtools/clouderrorreporting/v1beta1;clouderrorreporting\252\002#Google.Cloud.ErrorReporting.V1Beta1\312\002#Google\\Cloud\\ErrorReporting\\V1beta1"
+    ),
+)
 
 _ERRORGROUPSERVICE = _descriptor.ServiceDescriptor(
-  name='ErrorGroupService',
-  full_name='google.devtools.clouderrorreporting.v1beta1.ErrorGroupService',
-  file=DESCRIPTOR,
-  index=0,
-  options=None,
-  serialized_start=352,
-  serialized_end=750,
-  methods=[
-  _descriptor.MethodDescriptor(
-    name='GetGroup',
-    full_name='google.devtools.clouderrorreporting.v1beta1.ErrorGroupService.GetGroup',
+    name="ErrorGroupService",
+    full_name="google.devtools.clouderrorreporting.v1beta1.ErrorGroupService",
+    file=DESCRIPTOR,
     index=0,
-    containing_service=None,
-    input_type=_GETGROUPREQUEST,
-    output_type=google_dot_devtools_dot_clouderrorreporting__v1beta1_dot_proto_dot_common__pb2._ERRORGROUP,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002+\022)/v1beta1/{group_name=projects/*/groups/*}')),
-  ),
-  _descriptor.MethodDescriptor(
-    name='UpdateGroup',
-    full_name='google.devtools.clouderrorreporting.v1beta1.ErrorGroupService.UpdateGroup',
-    index=1,
-    containing_service=None,
-    input_type=_UPDATEGROUPREQUEST,
-    output_type=google_dot_devtools_dot_clouderrorreporting__v1beta1_dot_proto_dot_common__pb2._ERRORGROUP,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\0022\032)/v1beta1/{group.name=projects/*/groups/*}:\005group')),
-  ),
-])
+    options=None,
+    serialized_start=352,
+    serialized_end=750,
+    methods=[
+        _descriptor.MethodDescriptor(
+            name="GetGroup",
+            full_name="google.devtools.clouderrorreporting.v1beta1.ErrorGroupService.GetGroup",
+            index=0,
+            containing_service=None,
+            input_type=_GETGROUPREQUEST,
+            output_type=google_dot_devtools_dot_clouderrorreporting__v1beta1_dot_proto_dot_common__pb2._ERRORGROUP,
+            options=_descriptor._ParseOptions(
+                descriptor_pb2.MethodOptions(),
+                _b(
+                    "\202\323\344\223\002+\022)/v1beta1/{group_name=projects/*/groups/*}"
+                ),
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="UpdateGroup",
+            full_name="google.devtools.clouderrorreporting.v1beta1.ErrorGroupService.UpdateGroup",
+            index=1,
+            containing_service=None,
+            input_type=_UPDATEGROUPREQUEST,
+            output_type=google_dot_devtools_dot_clouderrorreporting__v1beta1_dot_proto_dot_common__pb2._ERRORGROUP,
+            options=_descriptor._ParseOptions(
+                descriptor_pb2.MethodOptions(),
+                _b(
+                    "\202\323\344\223\0022\032)/v1beta1/{group.name=projects/*/groups/*}:\005group"
+                ),
+            ),
+        ),
+    ],
+)
 _sym_db.RegisterServiceDescriptor(_ERRORGROUPSERVICE)
 
-DESCRIPTOR.services_by_name['ErrorGroupService'] = _ERRORGROUPSERVICE
+DESCRIPTOR.services_by_name["ErrorGroupService"] = _ERRORGROUPSERVICE
 
 # @@protoc_insertion_point(module_scope)
