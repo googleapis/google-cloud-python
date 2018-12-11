@@ -20,6 +20,8 @@ from google.cloud import environment_vars
 from google.cloud.client import ClientWithProject
 from google.cloud import _helpers
 
+from google.cloud.ndb import _runstate
+
 _DATASTORE_HOST = "datastore.googleapis.com"
 
 
@@ -91,3 +93,7 @@ class Client(ClientWithProject):
     def _determine_default(project):
         """Helper:  override default project detection."""
         return _determine_default_project(project)
+
+    def context(self):
+        """Returns a context manager that sets the client."""
+        return _runstate.ndb_context(client=self)
