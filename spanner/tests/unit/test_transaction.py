@@ -300,6 +300,33 @@ class TestTransaction(unittest.TestCase):
     def test_commit_w_mutations(self):
         self._commit_helper(mutate=True)
 
+    def test__make_params_pb_w_params_wo_param_types(self):
+        session = _Session()
+        transaction = self._make_one(session)
+
+        with self.assertRaises(ValueError):
+            transaction._make_params_pb(PARAMS, None)
+
+    def test__make_params_pb_wo_params_w_param_types(self):
+        session = _Session()
+        transaction = self._make_one(session)
+
+        with self.assertRaises(ValueError):
+            transaction._make_params_pb(None, PARAM_TYPES)
+
+    def test__make_params_pb_w_params_w_param_types(self):
+        from google.protobuf.struct_pb2 import Struct
+        from google.cloud.spanner_v1._helpers import _make_value_pb
+        session = _Session()
+        transaction = self._make_one(session)
+
+        params_pb = transaction._make_params_pb(PARAMS, PARAM_TYPES)
+
+        expected_params = Struct(
+            fields={key: _make_value_pb(value) for (key, value) in PARAMS.items()}
+        )
+        self.assertEqual(params_pb, expected_params)
+
     def test_execute_update_other_error(self):
         database = _Database()
         database.spanner_api = self._make_spanner_api()

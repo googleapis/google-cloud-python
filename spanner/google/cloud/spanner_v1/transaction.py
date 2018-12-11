@@ -130,6 +130,38 @@ class Transaction(_SnapshotBase, _BatchBase):
         del self._session._transaction
         return self.committed
 
+    @staticmethod
+    def _make_params_pb(params, param_types):
+        """Helper for :meth:`execute_update`.
+
+        :type params: dict, {str -> column value}
+        :param params: values for parameter replacement.  Keys must match
+                       the names used in ``dml``.
+
+        :type param_types: dict[str -> Union[dict, .types.Type]]
+        :param param_types:
+            (Optional) maps explicit types for one or more param values;
+            required if parameters are passed.
+
+        :rtype: Union[None, :class:`Struct`]
+        :returns: a struct message for the passed params, or None
+        :raises ValueError:
+            If ``param_types`` is None but ``params`` is not None.
+        :raises ValueError:
+            If ``params`` is None but ``param_types`` is not None.
+        """
+        if params is not None:
+            if param_types is None:
+                raise ValueError("Specify 'param_types' when passing 'params'.")
+            return Struct(
+                fields={key: _make_value_pb(value) for key, value in params.items()}
+            )
+        else:
+            if param_types is not None:
+                raise ValueError("Specify 'params' when passing 'param_types'.")
+
+        return None
+
     def execute_update(self, dml, params=None, param_types=None, query_mode=None):
         """Perform an ``ExecuteSql`` API request with DML.
 
@@ -153,15 +185,7 @@ class Transaction(_SnapshotBase, _BatchBase):
         :rtype: int
         :returns: Count of rows affected by the DML statement.
         """
-        if params is not None:
-            if param_types is None:
-                raise ValueError("Specify 'param_types' when passing 'params'.")
-            params_pb = Struct(
-                fields={key: _make_value_pb(value) for key, value in params.items()}
-            )
-        else:
-            params_pb = None
-
+        params_pb = self._make_params_pb(params, param_types)
         database = self._session._database
         metadata = _metadata_with_prefix(database.name)
         transaction = self._make_txn_selector()
