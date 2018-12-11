@@ -113,8 +113,8 @@ def parse_field_path(api_repr):
             The unique Firestore api representation which consists of
             either simple or UTF-8 field names. It cannot exceed
             1500 bytes, and cannot be empty. Simple field names match
-            `'^[_a-zA-Z][_a-zA-Z0-9]*$'`. All other field names are
-            escaped with ```.
+            ``'^[_a-zA-Z][_a-zA-Z0-9]*$'``. All other field names are
+            escaped by surrounding them with backticks.
 
     Returns:
         List[str, ...]: The list of field names in the field path.
