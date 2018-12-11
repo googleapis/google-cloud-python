@@ -4,6 +4,15 @@
 
 [1]: https://pypi.org/project/google-cloud-firestore/#history
 
+
+## 0.30.1
+
+12-11-2018 10:49 PDT
+ 
+
+### Dependencies
+- Update `core` and `api_core` dependencies to latest versions.
+
 ## 0.30.0
 
 10-15-2018 09:04 PDT
