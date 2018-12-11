@@ -129,7 +129,7 @@ def parse_field_path(api_repr):
     return field_names
 
 
-def get_field_path(field_names):
+def render_field_path(field_names):
     """Create a **field path** from a list of nested field names.
 
     A **field path** is a ``.``-delimited concatenation of the field
@@ -168,6 +168,9 @@ def get_field_path(field_names):
             result.append(_BACKTICK + replaced + _BACKTICK)
 
     return _FIELD_PATH_DELIMITER.join(result)
+
+
+get_field_path = render_field_path  # backward-compatibility
 
 
 def get_nested_value(field_path, data):
@@ -236,11 +239,11 @@ def get_nested_value(field_path, data):
                     msg = _FIELD_PATH_MISSING_TOP.format(field_name)
                     raise KeyError(msg)
                 else:
-                    partial = get_field_path(field_names[:index])
+                    partial = render_field_path(field_names[:index])
                     msg = _FIELD_PATH_MISSING_KEY.format(field_name, partial)
                     raise KeyError(msg)
         else:
-            partial = get_field_path(field_names[:index])
+            partial = render_field_path(field_names[:index])
             msg = _FIELD_PATH_WRONG_TYPE.format(partial, field_name)
             raise KeyError(msg)
 
@@ -339,7 +342,7 @@ class FieldPath(object):
             (str) Quoted string representation of the path stored
             within this FieldPath.
         """
-        return get_field_path(self.parts)
+        return render_field_path(self.parts)
 
     def eq_or_parent(self, other):
         """Check whether ``other`` is an ancestor.

@@ -117,12 +117,12 @@ class Test_parse_field_path(unittest.TestCase):
             self._call_fut("`a\\`b.c.d")
 
 
-class Test_get_field_path(unittest.TestCase):
+class Test_render_field_path(unittest.TestCase):
     @staticmethod
     def _call_fut(field_names):
         from google.cloud.firestore_v1beta1 import field_path
 
-        return field_path.get_field_path(field_names)
+        return field_path.render_field_path(field_names)
 
     def test_w_empty(self):
         self.assertEqual(self._call_fut([]), "")
