@@ -33,6 +33,7 @@ def test_constructor_defaults():
     assert future._exception == futures.Future._SENTINEL
     assert future._callbacks == []
     assert future._completed is Event.return_value
+    assert future._cancelled is False
 
     Event.assert_called_once_with()
 
@@ -45,6 +46,7 @@ def test_constructor_explicit_completed():
     assert future._exception == futures.Future._SENTINEL
     assert future._callbacks == []
     assert future._completed is completed
+    assert future._cancelled is False
 
 
 def test_cancel():
