@@ -37,6 +37,22 @@ excludes = [
 ]
 s.copy(library, excludes=excludes)
 
+s.replace(
+    "google/cloud/iam/credentials_v1/gapic/iam_credentials_client.py",
+    "google-cloud-iamcredentials",
+    "google-cloud-iam"
+)
+
+s.replace(
+    "**/*.py",
+    "from google\.iam\.credentials\.v1 import common_pb2",
+    "from google.cloud.iam.credentials_v1.proto import common_pb2"
+)
+s.replace(
+    "**/*.py",
+    "from google\.iam\.credentials\.v1 import iamcredentials_pb2_grpc",
+    "from google.cloud.iam.credentials_v1.proto import iamcredentials_pb2_grpc"
+)
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------

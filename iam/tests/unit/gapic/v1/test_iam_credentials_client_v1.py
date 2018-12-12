@@ -19,7 +19,7 @@ import mock
 import pytest
 
 from google.cloud.iam import credentials_v1
-from google.iam.credentials.v1 import common_pb2
+from google.cloud.iam.credentials_v1.proto import common_pb2
 
 
 class MultiCallableStub(object):

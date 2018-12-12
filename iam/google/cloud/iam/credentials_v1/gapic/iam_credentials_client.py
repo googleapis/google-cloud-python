@@ -30,13 +30,11 @@ from google.cloud.iam.credentials_v1.gapic import iam_credentials_client_config
 from google.cloud.iam.credentials_v1.gapic.transports import (
     iam_credentials_grpc_transport,
 )
-from google.iam.credentials.v1 import common_pb2
-from google.iam.credentials.v1 import iamcredentials_pb2_grpc
+from google.cloud.iam.credentials_v1.proto import common_pb2
+from google.cloud.iam.credentials_v1.proto import iamcredentials_pb2_grpc
 from google.protobuf import duration_pb2
 
-_GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
-    "google-cloud-iamcredentials"
-).version
+_GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution("google-cloud-iam").version
 
 
 class IAMCredentialsClient(object):
