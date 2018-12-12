@@ -34,6 +34,7 @@ excludes = [
     "README.rst",
     "setup.py",
     "docs/index.rst",
+    "nox.py",
 ]
 s.copy(library, excludes=excludes)
 
