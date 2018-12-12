@@ -20,6 +20,7 @@ import six
 
 from google.api_core import exceptions
 from google.cloud.firestore_v1beta1 import _helpers
+from google.cloud.firestore_v1beta1 import field_path as field_path_module
 from google.cloud.firestore_v1beta1.proto import common_pb2
 from google.cloud.firestore_v1beta1.watch import Watch
 
@@ -648,7 +649,7 @@ class DocumentSnapshot(object):
         """
         if not self._exists:
             return None
-        nested_data = _helpers.get_nested_value(field_path, self._data)
+        nested_data = field_path_module.get_nested_value(field_path, self._data)
         return copy.deepcopy(nested_data)
 
     def to_dict(self):
