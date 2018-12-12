@@ -26,7 +26,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     package="google.cloud.automl.v1beta1",
     syntax="proto3",
     serialized_pb=_b(
-        '\n2google/cloud/automl_v1beta1/proto/data_items.proto\x12\x1bgoogle.cloud.automl.v1beta1\x1a\x1cgoogle/api/annotations.proto\x1a*google/cloud/automl_v1beta1/proto/io.proto"\x7f\n\x05Image\x12\x15\n\x0bimage_bytes\x18\x01 \x01(\x0cH\x00\x12@\n\x0cinput_config\x18\x06 \x01(\x0b\x32(.google.cloud.automl.v1beta1.InputConfigH\x00\x12\x15\n\rthumbnail_uri\x18\x04 \x01(\tB\x06\n\x04\x64\x61ta"F\n\x0bTextSnippet\x12\x0f\n\x07\x63ontent\x18\x01 \x01(\t\x12\x11\n\tmime_type\x18\x02 \x01(\t\x12\x13\n\x0b\x63ontent_uri\x18\x04 \x01(\t"\x92\x01\n\x0e\x45xamplePayload\x12\x33\n\x05image\x18\x01 \x01(\x0b\x32".google.cloud.automl.v1beta1.ImageH\x00\x12@\n\x0ctext_snippet\x18\x02 \x01(\x0b\x32(.google.cloud.automl.v1beta1.TextSnippetH\x00\x42\t\n\x07payloadBf\n\x1f\x63om.google.cloud.automl.v1beta1P\x01ZAgoogle.golang.org/genproto/googleapis/cloud/automl/v1beta1;automlb\x06proto3'
+        '\n2google/cloud/automl_v1beta1/proto/data_items.proto\x12\x1bgoogle.cloud.automl.v1beta1\x1a\x1cgoogle/api/annotations.proto\x1a*google/cloud/automl_v1beta1/proto/io.proto"\x7f\n\x05Image\x12\x15\n\x0bimage_bytes\x18\x01 \x01(\x0cH\x00\x12@\n\x0cinput_config\x18\x06 \x01(\x0b\x32(.google.cloud.automl.v1beta1.InputConfigH\x00\x12\x15\n\rthumbnail_uri\x18\x04 \x01(\tB\x06\n\x04\x64\x61ta"F\n\x0bTextSnippet\x12\x0f\n\x07\x63ontent\x18\x01 \x01(\t\x12\x11\n\tmime_type\x18\x02 \x01(\t\x12\x13\n\x0b\x63ontent_uri\x18\x04 \x01(\t"\x92\x01\n\x0e\x45xamplePayload\x12\x33\n\x05image\x18\x01 \x01(\x0b\x32".google.cloud.automl.v1beta1.ImageH\x00\x12@\n\x0ctext_snippet\x18\x02 \x01(\x0b\x32(.google.cloud.automl.v1beta1.TextSnippetH\x00\x42\t\n\x07payloadB\x84\x01\n\x1f\x63om.google.cloud.automl.v1beta1P\x01ZAgoogle.golang.org/genproto/googleapis/cloud/automl/v1beta1;automl\xca\x02\x1bGoogle\\Cloud\\AutoMl\\V1beta1b\x06proto3'
     ),
     dependencies=[
         google_dot_api_dot_annotations__pb2.DESCRIPTOR,
@@ -366,7 +366,7 @@ DESCRIPTOR.has_options = True
 DESCRIPTOR._options = _descriptor._ParseOptions(
     descriptor_pb2.FileOptions(),
     _b(
-        "\n\037com.google.cloud.automl.v1beta1P\001ZAgoogle.golang.org/genproto/googleapis/cloud/automl/v1beta1;automl"
+        "\n\037com.google.cloud.automl.v1beta1P\001ZAgoogle.golang.org/genproto/googleapis/cloud/automl/v1beta1;automl\312\002\033Google\\Cloud\\AutoMl\\V1beta1"
     ),
 )
 # @@protoc_insertion_point(module_scope)
