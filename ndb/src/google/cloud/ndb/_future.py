@@ -14,7 +14,6 @@
 
 """A Future class."""
 
-_NOT_COMPUTED = object()
 
 
 class Future:
@@ -24,6 +23,7 @@ class Future:
     results of the wrapped gRPC futures. :method:`_compute_result` should be
     overriden to compute a result from the completed gRPC calls.
     """
+    _NOT_COMPUTED = object()
     _result = _NOT_COMPUTED
     _complete = False
 
@@ -32,7 +32,7 @@ class Future:
 
     def get_result(self):
         """Get the computed result for this future."""
-        if self._result is _NOT_COMPUTED:
+        if self._result is Future._NOT_COMPUTED:
             self._result = self._compute_result(
                 *[future.result() for future in self._grpc_futures])
         return self._result
