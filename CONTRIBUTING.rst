@@ -286,12 +286,10 @@ Supported Python Versions
 
 We support:
 
--  `Python 2.7`_
 -  `Python 3.4`_
 -  `Python 3.5`_
 -  `Python 3.6`_
 
-.. _Python 2.7: https://docs.python.org/2.7/
 .. _Python 3.4: https://docs.python.org/3.4/
 .. _Python 3.5: https://docs.python.org/3.5/
 .. _Python 3.6: https://docs.python.org/3.6/
