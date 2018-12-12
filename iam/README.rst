@@ -1,4 +1,4 @@
-Python Client for IAM Service Account Credentials API (`Alpha`_)
+Python Client for IAM API (`Alpha`_)
 ================================================================
 
 `IAM Service Account Credentials API`_: IAM Service Account Credentials API
@@ -7,7 +7,7 @@ Python Client for IAM Service Account Credentials API (`Alpha`_)
 - `Product Documentation`_
 
 .. _Alpha: https://github.com/googleapis/google-cloud-python/blob/master/README.rst
-.. _IAM Service Account Credentials API: https://cloud.google.com/iam
+.. _IAM API: https://cloud.google.com/iam
 .. _Client Library Documentation: https://googleapis.github.io/google-cloud-python/latest/iam/usage.html
 .. _Product Documentation:  https://cloud.google.com/iam
 
@@ -72,12 +72,12 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for IAM Service Account Credentials API
+-  Read the `Client Library Documentation`_ for IAM API
    API to see other available methods on the client.
--  Read the `IAM Service Account Credentials API Product documentation`_ to learn
+-  Read the `IAM API Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `repository’s main README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _IAM Service Account Credentials API Product documentation:  https://cloud.google.com/iam
+.. _IAM API Product documentation:  https://cloud.google.com/iam
 .. _repository’s main README: https://github.com/googleapis/google-cloud-python/blob/master/README.rst
