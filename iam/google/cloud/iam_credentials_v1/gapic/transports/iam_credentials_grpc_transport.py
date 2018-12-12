@@ -16,7 +16,7 @@
 
 import google.api_core.grpc_helpers
 
-from google.cloud.iam.credentials_v1.proto import iamcredentials_pb2_grpc
+from google.cloud.iam_credentials_v1.proto import iamcredentials_pb2_grpc
 
 
 class IamCredentialsGrpcTransport(object):

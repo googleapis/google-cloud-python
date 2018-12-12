@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# google-cloud-iamcredentials documentation build configuration file
+# google-cloud-iam documentation build configuration file
 #
 # This file is execfile()d with the current directory set to its
 # containing dir.
@@ -59,7 +59,7 @@ source_suffix = ".rst"
 master_doc = "index"
 
 # General information about the project.
-project = u"google-cloud-iamcredentials"
+project = u"google-cloud-iam"
 copyright = u"2017, Google"
 author = u"Google APIs"
 
@@ -212,7 +212,7 @@ html_theme = "sphinx_rtd_theme"
 # html_search_scorer = 'scorer.js'
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = "google-cloud-iamcredentials-doc"
+htmlhelp_basename = "google-cloud-iam-doc"
 
 # -- Options for LaTeX output ---------------------------------------------
 
@@ -233,8 +233,8 @@ latex_elements = {
 latex_documents = [
     (
         master_doc,
-        "google-cloud-iamcredentials.tex",
-        u"google-cloud-iamcredentials Documentation",
+        "google-cloud-iam.tex",
+        u"google-cloud-iam Documentation",
         author,
         "manual",
     )
@@ -265,13 +265,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (
-        master_doc,
-        "google-cloud-iamcredentials",
-        u"google-cloud-iamcredentials Documentation",
-        [author],
-        1,
-    )
+    (master_doc, "google-cloud-iam", u"google-cloud-iam Documentation", [author], 1)
 ]
 
 # If true, show URL addresses after external links.
@@ -285,10 +279,10 @@ man_pages = [
 texinfo_documents = [
     (
         master_doc,
-        "google-cloud-iamcredentials",
-        u"google-cloud-iamcredentials Documentation",
+        "google-cloud-iam",
+        u"google-cloud-iam Documentation",
         author,
-        "google-cloud-iamcredentials",
+        "google-cloud-iam",
         "GAPIC library for the {metadata.shortName} v1 service",
         "APIs",
     )

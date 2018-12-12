@@ -16,7 +16,7 @@ _sym_db = _symbol_database.Default()
 
 
 from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
-from google.cloud.iam.credentials_v1.proto import (
+from google.cloud.iam_credentials_v1.proto import (
     common_pb2 as google_dot_iam_dot_credentials_dot_v1_dot_common__pb2,
 )
 
