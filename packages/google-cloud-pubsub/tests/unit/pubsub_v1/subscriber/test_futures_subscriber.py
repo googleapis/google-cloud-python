@@ -34,6 +34,7 @@ class TestStreamingPullFuture(object):
 
         assert future.running()
         assert not future.done()
+        assert not future.cancelled()
         future._manager.add_close_callback.assert_called_once_with(
             future._on_close_callback
         )
