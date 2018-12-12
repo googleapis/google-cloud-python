@@ -963,6 +963,39 @@ class TestStorageRewrite(TestStorageFiles):
             retry_429(created.delete)(force=True)
 
 
+class TestStorageUpdateStorageClass(TestStorageFiles):
+
+    def test_update_storage_class_small_file(self):
+        blob = self.bucket.blob("SmallFile")
+
+        file_data = self.FILES["simple"]
+        blob.upload_from_filename(file_data["path"])
+        self.case_blobs_to_delete.append(blob)
+
+        blob.update_storage_class("NEARLINE")
+        blob.reload()
+        self.assertEqual(blob.storage_class, "NEARLINE")
+
+        blob.update_storage_class("COLDLINE")
+        blob.reload()
+        self.assertEqual(blob.storage_class, "COLDLINE")
+
+    def test_update_storage_class_large_file(self):
+        blob = self.bucket.blob("BigFile")
+
+        file_data = self.FILES["big"]
+        blob.upload_from_filename(file_data["path"])
+        self.case_blobs_to_delete.append(blob)
+
+        blob.update_storage_class("NEARLINE")
+        blob.reload()
+        self.assertEqual(blob.storage_class, "NEARLINE")
+
+        blob.update_storage_class("COLDLINE")
+        blob.reload()
+        self.assertEqual(blob.storage_class, "COLDLINE")
+
+
 class TestStorageNotificationCRUD(unittest.TestCase):
 
     topic = None

@@ -2499,10 +2499,43 @@ class Test_Blob(unittest.TestCase):
         with self.assertRaises(ValueError):
             blob.update_storage_class(u"BOGUS")
 
+    def test_update_storage_class_large_file(self):
+        BLOB_NAME = "blob-name"
+        STORAGE_CLASS = u"NEARLINE"
+        TOKEN = "TOKEN"
+        INCOMPLETE_RESPONSE = {
+            "totalBytesRewritten": 42,
+            "objectSize": 84,
+            "done": False,
+            "rewriteToken": TOKEN,
+            "resource": {"storageClass": STORAGE_CLASS}
+        }
+        COMPLETE_RESPONSE = {
+            "totalBytesRewritten": 84,
+            "objectSize": 84,
+            "done": True,
+            "resource": {"storageClass": STORAGE_CLASS}
+        }
+        response_1 = ({"status": http_client.OK}, INCOMPLETE_RESPONSE)
+        response_2 = ({"status": http_client.OK}, COMPLETE_RESPONSE)
+        connection = _Connection(response_1, response_2)
+        client = _Client(connection)
+        bucket = _Bucket(client=client)
+        blob = self._make_one(BLOB_NAME, bucket=bucket)
+
+        blob.update_storage_class("NEARLINE")
+
+        self.assertEqual(blob.storage_class, "NEARLINE")
+
     def test_update_storage_class_wo_encryption_key(self):
         BLOB_NAME = "blob-name"
         STORAGE_CLASS = u"NEARLINE"
-        RESPONSE = {"resource": {"storageClass": STORAGE_CLASS}}
+        RESPONSE = {
+            "totalBytesRewritten": 42,
+            "objectSize": 42,
+            "done": True,
+            "resource": {"storageClass": STORAGE_CLASS}
+        }
         response = ({"status": http_client.OK}, RESPONSE)
         connection = _Connection(response)
         client = _Client(connection)
@@ -2542,7 +2575,12 @@ class Test_Blob(unittest.TestCase):
         BLOB_KEY_HASH_B64 = base64.b64encode(BLOB_KEY_HASH).rstrip().decode("ascii")
         STORAGE_CLASS = u"NEARLINE"
         USER_PROJECT = "user-project-123"
-        RESPONSE = {"resource": {"storageClass": STORAGE_CLASS}}
+        RESPONSE = {
+            "totalBytesRewritten": 42,
+            "objectSize": 42,
+            "done": True,
+            "resource": {"storageClass": STORAGE_CLASS}
+        }
         response = ({"status": http_client.OK}, RESPONSE)
         connection = _Connection(response)
         client = _Client(connection)
