@@ -18,6 +18,7 @@ grpcio-gcp >= 0.2.2
 -e dlp/
 -e dns/
 -e firestore/
+-e iam/
 -e iot/
 -e kms/
 -e language/

@@ -14,6 +14,7 @@
   Data Loss Prevention <dlp/index>
   DNS <dns/index>
   Firestore <firestore/index>
+  IAM <iam/index>
   IoT <iot/index>
   Key Management <kms/index>
   Language <language/index>
