@@ -54,7 +54,7 @@ ${VENV}/bin/delocate-wheel \
     --check-archs \
     --wheel-dir ${FIXED_WHEELS} \
     --verbose \
-    ${DIST_WHEELS}/python_crc32c*${PY_TAG}*.whl
+    ${DIST_WHEELS}/google_crc32c*${PY_TAG}*.whl
 
 # Clean up.
 rm -fr ${DIST_WHEELS}

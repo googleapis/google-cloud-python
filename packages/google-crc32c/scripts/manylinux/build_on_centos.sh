@@ -68,7 +68,7 @@ for PYTHON_BIN in ${VERSION_WHITELIST}; do
 done
 
 # Bundle external shared libraries into the wheels
-for whl in dist_wheels/python_crc32c*.whl; do
+for whl in dist_wheels/google_crc32c*.whl; do
     ${MAIN_PYTHON_BIN}/auditwheel repair "${whl}" --wheel-dir wheels/
 done
 

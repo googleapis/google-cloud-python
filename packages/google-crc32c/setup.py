@@ -55,7 +55,7 @@ def main():
         readme = readme_file.read()
 
     setuptools.setup(
-        name="python-crc32c",
+        name="google-crc32c",
         version="0.0.1",
         description="A python wrapper of the C library 'Google CRC32C'",
         long_description=readme,

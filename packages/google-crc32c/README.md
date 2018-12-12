@@ -59,18 +59,18 @@ $ ./scripts/manylinux/check-37.sh
 _crc32c_cffi: <module 'crc32c._crc32c_cffi' from '.../py-crc32c/venv/lib/python3.7/site-packages/crc32c/_crc32c_cffi.abi3.so'>
 _crc32c_cffi.lib: <Lib object for 'crc32c._crc32c_cffi'>
 dir(_crc32c_cffi.lib): ['crc32c_extend', 'crc32c_value']
-+ unzip -l wheels/python_crc32c-0.0.1-cp37-cp37m-manylinux1_x86_64.whl
-Archive:  wheels/python_crc32c-0.0.1-cp37-cp37m-manylinux1_x86_64.whl
++ unzip -l wheels/google_crc32c-0.0.1-cp37-cp37m-manylinux1_x86_64.whl
+Archive:  wheels/google_crc32c-0.0.1-cp37-cp37m-manylinux1_x86_64.whl
   Length      Date    Time    Name
 ---------  ---------- -----   ----
     26120  2018-10-25 00:09   crc32c/_crc32c_cffi.abi3.so
       765  2018-10-24 23:57   crc32c/__init__.py
     29552  2018-10-25 00:09   crc32c/.libs/libcrc32c-f865a225.so
-      109  2018-10-25 00:09   python_crc32c-0.0.1.dist-info/WHEEL
-      766  2018-10-25 00:09   python_crc32c-0.0.1.dist-info/METADATA
-      652  2018-10-25 00:09   python_crc32c-0.0.1.dist-info/RECORD
-        1  2018-10-25 00:09   python_crc32c-0.0.1.dist-info/zip-safe
-        7  2018-10-25 00:09   python_crc32c-0.0.1.dist-info/top_level.txt
+      109  2018-10-25 00:09   google_crc32c-0.0.1.dist-info/WHEEL
+      766  2018-10-25 00:09   google_crc32c-0.0.1.dist-info/METADATA
+      652  2018-10-25 00:09   google_crc32c-0.0.1.dist-info/RECORD
+        1  2018-10-25 00:09   google_crc32c-0.0.1.dist-info/zip-safe
+        7  2018-10-25 00:09   google_crc32c-0.0.1.dist-info/top_level.txt
 ---------                     -------
     57972                     8 files
 ...
@@ -85,7 +85,7 @@ $ ./scripts/osx/check.sh
 _crc32c_cffi: <module 'crc32c._crc32c_cffi' from '.../py-crc32c/venv37/lib/python3.7/site-packages/crc32c/_crc32c_cffi.abi3.so'>
 _crc32c_cffi.lib: <Lib object for 'crc32c._crc32c_cffi'>
 dir(_crc32c_cffi.lib): ['crc32c_extend', 'crc32c_value']
-+ /Library/Frameworks/Python.framework/Versions/3.7/bin/delocate-listdeps --all --depending .../py-crc32c/wheels/python_crc32c-0.0.1-cp37-cp37m-macosx_10_6_intel.whl
++ /Library/Frameworks/Python.framework/Versions/3.7/bin/delocate-listdeps --all --depending .../py-crc32c/wheels/google_crc32c-0.0.1-cp37-cp37m-macosx_10_6_intel.whl
 /usr/lib/libSystem.B.dylib:
     crc32c/_crc32c_cffi.abi3.so
     crc32c/.dylibs/libcrc32c.dylib
