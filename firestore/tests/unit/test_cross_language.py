@@ -199,10 +199,51 @@ def test_delete_testprotos(test_proto):
     _run_testcase(testcase, call, firestore_api, client)
 
 
-@pytest.mark.skip(reason="Watch aka listen not yet implemented in Python.")
-@pytest.mark.parametrize("test_proto", _LISTEN_TESTPROTOS)
-def test_listen_paths_testprotos(test_proto):  # pragma: NO COVER
-    pass
+@pytest.mark.parametrize('test_proto', _LISTEN_TESTPROTOS)
+def test_listen_testprotos(test_proto):  # pragma: NO COVER
+    # test_proto.listen has 'reponses' messages,
+    # 'google.firestore.v1beta1.ListenResponse'
+    # and then an expected list of 'snapshots' (local 'Snapshot'), containing
+    # 'docs' (list of 'google.firestore.v1beta1.Document'),
+    # 'changes' (list lof local 'DocChange', and 'read_time' timestamp.
+    from google.cloud.firestore_v1beta1 import Client
+    from google.cloud.firestore_v1beta1 import DocumentReference
+    from google.cloud.firestore_v1beta1 import DocumentSnapshot
+    from google.cloud.firestore_v1beta1 import Watch
+    import google.auth.credentials
+
+    testcase = test_proto.listen
+    credentials = mock.Mock(spec=google.auth.credentials.Credentials)
+    client = Client(project='project', credentials=credentials)
+    modulename = "google.cloud.firestore_v1beta1.watch"
+    with mock.patch("%s.Watch.ResumableBidiRpc" % modulename,
+                    DummyRpc
+    ):
+        with mock.patch(
+                "%s.Watch.BackgroundConsumer" % modulename,
+                DummyBackgroundConsumer
+        ):
+            snapshots = []
+
+            def callback(keys, applied_changes, read_time):
+                snapshots.append((keys, applied_changes, read_time))
+
+            document = client.document('documents', 'C')
+            watch = Watch.for_document(
+                document,
+                callback,
+                DocumentSnapshot,
+                DocumentReference
+            )
+
+            for proto in testcase.responses:
+                watch.on_snapshot(proto)
+
+    # TODO:  assert that the API's 'listen' method was called appropriately.
+    #firestore_api.listen.assert_called_once_with(
+    #)
+    # TODO: add assertions about contents of 'snapshots', based on values
+    #       from 'testcase'.
 
 
 def convert_data(v):
@@ -249,3 +290,35 @@ def convert_precondition(precond):
 
     assert precond.HasField("update_time")
     return Client.write_option(last_update_time=precond.update_time)
+
+
+class DummyRpc(object):
+    def __init__(self, listen, initial_request, should_recover):
+        self.listen = listen
+        self.initial_request = initial_request
+        self.should_recover = should_recover
+        self.closed = False
+        self.callbacks = []
+
+    def add_done_callback(self, callback):
+        self.callbacks.append(callback)
+
+    def close(self):
+        self.closed = True
+
+
+class DummyBackgroundConsumer(object):
+    started = False
+    stopped = False
+    is_active = True
+
+    def __init__(self, rpc, on_snapshot):
+        self._rpc = rpc
+        self.on_snapshot = on_snapshot
+
+    def start(self):
+        self.started = True
+
+    def stop(self):
+        self.stopped = True
+        self.is_active = False
