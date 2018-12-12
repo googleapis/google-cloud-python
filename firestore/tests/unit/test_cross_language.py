@@ -216,28 +216,36 @@ def test_listen_testprotos(test_proto):  # pragma: NO COVER
     credentials = mock.Mock(spec=google.auth.credentials.Credentials)
     client = Client(project='project', credentials=credentials)
     modulename = "google.cloud.firestore_v1beta1.watch"
-    with mock.patch("%s.Watch.ResumableBidiRpc" % modulename,
-                    DummyRpc
+    with mock.patch(
+            "%s.Watch.ResumableBidiRpc" % modulename,
+            DummyRpc
     ):
         with mock.patch(
                 "%s.Watch.BackgroundConsumer" % modulename,
                 DummyBackgroundConsumer
         ):
-            snapshots = []
+            with mock.patch( # conformance data sets WATCH_TARGET_ID to 1
+                    '%s.WATCH_TARGET_ID' % modulename,
+                    1
+                    ):
+                snapshots = []
 
-            def callback(keys, applied_changes, read_time):
-                snapshots.append((keys, applied_changes, read_time))
+                def callback(keys, applied_changes, read_time):
+                    snapshots.append((keys, applied_changes, read_time))
 
-            document = client.document('documents', 'C')
-            watch = Watch.for_document(
-                document,
-                callback,
-                DocumentSnapshot,
-                DocumentReference
-            )
+                document = client.document('documents', 'C')
+                watch = Watch.for_document(
+                    document,
+                    callback,
+                    DocumentSnapshot,
+                    DocumentReference
+                )
+                watch._firestore._database_string_internal = 'projects/projectID/databases/(default)' # conformance data has db string as this
 
-            for proto in testcase.responses:
-                watch.on_snapshot(proto)
+                for proto in testcase.responses:
+                    watch.on_snapshot(proto)
+
+                assert(len(snapshots) == len(testcase.snapshots))
 
     # TODO:  assert that the API's 'listen' method was called appropriately.
     #firestore_api.listen.assert_called_once_with(
