@@ -16,8 +16,8 @@
 
 from __future__ import absolute_import
 
-from google.cloud.iam.credentials_v1 import types
-from google.cloud.iam.credentials_v1.gapic import iam_credentials_client
+from google.cloud.iam_credentials_v1 import types
+from google.cloud.iam_credentials_v1.gapic import iam_credentials_client
 
 
 class IAMCredentialsClient(iam_credentials_client.IAMCredentialsClient):

@@ -26,15 +26,17 @@ import google.api_core.grpc_helpers
 import google.api_core.path_template
 import grpc
 
-from google.cloud.iam.credentials_v1.gapic import iam_credentials_client_config
-from google.cloud.iam.credentials_v1.gapic.transports import (
+from google.cloud.iam_credentials_v1.gapic import iam_credentials_client_config
+from google.cloud.iam_credentials_v1.gapic.transports import (
     iam_credentials_grpc_transport,
 )
 from google.cloud.iam.credentials_v1.proto import common_pb2
 from google.cloud.iam.credentials_v1.proto import iamcredentials_pb2_grpc
 from google.protobuf import duration_pb2
 
-_GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution("google-cloud-iam").version
+_GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
+    "google-cloud-iamcredentials"
+).version
 
 
 class IAMCredentialsClient(object):
@@ -199,9 +201,9 @@ class IAMCredentialsClient(object):
         Generates an OAuth 2.0 access token for a service account.
 
         Example:
-            >>> from google.cloud.iam import credentials_v1
+            >>> from google.cloud import iam_credentials_v1
             >>>
-            >>> client = credentials_v1.IAMCredentialsClient()
+            >>> client = iam_credentials_v1.IAMCredentialsClient()
             >>>
             >>> name = client.service_account_path('[PROJECT]', '[SERVICE_ACCOUNT]')
             >>>
@@ -227,13 +229,13 @@ class IAMCredentialsClient(object):
 
                 The delegates must have the following format:
                 ``projects/-/serviceAccounts/{ACCOUNT_EMAIL_OR_UNIQUEID}``
-            lifetime (Union[dict, ~google.cloud.iam.credentials_v1.types.Duration]): The desired lifetime duration of the access token in seconds.
+            lifetime (Union[dict, ~google.cloud.iam_credentials_v1.types.Duration]): The desired lifetime duration of the access token in seconds.
                 Must be set to a value less than or equal to 3600 (1 hour). If a value is
                 not specified, the token's lifetime will be set to a default value of one
                 hour.
 
                 If a dict is provided, it must be of the same form as the protobuf
-                message :class:`~google.cloud.iam.credentials_v1.types.Duration`
+                message :class:`~google.cloud.iam_credentials_v1.types.Duration`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -244,7 +246,7 @@ class IAMCredentialsClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.cloud.iam.credentials_v1.types.GenerateAccessTokenResponse` instance.
+            A :class:`~google.cloud.iam_credentials_v1.types.GenerateAccessTokenResponse` instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -285,9 +287,9 @@ class IAMCredentialsClient(object):
         Generates an OpenID Connect ID token for a service account.
 
         Example:
-            >>> from google.cloud.iam import credentials_v1
+            >>> from google.cloud import iam_credentials_v1
             >>>
-            >>> client = credentials_v1.IAMCredentialsClient()
+            >>> client = iam_credentials_v1.IAMCredentialsClient()
             >>>
             >>> name = client.service_account_path('[PROJECT]', '[SERVICE_ACCOUNT]')
             >>>
@@ -323,7 +325,7 @@ class IAMCredentialsClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.cloud.iam.credentials_v1.types.GenerateIdTokenResponse` instance.
+            A :class:`~google.cloud.iam_credentials_v1.types.GenerateIdTokenResponse` instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -366,9 +368,9 @@ class IAMCredentialsClient(object):
         Signs a blob using a service account's system-managed private key.
 
         Example:
-            >>> from google.cloud.iam import credentials_v1
+            >>> from google.cloud import iam_credentials_v1
             >>>
-            >>> client = credentials_v1.IAMCredentialsClient()
+            >>> client = iam_credentials_v1.IAMCredentialsClient()
             >>>
             >>> name = client.service_account_path('[PROJECT]', '[SERVICE_ACCOUNT]')
             >>>
@@ -401,7 +403,7 @@ class IAMCredentialsClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.cloud.iam.credentials_v1.types.SignBlobResponse` instance.
+            A :class:`~google.cloud.iam_credentials_v1.types.SignBlobResponse` instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -441,9 +443,9 @@ class IAMCredentialsClient(object):
         Signs a JWT using a service account's system-managed private key.
 
         Example:
-            >>> from google.cloud.iam import credentials_v1
+            >>> from google.cloud import iam_credentials_v1
             >>>
-            >>> client = credentials_v1.IAMCredentialsClient()
+            >>> client = iam_credentials_v1.IAMCredentialsClient()
             >>>
             >>> name = client.service_account_path('[PROJECT]', '[SERVICE_ACCOUNT]')
             >>>
@@ -476,7 +478,7 @@ class IAMCredentialsClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.cloud.iam.credentials_v1.types.SignJwtResponse` instance.
+            A :class:`~google.cloud.iam_credentials_v1.types.SignJwtResponse` instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request

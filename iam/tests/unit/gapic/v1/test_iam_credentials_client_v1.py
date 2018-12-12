@@ -18,7 +18,7 @@
 import mock
 import pytest
 
-from google.cloud.iam import credentials_v1
+from google.cloud import iam_credentials_v1
 from google.cloud.iam.credentials_v1.proto import common_pb2
 
 
@@ -70,7 +70,7 @@ class TestIAMCredentialsClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = credentials_v1.IAMCredentialsClient()
+            client = iam_credentials_v1.IAMCredentialsClient()
 
         # Setup Request
         name = client.service_account_path("[PROJECT]", "[SERVICE_ACCOUNT]")
@@ -90,7 +90,7 @@ class TestIAMCredentialsClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = credentials_v1.IAMCredentialsClient()
+            client = iam_credentials_v1.IAMCredentialsClient()
 
         # Setup request
         name = client.service_account_path("[PROJECT]", "[SERVICE_ACCOUNT]")
@@ -110,7 +110,7 @@ class TestIAMCredentialsClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = credentials_v1.IAMCredentialsClient()
+            client = iam_credentials_v1.IAMCredentialsClient()
 
         # Setup Request
         name = client.service_account_path("[PROJECT]", "[SERVICE_ACCOUNT]")
@@ -132,7 +132,7 @@ class TestIAMCredentialsClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = credentials_v1.IAMCredentialsClient()
+            client = iam_credentials_v1.IAMCredentialsClient()
 
         # Setup request
         name = client.service_account_path("[PROJECT]", "[SERVICE_ACCOUNT]")
@@ -153,7 +153,7 @@ class TestIAMCredentialsClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = credentials_v1.IAMCredentialsClient()
+            client = iam_credentials_v1.IAMCredentialsClient()
 
         # Setup Request
         name = client.service_account_path("[PROJECT]", "[SERVICE_ACCOUNT]")
@@ -173,7 +173,7 @@ class TestIAMCredentialsClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = credentials_v1.IAMCredentialsClient()
+            client = iam_credentials_v1.IAMCredentialsClient()
 
         # Setup request
         name = client.service_account_path("[PROJECT]", "[SERVICE_ACCOUNT]")
@@ -194,7 +194,7 @@ class TestIAMCredentialsClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = credentials_v1.IAMCredentialsClient()
+            client = iam_credentials_v1.IAMCredentialsClient()
 
         # Setup Request
         name = client.service_account_path("[PROJECT]", "[SERVICE_ACCOUNT]")
@@ -214,7 +214,7 @@ class TestIAMCredentialsClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = credentials_v1.IAMCredentialsClient()
+            client = iam_credentials_v1.IAMCredentialsClient()
 
         # Setup request
         name = client.service_account_path("[PROJECT]", "[SERVICE_ACCOUNT]")
