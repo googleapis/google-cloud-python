@@ -27,6 +27,7 @@ from google.protobuf import wrappers_pb2
 
 from google.cloud.firestore_v1beta1 import _helpers
 from google.cloud.firestore_v1beta1 import document
+from google.cloud.firestore_v1beta1 import field_path as field_path_module
 from google.cloud.firestore_v1beta1 import transforms
 from google.cloud.firestore_v1beta1.gapic import enums
 from google.cloud.firestore_v1beta1.proto import query_pb2
@@ -175,7 +176,7 @@ class Query(object):
         """
         field_paths = list(field_paths)
         for field_path in field_paths:
-            _helpers.split_field_path(field_path)  # raises
+            field_path_module.split_field_path(field_path)  # raises
 
         new_projection = query_pb2.StructuredQuery.Projection(
             fields=[
@@ -224,7 +225,7 @@ class Query(object):
             ValueError: If ``value`` is a NaN or :data:`None` and
                 ``op_string`` is not ``==``.
         """
-        _helpers.split_field_path(field_path)  # raises
+        field_path_module.split_field_path(field_path)  # raises
 
         if value is None:
             if op_string != _EQ_OP:
@@ -288,7 +289,7 @@ class Query(object):
             ValueError: If ``direction`` is not one of :attr:`ASCENDING` or
                 :attr:`DESCENDING`.
         """
-        _helpers.split_field_path(field_path)  # raises
+        field_path_module.split_field_path(field_path)  # raises
 
         order_pb = query_pb2.StructuredQuery.Order(
             field=query_pb2.StructuredQuery.FieldReference(field_path=field_path),
@@ -581,7 +582,7 @@ class Query(object):
             data = document_fields
             for order_key in order_keys:
                 try:
-                    values.append(_helpers.get_nested_value(order_key, data))
+                    values.append(field_path_module.get_nested_value(order_key, data))
                 except KeyError:
                     msg = _MISSING_ORDER_BY.format(order_key, data)
                     raise ValueError(msg)
