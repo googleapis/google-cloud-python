@@ -46,7 +46,7 @@ class TestQuery(unittest.TestCase):
         self.assertIsNone(query._start_at)
         self.assertIsNone(query._end_at)
 
-    def _make_one_all_fields(self, limit=9876, offset=12, skip_fields=()):
+    def _make_one_all_fields(self, limit=9876, offset=12, skip_fields=(), parent=None):
         kwargs = {
             "projection": mock.sentinel.projection,
             "field_filters": mock.sentinel.filters,
@@ -58,7 +58,9 @@ class TestQuery(unittest.TestCase):
         }
         for field in skip_fields:
             kwargs.pop(field)
-        return self._make_one(mock.sentinel.parent, **kwargs)
+        if parent is None:
+            parent = mock.sentinel.parent
+        return self._make_one(parent, **kwargs)
 
     def test_constructor_explicit(self):
         limit = 234
@@ -289,10 +291,22 @@ class TestQuery(unittest.TestCase):
         self._compare_queries(query2, query3, "_offset")
 
     @staticmethod
-    def _make_snapshot(values):
-        from google.cloud.firestore_v1beta1.document import DocumentSnapshot
+    def _make_collection(*path, **kw):
+        from google.cloud.firestore_v1beta1 import collection
 
-        return DocumentSnapshot(None, values, True, None, None, None)
+        return collection.CollectionReference(*path, **kw)
+
+    @staticmethod
+    def _make_docref(*path, **kw):
+        from google.cloud.firestore_v1beta1 import document
+
+        return document.DocumentReference(*path, **kw)
+
+    @staticmethod
+    def _make_snapshot(docref, values):
+        from google.cloud.firestore_v1beta1 import document
+
+        return document.DocumentSnapshot(docref, values, True, None, None, None)
 
     def test__cursor_helper_w_dict(self):
         values = {"a": 7, "b": "foo"}
@@ -349,15 +363,26 @@ class TestQuery(unittest.TestCase):
         self.assertIsNot(cursor, values)
         self.assertTrue(before)
 
-    def test__cursor_helper_w_snapshot(self):
-
+    def test__cursor_helper_w_snapshot_wrong_collection(self):
         values = {"a": 7, "b": "foo"}
-        snapshot = self._make_snapshot(values)
-        query1 = self._make_one(mock.sentinel.parent)
+        docref = self._make_docref("there", "doc_id")
+        snapshot = self._make_snapshot(docref, values)
+        collection = self._make_collection("here")
+        query = self._make_one(collection)
+
+        with self.assertRaises(ValueError):
+            query._cursor_helper(snapshot, False, False)
+
+    def test__cursor_helper_w_snapshot(self):
+        values = {"a": 7, "b": "foo"}
+        docref = self._make_docref("here", "doc_id")
+        snapshot = self._make_snapshot(docref, values)
+        collection = self._make_collection("here")
+        query1 = self._make_one(collection)
 
         query2 = query1._cursor_helper(snapshot, False, False)
 
-        self.assertIs(query2._parent, mock.sentinel.parent)
+        self.assertIs(query2._parent, collection)
         self.assertIsNone(query2._projection)
         self.assertEqual(query2._field_filters, ())
         self.assertEqual(query2._orders, ())
@@ -367,11 +392,12 @@ class TestQuery(unittest.TestCase):
 
         cursor, before = query2._end_at
 
-        self.assertEqual(cursor, values)
+        self.assertIs(cursor, snapshot)
         self.assertFalse(before)
 
     def test_start_at(self):
-        query1 = self._make_one_all_fields(skip_fields=("orders",))
+        collection = self._make_collection("here")
+        query1 = self._make_one_all_fields(parent=collection, skip_fields=("orders",))
         query2 = query1.order_by("hi")
 
         document_fields3 = {"hi": "mom"}
@@ -384,15 +410,17 @@ class TestQuery(unittest.TestCase):
         # Make sure it overrides.
         query4 = query3.order_by("bye")
         values5 = {"hi": "zap", "bye": 88}
-        document_fields5 = self._make_snapshot(values5)
+        docref = self._make_docref("here", "doc_id")
+        document_fields5 = self._make_snapshot(docref, values5)
         query5 = query4.start_at(document_fields5)
         self.assertIsNot(query5, query4)
         self.assertIsInstance(query5, self._get_target_class())
-        self.assertEqual(query5._start_at, (values5, True))
+        self.assertEqual(query5._start_at, (document_fields5, True))
         self._compare_queries(query4, query5, "_start_at")
 
     def test_start_after(self):
-        query1 = self._make_one_all_fields(skip_fields=("orders",))
+        collection = self._make_collection("here")
+        query1 = self._make_one_all_fields(parent=collection, skip_fields=("orders",))
         query2 = query1.order_by("down")
 
         document_fields3 = {"down": 99.75}
@@ -405,15 +433,17 @@ class TestQuery(unittest.TestCase):
         # Make sure it overrides.
         query4 = query3.order_by("out")
         values5 = {"down": 100.25, "out": b"\x00\x01"}
-        document_fields5 = self._make_snapshot(values5)
+        docref = self._make_docref("here", "doc_id")
+        document_fields5 = self._make_snapshot(docref, values5)
         query5 = query4.start_after(document_fields5)
         self.assertIsNot(query5, query4)
         self.assertIsInstance(query5, self._get_target_class())
-        self.assertEqual(query5._start_at, (values5, False))
+        self.assertEqual(query5._start_at, (document_fields5, False))
         self._compare_queries(query4, query5, "_start_at")
 
     def test_end_before(self):
-        query1 = self._make_one_all_fields(skip_fields=("orders",))
+        collection = self._make_collection("here")
+        query1 = self._make_one_all_fields(parent=collection, skip_fields=("orders",))
         query2 = query1.order_by("down")
 
         document_fields3 = {"down": 99.75}
@@ -426,15 +456,18 @@ class TestQuery(unittest.TestCase):
         # Make sure it overrides.
         query4 = query3.order_by("out")
         values5 = {"down": 100.25, "out": b"\x00\x01"}
-        document_fields5 = self._make_snapshot(values5)
+        docref = self._make_docref("here", "doc_id")
+        document_fields5 = self._make_snapshot(docref, values5)
         query5 = query4.end_before(document_fields5)
         self.assertIsNot(query5, query4)
         self.assertIsInstance(query5, self._get_target_class())
-        self.assertEqual(query5._end_at, (values5, True))
+        self.assertEqual(query5._end_at, (document_fields5, True))
+        self._compare_queries(query4, query5, "_end_at")
         self._compare_queries(query4, query5, "_end_at")
 
     def test_end_at(self):
-        query1 = self._make_one_all_fields(skip_fields=("orders",))
+        collection = self._make_collection("here")
+        query1 = self._make_one_all_fields(parent=collection, skip_fields=("orders",))
         query2 = query1.order_by("hi")
 
         document_fields3 = {"hi": "mom"}
@@ -447,11 +480,12 @@ class TestQuery(unittest.TestCase):
         # Make sure it overrides.
         query4 = query3.order_by("bye")
         values5 = {"hi": "zap", "bye": 88}
-        document_fields5 = self._make_snapshot(values5)
+        docref = self._make_docref("here", "doc_id")
+        document_fields5 = self._make_snapshot(docref, values5)
         query5 = query4.end_at(document_fields5)
         self.assertIsNot(query5, query4)
         self.assertIsInstance(query5, self._get_target_class())
-        self.assertEqual(query5._end_at, (values5, False))
+        self.assertEqual(query5._end_at, (document_fields5, False))
         self._compare_queries(query4, query5, "_end_at")
 
     def test__filters_pb_empty(self):
@@ -530,6 +564,67 @@ class TestQuery(unittest.TestCase):
         query = self._make_one(mock.sentinel.parent)
         self.assertIs(query._normalize_projection(projection), projection)
 
+    def test__normalize_orders_wo_orders_wo_cursors(self):
+        query = self._make_one(mock.sentinel.parent)
+        expected = []
+        self.assertEqual(query._normalize_orders(), expected)
+
+    def test__normalize_orders_w_orders_wo_cursors(self):
+        query = self._make_one(mock.sentinel.parent).order_by("a")
+        expected = [query._make_order("a", "ASCENDING")]
+        self.assertEqual(query._normalize_orders(), expected)
+
+    def test__normalize_orders_wo_orders_w_snapshot_cursor(self):
+        values = {"a": 7, "b": "foo"}
+        docref = self._make_docref("here", "doc_id")
+        snapshot = self._make_snapshot(docref, values)
+        collection = self._make_collection("here")
+        query = self._make_one(collection).start_at(snapshot)
+        expected = [query._make_order("__name__", "ASCENDING")]
+        self.assertEqual(query._normalize_orders(), expected)
+
+    def test__normalize_orders_w_name_orders_w_snapshot_cursor(self):
+        values = {"a": 7, "b": "foo"}
+        docref = self._make_docref("here", "doc_id")
+        snapshot = self._make_snapshot(docref, values)
+        collection = self._make_collection("here")
+        query = (
+            self._make_one(collection)
+            .order_by("__name__", "DESCENDING")
+            .start_at(snapshot)
+        )
+        expected = [query._make_order("__name__", "DESCENDING")]
+        self.assertEqual(query._normalize_orders(), expected)
+
+    def test__normalize_orders_wo_orders_w_snapshot_cursor_w_neq_exists(self):
+        values = {"a": 7, "b": "foo"}
+        docref = self._make_docref("here", "doc_id")
+        snapshot = self._make_snapshot(docref, values)
+        collection = self._make_collection("here")
+        query = (
+            self._make_one(collection)
+            .where("c", "<=", 20)
+            .order_by("c", "DESCENDING")
+            .start_at(snapshot)
+        )
+        expected = [
+            query._make_order("c", "DESCENDING"),
+            query._make_order("__name__", "DESCENDING"),
+        ]
+        self.assertEqual(query._normalize_orders(), expected)
+
+    def test__normalize_orders_wo_orders_w_snapshot_cursor_w_neq_where(self):
+        values = {"a": 7, "b": "foo"}
+        docref = self._make_docref("here", "doc_id")
+        snapshot = self._make_snapshot(docref, values)
+        collection = self._make_collection("here")
+        query = self._make_one(collection).where("c", "<=", 20).end_at(snapshot)
+        expected = [
+            query._make_order("c", "ASCENDING"),
+            query._make_order("__name__", "ASCENDING"),
+        ]
+        self.assertEqual(query._normalize_orders(), expected)
+
     def test__normalize_cursor_none(self):
         query = self._make_one(mock.sentinel.parent)
         self.assertIsNone(query._normalize_cursor(None, query._orders))
@@ -600,6 +695,16 @@ class TestQuery(unittest.TestCase):
     def test__normalize_cursor_as_dict_hit(self):
         cursor = ({"b": 1}, True)
         query = self._make_one(mock.sentinel.parent).order_by("b", "ASCENDING")
+
+        self.assertEqual(query._normalize_cursor(cursor, query._orders), ([1], True))
+
+    def test__normalize_cursor_as_snapshot_hit(self):
+        values = {"b": 1}
+        docref = self._make_docref("here", "doc_id")
+        snapshot = self._make_snapshot(docref, values)
+        cursor = (snapshot, True)
+        collection = self._make_collection("here")
+        query = self._make_one(collection).order_by("b", "ASCENDING")
 
         self.assertEqual(query._normalize_cursor(cursor, query._orders), ([1], True))
 
@@ -1205,6 +1310,10 @@ class Test__enum_from_direction(unittest.TestCase):
         dir_class = enums.StructuredQuery.Direction
         self.assertEqual(self._call_fut(Query.ASCENDING), dir_class.ASCENDING)
         self.assertEqual(self._call_fut(Query.DESCENDING), dir_class.DESCENDING)
+
+        # Ints pass through
+        self.assertEqual(self._call_fut(dir_class.ASCENDING), dir_class.ASCENDING)
+        self.assertEqual(self._call_fut(dir_class.DESCENDING), dir_class.DESCENDING)
 
     def test_failure(self):
         with self.assertRaises(ValueError):
