@@ -30,7 +30,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     package="google.cloud.automl.v1beta1",
     syntax="proto3",
     serialized_pb=_b(
-        '\n8google/cloud/automl_v1beta1/proto/model_evaluation.proto\x12\x1bgoogle.cloud.automl.v1beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x36google/cloud/automl_v1beta1/proto/classification.proto\x1a\x33google/cloud/automl_v1beta1/proto/translation.proto\x1a\x1fgoogle/protobuf/timestamp.proto"\xe8\x02\n\x0fModelEvaluation\x12i\n!classification_evaluation_metrics\x18\x08 \x01(\x0b\x32<.google.cloud.automl.v1beta1.ClassificationEvaluationMetricsH\x00\x12\x63\n\x1etranslation_evaluation_metrics\x18\t \x01(\x0b\x32\x39.google.cloud.automl.v1beta1.TranslationEvaluationMetricsH\x00\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x1a\n\x12\x61nnotation_spec_id\x18\x02 \x01(\t\x12/\n\x0b\x63reate_time\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x1f\n\x17\x65valuated_example_count\x18\x06 \x01(\x05\x42\t\n\x07metricsBf\n\x1f\x63om.google.cloud.automl.v1beta1P\x01ZAgoogle.golang.org/genproto/googleapis/cloud/automl/v1beta1;automlb\x06proto3'
+        '\n8google/cloud/automl_v1beta1/proto/model_evaluation.proto\x12\x1bgoogle.cloud.automl.v1beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x36google/cloud/automl_v1beta1/proto/classification.proto\x1a\x33google/cloud/automl_v1beta1/proto/translation.proto\x1a\x1fgoogle/protobuf/timestamp.proto"\xe8\x02\n\x0fModelEvaluation\x12i\n!classification_evaluation_metrics\x18\x08 \x01(\x0b\x32<.google.cloud.automl.v1beta1.ClassificationEvaluationMetricsH\x00\x12\x63\n\x1etranslation_evaluation_metrics\x18\t \x01(\x0b\x32\x39.google.cloud.automl.v1beta1.TranslationEvaluationMetricsH\x00\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x1a\n\x12\x61nnotation_spec_id\x18\x02 \x01(\t\x12/\n\x0b\x63reate_time\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x1f\n\x17\x65valuated_example_count\x18\x06 \x01(\x05\x42\t\n\x07metricsB\x84\x01\n\x1f\x63om.google.cloud.automl.v1beta1P\x01ZAgoogle.golang.org/genproto/googleapis/cloud/automl/v1beta1;automl\xca\x02\x1bGoogle\\Cloud\\AutoMl\\V1beta1b\x06proto3'
     ),
     dependencies=[
         google_dot_api_dot_annotations__pb2.DESCRIPTOR,
@@ -247,7 +247,7 @@ DESCRIPTOR.has_options = True
 DESCRIPTOR._options = _descriptor._ParseOptions(
     descriptor_pb2.FileOptions(),
     _b(
-        "\n\037com.google.cloud.automl.v1beta1P\001ZAgoogle.golang.org/genproto/googleapis/cloud/automl/v1beta1;automl"
+        "\n\037com.google.cloud.automl.v1beta1P\001ZAgoogle.golang.org/genproto/googleapis/cloud/automl/v1beta1;automl\312\002\033Google\\Cloud\\AutoMl\\V1beta1"
     ),
 )
 # @@protoc_insertion_point(module_scope)

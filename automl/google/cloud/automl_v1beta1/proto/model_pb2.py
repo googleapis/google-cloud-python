@@ -33,7 +33,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     package="google.cloud.automl.v1beta1",
     syntax="proto3",
     serialized_pb=_b(
-        '\n-google/cloud/automl_v1beta1/proto/model.proto\x12\x1bgoogle.cloud.automl.v1beta1\x1a\x1cgoogle/api/annotations.proto\x1a-google/cloud/automl_v1beta1/proto/image.proto\x1a,google/cloud/automl_v1beta1/proto/text.proto\x1a\x33google/cloud/automl_v1beta1/proto/translation.proto\x1a\x1fgoogle/protobuf/timestamp.proto"\x8b\x05\n\x05Model\x12l\n#image_classification_model_metadata\x18\r \x01(\x0b\x32=.google.cloud.automl.v1beta1.ImageClassificationModelMetadataH\x00\x12j\n"text_classification_model_metadata\x18\x0e \x01(\x0b\x32<.google.cloud.automl.v1beta1.TextClassificationModelMetadataH\x00\x12[\n\x1atranslation_model_metadata\x18\x0f \x01(\x0b\x32\x35.google.cloud.automl.v1beta1.TranslationModelMetadataH\x00\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x02 \x01(\t\x12\x12\n\ndataset_id\x18\x03 \x01(\t\x12/\n\x0b\x63reate_time\x18\x07 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12/\n\x0bupdate_time\x18\x0b \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12L\n\x10\x64\x65ployment_state\x18\x08 \x01(\x0e\x32\x32.google.cloud.automl.v1beta1.Model.DeploymentState"Q\n\x0f\x44\x65ploymentState\x12 \n\x1c\x44\x45PLOYMENT_STATE_UNSPECIFIED\x10\x00\x12\x0c\n\x08\x44\x45PLOYED\x10\x01\x12\x0e\n\nUNDEPLOYED\x10\x02\x42\x10\n\x0emodel_metadataBf\n\x1f\x63om.google.cloud.automl.v1beta1P\x01ZAgoogle.golang.org/genproto/googleapis/cloud/automl/v1beta1;automlb\x06proto3'
+        '\n-google/cloud/automl_v1beta1/proto/model.proto\x12\x1bgoogle.cloud.automl.v1beta1\x1a\x1cgoogle/api/annotations.proto\x1a-google/cloud/automl_v1beta1/proto/image.proto\x1a,google/cloud/automl_v1beta1/proto/text.proto\x1a\x33google/cloud/automl_v1beta1/proto/translation.proto\x1a\x1fgoogle/protobuf/timestamp.proto"\x8b\x05\n\x05Model\x12l\n#image_classification_model_metadata\x18\r \x01(\x0b\x32=.google.cloud.automl.v1beta1.ImageClassificationModelMetadataH\x00\x12j\n"text_classification_model_metadata\x18\x0e \x01(\x0b\x32<.google.cloud.automl.v1beta1.TextClassificationModelMetadataH\x00\x12[\n\x1atranslation_model_metadata\x18\x0f \x01(\x0b\x32\x35.google.cloud.automl.v1beta1.TranslationModelMetadataH\x00\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x02 \x01(\t\x12\x12\n\ndataset_id\x18\x03 \x01(\t\x12/\n\x0b\x63reate_time\x18\x07 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12/\n\x0bupdate_time\x18\x0b \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12L\n\x10\x64\x65ployment_state\x18\x08 \x01(\x0e\x32\x32.google.cloud.automl.v1beta1.Model.DeploymentState"Q\n\x0f\x44\x65ploymentState\x12 \n\x1c\x44\x45PLOYMENT_STATE_UNSPECIFIED\x10\x00\x12\x0c\n\x08\x44\x45PLOYED\x10\x01\x12\x0e\n\nUNDEPLOYED\x10\x02\x42\x10\n\x0emodel_metadataB\x84\x01\n\x1f\x63om.google.cloud.automl.v1beta1P\x01ZAgoogle.golang.org/genproto/googleapis/cloud/automl/v1beta1;automl\xca\x02\x1bGoogle\\Cloud\\AutoMl\\V1beta1b\x06proto3'
     ),
     dependencies=[
         google_dot_api_dot_annotations__pb2.DESCRIPTOR,
@@ -356,7 +356,7 @@ DESCRIPTOR.has_options = True
 DESCRIPTOR._options = _descriptor._ParseOptions(
     descriptor_pb2.FileOptions(),
     _b(
-        "\n\037com.google.cloud.automl.v1beta1P\001ZAgoogle.golang.org/genproto/googleapis/cloud/automl/v1beta1;automl"
+        "\n\037com.google.cloud.automl.v1beta1P\001ZAgoogle.golang.org/genproto/googleapis/cloud/automl/v1beta1;automl\312\002\033Google\\Cloud\\AutoMl\\V1beta1"
     ),
 )
 # @@protoc_insertion_point(module_scope)
