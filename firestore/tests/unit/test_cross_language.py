@@ -84,6 +84,12 @@ _LISTEN_TESTPROTOS = [
     if test_proto.WhichOneof("test") == "listen"
 ]
 
+_QUERY_TESTPROTOS = [
+    test_proto
+    for test_proto in ALL_TESTPROTOS
+    if test_proto.WhichOneof("test") == "query"
+]
+
 
 def _mock_firestore_api():
     firestore_api = mock.Mock(spec=["commit"])
@@ -201,8 +207,21 @@ def test_delete_testprotos(test_proto):
 
 @pytest.mark.skip(reason="Watch aka listen not yet implemented in Python.")
 @pytest.mark.parametrize("test_proto", _LISTEN_TESTPROTOS)
-def test_listen_paths_testprotos(test_proto):  # pragma: NO COVER
+def test_listen_testprotos(test_proto):  # pragma: NO COVER
     pass
+
+
+@pytest.mark.parametrize("test_proto", _QUERY_TESTPROTOS)
+def test_query_testprotos(test_proto):  # pragma: NO COVER
+    testcase = test_proto.query
+    if testcase.is_error:
+        with pytest.raises(Exception):
+            query = parse_query(testcase)
+            query._to_protobuf()
+    else:
+        query = parse_query(testcase)
+        found = query._to_protobuf()
+        assert found == testcase.query
 
 
 def convert_data(v):
@@ -225,6 +244,8 @@ def convert_data(v):
         return [convert_data(e) for e in v]
     elif isinstance(v, dict):
         return {k: convert_data(v2) for k, v2 in v.items()}
+    elif v == "NaN":
+        return float(v)
     else:
         return v
 
@@ -249,3 +270,106 @@ def convert_precondition(precond):
 
     assert precond.HasField("update_time")
     return Client.write_option(last_update_time=precond.update_time)
+
+
+def parse_query(testcase):
+    # 'query' testcase contains:
+    # - 'coll_path':  collection ref path.
+    # - 'clauses':  array of one or more 'Clause' elements
+    # - 'query': the actual google.firestore.v1beta1.StructuredQuery message
+    #            to be constructed.
+    # - 'is_error' (as other testcases).
+    #
+    # 'Clause' elements are unions of:
+    # - 'select':  [field paths]
+    # - 'where': (field_path, op, json_value)
+    # - 'order_by': (field_path, direction)
+    # - 'offset': int
+    # - 'limit': int
+    # - 'start_at': 'Cursor'
+    # - 'start_after': 'Cursor'
+    # - 'end_at': 'Cursor'
+    # - 'end_before': 'Cursor'
+    #
+    # 'Cursor' contains either:
+    # - 'doc_snapshot': 'DocSnapshot'
+    # - 'json_values': [string]
+    #
+    # 'DocSnapshot' contains:
+    # 'path': str
+    # 'json_data': str
+    from google.auth.credentials import Credentials
+    from google.cloud.firestore_v1beta1 import Client
+    from google.cloud.firestore_v1beta1 import Query
+
+    _directions = {"asc": Query.ASCENDING, "desc": Query.DESCENDING}
+
+    credentials = mock.create_autospec(Credentials)
+    client = Client("projectID", credentials)
+    path = parse_path(testcase.coll_path)
+    collection = client.collection(*path)
+    query = collection
+
+    for clause in testcase.clauses:
+        kind = clause.WhichOneof("clause")
+
+        if kind == "select":
+            field_paths = [
+                ".".join(field_path.field) for field_path in clause.select.fields
+            ]
+            query = query.select(field_paths)
+        elif kind == "where":
+            path = ".".join(clause.where.path.field)
+            value = convert_data(json.loads(clause.where.json_value))
+            query = query.where(path, clause.where.op, value)
+        elif kind == "order_by":
+            path = ".".join(clause.order_by.path.field)
+            direction = clause.order_by.direction
+            direction = _directions.get(direction, direction)
+            query = query.order_by(path, direction=direction)
+        elif kind == "offset":
+            query = query.offset(clause.offset)
+        elif kind == "limit":
+            query = query.limit(clause.limit)
+        elif kind == "start_at":
+            cursor = parse_cursor(clause.start_at, client)
+            query = query.start_at(cursor)
+        elif kind == "start_after":
+            cursor = parse_cursor(clause.start_after, client)
+            query = query.start_after(cursor)
+        elif kind == "end_at":
+            cursor = parse_cursor(clause.end_at, client)
+            query = query.end_at(cursor)
+        elif kind == "end_before":
+            cursor = parse_cursor(clause.end_before, client)
+            query = query.end_before(cursor)
+        else:  # pragma: NO COVER
+            raise ValueError("Unknown query clause: {}".format(kind))
+
+    return query
+
+
+def parse_path(path):
+    _, relative = path.split("documents/")
+    return relative.split("/")
+
+
+def parse_cursor(cursor, client):
+    from google.cloud.firestore_v1beta1 import DocumentReference
+    from google.cloud.firestore_v1beta1 import DocumentSnapshot
+
+    if cursor.HasField("doc_snapshot"):
+        path = parse_path(cursor.doc_snapshot.path)
+        doc_ref = DocumentReference(*path, client=client)
+
+        return DocumentSnapshot(
+            reference=doc_ref,
+            data=json.loads(cursor.doc_snapshot.json_data),
+            exists=True,
+            read_time=None,
+            create_time=None,
+            update_time=None,
+        )
+
+    values = [json.loads(value) for value in cursor.json_values]
+    return convert_data(values)
