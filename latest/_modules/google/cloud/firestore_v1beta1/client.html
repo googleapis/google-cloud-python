@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.firestore_v1beta1.client &#8212; google-cloud 54991de documentation</title>
+    <title>google.cloud.firestore_v1beta1.client &#8212; google-cloud 242e407 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -66,6 +66,7 @@
 <span class="kn">from</span> <span class="nn">google.cloud.firestore_v1beta1.collection</span> <span class="k">import</span> <span class="n">CollectionReference</span>
 <span class="kn">from</span> <span class="nn">google.cloud.firestore_v1beta1.document</span> <span class="k">import</span> <span class="n">DocumentReference</span>
 <span class="kn">from</span> <span class="nn">google.cloud.firestore_v1beta1.document</span> <span class="k">import</span> <span class="n">DocumentSnapshot</span>
+<span class="kn">from</span> <span class="nn">google.cloud.firestore_v1beta1.field_path</span> <span class="k">import</span> <span class="n">render_field_path</span>
 <span class="kn">from</span> <span class="nn">google.cloud.firestore_v1beta1.gapic</span> <span class="k">import</span> <span class="n">firestore_client</span>
 <span class="kn">from</span> <span class="nn">google.cloud.firestore_v1beta1.transaction</span> <span class="k">import</span> <span class="n">Transaction</span>
 
@@ -278,7 +279,7 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            str: The ``.``-delimited field path.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">get_field_path</span><span class="p">(</span><span class="n">field_names</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">render_field_path</span><span class="p">(</span><span class="n">field_names</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Client.write_option"><a class="viewcode-back" href="../../../../firestore/client.html#google.cloud.firestore_v1beta1.client.Client.write_option">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">write_option</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
