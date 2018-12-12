@@ -60,5 +60,6 @@ setup(
     description='System test utilities for google-cloud-python',
     packages=find_packages(),
     install_requires=REQUIREMENTS,
+    python_requires='>=2.7,!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*',
     **SETUP_BASE
 )
