@@ -1,26 +1,38 @@
 {
+  "updateTime": "2018-12-11T13:11:18.249446Z",
   "sources": [
+    {
+      "generator": {
+        "name": "artman",
+        "version": "0.16.2",
+        "dockerImage": "googleapis/artman@sha256:2f6b261ee7fe1aedf238991c93a20b3820de37a343d0cacf3e3e9555c2aaf2ea"
+      }
+    },
     {
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "5a57f0c13a358b2b15452bf2d67453774a5f6d4f",
-        "internalRef": "221837528"
+        "sha": "bbafa41feac6aff3b08a54fb4adc35afa64a503d",
+        "internalRef": "224940619"
       }
     },
     {
-      "git": {
-        "name": "googleapis-private",
-        "remote": "https://github.com/googleapis/googleapis-private.git",
-        "sha": "6aa8e1a447bb8d0367150356a28cb4d3f2332641",
-        "internalRef": "221340946"
+      "template": {
+        "name": "python_library",
+        "origin": "synthtool.gcp",
+        "version": "2018.12.6"
       }
-    },
+    }
+  ],
+  "destinations": [
     {
-      "generator": {
-        "name": "artman",
-        "version": "0.16.0",
-        "dockerImage": "googleapis/artman@sha256:90f9d15e9bad675aeecd586725bce48f5667ffe7d5fc4d1e96d51ff34304815b"
+      "client": {
+        "source": "googleapis",
+        "apiName": "automl",
+        "apiVersion": "v1beta1",
+        "language": "python",
+        "generator": "gapic",
+        "config": "google/cloud/automl/artman_automl_v1beta1.yaml"
       }
     }
   ]
