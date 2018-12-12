@@ -47,9 +47,9 @@ def stub():
 def lookup(key):
     """Lookup one NDB entity by key."""
     state = _runstate.current()
-    request = datastore_pb2.LookupRequest(project_id=state.project)
-    key_pb = request.keys.add()
-    key_pb.CopyFrom(key._key.to_protobuf())
+    request = datastore_pb2.LookupRequest(
+        project_id=state.project,
+        keys=[key._key.to_protobuf()])
 
     api = stub()
     return api.Lookup.future(request)

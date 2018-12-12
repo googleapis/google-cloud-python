@@ -15,7 +15,6 @@
 """A Future class."""
 
 
-
 class Future:
     """A future that waits on one or more gRPC futures.
 
