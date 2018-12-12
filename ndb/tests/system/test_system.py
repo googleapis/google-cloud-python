@@ -11,23 +11,42 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
+import pytest
+
 from google.cloud import datastore
 from google.cloud import ndb
 
 
-def test_retrieve_entity():
-    ds_client = datastore.Client()
-    ds_key = ds_client.key("SomeKind", 1234)
-    ds_entity = datastore.Entity(key=ds_key)
-    ds_entity.update({"foo": 42, "bar": "none"})
-    ds_client.put(ds_entity)
+@pytest.fixture
+def ds_entity():
+    keys = []
+    client = datastore.Client()
+
+    def make_entity(*key_args, **entity_kwargs):
+        key = client.key(*key_args)
+        assert client.get(key) is None
+        entity = datastore.Entity(key=key)
+        entity.update(entity_kwargs)
+        client.put(entity)
+
+        keys.append(key)
+        return entity
+
+    yield make_entity
+
+    for key in keys:
+        client.delete(key)
+
+
+def test_retrieve_entity(ds_entity):
+    ds_entity("SomeKind", 1234, foo=42, bar="none")
 
     class SomeKind(ndb.Model):
         foo = ndb.IntegerProperty()
         bar = ndb.StringProperty()
 
     client = ndb.Client()
-
     with client.context():
         key = ndb.Key("SomeKind", 1234)
         entity = key.get()
