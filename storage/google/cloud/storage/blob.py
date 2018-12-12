@@ -1536,11 +1536,9 @@ class Blob(_PropertyMixin):
         self._patch_property('storageClass', new_class)
 
         # Execute consecutive rewrite operations until operation is done
-        token = None
-        while True:
+        token, _, _ = self.rewrite(self)
+        while token is not None:
             token, _, _ = self.rewrite(self, token=token)
-            if token is None:
-                break
 
     cache_control = _scalar_property("cacheControl")
     """HTTP 'Cache-Control' header for this object.
