@@ -10,6 +10,7 @@ API Reference
   client
   collection
   document
+  field_path
   query
   batch
   transaction
