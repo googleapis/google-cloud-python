@@ -76,6 +76,31 @@ class TestCollectionReference(unittest.TestCase):
         with self.assertRaises(TypeError):
             self._make_one("Coh-lek-shun", donut=True)
 
+    def test___eq___other_type(self):
+        client = mock.sentinel.client
+        collection = self._make_one("name", client=client)
+        other = object()
+        self.assertFalse(collection == other)
+
+    def test___eq___different_path_same_client(self):
+        client = mock.sentinel.client
+        collection = self._make_one("name", client=client)
+        other = self._make_one("other", client=client)
+        self.assertFalse(collection == other)
+
+    def test___eq___same_path_different_client(self):
+        client = mock.sentinel.client
+        other_client = mock.sentinel.other_client
+        collection = self._make_one("name", client=client)
+        other = self._make_one("name", client=other_client)
+        self.assertFalse(collection == other)
+
+    def test___eq___same_path_same_client(self):
+        client = mock.sentinel.client
+        collection = self._make_one("name", client=client)
+        other = self._make_one("name", client=client)
+        self.assertTrue(collection == other)
+
     def test_id_property(self):
         collection_id = "hi-bob"
         collection = self._make_one(collection_id)
