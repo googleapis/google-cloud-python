@@ -242,7 +242,8 @@ class TestDocumentReference(unittest.TestCase):
         snapshot.exists = True
         document_reference.get.return_value = snapshot
         firestore_api.commit.return_value = self._make_commit_repsonse(
-            write_results=[document_reference])
+            write_results=[document_reference]
+        )
 
         # Attach the fake GAPIC to a real client.
         client = _make_client("dignity")
