@@ -700,13 +700,15 @@ class TestStoragePseudoHierarchy(TestStorageFiles):
         self.assertEqual(iterator.prefixes, set())
 
 
-@unittest.skipUnless(
-    type(storage.Client()._credentials) is google.oauth2.service_account.credentials,
-    "Can only test signing with credentials capable of signing",
-)
 class TestStorageSignURLs(TestStorageFiles):
     def setUp(self):
         super(TestStorageSignURLs, self).setUp()
+
+        if (
+            type(storage.Client()._credentials)
+            is not google.oauth2.service_account.credentials
+        ):
+            self.skipTest("Signing tests requires a service account credential")
 
         logo_path = self.FILES["logo"]["path"]
         with open(logo_path, "rb") as file_obj:
@@ -969,7 +971,6 @@ class TestStorageRewrite(TestStorageFiles):
 
 
 class TestStorageUpdateStorageClass(TestStorageFiles):
-
     def test_update_storage_class_small_file(self):
         blob = self.bucket.blob("SmallFile")
 
