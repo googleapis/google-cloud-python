@@ -191,10 +191,18 @@ class Client(ClientWithProject):
         See `RPC docs`_.
 
         :type page_size: int
-        :param page_size: (Optional) Maximum number of results to return.
+        :param page_size:
+            Optional. The maximum number of configs in each page of results
+            from this request. Non-positive values are ignored. Defaults
+            to a sensible value set by the API.
 
         :type page_token: str
-        :param page_token: (Optional) Token for fetching next page of results.
+        :param page_token:
+            Optional. If present, return the next batch of configs, using
+            the value, which must correspond to the ``nextPageToken`` value
+            returned in the previous response.  Deprecated: use the ``pages``
+            property of the returned iterator instead of manually passing
+            the token.
 
         :rtype: :class:`~google.api_core.page_iterator.Iterator`
         :returns:
@@ -256,10 +264,18 @@ class Client(ClientWithProject):
                         the ``ListInstancesRequest`` docs above for examples.
 
         :type page_size: int
-        :param page_size: (Optional) Maximum number of results to return.
+        :param page_size:
+            Optional. The maximum number of instances in each page of results
+            from this request. Non-positive values are ignored. Defaults
+            to a sensible value set by the API.
 
         :type page_token: str
-        :param page_token: (Optional) Token for fetching next page of results.
+        :param page_token:
+            Optional. If present, return the next batch of instances, using
+            the value, which must correspond to the ``nextPageToken`` value
+            returned in the previous response.  Deprecated: use the ``pages``
+            property of the returned iterator instead of manually passing
+            the token.
 
         :rtype: :class:`~google.api_core.page_iterator.Iterator`
         :returns:

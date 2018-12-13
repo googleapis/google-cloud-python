@@ -338,10 +338,18 @@ class Instance(object):
         https://cloud.google.com/spanner/reference/rpc/google.spanner.admin.database.v1#google.spanner.admin.database.v1.DatabaseAdmin.ListDatabases
 
         :type page_size: int
-        :param page_size: (Optional) Maximum number of results to return.
+        :param page_size:
+            Optional. The maximum number of databases in each page of results
+            from this request. Non-positive values are ignored. Defaults
+            to a sensible value set by the API.
 
         :type page_token: str
-        :param page_token: (Optional) Token for fetching next page of results.
+        :param page_token:
+            Optional. If present, return the next batch of databases, using
+            the value, which must correspond to the ``nextPageToken`` value
+            returned in the previous response.  Deprecated: use the ``pages``
+            property of the returned iterator instead of manually passing
+            the token.
 
         :rtype: :class:`~google.api._ore.page_iterator.Iterator`
         :returns:
