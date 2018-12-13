@@ -59,6 +59,13 @@ s.replace(
     "from google\.iam\.credentials\.v1 import iamcredentials_pb2_grpc",
     "from google.cloud.iam_credentials_v1.proto import iamcredentials_pb2_grpc"
 )
+
+s.replace(
+    "google/cloud/iam_credentials_v1/proto/common_pb2.py",
+    "\"\"\"Attributes:\n",
+    "\"\"\"\nAttributes:\n"
+)
+
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
