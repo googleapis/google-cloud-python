@@ -4,6 +4,30 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
+## 1.8.0
+
+12-10-2018 12:39 PST
+
+
+### Implementation Changes
+- Add option to use BQ Storage API with `to_dataframe` ([#6854](https://github.com/googleapis/google-cloud-python/pull/6854))
+- Fix exception type in comment ([#6847](https://github.com/googleapis/google-cloud-python/pull/6847))
+- Add `to_bqstorage` to convert from Table[Reference] google-cloud-bigquery-storage reference ([#6840](https://github.com/googleapis/google-cloud-python/pull/6840))
+- Import `iam.policy` from `google.api_core`. ([#6741](https://github.com/googleapis/google-cloud-python/pull/6741))
+- Add avro logical type control for load jobs. ([#6827](https://github.com/googleapis/google-cloud-python/pull/6827))
+- Allow setting partition expiration to 'None'. ([#6823](https://github.com/googleapis/google-cloud-python/pull/6823))
+- Add `retry` argument to `_AsyncJob.result`. ([#6302](https://github.com/googleapis/google-cloud-python/pull/6302))
+
+### Dependencies
+- Update dependency to google-cloud-core ([#6835](https://github.com/googleapis/google-cloud-python/pull/6835))
+
+### Documentation
+- Add avro load samples ([#6832](https://github.com/googleapis/google-cloud-python/pull/6832))
+
+### Internal / Testing Changes
+- Blacken libraries ([#6794](https://github.com/googleapis/google-cloud-python/pull/6794))
+- Fix copy/paste typos in noxfile comments ([#6831](https://github.com/googleapis/google-cloud-python/pull/6831))
+
 ## 1.7.0
 
 11-05-2018 16:41 PST

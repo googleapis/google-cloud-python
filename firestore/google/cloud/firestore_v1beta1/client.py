@@ -31,6 +31,7 @@ from google.cloud.firestore_v1beta1.batch import WriteBatch
 from google.cloud.firestore_v1beta1.collection import CollectionReference
 from google.cloud.firestore_v1beta1.document import DocumentReference
 from google.cloud.firestore_v1beta1.document import DocumentSnapshot
+from google.cloud.firestore_v1beta1.field_path import render_field_path
 from google.cloud.firestore_v1beta1.gapic import firestore_client
 from google.cloud.firestore_v1beta1.transaction import Transaction
 
@@ -243,7 +244,7 @@ class Client(ClientWithProject):
         Returns:
             str: The ``.``-delimited field path.
         """
-        return _helpers.get_field_path(field_names)
+        return render_field_path(field_names)
 
     @staticmethod
     def write_option(**kwargs):
