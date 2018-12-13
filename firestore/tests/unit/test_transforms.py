@@ -37,10 +37,29 @@ class Test_ValueList(unittest.TestCase):
 
     def test_ctor_w_non_empty_list(self):
         values = ["phred", "bharney"]
-        union = self._make_one(values)
-        self.assertEqual(union.values, values)
+        inst = self._make_one(values)
+        self.assertEqual(inst.values, values)
 
     def test_ctor_w_non_empty_tuple(self):
         values = ("phred", "bharney")
-        union = self._make_one(values)
-        self.assertEqual(union.values, list(values))
+        inst = self._make_one(values)
+        self.assertEqual(inst.values, list(values))
+
+    def test___eq___other_type(self):
+        values = ("phred", "bharney")
+        inst = self._make_one(values)
+        other = object()
+        self.assertFalse(inst == other)
+
+    def test___eq___different_values(self):
+        values = ("phred", "bharney")
+        other_values = ("wylma", "bhetty")
+        inst = self._make_one(values)
+        other = self._make_one(other_values)
+        self.assertFalse(inst == other)
+
+    def test___eq___same_values(self):
+        values = ("phred", "bharney")
+        inst = self._make_one(values)
+        other = self._make_one(values)
+        self.assertTrue(inst == other)
