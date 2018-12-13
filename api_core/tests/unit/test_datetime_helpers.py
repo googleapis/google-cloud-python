@@ -18,6 +18,7 @@ import pytest
 import pytz
 
 from google.api_core import datetime_helpers
+from google.protobuf import timestamp_pb2
 
 
 ONE_MINUTE_IN_MICROSECONDS = 60 * 1e6
@@ -247,3 +248,20 @@ class Test_DateTimeWithNanos(object):
         )
         stamp = datetime_helpers.DatetimeWithNanoseconds.from_rfc3339(timestamp)
         assert stamp == expected
+
+    @staticmethod
+    def test_timestamp_pb_wo_nanos_naive():
+        stamp = datetime_helpers.DatetimeWithNanoseconds(
+            2016, 12, 20, 21, 13, 47, 123456)
+        delta = stamp.replace(tzinfo=pytz.UTC) - datetime_helpers._UTC_EPOCH
+        timestamp = timestamp_pb2.Timestamp(seconds=delta.seconds)
+        assert stamp.timestamp_pb() == timestamp
+
+    @staticmethod
+    def test_timestamp_pb_w_nanos():
+        stamp = datetime_helpers.DatetimeWithNanoseconds(
+            2016, 12, 20, 21, 13, 47, nanosecond=123456789, tzinfo=pytz.UTC
+        )
+        delta = stamp - datetime_helpers._UTC_EPOCH
+        timestamp = timestamp_pb2.Timestamp(seconds=delta.seconds, nanos=123456789)
+        assert stamp.timestamp_pb() == timestamp
