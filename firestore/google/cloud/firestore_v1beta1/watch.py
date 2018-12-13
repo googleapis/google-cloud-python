@@ -396,7 +396,7 @@ class Watch(object):
 
         # TODO: Consider surfacing a code property on the exception.
         # TODO: Consider a more exact exception
-        raise Exception("Error %s:  %s" % (code, message))
+        raise AssertionError("Error %s:  %s" % (code, message))
 
     def _on_snapshot_target_change_reset(self, proto):
         # Whatever changes have happened so far no longer matter.

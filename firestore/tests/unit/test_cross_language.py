@@ -242,10 +242,21 @@ def test_listen_testprotos(test_proto):  # pragma: NO COVER
                 )
                 watch._firestore._database_string_internal = 'projects/projectID/databases/(default)' # conformance data has db string as this
 
-                for proto in testcase.responses:
-                    watch.on_snapshot(proto)
+                if testcase.is_error:
+                    try:
+                        for proto in testcase.responses:
+                            watch.on_snapshot(proto)
+                    except AssertionError:
+                        # listen-target-add-wrong-id.textpro
+                        # listen-target-remove.textpro
+                        pass
 
-                assert(len(snapshots) == len(testcase.snapshots))
+
+                else:
+                    for proto in testcase.responses:
+                        watch.on_snapshot(proto)
+
+                    assert(len(snapshots) == len(testcase.snapshots))
 
     # TODO:  assert that the API's 'listen' method was called appropriately.
     #firestore_api.listen.assert_called_once_with(
