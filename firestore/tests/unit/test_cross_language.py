@@ -233,12 +233,12 @@ def test_listen_testprotos(test_proto):  # pragma: NO COVER
                 def callback(keys, applied_changes, read_time):
                     snapshots.append((keys, applied_changes, read_time))
 
-                document = client.document('documents', 'C')
-                watch = Watch.for_document(
-                    document,
+                query = DummyQuery(client=client)
+                watch = Watch.for_query(
+                    query,
                     callback,
                     DocumentSnapshot,
-                    DocumentReference
+                    DocumentReference,
                 )
                 watch._firestore._database_string_internal = 'projects/projectID/databases/(default)' # conformance data has db string as this
 
@@ -300,7 +300,7 @@ def convert_precondition(precond):
     return Client.write_option(last_update_time=precond.update_time)
 
 
-class DummyRpc(object):
+class DummyRpc(object):  # pragma: NO COVER
     def __init__(self, listen, initial_request, should_recover):
         self.listen = listen
         self.initial_request = initial_request
@@ -315,7 +315,7 @@ class DummyRpc(object):
         self.closed = True
 
 
-class DummyBackgroundConsumer(object):
+class DummyBackgroundConsumer(object):  # pragma: NO COVER
     started = False
     stopped = False
     is_active = True
@@ -330,3 +330,20 @@ class DummyBackgroundConsumer(object):
     def stop(self):
         self.stopped = True
         self.is_active = False
+
+class DummyQuery(object):  # pragma: NO COVER
+    def __init__(self, **kw):
+        self._client = kw["client"]
+        self._comparator = lambda x, y: 1
+
+    def _to_protobuf(self):
+        from google.cloud.firestore_v1beta1.proto import query_pb2
+        query_kwargs = {
+            "select": None,
+            "from": None,
+            "where": None,
+            "order_by": None,
+            "start_at": None,
+            "end_at": None,
+        }
+        return query_pb2.StructuredQuery(**query_kwargs)
