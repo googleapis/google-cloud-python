@@ -255,7 +255,9 @@ class Test_DateTimeWithNanos(object):
         stamp = datetime_helpers.DatetimeWithNanoseconds(
             2016, 12, 20, 21, 13, 47, 123456)
         delta = stamp.replace(tzinfo=pytz.UTC) - datetime_helpers._UTC_EPOCH
-        timestamp = timestamp_pb2.Timestamp(seconds=delta.seconds)
+        seconds = int(delta.total_seconds())
+        nanos = 123456000
+        timestamp = timestamp_pb2.Timestamp(seconds=seconds, nanos=nanos)
         assert stamp.timestamp_pb() == timestamp
 
     @staticmethod
@@ -264,7 +266,8 @@ class Test_DateTimeWithNanos(object):
             2016, 12, 20, 21, 13, 47, nanosecond=123456789, tzinfo=pytz.UTC
         )
         delta = stamp - datetime_helpers._UTC_EPOCH
-        timestamp = timestamp_pb2.Timestamp(seconds=delta.seconds, nanos=123456789)
+        timestamp = timestamp_pb2.Timestamp(
+            seconds=int(delta.total_seconds()), nanos=123456789)
         assert stamp.timestamp_pb() == timestamp
 
     @staticmethod
