@@ -1674,8 +1674,9 @@ class Client(ClientWithProject):
             start_index (int):
                 (Optional) The zero-based index of the starting row to read.
             page_size (int):
-                (Optional) The maximum number of items to return per page in
-                the iterator.
+                Optional. The maximum number of rows in each page of results
+                from this request. Non-positive values are ignored. Defaults
+                to a sensible value set by the API.
             retry (:class:`google.api_core.retry.Retry`):
                 (Optional) How to retry the RPC.
 
