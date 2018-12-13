@@ -295,7 +295,6 @@ We support:
 .. _Python 3.6: https://docs.python.org/3.6/
 
 
-
 Supported versions can be found in our ``noxfile.py`` `config`_.
 
 .. _config: https://github.com/googleapis/google-cloud-python/blob/master/noxfile.py
@@ -310,7 +309,7 @@ and lack of continuous integration `support`_.
 We have `dropped 2.6`_ as a supported version as well since Python 2.6 is no
 longer supported by the core development team.
 
-Python 2.7 support is deprecated. All code changes should maintain Python 2.7 compatability until January 1, 2020.
+Python 2.7 support is deprecated. All code changes should maintain Python 2.7 compatibility until January 1, 2020.
 
 We also explicitly decided to support Python 3 beginning with version
 3.4. Reasons for this include:
