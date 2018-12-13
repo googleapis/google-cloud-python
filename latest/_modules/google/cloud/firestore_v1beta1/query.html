@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.firestore_v1beta1.query &#8212; google-cloud 95ca5ca documentation</title>
+    <title>google.cloud.firestore_v1beta1.query &#8212; google-cloud 61b156c documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -723,8 +723,16 @@
 <div class="viewcode-block" id="Query.get"><a class="viewcode-back" href="../../../../firestore/query.html#google.cloud.firestore_v1beta1.query.Query.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transaction</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Read the documents in the collection that match this query.</span>
 
-<span class="sd">        This sends a ``RunQuery`` RPC and then consumes each document</span>
-<span class="sd">        returned in the stream of ``RunQueryResponse`` messages.</span>
+<span class="sd">        This sends a ``RunQuery`` RPC and then returns an iterator which</span>
+<span class="sd">        consumes each document returned in the stream of ``RunQueryResponse``</span>
+<span class="sd">        messages.</span>
+
+<span class="sd">        .. note::</span>
+
+<span class="sd">           The underlying stream of responses will time out after</span>
+<span class="sd">           the ``max_rpc_timeout_millis`` value set in the GAPIC</span>
+<span class="sd">           client configuration for the ``RunQuery`` API.  Snapshots</span>
+<span class="sd">           not consumed from the iterator before that point will be lost.</span>
 
 <span class="sd">        If a ``transaction`` is used and it already has write operations</span>
 <span class="sd">        added, this method cannot be used (i.e. read-after-write is not</span>
