@@ -503,9 +503,17 @@ class Watch(object):
                 document = proto.document_change.document
                 self.change_map[document.name] = ChangeType.REMOVED
 
-        elif proto.document_delete or proto.document_remove:
-            _LOGGER.debug("on_snapshot: document change: DELETE/REMOVE")
-            name = (proto.document_delete or proto.document_remove).document
+        # NB: document_delete and document_remove (as far as we, the client,
+        # are concerned) are functionally equivalent
+
+        elif str(proto.document_delete):
+            _LOGGER.debug("on_snapshot: document change: DELETE")
+            name = proto.document_delete.document
+            self.change_map[name] = ChangeType.REMOVED
+
+        elif str(proto.document_remove):
+            _LOGGER.debug("on_snapshot: document change: REMOVE")
+            name = proto.document_remove.document
             self.change_map[name] = ChangeType.REMOVED
 
         elif proto.filter:

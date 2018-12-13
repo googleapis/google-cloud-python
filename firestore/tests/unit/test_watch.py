@@ -403,7 +403,7 @@ class TestWatch(unittest.TestCase):
 
         remove = DummyRemove()
         proto.document_remove = remove
-        proto.document_delete = None
+        proto.document_delete = ""
         inst.on_snapshot(proto)
         self.assertTrue(inst.change_map["fred"] is ChangeType.REMOVED)
 
@@ -412,8 +412,8 @@ class TestWatch(unittest.TestCase):
         proto = DummyProto()
         proto.target_change = ""
         proto.document_change = ""
-        proto.document_remove = None
-        proto.document_delete = None
+        proto.document_remove = ""
+        proto.document_delete = ""
 
         class DummyFilter(object):
             count = 999
@@ -432,8 +432,8 @@ class TestWatch(unittest.TestCase):
         proto = DummyProto()
         proto.target_change = ""
         proto.document_change = ""
-        proto.document_remove = None
-        proto.document_delete = None
+        proto.document_remove = ""
+        proto.document_delete = ""
 
         class DummyFilter(object):
             count = 0
@@ -449,8 +449,8 @@ class TestWatch(unittest.TestCase):
         proto = DummyProto()
         proto.target_change = ""
         proto.document_change = ""
-        proto.document_remove = None
-        proto.document_delete = None
+        proto.document_remove = ""
+        proto.document_delete = ""
         proto.filter = ""
         with self.assertRaises(Exception) as exc:
             inst.on_snapshot(proto)
