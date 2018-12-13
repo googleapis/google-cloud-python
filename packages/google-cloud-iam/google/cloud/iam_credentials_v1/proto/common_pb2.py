@@ -604,7 +604,8 @@ GenerateAccessTokenRequest = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_GENERATEACCESSTOKENREQUEST,
         __module__="google.iam.credentials.v1.common_pb2",
-        __doc__="""Attributes:
+        __doc__="""
+Attributes:
       name:
           The resource name of the service account for which the
           credentials are requested, in the following format:
@@ -641,7 +642,8 @@ GenerateAccessTokenResponse = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_GENERATEACCESSTOKENRESPONSE,
         __module__="google.iam.credentials.v1.common_pb2",
-        __doc__="""Attributes:
+        __doc__="""
+Attributes:
       access_token:
           The OAuth 2.0 access token.
       expire_time:
@@ -658,7 +660,8 @@ SignBlobRequest = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_SIGNBLOBREQUEST,
         __module__="google.iam.credentials.v1.common_pb2",
-        __doc__="""Attributes:
+        __doc__="""
+Attributes:
       name:
           The resource name of the service account for which the
           credentials are requested, in the following format:
@@ -687,7 +690,8 @@ SignBlobResponse = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_SIGNBLOBRESPONSE,
         __module__="google.iam.credentials.v1.common_pb2",
-        __doc__="""Attributes:
+        __doc__="""
+Attributes:
       key_id:
           The ID of the key used to sign the blob.
       signed_blob:
@@ -704,7 +708,8 @@ SignJwtRequest = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_SIGNJWTREQUEST,
         __module__="google.iam.credentials.v1.common_pb2",
-        __doc__="""Attributes:
+        __doc__="""
+Attributes:
       name:
           The resource name of the service account for which the
           credentials are requested, in the following format:
@@ -734,7 +739,8 @@ SignJwtResponse = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_SIGNJWTRESPONSE,
         __module__="google.iam.credentials.v1.common_pb2",
-        __doc__="""Attributes:
+        __doc__="""
+Attributes:
       key_id:
           The ID of the key used to sign the JWT.
       signed_jwt:
@@ -751,7 +757,8 @@ GenerateIdTokenRequest = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_GENERATEIDTOKENREQUEST,
         __module__="google.iam.credentials.v1.common_pb2",
-        __doc__="""Attributes:
+        __doc__="""
+Attributes:
       name:
           The resource name of the service account for which the
           credentials are requested, in the following format:
@@ -785,7 +792,8 @@ GenerateIdTokenResponse = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_GENERATEIDTOKENRESPONSE,
         __module__="google.iam.credentials.v1.common_pb2",
-        __doc__="""Attributes:
+        __doc__="""
+Attributes:
       token:
           The OpenId Connect ID token.
   """,

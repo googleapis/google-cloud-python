@@ -1,7 +1,7 @@
 Python Client for IAM API (`Alpha`_)
 ================================================================
 
-`IAM Service Account Credentials API`_: IAM Service Account Credentials API
+`IAM API`_: IAM API
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -18,12 +18,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the IAM Service Account Credentials API.`_
+3. `Enable the IAM API.`_
 4. `Setup Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the IAM Service Account Credentials API.:  https://cloud.google.com/iam
+.. _Enable the IAM API.:  https://console.cloud.google.com/flows/enableapi?apiid=iam
 .. _Setup Authentication.: https://googleapis.github.io/google-cloud-python/latest/core/auth.html
 
 Installation
