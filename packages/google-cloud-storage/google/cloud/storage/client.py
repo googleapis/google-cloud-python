@@ -308,12 +308,15 @@ class Client(ClientWithProject):
         This implements "storage.buckets.list".
 
         :type max_results: int
-        :param max_results: Optional. Maximum number of buckets to return.
+        :param max_results: Optional. The maximum number of buckets to return.
 
         :type page_token: str
-        :param page_token: Optional. Opaque marker for the next "page" of
-                           buckets. If not passed, will return the first page
-                           of buckets.
+        :param page_token:
+            Optional. If present, return the next batch of buckets, using the
+            value, which must correspond to the ``nextPageToken`` value
+            returned in the previous response.  Deprecated: use the ``pages``
+            property of the returned iterator instead of manually passing the
+            token.
 
         :type prefix: str
         :param prefix: Optional. Filter results to buckets whose names begin
