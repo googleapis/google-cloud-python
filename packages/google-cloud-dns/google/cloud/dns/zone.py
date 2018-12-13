@@ -325,13 +325,16 @@ class ManagedZone(object):
         https://cloud.google.com/dns/api/v1/resourceRecordSets/list
 
         :type max_results: int
-        :param max_results: maximum number of zones to return, If not
-                            passed, defaults to a value set by the API.
+        :param max_results: Optional. The maximum number of resource record
+                            sets to return. Defaults to a sensible value
+                            set by the API.
 
         :type page_token: str
-        :param page_token: opaque marker for the next "page" of zones. If
-                           not passed, the API will return the first page of
-                           zones.
+        :param page_token: Optional. If present, return the next batch of
+            resource record sets, using the value, which must correspond to
+            the ``nextPageToken`` value returned in the previous response.
+            Deprecated: use the ``pages`` property of the returned iterator
+            instead of manually passing the token.
 
         :type client: :class:`google.cloud.dns.client.Client`
         :param client:
@@ -363,13 +366,15 @@ class ManagedZone(object):
         https://cloud.google.com/dns/api/v1/resourceRecordSets/list
 
         :type max_results: int
-        :param max_results: maximum number of zones to return, If not
-                            passed, defaults to a value set by the API.
+        :param max_results: Optional. The maximum number of change sets
+            to return. Defaults to a sensible value set by the API.
 
         :type page_token: str
-        :param page_token: opaque marker for the next "page" of zones. If
-                           not passed, the API will return the first page of
-                           zones.
+        :param page_token: Optional. If present, return the next batch of
+            change sets, using the value, which must correspond to the
+            ``nextPageToken`` value returned in the previous response.
+            Deprecated: use the ``pages`` property of the returned iterator
+            instead of manually passing the token.
 
         :type client: :class:`google.cloud.dns.client.Client`
         :param client:
