@@ -6,7 +6,7 @@
 
 ## 0.1.0
 
-12-12-2018 13:03 PST
+12-13-2018 10:55 PST
 
 
 ### New Features
@@ -14,3 +14,6 @@
 
 ### Documentation
 - Fix docs build ([#6913](https://github.com/googleapis/google-cloud-python/pull/6913))
+
+### Internal / Testing Changes
+- trove classifier fix ([#6922](https://github.com/googleapis/google-cloud-python/pull/6922))
