@@ -941,6 +941,11 @@ class LastUpdateOption(WriteOption):
     def __init__(self, last_update_time):
         self._last_update_time = last_update_time
 
+    def __eq__(self, other):
+        if not isinstance(other, self.__class__):
+            return NotImplemented
+        return self._last_update_time == other._last_update_time
+
     def modify_write(self, write_pb, **unused_kwargs):
         """Modify a ``Write`` protobuf based on the state of this write option.
 
@@ -972,6 +977,11 @@ class ExistsOption(WriteOption):
 
     def __init__(self, exists):
         self._exists = exists
+
+    def __eq__(self, other):
+        if not isinstance(other, self.__class__):
+            return NotImplemented
+        return self._exists == other._exists
 
     def modify_write(self, write_pb, **unused_kwargs):
         """Modify a ``Write`` protobuf based on the state of this write option.
