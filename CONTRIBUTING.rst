@@ -294,9 +294,11 @@ We support:
 .. _Python 3.5: https://docs.python.org/3.5/
 .. _Python 3.6: https://docs.python.org/3.6/
 
-Supported versions can be found in our ``nox.py`` `config`_.
 
-.. _config: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/nox.py
+
+Supported versions can be found in our ``noxfile.py`` `config`_.
+
+.. _config: https://github.com/googleapis/google-cloud-python/blob/master/noxfile.py
 
 We explicitly decided not to support `Python 2.5`_ due to `decreased usage`_
 and lack of continuous integration `support`_.
@@ -307,6 +309,8 @@ and lack of continuous integration `support`_.
 
 We have `dropped 2.6`_ as a supported version as well since Python 2.6 is no
 longer supported by the core development team.
+
+Python 2.7 support is deprecated. All code changes should maintain Python 2.7 compatability until January 1, 2020.
 
 We also explicitly decided to support Python 3 beginning with version
 3.4. Reasons for this include:
@@ -319,7 +323,7 @@ We also explicitly decided to support Python 3 beginning with version
 .. _prominent: https://docs.djangoproject.com/en/1.9/faq/install/#what-python-version-can-i-use-with-django
 .. _projects: http://flask.pocoo.org/docs/0.10/python3/
 .. _Unicode literal support: https://www.python.org/dev/peps/pep-0414/
-.. _dropped 2.6: https://github.com/GoogleCloudPlatform/google-cloud-python/issues/995
+.. _dropped 2.6: https://github.com/googleapis/google-cloud-python/issues/995
 
 **********
 Versioning
