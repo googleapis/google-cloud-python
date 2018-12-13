@@ -275,3 +275,27 @@ class DatetimeWithNanoseconds(datetime.datetime):
         inst = self if self.tzinfo is not None else self.replace(tzinfo=pytz.UTC)
         delta = inst - _UTC_EPOCH
         return timestamp_pb2.Timestamp(seconds=delta.seconds, nanos=self._nanosecond)
+
+    @classmethod
+    def from_timestamp_pb(cls, stamp):
+        """Parse RFC 3339-compliant timestamp, preserving nanoseconds.
+
+        Args:
+            stamp (:class:`~google.protobuf.timestamp_pb2.Timestamp`): timestamp message
+
+        Returns:
+            :class:`DatetimeWithNanoseconds`:
+                an instance matching the timestamp message
+        """
+        microseconds = int(stamp.seconds * 1e6)
+        bare = from_microseconds(microseconds)
+        return cls(
+            bare.year,
+            bare.month,
+            bare.day,
+            bare.hour,
+            bare.minute,
+            bare.second,
+            nanosecond=stamp.nanos,
+            tzinfo=pytz.UTC,
+        )

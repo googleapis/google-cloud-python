@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import calendar
 import datetime
 
 import pytest
@@ -265,3 +266,46 @@ class Test_DateTimeWithNanos(object):
         delta = stamp - datetime_helpers._UTC_EPOCH
         timestamp = timestamp_pb2.Timestamp(seconds=delta.seconds, nanos=123456789)
         assert stamp.timestamp_pb() == timestamp
+
+    @staticmethod
+    def test_from_timestamp_pb_wo_nanos():
+        when = datetime.datetime(2016, 12, 20, 21, 13, 47, 123456, tzinfo=pytz.UTC)
+        delta = when - datetime_helpers._UTC_EPOCH
+        seconds = int(delta.total_seconds())
+        timestamp = timestamp_pb2.Timestamp(seconds=seconds)
+
+        stamp = datetime_helpers.DatetimeWithNanoseconds.from_timestamp_pb(
+            timestamp)
+
+        assert _to_seconds(when) == _to_seconds(stamp)
+        assert stamp.microsecond == 0
+        assert stamp.nanosecond == 0
+        assert stamp.tzinfo == pytz.UTC
+
+    @staticmethod
+    def test_from_timestamp_pb_w_nanos():
+        when = datetime.datetime(2016, 12, 20, 21, 13, 47, 123456, tzinfo=pytz.UTC)
+        delta = when - datetime_helpers._UTC_EPOCH
+        seconds = int(delta.total_seconds())
+        timestamp = timestamp_pb2.Timestamp(seconds=seconds, nanos=123456789)
+
+        stamp = datetime_helpers.DatetimeWithNanoseconds.from_timestamp_pb(
+            timestamp)
+
+        assert _to_seconds(when) == _to_seconds(stamp)
+        assert stamp.microsecond == 123456
+        assert stamp.nanosecond == 123456789
+        assert stamp.tzinfo == pytz.UTC
+
+
+def _to_seconds(value):
+    """Convert a datetime to seconds since the unix epoch.
+
+    Args:
+        value (datetime.datetime): The datetime to covert.
+
+    Returns:
+        int: Microseconds since the unix epoch.
+    """
+    assert value.tzinfo is pytz.UTC
+    return calendar.timegm(value.timetuple())
