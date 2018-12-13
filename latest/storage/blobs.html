@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Blobs / Objects &#8212; google-cloud 35bc2ba documentation</title>
+    <title>Blobs / Objects &#8212; google-cloud 52d651c documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -965,7 +965,7 @@ resource has not been loaded from the server.</td>
 <p>This can only be set at blob / object <strong>creation</strong> time. If you’d
 like to change the storage class <strong>after</strong> the blob / object already
 exists in a bucket, call <a class="reference internal" href="#google.cloud.storage.blob.Blob.update_storage_class" title="google.cloud.storage.blob.Blob.update_storage_class"><code class="xref py py-meth docutils literal notranslate"><span class="pre">update_storage_class()</span></code></a> (which uses
-the “storage.objects.rewrite” method).</p>
+<a class="reference internal" href="#google.cloud.storage.blob.Blob.rewrite" title="google.cloud.storage.blob.Blob.rewrite"><code class="xref py py-meth docutils literal notranslate"><span class="pre">rewrite()</span></code></a>).</p>
 <p>See <a class="reference external" href="https://cloud.google.com/storage/docs/storage-classes">https://cloud.google.com/storage/docs/storage-classes</a></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1086,7 +1086,9 @@ not been deleted, this will never be set.</td>
 <dl class="method">
 <dt id="google.cloud.storage.blob.Blob.update_storage_class">
 <code class="descname">update_storage_class</code><span class="sig-paren">(</span><em>new_class</em>, <em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/storage/blob.html#Blob.update_storage_class"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.storage.blob.Blob.update_storage_class" title="Permalink to this definition">#</a></dt>
-<dd><p>Update blob’s storage class via a rewrite-in-place.</p>
+<dd><p>Update blob’s storage class via a rewrite-in-place. This helper will
+wait for the rewrite to complete before returning, so it may take some
+time for large files.</p>
 <p>See
 <a class="reference external" href="https://cloud.google.com/storage/docs/per-object-storage-class">https://cloud.google.com/storage/docs/per-object-storage-class</a></p>
 <p>If <a class="reference internal" href="#google.cloud.storage.blob.Blob.user_project" title="google.cloud.storage.blob.Blob.user_project"><code class="xref py py-attr docutils literal notranslate"><span class="pre">user_project</span></code></a> is set on the bucket, bills the API request
@@ -1325,6 +1327,7 @@ to the <code class="docutils literal notranslate"><span class="pre">client</span
 <li class="toctree-l1"><a class="reference internal" href="../dlp/index.html">Data Loss Prevention</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dns/index.html">DNS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../firestore/index.html">Firestore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../iam/index.html">IAM</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../iot/index.html">IoT</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../kms/index.html">Key Management</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../language/index.html">Language</a></li>
