@@ -23,7 +23,7 @@ import six
 
 from google.cloud import exceptions
 from google.cloud._helpers import _datetime_to_pb_timestamp
-from google.cloud._helpers import _pb_timestamp_to_datetime
+from google.api_core.datetime_helpers import DatetimeWithNanoseconds
 from google.cloud.firestore_v1beta1 import transforms
 from google.cloud.firestore_v1beta1 import types
 from google.cloud.firestore_v1beta1.field_path import FieldPath
@@ -165,6 +165,9 @@ def encode_value(value):
     if isinstance(value, float):
         return document_pb2.Value(double_value=value)
 
+    if isinstance(value, DatetimeWithNanoseconds):
+        return document_pb2.Value(timestamp_value=value.timestamp_pb())
+
     if isinstance(value, datetime.datetime):
         return document_pb2.Value(timestamp_value=_datetime_to_pb_timestamp(value))
 
@@ -275,10 +278,7 @@ def decode_value(value, client):
     elif value_type == "double_value":
         return value.double_value
     elif value_type == "timestamp_value":
-        # NOTE: This conversion is "lossy", Python ``datetime.datetime``
-        #       has microsecond precision but ``timestamp_value`` has
-        #       nanosecond precision.
-        return _pb_timestamp_to_datetime(value.timestamp_value)
+        return DatetimeWithNanoseconds.from_timestamp_pb(value.timestamp_value)
     elif value_type == "string_value":
         return value.string_value
     elif value_type == "bytes_value":
