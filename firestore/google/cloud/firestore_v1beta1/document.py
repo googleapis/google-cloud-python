@@ -99,6 +99,9 @@ class DocumentReference(object):
         else:
             return NotImplemented
 
+    def __hash__(self):
+        return hash(self._path) + hash(self._client)
+
     def __ne__(self, other):
         """Inequality check against another instance.
 
@@ -553,6 +556,11 @@ class DocumentSnapshot(object):
         if not isinstance(other, self.__class__):
             return NotImplemented
         return self._reference == other._reference and self._data == other._data
+
+    def __hash__(self):
+        seconds = self.read_time.seconds
+        nanos = self.read_time.nanos
+        return hash(self._reference) + hash(seconds) + hash(nanos)
 
     @property
     def _client(self):
