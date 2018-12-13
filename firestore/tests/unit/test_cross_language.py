@@ -240,7 +240,9 @@ def test_listen_testprotos(test_proto):  # pragma: NO COVER
                     DocumentSnapshot,
                     DocumentReference,
                 )
-                watch._firestore._database_string_internal = 'projects/projectID/databases/(default)' # conformance data has db string as this
+                # conformance data has db string as this
+                db_str = 'projects/projectID/databases/(default)'
+                watch._firestore._database_string_internal = db_str
 
                 if testcase.is_error:
                     try:
@@ -257,13 +259,6 @@ def test_listen_testprotos(test_proto):  # pragma: NO COVER
                         watch.on_snapshot(proto)
 
                     assert(len(snapshots) == len(testcase.snapshots))
-
-    # TODO:  assert that the API's 'listen' method was called appropriately.
-    #firestore_api.listen.assert_called_once_with(
-    #)
-    # TODO: add assertions about contents of 'snapshots', based on values
-    #       from 'testcase'.
-
 
 def convert_data(v):
     # Replace the strings 'ServerTimestamp' and 'Delete' with the corresponding
