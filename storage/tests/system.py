@@ -27,6 +27,7 @@ from google.cloud.storage._helpers import _base64_md5hash
 from google.cloud.storage.bucket import LifecycleRuleDelete
 from google.cloud.storage.bucket import LifecycleRuleSetStorageClass
 from google.cloud import kms
+import google.oauth2
 
 from test_utils.retry import RetryErrors
 from test_utils.system import unique_resource_id
@@ -699,6 +700,10 @@ class TestStoragePseudoHierarchy(TestStorageFiles):
         self.assertEqual(iterator.prefixes, set())
 
 
+@unittest.skipUnless(
+    type(storage.Client()._credentials) is google.oauth2.service_account.credentials,
+    "Can only test signing with credentials capable of signing",
+)
 class TestStorageSignURLs(TestStorageFiles):
     def setUp(self):
         super(TestStorageSignURLs, self).setUp()
