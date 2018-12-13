@@ -94,8 +94,15 @@ batch can not exceed 10 megabytes.
 Futures
 -------
 
-Every call to :meth:`~.pubsub_v1.publisher.client.Client.publish` will return
-a class that conforms to the :class:`~concurrent.futures.Future` interface.
+Every call to :meth:`~.pubsub_v1.publisher.client.Client.publish` returns
+an instance of :class:`google.api_core.future.Future`.
+
+.. note::
+   
+   The returned future conforms for the most part to the interface of
+   the standard library's :class:`~concurrent.futures.Future`, but might not
+   be usable in all cases which expect that exact implementaton.
+
 You can use this to ensure that the publish succeeded:
 
 .. code-block:: python

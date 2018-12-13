@@ -196,8 +196,9 @@ class Client(object):
                 sent as metadata. (These may be text strings or byte strings.)
 
         Returns:
-            ~concurrent.futures.Future: An object conforming to the
-            ``concurrent.futures.Future`` interface.
+            ~google.api_core.future.Future: An object conforming to the
+            ``concurrent.futures.Future`` interface (but not an instance
+            of that class).
         """
         # Sanity check: Is the data being sent as a bytestring?
         # If it is literally anything else, complain loudly about it.
