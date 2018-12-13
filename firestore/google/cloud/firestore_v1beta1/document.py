@@ -549,6 +549,11 @@ class DocumentSnapshot(object):
         self.update_time = update_time
         """google.protobuf.timestamp_pb2.Timestamp: Document's last update."""
 
+    def __eq__(self, other):
+        if not isinstance(other, self.__class__):
+            return NotImplemented
+        return self._reference == other._reference and self._data == other._data
+
     @property
     def _client(self):
         """The client that owns the document reference for this snapshot.
