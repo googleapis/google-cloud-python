@@ -12,3 +12,5 @@
 ### New Features
 - Add Client Library for IAM ([#6905](https://github.com/googleapis/google-cloud-python/pull/6905))
 
+### Documentation
+- Fix docs build ([#6913](https://github.com/googleapis/google-cloud-python/pull/6913))
