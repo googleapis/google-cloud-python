@@ -256,24 +256,25 @@ def test_listen_testprotos(test_proto):  # pragma: NO COVER
                         watch.on_snapshot(proto)
 
                     assert len(snapshots) == len(testcase.snapshots)
-                    for expected_snapshot, actual_snapshot in zip(
-                        testcase.snapshots, snapshots
+                    for i, (expected_snapshot, actual_snapshot) in enumerate(zip(
+                        testcase.snapshots, snapshots)
                     ):
                         expected_changes = expected_snapshot.changes
                         actual_changes = actual_snapshot[1]
                         if len(expected_changes) != len(actual_changes):
                             raise AssertionError(
-                                "change length mismatch in %s" % test_proto.description
+                                "change length mismatch in %s (snapshot #%s)" %
+                                (test_proto.description, i)
                             )
-                        for expected_change, actual_change in zip(
-                            expected_changes, actual_changes
+                        for y, (expected_change, actual_change) in enumerate(zip(
+                            expected_changes, actual_changes)
                         ):
                             expected_change_kind = expected_change.kind
                             actual_change_kind = actual_change.type.value
                             if expected_change_kind != actual_change_kind:
                                 raise AssertionError(
-                                    "change type mismatch in %s"
-                                    % test_proto.description
+                                    "change type mismatch in %s (snapshot #%s, change #%s')"
+                                    % (test_proto.description, i, y)
                                 )
 
 
