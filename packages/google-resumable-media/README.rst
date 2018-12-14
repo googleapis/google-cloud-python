@@ -9,6 +9,14 @@ See the `docs`_ for examples and usage.
 
 .. _docs: https://googleapis.github.io/google-resumable-media-python/latest/
 
+Supported Python Versions
+-------------------------
+Python >= 3.4
+
+Deprecated Python Versions
+--------------------------
+Python == 2.7. Python 2.7 support will be removed on January 1, 2020.
+
 License
 -------
 
