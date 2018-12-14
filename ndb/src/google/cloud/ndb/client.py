@@ -73,7 +73,8 @@ class Client(ClientWithProject):
         super(Client, self).__init__(project=project, credentials=credentials)
         self.namespace = namespace
         self.host = os.environ.get(
-            environment_vars.GCD_HOST, _http.DATASTORE_API_HOST)
+            environment_vars.GCD_HOST, _http.DATASTORE_API_HOST
+        )
 
     @property
     def _http(self):
