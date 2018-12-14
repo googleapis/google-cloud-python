@@ -64,7 +64,7 @@ def initialize_environment(request, environ):
     the current request, determines whether it's in a unit test, or not, and
     does the right thing.
     """
-    if request.module.__name__.startswith("tests.unit"):
+    if request.module.__name__.startswith("tests.unit"):  # pragma: NO COVER
         environ.pop(environment_vars.GCD_DATASET, None)
         environ.pop(environment_vars.GCD_HOST, None)
         environ.pop("GOOGLE_APPLICATION_CREDENTIALS", None)
