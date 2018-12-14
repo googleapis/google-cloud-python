@@ -17,10 +17,9 @@
 import os
 
 from google.cloud import environment_vars
-from google.cloud.client import ClientWithProject
 from google.cloud import _helpers
-
-_DATASTORE_HOST = "datastore.googleapis.com"
+from google.cloud.client import ClientWithProject
+from google.cloud.datastore import _http
 
 
 def _get_gcd_project():
@@ -73,7 +72,8 @@ class Client(ClientWithProject):
     def __init__(self, project=None, namespace=None, credentials=None):
         super(Client, self).__init__(project=project, credentials=credentials)
         self.namespace = namespace
-        self.host = os.environ.get(environment_vars.GCD_HOST, _DATASTORE_HOST)
+        self.host = os.environ.get(
+            environment_vars.GCD_HOST, _http.DATASTORE_API_HOST)
 
     @property
     def _http(self):

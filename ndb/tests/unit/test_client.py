@@ -19,6 +19,7 @@ from unittest import mock
 
 from google.auth import credentials
 from google.cloud import environment_vars
+from google.cloud.datastore import _http
 from google.cloud.ndb import client as client_module
 
 
@@ -37,7 +38,7 @@ class TestClient:
             client = client_module.Client()
         assert client.SCOPE == ("https://www.googleapis.com/auth/datastore",)
         assert client.namespace is None
-        assert client.host == client_module._DATASTORE_HOST
+        assert client.host == _http.DATASTORE_API_HOST
         assert client.project == "testing"
 
     @staticmethod
