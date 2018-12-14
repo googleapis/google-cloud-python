@@ -7,7 +7,7 @@
 
 See the `docs`_ for examples and usage.
 
-.. _docs: https://googlecloudplatform.github.io/google-resumable-media-python/latest/
+.. _docs: https://googleapis.github.io/google-resumable-media-python/latest/
 
 License
 -------
