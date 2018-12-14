@@ -205,7 +205,7 @@ def test_delete_testprotos(test_proto):
     _run_testcase(testcase, call, firestore_api, client)
 
 
-@pytest.mark.parametrize('test_proto', _LISTEN_TESTPROTOS)
+@pytest.mark.parametrize("test_proto", _LISTEN_TESTPROTOS)
 def test_listen_testprotos(test_proto):  # pragma: NO COVER
     # test_proto.listen has 'reponses' messages,
     # 'google.firestore.v1beta1.ListenResponse'
@@ -220,20 +220,15 @@ def test_listen_testprotos(test_proto):  # pragma: NO COVER
 
     testcase = test_proto.listen
     credentials = mock.Mock(spec=google.auth.credentials.Credentials)
-    client = Client(project='project', credentials=credentials)
+    client = Client(project="project", credentials=credentials)
     modulename = "google.cloud.firestore_v1beta1.watch"
-    with mock.patch(
-            "%s.Watch.ResumableBidiRpc" % modulename,
-            DummyRpc
-    ):
+    with mock.patch("%s.Watch.ResumableBidiRpc" % modulename, DummyRpc):
         with mock.patch(
-                "%s.Watch.BackgroundConsumer" % modulename,
-                DummyBackgroundConsumer
+            "%s.Watch.BackgroundConsumer" % modulename, DummyBackgroundConsumer
         ):
-            with mock.patch( # conformance data sets WATCH_TARGET_ID to 1
-                    '%s.WATCH_TARGET_ID' % modulename,
-                    1
-                    ):
+            with mock.patch(  # conformance data sets WATCH_TARGET_ID to 1
+                "%s.WATCH_TARGET_ID" % modulename, 1
+            ):
                 snapshots = []
 
                 def callback(keys, applied_changes, read_time):
@@ -241,13 +236,10 @@ def test_listen_testprotos(test_proto):  # pragma: NO COVER
 
                 query = DummyQuery(client=client)
                 watch = Watch.for_query(
-                    query,
-                    callback,
-                    DocumentSnapshot,
-                    DocumentReference,
+                    query, callback, DocumentSnapshot, DocumentReference
                 )
                 # conformance data has db string as this
-                db_str = 'projects/projectID/databases/(default)'
+                db_str = "projects/projectID/databases/(default)"
                 watch._firestore._database_string_internal = db_str
 
                 if testcase.is_error:
@@ -259,34 +251,31 @@ def test_listen_testprotos(test_proto):  # pragma: NO COVER
                         # listen-target-remove.textpro
                         pass
 
-
                 else:
                     for proto in testcase.responses:
                         watch.on_snapshot(proto)
 
-                    assert(len(snapshots) == len(testcase.snapshots))
+                    assert len(snapshots) == len(testcase.snapshots)
                     for expected_snapshot, actual_snapshot in zip(
-                            testcase.snapshots,
-                            snapshots
+                        testcase.snapshots, snapshots
                     ):
                         expected_changes = expected_snapshot.changes
                         actual_changes = actual_snapshot[1]
                         if len(expected_changes) != len(actual_changes):
                             raise AssertionError(
-                                'change length mismatch in %s' %
-                                test_proto.description
-                                )
+                                "change length mismatch in %s" % test_proto.description
+                            )
                         for expected_change, actual_change in zip(
-                                expected_changes,
-                                actual_changes,
-                            ):
+                            expected_changes, actual_changes
+                        ):
                             expected_change_kind = expected_change.kind
                             actual_change_kind = actual_change.type.value
                             if expected_change_kind != actual_change_kind:
                                 raise AssertionError(
-                                    'change type mismatch in %s' %
-                                    test_proto.description
+                                    "change type mismatch in %s"
+                                    % test_proto.description
                                 )
+
 
 @pytest.mark.parametrize("test_proto", _QUERY_TESTPROTOS)
 def test_query_testprotos(test_proto):  # pragma: NO COVER
@@ -380,6 +369,7 @@ class DummyBackgroundConsumer(object):  # pragma: NO COVER
         self.stopped = True
         self.is_active = False
 
+
 class DummyQuery(object):  # pragma: NO COVER
     def __init__(self, **kw):
         self._client = kw["client"]
@@ -387,6 +377,7 @@ class DummyQuery(object):  # pragma: NO COVER
 
     def _to_protobuf(self):
         from google.cloud.firestore_v1beta1.proto import query_pb2
+
         query_kwargs = {
             "select": None,
             "from": None,
@@ -396,6 +387,7 @@ class DummyQuery(object):  # pragma: NO COVER
             "end_at": None,
         }
         return query_pb2.StructuredQuery(**query_kwargs)
+
 
 def parse_query(testcase):
     # 'query' testcase contains:
