@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Buckets &#8212; google-cloud 61b156c documentation</title>
+    <title>Buckets &#8212; google-cloud aee5cec documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -795,10 +795,14 @@ the dict via the setter.  E.g.:</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>max_results</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – (Optional) Maximum number of blobs to return.</li>
-<li><strong>page_token</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – (Optional) Opaque marker for the next “page” of
-blobs. If not passed, will return the first page
-of blobs.</li>
+<li><strong>max_results</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – (Optional) The maximum number of blobs in each page of results
+from this request. Non-positive values are ignored. Defaults to
+a sensible value set by the API.</li>
+<li><strong>page_token</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – (Optional) If present, return the next batch of blobs, using the
+value, which must correspond to the <code class="docutils literal notranslate"><span class="pre">nextPageToken</span></code> value
+returned in the previous response.  Deprecated: use the <code class="docutils literal notranslate"><span class="pre">pages</span></code>
+property of the returned iterator instead of manually passing the
+token.</li>
 <li><strong>prefix</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – (Optional) prefix used to filter blobs.</li>
 <li><strong>delimiter</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – (Optional) Delimiter, used with <code class="docutils literal notranslate"><span class="pre">prefix</span></code> to
 emulate hierarchy.</li>

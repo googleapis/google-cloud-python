@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.spanner_v1.instance &#8212; google-cloud 61b156c documentation</title>
+    <title>google.cloud.spanner_v1.instance &#8212; google-cloud aee5cec documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -373,10 +373,18 @@
 <span class="sd">        https://cloud.google.com/spanner/reference/rpc/google.spanner.admin.database.v1#google.spanner.admin.database.v1.DatabaseAdmin.ListDatabases</span>
 
 <span class="sd">        :type page_size: int</span>
-<span class="sd">        :param page_size: (Optional) Maximum number of results to return.</span>
+<span class="sd">        :param page_size:</span>
+<span class="sd">            Optional. The maximum number of databases in each page of results</span>
+<span class="sd">            from this request. Non-positive values are ignored. Defaults</span>
+<span class="sd">            to a sensible value set by the API.</span>
 
 <span class="sd">        :type page_token: str</span>
-<span class="sd">        :param page_token: (Optional) Token for fetching next page of results.</span>
+<span class="sd">        :param page_token:</span>
+<span class="sd">            Optional. If present, return the next batch of databases, using</span>
+<span class="sd">            the value, which must correspond to the ``nextPageToken`` value</span>
+<span class="sd">            returned in the previous response.  Deprecated: use the ``pages``</span>
+<span class="sd">            property of the returned iterator instead of manually passing</span>
+<span class="sd">            the token.</span>
 
 <span class="sd">        :rtype: :class:`~google.api._ore.page_iterator.Iterator`</span>
 <span class="sd">        :returns:</span>

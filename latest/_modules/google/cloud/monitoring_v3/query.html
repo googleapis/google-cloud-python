@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.monitoring_v3.query &#8212; google-cloud 61b156c documentation</title>
+    <title>google.cloud.monitoring_v3.query &#8212; google-cloud aee5cec documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -461,9 +461,9 @@
 
 <span class="sd">        :type page_size: int</span>
 <span class="sd">        :param page_size:</span>
-<span class="sd">            (Optional) Positive number specifying the maximum number of points</span>
-<span class="sd">            to return per page. This can be used to control how far the</span>
-<span class="sd">            iterator reads ahead.</span>
+<span class="sd">            (Optional) The maximum number of points in each page of results</span>
+<span class="sd">            from this request. Non-positive values are ignored. Defaults</span>
+<span class="sd">            to a sensible value set by the API.</span>
 
 <span class="sd">        :raises: :exc:`ValueError` if the query time interval has not been</span>
 <span class="sd">            specified.</span>
@@ -485,7 +485,9 @@
 
 <span class="sd">        :type page_size: int</span>
 <span class="sd">        :param page_size:</span>
-<span class="sd">            (Optional) A limit on the number of points to return per page.</span>
+<span class="sd">            (Optional) The maximum number of points in each page of results</span>
+<span class="sd">            from this request. Non-positive values are ignored. Defaults</span>
+<span class="sd">            to a sensible value set by the API.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_project_path</span><span class="p">,</span> <span class="s2">&quot;filter_&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">filter</span><span class="p">}</span>
 

@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Spanner Client &#8212; google-cloud 61b156c documentation</title>
+    <title>Spanner Client &#8212; google-cloud aee5cec documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -173,8 +173,14 @@ cluster; used to set up the instance’s cluster.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>page_size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – (Optional) Maximum number of results to return.</li>
-<li><strong>page_token</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – (Optional) Token for fetching next page of results.</li>
+<li><strong>page_size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – Optional. The maximum number of configs in each page of results
+from this request. Non-positive values are ignored. Defaults
+to a sensible value set by the API.</li>
+<li><strong>page_token</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Optional. If present, return the next batch of configs, using
+the value, which must correspond to the <code class="docutils literal notranslate"><span class="pre">nextPageToken</span></code> value
+returned in the previous response.  Deprecated: use the <code class="docutils literal notranslate"><span class="pre">pages</span></code>
+property of the returned iterator instead of manually passing
+the token.</li>
 </ul>
 </td>
 </tr>
@@ -203,8 +209,14 @@ resources within the client’s project.</p>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>filter</strong> (<em>string</em>) – (Optional) Filter to select instances listed.  See
 the <code class="docutils literal notranslate"><span class="pre">ListInstancesRequest</span></code> docs above for examples.</li>
-<li><strong>page_size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – (Optional) Maximum number of results to return.</li>
-<li><strong>page_token</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – (Optional) Token for fetching next page of results.</li>
+<li><strong>page_size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – Optional. The maximum number of instances in each page of results
+from this request. Non-positive values are ignored. Defaults
+to a sensible value set by the API.</li>
+<li><strong>page_token</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Optional. If present, return the next batch of instances, using
+the value, which must correspond to the <code class="docutils literal notranslate"><span class="pre">nextPageToken</span></code> value
+returned in the previous response.  Deprecated: use the <code class="docutils literal notranslate"><span class="pre">pages</span></code>
+property of the returned iterator instead of manually passing
+the token.</li>
 </ul>
 </td>
 </tr>
