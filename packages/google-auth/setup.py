@@ -40,6 +40,7 @@ setup(
     packages=find_packages(exclude=('tests*', 'system_tests*')),
     namespace_packages=('google',),
     install_requires=DEPENDENCIES,
+    python_requires='>=2.7,!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*',
     license='Apache 2.0',
     keywords='google auth oauth client',
     classifiers=[
@@ -49,6 +50,7 @@ setup(
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
         'Development Status :: 5 - Production/Stable',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: Apache Software License',

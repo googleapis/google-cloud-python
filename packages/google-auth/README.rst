@@ -26,6 +26,14 @@ For more information on setting up your Python development environment, please r
 
 .. _`Python Development Environment Setup Guide`: https://cloud.google.com/python/setup
 
+Supported Python Versions
+^^^^^^^^^^^^^^^^^^^^^^^^^
+Python >= 3.4
+
+Deprecated Python Versions
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+Python == 2.7. Python 2.7 support will be removed on January 1, 2020.
+
 Documentation
 -------------
 
