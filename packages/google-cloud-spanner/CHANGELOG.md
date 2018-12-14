@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-spanner/#history
 
+## 1.7.1
+
+12-14-2018 15:18 PST
+
+
+### Documentation
+- Announce Python 2 deprecation ([#6910](https://github.com/googleapis/google-cloud-python/pull/6910))
+- Normalize documentation for 'page_size' / 'max_results' / 'page_token' ([#6842](https://github.com/googleapis/google-cloud-python/pull/6842))
+
+### Internal / Testing Changes
+- Include grpc config in manifest ([#6928](https://github.com/googleapis/google-cloud-python/pull/6928))
+
 ## 1.7.0
 
 12-10-2018 13:10 PST
