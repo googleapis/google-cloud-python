@@ -115,9 +115,9 @@ class WatchDocTree(object):
 
 
 class ChangeType(Enum):
-    ADDED = 0
-    MODIFIED = 1
+    ADDED = 1
     REMOVED = 2
+    MODIFIED = 3
 
 
 class DocumentChange(object):
