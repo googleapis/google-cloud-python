@@ -27,6 +27,7 @@ from google.cloud.storage._helpers import _base64_md5hash
 from google.cloud.storage.bucket import LifecycleRuleDelete
 from google.cloud.storage.bucket import LifecycleRuleSetStorageClass
 from google.cloud import kms
+import google.oauth2
 
 from test_utils.retry import RetryErrors
 from test_utils.system import unique_resource_id
@@ -703,6 +704,12 @@ class TestStorageSignURLs(TestStorageFiles):
     def setUp(self):
         super(TestStorageSignURLs, self).setUp()
 
+        if (
+            type(Config.CLIENT._credentials)
+            is not google.oauth2.service_account.credentials
+        ):
+            self.skipTest("Signing tests requires a service account credential")
+
         logo_path = self.FILES["logo"]["path"]
         with open(logo_path, "rb") as file_obj:
             self.LOCAL_FILE = file_obj.read()
@@ -964,7 +971,6 @@ class TestStorageRewrite(TestStorageFiles):
 
 
 class TestStorageUpdateStorageClass(TestStorageFiles):
-
     def test_update_storage_class_small_file(self):
         blob = self.bucket.blob("SmallFile")
 
