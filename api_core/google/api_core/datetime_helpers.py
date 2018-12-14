@@ -20,6 +20,8 @@ import re
 
 import pytz
 
+from google.protobuf import timestamp_pb2
+
 
 _UTC_EPOCH = datetime.datetime.utcfromtimestamp(0).replace(tzinfo=pytz.utc)
 _RFC3339_MICROS = "%Y-%m-%dT%H:%M:%S.%fZ"
@@ -261,5 +263,41 @@ class DatetimeWithNanoseconds(datetime.datetime):
             bare.minute,
             bare.second,
             nanosecond=nanos,
+            tzinfo=pytz.UTC,
+        )
+
+    def timestamp_pb(self):
+        """Return a timestamp message.
+
+        Returns:
+            (:class:`~google.protobuf.timestamp_pb2.Timestamp`): Timestamp message
+        """
+        inst = self if self.tzinfo is not None else self.replace(tzinfo=pytz.UTC)
+        delta = inst - _UTC_EPOCH
+        seconds = int(delta.total_seconds())
+        nanos = self._nanosecond or self.microsecond * 1000
+        return timestamp_pb2.Timestamp(seconds=seconds, nanos=nanos)
+
+    @classmethod
+    def from_timestamp_pb(cls, stamp):
+        """Parse RFC 3339-compliant timestamp, preserving nanoseconds.
+
+        Args:
+            stamp (:class:`~google.protobuf.timestamp_pb2.Timestamp`): timestamp message
+
+        Returns:
+            :class:`DatetimeWithNanoseconds`:
+                an instance matching the timestamp message
+        """
+        microseconds = int(stamp.seconds * 1e6)
+        bare = from_microseconds(microseconds)
+        return cls(
+            bare.year,
+            bare.month,
+            bare.day,
+            bare.hour,
+            bare.minute,
+            bare.second,
+            nanosecond=stamp.nanos,
             tzinfo=pytz.UTC,
         )

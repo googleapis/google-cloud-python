@@ -1,10 +1,11 @@
-Python Client for Google Container Engine API
-=============================================
+Python Client for Google Kubernetes Engine API
+==============================================
 
 |alpha| |pypi| |versions|
 
-`Google Container Engine API`_: The Google Kubernetes Engine API is used for building and managing container
-based applications, powered by the open source Kubernetes technology.
+`Google Kubernetes Engine API`_: The Google Kubernetes Engine API is used for
+building and managing container based applications, powered by the open source
+Kubernetes technology.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -15,9 +16,9 @@ based applications, powered by the open source Kubernetes technology.
    :target: https://pypi.org/project/google-cloud-container/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-container.svg
    :target: https://pypi.org/project/google-cloud-container/
-.. _Google Container Engine API: https://cloud.google.com/container
-.. _Client Library Documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/container/index.html
-.. _Product Documentation:  https://cloud.google.com/container
+.. _Google Kubernetes Engine API: https://cloud.google.com/kubernetes-engine
+.. _Client Library Documentation: https://googleapis.github.io/google-cloud-python/latest/container/index.html
+.. _Product Documentation:  https://cloud.google.com/kubernetes-engine
 
 Quick Start
 -----------
@@ -30,7 +31,7 @@ In order to use this library, you first need to go through the following steps:
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable the Google Container Engine API.:  https://cloud.google.com/container
-.. _Setup Authentication.: https://googlecloudplatform.github.io/google-cloud-python/latest/core/auth.html
+.. _Setup Authentication.: https://googleapis.github.io/google-cloud-python/latest/core/auth.html
 
 Installation
 ~~~~~~~~~~~~
@@ -44,6 +45,15 @@ install permissions, and without clashing with the installed system
 dependencies.
 
 .. _`virtualenv`: https://virtualenv.pypa.io/en/latest/
+
+
+Supported Python Versions
+^^^^^^^^^^^^^^^^^^^^^^^^^
+Python >= 3.4
+
+Deprecated Python Versions
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+Python == 2.7. Python 2.7 support will be removed on January 1, 2020.
 
 
 Mac/Linux
@@ -84,7 +94,8 @@ Example Usage
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Google Container Engine API
-   API to see other available methods on the client.
+-  Read the `Client API Documentation`_ to see other available methods on the client.
 -  Read the `Product documentation`_ to learn more about the product and see
    How-to Guides.
+
+.. _Client API Documentation: https://googleapis.github.io/google-cloud-python/latest/container/gapic/v1/api.html

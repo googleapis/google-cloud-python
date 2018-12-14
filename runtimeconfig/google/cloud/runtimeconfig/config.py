@@ -222,11 +222,17 @@ class Config(object):
 
         :type page_size: int
         :param page_size:
-            (Optional) Maximum number of variables to return per page.
+            Optional. The maximum number of variables in each page of results
+            from this request. Non-positive values are ignored. Defaults
+            to a sensible value set by the API.
 
         :type page_token: str
-        :param page_token: opaque marker for the next "page" of variables. If
-                           not passed, will return the first page of variables.
+        :param page_token:
+            Optional. If present, return the next batch of variables, using
+            the value, which must correspond to the ``nextPageToken`` value
+            returned in the previous response.  Deprecated: use the ``pages``
+            property of the returned iterator instead of manually passing
+            the token.
 
         :type client: :class:`~google.cloud.runtimeconfig.client.Client`
         :param client:

@@ -30,7 +30,7 @@ class StreamingPullFuture(futures.Future):
         super(StreamingPullFuture, self).__init__()
         self._manager = manager
         self._manager.add_close_callback(self._on_close_callback)
-        self._cancelled = True
+        self._cancelled = False
 
     def _on_close_callback(self, manager, result):
         if result is None:
