@@ -4,6 +4,20 @@
 
 [1]: https://pypi.org/project/google-api-core/#history
 
+## 1.7.0
+
+12-17-2018 13:56 PST
+
+### New Features
+- Support converting `DatetimeWithNanos` to / from `google.protobuf.timestamp_pb2.Timestamp`. ([#6919](https://github.com/googleapis/google-cloud-python/pull/6919))
+
+### Documentation
+- Document Python 2 deprecation. ([#6910](https://github.com/googleapis/google-cloud-python/pull/6910))
+- Add usage example for `google.api_core.iam.Polcy`. ([#6855](https://github.com/googleapis/google-cloud-python/pull/6855))
+
+### Internal / Testing Changes
+- Work around pytype big for `ABCMeta.register`. ([#6873](https://github.com/googleapis/google-cloud-python/pull/6873))
+
 ## 1.6.0
 
 11-30-2018 12:45 PST
