@@ -1,6 +1,17 @@
 Changelog
 =========
 
+v1.6.2
+------
+
+12-17-2018 10:51 PST
+
+Documentation
++++++++++++++
+
+- Announce deprecation of Python 2.7 (`#311 <https://github.com/googleapis/google-auth-library-python/pull/311>`_)
+- Link all the PRs in CHANGELOG (`#307 <https://github.com/googleapis/google-auth-library-python/pull/307>`_)
+
 v1.6.1
 ------
 
