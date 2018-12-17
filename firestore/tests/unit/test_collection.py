@@ -233,7 +233,9 @@ class TestCollectionReference(unittest.TestCase):
             update_time=mock.sentinel.update_time, spec=["update_time"]
         )
         commit_response = mock.Mock(
-            write_results=[write_result], spec=["write_results"]
+            write_results=[write_result],
+            spec=["write_results", "commit_time"],
+            commit_time=mock.sentinel.commit_time,
         )
         firestore_api.commit.return_value = commit_response
 

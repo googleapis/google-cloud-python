@@ -198,13 +198,19 @@ class TestDocumentReference(unittest.TestCase):
             current_document=common_pb2.Precondition(exists=False),
         )
 
+    @staticmethod
+    def _make_commit_repsonse(write_results=None):
+        from google.cloud.firestore_v1beta1.proto import firestore_pb2
+
+        response = mock.create_autospec(firestore_pb2.CommitResponse)
+        response.write_results = write_results or [mock.sentinel.write_result]
+        response.commit_time = mock.sentinel.commit_time
+        return response
+
     def test_create(self):
         # Create a minimal fake GAPIC with a dummy response.
         firestore_api = mock.Mock(spec=["commit"])
-        commit_response = mock.Mock(
-            write_results=[mock.sentinel.write_result], spec=["write_results"]
-        )
-        firestore_api.commit.return_value = commit_response
+        firestore_api.commit.return_value = self._make_commit_repsonse()
 
         # Attach the fake GAPIC to a real client.
         client = _make_client("dignity")
@@ -235,10 +241,9 @@ class TestDocumentReference(unittest.TestCase):
         snapshot = mock.create_autospec(DocumentSnapshot)
         snapshot.exists = True
         document_reference.get.return_value = snapshot
-        commit_response = mock.Mock(
-            write_results=[document_reference], get=[snapshot], spec=["write_results"]
+        firestore_api.commit.return_value = self._make_commit_repsonse(
+            write_results=[document_reference]
         )
-        firestore_api.commit.return_value = commit_response
 
         # Attach the fake GAPIC to a real client.
         client = _make_client("dignity")
@@ -281,10 +286,7 @@ class TestDocumentReference(unittest.TestCase):
     def _set_helper(self, merge=False, **option_kwargs):
         # Create a minimal fake GAPIC with a dummy response.
         firestore_api = mock.Mock(spec=["commit"])
-        commit_response = mock.Mock(
-            write_results=[mock.sentinel.write_result], spec=["write_results"]
-        )
-        firestore_api.commit.return_value = commit_response
+        firestore_api.commit.return_value = self._make_commit_repsonse()
 
         # Attach the fake GAPIC to a real client.
         client = _make_client("db-dee-bee")
@@ -332,10 +334,7 @@ class TestDocumentReference(unittest.TestCase):
 
         # Create a minimal fake GAPIC with a dummy response.
         firestore_api = mock.Mock(spec=["commit"])
-        commit_response = mock.Mock(
-            write_results=[mock.sentinel.write_result], spec=["write_results"]
-        )
-        firestore_api.commit.return_value = commit_response
+        firestore_api.commit.return_value = self._make_commit_repsonse()
 
         # Attach the fake GAPIC to a real client.
         client = _make_client("potato-chip")
@@ -389,10 +388,7 @@ class TestDocumentReference(unittest.TestCase):
     def test_empty_update(self):
         # Create a minimal fake GAPIC with a dummy response.
         firestore_api = mock.Mock(spec=["commit"])
-        commit_response = mock.Mock(
-            write_results=[mock.sentinel.write_result], spec=["write_results"]
-        )
-        firestore_api.commit.return_value = commit_response
+        firestore_api.commit.return_value = self._make_commit_repsonse()
 
         # Attach the fake GAPIC to a real client.
         client = _make_client("potato-chip")
@@ -410,10 +406,7 @@ class TestDocumentReference(unittest.TestCase):
 
         # Create a minimal fake GAPIC with a dummy response.
         firestore_api = mock.Mock(spec=["commit"])
-        commit_response = mock.Mock(
-            commit_time=mock.sentinel.commit_time, spec=["commit_time"]
-        )
-        firestore_api.commit.return_value = commit_response
+        firestore_api.commit.return_value = self._make_commit_repsonse()
 
         # Attach the fake GAPIC to a real client.
         client = _make_client("donut-base")

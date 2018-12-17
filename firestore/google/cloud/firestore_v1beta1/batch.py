@@ -33,6 +33,8 @@ class WriteBatch(object):
     def __init__(self, client):
         self._client = client
         self._write_pbs = []
+        self.write_results = None
+        self.commit_time = None
 
     def _add_write_pbs(self, write_pbs):
         """Add `Write`` protobufs to this transaction.
@@ -147,4 +149,13 @@ class WriteBatch(object):
         )
 
         self._write_pbs = []
-        return list(commit_response.write_results)
+        self.write_results = results = list(commit_response.write_results)
+        self.commit_time = commit_response.commit_time
+        return results
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_value, traceback):
+        if exc_type is None:
+            self.commit()
