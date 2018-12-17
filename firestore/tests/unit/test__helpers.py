@@ -163,7 +163,20 @@ class Test_encode_value(unittest.TestCase):
         expected = _value_pb(double_value=value)
         self.assertEqual(result, expected)
 
-    def test_datetime(self):
+    def test_datetime_with_nanos(self):
+        from google.api_core.datetime_helpers import DatetimeWithNanoseconds
+        from google.protobuf import timestamp_pb2
+
+        dt_seconds = 1488768504
+        dt_nanos = 458816991
+        timestamp_pb = timestamp_pb2.Timestamp(seconds=dt_seconds, nanos=dt_nanos)
+        dt_val = DatetimeWithNanoseconds.from_timestamp_pb(timestamp_pb)
+
+        result = self._call_fut(dt_val)
+        expected = _value_pb(timestamp_value=timestamp_pb)
+        self.assertEqual(result, expected)
+
+    def test_datetime_wo_nanos(self):
         from google.protobuf import timestamp_pb2
 
         dt_seconds = 1488768504
@@ -387,20 +400,16 @@ class Test_decode_value(unittest.TestCase):
         (3,) <= sys.version_info < (3, 4, 4), "known datetime bug (bpo-23517) in Python"
     )
     def test_datetime(self):
+        from google.api_core.datetime_helpers import DatetimeWithNanoseconds
         from google.protobuf import timestamp_pb2
-        from google.cloud._helpers import UTC
 
         dt_seconds = 552855006
-        dt_nanos = 766961000
-        # Make sure precision is valid in microseconds too.
-        self.assertEqual(dt_nanos % 1000, 0)
+        dt_nanos = 766961828
 
         timestamp_pb = timestamp_pb2.Timestamp(seconds=dt_seconds, nanos=dt_nanos)
         value = _value_pb(timestamp_value=timestamp_pb)
 
-        expected_dt_val = datetime.datetime.utcfromtimestamp(
-            dt_seconds + 1e-9 * dt_nanos
-        ).replace(tzinfo=UTC)
+        expected_dt_val = DatetimeWithNanoseconds.from_timestamp_pb(timestamp_pb)
         self.assertEqual(self._call_fut(value), expected_dt_val)
 
     def test_unicode(self):
