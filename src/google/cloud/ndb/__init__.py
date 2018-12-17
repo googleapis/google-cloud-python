@@ -25,6 +25,7 @@ __version__ = "0.0.1.dev1"
 """Current ``ndb`` version."""
 __all__ = [
     "AutoBatcher",
+    "Client",
     "Context",
     "ContextOptions",
     "EVENTUAL_CONSISTENCY",
@@ -122,6 +123,7 @@ __all__ = [
 ]
 """All top-level exported names."""
 
+from google.cloud.ndb.client import Client
 from google.cloud.ndb.context import AutoBatcher
 from google.cloud.ndb.context import Context
 from google.cloud.ndb.context import ContextOptions
