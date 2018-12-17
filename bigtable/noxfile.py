@@ -142,8 +142,9 @@ def cover(session):
 
 @nox.session(python=['2.7', '3.7'])
 def snippets(session):
-    """Run the system test suite."""
-    # Sanity check: Only run system tests if the environment variable is set.
+    """Run the documentation example snippets."""
+    # Sanity check: Only run snippets system tests if the environment variable
+    # is set.
     if not os.environ.get('GOOGLE_APPLICATION_CREDENTIALS', ''):
         session.skip('Credentials must be set via environment variable.')
 
