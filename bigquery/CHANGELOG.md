@@ -4,6 +4,11 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
+## 1.6.1
+
+# Dependencies
+- Allow using the latest core (0.28.0 - 0.30.0) on 1.6 versions
+
 ## 1.6.0
 
 ### New Features
