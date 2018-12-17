@@ -18,8 +18,12 @@ import os
 
 from google.cloud import environment_vars
 from google.cloud import _helpers
-from google.cloud.client import ClientWithProject
-from google.cloud.datastore import _http
+from google.cloud import client as google_client
+from google.cloud.datastore_v1.gapic import datastore_client
+
+DATASTORE_API_HOST = datastore_client.DatastoreClient.SERVICE_ADDRESS.rstrip(
+    ":443"
+)
 
 
 def _get_gcd_project():
@@ -53,7 +57,7 @@ _
     return project
 
 
-class Client(ClientWithProject):
+class Client(google_client.ClientWithProject):
     """An NDB client.
 
     Arguments:
@@ -73,7 +77,7 @@ class Client(ClientWithProject):
         super(Client, self).__init__(project=project, credentials=credentials)
         self.namespace = namespace
         self.host = os.environ.get(
-            environment_vars.GCD_HOST, _http.DATASTORE_API_HOST
+            environment_vars.GCD_HOST, DATASTORE_API_HOST
         )
 
     @property

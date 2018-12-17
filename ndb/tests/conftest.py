@@ -49,9 +49,9 @@ def reset_state(environ):
 def environ():
     """Copy of ``os.environ``"""
     original = os.environ
-    environ = original.copy()
-    os.environ = environ
-    yield environ
+    environ_copy = original.copy()
+    os.environ = environ_copy
+    yield environ_copy
     os.environ = original
 
 
