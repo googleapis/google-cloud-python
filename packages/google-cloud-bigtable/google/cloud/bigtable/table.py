@@ -109,6 +109,12 @@ class Table(object):
     def name(self):
         """Table name used in requests.
 
+        For example:
+
+        .. literalinclude:: snippets_table.py
+            :start-after: [START bigtable_table_name]
+            :end-before: [END bigtable_table_name]
+
         .. note::
 
           This property will not change if ``table_id`` does not, but the
@@ -131,6 +137,12 @@ class Table(object):
     def column_family(self, column_family_id, gc_rule=None):
         """Factory to create a column family associated with this table.
 
+        For example:
+
+        .. literalinclude:: snippets_table.py
+            :start-after: [START bigtable_table_column_family]
+            :end-before: [END bigtable_table_column_family]
+
         :type column_family_id: str
         :param column_family_id: The ID of the column family. Must be of the
                                  form ``[_a-zA-Z0-9][-_.a-zA-Z0-9]*``.
@@ -146,6 +158,12 @@ class Table(object):
 
     def row(self, row_key, filter_=None, append=False):
         """Factory to create a row associated with this table.
+
+        For example:
+
+        .. literalinclude:: snippets_table.py
+            :start-after: [START bigtable_table_row]
+            :end-before: [END bigtable_table_row]
 
         .. warning::
 
@@ -188,6 +206,12 @@ class Table(object):
     def create(self, initial_split_keys=[], column_families={}):
         """Creates this table.
 
+        For example:
+
+        .. literalinclude:: snippets_table.py
+            :start-after: [START bigtable_create_table]
+            :end-before: [END bigtable_create_table]
+
         .. note::
 
             A create request returns a
@@ -226,6 +250,12 @@ class Table(object):
     def exists(self):
         """Check whether the table exists.
 
+        For example:
+
+        .. literalinclude:: snippets_table.py
+            :start-after: [START bigtable_check_table_exists]
+            :end-before: [END bigtable_check_table_exists]
+
         :rtype: bool
         :returns: True if the table exists, else False.
         """
@@ -237,12 +267,26 @@ class Table(object):
             return False
 
     def delete(self):
-        """Delete this table."""
+        """Delete this table.
+
+        For example:
+
+        .. literalinclude:: snippets_table.py
+            :start-after: [START bigtable_delete_table]
+            :end-before: [END bigtable_delete_table]
+
+        """
         table_client = self._instance._client.table_admin_client
         table_client.delete_table(name=self.name)
 
     def list_column_families(self):
         """List the column families owned by this table.
+
+        For example:
+
+        .. literalinclude:: snippets_table.py
+            :start-after: [START bigtable_list_column_families]
+            :end-before: [END bigtable_list_column_families]
 
         :rtype: dict
         :returns: Dictionary of column families attached to this table. Keys
@@ -265,6 +309,12 @@ class Table(object):
     def get_cluster_states(self):
         """List the cluster states owned by this table.
 
+        For example:
+
+        .. literalinclude:: snippets_table.py
+            :start-after: [START bigtable_get_cluster_states]
+            :end-before: [END bigtable_get_cluster_states]
+
         :rtype: dict
         :returns: Dictionary of cluster states for this table.
                   Keys are cluster ids and values are
@@ -282,6 +332,12 @@ class Table(object):
 
     def read_row(self, row_key, filter_=None):
         """Read a single row from this table.
+
+        For example:
+
+        .. literalinclude:: snippets_table.py
+            :start-after: [START bigtable_read_row]
+            :end-before: [END bigtable_read_row]
 
         :type row_key: bytes
         :param row_key: The key of the row to read from.
@@ -315,6 +371,12 @@ class Table(object):
         retry=DEFAULT_RETRY_READ_ROWS,
     ):
         """Read rows from this table.
+
+        For example:
+
+        .. literalinclude:: snippets_table.py
+            :start-after: [START bigtable_read_rows]
+            :end-before: [END bigtable_read_rows]
 
         :type start_key: bytes
         :param start_key: (Optional) The beginning of a range of row keys to
@@ -408,6 +470,12 @@ class Table(object):
     def mutate_rows(self, rows, retry=DEFAULT_RETRY):
         """Mutates multiple rows in bulk.
 
+        For example:
+
+        .. literalinclude:: snippets_table.py
+            :start-after: [START bigtable_mutate_rows]
+            :end-before: [END bigtable_mutate_rows]
+
         The method tries to update all specified rows.
         If some of the rows weren't updated, it would not remove mutations.
         They can be applied to the row separately.
@@ -441,6 +509,12 @@ class Table(object):
 
     def sample_row_keys(self):
         """Read a sample of row keys in the table.
+
+        For example:
+
+        .. literalinclude:: snippets_table.py
+            :start-after: [START bigtable_sample_row_keys]
+            :end-before: [END bigtable_sample_row_keys]
 
         The returned row keys will delimit contiguous sections of the table of
         approximately equal size, which can be used to break up the data for
@@ -480,6 +554,12 @@ class Table(object):
     def truncate(self, timeout=None):
         """Truncate the table
 
+        For example:
+
+        .. literalinclude:: snippets_table.py
+            :start-after: [START bigtable_truncate_table]
+            :end-before: [END bigtable_truncate_table]
+
         :type timeout: float
         :param timeout: (Optional) The amount of time, in seconds, to wait
                         for the request to complete.
@@ -503,6 +583,13 @@ class Table(object):
 
     def drop_by_prefix(self, row_key_prefix, timeout=None):
         """
+
+        For example:
+
+        .. literalinclude:: snippets_table.py
+            :start-after: [START bigtable_drop_by_prefix]
+            :end-before: [END bigtable_drop_by_prefix]
+
         :type row_prefix: bytes
         :param row_prefix: Delete all rows that start with this row key
                             prefix. Prefix cannot be zero length.
@@ -530,6 +617,12 @@ class Table(object):
 
     def mutations_batcher(self, flush_count=FLUSH_COUNT, max_row_bytes=MAX_ROW_BYTES):
         """Factory to create a mutation batcher associated with this instance.
+
+        For example:
+
+        .. literalinclude:: snippets_table.py
+            :start-after: [START bigtable_mutations_batcher]
+            :end-before: [END bigtable_mutations_batcher]
 
         :type table: class
         :param table: class:`~google.cloud.bigtable.table.Table`.
