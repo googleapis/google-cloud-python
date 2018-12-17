@@ -659,13 +659,11 @@ class TestWatch(unittest.TestCase):
         inst.change_map = {None: None}
         from google.cloud.firestore_v1beta1.watch import WatchDocTree
 
-        doc = DummyDocumentReference()
-        doc._document_path = "/doc"
+        doc = DummyDocumentReference("doc")
         doc_tree = WatchDocTree()
-        doc_tree = doc_tree.insert("/doc", doc)
-        doc_tree = doc_tree.insert("/doc", doc)
         snapshot = DummyDocumentSnapshot(doc, None, True, None, None, None)
         snapshot.reference = doc
+        doc_tree = doc_tree.insert(snapshot, None)
         inst.doc_tree = doc_tree
         inst._reset_docs()
         self.assertEqual(inst.change_map, {"/doc": ChangeType.REMOVED})
@@ -691,9 +689,8 @@ class DummyDocumentReference(object):
             self._client = kw["client"]
 
         self._path = document_path
+        self._document_path = "/" + "/".join(document_path)
         self.__dict__.update(kw)
-
-    _document_path = "/"
 
 
 class DummyQuery(object):  # pragma: NO COVER
@@ -736,6 +733,18 @@ class DummyDocumentSnapshot(object):
         self.read_time = read_time
         self.create_time = create_time
         self.update_time = update_time
+
+    def __str__(self):
+        return "%s-%s" % (self.reference._document_path, self.read_time)
+
+    def __hash__(self):
+        return hash(str(self))
+
+    def __eq__(self, other):
+        return (
+            self.reference._document_path == other.reference._document_path
+            and self.read_time == other.read_time
+        )
 
 
 class DummyBackgroundConsumer(object):

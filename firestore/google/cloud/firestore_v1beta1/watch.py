@@ -495,7 +495,6 @@ class Watch(object):
                     create_time=document.create_time,
                     update_time=document.update_time,
                 )
-
                 self.change_map[document.name] = snapshot
 
             elif removed:
@@ -718,7 +717,8 @@ class Watch(object):
 
         # Mark each document as deleted. If documents are not deleted
         # they will be sent again by the server.
-        for name, snapshot in self.doc_tree.items():
+        for snapshot in self.doc_tree.keys():
+            name = snapshot.reference._document_path
             self.change_map[name] = ChangeType.REMOVED
 
         self.current = False
