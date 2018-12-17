@@ -37,6 +37,7 @@ class Batch(object):
       >>> from google.cloud import datastore
       >>> client = datastore.Client()
       >>> batch = client.batch()
+      >>> batch.begin()
       >>> batch.put(entity1)
       >>> batch.put(entity2)
       >>> batch.delete(key3)
