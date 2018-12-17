@@ -86,14 +86,6 @@ if [ "$(ls -A $OUT )"]; then
   >&2 echo "Warning: Output directory is not empty."
 fi
 
-# If the image is not yet on the machine, pull it.
-if ! docker images $IMAGE > /dev/null; then
-  echo "Image $IMAGE not found; pulling."
-  if ! docker pull $IMAGE; then
-    exit $?
-  fi
-fi
-
 # Generate the client library.
 docker run \
   --mount type=bind,source=${PROTO_PATH}/${IN},destination=/in/${IN},readonly \
