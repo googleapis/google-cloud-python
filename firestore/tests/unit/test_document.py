@@ -673,9 +673,13 @@ class TestDocumentSnapshot(unittest.TestCase):
             mock.sentinel.create_time,
             mock.sentinel.update_time,
         )
-        self.assertEqual(
-            hash(snapshot), hash(reference) + hash(123456) + hash(123456789)
+        expected_hash = (
+            hash(reference)
+            + hash(123456)
+            + hash(123456789)
+            + hash(tuple(sorted(data.items())))
         )
+        self.assertEqual(hash(snapshot), expected_hash)
 
     def test__client_property(self):
         reference = self._make_reference(

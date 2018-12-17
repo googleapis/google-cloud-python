@@ -560,7 +560,12 @@ class DocumentSnapshot(object):
     def __hash__(self):
         seconds = self.read_time.seconds
         nanos = self.read_time.nanos
-        return hash(self._reference) + hash(seconds) + hash(nanos)
+        return (
+            hash(self._reference)
+            + hash(seconds)
+            + hash(nanos)
+            + hash(tuple(sorted(self._data.items())))
+        )
 
     @property
     def _client(self):
