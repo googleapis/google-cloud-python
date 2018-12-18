@@ -36,7 +36,7 @@
 - Make cursor-related 'Query' methods accept lists ([#6697](https://github.com/googleapis/google-cloud-python/pull/6697))
 - Add 'Client.collections' method. ([#6650](https://github.com/googleapis/google-cloud-python/pull/6650))
 - Add support for 'ArrayRemove' / 'ArrayUnion' transforms ([#6651](https://github.com/googleapis/google-cloud-python/pull/6651))
-- Add support for 'array_contains' query operator. ([#6481](https://github.com/googleapis/google-cloud-python/pull/6481))
+- Add support for `array_contains` query operator. ([#6481](https://github.com/googleapis/google-cloud-python/pull/6481))
 - Add Watch Support ([#6191](https://github.com/googleapis/google-cloud-python/pull/6191))
 - Remove use of deprecated 'channel' argument. ([#6271](https://github.com/googleapis/google-cloud-python/pull/6271))
 
