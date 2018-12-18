@@ -98,7 +98,7 @@ class TraceServiceGrpcTransport(object):
 
     @property
     def batch_write_spans(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`TraceServiceClient.batch_write_spans`.
 
         Sends new spans to new or existing traces. You cannot update
         existing spans.
@@ -112,7 +112,7 @@ class TraceServiceGrpcTransport(object):
 
     @property
     def create_span(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`TraceServiceClient.create_span`.
 
         Creates a new span.
 
