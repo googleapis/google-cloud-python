@@ -18,20 +18,42 @@
 import enum
 
 
-class MqttState(enum.IntEnum):
+class GatewayAuthMethod(enum.IntEnum):
     """
-    Indicates whether an MQTT connection is enabled or disabled. See the field
-    description for details.
+    The gateway authorization/authentication method. This setting determines how
+    Cloud IoT Core authorizes/authenticate devices to access the gateway.
 
     Attributes:
-      MQTT_STATE_UNSPECIFIED (int): No MQTT state specified. If not specified, MQTT will be enabled by default.
-      MQTT_ENABLED (int): Enables a MQTT connection.
-      MQTT_DISABLED (int): Disables a MQTT connection.
+      GATEWAY_AUTH_METHOD_UNSPECIFIED (int): No authentication/authorization method specified. No devices are allowed to
+      access the gateway.
+      ASSOCIATION_ONLY (int): The device is authenticated through the gateway association only. Device
+      credentials are ignored even if provided.
+      DEVICE_AUTH_TOKEN_ONLY (int): The device is authenticated through its own credentials. Gateway
+      association is not checked.
+      ASSOCIATION_AND_DEVICE_AUTH_TOKEN (int): The device is authenticated through both device credentials and gateway
+      association. The device must be bound to the gateway and must provide its
+      own credentials.
     """
 
-    MQTT_STATE_UNSPECIFIED = 0
-    MQTT_ENABLED = 1
-    MQTT_DISABLED = 2
+    GATEWAY_AUTH_METHOD_UNSPECIFIED = 0
+    ASSOCIATION_ONLY = 1
+    DEVICE_AUTH_TOKEN_ONLY = 2
+    ASSOCIATION_AND_DEVICE_AUTH_TOKEN = 3
+
+
+class GatewayType(enum.IntEnum):
+    """
+    Gateway type.
+
+    Attributes:
+      GATEWAY_TYPE_UNSPECIFIED (int): If unspecified, the device is considered a non-gateway device.
+      GATEWAY (int): The device is a gateway.
+      NON_GATEWAY (int): The device is not a gateway.
+    """
+
+    GATEWAY_TYPE_UNSPECIFIED = 0
+    GATEWAY = 1
+    NON_GATEWAY = 2
 
 
 class HttpState(enum.IntEnum):
@@ -76,42 +98,20 @@ class LogLevel(enum.IntEnum):
     DEBUG = 40
 
 
-class GatewayType(enum.IntEnum):
+class MqttState(enum.IntEnum):
     """
-    Gateway type.
+    Indicates whether an MQTT connection is enabled or disabled. See the field
+    description for details.
 
     Attributes:
-      GATEWAY_TYPE_UNSPECIFIED (int): If unspecified, the device is considered a non-gateway device.
-      GATEWAY (int): The device is a gateway.
-      NON_GATEWAY (int): The device is not a gateway.
+      MQTT_STATE_UNSPECIFIED (int): No MQTT state specified. If not specified, MQTT will be enabled by default.
+      MQTT_ENABLED (int): Enables a MQTT connection.
+      MQTT_DISABLED (int): Disables a MQTT connection.
     """
 
-    GATEWAY_TYPE_UNSPECIFIED = 0
-    GATEWAY = 1
-    NON_GATEWAY = 2
-
-
-class GatewayAuthMethod(enum.IntEnum):
-    """
-    The gateway authorization/authentication method. This setting determines how
-    Cloud IoT Core authorizes/authenticate devices to access the gateway.
-
-    Attributes:
-      GATEWAY_AUTH_METHOD_UNSPECIFIED (int): No authentication/authorization method specified. No devices are allowed to
-      access the gateway.
-      ASSOCIATION_ONLY (int): The device is authenticated through the gateway association only. Device
-      credentials are ignored even if provided.
-      DEVICE_AUTH_TOKEN_ONLY (int): The device is authenticated through its own credentials. Gateway
-      association is not checked.
-      ASSOCIATION_AND_DEVICE_AUTH_TOKEN (int): The device is authenticated through both device credentials and gateway
-      association. The device must be bound to the gateway and must provide its
-      own credentials.
-    """
-
-    GATEWAY_AUTH_METHOD_UNSPECIFIED = 0
-    ASSOCIATION_ONLY = 1
-    DEVICE_AUTH_TOKEN_ONLY = 2
-    ASSOCIATION_AND_DEVICE_AUTH_TOKEN = 3
+    MQTT_STATE_UNSPECIFIED = 0
+    MQTT_ENABLED = 1
+    MQTT_DISABLED = 2
 
 
 class PublicKeyCertificateFormat(enum.IntEnum):
