@@ -10,7 +10,7 @@
 
 
 ### Implementation Changes
-- Initialize 'StreamingPullFuture._cancelled' as True ([#6901](https://github.com/googleapis/google-cloud-python/pull/6901))
+- Initialize `StreamingPullFuture._cancelled` as True. ([#6901](https://github.com/googleapis/google-cloud-python/pull/6901))
 - Use moved iam.policy now at google.api_core.iam.policy ([#6741](https://github.com/googleapis/google-cloud-python/pull/6741))
 
 ### Documentation
