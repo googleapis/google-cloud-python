@@ -19,18 +19,21 @@ from .transports import {{ service.name }}Transport
 class {{ service.name }}:
     """{{ service.meta.doc|rst(width=72, indent=4) }}"""
     def __init__(self, *,
+            host: str{% if service.host %} = '{{ service.host }}'{% endif %},
             credentials: credentials.Credentials = None,
             transport: Union[str, {{ service.name }}Transport] = None,
             ) -> None:
         """Instantiate the {{ (service.name|snake_case).replace('_', ' ') }}.
 
         Args:
+            host ({% if service.host %}Optional[str]{% else %}str{% endif %}):
+                {{- ' ' }}The hostname to connect to.
             credentials (Optional[google.auth.credentials.Credential]): The
                 authorization credentials to attach to requests. These
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.{{ service.name }}Transport): The
+            transport (Union[str, ~.{{ service.name }}Transport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
         """
@@ -44,7 +47,7 @@ class {{ service.name }}:
             self._transport = transport
         else:
             Transport = get_transport_class(transport)
-            self._transport = Transport(credentials=credentials)
+            self._transport = Transport(credentials=credentials, host=host)
 
     {% for method in service.methods.values() -%}
     {%- if method.signatures.single_dispatch -%}

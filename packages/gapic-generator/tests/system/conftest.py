@@ -14,7 +14,6 @@
 
 import pytest
 
-from google.auth.credentials import AnonymousCredentials
 from google.showcase import Echo
 from google.showcase_v1alpha2.services.echo.transports.grpc import (
     EchoGrpcTransport,
@@ -25,8 +24,7 @@ import grpc
 
 @pytest.fixture
 def echo():
-    transport = EchoGrpcTransport(credentials=AnonymousCredentials())
-    transport.__dict__['grpc_channel'] = grpc.insecure_channel(
-        transport.SERVICE_ADDRESS,
+    transport = EchoGrpcTransport(
+        channel=grpc.insecure_channel('localhost:7469'),
     )
     return Echo(transport=transport)

@@ -553,7 +553,7 @@ class Service:
         """
         if self.options.Extensions[annotations_pb2.default_host]:
             return self.options.Extensions[annotations_pb2.default_host]
-        return utils.Placeholder('<<< SERVICE ADDRESS >>>')
+        return None
 
     @property
     def oauth_scopes(self) -> Sequence[str]:

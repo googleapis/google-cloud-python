@@ -26,18 +26,21 @@ class {{ service.name }}HttpTransport({{ service.name }}Transport):
     It sends protocol buffers over the wire, but uses HTTP/1.1.
     """
     def __init__(self, *,
-        credentials: credentials.Credentials = None,
-        ) -> None:
+            host: str{% if service.host %} = '{{ service.host }}'{% endif %},
+            credentials: credentials.Credentials = None,
+            ) -> None:
         """Instantiate the transport.
 
         Args:
+            host ({% if service.host %}Optional[str]{% else %}str{% endif %}):
+                {{- ' ' }}The hostname to connect to.
             credentials (Optional[google.auth.credentials.Credentials]): The
                 authorization credentials to attach to requests. These
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
         """
-        super().__init__(credentials=credentials)
+        super().__init__(host=host, credentials=credentials)
         self._session = AuthorizedSession(self._credentials)
     {%- if service.has_lro %}
 
@@ -53,7 +56,7 @@ class {{ service.name }}HttpTransport({{ service.name }}Transport):
             from google.api_core import grpc_helpers
             self.__dict__['operations_client'] = operations_v1.OperationsClient(
                 grpc_helpers.create_channel(
-                    '{0}:443'.format(self.SERVICE_ADDRESS),
+                    self._host,
                     credentials=self._credentials,
                     scopes=self.AUTH_SCOPES,
                 )
@@ -90,7 +93,7 @@ class {{ service.name }}HttpTransport({{ service.name }}Transport):
         # Send the request.
         response = self._session.post(
             'https://{host}/$rpc/{package}.{service}/{method}'.format(
-                host=self.SERVICE_ADDRESS,
+                host=self._host,
                 method='{{ method.name }}',
                 package='{{ '.'.join(method.meta.address.package) }}',
                 service='{{ service.name }}',
