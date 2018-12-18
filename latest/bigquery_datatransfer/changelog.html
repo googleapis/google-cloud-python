@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Changelog &#8212; google-cloud 6dc5395 documentation</title>
+    <title>Changelog &#8212; google-cloud 112a4dc documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -38,15 +38,59 @@
 <span id="changelog"></span><h1>Changelog<a class="headerlink" href="#changelog" title="Permalink to this headline">#</a></h1>
 <p><a class="reference external" href="https://pypi.org/project/google-cloud-bigquery-datatransfer/#history">PyPI History</a></p>
 <div class="section" id="">
-<span id="id1"></span><h2>0.2.0<a class="headerlink" href="#" title="Permalink to this headline">#</a></h2>
+<span id="id1"></span><h2>0.3.0<a class="headerlink" href="#" title="Permalink to this headline">#</a></h2>
+<p>12-17-2018 17:59 PST</p>
 <div class="section" id="implementation-changes">
 <span id="implementation-changes"></span><h3>Implementation Changes<a class="headerlink" href="#implementation-changes" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li>Pick up enum fixes in the GAPIC generator. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6608">#6608</a>)</li>
+<li>Pick up fixes in GAPIC generator. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6491">#6491</a>)</li>
+<li>Fix <code class="docutils literal notranslate"><span class="pre">client_info</span></code> bug, update docstrings. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6405">#6405</a>)</li>
+<li>Re-generate library using bigquery_datatransfer/synth.py (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/5973">#5973</a>)</li>
+<li>Fix stray, lint-breaking blank lines from autosynth. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/5960">#5960</a>)</li>
+<li>Re-generate library using <code class="docutils literal notranslate"><span class="pre">bigquery_datatransfer/synth.py</span></code>. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/5947">#5947</a>)</li>
+</ul>
+</div>
+<div class="section" id="dependencies">
+<span id="dependencies"></span><h3>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li>Bump minimum api_core version for all GAPIC libs to 1.4.1. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6391">#6391</a>)</li>
+</ul>
+</div>
+<div class="section" id="documentation">
+<span id="documentation"></span><h3>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li>Document Python 2 deprecation (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6910">#6910</a>)</li>
+<li>Fix GAX fossils (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6264">#6264</a>)</li>
+<li>Normalize use of support level badges (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6159">#6159</a>)</li>
+<li>Harmonize / DRY ‘README.rst’ / ‘docs/index.rst’. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6013">#6013</a>)</li>
+</ul>
+</div>
+<div class="section" id="internal-testing-changes">
+<span id="internal-testing-changes"></span><h3>Internal / Testing Changes<a class="headerlink" href="#internal-testing-changes" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li>Update noxfile.</li>
+<li>Blacken all gen’d libs (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6792">#6792</a>)</li>
+<li>Omit local deps (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6701">#6701</a>)</li>
+<li>Run black at end of synth.py (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6698">#6698</a>)</li>
+<li>Unblack bigquery gapic and protos.</li>
+<li>Run Black on Generated libraries (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6666">#6666</a>)</li>
+<li>Add templates for flake8, coveragerc, noxfile, and black. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6642">#6642</a>)</li>
+<li>Add synth metadata. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6562">#6562</a>)</li>
+<li>Use new Nox (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6175">#6175</a>)</li>
+</ul>
+</div>
+</div>
+<div class="section" id="">
+<span id="id2"></span><h2>0.2.0<a class="headerlink" href="#" title="Permalink to this headline">#</a></h2>
+<div class="section" id="implementation-changes">
+<span id="id3"></span><h3>Implementation Changes<a class="headerlink" href="#implementation-changes" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li>Regenerate bigquery-datatransfer (#5793)</li>
 </ul>
 </div>
 <div class="section" id="internal-testing-changes">
-<span id="internal-testing-changes"></span><h3>Internal / Testing Changes<a class="headerlink" href="#internal-testing-changes" title="Permalink to this headline">#</a></h3>
+<span id="id4"></span><h3>Internal / Testing Changes<a class="headerlink" href="#internal-testing-changes" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li>Avoid overwriting ‘<strong>module</strong>’ of messages from shared modules. (#5364)</li>
 <li>Modify system tests to use prerelease versions of grpcio (#5304)</li>
@@ -57,15 +101,15 @@
 </div>
 </div>
 <div class="section" id="">
-<span id="id2"></span><h2>0.1.1<a class="headerlink" href="#" title="Permalink to this headline">#</a></h2>
+<span id="id5"></span><h2>0.1.1<a class="headerlink" href="#" title="Permalink to this headline">#</a></h2>
 <div class="section" id="dependencies">
-<span id="dependencies"></span><h3>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">#</a></h3>
+<span id="id6"></span><h3>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li>Update dependency range for api-core to include v1.0.0 releases (#4944)</li>
 </ul>
 </div>
 <div class="section" id="documentation">
-<span id="documentation"></span><h3>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">#</a></h3>
+<span id="id7"></span><h3>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li>Fix package name in readme (#4670)</li>
 <li>BigQueryDataTransfer: update 404 link for API documentation (#4672)</li>
@@ -83,7 +127,7 @@
 </div>
 </div>
 <div class="section" id="">
-<span id="id3"></span><h2>0.1.0<a class="headerlink" href="#" title="Permalink to this headline">#</a></h2>
+<span id="id8"></span><h2>0.1.0<a class="headerlink" href="#" title="Permalink to this headline">#</a></h2>
 <p><a class="reference external" href="https://cloud.google.com/terms/launch-stages"><img alt="release level" src="https://img.shields.io/badge/release%20level-alpha-orange.svg?style&amp;#x3D;flat" /></a></p>
 <p>The BigQuery Data Transfer Service automates data movement from SaaS
 applications to Google BigQuery on a scheduled, managed basis. Your analytics
