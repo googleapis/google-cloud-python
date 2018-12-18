@@ -102,7 +102,7 @@ class CloudSchedulerGrpcTransport(object):
 
     @property
     def list_jobs(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`CloudSchedulerClient.list_jobs`.
 
         Lists jobs.
 
@@ -115,7 +115,7 @@ class CloudSchedulerGrpcTransport(object):
 
     @property
     def get_job(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`CloudSchedulerClient.get_job`.
 
         Gets a job.
 
@@ -128,7 +128,7 @@ class CloudSchedulerGrpcTransport(object):
 
     @property
     def create_job(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`CloudSchedulerClient.create_job`.
 
         Creates a job.
 
@@ -141,7 +141,7 @@ class CloudSchedulerGrpcTransport(object):
 
     @property
     def update_job(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`CloudSchedulerClient.update_job`.
 
         Updates a job.
 
@@ -162,7 +162,7 @@ class CloudSchedulerGrpcTransport(object):
 
     @property
     def delete_job(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`CloudSchedulerClient.delete_job`.
 
         Deletes a job.
 
@@ -175,7 +175,7 @@ class CloudSchedulerGrpcTransport(object):
 
     @property
     def pause_job(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`CloudSchedulerClient.pause_job`.
 
         Pauses a job.
 
@@ -193,7 +193,7 @@ class CloudSchedulerGrpcTransport(object):
 
     @property
     def resume_job(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`CloudSchedulerClient.resume_job`.
 
         Resume a job.
 
@@ -211,7 +211,7 @@ class CloudSchedulerGrpcTransport(object):
 
     @property
     def run_job(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`CloudSchedulerClient.run_job`.
 
         Forces a job to run now.
 
