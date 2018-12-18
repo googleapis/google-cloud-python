@@ -11,7 +11,7 @@
 
 ### Implementation Changes
 - Pick up fixes to GAPIC generator. ([#6522](https://github.com/googleapis/google-cloud-python/pull/6522))
-- Fix client_info bug, update docstrings via synth. ([#6442](https://github.com/googleapis/google-cloud-python/pull/6442))
+- Fix `client_info` bug, update docstrings via synth. ([#6442](https://github.com/googleapis/google-cloud-python/pull/6442))
 
 ### Documentation
 - Document Python 2 deprecation ([#6910](https://github.com/googleapis/google-cloud-python/pull/6910))
