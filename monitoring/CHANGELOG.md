@@ -4,6 +4,23 @@
 
 [1]: https://pypi.org/project/google-cloud-monitoring/#history
 
+## 0.31.1
+
+12-17-2018 16:51 PST
+
+
+### Implementation Changes
+- Use moved iam.policy now at google.api_core.iam.policy ([#6741](https://github.com/googleapis/google-cloud-python/pull/6741))
+
+### Documentation
+- Document Python 2 deprecation ([#6910](https://github.com/googleapis/google-cloud-python/pull/6910))
+- Normalize docs for 'page_size' / 'max_results' / 'page_token' ([#6842](https://github.com/googleapis/google-cloud-python/pull/6842))
+
+### Internal / Testing Changes
+- Add baseline for synth.metadata
+- Update noxfile.
+- Blacken all gen'd libs ([#6792](https://github.com/googleapis/google-cloud-python/pull/6792))
+
 ## 0.31.0
 
 11-29-2018 13:03 PST
