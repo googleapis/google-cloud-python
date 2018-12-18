@@ -98,7 +98,7 @@ class FirestoreGrpcTransport(object):
 
     @property
     def get_document(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`FirestoreClient.get_document`.
 
         Gets a single document.
 
@@ -111,7 +111,7 @@ class FirestoreGrpcTransport(object):
 
     @property
     def list_documents(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`FirestoreClient.list_documents`.
 
         Lists documents.
 
@@ -124,7 +124,7 @@ class FirestoreGrpcTransport(object):
 
     @property
     def create_document(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`FirestoreClient.create_document`.
 
         Creates a new document.
 
@@ -137,7 +137,7 @@ class FirestoreGrpcTransport(object):
 
     @property
     def update_document(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`FirestoreClient.update_document`.
 
         Updates or inserts a document.
 
@@ -150,7 +150,7 @@ class FirestoreGrpcTransport(object):
 
     @property
     def delete_document(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`FirestoreClient.delete_document`.
 
         Deletes a document.
 
@@ -163,7 +163,7 @@ class FirestoreGrpcTransport(object):
 
     @property
     def batch_get_documents(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`FirestoreClient.batch_get_documents`.
 
         Gets multiple documents.
 
@@ -179,7 +179,7 @@ class FirestoreGrpcTransport(object):
 
     @property
     def begin_transaction(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`FirestoreClient.begin_transaction`.
 
         Starts a new transaction.
 
@@ -192,7 +192,7 @@ class FirestoreGrpcTransport(object):
 
     @property
     def commit(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`FirestoreClient.commit`.
 
         Commits a transaction, while optionally updating documents.
 
@@ -205,7 +205,7 @@ class FirestoreGrpcTransport(object):
 
     @property
     def rollback(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`FirestoreClient.rollback`.
 
         Rolls back a transaction.
 
@@ -218,7 +218,7 @@ class FirestoreGrpcTransport(object):
 
     @property
     def run_query(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`FirestoreClient.run_query`.
 
         Runs a query.
 
@@ -231,7 +231,7 @@ class FirestoreGrpcTransport(object):
 
     @property
     def write(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`FirestoreClient.write`.
 
         Streams batches of document updates and deletes, in order.
 
@@ -244,7 +244,7 @@ class FirestoreGrpcTransport(object):
 
     @property
     def listen(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`FirestoreClient.listen`.
 
         Listens to changes.
 
@@ -257,7 +257,7 @@ class FirestoreGrpcTransport(object):
 
     @property
     def list_collection_ids(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`FirestoreClient.list_collection_ids`.
 
         Lists all the collection IDs underneath a document.
 
