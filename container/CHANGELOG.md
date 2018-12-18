@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-container/#history
 
+## 0.2.1
+
+12-17-2018 16:36 PST
+
+
+### Documentation
+- Document Python 2 deprecation ([#6910](https://github.com/googleapis/google-cloud-python/pull/6910))
+- Improve linkage between container docs pages. ([#6852](https://github.com/googleapis/google-cloud-python/pull/6852))
+
+### Internal / Testing Changes
+- Add baseline for synth.metadata
+
 ## 0.2.0
 
 12-04-2018 11:28 PST
