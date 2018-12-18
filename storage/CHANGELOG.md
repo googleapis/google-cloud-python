@@ -10,7 +10,7 @@
 
 
 ### Implementation Changes
-- Update Blob.update_storage_class to support rewrite tokens ([#6527](https://github.com/googleapis/google-cloud-python/pull/6527))
+- Update `Blob.update_storage_class` to support rewrite tokens. ([#6527](https://github.com/googleapis/google-cloud-python/pull/6527))
 
 ### Internal / Testing Changes
 - Skip signing tests for insufficient credentials ([#6917](https://github.com/googleapis/google-cloud-python/pull/6917))
