@@ -79,9 +79,6 @@ class WatchDocTree(object):
     def keys(self):
         return list(self._dict.keys())
 
-    def items(self):
-        return list(self._dict.items())
-
     def _copy(self):
         wdt = WatchDocTree()
         wdt._dict = self._dict.copy()
@@ -115,9 +112,9 @@ class WatchDocTree(object):
 
 
 class ChangeType(Enum):
-    ADDED = 0
-    MODIFIED = 1
+    ADDED = 1
     REMOVED = 2
+    MODIFIED = 3
 
 
 class DocumentChange(object):
@@ -380,9 +377,9 @@ class Watch(object):
 
     def _on_snapshot_target_change_add(self, proto):
         _LOGGER.debug("on_snapshot: target change: ADD")
-        assert (
-            WATCH_TARGET_ID == proto.target_change.target_ids[0]
-        ), "Unexpected target ID sent by server"
+        target_id = proto.target_change.target_ids[0]
+        if target_id != WATCH_TARGET_ID:
+            raise RuntimeError("Unexpected target ID %s sent by server" % target_id)
 
     def _on_snapshot_target_change_remove(self, proto):
         _LOGGER.debug("on_snapshot: target change: REMOVE")
@@ -394,9 +391,9 @@ class Watch(object):
             code = change.cause.code
             message = change.cause.message
 
-        # TODO: Consider surfacing a code property on the exception.
-        # TODO: Consider a more exact exception
-        raise Exception("Error %s:  %s" % (code, message))
+        message = "Error %s:  %s" % (code, message)
+
+        raise RuntimeError(message)
 
     def _on_snapshot_target_change_reset(self, proto):
         # Whatever changes have happened so far no longer matter.
@@ -495,7 +492,6 @@ class Watch(object):
                     create_time=document.create_time,
                     update_time=document.update_time,
                 )
-
                 self.change_map[document.name] = snapshot
 
             elif removed:
@@ -503,9 +499,17 @@ class Watch(object):
                 document = proto.document_change.document
                 self.change_map[document.name] = ChangeType.REMOVED
 
-        elif proto.document_delete or proto.document_remove:
-            _LOGGER.debug("on_snapshot: document change: DELETE/REMOVE")
-            name = (proto.document_delete or proto.document_remove).document
+        # NB: document_delete and document_remove (as far as we, the client,
+        # are concerned) are functionally equivalent
+
+        elif str(proto.document_delete):
+            _LOGGER.debug("on_snapshot: document change: DELETE")
+            name = proto.document_delete.document
+            self.change_map[name] = ChangeType.REMOVED
+
+        elif str(proto.document_remove):
+            _LOGGER.debug("on_snapshot: document change: REMOVE")
+            name = proto.document_remove.document
             self.change_map[name] = ChangeType.REMOVED
 
         elif proto.filter:
@@ -710,7 +714,8 @@ class Watch(object):
 
         # Mark each document as deleted. If documents are not deleted
         # they will be sent again by the server.
-        for name, snapshot in self.doc_tree.items():
+        for snapshot in self.doc_tree.keys():
+            name = snapshot.reference._document_path
             self.change_map[name] = ChangeType.REMOVED
 
         self.current = False
