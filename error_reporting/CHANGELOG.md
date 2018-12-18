@@ -4,6 +4,33 @@
 
 [1]: https://pypi.org/project/google-cloud-error-reporting/#history
 
+## 0.30.1
+
+12-17-2018 18:17 PST
+
+
+### Implementation Changes
+- Pick up fixes to GAPIC generator. ([#6522](https://github.com/googleapis/google-cloud-python/pull/6522))
+- Fix client_info bug, update docstrings via synth. ([#6442](https://github.com/googleapis/google-cloud-python/pull/6442))
+
+### Documentation
+- Document Python 2 deprecation ([#6910](https://github.com/googleapis/google-cloud-python/pull/6910))
+- Fix [#6321](https://github.com/googleapis/google-cloud-python/pull/6321) Update README service links in quickstart guides. ([#6322](https://github.com/googleapis/google-cloud-python/pull/6322))
+- Prep docs for repo split. ([#6155](https://github.com/googleapis/google-cloud-python/pull/6155))
+- Replace links to '/stable/' with '/latest/'. ([#5901](https://github.com/googleapis/google-cloud-python/pull/5901))
+
+### Internal / Testing Changes
+- Update noxfile.
+- Blacken all gen'd libs ([#6792](https://github.com/googleapis/google-cloud-python/pull/6792))
+- Omit local deps ([#6701](https://github.com/googleapis/google-cloud-python/pull/6701))
+- Run black at end of synth.py ([#6698](https://github.com/googleapis/google-cloud-python/pull/6698))
+- Run Black on Generated libraries ([#6666](https://github.com/googleapis/google-cloud-python/pull/6666))
+- Add templates for flake8, coveragerc, noxfile, and black. ([#6642](https://github.com/googleapis/google-cloud-python/pull/6642))
+- Add synth metadata. ([#6566](https://github.com/googleapis/google-cloud-python/pull/6566))
+- Use new Nox ([#6175](https://github.com/googleapis/google-cloud-python/pull/6175))
+- Add 'synth.py'. ([#6082](https://github.com/googleapis/google-cloud-python/pull/6082))
+- Use Nox inplace installs ([#5865](https://github.com/googleapis/google-cloud-python/pull/5865))
+
 ## 0.30.0
 
 ### Implementation Changes
