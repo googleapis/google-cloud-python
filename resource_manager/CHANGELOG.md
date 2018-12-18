@@ -4,6 +4,15 @@
 
 [1]: https://pypi.org/project/google-cloud-resource-manager/#history
 
+## 0.28.3
+
+12-17-2018 16:59 PST
+
+
+### Documentation
+- Document Python 2 deprecation ([#6910](https://github.com/googleapis/google-cloud-python/pull/6910))
+- Docs/fixit: normalize docs for `page_size` / `max_results` / `page_token`. ([#6842](https://github.com/googleapis/google-cloud-python/pull/6842))
+
 ## 0.28.2
 
 12-10-2018 13:00 PST
