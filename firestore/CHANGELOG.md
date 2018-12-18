@@ -52,7 +52,7 @@
 - Normalize use of support level badges ([#6159](https://github.com/googleapis/google-cloud-python/pull/6159))
 
 ### Internal / Testing Changes
-- Implement listen conformance ([#6935](https://github.com/googleapis/google-cloud-python/pull/6935))
+- Add driver for listen conformance tests. ([#6935](https://github.com/googleapis/google-cloud-python/pull/6935))
 - Add driver for query conformance tests. ([#6839](https://github.com/googleapis/google-cloud-python/pull/6839))
 - Update noxfile.
 - Blacken libraries ([#6794](https://github.com/googleapis/google-cloud-python/pull/6794))
