@@ -17,7 +17,7 @@
 - Add gRPC Transport layer. ([#5959](https://github.com/googleapis/google-cloud-python/pull/5959))
 
 ### Dependencies
-- Bump minimum 'api_core' version for all GAPIC libs to 1.4.1. ([#6391](https://github.com/googleapis/google-cloud-python/pull/6391))
+- Bump minimum `api_core` version for all GAPIC libs to 1.4.1. ([#6391](https://github.com/googleapis/google-cloud-python/pull/6391))
 - Avoid broken 'google-common-apis 1.5.4' release. ([#6355](https://github.com/googleapis/google-cloud-python/pull/6355))
 
 ### Documentation
