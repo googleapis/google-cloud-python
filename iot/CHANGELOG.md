@@ -10,7 +10,7 @@
 
 
 ### Implementation Changes
-- Use moved iam.policy now at google.api_core.iam.policy ([#6741](https://github.com/googleapis/google-cloud-python/pull/6741))
+- Import `iam.policy` from `google.api_core`. ([#6741](https://github.com/googleapis/google-cloud-python/pull/6741))
 - Pick up new methods from protos. ([#6613](https://github.com/googleapis/google-cloud-python/pull/6613))
 - Pick up fixes to GAPIC generator. ([#6513](https://github.com/googleapis/google-cloud-python/pull/6513))
 - Fix client_info bug, update docstrings. ([#6413](https://github.com/googleapis/google-cloud-python/pull/6413))
