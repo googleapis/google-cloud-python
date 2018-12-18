@@ -12,7 +12,7 @@
 ### Implementation Changes
 - Pick up enum fixes in the GAPIC generator. ([#6608](https://github.com/googleapis/google-cloud-python/pull/6608))
 - Pick up fixes in GAPIC generator. ([#6491](https://github.com/googleapis/google-cloud-python/pull/6491))
-- Fix client_info bug, update docstrings. ([#6405](https://github.com/googleapis/google-cloud-python/pull/6405))
+- Fix `client_info` bug, update docstrings. ([#6405](https://github.com/googleapis/google-cloud-python/pull/6405))
 - Re-generate library using bigquery_datatransfer/synth.py ([#5973](https://github.com/googleapis/google-cloud-python/pull/5973))
 - Fix stray, lint-breaking blank lines from autosynth. ([#5960](https://github.com/googleapis/google-cloud-python/pull/5960))
 - Re-generate library using bigquery_datatransfer/synth.py ([#5947](https://github.com/googleapis/google-cloud-python/pull/5947))
