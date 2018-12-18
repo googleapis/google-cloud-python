@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-core/#history
 
+## 0.29.1
+
+12-17-2018 16:35 PST
+
+
+### Documentation
+- Document Python 2 deprecation ([#6910](https://github.com/googleapis/google-cloud-python/pull/6910))
+
 ## 0.29.0
 
 12-03-2018 15:54 PST
