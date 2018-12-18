@@ -16,7 +16,7 @@
 - Fix `client_info` bug, update docstrings. ([#6413](https://github.com/googleapis/google-cloud-python/pull/6413))
 
 ### Dependencies
-- Bump minimum 'api_core' version for all GAPIC libs to 1.4.1. ([#6391](https://github.com/googleapis/google-cloud-python/pull/6391))
+- Bump minimum `api_core` version for all GAPIC libs to 1.4.1. ([#6391](https://github.com/googleapis/google-cloud-python/pull/6391))
 - Update IAM version in dependencies ([#6362](https://github.com/googleapis/google-cloud-python/pull/6362))
 - Avoid broken 'google-common-apis 1.5.4' release. ([#6355](https://github.com/googleapis/google-cloud-python/pull/6355))
 
