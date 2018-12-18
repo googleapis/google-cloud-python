@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-translate/#history
 
+## 1.3.3
+
+12-17-2018 17:07 PST
+
+
+### Documentation
+- Document Python 2 deprecation ([#6910](https://github.com/googleapis/google-cloud-python/pull/6910))
+
 ## 1.3.2
 
 12-10-2018 13:33 PST
