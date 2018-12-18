@@ -11,7 +11,7 @@
 
 ### Documentation
 - Document Python 2 deprecation ([#6910](https://github.com/googleapis/google-cloud-python/pull/6910))
-- Docs/fixit: normalize docs for 'page_size' / 'max_results' / 'page_token' ([#6842](https://github.com/googleapis/google-cloud-python/pull/6842))
+- Docs/fixit: normalize docs for `page_size` / `max_results` / `page_token`. ([#6842](https://github.com/googleapis/google-cloud-python/pull/6842))
 
 ## 0.28.2
 
