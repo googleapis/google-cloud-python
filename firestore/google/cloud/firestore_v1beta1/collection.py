@@ -63,6 +63,11 @@ class CollectionReference(object):
                 "Received unexpected arguments", kwargs, "Only `client` is supported"
             )
 
+    def __eq__(self, other):
+        if not isinstance(other, self.__class__):
+            return NotImplemented
+        return self._path == other._path and self._client == other._client
+
     @property
     def id(self):
         """The collection identifier.
