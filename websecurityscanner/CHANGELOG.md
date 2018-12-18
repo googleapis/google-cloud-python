@@ -19,7 +19,7 @@
 ### Documentation
 - Document Python 2 deprecation ([#6910](https://github.com/googleapis/google-cloud-python/pull/6910))
 - Normalize use of support level badges ([#6159](https://github.com/googleapis/google-cloud-python/pull/6159))
-- Replace links to '/stable/' with '/latest/'. ([#5901](https://github.com/googleapis/google-cloud-python/pull/5901))
+- Replace links to `/stable/` with `/latest/`. ([#5901](https://github.com/googleapis/google-cloud-python/pull/5901))
 
 ### Internal / Testing Changes
 - Blacken all gen'd libs ([#6792](https://github.com/googleapis/google-cloud-python/pull/6792))
