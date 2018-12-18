@@ -272,7 +272,7 @@ class TestWatch(unittest.TestCase):
         proto.target_change.target_ids = [1]  # not "Py"
         with self.assertRaises(Exception) as exc:
             inst.on_snapshot(proto)
-        self.assertEqual(str(exc.exception), "Unexpected target ID sent by server")
+        self.assertEqual(str(exc.exception), "Unexpected target ID 1 sent by server")
 
     def test_on_snapshot_target_remove(self):
         inst = self._makeOne()

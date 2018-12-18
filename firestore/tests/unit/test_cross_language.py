@@ -248,7 +248,7 @@ def test_listen_testprotos(test_proto):  # pragma: NO COVER
                     try:
                         for proto in testcase.responses:
                             watch.on_snapshot(proto)
-                    except AssertionError:
+                    except RuntimeError:
                         # listen-target-add-wrong-id.textpro
                         # listen-target-remove.textpro
                         pass

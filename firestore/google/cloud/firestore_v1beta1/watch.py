@@ -377,9 +377,9 @@ class Watch(object):
 
     def _on_snapshot_target_change_add(self, proto):
         _LOGGER.debug("on_snapshot: target change: ADD")
-        assert (
-            WATCH_TARGET_ID == proto.target_change.target_ids[0]
-        ), "Unexpected target ID sent by server"
+        target_id = proto.target_change.target_ids[0]
+        if target_id != WATCH_TARGET_ID:
+            raise RuntimeError("Unexpected target ID %s sent by server" % target_id)
 
     def _on_snapshot_target_change_remove(self, proto):
         _LOGGER.debug("on_snapshot: target change: REMOVE")
@@ -391,9 +391,9 @@ class Watch(object):
             code = change.cause.code
             message = change.cause.message
 
-        # TODO: Consider surfacing a code property on the exception.
-        # TODO: Consider a more exact exception
-        raise AssertionError("Error %s:  %s" % (code, message))
+        message = "Error %s:  %s" % (code, message)
+
+        raise RuntimeError(message)
 
     def _on_snapshot_target_change_reset(self, proto):
         # Whatever changes have happened so far no longer matter.
