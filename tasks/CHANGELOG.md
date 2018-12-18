@@ -12,7 +12,7 @@
 ### Implementation Changes
 - Import `iam.policy` from `google.api_core`. ([#6741](https://github.com/googleapis/google-cloud-python/pull/6741))
 - Pick up enum fixes in the GAPIC generator. ([#6616](https://github.com/googleapis/google-cloud-python/pull/6616))
-- Fix client_info bug, update docstrings and timeouts. ([#6422](https://github.com/googleapis/google-cloud-python/pull/6422))
+- Fix `client_info` bug, update docstrings and timeouts. ([#6422](https://github.com/googleapis/google-cloud-python/pull/6422))
 - Re-generate library using tasks/synth.py ([#5980](https://github.com/googleapis/google-cloud-python/pull/5980))
 
 ### New Features
