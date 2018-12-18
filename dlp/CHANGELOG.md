@@ -17,7 +17,7 @@
 - Assorted synth fixups / cleanups ([#6400](https://github.com/googleapis/google-cloud-python/pull/6400))
 
 ### New Features
-- Add 'BigQueryOptions.excluded_fields' ([#6312](https://github.com/googleapis/google-cloud-python/pull/6312))
+- Add `BigQueryOptions.excluded_fields`. ([#6312](https://github.com/googleapis/google-cloud-python/pull/6312))
 
 ### Dependencies
 - Bump minimum 'api_core' version for all GAPIC libs to 1.4.1. ([#6391](https://github.com/googleapis/google-cloud-python/pull/6391))
