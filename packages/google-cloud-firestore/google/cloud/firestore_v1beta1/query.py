@@ -143,6 +143,20 @@ class Query(object):
         self._start_at = start_at
         self._end_at = end_at
 
+    def __eq__(self, other):
+        if not isinstance(other, self.__class__):
+            return NotImplemented
+        return (
+            self._parent == other._parent
+            and self._projection == other._projection
+            and self._field_filters == other._field_filters
+            and self._orders == other._orders
+            and self._limit == other._limit
+            and self._offset == other._offset
+            and self._start_at == other._start_at
+            and self._end_at == other._end_at
+        )
+
     @property
     def _client(self):
         """The client of the parent collection.

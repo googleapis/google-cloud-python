@@ -53,6 +53,11 @@ class _ValueList(object):
 
         self._values = list(values)
 
+    def __eq__(self, other):
+        if not isinstance(other, self.__class__):
+            return NotImplemented
+        return self._values == other._values
+
     @property
     def values(self):
         """Values to append.
