@@ -21,7 +21,7 @@
 
 ### Documentation
 - Document Python 2 deprecation ([#6910](https://github.com/googleapis/google-cloud-python/pull/6910))
-- Replace links to '/stable/' with '/latest/'. ([#5901](https://github.com/googleapis/google-cloud-python/pull/5901))
+- Replace links to `/stable/` with `/latest/`. ([#5901](https://github.com/googleapis/google-cloud-python/pull/5901))
 
 ### Internal / Testing Changes
 - Add baseline for synth.metadata
