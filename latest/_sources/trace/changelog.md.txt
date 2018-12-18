@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-trace/#history
 
+## 0.20.2
+
+12-17-2018 17:06 PST
+
+
+### Documentation
+- Document Python 2 deprecation ([#6910](https://github.com/googleapis/google-cloud-python/pull/6910))
+
 ## 0.20.1
 
 12-07-2018 16:06 PST
