@@ -4,6 +4,15 @@
 
 [1]: https://pypi.org/project/google-cloud-datastore/#history
 
+## 1.7.3
+
+12-17-2018 16:45 PST
+
+
+### Documentation
+- Show use of 'batch.begin()' in docstring example. ([#6932](https://github.com/googleapis/google-cloud-python/pull/6932))
+- Document Python 2 deprecation ([#6910](https://github.com/googleapis/google-cloud-python/pull/6910))
+
 ## 1.7.2
 
 12-10-2018 12:37 PST
