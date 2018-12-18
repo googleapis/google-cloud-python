@@ -38,7 +38,7 @@
 - Add / fix badges for PyPI / versions. ([#6158](https://github.com/googleapis/google-cloud-python/pull/6158))
 - Use new Nox ([#6175](https://github.com/googleapis/google-cloud-python/pull/6175))
 - Add 'synth.py'. ([#6085](https://github.com/googleapis/google-cloud-python/pull/6085))
-- fix [#5676](https://github.com/googleapis/google-cloud-python/pull/5676) by including iot docs in build ([#5679](https://github.com/googleapis/google-cloud-python/pull/5679))
+- Include IoT docs in build. ([#5679](https://github.com/googleapis/google-cloud-python/pull/5679))
 - fix trove classifier ([#5386](https://github.com/googleapis/google-cloud-python/pull/5386))
 
 ## 0.1.0
