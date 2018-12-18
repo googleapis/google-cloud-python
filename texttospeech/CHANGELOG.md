@@ -12,7 +12,7 @@
 ### Implementation Changes
 - Import `iam.policy` from `google.api_core`. ([#6741](https://github.com/googleapis/google-cloud-python/pull/6741))
 - Pick up fixes to GAPIC generator. ([#6510](https://github.com/googleapis/google-cloud-python/pull/6510))
-- Fix client_info bug, update docstrings. ([#6423](https://github.com/googleapis/google-cloud-python/pull/6423))
+- Fix `client_info` bug, update docstrings. ([#6423](https://github.com/googleapis/google-cloud-python/pull/6423))
 - Re-generate library using texttospeech/synth.py ([#5981](https://github.com/googleapis/google-cloud-python/pull/5981))
 - gRPC Transport layer added ([#5959](https://github.com/googleapis/google-cloud-python/pull/5959))
 
