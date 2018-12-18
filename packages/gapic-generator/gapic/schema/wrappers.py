@@ -454,7 +454,7 @@ class Method:
             answer.append(MethodSignature(
                 name=sig.function_name if sig.function_name else self.name,
                 fields=collections.OrderedDict([
-                    (f.split('.')[-1], self.input.get_field(f))
+                    (f.split('.')[-1], self.input.get_field(*f.split('.')))
                     for f in sig.fields
                 ]),
             ))

@@ -57,6 +57,32 @@ def test_method_signature():
     assert tuple(signature.fields.keys()) == ('int_field', 'float_field')
 
 
+def test_method_signature_nested():
+    # Set up a meaningful input message.
+    inner_msg = make_message(name='Inner', fields=(
+        make_field('int_field', type=5),
+        make_field('bool_field', type=8),
+        make_field('float_field', type=2),
+    ))
+    outer_msg = make_message(name='Outer', fields=(
+        make_field('inner', type=9, message=inner_msg),
+    ))
+
+    # Create the method.
+    method = make_method('SendStuff', input_message=outer_msg)
+
+    # Edit the underlying method pb2 post-hoc to add the appropriate annotation
+    # (google.api.signature).
+    method.options.Extensions[annotations_pb2.method_signature].MergeFrom(
+        signature_pb2.MethodSignature(fields=['inner.int_field'])
+    )
+
+    # We should get back just those two fields as part of the signature.
+    assert len(method.signatures) == 1
+    signature = method.signatures[0]
+    assert tuple(signature.fields.keys()) == ('int_field',)
+
+
 def test_method_no_signature():
     assert len(make_method('Ping').signatures) == 0
 
@@ -149,7 +175,9 @@ def make_message(name: str, package: str = 'foo.bar.v1', module: str = 'baz',
 
 
 def make_field(name: str, repeated: bool = False,
-               meta: metadata.Metadata = None, **kwargs) -> wrappers.Method:
+               meta: metadata.Metadata = None,
+               message: wrappers.MessageType = None,
+               **kwargs) -> wrappers.Method:
     field_pb = descriptor_pb2.FieldDescriptorProto(
         name=name,
         label=3 if repeated else 1,
@@ -157,5 +185,6 @@ def make_field(name: str, repeated: bool = False,
     )
     return wrappers.Field(
         field_pb=field_pb,
+        message=message,
         meta=meta or metadata.Metadata(),
     )
