@@ -12,7 +12,7 @@
 ### Implementation Changes
 - Import `iam.policy` from `google.api_core`. ([#6741](https://github.com/googleapis/google-cloud-python/pull/6741))
 - Pick up fixes to GAPIC generator. ([#6521](https://github.com/googleapis/google-cloud-python/pull/6521))
-- Fix client_info bug, update docstrings. ([#6415](https://github.com/googleapis/google-cloud-python/pull/6415))
+- Fix `client_info` bug, update docstrings. ([#6415](https://github.com/googleapis/google-cloud-python/pull/6415))
 
 ### Dependencies
 - Bump minimum 'api_core' version for all GAPIC libs to 1.4.1. ([#6391](https://github.com/googleapis/google-cloud-python/pull/6391))
