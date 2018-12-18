@@ -28,7 +28,7 @@
 - Docstring tweaks from protos. ([#6261](https://github.com/googleapis/google-cloud-python/pull/6261))
 - Normalize use of support level badges ([#6159](https://github.com/googleapis/google-cloud-python/pull/6159))
 - Remove autosynth / tweaks for 'README.rst' / 'setup.py'. ([#5957](https://github.com/googleapis/google-cloud-python/pull/5957))
-- Replace links to '/stable/' with '/latest/'. ([#5901](https://github.com/googleapis/google-cloud-python/pull/5901))
+- Replace links to `/stable/` with `/latest/`. ([#5901](https://github.com/googleapis/google-cloud-python/pull/5901))
 
 ### Internal / Testing Changes
 - Add baseline for synth.metadata
