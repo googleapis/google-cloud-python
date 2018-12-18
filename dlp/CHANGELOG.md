@@ -4,6 +4,37 @@
 
 [1]: https://pypi.org/project/google-cloud-dlp/#history
 
+## 0.10.0
+
+12-17-2018 18:07 PST
+
+
+### Implementation Changes
+- Import `iam.policy` from `google.api_core`. ([#6741](https://github.com/googleapis/google-cloud-python/pull/6741))
+- Pick up enum fixes in the GAPIC generator. ([#6611](https://github.com/googleapis/google-cloud-python/pull/6611))
+- Pick up fixes in GAPIC generator. ([#6495](https://github.com/googleapis/google-cloud-python/pull/6495))
+- Fix `client_info` bug, update docstrings via synth. ([#6440](https://github.com/googleapis/google-cloud-python/pull/6440))
+- Assorted synth fixups / cleanups ([#6400](https://github.com/googleapis/google-cloud-python/pull/6400))
+
+### New Features
+- Add `BigQueryOptions.excluded_fields`. ([#6312](https://github.com/googleapis/google-cloud-python/pull/6312))
+
+### Dependencies
+- Bump minimum `api_core` version for all GAPIC libs to 1.4.1. ([#6391](https://github.com/googleapis/google-cloud-python/pull/6391))
+
+### Documentation
+- Document Python 2 deprecation ([#6910](https://github.com/googleapis/google-cloud-python/pull/6910))
+- Pick up docstring fix via synth. ([#6874](https://github.com/googleapis/google-cloud-python/pull/6874))
+
+### Internal / Testing Changes
+- Update noxfile.
+- Blacken all gen'd libs ([#6792](https://github.com/googleapis/google-cloud-python/pull/6792))
+- Omit local deps ([#6701](https://github.com/googleapis/google-cloud-python/pull/6701))
+- Run black at end of synth.py ([#6698](https://github.com/googleapis/google-cloud-python/pull/6698))
+- Run Black on Generated libraries ([#6666](https://github.com/googleapis/google-cloud-python/pull/6666))
+- Add templates for flake8, coveragerc, noxfile, and black. ([#6642](https://github.com/googleapis/google-cloud-python/pull/6642))
+- Add synth metadata. ([#6565](https://github.com/googleapis/google-cloud-python/pull/6565))
+
 ## 0.9.0
 
 10-18-2018 10:44 PDT
