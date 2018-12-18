@@ -11,7 +11,7 @@
 
 
 ### Implementation Changes
-- Iimplement equality semantics for public types ([#6916](https://github.com/googleapis/google-cloud-python/pull/6916))
+- Implement equality semantics for public types ([#6916](https://github.com/googleapis/google-cloud-python/pull/6916))
 - Pick up stub docstring fix in GAPIC generator. ([#6988](https://github.com/googleapis/google-cloud-python/pull/6988))
 - Use 'DatetimeWithNanos' for converting timestamp messages. ([#6920](https://github.com/googleapis/google-cloud-python/pull/6920))
 - Enable use of 'WriteBatch' as a context manager. ([#6912](https://github.com/googleapis/google-cloud-python/pull/6912))
