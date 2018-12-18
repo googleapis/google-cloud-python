@@ -10,7 +10,7 @@
 
 
 ### Implementation Changes
-- Use moved iam.policy now at google.api_core.iam.policy ([#6741](https://github.com/googleapis/google-cloud-python/pull/6741))
+- Import  `iam.policy` from `google.api_core.iam.policy`. ([#6741](https://github.com/googleapis/google-cloud-python/pull/6741))
 
 ### Documentation
 - Document Python 2 deprecation ([#6910](https://github.com/googleapis/google-cloud-python/pull/6910))
