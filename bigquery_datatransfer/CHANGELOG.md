@@ -15,7 +15,7 @@
 - Fix `client_info` bug, update docstrings. ([#6405](https://github.com/googleapis/google-cloud-python/pull/6405))
 - Re-generate library using bigquery_datatransfer/synth.py ([#5973](https://github.com/googleapis/google-cloud-python/pull/5973))
 - Fix stray, lint-breaking blank lines from autosynth. ([#5960](https://github.com/googleapis/google-cloud-python/pull/5960))
-- Re-generate library using bigquery_datatransfer/synth.py ([#5947](https://github.com/googleapis/google-cloud-python/pull/5947))
+- Re-generate library using `bigquery_datatransfer/synth.py`. ([#5947](https://github.com/googleapis/google-cloud-python/pull/5947))
 
 ### Dependencies
 - Bump minimum api_core version for all GAPIC libs to 1.4.1. ([#6391](https://github.com/googleapis/google-cloud-python/pull/6391))
