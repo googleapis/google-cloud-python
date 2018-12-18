@@ -272,7 +272,7 @@ class TestWatch(unittest.TestCase):
         proto.target_change.target_ids = [1]  # not "Py"
         with self.assertRaises(Exception) as exc:
             inst.on_snapshot(proto)
-        self.assertEqual(str(exc.exception), "Unexpected target ID sent by server")
+        self.assertEqual(str(exc.exception), "Unexpected target ID 1 sent by server")
 
     def test_on_snapshot_target_remove(self):
         inst = self._makeOne()
@@ -403,7 +403,7 @@ class TestWatch(unittest.TestCase):
 
         remove = DummyRemove()
         proto.document_remove = remove
-        proto.document_delete = None
+        proto.document_delete = ""
         inst.on_snapshot(proto)
         self.assertTrue(inst.change_map["fred"] is ChangeType.REMOVED)
 
@@ -412,8 +412,8 @@ class TestWatch(unittest.TestCase):
         proto = DummyProto()
         proto.target_change = ""
         proto.document_change = ""
-        proto.document_remove = None
-        proto.document_delete = None
+        proto.document_remove = ""
+        proto.document_delete = ""
 
         class DummyFilter(object):
             count = 999
@@ -432,8 +432,8 @@ class TestWatch(unittest.TestCase):
         proto = DummyProto()
         proto.target_change = ""
         proto.document_change = ""
-        proto.document_remove = None
-        proto.document_delete = None
+        proto.document_remove = ""
+        proto.document_delete = ""
 
         class DummyFilter(object):
             count = 0
@@ -449,8 +449,8 @@ class TestWatch(unittest.TestCase):
         proto = DummyProto()
         proto.target_change = ""
         proto.document_change = ""
-        proto.document_remove = None
-        proto.document_delete = None
+        proto.document_remove = ""
+        proto.document_delete = ""
         proto.filter = ""
         with self.assertRaises(Exception) as exc:
             inst.on_snapshot(proto)
@@ -659,13 +659,11 @@ class TestWatch(unittest.TestCase):
         inst.change_map = {None: None}
         from google.cloud.firestore_v1beta1.watch import WatchDocTree
 
-        doc = DummyDocumentReference()
-        doc._document_path = "/doc"
+        doc = DummyDocumentReference("doc")
         doc_tree = WatchDocTree()
-        doc_tree = doc_tree.insert("/doc", doc)
-        doc_tree = doc_tree.insert("/doc", doc)
         snapshot = DummyDocumentSnapshot(doc, None, True, None, None, None)
         snapshot.reference = doc
+        doc_tree = doc_tree.insert(snapshot, None)
         inst.doc_tree = doc_tree
         inst._reset_docs()
         self.assertEqual(inst.change_map, {"/doc": ChangeType.REMOVED})
@@ -691,9 +689,8 @@ class DummyDocumentReference(object):
             self._client = kw["client"]
 
         self._path = document_path
+        self._document_path = "/" + "/".join(document_path)
         self.__dict__.update(kw)
-
-    _document_path = "/"
 
 
 class DummyQuery(object):  # pragma: NO COVER
@@ -736,6 +733,12 @@ class DummyDocumentSnapshot(object):
         self.read_time = read_time
         self.create_time = create_time
         self.update_time = update_time
+
+    def __str__(self):
+        return "%s-%s" % (self.reference._document_path, self.read_time)
+
+    def __hash__(self):
+        return hash(str(self))
 
 
 class DummyBackgroundConsumer(object):
