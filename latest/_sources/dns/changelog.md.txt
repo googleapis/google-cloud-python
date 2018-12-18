@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-dns/#history
 
+## 0.29.2
+
+12-17-2018 16:47 PST
+
+
+### Implementation Changes
+- Ensure that `ManagedZone:exists()` does not misreport `True` result. ([#6884](https://github.com/googleapis/google-cloud-python/pull/6884))
+
+### Documentation
+- Document Python 2 deprecation ([#6910](https://github.com/googleapis/google-cloud-python/pull/6910))
+- Docs/fixit: normalize docs for `page_size` / `max_results` / `page_token` ([#6842](https://github.com/googleapis/google-cloud-python/pull/6842))
+
 ## 0.29.1
 
 12-10-2018 12:50 PST
