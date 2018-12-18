@@ -4,6 +4,40 @@
 
 [1]: https://pypi.org/project/google-cloud-speech/#history
 
+## 0.36.1
+
+12-18-2018 09:46 PST
+
+
+### Implementation Changes
+- Import `iam.policy` from `google.api_core`. ([#6741](https://github.com/googleapis/google-cloud-python/pull/6741))
+- Pick up fixes to GAIPC generator. ([#6508](https://github.com/googleapis/google-cloud-python/pull/6508))
+- Add `result_end_time`, docstring changes via synth. ([#6462](https://github.com/googleapis/google-cloud-python/pull/6462))
+- Assorted synth fixups / cleanups ([#6400](https://github.com/googleapis/google-cloud-python/pull/6400))
+- Fix `client_info` bug, update docstrings and timeouts. ([#6421](https://github.com/googleapis/google-cloud-python/pull/6421))
+- Re-generate library using speech/synth.py ([#5979](https://github.com/googleapis/google-cloud-python/pull/5979))
+
+### Dependencies
+- Bump minimum `api_core` version for all GAPIC libs to 1.4.1. ([#6391](https://github.com/googleapis/google-cloud-python/pull/6391))
+
+### Documentation
+- Document Python 2 deprecation ([#6910](https://github.com/googleapis/google-cloud-python/pull/6910))
+- Clarify passed arguments in speech examples. ([#6857](https://github.com/googleapis/google-cloud-python/pull/6857))
+- Docs: normalize use of support level badges ([#6159](https://github.com/googleapis/google-cloud-python/pull/6159))
+- Fix client library URL. ([#6052](https://github.com/googleapis/google-cloud-python/pull/6052))
+- Prep docs for repo split. ([#6017](https://github.com/googleapis/google-cloud-python/pull/6017))
+
+### Internal / Testing Changes
+- Synth.metadata. ([#6868](https://github.com/googleapis/google-cloud-python/pull/6868))
+- Update noxfile.
+- Blacken all gen'd libs ([#6792](https://github.com/googleapis/google-cloud-python/pull/6792))
+- Omit local deps ([#6701](https://github.com/googleapis/google-cloud-python/pull/6701))
+- Run black at end of synth.py ([#6698](https://github.com/googleapis/google-cloud-python/pull/6698))
+- Run Black on Generated libraries ([#6666](https://github.com/googleapis/google-cloud-python/pull/6666))
+- Add templates for flake8, coveragerc, noxfile, and black. ([#6642](https://github.com/googleapis/google-cloud-python/pull/6642))
+- Add / fix badges for PyPI / versions. ([#6158](https://github.com/googleapis/google-cloud-python/pull/6158))
+- Use new Nox ([#6175](https://github.com/googleapis/google-cloud-python/pull/6175))
+
 ## 0.36.0
 
 ### New Features
