@@ -10,7 +10,7 @@
 
 
 ### Implementation Changes
-- Use moved iam.policy now at google.api_core.iam.policy ([#6741](https://github.com/googleapis/google-cloud-python/pull/6741))
+- Import `iam.policy` from `google.api_core`. ([#6741](https://github.com/googleapis/google-cloud-python/pull/6741))
 - Update 'cluster_controller_client' GAPIC config (via synth). ([#6659](https://github.com/googleapis/google-cloud-python/pull/6659))
 - Add 'WorkflowTemplateServiceClient', optional args; update timeouts (via synth). ([#6655](https://github.com/googleapis/google-cloud-python/pull/6655))
 - Pick up enum fixes in the GAPIC generator. ([#6609](https://github.com/googleapis/google-cloud-python/pull/6609))
