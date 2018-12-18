@@ -107,7 +107,8 @@ class TestDocumentReference(unittest.TestCase):
         self.assertIs(document.__eq__(other), NotImplemented)
 
     def test___hash__(self):
-        client = mock.sentinel.client
+        client = mock.MagicMock()
+        client.__hash__.return_value = 234566789
         document = self._make_one("X", "YY", client=client)
         self.assertEqual(hash(document), hash(("X", "YY")) + hash(client))
 
@@ -661,25 +662,17 @@ class TestDocumentSnapshot(unittest.TestCase):
     def test___hash__(self):
         from google.protobuf import timestamp_pb2
 
-        client = mock.sentinel.client
+        client = mock.MagicMock()
+        client.__hash__.return_value = 234566789
         reference = self._make_reference("hi", "bye", client=client)
         data = {"zoop": 83}
-        read_time = timestamp_pb2.Timestamp(seconds=123456, nanos=123456789)
+        update_time = timestamp_pb2.Timestamp(seconds=123456, nanos=123456789)
         snapshot = self._make_one(
-            reference,
-            data,
-            True,
-            read_time,
-            mock.sentinel.create_time,
-            mock.sentinel.update_time,
+            reference, data, True, None, mock.sentinel.create_time, update_time
         )
-        expected_hash = (
-            hash(reference)
-            + hash(123456)
-            + hash(123456789)
-            + hash(tuple(sorted(data.items())))
+        self.assertEqual(
+            hash(snapshot), hash(reference) + hash(123456) + hash(123456789)
         )
-        self.assertEqual(hash(snapshot), expected_hash)
 
     def test__client_property(self):
         reference = self._make_reference(
