@@ -191,13 +191,18 @@ class Client(ClientWithProject):
                          or :data:`~google.cloud.logging.DESCENDING`.
 
         :type page_size: int
-        :param page_size: maximum number of entries to return, If not passed,
-                          defaults to a value set by the API.
+        :param page_size:
+            Optional. The maximum number of entries in each page of results
+            from this request. Non-positive values are ignored. Defaults
+            to a sensible value set by the API.
 
         :type page_token: str
-        :param page_token: opaque marker for the next "page" of entries. If not
-                           passed, the API will return the first page of
-                           entries.
+        :param page_token:
+            Optional. If present, return the next batch of entries, using
+            the value, which must correspond to the ``nextPageToken`` value
+            returned in the previous response.  Deprecated: use the ``pages``
+            property of the returned iterator instead of manually passing
+            the token.
 
         :rtype: :class:`~google.api_core.page_iterator.Iterator`
         :returns: Iterator of :class:`~google.cloud.logging.entries._BaseEntry`
@@ -244,13 +249,18 @@ class Client(ClientWithProject):
         https://cloud.google.com/logging/docs/reference/v2/rest/v2/projects.sinks/list
 
         :type page_size: int
-        :param page_size: maximum number of sinks to return, If not passed,
-                          defaults to a value set by the API.
+        :param page_size:
+            Optional. The maximum number of sinks in each page of results from
+            this request. Non-positive values are ignored. Defaults to a
+            sensible value set by the API.
 
         :type page_token: str
-        :param page_token: opaque marker for the next "page" of sinks. If not
-                           passed, the API will return the first page of
-                           sinks.
+        :param page_token:
+            Optional. If present, return the next batch of sinks, using the
+            value, which must correspond to the ``nextPageToken`` value
+            returned in the previous response.  Deprecated: use the ``pages``
+            property of the returned iterator instead of manually passing the
+            token.
 
         :rtype: :class:`~google.api_core.page_iterator.Iterator`
         :returns: Iterator of
@@ -288,13 +298,18 @@ class Client(ClientWithProject):
         https://cloud.google.com/logging/docs/reference/v2/rest/v2/projects.metrics/list
 
         :type page_size: int
-        :param page_size: maximum number of metrics to return, If not passed,
-                          defaults to a value set by the API.
+        :param page_size:
+            Optional. The maximum number of metrics in each page of results
+            from this request. Non-positive values are ignored. Defaults to a
+            sensible value set by the API.
 
         :type page_token: str
-        :param page_token: opaque marker for the next "page" of metrics. If not
-                           passed, the API will return the first page of
-                           metrics.
+        :param page_token:
+            Optional. If present, return the next batch of metrics, using the
+            value, which must correspond to the ``nextPageToken`` value
+            returned in the previous response.  Deprecated: use the ``pages``
+            property of the returned iterator instead of manually passing the
+            token.
 
         :rtype: :class:`~google.api_core.page_iterator.Iterator`
         :returns: Iterator of :class:`~google.cloud.logging.metric.Metric`
@@ -302,8 +317,11 @@ class Client(ClientWithProject):
         """
         return self.metrics_api.list_metrics(self.project, page_size, page_token)
 
-    def get_default_handler(self):
+    def get_default_handler(self, **kw):
         """Return the default logging handler based on the local environment.
+
+        :type kw: dict
+        :param kw: keyword args passed to handler constructor
 
         :rtype: :class:`logging.Handler`
         :returns: The default log handler based on the environment
@@ -314,14 +332,14 @@ class Client(ClientWithProject):
             _APPENGINE_FLEXIBLE_ENV_VM in os.environ
             or _APPENGINE_INSTANCE_ID in os.environ
         ):
-            return AppEngineHandler(self)
+            return AppEngineHandler(self, **kw)
         elif gke_cluster_name is not None:
-            return ContainerEngineHandler()
+            return ContainerEngineHandler(**kw)
         else:
-            return CloudLoggingHandler(self)
+            return CloudLoggingHandler(self, **kw)
 
     def setup_logging(
-        self, log_level=logging.INFO, excluded_loggers=EXCLUDED_LOGGER_DEFAULTS
+        self, log_level=logging.INFO, excluded_loggers=EXCLUDED_LOGGER_DEFAULTS, **kw
     ):
         """Attach default Stackdriver logging handler to the root logger.
 
@@ -339,6 +357,9 @@ class Client(ClientWithProject):
                                  handler to. This will always include the
                                  loggers in the path of the logging client
                                  itself.
+
+        :type kw: dict
+        :param kw: keyword args passed to handler constructor
         """
-        handler = self.get_default_handler()
+        handler = self.get_default_handler(**kw)
         setup_logging(handler, log_level=log_level, excluded_loggers=excluded_loggers)

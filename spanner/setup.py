@@ -22,7 +22,7 @@ import setuptools
 
 name = 'google-cloud-spanner'
 description = 'Cloud Spanner API client library'
-version = '1.7.0'
+version = '1.7.1'
 # Should be one of:
 # 'Development Status :: 3 - Alpha'
 # 'Development Status :: 4 - Beta'
@@ -77,6 +77,7 @@ setuptools.setup(
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
         'Operating System :: OS Independent',
         'Topic :: Internet',
     ],
@@ -85,6 +86,7 @@ setuptools.setup(
     namespace_packages=namespaces,
     install_requires=dependencies,
     extras_require=extras,
+    python_requires='>=2.7,!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*',
     include_package_data=True,
     zip_safe=False,
 )
