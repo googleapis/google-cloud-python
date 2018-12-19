@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-logging/#history
 
+## 1.9.1
+
+12-17-2018 16:49 PST
+
+
+### Implementation Changes
+- Allow setting name, args on default handler (post-blacken) ([#6828](https://github.com/googleapis/google-cloud-python/pull/6828))
+
+### Documentation
+- Document Python 2 deprecation ([#6910](https://github.com/googleapis/google-cloud-python/pull/6910))
+- Normalize docs for `page_size` / `max_results` / `page_token`. ([#6842](https://github.com/googleapis/google-cloud-python/pull/6842))
+
 ## 1.9.0
 
 12-10-2018 12:55 PST
