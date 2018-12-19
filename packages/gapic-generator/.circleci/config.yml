@@ -93,6 +93,7 @@ jobs:
   showcase:
     docker:
       - image: python:3.7-slim
+      - image: gcr.io/gapic-showcase/gapic-showcase:0.0.7
     steps:
       - checkout
       - run:
@@ -111,18 +112,6 @@ jobs:
             cd /usr/src/protoc/
             unzip protoc-3.6.1.zip
             ln -s /usr/src/protoc/bin/protoc /usr/local/bin/protoc
-      - run:
-          name: Download and extract Showcase.
-          command: |
-            curl --location https://github.com/googleapis/gapic-showcase/releases/download/v0.0.7/gapic-showcase-0.0.7-linux-amd64.tar.gz --output /tmp/gapic-showcase.tar.gz
-            cd /tmp
-            tar xvfz /tmp/gapic-showcase.tar.gz
-            mv /tmp/gapic-showcase /usr/local/bin/showcase
-            chmod a+x /usr/local/bin/showcase
-      - run:
-          name: Run Showcase.
-          command: /usr/local/bin/showcase start
-          background: true
       - run:
           name: Run showcase tests.
           command: nox -s showcase
