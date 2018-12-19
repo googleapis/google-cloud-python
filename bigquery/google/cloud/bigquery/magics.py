@@ -114,7 +114,7 @@
 
         In [6]: params = {"num": 17}
 
-        In [7]: %%bigquery df --params $params
+        In [7]: %%bigquery --params $params
            ...: SELECT @num AS num
 
         Out[7]:     num
