@@ -257,17 +257,13 @@ def _run_query(client, query, job_config=None):
 @magic_arguments.argument(
     "destination_var",
     nargs="?",
-    help=(
-        "If provided, save the output to this variable instead of displaying it."
-    ),
+    help=("If provided, save the output to this variable instead of displaying it."),
 )
 @magic_arguments.argument(
     "--project",
     type=str,
     default=None,
-    help=(
-        "Project to use for executing this query. Defaults to the context project."
-    ),
+    help=("Project to use for executing this query. Defaults to the context project."),
 )
 @magic_arguments.argument(
     "--use_legacy_sql",
