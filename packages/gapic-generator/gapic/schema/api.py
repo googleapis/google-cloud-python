@@ -499,6 +499,12 @@ class _ProtoBuilder:
             # a specialized object in its place.
             output_type = self.all_messages[meth_pb.output_type.lstrip('.')]
             if meth_pb.output_type.endswith('google.longrunning.Operation'):
+                if not lro.response_type or not lro.metadata_type:
+                    raise TypeError(
+                        f'rpc {meth_pb.name} returns a google.longrunning.'
+                        'Operation, but is missing a response type or '
+                        'metadata type.',
+                    )
                 output_type = self._get_operation_type(
                     response_type=self.all_messages[
                         address.resolve(lro.response_type)

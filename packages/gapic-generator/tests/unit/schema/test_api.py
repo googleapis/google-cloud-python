@@ -15,6 +15,8 @@
 from typing import Sequence
 from unittest import mock
 
+import pytest
+
 from google.api import annotations_pb2
 from google.api import longrunning_pb2
 from google.protobuf import descriptor_pb2
@@ -481,6 +483,45 @@ def test_lro():
     assert len(proto.services) == 1
     assert len(proto.messages) == 3
     assert len(lro_proto.messages) == 1
+
+
+def test_lro_missing_annotation():
+    # Set up a prior proto that mimics google/protobuf/empty.proto
+    lro_proto = api.Proto.build(make_file_pb2(
+        name='operations.proto', package='google.longrunning',
+        messages=(make_message_pb2(name='Operation'),),
+    ), file_to_generate=False, naming=make_naming())
+
+    # Set up a method with an LRO but no annotation.
+    method_pb2 = descriptor_pb2.MethodDescriptorProto(
+        name='AsyncDoThing',
+        input_type='google.example.v3.AsyncDoThingRequest',
+        output_type='google.longrunning.Operation',
+    )
+
+    # Set up the service with an RPC.
+    service_pb = descriptor_pb2.ServiceDescriptorProto(
+        name='LongRunningService',
+        method=(method_pb2,),
+    )
+
+    # Set up the messages, including the annotated ones.
+    messages = (
+        make_message_pb2(name='AsyncDoThingRequest', fields=()),
+    )
+
+    # Finally, set up the file that encompasses these.
+    fdp = make_file_pb2(
+        package='google.example.v3',
+        messages=messages,
+        services=(service_pb,),
+    )
+
+    # Make the proto object.
+    with pytest.raises(TypeError):
+        proto = api.Proto.build(fdp, file_to_generate=True, prior_protos={
+            'google/longrunning/operations.proto': lro_proto,
+        }, naming=make_naming())
 
 
 def test_enums():
