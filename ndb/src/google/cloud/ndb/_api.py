@@ -18,10 +18,13 @@ import grpc
 
 from google.cloud import _helpers
 from google.cloud import _http
+from google.cloud.datastore_v1.proto import datastore_pb2
 from google.cloud.datastore_v1.proto import datastore_pb2_grpc
 
+from google.cloud.ndb import _runstate
 
-def stub(client):
+
+def stub():
     """Get a stub for the `Google Datastore` API.
 
     Arguments:
@@ -31,11 +34,25 @@ def stub(client):
         :class:`~google.cloud.datastore_v1.proto.datastore_pb2_grpc.DatastoreStub`:
             The stub instance.
     """
-    if client.secure:
-        channel = _helpers.make_secure_channel(
-            client._credentials, _http.DEFAULT_USER_AGENT, client.host
-        )
-    else:
-        channel = grpc.insecure_channel(client.host)
-    stub = datastore_pb2_grpc.DatastoreStub(channel)
-    return stub
+    state = _runstate.current()
+    client = state.client
+    if state.stub is None:
+        if client.secure:
+            channel = _helpers.make_secure_channel(
+                client._credentials, _http.DEFAULT_USER_AGENT, client.host
+            )
+        else:
+            channel = grpc.insecure_channel(client.host)
+        state.stub = datastore_pb2_grpc.DatastoreStub(channel)
+    return state.stub
+
+
+def lookup(key):
+    """Lookup one NDB entity by key."""
+    client = _runstate.current().client
+    request = datastore_pb2.LookupRequest(
+        project_id=client.project,
+        keys=[key._key.to_protobuf()])
+
+    api = stub()
+    return api.Lookup.future(request)

@@ -92,7 +92,10 @@ from google.cloud.datastore import _app_engine_key_pb2
 from google.cloud.datastore import key as _key_module
 import google.cloud.datastore
 
+from google.cloud.ndb import _api
 from google.cloud.ndb import exceptions
+from google.cloud.ndb import _runstate
+from google.cloud.ndb import tasklets
 
 
 __all__ = ["Key"]
@@ -708,8 +711,9 @@ class Key:
             NotImplementedError: Always. The method has not yet been
                 implemented.
         """
-        raise NotImplementedError
+        return self.get_async(**ctx_options).result()
 
+    @tasklets.tasklet
     def get_async(self, **ctx_options):
         """Asynchronously get the entity for this key.
 
@@ -724,7 +728,12 @@ class Key:
             NotImplementedError: Always. The method has not yet been
                 implemented.
         """
-        raise NotImplementedError
+        # Sketchy code
+        # What do do with ctx_options?
+        # What if lookup fails?
+        from google.cloud.ndb import model  # avoid circular import
+        response = yield _api.lookup(self)
+        return model._entity_from_protobuf(response.found[0].entity)
 
     def delete(self, **ctx_options):
         """Synchronously delete the entity for this key.
@@ -801,7 +810,10 @@ def _project_from_app(app, allow_empty=False):
     if app is None:
         if allow_empty:
             return None
-        app = os.environ.get(_APP_ID_ENVIRONMENT, _APP_ID_DEFAULT)
+        client = _runstate.current().client
+        app = client.project
+        if app is None:
+            app = os.environ.get(_APP_ID_ENVIRONMENT, _APP_ID_DEFAULT)
 
     # NOTE: This is the same behavior as in the helper
     #       ``google.cloud.datastore.key._clean_app()``.

@@ -21,6 +21,9 @@ from google.cloud import _helpers
 from google.cloud import client as google_client
 from google.cloud.datastore_v1.gapic import datastore_client
 
+from google.cloud.ndb import _runstate
+
+
 DATASTORE_API_HOST = datastore_client.DatastoreClient.SERVICE_ADDRESS.rstrip(
     ":443"
 )
@@ -96,3 +99,7 @@ class Client(google_client.ClientWithProject):
     def _determine_default(project):
         """Helper:  override default project detection."""
         return _determine_default_project(project)
+
+    def context(self):
+        """Returns a context manager that sets the client."""
+        return _runstate.ndb_context(client=self)

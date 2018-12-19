@@ -22,6 +22,8 @@ from google.cloud.ndb import exceptions
 
 class State:
     eventloop = None
+    client = None
+    stub = None
 
 
 class LocalStates(threading.local):
@@ -47,7 +49,7 @@ states = LocalStates()
 
 
 @contextlib.contextmanager
-def ndb_context():
+def ndb_context(client=None):
     """Establish a context for a set of NDB calls.
 
     This function provides a context manager which establishes the runtime
@@ -75,6 +77,7 @@ def ndb_context():
     HTTP request. This can typically be accomplished in a middleware layer.
     """
     state = State()
+    state.client = client
     states.push(state)
     yield
 
