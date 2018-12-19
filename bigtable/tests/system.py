@@ -194,11 +194,12 @@ class TestInstanceAdminAPI(unittest.TestCase):
         ALT_CLUSTER_ID = ALT_INSTANCE_ID + "-cluster"
         cluster = instance.cluster(ALT_CLUSTER_ID, location_id=LOCATION_ID)
         operation = instance.create(clusters=[cluster])
-        # We want to make sure the operation completes.
-        operation.result(timeout=10)
 
         # Make sure this instance gets deleted after the test case.
         self.instances_to_delete.append(instance)
+
+        # We want to make sure the operation completes.
+        operation.result(timeout=10)
 
         # Create a new instance instance and make sure it is the same.
         instance_alt = Config.CLIENT.instance(ALT_INSTANCE_ID)
