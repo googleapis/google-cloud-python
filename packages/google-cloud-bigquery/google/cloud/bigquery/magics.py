@@ -27,7 +27,8 @@
     Parameters:
 
     * ``<destination_var>`` (optional, line argument):
-        variable to store the query results.
+        variable to store the query results. The results are not displayed if
+        this parameter is used.
     * ``--project <project>`` (optional, line argument):
         Project to use for running the query. Defaults to the context
         :attr:`~google.cloud.bigquery.magics.Context.project`.
@@ -96,12 +97,6 @@
         Query executing: 2.61s
         Query complete after 2.92s
 
-        Out[3]:          name    count
-           ...: ----------------------
-           ...: 0        Mary  3736239
-           ...: 1    Patricia  1568495
-           ...: 2   Elizabeth  1519946
-
         In [4]: df
 
         Out[4]:          name    count
@@ -110,7 +105,7 @@
            ...: 1    Patricia  1568495
            ...: 2   Elizabeth  1519946
 
-        In [5]: %%bigquery df --params {"num": 17}
+        In [5]: %%bigquery --params {"num": 17}
            ...: SELECT @num AS num
 
         Out[5]:     num
@@ -119,7 +114,7 @@
 
         In [6]: params = {"num": 17}
 
-        In [7]: %%bigquery df --params $params
+        In [7]: %%bigquery --params $params
            ...: SELECT @num AS num
 
         Out[7]:     num
@@ -262,17 +257,13 @@ def _run_query(client, query, job_config=None):
 @magic_arguments.argument(
     "destination_var",
     nargs="?",
-    help=(
-        "If provided, save the output to this variable in addition " "to displaying it."
-    ),
+    help=("If provided, save the output to this variable instead of displaying it."),
 )
 @magic_arguments.argument(
     "--project",
     type=str,
     default=None,
-    help=(
-        "Project to use for executing this query. Defaults to the context " "project."
-    ),
+    help=("Project to use for executing this query. Defaults to the context project."),
 )
 @magic_arguments.argument(
     "--use_legacy_sql",
@@ -348,4 +339,5 @@ def _cell_magic(line, query):
     result = query_job.to_dataframe()
     if args.destination_var:
         IPython.get_ipython().push({args.destination_var: result})
-    return result
+    else:
+        return result
