@@ -88,9 +88,7 @@ class Client(object):
                 )
             # cannot pass both 'channel' and 'credentials'
             kwargs.pop("credentials", None)
-            transport = publisher_grpc_transport.PublisherGrpcTransport(
-                channel=channel,
-            )
+            transport = publisher_grpc_transport.PublisherGrpcTransport(channel=channel)
             kwargs["transport"] = transport
 
         # Add the metrics headers, and instantiate the underlying GAPIC

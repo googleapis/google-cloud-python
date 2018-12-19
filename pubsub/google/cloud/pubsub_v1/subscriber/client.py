@@ -83,7 +83,7 @@ class Client(object):
             # cannot pass both 'channel' and 'credentials'
             kwargs.pop("credentials", None)
             transport = subscriber_grpc_transport.SubscriberGrpcTransport(
-                channel=channel,
+                channel=channel
             )
             kwargs["transport"] = transport
 
