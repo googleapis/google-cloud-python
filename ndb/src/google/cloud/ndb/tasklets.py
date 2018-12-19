@@ -174,11 +174,7 @@ def synctasklet(*args, **kwargs):
 
 
 def tasklet(wrapped):
-    """Turns a function or method into a tasklet.
-
-    Returns:
-        :class:`Future`
-    """
+    """Turns a function or method into a tasklet."""
     @functools.wraps(wrapped)
     def tasklet_wrapper(*args, **kwargs):
         try:
