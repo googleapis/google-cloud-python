@@ -183,16 +183,8 @@ class TestBigQuery(unittest.TestCase):
 
     def _create_bucket(self, bucket_name, location=None):
         storage_client = storage.Client()
-
-        # In the **very** rare case the bucket name is reserved, this
-        # fails with a ConnectionError.
-        if location is None:
-            bucket = retry_storage_errors(storage_client.create_bucket)(bucket_name)
-        else:
-            bucket = storage_client.bucket(bucket_name)
-            bucket.location = location
-            retry_storage_errors(bucket.create)()
-
+        bucket = storage_client.bucket(bucket_name)
+        retry_storage_errors(bucket.create)(location=location)
         self.to_delete.append(bucket)
 
         return bucket
@@ -708,7 +700,7 @@ class TestBigQuery(unittest.TestCase):
     def test_load_table_from_file_w_explicit_location(self):
         # Create a temporary bucket for extract files.
         bucket_name = "bq_load_table_eu_extract_test" + unique_resource_id()
-        bucket = self._create_bucket(bucket_name, location="eu")
+        self._create_bucket(bucket_name, location="eu")
 
         # Create a temporary dataset & table in the EU.
         table_bytes = six.BytesIO(b"a,3\nb,2\nc,1\n")
