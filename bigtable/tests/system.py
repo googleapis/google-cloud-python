@@ -85,7 +85,7 @@ def _retry_on_unavailable(exc):
     return exc.code() == StatusCode.UNAVAILABLE
 
 
-retry_429 = RetryErrors(TooManyRequests)
+retry_429 = RetryErrors(TooManyRequests, max_tries=9)
 
 
 def setUpModule():
