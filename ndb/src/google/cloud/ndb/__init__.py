@@ -67,7 +67,6 @@ __all__ = [
     "ModelAdapter",
     "ModelAttribute",
     "ModelKey",
-    "ndb_context",
     "non_transactional",
     "PickleProperty",
     "Property",
@@ -205,7 +204,6 @@ from google.cloud.ndb.query import Query
 from google.cloud.ndb.query import QueryIterator
 from google.cloud.ndb.query import QueryOptions
 from google.cloud.ndb.query import RepeatedStructuredPropertyPredicate
-from google.cloud.ndb._runstate import ndb_context
 from google.cloud.ndb.tasklets import add_flow_exception
 from google.cloud.ndb.tasklets import Future
 from google.cloud.ndb.tasklets import get_context
