@@ -102,20 +102,40 @@ class TaskletFuture(Future):
         else:
             # Tasklet has yielded a value. We expect this to either be a gRPC
             # future, or a Future from another tasklet
+            def done_callback(yielded):
+                self._advance_tasklet(yielded.result())
+
             if isinstance(yielded, grpc.Future):
                 _eventloop.queue_rpc(self, yielded)
 
             elif isinstance(yielded, Future):
+                yielded.add_done_callback(done_callback)
 
-                def callback(yielded):
-                    self._advance_tasklet(yielded.result())
-
-                yielded.add_done_callback(callback)
+            elif isinstance(yielded, (list, tuple)):
+                future = MultiFuture(yielded)
+                future.add_done_callback(done_callback)
 
             else:
                 raise RuntimeError(
                     "A tasklet yielded an illegal value: {!r}".format(yielded)
                 )
+
+
+class MultiFuture(Future):
+    """A future that depends on other futures."""
+
+    def __init__(self, dependents):
+        super(MultiFuture, self).__init__()
+        self._dependents = dependents
+
+        for dependent in dependents:
+            dependent.add_done_callback(self._dependent_done)
+
+    def _dependent_done(self, dependent):
+        all_done = all((future.done() for future in self._dependents))
+        if all_done:
+            result = tuple((future.result() for future in self._dependents))
+            self.set_result(result)
 
 
 def get_context(*args, **kwargs):
@@ -139,13 +159,6 @@ def make_context(*args, **kwargs):
 
 def make_default_context(*args, **kwargs):
     raise NotImplementedError
-
-
-class MultiFuture:
-    __slots__ = ()
-
-    def __init__(self, *args, **kwargs):
-        raise NotImplementedError
 
 
 class QueueFuture:

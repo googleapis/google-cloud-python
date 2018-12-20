@@ -79,3 +79,33 @@ def test_nested_tasklet(ds_entity):
 
     key = ndb.Key("SomeKind", entity_id)
     assert get_foo(key).result() == 42
+
+
+@pytest.mark.usefixtures("client_context")
+def test_retrieve_two_entities_in_parallel(ds_entity):
+    entity1_id = test_utils.system.unique_resource_id()
+    ds_entity("SomeKind", entity1_id, foo=42, bar="none")
+    entity2_id = test_utils.system.unique_resource_id()
+    ds_entity("SomeKind", entity2_id, foo=65, bar="naan")
+
+    class SomeKind(ndb.Model):
+        foo = ndb.IntegerProperty()
+        bar = ndb.StringProperty()
+
+    key1 = ndb.Key("SomeKind", entity1_id)
+    key2 = ndb.Key("SomeKind", entity2_id)
+
+    @ndb.tasklet
+    def get_two_entities():
+        entity1, entity2 = yield key1.get_async(), key2.get_async()
+        return entity1, entity2
+
+    entity1, entity2 = get_two_entities().result()
+
+    assert isinstance(entity1, SomeKind)
+    assert entity1.foo == 42
+    assert entity1.bar == "none"
+
+    assert isinstance(entity2, SomeKind)
+    assert entity2.foo == 65
+    assert entity2.bar == "naan"
