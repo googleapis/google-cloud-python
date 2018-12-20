@@ -56,8 +56,13 @@ ALL_FILES = (
             slice(262144, None, None),  # obj[262144:]
         ),
     }, {
-        u'path': os.path.realpath(os.path.join(DATA_DIR, u'file.txt.gz')),
-        u'uncompressed': os.path.realpath(os.path.join(DATA_DIR, u'file.txt')),
+        u'path': os.path.realpath(os.path.join(DATA_DIR, u'file.txt')),
+        u'content_type': PLAIN_TEXT,
+        u'checksum': u'KHRs/+ZSrc/FuuR4qz/PZQ==',
+        u'slices': (),
+    }, {
+        u'path': os.path.realpath(os.path.join(DATA_DIR, u'gzipped.txt.gz')),
+        u'uncompressed': os.path.realpath(os.path.join(DATA_DIR, u'gzipped.txt')),
         u'content_type': PLAIN_TEXT,
         u'checksum': u'KHRs/+ZSrc/FuuR4qz/PZQ==',
         u'slices': (),
@@ -70,6 +75,11 @@ ENCRYPTED_ERR = (
     b'The target object is encrypted by a customer-supplied encryption key.')
 NO_BODY_ERR = (
     u'The content for this response was already consumed')
+NOT_FOUND_ERR = (
+    b'No such object: ' +
+    bytes(os.environ['GOOGLE_RESUMABLE_MEDIA_BUCKET'], 'utf-8') +
+    b'/does-not-exist.txt'
+)
 
 
 class CorruptingAuthorizedSession(tr_requests.AuthorizedSession):
@@ -254,7 +264,7 @@ def check_error_response(exc_info, status_code, message):
     error = exc_info.value
     response = error.response
     assert response.status_code == status_code
-    assert response.content == message
+    assert response.content.startswith(message)
     assert len(error.args) == 5
     assert error.args[1] == status_code
     assert error.args[3] == http_client.OK
@@ -288,8 +298,7 @@ def test_non_existent_file(authorized_transport):
     # Try to consume the resource and fail.
     with pytest.raises(resumable_media.InvalidResponse) as exc_info:
         download.consume(authorized_transport)
-
-    check_error_response(exc_info, http_client.NOT_FOUND, b'Not Found')
+    check_error_response(exc_info, http_client.NOT_FOUND, NOT_FOUND_ERR)
     check_tombstoned(download, authorized_transport)
 
 
