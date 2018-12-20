@@ -59,10 +59,14 @@ class Future:
     def __init__(self):
         self._done = False
         self._result = None
+        self._callbacks = []
 
     def set_result(self, result):
         self._result = result
         self._done = True
+
+        for callback in self._callbacks:
+            callback(self)
 
     def done(self):
         return self._done
@@ -71,6 +75,9 @@ class Future:
         while not self._done:
             _eventloop.run1()
         return self._result
+
+    def add_done_callback(self, callback):
+        self._callbacks.append(callback)
 
 
 class TaskletFuture(Future):
@@ -99,11 +106,15 @@ class TaskletFuture(Future):
                 _eventloop.queue_rpc(self, yielded)
 
             elif isinstance(yielded, Future):
-                raise NotImplementedError
+
+                def callback(yielded):
+                    self._advance_tasklet(yielded.result())
+
+                yielded.add_done_callback(callback)
 
             else:
                 raise RuntimeError(
-                    "A tasklet yielded an illegal value: {:r}".format(yielded)
+                    "A tasklet yielded an illegal value: {!r}".format(yielded)
                 )
 
 
@@ -194,7 +205,6 @@ def tasklet(wrapped):
         return future
 
     return tasklet_wrapper
-
 
 
 def toplevel(*args, **kwargs):

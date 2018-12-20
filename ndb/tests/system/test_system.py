@@ -61,3 +61,21 @@ def test_retrieve_entity(ds_entity):
     assert isinstance(entity, SomeKind)
     assert entity.foo == 42
     assert entity.bar == "none"
+
+
+@pytest.mark.usefixtures("client_context")
+def test_nested_tasklet(ds_entity):
+    entity_id = test_utils.system.unique_resource_id()
+    ds_entity("SomeKind", entity_id, foo=42, bar="none")
+
+    class SomeKind(ndb.Model):
+        foo = ndb.IntegerProperty()
+        bar = ndb.StringProperty()
+
+    @ndb.tasklet
+    def get_foo(key):
+        entity = yield key.get_async()
+        return entity.foo
+
+    key = ndb.Key("SomeKind", entity_id)
+    assert get_foo(key).result() == 42
