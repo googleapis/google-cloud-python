@@ -5,6 +5,7 @@ from google.api_core.exceptions import BadRequest
 from pybigquery.api import ApiClient
 from sqlalchemy.engine import create_engine
 from sqlalchemy.schema import Table, MetaData, Column
+from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import types, func, case, inspect
 from sqlalchemy.sql import expression, select, literal_column
 from sqlalchemy.exc import NoSuchTableError
@@ -380,6 +381,20 @@ def test_dml(engine, session, table_dml):
     session.query(table_dml).filter(table_dml.c.string == 'updated_row').delete(synchronize_session=False)
     result = table_dml.select().execute().fetchall()
     assert len(result) == 0
+
+
+def test_create_table(engine, session):
+    Base = declarative_base()
+
+    class Table(Base):
+        __tablename__ = 'test_pybigquery.test_table_create'
+        integer_c = Column(sqlalchemy.Integer)
+        float_c = Column(sqlalchemy.Float)
+        text_c = Column(sqlalchemy.Text)
+        binary_c = Column(sqlalchemy.BINARY)
+        decimal_c = Column(sqlalchemy.DECIMAL)
+
+    Base.metadata.create_all(engine)
 
 
 def test_schemas_names(inspector, inspector_using_test_dataset):
