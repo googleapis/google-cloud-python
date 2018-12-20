@@ -25,7 +25,10 @@ To use service account credentials, set the ``credentials`` parameter to the res
 
     .. code:: python
 
-        credentials = google.oauth2.service_account.Credentials.from_service_account_file(
+        from google.oauth2 import service_account
+        import pandas_gbq
+
+        credentials = service_account.Credentials.from_service_account_file(
             'path/to/key.json',
         )
         df = pandas_gbq.read_gbq(sql, project_id="YOUR-PROJECT-ID", credentials=credentials)
@@ -35,7 +38,10 @@ To use service account credentials, set the ``credentials`` parameter to the res
 
     .. code:: python
 
-        credentials = google.oauth2.service_account.Credentials.from_service_account_info(
+        from google.oauth2 import service_account
+        import pandas_gbq
+
+        credentials = service_account.Credentials.from_service_account_info(
             {
                 "type": "service_account",
                 "project_id": "YOUR-PROJECT-ID",

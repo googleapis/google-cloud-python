@@ -187,6 +187,57 @@ def test_to_gbq_with_verbose_old_pandas_no_warnings(recwarn, min_bq_version):
         assert len(recwarn) == 0
 
 
+def test_to_gbq_with_private_key_new_pandas_warns_deprecation(
+    min_bq_version, monkeypatch
+):
+    import pkg_resources
+    from pandas_gbq import auth
+
+    monkeypatch.setattr(auth, "get_credentials", mock_get_credentials)
+
+    pandas_version = pkg_resources.parse_version("0.24.0")
+    with pytest.warns(FutureWarning), mock.patch(
+        "pkg_resources.Distribution.parsed_version",
+        new_callable=mock.PropertyMock,
+    ) as mock_version:
+        mock_version.side_effect = [min_bq_version, pandas_version]
+        try:
+            gbq.to_gbq(
+                DataFrame([[1]]),
+                "dataset.tablename",
+                project_id="my-project",
+                private_key="path/to/key.json",
+            )
+        except gbq.TableCreationError:
+            pass
+
+
+def test_to_gbq_with_private_key_old_pandas_no_warnings(
+    recwarn, min_bq_version, monkeypatch
+):
+    import pkg_resources
+    from pandas_gbq import auth
+
+    monkeypatch.setattr(auth, "get_credentials", mock_get_credentials)
+
+    pandas_version = pkg_resources.parse_version("0.23.4")
+    with mock.patch(
+        "pkg_resources.Distribution.parsed_version",
+        new_callable=mock.PropertyMock,
+    ) as mock_version:
+        mock_version.side_effect = [min_bq_version, pandas_version]
+        try:
+            gbq.to_gbq(
+                DataFrame([[1]]),
+                "dataset.tablename",
+                project_id="my-project",
+                private_key="path/to/key.json",
+            )
+        except gbq.TableCreationError:
+            pass
+        assert len(recwarn) == 0
+
+
 def test_to_gbq_doesnt_run_query(
     recwarn, mock_bigquery_client, min_bq_version
 ):
@@ -330,6 +381,48 @@ def test_read_gbq_with_verbose_old_pandas_no_warnings(recwarn, min_bq_version):
             project_id="my-project",
             dialect="standard",
             verbose=True,
+        )
+        assert len(recwarn) == 0
+
+
+def test_read_gbq_with_private_key_new_pandas_warns_deprecation(
+    min_bq_version, monkeypatch
+):
+    import pkg_resources
+    from pandas_gbq import auth
+
+    monkeypatch.setattr(auth, "get_credentials", mock_get_credentials)
+
+    pandas_version = pkg_resources.parse_version("0.24.0")
+    with pytest.warns(FutureWarning), mock.patch(
+        "pkg_resources.Distribution.parsed_version",
+        new_callable=mock.PropertyMock,
+    ) as mock_version:
+        mock_version.side_effect = [min_bq_version, pandas_version]
+        gbq.read_gbq(
+            "SELECT 1", project_id="my-project", private_key="path/to/key.json"
+        )
+
+
+def test_read_gbq_with_private_key_old_pandas_no_warnings(
+    recwarn, min_bq_version, monkeypatch
+):
+    import pkg_resources
+    from pandas_gbq import auth
+
+    monkeypatch.setattr(auth, "get_credentials", mock_get_credentials)
+
+    pandas_version = pkg_resources.parse_version("0.23.4")
+    with mock.patch(
+        "pkg_resources.Distribution.parsed_version",
+        new_callable=mock.PropertyMock,
+    ) as mock_version:
+        mock_version.side_effect = [min_bq_version, pandas_version]
+        gbq.read_gbq(
+            "SELECT 1",
+            project_id="my-project",
+            dialect="standard",
+            private_key="path/to/key.json",
         )
         assert len(recwarn) == 0
 

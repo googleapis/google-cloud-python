@@ -14,6 +14,13 @@ logger = logging.getLogger(__name__)
 
 BIGQUERY_INSTALLED_VERSION = None
 SHOW_VERBOSE_DEPRECATION = False
+SHOW_PRIVATE_KEY_DEPRECATION = False
+PRIVATE_KEY_DEPRECATION_MESSAGE = (
+    "private_key is deprecated and will be removed in a future version."
+    "Use the credentials argument instead. See "
+    "https://pandas-gbq.readthedocs.io/en/latest/howto/authentication.html "
+    "for examples on using the credentials argument with service account keys."
+)
 
 try:
     import tqdm  # noqa
@@ -22,7 +29,7 @@ except ImportError:
 
 
 def _check_google_client_version():
-    global BIGQUERY_INSTALLED_VERSION, SHOW_VERBOSE_DEPRECATION
+    global BIGQUERY_INSTALLED_VERSION, SHOW_VERBOSE_DEPRECATION, SHOW_PRIVATE_KEY_DEPRECATION
 
     try:
         import pkg_resources
@@ -52,6 +59,10 @@ def _check_google_client_version():
     pandas_version_wo_verbosity = pkg_resources.parse_version("0.23.0")
     SHOW_VERBOSE_DEPRECATION = (
         pandas_installed_version >= pandas_version_wo_verbosity
+    )
+    pandas_version_with_credentials_arg = pkg_resources.parse_version("0.24.0")
+    SHOW_PRIVATE_KEY_DEPRECATION = (
+        pandas_installed_version >= pandas_version_with_credentials_arg
     )
 
 
@@ -805,6 +816,11 @@ def read_gbq(
             stacklevel=2,
         )
 
+    if private_key is not None and SHOW_PRIVATE_KEY_DEPRECATION:
+        warnings.warn(
+            PRIVATE_KEY_DEPRECATION_MESSAGE, FutureWarning, stacklevel=2
+        )
+
     if dialect not in ("legacy", "standard"):
         raise ValueError("'{0}' is not valid for dialect".format(dialect))
 
@@ -967,6 +983,11 @@ def to_gbq(
             "verbosity",
             FutureWarning,
             stacklevel=1,
+        )
+
+    if private_key is not None and SHOW_PRIVATE_KEY_DEPRECATION:
+        warnings.warn(
+            PRIVATE_KEY_DEPRECATION_MESSAGE, FutureWarning, stacklevel=2
         )
 
     if if_exists not in ("fail", "replace", "append"):
