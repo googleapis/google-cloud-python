@@ -383,16 +383,31 @@ def test_dml(engine, session, table_dml):
     assert len(result) == 0
 
 
-def test_create_table(engine, session):
+def test_create_table(engine):
+    meta = MetaData()
+    table = Table(
+        'test_pybigquery.test_table_create', meta,
+        Column('integer_c', sqlalchemy.Integer),
+        Column('float_c', sqlalchemy.Float),
+        Column('decimal_c', sqlalchemy.DECIMAL),
+        Column('string_c', sqlalchemy.String),
+        Column('text_c', sqlalchemy.Text),
+        Column('boolean_c', sqlalchemy.Boolean),
+        Column('timestamp_c', sqlalchemy.TIMESTAMP),
+        Column('datetime_c', sqlalchemy.DATETIME),
+        Column('date_c', sqlalchemy.DATE),
+        Column('time_c', sqlalchemy.TIME),
+        Column('binary_c', sqlalchemy.BINARY)
+    )
+    meta.create_all(engine)
+
+    # Test creating tables with declarative_base
     Base = declarative_base()
 
-    class Table(Base):
-        __tablename__ = 'test_pybigquery.test_table_create'
-        integer_c = Column(sqlalchemy.Integer)
+    class TableTest(Base):
+        __tablename__ = 'test_pybigquery.test_table_create2'
+        integer_c = Column(sqlalchemy.Integer, primary_key=True)
         float_c = Column(sqlalchemy.Float)
-        text_c = Column(sqlalchemy.Text)
-        binary_c = Column(sqlalchemy.BINARY)
-        decimal_c = Column(sqlalchemy.DECIMAL)
 
     Base.metadata.create_all(engine)
 
