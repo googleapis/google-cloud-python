@@ -20,7 +20,9 @@ from unittest import mock
 from google.auth import credentials
 from google.cloud import environment_vars
 from google.cloud.datastore import _http
+
 from google.cloud.ndb import client as client_module
+from google.cloud.ndb import _runstate
 
 
 @contextlib.contextmanager
@@ -71,3 +73,12 @@ class TestClient:
             client = client_module.Client()
         with pytest.raises(NotImplementedError):
             client._http
+
+    @staticmethod
+    def test__context():
+        with patch_credentials("testing"):
+            client = client_module.Client()
+
+        with client.context():
+            state = _runstate.current()
+            assert state.client is client
