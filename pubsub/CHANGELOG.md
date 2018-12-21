@@ -4,6 +4,28 @@
 
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
+## 0.39.1
+
+12-17-2018 16:57 PST
+
+
+### Implementation Changes
+- Initialize `StreamingPullFuture._cancelled` as True. ([#6901](https://github.com/googleapis/google-cloud-python/pull/6901))
+- Import `iam.policy` from `google.api_core`. ([#6741](https://github.com/googleapis/google-cloud-python/pull/6741))
+
+### Documentation
+- Document Python 2 deprecation ([#6910](https://github.com/googleapis/google-cloud-python/pull/6910))
+- Emphasize that returned futures may differ from stdlib futures. ([#6875](https://github.com/googleapis/google-cloud-python/pull/6875))
+
+### Internal / Testing Changes
+- Add baseline for synth.metadata
+- Update noxfile.
+- blacken all gen'd libs ([#6792](https://github.com/googleapis/google-cloud-python/pull/6792))
+- omit local deps ([#6701](https://github.com/googleapis/google-cloud-python/pull/6701))
+- Run black at end of synth.py ([#6698](https://github.com/googleapis/google-cloud-python/pull/6698))
+- Run Black on Generated libraries ([#6666](https://github.com/googleapis/google-cloud-python/pull/6666))
+- Add templates for flake8, coveragerc, noxfile, and black. ([#6642](https://github.com/googleapis/google-cloud-python/pull/6642))
+
 ## 0.39.0
 
 11-27-2018 13:32 PST
