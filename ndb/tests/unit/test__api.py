@@ -16,6 +16,7 @@ from unittest import mock
 
 from google.cloud import _http
 from google.cloud.ndb import _api
+from google.cloud.ndb import _runstate
 
 
 class TestStub:
@@ -30,7 +31,9 @@ class TestStub:
             host="thehost",
             spec=("_credentials", "secure", "host"),
         )
-        stub = _api.stub(client)
+        with _runstate.state_context(client):
+            stub = _api.stub()
+            assert _api.stub() is stub  # one stub per context
         assert stub is datastore_pb2_grpc.DatastoreStub.return_value
         datastore_pb2_grpc.DatastoreStub.assert_called_once_with(channel)
         _helpers.make_secure_channel.assert_called_once_with(
@@ -45,7 +48,8 @@ class TestStub:
         client = mock.Mock(
             secure=False, host="thehost", spec=("secure", "host")
         )
-        stub = _api.stub(client)
+        with _runstate.state_context(client):
+            stub = _api.stub()
         assert stub is datastore_pb2_grpc.DatastoreStub.return_value
         datastore_pb2_grpc.DatastoreStub.assert_called_once_with(channel)
         grpc.insecure_channel.assert_called_once_with("thehost")
