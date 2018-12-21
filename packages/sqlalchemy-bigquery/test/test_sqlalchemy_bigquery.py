@@ -400,6 +400,7 @@ def test_create_table(engine):
         Column('binary_c', sqlalchemy.BINARY)
     )
     meta.create_all(engine)
+    meta.drop_all(engine)
 
     # Test creating tables with declarative_base
     Base = declarative_base()
@@ -410,7 +411,7 @@ def test_create_table(engine):
         float_c = Column(sqlalchemy.Float)
 
     Base.metadata.create_all(engine)
-
+    Base.metadata.drop_all(engine)
 
 def test_schemas_names(inspector, inspector_using_test_dataset):
     datasets = inspector.get_schema_names()

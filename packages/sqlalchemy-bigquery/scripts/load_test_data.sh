@@ -5,8 +5,6 @@ bq rm -f -t test_pybigquery.sample
 bq rm -f -t test_pybigquery.sample_one_row
 bq rm -f -t test_pybigquery.sample_dml
 bq rm -f -t test_pybigquery_location.sample_one_row
-bq rm -f -t test_pybigquery.test_table_create
-bq rm -f -t test_pybigquery.test_table_create2
 
 bq mk --table --schema=$(dirname $0)/schema.json --time_partitioning_field timestamp --clustering_fields integer,string test_pybigquery.sample
 bq load --source_format=NEWLINE_DELIMITED_JSON --schema=$(dirname $0)/schema.json test_pybigquery.sample $(dirname $0)/sample.json
