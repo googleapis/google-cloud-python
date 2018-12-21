@@ -12,7 +12,7 @@ from google.oauth2 import service_account
 from google.api_core.exceptions import NotFound
 from sqlalchemy.exc import NoSuchTableError
 from sqlalchemy import types, util
-from sqlalchemy.sql.compiler import SQLCompiler, GenericTypeCompiler, IdentifierPreparer
+from sqlalchemy.sql.compiler import SQLCompiler, GenericTypeCompiler, DDLCompiler, IdentifierPreparer
 from sqlalchemy.engine.default import DefaultDialect, DefaultExecutionContext
 from sqlalchemy.engine.base import Engine
 from sqlalchemy.sql.schema import Column
@@ -197,12 +197,24 @@ class BigQueryTypeCompiler(GenericTypeCompiler):
         return 'NUMERIC'
 
 
+class BigQueryDDLCompiler(DDLCompiler):
+
+    # BigQuery has no support for foreign keys.
+    def visit_foreign_key_constraint(self, constraint):
+        return None
+
+    # BigQuery has no support for primary keys.
+    def visit_primary_key_constraint(self, constraint):
+        return None
+
+
 class BigQueryDialect(DefaultDialect):
     name = 'bigquery'
     driver = 'bigquery'
     preparer = BigQueryIdentifierPreparer
     statement_compiler = BigQueryCompiler
     type_compiler = BigQueryTypeCompiler
+    ddl_compiler = BigQueryDDLCompiler
     execution_ctx_cls = BigQueryExecutionContext
     supports_alter = False
     supports_pk_autoincrement = False
