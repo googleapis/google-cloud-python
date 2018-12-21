@@ -5,6 +5,7 @@ from google.api_core.exceptions import BadRequest
 from pybigquery.api import ApiClient
 from sqlalchemy.engine import create_engine
 from sqlalchemy.schema import Table, MetaData, Column
+from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import types, func, case, inspect
 from sqlalchemy.sql import expression, select, literal_column
 from sqlalchemy.exc import NoSuchTableError
@@ -381,6 +382,36 @@ def test_dml(engine, session, table_dml):
     result = table_dml.select().execute().fetchall()
     assert len(result) == 0
 
+
+def test_create_table(engine):
+    meta = MetaData()
+    table = Table(
+        'test_pybigquery.test_table_create', meta,
+        Column('integer_c', sqlalchemy.Integer),
+        Column('float_c', sqlalchemy.Float),
+        Column('decimal_c', sqlalchemy.DECIMAL),
+        Column('string_c', sqlalchemy.String),
+        Column('text_c', sqlalchemy.Text),
+        Column('boolean_c', sqlalchemy.Boolean),
+        Column('timestamp_c', sqlalchemy.TIMESTAMP),
+        Column('datetime_c', sqlalchemy.DATETIME),
+        Column('date_c', sqlalchemy.DATE),
+        Column('time_c', sqlalchemy.TIME),
+        Column('binary_c', sqlalchemy.BINARY)
+    )
+    meta.create_all(engine)
+    meta.drop_all(engine)
+
+    # Test creating tables with declarative_base
+    Base = declarative_base()
+
+    class TableTest(Base):
+        __tablename__ = 'test_pybigquery.test_table_create2'
+        integer_c = Column(sqlalchemy.Integer, primary_key=True)
+        float_c = Column(sqlalchemy.Float)
+
+    Base.metadata.create_all(engine)
+    Base.metadata.drop_all(engine)
 
 def test_schemas_names(inspector, inspector_using_test_dataset):
     datasets = inspector.get_schema_names()
