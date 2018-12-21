@@ -45,7 +45,7 @@ class MaxVersionsGCRule(GarbageCollectionRule):
 
     For example:
 
-    .. literalinclude:: snippets.py
+    .. literalinclude:: snippets_table.py
         :start-after: [START bigtable_create_MaxVersionsGCRule]
         :end-before: [END bigtable_create_MaxVersionsGCRule]
 
@@ -78,7 +78,7 @@ class MaxAgeGCRule(GarbageCollectionRule):
 
     For example:
 
-    .. literalinclude:: snippets.py
+    .. literalinclude:: snippets_table.py
         :start-after: [START bigtable_create_MaxAgeGCRule]
         :end-before: [END bigtable_create_MaxAgeGCRule]
 
@@ -112,7 +112,7 @@ class GCRuleUnion(GarbageCollectionRule):
 
     For example:
 
-    .. literalinclude:: snippets.py
+    .. literalinclude:: snippets_table.py
         :start-after: [START bigtable_create_GCRuleUnion]
         :end-before: [END bigtable_create_GCRuleUnion]
 
@@ -146,7 +146,7 @@ class GCRuleIntersection(GarbageCollectionRule):
 
     For example:
 
-    .. literalinclude:: snippets.py
+    .. literalinclude:: snippets_table.py
         :start-after: [START bigtable_create_GCRuleIntersection]
         :end-before: [END bigtable_create_GCRuleIntersection]
 
@@ -209,7 +209,7 @@ class ColumnFamily(object):
 
         For example:
 
-        .. literalinclude:: snippets.py
+        .. literalinclude:: snippets_table.py
             :start-after: [START bigtable_column_family_name]
             :end-before: [END bigtable_column_family_name]
 
@@ -255,7 +255,7 @@ class ColumnFamily(object):
 
         For example:
 
-        .. literalinclude:: snippets.py
+        .. literalinclude:: snippets_table.py
             :start-after: [START bigtable_create_column_family]
             :end-before: [END bigtable_create_column_family]
 
@@ -277,7 +277,7 @@ class ColumnFamily(object):
 
         For example:
 
-        .. literalinclude:: snippets.py
+        .. literalinclude:: snippets_table.py
             :start-after: [START bigtable_update_column_family]
             :end-before: [END bigtable_update_column_family]
 
@@ -303,7 +303,7 @@ class ColumnFamily(object):
 
         For example:
 
-        .. literalinclude:: snippets.py
+        .. literalinclude:: snippets_table.py
             :start-after: [START bigtable_delete_column_family]
             :end-before: [END bigtable_delete_column_family]
 
