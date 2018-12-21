@@ -235,6 +235,15 @@ def test__get_gae_credentials(app_identity):
     assert project_id == mock.sentinel.project
 
 
+def test__get_gae_credentials_no_app_engine():
+    import sys
+    with mock.patch.dict('sys.modules'):
+        sys.modules['google.auth.app_engine'] = None
+        credentials, project_id = _default._get_gae_credentials()
+        assert credentials is None
+        assert project_id is None
+
+
 def test__get_gae_credentials_no_apis():
     assert _default._get_gae_credentials() == (None, None)
 
@@ -273,6 +282,15 @@ def test__get_gce_credentials_no_project_id(unused_get, unused_ping):
 
     assert isinstance(credentials, compute_engine.Credentials)
     assert project_id is None
+
+
+def test__get_gce_credentials_no_compute_engine():
+    import sys
+    with mock.patch.dict('sys.modules'):
+        sys.modules['google.auth.compute_engine'] = None
+        credentials, project_id = _default._get_gce_credentials()
+        assert credentials is None
+        assert project_id is None
 
 
 @mock.patch(
@@ -366,3 +384,21 @@ def test_default_scoped(with_scopes, unused_get):
     assert project_id == mock.sentinel.project_id
     with_scopes.assert_called_once_with(
         mock.sentinel.credentials, scopes)
+
+
+@mock.patch(
+    'google.auth._default._get_explicit_environ_credentials',
+    return_value=(mock.sentinel.credentials, mock.sentinel.project_id),
+    autospec=True)
+def test_default_no_app_engine_compute_engine_module(unused_get):
+    """
+    google.auth.compute_engine and google.auth.app_engine are both optional
+    to allow not including them when using this package. This verifies
+    that default fails gracefully if these modules are absent
+    """
+    import sys
+    with mock.patch.dict('sys.modules'):
+        sys.modules['google.auth.compute_engine'] = None
+        sys.modules['google.auth.app_engine'] = None
+        assert _default.default() == (
+            mock.sentinel.credentials, mock.sentinel.project_id)

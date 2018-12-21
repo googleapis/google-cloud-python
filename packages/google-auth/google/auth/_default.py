@@ -172,7 +172,12 @@ def _get_explicit_environ_credentials():
 
 def _get_gae_credentials():
     """Gets Google App Engine App Identity credentials and project ID."""
-    from google.auth import app_engine
+    # While this library is normally bundled with app_engine, there are
+    # some cases where it's not available, so we tolerate ImportError.
+    try:
+        import google.auth.app_engine as app_engine
+    except ImportError:
+        return None, None
 
     try:
         credentials = app_engine.Credentials()
@@ -188,8 +193,14 @@ def _get_gce_credentials(request=None):
     # to require no arguments. So, we'll use the _http_client transport which
     # uses http.client. This is only acceptable because the metadata server
     # doesn't do SSL and never requires proxies.
-    from google.auth import compute_engine
-    from google.auth.compute_engine import _metadata
+
+    # While this library is normally bundled with compute_engine, there are
+    # some cases where it's not available, so we tolerate ImportError.
+    try:
+        from google.auth import compute_engine
+        from google.auth.compute_engine import _metadata
+    except ImportError:
+        return None, None
 
     if request is None:
         request = google.auth.transport._http_client.Request()
