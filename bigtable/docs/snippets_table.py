@@ -41,7 +41,7 @@ from google.cloud.bigtable import column_family
 
 INSTANCE_ID = "snippet-" + unique_resource_id('-')
 CLUSTER_ID = "clus-1-" + unique_resource_id('-')
-TABLE_ID = "tabl-1-" + unique_resource_id('-')
+TABLE_ID = "tabl-1" + unique_resource_id('-')
 COLUMN_FAMILY_ID = "col_fam_id-" + unique_resource_id('-')
 LOCATION_ID = 'us-central1-f'
 ALT_LOCATION_ID = 'us-central1-a'
@@ -425,9 +425,7 @@ def test_bigtable_create_update_delete_column_family():
 
     # [END bigtable_create_column_family]
     column_families = table.list_column_families()
-    assert column_family_id in column_families
-
-    gc_rule_before_update = column_family_obj.to_pb()
+    assert column_families[column_family_id].gc_rule == gc_rule
 
     # [START bigtable_update_column_family]
     from google.cloud.bigtable import Client
@@ -446,8 +444,8 @@ def test_bigtable_create_update_delete_column_family():
     column_family_obj.update()
     # [END bigtable_update_column_family]
 
-    gc_rule_after_update = column_family_obj.to_pb()
-    assert gc_rule_before_update != gc_rule_after_update
+    updated_families = table.list_column_families()
+    assert updated_families[column_family_id].gc_rule == max_age_rule
 
     # [START bigtable_delete_column_family]
     from google.cloud.bigtable import Client
@@ -509,7 +507,7 @@ def test_bigtable_create_MaxAgeGCRule():
 
 
 def test_bigtable_create_GCRuleUnion():
-    # [START bigtable_create_GCRuleIntersection]
+    # [START bigtable_create_GCRuleUnion]
     from google.cloud.bigtable import Client
     from google.cloud.bigtable import column_family
 
@@ -525,7 +523,7 @@ def test_bigtable_create_GCRuleUnion():
     column_family_obj = table.column_family('cf1', union_rule)
     column_family_obj.create()
 
-    # [END bigtable_create_GCRuleIntersection]
+    # [END bigtable_create_GCRuleUnion]
     rule = str(column_family_obj.to_pb())
     assert "union" in rule
     assert "max_age" in rule
@@ -535,7 +533,7 @@ def test_bigtable_create_GCRuleUnion():
 
 
 def test_bigtable_create_GCRuleIntersection():
-    # [START bigtable_create_GCRuleUnion]
+    # [START bigtable_create_GCRuleIntersection]
     from google.cloud.bigtable import Client
     from google.cloud.bigtable import column_family
 
@@ -553,7 +551,7 @@ def test_bigtable_create_GCRuleIntersection():
     column_family_obj = table.column_family('cf1', intersection_rule)
     column_family_obj.create()
 
-    # [END bigtable_create_GCRuleUnion]
+    # [END bigtable_create_GCRuleIntersection]
 
     rule = str(column_family_obj.to_pb())
     assert "intersection" in rule
