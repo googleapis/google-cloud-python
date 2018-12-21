@@ -299,12 +299,6 @@ class ColumnFamily(object):
         )
 
     def delete(self):
-<<<<<<< HEAD
-        """Delete this column family."""
-        modification = table_admin_v2_pb2.ModifyColumnFamiliesRequest.Modification(
-            id=self.column_family_id, drop=True
-        )
-=======
         """Delete this column family.
 
         For example:
@@ -317,7 +311,6 @@ class ColumnFamily(object):
         modification = (
             table_admin_v2_pb2.ModifyColumnFamiliesRequest.Modification(
                 id=self.column_family_id, drop=True))
->>>>>>> add column family snippets
 
         client = self._table._instance._client
         # data it contains are the GC rule and the column family ID already

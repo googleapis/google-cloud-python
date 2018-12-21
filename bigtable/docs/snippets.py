@@ -39,19 +39,10 @@ from google.cloud.bigtable import enums
 from google.cloud.bigtable import column_family
 
 
-<<<<<<< HEAD
 INSTANCE_ID = "snippet-" + unique_resource_id("-")
 CLUSTER_ID = "clus-1-" + unique_resource_id("-")
 LOCATION_ID = "us-central1-f"
 ALT_LOCATION_ID = "us-central1-a"
-=======
-INSTANCE_ID = "snippet-" + unique_resource_id('-')
-CLUSTER_ID = "clus-1-" + unique_resource_id('-')
-TABLE_ID = "tabl-1-" + unique_resource_id('-')
-COLUMN_FAMILY_ID = "col_fam_id-" + unique_resource_id('-')
-LOCATION_ID = 'us-central1-f'
-ALT_LOCATION_ID = 'us-central1-a'
->>>>>>> add column family snippets
 PRODUCTION = enums.Instance.Type.PRODUCTION
 SERVER_NODES = 3
 STORAGE_TYPE = enums.StorageType.SSD
@@ -77,38 +68,7 @@ class Config(object):
 
 
 def setup_module():
-<<<<<<< HEAD
-<<<<<<< HEAD
     client = Config.CLIENT = Client(admin=True)
-    Config.INSTANCE = client.instance(
-        INSTANCE_ID, instance_type=PRODUCTION, labels=LABELS
-    )
-    cluster = Config.INSTANCE.cluster(
-        CLUSTER_ID,
-        location_id=LOCATION_ID,
-        serve_nodes=SERVER_NODES,
-        default_storage_type=STORAGE_TYPE,
-    )
-    operation = Config.INSTANCE.create(clusters=[cluster])
-    # We want to make sure the operation completes.
-    operation.result(timeout=100)
-=======
-    import os
-    from google.cloud.environment_vars import BIGTABLE_EMULATOR
-    from google.cloud.bigtable import column_family
-    
-    Config.IN_EMULATOR = os.getenv(BIGTABLE_EMULATOR) is not None
-
-    if Config.IN_EMULATOR:
-        credentials = EmulatorCreds()
-        client = Config.CLIENT = Client(admin=True, credentials=credentials)
-    else:
-        client = Config.CLIENT = Client(admin=True)
-    client = Config.CLIENT = Client(project="grass-clump-479", admin=True)
-    #     client = Config.CLIENT = Client(admin=True)
-=======
-    client = Config.CLIENT = Client(admin=True)
->>>>>>> Create snippets for Column Families.
     Config.INSTANCE = client.instance(INSTANCE_ID,
                                       instance_type=PRODUCTION,
                                       labels=LABELS)
@@ -122,16 +82,9 @@ def setup_module():
     Config.TABLE = Config.INSTANCE.table(TABLE_ID)
     Config.TABLE.create()
     gc_rule = column_family.MaxVersionsGCRule(2)
-<<<<<<< HEAD
     column_family1 = Config.TABLE.column_family(COLUMN_FAMILY_ID,
                                                 gc_rule=gc_rule)
     column_family1.create()
->>>>>>> add column family snippets
-=======
-    column_family_obj = Config.TABLE.column_family(COLUMN_FAMILY_ID,
-                                                   gc_rule=gc_rule)
-    column_family_obj.create()
->>>>>>> Create snippets for Column Families.
 
 
 def teardown_module():
