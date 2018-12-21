@@ -190,6 +190,9 @@ class BigQueryTypeCompiler(GenericTypeCompiler):
     def visit_text(self, type_, **kw):
         return 'STRING'
 
+    def visit_string(self, type_, **kw):
+        return 'STRING'
+
     def visit_BINARY(self, type_, **kw):
         return 'BYTES'
 
