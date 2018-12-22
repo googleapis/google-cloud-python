@@ -21,7 +21,10 @@ from google.cloud.ndb import exceptions
 
 
 class State:
-    eventloop = None
+    def __init__(self, client):
+        self.client = client
+        self.eventloop = None
+        self.stub = None
 
 
 class LocalStates(threading.local):
@@ -47,34 +50,13 @@ states = LocalStates()
 
 
 @contextlib.contextmanager
-def ndb_context():
+def state_context(client):
     """Establish a context for a set of NDB calls.
 
-    This function provides a context manager which establishes the runtime
-    state for using NDB.
-
-    For example:
-
-    .. code-block:: python
-
-        from google.cloud.ndb import ndb_context
-
-        with ndb_context():
-            # Use NDB for some stuff
-            pass
-
-    Use of a context is required--NDB can only be used inside a running
-    context. The context is used to coordinate an event loop for asynchronous
-    API calls, runtime caching policy, and other essential runtime state.
-
-    Code within an asynchronous context should be single threaded. Internally,
-    a :class:`threading.local` instance is used to track the current event
-    loop.
-
-    In a web application, it is recommended that a single context be used per
-    HTTP request. This can typically be accomplished in a middleware layer.
+    Called from :meth:`google.cloud.ndb.client.Client.context` which has more
+    information.
     """
-    state = State()
+    state = State(client)
     states.push(state)
     yield
 
@@ -91,14 +73,14 @@ def current():
     """Get the current context state.
 
     This function should be called within a context established by
-    :func:`~google.cloud.ndb.ndb_context`.
+    :meth:`google.cloud.ndb.client.Client.context`.
 
     Returns:
         State: The state for the current context.
 
     Raises:
         .ContextError: If called outside of a context
-            established by :func:`~google.cloud.ndb.ndb_context`.
+            established by :meth:`google.cloud.ndb.client.Client.context`.
     """
     state = states.current()
     if state:
