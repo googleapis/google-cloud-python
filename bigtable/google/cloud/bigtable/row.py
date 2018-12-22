@@ -785,6 +785,7 @@ class AppendRow(Row):
         After committing the accumulated mutations, resets the local mutations.
 
         For example:
+
         .. literalinclude:: snippets_table.py
             :start-after: [START bigtable_row_commit]
             :end-before: [END bigtable_row_commit]
