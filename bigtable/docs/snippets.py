@@ -56,6 +56,7 @@ LABELS = {LABEL_KEY: str(LABEL_STAMP)}
 
 class Config(object):
     """Run-time configuration to be modified at set-up.
+
     This is a mutable stand-in to allow test set-up to modify
     global state.
     """
