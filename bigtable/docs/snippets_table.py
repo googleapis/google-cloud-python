@@ -454,5 +454,29 @@ def test_bigtable_row_append_cell_value():
     table.truncate(timeout=200)
 
 
+def test_bigtable_row_clear():
+    # [START bigtable_row_clear]
+    from google.cloud.bigtable import Client
+
+    client = Client(admin=True)
+    instance = client.instance(INSTANCE_ID)
+    table = instance.table(TABLE_ID)
+
+    row_key = b'row_key_1'
+    row_obj = table.row(row_key)
+    row_obj.set_cell(COLUMN_FAMILY_ID, COL_NAME1, b'cell-val')
+    # [END bigtable_row_clear]
+
+    mutation_size = row_obj.get_mutations_size()
+    assert mutation_size > 0
+
+    # [START bigtable_row_clear]
+    row_obj.clear()
+    # [END bigtable_row_clear]
+
+    mutation_size = row_obj.get_mutations_size()
+    assert mutation_size == 0
+
+
 if __name__ == '__main__':
     pytest.main()
