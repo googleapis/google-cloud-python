@@ -679,7 +679,9 @@ class AppendRow(Row):
 
     def clear(self):
         """Removes all currently accumulated modifications on current row.
+
         For example:
+
         .. literalinclude:: snippets_table.py
             :start-after: [START bigtable_row_clear]
             :end-before: [END bigtable_row_clear]
@@ -697,6 +699,7 @@ class AppendRow(Row):
             Google Cloud Bigtable API, call :meth:`commit`.
 
         For example:
+
         .. literalinclude:: snippets_table.py
             :start-after: [START bigtable_row_append_cell_value]
             :end-before: [END bigtable_row_append_cell_value]
@@ -736,6 +739,7 @@ class AppendRow(Row):
             Google Cloud Bigtable API, call :meth:`commit`.
 
         For example:
+
         .. literalinclude:: snippets_table.py
             :start-after: [START bigtable_row_increment_cell_value]
             :end-before: [END bigtable_row_increment_cell_value]
