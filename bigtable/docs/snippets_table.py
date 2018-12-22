@@ -42,7 +42,6 @@ from google.cloud.bigtable import column_family
 INSTANCE_ID = "snippet-" + unique_resource_id('-')
 CLUSTER_ID = "clus-1-" + unique_resource_id('-')
 TABLE_ID = "tabl-1-" + unique_resource_id('-')
-COLUMN_FAMILY_ID = "col_fam_id-" + unique_resource_id('-')
 LOCATION_ID = 'us-central1-f'
 ALT_LOCATION_ID = 'us-central1-a'
 PRODUCTION = enums.Instance.Type.PRODUCTION
@@ -53,8 +52,14 @@ LABEL_STAMP = datetime.datetime.utcnow() \
                                .replace(microsecond=0, tzinfo=UTC,) \
                                .strftime("%Y-%m-%dt%H-%M-%S")
 LABELS = {LABEL_KEY: str(LABEL_STAMP)}
+COLUMN_FAMILY_ID = "col_fam_id1"
 COL_NAME1 = b'col-name1'
 CELL_VAL1 = b'cell-val'
+ROW_KEY1 = b'row_key_id1'
+COLUMN_FAMILY_ID2 = "col_fam_id2"
+COL_NAME2 = b'col-name2'
+CELL_VAL2 = b'cell-val2'
+ROW_KEY2 = b'row_key_id2'
 
 
 class Config(object):
@@ -86,6 +91,10 @@ def setup_module():
     column_family1 = Config.TABLE.column_family(COLUMN_FAMILY_ID,
                                                 gc_rule=gc_rule)
     column_family1.create()
+    gc_rule2 = column_family.MaxVersionsGCRule(4)
+    column_family2 = Config.TABLE.column_family(COLUMN_FAMILY_ID2,
+                                                gc_rule=gc_rule2)
+    column_family2.create()
 
 
 def teardown_module():
@@ -385,6 +394,64 @@ def test_bigtable_table_row():
     assert actual_rows_keys == row_keys
 
     table.truncate(timeout=300)
+
+
+def test_bigtable_row_append_cell_value():
+    row = Config.TABLE.row(ROW_KEY1)
+
+    cell_val1 = b'1'
+    row.set_cell(COLUMN_FAMILY_ID, COL_NAME1, cell_val1)
+    row.commit()
+
+    # [START bigtable_row_append_cell_value]
+    from google.cloud.bigtable import Client
+
+    client = Client(admin=True)
+    instance = client.instance(INSTANCE_ID)
+    table = instance.table(TABLE_ID)
+    row = table.row(ROW_KEY1, append=True)
+
+    cell_val2 = b'2'
+    row.append_cell_value(COLUMN_FAMILY_ID, COL_NAME1, cell_val2)
+    # [END bigtable_row_append_cell_value]
+    row.commit()
+
+    row_data = table.read_row(ROW_KEY1)
+    actual_value = row_data.cell_value(COLUMN_FAMILY_ID, COL_NAME1)
+    assert actual_value == cell_val1 + cell_val2
+
+    # [START bigtable_row_commit]
+    from google.cloud.bigtable import Client
+
+    client = Client(admin=True)
+    instance = client.instance(INSTANCE_ID)
+    table = instance.table(TABLE_ID)
+    row = Config.TABLE.row(ROW_KEY2)
+    cell_val = 1
+    row.set_cell(COLUMN_FAMILY_ID, COL_NAME1, cell_val)
+    row.commit()
+    # [END bigtable_row_commit]
+
+    # [START bigtable_row_increment_cell_value]
+    from google.cloud.bigtable import Client
+
+    client = Client(admin=True)
+    instance = client.instance(INSTANCE_ID)
+    table = instance.table(TABLE_ID)
+    row = table.row(ROW_KEY2, append=True)
+
+    int_val = 3
+    row.increment_cell_value(COLUMN_FAMILY_ID, COL_NAME1, int_val)
+    # [END bigtable_row_increment_cell_value]
+    row.commit()
+
+    row_data = table.read_row(ROW_KEY2)
+    actual_value = row_data.cell_value(COLUMN_FAMILY_ID, COL_NAME1)
+
+    import struct
+    _PACK_I64 = struct.Struct(">q").pack
+    assert actual_value == _PACK_I64(cell_val + int_val)
+    table.truncate(timeout=200)
 
 
 if __name__ == '__main__':
