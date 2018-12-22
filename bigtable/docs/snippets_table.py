@@ -42,7 +42,6 @@ from google.cloud.bigtable import column_family
 INSTANCE_ID = "snippet-" + unique_resource_id('-')
 CLUSTER_ID = "clus-1-" + unique_resource_id('-')
 TABLE_ID = "tabl-1-" + unique_resource_id('-')
-COLUMN_FAMILY_ID = "col_fam_id-" + unique_resource_id('-')
 LOCATION_ID = 'us-central1-f'
 ALT_LOCATION_ID = 'us-central1-a'
 PRODUCTION = enums.Instance.Type.PRODUCTION
@@ -53,8 +52,14 @@ LABEL_STAMP = datetime.datetime.utcnow() \
                                .replace(microsecond=0, tzinfo=UTC,) \
                                .strftime("%Y-%m-%dt%H-%M-%S")
 LABELS = {LABEL_KEY: str(LABEL_STAMP)}
+COLUMN_FAMILY_ID = "col_fam_id1"
 COL_NAME1 = b'col-name1'
 CELL_VAL1 = b'cell-val'
+ROW_KEY1 = b'row_key_id1'
+COLUMN_FAMILY_ID2 = "col_fam_id2"
+COL_NAME2 = b'col-name2'
+CELL_VAL2 = b'cell-val2'
+ROW_KEY2 = b'row_key_id2'
 
 
 class Config(object):
@@ -86,6 +91,10 @@ def setup_module():
     column_family1 = Config.TABLE.column_family(COLUMN_FAMILY_ID,
                                                 gc_rule=gc_rule)
     column_family1.create()
+    gc_rule2 = column_family.MaxVersionsGCRule(4)
+    column_family2 = Config.TABLE.column_family(COLUMN_FAMILY_ID2,
+                                                gc_rule=gc_rule2)
+    column_family2.create()
 
 
 def teardown_module():
@@ -385,6 +394,78 @@ def test_bigtable_table_row():
     assert actual_rows_keys == row_keys
 
     table.truncate(timeout=300)
+
+
+def test_bigtable_add_row_add_row_range_add_row_range_from_keys():
+    row_keys = [
+        b'row_key_1', b'row_key_2', b'row_key_3', b'row_key_4',
+        b'row_key_5', b'row_key_6', b'row_key_7', b'row_key_8',
+        b'row_key_9']
+
+    rows = []
+    for row_key in row_keys:
+        row = Config.TABLE.row(row_key)
+        row.set_cell(COLUMN_FAMILY_ID, COL_NAME1, CELL_VAL1)
+        rows.append(row)
+    Config.TABLE.mutate_rows(rows)
+
+    # [START bigtable_add_row_key]
+    from google.cloud.bigtable import Client
+    from google.cloud.bigtable.row_set import RowSet
+
+    client = Client(admin=True)
+    instance = client.instance(INSTANCE_ID)
+    table = instance.table(TABLE_ID)
+
+    row_set = RowSet()
+    row_set.add_row_key(b'row_key_5')
+
+    read_rows = table.read_rows(row_set=row_set)
+    # [END bigtable_add_row_key]
+    expected_row_keys = [b'row_key_5']
+    found_row_keys = [row.row_key for row in read_rows]
+    assert found_row_keys == expected_row_keys
+
+    # [START bigtable_add_row_range]
+    from google.cloud.bigtable import Client
+    from google.cloud.bigtable.row_set import RowSet
+    from google.cloud.bigtable.row_set import RowRange
+
+    client = Client(admin=True)
+    instance = client.instance(INSTANCE_ID)
+    table = instance.table(TABLE_ID)
+
+    row_set = RowSet()
+    row_set.add_row_range(RowRange(start_key=b'row_key_3',
+                                   end_key=b'row_key_7'))
+
+    read_rows = table.read_rows(row_set=row_set)
+    # [END bigtable_add_row_range]
+    expected_row_keys = [b'row_key_3', b'row_key_4',
+                         b'row_key_5', b'row_key_6']
+    found_row_keys = [row.row_key for row in read_rows]
+    assert found_row_keys == expected_row_keys
+
+    # [START bigtable_row_range_from_keys]
+    from google.cloud.bigtable import Client
+    from google.cloud.bigtable.row_set import RowSet
+
+    client = Client(admin=True)
+    instance = client.instance(INSTANCE_ID)
+    table = instance.table(TABLE_ID)
+
+    row_set = RowSet()
+    row_set.add_row_range_from_keys(start_key=b'row_key_3',
+                                    end_key=b'row_key_7')
+
+    read_rows = table.read_rows(row_set=row_set)
+    # [END bigtable_row_range_from_keys]
+    expected_row_keys = [b'row_key_3', b'row_key_4',
+                         b'row_key_5', b'row_key_6']
+    found_row_keys = [row.row_key for row in read_rows]
+    assert found_row_keys == expected_row_keys
+
+    table.truncate(timeout=200)
 
 
 if __name__ == '__main__':

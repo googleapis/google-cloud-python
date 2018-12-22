@@ -53,6 +53,12 @@ class RowSet(object):
     def add_row_key(self, row_key):
         """Add row key to row_keys list.
 
+        For example:
+
+        .. literalinclude:: snippets.py
+            :start-after: [START bigtable_add_row_key]
+            :end-before: [END bigtable_add_row_key]
+
         :type row_key: bytes
         :param row_key: The key of a row to read
         """
@@ -60,6 +66,12 @@ class RowSet(object):
 
     def add_row_range(self, row_range):
         """Add row_range to row_ranges list.
+
+        For example:
+
+        .. literalinclude:: snippets.py
+            :start-after: [START bigtable_add_row_range]
+            :end-before: [END bigtable_add_row_range]
 
         :type row_range: class:`RowRange`
         :param row_range: The row range object having start and end key
@@ -70,6 +82,12 @@ class RowSet(object):
         self, start_key=None, end_key=None, start_inclusive=True, end_inclusive=False
     ):
         """Add row range to row_ranges list from the row keys
+
+        For example:
+
+        .. literalinclude:: snippets.py
+            :start-after: [START bigtable_row_range_from_keys]
+            :end-before: [END bigtable_row_range_from_keys]
 
         :type start_key: bytes
         :param start_key: (Optional) Start key of the row range. If left empty,
