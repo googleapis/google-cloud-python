@@ -42,7 +42,6 @@ from google.cloud.bigtable import column_family
 INSTANCE_ID = "snippet-" + unique_resource_id('-')
 CLUSTER_ID = "clus-1-" + unique_resource_id('-')
 TABLE_ID = "tabl-1-" + unique_resource_id('-')
-COLUMN_FAMILY_ID = "col_fam_id-" + unique_resource_id('-')
 LOCATION_ID = 'us-central1-f'
 ALT_LOCATION_ID = 'us-central1-a'
 PRODUCTION = enums.Instance.Type.PRODUCTION
@@ -53,8 +52,14 @@ LABEL_STAMP = datetime.datetime.utcnow() \
                                .replace(microsecond=0, tzinfo=UTC,) \
                                .strftime("%Y-%m-%dt%H-%M-%S")
 LABELS = {LABEL_KEY: str(LABEL_STAMP)}
+COLUMN_FAMILY_ID = "col_fam_id1"
 COL_NAME1 = b'col-name1'
 CELL_VAL1 = b'cell-val'
+ROW_KEY1 = b'row_key_id1'
+COLUMN_FAMILY_ID2 = "col_fam_id2"
+COL_NAME2 = b'col-name2'
+CELL_VAL2 = b'cell-val2'
+ROW_KEY2 = b'row_key_id2'
 
 
 class Config(object):
@@ -86,6 +91,10 @@ def setup_module():
     column_family1 = Config.TABLE.column_family(COLUMN_FAMILY_ID,
                                                 gc_rule=gc_rule)
     column_family1.create()
+    gc_rule2 = column_family.MaxVersionsGCRule(4)
+    column_family2 = Config.TABLE.column_family(COLUMN_FAMILY_ID2,
+                                                gc_rule=gc_rule2)
+    column_family2.create()
 
 
 def teardown_module():
@@ -385,6 +394,89 @@ def test_bigtable_table_row():
     assert actual_rows_keys == row_keys
 
     table.truncate(timeout=300)
+
+
+def test_bigtable_batcher_mutate_flush_mutate_rows():
+    # [START bigtable_batcher_mutate]
+    from google.cloud.bigtable import Client
+
+    client = Client(admin=True)
+    instance = client.instance(INSTANCE_ID)
+    table = instance.table(TABLE_ID)
+    # Batcher for max row bytes, max_row_bytes=1024 is optional.
+    batcher = table.mutations_batcher(max_row_bytes=1024)
+
+    # Add a single row
+    row_key = b'row_key_1'
+    row = table.row(row_key)
+    row.set_cell(COLUMN_FAMILY_ID,
+                 COL_NAME1,
+                 'value-0',
+                 timestamp=datetime.datetime.utcnow())
+
+    # In batcher, mutate will flush current batch if it
+    # reaches the max_row_bytes
+    batcher.mutate(row)
+    batcher.flush()
+    # [END bigtable_batcher_mutate]
+
+    # [START bigtable_batcher_flush]
+    from google.cloud.bigtable import Client
+
+    client = Client(admin=True)
+    instance = client.instance(INSTANCE_ID)
+    table = instance.table(TABLE_ID)
+    # Batcher for max row bytes, max_row_bytes=1024 is optional.
+    batcher = table.mutations_batcher(max_row_bytes=1024)
+
+    # Add a single row
+    row_key = b'row_key'
+    row = table.row(row_key)
+    row.set_cell(COLUMN_FAMILY_ID, COL_NAME1, 'value-0')
+
+    # In batcher, mutate will flush current batch if it
+    # reaches the max_row_bytes
+    batcher.mutate(row)
+    batcher.flush()
+    # [END bigtable_batcher_flush]
+
+    rows_on_table = []
+    for row in table.read_rows():
+        rows_on_table.append(row.row_key)
+    assert len(rows_on_table) == 2
+    table.truncate(timeout=200)
+
+    # [START bigtable_batcher_mutate_rows]
+    from google.cloud.bigtable import Client
+
+    client = Client(admin=True)
+    instance = client.instance(INSTANCE_ID)
+    table = instance.table(TABLE_ID)
+    batcher = table.mutations_batcher()
+
+    row1 = table.row(b'row_key_1')
+    row2 = table.row(b'row_key_2')
+    row3 = table.row(b'row_key_3')
+    row4 = table.row(b'row_key_4')
+
+    row1.set_cell(COLUMN_FAMILY_ID, COL_NAME1, b'cell-val1')
+    row2.set_cell(COLUMN_FAMILY_ID, COL_NAME1, b'cell-val2')
+    row3.set_cell(COLUMN_FAMILY_ID, COL_NAME1, b'cell-val3')
+    row4.set_cell(COLUMN_FAMILY_ID, COL_NAME1, b'cell-val4')
+
+    batcher.mutate_rows([row1, row2, row3, row4])
+
+    # batcher will flush current batch if it
+    # reaches the max flush_count
+    # Manually send the current batch to Cloud Bigtable
+    batcher.flush()
+    # [END bigtable_batcher_mutate_rows]
+
+    rows_on_table = []
+    for row in table.read_rows():
+        rows_on_table.append(row.row_key)
+    assert len(rows_on_table) == 4
+    table.truncate(timeout=200)
 
 
 if __name__ == '__main__':
