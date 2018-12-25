@@ -677,6 +677,21 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(kw["path"], "/b/%s/o/%s" % (NAME, BLOB_NAME))
         self.assertEqual(kw["query_params"], expected_qp)
 
+    def test_get_blob_hit_w_generation(self):
+        NAME = "name"
+        BLOB_NAME = "blob-name"
+        GENERATION = 1512565576797178
+        connection = _Connection({"name": BLOB_NAME})
+        client = _Client(connection)
+        bucket = self._make_one(name=NAME)
+        blob = bucket.get_blob(BLOB_NAME, client=client, generation=GENERATION)
+        self.assertIs(blob.bucket, bucket)
+        self.assertEqual(blob.name, BLOB_NAME)
+        kw, = connection._requested
+        self.assertEqual(kw["method"], "GET")
+        self.assertEqual(kw["path"], "/b/%s/o/%s" % (NAME, BLOB_NAME))
+        self.assertEqual(kw["query_params"], {"generation": GENERATION})
+
     def test_get_blob_hit_with_kwargs(self):
         from google.cloud.storage.blob import _get_encryption_headers
 
@@ -944,6 +959,20 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(kw["method"], "DELETE")
         self.assertEqual(kw["path"], "/b/%s/o/%s" % (NAME, BLOB_NAME))
         self.assertEqual(kw["query_params"], {"userProject": USER_PROJECT})
+
+    def test_delete_blob_hit_with_generation(self):
+        NAME = 'name'
+        BLOB_NAME = 'blob-name'
+        GENERATION = 1512565576797178
+        connection = _Connection({})
+        client = _Client(connection)
+        bucket = self._make_one(client=client, name=NAME)
+        result = bucket.delete_blob(BLOB_NAME, generation=GENERATION)
+        self.assertIsNone(result)
+        kw, = connection._requested
+        self.assertEqual(kw['method'], 'DELETE')
+        self.assertEqual(kw['path'], '/b/%s/o/%s' % (NAME, BLOB_NAME))
+        self.assertEqual(kw['query_params'], {'generation': GENERATION})
 
     def test_delete_blobs_empty(self):
         NAME = "name"

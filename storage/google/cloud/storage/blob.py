@@ -1497,6 +1497,9 @@ class Blob(_PropertyMixin):
         if token:
             query_params["rewriteToken"] = token
 
+        if source.generation:
+            query_params['sourceGeneration'] = source.generation
+
         if self.user_project is not None:
             query_params["userProject"] = self.user_project
 
