@@ -2295,6 +2295,41 @@ class Test_Blob(unittest.TestCase):
         self.assertEqual(rewritten, 33)
         self.assertEqual(size, 42)
 
+    def test_rewrite_generation(self):
+        SOURCE_BLOB = "source"
+        SOURCE_GENERATION = 42
+        DEST_BLOB = "dest"
+        DEST_BUCKET = "other-bucket"
+        TOKEN = "TOKEN"
+        RESPONSE = {
+            "totalBytesRewritten": 33,
+            "objectSize": 42,
+            "done": False,
+            "rewriteToken": TOKEN,
+        }
+        response = ({"status": http_client.OK}, RESPONSE)
+        connection = _Connection(response)
+        client = _Client(connection)
+        source_bucket = _Bucket(client=client)
+        source_blob = self._make_one(SOURCE_BLOB, bucket=source_bucket)
+        source_blob._set_properties({'generation': SOURCE_GENERATION})
+        dest_bucket = _Bucket(client=client, name=DEST_BUCKET)
+        dest_blob = self._make_one(DEST_BLOB, bucket=dest_bucket)
+
+        token, rewritten, size = dest_blob.rewrite(source_blob)
+
+        self.assertEqual(token, TOKEN)
+        self.assertEqual(rewritten, 33)
+        self.assertEqual(size, 42)
+
+        kw, = connection._requested
+        self.assertEqual(kw["method"], "POST")
+        self.assertEqual(kw["path"], "/b/%s/o/%s/rewriteTo/b/%s/o/%s" % (
+            (source_bucket.name, source_blob.name,
+             dest_bucket.name, dest_blob.name)))
+        self.assertEqual(kw["query_params"],
+                         {"sourceGeneration": SOURCE_GENERATION})
+
     def test_rewrite_other_bucket_other_name_no_encryption_partial(self):
         SOURCE_BLOB = "source"
         DEST_BLOB = "dest"

@@ -549,7 +549,8 @@ class Bucket(_PropertyMixin):
 
         return self.path_helper(self.name)
 
-    def get_blob(self, blob_name, client=None, encryption_key=None, **kwargs):
+    def get_blob(self, blob_name, client=None, encryption_key=None,
+                 generation=None, **kwargs):
         """Get a blob object by name.
 
         This will return None if the blob doesn't exist:
@@ -574,6 +575,10 @@ class Bucket(_PropertyMixin):
             See
             https://cloud.google.com/storage/docs/encryption#customer-supplied.
 
+        :type generation: long
+        :param generation: Optional. If present, selects a specific revision of
+                           this object.
+
         :type kwargs: dict
         :param kwargs: Keyword arguments to pass to the
                        :class:`~google.cloud.storage.blob.Blob` constructor.
@@ -586,6 +591,10 @@ class Bucket(_PropertyMixin):
 
         if self.user_project is not None:
             query_params["userProject"] = self.user_project
+
+        if generation is not None:
+            query_params['generation'] = generation
+
         blob = Blob(
             bucket=self, name=blob_name, encryption_key=encryption_key, **kwargs
         )
@@ -791,7 +800,7 @@ class Bucket(_PropertyMixin):
             _target_object=None,
         )
 
-    def delete_blob(self, blob_name, client=None):
+    def delete_blob(self, blob_name, client=None, generation=None):
         """Deletes a blob from the current bucket.
 
         If the blob isn't found (backend 404), raises a
@@ -813,6 +822,10 @@ class Bucket(_PropertyMixin):
         :param client: Optional. The client to use.  If not passed, falls back
                        to the ``client`` stored on the current bucket.
 
+        :type generation: long
+        :param generation: Optional. If present, permanently deletes a specific
+                           revision of this object.
+
         :raises: :class:`google.cloud.exceptions.NotFound` (to suppress
                  the exception, call ``delete_blobs``, passing a no-op
                  ``on_error`` callback, e.g.:
@@ -824,6 +837,9 @@ class Bucket(_PropertyMixin):
         """
         client = self._require_client(client)
         query_params = {}
+
+        if generation is not None:
+            query_params['generation'] = generation
 
         if self.user_project is not None:
             query_params["userProject"] = self.user_project
