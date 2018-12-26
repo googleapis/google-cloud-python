@@ -257,19 +257,24 @@ class MessageMeta(type):
     def meta(cls):
         return cls._meta
 
-    def pb(cls, obj=None):
+    def pb(cls, obj=None, *, coerce: bool = False):
         """Return the underlying protobuf Message class or instance.
 
         Args:
             obj: If provided, and an instance of ``cls``, return the
                 underlying protobuf instance.
+            coerce (bool): If provided, will attempt to coerce ``obj`` to
+                ``cls`` if it is not already an instance.
         """
         if obj is None:
             return cls.meta.pb
         if not isinstance(obj, cls):
-            raise TypeError('%r is not an instance of %s' % (
-                obj, cls.__name__,
-            ))
+            if coerce:
+                obj = cls(obj)
+            else:
+                raise TypeError('%r is not an instance of %s' % (
+                    obj, cls.__name__,
+                ))
         return obj._pb
 
     def wrap(cls, pb):
@@ -285,12 +290,13 @@ class MessageMeta(type):
         """Return the serialized proto.
 
         Args:
-            instance: An instance of this message type.
+            instance: An instance of this message type, or something
+                compatible (accepted by the type's constructor).
 
         Returns:
             bytes: The serialized representation of the protocol buffer.
         """
-        return cls.pb(instance).SerializeToString()
+        return cls.pb(instance, coerce=True).SerializeToString()
 
     def deserialize(cls, payload: bytes) -> 'Message':
         """Given a serialized proto, deserialize it into a Message instance.

@@ -169,6 +169,16 @@ def test_message_serialize():
     assert Foo.serialize(foo) == Foo.pb(foo).SerializeToString()
 
 
+def test_message_dict_serialize():
+    class Foo(proto.Message):
+        bar = proto.Field(proto.INT32, number=1)
+        baz = proto.Field(proto.STRING, number=2)
+        bacon = proto.Field(proto.BOOL, number=3)
+
+    foo = {'bar': 42, 'bacon': True}
+    assert Foo.serialize(foo) == Foo.pb(foo, coerce=True).SerializeToString()
+
+
 def test_message_deserialize():
     class OldFoo(proto.Message):
         bar = proto.Field(proto.INT32, number=1)
