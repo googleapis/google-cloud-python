@@ -52,5 +52,11 @@ def rst(text, width=72, indent=0, source_format='commonmark'):
     if '\n' in answer:
         answer += '\n' + ' ' * indent
 
+    # If the text ends in a double-quote, append a period.
+    # This ensures that we do not get a parse error when this output is
+    # followed by triple-quotes.
+    if answer.endswith('"'):
+        answer += '.'
+
     # Done; return the answer.
     return answer

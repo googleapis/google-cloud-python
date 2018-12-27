@@ -39,3 +39,10 @@ def test_rst_add_newline():
         s = 'The hail in Wales\nfalls mainly on the snails.'
         assert utils.rst(s) == s + '\n'
         assert convert_text.call_count == 0
+
+
+def test_rst_pad_close_quote():
+    with mock.patch.object(pypandoc, 'convert_text') as convert_text:
+        s = 'A value, as in "foo"'
+        assert utils.rst(s) == s + '.'
+        assert convert_text.call_count == 0
