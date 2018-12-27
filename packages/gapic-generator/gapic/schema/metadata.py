@@ -176,14 +176,6 @@ class Address:
         """
         # Is this referencing a message in the same proto file?
         if self.package == address.package and self.module == address.module:
-            # It is possible that a field references a message that has
-            # not yet been declared. If so, send its name enclosed in quotes
-            # (a string) instead.
-            if (len(self.module_path) == len(address.module_path) and
-                    self.module_path > address.module_path or
-                    self == address):
-                return f"'{self.name}'"
-
             # Edge case: If two (or more) messages are nested under a common
             # parent message, and one references another, then return that
             # enclosed in quotes.
@@ -202,6 +194,12 @@ class Address:
             # namespace.
             if self.parent and self.parent[0] == address.name:
                 return '.'.join(self.parent[1:] + (self.name,))
+
+            # It is possible that a field references a message that has
+            # not yet been declared. If so, send its name enclosed in quotes
+            # (a string) instead.
+            if self.module_path > address.module_path or self == address:
+                return f"'{'.'.join(self.parent + (self.name,))}'"
 
             # This is a message in the same module, already declared.
             # Send its name.
