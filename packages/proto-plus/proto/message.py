@@ -29,8 +29,8 @@ from google.protobuf import symbol_database
 from proto.fields import Field
 from proto.fields import MapField
 from proto.fields import RepeatedField
-from proto.marshal.marshal import marshal
-from proto.marshal.types.message import MessageMarshal
+from proto.marshal import Marshal
+from proto.marshal.rules.message import MessageRule
 from proto.primitives import ProtoType
 
 
@@ -47,6 +47,7 @@ class MessageMeta(type):
 
         # A package and full name should be present.
         package = getattr(Meta, 'package', '')
+        marshal = Marshal(name=getattr(Meta, 'marshal', package))
         local_path = tuple(attrs.get('__qualname__', name).split('.'))
 
         # Sanity check: We get the wrong full name if a class is declared
@@ -225,6 +226,7 @@ class MessageMeta(type):
         attrs['_meta'] = _MessageInfo(
             fields=fields,
             full_name=full_name,
+            marshal=marshal,
             options=opts,
             package=package,
         )
@@ -345,7 +347,7 @@ class Message(metaclass=MessageMeta):
             # passed in.
             #
             # The `__wrap_original` argument is private API to override
-            # this behavior, because `MessageMarshal` actually does want to
+            # this behavior, because `MessageRule` actually does want to
             # wrap the original argument it was given. The `wrap` method
             # on the metaclass is the public API for this behavior.
             if not kwargs.pop('__wrap_original', False):
@@ -364,6 +366,7 @@ class Message(metaclass=MessageMeta):
 
         # Update the mapping to address any values that need to be
         # coerced.
+        marshal = self._meta.marshal
         for key, value in copy.copy(mapping).items():
             pb_type = self._meta.fields[key].pb_type
             pb_value = marshal.to_proto(pb_type, value)
@@ -464,6 +467,7 @@ class Message(metaclass=MessageMeta):
         """
         pb_type = self._meta.fields[key].pb_type
         pb_value = getattr(self._pb, key)
+        marshal = self._meta.marshal
         return marshal.to_python(pb_type, pb_value, absent=key not in self)
 
     def __ne__(self, other):
@@ -481,6 +485,7 @@ class Message(metaclass=MessageMeta):
         """
         if key.startswith('_'):
             return super().__setattr__(key, value)
+        marshal = self._meta.marshal
         pb_type = self._meta.fields[key].pb_type
         pb_value = marshal.to_proto(pb_type, value)
 
@@ -503,11 +508,15 @@ class _MessageInfo:
         full_name (str): The full name of the message.
         file_info (~._FileInfo): The file descriptor and messages for the
             file containing this message.
+        marshal (~.Marshal): The marshal instance to which this message was
+            automatically registered.
         options (~.descriptor_pb2.MessageOptions): Any options that were
             set on the message.
     """
-    def __init__(self, *, fields: List[Field], package: str, full_name: str,
-                 options: descriptor_pb2.MessageOptions) -> None:
+    def __init__(self, *,
+            fields: List[Field], package: str, full_name: str,
+            marshal: Marshal, options: descriptor_pb2.MessageOptions
+            ) -> None:
         self.package = package
         self.full_name = full_name
         self.options = options
@@ -517,6 +526,7 @@ class _MessageInfo:
         self.fields_by_number = collections.OrderedDict([
             (i.number, i) for i in fields
         ])
+        self.marshal = marshal
         self._pb = None
 
     @property
@@ -573,9 +583,9 @@ class _FileInfo(collections.namedtuple(
             # Register the message with the marshal so it is wrapped
             # appropriately.
             proto_plus_message._meta._pb = pb_message
-            marshal.register(
+            proto_plus_message._meta.marshal.register(
                 pb_message,
-                MessageMarshal(pb_message, proto_plus_message)
+                MessageRule(pb_message, proto_plus_message)
             )
 
             # Iterate over any fields on the message and, if their type

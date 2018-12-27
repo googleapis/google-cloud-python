@@ -15,7 +15,7 @@
 from google.protobuf import wrappers_pb2
 
 
-class WrapperMarshal:
+class WrapperRule:
     """A marshal for converting the protobuf wrapper classes to Python.
 
     This class converts between ``google.protobuf.BoolValue``,
@@ -38,46 +38,46 @@ class WrapperMarshal:
         return value
 
 
-class DoubleValueMarshal(WrapperMarshal):
+class DoubleValueRule(WrapperRule):
     _proto_type = wrappers_pb2.DoubleValue
     _python_type = float
 
 
-class FloatValueMarshal(WrapperMarshal):
+class FloatValueRule(WrapperRule):
     _proto_type = wrappers_pb2.FloatValue
     _python_type = float
 
 
-class Int64ValueMarshal(WrapperMarshal):
+class Int64ValueRule(WrapperRule):
     _proto_type = wrappers_pb2.Int64Value
     _python_type = int
 
 
-class UInt64ValueMarshal(WrapperMarshal):
+class UInt64ValueRule(WrapperRule):
     _proto_type = wrappers_pb2.UInt64Value
     _python_type = int
 
 
-class Int32ValueMarshal(WrapperMarshal):
+class Int32ValueRule(WrapperRule):
     _proto_type = wrappers_pb2.Int32Value
     _python_type = int
 
 
-class UInt32ValueMarshal(WrapperMarshal):
+class UInt32ValueRule(WrapperRule):
     _proto_type = wrappers_pb2.UInt32Value
     _python_type = int
 
 
-class BoolValueMarshal(WrapperMarshal):
+class BoolValueRule(WrapperRule):
     _proto_type = wrappers_pb2.BoolValue
     _python_type = bool
 
 
-class StringValueMarshal(WrapperMarshal):
+class StringValueRule(WrapperRule):
     _proto_type = wrappers_pb2.StringValue
     _python_type = str
 
 
-class BytesValueMarshal(WrapperMarshal):
+class BytesValueRule(WrapperRule):
     _proto_type = wrappers_pb2.BytesValue
     _python_type = bytes

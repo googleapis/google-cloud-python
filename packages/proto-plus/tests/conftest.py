@@ -20,8 +20,8 @@ from google.protobuf import message
 from google.protobuf import reflection
 from google.protobuf import symbol_database
 
-import proto
-from proto.marshal import types
+from proto.marshal import Marshal
+from proto.marshal import rules
 from proto.message import _FileInfo
 
 
@@ -73,11 +73,11 @@ def pytest_runtest_setup(item):
     # If the marshal had previously registered the old message classes,
     # then reload the appropriate modules so the marshal is using the new ones.
     if 'wrappers_pb2' in reloaded:
-        imp.reload(types.wrappers)
+        imp.reload(rules.wrappers)
     if reloaded.intersection({'timestamp_pb2', 'duration_pb2'}):
-        imp.reload(types.dates)
-    proto.marshal.reset()
+        imp.reload(rules.dates)
 
 
 def pytest_runtest_teardown(item):
+    Marshal._instances.clear()
     [i.stop() for i in item._mocks]

@@ -13,7 +13,7 @@
 # limitations under the License.
 
 
-class MessageMarshal:
+class MessageRule:
     """A marshal for converting between a descriptor and proto.Message."""
 
     def __init__(self, descriptor: type, wrapper: type):

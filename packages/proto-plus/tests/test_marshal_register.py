@@ -16,24 +16,27 @@ import pytest
 
 from google.protobuf import empty_pb2
 
-import proto
+from proto.marshal.marshal import BaseMarshal
 
 
 def test_registration():
-    @proto.marshal.register(empty_pb2.Empty)
-    class Marshal:
+    marshal = BaseMarshal()
+
+    @marshal.register(empty_pb2.Empty)
+    class Rule:
         def to_proto(self, value):
             return value
 
         def to_python(self, value, *, absent=None):
             return value
-    assert isinstance(proto.marshal._registry[empty_pb2.Empty], Marshal)
+    assert isinstance(marshal._rules[empty_pb2.Empty], Rule)
 
 
 def test_invalid_target_registration():
+    marshal = BaseMarshal()
     with pytest.raises(TypeError):
-        @proto.marshal.register(object)
-        class Marshal:
+        @marshal.register(object)
+        class Rule:
             def to_proto(self, value):
                 return value
 
@@ -42,12 +45,14 @@ def test_invalid_target_registration():
 
 
 def test_invalid_marshal_class():
+    marshal = BaseMarshal()
     with pytest.raises(TypeError):
-        @proto.marshal.register(empty_pb2.Empty)
+        @marshal.register(empty_pb2.Empty)
         class Marshal:
             pass
 
 
 def test_invalid_marshal_rule():
+    marshal = BaseMarshal()
     with pytest.raises(TypeError):
-        proto.marshal.register(empty_pb2.Empty, rule=object())
+        marshal.register(empty_pb2.Empty, rule=object())

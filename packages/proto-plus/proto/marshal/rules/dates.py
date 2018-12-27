@@ -20,7 +20,7 @@ from google.protobuf import duration_pb2
 from google.protobuf import timestamp_pb2
 
 
-class TimestampMarshal:
+class TimestampRule:
     """A marshal between Python datetimes and protobuf timestamps.
 
     Note: Python datetimes are less precise than protobuf datetimes
@@ -47,7 +47,7 @@ class TimestampMarshal:
         return value
 
 
-class DurationMarshal:
+class DurationRule:
     """A marshal between Python timedeltas and protobuf durations.
 
     Note: Python timedeltas are less precise than protobuf durations

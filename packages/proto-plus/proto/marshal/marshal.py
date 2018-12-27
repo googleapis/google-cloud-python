@@ -19,12 +19,12 @@ from google.protobuf import duration_pb2
 from google.protobuf import timestamp_pb2
 from google.protobuf import wrappers_pb2
 
-from proto.marshal import containers
+from proto.marshal import compat
 from proto.marshal.collections import MapComposite
 from proto.marshal.collections import Repeated
 from proto.marshal.collections import RepeatedComposite
-from proto.marshal.types import dates
-from proto.marshal.types import wrappers
+from proto.marshal.rules import dates
+from proto.marshal.rules import wrappers
 
 
 class Rule(abc.ABC):
@@ -37,8 +37,8 @@ class Rule(abc.ABC):
         return NotImplemented
 
 
-class MarshalRegistry:
-    """A class to translate between protocol buffers and Python classes.
+class BaseMarshal:
+    """The base class to translate between protobuf and Python classes.
 
     Protocol buffers defines many common types (e.g. Timestamp, Duration)
     which also exist in the Python standard library. The marshal essentially
@@ -52,14 +52,12 @@ class MarshalRegistry:
     the declared field type is still used. This means that, if appropriate,
     multiple protocol buffer types may use the same Python type.
 
-    The marshal is intended to be a singleton; this module instantiates
-    and exports one marshal, which is imported throughout the rest of this
-    library. This allows for an advanced case where user code registers
-    additional types to be marshaled.
+    The primary implementation of this is :class:`Marshal`, which should
+    usually be used instead of this class directly.
     """
     def __init__(self):
-        self._registry = {}
-        self._noop = NoopMarshal()
+        self._rules = {}
+        self._noop = NoopRule()
         self.reset()
 
     def register(self, proto_type: type, rule: Rule = None):
@@ -73,7 +71,7 @@ class MarshalRegistry:
         This function can also be used as a decorator::
 
             @marshal.register(timestamp_pb2.Timestamp)
-            class TimestampMarshal:
+            class TimestampRule:
                 ...
 
         In this case, the class will be initialized for you with zero
@@ -97,7 +95,7 @@ class MarshalRegistry:
                                 '`to_proto` and `to_python` methods.')
 
             # Register the rule.
-            self._registry[proto_type] = rule
+            self._rules[proto_type] = rule
             return
 
         # Create an inner function that will register an instance of the
@@ -109,43 +107,43 @@ class MarshalRegistry:
                                 '`to_proto` and `to_python` methods.')
 
             # Register the rule class.
-            self._registry[proto_type] = rule_class()
+            self._rules[proto_type] = rule_class()
             return rule_class
         return register_rule_class
 
     def reset(self):
         """Reset the registry to its initial state."""
-        self._registry.clear()
+        self._rules.clear()
 
         # Register date and time wrappers.
-        self.register(timestamp_pb2.Timestamp, dates.TimestampMarshal())
-        self.register(duration_pb2.Duration, dates.DurationMarshal())
+        self.register(timestamp_pb2.Timestamp, dates.TimestampRule())
+        self.register(duration_pb2.Duration, dates.DurationRule())
 
         # Register nullable primitive wrappers.
-        self.register(wrappers_pb2.BoolValue, wrappers.BoolValueMarshal())
-        self.register(wrappers_pb2.BytesValue, wrappers.BytesValueMarshal())
-        self.register(wrappers_pb2.DoubleValue, wrappers.DoubleValueMarshal())
-        self.register(wrappers_pb2.FloatValue, wrappers.FloatValueMarshal())
-        self.register(wrappers_pb2.Int32Value, wrappers.Int32ValueMarshal())
-        self.register(wrappers_pb2.Int64Value, wrappers.Int64ValueMarshal())
-        self.register(wrappers_pb2.StringValue, wrappers.StringValueMarshal())
-        self.register(wrappers_pb2.UInt32Value, wrappers.UInt32ValueMarshal())
-        self.register(wrappers_pb2.UInt64Value, wrappers.UInt64ValueMarshal())
+        self.register(wrappers_pb2.BoolValue, wrappers.BoolValueRule())
+        self.register(wrappers_pb2.BytesValue, wrappers.BytesValueRule())
+        self.register(wrappers_pb2.DoubleValue, wrappers.DoubleValueRule())
+        self.register(wrappers_pb2.FloatValue, wrappers.FloatValueRule())
+        self.register(wrappers_pb2.Int32Value, wrappers.Int32ValueRule())
+        self.register(wrappers_pb2.Int64Value, wrappers.Int64ValueRule())
+        self.register(wrappers_pb2.StringValue, wrappers.StringValueRule())
+        self.register(wrappers_pb2.UInt32Value, wrappers.UInt32ValueRule())
+        self.register(wrappers_pb2.UInt64Value, wrappers.UInt64ValueRule())
 
     def to_python(self, proto_type, value, *, absent: bool = None):
         # Internal protobuf has its own special type for lists of values.
         # Return a view around it that implements MutableSequence.
-        if isinstance(value, containers.repeated_composite_types):
+        if isinstance(value, compat.repeated_composite_types):
             return RepeatedComposite(value, marshal=self)
-        if isinstance(value, containers.repeated_scalar_types):
+        if isinstance(value, compat.repeated_scalar_types):
             return Repeated(value, marshal=self)
 
         # Same thing for maps of messages.
-        if isinstance(value, containers.map_composite_types):
+        if isinstance(value, compat.map_composite_types):
             return MapComposite(value, marshal=self)
 
         # Convert ordinary values.
-        rule = self._registry.get(proto_type, self._noop)
+        rule = self._rules.get(proto_type, self._noop)
         return rule.to_python(value, absent=absent)
 
     def to_proto(self, proto_type, value, *, strict: bool = False):
@@ -172,7 +170,7 @@ class MarshalRegistry:
                     for k, v in value.items()}
 
         # Convert ordinary values.
-        rule = self._registry.get(proto_type, self._noop)
+        rule = self._rules.get(proto_type, self._noop)
         pb_value = rule.to_proto(value)
 
         # Sanity check: If we are in strict mode, did we get the value we want?
@@ -189,8 +187,42 @@ class MarshalRegistry:
         return pb_value
 
 
-class NoopMarshal:
-    """A catch-all marshal that does nothing."""
+class Marshal(BaseMarshal):
+    """The translator between protocol buffer and Python instances.
+
+    The bulk of the implementation is in :class:`BaseMarshal`. This class
+    adds identity tracking: multiple instantiations of :class:`Marshal` with
+    the same name will provide the same instance.
+    """
+    _instances = {}
+
+    def __new__(cls, *, name: str):
+        """Create a marshal instance.
+
+        Args:
+            name (str): The name of the marshal. Instantiating multiple
+                marshals with the same ``name`` argument will provide the
+                same marshal each time.
+        """
+        if name not in cls._instances:
+            cls._instances[name] = super().__new__(cls)
+        return cls._instances[name]
+
+    def __init__(self, *, name: str):
+        """Instantiate a marshal.
+
+        Args:
+            name (str): The name of the marshal. Instantiating multiple
+                marshals with the same ``name`` argument will provide the
+                same marshal each time.
+        """
+        self._name = name
+        if not hasattr(self, '_rules'):
+            super().__init__()
+
+
+class NoopRule:
+    """A catch-all rule that does nothing."""
 
     def to_python(self, pb_value, *, absent: bool = None):
         return pb_value
@@ -199,8 +231,6 @@ class NoopMarshal:
         return value
 
 
-marshal = MarshalRegistry()
-
 __all__ = (
-    'marshal',
+    'Marshal',
 )

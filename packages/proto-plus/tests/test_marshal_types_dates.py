@@ -20,6 +20,7 @@ from google.protobuf import duration_pb2
 from google.protobuf import timestamp_pb2
 
 import proto
+from proto.marshal.marshal import BaseMarshal
 
 
 def test_timestamp_read():
@@ -212,7 +213,7 @@ def test_timestamp_to_python_idempotent():
     #
     # However, we test idempotency for consistency with `to_proto` and
     # general resiliency.
-    marshal = proto.marshal
+    marshal = BaseMarshal()
     py_value = datetime(2012, 4, 21, 15, tzinfo=timezone.utc)
     assert marshal.to_python(timestamp_pb2.Timestamp, py_value) is py_value
 
@@ -223,6 +224,6 @@ def test_duration_to_python_idempotent():
     #
     # However, we test idempotency for consistency with `to_proto` and
     # general resiliency.
-    marshal = proto.marshal
+    marshal = BaseMarshal()
     py_value = timedelta(seconds=240)
     assert marshal.to_python(duration_pb2.Duration, py_value) is py_value

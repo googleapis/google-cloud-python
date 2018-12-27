@@ -15,6 +15,7 @@
 from google.protobuf import wrappers_pb2
 
 import proto
+from proto.marshal.marshal import BaseMarshal
 
 
 def test_bool_value_init():
@@ -103,7 +104,7 @@ def test_bool_value_to_python():
     #
     # However, we test idempotency for consistency with `to_proto` and
     # general resiliency.
-    marshal = proto.marshal
+    marshal = BaseMarshal()
     assert marshal.to_python(wrappers_pb2.BoolValue, True) is True
     assert marshal.to_python(wrappers_pb2.BoolValue, False) is False
     assert marshal.to_python(wrappers_pb2.BoolValue, None) is None

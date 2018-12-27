@@ -15,7 +15,7 @@
 from .fields import Field
 from .fields import MapField
 from .fields import RepeatedField
-from .marshal.marshal import marshal
+from .marshal import Marshal
 from .message import Message
 from .primitives import ProtoType
 
@@ -43,7 +43,7 @@ __all__ = (
     'Field',
     'MapField',
     'RepeatedField',
-    'marshal',
+    'Marshal',
     'Message',
 
     # Expose the types directly.
