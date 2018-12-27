@@ -75,10 +75,6 @@ class {{ service.name }}:
             {{ method.output.ident.sphinx }}:
                 {{ method.output.meta.doc|wrap(width=72, indent=16) }}
         """
-        # Coerce the request to the protocol buffer object.
-        if not isinstance(request, {{ method.input.ident }}):
-            request = {{ method.input.ident }}(**request)
-
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = gapic_v1.method.wrap_method(
