@@ -220,7 +220,7 @@ class MessageMeta(type):
         if len(local_path) == 1:
             file_info.descriptor.message_type.add().MergeFrom(desc)
         else:
-            file_info.nested[tuple(full_name.split('.'))] = desc
+            file_info.nested[local_path] = desc
 
         # Create the MessageInfo instance to be attached to this message.
         attrs['_meta'] = _MessageInfo(
