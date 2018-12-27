@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .map import MapComposite
+from .maps import MapComposite
 from .repeated import Repeated
 from .repeated import RepeatedComposite
 

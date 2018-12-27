@@ -489,7 +489,7 @@ class Message(metaclass=MessageMeta):
         pb_type = self._meta.fields[key].pb_type
         pb_value = marshal.to_proto(pb_type, value)
 
-        # We *always* clear the existing field.
+        # Clear the existing field.
         # This is the only way to successfully write nested falsy values,
         # because otherwise MergeFrom will no-op on them.
         self._pb.ClearField(key)

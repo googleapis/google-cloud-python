@@ -57,14 +57,10 @@ def pytest_runtest_setup(item):
             module = getattr(item.module, name)
             pool.AddSerializedFile(module.DESCRIPTOR.serialized_pb)
             fd = pool.FindFileByName(module.DESCRIPTOR.name)
-            for message_name, descriptor in fd.message_types_by_name.items():
-                new_message = reflection.GeneratedProtocolMessageType(
-                    message_name,
-                    (message.Message,),
-                    {'DESCRIPTOR': descriptor, '__module__': None},
-                )
-                sym_db.RegisterMessage(new_message)
-                setattr(module, message_name, new_message)
+
+            # Register all the messages to the symbol database and the
+            # module. Do this recursively if there are nested messages.
+            _register_messages(module, fd.message_types_by_name, sym_db)
 
             # Track which modules had new message classes loaded.
             # This is used below to wire the new classes into the marshal.
@@ -74,6 +70,8 @@ def pytest_runtest_setup(item):
     # then reload the appropriate modules so the marshal is using the new ones.
     if 'wrappers_pb2' in reloaded:
         imp.reload(rules.wrappers)
+    if 'struct_pb2' in reloaded:
+        imp.reload(rules.struct)
     if reloaded.intersection({'timestamp_pb2', 'duration_pb2'}):
         imp.reload(rules.dates)
 
@@ -81,3 +79,16 @@ def pytest_runtest_setup(item):
 def pytest_runtest_teardown(item):
     Marshal._instances.clear()
     [i.stop() for i in item._mocks]
+
+
+def _register_messages(scope, iterable, sym_db):
+    """Create and register messages from the file descriptor."""
+    for name, descriptor in iterable.items():
+        new_msg = reflection.GeneratedProtocolMessageType(
+            name,
+            (message.Message,),
+            {'DESCRIPTOR': descriptor, '__module__': None},
+        )
+        sym_db.RegisterMessage(new_msg)
+        setattr(scope, name, new_msg)
+        _register_messages(new_msg, descriptor.nested_types_by_name, sym_db)

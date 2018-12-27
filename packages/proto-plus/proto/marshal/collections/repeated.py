@@ -102,6 +102,11 @@ class RepeatedComposite(Repeated):
         canary = copy.deepcopy(self.pb).add()
         return type(canary)
 
+    def __eq__(self, other):
+        if super().__eq__(other):
+            return True
+        return tuple([i for i in self]) == tuple(other)
+
     def __getitem__(self, key):
         return self._marshal.to_python(self._pb_type, self.pb[key])
 

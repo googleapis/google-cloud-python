@@ -31,7 +31,19 @@ def test_repeated_composite_init():
 
     baz = Baz(foos=[Foo(bar=42)])
     assert len(baz.foos) == 1
+    assert baz.foos == baz.foos
     assert baz.foos[0].bar == 42
+
+
+def test_repeated_composite_equality():
+    class Foo(proto.Message):
+        bar = proto.Field(proto.INT32, number=1)
+
+    class Baz(proto.Message):
+        foos = proto.RepeatedField(proto.MESSAGE, message=Foo, number=1)
+
+    baz = Baz(foos=[Foo(bar=42)])
+    assert baz.foos == baz.foos
 
 
 def test_repeated_composite_init_struct():

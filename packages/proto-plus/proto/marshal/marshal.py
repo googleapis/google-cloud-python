@@ -17,6 +17,7 @@ import abc
 from google.protobuf import message
 from google.protobuf import duration_pb2
 from google.protobuf import timestamp_pb2
+from google.protobuf import struct_pb2
 from google.protobuf import wrappers_pb2
 
 from proto.marshal import compat
@@ -24,6 +25,7 @@ from proto.marshal.collections import MapComposite
 from proto.marshal.collections import Repeated
 from proto.marshal.collections import RepeatedComposite
 from proto.marshal.rules import dates
+from proto.marshal.rules import struct
 from proto.marshal.rules import wrappers
 
 
@@ -130,6 +132,15 @@ class BaseMarshal:
         self.register(wrappers_pb2.UInt32Value, wrappers.UInt32ValueRule())
         self.register(wrappers_pb2.UInt64Value, wrappers.UInt64ValueRule())
 
+        # Register the google.protobuf.Struct wrappers.
+        #
+        # These are aware of the marshal that created them, because they
+        # create RepeatedComposite and MapComposite instances directly and
+        # need to pass the marshal to them.
+        self.register(struct_pb2.Value, struct.ValueRule(marshal=self))
+        self.register(struct_pb2.ListValue, struct.ListValueRule(marshal=self))
+        self.register(struct_pb2.Struct, struct.StructRule(marshal=self))
+
     def to_python(self, proto_type, value, *, absent: bool = None):
         # Internal protobuf has its own special type for lists of values.
         # Return a view around it that implements MutableSequence.
@@ -147,14 +158,21 @@ class BaseMarshal:
         return rule.to_python(value, absent=absent)
 
     def to_proto(self, proto_type, value, *, strict: bool = False):
-        # For our repeated and map view objects, simply return the
-        # underlying pb.
-        if isinstance(value, (Repeated, MapComposite)):
-            return value.pb
+        # The protos in google/protobuf/struct.proto are exceptional cases,
+        # because they can and should represent themselves as lists and dicts.
+        # These cases are handled in their rule classes.
+        if proto_type not in (struct_pb2.Value,
+                struct_pb2.ListValue, struct_pb2.Struct):
+            # For our repeated and map view objects, simply return the
+            # underlying pb.
+            if isinstance(value, (Repeated, MapComposite)):
+                return value.pb
 
-        # Convert lists and tuples recursively.
-        if isinstance(value, (list, tuple)):
-            return type(value)([self.to_proto(proto_type, i) for i in value])
+            # Convert lists and tuples recursively.
+            if isinstance(value, (list, tuple)):
+                return type(value)(
+                    [self.to_proto(proto_type, i) for i in value],
+                )
 
         # Convert dictionaries recursively when the proto type is a map.
         # This is slightly more complicated than converting a list or tuple
