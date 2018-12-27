@@ -23,4 +23,5 @@ class {{ message.name }}({{ p }}.Message):
 
     class Meta:
         package = '{{ message.ident.proto_package }}'
+        marshal = '{{ api.naming.warehouse_package_name }}'
 {{ '\n\n' }}
