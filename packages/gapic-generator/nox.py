@@ -49,10 +49,7 @@ def showcase(session):
         session.log('Note: Showcase must be running for these tests to work.')
         session.log('See https://github.com/googleapis/gapic-showcase')
         session.log('-' * 70)
-        session.run('netstat', '-plnt', '|', 'grep', ':7469', silent=True)
-
-    # Use the Python implementation of protocol buffers.
-    session.env['PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION'] = 'python'
+        session.run('lsof', '-i', '4tcp:7469', '-sTCP:LISTEN', silent=True)
 
     # Install pytest and gapic-generator-python
     session.install('pytest')
