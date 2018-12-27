@@ -12,10 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
 import abc
-import collections
-import copy
 
 from google.protobuf import message
 from google.protobuf import duration_pb2
@@ -23,9 +20,11 @@ from google.protobuf import timestamp_pb2
 from google.protobuf import wrappers_pb2
 
 from proto.marshal import containers
+from proto.marshal.collections import MapComposite
+from proto.marshal.collections import Repeated
+from proto.marshal.collections import RepeatedComposite
 from proto.marshal.types import dates
 from proto.marshal.types import wrappers
-from proto.utils import cached_property
 
 
 class Rule(abc.ABC):
@@ -137,13 +136,13 @@ class MarshalRegistry:
         # Internal protobuf has its own special type for lists of values.
         # Return a view around it that implements MutableSequence.
         if isinstance(value, containers.repeated_composite_types):
-            return RepeatedComposite(value)
+            return RepeatedComposite(value, marshal=self)
         if isinstance(value, containers.repeated_scalar_types):
-            return Repeated(value)
+            return Repeated(value, marshal=self)
 
         # Same thing for maps of messages.
         if isinstance(value, containers.map_composite_types):
-            return MapComposite(value)
+            return MapComposite(value, marshal=self)
 
         # Convert ordinary values.
         rule = self._registry.get(proto_type, self._noop)
@@ -188,163 +187,6 @@ class MarshalRegistry:
 
         # Return the final value.
         return pb_value
-
-
-class Repeated(collections.MutableSequence):
-    """A view around a mutable sequence in protocol buffers.
-
-    This implements the full Python MutableSequence interface, but all methods
-    modify the underlying field container directly.
-    """
-    def __init__(self, sequence):
-        self._pb = sequence
-
-    def __copy__(self):
-        """Copy this object and return the copy."""
-        return type(self)(sequence=self.pb[:])
-
-    def __delitem__(self, key):
-        """Delete the given item."""
-        del self.pb[key]
-
-    def __eq__(self, other):
-        if hasattr(other, 'pb'):
-            return tuple(self.pb) == tuple(other.pb)
-        return tuple(self.pb) == tuple(other)
-
-    def __getitem__(self, key):
-        """Return the given item."""
-        return self.pb[key]
-
-    def __len__(self):
-        """Return the length of the sequence."""
-        return len(self.pb)
-
-    def __ne__(self, other):
-        return not self == other
-
-    def __repr__(self):
-        return repr(self.pb)
-
-    def __setitem__(self, key, value):
-        self.pb[key] = value
-
-    def insert(self, index: int, value):
-        """Insert ``value`` in the sequence before ``index``."""
-        self.pb.insert(index, value)
-
-    def sort(self, *, key: str = None, reverse: bool = False):
-        """Stable sort *IN PLACE*."""
-        self.pb.sort(key=key, reverse=reverse)
-
-    @property
-    def pb(self):
-        return self._pb
-
-
-class RepeatedComposite(Repeated):
-    """A view around a mutable sequence of messages in protocol buffers.
-
-    This implements the full Python MutableSequence interface, but all methods
-    modify the underlying field container directly.
-    """
-    @cached_property
-    def _pb_type(self):
-        """Return the protocol buffer type for this sequence."""
-        # There is no public-interface mechanism to determine the type
-        # of what should go in the list (and the C implementation seems to
-        # have no exposed mechanism at all).
-        #
-        # If the list has members, use the existing list members to
-        # determine the type.
-        if len(self.pb) > 0:
-            return type(self.pb[0])
-
-        # We have no members in the list.
-        # In order to get the type, we create a throw-away copy and add a
-        # blank member to it.
-        canary = copy.deepcopy(self.pb).add()
-        return type(canary)
-
-    def __getitem__(self, key):
-        return marshal.to_python(self._pb_type, self.pb[key])
-
-    def __setitem__(self, key, value):
-        pb_value = marshal.to_proto(self._pb_type, value, strict=True)
-
-        # Protocol buffers does not define a useful __setitem__, so we
-        # have to pop everything after this point off the list and reload it.
-        after = [pb_value]
-        while self.pb[key:]:
-            after.append(self.pb.pop(key))
-        self.pb.extend(after)
-
-    def insert(self, index: int, value):
-        """Insert ``value`` in the sequence before ``index``."""
-        pb_value = marshal.to_proto(self._pb_type, value, strict=True)
-
-        # Protocol buffers does not define a useful insert, so we have
-        # to pop everything after this point off the list and reload it.
-        after = [pb_value]
-        while self.pb[index:]:
-            after.append(self.pb.pop(index))
-        self.pb.extend(after)
-
-
-class MapComposite(collections.MutableMapping):
-    """A view around a mutable sequence in protocol buffers.
-
-    This implements the full Python MutableMapping interface, but all methods
-    modify the underlying field container directly.
-    """
-    @cached_property
-    def _pb_type(self):
-        """Return the protocol buffer type for this sequence."""
-        # Huzzah, another hack. Still less bad than RepeatedComposite.
-        return type(self.pb.GetEntryClass()().value)
-
-    def __init__(self, sequence):
-        self._pb = sequence
-
-    def __contains__(self, key):
-        # Protocol buffers is so permissive that querying for the existence
-        # of a key will in of itself create it.
-        #
-        # By taking a tuple of the keys and querying that, we avoid sending
-        # the lookup to protocol buffers and therefore avoid creating the key.
-        return key in tuple(self.keys())
-
-    def __getitem__(self, key):
-        # We handle raising KeyError ourselves, because otherwise protocol
-        # buffers will create the key if it does not exist.
-        if key not in self:
-            raise KeyError(key)
-        return marshal.to_python(self._pb_type, self.pb[key])
-
-    def __setitem__(self, key, value):
-        pb_value = marshal.to_proto(self._pb_type, value, strict=True)
-
-        # Directly setting a key is not allowed; however, protocol buffers
-        # is so permissive that querying for the existence of a key will in
-        # of itself create it.
-        #
-        # Therefore, we create a key that way (clearing any fields that may
-        # be set) and then merge in our values.
-        self.pb[key].Clear()
-        self.pb[key].MergeFrom(pb_value)
-
-    def __delitem__(self, key):
-        self.pb.pop(key)
-
-    def __len__(self):
-        return len(self.pb)
-
-    def __iter__(self):
-        return iter(self.pb)
-
-    @property
-    def pb(self):
-        return self._pb
 
 
 class NoopMarshal:
