@@ -419,9 +419,9 @@ def test_bigtable_add_row_add_row_range_add_row_range_from_keys():
 
     row_set = RowSet()
     row_set.add_row_key(b'row_key_5')
+    # [END bigtable_add_row_key]
 
     read_rows = table.read_rows(row_set=row_set)
-    # [END bigtable_add_row_key]
     expected_row_keys = [b'row_key_5']
     found_row_keys = [row.row_key for row in read_rows]
     assert found_row_keys == expected_row_keys
@@ -438,9 +438,9 @@ def test_bigtable_add_row_add_row_range_add_row_range_from_keys():
     row_set = RowSet()
     row_set.add_row_range(RowRange(start_key=b'row_key_3',
                                    end_key=b'row_key_7'))
+    # [END bigtable_add_row_range]
 
     read_rows = table.read_rows(row_set=row_set)
-    # [END bigtable_add_row_range]
     expected_row_keys = [b'row_key_3', b'row_key_4',
                          b'row_key_5', b'row_key_6']
     found_row_keys = [row.row_key for row in read_rows]
@@ -457,9 +457,9 @@ def test_bigtable_add_row_add_row_range_add_row_range_from_keys():
     row_set = RowSet()
     row_set.add_row_range_from_keys(start_key=b'row_key_3',
                                     end_key=b'row_key_7')
+    # [END bigtable_row_range_from_keys]
 
     read_rows = table.read_rows(row_set=row_set)
-    # [END bigtable_row_range_from_keys]
     expected_row_keys = [b'row_key_3', b'row_key_4',
                          b'row_key_5', b'row_key_6']
     found_row_keys = [row.row_key for row in read_rows]

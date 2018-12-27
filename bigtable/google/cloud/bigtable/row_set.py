@@ -55,7 +55,7 @@ class RowSet(object):
 
         For example:
 
-        .. literalinclude:: snippets.py
+        .. literalinclude:: snippets_table.py
             :start-after: [START bigtable_add_row_key]
             :end-before: [END bigtable_add_row_key]
 
@@ -69,7 +69,7 @@ class RowSet(object):
 
         For example:
 
-        .. literalinclude:: snippets.py
+        .. literalinclude:: snippets_table.py
             :start-after: [START bigtable_add_row_range]
             :end-before: [END bigtable_add_row_range]
 
@@ -85,7 +85,7 @@ class RowSet(object):
 
         For example:
 
-        .. literalinclude:: snippets.py
+        .. literalinclude:: snippets_table.py
             :start-after: [START bigtable_row_range_from_keys]
             :end-before: [END bigtable_row_range_from_keys]
 
