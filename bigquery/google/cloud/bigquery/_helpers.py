@@ -381,11 +381,11 @@ def _record_field_to_json(fields, row_value):
     """Convert a record/struct field to its JSON representation.
 
     Args:
-        field ( \
+        fields ( \
             Sequence[:class:`~google.cloud.bigquery.schema.SchemaField`], \
         ):
-            The SchemaField to use for type conversion and field name. The
-            field type must equal ``RECORD``.
+            The :class:`~google.cloud.bigquery.schema.SchemaField`s of the
+            record's subfields to use for type conversion and field names.
         row_value (Union[Tuple[Any], Mapping[str, Any]):
             A tuple or dictionary to convert to JSON-serializable values.
 
