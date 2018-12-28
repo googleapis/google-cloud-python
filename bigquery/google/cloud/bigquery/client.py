@@ -37,7 +37,7 @@ import google.cloud._helpers
 from google.cloud import exceptions
 from google.cloud.client import ClientWithProject
 
-from google.cloud.bigquery._helpers import _SCALAR_VALUE_TO_JSON_ROW
+from google.cloud.bigquery._helpers import _record_field_to_json
 from google.cloud.bigquery._helpers import _str_or_none
 from google.cloud.bigquery._http import Connection
 from google.cloud.bigquery.dataset import Dataset
@@ -51,7 +51,6 @@ from google.cloud.bigquery.table import TableListItem
 from google.cloud.bigquery.table import TableReference
 from google.cloud.bigquery.table import RowIterator
 from google.cloud.bigquery.table import _TABLE_HAS_NO_SCHEMA
-from google.cloud.bigquery.table import _row_from_mapping
 
 
 _DEFAULT_CHUNKSIZE = 1048576  # 1024 * 1024 B = 1 MB
@@ -1440,97 +1439,6 @@ class Client(ClientWithProject):
 
         return query_job
 
-    def _convert_to_safe_json_dict(self, field, row_value):
-        """Maps a field and value to a JSON-safe value.
-
-        Args:
-            field ( \
-                :class:`~google.cloud.bigquery.schema.SchemaField`, \
-            ):
-                The SchemaField to use for type conversion and field name.
-
-            row_value (Union[ \
-                Sequence[list], \
-                any, \
-            ]):
-                Row value(s) to be converted. If the value is
-                a list, converted all elements in the list and return
-                a dictionary whose value is that converted list.
-
-        Returns:
-            dict:
-                A dict of a field name to value(s), encoded for JSON.
-        """
-        if not isinstance(row_value, list):
-            converter = _SCALAR_VALUE_TO_JSON_ROW.get(field.field_type)
-            value = {}
-            if converter is not None:  # STRING doesn't need converting
-                value[field.name] = converter(row_value)
-            else:
-                value[field.name] = row_value
-            return value
-
-        values = []
-        for v in row_value:
-            converter = _SCALAR_VALUE_TO_JSON_ROW.get(field.field_type)
-            if converter is not None:  # STRING doesn't need converting
-                values.append(converter(v))
-            else:
-                values.append(v)
-        return {field.name: values}
-
-    def _handle_nested_schema(self, field, row_value):
-        """Traverses a row to map all field values to JSON-safe equivalents.
-
-        Args:
-            field ( \
-                :class:`~google.cloud.bigquery.schema.SchemaField`, \
-            ):
-                The SchemaField to use for type conversion and field name.
-
-            row_value (Union[ \
-                Sequence[list], \
-                any, \
-            ]):
-                Row data to be inserted. If the SchemaField's mode is
-                REPEATED, assume this is a list. If not, the type
-                is inferred from the SchemaField's field_type.
-
-        Returns:
-            Sequence[dict]:
-                A (potentially nested) dict of field names to value(s), encoded for JSON.
-        """
-        is_repeated = False
-        is_record = False
-        if field.mode is not None and field.mode == "REPEATED":
-            is_repeated = True
-        if field.field_type == "RECORD":
-            is_record = True
-
-        if not is_repeated and not is_record:
-            return self._convert_to_safe_json_dict(field, row_value)
-
-        # if it is repeated, but not a record, loop thru the values, and return
-        if is_repeated and not is_record:
-            return self._convert_to_safe_json_dict(field, row_value)
-
-        # if it is a record, but not repeated, just parse the subfields:
-        if is_record and not is_repeated:
-            record = {}
-            for f in field.fields:
-                d = self._handle_nested_schema(f, row_value[f.name])
-                record[f.name] = d[f.name]
-            return record
-
-        values = []
-        if is_record and is_repeated:
-            for record in row_value:
-                # remove the REPEATED, but keep the fields
-                # this will get processed as a RECORD
-                f = SchemaField(field.name, field.field_type, fields=field.fields)
-                values.append(self._handle_nested_schema(f, record))
-            return {field.name: values}
-
     def insert_rows(self, table, rows, selected_fields=None, **kwargs):
         """Insert rows into a table via the streaming API.
 
@@ -1586,18 +1494,7 @@ class Client(ClientWithProject):
         else:
             raise TypeError("table should be Table or TableReference")
 
-        json_rows = []
-
-        for index, row in enumerate(rows):
-            if isinstance(row, dict):
-                row = _row_from_mapping(row, schema)
-            json_row = {}
-
-            for field, value in zip(schema, row):
-                value = self._handle_nested_schema(field, value)
-                json_row[field.name] = value[field.name]
-
-            json_rows.append(json_row)
+        json_rows = [_record_field_to_json(schema, row) for row in rows]
 
         return self.insert_rows_json(table, json_rows, **kwargs)
 

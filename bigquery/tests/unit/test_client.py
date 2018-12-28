@@ -25,6 +25,7 @@ import mock
 import six
 from six.moves import http_client
 import pytest
+import pytz
 
 try:
     import pandas
@@ -3482,20 +3483,76 @@ class TestClient(unittest.TestCase):
         http = object()
         client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
         conn = client._connection = _make_connection({})
-        full_name = SchemaField("color", "STRING", mode="REPEATED")
-        index = SchemaField("index", "INTEGER", "REPEATED")
-        score = SchemaField("score", "FLOAT", "REPEATED")
-        struct = SchemaField("struct", "RECORD", mode="REPEATED", fields=[index, score])
-        table = Table(self.TABLE_REF, schema=[full_name, struct])
-        ROWS = [(["red", "green"], [{"index": [1, 2], "score": [3.1415, 1.414]}])]
-
-        def _row_data(row):
-            return {"color": row[0], "struct": row[1]}
+        color = SchemaField("color", "STRING", mode="REPEATED")
+        items = SchemaField("items", "INTEGER", mode="REPEATED")
+        score = SchemaField("score", "INTEGER")
+        times = SchemaField("times", "TIMESTAMP", mode="REPEATED")
+        distances = SchemaField("distances", "FLOAT", mode="REPEATED")
+        structs = SchemaField(
+            "structs", "RECORD", mode="REPEATED", fields=[score, times, distances]
+        )
+        table = Table(self.TABLE_REF, schema=[color, items, structs])
+        ROWS = [
+            (
+                ["red", "green"],
+                [1, 2],
+                [
+                    (
+                        12,
+                        [
+                            datetime.datetime(2018, 12, 1, 12, 0, 0, tzinfo=pytz.utc),
+                            datetime.datetime(2018, 12, 1, 13, 0, 0, tzinfo=pytz.utc),
+                        ],
+                        [1.25, 2.5],
+                    ),
+                    {
+                        "score": 13,
+                        "times": [
+                            datetime.datetime(2018, 12, 2, 12, 0, 0, tzinfo=pytz.utc),
+                            datetime.datetime(2018, 12, 2, 13, 0, 0, tzinfo=pytz.utc),
+                        ],
+                        "distances": [-1.25, -2.5],
+                    },
+                ],
+            ),
+            {"color": None, "items": [], "structs": [(None, [], [3.5])]},
+        ]
 
         SENT = {
             "rows": [
-                {"json": _row_data(row), "insertId": str(i)}
-                for i, row in enumerate(ROWS)
+                {
+                    "json": {
+                        "color": ["red", "green"],
+                        "items": ["1", "2"],
+                        "structs": [
+                            {
+                                "score": "12",
+                                "times": [
+                                    1543665600.0,  # 2018-12-01 12:00 UTC
+                                    1543669200.0,  # 2018-12-01 13:00 UTC
+                                ],
+                                "distances": [1.25, 2.5],
+                            },
+                            {
+                                "score": "13",
+                                "times": [
+                                    1543752000.0,  # 2018-12-02 12:00 UTC
+                                    1543755600.0,  # 2018-12-02 13:00 UTC
+                                ],
+                                "distances": [-1.25, -2.5],
+                            },
+                        ],
+                    },
+                    "insertId": "0",
+                },
+                {
+                    "json": {
+                        "color": None,
+                        "items": [],
+                        "structs": [{"score": None, "times": [], "distances": [3.5]}],
+                    },
+                    "insertId": "1",
+                },
             ]
         }
 
@@ -3531,20 +3588,38 @@ class TestClient(unittest.TestCase):
                 "Phred Phlyntstone",
                 {"area_code": "800", "local_number": "555-1212", "rank": 1},
             ),
-            (
-                "Bharney Rhubble",
-                {"area_code": "877", "local_number": "768-5309", "rank": 2},
-            ),
+            ("Bharney Rhubble", ("877", "768-5309", 2)),
             ("Wylma Phlyntstone", None),
         ]
 
-        def _row_data(row):
-            return {"full_name": row[0], "phone": row[1]}
-
         SENT = {
             "rows": [
-                {"json": _row_data(row), "insertId": str(i)}
-                for i, row in enumerate(ROWS)
+                {
+                    "json": {
+                        "full_name": "Phred Phlyntstone",
+                        "phone": {
+                            "area_code": "800",
+                            "local_number": "555-1212",
+                            "rank": "1",
+                        },
+                    },
+                    "insertId": "0",
+                },
+                {
+                    "json": {
+                        "full_name": "Bharney Rhubble",
+                        "phone": {
+                            "area_code": "877",
+                            "local_number": "768-5309",
+                            "rank": "2",
+                        },
+                    },
+                    "insertId": "1",
+                },
+                {
+                    "json": {"full_name": "Wylma Phlyntstone", "phone": None},
+                    "insertId": "2",
+                },
             ]
         }
 
