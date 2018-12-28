@@ -291,7 +291,7 @@ def make_proto(file_pb: descriptor_pb2.FileDescriptorProto,
 def make_api(*protos, naming: naming.Naming = None) -> api.API:
     return api.API(
         naming=naming or make_naming(),
-        protos={i.name: i for i in protos},
+        all_protos={i.name: i for i in protos},
     )
 
 

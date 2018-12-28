@@ -180,7 +180,7 @@ class API:
     (as ``api``).
     """
     naming: api_naming.Naming
-    protos: Mapping[str, Proto]
+    all_protos: Mapping[str, Proto]
 
     @classmethod
     def build(cls,
@@ -215,7 +215,7 @@ class API:
             ).proto
 
         # Done; return the API.
-        return cls(naming=naming, protos=protos)
+        return cls(naming=naming, all_protos=protos)
 
     @cached_property
     def enums(self) -> Mapping[str, wrappers.EnumType]:
@@ -230,6 +230,17 @@ class API:
         return collections.ChainMap({},
             *[p.messages for p in self.protos.values()],
         )
+
+    @cached_property
+    def protos(self) -> Mapping[str, Proto]:
+        """Return a map of all protos specific to this API.
+
+        This property excludes imported protos that are dependencies
+        of this API but not being directly generated.
+        """
+        return collections.OrderedDict([
+            (k, v) for k, v in self.all_protos.items() if v.file_to_generate
+        ])
 
     @cached_property
     def services(self) -> Mapping[str, wrappers.Service]:

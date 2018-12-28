@@ -68,8 +68,9 @@ def test_api_build():
 
     # Establish that the API has the data expected.
     assert isinstance(api_schema, api.API)
-    assert len(api_schema.protos) == 2
-    assert 'google.dep.ImportedMessage' in api_schema.messages
+    assert len(api_schema.all_protos) == 2
+    assert len(api_schema.protos) == 1
+    assert 'google.dep.ImportedMessage' not in api_schema.messages
     assert 'google.example.v1.Foo' in api_schema.messages
     assert 'google.example.v1.GetFooRequest' in api_schema.messages
     assert 'google.example.v1.GetFooResponse' in api_schema.messages

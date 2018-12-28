@@ -85,8 +85,6 @@ class Generator:
         # Some templates are rendered once per proto (and API may have
         # one or more protos).
         for proto in self._api.protos.values():
-            if not proto.file_to_generate:
-                continue
             output_files.update(self._render_templates(
                 self._env.loader.proto_templates,
                 additional_context={'proto': proto},
