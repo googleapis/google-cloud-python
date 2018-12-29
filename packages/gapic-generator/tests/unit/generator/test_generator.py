@@ -17,8 +17,9 @@ from unittest import mock
 
 import jinja2
 
+import pytest
+
 from google.protobuf import descriptor_pb2
-from google.protobuf.compiler import plugin_pb2
 
 from gapic.generator import generator
 from gapic.schema import api
@@ -26,193 +27,156 @@ from gapic.schema import naming
 from gapic.schema import wrappers
 
 
-def test_constructor():
-    # Create a generator.
-    g = generator.Generator(api_schema=make_api())
-    assert isinstance(g._api, api.API)
-
-    # Assert we have a Jinja environment also, with the expected filters.
-    # This is internal implementation baseball, but this is the best place
-    # to establish this and templates will depend on it.
-    assert isinstance(g._env, jinja2.Environment)
-    assert 'snake_case' in g._env.filters
-    assert 'wrap' in g._env.filters
-
-
 def test_custom_template_directory():
     # Create a generator.
-    g = generator.Generator(api_schema=make_api(), templates='/templates/')
+    g = generator.Generator(templates='/templates/')
 
     # Assert that the Jinja loader will pull from the correct location.
     assert g._env.loader.searchpath == ['/templates/']
 
 
 def test_get_response():
-    # Create a generator with mock data.
-    #
-    # We want to ensure that templates are rendered for each service,
-    # which we prove by sending two services.
-    file_pb2 = descriptor_pb2.FileDescriptorProto(
-        name='bacon.proto',
-        package='foo.bar.v1',
-        service=[descriptor_pb2.ServiceDescriptorProto(name='SpamService'),
-                 descriptor_pb2.ServiceDescriptorProto(name='EggsService')],
-    )
-    api_schema = make_api(make_proto(file_pb2))
-    g = generator.Generator(api_schema=api_schema)
-
-    # Mock all the rendering methods.
-    with mock.patch.object(g, '_render_templates') as _render_templates:
-        _render_templates.return_value = {
-            'template_file': plugin_pb2.CodeGeneratorResponse.File(
-                name='template_file',
-                content='This was a template.',
-            ),
-        }
-
-        # Okay, now run the `get_response` method.
-        response = g.get_response()
-
-        # First and foremost, we care that we got a valid response
-        # object back (albeit not so much what is in it).
-        assert isinstance(response, plugin_pb2.CodeGeneratorResponse)
-
-        # Next, determine that the general API templates and service
-        # templates were both called; the method should be called
-        # once per service, once per proto, plus one for the API as a whole.
-        assert _render_templates.call_count == sum([
-            1,  # for the API as a whole
-            len(api_schema.services),
-            len(api_schema.protos),
-        ])
-
-        # The service templates should have been called with the
-        # filename transformation and the additional `service` variable.
-        for call in _render_templates.mock_calls:
-            _, args, kwargs = call
-            if args[0] != g._env.loader.service_templates:
-                continue
-            service = kwargs['additional_context']['service']
-            assert isinstance(service, wrappers.Service)
+    g = generator.Generator()
+    with mock.patch.object(jinja2.FileSystemLoader, 'list_templates') as lt:
+        lt.return_value = ['foo/bar/baz.py.j2']
+        with mock.patch.object(jinja2.Environment, 'get_template') as gt:
+            gt.return_value = jinja2.Template('I am a template result.')
+            cgr = g.get_response(api_schema=make_api())
+    lt.assert_called_once()
+    gt.assert_called_once()
+    assert len(cgr.file) == 1
+    assert cgr.file[0].name == 'foo/bar/baz.py'
+    assert cgr.file[0].content == 'I am a template result.\n'
 
 
-def test_get_response_skipped_proto():
-    # Create a generator with mock data.
-    #
-    # We want to ensure that templates are rendered for each service,
-    # which we prove by sending two services.
-    file_pb2 = descriptor_pb2.FileDescriptorProto(
-        name='bacon.proto',
-        package='foo.bar.v1',
-    )
-    api_schema = make_api(make_proto(file_pb2, file_to_generate=False))
-    g = generator.Generator(api_schema=api_schema)
-
-    # Mock all the rendering methods.
-    with mock.patch.object(g, '_render_templates') as _render_templates:
-        _render_templates.return_value = {
-            'template_file': plugin_pb2.CodeGeneratorResponse.File(
-                name='template_file',
-                content='This was a template.',
-            ),
-        }
-
-        # Okay, now run the `get_response` method.
-        g.get_response()
-
-    # Since there are no protos and no services, only the rollup, API-wide
-    # call should have happened.
-    assert _render_templates.call_count == 1
+def test_get_response_ignores_private_files():
+    g = generator.Generator()
+    with mock.patch.object(jinja2.FileSystemLoader, 'list_templates') as lt:
+        lt.return_value = ['foo/bar/baz.py.j2', 'foo/bar/_base.py.j2']
+        with mock.patch.object(jinja2.Environment, 'get_template') as gt:
+            gt.return_value = jinja2.Template('I am a template result.')
+            cgr = g.get_response(api_schema=make_api())
+    lt.assert_called_once()
+    gt.assert_called_once()
+    assert len(cgr.file) == 1
+    assert cgr.file[0].name == 'foo/bar/baz.py'
+    assert cgr.file[0].content == 'I am a template result.\n'
 
 
-def test_render_templates():
-    g = generator.Generator(api_schema=make_api())
-
-    # Determine the templates to be rendered.
-    templates = ('foo.j2', 'bar.j2')
-    with mock.patch.object(jinja2.Environment, 'get_template') as get_template:
-        get_template.side_effect = lambda t: jinja2.Template(
-            f'Hello, I am `{t}`.',
-        )
-
-        # Render the templates.
-        files = g._render_templates(templates)
-
-    # Test that we get back the expected content for each template.
-    assert len(files) == 2
-    assert files['foo'].name == 'foo'
-    assert files['bar'].name == 'bar'
-    assert files['foo'].content == 'Hello, I am `foo.j2`.\n'
-    assert files['bar'].content == 'Hello, I am `bar.j2`.\n'
+def test_get_response_fails_invalid_file_paths():
+    g = generator.Generator()
+    with mock.patch.object(jinja2.FileSystemLoader, 'list_templates') as lt:
+        lt.return_value = ['foo/bar/$service/$proto/baz.py.j2']
+        with pytest.raises(ValueError) as ex:
+            g.get_response(api_schema=make_api())
+        assert '$proto' in str(ex) and '$service' in str(ex)
 
 
-def test_render_templates_duplicate():
-    g = generator.Generator(api_schema=make_api())
-
-    # Determine the templates to be rendered.
-    # In the case of duplication, we want the last one encountered to win.
-    templates = ('foo.j2', 'foo.j2')
-    with mock.patch.object(jinja2.Environment, 'get_template') as get_template:
-        get_template.side_effect = (
-            jinja2.Template(f'Hello, I am the first.'),
-            jinja2.Template(f'Hello, I am the second.'),
-        )
-
-        # Render the templates.
-        files = g._render_templates(templates)
-
-    # Test that we get back the expected content for each template.
-    assert len(files) == 1
-    assert files['foo'].name == 'foo'
-    assert files['foo'].content == 'Hello, I am the second.\n'
+def test_get_response_enumerates_services():
+    g = generator.Generator()
+    with mock.patch.object(jinja2.FileSystemLoader, 'list_templates') as lt:
+        lt.return_value = ['foo/$service/baz.py.j2']
+        with mock.patch.object(jinja2.Environment, 'get_template') as gt:
+            gt.return_value = jinja2.Template('Service: {{ service.name }}')
+            cgr = g.get_response(api_schema=make_api(make_proto(
+                descriptor_pb2.FileDescriptorProto(service=[
+                    descriptor_pb2.ServiceDescriptorProto(name='Spam'),
+                    descriptor_pb2.ServiceDescriptorProto(name='EggsService'),
+                ]),
+            )))
+    assert len(cgr.file) == 2
+    assert {i.name for i in cgr.file} == {
+        'foo/spam/baz.py',
+        'foo/eggs_service/baz.py',
+    }
 
 
-def test_render_templates_additional_context():
-    g = generator.Generator(api_schema=make_api())
+def test_get_response_enumerates_proto():
+    g = generator.Generator()
+    with mock.patch.object(jinja2.FileSystemLoader, 'list_templates') as lt:
+        lt.return_value = ['foo/$proto.py.j2']
+        with mock.patch.object(jinja2.Environment, 'get_template') as gt:
+            gt.return_value = jinja2.Template('Proto: {{ proto.module_name }}')
+            cgr = g.get_response(api_schema=make_api(
+                make_proto(descriptor_pb2.FileDescriptorProto(name='a.proto')),
+                make_proto(descriptor_pb2.FileDescriptorProto(name='b.proto')),
+            ))
+    assert len(cgr.file) == 2
+    assert {i.name for i in cgr.file} == {'foo/a.py', 'foo/b.py'}
 
-    # Determine the templates to be rendered.
-    templates = ('foo.j2',)
-    with mock.patch.object(jinja2.Environment, 'get_template') as get_template:
-        get_template.return_value = jinja2.Template('A {{ thing }}!')
 
-        # Render the templates.
-        files = g._render_templates(templates, additional_context={
-            'thing': 'bird',
-        })
-
-    # Test that we get back the expected content for each template.
-    assert len(files) == 1
-    assert files['foo'].name == 'foo'
-    assert files['foo'].content == 'A bird!\n'
+def test_get_response_divides_subpackages():
+    g = generator.Generator()
+    api_schema = api.API.build([
+        descriptor_pb2.FileDescriptorProto(
+            name='top.proto',
+            package='foo.v1',
+            service=[descriptor_pb2.ServiceDescriptorProto(name='Top')],
+        ),
+        descriptor_pb2.FileDescriptorProto(
+            name='a/spam/ham.proto',
+            package='foo.v1.spam',
+            service=[descriptor_pb2.ServiceDescriptorProto(name='Bacon')],
+        ),
+        descriptor_pb2.FileDescriptorProto(
+            name='a/eggs/yolk.proto',
+            package='foo.v1.eggs',
+            service=[descriptor_pb2.ServiceDescriptorProto(name='Scramble')],
+        ),
+    ], package='foo.v1')
+    with mock.patch.object(jinja2.FileSystemLoader, 'list_templates') as lt:
+        lt.return_value = [
+            'foo/$sub/types/$proto.py.j2',
+            'foo/$sub/services/$service.py.j2',
+        ]
+        with mock.patch.object(jinja2.Environment, 'get_template') as gt:
+            gt.return_value = jinja2.Template("""
+                {{- '' }}Subpackage: {{ '.'.join(api.subpackage_view) }}
+            """.strip())
+            cgr = g.get_response(api_schema=api_schema)
+    assert len(cgr.file) == 6
+    assert {i.name for i in cgr.file} == {
+        'foo/types/top.py',
+        'foo/services/top.py',
+        'foo/spam/types/ham.py',
+        'foo/spam/services/bacon.py',
+        'foo/eggs/types/yolk.py',
+        'foo/eggs/services/scramble.py',
+    }
 
 
 def test_get_filename():
-    g = generator.Generator(api_schema=make_api(
-        naming=make_naming(namespace=(), name='Spam', version='v2'),
-    ))
+    g = generator.Generator()
     template_name = '$namespace/$name_$version/foo.py.j2'
-    assert g._get_filename(template_name) == 'spam_v2/foo.py'
+    assert g._get_filename(template_name,
+        api_schema=make_api(
+            naming=make_naming(namespace=(), name='Spam', version='v2'),
+        )
+    ) == 'spam_v2/foo.py'
 
 
 def test_get_filename_with_namespace():
-    g = generator.Generator(api_schema=make_api(
-        naming=make_naming(
-            name='Spam',
-            namespace=('Ham', 'Bacon'),
-            version='v2',
-        ),
-    ))
+    g = generator.Generator()
     template_name = '$namespace/$name_$version/foo.py.j2'
-    assert g._get_filename(template_name) == 'ham/bacon/spam_v2/foo.py'
+    assert g._get_filename(template_name,
+        api_schema=make_api(
+            naming=make_naming(
+                name='Spam',
+                namespace=('Ham', 'Bacon'),
+                version='v2',
+            ),
+        ),
+    ) == 'ham/bacon/spam_v2/foo.py'
 
 
 def test_get_filename_with_service():
-    g = generator.Generator(api_schema=make_api(
-        naming=make_naming(namespace=(), name='Spam', version='v2'),
-    ))
+    g = generator.Generator()
     template_name = '$name/$service/foo.py.j2'
     assert g._get_filename(
         template_name,
+        api_schema=make_api(
+            naming=make_naming(namespace=(), name='Spam', version='v2'),
+        ),
         context={
             'service': wrappers.Service(
                 methods=[],
@@ -232,9 +196,10 @@ def test_get_filename_with_proto():
         naming=make_naming(namespace=(), name='Spam', version='v2'),
     )
 
-    g = generator.Generator(api_schema=api)
+    g = generator.Generator()
     assert g._get_filename(
         '$name/types/$proto.py.j2',
+        api_schema=api,
         context={'proto': api.protos['bacon.proto']},
     ) == 'spam/types/bacon.py'
 
@@ -253,11 +218,13 @@ def test_get_filename_with_proto_and_sub():
     api = make_api(
         make_proto(file_pb2, naming=naming),
         naming=naming,
+        subpackage_view=('baz',),
     )
 
-    g = generator.Generator(api_schema=api)
+    g = generator.Generator()
     assert g._get_filename(
         '$name/types/$sub/$proto.py.j2',
+        api_schema=api,
         context={'proto': api.protos['bacon.proto']},
     ) == 'bar/types/baz/bacon.py'
 
@@ -274,10 +241,11 @@ def make_proto(file_pb: descriptor_pb2.FileDescriptorProto,
     ).proto
 
 
-def make_api(*protos, naming: naming.Naming = None) -> api.API:
+def make_api(*protos, naming: naming.Naming = None, **kwargs) -> api.API:
     return api.API(
         naming=naming or make_naming(),
         all_protos={i.name: i for i in protos},
+        **kwargs
     )
 
 

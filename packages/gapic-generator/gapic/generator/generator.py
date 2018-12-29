@@ -15,7 +15,7 @@
 import collections
 import os
 import re
-from typing import Any, Iterable, Mapping, Sequence, Tuple
+from typing import Mapping, Sequence
 
 import jinja2
 
@@ -23,29 +23,22 @@ from google.protobuf.compiler.plugin_pb2 import CodeGeneratorResponse
 
 from gapic import utils
 from gapic.generator import formatter
-from gapic.generator import loader
 from gapic.schema import api
 
 
 class Generator:
     """A protoc code generator for client libraries.
 
-    This class receives a :class:`~.api.API`, a representation of the API
-    schema, and provides an interface for getting a
-    :class:`~.plugin_pb2.CodeGeneratorResponse` (which it does through
-    rendering templates).
+    This class provides an interface for getting a
+    :class:`~.plugin_pb2.CodeGeneratorResponse` for an :class:`~api.API`
+    schema object (which it does through rendering templates).
 
     Args:
-        api_schema (~.API): An API schema object, which is sent to every
-            template as the ``api`` variable.
         templates (str): Optional. Path to the templates to be
             rendered. If this is not provided, the templates included with
             this application are used.
     """
-    def __init__(self, api_schema: api.API, *,
-                 templates: str = None) -> None:
-        self._api = api_schema
-
+    def __init__(self, templates: str = None) -> None:
         # If explicit templates were not provided, use our default.
         if not templates:
             templates = os.path.join(
@@ -55,7 +48,7 @@ class Generator:
 
         # Create the jinja environment with which to render templates.
         self._env = jinja2.Environment(
-            loader=loader.TemplateLoader(searchpath=templates),
+            loader=jinja2.FileSystemLoader(searchpath=templates),
             undefined=jinja2.StrictUndefined,
         )
 
@@ -64,11 +57,14 @@ class Generator:
         self._env.filters['snake_case'] = utils.to_snake_case
         self._env.filters['wrap'] = utils.wrap
 
-    def get_response(self) -> CodeGeneratorResponse:
+    def get_response(self, api_schema: api.API) -> CodeGeneratorResponse:
         """Return a :class:`~.CodeGeneratorResponse` for this library.
 
         This is a complete response to be written to (usually) stdout, and
         thus read by ``protoc``.
+
+        Args:
+            api_schema (~api.API): An API schema object.
 
         Returns:
             ~.CodeGeneratorResponse: A response describing appropriate
@@ -76,76 +72,114 @@ class Generator:
         """
         output_files = collections.OrderedDict()
 
-        # Some templates are rendered once per API client library.
-        # These are generally boilerplate packaging and metadata files.
-        output_files.update(
-            self._render_templates(self._env.loader.api_templates),
-        )
+        # Iterate over each template and add the appropriate output files
+        # based on that template.
+        for template_name in self._env.loader.list_templates():
+            # Sanity check: Skip "private" templates.
+            filename = template_name.split('/')[-1]
+            if filename.startswith('_') and filename != '__init__.py.j2':
+                continue
 
-        # Some templates are rendered once per proto (and API may have
-        # one or more protos).
-        for proto in self._api.protos.values():
-            output_files.update(self._render_templates(
-                self._env.loader.proto_templates,
-                additional_context={'proto': proto},
-            ))
-
-        # Some templates are rendered once per service (an API may have
-        # one or more services).
-        for service in self._api.services.values():
-            output_files.update(self._render_templates(
-                self._env.loader.service_templates,
-                additional_context={'service': service},
+            # Append to the output files dictionary.
+            output_files.update(self._render_template(template_name,
+                api_schema=api_schema,
             ))
 
         # Return the CodeGeneratorResponse output.
         return CodeGeneratorResponse(file=[i for i in output_files.values()])
 
-    def _render_templates(
+    def _render_template(
             self,
-            templates: Iterable[str], *,
-            additional_context: Mapping[str, Any] = None,
+            template_name: str, *,
+            api_schema: api.API,
             ) -> Sequence[CodeGeneratorResponse.File]:
         """Render the requested templates.
 
         Args:
-            templates (Iterable[str]): The set of templates to be rendered.
-                It is expected that these come from the methods on
-                :class:`~.loader.TemplateLoader`, and they should be
-                able to be set to the :meth:`jinja2.Environment.get_template`
+            template_name (str): The template to be rendered.
+                It is expected that these come from
+                :class:`jinja2.FileSystemLoader`, and they should be
+                able to be sent to the :meth:`jinja2.Environment.get_template`
                 method.
-            additional_context (Mapping[str, Any]): Additional variables
-                to be sent to the templates. The ``api`` variable
-                is always available.
+            api_schema (~.api.API): An API schema object.
 
         Returns:
             Sequence[~.CodeGeneratorResponse.File]: A sequence of File
                 objects for inclusion in the final response.
         """
         answer = collections.OrderedDict()
-        context = additional_context or {}
+        skip_subpackages = False
 
-        # Iterate over the provided templates and generate a File object
-        # for each.
-        for template_name in templates:
-            # Generate the File object.
-            fn = self._get_filename(template_name, context=context)
-            answer[fn] = CodeGeneratorResponse.File(
-                content=formatter.fix_whitespace(
-                    self._env.get_template(template_name).render(
-                        api=self._api,
-                        **context
-                    ),
-                ),
-                name=fn,
-            )
+        # Sanity check: Rendering per service and per proto would be a
+        # combinatorial explosion and is almost certainly not what anyone
+        # ever wants. Error colorfully on it.
+        if '$service' in template_name and '$proto' in template_name:
+            raise ValueError('Template files may live under a $proto or '
+                             '$service directory, but not both.')
 
-        # Done; return the File objects based on these templates.
+        # If this template should be rendered for subpackages, process it
+        # for all subpackages and set the strict flag (restricting what
+        # services and protos we pull from for the remainder of the method).
+        if '$sub' in template_name:
+            for subpackage in api_schema.subpackages.values():
+                answer.update(self._render_template(template_name,
+                    api_schema=subpackage,
+                ))
+            skip_subpackages = True
+
+        # If this template should be rendered once per proto, iterate over
+        # all protos to be rendered
+        if '$proto' in template_name:
+            for proto in api_schema.protos.values():
+                if (skip_subpackages and proto.meta.address.subpackage !=
+                        api_schema.subpackage_view):
+                    continue
+                answer.update(self._get_file(template_name,
+                    api_schema=api_schema,
+                    proto=proto
+                ))
+            return answer
+
+        # If this template should be rendered once per service, iterate
+        # over all services to be rendered.
+        if '$service' in template_name:
+            for service in api_schema.services.values():
+                if (skip_subpackages and service.meta.address.subpackage !=
+                        api_schema.subpackage_view):
+                    continue
+                answer.update(self._get_file(template_name,
+                    api_schema=api_schema,
+                    service=service,
+                ))
+            return answer
+
+        # This file is not iterating over anything else; return back
+        # the one applicable file.
+        answer.update(self._get_file(template_name, api_schema=api_schema))
         return answer
+
+    def _get_file(self, template_name: str, *,
+            api_schema=api.API,
+            **context: Mapping):
+        """Render a template to a protobuf plugin File object."""
+        fn = self._get_filename(template_name,
+            api_schema=api_schema,
+            context=context,
+        )
+        return {fn: CodeGeneratorResponse.File(
+            content=formatter.fix_whitespace(
+                self._env.get_template(template_name).render(
+                    api=api_schema,
+                    **context
+                ),
+            ),
+            name=fn,
+        )}
 
     def _get_filename(
             self,
             template_name: str, *,
+            api_schema: api.API,
             context: dict = None,
             ) -> str:
         """Return the appropriate output filename for this template.
@@ -162,6 +196,7 @@ class Generator:
         Args:
             template_name (str): The filename of the template, from the
                 filesystem, relative to ``templates/``.
+            api_schema (~.api.API): An API schema object.
             context (Mapping): Additional context being sent to the template.
 
         Returns:
@@ -172,14 +207,16 @@ class Generator:
         # Replace the $namespace variable.
         filename = filename.replace(
             '$namespace',
-            os.path.sep.join([i.lower() for i in self._api.naming.namespace]),
+            os.path.sep.join([i.lower() for i in api_schema.naming.namespace]),
         ).lstrip(os.path.sep)
 
-        # Replace the $name and $version variables.
+        # Replace the $name, $version, and $sub variables.
         filename = filename.replace('$name_$version',
-                                    self._api.naming.versioned_module_name)
-        filename = filename.replace('$version', self._api.naming.version)
-        filename = filename.replace('$name', self._api.naming.module_name)
+                                    api_schema.naming.versioned_module_name)
+        filename = filename.replace('$version', api_schema.naming.version)
+        filename = filename.replace('$name', api_schema.naming.module_name)
+        filename = filename.replace('$sub',
+                                    '/'.join(api_schema.subpackage_view))
 
         # Replace the $service variable if applicable.
         if context and 'service' in context:
@@ -194,9 +231,6 @@ class Generator:
             filename = filename.replace(
                 '$proto',
                 context['proto'].module_name,
-            ).replace(
-                '$sub',
-                '/'.join(context['proto'].meta.address.subpackage),
             )
 
         # Paths may have empty path segments if components are empty
