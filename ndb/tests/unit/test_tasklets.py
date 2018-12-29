@@ -17,7 +17,9 @@ from unittest import mock
 import grpc
 import pytest
 
+from google.cloud.ndb import _eventloop
 from google.cloud.ndb import tasklets
+
 import tests.unit.utils
 
 
@@ -251,15 +253,35 @@ class TestTaskletFuture:
 
     @staticmethod
     @pytest.mark.usefixtures("with_runstate_context")
-    def test__advance_tasklet_yields_rpc():
+    @mock.patch("google.cloud.ndb.tasklets._eventloop")
+    def test__advance_tasklet_yields_rpc(_eventloop):
         def generator_function(dependent):
             yield dependent
 
         dependent = mock.Mock(spec=grpc.Future)
         generator = generator_function(dependent)
         future = tasklets.TaskletFuture(generator)
-        with pytest.raises(NotImplementedError):
-            future._advance_tasklet()
+        future._advance_tasklet()
+        _eventloop.queue_rpc.assert_called_once_with(future, dependent)
+
+    @staticmethod
+    @pytest.mark.usefixtures("with_runstate_context")
+    def test__advance_tasklet_yields_rpc_integration():
+        def generator_function(dependent):
+            value = yield dependent
+            return value + 3
+
+        dependent = mock.Mock(spec=grpc.Future)
+        dependent.exception.return_value = None
+        dependent.result.return_value = 8
+        generator = generator_function(dependent)
+        future = tasklets.TaskletFuture(generator)
+        future._advance_tasklet()
+
+        callback = dependent.add_done_callback.call_args[0][0]
+        callback(dependent)
+        _eventloop.run()
+        assert future.result() == 11
 
     @staticmethod
     @pytest.mark.usefixtures("with_runstate_context")

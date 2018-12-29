@@ -15,6 +15,7 @@
 import collections
 import unittest.mock
 
+import grpc
 import pytest
 
 import tests.unit.utils
@@ -146,8 +147,16 @@ class TestEventLoop:
 
     def test_queue_rpc(self):
         loop = self._make_one()
-        with pytest.raises(NotImplementedError):
-            loop.queue_rpc("rpc")
+        future = unittest.mock.Mock(spec=())
+        rpc = unittest.mock.Mock(spec=grpc.Future)
+        loop.queue_rpc(future, rpc)
+        assert list(loop.rpcs.values()) == [future]
+
+        callback = rpc.add_done_callback.call_args[0][0]
+        callback(rpc)
+        rpc_id, rpc_result = loop.rpc_results.get()
+        assert rpc_result is rpc
+        assert loop.rpcs[rpc_id] is future
 
     def test_add_idle(self):
         loop = self._make_one()
@@ -246,11 +255,35 @@ class TestEventLoop:
         assert len(loop.queue) == 1
         assert loop.inactive == 0
 
-    def test_run0_rpc(self):
+    def test_run0_rpc_success(self):
+        rpc = unittest.mock.Mock(spec=grpc.Future)
+        rpc.exception.return_value = None
+        rpc.result.return_value = 24
+        future = unittest.mock.Mock(spec=("_advance_tasklet",))
+
         loop = self._make_one()
-        loop.rpcs["foo"] = "bar"
-        with pytest.raises(NotImplementedError):
-            loop.run0()
+        loop.rpcs["foo"] = future
+        loop.rpc_results.put(("foo", rpc))
+
+        loop.run0()
+        assert len(loop.rpcs) == 0
+        assert loop.rpc_results.empty()
+        future._advance_tasklet.assert_called_once_with(24)
+
+    def test_run0_rpc_exception(self):
+        rpc = unittest.mock.Mock(spec=grpc.Future)
+        rpc.exception.return_value = error = Exception("Spurious error.")
+        rpc.result.return_value = 24
+        future = unittest.mock.Mock(spec=("_advance_tasklet",))
+
+        loop = self._make_one()
+        loop.rpcs["foo"] = future
+        loop.rpc_results.put(("foo", rpc))
+
+        loop.run0()
+        assert len(loop.rpcs) == 0
+        assert loop.rpc_results.empty()
+        future._advance_tasklet.assert_called_once_with(error=error)
 
     def test_run1_nothing_to_do(self):
         loop = self._make_one()
@@ -326,9 +359,14 @@ def test_queue_call(EventLoop):
         loop.queue_call.assert_called_once_with(42, "foo", "bar", baz="qux")
 
 
-def test_queue_rpc():
-    with pytest.raises(NotImplementedError):
-        _eventloop.queue_rpc()
+@unittest.mock.patch("google.cloud.ndb._eventloop.EventLoop")
+def test_queue_rpc(EventLoop):
+    EventLoop.return_value = loop = unittest.mock.Mock(
+        spec=("run", "queue_rpc")
+    )
+    with _runstate.state_context(None):
+        _eventloop.queue_rpc("foo", "bar")
+        loop.queue_rpc.assert_called_once_with("foo", "bar")
 
 
 @unittest.mock.patch("google.cloud.ndb._eventloop.EventLoop")
