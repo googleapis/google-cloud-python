@@ -122,6 +122,12 @@ The primary differences come from:
 - `Model.__repr__` will use `_key` to describe the entity's key when there
   is also a user-defined property named `key`. For an example, see the
   class docstring for `Model`.
+- `Future.set_exception` no longer takes `tb` argument. Python 3 does a good
+  job of remembering the original traceback for an exception and there is no
+  longer any value added by manually keeping track of the traceback ourselves.
+  This method shouldn't generally be called by user code, anyway.
+- `Future.state` is omitted as it is redundant. Call `Future.done()` or
+  `Future.running()` to get the state of a future.
 
 ## Bare Metal
 
