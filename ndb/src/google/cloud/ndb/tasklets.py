@@ -18,13 +18,14 @@ Tasklets are a way to write concurrently running functions without
 threads.
 """
 
+import grpc
+
 from google.cloud.ndb import _eventloop
 
 __all__ = [
     "add_flow_exception",
     "Future",
     "get_context",
-    "get_return_value",
     "make_context",
     "make_default_context",
     "MultiFuture",
@@ -36,6 +37,7 @@ __all__ = [
     "sleep",
     "synctasklet",
     "tasklet",
+    "TaskletFuture",
     "toplevel",
 ]
 
@@ -104,10 +106,7 @@ class Future:
             raise RuntimeError("Cannot set result on future that is done.")
 
         self._result = result
-        self._done = True
-
-        for callback in self._callbacks:
-            callback(self)
+        self._finish()
 
     def set_exception(self, exception):
         """Set an exception for this future.
@@ -126,7 +125,17 @@ class Future:
             raise RuntimeError("Cannot set exception on future that is done.")
 
         self._exception = exception
+        self._finish()
+
+    def _finish(self):
+        """Wrap up future upon completion.
+
+        Sets `_done` to True and calls any registered callbacks.
+        """
         self._done = True
+
+        for callback in self._callbacks:
+            callback(self)
 
     def result(self):
         """Return the result of this future's task.
@@ -137,9 +146,7 @@ class Future:
         Returns:
             Any: The result
         """
-        while not self._done:
-            _eventloop.run1()
-
+        self.check_success()
         return self._result
 
     get_result = result  # Legacy NDB interface
@@ -196,15 +203,91 @@ class Future:
         return False
 
 
+class TaskletFuture(Future):
+    """A future which waits on a tasklet.
+
+    A future of this type wraps a generator derived from calling a tasklet. A
+    tasklet's generator is expected to yield future objects, either an instance
+    of :class:`ndb.Future` or :class:`grpc.Future'. The result of each yielded
+    future is then sent back into the generator until the generator has
+    completed and either returned a value or raised an exception.
+
+    Args:
+        Generator[Union[ndb.Future, grpc.Future], Any, Any]: The generator.
+    """
+
+    def __init__(self, generator):
+        super(TaskletFuture, self).__init__()
+        self.generator = generator
+
+    def _advance_tasklet(self, send_value=None, error=None):
+        """Advance a tasklet one step by sending in a value or error."""
+        try:
+            # Send the next value or exception into the generator
+            if error:
+                self.generator.throw(type(error), error)
+
+            # send_value will be None if this is the first time
+            yielded = self.generator.send(send_value)
+
+        except StopIteration as stop:
+            # Generator has signalled exit, get the return value. This tasklet
+            # has finished.
+            self.set_result(_get_return_value(stop))
+            return
+
+        except Exception as error:
+            # An error has occurred in the tasklet. This tasklet has finished.
+            self.set_exception(error)
+            return
+
+        # This tasklet has yielded a value. We expect this to be a future
+        # object (either NDB or gRPC) or a sequence of futures, in the case of
+        # parallel yield.
+
+        def done_callback(yielded):
+            # To be called when a dependent future has completed.
+            # Advance the tasklet with the yielded value or error.
+            error = yielded.exception()
+            if error:
+                self._advance_tasklet(error=error)
+            else:
+                self._advance_tasklet(yielded.result())
+
+        if isinstance(yielded, Future):
+            yielded.add_done_callback(done_callback)
+
+        elif isinstance(yielded, grpc.Future):
+            raise NotImplementedError()
+
+        elif isinstance(yielded, (list, tuple)):
+            raise NotImplementedError()
+
+        else:
+            raise RuntimeError(
+                "A tasklet yielded an illegal value: {!r}".format(yielded)
+            )
+
+
+def _get_return_value(stop):
+    """Inspect StopIteration instance for return value of tasklet.
+
+    Args:
+        stop (StopIteration): The StopIteration exception for the finished
+            tasklet.
+    """
+    if len(stop.args) == 1:
+        return stop.args[0]
+
+    elif stop.args:
+        return stop.args
+
+
 def add_flow_exception(*args, **kwargs):
     raise NotImplementedError
 
 
 def get_context(*args, **kwargs):
-    raise NotImplementedError
-
-
-def get_return_value(*args, **kwargs):
     raise NotImplementedError
 
 
