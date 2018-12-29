@@ -128,27 +128,27 @@ class Generator:
         # Iterate over the provided templates and generate a File object
         # for each.
         for template_name in templates:
-            for fn in self._get_filenames(template_name, context=context):
-                # Generate the File object.
-                answer[fn] = CodeGeneratorResponse.File(
-                    content=formatter.fix_whitespace(
-                        self._env.get_template(template_name).render(
-                            api=self._api,
-                            **context
-                        ),
+            # Generate the File object.
+            fn = self._get_filename(template_name, context=context)
+            answer[fn] = CodeGeneratorResponse.File(
+                content=formatter.fix_whitespace(
+                    self._env.get_template(template_name).render(
+                        api=self._api,
+                        **context
                     ),
-                    name=fn,
-                )
+                ),
+                name=fn,
+            )
 
         # Done; return the File objects based on these templates.
         return answer
 
-    def _get_filenames(
+    def _get_filename(
             self,
             template_name: str, *,
             context: dict = None,
-            ) -> Tuple[str]:
-        """Return the appropriate output filenames for this template.
+            ) -> str:
+        """Return the appropriate output filename for this template.
 
         This entails running the template name through a series of
         replacements to replace the "filename variables" (``$name``,
@@ -165,21 +165,9 @@ class Generator:
             context (Mapping): Additional context being sent to the template.
 
         Returns:
-            Tuple[str]: The appropriate output filenames.
+            str: The appropriate output filename.
         """
         filename = template_name[:-len('.j2')]
-
-        # Special case: If the filename is `$namespace/__init__.py`, we
-        # need this exact file to be part of every individual directory
-        # in the namespace tree. Handle this special case.
-        #
-        # For more information, see:
-        # https://packaging.python.org/guides/packaging-namespace-packages/
-        if filename == os.path.join('$namespace', '__init__.py'):
-            return tuple([
-                os.path.sep.join(i.split('.') + ['__init__.py'])
-                for i in self._api.naming.namespace_packages
-            ])
 
         # Replace the $namespace variable.
         filename = filename.replace(
@@ -216,7 +204,7 @@ class Generator:
         filename = re.sub(r'/+', '/', filename)
 
         # Done, return the filename.
-        return (filename,)
+        return filename
 
 
 __all__ = (

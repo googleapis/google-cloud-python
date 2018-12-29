@@ -186,15 +186,15 @@ def test_render_templates_additional_context():
     assert files['foo'].content == 'A bird!\n'
 
 
-def test_get_filenames():
+def test_get_filename():
     g = generator.Generator(api_schema=make_api(
         naming=make_naming(namespace=(), name='Spam', version='v2'),
     ))
     template_name = '$namespace/$name_$version/foo.py.j2'
-    assert g._get_filenames(template_name) == ('spam_v2/foo.py',)
+    assert g._get_filename(template_name) == 'spam_v2/foo.py'
 
 
-def test_get_filenames_with_namespace():
+def test_get_filename_with_namespace():
     g = generator.Generator(api_schema=make_api(
         naming=make_naming(
             name='Spam',
@@ -203,15 +203,15 @@ def test_get_filenames_with_namespace():
         ),
     ))
     template_name = '$namespace/$name_$version/foo.py.j2'
-    assert g._get_filenames(template_name) == ('ham/bacon/spam_v2/foo.py',)
+    assert g._get_filename(template_name) == 'ham/bacon/spam_v2/foo.py'
 
 
-def test_get_filenames_with_service():
+def test_get_filename_with_service():
     g = generator.Generator(api_schema=make_api(
         naming=make_naming(namespace=(), name='Spam', version='v2'),
     ))
     template_name = '$name/$service/foo.py.j2'
-    assert g._get_filenames(
+    assert g._get_filename(
         template_name,
         context={
             'service': wrappers.Service(
@@ -219,10 +219,10 @@ def test_get_filenames_with_service():
                 service_pb=descriptor_pb2.ServiceDescriptorProto(name='Eggs'),
             ),
         }
-    ) == ('spam/eggs/foo.py',)
+    ) == 'spam/eggs/foo.py'
 
 
-def test_get_filenames_with_proto():
+def test_get_filename_with_proto():
     file_pb2 = descriptor_pb2.FileDescriptorProto(
         name='bacon.proto',
         package='foo.bar.v1',
@@ -233,13 +233,13 @@ def test_get_filenames_with_proto():
     )
 
     g = generator.Generator(api_schema=api)
-    assert g._get_filenames(
+    assert g._get_filename(
         '$name/types/$proto.py.j2',
         context={'proto': api.protos['bacon.proto']},
-    ) == ('spam/types/bacon.py',)
+    ) == 'spam/types/bacon.py'
 
 
-def test_get_filenames_with_proto_and_sub():
+def test_get_filename_with_proto_and_sub():
     file_pb2 = descriptor_pb2.FileDescriptorProto(
         name='bacon.proto',
         package='foo.bar.v2.baz',
@@ -256,24 +256,10 @@ def test_get_filenames_with_proto_and_sub():
     )
 
     g = generator.Generator(api_schema=api)
-    assert g._get_filenames(
+    assert g._get_filename(
         '$name/types/$sub/$proto.py.j2',
         context={'proto': api.protos['bacon.proto']},
-    ) == ('bar/types/baz/bacon.py',)
-
-
-def test_get_filenames_with_namespace_init():
-    g = generator.Generator(api_schema=make_api(naming=make_naming(
-        namespace=('Foo', 'Bar', 'Baz'),
-        name='Spam',
-        version='v2',
-    )))
-    template_name = '$namespace/__init__.py.j2'
-    assert g._get_filenames(template_name) == (
-        'foo/__init__.py',
-        'foo/bar/__init__.py',
-        'foo/bar/baz/__init__.py',
-    )
+    ) == 'bar/types/baz/bacon.py'
 
 
 def make_proto(file_pb: descriptor_pb2.FileDescriptorProto,
