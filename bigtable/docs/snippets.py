@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-from pickle import INST
 
 # Copyright 2018, Google LLC
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -40,12 +39,12 @@ from google.cloud.bigtable import enums
 from google.cloud.bigtable import column_family
 
 
-INSTANCE_ID = "snippet-" + unique_resource_id("-")
-CLUSTER_ID = "clus-1-" + unique_resource_id("-")
+INSTANCE_ID = "snippet" + unique_resource_id("-")
+CLUSTER_ID = "clus-1" + unique_resource_id("-")
 LOCATION_ID = "us-central1-f"
 ALT_LOCATION_ID = "us-central1-a"
-TABLE_ID = "tabl-1-" + unique_resource_id('-')
-COLUMN_FAMILY_ID = "col_fam_id-" + unique_resource_id('-')
+TABLE_ID = "tabl-1" + unique_resource_id('-')
+COLUMN_FAMILY_ID = "col_fam_id" + unique_resource_id('-')
 PRODUCTION = enums.Instance.Type.PRODUCTION
 SERVER_NODES = 3
 STORAGE_TYPE = enums.StorageType.SSD
@@ -94,7 +93,7 @@ def teardown_module():
     Config.INSTANCE.delete()
 
 
-def s___test_bigtable_create_instance():
+def test_bigtable_create_instance():
     # [START bigtable_create_prod_instance]
     from google.cloud.bigtable import Client
     from google.cloud.bigtable import enums
@@ -123,7 +122,7 @@ def s___test_bigtable_create_instance():
     instance.delete()
 
 
-def s___test_bigtable_create_additional_cluster():
+def test_bigtable_create_additional_cluster():
     # [START bigtable_create_cluster]
     from google.cloud.bigtable import Client
     from google.cloud.bigtable import enums
@@ -156,7 +155,7 @@ def s___test_bigtable_create_additional_cluster():
     cluster.delete()
 
 
-def s___test_bigtable_create_app_profile():
+def test_bigtable_create_app_profile():
     # [START bigtable_create_app_profile]
     from google.cloud.bigtable import Client
 
@@ -181,7 +180,7 @@ def s___test_bigtable_create_app_profile():
     app_profile.delete(ignore_warnings=True)
 
 
-def s___test_bigtable_list_instances():
+def test_bigtable_list_instances():
     # [START bigtable_list_instances]
     from google.cloud.bigtable import Client
 
@@ -191,7 +190,7 @@ def s___test_bigtable_list_instances():
     assert len(instances_list) > 0
 
 
-def s___test_bigtable_list_clusters_on_instance():
+def test_bigtable_list_clusters_on_instance():
     # [START bigtable_list_clusters_on_instance]
     from google.cloud.bigtable import Client
 
@@ -202,7 +201,7 @@ def s___test_bigtable_list_clusters_on_instance():
     assert len(clusters_list) > 0
 
 
-def s___test_bigtable_list_clusters_in_project():
+def test_bigtable_list_clusters_in_project():
     # [START bigtable_list_clusters_in_project]
     from google.cloud.bigtable import Client
 
@@ -212,7 +211,7 @@ def s___test_bigtable_list_clusters_in_project():
     assert len(clusters_list) > 0
 
 
-def s___test_bigtable_list_app_profiles():
+def test_bigtable_list_app_profiles():
     # [START bigtable_list_app_profiles]
     from google.cloud.bigtable import Client
 
@@ -232,7 +231,7 @@ def s___test_bigtable_list_app_profiles():
     assert len(app_profiles_list) > 0
 
 
-def s___test_bigtable_instance_exists():
+def test_bigtable_instance_exists():
     # [START bigtable_check_instance_exists]
     from google.cloud.bigtable import Client
 
@@ -243,7 +242,7 @@ def s___test_bigtable_instance_exists():
     assert instance_exists
 
 
-def s___test_bigtable_cluster_exists():
+def test_bigtable_cluster_exists():
     # [START bigtable_check_cluster_exists]
     from google.cloud.bigtable import Client
 
@@ -255,7 +254,7 @@ def s___test_bigtable_cluster_exists():
     assert cluster_exists
 
 
-def s___test_bigtable_reload_instance():
+def test_bigtable_reload_instance():
     # [START bigtable_reload_instance]
     from google.cloud.bigtable import Client
 
@@ -266,7 +265,7 @@ def s___test_bigtable_reload_instance():
     assert instance.type_ == PRODUCTION.value
 
 
-def s___test_bigtable_reload_cluster():
+def test_bigtable_reload_cluster():
     # [START bigtable_reload_cluster]
     from google.cloud.bigtable import Client
 
@@ -278,7 +277,7 @@ def s___test_bigtable_reload_cluster():
     assert cluster.serve_nodes == SERVER_NODES
 
 
-def s___test_bigtable_update_instance():
+def test_bigtable_update_instance():
     # [START bigtable_update_instance]
     from google.cloud.bigtable import Client
 
@@ -291,7 +290,7 @@ def s___test_bigtable_update_instance():
     assert instance.display_name == display_name
 
 
-def s___test_bigtable_update_cluster():
+def test_bigtable_update_cluster():
     # [START bigtable_update_cluster]
     from google.cloud.bigtable import Client
 
@@ -304,7 +303,7 @@ def s___test_bigtable_update_cluster():
     assert cluster.serve_nodes == 4
 
 
-def s___test_bigtable_create_table():
+def test_bigtable_create_table():
     # [START bigtable_create_table]
     from google.cloud.bigtable import Client
     from google.cloud.bigtable import column_family
@@ -319,7 +318,7 @@ def s___test_bigtable_create_table():
     assert table.exists()
 
 
-def s___test_bigtable_list_tables():
+def test_bigtable_list_tables():
     # [START bigtable_list_tables]
     from google.cloud.bigtable import Client
 
@@ -330,7 +329,7 @@ def s___test_bigtable_list_tables():
     assert len(tables_list) > 0
 
 
-def s___test_bigtable_delete_cluster():
+def test_bigtable_delete_cluster():
     # [START bigtable_delete_cluster]
     from google.cloud.bigtable import Client
 
@@ -356,7 +355,7 @@ def s___test_bigtable_delete_cluster():
     assert not cluster_to_delete.exists()
 
 
-def s___test_bigtable_delete_instance():
+def test_bigtable_delete_instance():
     # [START bigtable_delete_instance]
     from google.cloud.bigtable import Client
 
@@ -387,7 +386,7 @@ def s___test_bigtable_delete_instance():
     assert not instance_to_delete.exists()
 
 
-def s___test_bigtable_test_iam_permissions():
+def test_bigtable_test_iam_permissions():
     # [START bigtable_test_iam_permissions]
     from google.cloud.bigtable import Client
 
@@ -401,7 +400,7 @@ def s___test_bigtable_test_iam_permissions():
     assert permissions_allowed == permissions
 
 
-def s___test_bigtable_set_iam_policy_then_get_iam_policy():
+def test_bigtable_set_iam_policy_then_get_iam_policy():
     # [START bigtable_set_iam_policy]
     from google.cloud.bigtable import Client
     from google.cloud.bigtable.policy import Policy
@@ -442,56 +441,99 @@ def test_bigtable_instance_name():
     client = Client(admin=True)
     instance = client.instance(INSTANCE_ID)
     instance_name = instance.name
-    f = open("san.txt","w")
-    f.write(instance_name)
     # [END bigtable_instance_name]
 
-    #     _instance_name_re = re.compile(r'^projects/(?P<project>[^/]+)/'
-    #                                    r'instances/(?P<instance_id>'
-    #                                    r'[_a-zA-Z0-9][-_.a-zA-Z0-9]*)$')
-    _instance_name_re = re.compile(r"^projects/(?P<project>[^/]+)/" 
-                                   r"instances/(?P<instance_id>[a-z][-a-z0-9]*)$")
+    _instance_name_re = re.compile(r'^projects/(?P<project>[^/]+)/'
+                                   r'instances/(?P<instance_id>'
+                                   r'[a-z][-a-z0-9]*)$')
     assert _instance_name_re.match(instance_name)
+
+
+def test_bigtable_cluster_name():
+    import re
+    # [START bigtable_cluster_name]
+    from google.cloud.bigtable import Client
+
+    client = Client(admin=True)
+    instance = client.instance(INSTANCE_ID)
+    cluster = instance.cluster(CLUSTER_ID)
+    cluster_name = cluster.name
+    # [END bigtable_cluster_name]
+
+    _cluster_name_re = re.compile(r'^projects/(?P<project>[^/]+)/'
+                                  r'instances/(?P<instance>[^/]+)/'
+                                  r'clusters/(?P<cluster_id>'
+                                  r'[_a-zA-Z0-9][-_.a-zA-Z0-9]*)$')
+
+    assert _cluster_name_re.match(cluster_name)
 
 
 def test_bigtable_instance_from_pb():
     # [START bigtable_instance_from_pb]
     from google.cloud.bigtable import Client
-    from google.cloud.bigtable_admin_v2.types import instance_pb2   
+    from google.cloud.bigtable_admin_v2.types import instance_pb2
 
     client = Client(admin=True)
     instance = client.instance(INSTANCE_ID)
-    
-    #     instance_path = client.project_path + "/instances/" + "snippetjhgjhg"
-    instance_path = instance.name
-    f = open("san.txt","w")
-    f.write(instance_path)
+
+    name = instance.name
     instance_pb = instance_pb2.Instance(
-        display_name=instance_path,
+        name=name,
+        display_name=INSTANCE_ID,
         type=PRODUCTION,
         labels=LABELS)
-    
+
     instance2 = instance.from_pb(instance_pb, client)
     # [END bigtable_instance_from_pb]
-    assert instance2.name == instance2.name
-    
-def xx___test_bigtable_instance_state():
+    assert instance2.name == instance.name
+
+
+def test_bigtable_cluster_from_pb():
+    # [START bigtable_cluster_from_pb]
+    from google.cloud.bigtable import Client
+    from google.cloud.bigtable_admin_v2.types import instance_pb2
+
+    client = Client(admin=True)
+    instance = client.instance(INSTANCE_ID)
+    cluster = instance.cluster(CLUSTER_ID)
+
+    name = cluster.name
+    cluster_state = cluster.state
+    cluster_pb = instance_pb2.Cluster(
+        name=name,
+        location=LOCATION_ID,
+        state=cluster_state,
+        serve_nodes=SERVER_NODES,
+        default_storage_type=STORAGE_TYPE)
+
+    cluster2 = cluster.from_pb(cluster_pb, instance)
+    # [END bigtable_cluster_from_pb]
+    assert cluster2.name == cluster.name
+
+
+def test_bigtable_instance_state():
     # [START bigtable_instance_state]
     from google.cloud.bigtable import Client
 
     client = Client(admin=True)
     instance = client.instance(INSTANCE_ID)
     instance_state = instance.state
-
-    #     get_cluster_states = table.get_cluster_states()
     # [END bigtable_instance_state]
-    f = open("san.txt", "a")
-    f.write(str(instance))
-    f.write("\n\n")
-    f.write(str(instance_state))
-    f.write("\n\n")
-    f.close()
-    #     assert CLUSTER_ID in get_cluster_states
+    assert not instance_state
+
+
+def test_bigtable_cluster_state():
+    # [START bigtable_cluster_state]
+    from google.cloud.bigtable import Client
+
+    client = Client(admin=True)
+    instance = client.instance(INSTANCE_ID)
+    cluster = instance.cluster(CLUSTER_ID)
+    cluster_state = cluster.state
+    # [END bigtable_cluster_state]
+
+    assert not cluster_state
+
 
 if __name__ == "__main__":
     pytest.main()

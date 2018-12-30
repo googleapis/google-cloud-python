@@ -94,6 +94,12 @@ class Cluster(object):
     def from_pb(cls, cluster_pb, instance):
         """Creates an cluster instance from a protobuf.
 
+        For example:
+
+        .. literalinclude:: snippets.py
+            :start-after: [START bigtable_cluster_from_pb]
+            :end-before: [END bigtable_cluster_from_pb]
+
         :type cluster_pb: :class:`instance_pb2.Cluster`
         :param cluster_pb: An instance protobuf object.
 
@@ -148,6 +154,12 @@ class Cluster(object):
           This property will not change if ``_instance`` and ``cluster_id``
           do not, but the return value is not cached.
 
+        For example:
+
+        .. literalinclude:: snippets.py
+            :start-after: [START bigtable_cluster_name]
+            :end-before: [END bigtable_cluster_name]
+
         The cluster name is of the form
 
             ``"projects/{project}/instances/{instance}/clusters/{cluster_id}"``
@@ -161,7 +173,15 @@ class Cluster(object):
 
     @property
     def state(self):
-        """google.cloud.bigtable.enums.Cluster.State: state of cluster."""
+        """google.cloud.bigtable.enums.Cluster.State: state of cluster.
+
+        For example:
+
+        .. literalinclude:: snippets.py
+            :start-after: [START bigtable_cluster_state]
+            :end-before: [END bigtable_cluster_state]
+
+        """
         return self._state
 
     def __eq__(self, other):
