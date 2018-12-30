@@ -253,20 +253,7 @@ class TestTaskletFuture:
 
     @staticmethod
     @pytest.mark.usefixtures("with_runstate_context")
-    @mock.patch("google.cloud.ndb.tasklets._eventloop")
-    def test__advance_tasklet_yields_rpc(_eventloop):
-        def generator_function(dependent):
-            yield dependent
-
-        dependent = mock.Mock(spec=grpc.Future)
-        generator = generator_function(dependent)
-        future = tasklets.TaskletFuture(generator)
-        future._advance_tasklet()
-        _eventloop.queue_rpc.assert_called_once_with(future, dependent)
-
-    @staticmethod
-    @pytest.mark.usefixtures("with_runstate_context")
-    def test__advance_tasklet_yields_rpc_integration():
+    def test__advance_tasklet_yields_rpc():
         def generator_function(dependent):
             value = yield dependent
             return value + 3

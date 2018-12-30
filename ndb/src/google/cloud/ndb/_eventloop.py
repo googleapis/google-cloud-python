@@ -151,27 +151,26 @@ class EventLoop:
         event = _Event(when, callback, args, kwargs)
         self.insort_event_right(event)
 
-    def queue_rpc(self, future, rpc):
+    def queue_rpc(self, rpc, callback):
         """Add a gRPC call to the queue.
 
         Args:
-            future (:class:`~tasklets.TaskletFuture`): The future for the
-                tasklet which has made the gRPC call.
             rpc (:class:`grpc.Future`): The future for the gRPC call.
+            callback (Callable[[:class:`grpc.Future`], None]): Callback
+                function to execute when gRPC call has finished.
 
         gRPC handles its asynchronous calls in a separate processing thread, so
-        we add a callback to `rpc` which adds `rpc` to a synchronized queue
-        when it has finished. The event loop consumes the synchronized queue
-        and sends the results of finished gRPC calls back into their calling
-        tasklets.
+        we add our own callback to `rpc` which adds `rpc` to a synchronized
+        queue when it has finished. The event loop consumes the synchronized
+        queue and calls `callback` with the finished gRPC future.
         """
         rpc_id = uuid.uuid1()
-        self.rpcs[rpc_id] = future
+        self.rpcs[rpc_id] = callback
 
-        def callback(rpc):
+        def rpc_callback(rpc):
             self.rpc_results.put((rpc_id, rpc))
 
-        rpc.add_done_callback(callback)
+        rpc.add_done_callback(rpc_callback)
 
     def add_idle(self, callback, *args, **kwargs):
         """Add an idle callback.
@@ -260,13 +259,8 @@ class EventLoop:
             # call that was used here in legacy NDB.
             rpc_id, rpc = self.rpc_results.get()
 
-            future = self.rpcs.pop(rpc_id)
-            error = rpc.exception()
-            if error is not None:
-                future._advance_tasklet(error=error)
-                return 0
-
-            future._advance_tasklet(rpc.result())
+            callback = self.rpcs.pop(rpc_id)
+            callback(rpc)
             return 0
 
         return delay

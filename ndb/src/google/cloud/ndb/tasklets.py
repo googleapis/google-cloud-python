@@ -258,7 +258,7 @@ class TaskletFuture(Future):
             yielded.add_done_callback(done_callback)
 
         elif isinstance(yielded, grpc.Future):
-            _eventloop.queue_rpc(self, yielded)
+            _eventloop.queue_rpc(yielded, done_callback)
 
         elif isinstance(yielded, (list, tuple)):
             raise NotImplementedError()
