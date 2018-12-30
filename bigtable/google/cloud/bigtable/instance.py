@@ -513,8 +513,8 @@ class Instance(object):
         For example:
 
         .. literalinclude:: snippets.py
-            :start-after: [START bigtable_instance_cluster]
-            :end-before: [END bigtable_instance_cluster]
+            :start-after: [START bigtable_create_cluster]
+            :end-before: [END bigtable_create_cluster]
 
         :type cluster_id: str
         :param cluster_id: The ID of the cluster.
