@@ -13,7 +13,7 @@ from . import {{ subpackage }}
 -#}
 {% for proto in api.protos.values()|sort(attribute='module_name')
         if proto.meta.address.subpackage == api.subpackage_view -%}
-{% for message in proto.messages.values()|sort(attribute='name') -%}
+{% for message in proto.top.messages.values()|sort(attribute='name') -%}
 from .{{ proto.module_name }} import {{ message.name }}
 {% endfor %}{% endfor %}
 
@@ -24,7 +24,7 @@ __all__ = (
     {%- endfor %}
     {%- for proto in api.protos.values()|sort(attribute='module_name')
             if proto.meta.address.subpackage == api.subpackage_view %}
-    {%- for message in proto.messages.values()|sort(attribute='name') %}
+    {%- for message in proto.top.messages.values()|sort(attribute='name') %}
     '{{ message.name }}',
     {%- endfor %}{% endfor %}
 )
