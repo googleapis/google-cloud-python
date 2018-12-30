@@ -36,25 +36,24 @@ from test_utils.system import unique_resource_id
 from google.cloud._helpers import UTC
 from google.cloud.bigtable import Client
 from google.cloud.bigtable import enums
-from google.cloud.bigtable import column_family
 
 
-INSTANCE_ID = "snippet-" + unique_resource_id("-")
-CLUSTER_ID = "clus-1-" + unique_resource_id("-")
+INSTANCE_ID = "snippet" + unique_resource_id("-")
+CLUSTER_ID = "clus-1" + unique_resource_id("-")
+APP_PROFILE_ID = "app-prof" + unique_resource_id("-")
+ROUTING_POLICY_TYPE = enums.RoutingPolicyType.ANY
 LOCATION_ID = "us-central1-f"
 ALT_LOCATION_ID = "us-central1-a"
-TABLE_ID = "tabl-1-" + unique_resource_id('-')
-COLUMN_FAMILY_ID = "col_fam_id-" + unique_resource_id('-')
 PRODUCTION = enums.Instance.Type.PRODUCTION
 SERVER_NODES = 3
 STORAGE_TYPE = enums.StorageType.SSD
-LABEL_KEY = u'python-snippet'
-LABEL_STAMP = datetime.datetime.utcnow() \
-                               .replace(microsecond=0, tzinfo=UTC,) \
-                               .strftime("%Y-%m-%dt%H-%M-%S")
+LABEL_KEY = u"python-snippet"
+LABEL_STAMP = (
+    datetime.datetime.utcnow()
+    .replace(microsecond=0, tzinfo=UTC)
+    .strftime("%Y-%m-%dt%H-%M-%S")
+)
 LABELS = {LABEL_KEY: str(LABEL_STAMP)}
-COL_NAME1 = b'col-name1'
-CELL_VAL1 = b'cell-val'
 
 
 class Config(object):
@@ -66,27 +65,22 @@ class Config(object):
 
     CLIENT = None
     INSTANCE = None
-    TABLE = None
 
 
 def setup_module():
     client = Config.CLIENT = Client(admin=True)
-    Config.INSTANCE = client.instance(INSTANCE_ID,
-                                      instance_type=PRODUCTION,
-                                      labels=LABELS)
-    cluster = Config.INSTANCE.cluster(CLUSTER_ID,
-                                      location_id=LOCATION_ID,
-                                      serve_nodes=SERVER_NODES,
-                                      default_storage_type=STORAGE_TYPE)
+    Config.INSTANCE = client.instance(
+        INSTANCE_ID, instance_type=PRODUCTION, labels=LABELS
+    )
+    cluster = Config.INSTANCE.cluster(
+        CLUSTER_ID,
+        location_id=LOCATION_ID,
+        serve_nodes=SERVER_NODES,
+        default_storage_type=STORAGE_TYPE,
+    )
     operation = Config.INSTANCE.create(clusters=[cluster])
     # We want to make sure the operation completes.
     operation.result(timeout=100)
-    Config.TABLE = Config.INSTANCE.table(TABLE_ID)
-    Config.TABLE.create()
-    gc_rule = column_family.MaxVersionsGCRule(2)
-    column_family1 = Config.TABLE.column_family(COLUMN_FAMILY_ID,
-                                                gc_rule=gc_rule)
-    column_family1.create()
 
 
 def teardown_module():
@@ -155,20 +149,19 @@ def test_bigtable_create_additional_cluster():
     cluster.delete()
 
 
-def test_bigtable_create_app_profile():
+def test_bigtable_create_reload_delete_app_profile():
+    import re
     # [START bigtable_create_app_profile]
     from google.cloud.bigtable import Client
 
     client = Client(admin=True)
     instance = client.instance(INSTANCE_ID)
 
-    app_profile_id = "app-prof-" + unique_resource_id("-")
     description = "routing policy-multy"
-    routing_policy_type = enums.RoutingPolicyType.ANY
 
     app_profile = instance.app_profile(
-        app_profile_id=app_profile_id,
-        routing_policy_type=routing_policy_type,
+        app_profile_id=APP_PROFILE_ID,
+        routing_policy_type=ROUTING_POLICY_TYPE,
         description=description,
         cluster_id=CLUSTER_ID,
     )
@@ -177,7 +170,68 @@ def test_bigtable_create_app_profile():
     # [END bigtable_create_app_profile]
     assert app_profile.exists()
 
+    # [START bigtable_app_profile_name]
+    from google.cloud.bigtable import Client
+
+    client = Client(admin=True)
+    instance = client.instance(INSTANCE_ID)
+    app_profile = instance.app_profile(APP_PROFILE_ID)
+
+    app_profile_name = app_profile.name
+    # [END bigtable_app_profile_name]
+    _profile_name_re = re.compile(r'^projects/(?P<project>[^/]+)/'
+                                  r'instances/(?P<instance>[^/]+)/'
+                                  r'appProfiles/(?P<appprofile_id>'
+                                  r'[_a-zA-Z0-9][-_.a-zA-Z0-9]*)$')
+    assert _profile_name_re.match(app_profile_name)
+
+    # [START bigtable_app_profile_exists]
+    from google.cloud.bigtable import Client
+
+    client = Client(admin=True)
+    instance = client.instance(INSTANCE_ID)
+    app_profile = instance.app_profile(APP_PROFILE_ID)
+
+    app_profile_exists = app_profile.exists()
+    # [END bigtable_app_profile_exists]
+    assert app_profile_exists
+
+    # [START bigtable_reload_app_profile]
+    from google.cloud.bigtable import Client
+
+    client = Client(admin=True)
+    instance = client.instance(INSTANCE_ID)
+    app_profile = instance.app_profile(APP_PROFILE_ID)
+
+    app_profile.reload()
+    # [END bigtable_reload_app_profile]
+    assert app_profile.routing_policy_type == ROUTING_POLICY_TYPE
+
+    # [START bigtable_update_app_profile]
+    from google.cloud.bigtable import Client
+
+    client = Client(admin=True)
+    instance = client.instance(INSTANCE_ID)
+    app_profile = instance.app_profile(APP_PROFILE_ID)
+    app_profile.reload()
+
+    description = "My new app profile"
+    app_profile.description = description
+    app_profile.update()
+    # [END bigtable_update_app_profile]
+    assert app_profile.description == description
+
+    # [START bigtable_delete_app_profile]
+    from google.cloud.bigtable import Client
+
+    client = Client(admin=True)
+    instance = client.instance(INSTANCE_ID)
+    app_profile = instance.app_profile(APP_PROFILE_ID)
+    app_profile.reload()
+
     app_profile.delete(ignore_warnings=True)
+    # [END bigtable_delete_app_profile]
+    assert not app_profile.exists()
 
 
 def test_bigtable_list_instances():
