@@ -36,25 +36,22 @@ from test_utils.system import unique_resource_id
 from google.cloud._helpers import UTC
 from google.cloud.bigtable import Client
 from google.cloud.bigtable import enums
-from google.cloud.bigtable import column_family
 
 
 INSTANCE_ID = "snippet-" + unique_resource_id("-")
 CLUSTER_ID = "clus-1-" + unique_resource_id("-")
 LOCATION_ID = "us-central1-f"
 ALT_LOCATION_ID = "us-central1-a"
-TABLE_ID = "tabl-1-" + unique_resource_id('-')
-COLUMN_FAMILY_ID = "col_fam_id-" + unique_resource_id('-')
 PRODUCTION = enums.Instance.Type.PRODUCTION
 SERVER_NODES = 3
 STORAGE_TYPE = enums.StorageType.SSD
-LABEL_KEY = u'python-snippet'
-LABEL_STAMP = datetime.datetime.utcnow() \
-                               .replace(microsecond=0, tzinfo=UTC,) \
-                               .strftime("%Y-%m-%dt%H-%M-%S")
+LABEL_KEY = u"python-snippet"
+LABEL_STAMP = (
+    datetime.datetime.utcnow()
+    .replace(microsecond=0, tzinfo=UTC)
+    .strftime("%Y-%m-%dt%H-%M-%S")
+)
 LABELS = {LABEL_KEY: str(LABEL_STAMP)}
-COL_NAME1 = b'col-name1'
-CELL_VAL1 = b'cell-val'
 
 
 class Config(object):
@@ -66,27 +63,22 @@ class Config(object):
 
     CLIENT = None
     INSTANCE = None
-    TABLE = None
 
 
 def setup_module():
     client = Config.CLIENT = Client(admin=True)
-    Config.INSTANCE = client.instance(INSTANCE_ID,
-                                      instance_type=PRODUCTION,
-                                      labels=LABELS)
-    cluster = Config.INSTANCE.cluster(CLUSTER_ID,
-                                      location_id=LOCATION_ID,
-                                      serve_nodes=SERVER_NODES,
-                                      default_storage_type=STORAGE_TYPE)
+    Config.INSTANCE = client.instance(
+        INSTANCE_ID, instance_type=PRODUCTION, labels=LABELS
+    )
+    cluster = Config.INSTANCE.cluster(
+        CLUSTER_ID,
+        location_id=LOCATION_ID,
+        serve_nodes=SERVER_NODES,
+        default_storage_type=STORAGE_TYPE,
+    )
     operation = Config.INSTANCE.create(clusters=[cluster])
     # We want to make sure the operation completes.
     operation.result(timeout=100)
-    Config.TABLE = Config.INSTANCE.table(TABLE_ID)
-    Config.TABLE.create()
-    gc_rule = column_family.MaxVersionsGCRule(2)
-    column_family1 = Config.TABLE.column_family(COLUMN_FAMILY_ID,
-                                                gc_rule=gc_rule)
-    column_family1.create()
 
 
 def teardown_module():
@@ -431,6 +423,102 @@ def test_bigtable_set_iam_policy_then_get_iam_policy():
     # [END bigtable_get_iam_policy]
 
     assert len(policy.bigtable_admins) > 0
+
+
+def test_bigtable_admins_policy():
+    # [START bigtable_admins_policy]
+    from google.cloud.bigtable import Client
+    from google.cloud.bigtable.policy import Policy
+    from google.cloud.bigtable.policy import BIGTABLE_ADMIN_ROLE
+
+    # [END bigtable_admins_policy]
+
+    service_account_email = Config.CLIENT._credentials.service_account_email
+
+    # [START bigtable_admins_policy]
+    client = Client(admin=True)
+    instance = client.instance(INSTANCE_ID)
+    instance.reload()
+    new_policy = Policy()
+    new_policy[BIGTABLE_ADMIN_ROLE] = [Policy.service_account(service_account_email)]
+
+    policy_latest = instance.set_iam_policy(new_policy)
+    policy = policy_latest.bigtable_admins
+    # [END bigtable_admins_policy]
+
+    assert len(policy) > 0
+
+
+def test_bigtable_readers_policy():
+    # [START bigtable_readers_policy]
+    from google.cloud.bigtable import Client
+    from google.cloud.bigtable.policy import Policy
+    from google.cloud.bigtable.policy import BIGTABLE_READER_ROLE
+
+    # [END bigtable_readers_policy]
+
+    service_account_email = Config.CLIENT._credentials.service_account_email
+
+    # [START bigtable_readers_policy]
+    client = Client(admin=True)
+    instance = client.instance(INSTANCE_ID)
+    instance.reload()
+    new_policy = Policy()
+    new_policy[BIGTABLE_READER_ROLE] = [Policy.service_account(service_account_email)]
+
+    policy_latest = instance.set_iam_policy(new_policy)
+    policy = policy_latest.bigtable_readers
+    # [END bigtable_readers_policy]
+
+    assert len(policy) > 0
+
+
+def test_bigtable_users_policy():
+    # [START bigtable_users_policy]
+    from google.cloud.bigtable import Client
+    from google.cloud.bigtable.policy import Policy
+    from google.cloud.bigtable.policy import BIGTABLE_USER_ROLE
+
+    # [END bigtable_users_policy]
+
+    service_account_email = Config.CLIENT._credentials.service_account_email
+
+    # [START bigtable_users_policy]
+    client = Client(admin=True)
+    instance = client.instance(INSTANCE_ID)
+    instance.reload()
+    new_policy = Policy()
+    new_policy[BIGTABLE_USER_ROLE] = [Policy.service_account(service_account_email)]
+
+    policy_latest = instance.set_iam_policy(new_policy)
+    policy = policy_latest.bigtable_users
+    # [END bigtable_users_policy]
+
+    assert len(policy) > 0
+
+
+def test_bigtable_viewers_policy():
+    # [START bigtable_viewers_policy]
+    from google.cloud.bigtable import Client
+    from google.cloud.bigtable.policy import Policy
+    from google.cloud.bigtable.policy import BIGTABLE_VIEWER_ROLE
+
+    # [END bigtable_viewers_policy]
+
+    service_account_email = Config.CLIENT._credentials.service_account_email
+
+    # [START bigtable_viewers_policy]
+    client = Client(admin=True)
+    instance = client.instance(INSTANCE_ID)
+    instance.reload()
+    new_policy = Policy()
+    new_policy[BIGTABLE_VIEWER_ROLE] = [Policy.service_account(service_account_email)]
+
+    policy_latest = instance.set_iam_policy(new_policy)
+    policy = policy_latest.bigtable_viewers
+    # [END bigtable_viewers_policy]
+
+    assert len(policy) > 0
 
 
 if __name__ == "__main__":
