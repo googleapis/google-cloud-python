@@ -183,7 +183,7 @@ class TestTaskletFuture:
         assert future.generator is generator
 
     @staticmethod
-    @pytest.mark.usefixtures("with_runstate_context")
+    @pytest.mark.usefixtures("runstate")
     def test__advance_tasklet_return():
         def generator_function():
             yield
@@ -196,7 +196,7 @@ class TestTaskletFuture:
         assert future.result() == 42
 
     @staticmethod
-    @pytest.mark.usefixtures("with_runstate_context")
+    @pytest.mark.usefixtures("runstate")
     def test__advance_tasklet_generator_raises():
         error = Exception("Spurious error.")
 
@@ -211,7 +211,7 @@ class TestTaskletFuture:
         assert future.exception() is error
 
     @staticmethod
-    @pytest.mark.usefixtures("with_runstate_context")
+    @pytest.mark.usefixtures("runstate")
     def test__advance_tasklet_bad_yield():
         def generator_function():
             yield 42
@@ -222,7 +222,7 @@ class TestTaskletFuture:
             future._advance_tasklet()
 
     @staticmethod
-    @pytest.mark.usefixtures("with_runstate_context")
+    @pytest.mark.usefixtures("runstate")
     def test__advance_tasklet_dependency_returns():
         def generator_function(dependency):
             some_value = yield dependency
@@ -236,7 +236,7 @@ class TestTaskletFuture:
         assert future.result() == 63
 
     @staticmethod
-    @pytest.mark.usefixtures("with_runstate_context")
+    @pytest.mark.usefixtures("runstate")
     def test__advance_tasklet_dependency_raises():
         def generator_function(dependency):
             yield dependency
@@ -252,7 +252,7 @@ class TestTaskletFuture:
             future.result()
 
     @staticmethod
-    @pytest.mark.usefixtures("with_runstate_context")
+    @pytest.mark.usefixtures("runstate")
     def test__advance_tasklet_yields_rpc():
         def generator_function(dependency):
             value = yield dependency
@@ -271,7 +271,7 @@ class TestTaskletFuture:
         assert future.result() == 11
 
     @staticmethod
-    @pytest.mark.usefixtures("with_runstate_context")
+    @pytest.mark.usefixtures("runstate")
     def test__advance_tasklet_parallel_yield():
         def generator_function(dependencies):
             one, two = yield dependencies
