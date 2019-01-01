@@ -117,8 +117,7 @@ class Address:
             return imp.Import(
                 package=self.api_naming.module_namespace + (
                     self.api_naming.versioned_module_name,
-                    'types',
-                ) + self.subpackage,
+                ) + self.subpackage + ('types',),
                 module=self.module,
                 alias=self.module_alias,
             )

@@ -39,7 +39,7 @@ Here is a test script:
   response = ia.batch_annotate_images({
       'requests': [{
           'features': [{
-              'type': vision.types.image_annotator.Feature.Type.LABEL_DETECTION,
+              'type': vision.Feature.Type.LABEL_DETECTION,
           }],
           'image': {'source': {
               'image_uri': 'https://s3.amazonaws.com/cdn0.michiganbulb.com'

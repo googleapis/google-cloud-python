@@ -11,7 +11,7 @@ from google.auth import credentials
 {% for import_ in service.python_modules -%}
 {{ import_ }}
 {% endfor %}
-from ...utils import dispatch
+from ...{{ '.' * api.subpackage_view|length }}utils import dispatch
 from .transports import get_transport_class
 from .transports import {{ service.name }}Transport
 

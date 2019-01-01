@@ -1,15 +1,44 @@
 {% extends '_base.py.j2' %}
 
 {% block content %}
-from ..{{ api.naming.versioned_module_name }} import types
-{% for service in api.services.values()|sort(attribute='name') -%}
-from ..{{ api.naming.versioned_module_name }}.services.{{ service.name|snake_case }} import {{ service.name }}
-{% endfor %}
+{#  Import subpackages. -#}
+{% for subpackage in api.subpackages.keys() -%}
+from ..{{ api.naming.versioned_module_name }} import {{ subpackage }}
+{% endfor -%}
 
+{#  Import services for this package. -#}
+{% for service in api.services.values()|sort(attribute='name')
+        if service.meta.address.subpackage == api.subpackage_view -%}
+from ..{{ api.naming.versioned_module_name }}.services.{{ service.name|snake_case }} import {{ service.name }}
+{% endfor -%}
+
+{#  Import messages from each proto.
+    It is safe to import all of the messages into the same namespace here,
+    because protocol buffers itself enforces selector uniqueness within
+    a proto package.
+-#}
+{% for proto in api.protos.values()|sort(attribute='module_name')
+        if proto.meta.address.subpackage == api.subpackage_view -%}
+{% for message in proto.top.messages.values()|sort(attribute='name') -%}
+from ..{{ api.naming.versioned_module_name }}.types.{{ proto.module_name }} import {{ message.name }}
+{% endfor %}{% endfor %}
+
+{#  Define __all__.
+    This requires the full set of imported names, so we iterate over
+    them again.
+-#}
 __all__ = (
-    {%- for service in api.services.values()|sort(attribute='name') %}
+    {%- for subpackage in api.subpackages.keys() %}
+    '{{ subpackage }}',
+    {%- endfor %}
+    {%- for service in api.services.values()|sort(attribute='name')
+            if service.meta.address.subpackage == api.subpackage_view %}
     '{{ service.name }}',
     {%- endfor %}
-    'types',
+    {%- for proto in api.protos.values()|sort(attribute='module_name')
+            if proto.meta.address.subpackage == api.subpackage_view %}
+    {%- for message in proto.top.messages.values()|sort(attribute='name') %}
+    '{{ message.name }}',
+    {%- endfor %}{% endfor %}
 )
 {% endblock %}

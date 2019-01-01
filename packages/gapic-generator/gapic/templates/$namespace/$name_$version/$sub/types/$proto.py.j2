@@ -24,10 +24,10 @@ __all__ = (
 )
 
 {% for enum in proto.top.enums.values() -%}
-    {% include '$namespace/$name_$version/types/$sub/_enum.py.j2' with context %}
+    {% include '$namespace/$name_$version/$sub/types/_enum.py.j2' with context %}
 {% endfor %}
 
 {% for message in proto.top.messages.values() -%}
-    {% include "$namespace/$name_$version/types/$sub/_message.py.j2" with context %}
+    {% include "$namespace/$name_$version/$sub/types/_message.py.j2" with context %}
 {% endfor %}
 {% endwith %}{% endblock %}

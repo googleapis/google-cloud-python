@@ -1,9 +1,15 @@
-{% extends "_base.py.j2" %}
+{% extends '_base.py.j2' %}
 
 {% block content %}
-{# Import subpackages. -#}
+{#  Import subpackages. -#}
 {% for subpackage in api.subpackages.keys() -%}
 from . import {{ subpackage }}
+{% endfor -%}
+
+{#  Import services for this package. -#}
+{% for service in api.services.values()|sort(attribute='name')
+        if service.meta.address.subpackage == api.subpackage_view -%}
+from .services.{{ service.name|snake_case }} import {{ service.name }}
 {% endfor -%}
 
 {#  Import messages from each proto.
@@ -14,13 +20,20 @@ from . import {{ subpackage }}
 {% for proto in api.protos.values()|sort(attribute='module_name')
         if proto.meta.address.subpackage == api.subpackage_view -%}
 {% for message in proto.top.messages.values()|sort(attribute='name') -%}
-from .{{ proto.module_name }} import {{ message.name }}
+from .types.{{ proto.module_name }} import {{ message.name }}
 {% endfor %}{% endfor %}
 
-
+{#  Define __all__.
+    This requires the full set of imported names, so we iterate over
+    them again.
+-#}
 __all__ = (
     {%- for subpackage in api.subpackages.keys() %}
     '{{ subpackage }}',
+    {%- endfor %}
+    {%- for service in api.services.values()|sort(attribute='name')
+            if service.meta.address.subpackage == api.subpackage_view %}
+    '{{ service.name }}',
     {%- endfor %}
     {%- for proto in api.protos.values()|sort(attribute='module_name')
             if proto.meta.address.subpackage == api.subpackage_view %}
@@ -28,4 +41,4 @@ __all__ = (
     '{{ message.name }}',
     {%- endfor %}{% endfor %}
 )
-{%- endblock %}
+{% endblock %}
