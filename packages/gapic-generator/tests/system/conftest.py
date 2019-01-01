@@ -15,7 +15,7 @@
 import pytest
 
 from google.showcase import Echo
-from google.showcase_v1alpha2.services.echo.transports.grpc import (
+from google.showcase_v1alpha3.services.echo.transports.grpc import (
     EchoGrpcTransport,
 )
 
