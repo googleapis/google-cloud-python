@@ -17,6 +17,7 @@ from .fields import MapField
 from .fields import RepeatedField
 from .marshal import Marshal
 from .message import Message
+from .modules import define_module as module
 from .primitives import ProtoType
 
 
@@ -45,6 +46,7 @@ __all__ = (
     'RepeatedField',
     'Marshal',
     'Message',
+    'module',
 
     # Expose the types directly.
     'DOUBLE',

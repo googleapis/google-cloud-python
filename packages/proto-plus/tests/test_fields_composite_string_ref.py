@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import sys
+
 import proto
 
 
@@ -31,24 +33,19 @@ def test_composite_forward_ref():
 
 
 def test_composite_forward_ref_with_package():
-    class Spam(proto.Message):
-        foo = proto.Field('Foo', number=1)
+    sys.modules[__name__].__protobuf__ = proto.module(package='abc.def')
+    try:
+        class Spam(proto.Message):
+            foo = proto.Field('Foo', number=1)
 
-        class Meta:
-            package = 'abc.def'
+        class Eggs(proto.Message):
+            foo = proto.Field('abc.def.Foo', number=1)
 
-    class Eggs(proto.Message):
-        foo = proto.Field('abc.def.Foo', number=1)
-
-        class Meta:
-            package = 'abc.def'
-
-    class Foo(proto.Message):
-        bar = proto.Field(proto.STRING, number=1)
-        baz = proto.Field(proto.INT64, number=2)
-
-        class Meta:
-            package = 'abc.def'
+        class Foo(proto.Message):
+            bar = proto.Field(proto.STRING, number=1)
+            baz = proto.Field(proto.INT64, number=2)
+    finally:
+        del sys.modules[__name__].__protobuf__
 
     spam = Spam(foo=Foo(bar='str', baz=42))
     eggs = Eggs(foo=Foo(bar='rts', baz=24))

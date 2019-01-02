@@ -17,6 +17,7 @@ import collections.abc
 import copy
 import inspect
 import re
+import sys
 import uuid
 from typing import List, Type
 
@@ -42,12 +43,16 @@ class MessageMeta(type):
         if not bases:
             return super().__new__(mcls, name, bases, attrs)
 
+        # Pull a reference to the module where this class is being
+        # declared.
+        module = sys.modules.get(attrs.get('__module__'))
+
         # Pop metadata off the attrs.
-        Meta = attrs.pop('Meta', object())
+        proto_module = getattr(module, '__protobuf__', object())
 
         # A package and full name should be present.
-        package = getattr(Meta, 'package', '')
-        marshal = Marshal(name=getattr(Meta, 'marshal', package))
+        package = getattr(proto_module, 'package', '')
+        marshal = Marshal(name=getattr(proto_module, 'marshal', package))
         local_path = tuple(attrs.get('__qualname__', name).split('.'))
 
         # Sanity check: We get the wrong full name if a class is declared
@@ -57,9 +62,7 @@ class MessageMeta(type):
             local_path = local_path[:ix - 1] + local_path[ix + 1:]
 
         # Determine the full name in protocol buffers.
-        full_name = getattr(Meta, 'full_name',
-            '.'.join((package,) + local_path).lstrip('.'),
-        )
+        full_name = '.'.join((package,) + local_path).lstrip('.')
 
         # Special case: Maps. Map fields are special; they are essentially
         # shorthand for a nested message and a repeated field of that message.
@@ -92,10 +95,7 @@ class MessageMeta(type):
                     prefix=attrs.get('__qualname__', name),
                     name=msg_name,
                 ),
-                'Meta': type('Meta', (object,), {
-                    'options': descriptor_pb2.MessageOptions(map_entry=True),
-                    'package': package,
-                }),
+                '_pb_options': {'map_entry': True},
             })
             entry_attrs['key'] = Field(field.map_key_type, number=1)
             entry_attrs['value'] = Field(field.proto_type, number=2,
@@ -196,7 +196,7 @@ class MessageMeta(type):
                 file_info.descriptor.dependency.append(proto_import)
 
         # Retrieve any message options.
-        opts = getattr(Meta, 'options', descriptor_pb2.MessageOptions())
+        opts = descriptor_pb2.MessageOptions(**attrs.pop('_pb_options', {}))
 
         # Create the underlying proto descriptor.
         desc = descriptor_pb2.DescriptorProto(
@@ -626,13 +626,17 @@ class _FileInfo(collections.namedtuple(
             if field.message not in self.messages:
                 return False
 
-        # If the module in which this class is defined provides an __all__,
-        # do not generate the file descriptor until every member of __all__
-        # has been populated.
+        # If the module in which this class is defined provides a
+        # __protobuf__ property, it may have a manifest.
+        #
+        # Do not generate the file descriptor until every member of the
+        # manifest has been populated.
         module = inspect.getmodule(new_class)
-        manifest = set(getattr(module, '__all__', ())).difference(
-            {new_class.__name__},
-        )
+        manifest = frozenset()
+        if hasattr(module, '__protobuf__'):
+            manifest = module.__protobuf__.manifest.difference(
+                {new_class.__name__},
+            )
         if not all([hasattr(module, i) for i in manifest]):
             return False
 
