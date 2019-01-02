@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery.client &#8212; google-cloud 2fb75da documentation</title>
+    <title>google.cloud.bigquery.client &#8212; google-cloud e633ffd documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -73,7 +73,7 @@
 <span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">exceptions</span>
 <span class="kn">from</span> <span class="nn">google.cloud.client</span> <span class="k">import</span> <span class="n">ClientWithProject</span>
 
-<span class="kn">from</span> <span class="nn">google.cloud.bigquery._helpers</span> <span class="k">import</span> <span class="n">_SCALAR_VALUE_TO_JSON_ROW</span>
+<span class="kn">from</span> <span class="nn">google.cloud.bigquery._helpers</span> <span class="k">import</span> <span class="n">_record_field_to_json</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery._helpers</span> <span class="k">import</span> <span class="n">_str_or_none</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery._http</span> <span class="k">import</span> <span class="n">Connection</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery.dataset</span> <span class="k">import</span> <span class="n">Dataset</span>
@@ -87,7 +87,6 @@
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery.table</span> <span class="k">import</span> <span class="n">TableReference</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery.table</span> <span class="k">import</span> <span class="n">RowIterator</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery.table</span> <span class="k">import</span> <span class="n">_TABLE_HAS_NO_SCHEMA</span>
-<span class="kn">from</span> <span class="nn">google.cloud.bigquery.table</span> <span class="k">import</span> <span class="n">_row_from_mapping</span>
 
 
 <span class="n">_DEFAULT_CHUNKSIZE</span> <span class="o">=</span> <span class="mi">1048576</span>  <span class="c1"># 1024 * 1024 B = 1 MB</span>
@@ -1531,20 +1530,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;table should be Table or TableReference&quot;</span><span class="p">)</span>
 
-        <span class="n">json_rows</span> <span class="o">=</span> <span class="p">[]</span>
-
-        <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">rows</span><span class="p">):</span>
-            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
-                <span class="n">row</span> <span class="o">=</span> <span class="n">_row_from_mapping</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">schema</span><span class="p">)</span>
-            <span class="n">json_row</span> <span class="o">=</span> <span class="p">{}</span>
-
-            <span class="k">for</span> <span class="n">field</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">schema</span><span class="p">,</span> <span class="n">row</span><span class="p">):</span>
-                <span class="n">converter</span> <span class="o">=</span> <span class="n">_SCALAR_VALUE_TO_JSON_ROW</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">field</span><span class="o">.</span><span class="n">field_type</span><span class="p">)</span>
-                <span class="k">if</span> <span class="n">converter</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># STRING doesn&#39;t need converting</span>
-                    <span class="n">value</span> <span class="o">=</span> <span class="n">converter</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
-                <span class="n">json_row</span><span class="p">[</span><span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
-
-            <span class="n">json_rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">json_row</span><span class="p">)</span>
+        <span class="n">json_rows</span> <span class="o">=</span> <span class="p">[</span><span class="n">_record_field_to_json</span><span class="p">(</span><span class="n">schema</span><span class="p">,</span> <span class="n">row</span><span class="p">)</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">rows</span><span class="p">]</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">insert_rows_json</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">json_rows</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
