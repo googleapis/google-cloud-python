@@ -37,7 +37,7 @@ import google.cloud._helpers
 from google.cloud import exceptions
 from google.cloud.client import ClientWithProject
 
-from google.cloud.bigquery._helpers import _SCALAR_VALUE_TO_JSON_ROW
+from google.cloud.bigquery._helpers import _record_field_to_json
 from google.cloud.bigquery._helpers import _str_or_none
 from google.cloud.bigquery._http import Connection
 from google.cloud.bigquery.dataset import Dataset
@@ -51,7 +51,6 @@ from google.cloud.bigquery.table import TableListItem
 from google.cloud.bigquery.table import TableReference
 from google.cloud.bigquery.table import RowIterator
 from google.cloud.bigquery.table import _TABLE_HAS_NO_SCHEMA
-from google.cloud.bigquery.table import _row_from_mapping
 
 
 _DEFAULT_CHUNKSIZE = 1048576  # 1024 * 1024 B = 1 MB
@@ -1495,20 +1494,7 @@ class Client(ClientWithProject):
         else:
             raise TypeError("table should be Table or TableReference")
 
-        json_rows = []
-
-        for index, row in enumerate(rows):
-            if isinstance(row, dict):
-                row = _row_from_mapping(row, schema)
-            json_row = {}
-
-            for field, value in zip(schema, row):
-                converter = _SCALAR_VALUE_TO_JSON_ROW.get(field.field_type)
-                if converter is not None:  # STRING doesn't need converting
-                    value = converter(value)
-                json_row[field.name] = value
-
-            json_rows.append(json_row)
+        json_rows = [_record_field_to_json(schema, row) for row in rows]
 
         return self.insert_rows_json(table, json_rows, **kwargs)
 
