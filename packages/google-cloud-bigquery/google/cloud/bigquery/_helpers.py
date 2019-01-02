@@ -15,6 +15,7 @@
 """Shared helper functions for BigQuery API classes."""
 
 import base64
+import copy
 import datetime
 import decimal
 
@@ -327,6 +328,112 @@ _SCALAR_VALUE_TO_JSON_ROW = {
 # Converters used for scalar values marshalled as query parameters.
 _SCALAR_VALUE_TO_JSON_PARAM = _SCALAR_VALUE_TO_JSON_ROW.copy()
 _SCALAR_VALUE_TO_JSON_PARAM["TIMESTAMP"] = _timestamp_to_json_parameter
+
+
+def _scalar_field_to_json(field, row_value):
+    """Maps a field and value to a JSON-safe value.
+
+    Args:
+        field ( \
+            :class:`~google.cloud.bigquery.schema.SchemaField`, \
+        ):
+            The SchemaField to use for type conversion and field name.
+        row_value (any):
+            Value to be converted, based on the field's type.
+
+    Returns:
+        any:
+            A JSON-serializable object.
+    """
+    converter = _SCALAR_VALUE_TO_JSON_ROW.get(field.field_type)
+    if converter is None:  # STRING doesn't need converting
+        return row_value
+    return converter(row_value)
+
+
+def _repeated_field_to_json(field, row_value):
+    """Convert a repeated/array field to its JSON representation.
+
+    Args:
+        field ( \
+            :class:`~google.cloud.bigquery.schema.SchemaField`, \
+        ):
+            The SchemaField to use for type conversion and field name. The
+            field mode must equal ``REPEATED``.
+        row_value (Sequence[any]):
+            A sequence of values to convert to JSON-serializable values.
+
+    Returns:
+        List[any]:
+            A list of JSON-serializable objects.
+    """
+    # Remove the REPEATED, but keep the other fields. This allows us to process
+    # each item as if it were a top-level field.
+    item_field = copy.deepcopy(field)
+    item_field._mode = "NULLABLE"
+    values = []
+    for item in row_value:
+        values.append(_field_to_json(item_field, item))
+    return values
+
+
+def _record_field_to_json(fields, row_value):
+    """Convert a record/struct field to its JSON representation.
+
+    Args:
+        fields ( \
+            Sequence[:class:`~google.cloud.bigquery.schema.SchemaField`], \
+        ):
+            The :class:`~google.cloud.bigquery.schema.SchemaField`s of the
+            record's subfields to use for type conversion and field names.
+        row_value (Union[Tuple[Any], Mapping[str, Any]):
+            A tuple or dictionary to convert to JSON-serializable values.
+
+    Returns:
+        Mapping[str, any]:
+            A JSON-serializable dictionary.
+    """
+    record = {}
+    isdict = isinstance(row_value, dict)
+
+    for subindex, subfield in enumerate(fields):
+        subname = subfield.name
+        subvalue = row_value[subname] if isdict else row_value[subindex]
+        record[subname] = _field_to_json(subfield, subvalue)
+    return record
+
+
+def _field_to_json(field, row_value):
+    """Convert a field into JSON-serializable values.
+
+    Args:
+        field ( \
+            :class:`~google.cloud.bigquery.schema.SchemaField`, \
+        ):
+            The SchemaField to use for type conversion and field name.
+
+        row_value (Union[ \
+            Sequence[list], \
+            any, \
+        ]):
+            Row data to be inserted. If the SchemaField's mode is
+            REPEATED, assume this is a list. If not, the type
+            is inferred from the SchemaField's field_type.
+
+    Returns:
+        any:
+            A JSON-serializable object.
+    """
+    if row_value is None:
+        return None
+
+    if field.mode == "REPEATED":
+        return _repeated_field_to_json(field, row_value)
+
+    if field.field_type == "RECORD":
+        return _record_field_to_json(field.fields, row_value)
+
+    return _scalar_field_to_json(field, row_value)
 
 
 def _snake_to_camel_case(value):
