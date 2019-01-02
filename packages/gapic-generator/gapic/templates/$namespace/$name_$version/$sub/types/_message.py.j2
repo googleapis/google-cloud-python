@@ -20,8 +20,4 @@ class {{ message.name }}({{ p }}.Message):
     {% endif %})
     """{{ field.meta.doc|rst(indent=4) }}"""
     {% endfor %}
-
-    class Meta:
-        package = '{{ message.ident.proto_package }}'
-        marshal = '{{ api.naming.warehouse_package_name }}'
 {{ '\n\n' }}

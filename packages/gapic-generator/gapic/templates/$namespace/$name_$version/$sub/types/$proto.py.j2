@@ -14,14 +14,21 @@ import proto{% if p != 'proto' %} as {{ p }}{% endif -%}
 {{ import_ }}
 {% endfor %}
 
-__all__ = (
+__protobuf__ = {{ p }}.module(
+    package='{{ '.'.join(proto.meta.address.package) }}',
+    {% if api.naming.proto_package != '.'.join(proto.meta.address.package) -%}
+    marshal='{{ api.naming.proto_package }}',
+    {% endif -%}
+    manifest={
     {%- for enum in proto.top.enums.values() %}
-    '{{ enum.name }}',
-    {%- endfor -%}
-    {%- for message in proto.top.messages.values() %}
-    '{{ message.name }}',
+        '{{ enum.name }}',
     {%- endfor %}
+    {%- for message in proto.top.messages.values() %}
+        '{{ message.name }}',
+    {%- endfor %}
+    },
 )
+
 
 {% for enum in proto.top.enums.values() -%}
     {% include '$namespace/$name_$version/$sub/types/_enum.py.j2' with context %}
@@ -30,4 +37,7 @@ __all__ = (
 {% for message in proto.top.messages.values() -%}
     {% include "$namespace/$name_$version/$sub/types/_message.py.j2" with context %}
 {% endfor %}
-{% endwith %}{% endblock %}
+{% endwith %}
+
+__all__ = tuple(sorted(__protobuf__.manifest))
+{% endblock %}
