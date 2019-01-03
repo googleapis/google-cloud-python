@@ -22,6 +22,7 @@ import os
 
 from google.cloud import environment_vars
 from google.cloud.ndb import model
+from google.cloud.ndb import _runstate
 
 import pytest
 
@@ -68,3 +69,10 @@ def initialize_environment(request, environ):
         environ.pop(environment_vars.GCD_DATASET, None)
         environ.pop(environment_vars.GCD_HOST, None)
         environ.pop("GOOGLE_APPLICATION_CREDENTIALS", None)
+
+
+@pytest.fixture
+def with_runstate_context():
+    client = None
+    with _runstate.state_context(client):
+        yield
