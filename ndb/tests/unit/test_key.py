@@ -23,6 +23,7 @@ import pytest
 from google.cloud.ndb import exceptions
 from google.cloud.ndb import key as key_module
 from google.cloud.ndb import model
+from google.cloud.ndb import tasklets
 import tests.unit.utils
 
 
@@ -34,23 +35,22 @@ class TestKey:
     URLSAFE = b"agZzfmZpcmVyDwsSBEtpbmQiBVRoaW5nDA"
 
     @staticmethod
-    @unittest.mock.patch("os.environ", new={})
+    @pytest.mark.usefixtures("client")
     def test_constructor_default():
         key = key_module.Key("Kind", 42)
 
         assert key._key == google.cloud.datastore.Key(
-            "Kind", 42, project=key_module._APP_ID_DEFAULT
+            "Kind", 42, project="testing"
         )
         assert key._reference is None
 
     @staticmethod
-    @unittest.mock.patch("os.environ", new={})
     def test_constructor_empty_path():
         with pytest.raises(TypeError):
             key_module.Key(pairs=())
 
     @staticmethod
-    @unittest.mock.patch("os.environ", new={})
+    @pytest.mark.usefixtures("client")
     def test_constructor_partial():
         with pytest.raises(ValueError):
             key_module.Key("Kind")
@@ -59,7 +59,7 @@ class TestKey:
 
         assert key._key.is_partial
         assert key._key.flat_path == ("Kind",)
-        assert key._key.project == key_module._APP_ID_DEFAULT
+        assert key._key.project == "testing"
         assert key._reference is None
 
     @staticmethod
@@ -77,14 +77,14 @@ class TestKey:
             key_module.Key(object, 47)
 
     @staticmethod
-    @unittest.mock.patch("os.environ", new={})
+    @pytest.mark.usefixtures("client")
     def test_constructor_kind_as_model():
         class Simple(model.Model):
             pass
 
         key = key_module.Key(Simple, 47)
         assert key._key == google.cloud.datastore.Key(
-            "Simple", 47, project=key_module._APP_ID_DEFAULT
+            "Simple", 47, project="testing"
         )
         assert key._reference is None
 
@@ -132,22 +132,22 @@ class TestKey:
         )
 
     @staticmethod
-    @unittest.mock.patch("os.environ", new={})
+    @pytest.mark.usefixtures("client")
     def test_constructor_with_pairs():
         key = key_module.Key(pairs=[("Kind", 1)])
 
         assert key._key == google.cloud.datastore.Key(
-            "Kind", 1, project=key_module._APP_ID_DEFAULT
+            "Kind", 1, project="testing"
         )
         assert key._reference is None
 
     @staticmethod
-    @unittest.mock.patch("os.environ", new={})
+    @pytest.mark.usefixtures("client")
     def test_constructor_with_flat():
         key = key_module.Key(flat=["Kind", 1])
 
         assert key._key == google.cloud.datastore.Key(
-            "Kind", 1, project=key_module._APP_ID_DEFAULT
+            "Kind", 1, project="testing"
         )
         assert key._reference is None
 
@@ -166,12 +166,12 @@ class TestKey:
         assert key._reference is None
 
     @staticmethod
-    @unittest.mock.patch("os.environ", new={})
+    @pytest.mark.usefixtures("client")
     def test_constructor_with_namespace():
         key = key_module.Key("Kind", 1337, namespace="foo")
 
         assert key._key == google.cloud.datastore.Key(
-            "Kind", 1337, project=key_module._APP_ID_DEFAULT, namespace="foo"
+            "Kind", 1337, project="testing", namespace="foo"
         )
         assert key._reference is None
 
@@ -225,20 +225,21 @@ class TestKey:
         key_init.assert_not_called()
 
     @staticmethod
-    @unittest.mock.patch("os.environ", new={})
+    @pytest.mark.usefixtures("client")
     def test___repr__defaults():
         key = key_module.Key("a", "b")
         assert repr(key) == "Key('a', 'b')"
         assert str(key) == "Key('a', 'b')"
 
     @staticmethod
-    @unittest.mock.patch("os.environ", new={})
+    @pytest.mark.usefixtures("client")
     def test___repr__non_defaults():
         key = key_module.Key("X", 11, app="foo", namespace="bar")
         assert repr(key) == "Key('X', 11, app='foo', namespace='bar')"
         assert str(key) == "Key('X', 11, app='foo', namespace='bar')"
 
     @staticmethod
+    @pytest.mark.usefixtures("client")
     def test___hash__():
         key1 = key_module.Key("a", 1)
         assert hash(key1) == hash(key1)
@@ -341,6 +342,7 @@ class TestKey:
         assert key == unpickled
 
     @staticmethod
+    @pytest.mark.usefixtures("client")
     def test___setstate__bad_state():
         key = key_module.Key("a", "b")
 
@@ -353,6 +355,7 @@ class TestKey:
             key.__setstate__(state)
 
     @staticmethod
+    @pytest.mark.usefixtures("client")
     def test_parent():
         key = key_module.Key("a", "b", "c", "d")
         parent = key.parent()
@@ -360,11 +363,13 @@ class TestKey:
         assert parent._reference is None
 
     @staticmethod
+    @pytest.mark.usefixtures("client")
     def test_parent_top_level():
         key = key_module.Key("This", "key")
         assert key.parent() is None
 
     @staticmethod
+    @pytest.mark.usefixtures("client")
     def test_root():
         key = key_module.Key("a", "b", "c", "d")
         root = key.root()
@@ -372,11 +377,13 @@ class TestKey:
         assert root._reference is None
 
     @staticmethod
+    @pytest.mark.usefixtures("client")
     def test_root_top_level():
         key = key_module.Key("This", "key")
         assert key.root() is key
 
     @staticmethod
+    @pytest.mark.usefixtures("client")
     def test_namespace():
         namespace = "my-space"
         key = key_module.Key("abc", 1, namespace=namespace)
@@ -390,12 +397,14 @@ class TestKey:
         assert key.app() == app[2:]
 
     @staticmethod
+    @pytest.mark.usefixtures("client")
     def test_id():
         for id_or_name in ("x", 11, None):
             key = key_module.Key("Kind", id_or_name)
             assert key.id() == id_or_name
 
     @staticmethod
+    @pytest.mark.usefixtures("client")
     def test_string_id():
         pairs = (("x", "x"), (11, None), (None, None))
         for id_or_name, expected in pairs:
@@ -403,6 +412,7 @@ class TestKey:
             assert key.string_id() == expected
 
     @staticmethod
+    @pytest.mark.usefixtures("client")
     def test_integer_id():
         pairs = (("x", None), (11, 11), (None, None))
         for id_or_name, expected in pairs:
@@ -410,26 +420,31 @@ class TestKey:
             assert key.integer_id() == expected
 
     @staticmethod
+    @pytest.mark.usefixtures("client")
     def test_pairs():
         key = key_module.Key("a", "b")
         assert key.pairs() == (("a", "b"),)
 
     @staticmethod
+    @pytest.mark.usefixtures("client")
     def test_pairs_partial_key():
         key = key_module.Key("This", "key", "that", None)
         assert key.pairs() == (("This", "key"), ("that", None))
 
     @staticmethod
+    @pytest.mark.usefixtures("client")
     def test_flat():
         key = key_module.Key("This", "key")
         assert key.flat() == ("This", "key")
 
     @staticmethod
+    @pytest.mark.usefixtures("client")
     def test_flat_partial_key():
         key = key_module.Key("Kind", None)
         assert key.flat() == ("Kind", None)
 
     @staticmethod
+    @pytest.mark.usefixtures("client")
     def test_kind():
         key = key_module.Key("This", "key")
         assert key.kind() == "This"
@@ -444,6 +459,7 @@ class TestKey:
         )
 
     @staticmethod
+    @pytest.mark.usefixtures("client")
     def test_reference_cached():
         key = key_module.Key("This", "key")
         key._reference = unittest.mock.sentinel.reference
@@ -483,16 +499,35 @@ class TestKey:
         assert key.urlsafe() == b"agFmcgULEgFkDA"
 
     @staticmethod
-    def test_get():
+    @unittest.mock.patch("google.cloud.ndb.key._datastore_api")
+    @unittest.mock.patch("google.cloud.ndb.model._entity_from_protobuf")
+    def test_get(_entity_from_protobuf, _datastore_api):
+        ds_future = tasklets.Future()
+        ds_future.set_result("ds_entity")
+        _datastore_api.lookup.return_value = ds_future
+        _entity_from_protobuf.return_value = "the entity"
+
         key = key_module.Key("a", "b", app="c")
-        with pytest.raises(NotImplementedError):
-            key.get()
+        assert key.get() == "the entity"
+
+        _datastore_api.lookup.assert_called_once_with(key)
+        _entity_from_protobuf.assert_called_once_with("ds_entity")
 
     @staticmethod
-    def test_get_async():
+    @unittest.mock.patch("google.cloud.ndb.key._datastore_api")
+    @unittest.mock.patch("google.cloud.ndb.model._entity_from_protobuf")
+    def test_get_async(_entity_from_protobuf, _datastore_api):
+        ds_future = tasklets.Future()
+        _datastore_api.lookup.return_value = ds_future
+        _entity_from_protobuf.return_value = "the entity"
+
         key = key_module.Key("a", "b", app="c")
-        with pytest.raises(NotImplementedError):
-            key.get_async()
+        future = key.get_async()
+        ds_future.set_result("ds_entity")
+        assert future.result() == "the entity"
+
+        _datastore_api.lookup.assert_called_once_with(key)
+        _entity_from_protobuf.assert_called_once_with("ds_entity")
 
     @staticmethod
     def test_delete():
@@ -512,6 +547,7 @@ class TestKey:
             key_module.Key.from_old_key(None)
 
     @staticmethod
+    @pytest.mark.usefixtures("client")
     def test_to_old_key():
         key = key_module.Key("a", "b")
         with pytest.raises(NotImplementedError):
@@ -532,15 +568,8 @@ class Test__project_from_app:
             assert key_module._project_from_app(app) == project
 
     @staticmethod
-    @unittest.mock.patch("os.environ", new={})
-    def test_app_default():
-        assert key_module._project_from_app(None) == key_module._APP_ID_DEFAULT
-
-    @staticmethod
-    @unittest.mock.patch(
-        "os.environ", new={key_module._APP_ID_ENVIRONMENT: "s~jectpro"}
-    )
-    def test_app_fallback():
+    def test_app_fallback(client):
+        client.project = "s~jectpro"
         assert key_module._project_from_app(None) == "jectpro"
 
 

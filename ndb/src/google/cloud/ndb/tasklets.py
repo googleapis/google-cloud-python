@@ -181,12 +181,16 @@ class Future:
             return self._exception.__traceback__
 
     def add_done_callback(self, callback):
-        """Add a callback function to be run upon task completion.
+        """Add a callback function to be run upon task completion. Will run
+        immediately if task has already finished.
 
         Args:
             callback (Callable): The function to execute.
         """
-        self._callbacks.append(callback)
+        if self._done:
+            callback(self)
+        else:
+            self._callbacks.append(callback)
 
     def cancel(self):
         """Cancel the task for this future.

@@ -1298,6 +1298,7 @@ class TestProperty:
 
 class Test__validate_key:
     @staticmethod
+    @pytest.mark.usefixtures("client")
     def test_valid_value():
         value = model.Key("This", 1)
         result = model._validate_key(value)
@@ -1309,6 +1310,7 @@ class Test__validate_key:
             model._validate_key(None)
 
     @staticmethod
+    @pytest.mark.usefixtures("client")
     def test_unchecked_model_type():
         value = model.Key("This", 1)
         entity = object.__new__(model.Model)
@@ -1317,6 +1319,7 @@ class Test__validate_key:
         assert result is value
 
     @staticmethod
+    @pytest.mark.usefixtures("client")
     def test_unchecked_expando_type():
         value = model.Key("This", 1)
         entity = object.__new__(model.Expando)
@@ -1325,6 +1328,7 @@ class Test__validate_key:
         assert result is value
 
     @staticmethod
+    @pytest.mark.usefixtures("client")
     def test_same_kind():
         class Mine(model.Model):
             pass
@@ -1338,6 +1342,7 @@ class Test__validate_key:
         entity._get_kind.assert_called_once_with()
 
     @staticmethod
+    @pytest.mark.usefixtures("client")
     def test_different_kind():
         class Mine(model.Model):
             pass
@@ -1361,6 +1366,7 @@ class TestModelKey:
         assert prop.__dict__ == {"_name": "__key__"}
 
     @staticmethod
+    @pytest.mark.usefixtures("client")
     def test_compare_valid():
         prop = model.ModelKey()
         value = key_module.Key("say", "quay")
@@ -1374,6 +1380,7 @@ class TestModelKey:
             prop == None  # noqa: E711
 
     @staticmethod
+    @pytest.mark.usefixtures("client")
     def test__validate():
         prop = model.ModelKey()
         value = key_module.Key("Up", 909)
@@ -1386,6 +1393,7 @@ class TestModelKey:
             prop._validate(None)
 
     @staticmethod
+    @pytest.mark.usefixtures("client")
     def test__set_value():
         entity = object.__new__(model.Model)
         value = key_module.Key("Map", 8898)
@@ -2249,6 +2257,7 @@ class TestKeyProperty:
         assert repr(prop) == expected
 
     @staticmethod
+    @pytest.mark.usefixtures("client")
     def test__validate():
         kind = "Simple"
         prop = model.KeyProperty("keyp", kind=kind)
@@ -2256,6 +2265,7 @@ class TestKeyProperty:
         assert prop._validate(value) is None
 
     @staticmethod
+    @pytest.mark.usefixtures("client")
     def test__validate_without_kind():
         prop = model.KeyProperty("keyp")
         value = key_module.Key("Foo", "Bar")
@@ -2268,6 +2278,7 @@ class TestKeyProperty:
             prop._validate(None)
 
     @staticmethod
+    @pytest.mark.usefixtures("client")
     def test__validate_partial_key():
         prop = model.KeyProperty("keyp")
         value = key_module.Key("Kynd", None)
@@ -2275,6 +2286,7 @@ class TestKeyProperty:
             prop._validate(value)
 
     @staticmethod
+    @pytest.mark.usefixtures("client")
     def test__validate_wrong_kind():
         prop = model.KeyProperty("keyp", kind="Simple")
         value = key_module.Key("Kynd", 184939)
@@ -2597,6 +2609,7 @@ class TestModel:
         assert entity.__dict__ == {"_values": {}}
 
     @staticmethod
+    @pytest.mark.usefixtures("client")
     def test_constructor_key():
         key = key_module.Key("Foo", "bar")
         entity = model.Model(key=key)
@@ -2606,12 +2619,14 @@ class TestModel:
         assert entity.__dict__ == {"_values": {}, "_entity_key": key}
 
     @staticmethod
+    @pytest.mark.usefixtures("client")
     def test_constructor_key_parts():
         entity = model.Model(id=124)
         key = key_module.Key("Model", 124)
         assert entity.__dict__ == {"_values": {}, "_entity_key": key}
 
     @staticmethod
+    @pytest.mark.usefixtures("client")
     def test_constructor_key_and_key_parts():
         key = key_module.Key("Foo", "bar")
         with pytest.raises(exceptions.BadArgumentError):
@@ -2677,6 +2692,7 @@ class TestModel:
         assert repr(entity) == expected
 
     @staticmethod
+    @pytest.mark.usefixtures("client")
     def test_repr_with_property_named_key():
         ManyFields = ManyFieldsFactory()
         entity = ManyFields(
@@ -2689,6 +2705,7 @@ class TestModel:
         assert repr(entity) == expected
 
     @staticmethod
+    @pytest.mark.usefixtures("client")
     def test_repr_with_property_named_key_not_set():
         ManyFields = ManyFieldsFactory()
         entity = ManyFields(self=909, id="hi", value=None, _id=78)
@@ -2699,6 +2716,7 @@ class TestModel:
         assert repr(entity) == expected
 
     @staticmethod
+    @pytest.mark.usefixtures("client")
     def test_repr_no_property_named_key():
         class NoKeyCollision(model.Model):
             word = model.StringProperty()
@@ -2717,6 +2735,7 @@ class TestModel:
         assert Simple._get_kind() == "Simple"
 
     @staticmethod
+    @pytest.mark.usefixtures("client")
     def test___hash__():
         ManyFields = ManyFieldsFactory()
         entity = ManyFields(self=909, id="hi", value=None, _id=78)
@@ -2724,6 +2743,7 @@ class TestModel:
             hash(entity)
 
     @staticmethod
+    @pytest.mark.usefixtures("client")
     def test___eq__wrong_type():
         class Simple(model.Model):
             pass
@@ -2734,6 +2754,7 @@ class TestModel:
         assert not entity1 == entity2
 
     @staticmethod
+    @pytest.mark.usefixtures("client")
     def test___eq__wrong_key():
         ManyFields = ManyFieldsFactory()
         entity1 = ManyFields(_id=78)
@@ -2750,6 +2771,7 @@ class TestModel:
         assert not entity1 == entity2
 
     @staticmethod
+    @pytest.mark.usefixtures("client")
     def test___eq__same_type_same_key():
         ManyFields = ManyFieldsFactory()
         entity1 = ManyFields(self=909, id="hi", _id=78)

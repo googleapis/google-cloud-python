@@ -71,6 +71,14 @@ class TestFuture:
         callback2.assert_called_once_with(future)
 
     @staticmethod
+    def test_add_done_callback_already_done():
+        callback = mock.Mock()
+        future = tasklets.Future()
+        future.set_result(42)
+        future.add_done_callback(callback)
+        callback.assert_called_once_with(future)
+
+    @staticmethod
     def test_set_exception():
         future = tasklets.Future()
         error = Exception("Spurious Error")
