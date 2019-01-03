@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.tasks_v2beta3.gapic.cloud_tasks_client &#8212; google-cloud ebe21de documentation</title>
+    <title>google.cloud.tasks_v2beta3.gapic.cloud_tasks_client &#8212; google-cloud 2a1341c documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -468,8 +468,17 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; parent = client.location_path(&#39;[PROJECT]&#39;, &#39;[LOCATION]&#39;)</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `queue`:</span>
-<span class="sd">            &gt;&gt;&gt; queue = {}</span>
+<span class="sd">            &gt;&gt;&gt; # Initialize `queue`:</span>
+<span class="sd">            &gt;&gt;&gt; queue = {</span>
+<span class="sd">            &gt;&gt;&gt;     # The fully qualified path to the queue</span>
+<span class="sd">            &gt;&gt;&gt;     &#39;name&#39;: client.queue_path(&#39;[PROJECT]&#39;, &#39;[LOCATION]&#39;, &#39;[NAME]&#39;),</span>
+<span class="sd">            &gt;&gt;&gt;     &#39;app_engine_http_queue&#39;: {</span>
+<span class="sd">            &gt;&gt;&gt;         &#39;app_engine_routing_override&#39;: {</span>
+<span class="sd">            &gt;&gt;&gt;             # The App Engine service that will receive the tasks.</span>
+<span class="sd">            &gt;&gt;&gt;             &#39;service&#39;: &#39;default&#39;,</span>
+<span class="sd">            &gt;&gt;&gt;             },</span>
+<span class="sd">            &gt;&gt;&gt;         },</span>
+<span class="sd">            &gt;&gt;&gt;     }</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; response = client.create_queue(parent, queue)</span>
 
