@@ -17,6 +17,8 @@
 This should handle both asynchronous ``ndb`` objects and arbitrary callbacks.
 """
 import collections
+import queue
+import uuid
 import time
 
 from google.cloud.ndb import _runstate
@@ -67,7 +69,14 @@ class EventLoop:
             called when the RPC finishes.
     """
 
-    __slots__ = ("current", "idlers", "inactive", "queue", "rpcs")
+    __slots__ = (
+        "current",
+        "idlers",
+        "inactive",
+        "queue",
+        "rpcs",
+        "rpc_results",
+    )
 
     def __init__(self):
         self.current = collections.deque()
@@ -75,6 +84,7 @@ class EventLoop:
         self.inactive = 0
         self.queue = []
         self.rpcs = {}
+        self.rpc_results = queue.Queue()
 
     def clear(self):
         """Remove all pending events without running any."""
@@ -141,18 +151,26 @@ class EventLoop:
         event = _Event(when, callback, args, kwargs)
         self.insort_event_right(event)
 
-    def queue_rpc(self, rpc, callback=None, *args, **kwds):
-        """Schedule an RPC with an optional callback.
+    def queue_rpc(self, rpc, callback):
+        """Add a gRPC call to the queue.
 
-        The caller must have previously sent the call to the service.
-        The optional callback is called with the remaining arguments.
+        Args:
+            rpc (:class:`grpc.Future`): The future for the gRPC call.
+            callback (Callable[[:class:`grpc.Future`], None]): Callback
+                function to execute when gRPC call has finished.
 
-        .. note::
-
-            If the rpc is a MultiRpc, the callback will be called once
-            for each sub-RPC.
+        gRPC handles its asynchronous calls in a separate processing thread, so
+        we add our own callback to `rpc` which adds `rpc` to a synchronized
+        queue when it has finished. The event loop consumes the synchronized
+        queue and calls `callback` with the finished gRPC future.
         """
-        raise NotImplementedError
+        rpc_id = uuid.uuid1()
+        self.rpcs[rpc_id] = callback
+
+        def rpc_callback(rpc):
+            self.rpc_results.put((rpc_id, rpc))
+
+        rpc.add_done_callback(rpc_callback)
 
     def add_idle(self, callback, *args, **kwargs):
         """Add an idle callback.
@@ -236,7 +254,14 @@ class EventLoop:
                 return 0
 
         if self.rpcs:
-            raise NotImplementedError
+            # This potentially blocks, waiting for an rpc to finish and put its
+            # result on the queue. Functionally equivalent to the ``wait_any``
+            # call that was used here in legacy NDB.
+            rpc_id, rpc = self.rpc_results.get()
+
+            callback = self.rpcs.pop(rpc_id)
+            callback(rpc)
+            return 0
 
         return delay
 
@@ -291,8 +316,10 @@ def queue_call(delay, callback, *args, **kwargs):
     loop.queue_call(delay, callback, *args, **kwargs)
 
 
-def queue_rpc(*args, **kwargs):
-    raise NotImplementedError
+def queue_rpc(future, rpc):
+    """Calls :method:`EventLoop.queue_rpc` on current event loop."""
+    loop = get_event_loop()
+    loop.queue_rpc(future, rpc)
 
 
 def run():
