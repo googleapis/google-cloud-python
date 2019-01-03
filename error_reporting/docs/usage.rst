@@ -99,7 +99,7 @@ line number of the location where the error was reported.
    client = error_reporting.Client()
    error_reporting.report("Found an error!")
 
- As with reporting an exception, the user and HTTP context can be provided:
+As with reporting an exception, the user and HTTP context can be provided:
 
 .. code-block:: python
 
