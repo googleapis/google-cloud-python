@@ -106,7 +106,6 @@ __all__ = [
     "add_flow_exception",
     "Future",
     "get_context",
-    "get_return_value",
     "make_context",
     "make_default_context",
     "MultiFuture",
@@ -207,7 +206,6 @@ from google.cloud.ndb.query import RepeatedStructuredPropertyPredicate
 from google.cloud.ndb.tasklets import add_flow_exception
 from google.cloud.ndb.tasklets import Future
 from google.cloud.ndb.tasklets import get_context
-from google.cloud.ndb.tasklets import get_return_value
 from google.cloud.ndb.tasklets import make_context
 from google.cloud.ndb.tasklets import make_default_context
 from google.cloud.ndb.tasklets import MultiFuture

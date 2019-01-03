@@ -14,6 +14,7 @@
 
 from unittest import mock
 
+import grpc
 import pytest
 
 from google.cloud.ndb import tasklets
@@ -75,6 +76,20 @@ class TestFuture:
         assert future.exception() is error
         assert future.get_exception() is error
         assert future.get_traceback() is error.__traceback__
+        with pytest.raises(Exception):
+            future.result()
+
+    @staticmethod
+    def test_set_exception_with_callback():
+        callback = mock.Mock()
+        future = tasklets.Future()
+        future.add_done_callback(callback)
+        error = Exception("Spurious Error")
+        future.set_exception(error)
+        assert future.exception() is error
+        assert future.get_exception() is error
+        assert future.get_traceback() is error.__traceback__
+        callback.assert_called_once_with(future)
 
     @staticmethod
     def test_set_exception_already_done():
@@ -158,14 +173,127 @@ class TestFuture:
         assert future.cancelled() is False
 
 
+class TestTaskletFuture:
+    @staticmethod
+    def test_constructor():
+        generator = object()
+        future = tasklets.TaskletFuture(generator)
+        assert future.generator is generator
+
+    @staticmethod
+    @pytest.mark.usefixtures("with_runstate_context")
+    def test__advance_tasklet_return():
+        def generator_function():
+            yield
+            return 42
+
+        generator = generator_function()
+        next(generator)  # skip ahead to return
+        future = tasklets.TaskletFuture(generator)
+        future._advance_tasklet()
+        assert future.result() == 42
+
+    @staticmethod
+    @pytest.mark.usefixtures("with_runstate_context")
+    def test__advance_tasklet_generator_raises():
+        error = Exception("Spurious error.")
+
+        def generator_function():
+            yield
+            raise error
+
+        generator = generator_function()
+        next(generator)  # skip ahead to return
+        future = tasklets.TaskletFuture(generator)
+        future._advance_tasklet()
+        assert future.exception() is error
+
+    @staticmethod
+    @pytest.mark.usefixtures("with_runstate_context")
+    def test__advance_tasklet_bad_yield():
+        def generator_function():
+            yield 42
+
+        generator = generator_function()
+        future = tasklets.TaskletFuture(generator)
+        with pytest.raises(RuntimeError):
+            future._advance_tasklet()
+
+    @staticmethod
+    @pytest.mark.usefixtures("with_runstate_context")
+    def test__advance_tasklet_dependent_returns():
+        def generator_function(dependent):
+            some_value = yield dependent
+            return some_value + 42
+
+        dependent = tasklets.Future()
+        generator = generator_function(dependent)
+        future = tasklets.TaskletFuture(generator)
+        future._advance_tasklet()
+        dependent.set_result(21)
+        assert future.result() == 63
+
+    @staticmethod
+    @pytest.mark.usefixtures("with_runstate_context")
+    def test__advance_tasklet_dependent_raises():
+        def generator_function(dependent):
+            yield dependent
+
+        error = Exception("Spurious error.")
+        dependent = tasklets.Future()
+        generator = generator_function(dependent)
+        future = tasklets.TaskletFuture(generator)
+        future._advance_tasklet()
+        dependent.set_exception(error)
+        assert future.exception() is error
+        with pytest.raises(Exception):
+            future.result()
+
+    @staticmethod
+    @pytest.mark.usefixtures("with_runstate_context")
+    def test__advance_tasklet_yields_rpc():
+        def generator_function(dependent):
+            yield dependent
+
+        dependent = mock.Mock(spec=grpc.Future)
+        generator = generator_function(dependent)
+        future = tasklets.TaskletFuture(generator)
+        with pytest.raises(NotImplementedError):
+            future._advance_tasklet()
+
+    @staticmethod
+    @pytest.mark.usefixtures("with_runstate_context")
+    def test__advance_tasklet_parallel_yield():
+        def generator_function(*dependent):
+            yield dependents
+
+        dependents = (tasklets.Future(), tasklets.Future())
+        generator = generator_function(dependents)
+        future = tasklets.TaskletFuture(generator)
+        with pytest.raises(NotImplementedError):
+            future._advance_tasklet()
+
+
 def test_get_context():
     with pytest.raises(NotImplementedError):
         tasklets.get_context()
 
 
-def test_get_return_value():
-    with pytest.raises(NotImplementedError):
-        tasklets.get_return_value()
+class Test__get_return_value:
+    @staticmethod
+    def test_no_args():
+        stop = StopIteration()
+        assert tasklets._get_return_value(stop) is None
+
+    @staticmethod
+    def test_one_arg():
+        stop = StopIteration(42)
+        assert tasklets._get_return_value(stop) == 42
+
+    @staticmethod
+    def test_two_args():
+        stop = StopIteration(42, 21)
+        assert tasklets._get_return_value(stop) == (42, 21)
 
 
 def test_make_context():
