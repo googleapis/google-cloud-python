@@ -22,6 +22,7 @@ import pytest
 from google.protobuf import descriptor_pb2
 
 from gapic.generator import generator
+from gapic.generator import options
 from gapic.schema import api
 from gapic.schema import naming
 from gapic.schema import wrappers
@@ -29,14 +30,15 @@ from gapic.schema import wrappers
 
 def test_custom_template_directory():
     # Create a generator.
-    g = generator.Generator(templates='/templates/')
+    opts = options.Options.build('python-gapic-templates=/templates/')
+    g = generator.Generator(opts)
 
     # Assert that the Jinja loader will pull from the correct location.
     assert g._env.loader.searchpath == ['/templates/']
 
 
 def test_get_response():
-    g = generator.Generator()
+    g = make_generator()
     with mock.patch.object(jinja2.FileSystemLoader, 'list_templates') as lt:
         lt.return_value = ['foo/bar/baz.py.j2']
         with mock.patch.object(jinja2.Environment, 'get_template') as gt:
@@ -50,7 +52,7 @@ def test_get_response():
 
 
 def test_get_response_ignores_private_files():
-    g = generator.Generator()
+    g = make_generator()
     with mock.patch.object(jinja2.FileSystemLoader, 'list_templates') as lt:
         lt.return_value = ['foo/bar/baz.py.j2', 'foo/bar/_base.py.j2']
         with mock.patch.object(jinja2.Environment, 'get_template') as gt:
@@ -64,7 +66,7 @@ def test_get_response_ignores_private_files():
 
 
 def test_get_response_fails_invalid_file_paths():
-    g = generator.Generator()
+    g = make_generator()
     with mock.patch.object(jinja2.FileSystemLoader, 'list_templates') as lt:
         lt.return_value = ['foo/bar/$service/$proto/baz.py.j2']
         with pytest.raises(ValueError) as ex:
@@ -73,7 +75,7 @@ def test_get_response_fails_invalid_file_paths():
 
 
 def test_get_response_enumerates_services():
-    g = generator.Generator()
+    g = make_generator()
     with mock.patch.object(jinja2.FileSystemLoader, 'list_templates') as lt:
         lt.return_value = ['foo/$service/baz.py.j2']
         with mock.patch.object(jinja2.Environment, 'get_template') as gt:
@@ -92,7 +94,7 @@ def test_get_response_enumerates_services():
 
 
 def test_get_response_enumerates_proto():
-    g = generator.Generator()
+    g = make_generator()
     with mock.patch.object(jinja2.FileSystemLoader, 'list_templates') as lt:
         lt.return_value = ['foo/$proto.py.j2']
         with mock.patch.object(jinja2.Environment, 'get_template') as gt:
@@ -106,7 +108,7 @@ def test_get_response_enumerates_proto():
 
 
 def test_get_response_divides_subpackages():
-    g = generator.Generator()
+    g = make_generator()
     api_schema = api.API.build([
         descriptor_pb2.FileDescriptorProto(
             name='top.proto',
@@ -146,7 +148,7 @@ def test_get_response_divides_subpackages():
 
 
 def test_get_filename():
-    g = generator.Generator()
+    g = make_generator()
     template_name = '$namespace/$name_$version/foo.py.j2'
     assert g._get_filename(template_name,
         api_schema=make_api(
@@ -156,7 +158,7 @@ def test_get_filename():
 
 
 def test_get_filename_with_namespace():
-    g = generator.Generator()
+    g = make_generator()
     template_name = '$namespace/$name_$version/foo.py.j2'
     assert g._get_filename(template_name,
         api_schema=make_api(
@@ -170,7 +172,7 @@ def test_get_filename_with_namespace():
 
 
 def test_get_filename_with_service():
-    g = generator.Generator()
+    g = make_generator()
     template_name = '$name/$service/foo.py.j2'
     assert g._get_filename(
         template_name,
@@ -196,7 +198,7 @@ def test_get_filename_with_proto():
         naming=make_naming(namespace=(), name='Spam', version='v2'),
     )
 
-    g = generator.Generator()
+    g = make_generator()
     assert g._get_filename(
         '$name/types/$proto.py.j2',
         api_schema=api,
@@ -221,12 +223,16 @@ def test_get_filename_with_proto_and_sub():
         subpackage_view=('baz',),
     )
 
-    g = generator.Generator()
+    g = make_generator()
     assert g._get_filename(
         '$name/types/$sub/$proto.py.j2',
         api_schema=api,
         context={'proto': api.protos['bacon.proto']},
     ) == 'bar/types/baz/bacon.py'
+
+
+def make_generator(opts_str: str = '') -> generator.Generator:
+    return generator.Generator(options.Options.build(opts_str))
 
 
 def make_proto(file_pb: descriptor_pb2.FileDescriptorProto,

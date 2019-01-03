@@ -23,6 +23,7 @@ from google.protobuf.compiler.plugin_pb2 import CodeGeneratorResponse
 
 from gapic import utils
 from gapic.generator import formatter
+from gapic.generator import options
 from gapic.schema import api
 
 
@@ -34,21 +35,15 @@ class Generator:
     schema object (which it does through rendering templates).
 
     Args:
+        opts (~.options.Options): An options instance.
         templates (str): Optional. Path to the templates to be
             rendered. If this is not provided, the templates included with
             this application are used.
     """
-    def __init__(self, templates: str = None) -> None:
-        # If explicit templates were not provided, use our default.
-        if not templates:
-            templates = os.path.join(
-                os.path.realpath(os.path.dirname(__file__)),
-                '..', 'templates',
-            )
-
+    def __init__(self, opts: options.Options) -> None:
         # Create the jinja environment with which to render templates.
         self._env = jinja2.Environment(
-            loader=jinja2.FileSystemLoader(searchpath=templates),
+            loader=jinja2.FileSystemLoader(searchpath=opts.templates),
             undefined=jinja2.StrictUndefined,
         )
 

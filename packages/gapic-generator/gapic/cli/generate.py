@@ -22,6 +22,7 @@ from google.protobuf.compiler import plugin_pb2
 
 from gapic import generator
 from gapic.schema import api
+from gapic.generator import options
 
 
 @click.command()
@@ -32,18 +33,16 @@ from gapic.schema import api
 @click.option('--output', type=click.File('wb'), default=sys.stdout.buffer,
               help='Where to output the `CodeGeneratorResponse`. '
                    'Defaults to stdout.')
-@click.option('--templates', type=click.Path(exists=True), default=None,
-              help='Which templates to use to generate a library. '
-                   'Defaults to the templates included in gapic-generator, '
-                   'which generate client libraries for Python 3.4 and up.')
 def generate(
         request: typing.BinaryIO,
-        output: typing.BinaryIO,
-        templates: str = None) -> None:
+        output: typing.BinaryIO) -> None:
     """Generate a full API client description."""
 
     # Load the protobuf CodeGeneratorRequest.
     req = plugin_pb2.CodeGeneratorRequest.FromString(request.read())
+
+    # Pull apart arguments in the request.
+    opts = options.Options.build(req.parameter)
 
     # Determine the appropriate package.
     # This generator uses a slightly different mechanism for determining
@@ -62,7 +61,7 @@ def generate(
     # Translate into a protobuf CodeGeneratorResponse; this reads the
     # individual templates and renders them.
     # If there are issues, error out appropriately.
-    res = generator.Generator(templates).get_response(api_schema)
+    res = generator.Generator(opts).get_response(api_schema)
 
     # Output the serialized response.
     output.write(res.SerializeToString())

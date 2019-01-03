@@ -1,5 +1,5 @@
 Templates
----------
+=========
 
 This page provides a description of templates: how to write them, what
 variables they receive, and so on and so forth.
@@ -9,7 +9,7 @@ based on protocol buffers by only editing templates (or authoring new ones),
 with no requirement to alter the primary codebase itself.
 
 Jinja
-~~~~~
+-----
 
 All templates are implemented in `Jinja`_, Armin Ronacher's excellent
 templating library for Python. This document assumes that you are already
@@ -18,11 +18,17 @@ cover that here.
 
 
 Locating Templates
-~~~~~~~~~~~~~~~~~~
+------------------
 
 Templates are included in output simply on the basis that they exist.
 **There is no master list of templates**; it is assumed that every template
 should be rendered (unless its name begins with a single underscore).
+
+.. note::
+
+    Files beginning with an underscore (``_``) are not rendered by default.
+    This is to allow them to be used with ``extends`` and ``include``.
+    However, ``__init__.py.j2`` is rendered.
 
 The name of the output file is based on the name of the template, with
 the following string replacements applied:
@@ -49,7 +55,7 @@ the following string replacements applied:
     and the underscore are dropped.
 
 Context (Variables)
-~~~~~~~~~~~~~~~~~~~
+-------------------
 
 Every template receives one variable, spelled ``api``. It is the
 :class:`~.schema.api.API` object that was pieced together in the parsing step.
@@ -72,7 +78,7 @@ API structure is being iterated over:
     currently being iterated over.
 
 Filters
-~~~~~~~
+-------
 
 Additionally, templates receive a limited number of filters useful for
 writing properly formatted templates.
@@ -88,5 +94,66 @@ These are:
   arguments on this method such as ``offset`` and ``indent`` should make it
   relatively easy to take an arbitrary string and make it wrap to 79
   characters appropriately.
+
+Custom templates
+----------------
+
+It is possible to provide your own templates.
+
+To do so, you need a folder with Jinja templates. Each template must have
+a ``.j2`` extension (which will be stripped by this software when writing
+the final file; see above). Additionally, when you provide your own templates,
+the filename substitutions described above still occur.
+
+Building Locally
+~~~~~~~~~~~~~~~~
+
+To specify templates, you need to provide a ``--python_gapic_opt`` argument
+to ``protoc``, with a key-value pair that looks like:
+
+    --python_gapic_opt="python-gapic-templates=/path/to/templates"
+
+It is *also* possible to specify more than one directory for templates
+(in which case they are searched in order); to do this, provide the argument
+multiple times:
+
+    --python_gapic_opt="python-gapic-templates=/path/to/templates"
+    --python_gapic_opt="python-gapic-templates=/other/path"
+
+If you provide your own templates, the default templates are no longer
+consulted. If you want to add your own templates on top of the default ones
+provided by this library, use the special `DEFAULT` string:
+
+    --python_gapic_opt="python-gapic-templates=/path/to/templates"
+    --python_gapic_opt="python-gapic-templates=DEFAULT"
+
+Building with Docker
+~~~~~~~~~~~~~~~~~~~~
+
+When building with Docker, you instead provide the ``--python-gapic-templates``
+argument after the ``docker run`` command:
+
+.. code-block:: shell
+
+    $ docker run \
+      --mount type=bind,source=google/cloud/vision/v1/,destination=/in/google/cloud/vision/v1/,readonly \
+      --mount type=bind,source=dest/,destination=/out/ \
+      --mount type=bind,source=/path/to/templates,destination=/templates/,readonly \
+      --rm \
+      --user $UID \
+      gcr.io/gapic-images/gapic-generator-python \
+      --python-gapic-templates /templates/ \
+      --python-gapic-templates DEFAULT
+
+As before, to provide more than one location for templates, specify the
+argument more than once.
+
+.. warning::
+
+    If you are using custom templates with Docker, be sure to also mount
+    the directory with the templates into the Docker image; otherwise
+    the generator will not be able to read that directory. When specifying
+    the ``--python-gapic-templates`` argument, it is the path *inside*
+    the Docker image that matters!
 
 .. _Jinja: http://jinja.pocoo.org/docs/2.10/
