@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Table &#8212; google-cloud a28ef0d documentation</title>
+    <title>Table &#8212; google-cloud 3fc8616 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -166,7 +166,7 @@ column family.</li>
     <span class="n">table2</span> <span class="o">=</span> <span class="n">instance</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s2">&quot;table_id2&quot;</span><span class="p">)</span>
     <span class="c1"># Define the GC policy to retain only the most recent 2 versions.</span>
     <span class="n">max_versions_rule</span> <span class="o">=</span> <span class="n">column_family</span><span class="o">.</span><span class="n">MaxVersionsGCRule</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-    <span class="n">table2</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">column_families</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;cf1&#39;</span><span class="p">:</span> <span class="n">max_versions_rule</span><span class="p">})</span>
+    <span class="n">table2</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">column_families</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;cf1&quot;</span><span class="p">:</span> <span class="n">max_versions_rule</span><span class="p">})</span>
 
 </pre></div>
 </div>
@@ -217,7 +217,7 @@ the column_id str and the value is a
     <span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="n">admin</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="n">instance</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">instance</span><span class="p">(</span><span class="n">INSTANCE_ID</span><span class="p">)</span>
     <span class="n">table</span> <span class="o">=</span> <span class="n">instance</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="n">TABLE_ID</span><span class="p">)</span>
-    <span class="n">row_key_prefix</span> <span class="o">=</span> <span class="sa">b</span><span class="s1">&#39;row_key_2&#39;</span>
+    <span class="n">row_key_prefix</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;row_key_2&quot;</span>
     <span class="n">table</span><span class="o">.</span><span class="n">drop_by_prefix</span><span class="p">(</span><span class="n">row_key_prefix</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -339,23 +339,29 @@ name from the column family ID.</td>
     <span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="n">admin</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="n">instance</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">instance</span><span class="p">(</span><span class="n">INSTANCE_ID</span><span class="p">)</span>
     <span class="n">table</span> <span class="o">=</span> <span class="n">instance</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="n">TABLE_ID</span><span class="p">)</span>
-    <span class="n">row_keys</span> <span class="o">=</span> <span class="p">[</span><span class="sa">b</span><span class="s1">&#39;row_key_1&#39;</span><span class="p">,</span> <span class="sa">b</span><span class="s1">&#39;row_key_2&#39;</span><span class="p">,</span> <span class="sa">b</span><span class="s1">&#39;row_key_3&#39;</span><span class="p">,</span> <span class="sa">b</span><span class="s1">&#39;row_key_4&#39;</span><span class="p">,</span>
-                <span class="sa">b</span><span class="s1">&#39;row_key_20&#39;</span><span class="p">,</span> <span class="sa">b</span><span class="s1">&#39;row_key_22&#39;</span><span class="p">,</span> <span class="sa">b</span><span class="s1">&#39;row_key_200&#39;</span><span class="p">]</span>
-    <span class="n">col_name</span> <span class="o">=</span> <span class="sa">b</span><span class="s1">&#39;col-name1&#39;</span>
+    <span class="n">row_keys</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="sa">b</span><span class="s2">&quot;row_key_1&quot;</span><span class="p">,</span>
+        <span class="sa">b</span><span class="s2">&quot;row_key_2&quot;</span><span class="p">,</span>
+        <span class="sa">b</span><span class="s2">&quot;row_key_3&quot;</span><span class="p">,</span>
+        <span class="sa">b</span><span class="s2">&quot;row_key_4&quot;</span><span class="p">,</span>
+        <span class="sa">b</span><span class="s2">&quot;row_key_20&quot;</span><span class="p">,</span>
+        <span class="sa">b</span><span class="s2">&quot;row_key_22&quot;</span><span class="p">,</span>
+        <span class="sa">b</span><span class="s2">&quot;row_key_200&quot;</span><span class="p">,</span>
+    <span class="p">]</span>
+    <span class="n">col_name</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;col-name1&quot;</span>
     <span class="n">rows</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">row_key</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">row_keys</span><span class="p">):</span>
-        <span class="n">value</span> <span class="o">=</span> <span class="s1">&#39;value_</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">()</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="s2">&quot;value_</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">()</span>
         <span class="n">row</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">row</span><span class="p">(</span><span class="n">row_key</span><span class="p">)</span>
-        <span class="n">row</span><span class="o">.</span><span class="n">set_cell</span><span class="p">(</span><span class="n">COLUMN_FAMILY_ID</span><span class="p">,</span>
-                     <span class="n">col_name</span><span class="p">,</span>
-                     <span class="n">value</span><span class="p">,</span>
-                     <span class="n">timestamp</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">())</span>
+        <span class="n">row</span><span class="o">.</span><span class="n">set_cell</span><span class="p">(</span>
+            <span class="n">COLUMN_FAMILY_ID</span><span class="p">,</span> <span class="n">col_name</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">timestamp</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span>
+        <span class="p">)</span>
         <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
     <span class="n">response</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">mutate_rows</span><span class="p">(</span><span class="n">rows</span><span class="p">)</span>
     <span class="c1"># validate that all rows written successfully</span>
     <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">status</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">response</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">status</span><span class="o">.</span><span class="n">code</span> <span class="ow">is</span> <span class="ow">not</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Row number </span><span class="si">{}</span><span class="s1"> failed to write&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Row number </span><span class="si">{}</span><span class="s2"> failed to write&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
 </pre></div>
 </div>
 <p>The method tries to update all specified rows.
@@ -470,7 +476,7 @@ return value is not cached.</p>
     <span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="n">admin</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="n">instance</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">instance</span><span class="p">(</span><span class="n">INSTANCE_ID</span><span class="p">)</span>
     <span class="n">table</span> <span class="o">=</span> <span class="n">instance</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="n">TABLE_ID</span><span class="p">)</span>
-    <span class="n">row_key</span> <span class="o">=</span> <span class="s1">&#39;row_key_1&#39;</span>
+    <span class="n">row_key</span> <span class="o">=</span> <span class="s2">&quot;row_key_1&quot;</span>
     <span class="n">row</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">read_row</span><span class="p">(</span><span class="n">row_key</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -567,7 +573,7 @@ the streamed results.</p>
     <span class="n">instance</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">instance</span><span class="p">(</span><span class="n">INSTANCE_ID</span><span class="p">)</span>
     <span class="n">table</span> <span class="o">=</span> <span class="n">instance</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="n">TABLE_ID</span><span class="p">)</span>
 
-    <span class="n">row_keys</span> <span class="o">=</span> <span class="p">[</span><span class="sa">b</span><span class="s1">&#39;row_key_1&#39;</span><span class="p">,</span> <span class="sa">b</span><span class="s1">&#39;row_key_2&#39;</span><span class="p">]</span>
+    <span class="n">row_keys</span> <span class="o">=</span> <span class="p">[</span><span class="sa">b</span><span class="s2">&quot;row_key_1&quot;</span><span class="p">,</span> <span class="sa">b</span><span class="s2">&quot;row_key_2&quot;</span><span class="p">]</span>
     <span class="n">row1_obj</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">row</span><span class="p">(</span><span class="n">row_keys</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
     <span class="n">row2_obj</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">row</span><span class="p">(</span><span class="n">row_keys</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
 </pre></div>
