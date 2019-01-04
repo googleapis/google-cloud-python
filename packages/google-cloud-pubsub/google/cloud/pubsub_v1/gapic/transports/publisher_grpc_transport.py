@@ -102,7 +102,7 @@ class PublisherGrpcTransport(object):
 
     @property
     def create_topic(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`PublisherClient.create_topic`.
 
         Creates the given topic with the given name. See the resource name
         rules.
@@ -116,7 +116,7 @@ class PublisherGrpcTransport(object):
 
     @property
     def update_topic(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`PublisherClient.update_topic`.
 
         Updates an existing topic. Note that certain properties of a
         topic are not modifiable.
@@ -130,7 +130,7 @@ class PublisherGrpcTransport(object):
 
     @property
     def publish(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`PublisherClient.publish`.
 
         Adds one or more messages to the topic. Returns ``NOT_FOUND`` if the
         topic does not exist.
@@ -144,7 +144,7 @@ class PublisherGrpcTransport(object):
 
     @property
     def get_topic(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`PublisherClient.get_topic`.
 
         Gets the configuration of a topic.
 
@@ -157,7 +157,7 @@ class PublisherGrpcTransport(object):
 
     @property
     def list_topics(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`PublisherClient.list_topics`.
 
         Lists matching topics.
 
@@ -170,7 +170,7 @@ class PublisherGrpcTransport(object):
 
     @property
     def list_topic_subscriptions(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`PublisherClient.list_topic_subscriptions`.
 
         Lists the names of the subscriptions on this topic.
 
@@ -183,7 +183,7 @@ class PublisherGrpcTransport(object):
 
     @property
     def delete_topic(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`PublisherClient.delete_topic`.
 
         Deletes the topic with the given name. Returns ``NOT_FOUND`` if the
         topic does not exist. After a topic is deleted, a new topic may be
@@ -201,7 +201,7 @@ class PublisherGrpcTransport(object):
 
     @property
     def set_iam_policy(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`PublisherClient.set_iam_policy`.
 
         Sets the access control policy on the specified resource. Replaces any
         existing policy.
@@ -215,7 +215,7 @@ class PublisherGrpcTransport(object):
 
     @property
     def get_iam_policy(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`PublisherClient.get_iam_policy`.
 
         Gets the access control policy for a resource.
         Returns an empty policy if the resource exists and does not have a policy
@@ -230,7 +230,7 @@ class PublisherGrpcTransport(object):
 
     @property
     def test_iam_permissions(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`PublisherClient.test_iam_permissions`.
 
         Returns permissions that a caller has on the specified resource. If the
         resource does not exist, this will return an empty set of permissions,
