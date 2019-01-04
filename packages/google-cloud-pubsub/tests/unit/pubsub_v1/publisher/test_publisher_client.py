@@ -36,6 +36,19 @@ def test_init():
     assert client.batch_settings.max_messages == 1000
 
 
+def test_init_w_custom_transport():
+    transport = object()
+    client = publisher.Client(transport=transport)
+
+    # A plain client should have an `api` (the underlying GAPIC) and a
+    # batch settings object, which should have the defaults.
+    assert isinstance(client.api, publisher_client.PublisherClient)
+    assert client.api.transport is transport
+    assert client.batch_settings.max_bytes == 10 * 1000 * 1000
+    assert client.batch_settings.max_latency == 0.05
+    assert client.batch_settings.max_messages == 1000
+
+
 def test_init_emulator(monkeypatch):
     monkeypatch.setenv("PUBSUB_EMULATOR_HOST", "/foo/bar/")
     # NOTE: When the emulator host is set, a custom channel will be used, so

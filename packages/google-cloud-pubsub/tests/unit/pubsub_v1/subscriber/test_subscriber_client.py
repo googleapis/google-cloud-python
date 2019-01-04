@@ -16,6 +16,7 @@ from google.auth import credentials
 import mock
 
 from google.cloud.pubsub_v1 import subscriber
+from google.cloud.pubsub_v1.gapic import subscriber_client
 from google.cloud.pubsub_v1 import types
 from google.cloud.pubsub_v1.subscriber import futures
 
@@ -23,7 +24,14 @@ from google.cloud.pubsub_v1.subscriber import futures
 def test_init():
     creds = mock.Mock(spec=credentials.Credentials)
     client = subscriber.Client(credentials=creds)
-    assert client.api is not None
+    assert isinstance(client.api, subscriber_client.SubscriberClient)
+
+
+def test_init_w_custom_transport():
+    transport = object()
+    client = subscriber.Client(transport=transport)
+    assert isinstance(client.api, subscriber_client.SubscriberClient)
+    assert client.api.transport is transport
 
 
 def test_init_emulator(monkeypatch):
