@@ -32,6 +32,38 @@ class NullValue(enum.IntEnum):
     NULL_VALUE = 0
 
 
+class CommitRequest(object):
+    class Mode(enum.IntEnum):
+        """
+        The modes available for commits.
+
+        Attributes:
+          MODE_UNSPECIFIED (int): Unspecified. This value must not be used.
+          TRANSACTIONAL (int): Transactional: The mutations are either all applied, or none are
+          applied. Learn about transactions
+          `here <https://cloud.google.com/datastore/docs/concepts/transactions>`__.
+          NON_TRANSACTIONAL (int): Non-transactional: The mutations may not apply as all or none.
+        """
+
+        MODE_UNSPECIFIED = 0
+        TRANSACTIONAL = 1
+        NON_TRANSACTIONAL = 2
+
+
+class CompositeFilter(object):
+    class Operator(enum.IntEnum):
+        """
+        A composite filter operator.
+
+        Attributes:
+          OPERATOR_UNSPECIFIED (int): Unspecified. This value must not be used.
+          AND (int): The results are required to satisfy each of the combined filters.
+        """
+
+        OPERATOR_UNSPECIFIED = 0
+        AND = 1
+
+
 class EntityResult(object):
     class ResultType(enum.IntEnum):
         """
@@ -53,36 +85,6 @@ class EntityResult(object):
         FULL = 1
         PROJECTION = 2
         KEY_ONLY = 3
-
-
-class PropertyOrder(object):
-    class Direction(enum.IntEnum):
-        """
-        The sort direction.
-
-        Attributes:
-          DIRECTION_UNSPECIFIED (int): Unspecified. This value must not be used.
-          ASCENDING (int): Ascending.
-          DESCENDING (int): Descending.
-        """
-
-        DIRECTION_UNSPECIFIED = 0
-        ASCENDING = 1
-        DESCENDING = 2
-
-
-class CompositeFilter(object):
-    class Operator(enum.IntEnum):
-        """
-        A composite filter operator.
-
-        Attributes:
-          OPERATOR_UNSPECIFIED (int): Unspecified. This value must not be used.
-          AND (int): The results are required to satisfy each of the combined filters.
-        """
-
-        OPERATOR_UNSPECIFIED = 0
-        AND = 1
 
 
 class PropertyFilter(object):
@@ -109,6 +111,22 @@ class PropertyFilter(object):
         HAS_ANCESTOR = 11
 
 
+class PropertyOrder(object):
+    class Direction(enum.IntEnum):
+        """
+        The sort direction.
+
+        Attributes:
+          DIRECTION_UNSPECIFIED (int): Unspecified. This value must not be used.
+          ASCENDING (int): Ascending.
+          DESCENDING (int): Descending.
+        """
+
+        DIRECTION_UNSPECIFIED = 0
+        ASCENDING = 1
+        DESCENDING = 2
+
+
 class QueryResultBatch(object):
     class MoreResultsType(enum.IntEnum):
         """
@@ -128,24 +146,6 @@ class QueryResultBatch(object):
         MORE_RESULTS_AFTER_LIMIT = 2
         MORE_RESULTS_AFTER_CURSOR = 4
         NO_MORE_RESULTS = 3
-
-
-class CommitRequest(object):
-    class Mode(enum.IntEnum):
-        """
-        The modes available for commits.
-
-        Attributes:
-          MODE_UNSPECIFIED (int): Unspecified. This value must not be used.
-          TRANSACTIONAL (int): Transactional: The mutations are either all applied, or none are
-          applied. Learn about transactions
-          `here <https://cloud.google.com/datastore/docs/concepts/transactions>`__.
-          NON_TRANSACTIONAL (int): Non-transactional: The mutations may not apply as all or none.
-        """
-
-        MODE_UNSPECIFIED = 0
-        TRANSACTIONAL = 1
-        NON_TRANSACTIONAL = 2
 
 
 class ReadOptions(object):
