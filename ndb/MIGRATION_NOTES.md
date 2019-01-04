@@ -83,9 +83,6 @@ The primary differences come from:
   Now `Property._FIND_METHODS_CACHE` is set to `{}` when the `Property` class
   is created and there is another level of keys (based on fully-qualified
   class name) in the cache.
-- `eventloop` has been renamed to `_eventloop`. It is believed that `eventloop`
-  was previously a *de facto* private module, so we've just made that
-  explicit.
 - `BlobProperty._datastore_type` has not been implemented; the base class
   implementation is sufficient. The original implementation wrapped a byte
   string in a `google.appengine.api.datastore_types.ByteString` instance, but
@@ -128,6 +125,19 @@ The primary differences come from:
   This method shouldn't generally be called by user code, anyway.
 - `Future.state` is omitted as it is redundant. Call `Future.done()` or
   `Future.running()` to get the state of a future.
+
+## Privatization
+
+One thing legacy NDB didn't do very well, was distinguishing between internal
+private and external public API. A few bits of the nominally public API 
+have been found to be *de facto* private. These are pieces that are omitted
+from public facing documentation and which have no apparent use outside of NDB
+internals. These pieces have been formally renamed and moved to be internally
+facing, private API:
+
+- `eventloop` has been renamed to `_eventloop`.
+- `tasklets.get_return_value` has been renamed to `tasklets._get_return_value`
+  and is no longer among top level exports.
 
 ## Bare Metal
 
