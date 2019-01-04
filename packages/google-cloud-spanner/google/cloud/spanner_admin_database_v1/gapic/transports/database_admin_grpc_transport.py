@@ -110,7 +110,7 @@ class DatabaseAdminGrpcTransport(object):
 
     @property
     def list_databases(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`DatabaseAdminClient.list_databases`.
 
         Lists Cloud Spanner databases.
 
@@ -123,7 +123,7 @@ class DatabaseAdminGrpcTransport(object):
 
     @property
     def create_database(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`DatabaseAdminClient.create_database`.
 
         Creates a new Cloud Spanner database and starts to prepare it for
         serving. The returned ``long-running operation`` will have a name of the
@@ -141,7 +141,7 @@ class DatabaseAdminGrpcTransport(object):
 
     @property
     def get_database(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`DatabaseAdminClient.get_database`.
 
         Gets the state of a Cloud Spanner database.
 
@@ -154,7 +154,7 @@ class DatabaseAdminGrpcTransport(object):
 
     @property
     def update_database_ddl(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`DatabaseAdminClient.update_database_ddl`.
 
         Updates the schema of a Cloud Spanner database by
         creating/altering/dropping tables, columns, indexes, etc. The returned
@@ -172,7 +172,7 @@ class DatabaseAdminGrpcTransport(object):
 
     @property
     def drop_database(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`DatabaseAdminClient.drop_database`.
 
         Drops (aka deletes) a Cloud Spanner database.
 
@@ -185,7 +185,7 @@ class DatabaseAdminGrpcTransport(object):
 
     @property
     def get_database_ddl(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`DatabaseAdminClient.get_database_ddl`.
 
         Returns the schema of a Cloud Spanner database as a list of formatted
         DDL statements. This method does not show pending schema updates, those
@@ -200,7 +200,7 @@ class DatabaseAdminGrpcTransport(object):
 
     @property
     def set_iam_policy(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`DatabaseAdminClient.set_iam_policy`.
 
         Sets the access control policy on a database resource. Replaces any
         existing policy.
@@ -217,7 +217,7 @@ class DatabaseAdminGrpcTransport(object):
 
     @property
     def get_iam_policy(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`DatabaseAdminClient.get_iam_policy`.
 
         Gets the access control policy for a database resource. Returns an empty
         policy if a database exists but does not have a policy set.
@@ -234,7 +234,7 @@ class DatabaseAdminGrpcTransport(object):
 
     @property
     def test_iam_permissions(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`DatabaseAdminClient.test_iam_permissions`.
 
         Returns permissions that the caller has on the specified database
         resource.

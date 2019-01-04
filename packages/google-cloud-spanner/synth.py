@@ -131,4 +131,13 @@ s.replace(
 templated_files = common.py_library(unit_cov_level=97, cov_level=100)
 s.move(templated_files)
 
+# Template's MANIFEST.in does not include the needed GAPIC config file.
+# See PR #6928.
+s.replace(
+    "MANIFEST.in",
+    "include README.rst LICENSE\n",
+    "include README.rst LICENSE\n"
+    "include google/cloud/spanner_v1/gapic/transports/spanner.grpc.config\n",
+)
+
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)

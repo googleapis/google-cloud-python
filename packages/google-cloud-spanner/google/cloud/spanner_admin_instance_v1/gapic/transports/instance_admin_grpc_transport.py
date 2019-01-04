@@ -110,7 +110,7 @@ class InstanceAdminGrpcTransport(object):
 
     @property
     def list_instance_configs(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`InstanceAdminClient.list_instance_configs`.
 
         Lists the supported instance configurations for a given project.
 
@@ -123,7 +123,7 @@ class InstanceAdminGrpcTransport(object):
 
     @property
     def get_instance_config(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`InstanceAdminClient.get_instance_config`.
 
         Gets information about a particular instance configuration.
 
@@ -136,7 +136,7 @@ class InstanceAdminGrpcTransport(object):
 
     @property
     def list_instances(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`InstanceAdminClient.list_instances`.
 
         Lists all instances in the given project.
 
@@ -149,7 +149,7 @@ class InstanceAdminGrpcTransport(object):
 
     @property
     def get_instance(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`InstanceAdminClient.get_instance`.
 
         Gets information about a particular instance.
 
@@ -162,7 +162,7 @@ class InstanceAdminGrpcTransport(object):
 
     @property
     def create_instance(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`InstanceAdminClient.create_instance`.
 
         Creates an instance and begins preparing it to begin serving. The
         returned ``long-running operation`` can be used to track the progress of
@@ -205,7 +205,7 @@ class InstanceAdminGrpcTransport(object):
 
     @property
     def update_instance(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`InstanceAdminClient.update_instance`.
 
         Updates an instance, and begins allocating or releasing resources as
         requested. The returned ``long-running  operation`` can be used to track
@@ -253,7 +253,7 @@ class InstanceAdminGrpcTransport(object):
 
     @property
     def delete_instance(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`InstanceAdminClient.delete_instance`.
 
         Deletes an instance.
 
@@ -276,7 +276,7 @@ class InstanceAdminGrpcTransport(object):
 
     @property
     def set_iam_policy(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`InstanceAdminClient.set_iam_policy`.
 
         Sets the access control policy on an instance resource. Replaces any
         existing policy.
@@ -293,7 +293,7 @@ class InstanceAdminGrpcTransport(object):
 
     @property
     def get_iam_policy(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`InstanceAdminClient.get_iam_policy`.
 
         Gets the access control policy for an instance resource. Returns an
         empty policy if an instance exists but does not have a policy set.
@@ -310,7 +310,7 @@ class InstanceAdminGrpcTransport(object):
 
     @property
     def test_iam_permissions(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`InstanceAdminClient.test_iam_permissions`.
 
         Returns permissions that the caller has on the specified instance
         resource.
