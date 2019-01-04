@@ -95,7 +95,7 @@ class CloudTasksGrpcTransport(object):
 
     @property
     def list_queues(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`CloudTasksClient.list_queues`.
 
         Lists queues.
 
@@ -110,7 +110,7 @@ class CloudTasksGrpcTransport(object):
 
     @property
     def get_queue(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`CloudTasksClient.get_queue`.
 
         Gets a queue.
 
@@ -123,7 +123,7 @@ class CloudTasksGrpcTransport(object):
 
     @property
     def create_queue(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`CloudTasksClient.create_queue`.
 
         Creates a queue.
 
@@ -146,7 +146,7 @@ class CloudTasksGrpcTransport(object):
 
     @property
     def update_queue(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`CloudTasksClient.update_queue`.
 
         Updates a queue.
 
@@ -172,7 +172,7 @@ class CloudTasksGrpcTransport(object):
 
     @property
     def delete_queue(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`CloudTasksClient.delete_queue`.
 
         Deletes a queue.
 
@@ -196,7 +196,7 @@ class CloudTasksGrpcTransport(object):
 
     @property
     def purge_queue(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`CloudTasksClient.purge_queue`.
 
         Purges a queue by deleting all of its tasks.
 
@@ -214,7 +214,7 @@ class CloudTasksGrpcTransport(object):
 
     @property
     def pause_queue(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`CloudTasksClient.pause_queue`.
 
         Pauses the queue.
 
@@ -231,7 +231,7 @@ class CloudTasksGrpcTransport(object):
 
     @property
     def resume_queue(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`CloudTasksClient.resume_queue`.
 
         Resume a queue.
 
@@ -253,7 +253,7 @@ class CloudTasksGrpcTransport(object):
 
     @property
     def get_iam_policy(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`CloudTasksClient.get_iam_policy`.
 
         Gets the access control policy for a ``Queue``. Returns an empty policy
         if the resource exists and does not have a policy set.
@@ -273,7 +273,7 @@ class CloudTasksGrpcTransport(object):
 
     @property
     def set_iam_policy(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`CloudTasksClient.set_iam_policy`.
 
         Sets the access control policy for a ``Queue``. Replaces any existing
         policy.
@@ -296,7 +296,7 @@ class CloudTasksGrpcTransport(object):
 
     @property
     def test_iam_permissions(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`CloudTasksClient.test_iam_permissions`.
 
         Returns permissions that a caller has on a ``Queue``. If the resource
         does not exist, this will return an empty set of permissions, not a
@@ -315,7 +315,7 @@ class CloudTasksGrpcTransport(object):
 
     @property
     def list_tasks(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`CloudTasksClient.list_tasks`.
 
         Lists the tasks in a queue.
 
@@ -335,7 +335,7 @@ class CloudTasksGrpcTransport(object):
 
     @property
     def get_task(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`CloudTasksClient.get_task`.
 
         Gets a task.
 
@@ -348,7 +348,7 @@ class CloudTasksGrpcTransport(object):
 
     @property
     def create_task(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`CloudTasksClient.create_task`.
 
         Creates a task and adds it to a queue.
 
@@ -366,7 +366,7 @@ class CloudTasksGrpcTransport(object):
 
     @property
     def delete_task(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`CloudTasksClient.delete_task`.
 
         Deletes a task.
 
@@ -383,7 +383,7 @@ class CloudTasksGrpcTransport(object):
 
     @property
     def lease_tasks(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`CloudTasksClient.lease_tasks`.
 
         Leases tasks from a pull queue for ``lease_duration``.
 
@@ -409,7 +409,7 @@ class CloudTasksGrpcTransport(object):
 
     @property
     def acknowledge_task(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`CloudTasksClient.acknowledge_task`.
 
         Acknowledges a pull task.
 
@@ -430,7 +430,7 @@ class CloudTasksGrpcTransport(object):
 
     @property
     def renew_lease(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`CloudTasksClient.renew_lease`.
 
         Renew the current lease of a pull task.
 
@@ -447,7 +447,7 @@ class CloudTasksGrpcTransport(object):
 
     @property
     def cancel_lease(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`CloudTasksClient.cancel_lease`.
 
         Cancel a pull task's lease.
 
@@ -464,7 +464,7 @@ class CloudTasksGrpcTransport(object):
 
     @property
     def run_task(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`CloudTasksClient.run_task`.
 
         Forces a task to run now.
 
