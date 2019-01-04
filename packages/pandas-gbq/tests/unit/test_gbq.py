@@ -29,6 +29,15 @@ def mock_none_credentials(*args, **kwargs):
     return None, None
 
 
+def mock_get_credentials_no_project(*args, **kwargs):
+    import google.auth.credentials
+
+    mock_credentials = mock.create_autospec(
+        google.auth.credentials.Credentials
+    )
+    return mock_credentials, None
+
+
 def mock_get_credentials(*args, **kwargs):
     import google.auth.credentials
 
@@ -50,22 +59,9 @@ def mock_get_user_credentials(*args, **kwargs):
 @pytest.fixture(autouse=True)
 def no_auth(monkeypatch):
     from pandas_gbq import auth
+    import pydata_google_auth
 
-    monkeypatch.setattr(
-        auth, "get_application_default_credentials", mock_get_credentials
-    )
-    monkeypatch.setattr(
-        auth, "get_user_account_credentials", mock_get_user_credentials
-    )
-    monkeypatch.setattr(
-        auth, "_try_credentials", lambda project_id, credentials: credentials
-    )
-
-
-def test_should_return_credentials_path_set_by_env_var():
-    env = {"PANDAS_GBQ_CREDENTIALS_FILE": "/tmp/dummy.dat"}
-    with mock.patch.dict("os.environ", env):
-        assert gbq._get_credentials_file() == "/tmp/dummy.dat"
+    monkeypatch.setattr(pydata_google_auth, "default", mock_get_credentials)
 
 
 @pytest.mark.parametrize(
@@ -97,10 +93,10 @@ def test_to_gbq_should_fail_if_invalid_table_name_passed():
 
 
 def test_to_gbq_with_no_project_id_given_should_fail(monkeypatch):
-    from pandas_gbq import auth
+    import pydata_google_auth
 
     monkeypatch.setattr(
-        auth, "get_application_default_credentials", mock_none_credentials
+        pydata_google_auth, "default", mock_get_credentials_no_project
     )
 
     with pytest.raises(ValueError) as exception:
@@ -252,10 +248,10 @@ def test_to_gbq_doesnt_run_query(
 
 
 def test_read_gbq_with_no_project_id_given_should_fail(monkeypatch):
-    from pandas_gbq import auth
+    import pydata_google_auth
 
     monkeypatch.setattr(
-        auth, "get_application_default_credentials", mock_none_credentials
+        pydata_google_auth, "default", mock_get_credentials_no_project
     )
 
     with pytest.raises(ValueError) as exception:

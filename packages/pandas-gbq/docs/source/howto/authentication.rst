@@ -7,7 +7,7 @@ pandas-gbq `authenticates with the Google BigQuery service
 .. _authentication:
 
 
-Authentication with a Service Account
+Authenticating with a Service Account
 --------------------------------------
 
 Using service account credentials is particularly useful when working on
@@ -57,9 +57,80 @@ To use service account credentials, set the ``credentials`` parameter to the res
         )
         df = pandas_gbq.read_gbq(sql, project_id="YOUR-PROJECT-ID", credentials=credentials)
 
+Use the :func:`~google.oauth2.service_account.Credentials.with_scopes` method
+to use authorize with specific OAuth2 scopes, which may be required in
+queries to federated data sources such as Google Sheets.
+
+.. code:: python
+
+   credentials = ...
+   credentials = credentials.with_scopes(
+       [
+           'https://www.googleapis.com/auth/drive',
+           'https://www.googleapis.com/auth/cloud-platform',
+       ],
+   )
+   df = pandas_gbq.read_gbq(..., credentials=credentials)
+
 See the `Getting started with authentication on Google Cloud Platform
 <https://cloud.google.com/docs/authentication/getting-started>`_ guide for
 more information on service accounts.
+
+
+Authenticating with a User Account
+----------------------------------
+
+Use the `pydata-google-auth <https://pydata-google-auth.readthedocs.io/>`__
+library to authenticate with a user account (i.e. a G Suite or Gmail
+account). The :func:`pydata_google_auth.get_user_credentials` function loads
+credentials from a cache on disk or initiates an OAuth 2.0 flow if cached
+credentials are not found.
+
+.. code:: python
+
+   import pandas_gbq
+   import pydata_google_auth
+
+   SCOPES = [
+       'https://www.googleapis.com/auth/cloud-platform',
+       'https://www.googleapis.com/auth/drive',
+   ]
+
+   credentials = pydata_google_auth.get_user_credentials(
+       SCOPES,
+       # Set auth_local_webserver to True to have a slightly more convienient
+       # authorization flow. Note, this doesn't work if you're running from a
+       # notebook on a remote sever, such as over SSH or with Google Colab.
+       auth_local_webserver=True,
+
+
+   df = pandas_gbq.read_gbq(
+       "SELECT my_col FROM `my_dataset.my_table`",
+       project_id='YOUR-PROJECT-ID',
+       credentials=credentials,
+   )
+
+.. warning::
+
+   Do not store credentials on disk when using shared computing resources
+   such as a GCE VM or Colab notebook. Use the
+   :data:`pydata_google_auth.cache.NOOP` cache to avoid writing credentials
+   to disk.
+
+   .. code:: python
+
+      import pydata_google_auth.cache
+
+      credentials = pydata_google_auth.get_user_credentials(
+          SCOPES,
+          # Use the NOOP cache to avoid writing credentials to disk.
+          cache=pydata_google_auth.cache.NOOP,
+      )
+
+Additional information on the user credentials authentication mechanism
+can be found in the `Google Cloud authentication guide
+<https://cloud.google.com/docs/authentication/end-user>`__.
+
 
 Default Authentication Methods
 ------------------------------
@@ -70,6 +141,19 @@ methods:
 
 1. In-memory, cached credentials at ``pandas_gbq.context.credentials``. See
    :attr:`pandas_gbq.Context.credentials` for details.
+
+   .. code:: python
+
+       import pandas_gbq
+
+       credentials = ...  # From google-auth or pydata-google-auth library.
+
+       # Update the in-memory credentials cache (added in pandas-gbq 0.7.0).
+       pandas_gbq.context.credentials = credentials
+       pandas_gbq.context.project = "your-project-id"
+
+       # The credentials and project_id arguments can be omitted.
+       df = pandas_gbq.read_gbq("SELECT my_col FROM `my_dataset.my_table`")
 
 2. Application Default Credentials via the :func:`google.auth.default`
    function.
@@ -87,13 +171,14 @@ methods:
 3. User account credentials.
 
    pandas-gbq loads cached credentials from a hidden user folder on the
-   operating system. Override the location of the cached user credentials
-   by setting the ``PANDAS_GBQ_CREDENTIALS_FILE`` environment variable.
+   operating system.
+
+   Windows
+       ``%APPDATA%\pandas_gbq\bigquery_credentials.dat``
+
+   Linux/Mac/Unix
+       ``~/.config/pandas_gbq/bigquery_credentials.dat``
 
    If pandas-gbq does not find cached credentials, it opens a browser window
    asking for you to authenticate to your BigQuery account using the product
    name ``pandas GBQ``.
-
-   Additional information on the user credentails authentication mechanism
-   can be found `here
-   <https://developers.google.com/identity/protocols/OAuth2#clientside/>`__.

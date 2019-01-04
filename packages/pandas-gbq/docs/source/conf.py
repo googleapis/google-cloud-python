@@ -372,6 +372,7 @@ texinfo_documents = [
 intersphinx_mapping = {
     "https://docs.python.org/": None,
     "https://pandas.pydata.org/pandas-docs/stable/": None,
+    "https://pydata-google-auth.readthedocs.io/en/latest/": None,
     "https://google-auth.readthedocs.io/en/latest/": None,
 }
 

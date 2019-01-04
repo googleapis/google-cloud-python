@@ -37,6 +37,7 @@ Dependencies
 
 This module requires following additional dependencies:
 
+- `pydata-google-auth <https://github.com/pydata/pydata-google-auth>`__: Helpers for authentication to Google's API
 - `google-auth <https://github.com/GoogleCloudPlatform/google-auth-library-python>`__: authentication and authorization for Google's API
 - `google-auth-oauthlib <https://github.com/GoogleCloudPlatform/google-auth-library-python-oauthlib>`__: integration with `oauthlib <https://github.com/idan/oauthlib>`__ for end-user authentication
 - `google-cloud-bigquery <http://github.com/GoogleCloudPlatform/google-cloud-python>`__: Google Cloud client library for BigQuery

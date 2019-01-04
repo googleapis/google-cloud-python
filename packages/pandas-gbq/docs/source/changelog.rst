@@ -1,6 +1,17 @@
 Changelog
 =========
 
+.. _changelog-0.9.0:
+
+0.9.0 / TBD
+-----------
+
+Internal changes
+~~~~~~~~~~~~~~~~
+
+- **New dependency** Use the ``pydata-google-auth`` package for
+  authentication. (:issue:`241`)
+
 .. _changelog-0.8.0:
 
 0.8.0 / 2018-11-12

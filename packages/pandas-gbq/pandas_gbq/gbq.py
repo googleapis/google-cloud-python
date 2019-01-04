@@ -69,6 +69,13 @@ def _check_google_client_version():
 def _test_google_api_imports():
 
     try:
+        import pydata_google_auth
+    except ImportError as ex:
+        raise ImportError(
+            "pandas-gbq requires pydata-google-auth: {0}".format(ex)
+        )
+
+    try:
         from google_auth_oauthlib.flow import InstalledAppFlow  # noqa
     except ImportError as ex:
         raise ImportError(
@@ -297,7 +304,6 @@ class GbqConnector(object):
         auth_local_webserver=False,
         dialect="legacy",
         location=None,
-        try_credentials=None,
         credentials=None,
     ):
         global context
@@ -313,7 +319,6 @@ class GbqConnector(object):
         self.auth_local_webserver = auth_local_webserver
         self.dialect = dialect
         self.credentials = credentials
-        self.credentials_path = _get_credentials_file()
         default_project = None
 
         # Load credentials from cache.
@@ -328,7 +333,6 @@ class GbqConnector(object):
                 project_id=project_id,
                 reauth=reauth,
                 auth_local_webserver=auth_local_webserver,
-                try_credentials=try_credentials,
             )
 
         if self.project_id is None:
@@ -633,10 +637,6 @@ class GbqConnector(object):
         )
         table.delete(table_id)
         table.create(table_id, table_schema)
-
-
-def _get_credentials_file():
-    return os.environ.get("PANDAS_GBQ_CREDENTIALS_FILE")
 
 
 def _parse_schema(schema_fields):
@@ -1003,9 +1003,6 @@ def to_gbq(
         reauth=reauth,
         auth_local_webserver=auth_local_webserver,
         location=location,
-        # Avoid reads when writing tables.
-        # https://github.com/pydata/pandas-gbq/issues/202
-        try_credentials=lambda project, creds: creds,
         credentials=credentials,
         private_key=private_key,
     )

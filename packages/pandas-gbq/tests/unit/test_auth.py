@@ -86,6 +86,7 @@ def test_get_credentials_default_credentials(monkeypatch):
 def test_get_credentials_load_user_no_default(monkeypatch):
     import google.auth
     import google.auth.credentials
+    import pydata_google_auth.cache
 
     def mock_default_credentials(scopes=None, request=None):
         return (None, None)
@@ -95,14 +96,12 @@ def test_get_credentials_load_user_no_default(monkeypatch):
         google.auth.credentials.Credentials
     )
 
-    def mock_load_credentials(
-        try_credentials, project_id=None, credentials_path=None
-    ):
-        return mock_user_credentials
-
-    monkeypatch.setattr(
-        auth, "load_user_account_credentials", mock_load_credentials
+    mock_cache = mock.create_autospec(
+        pydata_google_auth.cache.CredentialsCache
     )
+    mock_cache.load.return_value = mock_user_credentials
+
+    monkeypatch.setattr(auth, "get_credentials_cache", lambda _: mock_cache)
 
     credentials, project = auth.get_credentials()
     assert project is None

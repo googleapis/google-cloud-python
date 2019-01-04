@@ -19,6 +19,7 @@ def readme():
 INSTALL_REQUIRES = [
     "setuptools",
     "pandas",
+    "pydata-google-auth",
     "google-auth",
     "google-auth-oauthlib",
     "google-cloud-bigquery>=0.32.0",

@@ -9,6 +9,35 @@ import pytest
 from pandas_gbq import auth
 
 
+def mock_default_credentials(scopes=None, request=None):
+    return (None, None)
+
+
+def _try_credentials(project_id, credentials):
+    from google.cloud import bigquery
+    import google.api_core.exceptions
+    import google.auth.exceptions
+
+    if not credentials:
+        return None
+    if not project_id:
+        return credentials
+
+    try:
+        client = bigquery.Client(project=project_id, credentials=credentials)
+        # Check if the application has rights to the BigQuery project
+        client.query("SELECT 1").result()
+        return credentials
+    except google.api_core.exceptions.GoogleAPIError:
+        return None
+    except google.auth.exceptions.RefreshError:
+        # Sometimes (such as on Travis) google-auth returns GCE credentials,
+        # but fetching the token for those credentials doesn't actually work.
+        # See:
+        # https://github.com/googleapis/google-auth-library-python/issues/287
+        return None
+
+
 def _check_if_can_get_correct_default_credentials():
     # Checks if "Application Default Credentials" can be fetched
     # from the environment the tests are running in.
@@ -26,7 +55,7 @@ def _check_if_can_get_correct_default_credentials():
     except (DefaultCredentialsError, IOError):
         return False
 
-    return auth._try_credentials(project, credentials) is not None
+    return _try_credentials(project, credentials) is not None
 
 
 def test_should_be_able_to_get_valid_credentials(project_id, private_key_path):
@@ -43,7 +72,7 @@ def test_get_service_account_credentials_private_key_path(private_key_path):
         private_key_path
     )
     assert isinstance(credentials, Credentials)
-    assert auth._try_credentials(project_id, credentials) is not None
+    assert _try_credentials(project_id, credentials) is not None
 
 
 def test_get_service_account_credentials_private_key_contents(
@@ -55,71 +84,44 @@ def test_get_service_account_credentials_private_key_contents(
         private_key_contents
     )
     assert isinstance(credentials, Credentials)
-    assert auth._try_credentials(project_id, credentials) is not None
-
-
-def test_get_application_default_credentials_does_not_throw_error():
-    if _check_if_can_get_correct_default_credentials():
-        # Can get real credentials, so mock it out to fail.
-        from google.auth.exceptions import DefaultCredentialsError
-
-        with mock.patch(
-            "google.auth.default", side_effect=DefaultCredentialsError()
-        ):
-            credentials, _ = auth.get_application_default_credentials(
-                try_credentials=auth._try_credentials
-            )
-    else:
-        credentials, _ = auth.get_application_default_credentials(
-            try_credentials=auth._try_credentials
-        )
-    assert credentials is None
-
-
-def test_get_application_default_credentials_returns_credentials():
-    if not _check_if_can_get_correct_default_credentials():
-        pytest.skip("Cannot get default_credentials " "from the environment!")
-    from google.auth.credentials import Credentials
-
-    credentials, default_project = auth.get_application_default_credentials(
-        try_credentials=auth._try_credentials
-    )
-
-    assert isinstance(credentials, Credentials)
-    assert default_project is not None
+    assert _try_credentials(project_id, credentials) is not None
 
 
 @pytest.mark.local_auth
-def test_get_user_account_credentials_bad_file_returns_user_credentials():
+def test_get_credentials_bad_file_returns_user_credentials(
+    project_id, monkeypatch
+):
+    import google.auth
     from google.auth.credentials import Credentials
+
+    monkeypatch.setattr(google.auth, "default", mock_default_credentials)
 
     with mock.patch("__main__.open", side_effect=IOError()):
-        credentials = auth.get_user_account_credentials(
-            try_credentials=auth._try_credentials
+        credentials, _ = auth.get_credentials(
+            project_id=project_id, auth_local_webserver=True
         )
     assert isinstance(credentials, Credentials)
 
 
 @pytest.mark.local_auth
-def test_get_user_account_credentials_returns_credentials(project_id):
-    from google.auth.credentials import Credentials
+def test_get_credentials_user_credentials_with_reauth(project_id, monkeypatch):
+    import google.auth
 
-    credentials = auth.get_user_account_credentials(
-        project_id=project_id,
-        auth_local_webserver=True,
-        try_credentials=auth._try_credentials,
+    monkeypatch.setattr(google.auth, "default", mock_default_credentials)
+
+    credentials, _ = auth.get_credentials(
+        project_id=project_id, reauth=True, auth_local_webserver=True
     )
-    assert isinstance(credentials, Credentials)
+    assert credentials.valid
 
 
 @pytest.mark.local_auth
-def test_get_user_account_credentials_reauth_returns_credentials(project_id):
-    from google.auth.credentials import Credentials
+def test_get_credentials_user_credentials(project_id, monkeypatch):
+    import google.auth
 
-    credentials = auth.get_user_account_credentials(
-        project_id=project_id,
-        auth_local_webserver=True,
-        reauth=True,
-        try_credentials=auth._try_credentials,
+    monkeypatch.setattr(google.auth, "default", mock_default_credentials)
+
+    credentials, _ = auth.get_credentials(
+        project_id=project_id, auth_local_webserver=True
     )
-    assert isinstance(credentials, Credentials)
+    assert credentials.valid
