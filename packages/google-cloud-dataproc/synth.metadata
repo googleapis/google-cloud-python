@@ -1,18 +1,48 @@
 {
+  "updateTime": "2018-12-18T13:14:58.257699Z",
   "sources": [
     {
       "generator": {
         "name": "artman",
-        "version": "0.16.2",
-        "dockerImage": "googleapis/artman@sha256:2f6b261ee7fe1aedf238991c93a20b3820de37a343d0cacf3e3e9555c2aaf2ea"
+        "version": "0.16.3",
+        "dockerImage": "googleapis/artman@sha256:bfb92654b4a77368471f70e2808eaf4e60f263b9559f27bb3284097322787bf1"
       }
     },
     {
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "3cef6c237ba87a81470b5fdf082ed187cbb23ded",
-        "internalRef": "222456573"
+        "sha": "c04bc0dc0a9164d924a9ab923fd6845b4ae6a7ab",
+        "internalRef": "225851467"
+      }
+    },
+    {
+      "template": {
+        "name": "python_library",
+        "origin": "synthtool.gcp",
+        "version": "2018.12.6"
+      }
+    }
+  ],
+  "destinations": [
+    {
+      "client": {
+        "source": "googleapis",
+        "apiName": "dataproc",
+        "apiVersion": "v1beta2",
+        "language": "python",
+        "generator": "gapic",
+        "config": "google/cloud/dataproc/artman_dataproc_v1beta2.yaml"
+      }
+    },
+    {
+      "client": {
+        "source": "googleapis",
+        "apiName": "dataproc",
+        "apiVersion": "v1",
+        "language": "python",
+        "generator": "gapic",
+        "config": "google/cloud/dataproc/artman_dataproc_v1.yaml"
       }
     }
   ]
