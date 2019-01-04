@@ -17,6 +17,8 @@
 Tasklets are a way to write concurrently running functions without
 threads.
 """
+import functools
+import types
 
 import grpc
 
@@ -317,6 +319,53 @@ class MultiFuture(Future):
             self.set_result(result)
 
 
+def tasklet(wrapped):
+    """
+    A decorator to turn a function or method into a tasklet.
+
+    Calling a tasklet will return a :class:`~Future` instance which can be used
+    to get the eventual return value of the tasklet.
+
+    For more information on tasklets and cooperative multitasking, see the main
+    documentation.
+
+    Args:
+        wrapped (Callable): The wrapped function.
+    """
+
+    @functools.wraps(wrapped)
+    def tasklet_wrapper(*args, **kwargs):
+        # The normal case is that the wrapped function is a generator function
+        # that returns a generator when called. We also support the case that
+        # the user has wrapped a regular function with the tasklet decorator.
+        # In this case, we fail to realize an actual tasklet, but we go ahead
+        # and create a future object and set the result to the function's
+        # return value so that from the user perspective there is no problem.
+        # This permissive behavior is inherited from legacy NDB.
+        try:
+            returned = wrapped(*args, **kwargs)
+        except StopIteration as stop:
+            # If wrapped  is a regular function and the function uses the
+            # deprecated "raise Return(result)" pattern rather than just
+            # returning the result, then we'll extract the result from the
+            # StopIteration exception.
+            returned = _get_return_value(stop)
+
+        if isinstance(returned, types.GeneratorType):
+            # We have a tasklet
+            future = TaskletFuture(returned)
+            future._advance_tasklet()
+
+        else:
+            # We don't have a tasklet, but we fake it anyway
+            future = Future()
+            future.set_result(returned)
+
+        return future
+
+    return tasklet_wrapper
+
+
 def add_flow_exception(*args, **kwargs):
     raise NotImplementedError
 
@@ -366,10 +415,6 @@ def sleep(*args, **kwargs):
 
 
 def synctasklet(*args, **kwargs):
-    raise NotImplementedError
-
-
-def tasklet(*args, **kwargs):
     raise NotImplementedError
 
 

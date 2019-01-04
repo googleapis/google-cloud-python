@@ -324,6 +324,41 @@ class Test__get_return_value:
         assert tasklets._get_return_value(stop) == (42, 21)
 
 
+class Test_tasklet:
+    @staticmethod
+    def test_generator():
+        @tasklets.tasklet
+        def generator(dependency):
+            value = yield dependency
+            return value + 3
+
+        dependency = tasklets.Future()
+        future = generator(dependency)
+        assert isinstance(future, tasklets.TaskletFuture)
+        dependency.set_result(8)
+        assert future.result() == 11
+
+    @staticmethod
+    def test_regular_function():
+        @tasklets.tasklet
+        def regular_function(value):
+            return value + 3
+
+        future = regular_function(8)
+        assert isinstance(future, tasklets.Future)
+        assert future.result() == 11
+
+    @staticmethod
+    def test_regular_function_raises_Return():
+        @tasklets.tasklet
+        def regular_function(value):
+            raise tasklets.Return(value + 3)
+
+        future = regular_function(8)
+        assert isinstance(future, tasklets.Future)
+        assert future.result() == 11
+
+
 def test_get_context():
     with pytest.raises(NotImplementedError):
         tasklets.get_context()
@@ -377,11 +412,6 @@ def test_sleep():
 def test_synctasklet():
     with pytest.raises(NotImplementedError):
         tasklets.synctasklet()
-
-
-def test_tasklet():
-    with pytest.raises(NotImplementedError):
-        tasklets.tasklet()
 
 
 def test_toplevel():
