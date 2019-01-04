@@ -576,7 +576,7 @@ class Test_Blob(unittest.TestCase):
         bucket._blobs[BLOB_NAME] = 1
         blob.delete()
         self.assertFalse(blob.exists())
-        self.assertEqual(bucket._deleted, [(BLOB_NAME, None)])
+        self.assertEqual(bucket._deleted, [(BLOB_NAME, None, blob.generation)])
 
     def test__get_transport(self):
         client = mock.Mock(spec=[u"_credentials", "_http"])
@@ -2312,7 +2312,7 @@ class Test_Blob(unittest.TestCase):
         client = _Client(connection)
         source_bucket = _Bucket(client=client)
         source_blob = self._make_one(SOURCE_BLOB, bucket=source_bucket)
-        source_blob._set_properties({'generation': SOURCE_GENERATION})
+        source_blob._set_properties({"generation": SOURCE_GENERATION})
         dest_bucket = _Bucket(client=client, name=DEST_BUCKET)
         dest_blob = self._make_one(DEST_BLOB, bucket=dest_bucket)
 
@@ -2324,11 +2324,14 @@ class Test_Blob(unittest.TestCase):
 
         kw, = connection._requested
         self.assertEqual(kw["method"], "POST")
-        self.assertEqual(kw["path"], "/b/%s/o/%s/rewriteTo/b/%s/o/%s" % (
-            (source_bucket.name, source_blob.name,
-             dest_bucket.name, dest_blob.name)))
-        self.assertEqual(kw["query_params"],
-                         {"sourceGeneration": SOURCE_GENERATION})
+        self.assertEqual(
+            kw["path"],
+            "/b/%s/o/%s/rewriteTo/b/%s/o/%s"
+            % (
+                (source_bucket.name, source_blob.name, dest_bucket.name, dest_blob.name)
+            ),
+        )
+        self.assertEqual(kw["query_params"], {"sourceGeneration": SOURCE_GENERATION})
 
     def test_rewrite_other_bucket_other_name_no_encryption_partial(self):
         SOURCE_BLOB = "source"
@@ -2543,13 +2546,13 @@ class Test_Blob(unittest.TestCase):
             "objectSize": 84,
             "done": False,
             "rewriteToken": TOKEN,
-            "resource": {"storageClass": STORAGE_CLASS}
+            "resource": {"storageClass": STORAGE_CLASS},
         }
         COMPLETE_RESPONSE = {
             "totalBytesRewritten": 84,
             "objectSize": 84,
             "done": True,
-            "resource": {"storageClass": STORAGE_CLASS}
+            "resource": {"storageClass": STORAGE_CLASS},
         }
         response_1 = ({"status": http_client.OK}, INCOMPLETE_RESPONSE)
         response_2 = ({"status": http_client.OK}, COMPLETE_RESPONSE)
@@ -2569,7 +2572,7 @@ class Test_Blob(unittest.TestCase):
             "totalBytesRewritten": 42,
             "objectSize": 42,
             "done": True,
-            "resource": {"storageClass": STORAGE_CLASS}
+            "resource": {"storageClass": STORAGE_CLASS},
         }
         response = ({"status": http_client.OK}, RESPONSE)
         connection = _Connection(response)
@@ -2614,7 +2617,7 @@ class Test_Blob(unittest.TestCase):
             "totalBytesRewritten": 42,
             "objectSize": 42,
             "done": True,
-            "resource": {"storageClass": STORAGE_CLASS}
+            "resource": {"storageClass": STORAGE_CLASS},
         }
         response = ({"status": http_client.OK}, RESPONSE)
         connection = _Connection(response)
@@ -3210,9 +3213,9 @@ class _Bucket(object):
         self.path = "/b/" + name
         self.user_project = user_project
 
-    def delete_blob(self, blob_name, client=None):
+    def delete_blob(self, blob_name, client=None, generation=None):
         del self._blobs[blob_name]
-        self._deleted.append((blob_name, client))
+        self._deleted.append((blob_name, client, generation))
 
 
 class _Signer(object):

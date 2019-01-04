@@ -345,6 +345,14 @@ class Bucket(_PropertyMixin):
         """
         return self._user_project
 
+    @property
+    def query_params(self):
+        """Default query parameters."""
+        params = {}
+        if self.user_project is not None:
+            params["userProject"] = self.user_project
+        return params
+
     def blob(self, blob_name, chunk_size=None, encryption_key=None, kms_key_name=None):
         """Factory constructor for blob object.
 
@@ -549,8 +557,9 @@ class Bucket(_PropertyMixin):
 
         return self.path_helper(self.name)
 
-    def get_blob(self, blob_name, client=None, encryption_key=None,
-                 generation=None, **kwargs):
+    def get_blob(
+        self, blob_name, client=None, encryption_key=None, generation=None, **kwargs
+    ):
         """Get a blob object by name.
 
         This will return None if the blob doesn't exist:
@@ -593,7 +602,7 @@ class Bucket(_PropertyMixin):
             query_params["userProject"] = self.user_project
 
         if generation is not None:
-            query_params['generation'] = generation
+            query_params["generation"] = generation
 
         blob = Blob(
             bucket=self, name=blob_name, encryption_key=encryption_key, **kwargs
@@ -839,7 +848,7 @@ class Bucket(_PropertyMixin):
         query_params = {}
 
         if generation is not None:
-            query_params['generation'] = generation
+            query_params["generation"] = generation
 
         if self.user_project is not None:
             query_params["userProject"] = self.user_project

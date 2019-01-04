@@ -853,8 +853,8 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(kw["query_params"], {"userProject": USER_PROJECT})
 
     def test_delete_blob_hit_with_generation(self):
-        NAME = 'name'
-        BLOB_NAME = 'blob-name'
+        NAME = "name"
+        BLOB_NAME = "blob-name"
         GENERATION = 1512565576797178
         connection = _Connection({})
         client = _Client(connection)
@@ -862,9 +862,9 @@ class Test_Bucket(unittest.TestCase):
         result = bucket.delete_blob(BLOB_NAME, generation=GENERATION)
         self.assertIsNone(result)
         kw, = connection._requested
-        self.assertEqual(kw['method'], 'DELETE')
-        self.assertEqual(kw['path'], '/b/%s/o/%s' % (NAME, BLOB_NAME))
-        self.assertEqual(kw['query_params'], {'generation': GENERATION})
+        self.assertEqual(kw["method"], "DELETE")
+        self.assertEqual(kw["path"], "/b/%s/o/%s" % (NAME, BLOB_NAME))
+        self.assertEqual(kw["query_params"], {"generation": GENERATION})
 
     def test_delete_blobs_empty(self):
         NAME = "name"

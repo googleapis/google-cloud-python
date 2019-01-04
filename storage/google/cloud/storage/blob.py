@@ -258,6 +258,16 @@ class Blob(_PropertyMixin):
         return self.bucket.user_project
 
     @property
+    def query_params(self):
+        """Default query parameters."""
+        params = {}
+        if self.generation is not None:
+            params["generation"] = self.generation
+        if self.user_project is not None:
+            params["userProject"] = self.user_project
+        return params
+
+    @property
     def public_url(self):
         """The public URL for this blob.
 
@@ -387,6 +397,9 @@ class Blob(_PropertyMixin):
         # minimize the returned payload.
         query_params = {"fields": "name"}
 
+        if self.generation:
+            query_params["generation"] = self.generation
+
         if self.user_project is not None:
             query_params["userProject"] = self.user_project
 
@@ -423,7 +436,9 @@ class Blob(_PropertyMixin):
                  (propagated from
                  :meth:`google.cloud.storage.bucket.Bucket.delete_blob`).
         """
-        return self.bucket.delete_blob(self.name, client=client)
+        return self.bucket.delete_blob(
+            self.name, client=client, generation=self.generation
+        )
 
     def _get_transport(self, client):
         """Return the client's transport.
@@ -1486,7 +1501,7 @@ class Blob(_PropertyMixin):
             query_params["rewriteToken"] = token
 
         if source.generation:
-            query_params['sourceGeneration'] = source.generation
+            query_params["sourceGeneration"] = source.generation
 
         if self.user_project is not None:
             query_params["userProject"] = self.user_project
@@ -1536,7 +1551,7 @@ class Blob(_PropertyMixin):
             raise ValueError("Invalid storage class: %s" % (new_class,))
 
         # Update current blob's storage class prior to rewrite
-        self._patch_property('storageClass', new_class)
+        self._patch_property("storageClass", new_class)
 
         # Execute consecutive rewrite operations until operation is done
         token, _, _ = self.rewrite(self)
