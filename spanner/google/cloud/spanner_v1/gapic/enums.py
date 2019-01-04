@@ -77,6 +77,24 @@ class TypeCode(enum.IntEnum):
     STRUCT = 9
 
 
+class ExecuteSqlRequest(object):
+    class QueryMode(enum.IntEnum):
+        """
+        Mode in which the statement must be processed.
+
+        Attributes:
+          NORMAL (int): The default mode. Only the statement results are returned.
+          PLAN (int): This mode returns only the query plan, without any results or
+          execution statistics information.
+          PROFILE (int): This mode returns both the query plan and the execution statistics along
+          with the results.
+        """
+
+        NORMAL = 0
+        PLAN = 1
+        PROFILE = 2
+
+
 class PlanNode(object):
     class Kind(enum.IntEnum):
         """
@@ -97,21 +115,3 @@ class PlanNode(object):
         KIND_UNSPECIFIED = 0
         RELATIONAL = 1
         SCALAR = 2
-
-
-class ExecuteSqlRequest(object):
-    class QueryMode(enum.IntEnum):
-        """
-        Mode in which the statement must be processed.
-
-        Attributes:
-          NORMAL (int): The default mode. Only the statement results are returned.
-          PLAN (int): This mode returns only the query plan, without any results or
-          execution statistics information.
-          PROFILE (int): This mode returns both the query plan and the execution statistics along
-          with the results.
-        """
-
-        NORMAL = 0
-        PLAN = 1
-        PROFILE = 2
