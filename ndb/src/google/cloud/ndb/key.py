@@ -731,7 +731,7 @@ class Key:
                 options have not yet been implemented.
 
         Returns:
-            :class:`tasklets.Future`
+            :class:`~google.cloud.ndb.tasklets.Future`
         """
         from google.cloud.ndb import model  # avoid circular import
 

@@ -175,7 +175,7 @@ class Future:
         attribute of that exception.
 
         Returns:
-            Union[traceback, None]: The traceback, or None.
+            Union[types.TracebackType, None]: The traceback, or None.
         """
         if self._exception:
             return self._exception.__traceback__
@@ -204,7 +204,7 @@ class Future:
         """Get whether task for this future has been cancelled.
 
         Returns:
-            False: Always.
+            :data:`False`: Always.
         """
         return False
 
@@ -214,12 +214,13 @@ class TaskletFuture(Future):
 
     A future of this type wraps a generator derived from calling a tasklet. A
     tasklet's generator is expected to yield future objects, either an instance
-    of :class:`ndb.Future` or :class:`grpc.Future'. The result of each yielded
-    future is then sent back into the generator until the generator has
+    of :class:`Future` or :class:`grpc.Future`. The result of each
+    yielded future is then sent back into the generator until the generator has
     completed and either returned a value or raised an exception.
 
     Args:
-        Generator[Union[ndb.Future, grpc.Future], Any, Any]: The generator.
+        typing.Generator[Union[tasklets.Future, grpc.Future], Any, Any]: The
+            generator.
     """
 
     def __init__(self, generator):
@@ -277,10 +278,10 @@ class TaskletFuture(Future):
 
 
 def _get_return_value(stop):
-    """Inspect StopIteration instance for return value of tasklet.
+    """Inspect `StopIteration` instance for return value of tasklet.
 
     Args:
-        stop (StopIteration): The StopIteration exception for the finished
+        stop (StopIteration): The `StopIteration` exception for the finished
             tasklet.
     """
     if len(stop.args) == 1:
@@ -297,8 +298,8 @@ class MultiFuture(Future):
     one dependency has raised an exception.
 
     Args:
-        dependencies (Sequence[google.cloud.ndb.tasklets.Future]): A sequence
-            of the futures this future depends on.
+        dependencies (typing.Sequence[tasklets.Future]): A sequence of the
+            futures this future depends on.
     """
 
     def __init__(self, dependencies):
@@ -400,7 +401,15 @@ class ReducingFuture:
         raise NotImplementedError
 
 
-Return = StopIteration
+class Return(StopIteration):
+    """Alias for `StopIteration`.
+
+    Older programs written with NDB may ``raise Return(result)`` in a tasklet.
+    This is no longer necessary, but it is included for backwards
+    compatibility. Tasklets should simply ``return`` their result.
+    """
+    # For reasons I don't entirely understand, Sphinx pukes if we just assign:
+    # Return = StopIteration
 
 
 class SerialQueueFuture:
