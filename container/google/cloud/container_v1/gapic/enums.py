@@ -18,20 +18,6 @@
 import enum
 
 
-class NetworkPolicy(object):
-    class Provider(enum.IntEnum):
-        """
-        Allowed Network Policy providers.
-
-        Attributes:
-          PROVIDER_UNSPECIFIED (int): Not set
-          CALICO (int): Tigera (Calico Felix).
-        """
-
-        PROVIDER_UNSPECIFIED = 0
-        CALICO = 1
-
-
 class Cluster(object):
     class Status(enum.IntEnum):
         """
@@ -59,6 +45,51 @@ class Cluster(object):
         STOPPING = 4
         ERROR = 5
         DEGRADED = 6
+
+
+class NetworkPolicy(object):
+    class Provider(enum.IntEnum):
+        """
+        Allowed Network Policy providers.
+
+        Attributes:
+          PROVIDER_UNSPECIFIED (int): Not set
+          CALICO (int): Tigera (Calico Felix).
+        """
+
+        PROVIDER_UNSPECIFIED = 0
+        CALICO = 1
+
+
+class NodePool(object):
+    class Status(enum.IntEnum):
+        """
+        The current status of the node pool instance.
+
+        Attributes:
+          STATUS_UNSPECIFIED (int): Not set.
+          PROVISIONING (int): The PROVISIONING state indicates the node pool is being created.
+          RUNNING (int): The RUNNING state indicates the node pool has been created
+          and is fully usable.
+          RUNNING_WITH_ERROR (int): The RUNNING\_WITH\_ERROR state indicates the node pool has been created
+          and is partially usable. Some error state has occurred and some
+          functionality may be impaired. Customer may need to reissue a request or
+          trigger a new update.
+          RECONCILING (int): The RECONCILING state indicates that some work is actively being done on
+          the node pool, such as upgrading node software. Details can be found in
+          the ``statusMessage`` field.
+          STOPPING (int): The STOPPING state indicates the node pool is being deleted.
+          ERROR (int): The ERROR state indicates the node pool may be unusable. Details can be
+          found in the ``statusMessage`` field.
+        """
+
+        STATUS_UNSPECIFIED = 0
+        PROVISIONING = 1
+        RUNNING = 2
+        RUNNING_WITH_ERROR = 3
+        RECONCILING = 4
+        STOPPING = 5
+        ERROR = 6
 
 
 class Operation(object):
@@ -142,34 +173,3 @@ class SetMasterAuthRequest(object):
         SET_PASSWORD = 1
         GENERATE_PASSWORD = 2
         SET_USERNAME = 3
-
-
-class NodePool(object):
-    class Status(enum.IntEnum):
-        """
-        The current status of the node pool instance.
-
-        Attributes:
-          STATUS_UNSPECIFIED (int): Not set.
-          PROVISIONING (int): The PROVISIONING state indicates the node pool is being created.
-          RUNNING (int): The RUNNING state indicates the node pool has been created
-          and is fully usable.
-          RUNNING_WITH_ERROR (int): The RUNNING\_WITH\_ERROR state indicates the node pool has been created
-          and is partially usable. Some error state has occurred and some
-          functionality may be impaired. Customer may need to reissue a request or
-          trigger a new update.
-          RECONCILING (int): The RECONCILING state indicates that some work is actively being done on
-          the node pool, such as upgrading node software. Details can be found in
-          the ``statusMessage`` field.
-          STOPPING (int): The STOPPING state indicates the node pool is being deleted.
-          ERROR (int): The ERROR state indicates the node pool may be unusable. Details can be
-          found in the ``statusMessage`` field.
-        """
-
-        STATUS_UNSPECIFIED = 0
-        PROVISIONING = 1
-        RUNNING = 2
-        RUNNING_WITH_ERROR = 3
-        RECONCILING = 4
-        STOPPING = 5
-        ERROR = 6
