@@ -104,7 +104,7 @@ class ErrorGroupServiceGrpcTransport(object):
 
     @property
     def get_group(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`ErrorGroupServiceClient.get_group`.
 
         Get the specified group.
 
@@ -117,7 +117,7 @@ class ErrorGroupServiceGrpcTransport(object):
 
     @property
     def update_group(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`ErrorGroupServiceClient.update_group`.
 
         Replace the data for the specified group.
         Fails if the group does not exist.
