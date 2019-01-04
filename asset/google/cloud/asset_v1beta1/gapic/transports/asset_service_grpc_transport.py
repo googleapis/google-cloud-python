@@ -105,7 +105,7 @@ class AssetServiceGrpcTransport(object):
 
     @property
     def export_assets(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`AssetServiceClient.export_assets`.
 
         Exports assets with time and resource types to a given Cloud Storage
         location. The output format is newline-delimited JSON. This API
@@ -121,7 +121,7 @@ class AssetServiceGrpcTransport(object):
 
     @property
     def batch_get_assets_history(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`AssetServiceClient.batch_get_assets_history`.
 
         Batch gets the update history of assets that overlap a time window. For
         RESOURCE content, this API outputs history with asset in both non-delete
