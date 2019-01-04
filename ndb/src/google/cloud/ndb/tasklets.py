@@ -246,7 +246,7 @@ class TaskletFuture(Future):
         # parallel yield.
 
         def done_callback(yielded):
-            # To be called when a dependent future has completed.
+            # To be called when a future dependency has completed.
             # Advance the tasklet with the yielded value or error.
             error = yielded.exception()
             if error:
@@ -261,7 +261,8 @@ class TaskletFuture(Future):
             _eventloop.queue_rpc(yielded, done_callback)
 
         elif isinstance(yielded, (list, tuple)):
-            raise NotImplementedError()
+            future = MultiFuture(yielded)
+            future.add_done_callback(done_callback)
 
         else:
             raise RuntimeError(
@@ -283,6 +284,39 @@ def _get_return_value(stop):
         return stop.args
 
 
+class MultiFuture(Future):
+    """A future which depends on multiple other futures.
+
+    This future will be done when either all dependencies have results or when
+    one dependency has raised an exception.
+
+    Args:
+        dependencies (Sequence[google.cloud.ndb.tasklets.Future]): A sequence
+            of the futures this future depends on.
+    """
+
+    def __init__(self, dependencies):
+        super(MultiFuture, self).__init__()
+        self._dependencies = dependencies
+
+        for dependency in dependencies:
+            dependency.add_done_callback(self._dependency_done)
+
+    def _dependency_done(self, dependency):
+        if self._done:
+            return
+
+        error = dependency.exception()
+        if error is not None:
+            self.set_exception(error)
+            return
+
+        all_done = all((future.done() for future in self._dependencies))
+        if all_done:
+            result = tuple((future.result() for future in self._dependencies))
+            self.set_result(result)
+
+
 def add_flow_exception(*args, **kwargs):
     raise NotImplementedError
 
@@ -297,13 +331,6 @@ def make_context(*args, **kwargs):
 
 def make_default_context(*args, **kwargs):
     raise NotImplementedError
-
-
-class MultiFuture:
-    __slots__ = ()
-
-    def __init__(self, *args, **kwargs):
-        raise NotImplementedError
 
 
 class QueueFuture:
