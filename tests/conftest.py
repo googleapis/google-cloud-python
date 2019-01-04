@@ -41,9 +41,11 @@ def reset_state(environ):
     """
     assert model.Property._FIND_METHODS_CACHE == {}
     assert model.Model._kind_map == {}
+    assert _runstate.states.stack == []
     yield
     model.Property._FIND_METHODS_CACHE.clear()
     model.Model._kind_map.clear()
+    del _runstate.states.stack[:]
 
 
 @pytest.fixture
@@ -72,7 +74,7 @@ def initialize_environment(request, environ):
 
 
 @pytest.fixture
-def with_runstate_context():
+def runstate():
     client = None
-    with _runstate.state_context(client):
-        yield
+    with _runstate.state_context(client) as state:
+        yield state
