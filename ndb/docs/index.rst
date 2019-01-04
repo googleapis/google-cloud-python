@@ -6,6 +6,7 @@
    :hidden:
    :maxdepth: 2
 
+   client
    key
    model
    query
@@ -16,7 +17,6 @@
    blobstore
    metadata
    stats
-   context
 
 .. automodule:: google.cloud.ndb
     :no-members:

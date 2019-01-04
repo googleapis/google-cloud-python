@@ -4,6 +4,15 @@
 
 [1]: https://pypi.org/project/google-cloud-bigtable/#history
 
+## 0.32.1
+
+12-17-2018 16:38 PST
+
+
+### Documentation
+- Document Python 2 deprecation ([#6910](https://github.com/googleapis/google-cloud-python/pull/6910))
+- Add snippets for table operations. ([#6484](https://github.com/googleapis/google-cloud-python/pull/6484))
+
 ## 0.32.0
 
 12-10-2018 12:47 PST

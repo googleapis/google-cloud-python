@@ -99,7 +99,7 @@ class PredictionServiceGrpcTransport(object):
 
     @property
     def predict(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`PredictionServiceClient.predict`.
 
         Perform a prediction.
 

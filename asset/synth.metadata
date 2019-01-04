@@ -1,26 +1,38 @@
 {
+  "updateTime": "2018-12-18T13:10:53.377179Z",
   "sources": [
+    {
+      "generator": {
+        "name": "artman",
+        "version": "0.16.3",
+        "dockerImage": "googleapis/artman@sha256:bfb92654b4a77368471f70e2808eaf4e60f263b9559f27bb3284097322787bf1"
+      }
+    },
     {
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "5a57f0c13a358b2b15452bf2d67453774a5f6d4f",
-        "internalRef": "221837528"
+        "sha": "c04bc0dc0a9164d924a9ab923fd6845b4ae6a7ab",
+        "internalRef": "225851467"
       }
     },
     {
-      "git": {
-        "name": "googleapis-private",
-        "remote": "https://github.com/googleapis/googleapis-private.git",
-        "sha": "6aa8e1a447bb8d0367150356a28cb4d3f2332641",
-        "internalRef": "221340946"
+      "template": {
+        "name": "python_library",
+        "origin": "synthtool.gcp",
+        "version": "2018.12.6"
       }
-    },
+    }
+  ],
+  "destinations": [
     {
-      "generator": {
-        "name": "artman",
-        "version": "0.16.0",
-        "dockerImage": "googleapis/artman@sha256:90f9d15e9bad675aeecd586725bce48f5667ffe7d5fc4d1e96d51ff34304815b"
+      "client": {
+        "source": "googleapis",
+        "apiName": "asset",
+        "apiVersion": "v1beta1",
+        "language": "python",
+        "generator": "gapic",
+        "config": "google/cloud/asset/artman_cloudasset_v1beta1.yaml"
       }
     }
   ]

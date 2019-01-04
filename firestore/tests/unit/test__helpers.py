@@ -1981,6 +1981,21 @@ class TestLastUpdateOption(unittest.TestCase):
         option = self._make_one(mock.sentinel.timestamp)
         self.assertIs(option._last_update_time, mock.sentinel.timestamp)
 
+    def test___eq___different_type(self):
+        option = self._make_one(mock.sentinel.timestamp)
+        other = object()
+        self.assertFalse(option == other)
+
+    def test___eq___different_timestamp(self):
+        option = self._make_one(mock.sentinel.timestamp)
+        other = self._make_one(mock.sentinel.other_timestamp)
+        self.assertFalse(option == other)
+
+    def test___eq___same_timestamp(self):
+        option = self._make_one(mock.sentinel.timestamp)
+        other = self._make_one(mock.sentinel.timestamp)
+        self.assertTrue(option == other)
+
     def test_modify_write_update_time(self):
         from google.protobuf import timestamp_pb2
         from google.cloud.firestore_v1beta1.proto import common_pb2
@@ -2010,6 +2025,21 @@ class TestExistsOption(unittest.TestCase):
     def test_constructor(self):
         option = self._make_one(mock.sentinel.totes_bool)
         self.assertIs(option._exists, mock.sentinel.totes_bool)
+
+    def test___eq___different_type(self):
+        option = self._make_one(mock.sentinel.timestamp)
+        other = object()
+        self.assertFalse(option == other)
+
+    def test___eq___different_exists(self):
+        option = self._make_one(True)
+        other = self._make_one(False)
+        self.assertFalse(option == other)
+
+    def test___eq___same_exists(self):
+        option = self._make_one(True)
+        other = self._make_one(True)
+        self.assertTrue(option == other)
 
     def test_modify_write(self):
         from google.cloud.firestore_v1beta1.proto import common_pb2

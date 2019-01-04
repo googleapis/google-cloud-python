@@ -207,6 +207,7 @@ epub_exclude_files = ["search.html"]
 # Example configuration for intersphinx: refer to the Python standard library.
 intersphinx_mapping = {
     "python": ("https://docs.python.org/", None),
+    "google-auth": ("https://google-auth.readthedocs.io/en/latest/", None),
     "google-cloud-datastore": (
         "https://googleapis.github.io/google-cloud-python/latest/",
         None,

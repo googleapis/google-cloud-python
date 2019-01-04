@@ -160,11 +160,11 @@ def test_bigquery_magic_without_optional_arguments():
     with run_query_patch as run_query_mock:
         run_query_mock.return_value = query_job_mock
 
-        result = ip.run_cell_magic("bigquery", "", sql)
+        return_value = ip.run_cell_magic("bigquery", "", sql)
 
-    assert isinstance(result, pandas.DataFrame)
-    assert len(result) == len(result)  # verify row count
-    assert list(result) == list(result)  # verify column names
+    assert isinstance(return_value, pandas.DataFrame)
+    assert len(return_value) == len(result)  # verify row count
+    assert list(return_value) == list(result)  # verify column names
 
 
 @pytest.mark.usefixtures("ipython_interactive")
@@ -208,8 +208,9 @@ def test_bigquery_magic_with_result_saved_to_variable():
     with run_query_patch as run_query_mock:
         run_query_mock.return_value = query_job_mock
 
-        ip.run_cell_magic("bigquery", "df", sql)
+        return_value = ip.run_cell_magic("bigquery", "df", sql)
 
+    assert return_value is None
     assert "df" in ip.user_ns  # verify that variable exists
     df = ip.user_ns["df"]
     assert len(df) == len(result)  # verify row count
