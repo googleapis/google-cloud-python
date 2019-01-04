@@ -105,7 +105,7 @@ class ClusterControllerGrpcTransport(object):
 
     @property
     def create_cluster(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`ClusterControllerClient.create_cluster`.
 
         Creates a cluster in a project.
 
@@ -118,7 +118,7 @@ class ClusterControllerGrpcTransport(object):
 
     @property
     def update_cluster(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`ClusterControllerClient.update_cluster`.
 
         Updates a cluster in a project.
 
@@ -131,7 +131,7 @@ class ClusterControllerGrpcTransport(object):
 
     @property
     def delete_cluster(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`ClusterControllerClient.delete_cluster`.
 
         Deletes a cluster in a project.
 
@@ -144,7 +144,7 @@ class ClusterControllerGrpcTransport(object):
 
     @property
     def get_cluster(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`ClusterControllerClient.get_cluster`.
 
         Gets the resource representation for a cluster in a project.
 
@@ -157,7 +157,7 @@ class ClusterControllerGrpcTransport(object):
 
     @property
     def list_clusters(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`ClusterControllerClient.list_clusters`.
 
         Lists all regions/{region}/clusters in a project.
 
@@ -170,7 +170,7 @@ class ClusterControllerGrpcTransport(object):
 
     @property
     def diagnose_cluster(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`ClusterControllerClient.diagnose_cluster`.
 
         Gets cluster diagnostic information. After the operation completes, the
         Operation.response field contains ``DiagnoseClusterOutputLocation``.
