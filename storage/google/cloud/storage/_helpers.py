@@ -43,8 +43,9 @@ class _PropertyMixin(object):
     """Abstract mixin for cloud storage classes with associated properties.
 
     Non-abstract subclasses should implement:
-      - client
       - path
+      - client
+      - user_project
 
     :type name: str
     :param name: The name of the object. Bucket names must start and end with a
@@ -70,6 +71,14 @@ class _PropertyMixin(object):
     def user_project(self):
         """Abstract getter for the object user_project."""
         raise NotImplementedError
+
+    @property
+    def query_params(self):
+        """Default query parameters."""
+        params = {}
+        if self.user_project is not None:
+            params["userProject"] = self.user_project
+        return params
 
     def _require_client(self, client):
         """Check client or verify over-ride.
@@ -109,11 +118,10 @@ class _PropertyMixin(object):
                        ``client`` stored on the current object.
         """
         client = self._require_client(client)
+        query_params = self.query_params
         # Pass only '?projection=noAcl' here because 'acl' and related
         # are handled via custom endpoints.
-        query_params = {"projection": "noAcl"}
-        if self.user_project is not None:
-            query_params["userProject"] = self.user_project
+        query_params["projection"] = "noAcl"
         api_response = client._connection.api_request(
             method="GET",
             path=self.path,
@@ -164,11 +172,10 @@ class _PropertyMixin(object):
                        ``client`` stored on the current object.
         """
         client = self._require_client(client)
+        query_params = self.query_params
         # Pass '?projection=full' here because 'PATCH' documented not
         # to work properly w/ 'noAcl'.
-        query_params = {"projection": "full"}
-        if self.user_project is not None:
-            query_params["userProject"] = self.user_project
+        query_params["projection"] = "full"
         update_properties = {key: self._properties[key] for key in self._changes}
 
         # Make the API call.
@@ -194,9 +201,8 @@ class _PropertyMixin(object):
                        ``client`` stored on the current object.
         """
         client = self._require_client(client)
-        query_params = {"projection": "full"}
-        if self.user_project is not None:
-            query_params["userProject"] = self.user_project
+        query_params = self.query_params
+        query_params["projection"] = "full"
         api_response = client._connection.api_request(
             method="PUT",
             path=self.path,
