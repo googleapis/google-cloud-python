@@ -32,22 +32,6 @@ class NullValue(enum.IntEnum):
     NULL_VALUE = 0
 
 
-class TransferType(enum.IntEnum):
-    """
-    DEPRECATED. Represents data transfer type.
-
-    Attributes:
-      TRANSFER_TYPE_UNSPECIFIED (int): Invalid or Unknown transfer type placeholder.
-      BATCH (int): Batch data transfer.
-      STREAMING (int): Streaming data transfer. Streaming data source currently doesn't
-      support multiple transfer configs per project.
-    """
-
-    TRANSFER_TYPE_UNSPECIFIED = 0
-    BATCH = 1
-    STREAMING = 2
-
-
 class TransferState(enum.IntEnum):
     """
     Represents data transfer run state.
@@ -70,47 +54,20 @@ class TransferState(enum.IntEnum):
     CANCELLED = 6
 
 
-class TransferMessage(object):
-    class MessageSeverity(enum.IntEnum):
-        """
-        Represents data transfer user facing message severity.
+class TransferType(enum.IntEnum):
+    """
+    DEPRECATED. Represents data transfer type.
 
-        Attributes:
-          MESSAGE_SEVERITY_UNSPECIFIED (int): No severity specified.
-          INFO (int): Informational message.
-          WARNING (int): Warning message.
-          ERROR (int): Error message.
-        """
+    Attributes:
+      TRANSFER_TYPE_UNSPECIFIED (int): Invalid or Unknown transfer type placeholder.
+      BATCH (int): Batch data transfer.
+      STREAMING (int): Streaming data transfer. Streaming data source currently doesn't
+      support multiple transfer configs per project.
+    """
 
-        MESSAGE_SEVERITY_UNSPECIFIED = 0
-        INFO = 1
-        WARNING = 2
-        ERROR = 3
-
-
-class DataSourceParameter(object):
-    class Type(enum.IntEnum):
-        """
-        Parameter type.
-
-        Attributes:
-          TYPE_UNSPECIFIED (int): Type unspecified.
-          STRING (int): String parameter.
-          INTEGER (int): Integer parameter (64-bits).
-          Will be serialized to json as string.
-          DOUBLE (int): Double precision floating point parameter.
-          BOOLEAN (int): Boolean parameter.
-          RECORD (int): Record parameter.
-          PLUS_PAGE (int): Page ID for a Google+ Page.
-        """
-
-        TYPE_UNSPECIFIED = 0
-        STRING = 1
-        INTEGER = 2
-        DOUBLE = 3
-        BOOLEAN = 4
-        RECORD = 5
-        PLUS_PAGE = 6
+    TRANSFER_TYPE_UNSPECIFIED = 0
+    BATCH = 1
+    STREAMING = 2
 
 
 class DataSource(object):
@@ -149,6 +106,31 @@ class DataSource(object):
         CUSTOM_SLIDING_WINDOW = 2
 
 
+class DataSourceParameter(object):
+    class Type(enum.IntEnum):
+        """
+        Parameter type.
+
+        Attributes:
+          TYPE_UNSPECIFIED (int): Type unspecified.
+          STRING (int): String parameter.
+          INTEGER (int): Integer parameter (64-bits).
+          Will be serialized to json as string.
+          DOUBLE (int): Double precision floating point parameter.
+          BOOLEAN (int): Boolean parameter.
+          RECORD (int): Record parameter.
+          PLUS_PAGE (int): Page ID for a Google+ Page.
+        """
+
+        TYPE_UNSPECIFIED = 0
+        STRING = 1
+        INTEGER = 2
+        DOUBLE = 3
+        BOOLEAN = 4
+        RECORD = 5
+        PLUS_PAGE = 6
+
+
 class ListTransferRunsRequest(object):
     class RunAttempt(enum.IntEnum):
         """
@@ -161,3 +143,21 @@ class ListTransferRunsRequest(object):
 
         RUN_ATTEMPT_UNSPECIFIED = 0
         LATEST = 1
+
+
+class TransferMessage(object):
+    class MessageSeverity(enum.IntEnum):
+        """
+        Represents data transfer user facing message severity.
+
+        Attributes:
+          MESSAGE_SEVERITY_UNSPECIFIED (int): No severity specified.
+          INFO (int): Informational message.
+          WARNING (int): Warning message.
+          ERROR (int): Error message.
+        """
+
+        MESSAGE_SEVERITY_UNSPECIFIED = 0
+        INFO = 1
+        WARNING = 2
+        ERROR = 3
