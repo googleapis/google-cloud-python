@@ -74,6 +74,21 @@ def lint(session):
     session.run('flake8', 'tests')
 
 
+@nox.session(python="3.6")
+def blacken(session):
+    """Run black.
+
+    Format code to uniform standard.
+    """
+    session.install("black")
+    session.run(
+        "black",
+        "google",
+        "tests",
+        "docs",
+    )
+
+
 @nox.session(python='3.6')
 def lint_setup_py(session):
     """Verify that setup.py is valid (including RST check)."""
