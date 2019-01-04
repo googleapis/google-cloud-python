@@ -112,7 +112,7 @@ class SecurityCenterGrpcTransport(object):
 
     @property
     def create_source(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`SecurityCenterClient.create_source`.
 
         Creates a source.
 
@@ -125,7 +125,7 @@ class SecurityCenterGrpcTransport(object):
 
     @property
     def create_finding(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`SecurityCenterClient.create_finding`.
 
         Creates a finding. The corresponding source must exist for finding creation
         to succeed.
@@ -139,7 +139,7 @@ class SecurityCenterGrpcTransport(object):
 
     @property
     def get_iam_policy(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`SecurityCenterClient.get_iam_policy`.
 
         Gets the access control policy on the specified Source.
 
@@ -152,7 +152,7 @@ class SecurityCenterGrpcTransport(object):
 
     @property
     def get_organization_settings(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`SecurityCenterClient.get_organization_settings`.
 
         Gets the settings for an organization.
 
@@ -165,7 +165,7 @@ class SecurityCenterGrpcTransport(object):
 
     @property
     def get_source(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`SecurityCenterClient.get_source`.
 
         Gets a source.
 
@@ -178,7 +178,7 @@ class SecurityCenterGrpcTransport(object):
 
     @property
     def group_assets(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`SecurityCenterClient.group_assets`.
 
         Filters an organization's assets and  groups them by their specified
         properties.
@@ -192,7 +192,7 @@ class SecurityCenterGrpcTransport(object):
 
     @property
     def group_findings(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`SecurityCenterClient.group_findings`.
 
         Filters an organization or source's findings and groups them by their
         specified properties.
@@ -209,7 +209,7 @@ class SecurityCenterGrpcTransport(object):
 
     @property
     def list_assets(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`SecurityCenterClient.list_assets`.
 
         Lists an organization's assets.
 
@@ -222,7 +222,7 @@ class SecurityCenterGrpcTransport(object):
 
     @property
     def list_findings(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`SecurityCenterClient.list_findings`.
 
         Lists an organization or source's findings.
 
@@ -238,7 +238,7 @@ class SecurityCenterGrpcTransport(object):
 
     @property
     def list_sources(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`SecurityCenterClient.list_sources`.
 
         Lists all sources belonging to an organization.
 
@@ -251,7 +251,7 @@ class SecurityCenterGrpcTransport(object):
 
     @property
     def run_asset_discovery(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`SecurityCenterClient.run_asset_discovery`.
 
         Runs asset discovery. The discovery is tracked with a long-running
         operation.
@@ -269,7 +269,7 @@ class SecurityCenterGrpcTransport(object):
 
     @property
     def set_finding_state(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`SecurityCenterClient.set_finding_state`.
 
         Updates the state of a finding.
 
@@ -282,7 +282,7 @@ class SecurityCenterGrpcTransport(object):
 
     @property
     def set_iam_policy(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`SecurityCenterClient.set_iam_policy`.
 
         Sets the access control policy on the specified Source.
 
@@ -295,7 +295,7 @@ class SecurityCenterGrpcTransport(object):
 
     @property
     def test_iam_permissions(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`SecurityCenterClient.test_iam_permissions`.
 
         Returns the permissions that a caller has on the specified source.
 
@@ -308,7 +308,7 @@ class SecurityCenterGrpcTransport(object):
 
     @property
     def update_finding(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`SecurityCenterClient.update_finding`.
 
         Creates or updates a finding. The corresponding source must exist for a
         finding creation to succeed.
@@ -322,7 +322,7 @@ class SecurityCenterGrpcTransport(object):
 
     @property
     def update_organization_settings(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`SecurityCenterClient.update_organization_settings`.
 
         Updates an organization's settings.
 
@@ -335,7 +335,7 @@ class SecurityCenterGrpcTransport(object):
 
     @property
     def update_source(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`SecurityCenterClient.update_source`.
 
         Updates a source.
 
@@ -348,7 +348,7 @@ class SecurityCenterGrpcTransport(object):
 
     @property
     def update_security_marks(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`SecurityCenterClient.update_security_marks`.
 
         Updates security marks.
 
