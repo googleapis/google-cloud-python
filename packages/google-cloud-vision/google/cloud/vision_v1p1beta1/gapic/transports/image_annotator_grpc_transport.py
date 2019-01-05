@@ -100,7 +100,7 @@ class ImageAnnotatorGrpcTransport(object):
 
     @property
     def batch_annotate_images(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`ImageAnnotatorClient.batch_annotate_images`.
 
         Run image detection and annotation for a batch of images.
 
