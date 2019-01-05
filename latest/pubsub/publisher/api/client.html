@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Publisher Client API &#8212; google-cloud b6e23ab documentation</title>
+    <title>Publisher Client API &#8212; google-cloud a538d22 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -89,7 +89,8 @@ and contain only letters (<cite>[A-Za-z]</cite>), numbers (<cite>[0-9]</cite>), 
 underscores (<cite>_</cite>), periods (<cite>.</cite>), tildes (<cite>~</cite>), plus (<cite>+</cite>) or percent
 signs (<cite>%</cite>). It must be between 3 and 255 characters in length, and it
 must not start with <cite>“goog”</cite>.</li>
-<li><strong>labels</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>[</em><em>str -&gt; str</em><em>]</em>) – See &lt;a href=”/pubsub/docs/labels”&gt; Creating and managing labels&lt;/a&gt;.</li>
+<li><strong>labels</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>[</em><em>str -&gt; str</em><em>]</em>) – See &lt;a href=”<a class="reference external" href="https://cloud.google.com/pubsub/docs/labels">https://cloud.google.com/pubsub/docs/labels</a>”&gt; Creating and
+managing labels&lt;/a&gt;.</li>
 <li><strong>message_storage_policy</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.MessageStoragePolicy" title="google.cloud.pubsub_v1.types.MessageStoragePolicy"><em>MessageStoragePolicy</em></a><em>]</em>) – <p>Policy constraining how messages published to the topic may be stored. It
 is determined when the topic is created based on the policy configured at
 the project level. It must not be set by the caller in the request to

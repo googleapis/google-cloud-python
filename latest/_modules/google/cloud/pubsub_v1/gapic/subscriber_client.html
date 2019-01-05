@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.pubsub_v1.gapic.subscriber_client &#8212; google-cloud b6e23ab documentation</title>
+    <title>google.cloud.pubsub_v1.gapic.subscriber_client &#8212; google-cloud a538d22 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -273,9 +273,9 @@
 <span class="sd">        If the name is not provided in the request, the server will assign a</span>
 <span class="sd">        random name for this subscription on the same project as the topic,</span>
 <span class="sd">        conforming to the `resource name</span>
-<span class="sd">        format &lt;https://cloud.google.com/pubsub/docs/overview#names&gt;`__. The</span>
-<span class="sd">        generated name is populated in the returned Subscription object. Note</span>
-<span class="sd">        that for REST API requests, you must specify a name in the request.</span>
+<span class="sd">        format &lt;https://cloud.google.com/pubsub/docs/admin#resource_names&gt;`__.</span>
+<span class="sd">        The generated name is populated in the returned Subscription object.</span>
+<span class="sd">        Note that for REST API requests, you must specify a name in the request.</span>
 
 <span class="sd">        Example:</span>
 <span class="sd">            &gt;&gt;&gt; from google.cloud import pubsub_v1</span>
@@ -303,11 +303,11 @@
 
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.pubsub_v1.types.PushConfig`</span>
-<span class="sd">            ack_deadline_seconds (int): This value is the maximum time after a subscriber receives a message</span>
-<span class="sd">                before the subscriber should acknowledge the message. After message</span>
-<span class="sd">                delivery but before the ack deadline expires and before the message is</span>
-<span class="sd">                acknowledged, it is an outstanding message and will not be delivered</span>
-<span class="sd">                again during that time (on a best-effort basis).</span>
+<span class="sd">            ack_deadline_seconds (int): The approximate amount of time (on a best-effort basis) Pub/Sub waits</span>
+<span class="sd">                for the subscriber to acknowledge receipt before resending the message.</span>
+<span class="sd">                In the interval after the message is delivered and before it is</span>
+<span class="sd">                acknowledged, it is considered to be outstanding. During that time</span>
+<span class="sd">                period, the message will not be redelivered (on a best-effort basis).</span>
 
 <span class="sd">                For pull subscriptions, this value is used as the initial value for the</span>
 <span class="sd">                ack deadline. To override this value for a given message, call</span>
@@ -326,23 +326,25 @@
 <span class="sd">            retain_acked_messages (bool): Indicates whether to retain acknowledged messages. If true, then</span>
 <span class="sd">                messages are not expunged from the subscription&#39;s backlog, even if they</span>
 <span class="sd">                are acknowledged, until they fall out of the</span>
-<span class="sd">                ``message_retention_duration`` window. ALPHA: This feature is part of an</span>
-<span class="sd">                alpha release. This API might be changed in backward-incompatible ways</span>
-<span class="sd">                and is not recommended for production use. It is not subject to any SLA</span>
-<span class="sd">                or deprecation policy.</span>
+<span class="sd">                ``message_retention_duration`` window. This must be true if you would</span>
+<span class="sd">                like to Seek to a timestamp. BETA: This feature is part of a beta</span>
+<span class="sd">                release. This API might be changed in backward-incompatible ways and is</span>
+<span class="sd">                not recommended for production use. It is not subject to any SLA or</span>
+<span class="sd">                deprecation policy.</span>
 <span class="sd">            message_retention_duration (Union[dict, ~google.cloud.pubsub_v1.types.Duration]): How long to retain unacknowledged messages in the subscription&#39;s</span>
 <span class="sd">                backlog, from the moment a message is published. If</span>
 <span class="sd">                ``retain_acked_messages`` is true, then this also configures the</span>
 <span class="sd">                retention of acknowledged messages, and thus configures how far back in</span>
 <span class="sd">                time a ``Seek`` can be done. Defaults to 7 days. Cannot be more than 7</span>
-<span class="sd">                days or less than 10 minutes. ALPHA: This feature is part of an alpha</span>
+<span class="sd">                days or less than 10 minutes. BETA: This feature is part of a beta</span>
 <span class="sd">                release. This API might be changed in backward-incompatible ways and is</span>
 <span class="sd">                not recommended for production use. It is not subject to any SLA or</span>
 <span class="sd">                deprecation policy.</span>
 
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.pubsub_v1.types.Duration`</span>
-<span class="sd">            labels (dict[str -&gt; str]): See &lt;a href=&quot;/pubsub/docs/labels&quot;&gt; Creating and managing labels&lt;/a&gt;.</span>
+<span class="sd">            labels (dict[str -&gt; str]): See &lt;a href=&quot;https://cloud.google.com/pubsub/docs/labels&quot;&gt; Creating and</span>
+<span class="sd">                managing labels&lt;/a&gt;.</span>
 <span class="sd">            expiration_policy (Union[dict, ~google.cloud.pubsub_v1.types.ExpirationPolicy]): A policy that specifies the conditions for this subscription&#39;s</span>
 <span class="sd">                expiration. A subscription is considered active as long as any connected</span>
 <span class="sd">                subscriber is successfully consuming messages from the subscription or</span>
@@ -716,9 +718,11 @@
 <span class="sd">            ack_deadline_seconds (int): The new ack deadline with respect to the time this request was sent to</span>
 <span class="sd">                the Pub/Sub system. For example, if the value is 10, the new ack</span>
 <span class="sd">                deadline will expire 10 seconds after the ``ModifyAckDeadline`` call was</span>
-<span class="sd">                made. Specifying zero may immediately make the message available for</span>
-<span class="sd">                another pull request. The minimum deadline you can specify is 0 seconds.</span>
-<span class="sd">                The maximum deadline you can specify is 600 seconds (10 minutes).</span>
+<span class="sd">                made. Specifying zero might immediately make the message available for</span>
+<span class="sd">                delivery to another subscriber client. This typically results in an</span>
+<span class="sd">                increase in the rate of message redeliveries (that is, duplicates). The</span>
+<span class="sd">                minimum deadline you can specify is 0 seconds. The maximum deadline you</span>
+<span class="sd">                can specify is 600 seconds (10 minutes).</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
 <span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
 <span class="sd">                be retried.</span>
@@ -1051,8 +1055,13 @@
         <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Lists the existing snapshots.&lt;br&gt;&lt;br&gt;</span>
-<span class="sd">        &lt;b&gt;ALPHA:&lt;/b&gt; This feature is part of an alpha release. This API might be</span>
+<span class="sd">        Lists the existing snapshots. Snapshots are used in</span>
+<span class="sd">        &lt;a href=&quot;https://cloud.google.com/pubsub/docs/replay-overview&quot;&gt;Seek&lt;/a&gt;</span>
+<span class="sd">        operations, which allow</span>
+<span class="sd">        you to manage message acknowledgments in bulk. That is, you can set the</span>
+<span class="sd">        acknowledgment state of messages in an existing subscription to the state</span>
+<span class="sd">        captured by a snapshot.&lt;br&gt;&lt;br&gt;</span>
+<span class="sd">        &lt;b&gt;BETA:&lt;/b&gt; This feature is part of a beta release. This API might be</span>
 <span class="sd">        changed in backward-incompatible ways and is not recommended for production</span>
 <span class="sd">        use. It is not subject to any SLA or deprecation policy.</span>
 
@@ -1144,8 +1153,11 @@
         <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Creates a snapshot from the requested subscription. ALPHA: This feature</span>
-<span class="sd">        is part of an alpha release. This API might be changed in</span>
+<span class="sd">        Creates a snapshot from the requested subscription. Snapshots are used</span>
+<span class="sd">        in Seek operations, which allow you to manage message acknowledgments in</span>
+<span class="sd">        bulk. That is, you can set the acknowledgment state of messages in an</span>
+<span class="sd">        existing subscription to the state captured by a snapshot. BETA: This</span>
+<span class="sd">        feature is part of a beta release. This API might be changed in</span>
 <span class="sd">        backward-incompatible ways and is not recommended for production use. It</span>
 <span class="sd">        is not subject to any SLA or deprecation policy. If the snapshot already</span>
 <span class="sd">        exists, returns ``ALREADY_EXISTS``. If the requested subscription</span>
@@ -1155,9 +1167,9 @@
 <span class="sd">        ``Snapshot.expire_time`` field. If the name is not provided in the</span>
 <span class="sd">        request, the server will assign a random name for this snapshot on the</span>
 <span class="sd">        same project as the subscription, conforming to the `resource name</span>
-<span class="sd">        format &lt;https://cloud.google.com/pubsub/docs/overview#names&gt;`__. The</span>
-<span class="sd">        generated name is populated in the returned Snapshot object. Note that</span>
-<span class="sd">        for REST API requests, you must specify a name in the request.</span>
+<span class="sd">        format &lt;https://cloud.google.com/pubsub/docs/admin#resource_names&gt;`__.</span>
+<span class="sd">        The generated name is populated in the returned Snapshot object. Note</span>
+<span class="sd">        that for REST API requests, you must specify a name in the request.</span>
 
 <span class="sd">        Example:</span>
 <span class="sd">            &gt;&gt;&gt; from google.cloud import pubsub_v1</span>
@@ -1183,7 +1195,8 @@
 <span class="sd">                messages published to the subscription&#39;s topic following the successful</span>
 <span class="sd">                completion of the CreateSnapshot request. Format is</span>
 <span class="sd">                ``projects/{project}/subscriptions/{sub}``.</span>
-<span class="sd">            labels (dict[str -&gt; str]): See &lt;a href=&quot;/pubsub/docs/labels&quot;&gt; Creating and managing labels&lt;/a&gt;.</span>
+<span class="sd">            labels (dict[str -&gt; str]): See &lt;a href=&quot;https://cloud.google.com/pubsub/docs/labels&quot;&gt; Creating and</span>
+<span class="sd">                managing labels&lt;/a&gt;.</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
 <span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
 <span class="sd">                be retried.</span>
@@ -1230,8 +1243,13 @@
         <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Updates an existing snapshot.&lt;br&gt;&lt;br&gt;</span>
-<span class="sd">        &lt;b&gt;ALPHA:&lt;/b&gt; This feature is part of an alpha release. This API might be</span>
+<span class="sd">        Updates an existing snapshot. Snapshots are used in</span>
+<span class="sd">        &lt;a href=&quot;https://cloud.google.com/pubsub/docs/replay-overview&quot;&gt;Seek&lt;/a&gt;</span>
+<span class="sd">        operations, which allow</span>
+<span class="sd">        you to manage message acknowledgments in bulk. That is, you can set the</span>
+<span class="sd">        acknowledgment state of messages in an existing subscription to the state</span>
+<span class="sd">        captured by a snapshot.&lt;br&gt;&lt;br&gt;</span>
+<span class="sd">        &lt;b&gt;BETA:&lt;/b&gt; This feature is part of a beta release. This API might be</span>
 <span class="sd">        changed in backward-incompatible ways and is not recommended for production</span>
 <span class="sd">        use. It is not subject to any SLA or deprecation policy.</span>
 <span class="sd">        Note that certain properties of a snapshot are not modifiable.</span>
@@ -1305,8 +1323,13 @@
         <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Removes an existing snapshot. &lt;br&gt;&lt;br&gt;</span>
-<span class="sd">        &lt;b&gt;ALPHA:&lt;/b&gt; This feature is part of an alpha release. This API might be</span>
+<span class="sd">        Removes an existing snapshot. Snapshots are used in</span>
+<span class="sd">        &lt;a href=&quot;https://cloud.google.com/pubsub/docs/replay-overview&quot;&gt;Seek&lt;/a&gt;</span>
+<span class="sd">        operations, which allow</span>
+<span class="sd">        you to manage message acknowledgments in bulk. That is, you can set the</span>
+<span class="sd">        acknowledgment state of messages in an existing subscription to the state</span>
+<span class="sd">        captured by a snapshot.&lt;br&gt;&lt;br&gt;</span>
+<span class="sd">        &lt;b&gt;BETA:&lt;/b&gt; This feature is part of a beta release. This API might be</span>
 <span class="sd">        changed in backward-incompatible ways and is not recommended for production</span>
 <span class="sd">        use. It is not subject to any SLA or deprecation policy.</span>
 <span class="sd">        When the snapshot is deleted, all messages retained in the snapshot</span>
@@ -1369,8 +1392,14 @@
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Seeks an existing subscription to a point in time or to a given snapshot,</span>
-<span class="sd">        whichever is provided in the request.&lt;br&gt;&lt;br&gt;</span>
-<span class="sd">        &lt;b&gt;ALPHA:&lt;/b&gt; This feature is part of an alpha release. This API might be</span>
+<span class="sd">        whichever is provided in the request. Snapshots are used in</span>
+<span class="sd">        &lt;a href=&quot;https://cloud.google.com/pubsub/docs/replay-overview&quot;&gt;Seek&lt;/a&gt;</span>
+<span class="sd">        operations, which allow</span>
+<span class="sd">        you to manage message acknowledgments in bulk. That is, you can set the</span>
+<span class="sd">        acknowledgment state of messages in an existing subscription to the state</span>
+<span class="sd">        captured by a snapshot. Note that both the subscription and the snapshot</span>
+<span class="sd">        must be on the same topic.&lt;br&gt;&lt;br&gt;</span>
+<span class="sd">        &lt;b&gt;BETA:&lt;/b&gt; This feature is part of a beta release. This API might be</span>
 <span class="sd">        changed in backward-incompatible ways and is not recommended for production</span>
 <span class="sd">        use. It is not subject to any SLA or deprecation policy.</span>
 

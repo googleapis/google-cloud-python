@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Subscriber Client API &#8212; google-cloud b6e23ab documentation</title>
+    <title>Subscriber Client API &#8212; google-cloud a538d22 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -121,8 +121,11 @@ to a retryable error and retry attempts failed.</li>
 <dl class="method">
 <dt id="google.cloud.pubsub_v1.subscriber.client.Client.create_snapshot">
 <code class="descname">create_snapshot</code><span class="sig-paren">(</span><em>name</em>, <em>subscription</em>, <em>labels=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.client.Client.create_snapshot" title="Permalink to this definition">#</a></dt>
-<dd><p>Creates a snapshot from the requested subscription. ALPHA: This feature
-is part of an alpha release. This API might be changed in
+<dd><p>Creates a snapshot from the requested subscription. Snapshots are used
+in Seek operations, which allow you to manage message acknowledgments in
+bulk. That is, you can set the acknowledgment state of messages in an
+existing subscription to the state captured by a snapshot. BETA: This
+feature is part of a beta release. This API might be changed in
 backward-incompatible ways and is not recommended for production use. It
 is not subject to any SLA or deprecation policy. If the snapshot already
 exists, returns <code class="docutils literal notranslate"><span class="pre">ALREADY_EXISTS</span></code>. If the requested subscription
@@ -131,10 +134,10 @@ is too old – and the resulting snapshot would expire in less than 1
 hour – then <code class="docutils literal notranslate"><span class="pre">FAILED_PRECONDITION</span></code> is returned. See also the
 <code class="docutils literal notranslate"><span class="pre">Snapshot.expire_time</span></code> field. If the name is not provided in the
 request, the server will assign a random name for this snapshot on the
-same project as the subscription, conforming to the <a class="reference external" href="https://cloud.google.com/pubsub/docs/overview#names">resource name
-format</a>. The
-generated name is populated in the returned Snapshot object. Note that
-for REST API requests, you must specify a name in the request.</p>
+same project as the subscription, conforming to the <a class="reference external" href="https://cloud.google.com/pubsub/docs/admin#resource_names">resource name
+format</a>.
+The generated name is populated in the returned Snapshot object. Note
+that for REST API requests, you must specify a name in the request.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">pubsub_v1</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -164,7 +167,8 @@ completion of the <code class="docutils literal notranslate"><span class="pre">C
 messages published to the subscription’s topic following the successful
 completion of the CreateSnapshot request. Format is
 <code class="docutils literal notranslate"><span class="pre">projects/{project}/subscriptions/{sub}</span></code>.</li>
-<li><strong>labels</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>[</em><em>str -&gt; str</em><em>]</em>) – See &lt;a href=”/pubsub/docs/labels”&gt; Creating and managing labels&lt;/a&gt;.</li>
+<li><strong>labels</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>[</em><em>str -&gt; str</em><em>]</em>) – See &lt;a href=”<a class="reference external" href="https://cloud.google.com/pubsub/docs/labels">https://cloud.google.com/pubsub/docs/labels</a>”&gt; Creating and
+managing labels&lt;/a&gt;.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
@@ -200,10 +204,10 @@ the subscription already exists, returns <code class="docutils literal notransla
 corresponding topic doesn’t exist, returns <code class="docutils literal notranslate"><span class="pre">NOT_FOUND</span></code>.</p>
 <p>If the name is not provided in the request, the server will assign a
 random name for this subscription on the same project as the topic,
-conforming to the <a class="reference external" href="https://cloud.google.com/pubsub/docs/overview#names">resource name
-format</a>. The
-generated name is populated in the returned Subscription object. Note
-that for REST API requests, you must specify a name in the request.</p>
+conforming to the <a class="reference external" href="https://cloud.google.com/pubsub/docs/admin#resource_names">resource name
+format</a>.
+The generated name is populated in the returned Subscription object.
+Note that for REST API requests, you must specify a name in the request.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">pubsub_v1</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -235,11 +239,11 @@ pull and ack messages using API methods.</p>
 <p>If a dict is provided, it must be of the same form as the protobuf
 message <a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.PushConfig" title="google.cloud.pubsub_v1.types.PushConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">PushConfig</span></code></a></p>
 </li>
-<li><strong>ack_deadline_seconds</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – <p>This value is the maximum time after a subscriber receives a message
-before the subscriber should acknowledge the message. After message
-delivery but before the ack deadline expires and before the message is
-acknowledged, it is an outstanding message and will not be delivered
-again during that time (on a best-effort basis).</p>
+<li><strong>ack_deadline_seconds</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – <p>The approximate amount of time (on a best-effort basis) Pub/Sub waits
+for the subscriber to acknowledge receipt before resending the message.
+In the interval after the message is delivered and before it is
+acknowledged, it is considered to be outstanding. During that time
+period, the message will not be redelivered (on a best-effort basis).</p>
 <p>For pull subscriptions, this value is used as the initial value for the
 ack deadline. To override this value for a given message, call
 <code class="docutils literal notranslate"><span class="pre">ModifyAckDeadline</span></code> with the corresponding <code class="docutils literal notranslate"><span class="pre">ack_id</span></code> if using
@@ -256,23 +260,25 @@ will eventually redeliver the message.</p>
 <li><strong>retain_acked_messages</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – Indicates whether to retain acknowledged messages. If true, then
 messages are not expunged from the subscription’s backlog, even if they
 are acknowledged, until they fall out of the
-<code class="docutils literal notranslate"><span class="pre">message_retention_duration</span></code> window. ALPHA: This feature is part of an
-alpha release. This API might be changed in backward-incompatible ways
-and is not recommended for production use. It is not subject to any SLA
-or deprecation policy.</li>
+<code class="docutils literal notranslate"><span class="pre">message_retention_duration</span></code> window. This must be true if you would
+like to Seek to a timestamp. BETA: This feature is part of a beta
+release. This API might be changed in backward-incompatible ways and is
+not recommended for production use. It is not subject to any SLA or
+deprecation policy.</li>
 <li><strong>message_retention_duration</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.Duration" title="google.cloud.pubsub_v1.types.Duration"><em>Duration</em></a><em>]</em>) – <p>How long to retain unacknowledged messages in the subscription’s
 backlog, from the moment a message is published. If
 <code class="docutils literal notranslate"><span class="pre">retain_acked_messages</span></code> is true, then this also configures the
 retention of acknowledged messages, and thus configures how far back in
 time a <code class="docutils literal notranslate"><span class="pre">Seek</span></code> can be done. Defaults to 7 days. Cannot be more than 7
-days or less than 10 minutes. ALPHA: This feature is part of an alpha
+days or less than 10 minutes. BETA: This feature is part of a beta
 release. This API might be changed in backward-incompatible ways and is
 not recommended for production use. It is not subject to any SLA or
 deprecation policy.</p>
 <p>If a dict is provided, it must be of the same form as the protobuf
 message <a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.Duration" title="google.cloud.pubsub_v1.types.Duration"><code class="xref py py-class docutils literal notranslate"><span class="pre">Duration</span></code></a></p>
 </li>
-<li><strong>labels</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>[</em><em>str -&gt; str</em><em>]</em>) – See &lt;a href=”/pubsub/docs/labels”&gt; Creating and managing labels&lt;/a&gt;.</li>
+<li><strong>labels</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>[</em><em>str -&gt; str</em><em>]</em>) – See &lt;a href=”<a class="reference external" href="https://cloud.google.com/pubsub/docs/labels">https://cloud.google.com/pubsub/docs/labels</a>”&gt; Creating and
+managing labels&lt;/a&gt;.</li>
 <li><strong>expiration_policy</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.ExpirationPolicy" title="google.cloud.pubsub_v1.types.ExpirationPolicy"><em>ExpirationPolicy</em></a><em>]</em>) – <p>A policy that specifies the conditions for this subscription’s
 expiration. A subscription is considered active as long as any connected
 subscriber is successfully consuming messages from the subscription or
@@ -315,8 +321,13 @@ to a retryable error and retry attempts failed.</li>
 <dl class="method">
 <dt id="google.cloud.pubsub_v1.subscriber.client.Client.delete_snapshot">
 <code class="descname">delete_snapshot</code><span class="sig-paren">(</span><em>snapshot</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.client.Client.delete_snapshot" title="Permalink to this definition">#</a></dt>
-<dd><p>Removes an existing snapshot. &lt;br&gt;&lt;br&gt;
-&lt;b&gt;ALPHA:&lt;/b&gt; This feature is part of an alpha release. This API might be
+<dd><p>Removes an existing snapshot. Snapshots are used in
+&lt;a href=”<a class="reference external" href="https://cloud.google.com/pubsub/docs/replay-overview">https://cloud.google.com/pubsub/docs/replay-overview</a>”&gt;Seek&lt;/a&gt;
+operations, which allow
+you to manage message acknowledgments in bulk. That is, you can set the
+acknowledgment state of messages in an existing subscription to the state
+captured by a snapshot.&lt;br&gt;&lt;br&gt;
+&lt;b&gt;BETA:&lt;/b&gt; This feature is part of a beta release. This API might be
 changed in backward-incompatible ways and is not recommended for production
 use. It is not subject to any SLA or deprecation policy.
 When the snapshot is deleted, all messages retained in the snapshot
@@ -568,8 +579,13 @@ to a retryable error and retry attempts failed.</li>
 <dl class="method">
 <dt id="google.cloud.pubsub_v1.subscriber.client.Client.list_snapshots">
 <code class="descname">list_snapshots</code><span class="sig-paren">(</span><em>project</em>, <em>page_size=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.client.Client.list_snapshots" title="Permalink to this definition">#</a></dt>
-<dd><p>Lists the existing snapshots.&lt;br&gt;&lt;br&gt;
-&lt;b&gt;ALPHA:&lt;/b&gt; This feature is part of an alpha release. This API might be
+<dd><p>Lists the existing snapshots. Snapshots are used in
+&lt;a href=”<a class="reference external" href="https://cloud.google.com/pubsub/docs/replay-overview">https://cloud.google.com/pubsub/docs/replay-overview</a>”&gt;Seek&lt;/a&gt;
+operations, which allow
+you to manage message acknowledgments in bulk. That is, you can set the
+acknowledgment state of messages in an existing subscription to the state
+captured by a snapshot.&lt;br&gt;&lt;br&gt;
+&lt;b&gt;BETA:&lt;/b&gt; This feature is part of a beta release. This API might be
 changed in backward-incompatible ways and is not recommended for production
 use. It is not subject to any SLA or deprecation policy.</p>
 <p class="rubric">Example</p>
@@ -739,9 +755,11 @@ subscription-level <code class="docutils literal notranslate"><span class="pre">
 <li><strong>ack_deadline_seconds</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – The new ack deadline with respect to the time this request was sent to
 the Pub/Sub system. For example, if the value is 10, the new ack
 deadline will expire 10 seconds after the <code class="docutils literal notranslate"><span class="pre">ModifyAckDeadline</span></code> call was
-made. Specifying zero may immediately make the message available for
-another pull request. The minimum deadline you can specify is 0 seconds.
-The maximum deadline you can specify is 600 seconds (10 minutes).</li>
+made. Specifying zero might immediately make the message available for
+delivery to another subscriber client. This typically results in an
+increase in the rate of message redeliveries (that is, duplicates). The
+minimum deadline you can specify is 0 seconds. The maximum deadline you
+can specify is 600 seconds (10 minutes).</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
@@ -896,8 +914,14 @@ to a retryable error and retry attempts failed.</li>
 <dt id="google.cloud.pubsub_v1.subscriber.client.Client.seek">
 <code class="descname">seek</code><span class="sig-paren">(</span><em>subscription</em>, <em>time=None</em>, <em>snapshot=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.client.Client.seek" title="Permalink to this definition">#</a></dt>
 <dd><p>Seeks an existing subscription to a point in time or to a given snapshot,
-whichever is provided in the request.&lt;br&gt;&lt;br&gt;
-&lt;b&gt;ALPHA:&lt;/b&gt; This feature is part of an alpha release. This API might be
+whichever is provided in the request. Snapshots are used in
+&lt;a href=”<a class="reference external" href="https://cloud.google.com/pubsub/docs/replay-overview">https://cloud.google.com/pubsub/docs/replay-overview</a>”&gt;Seek&lt;/a&gt;
+operations, which allow
+you to manage message acknowledgments in bulk. That is, you can set the
+acknowledgment state of messages in an existing subscription to the state
+captured by a snapshot. Note that both the subscription and the snapshot
+must be on the same topic.&lt;br&gt;&lt;br&gt;
+&lt;b&gt;BETA:&lt;/b&gt; This feature is part of a beta release. This API might be
 changed in backward-incompatible ways and is not recommended for production
 use. It is not subject to any SLA or deprecation policy.</p>
 <p class="rubric">Example</p>
@@ -1266,8 +1290,13 @@ to a retryable error and retry attempts failed.</li>
 <dl class="method">
 <dt id="google.cloud.pubsub_v1.subscriber.client.Client.update_snapshot">
 <code class="descname">update_snapshot</code><span class="sig-paren">(</span><em>snapshot</em>, <em>update_mask</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.client.Client.update_snapshot" title="Permalink to this definition">#</a></dt>
-<dd><p>Updates an existing snapshot.&lt;br&gt;&lt;br&gt;
-&lt;b&gt;ALPHA:&lt;/b&gt; This feature is part of an alpha release. This API might be
+<dd><p>Updates an existing snapshot. Snapshots are used in
+&lt;a href=”<a class="reference external" href="https://cloud.google.com/pubsub/docs/replay-overview">https://cloud.google.com/pubsub/docs/replay-overview</a>”&gt;Seek&lt;/a&gt;
+operations, which allow
+you to manage message acknowledgments in bulk. That is, you can set the
+acknowledgment state of messages in an existing subscription to the state
+captured by a snapshot.&lt;br&gt;&lt;br&gt;
+&lt;b&gt;BETA:&lt;/b&gt; This feature is part of a beta release. This API might be
 changed in backward-incompatible ways and is not recommended for production
 use. It is not subject to any SLA or deprecation policy.
 Note that certain properties of a snapshot are not modifiable.</p>
