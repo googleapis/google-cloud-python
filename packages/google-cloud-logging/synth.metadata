@@ -1,0 +1,39 @@
+{
+  "updateTime": "2019-01-05T17:54:33.074139Z",
+  "sources": [
+    {
+      "generator": {
+        "name": "artman",
+        "version": "0.16.4",
+        "dockerImage": "googleapis/artman@sha256:8b45fae963557c3299921037ecbb86f0689f41b1b4aea73408ebc50562cb2857"
+      }
+    },
+    {
+      "git": {
+        "name": "googleapis",
+        "remote": "https://github.com/googleapis/googleapis.git",
+        "sha": "a111a53c0c6722afcd793b64724ceef7862db5b9",
+        "internalRef": "227896184"
+      }
+    },
+    {
+      "template": {
+        "name": "python_library",
+        "origin": "synthtool.gcp",
+        "version": "2018.12.6"
+      }
+    }
+  ],
+  "destinations": [
+    {
+      "client": {
+        "source": "googleapis",
+        "apiName": "logging",
+        "apiVersion": "v2",
+        "language": "python",
+        "generator": "gapic",
+        "config": "google/logging/artman_logging.yaml"
+      }
+    }
+  ]
+}
