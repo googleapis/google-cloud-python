@@ -104,7 +104,7 @@ class ReportErrorsServiceGrpcTransport(object):
 
     @property
     def report_error_event(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`ReportErrorsServiceClient.report_error_event`.
 
         Report an individual error event.
 

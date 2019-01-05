@@ -105,7 +105,7 @@ class BigQueryStorageGrpcTransport(object):
 
     @property
     def create_read_session(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`BigQueryStorageClient.create_read_session`.
 
         Creates a new read session. A read session divides the contents of a
         BigQuery table into one or more streams, which can then be used to read
@@ -129,7 +129,7 @@ class BigQueryStorageGrpcTransport(object):
 
     @property
     def read_rows(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`BigQueryStorageClient.read_rows`.
 
         Reads rows from the table in the format prescribed by the read session.
         Each response contains one or more table rows, up to a maximum of 10 MiB
@@ -150,7 +150,7 @@ class BigQueryStorageGrpcTransport(object):
 
     @property
     def batch_create_read_session_streams(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`BigQueryStorageClient.batch_create_read_session_streams`.
 
         Creates additional streams for a ReadSession. This API can be used to
         dynamically adjust the parallelism of a batch processing task upwards by
@@ -165,7 +165,7 @@ class BigQueryStorageGrpcTransport(object):
 
     @property
     def finalize_stream(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`BigQueryStorageClient.finalize_stream`.
 
         Triggers the graceful termination of a single stream in a ReadSession. This
         API can be used to dynamically adjust the parallelism of a batch processing
@@ -191,7 +191,7 @@ class BigQueryStorageGrpcTransport(object):
 
     @property
     def split_read_stream(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`BigQueryStorageClient.split_read_stream`.
 
         Splits a given read stream into two Streams. These streams are referred
         to as the primary and the residual of the split. The original stream can

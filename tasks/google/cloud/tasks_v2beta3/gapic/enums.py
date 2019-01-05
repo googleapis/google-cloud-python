@@ -18,27 +18,6 @@
 import enum
 
 
-class HttpMethod(enum.IntEnum):
-    """
-    The HTTP method used to execute the task.
-
-    Attributes:
-      HTTP_METHOD_UNSPECIFIED (int): HTTP method unspecified
-      POST (int): HTTP POST
-      GET (int): HTTP GET
-      HEAD (int): HTTP HEAD
-      PUT (int): HTTP PUT
-      DELETE (int): HTTP DELETE
-    """
-
-    HTTP_METHOD_UNSPECIFIED = 0
-    POST = 1
-    GET = 2
-    HEAD = 3
-    PUT = 4
-    DELETE = 5
-
-
 class Code(enum.IntEnum):
     """
     The canonical error codes for Google APIs.
@@ -182,6 +161,27 @@ class Code(enum.IntEnum):
     INTERNAL = 13
     UNAVAILABLE = 14
     DATA_LOSS = 15
+
+
+class HttpMethod(enum.IntEnum):
+    """
+    The HTTP method used to execute the task.
+
+    Attributes:
+      HTTP_METHOD_UNSPECIFIED (int): HTTP method unspecified
+      POST (int): HTTP POST
+      GET (int): HTTP GET
+      HEAD (int): HTTP HEAD
+      PUT (int): HTTP PUT
+      DELETE (int): HTTP DELETE
+    """
+
+    HTTP_METHOD_UNSPECIFIED = 0
+    POST = 1
+    GET = 2
+    HEAD = 3
+    PUT = 4
+    DELETE = 5
 
 
 class Queue(object):

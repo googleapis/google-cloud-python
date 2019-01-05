@@ -15,6 +15,7 @@
 import collections
 import unittest.mock
 
+import grpc
 import pytest
 
 import tests.unit.utils
@@ -146,8 +147,16 @@ class TestEventLoop:
 
     def test_queue_rpc(self):
         loop = self._make_one()
-        with pytest.raises(NotImplementedError):
-            loop.queue_rpc("rpc")
+        callback = unittest.mock.Mock(spec=())
+        rpc = unittest.mock.Mock(spec=grpc.Future)
+        loop.queue_rpc(rpc, callback)
+        assert list(loop.rpcs.values()) == [callback]
+
+        rpc_callback = rpc.add_done_callback.call_args[0][0]
+        rpc_callback(rpc)
+        rpc_id, rpc_result = loop.rpc_results.get()
+        assert rpc_result is rpc
+        assert loop.rpcs[rpc_id] is callback
 
     def test_add_idle(self):
         loop = self._make_one()
@@ -247,10 +256,17 @@ class TestEventLoop:
         assert loop.inactive == 0
 
     def test_run0_rpc(self):
+        rpc = unittest.mock.Mock(spec=grpc.Future)
+        callback = unittest.mock.Mock(spec=())
+
         loop = self._make_one()
-        loop.rpcs["foo"] = "bar"
-        with pytest.raises(NotImplementedError):
-            loop.run0()
+        loop.rpcs["foo"] = callback
+        loop.rpc_results.put(("foo", rpc))
+
+        loop.run0()
+        assert len(loop.rpcs) == 0
+        assert loop.rpc_results.empty()
+        callback.assert_called_once_with(rpc)
 
     def test_run1_nothing_to_do(self):
         loop = self._make_one()
@@ -326,9 +342,14 @@ def test_queue_call(EventLoop):
         loop.queue_call.assert_called_once_with(42, "foo", "bar", baz="qux")
 
 
-def test_queue_rpc():
-    with pytest.raises(NotImplementedError):
-        _eventloop.queue_rpc()
+@unittest.mock.patch("google.cloud.ndb._eventloop.EventLoop")
+def test_queue_rpc(EventLoop):
+    EventLoop.return_value = loop = unittest.mock.Mock(
+        spec=("run", "queue_rpc")
+    )
+    with _runstate.state_context(None):
+        _eventloop.queue_rpc("foo", "bar")
+        loop.queue_rpc.assert_called_once_with("foo", "bar")
 
 
 @unittest.mock.patch("google.cloud.ndb._eventloop.EventLoop")

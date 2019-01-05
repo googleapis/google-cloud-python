@@ -425,5 +425,50 @@ def test_bigtable_set_iam_policy_then_get_iam_policy():
     assert len(policy.bigtable_admins) > 0
 
 
+def test_bigtable_project_path():
+    import re
+    # [START bigtable_project_path]
+    from google.cloud.bigtable import Client
+
+    client = Client(admin=True)
+    project_path = client.project_path
+    # [END bigtable_project_path]
+
+    _project_path_re = re.compile(r'^projects/'
+                                  r'(?P<project_id>'
+                                  r'[_a-zA-Z0-9][-_.a-zA-Z0-9]*)$')
+    assert _project_path_re.match(project_path)
+
+
+def test_bigtable_table_data_client():
+    # [START bigtable_table_data_client]
+    from google.cloud.bigtable import Client
+
+    client = Client(admin=True)
+    table_data_client = client.table_data_client
+    # [END bigtable_table_data_client]
+    assert "BigtableClient" in str(table_data_client)
+
+
+def test_bigtable_table_admin_client():
+    # [START bigtable_table_admin_client]
+    from google.cloud.bigtable import Client
+
+    client = Client(admin=True)
+    table_admin_client = client.table_admin_client
+    # [END bigtable_table_admin_client]
+    assert "BigtableTableAdmin" in str(table_admin_client)
+
+
+def test_bigtable_instance_admin_client():
+    # [START bigtable_instance_admin_client]
+    from google.cloud.bigtable import Client
+
+    client = Client(admin=True)
+    instance_admin_client = client.instance_admin_client
+    # [END bigtable_instance_admin_client]
+    assert "BigtableInstanceAdmin" in str(instance_admin_client)
+
+
 if __name__ == "__main__":
     pytest.main()

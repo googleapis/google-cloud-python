@@ -97,7 +97,7 @@ class ClusterManagerGrpcTransport(object):
 
     @property
     def list_clusters(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`ClusterManagerClient.list_clusters`.
 
         Lists all clusters owned by a project in either the specified zone or all
         zones.
@@ -111,7 +111,7 @@ class ClusterManagerGrpcTransport(object):
 
     @property
     def get_cluster(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`ClusterManagerClient.get_cluster`.
 
         Gets the details of a specific cluster.
 
@@ -124,7 +124,7 @@ class ClusterManagerGrpcTransport(object):
 
     @property
     def create_cluster(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`ClusterManagerClient.create_cluster`.
 
         Creates a cluster, consisting of the specified number and type of Google
         Compute Engine instances.
@@ -148,7 +148,7 @@ class ClusterManagerGrpcTransport(object):
 
     @property
     def update_cluster(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`ClusterManagerClient.update_cluster`.
 
         Updates the settings of a specific cluster.
 
@@ -161,7 +161,7 @@ class ClusterManagerGrpcTransport(object):
 
     @property
     def update_node_pool(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`ClusterManagerClient.update_node_pool`.
 
         Updates the version and/or image type for a specific node pool.
 
@@ -174,7 +174,7 @@ class ClusterManagerGrpcTransport(object):
 
     @property
     def set_node_pool_autoscaling(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`ClusterManagerClient.set_node_pool_autoscaling`.
 
         Sets the autoscaling settings for a specific node pool.
 
@@ -187,7 +187,7 @@ class ClusterManagerGrpcTransport(object):
 
     @property
     def set_logging_service(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`ClusterManagerClient.set_logging_service`.
 
         Sets the logging service for a specific cluster.
 
@@ -200,7 +200,7 @@ class ClusterManagerGrpcTransport(object):
 
     @property
     def set_monitoring_service(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`ClusterManagerClient.set_monitoring_service`.
 
         Sets the monitoring service for a specific cluster.
 
@@ -213,7 +213,7 @@ class ClusterManagerGrpcTransport(object):
 
     @property
     def set_addons_config(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`ClusterManagerClient.set_addons_config`.
 
         Sets the addons for a specific cluster.
 
@@ -226,7 +226,7 @@ class ClusterManagerGrpcTransport(object):
 
     @property
     def set_locations(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`ClusterManagerClient.set_locations`.
 
         Sets the locations for a specific cluster.
 
@@ -239,7 +239,7 @@ class ClusterManagerGrpcTransport(object):
 
     @property
     def update_master(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`ClusterManagerClient.update_master`.
 
         Updates the master for a specific cluster.
 
@@ -252,7 +252,7 @@ class ClusterManagerGrpcTransport(object):
 
     @property
     def set_master_auth(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`ClusterManagerClient.set_master_auth`.
 
         Used to set master auth materials. Currently supports :-
         Changing the admin password for a specific cluster.
@@ -267,7 +267,7 @@ class ClusterManagerGrpcTransport(object):
 
     @property
     def delete_cluster(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`ClusterManagerClient.delete_cluster`.
 
         Deletes the cluster, including the Kubernetes endpoint and all worker
         nodes.
@@ -288,7 +288,7 @@ class ClusterManagerGrpcTransport(object):
 
     @property
     def list_operations(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`ClusterManagerClient.list_operations`.
 
         Lists all operations in a project in a specific zone or all zones.
 
@@ -301,7 +301,7 @@ class ClusterManagerGrpcTransport(object):
 
     @property
     def get_operation(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`ClusterManagerClient.get_operation`.
 
         Gets the specified operation.
 
@@ -314,7 +314,7 @@ class ClusterManagerGrpcTransport(object):
 
     @property
     def cancel_operation(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`ClusterManagerClient.cancel_operation`.
 
         Cancels the specified operation.
 
@@ -327,7 +327,7 @@ class ClusterManagerGrpcTransport(object):
 
     @property
     def get_server_config(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`ClusterManagerClient.get_server_config`.
 
         Returns configuration info about the Kubernetes Engine service.
 
@@ -340,7 +340,7 @@ class ClusterManagerGrpcTransport(object):
 
     @property
     def list_node_pools(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`ClusterManagerClient.list_node_pools`.
 
         Lists the node pools for a cluster.
 
@@ -353,7 +353,7 @@ class ClusterManagerGrpcTransport(object):
 
     @property
     def get_node_pool(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`ClusterManagerClient.get_node_pool`.
 
         Retrieves the node pool requested.
 
@@ -366,7 +366,7 @@ class ClusterManagerGrpcTransport(object):
 
     @property
     def create_node_pool(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`ClusterManagerClient.create_node_pool`.
 
         Creates a node pool for a cluster.
 
@@ -379,7 +379,7 @@ class ClusterManagerGrpcTransport(object):
 
     @property
     def delete_node_pool(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`ClusterManagerClient.delete_node_pool`.
 
         Deletes a node pool from a cluster.
 
@@ -392,7 +392,7 @@ class ClusterManagerGrpcTransport(object):
 
     @property
     def rollback_node_pool_upgrade(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`ClusterManagerClient.rollback_node_pool_upgrade`.
 
         Roll back the previously Aborted or Failed NodePool upgrade.
         This will be an no-op if the last upgrade successfully completed.
@@ -406,7 +406,7 @@ class ClusterManagerGrpcTransport(object):
 
     @property
     def set_node_pool_management(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`ClusterManagerClient.set_node_pool_management`.
 
         Sets the NodeManagement options for a node pool.
 
@@ -419,7 +419,7 @@ class ClusterManagerGrpcTransport(object):
 
     @property
     def set_labels(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`ClusterManagerClient.set_labels`.
 
         Sets labels on a cluster.
 
@@ -432,7 +432,7 @@ class ClusterManagerGrpcTransport(object):
 
     @property
     def set_legacy_abac(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`ClusterManagerClient.set_legacy_abac`.
 
         Enables or disables the ABAC authorization mechanism on a cluster.
 
@@ -445,7 +445,7 @@ class ClusterManagerGrpcTransport(object):
 
     @property
     def start_i_p_rotation(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`ClusterManagerClient.start_i_p_rotation`.
 
         Start master IP rotation.
 
@@ -458,7 +458,7 @@ class ClusterManagerGrpcTransport(object):
 
     @property
     def complete_i_p_rotation(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`ClusterManagerClient.complete_i_p_rotation`.
 
         Completes master IP rotation.
 
@@ -471,7 +471,7 @@ class ClusterManagerGrpcTransport(object):
 
     @property
     def set_node_pool_size(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`ClusterManagerClient.set_node_pool_size`.
 
         Sets the size for a specific node pool.
 
@@ -484,7 +484,7 @@ class ClusterManagerGrpcTransport(object):
 
     @property
     def set_network_policy(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`ClusterManagerClient.set_network_policy`.
 
         Enables/Disables Network Policy for a cluster.
 
@@ -497,7 +497,7 @@ class ClusterManagerGrpcTransport(object):
 
     @property
     def set_maintenance_policy(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`ClusterManagerClient.set_maintenance_policy`.
 
         Sets the maintenance policy for a cluster.
 

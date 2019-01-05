@@ -25,6 +25,7 @@ class State:
         self.client = client
         self.eventloop = None
         self.stub = None
+        self.batches = {}
 
 
 class LocalStates(threading.local):
@@ -58,7 +59,7 @@ def state_context(client):
     """
     state = State(client)
     states.push(state)
-    yield
+    yield state
 
     # Finish up any work left to do on the event loop
     if state.eventloop is not None:

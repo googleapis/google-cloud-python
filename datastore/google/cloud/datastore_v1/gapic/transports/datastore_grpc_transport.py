@@ -98,7 +98,7 @@ class DatastoreGrpcTransport(object):
 
     @property
     def lookup(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`DatastoreClient.lookup`.
 
         Looks up entities by key.
 
@@ -111,7 +111,7 @@ class DatastoreGrpcTransport(object):
 
     @property
     def run_query(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`DatastoreClient.run_query`.
 
         Queries for entities.
 
@@ -124,7 +124,7 @@ class DatastoreGrpcTransport(object):
 
     @property
     def begin_transaction(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`DatastoreClient.begin_transaction`.
 
         Begins a new transaction.
 
@@ -137,7 +137,7 @@ class DatastoreGrpcTransport(object):
 
     @property
     def commit(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`DatastoreClient.commit`.
 
         Commits a transaction, optionally creating, deleting or modifying some
         entities.
@@ -151,7 +151,7 @@ class DatastoreGrpcTransport(object):
 
     @property
     def rollback(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`DatastoreClient.rollback`.
 
         Rolls back a transaction.
 
@@ -164,7 +164,7 @@ class DatastoreGrpcTransport(object):
 
     @property
     def allocate_ids(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`DatastoreClient.allocate_ids`.
 
         Allocates IDs for the given keys, which is useful for referencing an entity
         before it is inserted.
@@ -178,7 +178,7 @@ class DatastoreGrpcTransport(object):
 
     @property
     def reserve_ids(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`DatastoreClient.reserve_ids`.
 
         Prevents the supplied keys' IDs from being auto-allocated by Cloud
         Datastore.

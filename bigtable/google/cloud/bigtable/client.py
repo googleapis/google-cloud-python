@@ -168,6 +168,12 @@ class Client(ClientWithProject):
             This property will not change if ``project`` does not, but the
             return value is not cached.
 
+        For example:
+
+        .. literalinclude:: snippets.py
+            :start-after: [START bigtable_project_path]
+            :end-before: [END bigtable_project_path]
+
         The project name is of the form
 
             ``"projects/{project}"``
@@ -181,6 +187,12 @@ class Client(ClientWithProject):
     def table_data_client(self):
         """Getter for the gRPC stub used for the Table Admin API.
 
+        For example:
+
+        .. literalinclude:: snippets.py
+            :start-after: [START bigtable_table_data_client]
+            :end-before: [END bigtable_table_data_client]
+
         :rtype: :class:`.bigtable_v2.BigtableClient`
         :returns: A BigtableClient object.
         """
@@ -193,6 +205,12 @@ class Client(ClientWithProject):
     @property
     def table_admin_client(self):
         """Getter for the gRPC stub used for the Table Admin API.
+
+        For example:
+
+        .. literalinclude:: snippets.py
+            :start-after: [START bigtable_table_admin_client]
+            :end-before: [END bigtable_table_admin_client]
 
         :rtype: :class:`.bigtable_admin_pb2.BigtableTableAdmin`
         :returns: A BigtableTableAdmin instance.
@@ -211,6 +229,12 @@ class Client(ClientWithProject):
     @property
     def instance_admin_client(self):
         """Getter for the gRPC stub used for the Table Admin API.
+
+        For example:
+
+        .. literalinclude:: snippets.py
+            :start-after: [START bigtable_instance_admin_client]
+            :end-before: [END bigtable_instance_admin_client]
 
         :rtype: :class:`.bigtable_admin_pb2.BigtableInstanceAdmin`
         :returns: A BigtableInstanceAdmin instance.
