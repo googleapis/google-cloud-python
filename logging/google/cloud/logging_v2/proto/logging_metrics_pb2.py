@@ -3,14 +3,12 @@
 # source: google/cloud/logging_v2/proto/logging_metrics.proto
 
 import sys
-
-_b = sys.version_info[0] < 3 and (lambda x: x) or (lambda x: x.encode("latin1"))
+_b=sys.version_info[0]<3 and (lambda x:x) or (lambda x:x.encode('latin1'))
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
 from google.protobuf import descriptor_pb2
-
 # @@protoc_insertion_point(imports)
 
 _sym_db = _symbol_database.Default()
@@ -25,630 +23,406 @@ from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__
 
 
 DESCRIPTOR = _descriptor.FileDescriptor(
-    name="google/cloud/logging_v2/proto/logging_metrics.proto",
-    package="google.logging.v2",
-    syntax="proto3",
-    serialized_pb=_b(
-        '\n3google/cloud/logging_v2/proto/logging_metrics.proto\x12\x11google.logging.v2\x1a\x1cgoogle/api/annotations.proto\x1a\x1dgoogle/api/distribution.proto\x1a\x17google/api/metric.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto\x1a\x1fgoogle/protobuf/timestamp.proto"\xb1\x03\n\tLogMetric\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x02 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x03 \x01(\t\x12\x37\n\x11metric_descriptor\x18\x05 \x01(\x0b\x32\x1c.google.api.MetricDescriptor\x12\x17\n\x0fvalue_extractor\x18\x06 \x01(\t\x12K\n\x10label_extractors\x18\x07 \x03(\x0b\x32\x31.google.logging.v2.LogMetric.LabelExtractorsEntry\x12>\n\x0e\x62ucket_options\x18\x08 \x01(\x0b\x32&.google.api.Distribution.BucketOptions\x12<\n\x07version\x18\x04 \x01(\x0e\x32\'.google.logging.v2.LogMetric.ApiVersionB\x02\x18\x01\x1a\x36\n\x14LabelExtractorsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01"\x1c\n\nApiVersion\x12\x06\n\x02V2\x10\x00\x12\x06\n\x02V1\x10\x01"N\n\x15ListLogMetricsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x12\n\npage_token\x18\x02 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05"`\n\x16ListLogMetricsResponse\x12-\n\x07metrics\x18\x01 \x03(\x0b\x32\x1c.google.logging.v2.LogMetric\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"*\n\x13GetLogMetricRequest\x12\x13\n\x0bmetric_name\x18\x01 \x01(\t"V\n\x16\x43reateLogMetricRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12,\n\x06metric\x18\x02 \x01(\x0b\x32\x1c.google.logging.v2.LogMetric"[\n\x16UpdateLogMetricRequest\x12\x13\n\x0bmetric_name\x18\x01 \x01(\t\x12,\n\x06metric\x18\x02 \x01(\x0b\x32\x1c.google.logging.v2.LogMetric"-\n\x16\x44\x65leteLogMetricRequest\x12\x13\n\x0bmetric_name\x18\x01 \x01(\t2\xd4\x05\n\x10MetricsServiceV2\x12\x8e\x01\n\x0eListLogMetrics\x12(.google.logging.v2.ListLogMetricsRequest\x1a).google.logging.v2.ListLogMetricsResponse"\'\x82\xd3\xe4\x93\x02!\x12\x1f/v2/{parent=projects/*}/metrics\x12\x84\x01\n\x0cGetLogMetric\x12&.google.logging.v2.GetLogMetricRequest\x1a\x1c.google.logging.v2.LogMetric".\x82\xd3\xe4\x93\x02(\x12&/v2/{metric_name=projects/*/metrics/*}\x12\x8b\x01\n\x0f\x43reateLogMetric\x12).google.logging.v2.CreateLogMetricRequest\x1a\x1c.google.logging.v2.LogMetric"/\x82\xd3\xe4\x93\x02)"\x1f/v2/{parent=projects/*}/metrics:\x06metric\x12\x92\x01\n\x0fUpdateLogMetric\x12).google.logging.v2.UpdateLogMetricRequest\x1a\x1c.google.logging.v2.LogMetric"6\x82\xd3\xe4\x93\x02\x30\x1a&/v2/{metric_name=projects/*/metrics/*}:\x06metric\x12\x84\x01\n\x0f\x44\x65leteLogMetric\x12).google.logging.v2.DeleteLogMetricRequest\x1a\x16.google.protobuf.Empty".\x82\xd3\xe4\x93\x02(*&/v2/{metric_name=projects/*/metrics/*}B\x9f\x01\n\x15\x63om.google.logging.v2B\x13LoggingMetricsProtoP\x01Z8google.golang.org/genproto/googleapis/logging/v2;logging\xf8\x01\x01\xaa\x02\x17Google.Cloud.Logging.V2\xca\x02\x17Google\\Cloud\\Logging\\V2b\x06proto3'
-    ),
-    dependencies=[
-        google_dot_api_dot_annotations__pb2.DESCRIPTOR,
-        google_dot_api_dot_distribution__pb2.DESCRIPTOR,
-        google_dot_api_dot_metric__pb2.DESCRIPTOR,
-        google_dot_protobuf_dot_empty__pb2.DESCRIPTOR,
-        google_dot_protobuf_dot_field__mask__pb2.DESCRIPTOR,
-        google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,
-    ],
-)
+  name='google/cloud/logging_v2/proto/logging_metrics.proto',
+  package='google.logging.v2',
+  syntax='proto3',
+  serialized_pb=_b('\n3google/cloud/logging_v2/proto/logging_metrics.proto\x12\x11google.logging.v2\x1a\x1cgoogle/api/annotations.proto\x1a\x1dgoogle/api/distribution.proto\x1a\x17google/api/metric.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xb1\x03\n\tLogMetric\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x02 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x03 \x01(\t\x12\x37\n\x11metric_descriptor\x18\x05 \x01(\x0b\x32\x1c.google.api.MetricDescriptor\x12\x17\n\x0fvalue_extractor\x18\x06 \x01(\t\x12K\n\x10label_extractors\x18\x07 \x03(\x0b\x32\x31.google.logging.v2.LogMetric.LabelExtractorsEntry\x12>\n\x0e\x62ucket_options\x18\x08 \x01(\x0b\x32&.google.api.Distribution.BucketOptions\x12<\n\x07version\x18\x04 \x01(\x0e\x32\'.google.logging.v2.LogMetric.ApiVersionB\x02\x18\x01\x1a\x36\n\x14LabelExtractorsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"\x1c\n\nApiVersion\x12\x06\n\x02V2\x10\x00\x12\x06\n\x02V1\x10\x01\"N\n\x15ListLogMetricsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x12\n\npage_token\x18\x02 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05\"`\n\x16ListLogMetricsResponse\x12-\n\x07metrics\x18\x01 \x03(\x0b\x32\x1c.google.logging.v2.LogMetric\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\"*\n\x13GetLogMetricRequest\x12\x13\n\x0bmetric_name\x18\x01 \x01(\t\"V\n\x16\x43reateLogMetricRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12,\n\x06metric\x18\x02 \x01(\x0b\x32\x1c.google.logging.v2.LogMetric\"[\n\x16UpdateLogMetricRequest\x12\x13\n\x0bmetric_name\x18\x01 \x01(\t\x12,\n\x06metric\x18\x02 \x01(\x0b\x32\x1c.google.logging.v2.LogMetric\"-\n\x16\x44\x65leteLogMetricRequest\x12\x13\n\x0bmetric_name\x18\x01 \x01(\t2\xd4\x05\n\x10MetricsServiceV2\x12\x8e\x01\n\x0eListLogMetrics\x12(.google.logging.v2.ListLogMetricsRequest\x1a).google.logging.v2.ListLogMetricsResponse\"\'\x82\xd3\xe4\x93\x02!\x12\x1f/v2/{parent=projects/*}/metrics\x12\x84\x01\n\x0cGetLogMetric\x12&.google.logging.v2.GetLogMetricRequest\x1a\x1c.google.logging.v2.LogMetric\".\x82\xd3\xe4\x93\x02(\x12&/v2/{metric_name=projects/*/metrics/*}\x12\x8b\x01\n\x0f\x43reateLogMetric\x12).google.logging.v2.CreateLogMetricRequest\x1a\x1c.google.logging.v2.LogMetric\"/\x82\xd3\xe4\x93\x02)\"\x1f/v2/{parent=projects/*}/metrics:\x06metric\x12\x92\x01\n\x0fUpdateLogMetric\x12).google.logging.v2.UpdateLogMetricRequest\x1a\x1c.google.logging.v2.LogMetric\"6\x82\xd3\xe4\x93\x02\x30\x1a&/v2/{metric_name=projects/*/metrics/*}:\x06metric\x12\x84\x01\n\x0f\x44\x65leteLogMetric\x12).google.logging.v2.DeleteLogMetricRequest\x1a\x16.google.protobuf.Empty\".\x82\xd3\xe4\x93\x02(*&/v2/{metric_name=projects/*/metrics/*}B\x9f\x01\n\x15\x63om.google.logging.v2B\x13LoggingMetricsProtoP\x01Z8google.golang.org/genproto/googleapis/logging/v2;logging\xf8\x01\x01\xaa\x02\x17Google.Cloud.Logging.V2\xca\x02\x17Google\\Cloud\\Logging\\V2b\x06proto3')
+  ,
+  dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR,google_dot_api_dot_distribution__pb2.DESCRIPTOR,google_dot_api_dot_metric__pb2.DESCRIPTOR,google_dot_protobuf_dot_empty__pb2.DESCRIPTOR,google_dot_protobuf_dot_field__mask__pb2.DESCRIPTOR,google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,])
+
 
 
 _LOGMETRIC_APIVERSION = _descriptor.EnumDescriptor(
-    name="ApiVersion",
-    full_name="google.logging.v2.LogMetric.ApiVersion",
-    filename=None,
-    file=DESCRIPTOR,
-    values=[
-        _descriptor.EnumValueDescriptor(
-            name="V2", index=0, number=0, options=None, type=None
-        ),
-        _descriptor.EnumValueDescriptor(
-            name="V1", index=1, number=1, options=None, type=None
-        ),
-    ],
-    containing_type=None,
-    options=None,
-    serialized_start=662,
-    serialized_end=690,
+  name='ApiVersion',
+  full_name='google.logging.v2.LogMetric.ApiVersion',
+  filename=None,
+  file=DESCRIPTOR,
+  values=[
+    _descriptor.EnumValueDescriptor(
+      name='V2', index=0, number=0,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='V1', index=1, number=1,
+      options=None,
+      type=None),
+  ],
+  containing_type=None,
+  options=None,
+  serialized_start=662,
+  serialized_end=690,
 )
 _sym_db.RegisterEnumDescriptor(_LOGMETRIC_APIVERSION)
 
 
 _LOGMETRIC_LABELEXTRACTORSENTRY = _descriptor.Descriptor(
-    name="LabelExtractorsEntry",
-    full_name="google.logging.v2.LogMetric.LabelExtractorsEntry",
-    filename=None,
-    file=DESCRIPTOR,
-    containing_type=None,
-    fields=[
-        _descriptor.FieldDescriptor(
-            name="key",
-            full_name="google.logging.v2.LogMetric.LabelExtractorsEntry.key",
-            index=0,
-            number=1,
-            type=9,
-            cpp_type=9,
-            label=1,
-            has_default_value=False,
-            default_value=_b("").decode("utf-8"),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            options=None,
-            file=DESCRIPTOR,
-        ),
-        _descriptor.FieldDescriptor(
-            name="value",
-            full_name="google.logging.v2.LogMetric.LabelExtractorsEntry.value",
-            index=1,
-            number=2,
-            type=9,
-            cpp_type=9,
-            label=1,
-            has_default_value=False,
-            default_value=_b("").decode("utf-8"),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            options=None,
-            file=DESCRIPTOR,
-        ),
-    ],
-    extensions=[],
-    nested_types=[],
-    enum_types=[],
-    options=_descriptor._ParseOptions(descriptor_pb2.MessageOptions(), _b("8\001")),
-    is_extendable=False,
-    syntax="proto3",
-    extension_ranges=[],
-    oneofs=[],
-    serialized_start=606,
-    serialized_end=660,
+  name='LabelExtractorsEntry',
+  full_name='google.logging.v2.LogMetric.LabelExtractorsEntry',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='key', full_name='google.logging.v2.LogMetric.LabelExtractorsEntry.key', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='value', full_name='google.logging.v2.LogMetric.LabelExtractorsEntry.value', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=_descriptor._ParseOptions(descriptor_pb2.MessageOptions(), _b('8\001')),
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=606,
+  serialized_end=660,
 )
 
 _LOGMETRIC = _descriptor.Descriptor(
-    name="LogMetric",
-    full_name="google.logging.v2.LogMetric",
-    filename=None,
-    file=DESCRIPTOR,
-    containing_type=None,
-    fields=[
-        _descriptor.FieldDescriptor(
-            name="name",
-            full_name="google.logging.v2.LogMetric.name",
-            index=0,
-            number=1,
-            type=9,
-            cpp_type=9,
-            label=1,
-            has_default_value=False,
-            default_value=_b("").decode("utf-8"),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            options=None,
-            file=DESCRIPTOR,
-        ),
-        _descriptor.FieldDescriptor(
-            name="description",
-            full_name="google.logging.v2.LogMetric.description",
-            index=1,
-            number=2,
-            type=9,
-            cpp_type=9,
-            label=1,
-            has_default_value=False,
-            default_value=_b("").decode("utf-8"),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            options=None,
-            file=DESCRIPTOR,
-        ),
-        _descriptor.FieldDescriptor(
-            name="filter",
-            full_name="google.logging.v2.LogMetric.filter",
-            index=2,
-            number=3,
-            type=9,
-            cpp_type=9,
-            label=1,
-            has_default_value=False,
-            default_value=_b("").decode("utf-8"),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            options=None,
-            file=DESCRIPTOR,
-        ),
-        _descriptor.FieldDescriptor(
-            name="metric_descriptor",
-            full_name="google.logging.v2.LogMetric.metric_descriptor",
-            index=3,
-            number=5,
-            type=11,
-            cpp_type=10,
-            label=1,
-            has_default_value=False,
-            default_value=None,
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            options=None,
-            file=DESCRIPTOR,
-        ),
-        _descriptor.FieldDescriptor(
-            name="value_extractor",
-            full_name="google.logging.v2.LogMetric.value_extractor",
-            index=4,
-            number=6,
-            type=9,
-            cpp_type=9,
-            label=1,
-            has_default_value=False,
-            default_value=_b("").decode("utf-8"),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            options=None,
-            file=DESCRIPTOR,
-        ),
-        _descriptor.FieldDescriptor(
-            name="label_extractors",
-            full_name="google.logging.v2.LogMetric.label_extractors",
-            index=5,
-            number=7,
-            type=11,
-            cpp_type=10,
-            label=3,
-            has_default_value=False,
-            default_value=[],
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            options=None,
-            file=DESCRIPTOR,
-        ),
-        _descriptor.FieldDescriptor(
-            name="bucket_options",
-            full_name="google.logging.v2.LogMetric.bucket_options",
-            index=6,
-            number=8,
-            type=11,
-            cpp_type=10,
-            label=1,
-            has_default_value=False,
-            default_value=None,
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            options=None,
-            file=DESCRIPTOR,
-        ),
-        _descriptor.FieldDescriptor(
-            name="version",
-            full_name="google.logging.v2.LogMetric.version",
-            index=7,
-            number=4,
-            type=14,
-            cpp_type=8,
-            label=1,
-            has_default_value=False,
-            default_value=0,
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.FieldOptions(), _b("\030\001")
-            ),
-            file=DESCRIPTOR,
-        ),
-    ],
-    extensions=[],
-    nested_types=[_LOGMETRIC_LABELEXTRACTORSENTRY],
-    enum_types=[_LOGMETRIC_APIVERSION],
-    options=None,
-    is_extendable=False,
-    syntax="proto3",
-    extension_ranges=[],
-    oneofs=[],
-    serialized_start=257,
-    serialized_end=690,
+  name='LogMetric',
+  full_name='google.logging.v2.LogMetric',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='name', full_name='google.logging.v2.LogMetric.name', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='description', full_name='google.logging.v2.LogMetric.description', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='filter', full_name='google.logging.v2.LogMetric.filter', index=2,
+      number=3, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='metric_descriptor', full_name='google.logging.v2.LogMetric.metric_descriptor', index=3,
+      number=5, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='value_extractor', full_name='google.logging.v2.LogMetric.value_extractor', index=4,
+      number=6, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='label_extractors', full_name='google.logging.v2.LogMetric.label_extractors', index=5,
+      number=7, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='bucket_options', full_name='google.logging.v2.LogMetric.bucket_options', index=6,
+      number=8, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='version', full_name='google.logging.v2.LogMetric.version', index=7,
+      number=4, type=14, cpp_type=8, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=_descriptor._ParseOptions(descriptor_pb2.FieldOptions(), _b('\030\001')), file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[_LOGMETRIC_LABELEXTRACTORSENTRY, ],
+  enum_types=[
+    _LOGMETRIC_APIVERSION,
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=257,
+  serialized_end=690,
 )
 
 
 _LISTLOGMETRICSREQUEST = _descriptor.Descriptor(
-    name="ListLogMetricsRequest",
-    full_name="google.logging.v2.ListLogMetricsRequest",
-    filename=None,
-    file=DESCRIPTOR,
-    containing_type=None,
-    fields=[
-        _descriptor.FieldDescriptor(
-            name="parent",
-            full_name="google.logging.v2.ListLogMetricsRequest.parent",
-            index=0,
-            number=1,
-            type=9,
-            cpp_type=9,
-            label=1,
-            has_default_value=False,
-            default_value=_b("").decode("utf-8"),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            options=None,
-            file=DESCRIPTOR,
-        ),
-        _descriptor.FieldDescriptor(
-            name="page_token",
-            full_name="google.logging.v2.ListLogMetricsRequest.page_token",
-            index=1,
-            number=2,
-            type=9,
-            cpp_type=9,
-            label=1,
-            has_default_value=False,
-            default_value=_b("").decode("utf-8"),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            options=None,
-            file=DESCRIPTOR,
-        ),
-        _descriptor.FieldDescriptor(
-            name="page_size",
-            full_name="google.logging.v2.ListLogMetricsRequest.page_size",
-            index=2,
-            number=3,
-            type=5,
-            cpp_type=1,
-            label=1,
-            has_default_value=False,
-            default_value=0,
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            options=None,
-            file=DESCRIPTOR,
-        ),
-    ],
-    extensions=[],
-    nested_types=[],
-    enum_types=[],
-    options=None,
-    is_extendable=False,
-    syntax="proto3",
-    extension_ranges=[],
-    oneofs=[],
-    serialized_start=692,
-    serialized_end=770,
+  name='ListLogMetricsRequest',
+  full_name='google.logging.v2.ListLogMetricsRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='parent', full_name='google.logging.v2.ListLogMetricsRequest.parent', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='page_token', full_name='google.logging.v2.ListLogMetricsRequest.page_token', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='page_size', full_name='google.logging.v2.ListLogMetricsRequest.page_size', index=2,
+      number=3, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=692,
+  serialized_end=770,
 )
 
 
 _LISTLOGMETRICSRESPONSE = _descriptor.Descriptor(
-    name="ListLogMetricsResponse",
-    full_name="google.logging.v2.ListLogMetricsResponse",
-    filename=None,
-    file=DESCRIPTOR,
-    containing_type=None,
-    fields=[
-        _descriptor.FieldDescriptor(
-            name="metrics",
-            full_name="google.logging.v2.ListLogMetricsResponse.metrics",
-            index=0,
-            number=1,
-            type=11,
-            cpp_type=10,
-            label=3,
-            has_default_value=False,
-            default_value=[],
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            options=None,
-            file=DESCRIPTOR,
-        ),
-        _descriptor.FieldDescriptor(
-            name="next_page_token",
-            full_name="google.logging.v2.ListLogMetricsResponse.next_page_token",
-            index=1,
-            number=2,
-            type=9,
-            cpp_type=9,
-            label=1,
-            has_default_value=False,
-            default_value=_b("").decode("utf-8"),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            options=None,
-            file=DESCRIPTOR,
-        ),
-    ],
-    extensions=[],
-    nested_types=[],
-    enum_types=[],
-    options=None,
-    is_extendable=False,
-    syntax="proto3",
-    extension_ranges=[],
-    oneofs=[],
-    serialized_start=772,
-    serialized_end=868,
+  name='ListLogMetricsResponse',
+  full_name='google.logging.v2.ListLogMetricsResponse',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='metrics', full_name='google.logging.v2.ListLogMetricsResponse.metrics', index=0,
+      number=1, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='next_page_token', full_name='google.logging.v2.ListLogMetricsResponse.next_page_token', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=772,
+  serialized_end=868,
 )
 
 
 _GETLOGMETRICREQUEST = _descriptor.Descriptor(
-    name="GetLogMetricRequest",
-    full_name="google.logging.v2.GetLogMetricRequest",
-    filename=None,
-    file=DESCRIPTOR,
-    containing_type=None,
-    fields=[
-        _descriptor.FieldDescriptor(
-            name="metric_name",
-            full_name="google.logging.v2.GetLogMetricRequest.metric_name",
-            index=0,
-            number=1,
-            type=9,
-            cpp_type=9,
-            label=1,
-            has_default_value=False,
-            default_value=_b("").decode("utf-8"),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            options=None,
-            file=DESCRIPTOR,
-        )
-    ],
-    extensions=[],
-    nested_types=[],
-    enum_types=[],
-    options=None,
-    is_extendable=False,
-    syntax="proto3",
-    extension_ranges=[],
-    oneofs=[],
-    serialized_start=870,
-    serialized_end=912,
+  name='GetLogMetricRequest',
+  full_name='google.logging.v2.GetLogMetricRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='metric_name', full_name='google.logging.v2.GetLogMetricRequest.metric_name', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=870,
+  serialized_end=912,
 )
 
 
 _CREATELOGMETRICREQUEST = _descriptor.Descriptor(
-    name="CreateLogMetricRequest",
-    full_name="google.logging.v2.CreateLogMetricRequest",
-    filename=None,
-    file=DESCRIPTOR,
-    containing_type=None,
-    fields=[
-        _descriptor.FieldDescriptor(
-            name="parent",
-            full_name="google.logging.v2.CreateLogMetricRequest.parent",
-            index=0,
-            number=1,
-            type=9,
-            cpp_type=9,
-            label=1,
-            has_default_value=False,
-            default_value=_b("").decode("utf-8"),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            options=None,
-            file=DESCRIPTOR,
-        ),
-        _descriptor.FieldDescriptor(
-            name="metric",
-            full_name="google.logging.v2.CreateLogMetricRequest.metric",
-            index=1,
-            number=2,
-            type=11,
-            cpp_type=10,
-            label=1,
-            has_default_value=False,
-            default_value=None,
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            options=None,
-            file=DESCRIPTOR,
-        ),
-    ],
-    extensions=[],
-    nested_types=[],
-    enum_types=[],
-    options=None,
-    is_extendable=False,
-    syntax="proto3",
-    extension_ranges=[],
-    oneofs=[],
-    serialized_start=914,
-    serialized_end=1000,
+  name='CreateLogMetricRequest',
+  full_name='google.logging.v2.CreateLogMetricRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='parent', full_name='google.logging.v2.CreateLogMetricRequest.parent', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='metric', full_name='google.logging.v2.CreateLogMetricRequest.metric', index=1,
+      number=2, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=914,
+  serialized_end=1000,
 )
 
 
 _UPDATELOGMETRICREQUEST = _descriptor.Descriptor(
-    name="UpdateLogMetricRequest",
-    full_name="google.logging.v2.UpdateLogMetricRequest",
-    filename=None,
-    file=DESCRIPTOR,
-    containing_type=None,
-    fields=[
-        _descriptor.FieldDescriptor(
-            name="metric_name",
-            full_name="google.logging.v2.UpdateLogMetricRequest.metric_name",
-            index=0,
-            number=1,
-            type=9,
-            cpp_type=9,
-            label=1,
-            has_default_value=False,
-            default_value=_b("").decode("utf-8"),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            options=None,
-            file=DESCRIPTOR,
-        ),
-        _descriptor.FieldDescriptor(
-            name="metric",
-            full_name="google.logging.v2.UpdateLogMetricRequest.metric",
-            index=1,
-            number=2,
-            type=11,
-            cpp_type=10,
-            label=1,
-            has_default_value=False,
-            default_value=None,
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            options=None,
-            file=DESCRIPTOR,
-        ),
-    ],
-    extensions=[],
-    nested_types=[],
-    enum_types=[],
-    options=None,
-    is_extendable=False,
-    syntax="proto3",
-    extension_ranges=[],
-    oneofs=[],
-    serialized_start=1002,
-    serialized_end=1093,
+  name='UpdateLogMetricRequest',
+  full_name='google.logging.v2.UpdateLogMetricRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='metric_name', full_name='google.logging.v2.UpdateLogMetricRequest.metric_name', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='metric', full_name='google.logging.v2.UpdateLogMetricRequest.metric', index=1,
+      number=2, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1002,
+  serialized_end=1093,
 )
 
 
 _DELETELOGMETRICREQUEST = _descriptor.Descriptor(
-    name="DeleteLogMetricRequest",
-    full_name="google.logging.v2.DeleteLogMetricRequest",
-    filename=None,
-    file=DESCRIPTOR,
-    containing_type=None,
-    fields=[
-        _descriptor.FieldDescriptor(
-            name="metric_name",
-            full_name="google.logging.v2.DeleteLogMetricRequest.metric_name",
-            index=0,
-            number=1,
-            type=9,
-            cpp_type=9,
-            label=1,
-            has_default_value=False,
-            default_value=_b("").decode("utf-8"),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            options=None,
-            file=DESCRIPTOR,
-        )
-    ],
-    extensions=[],
-    nested_types=[],
-    enum_types=[],
-    options=None,
-    is_extendable=False,
-    syntax="proto3",
-    extension_ranges=[],
-    oneofs=[],
-    serialized_start=1095,
-    serialized_end=1140,
+  name='DeleteLogMetricRequest',
+  full_name='google.logging.v2.DeleteLogMetricRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='metric_name', full_name='google.logging.v2.DeleteLogMetricRequest.metric_name', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1095,
+  serialized_end=1140,
 )
 
 _LOGMETRIC_LABELEXTRACTORSENTRY.containing_type = _LOGMETRIC
-_LOGMETRIC.fields_by_name[
-    "metric_descriptor"
-].message_type = google_dot_api_dot_metric__pb2._METRICDESCRIPTOR
-_LOGMETRIC.fields_by_name[
-    "label_extractors"
-].message_type = _LOGMETRIC_LABELEXTRACTORSENTRY
-_LOGMETRIC.fields_by_name[
-    "bucket_options"
-].message_type = google_dot_api_dot_distribution__pb2._DISTRIBUTION_BUCKETOPTIONS
-_LOGMETRIC.fields_by_name["version"].enum_type = _LOGMETRIC_APIVERSION
+_LOGMETRIC.fields_by_name['metric_descriptor'].message_type = google_dot_api_dot_metric__pb2._METRICDESCRIPTOR
+_LOGMETRIC.fields_by_name['label_extractors'].message_type = _LOGMETRIC_LABELEXTRACTORSENTRY
+_LOGMETRIC.fields_by_name['bucket_options'].message_type = google_dot_api_dot_distribution__pb2._DISTRIBUTION_BUCKETOPTIONS
+_LOGMETRIC.fields_by_name['version'].enum_type = _LOGMETRIC_APIVERSION
 _LOGMETRIC_APIVERSION.containing_type = _LOGMETRIC
-_LISTLOGMETRICSRESPONSE.fields_by_name["metrics"].message_type = _LOGMETRIC
-_CREATELOGMETRICREQUEST.fields_by_name["metric"].message_type = _LOGMETRIC
-_UPDATELOGMETRICREQUEST.fields_by_name["metric"].message_type = _LOGMETRIC
-DESCRIPTOR.message_types_by_name["LogMetric"] = _LOGMETRIC
-DESCRIPTOR.message_types_by_name["ListLogMetricsRequest"] = _LISTLOGMETRICSREQUEST
-DESCRIPTOR.message_types_by_name["ListLogMetricsResponse"] = _LISTLOGMETRICSRESPONSE
-DESCRIPTOR.message_types_by_name["GetLogMetricRequest"] = _GETLOGMETRICREQUEST
-DESCRIPTOR.message_types_by_name["CreateLogMetricRequest"] = _CREATELOGMETRICREQUEST
-DESCRIPTOR.message_types_by_name["UpdateLogMetricRequest"] = _UPDATELOGMETRICREQUEST
-DESCRIPTOR.message_types_by_name["DeleteLogMetricRequest"] = _DELETELOGMETRICREQUEST
+_LISTLOGMETRICSRESPONSE.fields_by_name['metrics'].message_type = _LOGMETRIC
+_CREATELOGMETRICREQUEST.fields_by_name['metric'].message_type = _LOGMETRIC
+_UPDATELOGMETRICREQUEST.fields_by_name['metric'].message_type = _LOGMETRIC
+DESCRIPTOR.message_types_by_name['LogMetric'] = _LOGMETRIC
+DESCRIPTOR.message_types_by_name['ListLogMetricsRequest'] = _LISTLOGMETRICSREQUEST
+DESCRIPTOR.message_types_by_name['ListLogMetricsResponse'] = _LISTLOGMETRICSRESPONSE
+DESCRIPTOR.message_types_by_name['GetLogMetricRequest'] = _GETLOGMETRICREQUEST
+DESCRIPTOR.message_types_by_name['CreateLogMetricRequest'] = _CREATELOGMETRICREQUEST
+DESCRIPTOR.message_types_by_name['UpdateLogMetricRequest'] = _UPDATELOGMETRICREQUEST
+DESCRIPTOR.message_types_by_name['DeleteLogMetricRequest'] = _DELETELOGMETRICREQUEST
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
-LogMetric = _reflection.GeneratedProtocolMessageType(
-    "LogMetric",
-    (_message.Message,),
-    dict(
-        LabelExtractorsEntry=_reflection.GeneratedProtocolMessageType(
-            "LabelExtractorsEntry",
-            (_message.Message,),
-            dict(
-                DESCRIPTOR=_LOGMETRIC_LABELEXTRACTORSENTRY,
-                __module__="google.cloud.logging_v2.proto.logging_metrics_pb2"
-                # @@protoc_insertion_point(class_scope:google.logging.v2.LogMetric.LabelExtractorsEntry)
-            ),
-        ),
-        DESCRIPTOR=_LOGMETRIC,
-        __module__="google.cloud.logging_v2.proto.logging_metrics_pb2",
-        __doc__="""Describes a logs-based metric. The value of the metric is the number of
+LogMetric = _reflection.GeneratedProtocolMessageType('LogMetric', (_message.Message,), dict(
+
+  LabelExtractorsEntry = _reflection.GeneratedProtocolMessageType('LabelExtractorsEntry', (_message.Message,), dict(
+    DESCRIPTOR = _LOGMETRIC_LABELEXTRACTORSENTRY,
+    __module__ = 'google.cloud.logging_v2.proto.logging_metrics_pb2'
+    # @@protoc_insertion_point(class_scope:google.logging.v2.LogMetric.LabelExtractorsEntry)
+    ))
+  ,
+  DESCRIPTOR = _LOGMETRIC,
+  __module__ = 'google.cloud.logging_v2.proto.logging_metrics_pb2'
+  ,
+  __doc__ = """Describes a logs-based metric. The value of the metric is the number of
   log entries that match a logs filter in a given time interval.
   
   Logs-based metric can also be used to extract values from logs and
@@ -743,19 +517,16 @@ LogMetric = _reflection.GeneratedProtocolMessageType(
           metric. The v2 format is used by default and cannot be
           changed.
   """,
-        # @@protoc_insertion_point(class_scope:google.logging.v2.LogMetric)
-    ),
-)
+  # @@protoc_insertion_point(class_scope:google.logging.v2.LogMetric)
+  ))
 _sym_db.RegisterMessage(LogMetric)
 _sym_db.RegisterMessage(LogMetric.LabelExtractorsEntry)
 
-ListLogMetricsRequest = _reflection.GeneratedProtocolMessageType(
-    "ListLogMetricsRequest",
-    (_message.Message,),
-    dict(
-        DESCRIPTOR=_LISTLOGMETRICSREQUEST,
-        __module__="google.cloud.logging_v2.proto.logging_metrics_pb2",
-        __doc__="""The parameters to ListLogMetrics.
+ListLogMetricsRequest = _reflection.GeneratedProtocolMessageType('ListLogMetricsRequest', (_message.Message,), dict(
+  DESCRIPTOR = _LISTLOGMETRICSREQUEST,
+  __module__ = 'google.cloud.logging_v2.proto.logging_metrics_pb2'
+  ,
+  __doc__ = """The parameters to ListLogMetrics.
   
   
   Attributes:
@@ -774,18 +545,15 @@ ListLogMetricsRequest = _reflection.GeneratedProtocolMessageType(
           ``nextPageToken`` in the response indicates that more results
           might be available.
   """,
-        # @@protoc_insertion_point(class_scope:google.logging.v2.ListLogMetricsRequest)
-    ),
-)
+  # @@protoc_insertion_point(class_scope:google.logging.v2.ListLogMetricsRequest)
+  ))
 _sym_db.RegisterMessage(ListLogMetricsRequest)
 
-ListLogMetricsResponse = _reflection.GeneratedProtocolMessageType(
-    "ListLogMetricsResponse",
-    (_message.Message,),
-    dict(
-        DESCRIPTOR=_LISTLOGMETRICSRESPONSE,
-        __module__="google.cloud.logging_v2.proto.logging_metrics_pb2",
-        __doc__="""Result returned from ListLogMetrics.
+ListLogMetricsResponse = _reflection.GeneratedProtocolMessageType('ListLogMetricsResponse', (_message.Message,), dict(
+  DESCRIPTOR = _LISTLOGMETRICSRESPONSE,
+  __module__ = 'google.cloud.logging_v2.proto.logging_metrics_pb2'
+  ,
+  __doc__ = """Result returned from ListLogMetrics.
   
   
   Attributes:
@@ -797,18 +565,15 @@ ListLogMetricsResponse = _reflection.GeneratedProtocolMessageType(
           results, call this method again using the value of
           ``nextPageToken`` as ``pageToken``.
   """,
-        # @@protoc_insertion_point(class_scope:google.logging.v2.ListLogMetricsResponse)
-    ),
-)
+  # @@protoc_insertion_point(class_scope:google.logging.v2.ListLogMetricsResponse)
+  ))
 _sym_db.RegisterMessage(ListLogMetricsResponse)
 
-GetLogMetricRequest = _reflection.GeneratedProtocolMessageType(
-    "GetLogMetricRequest",
-    (_message.Message,),
-    dict(
-        DESCRIPTOR=_GETLOGMETRICREQUEST,
-        __module__="google.cloud.logging_v2.proto.logging_metrics_pb2",
-        __doc__="""The parameters to GetLogMetric.
+GetLogMetricRequest = _reflection.GeneratedProtocolMessageType('GetLogMetricRequest', (_message.Message,), dict(
+  DESCRIPTOR = _GETLOGMETRICREQUEST,
+  __module__ = 'google.cloud.logging_v2.proto.logging_metrics_pb2'
+  ,
+  __doc__ = """The parameters to GetLogMetric.
   
   
   Attributes:
@@ -816,18 +581,15 @@ GetLogMetricRequest = _reflection.GeneratedProtocolMessageType(
           The resource name of the desired metric:  ::
           "projects/[PROJECT_ID]/metrics/[METRIC_ID]"
   """,
-        # @@protoc_insertion_point(class_scope:google.logging.v2.GetLogMetricRequest)
-    ),
-)
+  # @@protoc_insertion_point(class_scope:google.logging.v2.GetLogMetricRequest)
+  ))
 _sym_db.RegisterMessage(GetLogMetricRequest)
 
-CreateLogMetricRequest = _reflection.GeneratedProtocolMessageType(
-    "CreateLogMetricRequest",
-    (_message.Message,),
-    dict(
-        DESCRIPTOR=_CREATELOGMETRICREQUEST,
-        __module__="google.cloud.logging_v2.proto.logging_metrics_pb2",
-        __doc__="""The parameters to CreateLogMetric.
+CreateLogMetricRequest = _reflection.GeneratedProtocolMessageType('CreateLogMetricRequest', (_message.Message,), dict(
+  DESCRIPTOR = _CREATELOGMETRICREQUEST,
+  __module__ = 'google.cloud.logging_v2.proto.logging_metrics_pb2'
+  ,
+  __doc__ = """The parameters to CreateLogMetric.
   
   
   Attributes:
@@ -839,18 +601,15 @@ CreateLogMetricRequest = _reflection.GeneratedProtocolMessageType(
           The new logs-based metric, which must not have an identifier
           that already exists.
   """,
-        # @@protoc_insertion_point(class_scope:google.logging.v2.CreateLogMetricRequest)
-    ),
-)
+  # @@protoc_insertion_point(class_scope:google.logging.v2.CreateLogMetricRequest)
+  ))
 _sym_db.RegisterMessage(CreateLogMetricRequest)
 
-UpdateLogMetricRequest = _reflection.GeneratedProtocolMessageType(
-    "UpdateLogMetricRequest",
-    (_message.Message,),
-    dict(
-        DESCRIPTOR=_UPDATELOGMETRICREQUEST,
-        __module__="google.cloud.logging_v2.proto.logging_metrics_pb2",
-        __doc__="""The parameters to UpdateLogMetric.
+UpdateLogMetricRequest = _reflection.GeneratedProtocolMessageType('UpdateLogMetricRequest', (_message.Message,), dict(
+  DESCRIPTOR = _UPDATELOGMETRICREQUEST,
+  __module__ = 'google.cloud.logging_v2.proto.logging_metrics_pb2'
+  ,
+  __doc__ = """The parameters to UpdateLogMetric.
   
   
   Attributes:
@@ -863,18 +622,15 @@ UpdateLogMetricRequest = _reflection.GeneratedProtocolMessageType(
       metric:
           The updated metric.
   """,
-        # @@protoc_insertion_point(class_scope:google.logging.v2.UpdateLogMetricRequest)
-    ),
-)
+  # @@protoc_insertion_point(class_scope:google.logging.v2.UpdateLogMetricRequest)
+  ))
 _sym_db.RegisterMessage(UpdateLogMetricRequest)
 
-DeleteLogMetricRequest = _reflection.GeneratedProtocolMessageType(
-    "DeleteLogMetricRequest",
-    (_message.Message,),
-    dict(
-        DESCRIPTOR=_DELETELOGMETRICREQUEST,
-        __module__="google.cloud.logging_v2.proto.logging_metrics_pb2",
-        __doc__="""The parameters to DeleteLogMetric.
+DeleteLogMetricRequest = _reflection.GeneratedProtocolMessageType('DeleteLogMetricRequest', (_message.Message,), dict(
+  DESCRIPTOR = _DELETELOGMETRICREQUEST,
+  __module__ = 'google.cloud.logging_v2.proto.logging_metrics_pb2'
+  ,
+  __doc__ = """The parameters to DeleteLogMetric.
   
   
   Attributes:
@@ -882,105 +638,75 @@ DeleteLogMetricRequest = _reflection.GeneratedProtocolMessageType(
           The resource name of the metric to delete:  ::
           "projects/[PROJECT_ID]/metrics/[METRIC_ID]"
   """,
-        # @@protoc_insertion_point(class_scope:google.logging.v2.DeleteLogMetricRequest)
-    ),
-)
+  # @@protoc_insertion_point(class_scope:google.logging.v2.DeleteLogMetricRequest)
+  ))
 _sym_db.RegisterMessage(DeleteLogMetricRequest)
 
 
 DESCRIPTOR.has_options = True
-DESCRIPTOR._options = _descriptor._ParseOptions(
-    descriptor_pb2.FileOptions(),
-    _b(
-        "\n\025com.google.logging.v2B\023LoggingMetricsProtoP\001Z8google.golang.org/genproto/googleapis/logging/v2;logging\370\001\001\252\002\027Google.Cloud.Logging.V2\312\002\027Google\\Cloud\\Logging\\V2"
-    ),
-)
+DESCRIPTOR._options = _descriptor._ParseOptions(descriptor_pb2.FileOptions(), _b('\n\025com.google.logging.v2B\023LoggingMetricsProtoP\001Z8google.golang.org/genproto/googleapis/logging/v2;logging\370\001\001\252\002\027Google.Cloud.Logging.V2\312\002\027Google\\Cloud\\Logging\\V2'))
 _LOGMETRIC_LABELEXTRACTORSENTRY.has_options = True
-_LOGMETRIC_LABELEXTRACTORSENTRY._options = _descriptor._ParseOptions(
-    descriptor_pb2.MessageOptions(), _b("8\001")
-)
-_LOGMETRIC.fields_by_name["version"].has_options = True
-_LOGMETRIC.fields_by_name["version"]._options = _descriptor._ParseOptions(
-    descriptor_pb2.FieldOptions(), _b("\030\001")
-)
+_LOGMETRIC_LABELEXTRACTORSENTRY._options = _descriptor._ParseOptions(descriptor_pb2.MessageOptions(), _b('8\001'))
+_LOGMETRIC.fields_by_name['version'].has_options = True
+_LOGMETRIC.fields_by_name['version']._options = _descriptor._ParseOptions(descriptor_pb2.FieldOptions(), _b('\030\001'))
 
 _METRICSSERVICEV2 = _descriptor.ServiceDescriptor(
-    name="MetricsServiceV2",
-    full_name="google.logging.v2.MetricsServiceV2",
-    file=DESCRIPTOR,
+  name='MetricsServiceV2',
+  full_name='google.logging.v2.MetricsServiceV2',
+  file=DESCRIPTOR,
+  index=0,
+  options=None,
+  serialized_start=1143,
+  serialized_end=1867,
+  methods=[
+  _descriptor.MethodDescriptor(
+    name='ListLogMetrics',
+    full_name='google.logging.v2.MetricsServiceV2.ListLogMetrics',
     index=0,
-    options=None,
-    serialized_start=1143,
-    serialized_end=1867,
-    methods=[
-        _descriptor.MethodDescriptor(
-            name="ListLogMetrics",
-            full_name="google.logging.v2.MetricsServiceV2.ListLogMetrics",
-            index=0,
-            containing_service=None,
-            input_type=_LISTLOGMETRICSREQUEST,
-            output_type=_LISTLOGMETRICSRESPONSE,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b("\202\323\344\223\002!\022\037/v2/{parent=projects/*}/metrics"),
-            ),
-        ),
-        _descriptor.MethodDescriptor(
-            name="GetLogMetric",
-            full_name="google.logging.v2.MetricsServiceV2.GetLogMetric",
-            index=1,
-            containing_service=None,
-            input_type=_GETLOGMETRICREQUEST,
-            output_type=_LOGMETRIC,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b("\202\323\344\223\002(\022&/v2/{metric_name=projects/*/metrics/*}"),
-            ),
-        ),
-        _descriptor.MethodDescriptor(
-            name="CreateLogMetric",
-            full_name="google.logging.v2.MetricsServiceV2.CreateLogMetric",
-            index=2,
-            containing_service=None,
-            input_type=_CREATELOGMETRICREQUEST,
-            output_type=_LOGMETRIC,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\002)"\037/v2/{parent=projects/*}/metrics:\006metric'
-                ),
-            ),
-        ),
-        _descriptor.MethodDescriptor(
-            name="UpdateLogMetric",
-            full_name="google.logging.v2.MetricsServiceV2.UpdateLogMetric",
-            index=3,
-            containing_service=None,
-            input_type=_UPDATELOGMETRICREQUEST,
-            output_type=_LOGMETRIC,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\0020\032&/v2/{metric_name=projects/*/metrics/*}:\006metric"
-                ),
-            ),
-        ),
-        _descriptor.MethodDescriptor(
-            name="DeleteLogMetric",
-            full_name="google.logging.v2.MetricsServiceV2.DeleteLogMetric",
-            index=4,
-            containing_service=None,
-            input_type=_DELETELOGMETRICREQUEST,
-            output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b("\202\323\344\223\002(*&/v2/{metric_name=projects/*/metrics/*}"),
-            ),
-        ),
-    ],
-)
+    containing_service=None,
+    input_type=_LISTLOGMETRICSREQUEST,
+    output_type=_LISTLOGMETRICSRESPONSE,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002!\022\037/v2/{parent=projects/*}/metrics')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='GetLogMetric',
+    full_name='google.logging.v2.MetricsServiceV2.GetLogMetric',
+    index=1,
+    containing_service=None,
+    input_type=_GETLOGMETRICREQUEST,
+    output_type=_LOGMETRIC,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002(\022&/v2/{metric_name=projects/*/metrics/*}')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='CreateLogMetric',
+    full_name='google.logging.v2.MetricsServiceV2.CreateLogMetric',
+    index=2,
+    containing_service=None,
+    input_type=_CREATELOGMETRICREQUEST,
+    output_type=_LOGMETRIC,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002)\"\037/v2/{parent=projects/*}/metrics:\006metric')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='UpdateLogMetric',
+    full_name='google.logging.v2.MetricsServiceV2.UpdateLogMetric',
+    index=3,
+    containing_service=None,
+    input_type=_UPDATELOGMETRICREQUEST,
+    output_type=_LOGMETRIC,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\0020\032&/v2/{metric_name=projects/*/metrics/*}:\006metric')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='DeleteLogMetric',
+    full_name='google.logging.v2.MetricsServiceV2.DeleteLogMetric',
+    index=4,
+    containing_service=None,
+    input_type=_DELETELOGMETRICREQUEST,
+    output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002(*&/v2/{metric_name=projects/*/metrics/*}')),
+  ),
+])
 _sym_db.RegisterServiceDescriptor(_METRICSSERVICEV2)
 
-DESCRIPTOR.services_by_name["MetricsServiceV2"] = _METRICSSERVICEV2
+DESCRIPTOR.services_by_name['MetricsServiceV2'] = _METRICSSERVICEV2
 
 # @@protoc_insertion_point(module_scope)

@@ -27,20 +27,20 @@ class ConfigServiceV2GrpcTransport(object):
     which can be used to take advantage of advanced
     features of gRPC.
     """
-
     # The scopes needed to make gRPC calls to all of the methods defined
     # in this service.
     _OAUTH_SCOPES = (
-        "https://www.googleapis.com/auth/cloud-platform",
-        "https://www.googleapis.com/auth/cloud-platform.read-only",
-        "https://www.googleapis.com/auth/logging.admin",
-        "https://www.googleapis.com/auth/logging.read",
-        "https://www.googleapis.com/auth/logging.write",
+        'https://www.googleapis.com/auth/cloud-platform',
+        'https://www.googleapis.com/auth/cloud-platform.read-only',
+        'https://www.googleapis.com/auth/logging.admin',
+        'https://www.googleapis.com/auth/logging.read',
+        'https://www.googleapis.com/auth/logging.write',
     )
 
-    def __init__(
-        self, channel=None, credentials=None, address="logging.googleapis.com:443"
-    ):
+    def __init__(self,
+                 channel=None,
+                 credentials=None,
+                 address='logging.googleapis.com:443'):
         """Instantiate the transport class.
 
         Args:
@@ -58,25 +58,29 @@ class ConfigServiceV2GrpcTransport(object):
         # exception (channels come with credentials baked in already).
         if channel is not None and credentials is not None:
             raise ValueError(
-                "The `channel` and `credentials` arguments are mutually " "exclusive."
-            )
+                'The `channel` and `credentials` arguments are mutually '
+                'exclusive.', )
 
         # Create the channel.
         if channel is None:
-            channel = self.create_channel(address=address, credentials=credentials)
+            channel = self.create_channel(
+                address=address,
+                credentials=credentials,
+            )
 
         self._channel = channel
 
         # gRPC uses objects called "stubs" that are bound to the
         # channel and provide a basic method for each RPC.
         self._stubs = {
-            "config_service_v2_stub": logging_config_pb2_grpc.ConfigServiceV2Stub(
-                channel
-            )
+            'config_service_v2_stub':
+            logging_config_pb2_grpc.ConfigServiceV2Stub(channel),
         }
 
     @classmethod
-    def create_channel(cls, address="logging.googleapis.com:443", credentials=None):
+    def create_channel(cls,
+                       address='logging.googleapis.com:443',
+                       credentials=None):
         """Create and return a gRPC channel object.
 
         Args:
@@ -91,7 +95,9 @@ class ConfigServiceV2GrpcTransport(object):
             grpc.Channel: A gRPC channel object.
         """
         return google.api_core.grpc_helpers.create_channel(
-            address, credentials=credentials, scopes=cls._OAUTH_SCOPES
+            address,
+            credentials=credentials,
+            scopes=cls._OAUTH_SCOPES,
         )
 
     @property
@@ -105,7 +111,7 @@ class ConfigServiceV2GrpcTransport(object):
 
     @property
     def list_sinks(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`ConfigServiceV2Client.list_sinks`.
 
         Lists sinks.
 
@@ -114,11 +120,11 @@ class ConfigServiceV2GrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["config_service_v2_stub"].ListSinks
+        return self._stubs['config_service_v2_stub'].ListSinks
 
     @property
     def get_sink(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`ConfigServiceV2Client.get_sink`.
 
         Gets a sink.
 
@@ -127,11 +133,11 @@ class ConfigServiceV2GrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["config_service_v2_stub"].GetSink
+        return self._stubs['config_service_v2_stub'].GetSink
 
     @property
     def create_sink(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`ConfigServiceV2Client.create_sink`.
 
         Creates a sink that exports specified log entries to a destination. The
         export of newly-ingested log entries begins immediately, unless the
@@ -143,11 +149,11 @@ class ConfigServiceV2GrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["config_service_v2_stub"].CreateSink
+        return self._stubs['config_service_v2_stub'].CreateSink
 
     @property
     def update_sink(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`ConfigServiceV2Client.update_sink`.
 
         Updates a sink. This method replaces the following fields in the
         existing sink with values from the new sink: ``destination``, and
@@ -159,11 +165,11 @@ class ConfigServiceV2GrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["config_service_v2_stub"].UpdateSink
+        return self._stubs['config_service_v2_stub'].UpdateSink
 
     @property
     def delete_sink(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`ConfigServiceV2Client.delete_sink`.
 
         Deletes a sink. If the sink has a unique ``writer_identity``, then that
         service account is also deleted.
@@ -173,11 +179,11 @@ class ConfigServiceV2GrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["config_service_v2_stub"].DeleteSink
+        return self._stubs['config_service_v2_stub'].DeleteSink
 
     @property
     def list_exclusions(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`ConfigServiceV2Client.list_exclusions`.
 
         Lists all the exclusions in a parent resource.
 
@@ -186,11 +192,11 @@ class ConfigServiceV2GrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["config_service_v2_stub"].ListExclusions
+        return self._stubs['config_service_v2_stub'].ListExclusions
 
     @property
     def get_exclusion(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`ConfigServiceV2Client.get_exclusion`.
 
         Gets the description of an exclusion.
 
@@ -199,11 +205,11 @@ class ConfigServiceV2GrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["config_service_v2_stub"].GetExclusion
+        return self._stubs['config_service_v2_stub'].GetExclusion
 
     @property
     def create_exclusion(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`ConfigServiceV2Client.create_exclusion`.
 
         Creates a new exclusion in a specified parent resource.
         Only log entries belonging to that resource can be excluded.
@@ -214,11 +220,11 @@ class ConfigServiceV2GrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["config_service_v2_stub"].CreateExclusion
+        return self._stubs['config_service_v2_stub'].CreateExclusion
 
     @property
     def update_exclusion(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`ConfigServiceV2Client.update_exclusion`.
 
         Changes one or more properties of an existing exclusion.
 
@@ -227,11 +233,11 @@ class ConfigServiceV2GrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["config_service_v2_stub"].UpdateExclusion
+        return self._stubs['config_service_v2_stub'].UpdateExclusion
 
     @property
     def delete_exclusion(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`ConfigServiceV2Client.delete_exclusion`.
 
         Deletes an exclusion.
 
@@ -240,4 +246,4 @@ class ConfigServiceV2GrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["config_service_v2_stub"].DeleteExclusion
+        return self._stubs['config_service_v2_stub'].DeleteExclusion
