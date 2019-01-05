@@ -25,6 +25,7 @@ from google.oauth2 import service_account
 from google.cloud.pubsub_v1 import _gapic
 from google.cloud.pubsub_v1 import types
 from google.cloud.pubsub_v1.gapic import subscriber_client
+from google.cloud.pubsub_v1.gapic.transports import subscriber_grpc_transport
 from google.cloud.pubsub_v1.subscriber import futures
 from google.cloud.pubsub_v1.subscriber._protocol import streaming_pull_manager
 
@@ -66,17 +67,25 @@ class Client(object):
         # Use a custom channel.
         # We need this in order to set appropriate default message size and
         # keepalive options.
-        if "channel" not in kwargs:
-            kwargs["channel"] = grpc_helpers.create_channel(
-                credentials=kwargs.pop("credentials", None),
-                target=self.target,
-                scopes=subscriber_client.SubscriberClient._DEFAULT_SCOPES,
-                options={
-                    "grpc.max_send_message_length": -1,
-                    "grpc.max_receive_message_length": -1,
-                    "grpc.keepalive_time_ms": 30000,
-                }.items(),
+        if "transport" not in kwargs:
+            channel = kwargs.pop("channel", None)
+            if channel is None:
+                channel = grpc_helpers.create_channel(
+                    credentials=kwargs.pop("credentials", None),
+                    target=self.target,
+                    scopes=subscriber_client.SubscriberClient._DEFAULT_SCOPES,
+                    options={
+                        "grpc.max_send_message_length": -1,
+                        "grpc.max_receive_message_length": -1,
+                        "grpc.keepalive_time_ms": 30000,
+                    }.items(),
+                )
+            # cannot pass both 'channel' and 'credentials'
+            kwargs.pop("credentials", None)
+            transport = subscriber_grpc_transport.SubscriberGrpcTransport(
+                channel=channel
             )
+            kwargs["transport"] = transport
 
         # Add the metrics headers, and instantiate the underlying GAPIC
         # client.

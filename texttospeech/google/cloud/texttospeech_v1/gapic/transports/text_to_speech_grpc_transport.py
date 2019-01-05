@@ -99,7 +99,7 @@ class TextToSpeechGrpcTransport(object):
 
     @property
     def list_voices(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`TextToSpeechClient.list_voices`.
 
         Returns a list of ``Voice`` supported for synthesis.
 
@@ -112,7 +112,7 @@ class TextToSpeechGrpcTransport(object):
 
     @property
     def synthesize_speech(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`TextToSpeechClient.synthesize_speech`.
 
         Synthesizes speech synchronously: receive results after all text input
         has been processed.

@@ -108,7 +108,7 @@ class MetricServiceGrpcTransport(object):
 
     @property
     def list_monitored_resource_descriptors(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`MetricServiceClient.list_monitored_resource_descriptors`.
 
         Lists monitored resource descriptors that match a filter. This method does not require a Stackdriver account.
 
@@ -121,7 +121,7 @@ class MetricServiceGrpcTransport(object):
 
     @property
     def get_monitored_resource_descriptor(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`MetricServiceClient.get_monitored_resource_descriptor`.
 
         Gets a single monitored resource descriptor. This method does not require a Stackdriver account.
 
@@ -134,7 +134,7 @@ class MetricServiceGrpcTransport(object):
 
     @property
     def list_metric_descriptors(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`MetricServiceClient.list_metric_descriptors`.
 
         Lists metric descriptors that match a filter. This method does not require a Stackdriver account.
 
@@ -147,7 +147,7 @@ class MetricServiceGrpcTransport(object):
 
     @property
     def get_metric_descriptor(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`MetricServiceClient.get_metric_descriptor`.
 
         Gets a single metric descriptor. This method does not require a Stackdriver account.
 
@@ -160,7 +160,7 @@ class MetricServiceGrpcTransport(object):
 
     @property
     def create_metric_descriptor(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`MetricServiceClient.create_metric_descriptor`.
 
         Creates a new metric descriptor. User-created metric descriptors define
         `custom metrics <https://cloud.google.com/monitoring/custom-metrics>`__.
@@ -174,7 +174,7 @@ class MetricServiceGrpcTransport(object):
 
     @property
     def delete_metric_descriptor(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`MetricServiceClient.delete_metric_descriptor`.
 
         Deletes a metric descriptor. Only user-created `custom
         metrics <https://cloud.google.com/monitoring/custom-metrics>`__ can be
@@ -189,7 +189,7 @@ class MetricServiceGrpcTransport(object):
 
     @property
     def list_time_series(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`MetricServiceClient.list_time_series`.
 
         Lists time series that match a filter. This method does not require a Stackdriver account.
 
@@ -202,7 +202,7 @@ class MetricServiceGrpcTransport(object):
 
     @property
     def create_time_series(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`MetricServiceClient.create_time_series`.
 
         Creates or adds data to one or more time series.
         The response is empty if all time series in the request were written.

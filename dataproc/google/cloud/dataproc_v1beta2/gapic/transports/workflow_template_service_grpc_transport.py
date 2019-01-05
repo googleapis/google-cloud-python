@@ -107,7 +107,7 @@ class WorkflowTemplateServiceGrpcTransport(object):
 
     @property
     def create_workflow_template(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`WorkflowTemplateServiceClient.create_workflow_template`.
 
         Creates new workflow template.
 
@@ -120,7 +120,7 @@ class WorkflowTemplateServiceGrpcTransport(object):
 
     @property
     def get_workflow_template(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`WorkflowTemplateServiceClient.get_workflow_template`.
 
         Retrieves the latest workflow template.
 
@@ -136,7 +136,7 @@ class WorkflowTemplateServiceGrpcTransport(object):
 
     @property
     def instantiate_workflow_template(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`WorkflowTemplateServiceClient.instantiate_workflow_template`.
 
         Instantiates a template and begins execution.
 
@@ -161,7 +161,7 @@ class WorkflowTemplateServiceGrpcTransport(object):
 
     @property
     def instantiate_inline_workflow_template(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`WorkflowTemplateServiceClient.instantiate_inline_workflow_template`.
 
         Instantiates a template and begins execution.
 
@@ -192,7 +192,7 @@ class WorkflowTemplateServiceGrpcTransport(object):
 
     @property
     def update_workflow_template(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`WorkflowTemplateServiceClient.update_workflow_template`.
 
         Updates (replaces) workflow template. The updated template
         must contain version that matches the current server version.
@@ -206,7 +206,7 @@ class WorkflowTemplateServiceGrpcTransport(object):
 
     @property
     def list_workflow_templates(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`WorkflowTemplateServiceClient.list_workflow_templates`.
 
         Lists workflows that match the specified filter in the request.
 
@@ -219,7 +219,7 @@ class WorkflowTemplateServiceGrpcTransport(object):
 
     @property
     def delete_workflow_template(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`WorkflowTemplateServiceClient.delete_workflow_template`.
 
         Deletes a workflow template. It does not cancel in-progress workflows.
 

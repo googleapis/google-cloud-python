@@ -103,7 +103,7 @@ class SpeechGrpcTransport(object):
 
     @property
     def recognize(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`SpeechClient.recognize`.
 
         Performs synchronous speech recognition: receive results after all audio
         has been sent and processed.
@@ -117,7 +117,7 @@ class SpeechGrpcTransport(object):
 
     @property
     def long_running_recognize(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`SpeechClient.long_running_recognize`.
 
         Performs asynchronous speech recognition: receive results via the
         google.longrunning.Operations interface. Returns either an
@@ -133,7 +133,7 @@ class SpeechGrpcTransport(object):
 
     @property
     def streaming_recognize(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`SpeechClient.streaming_recognize`.
 
         Performs bidirectional streaming speech recognition: receive results while
         sending audio. This method is only available via the gRPC API (not REST).

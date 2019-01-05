@@ -432,8 +432,17 @@ class CloudTasksClient(object):
             >>>
             >>> parent = client.location_path('[PROJECT]', '[LOCATION]')
             >>>
-            >>> # TODO: Initialize `queue`:
-            >>> queue = {}
+            >>> # Initialize `queue`:
+            >>> queue = {
+            >>>     # The fully qualified path to the queue
+            >>>     'name': client.queue_path('[PROJECT]', '[LOCATION]', '[NAME]'),
+            >>>     'app_engine_http_queue': {
+            >>>         'app_engine_routing_override': {
+            >>>             # The App Engine service that will receive the tasks.
+            >>>             'service': 'default',
+            >>>             },
+            >>>         },
+            >>>     }
             >>>
             >>> response = client.create_queue(parent, queue)
 

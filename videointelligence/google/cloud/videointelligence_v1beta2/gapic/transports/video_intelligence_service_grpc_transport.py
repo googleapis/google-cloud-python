@@ -112,7 +112,7 @@ class VideoIntelligenceServiceGrpcTransport(object):
 
     @property
     def annotate_video(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`VideoIntelligenceServiceClient.annotate_video`.
 
         Performs asynchronous video annotation. Progress and results can be
         retrieved through the ``google.longrunning.Operations`` interface.

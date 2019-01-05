@@ -18,46 +18,19 @@
 import enum
 
 
-class Likelihood(enum.IntEnum):
+class ContentOption(enum.IntEnum):
     """
-    Categorization of results based on how likely they are to represent a match,
-    based on the number of elements they contain which imply a match.
+    Options describing which parts of the provided content should be scanned.
 
     Attributes:
-      LIKELIHOOD_UNSPECIFIED (int): Default value; same as POSSIBLE.
-      VERY_UNLIKELY (int): Few matching elements.
-      UNLIKELY (int)
-      POSSIBLE (int): Some matching elements.
-      LIKELY (int)
-      VERY_LIKELY (int): Many matching elements.
+      CONTENT_UNSPECIFIED (int): Includes entire content of a file or a data stream.
+      CONTENT_TEXT (int): Text content within the data, excluding any metadata.
+      CONTENT_IMAGE (int): Images found in the data.
     """
 
-    LIKELIHOOD_UNSPECIFIED = 0
-    VERY_UNLIKELY = 1
-    UNLIKELY = 2
-    POSSIBLE = 3
-    LIKELY = 4
-    VERY_LIKELY = 5
-
-
-class FileType(enum.IntEnum):
-    """
-    Definitions of file type groups to scan.
-
-    Attributes:
-      FILE_TYPE_UNSPECIFIED (int): Includes all files.
-      BINARY_FILE (int): Includes all file extensions not covered by text file types.
-      TEXT_FILE (int): Included file extensions:
-        asc, brf, c, cc, cpp, csv, cxx, c++, cs, css, dart, eml, go, h, hh, hpp,
-        hxx, h++, hs, html, htm, shtml, shtm, xhtml, lhs, ini, java, js, json,
-        ocaml, md, mkd, markdown, m, ml, mli, pl, pm, php, phtml, pht, py, pyw,
-        rb, rbw, rs, rc, scala, sh, sql, tex, txt, text, tsv, vcard, vcs, wml,
-        xml, xsl, xsd, yml, yaml.
-    """
-
-    FILE_TYPE_UNSPECIFIED = 0
-    BINARY_FILE = 1
-    TEXT_FILE = 2
+    CONTENT_UNSPECIFIED = 0
+    CONTENT_TEXT = 1
+    CONTENT_IMAGE = 2
 
 
 class DayOfWeek(enum.IntEnum):
@@ -85,19 +58,76 @@ class DayOfWeek(enum.IntEnum):
     SUNDAY = 7
 
 
-class ContentOption(enum.IntEnum):
+class DlpJobType(enum.IntEnum):
     """
-    Options describing which parts of the provided content should be scanned.
+    An enum to represent the various type of DLP jobs.
 
     Attributes:
-      CONTENT_UNSPECIFIED (int): Includes entire content of a file or a data stream.
-      CONTENT_TEXT (int): Text content within the data, excluding any metadata.
-      CONTENT_IMAGE (int): Images found in the data.
+      DLP_JOB_TYPE_UNSPECIFIED (int)
+      INSPECT_JOB (int): The job inspected Google Cloud for sensitive data.
+      RISK_ANALYSIS_JOB (int): The job executed a Risk Analysis computation.
     """
 
-    CONTENT_UNSPECIFIED = 0
-    CONTENT_TEXT = 1
-    CONTENT_IMAGE = 2
+    DLP_JOB_TYPE_UNSPECIFIED = 0
+    INSPECT_JOB = 1
+    RISK_ANALYSIS_JOB = 2
+
+
+class FileType(enum.IntEnum):
+    """
+    Definitions of file type groups to scan.
+
+    Attributes:
+      FILE_TYPE_UNSPECIFIED (int): Includes all files.
+      BINARY_FILE (int): Includes all file extensions not covered by text file types.
+      TEXT_FILE (int): Included file extensions:
+        asc, brf, c, cc, cpp, csv, cxx, c++, cs, css, dart, eml, go, h, hh, hpp,
+        hxx, h++, hs, html, htm, shtml, shtm, xhtml, lhs, ini, java, js, json,
+        ocaml, md, mkd, markdown, m, ml, mli, pl, pm, php, phtml, pht, py, pyw,
+        rb, rbw, rs, rc, scala, sh, sql, tex, txt, text, tsv, vcard, vcs, wml,
+        xml, xsl, xsd, yml, yaml.
+    """
+
+    FILE_TYPE_UNSPECIFIED = 0
+    BINARY_FILE = 1
+    TEXT_FILE = 2
+
+
+class InfoTypeSupportedBy(enum.IntEnum):
+    """
+    Parts of the APIs which use certain infoTypes.
+
+    Attributes:
+      ENUM_TYPE_UNSPECIFIED (int)
+      INSPECT (int): Supported by the inspect operations.
+      RISK_ANALYSIS (int): Supported by the risk analysis operations.
+    """
+
+    ENUM_TYPE_UNSPECIFIED = 0
+    INSPECT = 1
+    RISK_ANALYSIS = 2
+
+
+class Likelihood(enum.IntEnum):
+    """
+    Categorization of results based on how likely they are to represent a match,
+    based on the number of elements they contain which imply a match.
+
+    Attributes:
+      LIKELIHOOD_UNSPECIFIED (int): Default value; same as POSSIBLE.
+      VERY_UNLIKELY (int): Few matching elements.
+      UNLIKELY (int)
+      POSSIBLE (int): Some matching elements.
+      LIKELY (int)
+      VERY_LIKELY (int): Many matching elements.
+    """
+
+    LIKELIHOOD_UNSPECIFIED = 0
+    VERY_UNLIKELY = 1
+    UNLIKELY = 2
+    POSSIBLE = 3
+    LIKELY = 4
+    VERY_LIKELY = 5
 
 
 class MatchingType(enum.IntEnum):
@@ -131,21 +161,6 @@ class MatchingType(enum.IntEnum):
     MATCHING_TYPE_INVERSE_MATCH = 3
 
 
-class InfoTypeSupportedBy(enum.IntEnum):
-    """
-    Parts of the APIs which use certain infoTypes.
-
-    Attributes:
-      ENUM_TYPE_UNSPECIFIED (int)
-      INSPECT (int): Supported by the inspect operations.
-      RISK_ANALYSIS (int): Supported by the risk analysis operations.
-    """
-
-    ENUM_TYPE_UNSPECIFIED = 0
-    INSPECT = 1
-    RISK_ANALYSIS = 2
-
-
 class RelationalOperator(enum.IntEnum):
     """
     Operators available for comparing the value of fields.
@@ -171,21 +186,6 @@ class RelationalOperator(enum.IntEnum):
     EXISTS = 7
 
 
-class DlpJobType(enum.IntEnum):
-    """
-    An enum to represent the various type of DLP jobs.
-
-    Attributes:
-      DLP_JOB_TYPE_UNSPECIFIED (int)
-      INSPECT_JOB (int): The job inspected Google Cloud for sensitive data.
-      RISK_ANALYSIS_JOB (int): The job executed a Risk Analysis computation.
-    """
-
-    DLP_JOB_TYPE_UNSPECIFIED = 0
-    INSPECT_JOB = 1
-    RISK_ANALYSIS_JOB = 2
-
-
 class StoredInfoTypeState(enum.IntEnum):
     """
     State of a StoredInfoType version.
@@ -206,38 +206,6 @@ class StoredInfoTypeState(enum.IntEnum):
     READY = 2
     FAILED = 3
     INVALID = 4
-
-
-class CustomInfoType(object):
-    class ExclusionType(enum.IntEnum):
-        """
-        Attributes:
-          EXCLUSION_TYPE_UNSPECIFIED (int): A finding of this custom info type will not be excluded from results.
-          EXCLUSION_TYPE_EXCLUDE (int): A finding of this custom info type will be excluded from final results,
-          but can still affect rule execution.
-        """
-
-        EXCLUSION_TYPE_UNSPECIFIED = 0
-        EXCLUSION_TYPE_EXCLUDE = 1
-
-
-class CloudStorageOptions(object):
-    class SampleMethod(enum.IntEnum):
-        """
-        How to sample bytes if not all bytes are scanned. Meaningful only when
-        used in conjunction with bytes\_limit\_per\_file. If not specified,
-        scanning would start from the top.
-
-        Attributes:
-          SAMPLE_METHOD_UNSPECIFIED (int)
-          TOP (int): Scan from the top (default).
-          RANDOM_START (int): For each file larger than bytes\_limit\_per\_file, randomly pick the
-          offset to start scanning. The scanned bytes are contiguous.
-        """
-
-        SAMPLE_METHOD_UNSPECIFIED = 0
-        TOP = 1
-        RANDOM_START = 2
 
 
 class BigQueryOptions(object):
@@ -280,51 +248,6 @@ class ByteContentItem(object):
         TEXT_UTF8 = 5
 
 
-class OutputStorageConfig(object):
-    class OutputSchema(enum.IntEnum):
-        """
-        Predefined schemas for storing findings.
-
-        Attributes:
-          OUTPUT_SCHEMA_UNSPECIFIED (int)
-          BASIC_COLUMNS (int): Basic schema including only ``info_type``, ``quote``, ``certainty``, and
-          ``timestamp``.
-          GCS_COLUMNS (int): Schema tailored to findings from scanning Google Cloud Storage.
-          DATASTORE_COLUMNS (int): Schema tailored to findings from scanning Google Datastore.
-          BIG_QUERY_COLUMNS (int): Schema tailored to findings from scanning Google BigQuery.
-          ALL_COLUMNS (int): Schema containing all columns.
-        """
-
-        OUTPUT_SCHEMA_UNSPECIFIED = 0
-        BASIC_COLUMNS = 1
-        GCS_COLUMNS = 2
-        DATASTORE_COLUMNS = 3
-        BIG_QUERY_COLUMNS = 4
-        ALL_COLUMNS = 5
-
-
-class TimePartConfig(object):
-    class TimePart(enum.IntEnum):
-        """
-        Attributes:
-          TIME_PART_UNSPECIFIED (int)
-          YEAR (int): [0-9999]
-          MONTH (int): [1-12]
-          DAY_OF_MONTH (int): [1-31]
-          DAY_OF_WEEK (int): [1-7]
-          WEEK_OF_YEAR (int): [1-52]
-          HOUR_OF_DAY (int): [0-23]
-        """
-
-        TIME_PART_UNSPECIFIED = 0
-        YEAR = 1
-        MONTH = 2
-        DAY_OF_MONTH = 3
-        DAY_OF_WEEK = 4
-        WEEK_OF_YEAR = 5
-        HOUR_OF_DAY = 6
-
-
 class CharsToIgnore(object):
     class CommonCharsToIgnore(enum.IntEnum):
         """
@@ -343,6 +266,25 @@ class CharsToIgnore(object):
         ALPHA_LOWER_CASE = 3
         PUNCTUATION = 4
         WHITESPACE = 5
+
+
+class CloudStorageOptions(object):
+    class SampleMethod(enum.IntEnum):
+        """
+        How to sample bytes if not all bytes are scanned. Meaningful only when
+        used in conjunction with bytes\_limit\_per\_file. If not specified,
+        scanning would start from the top.
+
+        Attributes:
+          SAMPLE_METHOD_UNSPECIFIED (int)
+          TOP (int): Scan from the top (default).
+          RANDOM_START (int): For each file larger than bytes\_limit\_per\_file, randomly pick the
+          offset to start scanning. The scanned bytes are contiguous.
+        """
+
+        SAMPLE_METHOD_UNSPECIFIED = 0
+        TOP = 1
+        RANDOM_START = 2
 
 
 class CryptoReplaceFfxFpeConfig(object):
@@ -367,33 +309,37 @@ class CryptoReplaceFfxFpeConfig(object):
         ALPHA_NUMERIC = 4
 
 
-class RecordCondition(object):
-    class Expressions(object):
-        class LogicalOperator(enum.IntEnum):
-            """
-            Attributes:
-              LOGICAL_OPERATOR_UNSPECIFIED (int)
-              AND (int)
-            """
-
-            LOGICAL_OPERATOR_UNSPECIFIED = 0
-            AND = 1
-
-
-class TransformationSummary(object):
-    class TransformationResultCode(enum.IntEnum):
+class CustomInfoType(object):
+    class ExclusionType(enum.IntEnum):
         """
-        Possible outcomes of transformations.
-
         Attributes:
-          TRANSFORMATION_RESULT_CODE_UNSPECIFIED (int)
-          SUCCESS (int)
-          ERROR (int)
+          EXCLUSION_TYPE_UNSPECIFIED (int): A finding of this custom info type will not be excluded from results.
+          EXCLUSION_TYPE_EXCLUDE (int): A finding of this custom info type will be excluded from final results,
+          but can still affect rule execution.
         """
 
-        TRANSFORMATION_RESULT_CODE_UNSPECIFIED = 0
-        SUCCESS = 1
-        ERROR = 2
+        EXCLUSION_TYPE_UNSPECIFIED = 0
+        EXCLUSION_TYPE_EXCLUDE = 1
+
+
+class DlpJob(object):
+    class JobState(enum.IntEnum):
+        """
+        Attributes:
+          JOB_STATE_UNSPECIFIED (int)
+          PENDING (int): The job has not yet started.
+          RUNNING (int): The job is currently running.
+          DONE (int): The job is no longer running.
+          CANCELED (int): The job was canceled before it could complete.
+          FAILED (int): The job had an error and did not complete.
+        """
+
+        JOB_STATE_UNSPECIFIED = 0
+        PENDING = 1
+        RUNNING = 2
+        DONE = 3
+        CANCELED = 4
+        FAILED = 5
 
 
 class JobTrigger(object):
@@ -417,21 +363,75 @@ class JobTrigger(object):
         CANCELLED = 3
 
 
-class DlpJob(object):
-    class JobState(enum.IntEnum):
+class OutputStorageConfig(object):
+    class OutputSchema(enum.IntEnum):
         """
+        Predefined schemas for storing findings.
+
         Attributes:
-          JOB_STATE_UNSPECIFIED (int)
-          PENDING (int): The job has not yet started.
-          RUNNING (int): The job is currently running.
-          DONE (int): The job is no longer running.
-          CANCELED (int): The job was canceled before it could complete.
-          FAILED (int): The job had an error and did not complete.
+          OUTPUT_SCHEMA_UNSPECIFIED (int)
+          BASIC_COLUMNS (int): Basic schema including only ``info_type``, ``quote``, ``certainty``, and
+          ``timestamp``.
+          GCS_COLUMNS (int): Schema tailored to findings from scanning Google Cloud Storage.
+          DATASTORE_COLUMNS (int): Schema tailored to findings from scanning Google Datastore.
+          BIG_QUERY_COLUMNS (int): Schema tailored to findings from scanning Google BigQuery.
+          ALL_COLUMNS (int): Schema containing all columns.
         """
 
-        JOB_STATE_UNSPECIFIED = 0
-        PENDING = 1
-        RUNNING = 2
-        DONE = 3
-        CANCELED = 4
-        FAILED = 5
+        OUTPUT_SCHEMA_UNSPECIFIED = 0
+        BASIC_COLUMNS = 1
+        GCS_COLUMNS = 2
+        DATASTORE_COLUMNS = 3
+        BIG_QUERY_COLUMNS = 4
+        ALL_COLUMNS = 5
+
+
+class RecordCondition(object):
+    class Expressions(object):
+        class LogicalOperator(enum.IntEnum):
+            """
+            Attributes:
+              LOGICAL_OPERATOR_UNSPECIFIED (int)
+              AND (int)
+            """
+
+            LOGICAL_OPERATOR_UNSPECIFIED = 0
+            AND = 1
+
+
+class TimePartConfig(object):
+    class TimePart(enum.IntEnum):
+        """
+        Attributes:
+          TIME_PART_UNSPECIFIED (int)
+          YEAR (int): [0-9999]
+          MONTH (int): [1-12]
+          DAY_OF_MONTH (int): [1-31]
+          DAY_OF_WEEK (int): [1-7]
+          WEEK_OF_YEAR (int): [1-52]
+          HOUR_OF_DAY (int): [0-23]
+        """
+
+        TIME_PART_UNSPECIFIED = 0
+        YEAR = 1
+        MONTH = 2
+        DAY_OF_MONTH = 3
+        DAY_OF_WEEK = 4
+        WEEK_OF_YEAR = 5
+        HOUR_OF_DAY = 6
+
+
+class TransformationSummary(object):
+    class TransformationResultCode(enum.IntEnum):
+        """
+        Possible outcomes of transformations.
+
+        Attributes:
+          TRANSFORMATION_RESULT_CODE_UNSPECIFIED (int)
+          SUCCESS (int)
+          ERROR (int)
+        """
+
+        TRANSFORMATION_RESULT_CODE_UNSPECIFIED = 0
+        SUCCESS = 1
+        ERROR = 2

@@ -104,7 +104,7 @@ class DataTransferServiceGrpcTransport(object):
 
     @property
     def get_data_source(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`DataTransferServiceClient.get_data_source`.
 
         Retrieves a supported data source and returns its settings,
         which can be used for UI rendering.
@@ -118,7 +118,7 @@ class DataTransferServiceGrpcTransport(object):
 
     @property
     def list_data_sources(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`DataTransferServiceClient.list_data_sources`.
 
         Lists supported data sources and returns their settings,
         which can be used for UI rendering.
@@ -132,7 +132,7 @@ class DataTransferServiceGrpcTransport(object):
 
     @property
     def create_transfer_config(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`DataTransferServiceClient.create_transfer_config`.
 
         Creates a new data transfer configuration.
 
@@ -145,7 +145,7 @@ class DataTransferServiceGrpcTransport(object):
 
     @property
     def update_transfer_config(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`DataTransferServiceClient.update_transfer_config`.
 
         Updates a data transfer configuration.
         All fields must be set, even if they are not updated.
@@ -159,7 +159,7 @@ class DataTransferServiceGrpcTransport(object):
 
     @property
     def delete_transfer_config(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`DataTransferServiceClient.delete_transfer_config`.
 
         Deletes a data transfer configuration,
         including any associated transfer runs and logs.
@@ -173,7 +173,7 @@ class DataTransferServiceGrpcTransport(object):
 
     @property
     def get_transfer_config(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`DataTransferServiceClient.get_transfer_config`.
 
         Returns information about a data transfer config.
 
@@ -186,7 +186,7 @@ class DataTransferServiceGrpcTransport(object):
 
     @property
     def list_transfer_configs(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`DataTransferServiceClient.list_transfer_configs`.
 
         Returns information about all data transfers in the project.
 
@@ -199,7 +199,7 @@ class DataTransferServiceGrpcTransport(object):
 
     @property
     def schedule_transfer_runs(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`DataTransferServiceClient.schedule_transfer_runs`.
 
         Creates transfer runs for a time range [start\_time, end\_time]. For
         each date - or whatever granularity the data source supports - in the
@@ -215,7 +215,7 @@ class DataTransferServiceGrpcTransport(object):
 
     @property
     def get_transfer_run(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`DataTransferServiceClient.get_transfer_run`.
 
         Returns information about the particular transfer run.
 
@@ -228,7 +228,7 @@ class DataTransferServiceGrpcTransport(object):
 
     @property
     def delete_transfer_run(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`DataTransferServiceClient.delete_transfer_run`.
 
         Deletes the specified transfer run.
 
@@ -241,7 +241,7 @@ class DataTransferServiceGrpcTransport(object):
 
     @property
     def list_transfer_runs(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`DataTransferServiceClient.list_transfer_runs`.
 
         Returns information about running and completed jobs.
 
@@ -254,7 +254,7 @@ class DataTransferServiceGrpcTransport(object):
 
     @property
     def list_transfer_logs(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`DataTransferServiceClient.list_transfer_logs`.
 
         Returns user facing log messages for the data transfer run.
 
@@ -267,7 +267,7 @@ class DataTransferServiceGrpcTransport(object):
 
     @property
     def check_valid_creds(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`DataTransferServiceClient.check_valid_creds`.
 
         Returns true if valid credentials exist for the given data source and
         requesting user.

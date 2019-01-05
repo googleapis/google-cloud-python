@@ -110,7 +110,7 @@ class AlertPolicyServiceGrpcTransport(object):
 
     @property
     def list_alert_policies(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`AlertPolicyServiceClient.list_alert_policies`.
 
         Lists the existing alerting policies for the project.
 
@@ -123,7 +123,7 @@ class AlertPolicyServiceGrpcTransport(object):
 
     @property
     def get_alert_policy(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`AlertPolicyServiceClient.get_alert_policy`.
 
         Gets a single alerting policy.
 
@@ -136,7 +136,7 @@ class AlertPolicyServiceGrpcTransport(object):
 
     @property
     def create_alert_policy(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`AlertPolicyServiceClient.create_alert_policy`.
 
         Creates a new alerting policy.
 
@@ -149,7 +149,7 @@ class AlertPolicyServiceGrpcTransport(object):
 
     @property
     def delete_alert_policy(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`AlertPolicyServiceClient.delete_alert_policy`.
 
         Deletes an alerting policy.
 
@@ -162,7 +162,7 @@ class AlertPolicyServiceGrpcTransport(object):
 
     @property
     def update_alert_policy(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`AlertPolicyServiceClient.update_alert_policy`.
 
         Updates an alerting policy. You can either replace the entire policy
         with a new one or replace only certain fields in the current alerting

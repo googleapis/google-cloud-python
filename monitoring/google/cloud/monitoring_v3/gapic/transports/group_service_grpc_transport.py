@@ -108,7 +108,7 @@ class GroupServiceGrpcTransport(object):
 
     @property
     def list_groups(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`GroupServiceClient.list_groups`.
 
         Lists the existing groups.
 
@@ -121,7 +121,7 @@ class GroupServiceGrpcTransport(object):
 
     @property
     def get_group(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`GroupServiceClient.get_group`.
 
         Gets a single group.
 
@@ -134,7 +134,7 @@ class GroupServiceGrpcTransport(object):
 
     @property
     def create_group(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`GroupServiceClient.create_group`.
 
         Creates a new group.
 
@@ -147,7 +147,7 @@ class GroupServiceGrpcTransport(object):
 
     @property
     def update_group(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`GroupServiceClient.update_group`.
 
         Updates an existing group. You can change any group attributes except
         ``name``.
@@ -161,7 +161,7 @@ class GroupServiceGrpcTransport(object):
 
     @property
     def delete_group(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`GroupServiceClient.delete_group`.
 
         Deletes an existing group.
 
@@ -174,7 +174,7 @@ class GroupServiceGrpcTransport(object):
 
     @property
     def list_group_members(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`GroupServiceClient.list_group_members`.
 
         Lists the monitored resources that are members of a group.
 
