@@ -108,7 +108,7 @@ class BigtableGrpcTransport(object):
 
     @property
     def read_rows(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`BigtableClient.read_rows`.
 
         Streams back the contents of all requested rows in key order, optionally
         applying the same Reader filter to each. Depending on their size,
@@ -125,7 +125,7 @@ class BigtableGrpcTransport(object):
 
     @property
     def sample_row_keys(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`BigtableClient.sample_row_keys`.
 
         Returns a sample of row keys in the table. The returned row keys will
         delimit contiguous sections of the table of approximately equal size,
@@ -141,7 +141,7 @@ class BigtableGrpcTransport(object):
 
     @property
     def mutate_row(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`BigtableClient.mutate_row`.
 
         Mutates a row atomically. Cells already present in the row are left
         unchanged unless explicitly changed by ``mutation``.
@@ -155,7 +155,7 @@ class BigtableGrpcTransport(object):
 
     @property
     def mutate_rows(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`BigtableClient.mutate_rows`.
 
         Mutates multiple rows in a batch. Each individual row is mutated
         atomically as in MutateRow, but the entire batch is not executed
@@ -170,7 +170,7 @@ class BigtableGrpcTransport(object):
 
     @property
     def check_and_mutate_row(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`BigtableClient.check_and_mutate_row`.
 
         Mutates a row atomically based on the output of a predicate Reader filter.
 
@@ -183,7 +183,7 @@ class BigtableGrpcTransport(object):
 
     @property
     def read_modify_write_row(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`BigtableClient.read_modify_write_row`.
 
         Modifies a row atomically on the server. The method reads the latest
         existing timestamp and value from the specified columns and writes a new
