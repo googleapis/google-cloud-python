@@ -103,7 +103,7 @@ class LoggingServiceV2GrpcTransport(object):
 
     @property
     def delete_log(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`LoggingServiceV2Client.delete_log`.
 
         Deletes all the log entries in a log.
         The log reappears if it receives new entries.
@@ -119,7 +119,7 @@ class LoggingServiceV2GrpcTransport(object):
 
     @property
     def write_log_entries(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`LoggingServiceV2Client.write_log_entries`.
 
         Writes log entries to Logging. This API method is the
         only way to send log entries to Logging. This method
@@ -138,7 +138,7 @@ class LoggingServiceV2GrpcTransport(object):
 
     @property
     def list_log_entries(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`LoggingServiceV2Client.list_log_entries`.
 
         Lists log entries. Use this method to retrieve log entries from Logging.
         For ways to export log entries, see `Exporting
@@ -153,7 +153,7 @@ class LoggingServiceV2GrpcTransport(object):
 
     @property
     def list_monitored_resource_descriptors(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`LoggingServiceV2Client.list_monitored_resource_descriptors`.
 
         Lists the descriptors for monitored resource types used by Logging.
 
@@ -166,7 +166,7 @@ class LoggingServiceV2GrpcTransport(object):
 
     @property
     def list_logs(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`LoggingServiceV2Client.list_logs`.
 
         Lists the logs in projects, organizations, folders, or billing accounts.
         Only logs that have entries are listed.
