@@ -108,7 +108,7 @@ class ImageAnnotatorGrpcTransport(object):
 
     @property
     def batch_annotate_images(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`ImageAnnotatorClient.batch_annotate_images`.
 
         Run image detection and annotation for a batch of images.
 
@@ -121,7 +121,7 @@ class ImageAnnotatorGrpcTransport(object):
 
     @property
     def async_batch_annotate_files(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`ImageAnnotatorClient.async_batch_annotate_files`.
 
         Run async image detection and annotation for a list of generic files
         (e.g. PDF) which may contain multiple pages and multiple images per
