@@ -404,7 +404,6 @@ def test_bigtable_table_row():
 
 
 def test_bigtable_column_family_name():
-    import re
     # [START bigtable_column_family_name]
     from google.cloud.bigtable import Client
 
@@ -416,7 +415,7 @@ def test_bigtable_column_family_name():
     column_family_obj = column_families[COLUMN_FAMILY_ID]
     column_family_name = column_family_obj.name
     # [END bigtable_column_family_name]
-
+    import re
     _cf_name_re = re.compile(r'^projects/(?P<project>[^/]+)/'
                              r'instances/(?P<instance>[^/]+)/tables/'
                              r'(?P<table>[^/]+)/columnFamilies/'
