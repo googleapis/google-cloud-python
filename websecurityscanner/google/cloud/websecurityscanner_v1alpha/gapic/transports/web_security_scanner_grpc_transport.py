@@ -104,7 +104,7 @@ class WebSecurityScannerGrpcTransport(object):
 
     @property
     def create_scan_config(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`WebSecurityScannerClient.create_scan_config`.
 
         Creates a new ScanConfig.
 
@@ -117,7 +117,7 @@ class WebSecurityScannerGrpcTransport(object):
 
     @property
     def delete_scan_config(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`WebSecurityScannerClient.delete_scan_config`.
 
         Deletes an existing ScanConfig and its child resources.
 
@@ -130,7 +130,7 @@ class WebSecurityScannerGrpcTransport(object):
 
     @property
     def get_scan_config(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`WebSecurityScannerClient.get_scan_config`.
 
         Gets a ScanConfig.
 
@@ -143,7 +143,7 @@ class WebSecurityScannerGrpcTransport(object):
 
     @property
     def list_scan_configs(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`WebSecurityScannerClient.list_scan_configs`.
 
         Lists ScanConfigs under a given project.
 
@@ -156,7 +156,7 @@ class WebSecurityScannerGrpcTransport(object):
 
     @property
     def update_scan_config(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`WebSecurityScannerClient.update_scan_config`.
 
         Updates a ScanConfig. This method support partial update of a ScanConfig.
 
@@ -169,7 +169,7 @@ class WebSecurityScannerGrpcTransport(object):
 
     @property
     def start_scan_run(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`WebSecurityScannerClient.start_scan_run`.
 
         Start a ScanRun according to the given ScanConfig.
 
@@ -182,7 +182,7 @@ class WebSecurityScannerGrpcTransport(object):
 
     @property
     def get_scan_run(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`WebSecurityScannerClient.get_scan_run`.
 
         Gets a ScanRun.
 
@@ -195,7 +195,7 @@ class WebSecurityScannerGrpcTransport(object):
 
     @property
     def list_scan_runs(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`WebSecurityScannerClient.list_scan_runs`.
 
         Lists ScanRuns under a given ScanConfig, in descending order of ScanRun
         stop time.
@@ -209,7 +209,7 @@ class WebSecurityScannerGrpcTransport(object):
 
     @property
     def stop_scan_run(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`WebSecurityScannerClient.stop_scan_run`.
 
         Stops a ScanRun. The stopped ScanRun is returned.
 
@@ -222,7 +222,7 @@ class WebSecurityScannerGrpcTransport(object):
 
     @property
     def list_crawled_urls(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`WebSecurityScannerClient.list_crawled_urls`.
 
         List CrawledUrls under a given ScanRun.
 
@@ -235,7 +235,7 @@ class WebSecurityScannerGrpcTransport(object):
 
     @property
     def get_finding(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`WebSecurityScannerClient.get_finding`.
 
         Gets a Finding.
 
@@ -248,7 +248,7 @@ class WebSecurityScannerGrpcTransport(object):
 
     @property
     def list_findings(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`WebSecurityScannerClient.list_findings`.
 
         List Findings under a given ScanRun.
 
@@ -261,7 +261,7 @@ class WebSecurityScannerGrpcTransport(object):
 
     @property
     def list_finding_type_stats(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`WebSecurityScannerClient.list_finding_type_stats`.
 
         List all FindingTypeStats under a given ScanRun.
 
