@@ -101,7 +101,7 @@ class KeyManagementServiceGrpcTransport(object):
 
     @property
     def list_key_rings(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`KeyManagementServiceClient.list_key_rings`.
 
         Lists ``KeyRings``.
 
@@ -114,7 +114,7 @@ class KeyManagementServiceGrpcTransport(object):
 
     @property
     def list_crypto_keys(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`KeyManagementServiceClient.list_crypto_keys`.
 
         Lists ``CryptoKeys``.
 
@@ -127,7 +127,7 @@ class KeyManagementServiceGrpcTransport(object):
 
     @property
     def list_crypto_key_versions(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`KeyManagementServiceClient.list_crypto_key_versions`.
 
         Lists ``CryptoKeyVersions``.
 
@@ -140,7 +140,7 @@ class KeyManagementServiceGrpcTransport(object):
 
     @property
     def get_key_ring(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`KeyManagementServiceClient.get_key_ring`.
 
         Returns metadata for a given ``KeyRing``.
 
@@ -153,7 +153,7 @@ class KeyManagementServiceGrpcTransport(object):
 
     @property
     def get_crypto_key(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`KeyManagementServiceClient.get_crypto_key`.
 
         Returns metadata for a given ``CryptoKey``, as well as its ``primary``
         ``CryptoKeyVersion``.
@@ -167,7 +167,7 @@ class KeyManagementServiceGrpcTransport(object):
 
     @property
     def get_crypto_key_version(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`KeyManagementServiceClient.get_crypto_key_version`.
 
         Returns metadata for a given ``CryptoKeyVersion``.
 
@@ -180,7 +180,7 @@ class KeyManagementServiceGrpcTransport(object):
 
     @property
     def create_key_ring(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`KeyManagementServiceClient.create_key_ring`.
 
         Create a new ``KeyRing`` in a given Project and Location.
 
@@ -193,7 +193,7 @@ class KeyManagementServiceGrpcTransport(object):
 
     @property
     def create_crypto_key(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`KeyManagementServiceClient.create_crypto_key`.
 
         Create a new ``CryptoKey`` within a ``KeyRing``.
 
@@ -209,7 +209,7 @@ class KeyManagementServiceGrpcTransport(object):
 
     @property
     def create_crypto_key_version(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`KeyManagementServiceClient.create_crypto_key_version`.
 
         Create a new ``CryptoKeyVersion`` in a ``CryptoKey``.
 
@@ -225,7 +225,7 @@ class KeyManagementServiceGrpcTransport(object):
 
     @property
     def update_crypto_key(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`KeyManagementServiceClient.update_crypto_key`.
 
         Update a ``CryptoKey``.
 
@@ -238,7 +238,7 @@ class KeyManagementServiceGrpcTransport(object):
 
     @property
     def update_crypto_key_version(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`KeyManagementServiceClient.update_crypto_key_version`.
 
         Update a ``CryptoKeyVersion``'s metadata.
 
@@ -255,7 +255,7 @@ class KeyManagementServiceGrpcTransport(object):
 
     @property
     def encrypt(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`KeyManagementServiceClient.encrypt`.
 
         Encrypts data, so that it can only be recovered by a call to
         ``Decrypt``. The ``CryptoKey.purpose`` must be ``ENCRYPT_DECRYPT``.
@@ -269,7 +269,7 @@ class KeyManagementServiceGrpcTransport(object):
 
     @property
     def decrypt(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`KeyManagementServiceClient.decrypt`.
 
         Decrypts data that was protected by ``Encrypt``. The
         ``CryptoKey.purpose`` must be ``ENCRYPT_DECRYPT``.
@@ -283,7 +283,7 @@ class KeyManagementServiceGrpcTransport(object):
 
     @property
     def update_crypto_key_primary_version(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`KeyManagementServiceClient.update_crypto_key_primary_version`.
 
         Update the version of a ``CryptoKey`` that will be used in ``Encrypt``.
 
@@ -298,7 +298,7 @@ class KeyManagementServiceGrpcTransport(object):
 
     @property
     def destroy_crypto_key_version(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`KeyManagementServiceClient.destroy_crypto_key_version`.
 
         Schedule a ``CryptoKeyVersion`` for destruction.
 
@@ -319,7 +319,7 @@ class KeyManagementServiceGrpcTransport(object):
 
     @property
     def restore_crypto_key_version(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`KeyManagementServiceClient.restore_crypto_key_version`.
 
         Restore a ``CryptoKeyVersion`` in the ``DESTROY_SCHEDULED`` state.
 
@@ -335,7 +335,7 @@ class KeyManagementServiceGrpcTransport(object):
 
     @property
     def get_public_key(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`KeyManagementServiceClient.get_public_key`.
 
         Returns the public key for the given ``CryptoKeyVersion``. The
         ``CryptoKey.purpose`` must be ``ASYMMETRIC_SIGN`` or
@@ -350,7 +350,7 @@ class KeyManagementServiceGrpcTransport(object):
 
     @property
     def asymmetric_decrypt(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`KeyManagementServiceClient.asymmetric_decrypt`.
 
         Decrypts data that was encrypted with a public key retrieved from
         ``GetPublicKey`` corresponding to a ``CryptoKeyVersion`` with
@@ -365,7 +365,7 @@ class KeyManagementServiceGrpcTransport(object):
 
     @property
     def asymmetric_sign(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`KeyManagementServiceClient.asymmetric_sign`.
 
         Signs data using a ``CryptoKeyVersion`` with ``CryptoKey.purpose``
         ASYMMETRIC\_SIGN, producing a signature that can be verified with the
@@ -380,7 +380,7 @@ class KeyManagementServiceGrpcTransport(object):
 
     @property
     def set_iam_policy(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`KeyManagementServiceClient.set_iam_policy`.
 
         Sets the access control policy on the specified resource. Replaces any
         existing policy.
@@ -394,7 +394,7 @@ class KeyManagementServiceGrpcTransport(object):
 
     @property
     def get_iam_policy(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`KeyManagementServiceClient.get_iam_policy`.
 
         Gets the access control policy for a resource.
         Returns an empty policy if the resource exists and does not have a policy
@@ -409,7 +409,7 @@ class KeyManagementServiceGrpcTransport(object):
 
     @property
     def test_iam_permissions(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`KeyManagementServiceClient.test_iam_permissions`.
 
         Returns permissions that a caller has on the specified resource. If the
         resource does not exist, this will return an empty set of permissions,

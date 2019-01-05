@@ -99,7 +99,7 @@ class LanguageServiceGrpcTransport(object):
 
     @property
     def analyze_sentiment(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`LanguageServiceClient.analyze_sentiment`.
 
         Analyzes the sentiment of the provided text.
 
@@ -112,7 +112,7 @@ class LanguageServiceGrpcTransport(object):
 
     @property
     def analyze_entities(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`LanguageServiceClient.analyze_entities`.
 
         Finds named entities (currently proper names and common nouns) in the text
         along with entity types, salience, mentions for each entity, and
@@ -127,7 +127,7 @@ class LanguageServiceGrpcTransport(object):
 
     @property
     def analyze_entity_sentiment(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`LanguageServiceClient.analyze_entity_sentiment`.
 
         Finds entities, similar to ``AnalyzeEntities`` in the text and analyzes
         sentiment associated with each entity and its mentions.
@@ -141,7 +141,7 @@ class LanguageServiceGrpcTransport(object):
 
     @property
     def analyze_syntax(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`LanguageServiceClient.analyze_syntax`.
 
         Analyzes the syntax of the text and provides sentence boundaries and
         tokenization along with part of speech tags, dependency trees, and other
@@ -156,7 +156,7 @@ class LanguageServiceGrpcTransport(object):
 
     @property
     def classify_text(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`LanguageServiceClient.classify_text`.
 
         Classifies a document into categories.
 
@@ -169,7 +169,7 @@ class LanguageServiceGrpcTransport(object):
 
     @property
     def annotate_text(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`LanguageServiceClient.annotate_text`.
 
         A convenience method that provides all the features that analyzeSentiment,
         analyzeEntities, and analyzeSyntax provide in one call.

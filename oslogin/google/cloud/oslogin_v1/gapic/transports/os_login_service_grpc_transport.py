@@ -102,7 +102,7 @@ class OsLoginServiceGrpcTransport(object):
 
     @property
     def delete_posix_account(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`OsLoginServiceClient.delete_posix_account`.
 
         Deletes a POSIX account.
 
@@ -115,7 +115,7 @@ class OsLoginServiceGrpcTransport(object):
 
     @property
     def delete_ssh_public_key(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`OsLoginServiceClient.delete_ssh_public_key`.
 
         Deletes an SSH public key.
 
@@ -128,7 +128,7 @@ class OsLoginServiceGrpcTransport(object):
 
     @property
     def get_login_profile(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`OsLoginServiceClient.get_login_profile`.
 
         Retrieves the profile information used for logging in to a virtual machine
         on Google Compute Engine.
@@ -142,7 +142,7 @@ class OsLoginServiceGrpcTransport(object):
 
     @property
     def get_ssh_public_key(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`OsLoginServiceClient.get_ssh_public_key`.
 
         Retrieves an SSH public key.
 
@@ -155,7 +155,7 @@ class OsLoginServiceGrpcTransport(object):
 
     @property
     def import_ssh_public_key(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`OsLoginServiceClient.import_ssh_public_key`.
 
         Adds an SSH public key and returns the profile information. Default POSIX
         account information is set when no username and UID exist as part of the
@@ -170,7 +170,7 @@ class OsLoginServiceGrpcTransport(object):
 
     @property
     def update_ssh_public_key(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`OsLoginServiceClient.update_ssh_public_key`.
 
         Updates an SSH public key and returns the profile information. This method
         supports patch semantics.

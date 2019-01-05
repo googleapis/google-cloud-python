@@ -95,7 +95,7 @@ class DlpServiceGrpcTransport(object):
 
     @property
     def inspect_content(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`DlpServiceClient.inspect_content`.
 
         Finds potentially sensitive info in content.
         This method has limits on input size, processing time, and output size.
@@ -116,7 +116,7 @@ class DlpServiceGrpcTransport(object):
 
     @property
     def redact_image(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`DlpServiceClient.redact_image`.
 
         Redacts potentially sensitive info from an image.
         This method has limits on input size, processing time, and output size.
@@ -136,7 +136,7 @@ class DlpServiceGrpcTransport(object):
 
     @property
     def deidentify_content(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`DlpServiceClient.deidentify_content`.
 
         De-identifies potentially sensitive info from a ContentItem.
         This method has limits on input size and output size.
@@ -156,7 +156,7 @@ class DlpServiceGrpcTransport(object):
 
     @property
     def reidentify_content(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`DlpServiceClient.reidentify_content`.
 
         Re-identifies content that has been de-identified. See
         https://cloud.google.com/dlp/docs/pseudonymization#re-identification\_in\_free\_text\_code\_example
@@ -171,7 +171,7 @@ class DlpServiceGrpcTransport(object):
 
     @property
     def list_info_types(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`DlpServiceClient.list_info_types`.
 
         Returns a list of the sensitive information types that the DLP API
         supports. See https://cloud.google.com/dlp/docs/infotypes-reference to
@@ -186,7 +186,7 @@ class DlpServiceGrpcTransport(object):
 
     @property
     def create_inspect_template(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`DlpServiceClient.create_inspect_template`.
 
         Creates an InspectTemplate for re-using frequently used configuration
         for inspecting content, images, and storage.
@@ -201,7 +201,7 @@ class DlpServiceGrpcTransport(object):
 
     @property
     def update_inspect_template(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`DlpServiceClient.update_inspect_template`.
 
         Updates the InspectTemplate.
         See https://cloud.google.com/dlp/docs/creating-templates to learn more.
@@ -215,7 +215,7 @@ class DlpServiceGrpcTransport(object):
 
     @property
     def get_inspect_template(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`DlpServiceClient.get_inspect_template`.
 
         Gets an InspectTemplate.
         See https://cloud.google.com/dlp/docs/creating-templates to learn more.
@@ -229,7 +229,7 @@ class DlpServiceGrpcTransport(object):
 
     @property
     def list_inspect_templates(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`DlpServiceClient.list_inspect_templates`.
 
         Lists InspectTemplates.
         See https://cloud.google.com/dlp/docs/creating-templates to learn more.
@@ -243,7 +243,7 @@ class DlpServiceGrpcTransport(object):
 
     @property
     def delete_inspect_template(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`DlpServiceClient.delete_inspect_template`.
 
         Deletes an InspectTemplate.
         See https://cloud.google.com/dlp/docs/creating-templates to learn more.
@@ -257,7 +257,7 @@ class DlpServiceGrpcTransport(object):
 
     @property
     def create_deidentify_template(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`DlpServiceClient.create_deidentify_template`.
 
         Creates a DeidentifyTemplate for re-using frequently used configuration
         for de-identifying content, images, and storage.
@@ -273,7 +273,7 @@ class DlpServiceGrpcTransport(object):
 
     @property
     def update_deidentify_template(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`DlpServiceClient.update_deidentify_template`.
 
         Updates the DeidentifyTemplate.
         See https://cloud.google.com/dlp/docs/creating-templates-deid to learn
@@ -288,7 +288,7 @@ class DlpServiceGrpcTransport(object):
 
     @property
     def get_deidentify_template(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`DlpServiceClient.get_deidentify_template`.
 
         Gets a DeidentifyTemplate.
         See https://cloud.google.com/dlp/docs/creating-templates-deid to learn
@@ -303,7 +303,7 @@ class DlpServiceGrpcTransport(object):
 
     @property
     def list_deidentify_templates(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`DlpServiceClient.list_deidentify_templates`.
 
         Lists DeidentifyTemplates.
         See https://cloud.google.com/dlp/docs/creating-templates-deid to learn
@@ -318,7 +318,7 @@ class DlpServiceGrpcTransport(object):
 
     @property
     def delete_deidentify_template(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`DlpServiceClient.delete_deidentify_template`.
 
         Deletes a DeidentifyTemplate.
         See https://cloud.google.com/dlp/docs/creating-templates-deid to learn
@@ -333,7 +333,7 @@ class DlpServiceGrpcTransport(object):
 
     @property
     def create_dlp_job(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`DlpServiceClient.create_dlp_job`.
 
         Creates a new job to inspect storage or calculate risk metrics.
         See https://cloud.google.com/dlp/docs/inspecting-storage and
@@ -352,7 +352,7 @@ class DlpServiceGrpcTransport(object):
 
     @property
     def list_dlp_jobs(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`DlpServiceClient.list_dlp_jobs`.
 
         Lists DlpJobs that match the specified filter in the request.
         See https://cloud.google.com/dlp/docs/inspecting-storage and
@@ -367,7 +367,7 @@ class DlpServiceGrpcTransport(object):
 
     @property
     def get_dlp_job(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`DlpServiceClient.get_dlp_job`.
 
         Gets the latest state of a long-running DlpJob.
         See https://cloud.google.com/dlp/docs/inspecting-storage and
@@ -382,7 +382,7 @@ class DlpServiceGrpcTransport(object):
 
     @property
     def delete_dlp_job(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`DlpServiceClient.delete_dlp_job`.
 
         Deletes a long-running DlpJob. This method indicates that the client is
         no longer interested in the DlpJob result. The job will be cancelled if
@@ -399,7 +399,7 @@ class DlpServiceGrpcTransport(object):
 
     @property
     def cancel_dlp_job(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`DlpServiceClient.cancel_dlp_job`.
 
         Starts asynchronous cancellation on a long-running DlpJob. The server
         makes a best effort to cancel the DlpJob, but success is not
@@ -416,7 +416,7 @@ class DlpServiceGrpcTransport(object):
 
     @property
     def list_job_triggers(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`DlpServiceClient.list_job_triggers`.
 
         Lists job triggers.
         See https://cloud.google.com/dlp/docs/creating-job-triggers to learn more.
@@ -430,7 +430,7 @@ class DlpServiceGrpcTransport(object):
 
     @property
     def get_job_trigger(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`DlpServiceClient.get_job_trigger`.
 
         Gets a job trigger.
         See https://cloud.google.com/dlp/docs/creating-job-triggers to learn more.
@@ -444,7 +444,7 @@ class DlpServiceGrpcTransport(object):
 
     @property
     def delete_job_trigger(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`DlpServiceClient.delete_job_trigger`.
 
         Deletes a job trigger.
         See https://cloud.google.com/dlp/docs/creating-job-triggers to learn more.
@@ -458,7 +458,7 @@ class DlpServiceGrpcTransport(object):
 
     @property
     def update_job_trigger(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`DlpServiceClient.update_job_trigger`.
 
         Updates a job trigger.
         See https://cloud.google.com/dlp/docs/creating-job-triggers to learn more.
@@ -472,7 +472,7 @@ class DlpServiceGrpcTransport(object):
 
     @property
     def create_job_trigger(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`DlpServiceClient.create_job_trigger`.
 
         Creates a job trigger to run DLP actions such as scanning storage for
         sensitive information on a set schedule.
@@ -487,7 +487,7 @@ class DlpServiceGrpcTransport(object):
 
     @property
     def create_stored_info_type(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`DlpServiceClient.create_stored_info_type`.
 
         Creates a pre-built stored infoType to be used for inspection.
         See https://cloud.google.com/dlp/docs/creating-stored-infotypes to
@@ -502,7 +502,7 @@ class DlpServiceGrpcTransport(object):
 
     @property
     def update_stored_info_type(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`DlpServiceClient.update_stored_info_type`.
 
         Updates the stored infoType by creating a new version. The existing version
         will continue to be used until the new version is ready.
@@ -518,7 +518,7 @@ class DlpServiceGrpcTransport(object):
 
     @property
     def get_stored_info_type(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`DlpServiceClient.get_stored_info_type`.
 
         Gets a stored infoType.
         See https://cloud.google.com/dlp/docs/creating-stored-infotypes to
@@ -533,7 +533,7 @@ class DlpServiceGrpcTransport(object):
 
     @property
     def list_stored_info_types(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`DlpServiceClient.list_stored_info_types`.
 
         Lists stored infoTypes.
         See https://cloud.google.com/dlp/docs/creating-stored-infotypes to
@@ -548,7 +548,7 @@ class DlpServiceGrpcTransport(object):
 
     @property
     def delete_stored_info_type(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`DlpServiceClient.delete_stored_info_type`.
 
         Deletes a stored infoType.
         See https://cloud.google.com/dlp/docs/creating-stored-infotypes to

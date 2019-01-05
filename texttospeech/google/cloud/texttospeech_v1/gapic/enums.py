@@ -18,28 +18,6 @@
 import enum
 
 
-class SsmlVoiceGender(enum.IntEnum):
-    """
-    Gender of the voice as described in `SSML voice
-    element <https://www.w3.org/TR/speech-synthesis11/#edef_voice>`__.
-
-    Attributes:
-      SSML_VOICE_GENDER_UNSPECIFIED (int): An unspecified gender.
-      In VoiceSelectionParams, this means that the client doesn't care which
-      gender the selected voice will have. In the Voice field of
-      ListVoicesResponse, this may mean that the voice doesn't fit any of the
-      other categories in this enum, or that the gender of the voice isn't known.
-      MALE (int): A male voice.
-      FEMALE (int): A female voice.
-      NEUTRAL (int): A gender-neutral voice.
-    """
-
-    SSML_VOICE_GENDER_UNSPECIFIED = 0
-    MALE = 1
-    FEMALE = 2
-    NEUTRAL = 3
-
-
 class AudioEncoding(enum.IntEnum):
     """
     Configuration to set up audio encoder. The encoding determines the output
@@ -60,3 +38,25 @@ class AudioEncoding(enum.IntEnum):
     LINEAR16 = 1
     MP3 = 2
     OGG_OPUS = 3
+
+
+class SsmlVoiceGender(enum.IntEnum):
+    """
+    Gender of the voice as described in `SSML voice
+    element <https://www.w3.org/TR/speech-synthesis11/#edef_voice>`__.
+
+    Attributes:
+      SSML_VOICE_GENDER_UNSPECIFIED (int): An unspecified gender.
+      In VoiceSelectionParams, this means that the client doesn't care which
+      gender the selected voice will have. In the Voice field of
+      ListVoicesResponse, this may mean that the voice doesn't fit any of the
+      other categories in this enum, or that the gender of the voice isn't known.
+      MALE (int): A male voice.
+      FEMALE (int): A female voice.
+      NEUTRAL (int): A gender-neutral voice.
+    """
+
+    SSML_VOICE_GENDER_UNSPECIFIED = 0
+    MALE = 1
+    FEMALE = 2
+    NEUTRAL = 3

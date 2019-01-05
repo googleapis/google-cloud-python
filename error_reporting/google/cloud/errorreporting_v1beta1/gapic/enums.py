@@ -18,6 +18,26 @@
 import enum
 
 
+class ErrorGroupOrder(enum.IntEnum):
+    """
+    A sorting order of error groups.
+
+    Attributes:
+      GROUP_ORDER_UNSPECIFIED (int): No group order specified.
+      COUNT_DESC (int): Total count of errors in the given time window in descending order.
+      LAST_SEEN_DESC (int): Timestamp when the group was last seen in the given time window
+      in descending order.
+      CREATED_DESC (int): Timestamp when the group was created in descending order.
+      AFFECTED_USERS_DESC (int): Number of affected users in the given time window in descending order.
+    """
+
+    GROUP_ORDER_UNSPECIFIED = 0
+    COUNT_DESC = 1
+    LAST_SEEN_DESC = 2
+    CREATED_DESC = 3
+    AFFECTED_USERS_DESC = 4
+
+
 class TimedCountAlignment(enum.IntEnum):
     """
     Specifies how the time periods of error group counts are aligned.
@@ -39,26 +59,6 @@ class TimedCountAlignment(enum.IntEnum):
     ERROR_COUNT_ALIGNMENT_UNSPECIFIED = 0
     ALIGNMENT_EQUAL_ROUNDED = 1
     ALIGNMENT_EQUAL_AT_END = 2
-
-
-class ErrorGroupOrder(enum.IntEnum):
-    """
-    A sorting order of error groups.
-
-    Attributes:
-      GROUP_ORDER_UNSPECIFIED (int): No group order specified.
-      COUNT_DESC (int): Total count of errors in the given time window in descending order.
-      LAST_SEEN_DESC (int): Timestamp when the group was last seen in the given time window
-      in descending order.
-      CREATED_DESC (int): Timestamp when the group was created in descending order.
-      AFFECTED_USERS_DESC (int): Number of affected users in the given time window in descending order.
-    """
-
-    GROUP_ORDER_UNSPECIFIED = 0
-    COUNT_DESC = 1
-    LAST_SEEN_DESC = 2
-    CREATED_DESC = 3
-    AFFECTED_USERS_DESC = 4
 
 
 class QueryTimeRange(object):

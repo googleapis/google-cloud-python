@@ -70,6 +70,29 @@ class Likelihood(enum.IntEnum):
     VERY_LIKELY = 5
 
 
+class BatchOperationMetadata(object):
+    class State(enum.IntEnum):
+        """
+        Enumerates the possible states that the batch request can be in.
+
+        Attributes:
+          STATE_UNSPECIFIED (int): Invalid.
+          PROCESSING (int): Request is actively being processed.
+          SUCCESSFUL (int): The request is done and at least one item has been successfully
+          processed.
+          FAILED (int): The request is done and no item has been successfully processed.
+          CANCELLED (int): The request is done after the longrunning.Operations.CancelOperation has
+          been called by the user.  Any records that were processed before the
+          cancel command are output as specified in the request.
+        """
+
+        STATE_UNSPECIFIED = 0
+        PROCESSING = 1
+        SUCCESSFUL = 2
+        FAILED = 3
+        CANCELLED = 4
+
+
 class TextAnnotation(object):
     class DetectedBreak(object):
         class BreakType(enum.IntEnum):
@@ -114,29 +137,6 @@ class Block(object):
         PICTURE = 3
         RULER = 4
         BARCODE = 5
-
-
-class BatchOperationMetadata(object):
-    class State(enum.IntEnum):
-        """
-        Enumerates the possible states that the batch request can be in.
-
-        Attributes:
-          STATE_UNSPECIFIED (int): Invalid.
-          PROCESSING (int): Request is actively being processed.
-          SUCCESSFUL (int): The request is done and at least one item has been successfully
-          processed.
-          FAILED (int): The request is done and no item has been successfully processed.
-          CANCELLED (int): The request is done after the longrunning.Operations.CancelOperation has
-          been called by the user.  Any records that were processed before the
-          cancel command are output as specified in the request.
-        """
-
-        STATE_UNSPECIFIED = 0
-        PROCESSING = 1
-        SUCCESSFUL = 2
-        FAILED = 3
-        CANCELLED = 4
 
 
 class Feature(object):
