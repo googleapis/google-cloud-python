@@ -18,6 +18,28 @@
 import enum
 
 
+class Likelihood(enum.IntEnum):
+    """
+    A bucketized representation of likelihood, which is intended to give clients
+    highly stable results across model upgrades.
+
+    Attributes:
+      UNKNOWN (int): Unknown likelihood.
+      VERY_UNLIKELY (int): It is very unlikely that the image belongs to the specified vertical.
+      UNLIKELY (int): It is unlikely that the image belongs to the specified vertical.
+      POSSIBLE (int): It is possible that the image belongs to the specified vertical.
+      LIKELY (int): It is likely that the image belongs to the specified vertical.
+      VERY_LIKELY (int): It is very likely that the image belongs to the specified vertical.
+    """
+
+    UNKNOWN = 0
+    VERY_UNLIKELY = 1
+    UNLIKELY = 2
+    POSSIBLE = 3
+    LIKELY = 4
+    VERY_LIKELY = 5
+
+
 class ProductSearchCategory(enum.IntEnum):
     """
     Supported product search categories.
@@ -48,28 +70,6 @@ class ProductSearchResultsView(enum.IntEnum):
     FULL = 1
 
 
-class Likelihood(enum.IntEnum):
-    """
-    A bucketized representation of likelihood, which is intended to give clients
-    highly stable results across model upgrades.
-
-    Attributes:
-      UNKNOWN (int): Unknown likelihood.
-      VERY_UNLIKELY (int): It is very unlikely that the image belongs to the specified vertical.
-      UNLIKELY (int): It is unlikely that the image belongs to the specified vertical.
-      POSSIBLE (int): It is possible that the image belongs to the specified vertical.
-      LIKELY (int): It is likely that the image belongs to the specified vertical.
-      VERY_LIKELY (int): It is very likely that the image belongs to the specified vertical.
-    """
-
-    UNKNOWN = 0
-    VERY_UNLIKELY = 1
-    UNLIKELY = 2
-    POSSIBLE = 3
-    LIKELY = 4
-    VERY_LIKELY = 5
-
-
 class BatchOperationMetadata(object):
     class State(enum.IntEnum):
         """
@@ -93,30 +93,6 @@ class BatchOperationMetadata(object):
         CANCELLED = 4
 
 
-class TextAnnotation(object):
-    class DetectedBreak(object):
-        class BreakType(enum.IntEnum):
-            """
-            Enum to denote the type of break found. New line, space etc.
-
-            Attributes:
-              UNKNOWN (int): Unknown break label type.
-              SPACE (int): Regular space.
-              SURE_SPACE (int): Sure space (very wide).
-              EOL_SURE_SPACE (int): Line-wrapping break.
-              HYPHEN (int): End-line hyphen that is not present in text; does not co-occur with
-              ``SPACE``, ``LEADER_SPACE``, or ``LINE_BREAK``.
-              LINE_BREAK (int): Line break that ends a paragraph.
-            """
-
-            UNKNOWN = 0
-            SPACE = 1
-            SURE_SPACE = 2
-            EOL_SURE_SPACE = 3
-            HYPHEN = 4
-            LINE_BREAK = 5
-
-
 class Block(object):
     class BlockType(enum.IntEnum):
         """
@@ -137,47 +113,6 @@ class Block(object):
         PICTURE = 3
         RULER = 4
         BARCODE = 5
-
-
-class Feature(object):
-    class Type(enum.IntEnum):
-        """
-        Type of Google Cloud Vision API feature to be extracted.
-
-        Attributes:
-          TYPE_UNSPECIFIED (int): Unspecified feature type.
-          FACE_DETECTION (int): Run face detection.
-          LANDMARK_DETECTION (int): Run landmark detection.
-          LOGO_DETECTION (int): Run logo detection.
-          LABEL_DETECTION (int): Run label detection.
-          TEXT_DETECTION (int): Run text detection / optical character recognition (OCR). Text detection
-          is optimized for areas of text within a larger image; if the image is a
-          document, use ``DOCUMENT_TEXT_DETECTION`` instead.
-          DOCUMENT_TEXT_DETECTION (int): Run dense text document OCR. Takes precedence when both
-          ``DOCUMENT_TEXT_DETECTION`` and ``TEXT_DETECTION`` are present.
-          SAFE_SEARCH_DETECTION (int): Run Safe Search to detect potentially unsafe
-          or undesirable content.
-          IMAGE_PROPERTIES (int): Compute a set of image properties, such as the
-          image's dominant colors.
-          CROP_HINTS (int): Run crop hints.
-          WEB_DETECTION (int): Run web detection.
-          PRODUCT_SEARCH (int): Run Product Search.
-          OBJECT_LOCALIZATION (int): Run localizer for object detection.
-        """
-
-        TYPE_UNSPECIFIED = 0
-        FACE_DETECTION = 1
-        LANDMARK_DETECTION = 2
-        LOGO_DETECTION = 3
-        LABEL_DETECTION = 4
-        TEXT_DETECTION = 5
-        DOCUMENT_TEXT_DETECTION = 11
-        SAFE_SEARCH_DETECTION = 6
-        IMAGE_PROPERTIES = 7
-        CROP_HINTS = 9
-        WEB_DETECTION = 10
-        PRODUCT_SEARCH = 12
-        OBJECT_LOCALIZATION = 19
 
 
 class FaceAnnotation(object):
@@ -264,6 +199,47 @@ class FaceAnnotation(object):
             CHIN_RIGHT_GONION = 34
 
 
+class Feature(object):
+    class Type(enum.IntEnum):
+        """
+        Type of Google Cloud Vision API feature to be extracted.
+
+        Attributes:
+          TYPE_UNSPECIFIED (int): Unspecified feature type.
+          FACE_DETECTION (int): Run face detection.
+          LANDMARK_DETECTION (int): Run landmark detection.
+          LOGO_DETECTION (int): Run logo detection.
+          LABEL_DETECTION (int): Run label detection.
+          TEXT_DETECTION (int): Run text detection / optical character recognition (OCR). Text detection
+          is optimized for areas of text within a larger image; if the image is a
+          document, use ``DOCUMENT_TEXT_DETECTION`` instead.
+          DOCUMENT_TEXT_DETECTION (int): Run dense text document OCR. Takes precedence when both
+          ``DOCUMENT_TEXT_DETECTION`` and ``TEXT_DETECTION`` are present.
+          SAFE_SEARCH_DETECTION (int): Run Safe Search to detect potentially unsafe
+          or undesirable content.
+          IMAGE_PROPERTIES (int): Compute a set of image properties, such as the
+          image's dominant colors.
+          CROP_HINTS (int): Run crop hints.
+          WEB_DETECTION (int): Run web detection.
+          PRODUCT_SEARCH (int): Run Product Search.
+          OBJECT_LOCALIZATION (int): Run localizer for object detection.
+        """
+
+        TYPE_UNSPECIFIED = 0
+        FACE_DETECTION = 1
+        LANDMARK_DETECTION = 2
+        LOGO_DETECTION = 3
+        LABEL_DETECTION = 4
+        TEXT_DETECTION = 5
+        DOCUMENT_TEXT_DETECTION = 11
+        SAFE_SEARCH_DETECTION = 6
+        IMAGE_PROPERTIES = 7
+        CROP_HINTS = 9
+        WEB_DETECTION = 10
+        PRODUCT_SEARCH = 12
+        OBJECT_LOCALIZATION = 19
+
+
 class OperationMetadata(object):
     class State(enum.IntEnum):
         """
@@ -282,3 +258,27 @@ class OperationMetadata(object):
         RUNNING = 2
         DONE = 3
         CANCELLED = 4
+
+
+class TextAnnotation(object):
+    class DetectedBreak(object):
+        class BreakType(enum.IntEnum):
+            """
+            Enum to denote the type of break found. New line, space etc.
+
+            Attributes:
+              UNKNOWN (int): Unknown break label type.
+              SPACE (int): Regular space.
+              SURE_SPACE (int): Sure space (very wide).
+              EOL_SURE_SPACE (int): Line-wrapping break.
+              HYPHEN (int): End-line hyphen that is not present in text; does not co-occur with
+              ``SPACE``, ``LEADER_SPACE``, or ``LINE_BREAK``.
+              LINE_BREAK (int): Line break that ends a paragraph.
+            """
+
+            UNKNOWN = 0
+            SPACE = 1
+            SURE_SPACE = 2
+            EOL_SURE_SPACE = 3
+            HYPHEN = 4
+            LINE_BREAK = 5

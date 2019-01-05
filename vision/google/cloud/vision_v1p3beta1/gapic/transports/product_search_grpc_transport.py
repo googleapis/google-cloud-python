@@ -110,7 +110,7 @@ class ProductSearchGrpcTransport(object):
 
     @property
     def create_product_set(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`ProductSearchClient.create_product_set`.
 
         Creates and returns a new ProductSet resource.
 
@@ -128,7 +128,7 @@ class ProductSearchGrpcTransport(object):
 
     @property
     def list_product_sets(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`ProductSearchClient.list_product_sets`.
 
         Lists ProductSets in an unspecified order.
 
@@ -146,7 +146,7 @@ class ProductSearchGrpcTransport(object):
 
     @property
     def get_product_set(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`ProductSearchClient.get_product_set`.
 
         Gets information associated with a ProductSet.
 
@@ -163,7 +163,7 @@ class ProductSearchGrpcTransport(object):
 
     @property
     def update_product_set(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`ProductSearchClient.update_product_set`.
 
         Makes changes to a ProductSet resource. Only display\_name can be
         updated currently.
@@ -183,7 +183,7 @@ class ProductSearchGrpcTransport(object):
 
     @property
     def delete_product_set(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`ProductSearchClient.delete_product_set`.
 
         Permanently deletes a ProductSet. All Products and ReferenceImages in
         the ProductSet will be deleted.
@@ -203,7 +203,7 @@ class ProductSearchGrpcTransport(object):
 
     @property
     def create_product(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`ProductSearchClient.create_product`.
 
         Creates and returns a new product resource.
 
@@ -224,7 +224,7 @@ class ProductSearchGrpcTransport(object):
 
     @property
     def list_products(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`ProductSearchClient.list_products`.
 
         Lists products in an unspecified order.
 
@@ -242,7 +242,7 @@ class ProductSearchGrpcTransport(object):
 
     @property
     def get_product(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`ProductSearchClient.get_product`.
 
         Gets information associated with a Product.
 
@@ -259,7 +259,7 @@ class ProductSearchGrpcTransport(object):
 
     @property
     def update_product(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`ProductSearchClient.update_product`.
 
         Makes changes to a Product resource. Only display\_name, description and
         labels can be updated right now.
@@ -286,7 +286,7 @@ class ProductSearchGrpcTransport(object):
 
     @property
     def delete_product(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`ProductSearchClient.delete_product`.
 
         Permanently deletes a product and its reference images.
 
@@ -307,7 +307,7 @@ class ProductSearchGrpcTransport(object):
 
     @property
     def create_reference_image(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`ProductSearchClient.create_reference_image`.
 
         Creates and returns a new ReferenceImage resource.
 
@@ -340,7 +340,7 @@ class ProductSearchGrpcTransport(object):
 
     @property
     def delete_reference_image(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`ProductSearchClient.delete_reference_image`.
 
         Permanently deletes a reference image.
 
@@ -363,7 +363,7 @@ class ProductSearchGrpcTransport(object):
 
     @property
     def list_reference_images(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`ProductSearchClient.list_reference_images`.
 
         Lists reference images.
 
@@ -382,7 +382,7 @@ class ProductSearchGrpcTransport(object):
 
     @property
     def get_reference_image(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`ProductSearchClient.get_reference_image`.
 
         Gets information associated with a ReferenceImage.
 
@@ -399,7 +399,7 @@ class ProductSearchGrpcTransport(object):
 
     @property
     def add_product_to_product_set(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`ProductSearchClient.add_product_to_product_set`.
 
         Adds a Product to the specified ProductSet. If the Product is already
         present, no change is made.
@@ -419,7 +419,7 @@ class ProductSearchGrpcTransport(object):
 
     @property
     def remove_product_from_product_set(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`ProductSearchClient.remove_product_from_product_set`.
 
         Removes a Product from the specified ProductSet.
 
@@ -436,7 +436,7 @@ class ProductSearchGrpcTransport(object):
 
     @property
     def list_products_in_product_set(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`ProductSearchClient.list_products_in_product_set`.
 
         Lists the Products in a ProductSet, in an unspecified order. If the
         ProductSet does not exist, the products field of the response will be
@@ -456,7 +456,7 @@ class ProductSearchGrpcTransport(object):
 
     @property
     def import_product_sets(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`ProductSearchClient.import_product_sets`.
 
         Asynchronous API that imports a list of reference images to specified
         product sets based on a list of image information.
