@@ -34,13 +34,6 @@ for version in ["v2beta2", "v2beta3"]:
 
     s.copy(library, excludes=excludes)
 
-    # Fix unindentation of bullet list second line
-    s.replace(
-        f"google/cloud/tasks_{version}/gapic/cloud_tasks_client.py",
-        "(        \* .*\n        )([^\s*])",
-        "\g<1>  \g<2>",
-    )
-
     s.replace(
         f"google/cloud/tasks_{version}/gapic/cloud_tasks_client.py",
         "(Google IAM .*?_) ",
@@ -50,19 +43,34 @@ for version in ["v2beta2", "v2beta3"]:
     # Issues with Anonymous ('__') links. Change to named.
     s.replace(f"google/cloud/tasks_{version}/proto/*.py", ">`__", ">`_")
 
-# Issue in v2beta2
-s.replace(
-    f"google/cloud/tasks_v2beta2/gapic/cloud_tasks_client.py",
-    r'(Sample filter \\"app_engine_http_target: )\*\\".',
-    '\g<1>\\*\\".',
-)
-
 # Wrapped link fails due to space in link (v2beta2)
 s.replace(
-    f"google/cloud/tasks_v2beta2/proto/queue_pb2.py",
+    "google/cloud/tasks_v2beta2/proto/queue_pb2.py",
     "(uests in queue.yaml/xml) <\n\s+",
     "\g<1>\n          <",
 )
+
+# Restore updated example from PR #7025.
+s.replace(
+    "google/cloud/tasks_v2beta3/gapic/cloud_tasks_client.py",
+    ">>> # TODO: Initialize `queue`:",
+    ">>> # Initialize `queue`:",
+)
+s.replace(
+    "google/cloud/tasks_v2beta3/gapic/cloud_tasks_client.py",
+    "^(\s+)>>> queue = {}\n",
+    "\g<1>>>> queue = {\n"
+    "\g<1>...     # The fully qualified path to the queue\n"
+    "\g<1>...     'name': client.queue_path('[PROJECT]', '[LOCATION]', '[NAME]'),\n"
+    "\g<1>...     'app_engine_http_queue': {\n"
+    "\g<1>...         'app_engine_routing_override': {\n"
+    "\g<1>...             # The App Engine service that will receive the tasks.\n"
+    "\g<1>...             'service': 'default',\n"
+    "\g<1>...         },\n"
+    "\g<1>...     },\n"
+    "\g<1>... }\n"
+)
+
 
 # ----------------------------------------------------------------------------
 # Add templated files
