@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Client for Cloud Tasks API &#8212; google-cloud 734c194 documentation</title>
+    <title>Client for Cloud Tasks API &#8212; google-cloud b70281e documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -98,15 +98,15 @@ using this method.</p>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Initialize `queue`:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">queue</span> <span class="o">=</span> <span class="p">{</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="c1"># The fully qualified path to the queue</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">client</span><span class="o">.</span><span class="n">queue_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">,</span> <span class="s1">&#39;[LOCATION]&#39;</span><span class="p">,</span> <span class="s1">&#39;[NAME]&#39;</span><span class="p">),</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="s1">&#39;app_engine_http_queue&#39;</span><span class="p">:</span> <span class="p">{</span>
-<span class="gp">&gt;&gt;&gt; </span>        <span class="s1">&#39;app_engine_routing_override&#39;</span><span class="p">:</span> <span class="p">{</span>
-<span class="gp">&gt;&gt;&gt; </span>            <span class="c1"># The App Engine service that will receive the tasks.</span>
-<span class="gp">&gt;&gt;&gt; </span>            <span class="s1">&#39;service&#39;</span><span class="p">:</span> <span class="s1">&#39;default&#39;</span><span class="p">,</span>
-<span class="gp">&gt;&gt;&gt; </span>            <span class="p">},</span>
-<span class="gp">&gt;&gt;&gt; </span>        <span class="p">},</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="p">}</span>
+<span class="gp">... </span>    <span class="c1"># The fully qualified path to the queue</span>
+<span class="gp">... </span>    <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">client</span><span class="o">.</span><span class="n">queue_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">,</span> <span class="s1">&#39;[LOCATION]&#39;</span><span class="p">,</span> <span class="s1">&#39;[NAME]&#39;</span><span class="p">),</span>
+<span class="gp">... </span>    <span class="s1">&#39;app_engine_http_queue&#39;</span><span class="p">:</span> <span class="p">{</span>
+<span class="gp">... </span>        <span class="s1">&#39;app_engine_routing_override&#39;</span><span class="p">:</span> <span class="p">{</span>
+<span class="gp">... </span>            <span class="c1"># The App Engine service that will receive the tasks.</span>
+<span class="gp">... </span>            <span class="s1">&#39;service&#39;</span><span class="p">:</span> <span class="s1">&#39;default&#39;</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="p">},</span>
+<span class="gp">... </span>    <span class="p">},</span>
+<span class="gp">... </span><span class="p">}</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">create_queue</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">queue</span><span class="p">)</span>
 </pre></div>
@@ -1157,8 +1157,17 @@ using this method.</p>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">tasks_v2beta3</span><span class="o">.</span><span class="n">CloudTasksClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `queue`:</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">queue</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Initialize `queue`:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">queue</span> <span class="o">=</span> <span class="p">{</span>
+<span class="gp">... </span>    <span class="c1"># The fully qualified path to the queue</span>
+<span class="gp">... </span>    <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">client</span><span class="o">.</span><span class="n">queue_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">,</span> <span class="s1">&#39;[LOCATION]&#39;</span><span class="p">,</span> <span class="s1">&#39;[NAME]&#39;</span><span class="p">),</span>
+<span class="gp">... </span>    <span class="s1">&#39;app_engine_http_queue&#39;</span><span class="p">:</span> <span class="p">{</span>
+<span class="gp">... </span>        <span class="s1">&#39;app_engine_routing_override&#39;</span><span class="p">:</span> <span class="p">{</span>
+<span class="gp">... </span>            <span class="c1"># The App Engine service that will receive the tasks.</span>
+<span class="gp">... </span>            <span class="s1">&#39;service&#39;</span><span class="p">:</span> <span class="s1">&#39;default&#39;</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="p">},</span>
+<span class="gp">... </span>    <span class="p">},</span>
+<span class="gp">... </span><span class="p">}</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">update_queue</span><span class="p">(</span><span class="n">queue</span><span class="p">)</span>
 </pre></div>
