@@ -105,7 +105,7 @@ class MetricsServiceV2GrpcTransport(object):
 
     @property
     def list_log_metrics(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`MetricsServiceV2Client.list_log_metrics`.
 
         Lists logs-based metrics.
 
@@ -118,7 +118,7 @@ class MetricsServiceV2GrpcTransport(object):
 
     @property
     def get_log_metric(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`MetricsServiceV2Client.get_log_metric`.
 
         Gets a logs-based metric.
 
@@ -131,7 +131,7 @@ class MetricsServiceV2GrpcTransport(object):
 
     @property
     def create_log_metric(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`MetricsServiceV2Client.create_log_metric`.
 
         Creates a logs-based metric.
 
@@ -144,7 +144,7 @@ class MetricsServiceV2GrpcTransport(object):
 
     @property
     def update_log_metric(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`MetricsServiceV2Client.update_log_metric`.
 
         Creates or updates a logs-based metric.
 
@@ -157,7 +157,7 @@ class MetricsServiceV2GrpcTransport(object):
 
     @property
     def delete_log_metric(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`MetricsServiceV2Client.delete_log_metric`.
 
         Deletes a logs-based metric.
 
