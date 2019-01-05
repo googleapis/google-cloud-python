@@ -110,7 +110,7 @@ class UptimeCheckServiceGrpcTransport(object):
 
     @property
     def list_uptime_check_configs(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`UptimeCheckServiceClient.list_uptime_check_configs`.
 
         Lists the existing valid uptime check configurations for the project,
         leaving out any invalid configurations.
@@ -124,7 +124,7 @@ class UptimeCheckServiceGrpcTransport(object):
 
     @property
     def get_uptime_check_config(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`UptimeCheckServiceClient.get_uptime_check_config`.
 
         Gets a single uptime check configuration.
 
@@ -137,7 +137,7 @@ class UptimeCheckServiceGrpcTransport(object):
 
     @property
     def create_uptime_check_config(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`UptimeCheckServiceClient.create_uptime_check_config`.
 
         Creates a new uptime check configuration.
 
@@ -150,7 +150,7 @@ class UptimeCheckServiceGrpcTransport(object):
 
     @property
     def update_uptime_check_config(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`UptimeCheckServiceClient.update_uptime_check_config`.
 
         Updates an uptime check configuration. You can either replace the entire
         configuration with a new one or replace only certain fields in the
@@ -166,7 +166,7 @@ class UptimeCheckServiceGrpcTransport(object):
 
     @property
     def delete_uptime_check_config(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`UptimeCheckServiceClient.delete_uptime_check_config`.
 
         Deletes an uptime check configuration. Note that this method will fail
         if the uptime check configuration is referenced by an alert policy or
@@ -181,7 +181,7 @@ class UptimeCheckServiceGrpcTransport(object):
 
     @property
     def list_uptime_check_ips(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`UptimeCheckServiceClient.list_uptime_check_ips`.
 
         Returns the list of IPs that checkers run from
 

@@ -1,19 +1,19 @@
 {
-  "updateTime": "2018-12-18T13:14:58.257699Z",
+  "updateTime": "2018-12-08T13:13:19.537274Z",
   "sources": [
     {
       "generator": {
         "name": "artman",
-        "version": "0.16.3",
-        "dockerImage": "googleapis/artman@sha256:bfb92654b4a77368471f70e2808eaf4e60f263b9559f27bb3284097322787bf1"
+        "version": "0.16.2",
+        "dockerImage": "googleapis/artman@sha256:2f6b261ee7fe1aedf238991c93a20b3820de37a343d0cacf3e3e9555c2aaf2ea"
       }
     },
     {
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "c04bc0dc0a9164d924a9ab923fd6845b4ae6a7ab",
-        "internalRef": "225851467"
+        "sha": "6f6505a69b2b0a1260c93e890d636eefb859e76e",
+        "internalRef": "224530961"
       }
     },
     {
@@ -28,21 +28,21 @@
     {
       "client": {
         "source": "googleapis",
-        "apiName": "dataproc",
-        "apiVersion": "v1beta2",
+        "apiName": "bigtable",
+        "apiVersion": "v2",
         "language": "python",
         "generator": "gapic",
-        "config": "google/cloud/dataproc/artman_dataproc_v1beta2.yaml"
+        "config": "google/bigtable/artman_bigtable.yaml"
       }
     },
     {
       "client": {
         "source": "googleapis",
-        "apiName": "dataproc",
-        "apiVersion": "v1",
+        "apiName": "bigtable_admin",
+        "apiVersion": "v2",
         "language": "python",
         "generator": "gapic",
-        "config": "google/cloud/dataproc/artman_dataproc_v1.yaml"
+        "config": "google/bigtable/admin/artman_bigtableadmin.yaml"
       }
     }
   ]

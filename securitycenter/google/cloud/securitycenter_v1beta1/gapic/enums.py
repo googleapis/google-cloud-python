@@ -49,6 +49,31 @@ class Finding(object):
         INACTIVE = 2
 
 
+class ListAssetsResponse(object):
+    class ListAssetsResult(object):
+        class State(enum.IntEnum):
+            """
+            State of the asset.
+
+            When querying across two points in time this describes the change
+            between the two points: ADDED, REMOVED, or ACTIVE. If there was no
+            compare\_duration supplied in the request the state should be: UNUSED
+
+            Attributes:
+              STATE_UNSPECIFIED (int): Unspecified state.
+              UNUSED (int): Request did not specify use of this field in the result.
+              ADDED (int): Asset was added between the points in time.
+              REMOVED (int): Asset was removed between the points in time.
+              ACTIVE (int): Asset was active at both point(s) in time.
+            """
+
+            STATE_UNSPECIFIED = 0
+            UNUSED = 1
+            ADDED = 2
+            REMOVED = 3
+            ACTIVE = 4
+
+
 class OrganizationSettings(object):
     class AssetDiscoveryConfig(object):
         class InclusionMode(enum.IntEnum):
@@ -73,28 +98,3 @@ class OrganizationSettings(object):
             INCLUSION_MODE_UNSPECIFIED = 0
             INCLUDE_ONLY = 1
             EXCLUDE = 2
-
-
-class ListAssetsResponse(object):
-    class ListAssetsResult(object):
-        class State(enum.IntEnum):
-            """
-            State of the asset.
-
-            When querying across two points in time this describes the change
-            between the two points: ADDED, REMOVED, or ACTIVE. If there was no
-            compare\_duration supplied in the request the state should be: UNUSED
-
-            Attributes:
-              STATE_UNSPECIFIED (int): Unspecified state.
-              UNUSED (int): Request did not specify use of this field in the result.
-              ADDED (int): Asset was added between the points in time.
-              REMOVED (int): Asset was removed between the points in time.
-              ACTIVE (int): Asset was active at both point(s) in time.
-            """
-
-            STATE_UNSPECIFIED = 0
-            UNUSED = 1
-            ADDED = 2
-            REMOVED = 3
-            ACTIVE = 4

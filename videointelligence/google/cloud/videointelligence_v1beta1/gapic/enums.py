@@ -37,6 +37,23 @@ class Feature(enum.IntEnum):
     SAFE_SEARCH_DETECTION = 4
 
 
+class LabelDetectionMode(enum.IntEnum):
+    """
+    Label detection mode.
+
+    Attributes:
+      LABEL_DETECTION_MODE_UNSPECIFIED (int): Unspecified.
+      SHOT_MODE (int): Detect shot-level labels.
+      FRAME_MODE (int): Detect frame-level labels.
+      SHOT_AND_FRAME_MODE (int): Detect both shot-level and frame-level labels.
+    """
+
+    LABEL_DETECTION_MODE_UNSPECIFIED = 0
+    SHOT_MODE = 1
+    FRAME_MODE = 2
+    SHOT_AND_FRAME_MODE = 3
+
+
 class LabelLevel(enum.IntEnum):
     """
     Label level (scope).
@@ -55,23 +72,6 @@ class LabelLevel(enum.IntEnum):
     SEGMENT_LEVEL = 2
     SHOT_LEVEL = 3
     FRAME_LEVEL = 4
-
-
-class LabelDetectionMode(enum.IntEnum):
-    """
-    Label detection mode.
-
-    Attributes:
-      LABEL_DETECTION_MODE_UNSPECIFIED (int): Unspecified.
-      SHOT_MODE (int): Detect shot-level labels.
-      FRAME_MODE (int): Detect frame-level labels.
-      SHOT_AND_FRAME_MODE (int): Detect both shot-level and frame-level labels.
-    """
-
-    LABEL_DETECTION_MODE_UNSPECIFIED = 0
-    SHOT_MODE = 1
-    FRAME_MODE = 2
-    SHOT_AND_FRAME_MODE = 3
 
 
 class Likelihood(enum.IntEnum):

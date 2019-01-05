@@ -103,7 +103,7 @@ class CloudRedisGrpcTransport(object):
 
     @property
     def list_instances(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`CloudRedisClient.list_instances`.
 
         Lists all Redis instances owned by a project in either the specified
         location (region) or all locations.
@@ -123,7 +123,7 @@ class CloudRedisGrpcTransport(object):
 
     @property
     def get_instance(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`CloudRedisClient.get_instance`.
 
         Gets the details of a specific Redis instance.
 
@@ -136,7 +136,7 @@ class CloudRedisGrpcTransport(object):
 
     @property
     def create_instance(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`CloudRedisClient.create_instance`.
 
         Creates a Redis instance based on the specified tier and memory size.
 
@@ -161,7 +161,7 @@ class CloudRedisGrpcTransport(object):
 
     @property
     def update_instance(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`CloudRedisClient.update_instance`.
 
         Updates the metadata and configuration of a specific Redis instance.
 
@@ -178,7 +178,7 @@ class CloudRedisGrpcTransport(object):
 
     @property
     def delete_instance(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`CloudRedisClient.delete_instance`.
 
         Deletes a specific Redis instance.  Instance stops serving and data is
         deleted.

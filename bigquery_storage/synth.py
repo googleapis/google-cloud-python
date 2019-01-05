@@ -111,3 +111,5 @@ s.replace(
     'google.api_core.grpc_helpers.create_channel(  # pragma: no cover',
 )
 # END: Ignore lint and coverage
+
+s.shell.run(["nox", "-s", "blacken"], hide_output=False)
