@@ -125,7 +125,7 @@ Source = _reflection.GeneratedProtocolMessageType(
           google.com/apis/design/resource\_names#relative\_resource\_nam
           e Example: "organizations/123/sources/456"
       display_name:
-          The source’s display name. A source’s display name must be
+          The source's display name. A source's display name must be
           unique amongst its siblings, for example, two sources with the
           same parent can't share the same display name. The display
           name must start and end with a letter or digit, may contain
