@@ -105,7 +105,7 @@ class ConfigServiceV2GrpcTransport(object):
 
     @property
     def list_sinks(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`ConfigServiceV2Client.list_sinks`.
 
         Lists sinks.
 
@@ -118,7 +118,7 @@ class ConfigServiceV2GrpcTransport(object):
 
     @property
     def get_sink(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`ConfigServiceV2Client.get_sink`.
 
         Gets a sink.
 
@@ -131,7 +131,7 @@ class ConfigServiceV2GrpcTransport(object):
 
     @property
     def create_sink(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`ConfigServiceV2Client.create_sink`.
 
         Creates a sink that exports specified log entries to a destination. The
         export of newly-ingested log entries begins immediately, unless the
@@ -147,7 +147,7 @@ class ConfigServiceV2GrpcTransport(object):
 
     @property
     def update_sink(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`ConfigServiceV2Client.update_sink`.
 
         Updates a sink. This method replaces the following fields in the
         existing sink with values from the new sink: ``destination``, and
@@ -163,7 +163,7 @@ class ConfigServiceV2GrpcTransport(object):
 
     @property
     def delete_sink(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`ConfigServiceV2Client.delete_sink`.
 
         Deletes a sink. If the sink has a unique ``writer_identity``, then that
         service account is also deleted.
@@ -177,7 +177,7 @@ class ConfigServiceV2GrpcTransport(object):
 
     @property
     def list_exclusions(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`ConfigServiceV2Client.list_exclusions`.
 
         Lists all the exclusions in a parent resource.
 
@@ -190,7 +190,7 @@ class ConfigServiceV2GrpcTransport(object):
 
     @property
     def get_exclusion(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`ConfigServiceV2Client.get_exclusion`.
 
         Gets the description of an exclusion.
 
@@ -203,7 +203,7 @@ class ConfigServiceV2GrpcTransport(object):
 
     @property
     def create_exclusion(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`ConfigServiceV2Client.create_exclusion`.
 
         Creates a new exclusion in a specified parent resource.
         Only log entries belonging to that resource can be excluded.
@@ -218,7 +218,7 @@ class ConfigServiceV2GrpcTransport(object):
 
     @property
     def update_exclusion(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`ConfigServiceV2Client.update_exclusion`.
 
         Changes one or more properties of an existing exclusion.
 
@@ -231,7 +231,7 @@ class ConfigServiceV2GrpcTransport(object):
 
     @property
     def delete_exclusion(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`ConfigServiceV2Client.delete_exclusion`.
 
         Deletes an exclusion.
 
