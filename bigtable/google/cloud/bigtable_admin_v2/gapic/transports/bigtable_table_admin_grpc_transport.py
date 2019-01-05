@@ -125,7 +125,7 @@ class BigtableTableAdminGrpcTransport(object):
 
     @property
     def create_table(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`BigtableTableAdminClient.create_table`.
 
         Creates a new table in the specified instance.
         The table can be created with a full set of initial column families,
@@ -140,7 +140,7 @@ class BigtableTableAdminGrpcTransport(object):
 
     @property
     def create_table_from_snapshot(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`BigtableTableAdminClient.create_table_from_snapshot`.
 
         Creates a new table from the specified snapshot. The target table must
         not exist. The snapshot and the table must be in the same instance.
@@ -160,7 +160,7 @@ class BigtableTableAdminGrpcTransport(object):
 
     @property
     def list_tables(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`BigtableTableAdminClient.list_tables`.
 
         Lists all tables served from a specified instance.
 
@@ -173,7 +173,7 @@ class BigtableTableAdminGrpcTransport(object):
 
     @property
     def get_table(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`BigtableTableAdminClient.get_table`.
 
         Gets metadata information about the specified table.
 
@@ -186,7 +186,7 @@ class BigtableTableAdminGrpcTransport(object):
 
     @property
     def delete_table(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`BigtableTableAdminClient.delete_table`.
 
         Permanently deletes a specified table and all of its data.
 
@@ -199,7 +199,7 @@ class BigtableTableAdminGrpcTransport(object):
 
     @property
     def modify_column_families(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`BigtableTableAdminClient.modify_column_families`.
 
         Performs a series of column family modifications on the specified table.
         Either all or none of the modifications will occur before this method
@@ -215,7 +215,7 @@ class BigtableTableAdminGrpcTransport(object):
 
     @property
     def drop_row_range(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`BigtableTableAdminClient.drop_row_range`.
 
         Permanently drop/delete a row range from a specified table. The request can
         specify whether to delete all rows in a table, or only those that match a
@@ -230,7 +230,7 @@ class BigtableTableAdminGrpcTransport(object):
 
     @property
     def generate_consistency_token(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`BigtableTableAdminClient.generate_consistency_token`.
 
         Generates a consistency token for a Table, which can be used in
         CheckConsistency to check whether mutations to the table that finished
@@ -246,7 +246,7 @@ class BigtableTableAdminGrpcTransport(object):
 
     @property
     def check_consistency(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`BigtableTableAdminClient.check_consistency`.
 
         Checks replication consistency based on a consistency token, that is, if
         replication has caught up based on the conditions specified in the token
@@ -261,7 +261,7 @@ class BigtableTableAdminGrpcTransport(object):
 
     @property
     def snapshot_table(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`BigtableTableAdminClient.snapshot_table`.
 
         Creates a new snapshot in the specified cluster from the specified
         source table. The cluster and the table must be in the same instance.
@@ -281,7 +281,7 @@ class BigtableTableAdminGrpcTransport(object):
 
     @property
     def get_snapshot(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`BigtableTableAdminClient.get_snapshot`.
 
         Gets metadata information about the specified snapshot.
 
@@ -300,7 +300,7 @@ class BigtableTableAdminGrpcTransport(object):
 
     @property
     def list_snapshots(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`BigtableTableAdminClient.list_snapshots`.
 
         Lists all snapshots associated with the specified cluster.
 
@@ -319,7 +319,7 @@ class BigtableTableAdminGrpcTransport(object):
 
     @property
     def delete_snapshot(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`BigtableTableAdminClient.delete_snapshot`.
 
         Permanently deletes the specified snapshot.
 
