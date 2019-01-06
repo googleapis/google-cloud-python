@@ -210,6 +210,23 @@ class BigQueryDDLCompiler(DDLCompiler):
     def visit_primary_key_constraint(self, constraint):
         return None
 
+    def get_column_specification(self, column, **kwargs):
+        colspec = super(BigQueryDDLCompiler, self).get_column_specification(column, **kwargs)
+        if column.doc is not None:
+            colspec = '{} OPTIONS(description={})'.format(colspec, self.preparer.quote(column.doc))
+        return colspec
+
+    def post_create_table(self, table):
+        bq_opts = table.dialect_options['bigquery']
+        opts = []
+        if 'description' in bq_opts:
+            opts.append('description={}'.format(self.preparer.quote(bq_opts['description'])))
+        if 'friendly_name' in bq_opts:
+            opts.append('friendly_name={}'.format(self.preparer.quote(bq_opts['friendly_name'])))
+        if opts:
+            return '\nOPTIONS({})'.format(', '.join(opts))
+        return ''
+
 
 class BigQueryDialect(DefaultDialect):
     name = 'bigquery'
