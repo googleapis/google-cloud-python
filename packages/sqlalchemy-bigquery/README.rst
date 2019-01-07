@@ -134,11 +134,13 @@ _______________
 To add metadata to a table:
 
 .. code-block:: python
+
     table = Table('mytable', ..., bigquery_description='my table description', bigquery_friendly_name='my table friendly name')
 
 To add metadata to a column:
 
 .. code-block:: python
+
     Column('mycolumn', doc='my column description')
 
 
