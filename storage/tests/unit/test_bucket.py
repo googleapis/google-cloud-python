@@ -175,6 +175,108 @@ class Test_LifecycleRuleSetStorageClass(unittest.TestCase):
         self.assertEqual(dict(rule), resource)
 
 
+class Test_IAMConfiguration(unittest.TestCase):
+    @staticmethod
+    def _get_target_class():
+        from google.cloud.storage.bucket import IAMConfiguration
+
+        return IAMConfiguration
+
+    def _make_one(self, bucket, **kw):
+        return self._get_target_class()(bucket, **kw)
+
+    @staticmethod
+    def _make_bucket():
+        from google.cloud.storage.bucket import Bucket
+
+        return mock.create_autospec(Bucket, instance=True)
+
+    def test_ctor_defaults(self):
+        bucket = self._make_bucket()
+
+        config = self._make_one(bucket)
+
+        self.assertIs(config.bucket, bucket)
+        self.assertFalse(config.bucket_policy_only)
+        self.assertIsNone(config.locked_time)
+
+    def test_ctor_explicit(self):
+        import datetime
+        import pytz
+
+        bucket = self._make_bucket()
+        now = datetime.datetime.utcnow().replace(tzinfo=pytz.UTC)
+
+        config = self._make_one(bucket, enabled=True, locked_time=now)
+
+        self.assertIs(config.bucket, bucket)
+        self.assertTrue(config.bucket_policy_only)
+        self.assertEqual(config.locked_time, now)
+
+    def test_from_api_repr_w_empty_resource(self):
+        klass = self._get_target_class()
+        bucket = self._make_bucket()
+        resource = {}
+
+        config = klass.from_api_repr(resource, bucket)
+
+        self.assertIs(config.bucket, bucket)
+        self.assertFalse(config.bucket_policy_only)
+        self.assertIsNone(config.locked_time)
+
+    def test_from_api_repr_w_empty_bpo(self):
+        klass = self._get_target_class()
+        bucket = self._make_bucket()
+        resource = {"bucketPolicyOnly": {}}
+
+        config = klass.from_api_repr(resource, bucket)
+
+        self.assertIs(config.bucket, bucket)
+        self.assertFalse(config.bucket_policy_only)
+        self.assertIsNone(config.locked_time)
+
+    def test_from_api_repr_w_disabled(self):
+        klass = self._get_target_class()
+        bucket = self._make_bucket()
+        resource = {"bucketPolicyOnly": {"enabled": False}}
+
+        config = klass.from_api_repr(resource, bucket)
+
+        self.assertIs(config.bucket, bucket)
+        self.assertFalse(config.bucket_policy_only)
+        self.assertIsNone(config.locked_time)
+
+    def test_from_api_repr_w_enabled(self):
+        import datetime
+        import pytz
+        from google.cloud._helpers import _datetime_to_rfc3339
+
+        klass = self._get_target_class()
+        bucket = self._make_bucket()
+        now = datetime.datetime.utcnow().replace(tzinfo=pytz.UTC)
+        resource = {
+            "bucketPolicyOnly": {
+                "enabled": True,
+                "lockedTime": _datetime_to_rfc3339(now),
+            }
+        }
+
+        config = klass.from_api_repr(resource, bucket)
+
+        self.assertIs(config.bucket, bucket)
+        self.assertTrue(config.bucket_policy_only)
+        self.assertEqual(config.locked_time, now)
+
+    def test_bucket_policy_only_setter(self):
+        bucket = self._make_bucket()
+        config = self._make_one(bucket)
+
+        config.bucket_policy_only = True
+
+        self.assertTrue(config["bucketPolicyOnly"]["enabled"])
+        bucket._patch_property.assert_called_once_with("iamConfiguration", config)
+
+
 class Test_Bucket(unittest.TestCase):
     @staticmethod
     def _get_target_class():

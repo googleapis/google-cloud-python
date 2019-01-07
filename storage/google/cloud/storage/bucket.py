@@ -272,6 +272,82 @@ class LifecycleRuleSetStorageClass(dict):
         return instance
 
 
+class IAMConfiguration(dict):
+    """Map a bucket's IAM configuration.
+
+    :type bucket: :class:`Bucket`
+    :params bucket: Bucket for which this instance is the policy.
+
+    :type enabled: bool
+    :params enabled: (optional) whether the IAM-only policy is enabled for the bucket.
+
+    :type locked_time: :class:`datetime.datetime`
+    :params locked_time: (optional) When the bucket's IAM-only policy was ehabled.  This value should normally only be set by the back-end API.
+    """
+
+    def __init__(self, bucket, enabled=False, locked_time=None):
+        data = {"bucketPolicyOnly": {"enabled": enabled}}
+        if locked_time is not None:
+            data["bucketPolicyOnly"]["lockedTime"] = _datetime_to_rfc3339(locked_time)
+        super(IAMConfiguration, self).__init__(data)
+        self._bucket = bucket
+
+    @classmethod
+    def from_api_repr(cls, resource, bucket):
+        """Factory:  construct instance from resource.
+
+        :type bucket: :class:`Bucket`
+        :params bucket: Bucket for which this instance is the policy.
+
+        :type resource: dict
+        :param resource: mapping as returned from API call.
+
+        :rtype: :class:`IAMConfiguration`
+        :returns: Instance created from resource.
+        """
+        instance = cls(bucket)
+        instance.update(resource)
+        return instance
+
+    @property
+    def bucket(self):
+        """Bucket for which this instance is the policy.
+
+        :rtype: :class:`Bucket`
+        :returns: the instance's bucket.
+        """
+        return self._bucket
+
+    @property
+    def bucket_policy_only(self):
+        """Is the bucket configured to allow only IAM policy?
+
+        :rtype: bool
+        :returns: whether the bucket is configured to allow only IAM.
+        """
+        bpo = self.get("bucketPolicyOnly", {})
+        return bpo.get("enabled", False)
+
+    @bucket_policy_only.setter
+    def bucket_policy_only(self, value):
+        bpo = self.setdefault("bucketPolicyOnly", {})
+        bpo["enabled"] = bool(value)
+        self.bucket._patch_property("iamConfiguration", self)
+
+    @property
+    def locked_time(self):
+        """When was the bucket configured to allow only IAM policy?
+
+        :rtype: Union[:class:`datetime.datetime`, None]
+        :returns:  (readonly) the time the bucket's IAM-only policy was set.
+        """
+        bpo = self.get("bucketPolicyOnly", {})
+        stamp = bpo.get("lockedTime")
+        if stamp is not None:
+            stamp = _rfc3339_to_datetime(stamp)
+        return stamp
+
+
 class Bucket(_PropertyMixin):
     """A class representing a Bucket on Cloud Storage.
 
