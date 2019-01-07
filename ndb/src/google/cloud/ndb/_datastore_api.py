@@ -88,7 +88,8 @@ def _get_lookup_batch():
     the batch look up.
 
     Returns:
-        Dict[~datastore_v1.proto.entity_pb2.Key, List[~tasklets.Future]]
+        Dict[bytes, List[~tasklets.Future]]: Mapping of serialized entity keys
+            to futures.
     """
     state = _runstate.current()
     batch = state.batches.get(_BATCH_LOOKUP)
@@ -126,8 +127,8 @@ class BatchLookupCallback:
     """Callback for processing the results of a call to Datastore Lookup.
 
     Args:
-        batch (Dict[~datastore_v1.proto.entity_pb2.Key, List[~tasklets.Future]]):
-            Mapping of keys to futures for the batch request.
+        batch (Dict[bytes, List[~tasklets.Future]]): Mapping of serialized keys
+            to futures for the batch request.
     """
 
     def __init__(self, batch):
