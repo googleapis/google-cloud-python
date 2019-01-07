@@ -1194,6 +1194,44 @@ class Test_Bucket(unittest.TestCase):
             bucket_module._LOCATION_SETTER_MESSAGE, DeprecationWarning, stacklevel=2
         )
 
+    def test_iam_configuration_policy_missing(self):
+        from google.cloud.storage.bucket import IAMConfiguration
+
+        NAME = "name"
+        bucket = self._make_one(name=NAME)
+
+        config = bucket.iam_configuration
+
+        self.assertIsInstance(config, IAMConfiguration)
+        self.assertIs(config.bucket, bucket)
+        self.assertFalse(config.bucket_policy_only)
+        self.assertIsNone(config.locked_time)
+
+    def test_iam_configuration_policy_w_entry(self):
+        import datetime
+        import pytz
+        from google.cloud._helpers import _datetime_to_rfc3339
+        from google.cloud.storage.bucket import IAMConfiguration
+
+        now = datetime.datetime.utcnow().replace(tzinfo=pytz.UTC)
+        NAME = "name"
+        properties = {
+            "iamConfiguration": {
+                "bucketPolicyOnly": {
+                    "enabled": True,
+                    "lockedTime": _datetime_to_rfc3339(now),
+                }
+            }
+        }
+        bucket = self._make_one(name=NAME, properties=properties)
+
+        config = bucket.iam_configuration
+
+        self.assertIsInstance(config, IAMConfiguration)
+        self.assertIs(config.bucket, bucket)
+        self.assertTrue(config.bucket_policy_only)
+        self.assertEqual(config.locked_time, now)
+
     def test_lifecycle_rules_getter_unknown_action_type(self):
         NAME = "name"
         BOGUS_RULE = {"action": {"type": "Bogus"}, "condition": {"age": 42}}

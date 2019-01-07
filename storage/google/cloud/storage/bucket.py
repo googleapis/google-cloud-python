@@ -1211,6 +1211,16 @@ class Bucket(_PropertyMixin):
         return self._properties.get("id")
 
     @property
+    def iam_configuration(self):
+        """Retrieve IAM configuration for this bucket.
+
+        :rtype: :class:`IAMConfiguration`
+        :returns: an instance for managing the bucket's IAM configuration.
+        """
+        info = self._properties.get("iamConfiguration", {})
+        return IAMConfiguration.from_api_repr(info, self)
+
+    @property
     def lifecycle_rules(self):
         """Retrieve or set lifecycle rules configured for this bucket.
 
