@@ -85,6 +85,15 @@ class TestAuthorizedHttp(object):
 
         assert authed_session.credentials == mock.sentinel.credentials
 
+    def test_constructor_with_auth_request(self):
+        http = mock.create_autospec(requests.Session)
+        auth_request = google.auth.transport.requests.Request(http)
+
+        authed_session = google.auth.transport.requests.AuthorizedSession(
+            mock.sentinel.credentials, auth_request=auth_request)
+
+        assert authed_session._auth_request == auth_request
+
     def test_request_no_refresh(self):
         credentials = mock.Mock(wraps=CredentialsStub())
         response = make_response()
