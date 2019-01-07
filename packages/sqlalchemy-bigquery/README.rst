@@ -128,6 +128,20 @@ Here are examples of all the supported arguments. Any not present are either for
     )
 
 
+Creating tables
+_______________
+
+To add metadata to a table:
+
+.. code-block:: python
+    table = Table('mytable', ..., bigquery_description='my table description', bigquery_friendly_name='my table friendly name')
+
+To add metadata to a column:
+
+.. code-block:: python
+    Column('mycolumn', doc='my column description')
+
+
 Requirements
 ============
 
