@@ -744,7 +744,7 @@ class Key:
         """
         from google.cloud.ndb import model  # avoid circular import
 
-        entity_pb = yield _datastore_api.lookup(self)
+        entity_pb = yield _datastore_api.lookup(self._key)
         return model._entity_from_protobuf(entity_pb)
 
     def delete(self, **ctx_options):

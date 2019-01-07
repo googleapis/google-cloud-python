@@ -22,6 +22,7 @@ from google.cloud import _helpers
 from google.cloud import _http
 from google.cloud.datastore_v1.proto import datastore_pb2
 from google.cloud.datastore_v1.proto import datastore_pb2_grpc
+from google.cloud.datastore_v1.proto import entity_pb2
 
 from google.cloud.ndb import _eventloop
 from google.cloud.ndb import _runstate
@@ -71,10 +72,10 @@ def lookup(key):
         :class:`~tasklets.Future`: If not an exception, future's result will be
             either an entity protocol buffer or _NOT_FOUND.
     """
-    key_pb = key.to_protobuf()
     future = tasklets.Future()
     batch = _get_lookup_batch()
-    batch.setdefault(key_pb, []).append(future)
+    batch_key = key.to_protobuf().SerializeToString()
+    batch.setdefault(batch_key, []).append(future)
     return future
 
 
@@ -111,7 +112,13 @@ def _perform_batch_lookup():
     if batch is None:
         return
 
-    rpc = _datastore_lookup(batch.keys())
+    keys = []
+    for batch_key in batch.keys():
+        key_pb = entity_pb2.Key()
+        key_pb.ParseFromString(batch_key)
+        keys.append(key_pb)
+
+    rpc = _datastore_lookup(keys)
     _eventloop.queue_rpc(rpc, BatchLookupCallback(batch))
 
 
@@ -119,8 +126,8 @@ class BatchLookupCallback:
     """Callback for processing the results of a call to Datastore Lookup.
 
     Args:
-        batch (Dict[~datastore_v1.proto.entity_pb2.Key, List[~tasklets.Future]]): Mapping of keys
-            to futures for the batch request.
+        batch (Dict[~datastore_v1.proto.entity_pb2.Key, List[~tasklets.Future]]):
+            Mapping of keys to futures for the batch request.
     """
 
     def __init__(self, batch):
@@ -158,19 +165,21 @@ class BatchLookupCallback:
         if results.deferred:
             next_batch = _get_lookup_batch()
             for key in results.deferred:
-                next_batch.setdefault(key, []).extend(batch[key])
+                batch_key = key.SerializeToString()
+                next_batch.setdefault(batch_key, []).extend(batch[batch_key])
 
         # For all missing keys, set result to _NOT_FOUND and let callers decide
         # how to handle
         for result in results.missing:
-            key = result.entity.key
-            for future in batch[key]:
+            batch_key = result.entity.key.SerializeToString()
+            for future in batch[batch_key]:
                 future.set_result(_NOT_FOUND)
 
         # For all found entities, set the result on their corresponding futures
         for result in results.found:
             entity = result.entity
-            for future in batch[entity.key]:
+            batch_key = entity.key.SerializeToString()
+            for future in batch[batch_key]:
                 future.set_result(entity)
 
 
@@ -178,7 +187,8 @@ def _datastore_lookup(keys):
     """Issue a Lookup call to Datastore using gRPC.
 
     Args:
-        keys (Iterable[datastore_v1.proto.entity_pb2.Key]): The entity keys to look up.
+        keys (Iterable[datastore_v1.proto.entity_pb2.Key]): The entity keys to
+            look up.
 
     Returns:
         :class:`grpc.Future`: Future object for eventual result of lookup.

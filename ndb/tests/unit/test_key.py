@@ -510,7 +510,7 @@ class TestKey:
         key = key_module.Key("a", "b", app="c")
         assert key.get() == "the entity"
 
-        _datastore_api.lookup.assert_called_once_with(key)
+        _datastore_api.lookup.assert_called_once_with(key._key)
         _entity_from_protobuf.assert_called_once_with("ds_entity")
 
     @staticmethod
@@ -526,7 +526,7 @@ class TestKey:
         ds_future.set_result("ds_entity")
         assert future.result() == "the entity"
 
-        _datastore_api.lookup.assert_called_once_with(key)
+        _datastore_api.lookup.assert_called_once_with(key._key)
         _entity_from_protobuf.assert_called_once_with("ds_entity")
 
     @staticmethod
