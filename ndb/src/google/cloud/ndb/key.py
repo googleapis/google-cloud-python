@@ -134,8 +134,17 @@ class Key:
 
     .. testsetup:: *
 
+        from unittest import mock
+        from google.cloud.ndb import _runstate
+        client = mock.Mock(project="testing", spec=("project",))
+        context = _runstate.state_context(client)
+        context.__enter__()
         kind1, id1 = "Parent", "C"
         kind2, id2 = "Child", 42
+
+    .. testcleanup:: *
+
+        context.__exit__(None, None, None)
 
     .. doctest:: key-constructor-primary
 

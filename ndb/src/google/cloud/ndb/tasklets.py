@@ -408,6 +408,7 @@ class Return(StopIteration):
     This is no longer necessary, but it is included for backwards
     compatibility. Tasklets should simply ``return`` their result.
     """
+
     # For reasons I don't entirely understand, Sphinx pukes if we just assign:
     # Return = StopIteration
 

@@ -397,7 +397,7 @@ class TestReducingFuture:
 
 
 def test_Return():
-    assert tasklets.Return is StopIteration
+    assert issubclass(tasklets.Return, StopIteration)
 
 
 class TestSerialQueueFuture:
