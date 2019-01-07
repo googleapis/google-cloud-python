@@ -91,9 +91,6 @@ class Test_perform_batch_lookup:
             def ParseFromString(self, key):
                 self.key = key
 
-            def __eq__(self, other):
-                return other.key == self.key
-
         entity_pb2.Key = MockKey
         runstate.eventloop = mock.Mock(spec=("queue_rpc", "run"))
         runstate.batches[_api._BATCH_LOOKUP] = batch = {
@@ -101,9 +98,10 @@ class Test_perform_batch_lookup:
             "bar": ["three"],
         }
         _api._perform_batch_lookup()
-        _datastore_lookup.assert_called_once_with(
-            [MockKey("foo"), MockKey("bar")]
-        )
+        called_with = _datastore_lookup.call_args[0][0]
+        called_with_keys = set((mock_key.key for mock_key in called_with))
+        assert called_with_keys == set(["foo", "bar"])
+
         rpc = _datastore_lookup.return_value
         call_args = runstate.eventloop.queue_rpc.call_args[0]
         assert call_args[0] == rpc
