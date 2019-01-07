@@ -745,7 +745,8 @@ class Key:
         from google.cloud.ndb import model  # avoid circular import
 
         entity_pb = yield _datastore_api.lookup(self._key)
-        return model._entity_from_protobuf(entity_pb)
+        if entity_pb is not _datastore_api._NOT_FOUND:
+            return model._entity_from_protobuf(entity_pb)
 
     def delete(self, **ctx_options):
         """Synchronously delete the entity for this key.

@@ -530,6 +530,17 @@ class TestKey:
         _entity_from_protobuf.assert_called_once_with("ds_entity")
 
     @staticmethod
+    @unittest.mock.patch("google.cloud.ndb.key._datastore_api")
+    def test_get_async_not_found(_datastore_api):
+        ds_future = tasklets.Future()
+        _datastore_api.lookup.return_value = ds_future
+
+        key = key_module.Key("a", "b", app="c")
+        future = key.get_async()
+        ds_future.set_result(_datastore_api._NOT_FOUND)
+        assert future.result() is None
+
+    @staticmethod
     def test_delete():
         key = key_module.Key("a", "b", app="c")
         with pytest.raises(NotImplementedError):

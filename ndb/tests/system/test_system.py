@@ -65,6 +65,18 @@ def test_retrieve_entity(ds_entity):
 
 
 @pytest.mark.usefixtures("client_context")
+def test_retrieve_entity_not_found(ds_entity):
+    entity_id = test_utils.system.unique_resource_id()
+
+    class SomeKind(ndb.Model):
+        foo = ndb.IntegerProperty()
+        bar = ndb.StringProperty()
+
+    key = ndb.Key("SomeKind", entity_id)
+    assert key.get() is None
+
+
+@pytest.mark.usefixtures("client_context")
 def test_nested_tasklet(ds_entity):
     entity_id = test_utils.system.unique_resource_id()
     ds_entity("SomeKind", entity_id, foo=42, bar="none")
