@@ -253,8 +253,15 @@ class TaskletFuture(Future):
         # parallel yield.
 
         def done_callback(yielded):
-            # To be called when a future dependency has completed.
-            # Advance the tasklet with the yielded value or error.
+            # To be called when a future dependency has completed.  Advance the
+            # tasklet with the yielded value or error.
+            #
+            # It might be worth noting that legacy NDB added a callback to the
+            # event loop which, in turn, called _help_tasklet_along. I don't
+            # see a compelling reason not to go ahead and call _advance_tasklet
+            # immediately here, rather than queue it up to be called soon by
+            # the event loop. This is subject to change if the reason for the
+            # indirection in the original implementation becomes apparent.
             error = yielded.exception()
             if error:
                 self._advance_tasklet(error=error)
