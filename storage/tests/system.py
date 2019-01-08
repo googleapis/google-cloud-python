@@ -1470,3 +1470,150 @@ class TestRetentionPolicy(unittest.TestCase):
         bucket.retention_period = None
         with self.assertRaises(exceptions.Forbidden):
             bucket.patch()
+
+
+class TestIAMConfiguration(unittest.TestCase):
+    def setUp(self):
+        self.case_buckets_to_delete = []
+
+    def tearDown(self):
+        for bucket_name in self.case_buckets_to_delete:
+            bucket = Config.CLIENT.bucket(bucket_name)
+            retry_429(bucket.delete)(force=True)
+
+    def test_new_bucket_w_bpo(self):
+        new_bucket_name = "new-w-bpo" + unique_resource_id("-")
+        self.assertRaises(
+            exceptions.NotFound, Config.CLIENT.get_bucket, new_bucket_name
+        )
+        bucket = Config.CLIENT.bucket(new_bucket_name)
+        bucket.iam_configuration.bucket_policy_only = True
+        retry_429(bucket.create)()
+        self.case_buckets_to_delete.append(new_bucket_name)
+
+        bucket_acl = bucket.acl
+        with self.assertRaises(exceptions.BadRequest):
+            bucket_acl.reload()
+
+        bucket_acl.loaded = True  # Fake that we somehow loaded the ACL
+        bucket_acl.all().grant_read()
+        with self.assertRaises(exceptions.BadRequest):
+            bucket_acl.save()
+
+        blob_name = "my-blob.txt"
+        blob = bucket.blob(blob_name)
+        payload = b"DEADBEEF"
+        blob.upload_from_string(payload)
+
+        found = bucket.get_blob(blob_name)
+        self.assertEqual(found.download_as_string(), payload)
+
+        blob_acl = blob.acl
+        with self.assertRaises(exceptions.BadRequest):
+            blob_acl.reload()
+
+        blob_acl.loaded = True  # Fake that we somehow loaded the ACL
+        blob_acl.all().grant_read()
+        with self.assertRaises(exceptions.BadRequest):
+            blob_acl.save()
+
+    @unittest.expectedFailure  # Until rollout completes, ETA 2019-01-10
+    def test_existing_bucket_set_bpo(self):
+        import requests
+
+        new_bucket_name = "set-bpo" + unique_resource_id("-")
+        self.assertRaises(
+            exceptions.NotFound, Config.CLIENT.get_bucket, new_bucket_name
+        )
+        bucket = retry_429(Config.CLIENT.create_bucket)(new_bucket_name)
+        self.case_buckets_to_delete.append(new_bucket_name)
+
+        blob_name = "my-blob.txt"
+        blob = bucket.blob(blob_name)
+        payload = b"DEADBEEF"
+        blob.upload_from_string(payload)
+
+        blob.make_public()
+
+        ok_response = requests.get(blob.public_url)
+        self.assertEqual(ok_response.content, payload)
+
+        # XXX: Work around 400 error: "Cannot disable object policies because
+        # default object acls are not empty."
+        response = Config.CLIENT._connection.api_request(
+            method="PATCH",
+            path=bucket.path,
+            data={},
+            query_params={'predefinedDefaultObjectAcl': 'private'},
+            _target_object=bucket,
+        )
+
+        bucket.iam_configuration.bucket_policy_only = True
+        bucket.patch()
+
+        failed_response = requests.get(blob.public_url)
+        #XXX: the request for downloading the object via its public URL does
+        #     *not* fail as of 2019-01-08T18:43:00Z
+        self.assertEqual(failed_response.status_code, 403)
+
+    def test_bpo_set_unset_preserves_acls(self):
+        new_bucket_name = "bpo-acls" + unique_resource_id("-")
+        self.assertRaises(
+            exceptions.NotFound, Config.CLIENT.get_bucket, new_bucket_name
+        )
+        bucket = retry_429(Config.CLIENT.create_bucket)(new_bucket_name)
+        self.case_buckets_to_delete.append(new_bucket_name)
+
+        blob_name = "my-blob.txt"
+        blob = bucket.blob(blob_name)
+        payload = b"DEADBEEF"
+        blob.upload_from_string(payload)
+        blob_policy = blob.get_iam_policy()
+
+        # Preserve ACLs before setting BPO
+        bucket_acl_before = list(bucket.acl)
+        blob_acl_before = list(bucket.acl)
+
+        # XXX: Work around 400 error: "Cannot disable object policies because
+        # default object acls are not empty."
+        response = Config.CLIENT._connection.api_request(
+            method="PATCH",
+            path=bucket.path,
+            data={},
+            query_params={'predefinedDefaultObjectAcl': 'private'},
+            _target_object=bucket,
+        )
+
+        # Set BPO
+        bucket.iam_configuration.bucket_policy_only = True
+        bucket.patch()
+
+        # While BPO is set, cannot get / set ACLs
+        with self.assertRaises(exceptions.BadRequest):
+            bucket.acl.reload()
+
+        # XXX This should raise, but doesn't as of 2018-01-08T19:00:00Z
+        #with self.assertRaises(exceptions.BadRequest):
+        #    bucket.acl.clear()
+
+        # XXX The blob ACL get / set stuff raises 403, rather than 400.
+        #with self.assertRaises(exceptions.BadRequest):
+        with self.assertRaises(exceptions.Forbidden):
+            blob.acl.reload()
+
+        #with self.assertRaises(exceptions.BadRequest):
+        with self.assertRaises(exceptions.Forbidden):
+            blob.acl.clear()
+
+        # Clear BPO
+        bucket.iam_configuration.bucket_policy_only = False
+        bucket.patch()
+
+        # Query ACLs after clearing BPO
+        bucket.acl.reload()
+        bucket_acl_after = list(bucket.acl)
+        blob.acl.reload()
+        blob_acl_after = list(bucket.acl)
+
+        self.assertEqual(bucket_acl_before, bucket_acl_after)
+        self.assertEqual(blob_acl_before, blob_acl_after)
