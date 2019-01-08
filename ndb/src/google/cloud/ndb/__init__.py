@@ -108,7 +108,6 @@ __all__ = [
     "get_context",
     "make_context",
     "make_default_context",
-    "MultiFuture",
     "QueueFuture",
     "ReducingFuture",
     "Return",
@@ -208,7 +207,6 @@ from google.cloud.ndb.tasklets import Future
 from google.cloud.ndb.tasklets import get_context
 from google.cloud.ndb.tasklets import make_context
 from google.cloud.ndb.tasklets import make_default_context
-from google.cloud.ndb.tasklets import MultiFuture
 from google.cloud.ndb.tasklets import QueueFuture
 from google.cloud.ndb.tasklets import ReducingFuture
 from google.cloud.ndb.tasklets import Return

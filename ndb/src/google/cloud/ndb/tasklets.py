@@ -30,7 +30,6 @@ __all__ = [
     "get_context",
     "make_context",
     "make_default_context",
-    "MultiFuture",
     "QueueFuture",
     "ReducingFuture",
     "Return",
@@ -39,7 +38,6 @@ __all__ = [
     "sleep",
     "synctasklet",
     "tasklet",
-    "TaskletFuture",
     "toplevel",
 ]
 
@@ -205,7 +203,7 @@ class Future:
         return False
 
 
-class TaskletFuture(Future):
+class _TaskletFuture(Future):
     """A future which waits on a tasklet.
 
     A future of this type wraps a generator derived from calling a tasklet. A
@@ -219,7 +217,7 @@ class TaskletFuture(Future):
     """
 
     def __init__(self, generator):
-        super(TaskletFuture, self).__init__()
+        super(_TaskletFuture, self).__init__()
         self.generator = generator
 
     def _advance_tasklet(self, send_value=None, error=None):
@@ -263,7 +261,7 @@ class TaskletFuture(Future):
             _eventloop.queue_rpc(yielded, done_callback)
 
         elif isinstance(yielded, (list, tuple)):
-            future = MultiFuture(yielded)
+            future = _MultiFuture(yielded)
             future.add_done_callback(done_callback)
 
         else:
@@ -286,7 +284,7 @@ def _get_return_value(stop):
         return stop.args
 
 
-class MultiFuture(Future):
+class _MultiFuture(Future):
     """A future which depends on multiple other futures.
 
     This future will be done when either all dependencies have results or when
@@ -298,7 +296,7 @@ class MultiFuture(Future):
     """
 
     def __init__(self, dependencies):
-        super(MultiFuture, self).__init__()
+        super(_MultiFuture, self).__init__()
         self._dependencies = dependencies
 
         for dependency in dependencies:
@@ -353,7 +351,7 @@ def tasklet(wrapped):
 
         if isinstance(returned, types.GeneratorType):
             # We have a tasklet
-            future = TaskletFuture(returned)
+            future = _TaskletFuture(returned)
             future._advance_tasklet()
 
         else:

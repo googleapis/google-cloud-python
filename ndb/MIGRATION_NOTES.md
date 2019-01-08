@@ -138,6 +138,8 @@ facing, private API:
 - `eventloop` has been renamed to `_eventloop`.
 - `tasklets.get_return_value` has been renamed to `tasklets._get_return_value`
   and is no longer among top level exports.
+- `tasklets.MultiFuture` has been renamed to `tasklets._MultiFuture`, removed
+  from top level exports, and has a much simpler interface.
 
 ## Bare Metal
 
