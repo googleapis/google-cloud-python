@@ -8,7 +8,6 @@ from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
-from google.protobuf import descriptor_pb2
 
 # @@protoc_insertion_point(imports)
 
@@ -27,6 +26,9 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     name="google/cloud/redis_v1beta1/proto/cloud_redis.proto",
     package="google.cloud.redis.v1beta1",
     syntax="proto3",
+    serialized_options=_b(
+        "\n\036com.google.cloud.redis.v1beta1B\032CloudRedisServiceBetaProtoP\001Z?google.golang.org/genproto/googleapis/cloud/redis/v1beta1;redis"
+    ),
     serialized_pb=_b(
         '\n2google/cloud/redis_v1beta1/proto/cloud_redis.proto\x12\x1agoogle.cloud.redis.v1beta1\x1a\x1cgoogle/api/annotations.proto\x1a#google/longrunning/operations.proto\x1a google/protobuf/field_mask.proto\x1a\x1fgoogle/protobuf/timestamp.proto"\xe4\x06\n\x08Instance\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x02 \x01(\t\x12@\n\x06labels\x18\x03 \x03(\x0b\x32\x30.google.cloud.redis.v1beta1.Instance.LabelsEntry\x12\x13\n\x0blocation_id\x18\x04 \x01(\t\x12\x1f\n\x17\x61lternative_location_id\x18\x05 \x01(\t\x12\x15\n\rredis_version\x18\x07 \x01(\t\x12\x19\n\x11reserved_ip_range\x18\t \x01(\t\x12\x0c\n\x04host\x18\n \x01(\t\x12\x0c\n\x04port\x18\x0b \x01(\x05\x12\x1b\n\x13\x63urrent_location_id\x18\x0c \x01(\t\x12/\n\x0b\x63reate_time\x18\r \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x39\n\x05state\x18\x0e \x01(\x0e\x32*.google.cloud.redis.v1beta1.Instance.State\x12\x16\n\x0estatus_message\x18\x0f \x01(\t\x12M\n\rredis_configs\x18\x10 \x03(\x0b\x32\x36.google.cloud.redis.v1beta1.Instance.RedisConfigsEntry\x12\x37\n\x04tier\x18\x11 \x01(\x0e\x32).google.cloud.redis.v1beta1.Instance.Tier\x12\x16\n\x0ememory_size_gb\x18\x12 \x01(\x05\x12\x1a\n\x12\x61uthorized_network\x18\x14 \x01(\t\x1a-\n\x0bLabelsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x1a\x33\n\x11RedisConfigsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01"s\n\x05State\x12\x15\n\x11STATE_UNSPECIFIED\x10\x00\x12\x0c\n\x08\x43REATING\x10\x01\x12\t\n\x05READY\x10\x02\x12\x0c\n\x08UPDATING\x10\x03\x12\x0c\n\x08\x44\x45LETING\x10\x04\x12\r\n\tREPAIRING\x10\x05\x12\x0f\n\x0bMAINTENANCE\x10\x06"8\n\x04Tier\x12\x14\n\x10TIER_UNSPECIFIED\x10\x00\x12\t\n\x05\x42\x41SIC\x10\x01\x12\x0f\n\x0bSTANDARD_HA\x10\x03"M\n\x14ListInstancesRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t"i\n\x15ListInstancesResponse\x12\x37\n\tinstances\x18\x01 \x03(\x0b\x32$.google.cloud.redis.v1beta1.Instance\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t""\n\x12GetInstanceRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"t\n\x15\x43reateInstanceRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x13\n\x0binstance_id\x18\x02 \x01(\t\x12\x36\n\x08instance\x18\x03 \x01(\x0b\x32$.google.cloud.redis.v1beta1.Instance"\x80\x01\n\x15UpdateInstanceRequest\x12/\n\x0bupdate_mask\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.FieldMask\x12\x36\n\x08instance\x18\x02 \x01(\x0b\x32$.google.cloud.redis.v1beta1.Instance"%\n\x15\x44\x65leteInstanceRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"\xce\x01\n\x10LocationMetadata\x12Y\n\x0f\x61vailable_zones\x18\x01 \x03(\x0b\x32@.google.cloud.redis.v1beta1.LocationMetadata.AvailableZonesEntry\x1a_\n\x13\x41vailableZonesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x37\n\x05value\x18\x02 \x01(\x0b\x32(.google.cloud.redis.v1beta1.ZoneMetadata:\x02\x38\x01"\x0e\n\x0cZoneMetadata2\xe1\x06\n\nCloudRedis\x12\xb0\x01\n\rListInstances\x12\x30.google.cloud.redis.v1beta1.ListInstancesRequest\x1a\x31.google.cloud.redis.v1beta1.ListInstancesResponse":\x82\xd3\xe4\x93\x02\x34\x12\x32/v1beta1/{parent=projects/*/locations/*}/instances\x12\x9f\x01\n\x0bGetInstance\x12..google.cloud.redis.v1beta1.GetInstanceRequest\x1a$.google.cloud.redis.v1beta1.Instance":\x82\xd3\xe4\x93\x02\x34\x12\x32/v1beta1/{name=projects/*/locations/*/instances/*}\x12\xa8\x01\n\x0e\x43reateInstance\x12\x31.google.cloud.redis.v1beta1.CreateInstanceRequest\x1a\x1d.google.longrunning.Operation"D\x82\xd3\xe4\x93\x02>"2/v1beta1/{parent=projects/*/locations/*}/instances:\x08instance\x12\xb1\x01\n\x0eUpdateInstance\x12\x31.google.cloud.redis.v1beta1.UpdateInstanceRequest\x1a\x1d.google.longrunning.Operation"M\x82\xd3\xe4\x93\x02G2;/v1beta1/{instance.name=projects/*/locations/*/instances/*}:\x08instance\x12\x9e\x01\n\x0e\x44\x65leteInstance\x12\x31.google.cloud.redis.v1beta1.DeleteInstanceRequest\x1a\x1d.google.longrunning.Operation":\x82\xd3\xe4\x93\x02\x34*2/v1beta1/{name=projects/*/locations/*/instances/*}B\x7f\n\x1e\x63om.google.cloud.redis.v1beta1B\x1a\x43loudRedisServiceBetaProtoP\x01Z?google.golang.org/genproto/googleapis/cloud/redis/v1beta1;redisb\x06proto3'
     ),
@@ -46,29 +48,33 @@ _INSTANCE_STATE = _descriptor.EnumDescriptor(
     file=DESCRIPTOR,
     values=[
         _descriptor.EnumValueDescriptor(
-            name="STATE_UNSPECIFIED", index=0, number=0, options=None, type=None
+            name="STATE_UNSPECIFIED",
+            index=0,
+            number=0,
+            serialized_options=None,
+            type=None,
         ),
         _descriptor.EnumValueDescriptor(
-            name="CREATING", index=1, number=1, options=None, type=None
+            name="CREATING", index=1, number=1, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="READY", index=2, number=2, options=None, type=None
+            name="READY", index=2, number=2, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="UPDATING", index=3, number=3, options=None, type=None
+            name="UPDATING", index=3, number=3, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="DELETING", index=4, number=4, options=None, type=None
+            name="DELETING", index=4, number=4, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="REPAIRING", index=5, number=5, options=None, type=None
+            name="REPAIRING", index=5, number=5, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="MAINTENANCE", index=6, number=6, options=None, type=None
+            name="MAINTENANCE", index=6, number=6, serialized_options=None, type=None
         ),
     ],
     containing_type=None,
-    options=None,
+    serialized_options=None,
     serialized_start=912,
     serialized_end=1027,
 )
@@ -81,17 +87,21 @@ _INSTANCE_TIER = _descriptor.EnumDescriptor(
     file=DESCRIPTOR,
     values=[
         _descriptor.EnumValueDescriptor(
-            name="TIER_UNSPECIFIED", index=0, number=0, options=None, type=None
+            name="TIER_UNSPECIFIED",
+            index=0,
+            number=0,
+            serialized_options=None,
+            type=None,
         ),
         _descriptor.EnumValueDescriptor(
-            name="BASIC", index=1, number=1, options=None, type=None
+            name="BASIC", index=1, number=1, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="STANDARD_HA", index=2, number=3, options=None, type=None
+            name="STANDARD_HA", index=2, number=3, serialized_options=None, type=None
         ),
     ],
     containing_type=None,
-    options=None,
+    serialized_options=None,
     serialized_start=1029,
     serialized_end=1085,
 )
@@ -120,7 +130,7 @@ _INSTANCE_LABELSENTRY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -138,14 +148,14 @@ _INSTANCE_LABELSENTRY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=_descriptor._ParseOptions(descriptor_pb2.MessageOptions(), _b("8\001")),
+    serialized_options=_b("8\001"),
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -176,7 +186,7 @@ _INSTANCE_REDISCONFIGSENTRY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -194,14 +204,14 @@ _INSTANCE_REDISCONFIGSENTRY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=_descriptor._ParseOptions(descriptor_pb2.MessageOptions(), _b("8\001")),
+    serialized_options=_b("8\001"),
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -232,7 +242,7 @@ _INSTANCE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -250,7 +260,7 @@ _INSTANCE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -268,7 +278,7 @@ _INSTANCE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -286,7 +296,7 @@ _INSTANCE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -304,7 +314,7 @@ _INSTANCE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -322,7 +332,7 @@ _INSTANCE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -340,7 +350,7 @@ _INSTANCE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -358,7 +368,7 @@ _INSTANCE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -376,7 +386,7 @@ _INSTANCE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -394,7 +404,7 @@ _INSTANCE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -412,7 +422,7 @@ _INSTANCE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -430,7 +440,7 @@ _INSTANCE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -448,7 +458,7 @@ _INSTANCE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -466,7 +476,7 @@ _INSTANCE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -484,7 +494,7 @@ _INSTANCE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -502,7 +512,7 @@ _INSTANCE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -520,14 +530,14 @@ _INSTANCE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[_INSTANCE_LABELSENTRY, _INSTANCE_REDISCONFIGSENTRY],
     enum_types=[_INSTANCE_STATE, _INSTANCE_TIER],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -559,7 +569,7 @@ _LISTINSTANCESREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -577,7 +587,7 @@ _LISTINSTANCESREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -595,14 +605,14 @@ _LISTINSTANCESREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -634,7 +644,7 @@ _LISTINSTANCESRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -652,14 +662,14 @@ _LISTINSTANCESRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -691,14 +701,14 @@ _GETINSTANCEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -730,7 +740,7 @@ _CREATEINSTANCEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -748,7 +758,7 @@ _CREATEINSTANCEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -766,14 +776,14 @@ _CREATEINSTANCEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -805,7 +815,7 @@ _UPDATEINSTANCEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -823,14 +833,14 @@ _UPDATEINSTANCEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -862,14 +872,14 @@ _DELETEINSTANCEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -901,7 +911,7 @@ _LOCATIONMETADATA_AVAILABLEZONESENTRY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -919,14 +929,14 @@ _LOCATIONMETADATA_AVAILABLEZONESENTRY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=_descriptor._ParseOptions(descriptor_pb2.MessageOptions(), _b("8\001")),
+    serialized_options=_b("8\001"),
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -957,14 +967,14 @@ _LOCATIONMETADATA = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[_LOCATIONMETADATA_AVAILABLEZONESENTRY],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -984,7 +994,7 @@ _ZONEMETADATA = _descriptor.Descriptor(
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1342,32 +1352,17 @@ ZoneMetadata = _reflection.GeneratedProtocolMessageType(
 _sym_db.RegisterMessage(ZoneMetadata)
 
 
-DESCRIPTOR.has_options = True
-DESCRIPTOR._options = _descriptor._ParseOptions(
-    descriptor_pb2.FileOptions(),
-    _b(
-        "\n\036com.google.cloud.redis.v1beta1B\032CloudRedisServiceBetaProtoP\001Z?google.golang.org/genproto/googleapis/cloud/redis/v1beta1;redis"
-    ),
-)
-_INSTANCE_LABELSENTRY.has_options = True
-_INSTANCE_LABELSENTRY._options = _descriptor._ParseOptions(
-    descriptor_pb2.MessageOptions(), _b("8\001")
-)
-_INSTANCE_REDISCONFIGSENTRY.has_options = True
-_INSTANCE_REDISCONFIGSENTRY._options = _descriptor._ParseOptions(
-    descriptor_pb2.MessageOptions(), _b("8\001")
-)
-_LOCATIONMETADATA_AVAILABLEZONESENTRY.has_options = True
-_LOCATIONMETADATA_AVAILABLEZONESENTRY._options = _descriptor._ParseOptions(
-    descriptor_pb2.MessageOptions(), _b("8\001")
-)
+DESCRIPTOR._options = None
+_INSTANCE_LABELSENTRY._options = None
+_INSTANCE_REDISCONFIGSENTRY._options = None
+_LOCATIONMETADATA_AVAILABLEZONESENTRY._options = None
 
 _CLOUDREDIS = _descriptor.ServiceDescriptor(
     name="CloudRedis",
     full_name="google.cloud.redis.v1beta1.CloudRedis",
     file=DESCRIPTOR,
     index=0,
-    options=None,
+    serialized_options=None,
     serialized_start=1823,
     serialized_end=2688,
     methods=[
@@ -1378,11 +1373,8 @@ _CLOUDREDIS = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_LISTINSTANCESREQUEST,
             output_type=_LISTINSTANCESRESPONSE,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\0024\0222/v1beta1/{parent=projects/*/locations/*}/instances"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\0024\0222/v1beta1/{parent=projects/*/locations/*}/instances"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -1392,11 +1384,8 @@ _CLOUDREDIS = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_GETINSTANCEREQUEST,
             output_type=_INSTANCE,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\0024\0222/v1beta1/{name=projects/*/locations/*/instances/*}"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\0024\0222/v1beta1/{name=projects/*/locations/*/instances/*}"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -1406,11 +1395,8 @@ _CLOUDREDIS = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_CREATEINSTANCEREQUEST,
             output_type=google_dot_longrunning_dot_operations__pb2._OPERATION,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\002>"2/v1beta1/{parent=projects/*/locations/*}/instances:\010instance'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\002>"2/v1beta1/{parent=projects/*/locations/*}/instances:\010instance'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -1420,11 +1406,8 @@ _CLOUDREDIS = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_UPDATEINSTANCEREQUEST,
             output_type=google_dot_longrunning_dot_operations__pb2._OPERATION,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\002G2;/v1beta1/{instance.name=projects/*/locations/*/instances/*}:\010instance"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\002G2;/v1beta1/{instance.name=projects/*/locations/*/instances/*}:\010instance"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -1434,11 +1417,8 @@ _CLOUDREDIS = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_DELETEINSTANCEREQUEST,
             output_type=google_dot_longrunning_dot_operations__pb2._OPERATION,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\0024*2/v1beta1/{name=projects/*/locations/*/instances/*}"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\0024*2/v1beta1/{name=projects/*/locations/*/instances/*}"
             ),
         ),
     ],
