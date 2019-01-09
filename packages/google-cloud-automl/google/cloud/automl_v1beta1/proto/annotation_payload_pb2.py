@@ -8,7 +8,6 @@ from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
-from google.protobuf import descriptor_pb2
 
 # @@protoc_insertion_point(imports)
 
@@ -28,6 +27,9 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     name="google/cloud/automl_v1beta1/proto/annotation_payload.proto",
     package="google.cloud.automl.v1beta1",
     syntax="proto3",
+    serialized_options=_b(
+        "\n\037com.google.cloud.automl.v1beta1P\001ZAgoogle.golang.org/genproto/googleapis/cloud/automl/v1beta1;automl\312\002\033Google\\Cloud\\AutoMl\\V1beta1"
+    ),
     serialized_pb=_b(
         '\n:google/cloud/automl_v1beta1/proto/annotation_payload.proto\x12\x1bgoogle.cloud.automl.v1beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x36google/cloud/automl_v1beta1/proto/classification.proto\x1a\x33google/cloud/automl_v1beta1/proto/translation.proto"\xeb\x01\n\x11\x41nnotationPayload\x12I\n\x0btranslation\x18\x02 \x01(\x0b\x32\x32.google.cloud.automl.v1beta1.TranslationAnnotationH\x00\x12O\n\x0e\x63lassification\x18\x03 \x01(\x0b\x32\x35.google.cloud.automl.v1beta1.ClassificationAnnotationH\x00\x12\x1a\n\x12\x61nnotation_spec_id\x18\x01 \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x05 \x01(\tB\x08\n\x06\x64\x65tailB\x84\x01\n\x1f\x63om.google.cloud.automl.v1beta1P\x01ZAgoogle.golang.org/genproto/googleapis/cloud/automl/v1beta1;automl\xca\x02\x1bGoogle\\Cloud\\AutoMl\\V1beta1b\x06proto3'
     ),
@@ -61,7 +63,7 @@ _ANNOTATIONPAYLOAD = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -79,7 +81,7 @@ _ANNOTATIONPAYLOAD = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -97,7 +99,7 @@ _ANNOTATIONPAYLOAD = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -115,14 +117,14 @@ _ANNOTATIONPAYLOAD = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -200,11 +202,5 @@ AnnotationPayload = _reflection.GeneratedProtocolMessageType(
 _sym_db.RegisterMessage(AnnotationPayload)
 
 
-DESCRIPTOR.has_options = True
-DESCRIPTOR._options = _descriptor._ParseOptions(
-    descriptor_pb2.FileOptions(),
-    _b(
-        "\n\037com.google.cloud.automl.v1beta1P\001ZAgoogle.golang.org/genproto/googleapis/cloud/automl/v1beta1;automl\312\002\033Google\\Cloud\\AutoMl\\V1beta1"
-    ),
-)
+DESCRIPTOR._options = None
 # @@protoc_insertion_point(module_scope)
