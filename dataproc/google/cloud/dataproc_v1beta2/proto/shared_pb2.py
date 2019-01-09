@@ -8,7 +8,6 @@ from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
-from google.protobuf import descriptor_pb2
 
 # @@protoc_insertion_point(imports)
 
@@ -22,6 +21,9 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     name="google/cloud/dataproc_v1beta2/proto/shared.proto",
     package="google.cloud.dataproc.v1beta2",
     syntax="proto3",
+    serialized_options=_b(
+        "\n!com.google.cloud.dataproc.v1beta2B\013SharedProtoP\001ZEgoogle.golang.org/genproto/googleapis/cloud/dataproc/v1beta2;dataproc"
+    ),
     serialized_pb=_b(
         "\n0google/cloud/dataproc_v1beta2/proto/shared.proto\x12\x1dgoogle.cloud.dataproc.v1beta2\x1a\x1cgoogle/api/annotations.protoBy\n!com.google.cloud.dataproc.v1beta2B\x0bSharedProtoP\x01ZEgoogle.golang.org/genproto/googleapis/cloud/dataproc/v1beta2;dataprocb\x06proto3"
     ),
@@ -32,11 +34,5 @@ DESCRIPTOR = _descriptor.FileDescriptor(
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 
-DESCRIPTOR.has_options = True
-DESCRIPTOR._options = _descriptor._ParseOptions(
-    descriptor_pb2.FileOptions(),
-    _b(
-        "\n!com.google.cloud.dataproc.v1beta2B\013SharedProtoP\001ZEgoogle.golang.org/genproto/googleapis/cloud/dataproc/v1beta2;dataproc"
-    ),
-)
+DESCRIPTOR._options = None
 # @@protoc_insertion_point(module_scope)
