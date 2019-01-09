@@ -8,7 +8,6 @@ from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
-from google.protobuf import descriptor_pb2
 
 # @@protoc_insertion_point(imports)
 
@@ -27,6 +26,9 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     name="google/cloud/scheduler_v1beta1/proto/cloudscheduler.proto",
     package="google.cloud.scheduler.v1beta1",
     syntax="proto3",
+    serialized_options=_b(
+        '\n"com.google.cloud.scheduler.v1beta1B\016SchedulerProtoP\001ZGgoogle.golang.org/genproto/googleapis/cloud/scheduler/v1beta1;scheduler\242\002\tSCHEDULER'
+    ),
     serialized_pb=_b(
         '\n9google/cloud/scheduler_v1beta1/proto/cloudscheduler.proto\x12\x1egoogle.cloud.scheduler.v1beta1\x1a\x1cgoogle/api/annotations.proto\x1a.google/cloud/scheduler_v1beta1/proto/job.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto"H\n\x0fListJobsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x11\n\tpage_size\x18\x05 \x01(\x05\x12\x12\n\npage_token\x18\x06 \x01(\t"^\n\x10ListJobsResponse\x12\x31\n\x04jobs\x18\x01 \x03(\x0b\x32#.google.cloud.scheduler.v1beta1.Job\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"\x1d\n\rGetJobRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"T\n\x10\x43reateJobRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x30\n\x03job\x18\x02 \x01(\x0b\x32#.google.cloud.scheduler.v1beta1.Job"u\n\x10UpdateJobRequest\x12\x30\n\x03job\x18\x01 \x01(\x0b\x32#.google.cloud.scheduler.v1beta1.Job\x12/\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMask" \n\x10\x44\x65leteJobRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"\x1f\n\x0fPauseJobRequest\x12\x0c\n\x04name\x18\x01 \x01(\t" \n\x10ResumeJobRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"\x1d\n\rRunJobRequest\x12\x0c\n\x04name\x18\x01 \x01(\t2\x88\n\n\x0e\x43loudScheduler\x12\xa4\x01\n\x08ListJobs\x12/.google.cloud.scheduler.v1beta1.ListJobsRequest\x1a\x30.google.cloud.scheduler.v1beta1.ListJobsResponse"5\x82\xd3\xe4\x93\x02/\x12-/v1beta1/{parent=projects/*/locations/*}/jobs\x12\x93\x01\n\x06GetJob\x12-.google.cloud.scheduler.v1beta1.GetJobRequest\x1a#.google.cloud.scheduler.v1beta1.Job"5\x82\xd3\xe4\x93\x02/\x12-/v1beta1/{name=projects/*/locations/*/jobs/*}\x12\x9e\x01\n\tCreateJob\x12\x30.google.cloud.scheduler.v1beta1.CreateJobRequest\x1a#.google.cloud.scheduler.v1beta1.Job":\x82\xd3\xe4\x93\x02\x34"-/v1beta1/{parent=projects/*/locations/*}/jobs:\x03job\x12\xa2\x01\n\tUpdateJob\x12\x30.google.cloud.scheduler.v1beta1.UpdateJobRequest\x1a#.google.cloud.scheduler.v1beta1.Job">\x82\xd3\xe4\x93\x02\x38\x32\x31/v1beta1/{job.name=projects/*/locations/*/jobs/*}:\x03job\x12\x8c\x01\n\tDeleteJob\x12\x30.google.cloud.scheduler.v1beta1.DeleteJobRequest\x1a\x16.google.protobuf.Empty"5\x82\xd3\xe4\x93\x02/*-/v1beta1/{name=projects/*/locations/*/jobs/*}\x12\xa0\x01\n\x08PauseJob\x12/.google.cloud.scheduler.v1beta1.PauseJobRequest\x1a#.google.cloud.scheduler.v1beta1.Job">\x82\xd3\xe4\x93\x02\x38"3/v1beta1/{name=projects/*/locations/*/jobs/*}:pause:\x01*\x12\xa3\x01\n\tResumeJob\x12\x30.google.cloud.scheduler.v1beta1.ResumeJobRequest\x1a#.google.cloud.scheduler.v1beta1.Job"?\x82\xd3\xe4\x93\x02\x39"4/v1beta1/{name=projects/*/locations/*/jobs/*}:resume:\x01*\x12\x9a\x01\n\x06RunJob\x12-.google.cloud.scheduler.v1beta1.RunJobRequest\x1a#.google.cloud.scheduler.v1beta1.Job"<\x82\xd3\xe4\x93\x02\x36"1/v1beta1/{name=projects/*/locations/*/jobs/*}:run:\x01*B\x8b\x01\n"com.google.cloud.scheduler.v1beta1B\x0eSchedulerProtoP\x01ZGgoogle.golang.org/genproto/googleapis/cloud/scheduler/v1beta1;scheduler\xa2\x02\tSCHEDULERb\x06proto3'
     ),
@@ -61,7 +63,7 @@ _LISTJOBSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -79,7 +81,7 @@ _LISTJOBSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -97,14 +99,14 @@ _LISTJOBSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -136,7 +138,7 @@ _LISTJOBSRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -154,14 +156,14 @@ _LISTJOBSRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -193,14 +195,14 @@ _GETJOBREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -232,7 +234,7 @@ _CREATEJOBREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -250,14 +252,14 @@ _CREATEJOBREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -289,7 +291,7 @@ _UPDATEJOBREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -307,14 +309,14 @@ _UPDATEJOBREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -346,14 +348,14 @@ _DELETEJOBREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -385,14 +387,14 @@ _PAUSEJOBREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -424,14 +426,14 @@ _RESUMEJOBREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -463,14 +465,14 @@ _RUNJOBREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -721,20 +723,14 @@ RunJobRequest = _reflection.GeneratedProtocolMessageType(
 _sym_db.RegisterMessage(RunJobRequest)
 
 
-DESCRIPTOR.has_options = True
-DESCRIPTOR._options = _descriptor._ParseOptions(
-    descriptor_pb2.FileOptions(),
-    _b(
-        '\n"com.google.cloud.scheduler.v1beta1B\016SchedulerProtoP\001ZGgoogle.golang.org/genproto/googleapis/cloud/scheduler/v1beta1;scheduler\242\002\tSCHEDULER'
-    ),
-)
+DESCRIPTOR._options = None
 
 _CLOUDSCHEDULER = _descriptor.ServiceDescriptor(
     name="CloudScheduler",
     full_name="google.cloud.scheduler.v1beta1.CloudScheduler",
     file=DESCRIPTOR,
     index=0,
-    options=None,
+    serialized_options=None,
     serialized_start=773,
     serialized_end=2061,
     methods=[
@@ -745,11 +741,8 @@ _CLOUDSCHEDULER = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_LISTJOBSREQUEST,
             output_type=_LISTJOBSRESPONSE,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\002/\022-/v1beta1/{parent=projects/*/locations/*}/jobs"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\002/\022-/v1beta1/{parent=projects/*/locations/*}/jobs"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -759,11 +752,8 @@ _CLOUDSCHEDULER = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_GETJOBREQUEST,
             output_type=google_dot_cloud_dot_scheduler__v1beta1_dot_proto_dot_job__pb2._JOB,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\002/\022-/v1beta1/{name=projects/*/locations/*/jobs/*}"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\002/\022-/v1beta1/{name=projects/*/locations/*/jobs/*}"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -773,11 +763,8 @@ _CLOUDSCHEDULER = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_CREATEJOBREQUEST,
             output_type=google_dot_cloud_dot_scheduler__v1beta1_dot_proto_dot_job__pb2._JOB,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\0024"-/v1beta1/{parent=projects/*/locations/*}/jobs:\003job'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\0024"-/v1beta1/{parent=projects/*/locations/*}/jobs:\003job'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -787,11 +774,8 @@ _CLOUDSCHEDULER = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_UPDATEJOBREQUEST,
             output_type=google_dot_cloud_dot_scheduler__v1beta1_dot_proto_dot_job__pb2._JOB,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\002821/v1beta1/{job.name=projects/*/locations/*/jobs/*}:\003job"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\002821/v1beta1/{job.name=projects/*/locations/*/jobs/*}:\003job"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -801,11 +785,8 @@ _CLOUDSCHEDULER = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_DELETEJOBREQUEST,
             output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\002/*-/v1beta1/{name=projects/*/locations/*/jobs/*}"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\002/*-/v1beta1/{name=projects/*/locations/*/jobs/*}"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -815,11 +796,8 @@ _CLOUDSCHEDULER = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_PAUSEJOBREQUEST,
             output_type=google_dot_cloud_dot_scheduler__v1beta1_dot_proto_dot_job__pb2._JOB,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\0028"3/v1beta1/{name=projects/*/locations/*/jobs/*}:pause:\001*'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\0028"3/v1beta1/{name=projects/*/locations/*/jobs/*}:pause:\001*'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -829,11 +807,8 @@ _CLOUDSCHEDULER = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_RESUMEJOBREQUEST,
             output_type=google_dot_cloud_dot_scheduler__v1beta1_dot_proto_dot_job__pb2._JOB,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\0029"4/v1beta1/{name=projects/*/locations/*/jobs/*}:resume:\001*'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\0029"4/v1beta1/{name=projects/*/locations/*/jobs/*}:resume:\001*'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -843,11 +818,8 @@ _CLOUDSCHEDULER = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_RUNJOBREQUEST,
             output_type=google_dot_cloud_dot_scheduler__v1beta1_dot_proto_dot_job__pb2._JOB,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\0026"1/v1beta1/{name=projects/*/locations/*/jobs/*}:run:\001*'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\0026"1/v1beta1/{name=projects/*/locations/*/jobs/*}:run:\001*'
             ),
         ),
     ],

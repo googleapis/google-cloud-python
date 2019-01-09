@@ -9,7 +9,6 @@ from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
-from google.protobuf import descriptor_pb2
 
 # @@protoc_insertion_point(imports)
 
@@ -24,6 +23,9 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     name="google/cloud/scheduler_v1beta1/proto/target.proto",
     package="google.cloud.scheduler.v1beta1",
     syntax="proto3",
+    serialized_options=_b(
+        '\n"com.google.cloud.scheduler.v1beta1B\013TargetProtoP\001ZGgoogle.golang.org/genproto/googleapis/cloud/scheduler/v1beta1;scheduler'
+    ),
     serialized_pb=_b(
         '\n1google/cloud/scheduler_v1beta1/proto/target.proto\x12\x1egoogle.cloud.scheduler.v1beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x19google/protobuf/any.proto"\xe2\x01\n\nHttpTarget\x12\x0b\n\x03uri\x18\x01 \x01(\t\x12?\n\x0bhttp_method\x18\x02 \x01(\x0e\x32*.google.cloud.scheduler.v1beta1.HttpMethod\x12H\n\x07headers\x18\x03 \x03(\x0b\x32\x37.google.cloud.scheduler.v1beta1.HttpTarget.HeadersEntry\x12\x0c\n\x04\x62ody\x18\x04 \x01(\x0c\x1a.\n\x0cHeadersEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01"\xcb\x02\n\x13\x41ppEngineHttpTarget\x12?\n\x0bhttp_method\x18\x01 \x01(\x0e\x32*.google.cloud.scheduler.v1beta1.HttpMethod\x12L\n\x12\x61pp_engine_routing\x18\x02 \x01(\x0b\x32\x30.google.cloud.scheduler.v1beta1.AppEngineRouting\x12\x14\n\x0crelative_uri\x18\x03 \x01(\t\x12Q\n\x07headers\x18\x04 \x03(\x0b\x32@.google.cloud.scheduler.v1beta1.AppEngineHttpTarget.HeadersEntry\x12\x0c\n\x04\x62ody\x18\x05 \x01(\x0c\x1a.\n\x0cHeadersEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01"\xb5\x01\n\x0cPubsubTarget\x12\x12\n\ntopic_name\x18\x01 \x01(\t\x12\x0c\n\x04\x64\x61ta\x18\x03 \x01(\x0c\x12P\n\nattributes\x18\x04 \x03(\x0b\x32<.google.cloud.scheduler.v1beta1.PubsubTarget.AttributesEntry\x1a\x31\n\x0f\x41ttributesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01"T\n\x10\x41ppEngineRouting\x12\x0f\n\x07service\x18\x01 \x01(\t\x12\x0f\n\x07version\x18\x02 \x01(\t\x12\x10\n\x08instance\x18\x03 \x01(\t\x12\x0c\n\x04host\x18\x04 \x01(\t*s\n\nHttpMethod\x12\x1b\n\x17HTTP_METHOD_UNSPECIFIED\x10\x00\x12\x08\n\x04POST\x10\x01\x12\x07\n\x03GET\x10\x02\x12\x08\n\x04HEAD\x10\x03\x12\x07\n\x03PUT\x10\x04\x12\n\n\x06\x44\x45LETE\x10\x05\x12\t\n\x05PATCH\x10\x06\x12\x0b\n\x07OPTIONS\x10\x07\x42|\n"com.google.cloud.scheduler.v1beta1B\x0bTargetProtoP\x01ZGgoogle.golang.org/genproto/googleapis/cloud/scheduler/v1beta1;schedulerb\x06proto3'
     ),
@@ -40,32 +42,36 @@ _HTTPMETHOD = _descriptor.EnumDescriptor(
     file=DESCRIPTOR,
     values=[
         _descriptor.EnumValueDescriptor(
-            name="HTTP_METHOD_UNSPECIFIED", index=0, number=0, options=None, type=None
+            name="HTTP_METHOD_UNSPECIFIED",
+            index=0,
+            number=0,
+            serialized_options=None,
+            type=None,
         ),
         _descriptor.EnumValueDescriptor(
-            name="POST", index=1, number=1, options=None, type=None
+            name="POST", index=1, number=1, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="GET", index=2, number=2, options=None, type=None
+            name="GET", index=2, number=2, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="HEAD", index=3, number=3, options=None, type=None
+            name="HEAD", index=3, number=3, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="PUT", index=4, number=4, options=None, type=None
+            name="PUT", index=4, number=4, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="DELETE", index=5, number=5, options=None, type=None
+            name="DELETE", index=5, number=5, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="PATCH", index=6, number=6, options=None, type=None
+            name="PATCH", index=6, number=6, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="OPTIONS", index=7, number=7, options=None, type=None
+            name="OPTIONS", index=7, number=7, serialized_options=None, type=None
         ),
     ],
     containing_type=None,
-    options=None,
+    serialized_options=None,
     serialized_start=975,
     serialized_end=1090,
 )
@@ -104,7 +110,7 @@ _HTTPTARGET_HEADERSENTRY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -122,14 +128,14 @@ _HTTPTARGET_HEADERSENTRY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=_descriptor._ParseOptions(descriptor_pb2.MessageOptions(), _b("8\001")),
+    serialized_options=_b("8\001"),
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -160,7 +166,7 @@ _HTTPTARGET = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -178,7 +184,7 @@ _HTTPTARGET = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -196,7 +202,7 @@ _HTTPTARGET = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -214,14 +220,14 @@ _HTTPTARGET = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[_HTTPTARGET_HEADERSENTRY],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -253,7 +259,7 @@ _APPENGINEHTTPTARGET_HEADERSENTRY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -271,14 +277,14 @@ _APPENGINEHTTPTARGET_HEADERSENTRY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=_descriptor._ParseOptions(descriptor_pb2.MessageOptions(), _b("8\001")),
+    serialized_options=_b("8\001"),
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -309,7 +315,7 @@ _APPENGINEHTTPTARGET = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -327,7 +333,7 @@ _APPENGINEHTTPTARGET = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -345,7 +351,7 @@ _APPENGINEHTTPTARGET = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -363,7 +369,7 @@ _APPENGINEHTTPTARGET = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -381,14 +387,14 @@ _APPENGINEHTTPTARGET = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[_APPENGINEHTTPTARGET_HEADERSENTRY],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -420,7 +426,7 @@ _PUBSUBTARGET_ATTRIBUTESENTRY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -438,14 +444,14 @@ _PUBSUBTARGET_ATTRIBUTESENTRY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=_descriptor._ParseOptions(descriptor_pb2.MessageOptions(), _b("8\001")),
+    serialized_options=_b("8\001"),
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -476,7 +482,7 @@ _PUBSUBTARGET = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -494,7 +500,7 @@ _PUBSUBTARGET = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -512,14 +518,14 @@ _PUBSUBTARGET = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[_PUBSUBTARGET_ATTRIBUTESENTRY],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -551,7 +557,7 @@ _APPENGINEROUTING = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -569,7 +575,7 @@ _APPENGINEROUTING = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -587,7 +593,7 @@ _APPENGINEROUTING = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -605,14 +611,14 @@ _APPENGINEROUTING = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -920,23 +926,8 @@ AppEngineRouting = _reflection.GeneratedProtocolMessageType(
 _sym_db.RegisterMessage(AppEngineRouting)
 
 
-DESCRIPTOR.has_options = True
-DESCRIPTOR._options = _descriptor._ParseOptions(
-    descriptor_pb2.FileOptions(),
-    _b(
-        '\n"com.google.cloud.scheduler.v1beta1B\013TargetProtoP\001ZGgoogle.golang.org/genproto/googleapis/cloud/scheduler/v1beta1;scheduler'
-    ),
-)
-_HTTPTARGET_HEADERSENTRY.has_options = True
-_HTTPTARGET_HEADERSENTRY._options = _descriptor._ParseOptions(
-    descriptor_pb2.MessageOptions(), _b("8\001")
-)
-_APPENGINEHTTPTARGET_HEADERSENTRY.has_options = True
-_APPENGINEHTTPTARGET_HEADERSENTRY._options = _descriptor._ParseOptions(
-    descriptor_pb2.MessageOptions(), _b("8\001")
-)
-_PUBSUBTARGET_ATTRIBUTESENTRY.has_options = True
-_PUBSUBTARGET_ATTRIBUTESENTRY._options = _descriptor._ParseOptions(
-    descriptor_pb2.MessageOptions(), _b("8\001")
-)
+DESCRIPTOR._options = None
+_HTTPTARGET_HEADERSENTRY._options = None
+_APPENGINEHTTPTARGET_HEADERSENTRY._options = None
+_PUBSUBTARGET_ATTRIBUTESENTRY._options = None
 # @@protoc_insertion_point(module_scope)
