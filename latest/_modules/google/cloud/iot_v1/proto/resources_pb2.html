@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.iot_v1.proto.resources_pb2 &#8212; google-cloud 8cb7b29 documentation</title>
+    <title>google.cloud.iot_v1.proto.resources_pb2 &#8212; google-cloud e95517a documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -45,7 +45,6 @@
 <span class="kn">from</span> <span class="nn">google.protobuf</span> <span class="k">import</span> <span class="n">message</span> <span class="k">as</span> <span class="n">_message</span>
 <span class="kn">from</span> <span class="nn">google.protobuf</span> <span class="k">import</span> <span class="n">reflection</span> <span class="k">as</span> <span class="n">_reflection</span>
 <span class="kn">from</span> <span class="nn">google.protobuf</span> <span class="k">import</span> <span class="n">symbol_database</span> <span class="k">as</span> <span class="n">_symbol_database</span>
-<span class="kn">from</span> <span class="nn">google.protobuf</span> <span class="k">import</span> <span class="n">descriptor_pb2</span>
 
 <span class="c1"># @@protoc_insertion_point(imports)</span>
 
@@ -61,6 +60,9 @@
     <span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/cloud/iot_v1/proto/resources.proto&quot;</span><span class="p">,</span>
     <span class="n">package</span><span class="o">=</span><span class="s2">&quot;google.cloud.iot.v1&quot;</span><span class="p">,</span>
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
+    <span class="n">serialized_options</span><span class="o">=</span><span class="n">_b</span><span class="p">(</span>
+        <span class="s2">&quot;</span><span class="se">\n\027</span><span class="s2">com.google.cloud.iot.v1B</span><span class="se">\016</span><span class="s2">ResourcesProtoP</span><span class="se">\001</span><span class="s2">Z6google.golang.org/genproto/googleapis/cloud/iot/v1;iot</span><span class="se">\370\001\001</span><span class="s2">&quot;</span>
+    <span class="p">),</span>
     <span class="n">serialized_pb</span><span class="o">=</span><span class="n">_b</span><span class="p">(</span>
         <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">)google/cloud/iot_v1/proto/resources.proto</span><span class="se">\x12\x13</span><span class="s1">google.cloud.iot.v1</span><span class="se">\x1a\x1c</span><span class="s1">google/api/annotations.proto</span><span class="se">\x1a\x1f</span><span class="s1">google/protobuf/timestamp.proto</span><span class="se">\x1a\x17</span><span class="s1">google/rpc/status.proto&quot;</span><span class="se">\xbb\x06\n\x06\x44\x65</span><span class="s1">vice</span><span class="se">\x12\n\n\x02</span><span class="s1">id</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x0c\n\x04</span><span class="s1">name</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x0e\n\x06</span><span class="s1">num_id</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x04\x12</span><span class="s1">:</span><span class="se">\n\x0b\x63</span><span class="s1">redentials</span><span class="se">\x18\x0c</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">%.google.cloud.iot.v1.DeviceCredential</span><span class="se">\x12\x37\n\x13</span><span class="s1">last_heartbeat_time</span><span class="se">\x18\x07</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x1a</span><span class="s1">.google.protobuf.Timestamp</span><span class="se">\x12\x33\n\x0f</span><span class="s1">last_event_time</span><span class="se">\x18\x08</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x1a</span><span class="s1">.google.protobuf.Timestamp</span><span class="se">\x12\x33\n\x0f</span><span class="s1">last_state_time</span><span class="se">\x18\x14</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x1a</span><span class="s1">.google.protobuf.Timestamp</span><span class="se">\x12\x38\n\x14</span><span class="s1">last_config_ack_time</span><span class="se">\x18\x0e</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x1a</span><span class="s1">.google.protobuf.Timestamp</span><span class="se">\x12\x39\n\x15</span><span class="s1">last_config_send_time</span><span class="se">\x18\x12</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x1a</span><span class="s1">.google.protobuf.Timestamp</span><span class="se">\x12\x0f\n\x07\x62</span><span class="s1">locked</span><span class="se">\x18\x13</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x08\x12\x33\n\x0f</span><span class="s1">last_error_time</span><span class="se">\x18\n</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x1a</span><span class="s1">.google.protobuf.Timestamp</span><span class="se">\x12</span><span class="s1">-</span><span class="se">\n\x11</span><span class="s1">last_error_status</span><span class="se">\x18\x0b</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x12</span><span class="s1">.google.rpc.Status</span><span class="se">\x12\x31\n\x06\x63</span><span class="s1">onfig</span><span class="se">\x18\r</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">!.google.cloud.iot.v1.DeviceConfig</span><span class="se">\x12</span><span class="s1">/</span><span class="se">\n\x05</span><span class="s1">state</span><span class="se">\x18\x10</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1"> .google.cloud.iot.v1.DeviceState</span><span class="se">\x12\x30\n\t</span><span class="s1">log_level</span><span class="se">\x18\x15</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0e\x32\x1d</span><span class="s1">.google.cloud.iot.v1.LogLevel</span><span class="se">\x12</span><span class="s1">;</span><span class="se">\n\x08</span><span class="s1">metadata</span><span class="se">\x18\x11</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">).google.cloud.iot.v1.Device.MetadataEntry</span><span class="se">\x12</span><span class="s1">:</span><span class="se">\n\x0e</span><span class="s1">gateway_config</span><span class="se">\x18\x18</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">&quot;.google.cloud.iot.v1.GatewayConfig</span><span class="se">\x1a</span><span class="s1">/</span><span class="se">\n\r</span><span class="s1">MetadataEntry</span><span class="se">\x12\x0b\n\x03</span><span class="s1">key</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\r\n\x05</span><span class="s1">value</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t</span><span class="s1">:</span><span class="se">\x02\x38\x01</span><span class="s1">&quot;</span><span class="se">\xee\x01\n\r</span><span class="s1">GatewayConfig</span><span class="se">\x12\x36\n\x0c</span><span class="s1">gateway_type</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0e\x32</span><span class="s1"> .google.cloud.iot.v1.GatewayType</span><span class="se">\x12\x43\n\x13</span><span class="s1">gateway_auth_method</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0e\x32</span><span class="s1">&amp;.google.cloud.iot.v1.GatewayAuthMethod</span><span class="se">\x12</span><span class="s1"> </span><span class="se">\n\x18</span><span class="s1">last_accessed_gateway_id</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12</span><span class="s1">&gt;</span><span class="se">\n\x1a</span><span class="s1">last_accessed_gateway_time</span><span class="se">\x18\x04</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x1a</span><span class="s1">.google.protobuf.Timestamp&quot;</span><span class="se">\xa9\x03\n\x0e\x44\x65</span><span class="s1">viceRegistry</span><span class="se">\x12\n\n\x02</span><span class="s1">id</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x0c\n\x04</span><span class="s1">name</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12</span><span class="s1">P</span><span class="se">\n\x1a\x65</span><span class="s1">vent_notification_configs</span><span class="se">\x18\n</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">,.google.cloud.iot.v1.EventNotificationConfig</span><span class="se">\x12</span><span class="s1">O</span><span class="se">\n\x19</span><span class="s1">state_notification_config</span><span class="se">\x18\x07</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">,.google.cloud.iot.v1.StateNotificationConfig</span><span class="se">\x12\x34\n\x0b</span><span class="s1">mqtt_config</span><span class="se">\x18\x04</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x1f</span><span class="s1">.google.cloud.iot.v1.MqttConfig</span><span class="se">\x12\x34\n\x0b</span><span class="s1">http_config</span><span class="se">\x18\t</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x1f</span><span class="s1">.google.cloud.iot.v1.HttpConfig</span><span class="se">\x12\x30\n\t</span><span class="s1">log_level</span><span class="se">\x18\x0b</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0e\x32\x1d</span><span class="s1">.google.cloud.iot.v1.LogLevel</span><span class="se">\x12</span><span class="s1">&lt;</span><span class="se">\n\x0b\x63</span><span class="s1">redentials</span><span class="se">\x18\x08</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32\&#39;</span><span class="s1">.google.cloud.iot.v1.RegistryCredential&quot;H</span><span class="se">\n\n</span><span class="s1">MqttConfig</span><span class="se">\x12</span><span class="s1">:</span><span class="se">\n\x12</span><span class="s1">mqtt_enabled_state</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0e\x32\x1e</span><span class="s1">.google.cloud.iot.v1.MqttState&quot;H</span><span class="se">\n\n</span><span class="s1">HttpConfig</span><span class="se">\x12</span><span class="s1">:</span><span class="se">\n\x12</span><span class="s1">http_enabled_state</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0e\x32\x1e</span><span class="s1">.google.cloud.iot.v1.HttpState&quot;O</span><span class="se">\n\x17\x45</span><span class="s1">ventNotificationConfig</span><span class="se">\x12\x19\n\x11</span><span class="s1">subfolder_matches</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x19\n\x11</span><span class="s1">pubsub_topic_name</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t</span><span class="s1">&quot;4</span><span class="se">\n\x17</span><span class="s1">StateNotificationConfig</span><span class="se">\x12\x19\n\x11</span><span class="s1">pubsub_topic_name</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t</span><span class="s1">&quot;o</span><span class="se">\n\x12</span><span class="s1">RegistryCredential</span><span class="se">\x12</span><span class="s1">K</span><span class="se">\n\x16</span><span class="s1">public_key_certificate</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">).google.cloud.iot.v1.PublicKeyCertificateH</span><span class="se">\x00\x42\x0c\n\n</span><span class="s1">credential&quot;</span><span class="se">\xd0\x01\n\x16</span><span class="s1">X509CertificateDetails</span><span class="se">\x12\x0e\n\x06</span><span class="s1">issuer</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x0f\n\x07</span><span class="s1">subject</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12</span><span class="s1">.</span><span class="se">\n\n</span><span class="s1">start_time</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x1a</span><span class="s1">.google.protobuf.Timestamp</span><span class="se">\x12</span><span class="s1">/</span><span class="se">\n\x0b\x65</span><span class="s1">xpiry_time</span><span class="se">\x18\x04</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x1a</span><span class="s1">.google.protobuf.Timestamp</span><span class="se">\x12\x1b\n\x13</span><span class="s1">signature_algorithm</span><span class="se">\x18\x05</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x17\n\x0f</span><span class="s1">public_key_type</span><span class="se">\x18\x06</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t</span><span class="s1">&quot;</span><span class="se">\xaf\x01\n\x14</span><span class="s1">PublicKeyCertificate</span><span class="se">\x12</span><span class="s1">?</span><span class="se">\n\x06\x66</span><span class="s1">ormat</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0e\x32</span><span class="s1">/.google.cloud.iot.v1.PublicKeyCertificateFormat</span><span class="se">\x12\x13\n\x0b\x63\x65</span><span class="s1">rtificate</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x41\n\x0c</span><span class="s1">x509_details</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">+.google.cloud.iot.v1.X509CertificateDetails&quot;</span><span class="se">\x95\x01\n\x10\x44\x65</span><span class="s1">viceCredential</span><span class="se">\x12</span><span class="s1">&gt;</span><span class="se">\n\n</span><span class="s1">public_key</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">(.google.cloud.iot.v1.PublicKeyCredentialH</span><span class="se">\x00\x12\x33\n\x0f\x65</span><span class="s1">xpiration_time</span><span class="se">\x18\x06</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x1a</span><span class="s1">.google.protobuf.TimestampB</span><span class="se">\x0c\n\n</span><span class="s1">credential&quot;X</span><span class="se">\n\x13</span><span class="s1">PublicKeyCredential</span><span class="se">\x12\x34\n\x06\x66</span><span class="s1">ormat</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0e\x32</span><span class="s1">$.google.cloud.iot.v1.PublicKeyFormat</span><span class="se">\x12\x0b\n\x03</span><span class="s1">key</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t</span><span class="s1">&quot;</span><span class="se">\xa0\x01\n\x0c\x44\x65</span><span class="s1">viceConfig</span><span class="se">\x12\x0f\n\x07</span><span class="s1">version</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x03\x12\x35\n\x11\x63</span><span class="s1">loud_update_time</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x1a</span><span class="s1">.google.protobuf.Timestamp</span><span class="se">\x12\x33\n\x0f\x64\x65</span><span class="s1">vice_ack_time</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x1a</span><span class="s1">.google.protobuf.Timestamp</span><span class="se">\x12\x13\n\x0b\x62</span><span class="s1">inary_data</span><span class="se">\x18\x04</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0c</span><span class="s1">&quot;S</span><span class="se">\n\x0b\x44\x65</span><span class="s1">viceState</span><span class="se">\x12</span><span class="s1">/</span><span class="se">\n\x0b</span><span class="s1">update_time</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x1a</span><span class="s1">.google.protobuf.Timestamp</span><span class="se">\x12\x13\n\x0b\x62</span><span class="s1">inary_data</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0c</span><span class="s1">*L</span><span class="se">\n\t</span><span class="s1">MqttState</span><span class="se">\x12\x1a\n\x16</span><span class="s1">MQTT_STATE_UNSPECIFIED</span><span class="se">\x10\x00\x12\x10\n\x0c</span><span class="s1">MQTT_ENABLED</span><span class="se">\x10\x01\x12\x11\n\r</span><span class="s1">MQTT_DISABLED</span><span class="se">\x10\x02</span><span class="s1">*L</span><span class="se">\n\t</span><span class="s1">HttpState</span><span class="se">\x12\x1a\n\x16</span><span class="s1">HTTP_STATE_UNSPECIFIED</span><span class="se">\x10\x00\x12\x10\n\x0c</span><span class="s1">HTTP_ENABLED</span><span class="se">\x10\x01\x12\x11\n\r</span><span class="s1">HTTP_DISABLED</span><span class="se">\x10\x02</span><span class="s1">*O</span><span class="se">\n\x08</span><span class="s1">LogLevel</span><span class="se">\x12\x19\n\x15</span><span class="s1">LOG_LEVEL_UNSPECIFIED</span><span class="se">\x10\x00\x12\x08\n\x04</span><span class="s1">NONE</span><span class="se">\x10\n\x12\t\n\x05\x45</span><span class="s1">RROR</span><span class="se">\x10\x14\x12\x08\n\x04</span><span class="s1">INFO</span><span class="se">\x10\x1e\x12\t\n\x05\x44\x45\x42</span><span class="s1">UG</span><span class="se">\x10</span><span class="s1">(*I</span><span class="se">\n\x0b</span><span class="s1">GatewayType</span><span class="se">\x12\x1c\n\x18</span><span class="s1">GATEWAY_TYPE_UNSPECIFIED</span><span class="se">\x10\x00\x12\x0b\n\x07</span><span class="s1">GATEWAY</span><span class="se">\x10\x01\x12\x0f\n\x0b</span><span class="s1">NON_GATEWAY</span><span class="se">\x10\x02</span><span class="s1">*</span><span class="se">\x91\x01\n\x11</span><span class="s1">GatewayAuthMethod</span><span class="se">\x12</span><span class="s1">#</span><span class="se">\n\x1f</span><span class="s1">GATEWAY_AUTH_METHOD_UNSPECIFIED</span><span class="se">\x10\x00\x12\x14\n\x10\x41</span><span class="s1">SSOCIATION_ONLY</span><span class="se">\x10\x01\x12\x1a\n\x16\x44\x45</span><span class="s1">VICE_AUTH_TOKEN_ONLY</span><span class="se">\x10\x02\x12</span><span class="s1">%</span><span class="se">\n</span><span class="s1">!ASSOCIATION_AND_DEVICE_AUTH_TOKEN</span><span class="se">\x10\x03</span><span class="s1">*e</span><span class="se">\n\x1a</span><span class="s1">PublicKeyCertificateFormat</span><span class="se">\x12</span><span class="s1">-</span><span class="se">\n</span><span class="s1">)UNSPECIFIED_PUBLIC_KEY_CERTIFICATE_FORMAT</span><span class="se">\x10\x00\x12\x18\n\x14</span><span class="s1">X509_CERTIFICATE_PEM</span><span class="se">\x10\x01</span><span class="s1">*v</span><span class="se">\n\x0f</span><span class="s1">PublicKeyFormat</span><span class="se">\x12</span><span class="s1">!</span><span class="se">\n\x1d</span><span class="s1">UNSPECIFIED_PUBLIC_KEY_FORMAT</span><span class="se">\x10\x00\x12\x0b\n\x07</span><span class="s1">RSA_PEM</span><span class="se">\x10\x03\x12\x10\n\x0c</span><span class="s1">RSA_X509_PEM</span><span class="se">\x10\x01\x12\r\n\t</span><span class="s1">ES256_PEM</span><span class="se">\x10\x02\x12\x12\n\x0e\x45</span><span class="s1">S256_X509_PEM</span><span class="se">\x10\x04\x42\x66\n\x17\x63</span><span class="s1">om.google.cloud.iot.v1B</span><span class="se">\x0e</span><span class="s1">ResourcesProtoP</span><span class="se">\x01</span><span class="s1">Z6google.golang.org/genproto/googleapis/cloud/iot/v1;iot</span><span class="se">\xf8\x01\x01\x62\x06</span><span class="s1">proto3&#39;</span>
     <span class="p">),</span>
@@ -78,17 +80,21 @@
     <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
     <span class="n">values</span><span class="o">=</span><span class="p">[</span>
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">EnumValueDescriptor</span><span class="p">(</span>
-            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;MQTT_STATE_UNSPECIFIED&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="kc">None</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;MQTT_STATE_UNSPECIFIED&quot;</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">number</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="p">),</span>
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">EnumValueDescriptor</span><span class="p">(</span>
-            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;MQTT_ENABLED&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="kc">None</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;MQTT_ENABLED&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="kc">None</span>
         <span class="p">),</span>
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">EnumValueDescriptor</span><span class="p">(</span>
-            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;MQTT_DISABLED&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="kc">None</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;MQTT_DISABLED&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="kc">None</span>
         <span class="p">),</span>
     <span class="p">],</span>
     <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-    <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">serialized_start</span><span class="o">=</span><span class="mi">2928</span><span class="p">,</span>
     <span class="n">serialized_end</span><span class="o">=</span><span class="mi">3004</span><span class="p">,</span>
 <span class="p">)</span>
@@ -102,17 +108,21 @@
     <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
     <span class="n">values</span><span class="o">=</span><span class="p">[</span>
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">EnumValueDescriptor</span><span class="p">(</span>
-            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;HTTP_STATE_UNSPECIFIED&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="kc">None</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;HTTP_STATE_UNSPECIFIED&quot;</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">number</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="p">),</span>
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">EnumValueDescriptor</span><span class="p">(</span>
-            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;HTTP_ENABLED&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="kc">None</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;HTTP_ENABLED&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="kc">None</span>
         <span class="p">),</span>
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">EnumValueDescriptor</span><span class="p">(</span>
-            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;HTTP_DISABLED&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="kc">None</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;HTTP_DISABLED&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="kc">None</span>
         <span class="p">),</span>
     <span class="p">],</span>
     <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-    <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">serialized_start</span><span class="o">=</span><span class="mi">3006</span><span class="p">,</span>
     <span class="n">serialized_end</span><span class="o">=</span><span class="mi">3082</span><span class="p">,</span>
 <span class="p">)</span>
@@ -126,23 +136,27 @@
     <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
     <span class="n">values</span><span class="o">=</span><span class="p">[</span>
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">EnumValueDescriptor</span><span class="p">(</span>
-            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;LOG_LEVEL_UNSPECIFIED&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="kc">None</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;LOG_LEVEL_UNSPECIFIED&quot;</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">number</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="p">),</span>
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">EnumValueDescriptor</span><span class="p">(</span>
-            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;NONE&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="kc">None</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;NONE&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="kc">None</span>
         <span class="p">),</span>
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">EnumValueDescriptor</span><span class="p">(</span>
-            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;ERROR&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="kc">None</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;ERROR&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="kc">None</span>
         <span class="p">),</span>
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">EnumValueDescriptor</span><span class="p">(</span>
-            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;INFO&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="kc">None</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;INFO&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="kc">None</span>
         <span class="p">),</span>
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">EnumValueDescriptor</span><span class="p">(</span>
-            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;DEBUG&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="kc">None</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;DEBUG&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="kc">None</span>
         <span class="p">),</span>
     <span class="p">],</span>
     <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-    <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">serialized_start</span><span class="o">=</span><span class="mi">3084</span><span class="p">,</span>
     <span class="n">serialized_end</span><span class="o">=</span><span class="mi">3163</span><span class="p">,</span>
 <span class="p">)</span>
@@ -156,17 +170,21 @@
     <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
     <span class="n">values</span><span class="o">=</span><span class="p">[</span>
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">EnumValueDescriptor</span><span class="p">(</span>
-            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;GATEWAY_TYPE_UNSPECIFIED&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="kc">None</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;GATEWAY_TYPE_UNSPECIFIED&quot;</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">number</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="p">),</span>
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">EnumValueDescriptor</span><span class="p">(</span>
-            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;GATEWAY&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="kc">None</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;GATEWAY&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="kc">None</span>
         <span class="p">),</span>
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">EnumValueDescriptor</span><span class="p">(</span>
-            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;NON_GATEWAY&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="kc">None</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;NON_GATEWAY&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="kc">None</span>
         <span class="p">),</span>
     <span class="p">],</span>
     <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-    <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">serialized_start</span><span class="o">=</span><span class="mi">3165</span><span class="p">,</span>
     <span class="n">serialized_end</span><span class="o">=</span><span class="mi">3238</span><span class="p">,</span>
 <span class="p">)</span>
@@ -183,25 +201,33 @@
             <span class="n">name</span><span class="o">=</span><span class="s2">&quot;GATEWAY_AUTH_METHOD_UNSPECIFIED&quot;</span><span class="p">,</span>
             <span class="n">index</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
             <span class="n">number</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="nb">type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="p">),</span>
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">EnumValueDescriptor</span><span class="p">(</span>
-            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;ASSOCIATION_ONLY&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="kc">None</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;ASSOCIATION_ONLY&quot;</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">number</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="p">),</span>
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">EnumValueDescriptor</span><span class="p">(</span>
-            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;DEVICE_AUTH_TOKEN_ONLY&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="kc">None</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;DEVICE_AUTH_TOKEN_ONLY&quot;</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="n">number</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="p">),</span>
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">EnumValueDescriptor</span><span class="p">(</span>
             <span class="n">name</span><span class="o">=</span><span class="s2">&quot;ASSOCIATION_AND_DEVICE_AUTH_TOKEN&quot;</span><span class="p">,</span>
             <span class="n">index</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
             <span class="n">number</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
-            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="nb">type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="p">),</span>
     <span class="p">],</span>
     <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-    <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">serialized_start</span><span class="o">=</span><span class="mi">3241</span><span class="p">,</span>
     <span class="n">serialized_end</span><span class="o">=</span><span class="mi">3386</span><span class="p">,</span>
 <span class="p">)</span>
@@ -218,15 +244,19 @@
             <span class="n">name</span><span class="o">=</span><span class="s2">&quot;UNSPECIFIED_PUBLIC_KEY_CERTIFICATE_FORMAT&quot;</span><span class="p">,</span>
             <span class="n">index</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
             <span class="n">number</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="nb">type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="p">),</span>
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">EnumValueDescriptor</span><span class="p">(</span>
-            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;X509_CERTIFICATE_PEM&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="kc">None</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;X509_CERTIFICATE_PEM&quot;</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">number</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="p">),</span>
     <span class="p">],</span>
     <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-    <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">serialized_start</span><span class="o">=</span><span class="mi">3388</span><span class="p">,</span>
     <span class="n">serialized_end</span><span class="o">=</span><span class="mi">3489</span><span class="p">,</span>
 <span class="p">)</span>
@@ -245,24 +275,24 @@
             <span class="n">name</span><span class="o">=</span><span class="s2">&quot;UNSPECIFIED_PUBLIC_KEY_FORMAT&quot;</span><span class="p">,</span>
             <span class="n">index</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
             <span class="n">number</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="nb">type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="p">),</span>
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">EnumValueDescriptor</span><span class="p">(</span>
-            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;RSA_PEM&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="kc">None</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;RSA_PEM&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="kc">None</span>
         <span class="p">),</span>
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">EnumValueDescriptor</span><span class="p">(</span>
-            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;RSA_X509_PEM&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="kc">None</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;RSA_X509_PEM&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="kc">None</span>
         <span class="p">),</span>
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">EnumValueDescriptor</span><span class="p">(</span>
-            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;ES256_PEM&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="kc">None</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;ES256_PEM&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="kc">None</span>
         <span class="p">),</span>
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">EnumValueDescriptor</span><span class="p">(</span>
-            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;ES256_X509_PEM&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="kc">None</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;ES256_X509_PEM&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="kc">None</span>
         <span class="p">),</span>
     <span class="p">],</span>
     <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-    <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">serialized_start</span><span class="o">=</span><span class="mi">3491</span><span class="p">,</span>
     <span class="n">serialized_end</span><span class="o">=</span><span class="mi">3609</span><span class="p">,</span>
 <span class="p">)</span>
@@ -318,7 +348,7 @@
             <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
         <span class="p">),</span>
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
@@ -336,14 +366,14 @@
             <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
         <span class="p">),</span>
     <span class="p">],</span>
     <span class="n">extensions</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">nested_types</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">enum_types</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">options</span><span class="o">=</span><span class="n">_descriptor</span><span class="o">.</span><span class="n">_ParseOptions</span><span class="p">(</span><span class="n">descriptor_pb2</span><span class="o">.</span><span class="n">MessageOptions</span><span class="p">(),</span> <span class="n">_b</span><span class="p">(</span><span class="s2">&quot;8</span><span class="se">\001</span><span class="s2">&quot;</span><span class="p">)),</span>
+    <span class="n">serialized_options</span><span class="o">=</span><span class="n">_b</span><span class="p">(</span><span class="s2">&quot;8</span><span class="se">\001</span><span class="s2">&quot;</span><span class="p">),</span>
     <span class="n">is_extendable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
@@ -374,7 +404,7 @@
             <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
         <span class="p">),</span>
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
@@ -392,7 +422,7 @@
             <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
         <span class="p">),</span>
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
@@ -410,7 +440,7 @@
             <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
         <span class="p">),</span>
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
@@ -428,7 +458,7 @@
             <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
         <span class="p">),</span>
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
@@ -446,7 +476,7 @@
             <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
         <span class="p">),</span>
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
@@ -464,7 +494,7 @@
             <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
         <span class="p">),</span>
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
@@ -482,7 +512,7 @@
             <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
         <span class="p">),</span>
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
@@ -500,7 +530,7 @@
             <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
         <span class="p">),</span>
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
@@ -518,7 +548,7 @@
             <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
         <span class="p">),</span>
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
@@ -536,7 +566,7 @@
             <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
         <span class="p">),</span>
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
@@ -554,7 +584,7 @@
             <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
         <span class="p">),</span>
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
@@ -572,7 +602,7 @@
             <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
         <span class="p">),</span>
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
@@ -590,7 +620,7 @@
             <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
         <span class="p">),</span>
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
@@ -608,7 +638,7 @@
             <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
         <span class="p">),</span>
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
@@ -626,7 +656,7 @@
             <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
         <span class="p">),</span>
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
@@ -644,7 +674,7 @@
             <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
         <span class="p">),</span>
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
@@ -662,14 +692,14 @@
             <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
         <span class="p">),</span>
     <span class="p">],</span>
     <span class="n">extensions</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">nested_types</span><span class="o">=</span><span class="p">[</span><span class="n">_DEVICE_METADATAENTRY</span><span class="p">],</span>
     <span class="n">enum_types</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">is_extendable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
@@ -701,7 +731,7 @@
             <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
         <span class="p">),</span>
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
@@ -719,7 +749,7 @@
             <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
         <span class="p">),</span>
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
@@ -737,7 +767,7 @@
             <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
         <span class="p">),</span>
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
@@ -755,14 +785,14 @@
             <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
         <span class="p">),</span>
     <span class="p">],</span>
     <span class="n">extensions</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">nested_types</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">enum_types</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">is_extendable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
@@ -794,7 +824,7 @@
             <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
         <span class="p">),</span>
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
@@ -812,7 +842,7 @@
             <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
         <span class="p">),</span>
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
@@ -830,7 +860,7 @@
             <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
         <span class="p">),</span>
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
@@ -848,7 +878,7 @@
             <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
         <span class="p">),</span>
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
@@ -866,7 +896,7 @@
             <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
         <span class="p">),</span>
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
@@ -884,7 +914,7 @@
             <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
         <span class="p">),</span>
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
@@ -902,7 +932,7 @@
             <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
         <span class="p">),</span>
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
@@ -920,14 +950,14 @@
             <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
         <span class="p">),</span>
     <span class="p">],</span>
     <span class="n">extensions</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">nested_types</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">enum_types</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">is_extendable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
@@ -959,14 +989,14 @@
             <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
         <span class="p">)</span>
     <span class="p">],</span>
     <span class="n">extensions</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">nested_types</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">enum_types</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">is_extendable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
@@ -998,14 +1028,14 @@
             <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
         <span class="p">)</span>
     <span class="p">],</span>
     <span class="n">extensions</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">nested_types</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">enum_types</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">is_extendable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
@@ -1037,7 +1067,7 @@
             <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
         <span class="p">),</span>
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
@@ -1055,14 +1085,14 @@
             <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
         <span class="p">),</span>
     <span class="p">],</span>
     <span class="n">extensions</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">nested_types</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">enum_types</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">is_extendable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
@@ -1094,14 +1124,14 @@
             <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
         <span class="p">)</span>
     <span class="p">],</span>
     <span class="n">extensions</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">nested_types</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">enum_types</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">is_extendable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
@@ -1133,14 +1163,14 @@
             <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
         <span class="p">)</span>
     <span class="p">],</span>
     <span class="n">extensions</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">nested_types</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">enum_types</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">is_extendable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
@@ -1180,7 +1210,7 @@
             <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
         <span class="p">),</span>
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
@@ -1198,7 +1228,7 @@
             <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
         <span class="p">),</span>
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
@@ -1216,7 +1246,7 @@
             <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
         <span class="p">),</span>
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
@@ -1234,7 +1264,7 @@
             <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
         <span class="p">),</span>
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
@@ -1252,7 +1282,7 @@
             <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
         <span class="p">),</span>
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
@@ -1270,14 +1300,14 @@
             <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
         <span class="p">),</span>
     <span class="p">],</span>
     <span class="n">extensions</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">nested_types</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">enum_types</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">is_extendable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
@@ -1309,7 +1339,7 @@
             <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
         <span class="p">),</span>
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
@@ -1327,7 +1357,7 @@
             <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
         <span class="p">),</span>
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
@@ -1345,14 +1375,14 @@
             <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
         <span class="p">),</span>
     <span class="p">],</span>
     <span class="n">extensions</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">nested_types</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">enum_types</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">is_extendable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
@@ -1384,7 +1414,7 @@
             <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
         <span class="p">),</span>
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
@@ -1402,14 +1432,14 @@
             <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
         <span class="p">),</span>
     <span class="p">],</span>
     <span class="n">extensions</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">nested_types</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">enum_types</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">is_extendable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
@@ -1449,7 +1479,7 @@
             <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
         <span class="p">),</span>
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
@@ -1467,14 +1497,14 @@
             <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
         <span class="p">),</span>
     <span class="p">],</span>
     <span class="n">extensions</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">nested_types</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">enum_types</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">is_extendable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
@@ -1506,7 +1536,7 @@
             <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
         <span class="p">),</span>
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
@@ -1524,7 +1554,7 @@
             <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
         <span class="p">),</span>
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
@@ -1542,7 +1572,7 @@
             <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
         <span class="p">),</span>
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
@@ -1560,14 +1590,14 @@
             <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
         <span class="p">),</span>
     <span class="p">],</span>
     <span class="n">extensions</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">nested_types</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">enum_types</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">is_extendable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
@@ -1599,7 +1629,7 @@
             <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
         <span class="p">),</span>
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
@@ -1617,14 +1647,14 @@
             <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
         <span class="p">),</span>
     <span class="p">],</span>
     <span class="n">extensions</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">nested_types</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">enum_types</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">is_extendable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
@@ -2218,17 +2248,8 @@
 <span class="n">_sym_db</span><span class="o">.</span><span class="n">RegisterMessage</span><span class="p">(</span><span class="n">DeviceState</span><span class="p">)</span>
 
 
-<span class="n">DESCRIPTOR</span><span class="o">.</span><span class="n">has_options</span> <span class="o">=</span> <span class="kc">True</span>
-<span class="n">DESCRIPTOR</span><span class="o">.</span><span class="n">_options</span> <span class="o">=</span> <span class="n">_descriptor</span><span class="o">.</span><span class="n">_ParseOptions</span><span class="p">(</span>
-    <span class="n">descriptor_pb2</span><span class="o">.</span><span class="n">FileOptions</span><span class="p">(),</span>
-    <span class="n">_b</span><span class="p">(</span>
-        <span class="s2">&quot;</span><span class="se">\n\027</span><span class="s2">com.google.cloud.iot.v1B</span><span class="se">\016</span><span class="s2">ResourcesProtoP</span><span class="se">\001</span><span class="s2">Z6google.golang.org/genproto/googleapis/cloud/iot/v1;iot</span><span class="se">\370\001\001</span><span class="s2">&quot;</span>
-    <span class="p">),</span>
-<span class="p">)</span>
-<span class="n">_DEVICE_METADATAENTRY</span><span class="o">.</span><span class="n">has_options</span> <span class="o">=</span> <span class="kc">True</span>
-<span class="n">_DEVICE_METADATAENTRY</span><span class="o">.</span><span class="n">_options</span> <span class="o">=</span> <span class="n">_descriptor</span><span class="o">.</span><span class="n">_ParseOptions</span><span class="p">(</span>
-    <span class="n">descriptor_pb2</span><span class="o">.</span><span class="n">MessageOptions</span><span class="p">(),</span> <span class="n">_b</span><span class="p">(</span><span class="s2">&quot;8</span><span class="se">\001</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="p">)</span>
+<span class="n">DESCRIPTOR</span><span class="o">.</span><span class="n">_options</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="n">_DEVICE_METADATAENTRY</span><span class="o">.</span><span class="n">_options</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="c1"># @@protoc_insertion_point(module_scope)</span>
 </pre></div>
 
