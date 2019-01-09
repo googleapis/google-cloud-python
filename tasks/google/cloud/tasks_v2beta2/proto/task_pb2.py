@@ -8,7 +8,6 @@ from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
-from google.protobuf import descriptor_pb2
 
 # @@protoc_insertion_point(imports)
 
@@ -27,6 +26,9 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     name="google/cloud/tasks_v2beta2/proto/task.proto",
     package="google.cloud.tasks.v2beta2",
     syntax="proto3",
+    serialized_options=_b(
+        "\n\036com.google.cloud.tasks.v2beta2B\tTaskProtoP\001Z?google.golang.org/genproto/googleapis/cloud/tasks/v2beta2;tasks"
+    ),
     serialized_pb=_b(
         '\n+google/cloud/tasks_v2beta2/proto/task.proto\x12\x1agoogle.cloud.tasks.v2beta2\x1a\x1cgoogle/api/annotations.proto\x1a-google/cloud/tasks_v2beta2/proto/target.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x17google/rpc/status.proto"\xbe\x03\n\x04Task\x12\x0c\n\x04name\x18\x01 \x01(\t\x12S\n\x17\x61pp_engine_http_request\x18\x03 \x01(\x0b\x32\x30.google.cloud.tasks.v2beta2.AppEngineHttpRequestH\x00\x12?\n\x0cpull_message\x18\x04 \x01(\x0b\x32\'.google.cloud.tasks.v2beta2.PullMessageH\x00\x12\x31\n\rschedule_time\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12/\n\x0b\x63reate_time\x18\x06 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x36\n\x06status\x18\x07 \x01(\x0b\x32&.google.cloud.tasks.v2beta2.TaskStatus\x12\x33\n\x04view\x18\x08 \x01(\x0e\x32%.google.cloud.tasks.v2beta2.Task.View"1\n\x04View\x12\x14\n\x10VIEW_UNSPECIFIED\x10\x00\x12\t\n\x05\x42\x41SIC\x10\x01\x12\x08\n\x04\x46ULL\x10\x02\x42\x0e\n\x0cpayload_type"\xdd\x01\n\nTaskStatus\x12\x1e\n\x16\x61ttempt_dispatch_count\x18\x01 \x01(\x05\x12\x1e\n\x16\x61ttempt_response_count\x18\x02 \x01(\x05\x12G\n\x14\x66irst_attempt_status\x18\x03 \x01(\x0b\x32).google.cloud.tasks.v2beta2.AttemptStatus\x12\x46\n\x13last_attempt_status\x18\x04 \x01(\x0b\x32).google.cloud.tasks.v2beta2.AttemptStatus"\xd5\x01\n\rAttemptStatus\x12\x31\n\rschedule_time\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x31\n\rdispatch_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x31\n\rresponse_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12+\n\x0fresponse_status\x18\x04 \x01(\x0b\x32\x12.google.rpc.StatusBn\n\x1e\x63om.google.cloud.tasks.v2beta2B\tTaskProtoP\x01Z?google.golang.org/genproto/googleapis/cloud/tasks/v2beta2;tasksb\x06proto3'
     ),
@@ -46,17 +48,21 @@ _TASK_VIEW = _descriptor.EnumDescriptor(
     file=DESCRIPTOR,
     values=[
         _descriptor.EnumValueDescriptor(
-            name="VIEW_UNSPECIFIED", index=0, number=0, options=None, type=None
+            name="VIEW_UNSPECIFIED",
+            index=0,
+            number=0,
+            serialized_options=None,
+            type=None,
         ),
         _descriptor.EnumValueDescriptor(
-            name="BASIC", index=1, number=1, options=None, type=None
+            name="BASIC", index=1, number=1, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="FULL", index=2, number=2, options=None, type=None
+            name="FULL", index=2, number=2, serialized_options=None, type=None
         ),
     ],
     containing_type=None,
-    options=None,
+    serialized_options=None,
     serialized_start=592,
     serialized_end=641,
 )
@@ -85,7 +91,7 @@ _TASK = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -103,7 +109,7 @@ _TASK = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -121,7 +127,7 @@ _TASK = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -139,7 +145,7 @@ _TASK = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -157,7 +163,7 @@ _TASK = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -175,7 +181,7 @@ _TASK = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -193,14 +199,14 @@ _TASK = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[_TASK_VIEW],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -240,7 +246,7 @@ _TASKSTATUS = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -258,7 +264,7 @@ _TASKSTATUS = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -276,7 +282,7 @@ _TASKSTATUS = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -294,14 +300,14 @@ _TASKSTATUS = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -333,7 +339,7 @@ _ATTEMPTSTATUS = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -351,7 +357,7 @@ _ATTEMPTSTATUS = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -369,7 +375,7 @@ _ATTEMPTSTATUS = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -387,14 +393,14 @@ _ATTEMPTSTATUS = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -590,11 +596,5 @@ AttemptStatus = _reflection.GeneratedProtocolMessageType(
 _sym_db.RegisterMessage(AttemptStatus)
 
 
-DESCRIPTOR.has_options = True
-DESCRIPTOR._options = _descriptor._ParseOptions(
-    descriptor_pb2.FileOptions(),
-    _b(
-        "\n\036com.google.cloud.tasks.v2beta2B\tTaskProtoP\001Z?google.golang.org/genproto/googleapis/cloud/tasks/v2beta2;tasks"
-    ),
-)
+DESCRIPTOR._options = None
 # @@protoc_insertion_point(module_scope)
