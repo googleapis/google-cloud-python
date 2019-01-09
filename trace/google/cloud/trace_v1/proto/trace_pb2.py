@@ -9,7 +9,6 @@ from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
-from google.protobuf import descriptor_pb2
 
 # @@protoc_insertion_point(imports)
 
@@ -25,6 +24,9 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     name="google/devtools/cloudtrace_v1/proto/trace.proto",
     package="google.devtools.cloudtrace.v1",
     syntax="proto3",
+    serialized_options=_b(
+        "\n!com.google.devtools.cloudtrace.v1B\nTraceProtoP\001ZGgoogle.golang.org/genproto/googleapis/devtools/cloudtrace/v1;cloudtrace\252\002\025Google.Cloud.Trace.V1\312\002\025Google\\Cloud\\Trace\\V1"
+    ),
     serialized_pb=_b(
         '\n/google/devtools/cloudtrace_v1/proto/trace.proto\x12\x1dgoogle.devtools.cloudtrace.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1fgoogle/protobuf/timestamp.proto"f\n\x05Trace\x12\x12\n\nproject_id\x18\x01 \x01(\t\x12\x10\n\x08trace_id\x18\x02 \x01(\t\x12\x37\n\x05spans\x18\x03 \x03(\x0b\x32(.google.devtools.cloudtrace.v1.TraceSpan">\n\x06Traces\x12\x34\n\x06traces\x18\x01 \x03(\x0b\x32$.google.devtools.cloudtrace.v1.Trace"\x9d\x03\n\tTraceSpan\x12\x0f\n\x07span_id\x18\x01 \x01(\x06\x12?\n\x04kind\x18\x02 \x01(\x0e\x32\x31.google.devtools.cloudtrace.v1.TraceSpan.SpanKind\x12\x0c\n\x04name\x18\x03 \x01(\t\x12.\n\nstart_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12,\n\x08\x65nd_time\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x16\n\x0eparent_span_id\x18\x06 \x01(\x06\x12\x44\n\x06labels\x18\x07 \x03(\x0b\x32\x34.google.devtools.cloudtrace.v1.TraceSpan.LabelsEntry\x1a-\n\x0bLabelsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01"E\n\x08SpanKind\x12\x19\n\x15SPAN_KIND_UNSPECIFIED\x10\x00\x12\x0e\n\nRPC_SERVER\x10\x01\x12\x0e\n\nRPC_CLIENT\x10\x02"\xe7\x02\n\x11ListTracesRequest\x12\x12\n\nproject_id\x18\x01 \x01(\t\x12G\n\x04view\x18\x02 \x01(\x0e\x32\x39.google.devtools.cloudtrace.v1.ListTracesRequest.ViewType\x12\x11\n\tpage_size\x18\x03 \x01(\x05\x12\x12\n\npage_token\x18\x04 \x01(\t\x12.\n\nstart_time\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12,\n\x08\x65nd_time\x18\x06 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x0e\n\x06\x66ilter\x18\x07 \x01(\t\x12\x10\n\x08order_by\x18\x08 \x01(\t"N\n\x08ViewType\x12\x19\n\x15VIEW_TYPE_UNSPECIFIED\x10\x00\x12\x0b\n\x07MINIMAL\x10\x01\x12\x0c\n\x08ROOTSPAN\x10\x02\x12\x0c\n\x08\x43OMPLETE\x10\x03"c\n\x12ListTracesResponse\x12\x34\n\x06traces\x18\x01 \x03(\x0b\x32$.google.devtools.cloudtrace.v1.Trace\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"7\n\x0fGetTraceRequest\x12\x12\n\nproject_id\x18\x01 \x01(\t\x12\x10\n\x08trace_id\x18\x02 \x01(\t"_\n\x12PatchTracesRequest\x12\x12\n\nproject_id\x18\x01 \x01(\t\x12\x35\n\x06traces\x18\x02 \x01(\x0b\x32%.google.devtools.cloudtrace.v1.Traces2\xd1\x03\n\x0cTraceService\x12\x9b\x01\n\nListTraces\x12\x30.google.devtools.cloudtrace.v1.ListTracesRequest\x1a\x31.google.devtools.cloudtrace.v1.ListTracesResponse"(\x82\xd3\xe4\x93\x02"\x12 /v1/projects/{project_id}/traces\x12\x95\x01\n\x08GetTrace\x12..google.devtools.cloudtrace.v1.GetTraceRequest\x1a$.google.devtools.cloudtrace.v1.Trace"3\x82\xd3\xe4\x93\x02-\x12+/v1/projects/{project_id}/traces/{trace_id}\x12\x8a\x01\n\x0bPatchTraces\x12\x31.google.devtools.cloudtrace.v1.PatchTracesRequest\x1a\x16.google.protobuf.Empty"0\x82\xd3\xe4\x93\x02*2 /v1/projects/{project_id}/traces:\x06tracesB\xaa\x01\n!com.google.devtools.cloudtrace.v1B\nTraceProtoP\x01ZGgoogle.golang.org/genproto/googleapis/devtools/cloudtrace/v1;cloudtrace\xaa\x02\x15Google.Cloud.Trace.V1\xca\x02\x15Google\\Cloud\\Trace\\V1b\x06proto3'
     ),
@@ -43,17 +45,21 @@ _TRACESPAN_SPANKIND = _descriptor.EnumDescriptor(
     file=DESCRIPTOR,
     values=[
         _descriptor.EnumValueDescriptor(
-            name="SPAN_KIND_UNSPECIFIED", index=0, number=0, options=None, type=None
+            name="SPAN_KIND_UNSPECIFIED",
+            index=0,
+            number=0,
+            serialized_options=None,
+            type=None,
         ),
         _descriptor.EnumValueDescriptor(
-            name="RPC_SERVER", index=1, number=1, options=None, type=None
+            name="RPC_SERVER", index=1, number=1, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="RPC_CLIENT", index=2, number=2, options=None, type=None
+            name="RPC_CLIENT", index=2, number=2, serialized_options=None, type=None
         ),
     ],
     containing_type=None,
-    options=None,
+    serialized_options=None,
     serialized_start=687,
     serialized_end=756,
 )
@@ -66,20 +72,24 @@ _LISTTRACESREQUEST_VIEWTYPE = _descriptor.EnumDescriptor(
     file=DESCRIPTOR,
     values=[
         _descriptor.EnumValueDescriptor(
-            name="VIEW_TYPE_UNSPECIFIED", index=0, number=0, options=None, type=None
+            name="VIEW_TYPE_UNSPECIFIED",
+            index=0,
+            number=0,
+            serialized_options=None,
+            type=None,
         ),
         _descriptor.EnumValueDescriptor(
-            name="MINIMAL", index=1, number=1, options=None, type=None
+            name="MINIMAL", index=1, number=1, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="ROOTSPAN", index=2, number=2, options=None, type=None
+            name="ROOTSPAN", index=2, number=2, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="COMPLETE", index=3, number=3, options=None, type=None
+            name="COMPLETE", index=3, number=3, serialized_options=None, type=None
         ),
     ],
     containing_type=None,
-    options=None,
+    serialized_options=None,
     serialized_start=1040,
     serialized_end=1118,
 )
@@ -108,7 +118,7 @@ _TRACE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -126,7 +136,7 @@ _TRACE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -144,14 +154,14 @@ _TRACE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -183,14 +193,14 @@ _TRACES = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -222,7 +232,7 @@ _TRACESPAN_LABELSENTRY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -240,14 +250,14 @@ _TRACESPAN_LABELSENTRY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=_descriptor._ParseOptions(descriptor_pb2.MessageOptions(), _b("8\001")),
+    serialized_options=_b("8\001"),
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -278,7 +288,7 @@ _TRACESPAN = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -296,7 +306,7 @@ _TRACESPAN = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -314,7 +324,7 @@ _TRACESPAN = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -332,7 +342,7 @@ _TRACESPAN = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -350,7 +360,7 @@ _TRACESPAN = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -368,7 +378,7 @@ _TRACESPAN = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -386,14 +396,14 @@ _TRACESPAN = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[_TRACESPAN_LABELSENTRY],
     enum_types=[_TRACESPAN_SPANKIND],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -425,7 +435,7 @@ _LISTTRACESREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -443,7 +453,7 @@ _LISTTRACESREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -461,7 +471,7 @@ _LISTTRACESREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -479,7 +489,7 @@ _LISTTRACESREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -497,7 +507,7 @@ _LISTTRACESREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -515,7 +525,7 @@ _LISTTRACESREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -533,7 +543,7 @@ _LISTTRACESREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -551,14 +561,14 @@ _LISTTRACESREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[_LISTTRACESREQUEST_VIEWTYPE],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -590,7 +600,7 @@ _LISTTRACESRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -608,14 +618,14 @@ _LISTTRACESRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -647,7 +657,7 @@ _GETTRACEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -665,14 +675,14 @@ _GETTRACEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -704,7 +714,7 @@ _PATCHTRACESREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -722,14 +732,14 @@ _PATCHTRACESREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1021,24 +1031,15 @@ PatchTracesRequest = _reflection.GeneratedProtocolMessageType(
 _sym_db.RegisterMessage(PatchTracesRequest)
 
 
-DESCRIPTOR.has_options = True
-DESCRIPTOR._options = _descriptor._ParseOptions(
-    descriptor_pb2.FileOptions(),
-    _b(
-        "\n!com.google.devtools.cloudtrace.v1B\nTraceProtoP\001ZGgoogle.golang.org/genproto/googleapis/devtools/cloudtrace/v1;cloudtrace\252\002\025Google.Cloud.Trace.V1\312\002\025Google\\Cloud\\Trace\\V1"
-    ),
-)
-_TRACESPAN_LABELSENTRY.has_options = True
-_TRACESPAN_LABELSENTRY._options = _descriptor._ParseOptions(
-    descriptor_pb2.MessageOptions(), _b("8\001")
-)
+DESCRIPTOR._options = None
+_TRACESPAN_LABELSENTRY._options = None
 
 _TRACESERVICE = _descriptor.ServiceDescriptor(
     name="TraceService",
     full_name="google.devtools.cloudtrace.v1.TraceService",
     file=DESCRIPTOR,
     index=0,
-    options=None,
+    serialized_options=None,
     serialized_start=1376,
     serialized_end=1841,
     methods=[
@@ -1049,9 +1050,8 @@ _TRACESERVICE = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_LISTTRACESREQUEST,
             output_type=_LISTTRACESRESPONSE,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b('\202\323\344\223\002"\022 /v1/projects/{project_id}/traces'),
+            serialized_options=_b(
+                '\202\323\344\223\002"\022 /v1/projects/{project_id}/traces'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -1061,11 +1061,8 @@ _TRACESERVICE = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_GETTRACEREQUEST,
             output_type=_TRACE,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\002-\022+/v1/projects/{project_id}/traces/{trace_id}"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\002-\022+/v1/projects/{project_id}/traces/{trace_id}"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -1075,11 +1072,8 @@ _TRACESERVICE = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_PATCHTRACESREQUEST,
             output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\002*2 /v1/projects/{project_id}/traces:\006traces"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\002*2 /v1/projects/{project_id}/traces:\006traces"
             ),
         ),
     ],
