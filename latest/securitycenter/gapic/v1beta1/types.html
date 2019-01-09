@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Types for Cloud Security Command Center API Client &#8212; google-cloud 2ec179a documentation</title>
+    <title>Types for Cloud Security Command Center API Client &#8212; google-cloud 50d2612 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -403,7 +403,7 @@ immutable after creation time.</p>
 <dl class="attribute">
 <dt id="google.cloud.securitycenter_v1beta1.types.Finding.category">
 <code class="descname">category</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.Finding.category" title="Permalink to this definition">#</a></dt>
-<dd><p>The additional taxonomy group within findings from a give
+<dd><p>The additional taxonomy group within findings from a given
 source. This field is immutable after creation time. Example:
 “XSS_FLASH_INJECTION”</p>
 </dd></dl>
@@ -421,7 +421,10 @@ well formed URL.</p>
 <dt id="google.cloud.securitycenter_v1beta1.types.Finding.source_properties">
 <code class="descname">source_properties</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.Finding.source_properties" title="Permalink to this definition">#</a></dt>
 <dd><p>Source specific properties. These properties are managed by
-the source that writes the finding.</p>
+the source that writes the finding. The key names in the
+source_properties map must be between 1 and 255 characters,
+and must start with a letter and contain alphanumeric
+characters or underscores only.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1383,9 +1386,9 @@ unique amongst its siblings, for example, two sources with the
 same parent can’t share the same display name. The display
 name must start and end with a letter or digit, may contain
 letters, digits, spaces, hyphens, and underscores, and can be
-no longer than 30 characters. This is captured by the regular
+no longer than 32 characters. This is captured by the regular
 expression: <cite>:raw-latex:</cite>p{L}`:raw-latex:<cite>p{N}</cite> &lt;%7Bp%7BL%7
-Dp%7BN%7D_-%20%5D%7B0,28%7D%5Bp%7BL%7Dp%7BN%7D%5D&gt;`__?.</p>
+Dp%7BN%7D_-%20%5D%7B0,30%7D%5Bp%7BL%7Dp%7BN%7D%5D&gt;`__?.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1495,8 +1498,7 @@ characters and greater than 0 characters in length.</p>
 <dt id="google.cloud.securitycenter_v1beta1.types.UpdateFindingRequest.update_mask">
 <code class="descname">update_mask</code><a class="headerlink" href="#google.cloud.securitycenter_v1beta1.types.UpdateFindingRequest.update_mask" title="Permalink to this definition">#</a></dt>
 <dd><p>The FieldMask to use when updating the finding resource. This
-field is ignored if the finding does not already exist and the
-finding is created.</p>
+field should not be specified when creating a finding.</p>
 </dd></dl>
 
 </dd></dl>

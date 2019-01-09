@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.securitycenter_v1beta1.proto.asset_pb2 &#8212; google-cloud 2ec179a documentation</title>
+    <title>google.cloud.securitycenter_v1beta1.proto.asset_pb2 &#8212; google-cloud 50d2612 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -45,7 +45,6 @@
 <span class="kn">from</span> <span class="nn">google.protobuf</span> <span class="k">import</span> <span class="n">message</span> <span class="k">as</span> <span class="n">_message</span>
 <span class="kn">from</span> <span class="nn">google.protobuf</span> <span class="k">import</span> <span class="n">reflection</span> <span class="k">as</span> <span class="n">_reflection</span>
 <span class="kn">from</span> <span class="nn">google.protobuf</span> <span class="k">import</span> <span class="n">symbol_database</span> <span class="k">as</span> <span class="n">_symbol_database</span>
-<span class="kn">from</span> <span class="nn">google.protobuf</span> <span class="k">import</span> <span class="n">descriptor_pb2</span>
 
 <span class="c1"># @@protoc_insertion_point(imports)</span>
 
@@ -64,6 +63,9 @@
     <span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/cloud/securitycenter_v1beta1/proto/asset.proto&quot;</span><span class="p">,</span>
     <span class="n">package</span><span class="o">=</span><span class="s2">&quot;google.cloud.securitycenter.v1beta1&quot;</span><span class="p">,</span>
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
+    <span class="n">serialized_options</span><span class="o">=</span><span class="n">_b</span><span class="p">(</span>
+        <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&#39;com.google.cloud.securitycenter.v1beta1P</span><span class="se">\001</span><span class="s2">ZQgoogle.golang.org/genproto/googleapis/cloud/securitycenter/v1beta1;securitycenter&quot;</span>
+    <span class="p">),</span>
     <span class="n">serialized_pb</span><span class="o">=</span><span class="n">_b</span><span class="p">(</span>
         <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">5google/cloud/securitycenter_v1beta1/proto/asset.proto</span><span class="se">\x12</span><span class="s2">#google.cloud.securitycenter.v1beta1</span><span class="se">\x1a\x1c</span><span class="s2">google/api/annotations.proto</span><span class="se">\x1a</span><span class="s2">&gt;google/cloud/securitycenter_v1beta1/proto/security_marks.proto</span><span class="se">\x1a\x1c</span><span class="s2">google/protobuf/struct.proto</span><span class="se">\x1a\x1f</span><span class="s2">google/protobuf/timestamp.proto</span><span class="se">\&quot;\xf7\x04\n\x05\x41</span><span class="s2">sset</span><span class="se">\x12\x0c\n\x04</span><span class="s2">name</span><span class="se">\x18\x01</span><span class="s2"> </span><span class="se">\x01</span><span class="s2">(</span><span class="se">\t\x12</span><span class="s2">g</span><span class="se">\n\x1a</span><span class="s2">security_center_properties</span><span class="se">\x18\x02</span><span class="s2"> </span><span class="se">\x01</span><span class="s2">(</span><span class="se">\x0b\x32\x43</span><span class="s2">.google.cloud.securitycenter.v1beta1.Asset.SecurityCenterProperties</span><span class="se">\x12</span><span class="s2">_</span><span class="se">\n\x13</span><span class="s2">resource_properties</span><span class="se">\x18\x07</span><span class="s2"> </span><span class="se">\x03</span><span class="s2">(</span><span class="se">\x0b\x32\x42</span><span class="s2">.google.cloud.securitycenter.v1beta1.Asset.ResourcePropertiesEntry</span><span class="se">\x12</span><span class="s2">J</span><span class="se">\n\x0e</span><span class="s2">security_marks</span><span class="se">\x18\x08</span><span class="s2"> </span><span class="se">\x01</span><span class="s2">(</span><span class="se">\x0b\x32\x32</span><span class="s2">.google.cloud.securitycenter.v1beta1.SecurityMarks</span><span class="se">\x12</span><span class="s2">/</span><span class="se">\n\x0b\x63</span><span class="s2">reate_time</span><span class="se">\x18\t</span><span class="s2"> </span><span class="se">\x01</span><span class="s2">(</span><span class="se">\x0b\x32\x1a</span><span class="s2">.google.protobuf.Timestamp</span><span class="se">\x12</span><span class="s2">/</span><span class="se">\n\x0b</span><span class="s2">update_time</span><span class="se">\x18\n</span><span class="s2"> </span><span class="se">\x01</span><span class="s2">(</span><span class="se">\x0b\x32\x1a</span><span class="s2">.google.protobuf.Timestamp</span><span class="se">\x1a\x94\x01\n\x18</span><span class="s2">SecurityCenterProperties</span><span class="se">\x12\x15\n\r</span><span class="s2">resource_name</span><span class="se">\x18\x01</span><span class="s2"> </span><span class="se">\x01</span><span class="s2">(</span><span class="se">\t\x12\x15\n\r</span><span class="s2">resource_type</span><span class="se">\x18\x02</span><span class="s2"> </span><span class="se">\x01</span><span class="s2">(</span><span class="se">\t\x12\x17\n\x0f</span><span class="s2">resource_parent</span><span class="se">\x18\x03</span><span class="s2"> </span><span class="se">\x01</span><span class="s2">(</span><span class="se">\t\x12\x18\n\x10</span><span class="s2">resource_project</span><span class="se">\x18\x04</span><span class="s2"> </span><span class="se">\x01</span><span class="s2">(</span><span class="se">\t\x12\x17\n\x0f</span><span class="s2">resource_owners</span><span class="se">\x18\x05</span><span class="s2"> </span><span class="se">\x03</span><span class="s2">(</span><span class="se">\t\x1a</span><span class="s2">Q</span><span class="se">\n\x17</span><span class="s2">ResourcePropertiesEntry</span><span class="se">\x12\x0b\n\x03</span><span class="s2">key</span><span class="se">\x18\x01</span><span class="s2"> </span><span class="se">\x01</span><span class="s2">(</span><span class="se">\t\x12</span><span class="s2">%</span><span class="se">\n\x05</span><span class="s2">value</span><span class="se">\x18\x02</span><span class="s2"> </span><span class="se">\x01</span><span class="s2">(</span><span class="se">\x0b\x32\x16</span><span class="s2">.google.protobuf.Value:</span><span class="se">\x02\x38\x01\x42</span><span class="s2">~</span><span class="se">\n</span><span class="s2">&#39;com.google.cloud.securitycenter.v1beta1P</span><span class="se">\x01</span><span class="s2">ZQgoogle.golang.org/genproto/googleapis/cloud/securitycenter/v1beta1;securitycenterb</span><span class="se">\x06</span><span class="s2">proto3&quot;</span>
     <span class="p">),</span>
@@ -98,7 +100,7 @@
             <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
         <span class="p">),</span>
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
@@ -116,7 +118,7 @@
             <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
         <span class="p">),</span>
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
@@ -134,7 +136,7 @@
             <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
         <span class="p">),</span>
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
@@ -152,7 +154,7 @@
             <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
         <span class="p">),</span>
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
@@ -170,14 +172,14 @@
             <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
         <span class="p">),</span>
     <span class="p">],</span>
     <span class="n">extensions</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">nested_types</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">enum_types</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">is_extendable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
@@ -208,7 +210,7 @@
             <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
         <span class="p">),</span>
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
@@ -226,14 +228,14 @@
             <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
         <span class="p">),</span>
     <span class="p">],</span>
     <span class="n">extensions</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">nested_types</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">enum_types</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">options</span><span class="o">=</span><span class="n">_descriptor</span><span class="o">.</span><span class="n">_ParseOptions</span><span class="p">(</span><span class="n">descriptor_pb2</span><span class="o">.</span><span class="n">MessageOptions</span><span class="p">(),</span> <span class="n">_b</span><span class="p">(</span><span class="s2">&quot;8</span><span class="se">\001</span><span class="s2">&quot;</span><span class="p">)),</span>
+    <span class="n">serialized_options</span><span class="o">=</span><span class="n">_b</span><span class="p">(</span><span class="s2">&quot;8</span><span class="se">\001</span><span class="s2">&quot;</span><span class="p">),</span>
     <span class="n">is_extendable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
@@ -264,7 +266,7 @@
             <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
         <span class="p">),</span>
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
@@ -282,7 +284,7 @@
             <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
         <span class="p">),</span>
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
@@ -300,7 +302,7 @@
             <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
         <span class="p">),</span>
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
@@ -318,7 +320,7 @@
             <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
         <span class="p">),</span>
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
@@ -336,7 +338,7 @@
             <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
         <span class="p">),</span>
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
@@ -354,14 +356,14 @@
             <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
         <span class="p">),</span>
     <span class="p">],</span>
     <span class="n">extensions</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">nested_types</span><span class="o">=</span><span class="p">[</span><span class="n">_ASSET_SECURITYCENTERPROPERTIES</span><span class="p">,</span> <span class="n">_ASSET_RESOURCEPROPERTIESENTRY</span><span class="p">],</span>
     <span class="n">enum_types</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">is_extendable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
@@ -483,17 +485,8 @@
 <span class="n">_sym_db</span><span class="o">.</span><span class="n">RegisterMessage</span><span class="p">(</span><span class="n">Asset</span><span class="o">.</span><span class="n">ResourcePropertiesEntry</span><span class="p">)</span>
 
 
-<span class="n">DESCRIPTOR</span><span class="o">.</span><span class="n">has_options</span> <span class="o">=</span> <span class="kc">True</span>
-<span class="n">DESCRIPTOR</span><span class="o">.</span><span class="n">_options</span> <span class="o">=</span> <span class="n">_descriptor</span><span class="o">.</span><span class="n">_ParseOptions</span><span class="p">(</span>
-    <span class="n">descriptor_pb2</span><span class="o">.</span><span class="n">FileOptions</span><span class="p">(),</span>
-    <span class="n">_b</span><span class="p">(</span>
-        <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&#39;com.google.cloud.securitycenter.v1beta1P</span><span class="se">\001</span><span class="s2">ZQgoogle.golang.org/genproto/googleapis/cloud/securitycenter/v1beta1;securitycenter&quot;</span>
-    <span class="p">),</span>
-<span class="p">)</span>
-<span class="n">_ASSET_RESOURCEPROPERTIESENTRY</span><span class="o">.</span><span class="n">has_options</span> <span class="o">=</span> <span class="kc">True</span>
-<span class="n">_ASSET_RESOURCEPROPERTIESENTRY</span><span class="o">.</span><span class="n">_options</span> <span class="o">=</span> <span class="n">_descriptor</span><span class="o">.</span><span class="n">_ParseOptions</span><span class="p">(</span>
-    <span class="n">descriptor_pb2</span><span class="o">.</span><span class="n">MessageOptions</span><span class="p">(),</span> <span class="n">_b</span><span class="p">(</span><span class="s2">&quot;8</span><span class="se">\001</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="p">)</span>
+<span class="n">DESCRIPTOR</span><span class="o">.</span><span class="n">_options</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="n">_ASSET_RESOURCEPROPERTIESENTRY</span><span class="o">.</span><span class="n">_options</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="c1"># @@protoc_insertion_point(module_scope)</span>
 </pre></div>
 
