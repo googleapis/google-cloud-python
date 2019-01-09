@@ -8,7 +8,6 @@ from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
-from google.protobuf import descriptor_pb2
 
 # @@protoc_insertion_point(imports)
 
@@ -22,6 +21,9 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     name="google/cloud/monitoring_v3/proto/dropped_labels.proto",
     package="google.monitoring.v3",
     syntax="proto3",
+    serialized_options=_b(
+        "Z>google.golang.org/genproto/googleapis/monitoring/v3;monitoring"
+    ),
     serialized_pb=_b(
         '\n5google/cloud/monitoring_v3/proto/dropped_labels.proto\x12\x14google.monitoring.v3\x1a\x1cgoogle/api/annotations.proto"|\n\rDroppedLabels\x12=\n\x05label\x18\x01 \x03(\x0b\x32..google.monitoring.v3.DroppedLabels.LabelEntry\x1a,\n\nLabelEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x42@Z>google.golang.org/genproto/googleapis/monitoring/v3;monitoringb\x06proto3'
     ),
@@ -51,7 +53,7 @@ _DROPPEDLABELS_LABELENTRY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -69,14 +71,14 @@ _DROPPEDLABELS_LABELENTRY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=_descriptor._ParseOptions(descriptor_pb2.MessageOptions(), _b("8\001")),
+    serialized_options=_b("8\001"),
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -107,14 +109,14 @@ _DROPPEDLABELS = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[_DROPPEDLABELS_LABELENTRY],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -172,13 +174,6 @@ _sym_db.RegisterMessage(DroppedLabels)
 _sym_db.RegisterMessage(DroppedLabels.LabelEntry)
 
 
-DESCRIPTOR.has_options = True
-DESCRIPTOR._options = _descriptor._ParseOptions(
-    descriptor_pb2.FileOptions(),
-    _b("Z>google.golang.org/genproto/googleapis/monitoring/v3;monitoring"),
-)
-_DROPPEDLABELS_LABELENTRY.has_options = True
-_DROPPEDLABELS_LABELENTRY._options = _descriptor._ParseOptions(
-    descriptor_pb2.MessageOptions(), _b("8\001")
-)
+DESCRIPTOR._options = None
+_DROPPEDLABELS_LABELENTRY._options = None
 # @@protoc_insertion_point(module_scope)

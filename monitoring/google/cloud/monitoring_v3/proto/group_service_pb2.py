@@ -8,7 +8,6 @@ from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
-from google.protobuf import descriptor_pb2
 
 # @@protoc_insertion_point(imports)
 
@@ -32,6 +31,9 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     name="google/cloud/monitoring_v3/proto/group_service.proto",
     package="google.monitoring.v3",
     syntax="proto3",
+    serialized_options=_b(
+        "\n\030com.google.monitoring.v3B\021GroupServiceProtoP\001Z>google.golang.org/genproto/googleapis/monitoring/v3;monitoring\252\002\032Google.Cloud.Monitoring.V3\312\002\032Google\\Cloud\\Monitoring\\V3"
+    ),
     serialized_pb=_b(
         '\n4google/cloud/monitoring_v3/proto/group_service.proto\x12\x14google.monitoring.v3\x1a\x1cgoogle/api/annotations.proto\x1a#google/api/monitored_resource.proto\x1a-google/cloud/monitoring_v3/proto/common.proto\x1a,google/cloud/monitoring_v3/proto/group.proto\x1a\x1bgoogle/protobuf/empty.proto"\xad\x01\n\x11ListGroupsRequest\x12\x0c\n\x04name\x18\x07 \x01(\t\x12\x1b\n\x11\x63hildren_of_group\x18\x02 \x01(\tH\x00\x12\x1c\n\x12\x61ncestors_of_group\x18\x03 \x01(\tH\x00\x12\x1e\n\x14\x64\x65scendants_of_group\x18\x04 \x01(\tH\x00\x12\x11\n\tpage_size\x18\x05 \x01(\x05\x12\x12\n\npage_token\x18\x06 \x01(\tB\x08\n\x06\x66ilter"Y\n\x12ListGroupsResponse\x12*\n\x05group\x18\x01 \x03(\x0b\x32\x1b.google.monitoring.v3.Group\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"\x1f\n\x0fGetGroupRequest\x12\x0c\n\x04name\x18\x03 \x01(\t"e\n\x12\x43reateGroupRequest\x12\x0c\n\x04name\x18\x04 \x01(\t\x12*\n\x05group\x18\x02 \x01(\x0b\x32\x1b.google.monitoring.v3.Group\x12\x15\n\rvalidate_only\x18\x03 \x01(\x08"W\n\x12UpdateGroupRequest\x12*\n\x05group\x18\x02 \x01(\x0b\x32\x1b.google.monitoring.v3.Group\x12\x15\n\rvalidate_only\x18\x03 \x01(\x08""\n\x12\x44\x65leteGroupRequest\x12\x0c\n\x04name\x18\x03 \x01(\t"\x94\x01\n\x17ListGroupMembersRequest\x12\x0c\n\x04name\x18\x07 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05\x12\x12\n\npage_token\x18\x04 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x05 \x01(\t\x12\x34\n\x08interval\x18\x06 \x01(\x0b\x32".google.monitoring.v3.TimeInterval"w\n\x18ListGroupMembersResponse\x12.\n\x07members\x18\x01 \x03(\x0b\x32\x1d.google.api.MonitoredResource\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\x12\x12\n\ntotal_size\x18\x03 \x01(\x05\x32\xbb\x06\n\x0cGroupService\x12\x85\x01\n\nListGroups\x12\'.google.monitoring.v3.ListGroupsRequest\x1a(.google.monitoring.v3.ListGroupsResponse"$\x82\xd3\xe4\x93\x02\x1e\x12\x1c/v3/{name=projects/*}/groups\x12v\n\x08GetGroup\x12%.google.monitoring.v3.GetGroupRequest\x1a\x1b.google.monitoring.v3.Group"&\x82\xd3\xe4\x93\x02 \x12\x1e/v3/{name=projects/*/groups/*}\x12\x81\x01\n\x0b\x43reateGroup\x12(.google.monitoring.v3.CreateGroupRequest\x1a\x1b.google.monitoring.v3.Group"+\x82\xd3\xe4\x93\x02%"\x1c/v3/{name=projects/*}/groups:\x05group\x12\x89\x01\n\x0bUpdateGroup\x12(.google.monitoring.v3.UpdateGroupRequest\x1a\x1b.google.monitoring.v3.Group"3\x82\xd3\xe4\x93\x02-\x1a$/v3/{group.name=projects/*/groups/*}:\x05group\x12w\n\x0b\x44\x65leteGroup\x12(.google.monitoring.v3.DeleteGroupRequest\x1a\x16.google.protobuf.Empty"&\x82\xd3\xe4\x93\x02 *\x1e/v3/{name=projects/*/groups/*}\x12\xa1\x01\n\x10ListGroupMembers\x12-.google.monitoring.v3.ListGroupMembersRequest\x1a..google.monitoring.v3.ListGroupMembersResponse".\x82\xd3\xe4\x93\x02(\x12&/v3/{name=projects/*/groups/*}/membersB\xa9\x01\n\x18\x63om.google.monitoring.v3B\x11GroupServiceProtoP\x01Z>google.golang.org/genproto/googleapis/monitoring/v3;monitoring\xaa\x02\x1aGoogle.Cloud.Monitoring.V3\xca\x02\x1aGoogle\\Cloud\\Monitoring\\V3b\x06proto3'
     ),
@@ -67,7 +69,7 @@ _LISTGROUPSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -85,7 +87,7 @@ _LISTGROUPSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -103,7 +105,7 @@ _LISTGROUPSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -121,7 +123,7 @@ _LISTGROUPSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -139,7 +141,7 @@ _LISTGROUPSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -157,14 +159,14 @@ _LISTGROUPSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -204,7 +206,7 @@ _LISTGROUPSRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -222,14 +224,14 @@ _LISTGROUPSRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -261,14 +263,14 @@ _GETGROUPREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -300,7 +302,7 @@ _CREATEGROUPREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -318,7 +320,7 @@ _CREATEGROUPREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -336,14 +338,14 @@ _CREATEGROUPREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -375,7 +377,7 @@ _UPDATEGROUPREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -393,14 +395,14 @@ _UPDATEGROUPREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -432,14 +434,14 @@ _DELETEGROUPREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -471,7 +473,7 @@ _LISTGROUPMEMBERSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -489,7 +491,7 @@ _LISTGROUPMEMBERSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -507,7 +509,7 @@ _LISTGROUPMEMBERSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -525,7 +527,7 @@ _LISTGROUPMEMBERSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -543,14 +545,14 @@ _LISTGROUPMEMBERSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -582,7 +584,7 @@ _LISTGROUPMEMBERSRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -600,7 +602,7 @@ _LISTGROUPMEMBERSRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -618,14 +620,14 @@ _LISTGROUPMEMBERSRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -906,20 +908,14 @@ ListGroupMembersResponse = _reflection.GeneratedProtocolMessageType(
 _sym_db.RegisterMessage(ListGroupMembersResponse)
 
 
-DESCRIPTOR.has_options = True
-DESCRIPTOR._options = _descriptor._ParseOptions(
-    descriptor_pb2.FileOptions(),
-    _b(
-        "\n\030com.google.monitoring.v3B\021GroupServiceProtoP\001Z>google.golang.org/genproto/googleapis/monitoring/v3;monitoring\252\002\032Google.Cloud.Monitoring.V3\312\002\032Google\\Cloud\\Monitoring\\V3"
-    ),
-)
+DESCRIPTOR._options = None
 
 _GROUPSERVICE = _descriptor.ServiceDescriptor(
     name="GroupService",
     full_name="google.monitoring.v3.GroupService",
     file=DESCRIPTOR,
     index=0,
-    options=None,
+    serialized_options=None,
     serialized_start=1068,
     serialized_end=1895,
     methods=[
@@ -930,9 +926,8 @@ _GROUPSERVICE = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_LISTGROUPSREQUEST,
             output_type=_LISTGROUPSRESPONSE,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b("\202\323\344\223\002\036\022\034/v3/{name=projects/*}/groups"),
+            serialized_options=_b(
+                "\202\323\344\223\002\036\022\034/v3/{name=projects/*}/groups"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -942,9 +937,8 @@ _GROUPSERVICE = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_GETGROUPREQUEST,
             output_type=google_dot_cloud_dot_monitoring__v3_dot_proto_dot_group__pb2._GROUP,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b("\202\323\344\223\002 \022\036/v3/{name=projects/*/groups/*}"),
+            serialized_options=_b(
+                "\202\323\344\223\002 \022\036/v3/{name=projects/*/groups/*}"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -954,9 +948,8 @@ _GROUPSERVICE = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_CREATEGROUPREQUEST,
             output_type=google_dot_cloud_dot_monitoring__v3_dot_proto_dot_group__pb2._GROUP,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b('\202\323\344\223\002%"\034/v3/{name=projects/*}/groups:\005group'),
+            serialized_options=_b(
+                '\202\323\344\223\002%"\034/v3/{name=projects/*}/groups:\005group'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -966,11 +959,8 @@ _GROUPSERVICE = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_UPDATEGROUPREQUEST,
             output_type=google_dot_cloud_dot_monitoring__v3_dot_proto_dot_group__pb2._GROUP,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\002-\032$/v3/{group.name=projects/*/groups/*}:\005group"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\002-\032$/v3/{group.name=projects/*/groups/*}:\005group"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -980,9 +970,8 @@ _GROUPSERVICE = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_DELETEGROUPREQUEST,
             output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b("\202\323\344\223\002 *\036/v3/{name=projects/*/groups/*}"),
+            serialized_options=_b(
+                "\202\323\344\223\002 *\036/v3/{name=projects/*/groups/*}"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -992,9 +981,8 @@ _GROUPSERVICE = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_LISTGROUPMEMBERSREQUEST,
             output_type=_LISTGROUPMEMBERSRESPONSE,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b("\202\323\344\223\002(\022&/v3/{name=projects/*/groups/*}/members"),
+            serialized_options=_b(
+                "\202\323\344\223\002(\022&/v3/{name=projects/*/groups/*}/members"
             ),
         ),
     ],
