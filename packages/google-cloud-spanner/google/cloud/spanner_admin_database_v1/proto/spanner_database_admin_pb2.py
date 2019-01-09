@@ -8,7 +8,6 @@ from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
-from google.protobuf import descriptor_pb2
 
 # @@protoc_insertion_point(imports)
 
@@ -29,6 +28,9 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     name="google/cloud/spanner/admin/database_v1/proto/spanner_database_admin.proto",
     package="google.spanner.admin.database.v1",
     syntax="proto3",
+    serialized_options=_b(
+        "\n$com.google.spanner.admin.database.v1B\031SpannerDatabaseAdminProtoP\001ZHgoogle.golang.org/genproto/googleapis/spanner/admin/database/v1;database\252\002&Google.Cloud.Spanner.Admin.Database.V1\312\002&Google\\Cloud\\Spanner\\Admin\\Database\\V1"
+    ),
     serialized_pb=_b(
         '\nIgoogle/cloud/spanner/admin/database_v1/proto/spanner_database_admin.proto\x12 google.spanner.admin.database.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x1egoogle/iam/v1/iam_policy.proto\x1a\x1agoogle/iam/v1/policy.proto\x1a#google/longrunning/operations.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1fgoogle/protobuf/timestamp.proto"\x92\x01\n\x08\x44\x61tabase\x12\x0c\n\x04name\x18\x01 \x01(\t\x12?\n\x05state\x18\x02 \x01(\x0e\x32\x30.google.spanner.admin.database.v1.Database.State"7\n\x05State\x12\x15\n\x11STATE_UNSPECIFIED\x10\x00\x12\x0c\n\x08\x43REATING\x10\x01\x12\t\n\x05READY\x10\x02"M\n\x14ListDatabasesRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05\x12\x12\n\npage_token\x18\x04 \x01(\t"o\n\x15ListDatabasesResponse\x12=\n\tdatabases\x18\x01 \x03(\x0b\x32*.google.spanner.admin.database.v1.Database\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"[\n\x15\x43reateDatabaseRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x18\n\x10\x63reate_statement\x18\x02 \x01(\t\x12\x18\n\x10\x65xtra_statements\x18\x03 \x03(\t"*\n\x16\x43reateDatabaseMetadata\x12\x10\n\x08\x64\x61tabase\x18\x01 \x01(\t""\n\x12GetDatabaseRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"V\n\x18UpdateDatabaseDdlRequest\x12\x10\n\x08\x64\x61tabase\x18\x01 \x01(\t\x12\x12\n\nstatements\x18\x02 \x03(\t\x12\x14\n\x0coperation_id\x18\x03 \x01(\t"x\n\x19UpdateDatabaseDdlMetadata\x12\x10\n\x08\x64\x61tabase\x18\x01 \x01(\t\x12\x12\n\nstatements\x18\x02 \x03(\t\x12\x35\n\x11\x63ommit_timestamps\x18\x03 \x03(\x0b\x32\x1a.google.protobuf.Timestamp"\'\n\x13\x44ropDatabaseRequest\x12\x10\n\x08\x64\x61tabase\x18\x01 \x01(\t")\n\x15GetDatabaseDdlRequest\x12\x10\n\x08\x64\x61tabase\x18\x01 \x01(\t",\n\x16GetDatabaseDdlResponse\x12\x12\n\nstatements\x18\x01 \x03(\t2\x95\x0c\n\rDatabaseAdmin\x12\xb7\x01\n\rListDatabases\x12\x36.google.spanner.admin.database.v1.ListDatabasesRequest\x1a\x37.google.spanner.admin.database.v1.ListDatabasesResponse"5\x82\xd3\xe4\x93\x02/\x12-/v1/{parent=projects/*/instances/*}/databases\x12\xa2\x01\n\x0e\x43reateDatabase\x12\x37.google.spanner.admin.database.v1.CreateDatabaseRequest\x1a\x1d.google.longrunning.Operation"8\x82\xd3\xe4\x93\x02\x32"-/v1/{parent=projects/*/instances/*}/databases:\x01*\x12\xa6\x01\n\x0bGetDatabase\x12\x34.google.spanner.admin.database.v1.GetDatabaseRequest\x1a*.google.spanner.admin.database.v1.Database"5\x82\xd3\xe4\x93\x02/\x12-/v1/{name=projects/*/instances/*/databases/*}\x12\xb0\x01\n\x11UpdateDatabaseDdl\x12:.google.spanner.admin.database.v1.UpdateDatabaseDdlRequest\x1a\x1d.google.longrunning.Operation"@\x82\xd3\xe4\x93\x02:25/v1/{database=projects/*/instances/*/databases/*}/ddl:\x01*\x12\x98\x01\n\x0c\x44ropDatabase\x12\x35.google.spanner.admin.database.v1.DropDatabaseRequest\x1a\x16.google.protobuf.Empty"9\x82\xd3\xe4\x93\x02\x33*1/v1/{database=projects/*/instances/*/databases/*}\x12\xc2\x01\n\x0eGetDatabaseDdl\x12\x37.google.spanner.admin.database.v1.GetDatabaseDdlRequest\x1a\x38.google.spanner.admin.database.v1.GetDatabaseDdlResponse"=\x82\xd3\xe4\x93\x02\x37\x12\x35/v1/{database=projects/*/instances/*/databases/*}/ddl\x12\x94\x01\n\x0cSetIamPolicy\x12".google.iam.v1.SetIamPolicyRequest\x1a\x15.google.iam.v1.Policy"I\x82\xd3\xe4\x93\x02\x43">/v1/{resource=projects/*/instances/*/databases/*}:setIamPolicy:\x01*\x12\x94\x01\n\x0cGetIamPolicy\x12".google.iam.v1.GetIamPolicyRequest\x1a\x15.google.iam.v1.Policy"I\x82\xd3\xe4\x93\x02\x43">/v1/{resource=projects/*/instances/*/databases/*}:getIamPolicy:\x01*\x12\xba\x01\n\x12TestIamPermissions\x12(.google.iam.v1.TestIamPermissionsRequest\x1a).google.iam.v1.TestIamPermissionsResponse"O\x82\xd3\xe4\x93\x02I"D/v1/{resource=projects/*/instances/*/databases/*}:testIamPermissions:\x01*B\xdf\x01\n$com.google.spanner.admin.database.v1B\x19SpannerDatabaseAdminProtoP\x01ZHgoogle.golang.org/genproto/googleapis/spanner/admin/database/v1;database\xaa\x02&Google.Cloud.Spanner.Admin.Database.V1\xca\x02&Google\\Cloud\\Spanner\\Admin\\Database\\V1b\x06proto3'
     ),
@@ -50,17 +52,21 @@ _DATABASE_STATE = _descriptor.EnumDescriptor(
     file=DESCRIPTOR,
     values=[
         _descriptor.EnumValueDescriptor(
-            name="STATE_UNSPECIFIED", index=0, number=0, options=None, type=None
+            name="STATE_UNSPECIFIED",
+            index=0,
+            number=0,
+            serialized_options=None,
+            type=None,
         ),
         _descriptor.EnumValueDescriptor(
-            name="CREATING", index=1, number=1, options=None, type=None
+            name="CREATING", index=1, number=1, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="READY", index=2, number=2, options=None, type=None
+            name="READY", index=2, number=2, serialized_options=None, type=None
         ),
     ],
     containing_type=None,
-    options=None,
+    serialized_options=None,
     serialized_start=392,
     serialized_end=447,
 )
@@ -89,7 +95,7 @@ _DATABASE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -107,14 +113,14 @@ _DATABASE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[_DATABASE_STATE],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -146,7 +152,7 @@ _LISTDATABASESREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -164,7 +170,7 @@ _LISTDATABASESREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -182,14 +188,14 @@ _LISTDATABASESREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -221,7 +227,7 @@ _LISTDATABASESRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -239,14 +245,14 @@ _LISTDATABASESRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -278,7 +284,7 @@ _CREATEDATABASEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -296,7 +302,7 @@ _CREATEDATABASEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -314,14 +320,14 @@ _CREATEDATABASEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -353,14 +359,14 @@ _CREATEDATABASEMETADATA = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -392,14 +398,14 @@ _GETDATABASEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -431,7 +437,7 @@ _UPDATEDATABASEDDLREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -449,7 +455,7 @@ _UPDATEDATABASEDDLREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -467,14 +473,14 @@ _UPDATEDATABASEDDLREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -506,7 +512,7 @@ _UPDATEDATABASEDDLMETADATA = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -524,7 +530,7 @@ _UPDATEDATABASEDDLMETADATA = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -542,14 +548,14 @@ _UPDATEDATABASEDDLMETADATA = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -581,14 +587,14 @@ _DROPDATABASEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -620,14 +626,14 @@ _GETDATABASEDDLREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -659,14 +665,14 @@ _GETDATABASEDDLRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -987,20 +993,14 @@ GetDatabaseDdlResponse = _reflection.GeneratedProtocolMessageType(
 _sym_db.RegisterMessage(GetDatabaseDdlResponse)
 
 
-DESCRIPTOR.has_options = True
-DESCRIPTOR._options = _descriptor._ParseOptions(
-    descriptor_pb2.FileOptions(),
-    _b(
-        "\n$com.google.spanner.admin.database.v1B\031SpannerDatabaseAdminProtoP\001ZHgoogle.golang.org/genproto/googleapis/spanner/admin/database/v1;database\252\002&Google.Cloud.Spanner.Admin.Database.V1\312\002&Google\\Cloud\\Spanner\\Admin\\Database\\V1"
-    ),
-)
+DESCRIPTOR._options = None
 
 _DATABASEADMIN = _descriptor.ServiceDescriptor(
     name="DatabaseAdmin",
     full_name="google.spanner.admin.database.v1.DatabaseAdmin",
     file=DESCRIPTOR,
     index=0,
-    options=None,
+    serialized_options=None,
     serialized_start=1155,
     serialized_end=2712,
     methods=[
@@ -1011,11 +1011,8 @@ _DATABASEADMIN = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_LISTDATABASESREQUEST,
             output_type=_LISTDATABASESRESPONSE,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\002/\022-/v1/{parent=projects/*/instances/*}/databases"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\002/\022-/v1/{parent=projects/*/instances/*}/databases"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -1025,11 +1022,8 @@ _DATABASEADMIN = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_CREATEDATABASEREQUEST,
             output_type=google_dot_longrunning_dot_operations__pb2._OPERATION,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\0022"-/v1/{parent=projects/*/instances/*}/databases:\001*'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\0022"-/v1/{parent=projects/*/instances/*}/databases:\001*'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -1039,11 +1033,8 @@ _DATABASEADMIN = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_GETDATABASEREQUEST,
             output_type=_DATABASE,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\002/\022-/v1/{name=projects/*/instances/*/databases/*}"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\002/\022-/v1/{name=projects/*/instances/*/databases/*}"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -1053,11 +1044,8 @@ _DATABASEADMIN = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_UPDATEDATABASEDDLREQUEST,
             output_type=google_dot_longrunning_dot_operations__pb2._OPERATION,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\002:25/v1/{database=projects/*/instances/*/databases/*}/ddl:\001*"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\002:25/v1/{database=projects/*/instances/*/databases/*}/ddl:\001*"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -1067,11 +1055,8 @@ _DATABASEADMIN = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_DROPDATABASEREQUEST,
             output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\0023*1/v1/{database=projects/*/instances/*/databases/*}"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\0023*1/v1/{database=projects/*/instances/*/databases/*}"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -1081,11 +1066,8 @@ _DATABASEADMIN = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_GETDATABASEDDLREQUEST,
             output_type=_GETDATABASEDDLRESPONSE,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\0027\0225/v1/{database=projects/*/instances/*/databases/*}/ddl"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\0027\0225/v1/{database=projects/*/instances/*/databases/*}/ddl"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -1095,11 +1077,8 @@ _DATABASEADMIN = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=google_dot_iam_dot_v1_dot_iam__policy__pb2._SETIAMPOLICYREQUEST,
             output_type=google_dot_iam_dot_v1_dot_policy__pb2._POLICY,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\002C">/v1/{resource=projects/*/instances/*/databases/*}:setIamPolicy:\001*'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\002C">/v1/{resource=projects/*/instances/*/databases/*}:setIamPolicy:\001*'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -1109,11 +1088,8 @@ _DATABASEADMIN = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=google_dot_iam_dot_v1_dot_iam__policy__pb2._GETIAMPOLICYREQUEST,
             output_type=google_dot_iam_dot_v1_dot_policy__pb2._POLICY,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\002C">/v1/{resource=projects/*/instances/*/databases/*}:getIamPolicy:\001*'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\002C">/v1/{resource=projects/*/instances/*/databases/*}:getIamPolicy:\001*'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -1123,11 +1099,8 @@ _DATABASEADMIN = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=google_dot_iam_dot_v1_dot_iam__policy__pb2._TESTIAMPERMISSIONSREQUEST,
             output_type=google_dot_iam_dot_v1_dot_iam__policy__pb2._TESTIAMPERMISSIONSRESPONSE,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\002I"D/v1/{resource=projects/*/instances/*/databases/*}:testIamPermissions:\001*'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\002I"D/v1/{resource=projects/*/instances/*/databases/*}:testIamPermissions:\001*'
             ),
         ),
     ],

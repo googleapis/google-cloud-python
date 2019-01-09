@@ -8,7 +8,6 @@ from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
-from google.protobuf import descriptor_pb2
 
 # @@protoc_insertion_point(imports)
 
@@ -40,6 +39,9 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     name="google/cloud/spanner_v1/proto/spanner.proto",
     package="google.spanner.v1",
     syntax="proto3",
+    serialized_options=_b(
+        "\n\025com.google.spanner.v1B\014SpannerProtoP\001Z8google.golang.org/genproto/googleapis/spanner/v1;spanner\252\002\027Google.Cloud.Spanner.V1\312\002\027Google\\Cloud\\Spanner\\V1"
+    ),
     serialized_pb=_b(
         '\n+google/cloud/spanner_v1/proto/spanner.proto\x12\x11google.spanner.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1cgoogle/protobuf/struct.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a(google/cloud/spanner_v1/proto/keys.proto\x1a,google/cloud/spanner_v1/proto/mutation.proto\x1a.google/cloud/spanner_v1/proto/result_set.proto\x1a/google/cloud/spanner_v1/proto/transaction.proto\x1a(google/cloud/spanner_v1/proto/type.proto"U\n\x14\x43reateSessionRequest\x12\x10\n\x08\x64\x61tabase\x18\x01 \x01(\t\x12+\n\x07session\x18\x02 \x01(\x0b\x32\x1a.google.spanner.v1.Session"\xee\x01\n\x07Session\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x36\n\x06labels\x18\x02 \x03(\x0b\x32&.google.spanner.v1.Session.LabelsEntry\x12/\n\x0b\x63reate_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12=\n\x19\x61pproximate_last_use_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x1a-\n\x0bLabelsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01"!\n\x11GetSessionRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"^\n\x13ListSessionsRequest\x12\x10\n\x08\x64\x61tabase\x18\x01 \x01(\t\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x04 \x01(\t"]\n\x14ListSessionsResponse\x12,\n\x08sessions\x18\x01 \x03(\x0b\x32\x1a.google.spanner.v1.Session\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"$\n\x14\x44\x65leteSessionRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"\xe0\x03\n\x11\x45xecuteSqlRequest\x12\x0f\n\x07session\x18\x01 \x01(\t\x12;\n\x0btransaction\x18\x02 \x01(\x0b\x32&.google.spanner.v1.TransactionSelector\x12\x0b\n\x03sql\x18\x03 \x01(\t\x12\'\n\x06params\x18\x04 \x01(\x0b\x32\x17.google.protobuf.Struct\x12I\n\x0bparam_types\x18\x05 \x03(\x0b\x32\x34.google.spanner.v1.ExecuteSqlRequest.ParamTypesEntry\x12\x14\n\x0cresume_token\x18\x06 \x01(\x0c\x12\x42\n\nquery_mode\x18\x07 \x01(\x0e\x32..google.spanner.v1.ExecuteSqlRequest.QueryMode\x12\x17\n\x0fpartition_token\x18\x08 \x01(\x0c\x12\r\n\x05seqno\x18\t \x01(\x03\x1aJ\n\x0fParamTypesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12&\n\x05value\x18\x02 \x01(\x0b\x32\x17.google.spanner.v1.Type:\x02\x38\x01".\n\tQueryMode\x12\n\n\x06NORMAL\x10\x00\x12\x08\n\x04PLAN\x10\x01\x12\x0b\n\x07PROFILE\x10\x02"H\n\x10PartitionOptions\x12\x1c\n\x14partition_size_bytes\x18\x01 \x01(\x03\x12\x16\n\x0emax_partitions\x18\x02 \x01(\x03"\xf6\x02\n\x15PartitionQueryRequest\x12\x0f\n\x07session\x18\x01 \x01(\t\x12;\n\x0btransaction\x18\x02 \x01(\x0b\x32&.google.spanner.v1.TransactionSelector\x12\x0b\n\x03sql\x18\x03 \x01(\t\x12\'\n\x06params\x18\x04 \x01(\x0b\x32\x17.google.protobuf.Struct\x12M\n\x0bparam_types\x18\x05 \x03(\x0b\x32\x38.google.spanner.v1.PartitionQueryRequest.ParamTypesEntry\x12>\n\x11partition_options\x18\x06 \x01(\x0b\x32#.google.spanner.v1.PartitionOptions\x1aJ\n\x0fParamTypesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12&\n\x05value\x18\x02 \x01(\x0b\x32\x17.google.spanner.v1.Type:\x02\x38\x01"\xff\x01\n\x14PartitionReadRequest\x12\x0f\n\x07session\x18\x01 \x01(\t\x12;\n\x0btransaction\x18\x02 \x01(\x0b\x32&.google.spanner.v1.TransactionSelector\x12\r\n\x05table\x18\x03 \x01(\t\x12\r\n\x05index\x18\x04 \x01(\t\x12\x0f\n\x07\x63olumns\x18\x05 \x03(\t\x12*\n\x07key_set\x18\x06 \x01(\x0b\x32\x19.google.spanner.v1.KeySet\x12>\n\x11partition_options\x18\t \x01(\x0b\x32#.google.spanner.v1.PartitionOptions"$\n\tPartition\x12\x17\n\x0fpartition_token\x18\x01 \x01(\x0c"z\n\x11PartitionResponse\x12\x30\n\npartitions\x18\x01 \x03(\x0b\x32\x1c.google.spanner.v1.Partition\x12\x33\n\x0btransaction\x18\x02 \x01(\x0b\x32\x1e.google.spanner.v1.Transaction"\xf4\x01\n\x0bReadRequest\x12\x0f\n\x07session\x18\x01 \x01(\t\x12;\n\x0btransaction\x18\x02 \x01(\x0b\x32&.google.spanner.v1.TransactionSelector\x12\r\n\x05table\x18\x03 \x01(\t\x12\r\n\x05index\x18\x04 \x01(\t\x12\x0f\n\x07\x63olumns\x18\x05 \x03(\t\x12*\n\x07key_set\x18\x06 \x01(\x0b\x32\x19.google.spanner.v1.KeySet\x12\r\n\x05limit\x18\x08 \x01(\x03\x12\x14\n\x0cresume_token\x18\t \x01(\x0c\x12\x17\n\x0fpartition_token\x18\n \x01(\x0c"b\n\x17\x42\x65ginTransactionRequest\x12\x0f\n\x07session\x18\x01 \x01(\t\x12\x36\n\x07options\x18\x02 \x01(\x0b\x32%.google.spanner.v1.TransactionOptions"\xc2\x01\n\rCommitRequest\x12\x0f\n\x07session\x18\x01 \x01(\t\x12\x18\n\x0etransaction_id\x18\x02 \x01(\x0cH\x00\x12G\n\x16single_use_transaction\x18\x03 \x01(\x0b\x32%.google.spanner.v1.TransactionOptionsH\x00\x12.\n\tmutations\x18\x04 \x03(\x0b\x32\x1b.google.spanner.v1.MutationB\r\n\x0btransaction"F\n\x0e\x43ommitResponse\x12\x34\n\x10\x63ommit_timestamp\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.Timestamp":\n\x0fRollbackRequest\x12\x0f\n\x07session\x18\x01 \x01(\t\x12\x16\n\x0etransaction_id\x18\x02 \x01(\x0c\x32\x83\x11\n\x07Spanner\x12\x9b\x01\n\rCreateSession\x12\'.google.spanner.v1.CreateSessionRequest\x1a\x1a.google.spanner.v1.Session"E\x82\xd3\xe4\x93\x02?":/v1/{database=projects/*/instances/*/databases/*}/sessions:\x01*\x12\x90\x01\n\nGetSession\x12$.google.spanner.v1.GetSessionRequest\x1a\x1a.google.spanner.v1.Session"@\x82\xd3\xe4\x93\x02:\x12\x38/v1/{name=projects/*/instances/*/databases/*/sessions/*}\x12\xa3\x01\n\x0cListSessions\x12&.google.spanner.v1.ListSessionsRequest\x1a\'.google.spanner.v1.ListSessionsResponse"B\x82\xd3\xe4\x93\x02<\x12:/v1/{database=projects/*/instances/*/databases/*}/sessions\x12\x92\x01\n\rDeleteSession\x12\'.google.spanner.v1.DeleteSessionRequest\x1a\x16.google.protobuf.Empty"@\x82\xd3\xe4\x93\x02:*8/v1/{name=projects/*/instances/*/databases/*/sessions/*}\x12\xa3\x01\n\nExecuteSql\x12$.google.spanner.v1.ExecuteSqlRequest\x1a\x1c.google.spanner.v1.ResultSet"Q\x82\xd3\xe4\x93\x02K"F/v1/{session=projects/*/instances/*/databases/*/sessions/*}:executeSql:\x01*\x12\xbe\x01\n\x13\x45xecuteStreamingSql\x12$.google.spanner.v1.ExecuteSqlRequest\x1a#.google.spanner.v1.PartialResultSet"Z\x82\xd3\xe4\x93\x02T"O/v1/{session=projects/*/instances/*/databases/*/sessions/*}:executeStreamingSql:\x01*0\x01\x12\x91\x01\n\x04Read\x12\x1e.google.spanner.v1.ReadRequest\x1a\x1c.google.spanner.v1.ResultSet"K\x82\xd3\xe4\x93\x02\x45"@/v1/{session=projects/*/instances/*/databases/*/sessions/*}:read:\x01*\x12\xac\x01\n\rStreamingRead\x12\x1e.google.spanner.v1.ReadRequest\x1a#.google.spanner.v1.PartialResultSet"T\x82\xd3\xe4\x93\x02N"I/v1/{session=projects/*/instances/*/databases/*/sessions/*}:streamingRead:\x01*0\x01\x12\xb7\x01\n\x10\x42\x65ginTransaction\x12*.google.spanner.v1.BeginTransactionRequest\x1a\x1e.google.spanner.v1.Transaction"W\x82\xd3\xe4\x93\x02Q"L/v1/{session=projects/*/instances/*/databases/*/sessions/*}:beginTransaction:\x01*\x12\x9c\x01\n\x06\x43ommit\x12 .google.spanner.v1.CommitRequest\x1a!.google.spanner.v1.CommitResponse"M\x82\xd3\xe4\x93\x02G"B/v1/{session=projects/*/instances/*/databases/*/sessions/*}:commit:\x01*\x12\x97\x01\n\x08Rollback\x12".google.spanner.v1.RollbackRequest\x1a\x16.google.protobuf.Empty"O\x82\xd3\xe4\x93\x02I"D/v1/{session=projects/*/instances/*/databases/*/sessions/*}:rollback:\x01*\x12\xb7\x01\n\x0ePartitionQuery\x12(.google.spanner.v1.PartitionQueryRequest\x1a$.google.spanner.v1.PartitionResponse"U\x82\xd3\xe4\x93\x02O"J/v1/{session=projects/*/instances/*/databases/*/sessions/*}:partitionQuery:\x01*\x12\xb4\x01\n\rPartitionRead\x12\'.google.spanner.v1.PartitionReadRequest\x1a$.google.spanner.v1.PartitionResponse"T\x82\xd3\xe4\x93\x02N"I/v1/{session=projects/*/instances/*/databases/*/sessions/*}:partitionRead:\x01*B\x95\x01\n\x15\x63om.google.spanner.v1B\x0cSpannerProtoP\x01Z8google.golang.org/genproto/googleapis/spanner/v1;spanner\xaa\x02\x17Google.Cloud.Spanner.V1\xca\x02\x17Google\\Cloud\\Spanner\\V1b\x06proto3'
     ),
@@ -64,17 +66,17 @@ _EXECUTESQLREQUEST_QUERYMODE = _descriptor.EnumDescriptor(
     file=DESCRIPTOR,
     values=[
         _descriptor.EnumValueDescriptor(
-            name="NORMAL", index=0, number=0, options=None, type=None
+            name="NORMAL", index=0, number=0, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="PLAN", index=1, number=1, options=None, type=None
+            name="PLAN", index=1, number=1, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="PROFILE", index=2, number=2, options=None, type=None
+            name="PROFILE", index=2, number=2, serialized_options=None, type=None
         ),
     ],
     containing_type=None,
-    options=None,
+    serialized_options=None,
     serialized_start=1442,
     serialized_end=1488,
 )
@@ -103,7 +105,7 @@ _CREATESESSIONREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -121,14 +123,14 @@ _CREATESESSIONREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -160,7 +162,7 @@ _SESSION_LABELSENTRY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -178,14 +180,14 @@ _SESSION_LABELSENTRY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=_descriptor._ParseOptions(descriptor_pb2.MessageOptions(), _b("8\001")),
+    serialized_options=_b("8\001"),
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -216,7 +218,7 @@ _SESSION = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -234,7 +236,7 @@ _SESSION = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -252,7 +254,7 @@ _SESSION = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -270,14 +272,14 @@ _SESSION = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[_SESSION_LABELSENTRY],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -309,14 +311,14 @@ _GETSESSIONREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -348,7 +350,7 @@ _LISTSESSIONSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -366,7 +368,7 @@ _LISTSESSIONSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -384,7 +386,7 @@ _LISTSESSIONSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -402,14 +404,14 @@ _LISTSESSIONSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -441,7 +443,7 @@ _LISTSESSIONSRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -459,14 +461,14 @@ _LISTSESSIONSRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -498,14 +500,14 @@ _DELETESESSIONREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -537,7 +539,7 @@ _EXECUTESQLREQUEST_PARAMTYPESENTRY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -555,14 +557,14 @@ _EXECUTESQLREQUEST_PARAMTYPESENTRY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=_descriptor._ParseOptions(descriptor_pb2.MessageOptions(), _b("8\001")),
+    serialized_options=_b("8\001"),
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -593,7 +595,7 @@ _EXECUTESQLREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -611,7 +613,7 @@ _EXECUTESQLREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -629,7 +631,7 @@ _EXECUTESQLREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -647,7 +649,7 @@ _EXECUTESQLREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -665,7 +667,7 @@ _EXECUTESQLREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -683,7 +685,7 @@ _EXECUTESQLREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -701,7 +703,7 @@ _EXECUTESQLREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -719,7 +721,7 @@ _EXECUTESQLREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -737,14 +739,14 @@ _EXECUTESQLREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[_EXECUTESQLREQUEST_PARAMTYPESENTRY],
     enum_types=[_EXECUTESQLREQUEST_QUERYMODE],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -776,7 +778,7 @@ _PARTITIONOPTIONS = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -794,14 +796,14 @@ _PARTITIONOPTIONS = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -833,7 +835,7 @@ _PARTITIONQUERYREQUEST_PARAMTYPESENTRY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -851,14 +853,14 @@ _PARTITIONQUERYREQUEST_PARAMTYPESENTRY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=_descriptor._ParseOptions(descriptor_pb2.MessageOptions(), _b("8\001")),
+    serialized_options=_b("8\001"),
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -889,7 +891,7 @@ _PARTITIONQUERYREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -907,7 +909,7 @@ _PARTITIONQUERYREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -925,7 +927,7 @@ _PARTITIONQUERYREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -943,7 +945,7 @@ _PARTITIONQUERYREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -961,7 +963,7 @@ _PARTITIONQUERYREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -979,14 +981,14 @@ _PARTITIONQUERYREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[_PARTITIONQUERYREQUEST_PARAMTYPESENTRY],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1018,7 +1020,7 @@ _PARTITIONREADREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1036,7 +1038,7 @@ _PARTITIONREADREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1054,7 +1056,7 @@ _PARTITIONREADREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1072,7 +1074,7 @@ _PARTITIONREADREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1090,7 +1092,7 @@ _PARTITIONREADREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1108,7 +1110,7 @@ _PARTITIONREADREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1126,14 +1128,14 @@ _PARTITIONREADREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1165,14 +1167,14 @@ _PARTITION = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1204,7 +1206,7 @@ _PARTITIONRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1222,14 +1224,14 @@ _PARTITIONRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1261,7 +1263,7 @@ _READREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1279,7 +1281,7 @@ _READREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1297,7 +1299,7 @@ _READREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1315,7 +1317,7 @@ _READREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1333,7 +1335,7 @@ _READREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1351,7 +1353,7 @@ _READREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1369,7 +1371,7 @@ _READREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1387,7 +1389,7 @@ _READREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1405,14 +1407,14 @@ _READREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1444,7 +1446,7 @@ _BEGINTRANSACTIONREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1462,14 +1464,14 @@ _BEGINTRANSACTIONREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1501,7 +1503,7 @@ _COMMITREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1519,7 +1521,7 @@ _COMMITREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1537,7 +1539,7 @@ _COMMITREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1555,14 +1557,14 @@ _COMMITREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1602,14 +1604,14 @@ _COMMITRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1641,7 +1643,7 @@ _ROLLBACKREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1659,14 +1661,14 @@ _ROLLBACKREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -2414,32 +2416,17 @@ RollbackRequest = _reflection.GeneratedProtocolMessageType(
 _sym_db.RegisterMessage(RollbackRequest)
 
 
-DESCRIPTOR.has_options = True
-DESCRIPTOR._options = _descriptor._ParseOptions(
-    descriptor_pb2.FileOptions(),
-    _b(
-        "\n\025com.google.spanner.v1B\014SpannerProtoP\001Z8google.golang.org/genproto/googleapis/spanner/v1;spanner\252\002\027Google.Cloud.Spanner.V1\312\002\027Google\\Cloud\\Spanner\\V1"
-    ),
-)
-_SESSION_LABELSENTRY.has_options = True
-_SESSION_LABELSENTRY._options = _descriptor._ParseOptions(
-    descriptor_pb2.MessageOptions(), _b("8\001")
-)
-_EXECUTESQLREQUEST_PARAMTYPESENTRY.has_options = True
-_EXECUTESQLREQUEST_PARAMTYPESENTRY._options = _descriptor._ParseOptions(
-    descriptor_pb2.MessageOptions(), _b("8\001")
-)
-_PARTITIONQUERYREQUEST_PARAMTYPESENTRY.has_options = True
-_PARTITIONQUERYREQUEST_PARAMTYPESENTRY._options = _descriptor._ParseOptions(
-    descriptor_pb2.MessageOptions(), _b("8\001")
-)
+DESCRIPTOR._options = None
+_SESSION_LABELSENTRY._options = None
+_EXECUTESQLREQUEST_PARAMTYPESENTRY._options = None
+_PARTITIONQUERYREQUEST_PARAMTYPESENTRY._options = None
 
 _SPANNER = _descriptor.ServiceDescriptor(
     name="Spanner",
     full_name="google.spanner.v1.Spanner",
     file=DESCRIPTOR,
     index=0,
-    options=None,
+    serialized_options=None,
     serialized_start=3038,
     serialized_end=5217,
     methods=[
@@ -2450,11 +2437,8 @@ _SPANNER = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_CREATESESSIONREQUEST,
             output_type=_SESSION,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\002?":/v1/{database=projects/*/instances/*/databases/*}/sessions:\001*'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\002?":/v1/{database=projects/*/instances/*/databases/*}/sessions:\001*'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2464,11 +2448,8 @@ _SPANNER = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_GETSESSIONREQUEST,
             output_type=_SESSION,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\002:\0228/v1/{name=projects/*/instances/*/databases/*/sessions/*}"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\002:\0228/v1/{name=projects/*/instances/*/databases/*/sessions/*}"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2478,11 +2459,8 @@ _SPANNER = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_LISTSESSIONSREQUEST,
             output_type=_LISTSESSIONSRESPONSE,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\002<\022:/v1/{database=projects/*/instances/*/databases/*}/sessions"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\002<\022:/v1/{database=projects/*/instances/*/databases/*}/sessions"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2492,11 +2470,8 @@ _SPANNER = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_DELETESESSIONREQUEST,
             output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\002:*8/v1/{name=projects/*/instances/*/databases/*/sessions/*}"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\002:*8/v1/{name=projects/*/instances/*/databases/*/sessions/*}"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2506,11 +2481,8 @@ _SPANNER = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_EXECUTESQLREQUEST,
             output_type=google_dot_cloud_dot_spanner__v1_dot_proto_dot_result__set__pb2._RESULTSET,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\002K"F/v1/{session=projects/*/instances/*/databases/*/sessions/*}:executeSql:\001*'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\002K"F/v1/{session=projects/*/instances/*/databases/*/sessions/*}:executeSql:\001*'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2520,11 +2492,8 @@ _SPANNER = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_EXECUTESQLREQUEST,
             output_type=google_dot_cloud_dot_spanner__v1_dot_proto_dot_result__set__pb2._PARTIALRESULTSET,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\002T"O/v1/{session=projects/*/instances/*/databases/*/sessions/*}:executeStreamingSql:\001*'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\002T"O/v1/{session=projects/*/instances/*/databases/*/sessions/*}:executeStreamingSql:\001*'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2534,11 +2503,8 @@ _SPANNER = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_READREQUEST,
             output_type=google_dot_cloud_dot_spanner__v1_dot_proto_dot_result__set__pb2._RESULTSET,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\002E"@/v1/{session=projects/*/instances/*/databases/*/sessions/*}:read:\001*'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\002E"@/v1/{session=projects/*/instances/*/databases/*/sessions/*}:read:\001*'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2548,11 +2514,8 @@ _SPANNER = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_READREQUEST,
             output_type=google_dot_cloud_dot_spanner__v1_dot_proto_dot_result__set__pb2._PARTIALRESULTSET,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\002N"I/v1/{session=projects/*/instances/*/databases/*/sessions/*}:streamingRead:\001*'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\002N"I/v1/{session=projects/*/instances/*/databases/*/sessions/*}:streamingRead:\001*'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2562,11 +2525,8 @@ _SPANNER = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_BEGINTRANSACTIONREQUEST,
             output_type=google_dot_cloud_dot_spanner__v1_dot_proto_dot_transaction__pb2._TRANSACTION,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\002Q"L/v1/{session=projects/*/instances/*/databases/*/sessions/*}:beginTransaction:\001*'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\002Q"L/v1/{session=projects/*/instances/*/databases/*/sessions/*}:beginTransaction:\001*'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2576,11 +2536,8 @@ _SPANNER = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_COMMITREQUEST,
             output_type=_COMMITRESPONSE,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\002G"B/v1/{session=projects/*/instances/*/databases/*/sessions/*}:commit:\001*'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\002G"B/v1/{session=projects/*/instances/*/databases/*/sessions/*}:commit:\001*'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2590,11 +2547,8 @@ _SPANNER = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_ROLLBACKREQUEST,
             output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\002I"D/v1/{session=projects/*/instances/*/databases/*/sessions/*}:rollback:\001*'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\002I"D/v1/{session=projects/*/instances/*/databases/*/sessions/*}:rollback:\001*'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2604,11 +2558,8 @@ _SPANNER = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_PARTITIONQUERYREQUEST,
             output_type=_PARTITIONRESPONSE,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\002O"J/v1/{session=projects/*/instances/*/databases/*/sessions/*}:partitionQuery:\001*'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\002O"J/v1/{session=projects/*/instances/*/databases/*/sessions/*}:partitionQuery:\001*'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2618,11 +2569,8 @@ _SPANNER = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_PARTITIONREADREQUEST,
             output_type=_PARTITIONRESPONSE,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\002N"I/v1/{session=projects/*/instances/*/databases/*/sessions/*}:partitionRead:\001*'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\002N"I/v1/{session=projects/*/instances/*/databases/*/sessions/*}:partitionRead:\001*'
             ),
         ),
     ],
