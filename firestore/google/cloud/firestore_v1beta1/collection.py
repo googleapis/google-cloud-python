@@ -173,8 +173,8 @@ class CollectionReference(object):
 
             new_document_id = _helpers.get_doc_id(created_document_pb, expected_prefix)
             document_ref = self.document(new_document_id)
-            document_ref.set(document_data)
-            return created_document_pb.update_time, document_ref
+            set_result = document_ref.set(document_data)
+            return set_result.update_time, document_ref
         else:
             document_ref = self.document(document_id)
             write_result = document_ref.create(document_data)

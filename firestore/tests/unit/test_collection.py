@@ -228,7 +228,7 @@ class TestCollectionReference(unittest.TestCase):
         update_time, document_ref = collection.add(document_data)
 
         # Verify the response and the mocks.
-        self.assertIs(update_time, create_doc_response.update_time)
+        self.assertIs(update_time, mock.sentinel.update_time)
         self.assertIsInstance(document_ref, DocumentReference)
         self.assertIs(document_ref._client, client)
         expected_path = collection._path + (auto_assigned_id,)
