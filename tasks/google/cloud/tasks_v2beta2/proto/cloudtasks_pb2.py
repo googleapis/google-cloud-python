@@ -8,7 +8,6 @@ from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
-from google.protobuf import descriptor_pb2
 
 # @@protoc_insertion_point(imports)
 
@@ -35,6 +34,9 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     name="google/cloud/tasks_v2beta2/proto/cloudtasks.proto",
     package="google.cloud.tasks.v2beta2",
     syntax="proto3",
+    serialized_options=_b(
+        "\n\036com.google.cloud.tasks.v2beta2B\017CloudTasksProtoP\001Z?google.golang.org/genproto/googleapis/cloud/tasks/v2beta2;tasks\242\002\005TASKS"
+    ),
     serialized_pb=_b(
         '\n1google/cloud/tasks_v2beta2/proto/cloudtasks.proto\x12\x1agoogle.cloud.tasks.v2beta2\x1a\x1cgoogle/api/annotations.proto\x1a,google/cloud/tasks_v2beta2/proto/queue.proto\x1a+google/cloud/tasks_v2beta2/proto/task.proto\x1a\x1egoogle/iam/v1/iam_policy.proto\x1a\x1agoogle/iam/v1/policy.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x15google/rpc/code.proto"Z\n\x11ListQueuesRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x02 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05\x12\x12\n\npage_token\x18\x04 \x01(\t"`\n\x12ListQueuesResponse\x12\x31\n\x06queues\x18\x01 \x03(\x0b\x32!.google.cloud.tasks.v2beta2.Queue\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"\x1f\n\x0fGetQueueRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"V\n\x12\x43reateQueueRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x30\n\x05queue\x18\x02 \x01(\x0b\x32!.google.cloud.tasks.v2beta2.Queue"w\n\x12UpdateQueueRequest\x12\x30\n\x05queue\x18\x01 \x01(\x0b\x32!.google.cloud.tasks.v2beta2.Queue\x12/\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMask""\n\x12\x44\x65leteQueueRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"!\n\x11PurgeQueueRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"!\n\x11PauseQueueRequest\x12\x0c\n\x04name\x18\x01 \x01(\t""\n\x12ResumeQueueRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"\x87\x01\n\x10ListTasksRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12<\n\rresponse_view\x18\x02 \x01(\x0e\x32%.google.cloud.tasks.v2beta2.Task.View\x12\x11\n\tpage_size\x18\x04 \x01(\x05\x12\x12\n\npage_token\x18\x05 \x01(\t"]\n\x11ListTasksResponse\x12/\n\x05tasks\x18\x01 \x03(\x0b\x32 .google.cloud.tasks.v2beta2.Task\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"\\\n\x0eGetTaskRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12<\n\rresponse_view\x18\x02 \x01(\x0e\x32%.google.cloud.tasks.v2beta2.Task.View"\x91\x01\n\x11\x43reateTaskRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12.\n\x04task\x18\x02 \x01(\x0b\x32 .google.cloud.tasks.v2beta2.Task\x12<\n\rresponse_view\x18\x03 \x01(\x0e\x32%.google.cloud.tasks.v2beta2.Task.View"!\n\x11\x44\x65leteTaskRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"\xb7\x01\n\x11LeaseTasksRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x11\n\tmax_tasks\x18\x02 \x01(\x05\x12\x31\n\x0elease_duration\x18\x03 \x01(\x0b\x32\x19.google.protobuf.Duration\x12<\n\rresponse_view\x18\x04 \x01(\x0e\x32%.google.cloud.tasks.v2beta2.Task.View\x12\x0e\n\x06\x66ilter\x18\x05 \x01(\t"E\n\x12LeaseTasksResponse\x12/\n\x05tasks\x18\x01 \x03(\x0b\x32 .google.cloud.tasks.v2beta2.Task"Y\n\x16\x41\x63knowledgeTaskRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x31\n\rschedule_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp"\xc5\x01\n\x11RenewLeaseRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x31\n\rschedule_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x31\n\x0elease_duration\x18\x03 \x01(\x0b\x32\x19.google.protobuf.Duration\x12<\n\rresponse_view\x18\x04 \x01(\x0e\x32%.google.cloud.tasks.v2beta2.Task.View"\x93\x01\n\x12\x43\x61ncelLeaseRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x31\n\rschedule_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12<\n\rresponse_view\x18\x03 \x01(\x0e\x32%.google.cloud.tasks.v2beta2.Task.View"\\\n\x0eRunTaskRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12<\n\rresponse_view\x18\x02 \x01(\x0e\x32%.google.cloud.tasks.v2beta2.Task.View2\xf0\x19\n\nCloudTasks\x12\xa4\x01\n\nListQueues\x12-.google.cloud.tasks.v2beta2.ListQueuesRequest\x1a..google.cloud.tasks.v2beta2.ListQueuesResponse"7\x82\xd3\xe4\x93\x02\x31\x12//v2beta2/{parent=projects/*/locations/*}/queues\x12\x93\x01\n\x08GetQueue\x12+.google.cloud.tasks.v2beta2.GetQueueRequest\x1a!.google.cloud.tasks.v2beta2.Queue"7\x82\xd3\xe4\x93\x02\x31\x12//v2beta2/{name=projects/*/locations/*/queues/*}\x12\xa0\x01\n\x0b\x43reateQueue\x12..google.cloud.tasks.v2beta2.CreateQueueRequest\x1a!.google.cloud.tasks.v2beta2.Queue">\x82\xd3\xe4\x93\x02\x38"//v2beta2/{parent=projects/*/locations/*}/queues:\x05queue\x12\xa6\x01\n\x0bUpdateQueue\x12..google.cloud.tasks.v2beta2.UpdateQueueRequest\x1a!.google.cloud.tasks.v2beta2.Queue"D\x82\xd3\xe4\x93\x02>25/v2beta2/{queue.name=projects/*/locations/*/queues/*}:\x05queue\x12\x8e\x01\n\x0b\x44\x65leteQueue\x12..google.cloud.tasks.v2beta2.DeleteQueueRequest\x1a\x16.google.protobuf.Empty"7\x82\xd3\xe4\x93\x02\x31*//v2beta2/{name=projects/*/locations/*/queues/*}\x12\xa0\x01\n\nPurgeQueue\x12-.google.cloud.tasks.v2beta2.PurgeQueueRequest\x1a!.google.cloud.tasks.v2beta2.Queue"@\x82\xd3\xe4\x93\x02:"5/v2beta2/{name=projects/*/locations/*/queues/*}:purge:\x01*\x12\xa0\x01\n\nPauseQueue\x12-.google.cloud.tasks.v2beta2.PauseQueueRequest\x1a!.google.cloud.tasks.v2beta2.Queue"@\x82\xd3\xe4\x93\x02:"5/v2beta2/{name=projects/*/locations/*/queues/*}:pause:\x01*\x12\xa3\x01\n\x0bResumeQueue\x12..google.cloud.tasks.v2beta2.ResumeQueueRequest\x1a!.google.cloud.tasks.v2beta2.Queue"A\x82\xd3\xe4\x93\x02;"6/v2beta2/{name=projects/*/locations/*/queues/*}:resume:\x01*\x12\x96\x01\n\x0cGetIamPolicy\x12".google.iam.v1.GetIamPolicyRequest\x1a\x15.google.iam.v1.Policy"K\x82\xd3\xe4\x93\x02\x45"@/v2beta2/{resource=projects/*/locations/*/queues/*}:getIamPolicy:\x01*\x12\x96\x01\n\x0cSetIamPolicy\x12".google.iam.v1.SetIamPolicyRequest\x1a\x15.google.iam.v1.Policy"K\x82\xd3\xe4\x93\x02\x45"@/v2beta2/{resource=projects/*/locations/*/queues/*}:setIamPolicy:\x01*\x12\xbc\x01\n\x12TestIamPermissions\x12(.google.iam.v1.TestIamPermissionsRequest\x1a).google.iam.v1.TestIamPermissionsResponse"Q\x82\xd3\xe4\x93\x02K"F/v2beta2/{resource=projects/*/locations/*/queues/*}:testIamPermissions:\x01*\x12\xa9\x01\n\tListTasks\x12,.google.cloud.tasks.v2beta2.ListTasksRequest\x1a-.google.cloud.tasks.v2beta2.ListTasksResponse"?\x82\xd3\xe4\x93\x02\x39\x12\x37/v2beta2/{parent=projects/*/locations/*/queues/*}/tasks\x12\x98\x01\n\x07GetTask\x12*.google.cloud.tasks.v2beta2.GetTaskRequest\x1a .google.cloud.tasks.v2beta2.Task"?\x82\xd3\xe4\x93\x02\x39\x12\x37/v2beta2/{name=projects/*/locations/*/queues/*/tasks/*}\x12\xa1\x01\n\nCreateTask\x12-.google.cloud.tasks.v2beta2.CreateTaskRequest\x1a .google.cloud.tasks.v2beta2.Task"B\x82\xd3\xe4\x93\x02<"7/v2beta2/{parent=projects/*/locations/*/queues/*}/tasks:\x01*\x12\x94\x01\n\nDeleteTask\x12-.google.cloud.tasks.v2beta2.DeleteTaskRequest\x1a\x16.google.protobuf.Empty"?\x82\xd3\xe4\x93\x02\x39*7/v2beta2/{name=projects/*/locations/*/queues/*/tasks/*}\x12\xb5\x01\n\nLeaseTasks\x12-.google.cloud.tasks.v2beta2.LeaseTasksRequest\x1a..google.cloud.tasks.v2beta2.LeaseTasksResponse"H\x82\xd3\xe4\x93\x02\x42"=/v2beta2/{parent=projects/*/locations/*/queues/*}/tasks:lease:\x01*\x12\xad\x01\n\x0f\x41\x63knowledgeTask\x12\x32.google.cloud.tasks.v2beta2.AcknowledgeTaskRequest\x1a\x16.google.protobuf.Empty"N\x82\xd3\xe4\x93\x02H"C/v2beta2/{name=projects/*/locations/*/queues/*/tasks/*}:acknowledge:\x01*\x12\xac\x01\n\nRenewLease\x12-.google.cloud.tasks.v2beta2.RenewLeaseRequest\x1a .google.cloud.tasks.v2beta2.Task"M\x82\xd3\xe4\x93\x02G"B/v2beta2/{name=projects/*/locations/*/queues/*/tasks/*}:renewLease:\x01*\x12\xaf\x01\n\x0b\x43\x61ncelLease\x12..google.cloud.tasks.v2beta2.CancelLeaseRequest\x1a .google.cloud.tasks.v2beta2.Task"N\x82\xd3\xe4\x93\x02H"C/v2beta2/{name=projects/*/locations/*/queues/*/tasks/*}:cancelLease:\x01*\x12\x9f\x01\n\x07RunTask\x12*.google.cloud.tasks.v2beta2.RunTaskRequest\x1a .google.cloud.tasks.v2beta2.Task"F\x82\xd3\xe4\x93\x02@";/v2beta2/{name=projects/*/locations/*/queues/*/tasks/*}:run:\x01*B|\n\x1e\x63om.google.cloud.tasks.v2beta2B\x0f\x43loudTasksProtoP\x01Z?google.golang.org/genproto/googleapis/cloud/tasks/v2beta2;tasks\xa2\x02\x05TASKSb\x06proto3'
     ),
@@ -75,7 +77,7 @@ _LISTQUEUESREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -93,7 +95,7 @@ _LISTQUEUESREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -111,7 +113,7 @@ _LISTQUEUESREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -129,14 +131,14 @@ _LISTQUEUESREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -168,7 +170,7 @@ _LISTQUEUESRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -186,14 +188,14 @@ _LISTQUEUESRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -225,14 +227,14 @@ _GETQUEUEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -264,7 +266,7 @@ _CREATEQUEUEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -282,14 +284,14 @@ _CREATEQUEUEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -321,7 +323,7 @@ _UPDATEQUEUEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -339,14 +341,14 @@ _UPDATEQUEUEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -378,14 +380,14 @@ _DELETEQUEUEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -417,14 +419,14 @@ _PURGEQUEUEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -456,14 +458,14 @@ _PAUSEQUEUEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -495,14 +497,14 @@ _RESUMEQUEUEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -534,7 +536,7 @@ _LISTTASKSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -552,7 +554,7 @@ _LISTTASKSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -570,7 +572,7 @@ _LISTTASKSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -588,14 +590,14 @@ _LISTTASKSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -627,7 +629,7 @@ _LISTTASKSRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -645,14 +647,14 @@ _LISTTASKSRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -684,7 +686,7 @@ _GETTASKREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -702,14 +704,14 @@ _GETTASKREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -741,7 +743,7 @@ _CREATETASKREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -759,7 +761,7 @@ _CREATETASKREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -777,14 +779,14 @@ _CREATETASKREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -816,14 +818,14 @@ _DELETETASKREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -855,7 +857,7 @@ _LEASETASKSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -873,7 +875,7 @@ _LEASETASKSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -891,7 +893,7 @@ _LEASETASKSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -909,7 +911,7 @@ _LEASETASKSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -927,14 +929,14 @@ _LEASETASKSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -966,14 +968,14 @@ _LEASETASKSRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1005,7 +1007,7 @@ _ACKNOWLEDGETASKREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1023,14 +1025,14 @@ _ACKNOWLEDGETASKREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1062,7 +1064,7 @@ _RENEWLEASEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1080,7 +1082,7 @@ _RENEWLEASEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1098,7 +1100,7 @@ _RENEWLEASEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1116,14 +1118,14 @@ _RENEWLEASEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1155,7 +1157,7 @@ _CANCELLEASEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1173,7 +1175,7 @@ _CANCELLEASEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1191,14 +1193,14 @@ _CANCELLEASEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1230,7 +1232,7 @@ _RUNTASKREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1248,14 +1250,14 @@ _RUNTASKREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -2005,20 +2007,14 @@ RunTaskRequest = _reflection.GeneratedProtocolMessageType(
 _sym_db.RegisterMessage(RunTaskRequest)
 
 
-DESCRIPTOR.has_options = True
-DESCRIPTOR._options = _descriptor._ParseOptions(
-    descriptor_pb2.FileOptions(),
-    _b(
-        "\n\036com.google.cloud.tasks.v2beta2B\017CloudTasksProtoP\001Z?google.golang.org/genproto/googleapis/cloud/tasks/v2beta2;tasks\242\002\005TASKS"
-    ),
-)
+DESCRIPTOR._options = None
 
 _CLOUDTASKS = _descriptor.ServiceDescriptor(
     name="CloudTasks",
     full_name="google.cloud.tasks.v2beta2.CloudTasks",
     file=DESCRIPTOR,
     index=0,
-    options=None,
+    serialized_options=None,
     serialized_start=2290,
     serialized_end=5602,
     methods=[
@@ -2029,11 +2025,8 @@ _CLOUDTASKS = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_LISTQUEUESREQUEST,
             output_type=_LISTQUEUESRESPONSE,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\0021\022//v2beta2/{parent=projects/*/locations/*}/queues"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\0021\022//v2beta2/{parent=projects/*/locations/*}/queues"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2043,11 +2036,8 @@ _CLOUDTASKS = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_GETQUEUEREQUEST,
             output_type=google_dot_cloud_dot_tasks__v2beta2_dot_proto_dot_queue__pb2._QUEUE,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\0021\022//v2beta2/{name=projects/*/locations/*/queues/*}"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\0021\022//v2beta2/{name=projects/*/locations/*/queues/*}"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2057,11 +2047,8 @@ _CLOUDTASKS = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_CREATEQUEUEREQUEST,
             output_type=google_dot_cloud_dot_tasks__v2beta2_dot_proto_dot_queue__pb2._QUEUE,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\0028"//v2beta2/{parent=projects/*/locations/*}/queues:\005queue'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\0028"//v2beta2/{parent=projects/*/locations/*}/queues:\005queue'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2071,11 +2058,8 @@ _CLOUDTASKS = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_UPDATEQUEUEREQUEST,
             output_type=google_dot_cloud_dot_tasks__v2beta2_dot_proto_dot_queue__pb2._QUEUE,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\002>25/v2beta2/{queue.name=projects/*/locations/*/queues/*}:\005queue"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\002>25/v2beta2/{queue.name=projects/*/locations/*/queues/*}:\005queue"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2085,11 +2069,8 @@ _CLOUDTASKS = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_DELETEQUEUEREQUEST,
             output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\0021*//v2beta2/{name=projects/*/locations/*/queues/*}"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\0021*//v2beta2/{name=projects/*/locations/*/queues/*}"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2099,11 +2080,8 @@ _CLOUDTASKS = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_PURGEQUEUEREQUEST,
             output_type=google_dot_cloud_dot_tasks__v2beta2_dot_proto_dot_queue__pb2._QUEUE,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\002:"5/v2beta2/{name=projects/*/locations/*/queues/*}:purge:\001*'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\002:"5/v2beta2/{name=projects/*/locations/*/queues/*}:purge:\001*'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2113,11 +2091,8 @@ _CLOUDTASKS = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_PAUSEQUEUEREQUEST,
             output_type=google_dot_cloud_dot_tasks__v2beta2_dot_proto_dot_queue__pb2._QUEUE,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\002:"5/v2beta2/{name=projects/*/locations/*/queues/*}:pause:\001*'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\002:"5/v2beta2/{name=projects/*/locations/*/queues/*}:pause:\001*'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2127,11 +2102,8 @@ _CLOUDTASKS = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_RESUMEQUEUEREQUEST,
             output_type=google_dot_cloud_dot_tasks__v2beta2_dot_proto_dot_queue__pb2._QUEUE,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\002;"6/v2beta2/{name=projects/*/locations/*/queues/*}:resume:\001*'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\002;"6/v2beta2/{name=projects/*/locations/*/queues/*}:resume:\001*'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2141,11 +2113,8 @@ _CLOUDTASKS = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=google_dot_iam_dot_v1_dot_iam__policy__pb2._GETIAMPOLICYREQUEST,
             output_type=google_dot_iam_dot_v1_dot_policy__pb2._POLICY,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\002E"@/v2beta2/{resource=projects/*/locations/*/queues/*}:getIamPolicy:\001*'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\002E"@/v2beta2/{resource=projects/*/locations/*/queues/*}:getIamPolicy:\001*'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2155,11 +2124,8 @@ _CLOUDTASKS = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=google_dot_iam_dot_v1_dot_iam__policy__pb2._SETIAMPOLICYREQUEST,
             output_type=google_dot_iam_dot_v1_dot_policy__pb2._POLICY,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\002E"@/v2beta2/{resource=projects/*/locations/*/queues/*}:setIamPolicy:\001*'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\002E"@/v2beta2/{resource=projects/*/locations/*/queues/*}:setIamPolicy:\001*'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2169,11 +2135,8 @@ _CLOUDTASKS = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=google_dot_iam_dot_v1_dot_iam__policy__pb2._TESTIAMPERMISSIONSREQUEST,
             output_type=google_dot_iam_dot_v1_dot_iam__policy__pb2._TESTIAMPERMISSIONSRESPONSE,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\002K"F/v2beta2/{resource=projects/*/locations/*/queues/*}:testIamPermissions:\001*'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\002K"F/v2beta2/{resource=projects/*/locations/*/queues/*}:testIamPermissions:\001*'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2183,11 +2146,8 @@ _CLOUDTASKS = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_LISTTASKSREQUEST,
             output_type=_LISTTASKSRESPONSE,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\0029\0227/v2beta2/{parent=projects/*/locations/*/queues/*}/tasks"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\0029\0227/v2beta2/{parent=projects/*/locations/*/queues/*}/tasks"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2197,11 +2157,8 @@ _CLOUDTASKS = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_GETTASKREQUEST,
             output_type=google_dot_cloud_dot_tasks__v2beta2_dot_proto_dot_task__pb2._TASK,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\0029\0227/v2beta2/{name=projects/*/locations/*/queues/*/tasks/*}"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\0029\0227/v2beta2/{name=projects/*/locations/*/queues/*/tasks/*}"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2211,11 +2168,8 @@ _CLOUDTASKS = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_CREATETASKREQUEST,
             output_type=google_dot_cloud_dot_tasks__v2beta2_dot_proto_dot_task__pb2._TASK,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\002<"7/v2beta2/{parent=projects/*/locations/*/queues/*}/tasks:\001*'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\002<"7/v2beta2/{parent=projects/*/locations/*/queues/*}/tasks:\001*'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2225,11 +2179,8 @@ _CLOUDTASKS = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_DELETETASKREQUEST,
             output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\0029*7/v2beta2/{name=projects/*/locations/*/queues/*/tasks/*}"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\0029*7/v2beta2/{name=projects/*/locations/*/queues/*/tasks/*}"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2239,11 +2190,8 @@ _CLOUDTASKS = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_LEASETASKSREQUEST,
             output_type=_LEASETASKSRESPONSE,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\002B"=/v2beta2/{parent=projects/*/locations/*/queues/*}/tasks:lease:\001*'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\002B"=/v2beta2/{parent=projects/*/locations/*/queues/*}/tasks:lease:\001*'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2253,11 +2201,8 @@ _CLOUDTASKS = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_ACKNOWLEDGETASKREQUEST,
             output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\002H"C/v2beta2/{name=projects/*/locations/*/queues/*/tasks/*}:acknowledge:\001*'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\002H"C/v2beta2/{name=projects/*/locations/*/queues/*/tasks/*}:acknowledge:\001*'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2267,11 +2212,8 @@ _CLOUDTASKS = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_RENEWLEASEREQUEST,
             output_type=google_dot_cloud_dot_tasks__v2beta2_dot_proto_dot_task__pb2._TASK,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\002G"B/v2beta2/{name=projects/*/locations/*/queues/*/tasks/*}:renewLease:\001*'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\002G"B/v2beta2/{name=projects/*/locations/*/queues/*/tasks/*}:renewLease:\001*'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2281,11 +2223,8 @@ _CLOUDTASKS = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_CANCELLEASEREQUEST,
             output_type=google_dot_cloud_dot_tasks__v2beta2_dot_proto_dot_task__pb2._TASK,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\002H"C/v2beta2/{name=projects/*/locations/*/queues/*/tasks/*}:cancelLease:\001*'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\002H"C/v2beta2/{name=projects/*/locations/*/queues/*/tasks/*}:cancelLease:\001*'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2295,11 +2234,8 @@ _CLOUDTASKS = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_RUNTASKREQUEST,
             output_type=google_dot_cloud_dot_tasks__v2beta2_dot_proto_dot_task__pb2._TASK,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\002@";/v2beta2/{name=projects/*/locations/*/queues/*/tasks/*}:run:\001*'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\002@";/v2beta2/{name=projects/*/locations/*/queues/*/tasks/*}:run:\001*'
             ),
         ),
     ],
