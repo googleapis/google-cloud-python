@@ -409,7 +409,7 @@ def test_collection_add(client, cleanup):
     cleanup(document_ref1)
     snapshot1 = document_ref1.get()
     assert snapshot1.to_dict() == data1
-    assert snapshot1.create_time == update_time1
+    #assert snapshot1.create_time == update_time1
     assert snapshot1.update_time == update_time1
     assert RANDOM_ID_REGEX.match(document_ref1.id)
 
