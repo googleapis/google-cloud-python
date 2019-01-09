@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.vision_v1.proto.product_search_pb2 &#8212; google-cloud 80fe607 documentation</title>
+    <title>google.cloud.vision_v1.proto.product_search_pb2 &#8212; google-cloud a94787e documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -44,7 +44,6 @@
 <span class="kn">from</span> <span class="nn">google.protobuf</span> <span class="k">import</span> <span class="n">message</span> <span class="k">as</span> <span class="n">_message</span>
 <span class="kn">from</span> <span class="nn">google.protobuf</span> <span class="k">import</span> <span class="n">reflection</span> <span class="k">as</span> <span class="n">_reflection</span>
 <span class="kn">from</span> <span class="nn">google.protobuf</span> <span class="k">import</span> <span class="n">symbol_database</span> <span class="k">as</span> <span class="n">_symbol_database</span>
-<span class="kn">from</span> <span class="nn">google.protobuf</span> <span class="k">import</span> <span class="n">descriptor_pb2</span>
 
 <span class="c1"># @@protoc_insertion_point(imports)</span>
 
@@ -65,6 +64,9 @@
     <span class="n">name</span><span class="o">=</span><span class="s2">&quot;google/cloud/vision_v1/proto/product_search.proto&quot;</span><span class="p">,</span>
     <span class="n">package</span><span class="o">=</span><span class="s2">&quot;google.cloud.vision.v1&quot;</span><span class="p">,</span>
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
+    <span class="n">serialized_options</span><span class="o">=</span><span class="n">_b</span><span class="p">(</span>
+        <span class="s2">&quot;</span><span class="se">\n\032</span><span class="s2">com.google.cloud.vision.v1B</span><span class="se">\022</span><span class="s2">ProductSearchProtoP</span><span class="se">\001</span><span class="s2">Z&lt;google.golang.org/genproto/googleapis/cloud/vision/v1;vision</span><span class="se">\370\001\001\242\002\004</span><span class="s2">GCVN&quot;</span>
+    <span class="p">),</span>
     <span class="n">serialized_pb</span><span class="o">=</span><span class="n">_b</span><span class="p">(</span>
         <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">1google/cloud/vision_v1/proto/product_search.proto</span><span class="se">\x12\x16</span><span class="s1">google.cloud.vision.v1</span><span class="se">\x1a\x1c</span><span class="s1">google/api/annotations.proto</span><span class="se">\x1a</span><span class="s1">+google/cloud/vision_v1/proto/geometry.proto</span><span class="se">\x1a\x39</span><span class="s1">google/cloud/vision_v1/proto/product_search_service.proto</span><span class="se">\x1a\x1f</span><span class="s1">google/protobuf/timestamp.proto&quot;</span><span class="se">\x93\x01\n\x13</span><span class="s1">ProductSearchParams</span><span class="se">\x12</span><span class="s1">;</span><span class="se">\n\r</span><span class="s1">bounding_poly</span><span class="se">\x18\t</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">$.google.cloud.vision.v1.BoundingPoly</span><span class="se">\x12\x13\n\x0b</span><span class="s1">product_set</span><span class="se">\x18\x06</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x1a\n\x12</span><span class="s1">product_categories</span><span class="se">\x18\x07</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\t\x12\x0e\n\x06\x66</span><span class="s1">ilter</span><span class="se">\x18\x08</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t</span><span class="s1">&quot;</span><span class="se">\xd8\x03\n\x14</span><span class="s1">ProductSearchResults</span><span class="se">\x12</span><span class="s1">.</span><span class="se">\n\n</span><span class="s1">index_time</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x1a</span><span class="s1">.google.protobuf.Timestamp</span><span class="se">\x12\x44\n\x07</span><span class="s1">results</span><span class="se">\x18\x05</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32\x33</span><span class="s1">.google.cloud.vision.v1.ProductSearchResults.Result</span><span class="se">\x12</span><span class="s1">[</span><span class="se">\n\x17</span><span class="s1">product_grouped_results</span><span class="se">\x18\x06</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">:.google.cloud.vision.v1.ProductSearchResults.GroupedResult</span><span class="se">\x1a</span><span class="s1">X</span><span class="se">\n\x06</span><span class="s1">Result</span><span class="se">\x12\x30\n\x07</span><span class="s1">product</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x1f</span><span class="s1">.google.cloud.vision.v1.Product</span><span class="se">\x12\r\n\x05</span><span class="s1">score</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x02\x12\r\n\x05</span><span class="s1">image</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x1a\x92\x01\n\r</span><span class="s1">GroupedResult</span><span class="se">\x12</span><span class="s1">;</span><span class="se">\n\r</span><span class="s1">bounding_poly</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">$.google.cloud.vision.v1.BoundingPoly</span><span class="se">\x12\x44\n\x07</span><span class="s1">results</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32\x33</span><span class="s1">.google.cloud.vision.v1.ProductSearchResults.ResultBz</span><span class="se">\n\x1a\x63</span><span class="s1">om.google.cloud.vision.v1B</span><span class="se">\x12</span><span class="s1">ProductSearchProtoP</span><span class="se">\x01</span><span class="s1">Z&lt;google.golang.org/genproto/googleapis/cloud/vision/v1;vision</span><span class="se">\xf8\x01\x01\xa2\x02\x04</span><span class="s1">GCVNb</span><span class="se">\x06</span><span class="s1">proto3&#39;</span>
     <span class="p">),</span>
@@ -99,7 +101,7 @@
             <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
         <span class="p">),</span>
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
@@ -117,7 +119,7 @@
             <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
         <span class="p">),</span>
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
@@ -135,7 +137,7 @@
             <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
         <span class="p">),</span>
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
@@ -153,14 +155,14 @@
             <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
         <span class="p">),</span>
     <span class="p">],</span>
     <span class="n">extensions</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">nested_types</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">enum_types</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">is_extendable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
@@ -192,7 +194,7 @@
             <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
         <span class="p">),</span>
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
@@ -210,7 +212,7 @@
             <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
         <span class="p">),</span>
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
@@ -228,14 +230,14 @@
             <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
         <span class="p">),</span>
     <span class="p">],</span>
     <span class="n">extensions</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">nested_types</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">enum_types</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">is_extendable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
@@ -266,7 +268,7 @@
             <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
         <span class="p">),</span>
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
@@ -284,14 +286,14 @@
             <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
         <span class="p">),</span>
     <span class="p">],</span>
     <span class="n">extensions</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">nested_types</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">enum_types</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">is_extendable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
@@ -322,7 +324,7 @@
             <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
         <span class="p">),</span>
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
@@ -340,7 +342,7 @@
             <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
         <span class="p">),</span>
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
@@ -358,14 +360,14 @@
             <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
         <span class="p">),</span>
     <span class="p">],</span>
     <span class="n">extensions</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">nested_types</span><span class="o">=</span><span class="p">[</span><span class="n">_PRODUCTSEARCHRESULTS_RESULT</span><span class="p">,</span> <span class="n">_PRODUCTSEARCHRESULTS_GROUPEDRESULT</span><span class="p">],</span>
     <span class="n">enum_types</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">is_extendable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
@@ -515,13 +517,7 @@
 <span class="n">_sym_db</span><span class="o">.</span><span class="n">RegisterMessage</span><span class="p">(</span><span class="n">ProductSearchResults</span><span class="o">.</span><span class="n">GroupedResult</span><span class="p">)</span>
 
 
-<span class="n">DESCRIPTOR</span><span class="o">.</span><span class="n">has_options</span> <span class="o">=</span> <span class="kc">True</span>
-<span class="n">DESCRIPTOR</span><span class="o">.</span><span class="n">_options</span> <span class="o">=</span> <span class="n">_descriptor</span><span class="o">.</span><span class="n">_ParseOptions</span><span class="p">(</span>
-    <span class="n">descriptor_pb2</span><span class="o">.</span><span class="n">FileOptions</span><span class="p">(),</span>
-    <span class="n">_b</span><span class="p">(</span>
-        <span class="s2">&quot;</span><span class="se">\n\032</span><span class="s2">com.google.cloud.vision.v1B</span><span class="se">\022</span><span class="s2">ProductSearchProtoP</span><span class="se">\001</span><span class="s2">Z&lt;google.golang.org/genproto/googleapis/cloud/vision/v1;vision</span><span class="se">\370\001\001\242\002\004</span><span class="s2">GCVN&quot;</span>
-    <span class="p">),</span>
-<span class="p">)</span>
+<span class="n">DESCRIPTOR</span><span class="o">.</span><span class="n">_options</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="c1"># @@protoc_insertion_point(module_scope)</span>
 </pre></div>
 
