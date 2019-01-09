@@ -387,7 +387,7 @@ def test_create_table(engine):
     meta = MetaData()
     table = Table(
         'test_pybigquery.test_table_create', meta,
-        Column('integer_c', sqlalchemy.Integer),
+        Column('integer_c', sqlalchemy.Integer, doc="column description"),
         Column('float_c', sqlalchemy.Float),
         Column('decimal_c', sqlalchemy.DECIMAL),
         Column('string_c', sqlalchemy.String),
@@ -397,7 +397,9 @@ def test_create_table(engine):
         Column('datetime_c', sqlalchemy.DATETIME),
         Column('date_c', sqlalchemy.DATE),
         Column('time_c', sqlalchemy.TIME),
-        Column('binary_c', sqlalchemy.BINARY)
+        Column('binary_c', sqlalchemy.BINARY),
+        bigquery_description="test table description",
+        bigquery_friendly_name="test table name"
     )
     meta.create_all(engine)
     meta.drop_all(engine)
