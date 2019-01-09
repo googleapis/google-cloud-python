@@ -9,7 +9,6 @@ from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
-from google.protobuf import descriptor_pb2
 
 # @@protoc_insertion_point(imports)
 
@@ -23,6 +22,9 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     name="google/cloud/texttospeech_v1/proto/cloud_tts.proto",
     package="google.cloud.texttospeech.v1",
     syntax="proto3",
+    serialized_options=_b(
+        "\n com.google.cloud.texttospeech.v1B\021TextToSpeechProtoP\001ZHgoogle.golang.org/genproto/googleapis/cloud/texttospeech/v1;texttospeech\370\001\001\252\002\034Google.Cloud.TextToSpeech.V1\312\002\034Google\\Cloud\\TextToSpeech\\V1"
+    ),
     serialized_pb=_b(
         '\n2google/cloud/texttospeech_v1/proto/cloud_tts.proto\x12\x1cgoogle.cloud.texttospeech.v1\x1a\x1cgoogle/api/annotations.proto"*\n\x11ListVoicesRequest\x12\x15\n\rlanguage_code\x18\x01 \x01(\t"I\n\x12ListVoicesResponse\x12\x33\n\x06voices\x18\x01 \x03(\x0b\x32#.google.cloud.texttospeech.v1.Voice"\x94\x01\n\x05Voice\x12\x16\n\x0elanguage_codes\x18\x01 \x03(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x42\n\x0bssml_gender\x18\x03 \x01(\x0e\x32-.google.cloud.texttospeech.v1.SsmlVoiceGender\x12!\n\x19natural_sample_rate_hertz\x18\x04 \x01(\x05"\xda\x01\n\x17SynthesizeSpeechRequest\x12;\n\x05input\x18\x01 \x01(\x0b\x32,.google.cloud.texttospeech.v1.SynthesisInput\x12\x41\n\x05voice\x18\x02 \x01(\x0b\x32\x32.google.cloud.texttospeech.v1.VoiceSelectionParams\x12?\n\x0c\x61udio_config\x18\x03 \x01(\x0b\x32).google.cloud.texttospeech.v1.AudioConfig"@\n\x0eSynthesisInput\x12\x0e\n\x04text\x18\x01 \x01(\tH\x00\x12\x0e\n\x04ssml\x18\x02 \x01(\tH\x00\x42\x0e\n\x0cinput_source"\x7f\n\x14VoiceSelectionParams\x12\x15\n\rlanguage_code\x18\x01 \x01(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x42\n\x0bssml_gender\x18\x03 \x01(\x0e\x32-.google.cloud.texttospeech.v1.SsmlVoiceGender"\xab\x01\n\x0b\x41udioConfig\x12\x43\n\x0e\x61udio_encoding\x18\x01 \x01(\x0e\x32+.google.cloud.texttospeech.v1.AudioEncoding\x12\x15\n\rspeaking_rate\x18\x02 \x01(\x01\x12\r\n\x05pitch\x18\x03 \x01(\x01\x12\x16\n\x0evolume_gain_db\x18\x04 \x01(\x01\x12\x19\n\x11sample_rate_hertz\x18\x05 \x01(\x05"1\n\x18SynthesizeSpeechResponse\x12\x15\n\raudio_content\x18\x01 \x01(\x0c*W\n\x0fSsmlVoiceGender\x12!\n\x1dSSML_VOICE_GENDER_UNSPECIFIED\x10\x00\x12\x08\n\x04MALE\x10\x01\x12\n\n\x06\x46\x45MALE\x10\x02\x12\x0b\n\x07NEUTRAL\x10\x03*T\n\rAudioEncoding\x12\x1e\n\x1a\x41UDIO_ENCODING_UNSPECIFIED\x10\x00\x12\x0c\n\x08LINEAR16\x10\x01\x12\x07\n\x03MP3\x10\x02\x12\x0c\n\x08OGG_OPUS\x10\x03\x32\xb8\x02\n\x0cTextToSpeech\x12\x83\x01\n\nListVoices\x12/.google.cloud.texttospeech.v1.ListVoicesRequest\x1a\x30.google.cloud.texttospeech.v1.ListVoicesResponse"\x12\x82\xd3\xe4\x93\x02\x0c\x12\n/v1/voices\x12\xa1\x01\n\x10SynthesizeSpeech\x12\x35.google.cloud.texttospeech.v1.SynthesizeSpeechRequest\x1a\x36.google.cloud.texttospeech.v1.SynthesizeSpeechResponse"\x1e\x82\xd3\xe4\x93\x02\x18"\x13/v1/text:synthesize:\x01*B\xc2\x01\n com.google.cloud.texttospeech.v1B\x11TextToSpeechProtoP\x01ZHgoogle.golang.org/genproto/googleapis/cloud/texttospeech/v1;texttospeech\xf8\x01\x01\xaa\x02\x1cGoogle.Cloud.TextToSpeech.V1\xca\x02\x1cGoogle\\Cloud\\TextToSpeech\\V1b\x06proto3'
     ),
@@ -39,21 +41,21 @@ _SSMLVOICEGENDER = _descriptor.EnumDescriptor(
             name="SSML_VOICE_GENDER_UNSPECIFIED",
             index=0,
             number=0,
-            options=None,
+            serialized_options=None,
             type=None,
         ),
         _descriptor.EnumValueDescriptor(
-            name="MALE", index=1, number=1, options=None, type=None
+            name="MALE", index=1, number=1, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="FEMALE", index=2, number=2, options=None, type=None
+            name="FEMALE", index=2, number=2, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="NEUTRAL", index=3, number=3, options=None, type=None
+            name="NEUTRAL", index=3, number=3, serialized_options=None, type=None
         ),
     ],
     containing_type=None,
-    options=None,
+    serialized_options=None,
     serialized_start=1025,
     serialized_end=1112,
 )
@@ -70,21 +72,21 @@ _AUDIOENCODING = _descriptor.EnumDescriptor(
             name="AUDIO_ENCODING_UNSPECIFIED",
             index=0,
             number=0,
-            options=None,
+            serialized_options=None,
             type=None,
         ),
         _descriptor.EnumValueDescriptor(
-            name="LINEAR16", index=1, number=1, options=None, type=None
+            name="LINEAR16", index=1, number=1, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="MP3", index=2, number=2, options=None, type=None
+            name="MP3", index=2, number=2, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="OGG_OPUS", index=3, number=3, options=None, type=None
+            name="OGG_OPUS", index=3, number=3, serialized_options=None, type=None
         ),
     ],
     containing_type=None,
-    options=None,
+    serialized_options=None,
     serialized_start=1114,
     serialized_end=1198,
 )
@@ -123,14 +125,14 @@ _LISTVOICESREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -162,14 +164,14 @@ _LISTVOICESRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -201,7 +203,7 @@ _VOICE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -219,7 +221,7 @@ _VOICE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -237,7 +239,7 @@ _VOICE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -255,14 +257,14 @@ _VOICE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -294,7 +296,7 @@ _SYNTHESIZESPEECHREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -312,7 +314,7 @@ _SYNTHESIZESPEECHREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -330,14 +332,14 @@ _SYNTHESIZESPEECHREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -369,7 +371,7 @@ _SYNTHESISINPUT = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -387,14 +389,14 @@ _SYNTHESISINPUT = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -434,7 +436,7 @@ _VOICESELECTIONPARAMS = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -452,7 +454,7 @@ _VOICESELECTIONPARAMS = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -470,14 +472,14 @@ _VOICESELECTIONPARAMS = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -509,7 +511,7 @@ _AUDIOCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -527,7 +529,7 @@ _AUDIOCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -545,7 +547,7 @@ _AUDIOCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -563,7 +565,7 @@ _AUDIOCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -581,14 +583,14 @@ _AUDIOCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -620,14 +622,14 @@ _SYNTHESIZESPEECHRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -900,20 +902,14 @@ SynthesizeSpeechResponse = _reflection.GeneratedProtocolMessageType(
 _sym_db.RegisterMessage(SynthesizeSpeechResponse)
 
 
-DESCRIPTOR.has_options = True
-DESCRIPTOR._options = _descriptor._ParseOptions(
-    descriptor_pb2.FileOptions(),
-    _b(
-        "\n com.google.cloud.texttospeech.v1B\021TextToSpeechProtoP\001ZHgoogle.golang.org/genproto/googleapis/cloud/texttospeech/v1;texttospeech\370\001\001\252\002\034Google.Cloud.TextToSpeech.V1\312\002\034Google\\Cloud\\TextToSpeech\\V1"
-    ),
-)
+DESCRIPTOR._options = None
 
 _TEXTTOSPEECH = _descriptor.ServiceDescriptor(
     name="TextToSpeech",
     full_name="google.cloud.texttospeech.v1.TextToSpeech",
     file=DESCRIPTOR,
     index=0,
-    options=None,
+    serialized_options=None,
     serialized_start=1201,
     serialized_end=1513,
     methods=[
@@ -924,10 +920,7 @@ _TEXTTOSPEECH = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_LISTVOICESREQUEST,
             output_type=_LISTVOICESRESPONSE,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b("\202\323\344\223\002\014\022\n/v1/voices"),
-            ),
+            serialized_options=_b("\202\323\344\223\002\014\022\n/v1/voices"),
         ),
         _descriptor.MethodDescriptor(
             name="SynthesizeSpeech",
@@ -936,9 +929,8 @@ _TEXTTOSPEECH = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_SYNTHESIZESPEECHREQUEST,
             output_type=_SYNTHESIZESPEECHRESPONSE,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b('\202\323\344\223\002\030"\023/v1/text:synthesize:\001*'),
+            serialized_options=_b(
+                '\202\323\344\223\002\030"\023/v1/text:synthesize:\001*'
             ),
         ),
     ],
