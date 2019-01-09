@@ -8,7 +8,6 @@ from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
-from google.protobuf import descriptor_pb2
 
 # @@protoc_insertion_point(imports)
 
@@ -23,6 +22,9 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     name="google/cloud/websecurityscanner_v1alpha/proto/scan_run.proto",
     package="google.cloud.websecurityscanner.v1alpha",
     syntax="proto3",
+    serialized_options=_b(
+        "\n+com.google.cloud.websecurityscanner.v1alphaB\014ScanRunProtoP\001ZYgoogle.golang.org/genproto/googleapis/cloud/websecurityscanner/v1alpha;websecurityscanner"
+    ),
     serialized_pb=_b(
         '\n<google/cloud/websecurityscanner_v1alpha/proto/scan_run.proto\x12\'google.cloud.websecurityscanner.v1alpha\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/protobuf/timestamp.proto"\xbd\x04\n\x07ScanRun\x12\x0c\n\x04name\x18\x01 \x01(\t\x12X\n\x0f\x65xecution_state\x18\x02 \x01(\x0e\x32?.google.cloud.websecurityscanner.v1alpha.ScanRun.ExecutionState\x12R\n\x0cresult_state\x18\x03 \x01(\x0e\x32<.google.cloud.websecurityscanner.v1alpha.ScanRun.ResultState\x12.\n\nstart_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12,\n\x08\x65nd_time\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x1a\n\x12urls_crawled_count\x18\x06 \x01(\x03\x12\x19\n\x11urls_tested_count\x18\x07 \x01(\x03\x12\x1b\n\x13has_vulnerabilities\x18\x08 \x01(\x08\x12\x18\n\x10progress_percent\x18\t \x01(\x05"Y\n\x0e\x45xecutionState\x12\x1f\n\x1b\x45XECUTION_STATE_UNSPECIFIED\x10\x00\x12\n\n\x06QUEUED\x10\x01\x12\x0c\n\x08SCANNING\x10\x02\x12\x0c\n\x08\x46INISHED\x10\x03"O\n\x0bResultState\x12\x1c\n\x18RESULT_STATE_UNSPECIFIED\x10\x00\x12\x0b\n\x07SUCCESS\x10\x01\x12\t\n\x05\x45RROR\x10\x02\x12\n\n\x06KILLED\x10\x03\x42\x98\x01\n+com.google.cloud.websecurityscanner.v1alphaB\x0cScanRunProtoP\x01ZYgoogle.golang.org/genproto/googleapis/cloud/websecurityscanner/v1alpha;websecurityscannerb\x06proto3'
     ),
@@ -43,21 +45,21 @@ _SCANRUN_EXECUTIONSTATE = _descriptor.EnumDescriptor(
             name="EXECUTION_STATE_UNSPECIFIED",
             index=0,
             number=0,
-            options=None,
+            serialized_options=None,
             type=None,
         ),
         _descriptor.EnumValueDescriptor(
-            name="QUEUED", index=1, number=1, options=None, type=None
+            name="QUEUED", index=1, number=1, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="SCANNING", index=2, number=2, options=None, type=None
+            name="SCANNING", index=2, number=2, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="FINISHED", index=3, number=3, options=None, type=None
+            name="FINISHED", index=3, number=3, serialized_options=None, type=None
         ),
     ],
     containing_type=None,
-    options=None,
+    serialized_options=None,
     serialized_start=572,
     serialized_end=661,
 )
@@ -70,20 +72,24 @@ _SCANRUN_RESULTSTATE = _descriptor.EnumDescriptor(
     file=DESCRIPTOR,
     values=[
         _descriptor.EnumValueDescriptor(
-            name="RESULT_STATE_UNSPECIFIED", index=0, number=0, options=None, type=None
+            name="RESULT_STATE_UNSPECIFIED",
+            index=0,
+            number=0,
+            serialized_options=None,
+            type=None,
         ),
         _descriptor.EnumValueDescriptor(
-            name="SUCCESS", index=1, number=1, options=None, type=None
+            name="SUCCESS", index=1, number=1, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="ERROR", index=2, number=2, options=None, type=None
+            name="ERROR", index=2, number=2, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="KILLED", index=3, number=3, options=None, type=None
+            name="KILLED", index=3, number=3, serialized_options=None, type=None
         ),
     ],
     containing_type=None,
-    options=None,
+    serialized_options=None,
     serialized_start=663,
     serialized_end=742,
 )
@@ -112,7 +118,7 @@ _SCANRUN = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -130,7 +136,7 @@ _SCANRUN = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -148,7 +154,7 @@ _SCANRUN = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -166,7 +172,7 @@ _SCANRUN = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -184,7 +190,7 @@ _SCANRUN = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -202,7 +208,7 @@ _SCANRUN = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -220,7 +226,7 @@ _SCANRUN = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -238,7 +244,7 @@ _SCANRUN = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -256,14 +262,14 @@ _SCANRUN = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[_SCANRUN_EXECUTIONSTATE, _SCANRUN_RESULTSTATE],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -337,11 +343,5 @@ ScanRun = _reflection.GeneratedProtocolMessageType(
 _sym_db.RegisterMessage(ScanRun)
 
 
-DESCRIPTOR.has_options = True
-DESCRIPTOR._options = _descriptor._ParseOptions(
-    descriptor_pb2.FileOptions(),
-    _b(
-        "\n+com.google.cloud.websecurityscanner.v1alphaB\014ScanRunProtoP\001ZYgoogle.golang.org/genproto/googleapis/cloud/websecurityscanner/v1alpha;websecurityscanner"
-    ),
-)
+DESCRIPTOR._options = None
 # @@protoc_insertion_point(module_scope)
