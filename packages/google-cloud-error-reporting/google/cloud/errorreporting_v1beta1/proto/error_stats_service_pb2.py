@@ -9,7 +9,6 @@ from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
-from google.protobuf import descriptor_pb2
 
 # @@protoc_insertion_point(imports)
 
@@ -28,6 +27,9 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     name="google/devtools/clouderrorreporting_v1beta1/proto/error_stats_service.proto",
     package="google.devtools.clouderrorreporting.v1beta1",
     syntax="proto3",
+    serialized_options=_b(
+        "\n/com.google.devtools.clouderrorreporting.v1beta1B\026ErrorStatsServiceProtoP\001Z^google.golang.org/genproto/googleapis/devtools/clouderrorreporting/v1beta1;clouderrorreporting\252\002#Google.Cloud.ErrorReporting.V1Beta1\312\002#Google\\Cloud\\ErrorReporting\\V1beta1"
+    ),
     serialized_pb=_b(
         '\nKgoogle/devtools/clouderrorreporting_v1beta1/proto/error_stats_service.proto\x12+google.devtools.clouderrorreporting.v1beta1\x1a\x1cgoogle/api/annotations.proto\x1a>google/devtools/clouderrorreporting_v1beta1/proto/common.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1fgoogle/protobuf/timestamp.proto"\xa1\x04\n\x15ListGroupStatsRequest\x12\x14\n\x0cproject_name\x18\x01 \x01(\t\x12\x10\n\x08group_id\x18\x02 \x03(\t\x12Y\n\x0eservice_filter\x18\x03 \x01(\x0b\x32\x41.google.devtools.clouderrorreporting.v1beta1.ServiceContextFilter\x12O\n\ntime_range\x18\x05 \x01(\x0b\x32;.google.devtools.clouderrorreporting.v1beta1.QueryTimeRange\x12\x37\n\x14timed_count_duration\x18\x06 \x01(\x0b\x32\x19.google.protobuf.Duration\x12S\n\talignment\x18\x07 \x01(\x0e\x32@.google.devtools.clouderrorreporting.v1beta1.TimedCountAlignment\x12\x32\n\x0e\x61lignment_time\x18\x08 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12K\n\x05order\x18\t \x01(\x0e\x32<.google.devtools.clouderrorreporting.v1beta1.ErrorGroupOrder\x12\x11\n\tpage_size\x18\x0b \x01(\x05\x12\x12\n\npage_token\x18\x0c \x01(\t"\xc0\x01\n\x16ListGroupStatsResponse\x12W\n\x11\x65rror_group_stats\x18\x01 \x03(\x0b\x32<.google.devtools.clouderrorreporting.v1beta1.ErrorGroupStats\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\x12\x34\n\x10time_range_begin\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp"\x86\x04\n\x0f\x45rrorGroupStats\x12\x46\n\x05group\x18\x01 \x01(\x0b\x32\x37.google.devtools.clouderrorreporting.v1beta1.ErrorGroup\x12\r\n\x05\x63ount\x18\x02 \x01(\x03\x12\x1c\n\x14\x61\x66\x66\x65\x63ted_users_count\x18\x03 \x01(\x03\x12M\n\x0ctimed_counts\x18\x04 \x03(\x0b\x32\x37.google.devtools.clouderrorreporting.v1beta1.TimedCount\x12\x33\n\x0f\x66irst_seen_time\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x32\n\x0elast_seen_time\x18\x06 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12V\n\x11\x61\x66\x66\x65\x63ted_services\x18\x07 \x03(\x0b\x32;.google.devtools.clouderrorreporting.v1beta1.ServiceContext\x12\x1d\n\x15num_affected_services\x18\x08 \x01(\x05\x12O\n\x0erepresentative\x18\t \x01(\x0b\x32\x37.google.devtools.clouderrorreporting.v1beta1.ErrorEvent"y\n\nTimedCount\x12\r\n\x05\x63ount\x18\x01 \x01(\x03\x12.\n\nstart_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12,\n\x08\x65nd_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp"\x8e\x02\n\x11ListEventsRequest\x12\x14\n\x0cproject_name\x18\x01 \x01(\t\x12\x10\n\x08group_id\x18\x02 \x01(\t\x12Y\n\x0eservice_filter\x18\x03 \x01(\x0b\x32\x41.google.devtools.clouderrorreporting.v1beta1.ServiceContextFilter\x12O\n\ntime_range\x18\x04 \x01(\x0b\x32;.google.devtools.clouderrorreporting.v1beta1.QueryTimeRange\x12\x11\n\tpage_size\x18\x06 \x01(\x05\x12\x12\n\npage_token\x18\x07 \x01(\t"\xb2\x01\n\x12ListEventsResponse\x12M\n\x0c\x65rror_events\x18\x01 \x03(\x0b\x32\x37.google.devtools.clouderrorreporting.v1beta1.ErrorEvent\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\x12\x34\n\x10time_range_begin\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp"\xe7\x01\n\x0eQueryTimeRange\x12R\n\x06period\x18\x01 \x01(\x0e\x32\x42.google.devtools.clouderrorreporting.v1beta1.QueryTimeRange.Period"\x80\x01\n\x06Period\x12\x16\n\x12PERIOD_UNSPECIFIED\x10\x00\x12\x11\n\rPERIOD_1_HOUR\x10\x01\x12\x12\n\x0ePERIOD_6_HOURS\x10\x02\x12\x10\n\x0cPERIOD_1_DAY\x10\x03\x12\x11\n\rPERIOD_1_WEEK\x10\x04\x12\x12\n\x0ePERIOD_30_DAYS\x10\x05"O\n\x14ServiceContextFilter\x12\x0f\n\x07service\x18\x02 \x01(\t\x12\x0f\n\x07version\x18\x03 \x01(\t\x12\x15\n\rresource_type\x18\x04 \x01(\t"+\n\x13\x44\x65leteEventsRequest\x12\x14\n\x0cproject_name\x18\x01 \x01(\t"\x16\n\x14\x44\x65leteEventsResponse*u\n\x13TimedCountAlignment\x12%\n!ERROR_COUNT_ALIGNMENT_UNSPECIFIED\x10\x00\x12\x1b\n\x17\x41LIGNMENT_EQUAL_ROUNDED\x10\x01\x12\x1a\n\x16\x41LIGNMENT_EQUAL_AT_END\x10\x02*}\n\x0f\x45rrorGroupOrder\x12\x1b\n\x17GROUP_ORDER_UNSPECIFIED\x10\x00\x12\x0e\n\nCOUNT_DESC\x10\x01\x12\x12\n\x0eLAST_SEEN_DESC\x10\x02\x12\x10\n\x0c\x43REATED_DESC\x10\x03\x12\x17\n\x13\x41\x46\x46\x45\x43TED_USERS_DESC\x10\x04\x32\xf2\x04\n\x11\x45rrorStatsService\x12\xd0\x01\n\x0eListGroupStats\x12\x42.google.devtools.clouderrorreporting.v1beta1.ListGroupStatsRequest\x1a\x43.google.devtools.clouderrorreporting.v1beta1.ListGroupStatsResponse"5\x82\xd3\xe4\x93\x02/\x12-/v1beta1/{project_name=projects/*}/groupStats\x12\xc0\x01\n\nListEvents\x12>.google.devtools.clouderrorreporting.v1beta1.ListEventsRequest\x1a?.google.devtools.clouderrorreporting.v1beta1.ListEventsResponse"1\x82\xd3\xe4\x93\x02+\x12)/v1beta1/{project_name=projects/*}/events\x12\xc6\x01\n\x0c\x44\x65leteEvents\x12@.google.devtools.clouderrorreporting.v1beta1.DeleteEventsRequest\x1a\x41.google.devtools.clouderrorreporting.v1beta1.DeleteEventsResponse"1\x82\xd3\xe4\x93\x02+*)/v1beta1/{project_name=projects/*}/eventsB\xf7\x01\n/com.google.devtools.clouderrorreporting.v1beta1B\x16\x45rrorStatsServiceProtoP\x01Z^google.golang.org/genproto/googleapis/devtools/clouderrorreporting/v1beta1;clouderrorreporting\xaa\x02#Google.Cloud.ErrorReporting.V1Beta1\xca\x02#Google\\Cloud\\ErrorReporting\\V1beta1b\x06proto3'
     ),
@@ -49,18 +51,26 @@ _TIMEDCOUNTALIGNMENT = _descriptor.EnumDescriptor(
             name="ERROR_COUNT_ALIGNMENT_UNSPECIFIED",
             index=0,
             number=0,
-            options=None,
+            serialized_options=None,
             type=None,
         ),
         _descriptor.EnumValueDescriptor(
-            name="ALIGNMENT_EQUAL_ROUNDED", index=1, number=1, options=None, type=None
+            name="ALIGNMENT_EQUAL_ROUNDED",
+            index=1,
+            number=1,
+            serialized_options=None,
+            type=None,
         ),
         _descriptor.EnumValueDescriptor(
-            name="ALIGNMENT_EQUAL_AT_END", index=2, number=2, options=None, type=None
+            name="ALIGNMENT_EQUAL_AT_END",
+            index=2,
+            number=2,
+            serialized_options=None,
+            type=None,
         ),
     ],
     containing_type=None,
-    options=None,
+    serialized_options=None,
     serialized_start=2508,
     serialized_end=2625,
 )
@@ -74,23 +84,31 @@ _ERRORGROUPORDER = _descriptor.EnumDescriptor(
     file=DESCRIPTOR,
     values=[
         _descriptor.EnumValueDescriptor(
-            name="GROUP_ORDER_UNSPECIFIED", index=0, number=0, options=None, type=None
+            name="GROUP_ORDER_UNSPECIFIED",
+            index=0,
+            number=0,
+            serialized_options=None,
+            type=None,
         ),
         _descriptor.EnumValueDescriptor(
-            name="COUNT_DESC", index=1, number=1, options=None, type=None
+            name="COUNT_DESC", index=1, number=1, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="LAST_SEEN_DESC", index=2, number=2, options=None, type=None
+            name="LAST_SEEN_DESC", index=2, number=2, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="CREATED_DESC", index=3, number=3, options=None, type=None
+            name="CREATED_DESC", index=3, number=3, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="AFFECTED_USERS_DESC", index=4, number=4, options=None, type=None
+            name="AFFECTED_USERS_DESC",
+            index=4,
+            number=4,
+            serialized_options=None,
+            type=None,
         ),
     ],
     containing_type=None,
-    options=None,
+    serialized_options=None,
     serialized_start=2627,
     serialized_end=2752,
 )
@@ -114,26 +132,30 @@ _QUERYTIMERANGE_PERIOD = _descriptor.EnumDescriptor(
     file=DESCRIPTOR,
     values=[
         _descriptor.EnumValueDescriptor(
-            name="PERIOD_UNSPECIFIED", index=0, number=0, options=None, type=None
+            name="PERIOD_UNSPECIFIED",
+            index=0,
+            number=0,
+            serialized_options=None,
+            type=None,
         ),
         _descriptor.EnumValueDescriptor(
-            name="PERIOD_1_HOUR", index=1, number=1, options=None, type=None
+            name="PERIOD_1_HOUR", index=1, number=1, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="PERIOD_6_HOURS", index=2, number=2, options=None, type=None
+            name="PERIOD_6_HOURS", index=2, number=2, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="PERIOD_1_DAY", index=3, number=3, options=None, type=None
+            name="PERIOD_1_DAY", index=3, number=3, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="PERIOD_1_WEEK", index=4, number=4, options=None, type=None
+            name="PERIOD_1_WEEK", index=4, number=4, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="PERIOD_30_DAYS", index=5, number=5, options=None, type=None
+            name="PERIOD_30_DAYS", index=5, number=5, serialized_options=None, type=None
         ),
     ],
     containing_type=None,
-    options=None,
+    serialized_options=None,
     serialized_start=2228,
     serialized_end=2356,
 )
@@ -162,7 +184,7 @@ _LISTGROUPSTATSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -180,7 +202,7 @@ _LISTGROUPSTATSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -198,7 +220,7 @@ _LISTGROUPSTATSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -216,7 +238,7 @@ _LISTGROUPSTATSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -234,7 +256,7 @@ _LISTGROUPSTATSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -252,7 +274,7 @@ _LISTGROUPSTATSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -270,7 +292,7 @@ _LISTGROUPSTATSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -288,7 +310,7 @@ _LISTGROUPSTATSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -306,7 +328,7 @@ _LISTGROUPSTATSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -324,14 +346,14 @@ _LISTGROUPSTATSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -363,7 +385,7 @@ _LISTGROUPSTATSRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -381,7 +403,7 @@ _LISTGROUPSTATSRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -399,14 +421,14 @@ _LISTGROUPSTATSRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -438,7 +460,7 @@ _ERRORGROUPSTATS = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -456,7 +478,7 @@ _ERRORGROUPSTATS = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -474,7 +496,7 @@ _ERRORGROUPSTATS = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -492,7 +514,7 @@ _ERRORGROUPSTATS = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -510,7 +532,7 @@ _ERRORGROUPSTATS = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -528,7 +550,7 @@ _ERRORGROUPSTATS = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -546,7 +568,7 @@ _ERRORGROUPSTATS = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -564,7 +586,7 @@ _ERRORGROUPSTATS = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -582,14 +604,14 @@ _ERRORGROUPSTATS = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -621,7 +643,7 @@ _TIMEDCOUNT = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -639,7 +661,7 @@ _TIMEDCOUNT = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -657,14 +679,14 @@ _TIMEDCOUNT = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -696,7 +718,7 @@ _LISTEVENTSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -714,7 +736,7 @@ _LISTEVENTSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -732,7 +754,7 @@ _LISTEVENTSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -750,7 +772,7 @@ _LISTEVENTSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -768,7 +790,7 @@ _LISTEVENTSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -786,14 +808,14 @@ _LISTEVENTSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -825,7 +847,7 @@ _LISTEVENTSRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -843,7 +865,7 @@ _LISTEVENTSRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -861,14 +883,14 @@ _LISTEVENTSRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -900,14 +922,14 @@ _QUERYTIMERANGE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[_QUERYTIMERANGE_PERIOD],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -939,7 +961,7 @@ _SERVICECONTEXTFILTER = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -957,7 +979,7 @@ _SERVICECONTEXTFILTER = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -975,14 +997,14 @@ _SERVICECONTEXTFILTER = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1014,14 +1036,14 @@ _DELETEEVENTSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1041,7 +1063,7 @@ _DELETEEVENTSRESPONSE = _descriptor.Descriptor(
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1437,20 +1459,14 @@ DeleteEventsResponse = _reflection.GeneratedProtocolMessageType(
 _sym_db.RegisterMessage(DeleteEventsResponse)
 
 
-DESCRIPTOR.has_options = True
-DESCRIPTOR._options = _descriptor._ParseOptions(
-    descriptor_pb2.FileOptions(),
-    _b(
-        "\n/com.google.devtools.clouderrorreporting.v1beta1B\026ErrorStatsServiceProtoP\001Z^google.golang.org/genproto/googleapis/devtools/clouderrorreporting/v1beta1;clouderrorreporting\252\002#Google.Cloud.ErrorReporting.V1Beta1\312\002#Google\\Cloud\\ErrorReporting\\V1beta1"
-    ),
-)
+DESCRIPTOR._options = None
 
 _ERRORSTATSSERVICE = _descriptor.ServiceDescriptor(
     name="ErrorStatsService",
     full_name="google.devtools.clouderrorreporting.v1beta1.ErrorStatsService",
     file=DESCRIPTOR,
     index=0,
-    options=None,
+    serialized_options=None,
     serialized_start=2755,
     serialized_end=3381,
     methods=[
@@ -1461,11 +1477,8 @@ _ERRORSTATSSERVICE = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_LISTGROUPSTATSREQUEST,
             output_type=_LISTGROUPSTATSRESPONSE,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\002/\022-/v1beta1/{project_name=projects/*}/groupStats"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\002/\022-/v1beta1/{project_name=projects/*}/groupStats"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -1475,11 +1488,8 @@ _ERRORSTATSSERVICE = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_LISTEVENTSREQUEST,
             output_type=_LISTEVENTSRESPONSE,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\002+\022)/v1beta1/{project_name=projects/*}/events"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\002+\022)/v1beta1/{project_name=projects/*}/events"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -1489,9 +1499,8 @@ _ERRORSTATSSERVICE = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_DELETEEVENTSREQUEST,
             output_type=_DELETEEVENTSRESPONSE,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b("\202\323\344\223\002+*)/v1beta1/{project_name=projects/*}/events"),
+            serialized_options=_b(
+                "\202\323\344\223\002+*)/v1beta1/{project_name=projects/*}/events"
             ),
         ),
     ],
