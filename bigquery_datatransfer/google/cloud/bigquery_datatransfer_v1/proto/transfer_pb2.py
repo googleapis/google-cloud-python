@@ -9,7 +9,6 @@ from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
-from google.protobuf import descriptor_pb2
 
 # @@protoc_insertion_point(imports)
 
@@ -26,6 +25,9 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     name="google/cloud/bigquery/datatransfer_v1/proto/transfer.proto",
     package="google.cloud.bigquery.datatransfer.v1",
     syntax="proto3",
+    serialized_options=_b(
+        "\n)com.google.cloud.bigquery.datatransfer.v1B\rTransferProtoP\001ZQgoogle.golang.org/genproto/googleapis/cloud/bigquery/datatransfer/v1;datatransfer\242\002\005GCBDT\252\002%Google.Cloud.BigQuery.DataTransfer.V1\312\002%Google\\Cloud\\BigQuery\\DataTransfer\\V1"
+    ),
     serialized_pb=_b(
         '\n:google/cloud/bigquery/datatransfer_v1/proto/transfer.proto\x12%google.cloud.bigquery.datatransfer.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x1cgoogle/protobuf/struct.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x17google/rpc/status.proto"\xad\x03\n\x0eTransferConfig\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x1e\n\x16\x64\x65stination_dataset_id\x18\x02 \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x03 \x01(\t\x12\x16\n\x0e\x64\x61ta_source_id\x18\x05 \x01(\t\x12\'\n\x06params\x18\t \x01(\x0b\x32\x17.google.protobuf.Struct\x12\x10\n\x08schedule\x18\x07 \x01(\t\x12 \n\x18\x64\x61ta_refresh_window_days\x18\x0c \x01(\x05\x12\x10\n\x08\x64isabled\x18\r \x01(\x08\x12/\n\x0bupdate_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x31\n\rnext_run_time\x18\x08 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x43\n\x05state\x18\n \x01(\x0e\x32\x34.google.cloud.bigquery.datatransfer.v1.TransferState\x12\x0f\n\x07user_id\x18\x0b \x01(\x03\x12\x16\n\x0e\x64\x61taset_region\x18\x0e \x01(\t"\xfe\x03\n\x0bTransferRun\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x31\n\rschedule_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12,\n\x08run_time\x18\n \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12(\n\x0c\x65rror_status\x18\x15 \x01(\x0b\x32\x12.google.rpc.Status\x12.\n\nstart_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12,\n\x08\x65nd_time\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12/\n\x0bupdate_time\x18\x06 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\'\n\x06params\x18\t \x01(\x0b\x32\x17.google.protobuf.Struct\x12\x1e\n\x16\x64\x65stination_dataset_id\x18\x02 \x01(\t\x12\x16\n\x0e\x64\x61ta_source_id\x18\x07 \x01(\t\x12\x43\n\x05state\x18\x08 \x01(\x0e\x32\x34.google.cloud.bigquery.datatransfer.v1.TransferState\x12\x0f\n\x07user_id\x18\x0b \x01(\x03\x12\x10\n\x08schedule\x18\x0c \x01(\t"\x8a\x02\n\x0fTransferMessage\x12\x30\n\x0cmessage_time\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12X\n\x08severity\x18\x02 \x01(\x0e\x32\x46.google.cloud.bigquery.datatransfer.v1.TransferMessage.MessageSeverity\x12\x14\n\x0cmessage_text\x18\x03 \x01(\t"U\n\x0fMessageSeverity\x12 \n\x1cMESSAGE_SEVERITY_UNSPECIFIED\x10\x00\x12\x08\n\x04INFO\x10\x01\x12\x0b\n\x07WARNING\x10\x02\x12\t\n\x05\x45RROR\x10\x03*G\n\x0cTransferType\x12\x1d\n\x19TRANSFER_TYPE_UNSPECIFIED\x10\x00\x12\t\n\x05\x42\x41TCH\x10\x01\x12\r\n\tSTREAMING\x10\x02*s\n\rTransferState\x12\x1e\n\x1aTRANSFER_STATE_UNSPECIFIED\x10\x00\x12\x0b\n\x07PENDING\x10\x02\x12\x0b\n\x07RUNNING\x10\x03\x12\r\n\tSUCCEEDED\x10\x04\x12\n\n\x06\x46\x41ILED\x10\x05\x12\r\n\tCANCELLED\x10\x06\x42\xe7\x01\n)com.google.cloud.bigquery.datatransfer.v1B\rTransferProtoP\x01ZQgoogle.golang.org/genproto/googleapis/cloud/bigquery/datatransfer/v1;datatransfer\xa2\x02\x05GCBDT\xaa\x02%Google.Cloud.BigQuery.DataTransfer.V1\xca\x02%Google\\Cloud\\BigQuery\\DataTransfer\\V1b\x06proto3'
     ),
@@ -44,17 +46,21 @@ _TRANSFERTYPE = _descriptor.EnumDescriptor(
     file=DESCRIPTOR,
     values=[
         _descriptor.EnumValueDescriptor(
-            name="TRANSFER_TYPE_UNSPECIFIED", index=0, number=0, options=None, type=None
+            name="TRANSFER_TYPE_UNSPECIFIED",
+            index=0,
+            number=0,
+            serialized_options=None,
+            type=None,
         ),
         _descriptor.EnumValueDescriptor(
-            name="BATCH", index=1, number=1, options=None, type=None
+            name="BATCH", index=1, number=1, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="STREAMING", index=2, number=2, options=None, type=None
+            name="STREAMING", index=2, number=2, serialized_options=None, type=None
         ),
     ],
     containing_type=None,
-    options=None,
+    serialized_options=None,
     serialized_start=1433,
     serialized_end=1504,
 )
@@ -71,27 +77,27 @@ _TRANSFERSTATE = _descriptor.EnumDescriptor(
             name="TRANSFER_STATE_UNSPECIFIED",
             index=0,
             number=0,
-            options=None,
+            serialized_options=None,
             type=None,
         ),
         _descriptor.EnumValueDescriptor(
-            name="PENDING", index=1, number=2, options=None, type=None
+            name="PENDING", index=1, number=2, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="RUNNING", index=2, number=3, options=None, type=None
+            name="RUNNING", index=2, number=3, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="SUCCEEDED", index=3, number=4, options=None, type=None
+            name="SUCCEEDED", index=3, number=4, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="FAILED", index=4, number=5, options=None, type=None
+            name="FAILED", index=4, number=5, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="CANCELLED", index=5, number=6, options=None, type=None
+            name="CANCELLED", index=5, number=6, serialized_options=None, type=None
         ),
     ],
     containing_type=None,
-    options=None,
+    serialized_options=None,
     serialized_start=1506,
     serialized_end=1621,
 )
@@ -119,21 +125,21 @@ _TRANSFERMESSAGE_MESSAGESEVERITY = _descriptor.EnumDescriptor(
             name="MESSAGE_SEVERITY_UNSPECIFIED",
             index=0,
             number=0,
-            options=None,
+            serialized_options=None,
             type=None,
         ),
         _descriptor.EnumValueDescriptor(
-            name="INFO", index=1, number=1, options=None, type=None
+            name="INFO", index=1, number=1, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="WARNING", index=2, number=2, options=None, type=None
+            name="WARNING", index=2, number=2, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="ERROR", index=3, number=3, options=None, type=None
+            name="ERROR", index=3, number=3, serialized_options=None, type=None
         ),
     ],
     containing_type=None,
-    options=None,
+    serialized_options=None,
     serialized_start=1346,
     serialized_end=1431,
 )
@@ -162,7 +168,7 @@ _TRANSFERCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -180,7 +186,7 @@ _TRANSFERCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -198,7 +204,7 @@ _TRANSFERCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -216,7 +222,7 @@ _TRANSFERCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -234,7 +240,7 @@ _TRANSFERCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -252,7 +258,7 @@ _TRANSFERCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -270,7 +276,7 @@ _TRANSFERCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -288,7 +294,7 @@ _TRANSFERCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -306,7 +312,7 @@ _TRANSFERCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -324,7 +330,7 @@ _TRANSFERCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -342,7 +348,7 @@ _TRANSFERCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -360,7 +366,7 @@ _TRANSFERCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -378,14 +384,14 @@ _TRANSFERCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -417,7 +423,7 @@ _TRANSFERRUN = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -435,7 +441,7 @@ _TRANSFERRUN = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -453,7 +459,7 @@ _TRANSFERRUN = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -471,7 +477,7 @@ _TRANSFERRUN = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -489,7 +495,7 @@ _TRANSFERRUN = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -507,7 +513,7 @@ _TRANSFERRUN = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -525,7 +531,7 @@ _TRANSFERRUN = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -543,7 +549,7 @@ _TRANSFERRUN = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -561,7 +567,7 @@ _TRANSFERRUN = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -579,7 +585,7 @@ _TRANSFERRUN = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -597,7 +603,7 @@ _TRANSFERRUN = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -615,7 +621,7 @@ _TRANSFERRUN = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -633,14 +639,14 @@ _TRANSFERRUN = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -672,7 +678,7 @@ _TRANSFERMESSAGE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -690,7 +696,7 @@ _TRANSFERMESSAGE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -708,14 +714,14 @@ _TRANSFERMESSAGE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[_TRANSFERMESSAGE_MESSAGESEVERITY],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -924,11 +930,5 @@ TransferMessage = _reflection.GeneratedProtocolMessageType(
 _sym_db.RegisterMessage(TransferMessage)
 
 
-DESCRIPTOR.has_options = True
-DESCRIPTOR._options = _descriptor._ParseOptions(
-    descriptor_pb2.FileOptions(),
-    _b(
-        "\n)com.google.cloud.bigquery.datatransfer.v1B\rTransferProtoP\001ZQgoogle.golang.org/genproto/googleapis/cloud/bigquery/datatransfer/v1;datatransfer\242\002\005GCBDT\252\002%Google.Cloud.BigQuery.DataTransfer.V1\312\002%Google\\Cloud\\BigQuery\\DataTransfer\\V1"
-    ),
-)
+DESCRIPTOR._options = None
 # @@protoc_insertion_point(module_scope)
