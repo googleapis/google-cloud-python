@@ -28,7 +28,8 @@ from google.cloud.ndb import _eventloop
 from google.cloud.ndb import _runstate
 from google.cloud.ndb import tasklets
 
-_BATCH_LOOKUP = "Lookup"
+EVENTUAL = datastore_pb2.ReadOptions.EVENTUAL
+EVENTUAL_CONSISTENCY = EVENTUAL   # Legacy NDB
 _NOT_FOUND = object()
 
 
@@ -58,7 +59,7 @@ def stub():
     return state.stub
 
 
-def lookup(key):
+def lookup(key, **options):
     """Look up a Datastore entity.
 
     Gets an entity from Datastore, asynchronously. Actually adds the request to
@@ -67,19 +68,23 @@ def lookup(key):
 
     Args:
         key (~datastore.Key): The key for the entity to retrieve.
+        options (Dict[str, Any]): The options for the request. For example,
+            ``{"read_consistency": EVENTUAL}``.
 
     Returns:
         :class:`~tasklets.Future`: If not an exception, future's result will be
             either an entity protocol buffer or _NOT_FOUND.
     """
-    future = tasklets.Future()
-    batch = _get_lookup_batch()
+    _check_unsupported_options(options)
+
+    batch = _get_batch(_LookupBatch, options)
     batch_key = key.to_protobuf().SerializeToString()
+    future = tasklets.Future()
     batch.setdefault(batch_key, []).append(future)
     return future
 
 
-def _get_lookup_batch():
+def _get_batch(batch_cls, options):
     """Gets a data structure for storing batched calls to Datastore Lookup.
 
     The batch data structure is stored in the current run state. If there is
@@ -87,54 +92,58 @@ def _get_lookup_batch():
     callback is added to the current event loop which will eventually perform
     the batch look up.
 
+    Args:
+        batch_cls (type): Class representing the kind of operation being
+            batched.
+        options (Dict[str, Any]): The options for the request. For example,
+            ``{"read_consistency": EVENTUAL}``. Calls with different options
+            will be placed in different batches.
+
     Returns:
-        Dict[bytes, List[~tasklets.Future]]: Mapping of serialized entity keys
-            to futures.
+        batch_cls: An instance of the batch class.
     """
     state = _runstate.current()
-    batch = state.batches.get(_BATCH_LOOKUP)
+    batches = state.batches.get(batch_cls)
+    if batches is None:
+        state.batches[batch_cls] = batches = {}
+
+    options_key = tuple(sorted(options.items()))
+    batch = batches.get(options_key)
     if batch is not None:
         return batch
 
-    state.batches[_BATCH_LOOKUP] = batch = {}
-    _eventloop.add_idle(_perform_batch_lookup)
+    batches[options_key] = batch = _LookupBatch(options)
+    _eventloop.add_idle(batch.idle_callback)
     return batch
 
 
-def _perform_batch_lookup():
-    """Perform a Datastore Lookup on all batched Lookup requests.
+class _LookupBatch(dict):
+    """Batch for Lookup requests.
 
-    Meant to be used as an idle callback, so that calls to lookup entities can
-    be batched into a single request to the back end service as soon as running
-    code has need of one of the results.
-    """
-    state = _runstate.current()
-    batch = state.batches.pop(_BATCH_LOOKUP, None)
-    if batch is None:
-        return
-
-    keys = []
-    for batch_key in batch.keys():
-        key_pb = entity_pb2.Key()
-        key_pb.ParseFromString(batch_key)
-        keys.append(key_pb)
-
-    rpc = _datastore_lookup(keys)
-    _eventloop.queue_rpc(rpc, BatchLookupCallback(batch))
-
-
-class BatchLookupCallback:
-    """Callback for processing the results of a call to Datastore Lookup.
+    Extends ``dict`` and expects to be used as a mapping from serialized key
+    protobuffers to lists of futures waiting for lookups for those keys.
 
     Args:
-        batch (Dict[bytes, List[~tasklets.Future]]): Mapping of serialized keys
-            to futures for the batch request.
+        options (Dict[str, Any]): The options for the request. For example,
+            ``{"read_consistency": EVENTUAL}``. Calls with different options
+            will be placed in different batches.
     """
+    def __init__(self, options):
+        self.options = options
 
-    def __init__(self, batch):
-        self.batch = batch
+    def idle_callback(self):
+        """Perform a Datastore Lookup on all batched Lookup requests."""
+        keys = []
+        for batch_key in self.keys():
+            key_pb = entity_pb2.Key()
+            key_pb.ParseFromString(batch_key)
+            keys.append(key_pb)
 
-    def __call__(self, rpc):
+        read_options = _get_read_options(self.options)
+        rpc = _datastore_lookup(keys, read_options)
+        _eventloop.queue_rpc(rpc, self.lookup_callback)
+
+    def lookup_callback(self, rpc):
         """Process the results of a call to Datastore Lookup.
 
         Each key in the batch will be in one of `found`, `missing`, or
@@ -145,16 +154,14 @@ class BatchLookupCallback:
 
         Args:
             rpc (grpc.Future): If not an exception, the result will be an
-            instance of
-            :class:`google.cloud.datastore_v1.datastore_pb.LookupResponse`
+                instance of
+                :class:`google.cloud.datastore_v1.datastore_pb.LookupResponse`
         """
-        batch = self.batch
-
         # If RPC has resulted in an exception, propagate that exception to all
         # waiting futures.
         exception = rpc.exception()
         if exception is not None:
-            for future in itertools.chain(*batch.values()):
+            for future in itertools.chain(*self.values()):
                 future.set_exception(exception)
             return
 
@@ -164,40 +171,119 @@ class BatchLookupCallback:
         # For all deferred keys, batch them up again with their original
         # futures
         if results.deferred:
-            next_batch = _get_lookup_batch()
+            next_batch = _get_batch(type(self), self.options)
             for key in results.deferred:
                 batch_key = key.SerializeToString()
-                next_batch.setdefault(batch_key, []).extend(batch[batch_key])
+                next_batch.setdefault(batch_key, []).extend(self[batch_key])
 
         # For all missing keys, set result to _NOT_FOUND and let callers decide
         # how to handle
         for result in results.missing:
             batch_key = result.entity.key.SerializeToString()
-            for future in batch[batch_key]:
+            for future in self[batch_key]:
                 future.set_result(_NOT_FOUND)
 
         # For all found entities, set the result on their corresponding futures
         for result in results.found:
             entity = result.entity
             batch_key = entity.key.SerializeToString()
-            for future in batch[batch_key]:
+            for future in self[batch_key]:
                 future.set_result(entity)
 
 
-def _datastore_lookup(keys):
+def _datastore_lookup(keys, read_options):
     """Issue a Lookup call to Datastore using gRPC.
 
     Args:
-        keys (Iterable[datastore_v1.proto.entity_pb2.Key]): The entity keys to
+        keys (Iterable[entity_pb2.Key]): The entity keys to
             look up.
+        read_options (Union[datastore_pb2.ReadOptions, NoneType]): Options for
+            the request.
 
     Returns:
         :class:`grpc.Future`: Future object for eventual result of lookup.
     """
     client = _runstate.current().client
     request = datastore_pb2.LookupRequest(
-        project_id=client.project, keys=[key for key in keys]
+        project_id=client.project, keys=[key for key in keys],
+        read_options=read_options,
     )
 
     api = stub()
     return api.Lookup.future(request)
+
+
+def _get_read_options(options):
+    """Get the read options for a request.
+
+    Args:
+        options (Dict[str, Any]): The options for the request. For example,
+            ``{"read_consistency": EVENTUAL}``. May contain options unrelated
+            to creating a :class:`datastore_pb2.ReadOptions` instance, which
+            will be ignored.
+
+    Returns:
+        datastore_pb2.ReadOptions: The options instance for passing to the
+            Datastore gRPC API.
+
+    Raises:
+        ValueError: When ``read_consistency`` is set to ``EVENTUAL`` and there
+            is a transaction.
+    """
+    state = _runstate.current()
+    transaction = options.get("transaction", state.transaction)
+
+    read_consistency = options.get("read_consistency")
+    if read_consistency is None:
+        read_consistency = options.get("read_policy")  # Legacy NDB
+
+    if transaction is not None and read_consistency is EVENTUAL:
+        raise ValueError(
+            "read_consistency must be EVENTUAL when in transaction")
+
+    return datastore_pb2.ReadOptions(
+        read_consistency=read_consistency,
+        transaction=transaction,
+    )
+
+
+_OPTIONS_SUPPORTED = {
+    "transaction",
+    "read_consistency",
+    "read_policy",
+}
+
+_OPTIONS_NOT_IMPLEMENTED = {
+    "deadline",
+    "force_writes",
+    "use_cache",
+    "use_memcache",
+    "use_datastore",
+    "memcache_timeout",
+    "max_memcache_items",
+    "xg",
+    "propagation",
+    "retries",
+}
+
+
+def _check_unsupported_options(options):
+    """Check to see if any passed options are not supported.
+
+    options (Dict[str, Any]): The options for the request. For example,
+        ``{"read_consistency": EVENTUAL}``.
+
+    Raises: NotImplementedError if any options are not supported.
+    """
+    for key in options:
+        if key in _OPTIONS_NOT_IMPLEMENTED:
+            # option is used in Legacy NDB, but has not yet been implemented in
+            # the rewrite, nor have we determined it won't be used, yet.
+            raise NotImplementedError(
+                "Support for option {!r} has not yet been implemented".format(
+                    key
+                )
+            )
+
+        elif key not in _OPTIONS_SUPPORTED:
+            raise NotImplementedError("Passed bad option: {!r}".format(key))

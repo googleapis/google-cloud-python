@@ -19,7 +19,6 @@ __all__ = [
     "AutoBatcher",
     "Context",
     "ContextOptions",
-    "EVENTUAL_CONSISTENCY",
     "TransactionOptions",
 ]
 
@@ -43,9 +42,6 @@ class ContextOptions:
 
     def __init__(self, *args, **kwargs):
         raise NotImplementedError
-
-
-EVENTUAL_CONSISTENCY = 1
 
 
 class TransactionOptions:

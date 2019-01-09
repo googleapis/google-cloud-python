@@ -705,46 +705,38 @@ class Key:
         raw_bytes = self.serialized()
         return base64.urlsafe_b64encode(raw_bytes).strip(b"=")
 
-    def get(self, **ctx_options):
+    def get(self, **options):
         """Synchronously get the entity for this key.
 
         Returns the retrieved :class:`.Model` or :data:`None` if there is no
         such entity.
 
         Args:
-            ctx_options (Dict[str, Any]): The context options for the request.
-                For example, ``{"read_policy": EVENTUAL_CONSISTENCY}``.
-
-        Raises:
-            NotImplementedError: When ``ctx_options`` is not empty. Context
-                options have not yet been implemented.
+            options (Dict[str, Any]): The options for the request. For
+                example, ``{"read_consistency": EVENTUAL}``.
 
         Returns:
             Union[:class:`.Model`, :data:`None`]
         """
-        return self.get_async(**ctx_options).result()
+        return self.get_async(**options).result()
 
     @tasklets.tasklet
-    def get_async(self, **ctx_options):
+    def get_async(self, **options):
         """Asynchronously get the entity for this key.
 
         The result for the returned future will either be the retrieved
         :class:`.Model` or :data:`None` if there is no such entity.
 
         Args:
-            ctx_options (Dict[str, Any]): The context options for the request.
-                For example, ``{"read_policy": EVENTUAL_CONSISTENCY}``.
-
-        Raises:
-            NotImplementedError: When ``ctx_options`` is not empty. Context
-                options have not yet been implemented.
+            options (Dict[str, Any]): The options for the request. For
+                example, ``{"read_consistency": EVENTUAL}``.
 
         Returns:
             :class:`~google.cloud.ndb.tasklets.Future`
         """
         from google.cloud.ndb import model  # avoid circular import
 
-        entity_pb = yield _datastore_api.lookup(self._key)
+        entity_pb = yield _datastore_api.lookup(self._key, **options)
         if entity_pb is not _datastore_api._NOT_FOUND:
             return model._entity_from_protobuf(entity_pb)
 
