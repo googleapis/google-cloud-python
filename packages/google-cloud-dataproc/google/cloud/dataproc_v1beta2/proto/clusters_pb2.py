@@ -9,7 +9,6 @@ from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
-from google.protobuf import descriptor_pb2
 
 # @@protoc_insertion_point(imports)
 
@@ -35,6 +34,9 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     name="google/cloud/dataproc_v1beta2/proto/clusters.proto",
     package="google.cloud.dataproc.v1beta2",
     syntax="proto3",
+    serialized_options=_b(
+        "\n!com.google.cloud.dataproc.v1beta2B\rClustersProtoP\001ZEgoogle.golang.org/genproto/googleapis/cloud/dataproc/v1beta2;dataproc"
+    ),
     serialized_pb=_b(
         '\n2google/cloud/dataproc_v1beta2/proto/clusters.proto\x12\x1dgoogle.cloud.dataproc.v1beta2\x1a\x1cgoogle/api/annotations.proto\x1a\x30google/cloud/dataproc_v1beta2/proto/shared.proto\x1a\x34google/cloud/dataproc_v1beta2/proto/operations.proto\x1a#google/longrunning/operations.proto\x1a\x1egoogle/protobuf/duration.proto\x1a google/protobuf/field_mask.proto\x1a\x1fgoogle/protobuf/timestamp.proto"\xbe\x03\n\x07\x43luster\x12\x12\n\nproject_id\x18\x01 \x01(\t\x12\x14\n\x0c\x63luster_name\x18\x02 \x01(\t\x12<\n\x06\x63onfig\x18\x03 \x01(\x0b\x32,.google.cloud.dataproc.v1beta2.ClusterConfig\x12\x42\n\x06labels\x18\x08 \x03(\x0b\x32\x32.google.cloud.dataproc.v1beta2.Cluster.LabelsEntry\x12<\n\x06status\x18\x04 \x01(\x0b\x32,.google.cloud.dataproc.v1beta2.ClusterStatus\x12\x44\n\x0estatus_history\x18\x07 \x03(\x0b\x32,.google.cloud.dataproc.v1beta2.ClusterStatus\x12\x14\n\x0c\x63luster_uuid\x18\x06 \x01(\t\x12>\n\x07metrics\x18\t \x01(\x0b\x32-.google.cloud.dataproc.v1beta2.ClusterMetrics\x1a-\n\x0bLabelsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01"\x95\x05\n\rClusterConfig\x12\x15\n\rconfig_bucket\x18\x01 \x01(\t\x12K\n\x12gce_cluster_config\x18\x08 \x01(\x0b\x32/.google.cloud.dataproc.v1beta2.GceClusterConfig\x12I\n\rmaster_config\x18\t \x01(\x0b\x32\x32.google.cloud.dataproc.v1beta2.InstanceGroupConfig\x12I\n\rworker_config\x18\n \x01(\x0b\x32\x32.google.cloud.dataproc.v1beta2.InstanceGroupConfig\x12S\n\x17secondary_worker_config\x18\x0c \x01(\x0b\x32\x32.google.cloud.dataproc.v1beta2.InstanceGroupConfig\x12\x46\n\x0fsoftware_config\x18\r \x01(\x0b\x32-.google.cloud.dataproc.v1beta2.SoftwareConfig\x12H\n\x10lifecycle_config\x18\x0e \x01(\x0b\x32..google.cloud.dataproc.v1beta2.LifecycleConfig\x12W\n\x16initialization_actions\x18\x0b \x03(\x0b\x32\x37.google.cloud.dataproc.v1beta2.NodeInitializationAction\x12J\n\x11\x65ncryption_config\x18\x0f \x01(\x0b\x32/.google.cloud.dataproc.v1beta2.EncryptionConfig"/\n\x10\x45ncryptionConfig\x12\x1b\n\x13gce_pd_kms_key_name\x18\x01 \x01(\t"\xb4\x02\n\x10GceClusterConfig\x12\x10\n\x08zone_uri\x18\x01 \x01(\t\x12\x13\n\x0bnetwork_uri\x18\x02 \x01(\t\x12\x16\n\x0esubnetwork_uri\x18\x06 \x01(\t\x12\x18\n\x10internal_ip_only\x18\x07 \x01(\x08\x12\x17\n\x0fservice_account\x18\x08 \x01(\t\x12\x1e\n\x16service_account_scopes\x18\x03 \x03(\t\x12\x0c\n\x04tags\x18\x04 \x03(\t\x12O\n\x08metadata\x18\x05 \x03(\x0b\x32=.google.cloud.dataproc.v1beta2.GceClusterConfig.MetadataEntry\x1a/\n\rMetadataEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01"\xfc\x02\n\x13InstanceGroupConfig\x12\x15\n\rnum_instances\x18\x01 \x01(\x05\x12\x16\n\x0einstance_names\x18\x02 \x03(\t\x12\x11\n\timage_uri\x18\x03 \x01(\t\x12\x18\n\x10machine_type_uri\x18\x04 \x01(\t\x12>\n\x0b\x64isk_config\x18\x05 \x01(\x0b\x32).google.cloud.dataproc.v1beta2.DiskConfig\x12\x16\n\x0eis_preemptible\x18\x06 \x01(\x08\x12O\n\x14managed_group_config\x18\x07 \x01(\x0b\x32\x31.google.cloud.dataproc.v1beta2.ManagedGroupConfig\x12\x46\n\x0c\x61\x63\x63\x65lerators\x18\x08 \x03(\x0b\x32\x30.google.cloud.dataproc.v1beta2.AcceleratorConfig\x12\x18\n\x10min_cpu_platform\x18\t \x01(\t"Y\n\x12ManagedGroupConfig\x12\x1e\n\x16instance_template_name\x18\x01 \x01(\t\x12#\n\x1binstance_group_manager_name\x18\x02 \x01(\t"L\n\x11\x41\x63\x63\x65leratorConfig\x12\x1c\n\x14\x61\x63\x63\x65lerator_type_uri\x18\x01 \x01(\t\x12\x19\n\x11\x61\x63\x63\x65lerator_count\x18\x02 \x01(\x05"W\n\nDiskConfig\x12\x16\n\x0e\x62oot_disk_type\x18\x03 \x01(\t\x12\x19\n\x11\x62oot_disk_size_gb\x18\x01 \x01(\x05\x12\x16\n\x0enum_local_ssds\x18\x02 \x01(\x05"\xba\x01\n\x0fLifecycleConfig\x12\x32\n\x0fidle_delete_ttl\x18\x01 \x01(\x0b\x32\x19.google.protobuf.Duration\x12\x36\n\x10\x61uto_delete_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.TimestampH\x00\x12\x34\n\x0f\x61uto_delete_ttl\x18\x03 \x01(\x0b\x32\x19.google.protobuf.DurationH\x00\x42\x05\n\x03ttl"i\n\x18NodeInitializationAction\x12\x17\n\x0f\x65xecutable_file\x18\x01 \x01(\t\x12\x34\n\x11\x65xecution_timeout\x18\x02 \x01(\x0b\x32\x19.google.protobuf.Duration"\xf7\x02\n\rClusterStatus\x12\x41\n\x05state\x18\x01 \x01(\x0e\x32\x32.google.cloud.dataproc.v1beta2.ClusterStatus.State\x12\x0e\n\x06\x64\x65tail\x18\x02 \x01(\t\x12\x34\n\x10state_start_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12G\n\x08substate\x18\x04 \x01(\x0e\x32\x35.google.cloud.dataproc.v1beta2.ClusterStatus.Substate"V\n\x05State\x12\x0b\n\x07UNKNOWN\x10\x00\x12\x0c\n\x08\x43REATING\x10\x01\x12\x0b\n\x07RUNNING\x10\x02\x12\t\n\x05\x45RROR\x10\x03\x12\x0c\n\x08\x44\x45LETING\x10\x04\x12\x0c\n\x08UPDATING\x10\x05"<\n\x08Substate\x12\x0f\n\x0bUNSPECIFIED\x10\x00\x12\r\n\tUNHEALTHY\x10\x01\x12\x10\n\x0cSTALE_STATUS\x10\x02"\xad\x01\n\x0eSoftwareConfig\x12\x15\n\rimage_version\x18\x01 \x01(\t\x12Q\n\nproperties\x18\x02 \x03(\x0b\x32=.google.cloud.dataproc.v1beta2.SoftwareConfig.PropertiesEntry\x1a\x31\n\x0fPropertiesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01"\xa4\x02\n\x0e\x43lusterMetrics\x12T\n\x0chdfs_metrics\x18\x01 \x03(\x0b\x32>.google.cloud.dataproc.v1beta2.ClusterMetrics.HdfsMetricsEntry\x12T\n\x0cyarn_metrics\x18\x02 \x03(\x0b\x32>.google.cloud.dataproc.v1beta2.ClusterMetrics.YarnMetricsEntry\x1a\x32\n\x10HdfsMetricsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\x03:\x02\x38\x01\x1a\x32\n\x10YarnMetricsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\x03:\x02\x38\x01"\x87\x01\n\x14\x43reateClusterRequest\x12\x12\n\nproject_id\x18\x01 \x01(\t\x12\x0e\n\x06region\x18\x03 \x01(\t\x12\x37\n\x07\x63luster\x18\x02 \x01(\x0b\x32&.google.cloud.dataproc.v1beta2.Cluster\x12\x12\n\nrequest_id\x18\x04 \x01(\t"\x90\x02\n\x14UpdateClusterRequest\x12\x12\n\nproject_id\x18\x01 \x01(\t\x12\x0e\n\x06region\x18\x05 \x01(\t\x12\x14\n\x0c\x63luster_name\x18\x02 \x01(\t\x12\x37\n\x07\x63luster\x18\x03 \x01(\x0b\x32&.google.cloud.dataproc.v1beta2.Cluster\x12@\n\x1dgraceful_decommission_timeout\x18\x06 \x01(\x0b\x32\x19.google.protobuf.Duration\x12/\n\x0bupdate_mask\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.FieldMask\x12\x12\n\nrequest_id\x18\x07 \x01(\t"z\n\x14\x44\x65leteClusterRequest\x12\x12\n\nproject_id\x18\x01 \x01(\t\x12\x0e\n\x06region\x18\x03 \x01(\t\x12\x14\n\x0c\x63luster_name\x18\x02 \x01(\t\x12\x14\n\x0c\x63luster_uuid\x18\x04 \x01(\t\x12\x12\n\nrequest_id\x18\x05 \x01(\t"M\n\x11GetClusterRequest\x12\x12\n\nproject_id\x18\x01 \x01(\t\x12\x0e\n\x06region\x18\x03 \x01(\t\x12\x14\n\x0c\x63luster_name\x18\x02 \x01(\t"p\n\x13ListClustersRequest\x12\x12\n\nproject_id\x18\x01 \x01(\t\x12\x0e\n\x06region\x18\x04 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x05 \x01(\t\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t"i\n\x14ListClustersResponse\x12\x38\n\x08\x63lusters\x18\x01 \x03(\x0b\x32&.google.cloud.dataproc.v1beta2.Cluster\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"R\n\x16\x44iagnoseClusterRequest\x12\x12\n\nproject_id\x18\x01 \x01(\t\x12\x0e\n\x06region\x18\x03 \x01(\t\x12\x14\n\x0c\x63luster_name\x18\x02 \x01(\t",\n\x16\x44iagnoseClusterResults\x12\x12\n\noutput_uri\x18\x01 \x01(\t2\xf8\x08\n\x11\x43lusterController\x12\xae\x01\n\rCreateCluster\x12\x33.google.cloud.dataproc.v1beta2.CreateClusterRequest\x1a\x1d.google.longrunning.Operation"I\x82\xd3\xe4\x93\x02\x43"8/v1beta2/projects/{project_id}/regions/{region}/clusters:\x07\x63luster\x12\xbd\x01\n\rUpdateCluster\x12\x33.google.cloud.dataproc.v1beta2.UpdateClusterRequest\x1a\x1d.google.longrunning.Operation"X\x82\xd3\xe4\x93\x02R2G/v1beta2/projects/{project_id}/regions/{region}/clusters/{cluster_name}:\x07\x63luster\x12\xb4\x01\n\rDeleteCluster\x12\x33.google.cloud.dataproc.v1beta2.DeleteClusterRequest\x1a\x1d.google.longrunning.Operation"O\x82\xd3\xe4\x93\x02I*G/v1beta2/projects/{project_id}/regions/{region}/clusters/{cluster_name}\x12\xb7\x01\n\nGetCluster\x12\x30.google.cloud.dataproc.v1beta2.GetClusterRequest\x1a&.google.cloud.dataproc.v1beta2.Cluster"O\x82\xd3\xe4\x93\x02I\x12G/v1beta2/projects/{project_id}/regions/{region}/clusters/{cluster_name}\x12\xb9\x01\n\x0cListClusters\x12\x32.google.cloud.dataproc.v1beta2.ListClustersRequest\x1a\x33.google.cloud.dataproc.v1beta2.ListClustersResponse"@\x82\xd3\xe4\x93\x02:\x12\x38/v1beta2/projects/{project_id}/regions/{region}/clusters\x12\xc4\x01\n\x0f\x44iagnoseCluster\x12\x35.google.cloud.dataproc.v1beta2.DiagnoseClusterRequest\x1a\x1d.google.longrunning.Operation"[\x82\xd3\xe4\x93\x02U"P/v1beta2/projects/{project_id}/regions/{region}/clusters/{cluster_name}:diagnose:\x01*B{\n!com.google.cloud.dataproc.v1beta2B\rClustersProtoP\x01ZEgoogle.golang.org/genproto/googleapis/cloud/dataproc/v1beta2;dataprocb\x06proto3'
     ),
@@ -57,26 +59,26 @@ _CLUSTERSTATUS_STATE = _descriptor.EnumDescriptor(
     file=DESCRIPTOR,
     values=[
         _descriptor.EnumValueDescriptor(
-            name="UNKNOWN", index=0, number=0, options=None, type=None
+            name="UNKNOWN", index=0, number=0, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="CREATING", index=1, number=1, options=None, type=None
+            name="CREATING", index=1, number=1, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="RUNNING", index=2, number=2, options=None, type=None
+            name="RUNNING", index=2, number=2, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="ERROR", index=3, number=3, options=None, type=None
+            name="ERROR", index=3, number=3, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="DELETING", index=4, number=4, options=None, type=None
+            name="DELETING", index=4, number=4, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="UPDATING", index=5, number=5, options=None, type=None
+            name="UPDATING", index=5, number=5, serialized_options=None, type=None
         ),
     ],
     containing_type=None,
-    options=None,
+    serialized_options=None,
     serialized_start=2993,
     serialized_end=3079,
 )
@@ -89,17 +91,17 @@ _CLUSTERSTATUS_SUBSTATE = _descriptor.EnumDescriptor(
     file=DESCRIPTOR,
     values=[
         _descriptor.EnumValueDescriptor(
-            name="UNSPECIFIED", index=0, number=0, options=None, type=None
+            name="UNSPECIFIED", index=0, number=0, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="UNHEALTHY", index=1, number=1, options=None, type=None
+            name="UNHEALTHY", index=1, number=1, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="STALE_STATUS", index=2, number=2, options=None, type=None
+            name="STALE_STATUS", index=2, number=2, serialized_options=None, type=None
         ),
     ],
     containing_type=None,
-    options=None,
+    serialized_options=None,
     serialized_start=3081,
     serialized_end=3141,
 )
@@ -128,7 +130,7 @@ _CLUSTER_LABELSENTRY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -146,14 +148,14 @@ _CLUSTER_LABELSENTRY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=_descriptor._ParseOptions(descriptor_pb2.MessageOptions(), _b("8\001")),
+    serialized_options=_b("8\001"),
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -184,7 +186,7 @@ _CLUSTER = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -202,7 +204,7 @@ _CLUSTER = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -220,7 +222,7 @@ _CLUSTER = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -238,7 +240,7 @@ _CLUSTER = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -256,7 +258,7 @@ _CLUSTER = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -274,7 +276,7 @@ _CLUSTER = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -292,7 +294,7 @@ _CLUSTER = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -310,14 +312,14 @@ _CLUSTER = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[_CLUSTER_LABELSENTRY],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -349,7 +351,7 @@ _CLUSTERCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -367,7 +369,7 @@ _CLUSTERCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -385,7 +387,7 @@ _CLUSTERCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -403,7 +405,7 @@ _CLUSTERCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -421,7 +423,7 @@ _CLUSTERCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -439,7 +441,7 @@ _CLUSTERCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -457,7 +459,7 @@ _CLUSTERCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -475,7 +477,7 @@ _CLUSTERCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -493,14 +495,14 @@ _CLUSTERCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -532,14 +534,14 @@ _ENCRYPTIONCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -571,7 +573,7 @@ _GCECLUSTERCONFIG_METADATAENTRY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -589,14 +591,14 @@ _GCECLUSTERCONFIG_METADATAENTRY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=_descriptor._ParseOptions(descriptor_pb2.MessageOptions(), _b("8\001")),
+    serialized_options=_b("8\001"),
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -627,7 +629,7 @@ _GCECLUSTERCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -645,7 +647,7 @@ _GCECLUSTERCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -663,7 +665,7 @@ _GCECLUSTERCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -681,7 +683,7 @@ _GCECLUSTERCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -699,7 +701,7 @@ _GCECLUSTERCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -717,7 +719,7 @@ _GCECLUSTERCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -735,7 +737,7 @@ _GCECLUSTERCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -753,14 +755,14 @@ _GCECLUSTERCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[_GCECLUSTERCONFIG_METADATAENTRY],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -792,7 +794,7 @@ _INSTANCEGROUPCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -810,7 +812,7 @@ _INSTANCEGROUPCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -828,7 +830,7 @@ _INSTANCEGROUPCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -846,7 +848,7 @@ _INSTANCEGROUPCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -864,7 +866,7 @@ _INSTANCEGROUPCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -882,7 +884,7 @@ _INSTANCEGROUPCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -900,7 +902,7 @@ _INSTANCEGROUPCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -918,7 +920,7 @@ _INSTANCEGROUPCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -936,14 +938,14 @@ _INSTANCEGROUPCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -975,7 +977,7 @@ _MANAGEDGROUPCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -993,14 +995,14 @@ _MANAGEDGROUPCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1032,7 +1034,7 @@ _ACCELERATORCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1050,14 +1052,14 @@ _ACCELERATORCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1089,7 +1091,7 @@ _DISKCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1107,7 +1109,7 @@ _DISKCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1125,14 +1127,14 @@ _DISKCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1164,7 +1166,7 @@ _LIFECYCLECONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1182,7 +1184,7 @@ _LIFECYCLECONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1200,14 +1202,14 @@ _LIFECYCLECONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1247,7 +1249,7 @@ _NODEINITIALIZATIONACTION = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1265,14 +1267,14 @@ _NODEINITIALIZATIONACTION = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1304,7 +1306,7 @@ _CLUSTERSTATUS = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1322,7 +1324,7 @@ _CLUSTERSTATUS = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1340,7 +1342,7 @@ _CLUSTERSTATUS = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1358,14 +1360,14 @@ _CLUSTERSTATUS = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[_CLUSTERSTATUS_STATE, _CLUSTERSTATUS_SUBSTATE],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1397,7 +1399,7 @@ _SOFTWARECONFIG_PROPERTIESENTRY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1415,14 +1417,14 @@ _SOFTWARECONFIG_PROPERTIESENTRY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=_descriptor._ParseOptions(descriptor_pb2.MessageOptions(), _b("8\001")),
+    serialized_options=_b("8\001"),
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1453,7 +1455,7 @@ _SOFTWARECONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1471,14 +1473,14 @@ _SOFTWARECONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[_SOFTWARECONFIG_PROPERTIESENTRY],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1510,7 +1512,7 @@ _CLUSTERMETRICS_HDFSMETRICSENTRY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1528,14 +1530,14 @@ _CLUSTERMETRICS_HDFSMETRICSENTRY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=_descriptor._ParseOptions(descriptor_pb2.MessageOptions(), _b("8\001")),
+    serialized_options=_b("8\001"),
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1566,7 +1568,7 @@ _CLUSTERMETRICS_YARNMETRICSENTRY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1584,14 +1586,14 @@ _CLUSTERMETRICS_YARNMETRICSENTRY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=_descriptor._ParseOptions(descriptor_pb2.MessageOptions(), _b("8\001")),
+    serialized_options=_b("8\001"),
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1622,7 +1624,7 @@ _CLUSTERMETRICS = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1640,14 +1642,14 @@ _CLUSTERMETRICS = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[_CLUSTERMETRICS_HDFSMETRICSENTRY, _CLUSTERMETRICS_YARNMETRICSENTRY],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1679,7 +1681,7 @@ _CREATECLUSTERREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1697,7 +1699,7 @@ _CREATECLUSTERREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1715,7 +1717,7 @@ _CREATECLUSTERREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1733,14 +1735,14 @@ _CREATECLUSTERREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1772,7 +1774,7 @@ _UPDATECLUSTERREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1790,7 +1792,7 @@ _UPDATECLUSTERREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1808,7 +1810,7 @@ _UPDATECLUSTERREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1826,7 +1828,7 @@ _UPDATECLUSTERREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1844,7 +1846,7 @@ _UPDATECLUSTERREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1862,7 +1864,7 @@ _UPDATECLUSTERREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1880,14 +1882,14 @@ _UPDATECLUSTERREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1919,7 +1921,7 @@ _DELETECLUSTERREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1937,7 +1939,7 @@ _DELETECLUSTERREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1955,7 +1957,7 @@ _DELETECLUSTERREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1973,7 +1975,7 @@ _DELETECLUSTERREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1991,14 +1993,14 @@ _DELETECLUSTERREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -2030,7 +2032,7 @@ _GETCLUSTERREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2048,7 +2050,7 @@ _GETCLUSTERREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2066,14 +2068,14 @@ _GETCLUSTERREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -2105,7 +2107,7 @@ _LISTCLUSTERSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2123,7 +2125,7 @@ _LISTCLUSTERSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2141,7 +2143,7 @@ _LISTCLUSTERSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2159,7 +2161,7 @@ _LISTCLUSTERSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2177,14 +2179,14 @@ _LISTCLUSTERSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -2216,7 +2218,7 @@ _LISTCLUSTERSRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2234,14 +2236,14 @@ _LISTCLUSTERSRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -2273,7 +2275,7 @@ _DIAGNOSECLUSTERREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2291,7 +2293,7 @@ _DIAGNOSECLUSTERREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2309,14 +2311,14 @@ _DIAGNOSECLUSTERREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -2348,14 +2350,14 @@ _DIAGNOSECLUSTERRESULTS = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -3303,40 +3305,19 @@ DiagnoseClusterResults = _reflection.GeneratedProtocolMessageType(
 _sym_db.RegisterMessage(DiagnoseClusterResults)
 
 
-DESCRIPTOR.has_options = True
-DESCRIPTOR._options = _descriptor._ParseOptions(
-    descriptor_pb2.FileOptions(),
-    _b(
-        "\n!com.google.cloud.dataproc.v1beta2B\rClustersProtoP\001ZEgoogle.golang.org/genproto/googleapis/cloud/dataproc/v1beta2;dataproc"
-    ),
-)
-_CLUSTER_LABELSENTRY.has_options = True
-_CLUSTER_LABELSENTRY._options = _descriptor._ParseOptions(
-    descriptor_pb2.MessageOptions(), _b("8\001")
-)
-_GCECLUSTERCONFIG_METADATAENTRY.has_options = True
-_GCECLUSTERCONFIG_METADATAENTRY._options = _descriptor._ParseOptions(
-    descriptor_pb2.MessageOptions(), _b("8\001")
-)
-_SOFTWARECONFIG_PROPERTIESENTRY.has_options = True
-_SOFTWARECONFIG_PROPERTIESENTRY._options = _descriptor._ParseOptions(
-    descriptor_pb2.MessageOptions(), _b("8\001")
-)
-_CLUSTERMETRICS_HDFSMETRICSENTRY.has_options = True
-_CLUSTERMETRICS_HDFSMETRICSENTRY._options = _descriptor._ParseOptions(
-    descriptor_pb2.MessageOptions(), _b("8\001")
-)
-_CLUSTERMETRICS_YARNMETRICSENTRY.has_options = True
-_CLUSTERMETRICS_YARNMETRICSENTRY._options = _descriptor._ParseOptions(
-    descriptor_pb2.MessageOptions(), _b("8\001")
-)
+DESCRIPTOR._options = None
+_CLUSTER_LABELSENTRY._options = None
+_GCECLUSTERCONFIG_METADATAENTRY._options = None
+_SOFTWARECONFIG_PROPERTIESENTRY._options = None
+_CLUSTERMETRICS_HDFSMETRICSENTRY._options = None
+_CLUSTERMETRICS_YARNMETRICSENTRY._options = None
 
 _CLUSTERCONTROLLER = _descriptor.ServiceDescriptor(
     name="ClusterController",
     full_name="google.cloud.dataproc.v1beta2.ClusterController",
     file=DESCRIPTOR,
     index=0,
-    options=None,
+    serialized_options=None,
     serialized_start=4582,
     serialized_end=5726,
     methods=[
@@ -3347,11 +3328,8 @@ _CLUSTERCONTROLLER = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_CREATECLUSTERREQUEST,
             output_type=google_dot_longrunning_dot_operations__pb2._OPERATION,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\002C"8/v1beta2/projects/{project_id}/regions/{region}/clusters:\007cluster'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\002C"8/v1beta2/projects/{project_id}/regions/{region}/clusters:\007cluster'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -3361,11 +3339,8 @@ _CLUSTERCONTROLLER = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_UPDATECLUSTERREQUEST,
             output_type=google_dot_longrunning_dot_operations__pb2._OPERATION,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\002R2G/v1beta2/projects/{project_id}/regions/{region}/clusters/{cluster_name}:\007cluster"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\002R2G/v1beta2/projects/{project_id}/regions/{region}/clusters/{cluster_name}:\007cluster"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -3375,11 +3350,8 @@ _CLUSTERCONTROLLER = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_DELETECLUSTERREQUEST,
             output_type=google_dot_longrunning_dot_operations__pb2._OPERATION,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\002I*G/v1beta2/projects/{project_id}/regions/{region}/clusters/{cluster_name}"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\002I*G/v1beta2/projects/{project_id}/regions/{region}/clusters/{cluster_name}"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -3389,11 +3361,8 @@ _CLUSTERCONTROLLER = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_GETCLUSTERREQUEST,
             output_type=_CLUSTER,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\002I\022G/v1beta2/projects/{project_id}/regions/{region}/clusters/{cluster_name}"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\002I\022G/v1beta2/projects/{project_id}/regions/{region}/clusters/{cluster_name}"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -3403,11 +3372,8 @@ _CLUSTERCONTROLLER = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_LISTCLUSTERSREQUEST,
             output_type=_LISTCLUSTERSRESPONSE,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\002:\0228/v1beta2/projects/{project_id}/regions/{region}/clusters"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\002:\0228/v1beta2/projects/{project_id}/regions/{region}/clusters"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -3417,11 +3383,8 @@ _CLUSTERCONTROLLER = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_DIAGNOSECLUSTERREQUEST,
             output_type=google_dot_longrunning_dot_operations__pb2._OPERATION,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\002U"P/v1beta2/projects/{project_id}/regions/{region}/clusters/{cluster_name}:diagnose:\001*'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\002U"P/v1beta2/projects/{project_id}/regions/{region}/clusters/{cluster_name}:diagnose:\001*'
             ),
         ),
     ],
