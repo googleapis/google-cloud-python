@@ -8,7 +8,6 @@ from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
-from google.protobuf import descriptor_pb2
 
 # @@protoc_insertion_point(imports)
 
@@ -30,6 +29,9 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     name="google/cloud/monitoring_v3/proto/alert.proto",
     package="google.monitoring.v3",
     syntax="proto3",
+    serialized_options=_b(
+        "\n\030com.google.monitoring.v3B\nAlertProtoP\001Z>google.golang.org/genproto/googleapis/monitoring/v3;monitoring\252\002\032Google.Cloud.Monitoring.V3\312\002\032Google\\Cloud\\Monitoring\\V3"
+    ),
     serialized_pb=_b(
         '\n,google/cloud/monitoring_v3/proto/alert.proto\x12\x14google.monitoring.v3\x1a\x1cgoogle/api/annotations.proto\x1a-google/cloud/monitoring_v3/proto/common.proto\x1a\x36google/cloud/monitoring_v3/proto/mutation_record.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1egoogle/protobuf/wrappers.proto"\xdd\x0c\n\x0b\x41lertPolicy\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x02 \x01(\t\x12\x46\n\rdocumentation\x18\r \x01(\x0b\x32/.google.monitoring.v3.AlertPolicy.Documentation\x12\x46\n\x0buser_labels\x18\x10 \x03(\x0b\x32\x31.google.monitoring.v3.AlertPolicy.UserLabelsEntry\x12?\n\nconditions\x18\x0c \x03(\x0b\x32+.google.monitoring.v3.AlertPolicy.Condition\x12I\n\x08\x63ombiner\x18\x06 \x01(\x0e\x32\x37.google.monitoring.v3.AlertPolicy.ConditionCombinerType\x12+\n\x07\x65nabled\x18\x11 \x01(\x0b\x32\x1a.google.protobuf.BoolValue\x12\x1d\n\x15notification_channels\x18\x0e \x03(\t\x12=\n\x0f\x63reation_record\x18\n \x01(\x0b\x32$.google.monitoring.v3.MutationRecord\x12=\n\x0fmutation_record\x18\x0b \x01(\x0b\x32$.google.monitoring.v3.MutationRecord\x1a\x33\n\rDocumentation\x12\x0f\n\x07\x63ontent\x18\x01 \x01(\t\x12\x11\n\tmime_type\x18\x02 \x01(\t\x1a\xf8\x06\n\tCondition\x12\x0c\n\x04name\x18\x0c \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x06 \x01(\t\x12Z\n\x13\x63ondition_threshold\x18\x01 \x01(\x0b\x32;.google.monitoring.v3.AlertPolicy.Condition.MetricThresholdH\x00\x12U\n\x10\x63ondition_absent\x18\x02 \x01(\x0b\x32\x39.google.monitoring.v3.AlertPolicy.Condition.MetricAbsenceH\x00\x1a\x35\n\x07Trigger\x12\x0f\n\x05\x63ount\x18\x01 \x01(\x05H\x00\x12\x11\n\x07percent\x18\x02 \x01(\x01H\x00\x42\x06\n\x04type\x1a\x81\x03\n\x0fMetricThreshold\x12\x0e\n\x06\x66ilter\x18\x02 \x01(\t\x12\x37\n\x0c\x61ggregations\x18\x08 \x03(\x0b\x32!.google.monitoring.v3.Aggregation\x12\x1a\n\x12\x64\x65nominator_filter\x18\t \x01(\t\x12\x43\n\x18\x64\x65nominator_aggregations\x18\n \x03(\x0b\x32!.google.monitoring.v3.Aggregation\x12\x38\n\ncomparison\x18\x04 \x01(\x0e\x32$.google.monitoring.v3.ComparisonType\x12\x17\n\x0fthreshold_value\x18\x05 \x01(\x01\x12+\n\x08\x64uration\x18\x06 \x01(\x0b\x32\x19.google.protobuf.Duration\x12\x44\n\x07trigger\x18\x07 \x01(\x0b\x32\x33.google.monitoring.v3.AlertPolicy.Condition.Trigger\x1a\xcb\x01\n\rMetricAbsence\x12\x0e\n\x06\x66ilter\x18\x01 \x01(\t\x12\x37\n\x0c\x61ggregations\x18\x05 \x03(\x0b\x32!.google.monitoring.v3.Aggregation\x12+\n\x08\x64uration\x18\x02 \x01(\x0b\x32\x19.google.protobuf.Duration\x12\x44\n\x07trigger\x18\x03 \x01(\x0b\x32\x33.google.monitoring.v3.AlertPolicy.Condition.TriggerB\x0b\n\tcondition\x1a\x31\n\x0fUserLabelsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01"a\n\x15\x43onditionCombinerType\x12\x17\n\x13\x43OMBINE_UNSPECIFIED\x10\x00\x12\x07\n\x03\x41ND\x10\x01\x12\x06\n\x02OR\x10\x02\x12\x1e\n\x1a\x41ND_WITH_MATCHING_RESOURCE\x10\x03\x42\xa2\x01\n\x18\x63om.google.monitoring.v3B\nAlertProtoP\x01Z>google.golang.org/genproto/googleapis/monitoring/v3;monitoring\xaa\x02\x1aGoogle.Cloud.Monitoring.V3\xca\x02\x1aGoogle\\Cloud\\Monitoring\\V3b\x06proto3'
     ),
@@ -50,24 +52,28 @@ _ALERTPOLICY_CONDITIONCOMBINERTYPE = _descriptor.EnumDescriptor(
     file=DESCRIPTOR,
     values=[
         _descriptor.EnumValueDescriptor(
-            name="COMBINE_UNSPECIFIED", index=0, number=0, options=None, type=None
+            name="COMBINE_UNSPECIFIED",
+            index=0,
+            number=0,
+            serialized_options=None,
+            type=None,
         ),
         _descriptor.EnumValueDescriptor(
-            name="AND", index=1, number=1, options=None, type=None
+            name="AND", index=1, number=1, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="OR", index=2, number=2, options=None, type=None
+            name="OR", index=2, number=2, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
             name="AND_WITH_MATCHING_RESOURCE",
             index=3,
             number=3,
-            options=None,
+            serialized_options=None,
             type=None,
         ),
     ],
     containing_type=None,
-    options=None,
+    serialized_options=None,
     serialized_start=1800,
     serialized_end=1897,
 )
@@ -96,7 +102,7 @@ _ALERTPOLICY_DOCUMENTATION = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -114,14 +120,14 @@ _ALERTPOLICY_DOCUMENTATION = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -152,7 +158,7 @@ _ALERTPOLICY_CONDITION_TRIGGER = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -170,14 +176,14 @@ _ALERTPOLICY_CONDITION_TRIGGER = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -216,7 +222,7 @@ _ALERTPOLICY_CONDITION_METRICTHRESHOLD = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -234,7 +240,7 @@ _ALERTPOLICY_CONDITION_METRICTHRESHOLD = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -252,7 +258,7 @@ _ALERTPOLICY_CONDITION_METRICTHRESHOLD = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -270,7 +276,7 @@ _ALERTPOLICY_CONDITION_METRICTHRESHOLD = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -288,7 +294,7 @@ _ALERTPOLICY_CONDITION_METRICTHRESHOLD = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -306,7 +312,7 @@ _ALERTPOLICY_CONDITION_METRICTHRESHOLD = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -324,7 +330,7 @@ _ALERTPOLICY_CONDITION_METRICTHRESHOLD = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -342,14 +348,14 @@ _ALERTPOLICY_CONDITION_METRICTHRESHOLD = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -380,7 +386,7 @@ _ALERTPOLICY_CONDITION_METRICABSENCE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -398,7 +404,7 @@ _ALERTPOLICY_CONDITION_METRICABSENCE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -416,7 +422,7 @@ _ALERTPOLICY_CONDITION_METRICABSENCE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -434,14 +440,14 @@ _ALERTPOLICY_CONDITION_METRICABSENCE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -472,7 +478,7 @@ _ALERTPOLICY_CONDITION = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -490,7 +496,7 @@ _ALERTPOLICY_CONDITION = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -508,7 +514,7 @@ _ALERTPOLICY_CONDITION = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -526,7 +532,7 @@ _ALERTPOLICY_CONDITION = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
@@ -537,7 +543,7 @@ _ALERTPOLICY_CONDITION = _descriptor.Descriptor(
         _ALERTPOLICY_CONDITION_METRICABSENCE,
     ],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -576,7 +582,7 @@ _ALERTPOLICY_USERLABELSENTRY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -594,14 +600,14 @@ _ALERTPOLICY_USERLABELSENTRY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=_descriptor._ParseOptions(descriptor_pb2.MessageOptions(), _b("8\001")),
+    serialized_options=_b("8\001"),
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -632,7 +638,7 @@ _ALERTPOLICY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -650,7 +656,7 @@ _ALERTPOLICY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -668,7 +674,7 @@ _ALERTPOLICY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -686,7 +692,7 @@ _ALERTPOLICY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -704,7 +710,7 @@ _ALERTPOLICY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -722,7 +728,7 @@ _ALERTPOLICY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -740,7 +746,7 @@ _ALERTPOLICY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -758,7 +764,7 @@ _ALERTPOLICY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -776,7 +782,7 @@ _ALERTPOLICY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -794,7 +800,7 @@ _ALERTPOLICY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
@@ -805,7 +811,7 @@ _ALERTPOLICY = _descriptor.Descriptor(
         _ALERTPOLICY_USERLABELSENTRY,
     ],
     enum_types=[_ALERTPOLICY_CONDITIONCOMBINERTYPE],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1247,15 +1253,6 @@ _sym_db.RegisterMessage(AlertPolicy.Condition.MetricAbsence)
 _sym_db.RegisterMessage(AlertPolicy.UserLabelsEntry)
 
 
-DESCRIPTOR.has_options = True
-DESCRIPTOR._options = _descriptor._ParseOptions(
-    descriptor_pb2.FileOptions(),
-    _b(
-        "\n\030com.google.monitoring.v3B\nAlertProtoP\001Z>google.golang.org/genproto/googleapis/monitoring/v3;monitoring\252\002\032Google.Cloud.Monitoring.V3\312\002\032Google\\Cloud\\Monitoring\\V3"
-    ),
-)
-_ALERTPOLICY_USERLABELSENTRY.has_options = True
-_ALERTPOLICY_USERLABELSENTRY._options = _descriptor._ParseOptions(
-    descriptor_pb2.MessageOptions(), _b("8\001")
-)
+DESCRIPTOR._options = None
+_ALERTPOLICY_USERLABELSENTRY._options = None
 # @@protoc_insertion_point(module_scope)
