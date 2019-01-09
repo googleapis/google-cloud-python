@@ -9,7 +9,6 @@ from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
-from google.protobuf import descriptor_pb2
 
 # @@protoc_insertion_point(imports)
 
@@ -23,6 +22,9 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     name="google/cloud/securitycenter_v1beta1/proto/source.proto",
     package="google.cloud.securitycenter.v1beta1",
     syntax="proto3",
+    serialized_options=_b(
+        "\n'com.google.cloud.securitycenter.v1beta1P\001ZQgoogle.golang.org/genproto/googleapis/cloud/securitycenter/v1beta1;securitycenter"
+    ),
     serialized_pb=_b(
         "\n6google/cloud/securitycenter_v1beta1/proto/source.proto\x12#google.cloud.securitycenter.v1beta1\x1a\x1cgoogle/api/annotations.proto\"A\n\x06Source\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x02 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x03 \x01(\tB~\n'com.google.cloud.securitycenter.v1beta1P\x01ZQgoogle.golang.org/genproto/googleapis/cloud/securitycenter/v1beta1;securitycenterb\x06proto3"
     ),
@@ -52,7 +54,7 @@ _SOURCE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -70,7 +72,7 @@ _SOURCE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -88,14 +90,14 @@ _SOURCE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -130,9 +132,9 @@ Source = _reflection.GeneratedProtocolMessageType(
           same parent can't share the same display name. The display
           name must start and end with a letter or digit, may contain
           letters, digits, spaces, hyphens, and underscores, and can be
-          no longer than 30 characters. This is captured by the regular
+          no longer than 32 characters. This is captured by the regular
           expression: `:raw-latex:`\p{L}`:raw-latex:`\p{N}` <%7B\p%7BL%7
-          D\p%7BN%7D_-%20%5D%7B0,28%7D%5B\p%7BL%7D\p%7BN%7D%5D>`__?.
+          D\p%7BN%7D_-%20%5D%7B0,30%7D%5B\p%7BL%7D\p%7BN%7D%5D>`__?.
       description:
           The description of the source (max of 1024 characters).
           Example: "Cloud Security Scanner is a web security scanner for
@@ -147,11 +149,5 @@ Source = _reflection.GeneratedProtocolMessageType(
 _sym_db.RegisterMessage(Source)
 
 
-DESCRIPTOR.has_options = True
-DESCRIPTOR._options = _descriptor._ParseOptions(
-    descriptor_pb2.FileOptions(),
-    _b(
-        "\n'com.google.cloud.securitycenter.v1beta1P\001ZQgoogle.golang.org/genproto/googleapis/cloud/securitycenter/v1beta1;securitycenter"
-    ),
-)
+DESCRIPTOR._options = None
 # @@protoc_insertion_point(module_scope)
