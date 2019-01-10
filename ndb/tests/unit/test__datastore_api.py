@@ -79,7 +79,9 @@ class TestLookup:
         batch = runstate.batches[_api._LookupBatch][()]
         assert batch["foo"] == [future1, future2]
         assert batch["bar"] == [future3]
-        runstate.eventloop.add_idle.assert_called_once_with(batch.idle_callback)
+        runstate.eventloop.add_idle.assert_called_once_with(
+            batch.idle_callback
+        )
 
     @staticmethod
     def test_it_with_options(runstate):
@@ -131,7 +133,8 @@ class Test_LookupBatch:
 
         rpc = _datastore_lookup.return_value
         runstate.eventloop.queue_rpc.assert_called_once_with(
-            rpc, batch.lookup_callback)
+            rpc, batch.lookup_callback
+        )
 
     @staticmethod
     def test_lookup_callback_exception():
@@ -287,7 +290,7 @@ def test__datastore_lookup(datastore_pb2, runstate):
     assert _api._datastore_lookup(["foo", "bar"], None) is future
 
     datastore_pb2.LookupRequest.assert_called_once_with(
-        project_id="theproject", keys=["foo", "bar"], read_options=None,
+        project_id="theproject", keys=["foo", "bar"], read_options=None
     )
     runstate.stub.Lookup.future.assert_called_once_with(
         datastore_pb2.LookupRequest.return_value
@@ -295,14 +298,15 @@ def test__datastore_lookup(datastore_pb2, runstate):
 
 
 class Test_check_unsupported_options:
-
     @staticmethod
     def test_supported():
-        _api._check_unsupported_options({
-            "transaction": None,
-            "read_consistency": None,
-            "read_policy": None,
-        })
+        _api._check_unsupported_options(
+            {
+                "transaction": None,
+                "read_consistency": None,
+                "read_policy": None,
+            }
+        )
 
     @staticmethod
     def test_not_implemented():
@@ -334,7 +338,6 @@ class Test_check_unsupported_options:
 
 
 class Test_get_read_options:
-
     @staticmethod
     def test_no_args_no_transaction(runstate):
         assert _api._get_read_options({}) == datastore_pb2.ReadOptions()
@@ -353,18 +356,16 @@ class Test_get_read_options:
 
     @staticmethod
     def test_eventually_consistent(runstate):
-        options = _api._get_read_options({
-            "read_consistency": _api.EVENTUAL
-        })
+        options = _api._get_read_options({"read_consistency": _api.EVENTUAL})
         assert options == datastore_pb2.ReadOptions(
             read_consistency=datastore_pb2.ReadOptions.EVENTUAL
         )
 
     @staticmethod
     def test_eventually_consistent_legacy(runstate):
-        options = _api._get_read_options({
-            "read_policy": _api.EVENTUAL_CONSISTENCY,
-        })
+        options = _api._get_read_options(
+            {"read_policy": _api.EVENTUAL_CONSISTENCY}
+        )
         assert options == datastore_pb2.ReadOptions(
             read_consistency=datastore_pb2.ReadOptions.EVENTUAL
         )
@@ -372,7 +373,6 @@ class Test_get_read_options:
     @staticmethod
     def test_eventually_consistent_with_transaction(runstate):
         with pytest.raises(ValueError):
-            _api._get_read_options({
-                "read_consistency": _api.EVENTUAL,
-                "transaction": b"txfoo",
-            })
+            _api._get_read_options(
+                {"read_consistency": _api.EVENTUAL, "transaction": b"txfoo"}
+            )

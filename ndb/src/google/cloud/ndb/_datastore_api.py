@@ -29,7 +29,7 @@ from google.cloud.ndb import _runstate
 from google.cloud.ndb import tasklets
 
 EVENTUAL = datastore_pb2.ReadOptions.EVENTUAL
-EVENTUAL_CONSISTENCY = EVENTUAL   # Legacy NDB
+EVENTUAL_CONSISTENCY = EVENTUAL  # Legacy NDB
 _NOT_FOUND = object()
 
 
@@ -128,6 +128,7 @@ class _LookupBatch(dict):
             ``{"read_consistency": EVENTUAL}``. Calls with different options
             will be placed in different batches.
     """
+
     def __init__(self, options):
         self.options = options
 
@@ -205,7 +206,8 @@ def _datastore_lookup(keys, read_options):
     """
     client = _runstate.current().client
     request = datastore_pb2.LookupRequest(
-        project_id=client.project, keys=[key for key in keys],
+        project_id=client.project,
+        keys=[key for key in keys],
         read_options=read_options,
     )
 
@@ -239,19 +241,15 @@ def _get_read_options(options):
 
     if transaction is not None and read_consistency is EVENTUAL:
         raise ValueError(
-            "read_consistency must be EVENTUAL when in transaction")
+            "read_consistency must be EVENTUAL when in transaction"
+        )
 
     return datastore_pb2.ReadOptions(
-        read_consistency=read_consistency,
-        transaction=transaction,
+        read_consistency=read_consistency, transaction=transaction
     )
 
 
-_OPTIONS_SUPPORTED = {
-    "transaction",
-    "read_consistency",
-    "read_policy",
-}
+_OPTIONS_SUPPORTED = {"transaction", "read_consistency", "read_policy"}
 
 _OPTIONS_NOT_IMPLEMENTED = {
     "deadline",

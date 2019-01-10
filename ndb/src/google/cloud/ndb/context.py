@@ -15,12 +15,7 @@
 """Context for currently running tasks and transactions."""
 
 
-__all__ = [
-    "AutoBatcher",
-    "Context",
-    "ContextOptions",
-    "TransactionOptions",
-]
+__all__ = ["AutoBatcher", "Context", "ContextOptions", "TransactionOptions"]
 
 
 class AutoBatcher:
