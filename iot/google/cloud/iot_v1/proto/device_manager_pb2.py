@@ -8,7 +8,6 @@ from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
-from google.protobuf import descriptor_pb2
 
 # @@protoc_insertion_point(imports)
 
@@ -32,6 +31,9 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     name="google/cloud/iot_v1/proto/device_manager.proto",
     package="google.cloud.iot.v1",
     syntax="proto3",
+    serialized_options=_b(
+        "\n\027com.google.cloud.iot.v1B\022DeviceManagerProtoP\001Z6google.golang.org/genproto/googleapis/cloud/iot/v1;iot\370\001\001"
+    ),
     serialized_pb=_b(
         '\n.google/cloud/iot_v1/proto/device_manager.proto\x12\x13google.cloud.iot.v1\x1a\x1cgoogle/api/annotations.proto\x1a)google/cloud/iot_v1/proto/resources.proto\x1a\x1egoogle/iam/v1/iam_policy.proto\x1a\x1agoogle/iam/v1/policy.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x17google/rpc/status.proto"k\n\x1b\x43reateDeviceRegistryRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12<\n\x0f\x64\x65vice_registry\x18\x02 \x01(\x0b\x32#.google.cloud.iot.v1.DeviceRegistry"(\n\x18GetDeviceRegistryRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"+\n\x1b\x44\x65leteDeviceRegistryRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"\x8c\x01\n\x1bUpdateDeviceRegistryRequest\x12<\n\x0f\x64\x65vice_registry\x18\x01 \x01(\x0b\x32#.google.cloud.iot.v1.DeviceRegistry\x12/\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMask"T\n\x1bListDeviceRegistriesRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t"w\n\x1cListDeviceRegistriesResponse\x12>\n\x11\x64\x65vice_registries\x18\x01 \x03(\x0b\x32#.google.cloud.iot.v1.DeviceRegistry\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"R\n\x13\x43reateDeviceRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12+\n\x06\x64\x65vice\x18\x02 \x01(\x0b\x32\x1b.google.cloud.iot.v1.Device"P\n\x10GetDeviceRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12.\n\nfield_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMask"s\n\x13UpdateDeviceRequest\x12+\n\x06\x64\x65vice\x18\x02 \x01(\x0b\x32\x1b.google.cloud.iot.v1.Device\x12/\n\x0bupdate_mask\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.FieldMask"#\n\x13\x44\x65leteDeviceRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"\xee\x01\n\x12ListDevicesRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x16\n\x0e\x64\x65vice_num_ids\x18\x02 \x03(\x04\x12\x12\n\ndevice_ids\x18\x03 \x03(\t\x12.\n\nfield_mask\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.FieldMask\x12\x45\n\x14gateway_list_options\x18\x06 \x01(\x0b\x32\'.google.cloud.iot.v1.GatewayListOptions\x12\x11\n\tpage_size\x18\x64 \x01(\x05\x12\x12\n\npage_token\x18\x65 \x01(\t"\x9d\x01\n\x12GatewayListOptions\x12\x38\n\x0cgateway_type\x18\x01 \x01(\x0e\x32 .google.cloud.iot.v1.GatewayTypeH\x00\x12!\n\x17\x61ssociations_gateway_id\x18\x02 \x01(\tH\x00\x12 \n\x16\x61ssociations_device_id\x18\x03 \x01(\tH\x00\x42\x08\n\x06\x66ilter"\\\n\x13ListDevicesResponse\x12,\n\x07\x64\x65vices\x18\x01 \x03(\x0b\x32\x1b.google.cloud.iot.v1.Device\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"`\n ModifyCloudToDeviceConfigRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x19\n\x11version_to_update\x18\x02 \x01(\x03\x12\x13\n\x0b\x62inary_data\x18\x03 \x01(\x0c"E\n\x1fListDeviceConfigVersionsRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x14\n\x0cnum_versions\x18\x02 \x01(\x05"]\n ListDeviceConfigVersionsResponse\x12\x39\n\x0e\x64\x65vice_configs\x18\x01 \x03(\x0b\x32!.google.cloud.iot.v1.DeviceConfig";\n\x17ListDeviceStatesRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x12\n\nnum_states\x18\x02 \x01(\x05"S\n\x18ListDeviceStatesResponse\x12\x37\n\rdevice_states\x18\x01 \x03(\x0b\x32 .google.cloud.iot.v1.DeviceState"R\n\x1aSendCommandToDeviceRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x13\n\x0b\x62inary_data\x18\x02 \x01(\x0c\x12\x11\n\tsubfolder\x18\x03 \x01(\t"\x1d\n\x1bSendCommandToDeviceResponse"S\n\x1a\x42indDeviceToGatewayRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x12\n\ngateway_id\x18\x02 \x01(\t\x12\x11\n\tdevice_id\x18\x03 \x01(\t"\x1d\n\x1b\x42indDeviceToGatewayResponse"W\n\x1eUnbindDeviceFromGatewayRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x12\n\ngateway_id\x18\x02 \x01(\t\x12\x11\n\tdevice_id\x18\x03 \x01(\t"!\n\x1fUnbindDeviceFromGatewayResponse2\xe5"\n\rDeviceManager\x12\xb6\x01\n\x14\x43reateDeviceRegistry\x12\x30.google.cloud.iot.v1.CreateDeviceRegistryRequest\x1a#.google.cloud.iot.v1.DeviceRegistry"G\x82\xd3\xe4\x93\x02\x41"./v1/{parent=projects/*/locations/*}/registries:\x0f\x64\x65vice_registry\x12\x9f\x01\n\x11GetDeviceRegistry\x12-.google.cloud.iot.v1.GetDeviceRegistryRequest\x1a#.google.cloud.iot.v1.DeviceRegistry"6\x82\xd3\xe4\x93\x02\x30\x12./v1/{name=projects/*/locations/*/registries/*}\x12\xc6\x01\n\x14UpdateDeviceRegistry\x12\x30.google.cloud.iot.v1.UpdateDeviceRegistryRequest\x1a#.google.cloud.iot.v1.DeviceRegistry"W\x82\xd3\xe4\x93\x02Q2>/v1/{device_registry.name=projects/*/locations/*/registries/*}:\x0f\x64\x65vice_registry\x12\x98\x01\n\x14\x44\x65leteDeviceRegistry\x12\x30.google.cloud.iot.v1.DeleteDeviceRegistryRequest\x1a\x16.google.protobuf.Empty"6\x82\xd3\xe4\x93\x02\x30*./v1/{name=projects/*/locations/*/registries/*}\x12\xb3\x01\n\x14ListDeviceRegistries\x12\x30.google.cloud.iot.v1.ListDeviceRegistriesRequest\x1a\x31.google.cloud.iot.v1.ListDeviceRegistriesResponse"6\x82\xd3\xe4\x93\x02\x30\x12./v1/{parent=projects/*/locations/*}/registries\x12\x9f\x01\n\x0c\x43reateDevice\x12(.google.cloud.iot.v1.CreateDeviceRequest\x1a\x1b.google.cloud.iot.v1.Device"H\x82\xd3\xe4\x93\x02\x42"8/v1/{parent=projects/*/locations/*/registries/*}/devices:\x06\x64\x65vice\x12\xd7\x01\n\tGetDevice\x12%.google.cloud.iot.v1.GetDeviceRequest\x1a\x1b.google.cloud.iot.v1.Device"\x85\x01\x82\xd3\xe4\x93\x02\x7f\x12\x38/v1/{name=projects/*/locations/*/registries/*/devices/*}ZC\x12\x41/v1/{name=projects/*/locations/*/registries/*/groups/*/devices/*}\x12\xfc\x01\n\x0cUpdateDevice\x12(.google.cloud.iot.v1.UpdateDeviceRequest\x1a\x1b.google.cloud.iot.v1.Device"\xa4\x01\x82\xd3\xe4\x93\x02\x9d\x01\x32?/v1/{device.name=projects/*/locations/*/registries/*/devices/*}:\x06\x64\x65viceZR2H/v1/{device.name=projects/*/locations/*/registries/*/groups/*/devices/*}:\x06\x64\x65vice\x12\x92\x01\n\x0c\x44\x65leteDevice\x12(.google.cloud.iot.v1.DeleteDeviceRequest\x1a\x16.google.protobuf.Empty"@\x82\xd3\xe4\x93\x02:*8/v1/{name=projects/*/locations/*/registries/*/devices/*}\x12\xe8\x01\n\x0bListDevices\x12\'.google.cloud.iot.v1.ListDevicesRequest\x1a(.google.cloud.iot.v1.ListDevicesResponse"\x85\x01\x82\xd3\xe4\x93\x02\x7f\x12\x38/v1/{parent=projects/*/locations/*/registries/*}/devicesZC\x12\x41/v1/{parent=projects/*/locations/*/registries/*/groups/*}/devices\x12\xb8\x02\n\x19ModifyCloudToDeviceConfig\x12\x35.google.cloud.iot.v1.ModifyCloudToDeviceConfigRequest\x1a!.google.cloud.iot.v1.DeviceConfig"\xc0\x01\x82\xd3\xe4\x93\x02\xb9\x01"R/v1/{name=projects/*/locations/*/registries/*/devices/*}:modifyCloudToDeviceConfig:\x01*Z`"[/v1/{name=projects/*/locations/*/registries/*/groups/*/devices/*}:modifyCloudToDeviceConfig:\x01*\x12\xae\x02\n\x18ListDeviceConfigVersions\x12\x34.google.cloud.iot.v1.ListDeviceConfigVersionsRequest\x1a\x35.google.cloud.iot.v1.ListDeviceConfigVersionsResponse"\xa4\x01\x82\xd3\xe4\x93\x02\x9d\x01\x12G/v1/{name=projects/*/locations/*/registries/*/devices/*}/configVersionsZR\x12P/v1/{name=projects/*/locations/*/registries/*/groups/*/devices/*}/configVersions\x12\x86\x02\n\x10ListDeviceStates\x12,.google.cloud.iot.v1.ListDeviceStatesRequest\x1a-.google.cloud.iot.v1.ListDeviceStatesResponse"\x94\x01\x82\xd3\xe4\x93\x02\x8d\x01\x12?/v1/{name=projects/*/locations/*/registries/*/devices/*}/statesZJ\x12H/v1/{name=projects/*/locations/*/registries/*/groups/*/devices/*}/states\x12\xe6\x01\n\x0cSetIamPolicy\x12".google.iam.v1.SetIamPolicyRequest\x1a\x15.google.iam.v1.Policy"\x9a\x01\x82\xd3\xe4\x93\x02\x93\x01"?/v1/{resource=projects/*/locations/*/registries/*}:setIamPolicy:\x01*ZM"H/v1/{resource=projects/*/locations/*/registries/*/groups/*}:setIamPolicy:\x01*\x12\xe6\x01\n\x0cGetIamPolicy\x12".google.iam.v1.GetIamPolicyRequest\x1a\x15.google.iam.v1.Policy"\x9a\x01\x82\xd3\xe4\x93\x02\x93\x01"?/v1/{resource=projects/*/locations/*/registries/*}:getIamPolicy:\x01*ZM"H/v1/{resource=projects/*/locations/*/registries/*/groups/*}:getIamPolicy:\x01*\x12\x92\x02\n\x12TestIamPermissions\x12(.google.iam.v1.TestIamPermissionsRequest\x1a).google.iam.v1.TestIamPermissionsResponse"\xa6\x01\x82\xd3\xe4\x93\x02\x9f\x01"E/v1/{resource=projects/*/locations/*/registries/*}:testIamPermissions:\x01*ZS"N/v1/{resource=projects/*/locations/*/registries/*/groups/*}:testIamPermissions:\x01*\x12\xaf\x02\n\x13SendCommandToDevice\x12/.google.cloud.iot.v1.SendCommandToDeviceRequest\x1a\x30.google.cloud.iot.v1.SendCommandToDeviceResponse"\xb4\x01\x82\xd3\xe4\x93\x02\xad\x01"L/v1/{name=projects/*/locations/*/registries/*/devices/*}:sendCommandToDevice:\x01*ZZ"U/v1/{name=projects/*/locations/*/registries/*/groups/*/devices/*}:sendCommandToDevice:\x01*\x12\x9f\x02\n\x13\x42indDeviceToGateway\x12/.google.cloud.iot.v1.BindDeviceToGatewayRequest\x1a\x30.google.cloud.iot.v1.BindDeviceToGatewayResponse"\xa4\x01\x82\xd3\xe4\x93\x02\x9d\x01"D/v1/{parent=projects/*/locations/*/registries/*}:bindDeviceToGateway:\x01*ZR"M/v1/{parent=projects/*/locations/*/registries/*/groups/*}:bindDeviceToGateway:\x01*\x12\xb3\x02\n\x17UnbindDeviceFromGateway\x12\x33.google.cloud.iot.v1.UnbindDeviceFromGatewayRequest\x1a\x34.google.cloud.iot.v1.UnbindDeviceFromGatewayResponse"\xac\x01\x82\xd3\xe4\x93\x02\xa5\x01"H/v1/{parent=projects/*/locations/*/registries/*}:unbindDeviceFromGateway:\x01*ZV"Q/v1/{parent=projects/*/locations/*/registries/*/groups/*}:unbindDeviceFromGateway:\x01*Bj\n\x17\x63om.google.cloud.iot.v1B\x12\x44\x65viceManagerProtoP\x01Z6google.golang.org/genproto/googleapis/cloud/iot/v1;iot\xf8\x01\x01\x62\x06proto3'
     ),
@@ -71,7 +73,7 @@ _CREATEDEVICEREGISTRYREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -89,14 +91,14 @@ _CREATEDEVICEREGISTRYREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -128,14 +130,14 @@ _GETDEVICEREGISTRYREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -167,14 +169,14 @@ _DELETEDEVICEREGISTRYREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -206,7 +208,7 @@ _UPDATEDEVICEREGISTRYREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -224,14 +226,14 @@ _UPDATEDEVICEREGISTRYREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -263,7 +265,7 @@ _LISTDEVICEREGISTRIESREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -281,7 +283,7 @@ _LISTDEVICEREGISTRIESREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -299,14 +301,14 @@ _LISTDEVICEREGISTRIESREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -338,7 +340,7 @@ _LISTDEVICEREGISTRIESRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -356,14 +358,14 @@ _LISTDEVICEREGISTRIESRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -395,7 +397,7 @@ _CREATEDEVICEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -413,14 +415,14 @@ _CREATEDEVICEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -452,7 +454,7 @@ _GETDEVICEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -470,14 +472,14 @@ _GETDEVICEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -509,7 +511,7 @@ _UPDATEDEVICEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -527,14 +529,14 @@ _UPDATEDEVICEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -566,14 +568,14 @@ _DELETEDEVICEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -605,7 +607,7 @@ _LISTDEVICESREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -623,7 +625,7 @@ _LISTDEVICESREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -641,7 +643,7 @@ _LISTDEVICESREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -659,7 +661,7 @@ _LISTDEVICESREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -677,7 +679,7 @@ _LISTDEVICESREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -695,7 +697,7 @@ _LISTDEVICESREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -713,14 +715,14 @@ _LISTDEVICESREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -752,7 +754,7 @@ _GATEWAYLISTOPTIONS = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -770,7 +772,7 @@ _GATEWAYLISTOPTIONS = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -788,14 +790,14 @@ _GATEWAYLISTOPTIONS = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -835,7 +837,7 @@ _LISTDEVICESRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -853,14 +855,14 @@ _LISTDEVICESRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -892,7 +894,7 @@ _MODIFYCLOUDTODEVICECONFIGREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -910,7 +912,7 @@ _MODIFYCLOUDTODEVICECONFIGREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -928,14 +930,14 @@ _MODIFYCLOUDTODEVICECONFIGREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -967,7 +969,7 @@ _LISTDEVICECONFIGVERSIONSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -985,14 +987,14 @@ _LISTDEVICECONFIGVERSIONSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1024,14 +1026,14 @@ _LISTDEVICECONFIGVERSIONSRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1063,7 +1065,7 @@ _LISTDEVICESTATESREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1081,14 +1083,14 @@ _LISTDEVICESTATESREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1120,14 +1122,14 @@ _LISTDEVICESTATESRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1159,7 +1161,7 @@ _SENDCOMMANDTODEVICEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1177,7 +1179,7 @@ _SENDCOMMANDTODEVICEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1195,14 +1197,14 @@ _SENDCOMMANDTODEVICEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1222,7 +1224,7 @@ _SENDCOMMANDTODEVICERESPONSE = _descriptor.Descriptor(
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1254,7 +1256,7 @@ _BINDDEVICETOGATEWAYREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1272,7 +1274,7 @@ _BINDDEVICETOGATEWAYREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1290,14 +1292,14 @@ _BINDDEVICETOGATEWAYREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1317,7 +1319,7 @@ _BINDDEVICETOGATEWAYRESPONSE = _descriptor.Descriptor(
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1349,7 +1351,7 @@ _UNBINDDEVICEFROMGATEWAYREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1367,7 +1369,7 @@ _UNBINDDEVICEFROMGATEWAYREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1385,14 +1387,14 @@ _UNBINDDEVICEFROMGATEWAYREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1412,7 +1414,7 @@ _UNBINDDEVICEFROMGATEWAYRESPONSE = _descriptor.Descriptor(
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -2136,20 +2138,14 @@ UnbindDeviceFromGatewayResponse = _reflection.GeneratedProtocolMessageType(
 _sym_db.RegisterMessage(UnbindDeviceFromGatewayResponse)
 
 
-DESCRIPTOR.has_options = True
-DESCRIPTOR._options = _descriptor._ParseOptions(
-    descriptor_pb2.FileOptions(),
-    _b(
-        "\n\027com.google.cloud.iot.v1B\022DeviceManagerProtoP\001Z6google.golang.org/genproto/googleapis/cloud/iot/v1;iot\370\001\001"
-    ),
-)
+DESCRIPTOR._options = None
 
 _DEVICEMANAGER = _descriptor.ServiceDescriptor(
     name="DeviceManager",
     full_name="google.cloud.iot.v1.DeviceManager",
     file=DESCRIPTOR,
     index=0,
-    options=None,
+    serialized_options=None,
     serialized_start=2484,
     serialized_end=6937,
     methods=[
@@ -2160,11 +2156,8 @@ _DEVICEMANAGER = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_CREATEDEVICEREGISTRYREQUEST,
             output_type=google_dot_cloud_dot_iot__v1_dot_proto_dot_resources__pb2._DEVICEREGISTRY,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\002A"./v1/{parent=projects/*/locations/*}/registries:\017device_registry'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\002A"./v1/{parent=projects/*/locations/*}/registries:\017device_registry'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2174,11 +2167,8 @@ _DEVICEMANAGER = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_GETDEVICEREGISTRYREQUEST,
             output_type=google_dot_cloud_dot_iot__v1_dot_proto_dot_resources__pb2._DEVICEREGISTRY,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\0020\022./v1/{name=projects/*/locations/*/registries/*}"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\0020\022./v1/{name=projects/*/locations/*/registries/*}"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2188,11 +2178,8 @@ _DEVICEMANAGER = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_UPDATEDEVICEREGISTRYREQUEST,
             output_type=google_dot_cloud_dot_iot__v1_dot_proto_dot_resources__pb2._DEVICEREGISTRY,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\002Q2>/v1/{device_registry.name=projects/*/locations/*/registries/*}:\017device_registry"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\002Q2>/v1/{device_registry.name=projects/*/locations/*/registries/*}:\017device_registry"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2202,11 +2189,8 @@ _DEVICEMANAGER = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_DELETEDEVICEREGISTRYREQUEST,
             output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\0020*./v1/{name=projects/*/locations/*/registries/*}"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\0020*./v1/{name=projects/*/locations/*/registries/*}"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2216,11 +2200,8 @@ _DEVICEMANAGER = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_LISTDEVICEREGISTRIESREQUEST,
             output_type=_LISTDEVICEREGISTRIESRESPONSE,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\0020\022./v1/{parent=projects/*/locations/*}/registries"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\0020\022./v1/{parent=projects/*/locations/*}/registries"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2230,11 +2211,8 @@ _DEVICEMANAGER = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_CREATEDEVICEREQUEST,
             output_type=google_dot_cloud_dot_iot__v1_dot_proto_dot_resources__pb2._DEVICE,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\002B"8/v1/{parent=projects/*/locations/*/registries/*}/devices:\006device'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\002B"8/v1/{parent=projects/*/locations/*/registries/*}/devices:\006device'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2244,11 +2222,8 @@ _DEVICEMANAGER = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_GETDEVICEREQUEST,
             output_type=google_dot_cloud_dot_iot__v1_dot_proto_dot_resources__pb2._DEVICE,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\002\177\0228/v1/{name=projects/*/locations/*/registries/*/devices/*}ZC\022A/v1/{name=projects/*/locations/*/registries/*/groups/*/devices/*}"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\002\177\0228/v1/{name=projects/*/locations/*/registries/*/devices/*}ZC\022A/v1/{name=projects/*/locations/*/registries/*/groups/*/devices/*}"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2258,11 +2233,8 @@ _DEVICEMANAGER = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_UPDATEDEVICEREQUEST,
             output_type=google_dot_cloud_dot_iot__v1_dot_proto_dot_resources__pb2._DEVICE,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\002\235\0012?/v1/{device.name=projects/*/locations/*/registries/*/devices/*}:\006deviceZR2H/v1/{device.name=projects/*/locations/*/registries/*/groups/*/devices/*}:\006device"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\002\235\0012?/v1/{device.name=projects/*/locations/*/registries/*/devices/*}:\006deviceZR2H/v1/{device.name=projects/*/locations/*/registries/*/groups/*/devices/*}:\006device"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2272,11 +2244,8 @@ _DEVICEMANAGER = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_DELETEDEVICEREQUEST,
             output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\002:*8/v1/{name=projects/*/locations/*/registries/*/devices/*}"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\002:*8/v1/{name=projects/*/locations/*/registries/*/devices/*}"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2286,11 +2255,8 @@ _DEVICEMANAGER = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_LISTDEVICESREQUEST,
             output_type=_LISTDEVICESRESPONSE,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\002\177\0228/v1/{parent=projects/*/locations/*/registries/*}/devicesZC\022A/v1/{parent=projects/*/locations/*/registries/*/groups/*}/devices"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\002\177\0228/v1/{parent=projects/*/locations/*/registries/*}/devicesZC\022A/v1/{parent=projects/*/locations/*/registries/*/groups/*}/devices"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2300,11 +2266,8 @@ _DEVICEMANAGER = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_MODIFYCLOUDTODEVICECONFIGREQUEST,
             output_type=google_dot_cloud_dot_iot__v1_dot_proto_dot_resources__pb2._DEVICECONFIG,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\002\271\001"R/v1/{name=projects/*/locations/*/registries/*/devices/*}:modifyCloudToDeviceConfig:\001*Z`"[/v1/{name=projects/*/locations/*/registries/*/groups/*/devices/*}:modifyCloudToDeviceConfig:\001*'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\002\271\001"R/v1/{name=projects/*/locations/*/registries/*/devices/*}:modifyCloudToDeviceConfig:\001*Z`"[/v1/{name=projects/*/locations/*/registries/*/groups/*/devices/*}:modifyCloudToDeviceConfig:\001*'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2314,11 +2277,8 @@ _DEVICEMANAGER = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_LISTDEVICECONFIGVERSIONSREQUEST,
             output_type=_LISTDEVICECONFIGVERSIONSRESPONSE,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\002\235\001\022G/v1/{name=projects/*/locations/*/registries/*/devices/*}/configVersionsZR\022P/v1/{name=projects/*/locations/*/registries/*/groups/*/devices/*}/configVersions"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\002\235\001\022G/v1/{name=projects/*/locations/*/registries/*/devices/*}/configVersionsZR\022P/v1/{name=projects/*/locations/*/registries/*/groups/*/devices/*}/configVersions"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2328,11 +2288,8 @@ _DEVICEMANAGER = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_LISTDEVICESTATESREQUEST,
             output_type=_LISTDEVICESTATESRESPONSE,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\002\215\001\022?/v1/{name=projects/*/locations/*/registries/*/devices/*}/statesZJ\022H/v1/{name=projects/*/locations/*/registries/*/groups/*/devices/*}/states"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\002\215\001\022?/v1/{name=projects/*/locations/*/registries/*/devices/*}/statesZJ\022H/v1/{name=projects/*/locations/*/registries/*/groups/*/devices/*}/states"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2342,11 +2299,8 @@ _DEVICEMANAGER = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=google_dot_iam_dot_v1_dot_iam__policy__pb2._SETIAMPOLICYREQUEST,
             output_type=google_dot_iam_dot_v1_dot_policy__pb2._POLICY,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\002\223\001"?/v1/{resource=projects/*/locations/*/registries/*}:setIamPolicy:\001*ZM"H/v1/{resource=projects/*/locations/*/registries/*/groups/*}:setIamPolicy:\001*'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\002\223\001"?/v1/{resource=projects/*/locations/*/registries/*}:setIamPolicy:\001*ZM"H/v1/{resource=projects/*/locations/*/registries/*/groups/*}:setIamPolicy:\001*'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2356,11 +2310,8 @@ _DEVICEMANAGER = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=google_dot_iam_dot_v1_dot_iam__policy__pb2._GETIAMPOLICYREQUEST,
             output_type=google_dot_iam_dot_v1_dot_policy__pb2._POLICY,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\002\223\001"?/v1/{resource=projects/*/locations/*/registries/*}:getIamPolicy:\001*ZM"H/v1/{resource=projects/*/locations/*/registries/*/groups/*}:getIamPolicy:\001*'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\002\223\001"?/v1/{resource=projects/*/locations/*/registries/*}:getIamPolicy:\001*ZM"H/v1/{resource=projects/*/locations/*/registries/*/groups/*}:getIamPolicy:\001*'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2370,11 +2321,8 @@ _DEVICEMANAGER = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=google_dot_iam_dot_v1_dot_iam__policy__pb2._TESTIAMPERMISSIONSREQUEST,
             output_type=google_dot_iam_dot_v1_dot_iam__policy__pb2._TESTIAMPERMISSIONSRESPONSE,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\002\237\001"E/v1/{resource=projects/*/locations/*/registries/*}:testIamPermissions:\001*ZS"N/v1/{resource=projects/*/locations/*/registries/*/groups/*}:testIamPermissions:\001*'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\002\237\001"E/v1/{resource=projects/*/locations/*/registries/*}:testIamPermissions:\001*ZS"N/v1/{resource=projects/*/locations/*/registries/*/groups/*}:testIamPermissions:\001*'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2384,11 +2332,8 @@ _DEVICEMANAGER = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_SENDCOMMANDTODEVICEREQUEST,
             output_type=_SENDCOMMANDTODEVICERESPONSE,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\002\255\001"L/v1/{name=projects/*/locations/*/registries/*/devices/*}:sendCommandToDevice:\001*ZZ"U/v1/{name=projects/*/locations/*/registries/*/groups/*/devices/*}:sendCommandToDevice:\001*'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\002\255\001"L/v1/{name=projects/*/locations/*/registries/*/devices/*}:sendCommandToDevice:\001*ZZ"U/v1/{name=projects/*/locations/*/registries/*/groups/*/devices/*}:sendCommandToDevice:\001*'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2398,11 +2343,8 @@ _DEVICEMANAGER = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_BINDDEVICETOGATEWAYREQUEST,
             output_type=_BINDDEVICETOGATEWAYRESPONSE,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\002\235\001"D/v1/{parent=projects/*/locations/*/registries/*}:bindDeviceToGateway:\001*ZR"M/v1/{parent=projects/*/locations/*/registries/*/groups/*}:bindDeviceToGateway:\001*'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\002\235\001"D/v1/{parent=projects/*/locations/*/registries/*}:bindDeviceToGateway:\001*ZR"M/v1/{parent=projects/*/locations/*/registries/*/groups/*}:bindDeviceToGateway:\001*'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2412,11 +2354,8 @@ _DEVICEMANAGER = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_UNBINDDEVICEFROMGATEWAYREQUEST,
             output_type=_UNBINDDEVICEFROMGATEWAYRESPONSE,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\002\245\001"H/v1/{parent=projects/*/locations/*/registries/*}:unbindDeviceFromGateway:\001*ZV"Q/v1/{parent=projects/*/locations/*/registries/*/groups/*}:unbindDeviceFromGateway:\001*'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\002\245\001"H/v1/{parent=projects/*/locations/*/registries/*}:unbindDeviceFromGateway:\001*ZV"Q/v1/{parent=projects/*/locations/*/registries/*/groups/*}:unbindDeviceFromGateway:\001*'
             ),
         ),
     ],

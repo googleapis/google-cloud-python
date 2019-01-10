@@ -9,7 +9,6 @@ from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
-from google.protobuf import descriptor_pb2
 
 # @@protoc_insertion_point(imports)
 
@@ -24,6 +23,9 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     name="google/cloud/container_v1/proto/cluster_service.proto",
     package="google.container.v1",
     syntax="proto3",
+    serialized_options=_b(
+        "\n\027com.google.container.v1B\023ClusterServiceProtoP\001Z<google.golang.org/genproto/googleapis/container/v1;container\252\002\031Google.Cloud.Container.V1\312\002\031Google\\Cloud\\Container\\V1"
+    ),
     serialized_pb=_b(
         '\n5google/cloud/container_v1/proto/cluster_service.proto\x12\x13google.container.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x1bgoogle/protobuf/empty.proto"\x80\x04\n\nNodeConfig\x12\x14\n\x0cmachine_type\x18\x01 \x01(\t\x12\x14\n\x0c\x64isk_size_gb\x18\x02 \x01(\x05\x12\x14\n\x0coauth_scopes\x18\x03 \x03(\t\x12\x17\n\x0fservice_account\x18\t \x01(\t\x12?\n\x08metadata\x18\x04 \x03(\x0b\x32-.google.container.v1.NodeConfig.MetadataEntry\x12\x12\n\nimage_type\x18\x05 \x01(\t\x12;\n\x06labels\x18\x06 \x03(\x0b\x32+.google.container.v1.NodeConfig.LabelsEntry\x12\x17\n\x0flocal_ssd_count\x18\x07 \x01(\x05\x12\x0c\n\x04tags\x18\x08 \x03(\t\x12\x13\n\x0bpreemptible\x18\n \x01(\x08\x12<\n\x0c\x61\x63\x63\x65lerators\x18\x0b \x03(\x0b\x32&.google.container.v1.AcceleratorConfig\x12\x11\n\tdisk_type\x18\x0c \x01(\t\x12\x18\n\x10min_cpu_platform\x18\r \x01(\t\x1a/\n\rMetadataEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x1a-\n\x0bLabelsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01"\xd1\x01\n\nMasterAuth\x12\x10\n\x08username\x18\x01 \x01(\t\x12\x10\n\x08password\x18\x02 \x01(\t\x12O\n\x19\x63lient_certificate_config\x18\x03 \x01(\x0b\x32,.google.container.v1.ClientCertificateConfig\x12\x1e\n\x16\x63luster_ca_certificate\x18\x64 \x01(\t\x12\x1a\n\x12\x63lient_certificate\x18\x65 \x01(\t\x12\x12\n\nclient_key\x18\x66 \x01(\t";\n\x17\x43lientCertificateConfig\x12 \n\x18issue_client_certificate\x18\x01 \x01(\x08"\xb7\x02\n\x0c\x41\x64\x64onsConfig\x12\x43\n\x13http_load_balancing\x18\x01 \x01(\x0b\x32&.google.container.v1.HttpLoadBalancing\x12Q\n\x1ahorizontal_pod_autoscaling\x18\x02 \x01(\x0b\x32-.google.container.v1.HorizontalPodAutoscaling\x12\x46\n\x14kubernetes_dashboard\x18\x03 \x01(\x0b\x32(.google.container.v1.KubernetesDashboard\x12G\n\x15network_policy_config\x18\x04 \x01(\x0b\x32(.google.container.v1.NetworkPolicyConfig"%\n\x11HttpLoadBalancing\x12\x10\n\x08\x64isabled\x18\x01 \x01(\x08",\n\x18HorizontalPodAutoscaling\x12\x10\n\x08\x64isabled\x18\x01 \x01(\x08"\'\n\x13KubernetesDashboard\x12\x10\n\x08\x64isabled\x18\x01 \x01(\x08"\'\n\x13NetworkPolicyConfig\x12\x10\n\x08\x64isabled\x18\x01 \x01(\x08"\xa8\x01\n\x14PrivateClusterConfig\x12\x1c\n\x14\x65nable_private_nodes\x18\x01 \x01(\x08\x12\x1f\n\x17\x65nable_private_endpoint\x18\x02 \x01(\x08\x12\x1e\n\x16master_ipv4_cidr_block\x18\x03 \x01(\t\x12\x18\n\x10private_endpoint\x18\x04 \x01(\t\x12\x17\n\x0fpublic_endpoint\x18\x05 \x01(\t"\xbc\x01\n\x1eMasterAuthorizedNetworksConfig\x12\x0f\n\x07\x65nabled\x18\x01 \x01(\x08\x12R\n\x0b\x63idr_blocks\x18\x02 \x03(\x0b\x32=.google.container.v1.MasterAuthorizedNetworksConfig.CidrBlock\x1a\x35\n\tCidrBlock\x12\x14\n\x0c\x64isplay_name\x18\x01 \x01(\t\x12\x12\n\ncidr_block\x18\x02 \x01(\t"\x1d\n\nLegacyAbac\x12\x0f\n\x07\x65nabled\x18\x01 \x01(\x08"\x91\x01\n\rNetworkPolicy\x12=\n\x08provider\x18\x01 \x01(\x0e\x32+.google.container.v1.NetworkPolicy.Provider\x12\x0f\n\x07\x65nabled\x18\x02 \x01(\x08"0\n\x08Provider\x12\x18\n\x14PROVIDER_UNSPECIFIED\x10\x00\x12\n\n\x06\x43\x41LICO\x10\x01"\xe9\x02\n\x12IPAllocationPolicy\x12\x16\n\x0euse_ip_aliases\x18\x01 \x01(\x08\x12\x19\n\x11\x63reate_subnetwork\x18\x02 \x01(\x08\x12\x17\n\x0fsubnetwork_name\x18\x03 \x01(\t\x12\x1d\n\x11\x63luster_ipv4_cidr\x18\x04 \x01(\tB\x02\x18\x01\x12\x1a\n\x0enode_ipv4_cidr\x18\x05 \x01(\tB\x02\x18\x01\x12\x1e\n\x12services_ipv4_cidr\x18\x06 \x01(\tB\x02\x18\x01\x12$\n\x1c\x63luster_secondary_range_name\x18\x07 \x01(\t\x12%\n\x1dservices_secondary_range_name\x18\x08 \x01(\t\x12\x1f\n\x17\x63luster_ipv4_cidr_block\x18\t \x01(\t\x12\x1c\n\x14node_ipv4_cidr_block\x18\n \x01(\t\x12 \n\x18services_ipv4_cidr_block\x18\x0b \x01(\t"\xdd\x0c\n\x07\x43luster\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x02 \x01(\t\x12\x1a\n\x12initial_node_count\x18\x03 \x01(\x05\x12\x34\n\x0bnode_config\x18\x04 \x01(\x0b\x32\x1f.google.container.v1.NodeConfig\x12\x34\n\x0bmaster_auth\x18\x05 \x01(\x0b\x32\x1f.google.container.v1.MasterAuth\x12\x17\n\x0flogging_service\x18\x06 \x01(\t\x12\x1a\n\x12monitoring_service\x18\x07 \x01(\t\x12\x0f\n\x07network\x18\x08 \x01(\t\x12\x19\n\x11\x63luster_ipv4_cidr\x18\t \x01(\t\x12\x38\n\raddons_config\x18\n \x01(\x0b\x32!.google.container.v1.AddonsConfig\x12\x12\n\nsubnetwork\x18\x0b \x01(\t\x12\x31\n\nnode_pools\x18\x0c \x03(\x0b\x32\x1d.google.container.v1.NodePool\x12\x11\n\tlocations\x18\r \x03(\t\x12\x1f\n\x17\x65nable_kubernetes_alpha\x18\x0e \x01(\x08\x12I\n\x0fresource_labels\x18\x0f \x03(\x0b\x32\x30.google.container.v1.Cluster.ResourceLabelsEntry\x12\x19\n\x11label_fingerprint\x18\x10 \x01(\t\x12\x34\n\x0blegacy_abac\x18\x12 \x01(\x0b\x32\x1f.google.container.v1.LegacyAbac\x12:\n\x0enetwork_policy\x18\x13 \x01(\x0b\x32".google.container.v1.NetworkPolicy\x12\x45\n\x14ip_allocation_policy\x18\x14 \x01(\x0b\x32\'.google.container.v1.IPAllocationPolicy\x12^\n!master_authorized_networks_config\x18\x16 \x01(\x0b\x32\x33.google.container.v1.MasterAuthorizedNetworksConfig\x12\x42\n\x12maintenance_policy\x18\x17 \x01(\x0b\x32&.google.container.v1.MaintenancePolicy\x12:\n\x0enetwork_config\x18\x1b \x01(\x0b\x32".google.container.v1.NetworkConfig\x12I\n\x16private_cluster_config\x18% \x01(\x0b\x32).google.container.v1.PrivateClusterConfig\x12\x11\n\tself_link\x18\x64 \x01(\t\x12\x10\n\x04zone\x18\x65 \x01(\tB\x02\x18\x01\x12\x10\n\x08\x65ndpoint\x18\x66 \x01(\t\x12\x1f\n\x17initial_cluster_version\x18g \x01(\t\x12\x1e\n\x16\x63urrent_master_version\x18h \x01(\t\x12 \n\x14\x63urrent_node_version\x18i \x01(\tB\x02\x18\x01\x12\x13\n\x0b\x63reate_time\x18j \x01(\t\x12\x33\n\x06status\x18k \x01(\x0e\x32#.google.container.v1.Cluster.Status\x12\x16\n\x0estatus_message\x18l \x01(\t\x12\x1b\n\x13node_ipv4_cidr_size\x18m \x01(\x05\x12\x1a\n\x12services_ipv4_cidr\x18n \x01(\t\x12\x1f\n\x13instance_group_urls\x18o \x03(\tB\x02\x18\x01\x12\x1a\n\x12\x63urrent_node_count\x18p \x01(\x05\x12\x13\n\x0b\x65xpire_time\x18q \x01(\t\x12\x10\n\x08location\x18r \x01(\t\x1a\x35\n\x13ResourceLabelsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01"w\n\x06Status\x12\x16\n\x12STATUS_UNSPECIFIED\x10\x00\x12\x10\n\x0cPROVISIONING\x10\x01\x12\x0b\n\x07RUNNING\x10\x02\x12\x0f\n\x0bRECONCILING\x10\x03\x12\x0c\n\x08STOPPING\x10\x04\x12\t\n\x05\x45RROR\x10\x05\x12\x0c\n\x08\x44\x45GRADED\x10\x06"\xc1\x03\n\rClusterUpdate\x12\x1c\n\x14\x64\x65sired_node_version\x18\x04 \x01(\t\x12"\n\x1a\x64\x65sired_monitoring_service\x18\x05 \x01(\t\x12@\n\x15\x64\x65sired_addons_config\x18\x06 \x01(\x0b\x32!.google.container.v1.AddonsConfig\x12\x1c\n\x14\x64\x65sired_node_pool_id\x18\x07 \x01(\t\x12\x1a\n\x12\x64\x65sired_image_type\x18\x08 \x01(\t\x12O\n\x1d\x64\x65sired_node_pool_autoscaling\x18\t \x01(\x0b\x32(.google.container.v1.NodePoolAutoscaling\x12\x19\n\x11\x64\x65sired_locations\x18\n \x03(\t\x12\x66\n)desired_master_authorized_networks_config\x18\x0c \x01(\x0b\x32\x33.google.container.v1.MasterAuthorizedNetworksConfig\x12\x1e\n\x16\x64\x65sired_master_version\x18\x64 \x01(\t"\xfb\x05\n\tOperation\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x10\n\x04zone\x18\x02 \x01(\tB\x02\x18\x01\x12;\n\x0eoperation_type\x18\x03 \x01(\x0e\x32#.google.container.v1.Operation.Type\x12\x35\n\x06status\x18\x04 \x01(\x0e\x32%.google.container.v1.Operation.Status\x12\x0e\n\x06\x64\x65tail\x18\x08 \x01(\t\x12\x16\n\x0estatus_message\x18\x05 \x01(\t\x12\x11\n\tself_link\x18\x06 \x01(\t\x12\x13\n\x0btarget_link\x18\x07 \x01(\t\x12\x10\n\x08location\x18\t \x01(\t\x12\x12\n\nstart_time\x18\n \x01(\t\x12\x10\n\x08\x65nd_time\x18\x0b \x01(\t"R\n\x06Status\x12\x16\n\x12STATUS_UNSPECIFIED\x10\x00\x12\x0b\n\x07PENDING\x10\x01\x12\x0b\n\x07RUNNING\x10\x02\x12\x08\n\x04\x44ONE\x10\x03\x12\x0c\n\x08\x41\x42ORTING\x10\x04"\xfd\x02\n\x04Type\x12\x14\n\x10TYPE_UNSPECIFIED\x10\x00\x12\x12\n\x0e\x43REATE_CLUSTER\x10\x01\x12\x12\n\x0e\x44\x45LETE_CLUSTER\x10\x02\x12\x12\n\x0eUPGRADE_MASTER\x10\x03\x12\x11\n\rUPGRADE_NODES\x10\x04\x12\x12\n\x0eREPAIR_CLUSTER\x10\x05\x12\x12\n\x0eUPDATE_CLUSTER\x10\x06\x12\x14\n\x10\x43REATE_NODE_POOL\x10\x07\x12\x14\n\x10\x44\x45LETE_NODE_POOL\x10\x08\x12\x1c\n\x18SET_NODE_POOL_MANAGEMENT\x10\t\x12\x15\n\x11\x41UTO_REPAIR_NODES\x10\n\x12\x16\n\x12\x41UTO_UPGRADE_NODES\x10\x0b\x12\x0e\n\nSET_LABELS\x10\x0c\x12\x13\n\x0fSET_MASTER_AUTH\x10\r\x12\x16\n\x12SET_NODE_POOL_SIZE\x10\x0e\x12\x16\n\x12SET_NETWORK_POLICY\x10\x0f\x12\x1a\n\x16SET_MAINTENANCE_POLICY\x10\x10"\x7f\n\x14\x43reateClusterRequest\x12\x16\n\nproject_id\x18\x01 \x01(\tB\x02\x18\x01\x12\x10\n\x04zone\x18\x02 \x01(\tB\x02\x18\x01\x12-\n\x07\x63luster\x18\x03 \x01(\x0b\x32\x1c.google.container.v1.Cluster\x12\x0e\n\x06parent\x18\x05 \x01(\t"c\n\x11GetClusterRequest\x12\x16\n\nproject_id\x18\x01 \x01(\tB\x02\x18\x01\x12\x10\n\x04zone\x18\x02 \x01(\tB\x02\x18\x01\x12\x16\n\ncluster_id\x18\x03 \x01(\tB\x02\x18\x01\x12\x0c\n\x04name\x18\x05 \x01(\t"\x9a\x01\n\x14UpdateClusterRequest\x12\x16\n\nproject_id\x18\x01 \x01(\tB\x02\x18\x01\x12\x10\n\x04zone\x18\x02 \x01(\tB\x02\x18\x01\x12\x16\n\ncluster_id\x18\x03 \x01(\tB\x02\x18\x01\x12\x32\n\x06update\x18\x04 \x01(\x0b\x32".google.container.v1.ClusterUpdate\x12\x0c\n\x04name\x18\x05 \x01(\t"\xab\x01\n\x15UpdateNodePoolRequest\x12\x16\n\nproject_id\x18\x01 \x01(\tB\x02\x18\x01\x12\x10\n\x04zone\x18\x02 \x01(\tB\x02\x18\x01\x12\x16\n\ncluster_id\x18\x03 \x01(\tB\x02\x18\x01\x12\x18\n\x0cnode_pool_id\x18\x04 \x01(\tB\x02\x18\x01\x12\x14\n\x0cnode_version\x18\x05 \x01(\t\x12\x12\n\nimage_type\x18\x06 \x01(\t\x12\x0c\n\x04name\x18\x08 \x01(\t"\xc8\x01\n\x1dSetNodePoolAutoscalingRequest\x12\x16\n\nproject_id\x18\x01 \x01(\tB\x02\x18\x01\x12\x10\n\x04zone\x18\x02 \x01(\tB\x02\x18\x01\x12\x16\n\ncluster_id\x18\x03 \x01(\tB\x02\x18\x01\x12\x18\n\x0cnode_pool_id\x18\x04 \x01(\tB\x02\x18\x01\x12=\n\x0b\x61utoscaling\x18\x05 \x01(\x0b\x32(.google.container.v1.NodePoolAutoscaling\x12\x0c\n\x04name\x18\x06 \x01(\t"\x7f\n\x18SetLoggingServiceRequest\x12\x16\n\nproject_id\x18\x01 \x01(\tB\x02\x18\x01\x12\x0c\n\x04zone\x18\x02 \x01(\t\x12\x16\n\ncluster_id\x18\x03 \x01(\tB\x02\x18\x01\x12\x17\n\x0flogging_service\x18\x04 \x01(\t\x12\x0c\n\x04name\x18\x05 \x01(\t"\x89\x01\n\x1bSetMonitoringServiceRequest\x12\x16\n\nproject_id\x18\x01 \x01(\tB\x02\x18\x01\x12\x10\n\x04zone\x18\x02 \x01(\tB\x02\x18\x01\x12\x16\n\ncluster_id\x18\x03 \x01(\tB\x02\x18\x01\x12\x1a\n\x12monitoring_service\x18\x04 \x01(\t\x12\x0c\n\x04name\x18\x06 \x01(\t"\xa2\x01\n\x16SetAddonsConfigRequest\x12\x16\n\nproject_id\x18\x01 \x01(\tB\x02\x18\x01\x12\x10\n\x04zone\x18\x02 \x01(\tB\x02\x18\x01\x12\x16\n\ncluster_id\x18\x03 \x01(\tB\x02\x18\x01\x12\x38\n\raddons_config\x18\x04 \x01(\x0b\x32!.google.container.v1.AddonsConfig\x12\x0c\n\x04name\x18\x06 \x01(\t"x\n\x13SetLocationsRequest\x12\x16\n\nproject_id\x18\x01 \x01(\tB\x02\x18\x01\x12\x10\n\x04zone\x18\x02 \x01(\tB\x02\x18\x01\x12\x16\n\ncluster_id\x18\x03 \x01(\tB\x02\x18\x01\x12\x11\n\tlocations\x18\x04 \x03(\t\x12\x0c\n\x04name\x18\x06 \x01(\t"}\n\x13UpdateMasterRequest\x12\x16\n\nproject_id\x18\x01 \x01(\tB\x02\x18\x01\x12\x10\n\x04zone\x18\x02 \x01(\tB\x02\x18\x01\x12\x16\n\ncluster_id\x18\x03 \x01(\tB\x02\x18\x01\x12\x16\n\x0emaster_version\x18\x04 \x01(\t\x12\x0c\n\x04name\x18\x07 \x01(\t"\xab\x02\n\x14SetMasterAuthRequest\x12\x16\n\nproject_id\x18\x01 \x01(\tB\x02\x18\x01\x12\x10\n\x04zone\x18\x02 \x01(\tB\x02\x18\x01\x12\x16\n\ncluster_id\x18\x03 \x01(\tB\x02\x18\x01\x12@\n\x06\x61\x63tion\x18\x04 \x01(\x0e\x32\x30.google.container.v1.SetMasterAuthRequest.Action\x12/\n\x06update\x18\x05 \x01(\x0b\x32\x1f.google.container.v1.MasterAuth\x12\x0c\n\x04name\x18\x07 \x01(\t"P\n\x06\x41\x63tion\x12\x0b\n\x07UNKNOWN\x10\x00\x12\x10\n\x0cSET_PASSWORD\x10\x01\x12\x15\n\x11GENERATE_PASSWORD\x10\x02\x12\x10\n\x0cSET_USERNAME\x10\x03"f\n\x14\x44\x65leteClusterRequest\x12\x16\n\nproject_id\x18\x01 \x01(\tB\x02\x18\x01\x12\x10\n\x04zone\x18\x02 \x01(\tB\x02\x18\x01\x12\x16\n\ncluster_id\x18\x03 \x01(\tB\x02\x18\x01\x12\x0c\n\x04name\x18\x04 \x01(\t"O\n\x13ListClustersRequest\x12\x16\n\nproject_id\x18\x01 \x01(\tB\x02\x18\x01\x12\x10\n\x04zone\x18\x02 \x01(\tB\x02\x18\x01\x12\x0e\n\x06parent\x18\x04 \x01(\t"]\n\x14ListClustersResponse\x12.\n\x08\x63lusters\x18\x01 \x03(\x0b\x32\x1c.google.container.v1.Cluster\x12\x15\n\rmissing_zones\x18\x02 \x03(\t"g\n\x13GetOperationRequest\x12\x16\n\nproject_id\x18\x01 \x01(\tB\x02\x18\x01\x12\x10\n\x04zone\x18\x02 \x01(\tB\x02\x18\x01\x12\x18\n\x0coperation_id\x18\x03 \x01(\tB\x02\x18\x01\x12\x0c\n\x04name\x18\x05 \x01(\t"Q\n\x15ListOperationsRequest\x12\x16\n\nproject_id\x18\x01 \x01(\tB\x02\x18\x01\x12\x10\n\x04zone\x18\x02 \x01(\tB\x02\x18\x01\x12\x0e\n\x06parent\x18\x04 \x01(\t"j\n\x16\x43\x61ncelOperationRequest\x12\x16\n\nproject_id\x18\x01 \x01(\tB\x02\x18\x01\x12\x10\n\x04zone\x18\x02 \x01(\tB\x02\x18\x01\x12\x18\n\x0coperation_id\x18\x03 \x01(\tB\x02\x18\x01\x12\x0c\n\x04name\x18\x04 \x01(\t"c\n\x16ListOperationsResponse\x12\x32\n\noperations\x18\x01 \x03(\x0b\x32\x1e.google.container.v1.Operation\x12\x15\n\rmissing_zones\x18\x02 \x03(\t"P\n\x16GetServerConfigRequest\x12\x16\n\nproject_id\x18\x01 \x01(\tB\x02\x18\x01\x12\x10\n\x04zone\x18\x02 \x01(\tB\x02\x18\x01\x12\x0c\n\x04name\x18\x04 \x01(\t"\xa2\x01\n\x0cServerConfig\x12\x1f\n\x17\x64\x65\x66\x61ult_cluster_version\x18\x01 \x01(\t\x12\x1b\n\x13valid_node_versions\x18\x03 \x03(\t\x12\x1a\n\x12\x64\x65\x66\x61ult_image_type\x18\x04 \x01(\t\x12\x19\n\x11valid_image_types\x18\x05 \x03(\t\x12\x1d\n\x15valid_master_versions\x18\x06 \x03(\t"\x9b\x01\n\x15\x43reateNodePoolRequest\x12\x16\n\nproject_id\x18\x01 \x01(\tB\x02\x18\x01\x12\x10\n\x04zone\x18\x02 \x01(\tB\x02\x18\x01\x12\x16\n\ncluster_id\x18\x03 \x01(\tB\x02\x18\x01\x12\x30\n\tnode_pool\x18\x04 \x01(\x0b\x32\x1d.google.container.v1.NodePool\x12\x0e\n\x06parent\x18\x06 \x01(\t"\x81\x01\n\x15\x44\x65leteNodePoolRequest\x12\x16\n\nproject_id\x18\x01 \x01(\tB\x02\x18\x01\x12\x10\n\x04zone\x18\x02 \x01(\tB\x02\x18\x01\x12\x16\n\ncluster_id\x18\x03 \x01(\tB\x02\x18\x01\x12\x18\n\x0cnode_pool_id\x18\x04 \x01(\tB\x02\x18\x01\x12\x0c\n\x04name\x18\x06 \x01(\t"h\n\x14ListNodePoolsRequest\x12\x16\n\nproject_id\x18\x01 \x01(\tB\x02\x18\x01\x12\x10\n\x04zone\x18\x02 \x01(\tB\x02\x18\x01\x12\x16\n\ncluster_id\x18\x03 \x01(\tB\x02\x18\x01\x12\x0e\n\x06parent\x18\x05 \x01(\t"~\n\x12GetNodePoolRequest\x12\x16\n\nproject_id\x18\x01 \x01(\tB\x02\x18\x01\x12\x10\n\x04zone\x18\x02 \x01(\tB\x02\x18\x01\x12\x16\n\ncluster_id\x18\x03 \x01(\tB\x02\x18\x01\x12\x18\n\x0cnode_pool_id\x18\x04 \x01(\tB\x02\x18\x01\x12\x0c\n\x04name\x18\x06 \x01(\t"\xf0\x03\n\x08NodePool\x12\x0c\n\x04name\x18\x01 \x01(\t\x12/\n\x06\x63onfig\x18\x02 \x01(\x0b\x32\x1f.google.container.v1.NodeConfig\x12\x1a\n\x12initial_node_count\x18\x03 \x01(\x05\x12\x11\n\tself_link\x18\x64 \x01(\t\x12\x0f\n\x07version\x18\x65 \x01(\t\x12\x1b\n\x13instance_group_urls\x18\x66 \x03(\t\x12\x34\n\x06status\x18g \x01(\x0e\x32$.google.container.v1.NodePool.Status\x12\x16\n\x0estatus_message\x18h \x01(\t\x12=\n\x0b\x61utoscaling\x18\x04 \x01(\x0b\x32(.google.container.v1.NodePoolAutoscaling\x12\x37\n\nmanagement\x18\x05 \x01(\x0b\x32#.google.container.v1.NodeManagement"\x81\x01\n\x06Status\x12\x16\n\x12STATUS_UNSPECIFIED\x10\x00\x12\x10\n\x0cPROVISIONING\x10\x01\x12\x0b\n\x07RUNNING\x10\x02\x12\x16\n\x12RUNNING_WITH_ERROR\x10\x03\x12\x0f\n\x0bRECONCILING\x10\x04\x12\x0c\n\x08STOPPING\x10\x05\x12\t\n\x05\x45RROR\x10\x06"}\n\x0eNodeManagement\x12\x14\n\x0c\x61uto_upgrade\x18\x01 \x01(\x08\x12\x13\n\x0b\x61uto_repair\x18\x02 \x01(\x08\x12@\n\x0fupgrade_options\x18\n \x01(\x0b\x32\'.google.container.v1.AutoUpgradeOptions"J\n\x12\x41utoUpgradeOptions\x12\x1f\n\x17\x61uto_upgrade_start_time\x18\x01 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x02 \x01(\t"K\n\x11MaintenancePolicy\x12\x36\n\x06window\x18\x01 \x01(\x0b\x32&.google.container.v1.MaintenanceWindow"n\n\x11MaintenanceWindow\x12O\n\x18\x64\x61ily_maintenance_window\x18\x02 \x01(\x0b\x32+.google.container.v1.DailyMaintenanceWindowH\x00\x42\x08\n\x06policy">\n\x16\x44\x61ilyMaintenanceWindow\x12\x12\n\nstart_time\x18\x02 \x01(\t\x12\x10\n\x08\x64uration\x18\x03 \x01(\t"\xc1\x01\n\x1cSetNodePoolManagementRequest\x12\x16\n\nproject_id\x18\x01 \x01(\tB\x02\x18\x01\x12\x10\n\x04zone\x18\x02 \x01(\tB\x02\x18\x01\x12\x16\n\ncluster_id\x18\x03 \x01(\tB\x02\x18\x01\x12\x18\n\x0cnode_pool_id\x18\x04 \x01(\tB\x02\x18\x01\x12\x37\n\nmanagement\x18\x05 \x01(\x0b\x32#.google.container.v1.NodeManagement\x12\x0c\n\x04name\x18\x07 \x01(\t"\x96\x01\n\x16SetNodePoolSizeRequest\x12\x16\n\nproject_id\x18\x01 \x01(\tB\x02\x18\x01\x12\x10\n\x04zone\x18\x02 \x01(\tB\x02\x18\x01\x12\x16\n\ncluster_id\x18\x03 \x01(\tB\x02\x18\x01\x12\x18\n\x0cnode_pool_id\x18\x04 \x01(\tB\x02\x18\x01\x12\x12\n\nnode_count\x18\x05 \x01(\x05\x12\x0c\n\x04name\x18\x07 \x01(\t"\x8a\x01\n\x1eRollbackNodePoolUpgradeRequest\x12\x16\n\nproject_id\x18\x01 \x01(\tB\x02\x18\x01\x12\x10\n\x04zone\x18\x02 \x01(\tB\x02\x18\x01\x12\x16\n\ncluster_id\x18\x03 \x01(\tB\x02\x18\x01\x12\x18\n\x0cnode_pool_id\x18\x04 \x01(\tB\x02\x18\x01\x12\x0c\n\x04name\x18\x06 \x01(\t"J\n\x15ListNodePoolsResponse\x12\x31\n\nnode_pools\x18\x01 \x03(\x0b\x32\x1d.google.container.v1.NodePool"V\n\x13NodePoolAutoscaling\x12\x0f\n\x07\x65nabled\x18\x01 \x01(\x08\x12\x16\n\x0emin_node_count\x18\x02 \x01(\x05\x12\x16\n\x0emax_node_count\x18\x03 \x01(\x05"\x88\x02\n\x10SetLabelsRequest\x12\x16\n\nproject_id\x18\x01 \x01(\tB\x02\x18\x01\x12\x10\n\x04zone\x18\x02 \x01(\tB\x02\x18\x01\x12\x16\n\ncluster_id\x18\x03 \x01(\tB\x02\x18\x01\x12R\n\x0fresource_labels\x18\x04 \x03(\x0b\x32\x39.google.container.v1.SetLabelsRequest.ResourceLabelsEntry\x12\x19\n\x11label_fingerprint\x18\x05 \x01(\t\x12\x0c\n\x04name\x18\x07 \x01(\t\x1a\x35\n\x13ResourceLabelsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01"w\n\x14SetLegacyAbacRequest\x12\x16\n\nproject_id\x18\x01 \x01(\tB\x02\x18\x01\x12\x10\n\x04zone\x18\x02 \x01(\tB\x02\x18\x01\x12\x16\n\ncluster_id\x18\x03 \x01(\tB\x02\x18\x01\x12\x0f\n\x07\x65nabled\x18\x04 \x01(\x08\x12\x0c\n\x04name\x18\x06 \x01(\t"\x84\x01\n\x16StartIPRotationRequest\x12\x16\n\nproject_id\x18\x01 \x01(\tB\x02\x18\x01\x12\x10\n\x04zone\x18\x02 \x01(\tB\x02\x18\x01\x12\x16\n\ncluster_id\x18\x03 \x01(\tB\x02\x18\x01\x12\x0c\n\x04name\x18\x06 \x01(\t\x12\x1a\n\x12rotate_credentials\x18\x07 \x01(\x08"k\n\x19\x43ompleteIPRotationRequest\x12\x16\n\nproject_id\x18\x01 \x01(\tB\x02\x18\x01\x12\x10\n\x04zone\x18\x02 \x01(\tB\x02\x18\x01\x12\x16\n\ncluster_id\x18\x03 \x01(\tB\x02\x18\x01\x12\x0c\n\x04name\x18\x07 \x01(\t"H\n\x11\x41\x63\x63\x65leratorConfig\x12\x19\n\x11\x61\x63\x63\x65lerator_count\x18\x01 \x01(\x03\x12\x18\n\x10\x61\x63\x63\x65lerator_type\x18\x02 \x01(\t"\xa5\x01\n\x17SetNetworkPolicyRequest\x12\x16\n\nproject_id\x18\x01 \x01(\tB\x02\x18\x01\x12\x10\n\x04zone\x18\x02 \x01(\tB\x02\x18\x01\x12\x16\n\ncluster_id\x18\x03 \x01(\tB\x02\x18\x01\x12:\n\x0enetwork_policy\x18\x04 \x01(\x0b\x32".google.container.v1.NetworkPolicy\x12\x0c\n\x04name\x18\x06 \x01(\t"\xa5\x01\n\x1bSetMaintenancePolicyRequest\x12\x12\n\nproject_id\x18\x01 \x01(\t\x12\x0c\n\x04zone\x18\x02 \x01(\t\x12\x12\n\ncluster_id\x18\x03 \x01(\t\x12\x42\n\x12maintenance_policy\x18\x04 \x01(\x0b\x32&.google.container.v1.MaintenancePolicy\x12\x0c\n\x04name\x18\x05 \x01(\t"4\n\rNetworkConfig\x12\x0f\n\x07network\x18\x01 \x01(\t\x12\x12\n\nsubnetwork\x18\x02 \x01(\t2\xcb\x39\n\x0e\x43lusterManager\x12\xcc\x01\n\x0cListClusters\x12(.google.container.v1.ListClustersRequest\x1a).google.container.v1.ListClustersResponse"g\x82\xd3\xe4\x93\x02\x61\x12,/v1/{parent=projects/*/locations/*}/clustersZ1\x12//v1/projects/{project_id}/zones/{zone}/clusters\x12\xc8\x01\n\nGetCluster\x12&.google.container.v1.GetClusterRequest\x1a\x1c.google.container.v1.Cluster"t\x82\xd3\xe4\x93\x02n\x12,/v1/{name=projects/*/locations/*/clusters/*}Z>\x12</v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}\x12\xc9\x01\n\rCreateCluster\x12).google.container.v1.CreateClusterRequest\x1a\x1e.google.container.v1.Operation"m\x82\xd3\xe4\x93\x02g",/v1/{parent=projects/*/locations/*}/clusters:\x01*Z4"//v1/projects/{project_id}/zones/{zone}/clusters:\x01*\x12\xd6\x01\n\rUpdateCluster\x12).google.container.v1.UpdateClusterRequest\x1a\x1e.google.container.v1.Operation"z\x82\xd3\xe4\x93\x02t\x1a,/v1/{name=projects/*/locations/*/clusters/*}:\x01*ZA\x1a</v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}:\x01*\x12\x86\x02\n\x0eUpdateNodePool\x12*.google.container.v1.UpdateNodePoolRequest\x1a\x1e.google.container.v1.Operation"\xa7\x01\x82\xd3\xe4\x93\x02\xa0\x01\x1a\x38/v1/{name=projects/*/locations/*/clusters/*/nodePools/*}:\x01*Za"\\/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/nodePools/{node_pool_id}/update:\x01*\x12\xaa\x02\n\x16SetNodePoolAutoscaling\x12\x32.google.container.v1.SetNodePoolAutoscalingRequest\x1a\x1e.google.container.v1.Operation"\xbb\x01\x82\xd3\xe4\x93\x02\xb4\x01"G/v1/{name=projects/*/locations/*/clusters/*/nodePools/*}:setAutoscaling:\x01*Zf"a/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/nodePools/{node_pool_id}/autoscaling:\x01*\x12\xf3\x01\n\x11SetLoggingService\x12-.google.container.v1.SetLoggingServiceRequest\x1a\x1e.google.container.v1.Operation"\x8e\x01\x82\xd3\xe4\x93\x02\x87\x01"7/v1/{name=projects/*/locations/*/clusters/*}:setLogging:\x01*ZI"D/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/logging:\x01*\x12\xff\x01\n\x14SetMonitoringService\x12\x30.google.container.v1.SetMonitoringServiceRequest\x1a\x1e.google.container.v1.Operation"\x94\x01\x82\xd3\xe4\x93\x02\x8d\x01":/v1/{name=projects/*/locations/*/clusters/*}:setMonitoring:\x01*ZL"G/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/monitoring:\x01*\x12\xed\x01\n\x0fSetAddonsConfig\x12+.google.container.v1.SetAddonsConfigRequest\x1a\x1e.google.container.v1.Operation"\x8c\x01\x82\xd3\xe4\x93\x02\x85\x01"6/v1/{name=projects/*/locations/*/clusters/*}:setAddons:\x01*ZH"C/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/addons:\x01*\x12\xed\x01\n\x0cSetLocations\x12(.google.container.v1.SetLocationsRequest\x1a\x1e.google.container.v1.Operation"\x92\x01\x82\xd3\xe4\x93\x02\x8b\x01"9/v1/{name=projects/*/locations/*/clusters/*}:setLocations:\x01*ZK"F/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/locations:\x01*\x12\xea\x01\n\x0cUpdateMaster\x12(.google.container.v1.UpdateMasterRequest\x1a\x1e.google.container.v1.Operation"\x8f\x01\x82\xd3\xe4\x93\x02\x88\x01"9/v1/{name=projects/*/locations/*/clusters/*}:updateMaster:\x01*ZH"C/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/master:\x01*\x12\xf4\x01\n\rSetMasterAuth\x12).google.container.v1.SetMasterAuthRequest\x1a\x1e.google.container.v1.Operation"\x97\x01\x82\xd3\xe4\x93\x02\x90\x01":/v1/{name=projects/*/locations/*/clusters/*}:setMasterAuth:\x01*ZO"J/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}:setMasterAuth:\x01*\x12\xd0\x01\n\rDeleteCluster\x12).google.container.v1.DeleteClusterRequest\x1a\x1e.google.container.v1.Operation"t\x82\xd3\xe4\x93\x02n*,/v1/{name=projects/*/locations/*/clusters/*}Z>*</v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}\x12\xd6\x01\n\x0eListOperations\x12*.google.container.v1.ListOperationsRequest\x1a+.google.container.v1.ListOperationsResponse"k\x82\xd3\xe4\x93\x02\x65\x12./v1/{parent=projects/*/locations/*}/operationsZ3\x12\x31/v1/projects/{project_id}/zones/{zone}/operations\x12\xd4\x01\n\x0cGetOperation\x12(.google.container.v1.GetOperationRequest\x1a\x1e.google.container.v1.Operation"z\x82\xd3\xe4\x93\x02t\x12./v1/{name=projects/*/locations/*/operations/*}ZB\x12@/v1/projects/{project_id}/zones/{zone}/operations/{operation_id}\x12\xe8\x01\n\x0f\x43\x61ncelOperation\x12+.google.container.v1.CancelOperationRequest\x1a\x16.google.protobuf.Empty"\x8f\x01\x82\xd3\xe4\x93\x02\x88\x01"5/v1/{name=projects/*/locations/*/operations/*}:cancel:\x01*ZL"G/v1/projects/{project_id}/zones/{zone}/operations/{operation_id}:cancel:\x01*\x12\xd0\x01\n\x0fGetServerConfig\x12+.google.container.v1.GetServerConfigRequest\x1a!.google.container.v1.ServerConfig"m\x82\xd3\xe4\x93\x02g\x12./v1/{name=projects/*/locations/*}/serverConfigZ5\x12\x33/v1/projects/{project_id}/zones/{zone}/serverconfig\x12\xf4\x01\n\rListNodePools\x12).google.container.v1.ListNodePoolsRequest\x1a*.google.container.v1.ListNodePoolsResponse"\x8b\x01\x82\xd3\xe4\x93\x02\x84\x01\x12\x38/v1/{parent=projects/*/locations/*/clusters/*}/nodePoolsZH\x12\x46/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/nodePools\x12\xf2\x01\n\x0bGetNodePool\x12\'.google.container.v1.GetNodePoolRequest\x1a\x1d.google.container.v1.NodePool"\x9a\x01\x82\xd3\xe4\x93\x02\x93\x01\x12\x38/v1/{name=projects/*/locations/*/clusters/*/nodePools/*}ZW\x12U/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/nodePools/{node_pool_id}\x12\xf0\x01\n\x0e\x43reateNodePool\x12*.google.container.v1.CreateNodePoolRequest\x1a\x1e.google.container.v1.Operation"\x91\x01\x82\xd3\xe4\x93\x02\x8a\x01"8/v1/{parent=projects/*/locations/*/clusters/*}/nodePools:\x01*ZK"F/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/nodePools:\x01*\x12\xf9\x01\n\x0e\x44\x65leteNodePool\x12*.google.container.v1.DeleteNodePoolRequest\x1a\x1e.google.container.v1.Operation"\x9a\x01\x82\xd3\xe4\x93\x02\x93\x01*8/v1/{name=projects/*/locations/*/clusters/*/nodePools/*}ZW*U/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/nodePools/{node_pool_id}\x12\xa3\x02\n\x17RollbackNodePoolUpgrade\x12\x33.google.container.v1.RollbackNodePoolUpgradeRequest\x1a\x1e.google.container.v1.Operation"\xb2\x01\x82\xd3\xe4\x93\x02\xab\x01"A/v1/{name=projects/*/locations/*/clusters/*/nodePools/*}:rollback:\x01*Zc"^/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/nodePools/{node_pool_id}:rollback:\x01*\x12\xa9\x02\n\x15SetNodePoolManagement\x12\x31.google.container.v1.SetNodePoolManagementRequest\x1a\x1e.google.container.v1.Operation"\xbc\x01\x82\xd3\xe4\x93\x02\xb5\x01"F/v1/{name=projects/*/locations/*/clusters/*/nodePools/*}:setManagement:\x01*Zh"c/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/nodePools/{node_pool_id}/setManagement:\x01*\x12\xf1\x01\n\tSetLabels\x12%.google.container.v1.SetLabelsRequest\x1a\x1e.google.container.v1.Operation"\x9c\x01\x82\xd3\xe4\x93\x02\x95\x01">/v1/{name=projects/*/locations/*/clusters/*}:setResourceLabels:\x01*ZP"K/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/resourceLabels:\x01*\x12\xf1\x01\n\rSetLegacyAbac\x12).google.container.v1.SetLegacyAbacRequest\x1a\x1e.google.container.v1.Operation"\x94\x01\x82\xd3\xe4\x93\x02\x8d\x01":/v1/{name=projects/*/locations/*/clusters/*}:setLegacyAbac:\x01*ZL"G/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/legacyAbac:\x01*\x12\xfc\x01\n\x0fStartIPRotation\x12+.google.container.v1.StartIPRotationRequest\x1a\x1e.google.container.v1.Operation"\x9b\x01\x82\xd3\xe4\x93\x02\x94\x01"</v1/{name=projects/*/locations/*/clusters/*}:startIpRotation:\x01*ZQ"L/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}:startIpRotation:\x01*\x12\x88\x02\n\x12\x43ompleteIPRotation\x12..google.container.v1.CompleteIPRotationRequest\x1a\x1e.google.container.v1.Operation"\xa1\x01\x82\xd3\xe4\x93\x02\x9a\x01"?/v1/{name=projects/*/locations/*/clusters/*}:completeIpRotation:\x01*ZT"O/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}:completeIpRotation:\x01*\x12\x91\x02\n\x0fSetNodePoolSize\x12+.google.container.v1.SetNodePoolSizeRequest\x1a\x1e.google.container.v1.Operation"\xb0\x01\x82\xd3\xe4\x93\x02\xa9\x01"@/v1/{name=projects/*/locations/*/clusters/*/nodePools/*}:setSize:\x01*Zb"]/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/nodePools/{node_pool_id}/setSize:\x01*\x12\x80\x02\n\x10SetNetworkPolicy\x12,.google.container.v1.SetNetworkPolicyRequest\x1a\x1e.google.container.v1.Operation"\x9d\x01\x82\xd3\xe4\x93\x02\x96\x01"=/v1/{name=projects/*/locations/*/clusters/*}:setNetworkPolicy:\x01*ZR"M/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}:setNetworkPolicy:\x01*\x12\x90\x02\n\x14SetMaintenancePolicy\x12\x30.google.container.v1.SetMaintenancePolicyRequest\x1a\x1e.google.container.v1.Operation"\xa5\x01\x82\xd3\xe4\x93\x02\x9e\x01"A/v1/{name=projects/*/locations/*/clusters/*}:setMaintenancePolicy:\x01*ZV"Q/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}:setMaintenancePolicy:\x01*B\xa6\x01\n\x17\x63om.google.container.v1B\x13\x43lusterServiceProtoP\x01Z<google.golang.org/genproto/googleapis/container/v1;container\xaa\x02\x19Google.Cloud.Container.V1\xca\x02\x19Google\\Cloud\\Container\\V1b\x06proto3'
     ),
@@ -41,14 +43,18 @@ _NETWORKPOLICY_PROVIDER = _descriptor.EnumDescriptor(
     file=DESCRIPTOR,
     values=[
         _descriptor.EnumValueDescriptor(
-            name="PROVIDER_UNSPECIFIED", index=0, number=0, options=None, type=None
+            name="PROVIDER_UNSPECIFIED",
+            index=0,
+            number=0,
+            serialized_options=None,
+            type=None,
         ),
         _descriptor.EnumValueDescriptor(
-            name="CALICO", index=1, number=1, options=None, type=None
+            name="CALICO", index=1, number=1, serialized_options=None, type=None
         ),
     ],
     containing_type=None,
-    options=None,
+    serialized_options=None,
     serialized_start=1897,
     serialized_end=1945,
 )
@@ -61,29 +67,33 @@ _CLUSTER_STATUS = _descriptor.EnumDescriptor(
     file=DESCRIPTOR,
     values=[
         _descriptor.EnumValueDescriptor(
-            name="STATUS_UNSPECIFIED", index=0, number=0, options=None, type=None
+            name="STATUS_UNSPECIFIED",
+            index=0,
+            number=0,
+            serialized_options=None,
+            type=None,
         ),
         _descriptor.EnumValueDescriptor(
-            name="PROVISIONING", index=1, number=1, options=None, type=None
+            name="PROVISIONING", index=1, number=1, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="RUNNING", index=2, number=2, options=None, type=None
+            name="RUNNING", index=2, number=2, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="RECONCILING", index=3, number=3, options=None, type=None
+            name="RECONCILING", index=3, number=3, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="STOPPING", index=4, number=4, options=None, type=None
+            name="STOPPING", index=4, number=4, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="ERROR", index=5, number=5, options=None, type=None
+            name="ERROR", index=5, number=5, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="DEGRADED", index=6, number=6, options=None, type=None
+            name="DEGRADED", index=6, number=6, serialized_options=None, type=None
         ),
     ],
     containing_type=None,
-    options=None,
+    serialized_options=None,
     serialized_start=3822,
     serialized_end=3941,
 )
@@ -96,23 +106,27 @@ _OPERATION_STATUS = _descriptor.EnumDescriptor(
     file=DESCRIPTOR,
     values=[
         _descriptor.EnumValueDescriptor(
-            name="STATUS_UNSPECIFIED", index=0, number=0, options=None, type=None
+            name="STATUS_UNSPECIFIED",
+            index=0,
+            number=0,
+            serialized_options=None,
+            type=None,
         ),
         _descriptor.EnumValueDescriptor(
-            name="PENDING", index=1, number=1, options=None, type=None
+            name="PENDING", index=1, number=1, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="RUNNING", index=2, number=2, options=None, type=None
+            name="RUNNING", index=2, number=2, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="DONE", index=3, number=3, options=None, type=None
+            name="DONE", index=3, number=3, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="ABORTING", index=4, number=4, options=None, type=None
+            name="ABORTING", index=4, number=4, serialized_options=None, type=None
         ),
     ],
     containing_type=None,
-    options=None,
+    serialized_options=None,
     serialized_start=4693,
     serialized_end=4775,
 )
@@ -125,59 +139,99 @@ _OPERATION_TYPE = _descriptor.EnumDescriptor(
     file=DESCRIPTOR,
     values=[
         _descriptor.EnumValueDescriptor(
-            name="TYPE_UNSPECIFIED", index=0, number=0, options=None, type=None
+            name="TYPE_UNSPECIFIED",
+            index=0,
+            number=0,
+            serialized_options=None,
+            type=None,
         ),
         _descriptor.EnumValueDescriptor(
-            name="CREATE_CLUSTER", index=1, number=1, options=None, type=None
+            name="CREATE_CLUSTER", index=1, number=1, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="DELETE_CLUSTER", index=2, number=2, options=None, type=None
+            name="DELETE_CLUSTER", index=2, number=2, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="UPGRADE_MASTER", index=3, number=3, options=None, type=None
+            name="UPGRADE_MASTER", index=3, number=3, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="UPGRADE_NODES", index=4, number=4, options=None, type=None
+            name="UPGRADE_NODES", index=4, number=4, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="REPAIR_CLUSTER", index=5, number=5, options=None, type=None
+            name="REPAIR_CLUSTER", index=5, number=5, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="UPDATE_CLUSTER", index=6, number=6, options=None, type=None
+            name="UPDATE_CLUSTER", index=6, number=6, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="CREATE_NODE_POOL", index=7, number=7, options=None, type=None
+            name="CREATE_NODE_POOL",
+            index=7,
+            number=7,
+            serialized_options=None,
+            type=None,
         ),
         _descriptor.EnumValueDescriptor(
-            name="DELETE_NODE_POOL", index=8, number=8, options=None, type=None
+            name="DELETE_NODE_POOL",
+            index=8,
+            number=8,
+            serialized_options=None,
+            type=None,
         ),
         _descriptor.EnumValueDescriptor(
-            name="SET_NODE_POOL_MANAGEMENT", index=9, number=9, options=None, type=None
+            name="SET_NODE_POOL_MANAGEMENT",
+            index=9,
+            number=9,
+            serialized_options=None,
+            type=None,
         ),
         _descriptor.EnumValueDescriptor(
-            name="AUTO_REPAIR_NODES", index=10, number=10, options=None, type=None
+            name="AUTO_REPAIR_NODES",
+            index=10,
+            number=10,
+            serialized_options=None,
+            type=None,
         ),
         _descriptor.EnumValueDescriptor(
-            name="AUTO_UPGRADE_NODES", index=11, number=11, options=None, type=None
+            name="AUTO_UPGRADE_NODES",
+            index=11,
+            number=11,
+            serialized_options=None,
+            type=None,
         ),
         _descriptor.EnumValueDescriptor(
-            name="SET_LABELS", index=12, number=12, options=None, type=None
+            name="SET_LABELS", index=12, number=12, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="SET_MASTER_AUTH", index=13, number=13, options=None, type=None
+            name="SET_MASTER_AUTH",
+            index=13,
+            number=13,
+            serialized_options=None,
+            type=None,
         ),
         _descriptor.EnumValueDescriptor(
-            name="SET_NODE_POOL_SIZE", index=14, number=14, options=None, type=None
+            name="SET_NODE_POOL_SIZE",
+            index=14,
+            number=14,
+            serialized_options=None,
+            type=None,
         ),
         _descriptor.EnumValueDescriptor(
-            name="SET_NETWORK_POLICY", index=15, number=15, options=None, type=None
+            name="SET_NETWORK_POLICY",
+            index=15,
+            number=15,
+            serialized_options=None,
+            type=None,
         ),
         _descriptor.EnumValueDescriptor(
-            name="SET_MAINTENANCE_POLICY", index=16, number=16, options=None, type=None
+            name="SET_MAINTENANCE_POLICY",
+            index=16,
+            number=16,
+            serialized_options=None,
+            type=None,
         ),
     ],
     containing_type=None,
-    options=None,
+    serialized_options=None,
     serialized_start=4778,
     serialized_end=5159,
 )
@@ -190,20 +244,24 @@ _SETMASTERAUTHREQUEST_ACTION = _descriptor.EnumDescriptor(
     file=DESCRIPTOR,
     values=[
         _descriptor.EnumValueDescriptor(
-            name="UNKNOWN", index=0, number=0, options=None, type=None
+            name="UNKNOWN", index=0, number=0, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="SET_PASSWORD", index=1, number=1, options=None, type=None
+            name="SET_PASSWORD", index=1, number=1, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="GENERATE_PASSWORD", index=2, number=2, options=None, type=None
+            name="GENERATE_PASSWORD",
+            index=2,
+            number=2,
+            serialized_options=None,
+            type=None,
         ),
         _descriptor.EnumValueDescriptor(
-            name="SET_USERNAME", index=3, number=3, options=None, type=None
+            name="SET_USERNAME", index=3, number=3, serialized_options=None, type=None
         ),
     ],
     containing_type=None,
-    options=None,
+    serialized_options=None,
     serialized_start=6828,
     serialized_end=6908,
 )
@@ -216,29 +274,37 @@ _NODEPOOL_STATUS = _descriptor.EnumDescriptor(
     file=DESCRIPTOR,
     values=[
         _descriptor.EnumValueDescriptor(
-            name="STATUS_UNSPECIFIED", index=0, number=0, options=None, type=None
+            name="STATUS_UNSPECIFIED",
+            index=0,
+            number=0,
+            serialized_options=None,
+            type=None,
         ),
         _descriptor.EnumValueDescriptor(
-            name="PROVISIONING", index=1, number=1, options=None, type=None
+            name="PROVISIONING", index=1, number=1, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="RUNNING", index=2, number=2, options=None, type=None
+            name="RUNNING", index=2, number=2, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="RUNNING_WITH_ERROR", index=3, number=3, options=None, type=None
+            name="RUNNING_WITH_ERROR",
+            index=3,
+            number=3,
+            serialized_options=None,
+            type=None,
         ),
         _descriptor.EnumValueDescriptor(
-            name="RECONCILING", index=4, number=4, options=None, type=None
+            name="RECONCILING", index=4, number=4, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="STOPPING", index=5, number=5, options=None, type=None
+            name="STOPPING", index=5, number=5, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="ERROR", index=6, number=6, options=None, type=None
+            name="ERROR", index=6, number=6, serialized_options=None, type=None
         ),
     ],
     containing_type=None,
-    options=None,
+    serialized_options=None,
     serialized_start=8726,
     serialized_end=8855,
 )
@@ -267,7 +333,7 @@ _NODECONFIG_METADATAENTRY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -285,14 +351,14 @@ _NODECONFIG_METADATAENTRY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=_descriptor._ParseOptions(descriptor_pb2.MessageOptions(), _b("8\001")),
+    serialized_options=_b("8\001"),
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -323,7 +389,7 @@ _NODECONFIG_LABELSENTRY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -341,14 +407,14 @@ _NODECONFIG_LABELSENTRY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=_descriptor._ParseOptions(descriptor_pb2.MessageOptions(), _b("8\001")),
+    serialized_options=_b("8\001"),
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -379,7 +445,7 @@ _NODECONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -397,7 +463,7 @@ _NODECONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -415,7 +481,7 @@ _NODECONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -433,7 +499,7 @@ _NODECONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -451,7 +517,7 @@ _NODECONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -469,7 +535,7 @@ _NODECONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -487,7 +553,7 @@ _NODECONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -505,7 +571,7 @@ _NODECONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -523,7 +589,7 @@ _NODECONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -541,7 +607,7 @@ _NODECONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -559,7 +625,7 @@ _NODECONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -577,7 +643,7 @@ _NODECONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -595,14 +661,14 @@ _NODECONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[_NODECONFIG_METADATAENTRY, _NODECONFIG_LABELSENTRY],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -634,7 +700,7 @@ _MASTERAUTH = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -652,7 +718,7 @@ _MASTERAUTH = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -670,7 +736,7 @@ _MASTERAUTH = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -688,7 +754,7 @@ _MASTERAUTH = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -706,7 +772,7 @@ _MASTERAUTH = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -724,14 +790,14 @@ _MASTERAUTH = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -763,14 +829,14 @@ _CLIENTCERTIFICATECONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -802,7 +868,7 @@ _ADDONSCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -820,7 +886,7 @@ _ADDONSCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -838,7 +904,7 @@ _ADDONSCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -856,14 +922,14 @@ _ADDONSCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -895,14 +961,14 @@ _HTTPLOADBALANCING = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -934,14 +1000,14 @@ _HORIZONTALPODAUTOSCALING = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -973,14 +1039,14 @@ _KUBERNETESDASHBOARD = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1012,14 +1078,14 @@ _NETWORKPOLICYCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1051,7 +1117,7 @@ _PRIVATECLUSTERCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1069,7 +1135,7 @@ _PRIVATECLUSTERCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1087,7 +1153,7 @@ _PRIVATECLUSTERCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1105,7 +1171,7 @@ _PRIVATECLUSTERCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1123,14 +1189,14 @@ _PRIVATECLUSTERCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1162,7 +1228,7 @@ _MASTERAUTHORIZEDNETWORKSCONFIG_CIDRBLOCK = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1180,14 +1246,14 @@ _MASTERAUTHORIZEDNETWORKSCONFIG_CIDRBLOCK = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1218,7 +1284,7 @@ _MASTERAUTHORIZEDNETWORKSCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1236,14 +1302,14 @@ _MASTERAUTHORIZEDNETWORKSCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[_MASTERAUTHORIZEDNETWORKSCONFIG_CIDRBLOCK],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1275,14 +1341,14 @@ _LEGACYABAC = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1314,7 +1380,7 @@ _NETWORKPOLICY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1332,14 +1398,14 @@ _NETWORKPOLICY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[_NETWORKPOLICY_PROVIDER],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1371,7 +1437,7 @@ _IPALLOCATIONPOLICY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1389,7 +1455,7 @@ _IPALLOCATIONPOLICY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1407,7 +1473,7 @@ _IPALLOCATIONPOLICY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1425,9 +1491,7 @@ _IPALLOCATIONPOLICY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.FieldOptions(), _b("\030\001")
-            ),
+            serialized_options=_b("\030\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1445,9 +1509,7 @@ _IPALLOCATIONPOLICY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.FieldOptions(), _b("\030\001")
-            ),
+            serialized_options=_b("\030\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1465,9 +1527,7 @@ _IPALLOCATIONPOLICY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.FieldOptions(), _b("\030\001")
-            ),
+            serialized_options=_b("\030\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1485,7 +1545,7 @@ _IPALLOCATIONPOLICY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1503,7 +1563,7 @@ _IPALLOCATIONPOLICY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1521,7 +1581,7 @@ _IPALLOCATIONPOLICY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1539,7 +1599,7 @@ _IPALLOCATIONPOLICY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1557,14 +1617,14 @@ _IPALLOCATIONPOLICY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1596,7 +1656,7 @@ _CLUSTER_RESOURCELABELSENTRY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1614,14 +1674,14 @@ _CLUSTER_RESOURCELABELSENTRY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=_descriptor._ParseOptions(descriptor_pb2.MessageOptions(), _b("8\001")),
+    serialized_options=_b("8\001"),
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1652,7 +1712,7 @@ _CLUSTER = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1670,7 +1730,7 @@ _CLUSTER = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1688,7 +1748,7 @@ _CLUSTER = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1706,7 +1766,7 @@ _CLUSTER = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1724,7 +1784,7 @@ _CLUSTER = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1742,7 +1802,7 @@ _CLUSTER = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1760,7 +1820,7 @@ _CLUSTER = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1778,7 +1838,7 @@ _CLUSTER = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1796,7 +1856,7 @@ _CLUSTER = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1814,7 +1874,7 @@ _CLUSTER = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1832,7 +1892,7 @@ _CLUSTER = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1850,7 +1910,7 @@ _CLUSTER = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1868,7 +1928,7 @@ _CLUSTER = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1886,7 +1946,7 @@ _CLUSTER = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1904,7 +1964,7 @@ _CLUSTER = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1922,7 +1982,7 @@ _CLUSTER = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1940,7 +2000,7 @@ _CLUSTER = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1958,7 +2018,7 @@ _CLUSTER = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1976,7 +2036,7 @@ _CLUSTER = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1994,7 +2054,7 @@ _CLUSTER = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2012,7 +2072,7 @@ _CLUSTER = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2030,7 +2090,7 @@ _CLUSTER = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2048,7 +2108,7 @@ _CLUSTER = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2066,7 +2126,7 @@ _CLUSTER = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2084,9 +2144,7 @@ _CLUSTER = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.FieldOptions(), _b("\030\001")
-            ),
+            serialized_options=_b("\030\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2104,7 +2162,7 @@ _CLUSTER = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2122,7 +2180,7 @@ _CLUSTER = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2140,7 +2198,7 @@ _CLUSTER = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2158,9 +2216,7 @@ _CLUSTER = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.FieldOptions(), _b("\030\001")
-            ),
+            serialized_options=_b("\030\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2178,7 +2234,7 @@ _CLUSTER = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2196,7 +2252,7 @@ _CLUSTER = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2214,7 +2270,7 @@ _CLUSTER = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2232,7 +2288,7 @@ _CLUSTER = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2250,7 +2306,7 @@ _CLUSTER = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2268,9 +2324,7 @@ _CLUSTER = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.FieldOptions(), _b("\030\001")
-            ),
+            serialized_options=_b("\030\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2288,7 +2342,7 @@ _CLUSTER = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2306,7 +2360,7 @@ _CLUSTER = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2324,14 +2378,14 @@ _CLUSTER = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[_CLUSTER_RESOURCELABELSENTRY],
     enum_types=[_CLUSTER_STATUS],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -2363,7 +2417,7 @@ _CLUSTERUPDATE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2381,7 +2435,7 @@ _CLUSTERUPDATE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2399,7 +2453,7 @@ _CLUSTERUPDATE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2417,7 +2471,7 @@ _CLUSTERUPDATE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2435,7 +2489,7 @@ _CLUSTERUPDATE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2453,7 +2507,7 @@ _CLUSTERUPDATE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2471,7 +2525,7 @@ _CLUSTERUPDATE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2489,7 +2543,7 @@ _CLUSTERUPDATE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2507,14 +2561,14 @@ _CLUSTERUPDATE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -2546,7 +2600,7 @@ _OPERATION = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2564,9 +2618,7 @@ _OPERATION = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.FieldOptions(), _b("\030\001")
-            ),
+            serialized_options=_b("\030\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2584,7 +2636,7 @@ _OPERATION = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2602,7 +2654,7 @@ _OPERATION = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2620,7 +2672,7 @@ _OPERATION = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2638,7 +2690,7 @@ _OPERATION = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2656,7 +2708,7 @@ _OPERATION = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2674,7 +2726,7 @@ _OPERATION = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2692,7 +2744,7 @@ _OPERATION = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2710,7 +2762,7 @@ _OPERATION = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2728,14 +2780,14 @@ _OPERATION = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[_OPERATION_STATUS, _OPERATION_TYPE],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -2767,9 +2819,7 @@ _CREATECLUSTERREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.FieldOptions(), _b("\030\001")
-            ),
+            serialized_options=_b("\030\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2787,9 +2837,7 @@ _CREATECLUSTERREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.FieldOptions(), _b("\030\001")
-            ),
+            serialized_options=_b("\030\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2807,7 +2855,7 @@ _CREATECLUSTERREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2825,14 +2873,14 @@ _CREATECLUSTERREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -2864,9 +2912,7 @@ _GETCLUSTERREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.FieldOptions(), _b("\030\001")
-            ),
+            serialized_options=_b("\030\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2884,9 +2930,7 @@ _GETCLUSTERREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.FieldOptions(), _b("\030\001")
-            ),
+            serialized_options=_b("\030\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2904,9 +2948,7 @@ _GETCLUSTERREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.FieldOptions(), _b("\030\001")
-            ),
+            serialized_options=_b("\030\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2924,14 +2966,14 @@ _GETCLUSTERREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -2963,9 +3005,7 @@ _UPDATECLUSTERREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.FieldOptions(), _b("\030\001")
-            ),
+            serialized_options=_b("\030\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2983,9 +3023,7 @@ _UPDATECLUSTERREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.FieldOptions(), _b("\030\001")
-            ),
+            serialized_options=_b("\030\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -3003,9 +3041,7 @@ _UPDATECLUSTERREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.FieldOptions(), _b("\030\001")
-            ),
+            serialized_options=_b("\030\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -3023,7 +3059,7 @@ _UPDATECLUSTERREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -3041,14 +3077,14 @@ _UPDATECLUSTERREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -3080,9 +3116,7 @@ _UPDATENODEPOOLREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.FieldOptions(), _b("\030\001")
-            ),
+            serialized_options=_b("\030\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -3100,9 +3134,7 @@ _UPDATENODEPOOLREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.FieldOptions(), _b("\030\001")
-            ),
+            serialized_options=_b("\030\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -3120,9 +3152,7 @@ _UPDATENODEPOOLREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.FieldOptions(), _b("\030\001")
-            ),
+            serialized_options=_b("\030\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -3140,9 +3170,7 @@ _UPDATENODEPOOLREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.FieldOptions(), _b("\030\001")
-            ),
+            serialized_options=_b("\030\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -3160,7 +3188,7 @@ _UPDATENODEPOOLREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -3178,7 +3206,7 @@ _UPDATENODEPOOLREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -3196,14 +3224,14 @@ _UPDATENODEPOOLREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -3235,9 +3263,7 @@ _SETNODEPOOLAUTOSCALINGREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.FieldOptions(), _b("\030\001")
-            ),
+            serialized_options=_b("\030\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -3255,9 +3281,7 @@ _SETNODEPOOLAUTOSCALINGREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.FieldOptions(), _b("\030\001")
-            ),
+            serialized_options=_b("\030\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -3275,9 +3299,7 @@ _SETNODEPOOLAUTOSCALINGREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.FieldOptions(), _b("\030\001")
-            ),
+            serialized_options=_b("\030\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -3295,9 +3317,7 @@ _SETNODEPOOLAUTOSCALINGREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.FieldOptions(), _b("\030\001")
-            ),
+            serialized_options=_b("\030\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -3315,7 +3335,7 @@ _SETNODEPOOLAUTOSCALINGREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -3333,14 +3353,14 @@ _SETNODEPOOLAUTOSCALINGREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -3372,9 +3392,7 @@ _SETLOGGINGSERVICEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.FieldOptions(), _b("\030\001")
-            ),
+            serialized_options=_b("\030\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -3392,7 +3410,7 @@ _SETLOGGINGSERVICEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -3410,9 +3428,7 @@ _SETLOGGINGSERVICEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.FieldOptions(), _b("\030\001")
-            ),
+            serialized_options=_b("\030\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -3430,7 +3446,7 @@ _SETLOGGINGSERVICEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -3448,14 +3464,14 @@ _SETLOGGINGSERVICEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -3487,9 +3503,7 @@ _SETMONITORINGSERVICEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.FieldOptions(), _b("\030\001")
-            ),
+            serialized_options=_b("\030\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -3507,9 +3521,7 @@ _SETMONITORINGSERVICEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.FieldOptions(), _b("\030\001")
-            ),
+            serialized_options=_b("\030\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -3527,9 +3539,7 @@ _SETMONITORINGSERVICEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.FieldOptions(), _b("\030\001")
-            ),
+            serialized_options=_b("\030\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -3547,7 +3557,7 @@ _SETMONITORINGSERVICEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -3565,14 +3575,14 @@ _SETMONITORINGSERVICEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -3604,9 +3614,7 @@ _SETADDONSCONFIGREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.FieldOptions(), _b("\030\001")
-            ),
+            serialized_options=_b("\030\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -3624,9 +3632,7 @@ _SETADDONSCONFIGREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.FieldOptions(), _b("\030\001")
-            ),
+            serialized_options=_b("\030\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -3644,9 +3650,7 @@ _SETADDONSCONFIGREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.FieldOptions(), _b("\030\001")
-            ),
+            serialized_options=_b("\030\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -3664,7 +3668,7 @@ _SETADDONSCONFIGREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -3682,14 +3686,14 @@ _SETADDONSCONFIGREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -3721,9 +3725,7 @@ _SETLOCATIONSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.FieldOptions(), _b("\030\001")
-            ),
+            serialized_options=_b("\030\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -3741,9 +3743,7 @@ _SETLOCATIONSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.FieldOptions(), _b("\030\001")
-            ),
+            serialized_options=_b("\030\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -3761,9 +3761,7 @@ _SETLOCATIONSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.FieldOptions(), _b("\030\001")
-            ),
+            serialized_options=_b("\030\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -3781,7 +3779,7 @@ _SETLOCATIONSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -3799,14 +3797,14 @@ _SETLOCATIONSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -3838,9 +3836,7 @@ _UPDATEMASTERREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.FieldOptions(), _b("\030\001")
-            ),
+            serialized_options=_b("\030\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -3858,9 +3854,7 @@ _UPDATEMASTERREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.FieldOptions(), _b("\030\001")
-            ),
+            serialized_options=_b("\030\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -3878,9 +3872,7 @@ _UPDATEMASTERREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.FieldOptions(), _b("\030\001")
-            ),
+            serialized_options=_b("\030\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -3898,7 +3890,7 @@ _UPDATEMASTERREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -3916,14 +3908,14 @@ _UPDATEMASTERREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -3955,9 +3947,7 @@ _SETMASTERAUTHREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.FieldOptions(), _b("\030\001")
-            ),
+            serialized_options=_b("\030\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -3975,9 +3965,7 @@ _SETMASTERAUTHREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.FieldOptions(), _b("\030\001")
-            ),
+            serialized_options=_b("\030\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -3995,9 +3983,7 @@ _SETMASTERAUTHREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.FieldOptions(), _b("\030\001")
-            ),
+            serialized_options=_b("\030\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -4015,7 +4001,7 @@ _SETMASTERAUTHREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -4033,7 +4019,7 @@ _SETMASTERAUTHREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -4051,14 +4037,14 @@ _SETMASTERAUTHREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[_SETMASTERAUTHREQUEST_ACTION],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -4090,9 +4076,7 @@ _DELETECLUSTERREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.FieldOptions(), _b("\030\001")
-            ),
+            serialized_options=_b("\030\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -4110,9 +4094,7 @@ _DELETECLUSTERREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.FieldOptions(), _b("\030\001")
-            ),
+            serialized_options=_b("\030\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -4130,9 +4112,7 @@ _DELETECLUSTERREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.FieldOptions(), _b("\030\001")
-            ),
+            serialized_options=_b("\030\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -4150,14 +4130,14 @@ _DELETECLUSTERREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -4189,9 +4169,7 @@ _LISTCLUSTERSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.FieldOptions(), _b("\030\001")
-            ),
+            serialized_options=_b("\030\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -4209,9 +4187,7 @@ _LISTCLUSTERSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.FieldOptions(), _b("\030\001")
-            ),
+            serialized_options=_b("\030\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -4229,14 +4205,14 @@ _LISTCLUSTERSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -4268,7 +4244,7 @@ _LISTCLUSTERSRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -4286,14 +4262,14 @@ _LISTCLUSTERSRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -4325,9 +4301,7 @@ _GETOPERATIONREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.FieldOptions(), _b("\030\001")
-            ),
+            serialized_options=_b("\030\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -4345,9 +4319,7 @@ _GETOPERATIONREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.FieldOptions(), _b("\030\001")
-            ),
+            serialized_options=_b("\030\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -4365,9 +4337,7 @@ _GETOPERATIONREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.FieldOptions(), _b("\030\001")
-            ),
+            serialized_options=_b("\030\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -4385,14 +4355,14 @@ _GETOPERATIONREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -4424,9 +4394,7 @@ _LISTOPERATIONSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.FieldOptions(), _b("\030\001")
-            ),
+            serialized_options=_b("\030\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -4444,9 +4412,7 @@ _LISTOPERATIONSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.FieldOptions(), _b("\030\001")
-            ),
+            serialized_options=_b("\030\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -4464,14 +4430,14 @@ _LISTOPERATIONSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -4503,9 +4469,7 @@ _CANCELOPERATIONREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.FieldOptions(), _b("\030\001")
-            ),
+            serialized_options=_b("\030\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -4523,9 +4487,7 @@ _CANCELOPERATIONREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.FieldOptions(), _b("\030\001")
-            ),
+            serialized_options=_b("\030\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -4543,9 +4505,7 @@ _CANCELOPERATIONREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.FieldOptions(), _b("\030\001")
-            ),
+            serialized_options=_b("\030\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -4563,14 +4523,14 @@ _CANCELOPERATIONREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -4602,7 +4562,7 @@ _LISTOPERATIONSRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -4620,14 +4580,14 @@ _LISTOPERATIONSRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -4659,9 +4619,7 @@ _GETSERVERCONFIGREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.FieldOptions(), _b("\030\001")
-            ),
+            serialized_options=_b("\030\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -4679,9 +4637,7 @@ _GETSERVERCONFIGREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.FieldOptions(), _b("\030\001")
-            ),
+            serialized_options=_b("\030\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -4699,14 +4655,14 @@ _GETSERVERCONFIGREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -4738,7 +4694,7 @@ _SERVERCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -4756,7 +4712,7 @@ _SERVERCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -4774,7 +4730,7 @@ _SERVERCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -4792,7 +4748,7 @@ _SERVERCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -4810,14 +4766,14 @@ _SERVERCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -4849,9 +4805,7 @@ _CREATENODEPOOLREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.FieldOptions(), _b("\030\001")
-            ),
+            serialized_options=_b("\030\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -4869,9 +4823,7 @@ _CREATENODEPOOLREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.FieldOptions(), _b("\030\001")
-            ),
+            serialized_options=_b("\030\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -4889,9 +4841,7 @@ _CREATENODEPOOLREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.FieldOptions(), _b("\030\001")
-            ),
+            serialized_options=_b("\030\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -4909,7 +4859,7 @@ _CREATENODEPOOLREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -4927,14 +4877,14 @@ _CREATENODEPOOLREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -4966,9 +4916,7 @@ _DELETENODEPOOLREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.FieldOptions(), _b("\030\001")
-            ),
+            serialized_options=_b("\030\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -4986,9 +4934,7 @@ _DELETENODEPOOLREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.FieldOptions(), _b("\030\001")
-            ),
+            serialized_options=_b("\030\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -5006,9 +4952,7 @@ _DELETENODEPOOLREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.FieldOptions(), _b("\030\001")
-            ),
+            serialized_options=_b("\030\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -5026,9 +4970,7 @@ _DELETENODEPOOLREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.FieldOptions(), _b("\030\001")
-            ),
+            serialized_options=_b("\030\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -5046,14 +4988,14 @@ _DELETENODEPOOLREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -5085,9 +5027,7 @@ _LISTNODEPOOLSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.FieldOptions(), _b("\030\001")
-            ),
+            serialized_options=_b("\030\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -5105,9 +5045,7 @@ _LISTNODEPOOLSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.FieldOptions(), _b("\030\001")
-            ),
+            serialized_options=_b("\030\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -5125,9 +5063,7 @@ _LISTNODEPOOLSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.FieldOptions(), _b("\030\001")
-            ),
+            serialized_options=_b("\030\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -5145,14 +5081,14 @@ _LISTNODEPOOLSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -5184,9 +5120,7 @@ _GETNODEPOOLREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.FieldOptions(), _b("\030\001")
-            ),
+            serialized_options=_b("\030\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -5204,9 +5138,7 @@ _GETNODEPOOLREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.FieldOptions(), _b("\030\001")
-            ),
+            serialized_options=_b("\030\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -5224,9 +5156,7 @@ _GETNODEPOOLREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.FieldOptions(), _b("\030\001")
-            ),
+            serialized_options=_b("\030\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -5244,9 +5174,7 @@ _GETNODEPOOLREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.FieldOptions(), _b("\030\001")
-            ),
+            serialized_options=_b("\030\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -5264,14 +5192,14 @@ _GETNODEPOOLREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -5303,7 +5231,7 @@ _NODEPOOL = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -5321,7 +5249,7 @@ _NODEPOOL = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -5339,7 +5267,7 @@ _NODEPOOL = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -5357,7 +5285,7 @@ _NODEPOOL = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -5375,7 +5303,7 @@ _NODEPOOL = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -5393,7 +5321,7 @@ _NODEPOOL = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -5411,7 +5339,7 @@ _NODEPOOL = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -5429,7 +5357,7 @@ _NODEPOOL = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -5447,7 +5375,7 @@ _NODEPOOL = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -5465,14 +5393,14 @@ _NODEPOOL = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[_NODEPOOL_STATUS],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -5504,7 +5432,7 @@ _NODEMANAGEMENT = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -5522,7 +5450,7 @@ _NODEMANAGEMENT = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -5540,14 +5468,14 @@ _NODEMANAGEMENT = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -5579,7 +5507,7 @@ _AUTOUPGRADEOPTIONS = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -5597,14 +5525,14 @@ _AUTOUPGRADEOPTIONS = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -5636,14 +5564,14 @@ _MAINTENANCEPOLICY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -5675,14 +5603,14 @@ _MAINTENANCEWINDOW = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -5722,7 +5650,7 @@ _DAILYMAINTENANCEWINDOW = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -5740,14 +5668,14 @@ _DAILYMAINTENANCEWINDOW = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -5779,9 +5707,7 @@ _SETNODEPOOLMANAGEMENTREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.FieldOptions(), _b("\030\001")
-            ),
+            serialized_options=_b("\030\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -5799,9 +5725,7 @@ _SETNODEPOOLMANAGEMENTREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.FieldOptions(), _b("\030\001")
-            ),
+            serialized_options=_b("\030\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -5819,9 +5743,7 @@ _SETNODEPOOLMANAGEMENTREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.FieldOptions(), _b("\030\001")
-            ),
+            serialized_options=_b("\030\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -5839,9 +5761,7 @@ _SETNODEPOOLMANAGEMENTREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.FieldOptions(), _b("\030\001")
-            ),
+            serialized_options=_b("\030\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -5859,7 +5779,7 @@ _SETNODEPOOLMANAGEMENTREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -5877,14 +5797,14 @@ _SETNODEPOOLMANAGEMENTREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -5916,9 +5836,7 @@ _SETNODEPOOLSIZEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.FieldOptions(), _b("\030\001")
-            ),
+            serialized_options=_b("\030\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -5936,9 +5854,7 @@ _SETNODEPOOLSIZEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.FieldOptions(), _b("\030\001")
-            ),
+            serialized_options=_b("\030\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -5956,9 +5872,7 @@ _SETNODEPOOLSIZEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.FieldOptions(), _b("\030\001")
-            ),
+            serialized_options=_b("\030\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -5976,9 +5890,7 @@ _SETNODEPOOLSIZEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.FieldOptions(), _b("\030\001")
-            ),
+            serialized_options=_b("\030\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -5996,7 +5908,7 @@ _SETNODEPOOLSIZEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -6014,14 +5926,14 @@ _SETNODEPOOLSIZEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -6053,9 +5965,7 @@ _ROLLBACKNODEPOOLUPGRADEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.FieldOptions(), _b("\030\001")
-            ),
+            serialized_options=_b("\030\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -6073,9 +5983,7 @@ _ROLLBACKNODEPOOLUPGRADEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.FieldOptions(), _b("\030\001")
-            ),
+            serialized_options=_b("\030\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -6093,9 +6001,7 @@ _ROLLBACKNODEPOOLUPGRADEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.FieldOptions(), _b("\030\001")
-            ),
+            serialized_options=_b("\030\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -6113,9 +6019,7 @@ _ROLLBACKNODEPOOLUPGRADEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.FieldOptions(), _b("\030\001")
-            ),
+            serialized_options=_b("\030\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -6133,14 +6037,14 @@ _ROLLBACKNODEPOOLUPGRADEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -6172,14 +6076,14 @@ _LISTNODEPOOLSRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -6211,7 +6115,7 @@ _NODEPOOLAUTOSCALING = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -6229,7 +6133,7 @@ _NODEPOOLAUTOSCALING = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -6247,14 +6151,14 @@ _NODEPOOLAUTOSCALING = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -6286,7 +6190,7 @@ _SETLABELSREQUEST_RESOURCELABELSENTRY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -6304,14 +6208,14 @@ _SETLABELSREQUEST_RESOURCELABELSENTRY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=_descriptor._ParseOptions(descriptor_pb2.MessageOptions(), _b("8\001")),
+    serialized_options=_b("8\001"),
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -6342,9 +6246,7 @@ _SETLABELSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.FieldOptions(), _b("\030\001")
-            ),
+            serialized_options=_b("\030\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -6362,9 +6264,7 @@ _SETLABELSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.FieldOptions(), _b("\030\001")
-            ),
+            serialized_options=_b("\030\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -6382,9 +6282,7 @@ _SETLABELSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.FieldOptions(), _b("\030\001")
-            ),
+            serialized_options=_b("\030\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -6402,7 +6300,7 @@ _SETLABELSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -6420,7 +6318,7 @@ _SETLABELSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -6438,14 +6336,14 @@ _SETLABELSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[_SETLABELSREQUEST_RESOURCELABELSENTRY],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -6477,9 +6375,7 @@ _SETLEGACYABACREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.FieldOptions(), _b("\030\001")
-            ),
+            serialized_options=_b("\030\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -6497,9 +6393,7 @@ _SETLEGACYABACREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.FieldOptions(), _b("\030\001")
-            ),
+            serialized_options=_b("\030\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -6517,9 +6411,7 @@ _SETLEGACYABACREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.FieldOptions(), _b("\030\001")
-            ),
+            serialized_options=_b("\030\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -6537,7 +6429,7 @@ _SETLEGACYABACREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -6555,14 +6447,14 @@ _SETLEGACYABACREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -6594,9 +6486,7 @@ _STARTIPROTATIONREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.FieldOptions(), _b("\030\001")
-            ),
+            serialized_options=_b("\030\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -6614,9 +6504,7 @@ _STARTIPROTATIONREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.FieldOptions(), _b("\030\001")
-            ),
+            serialized_options=_b("\030\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -6634,9 +6522,7 @@ _STARTIPROTATIONREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.FieldOptions(), _b("\030\001")
-            ),
+            serialized_options=_b("\030\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -6654,7 +6540,7 @@ _STARTIPROTATIONREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -6672,14 +6558,14 @@ _STARTIPROTATIONREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -6711,9 +6597,7 @@ _COMPLETEIPROTATIONREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.FieldOptions(), _b("\030\001")
-            ),
+            serialized_options=_b("\030\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -6731,9 +6615,7 @@ _COMPLETEIPROTATIONREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.FieldOptions(), _b("\030\001")
-            ),
+            serialized_options=_b("\030\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -6751,9 +6633,7 @@ _COMPLETEIPROTATIONREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.FieldOptions(), _b("\030\001")
-            ),
+            serialized_options=_b("\030\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -6771,14 +6651,14 @@ _COMPLETEIPROTATIONREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -6810,7 +6690,7 @@ _ACCELERATORCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -6828,14 +6708,14 @@ _ACCELERATORCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -6867,9 +6747,7 @@ _SETNETWORKPOLICYREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.FieldOptions(), _b("\030\001")
-            ),
+            serialized_options=_b("\030\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -6887,9 +6765,7 @@ _SETNETWORKPOLICYREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.FieldOptions(), _b("\030\001")
-            ),
+            serialized_options=_b("\030\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -6907,9 +6783,7 @@ _SETNETWORKPOLICYREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.FieldOptions(), _b("\030\001")
-            ),
+            serialized_options=_b("\030\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -6927,7 +6801,7 @@ _SETNETWORKPOLICYREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -6945,14 +6819,14 @@ _SETNETWORKPOLICYREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -6984,7 +6858,7 @@ _SETMAINTENANCEPOLICYREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -7002,7 +6876,7 @@ _SETMAINTENANCEPOLICYREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -7020,7 +6894,7 @@ _SETMAINTENANCEPOLICYREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -7038,7 +6912,7 @@ _SETMAINTENANCEPOLICYREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -7056,14 +6930,14 @@ _SETMAINTENANCEPOLICYREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -7095,7 +6969,7 @@ _NETWORKCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -7113,14 +6987,14 @@ _NETWORKCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -9519,420 +9393,114 @@ NetworkConfig = _reflection.GeneratedProtocolMessageType(
 _sym_db.RegisterMessage(NetworkConfig)
 
 
-DESCRIPTOR.has_options = True
-DESCRIPTOR._options = _descriptor._ParseOptions(
-    descriptor_pb2.FileOptions(),
-    _b(
-        "\n\027com.google.container.v1B\023ClusterServiceProtoP\001Z<google.golang.org/genproto/googleapis/container/v1;container\252\002\031Google.Cloud.Container.V1\312\002\031Google\\Cloud\\Container\\V1"
-    ),
-)
-_NODECONFIG_METADATAENTRY.has_options = True
-_NODECONFIG_METADATAENTRY._options = _descriptor._ParseOptions(
-    descriptor_pb2.MessageOptions(), _b("8\001")
-)
-_NODECONFIG_LABELSENTRY.has_options = True
-_NODECONFIG_LABELSENTRY._options = _descriptor._ParseOptions(
-    descriptor_pb2.MessageOptions(), _b("8\001")
-)
-_IPALLOCATIONPOLICY.fields_by_name["cluster_ipv4_cidr"].has_options = True
-_IPALLOCATIONPOLICY.fields_by_name[
-    "cluster_ipv4_cidr"
-]._options = _descriptor._ParseOptions(descriptor_pb2.FieldOptions(), _b("\030\001"))
-_IPALLOCATIONPOLICY.fields_by_name["node_ipv4_cidr"].has_options = True
-_IPALLOCATIONPOLICY.fields_by_name[
-    "node_ipv4_cidr"
-]._options = _descriptor._ParseOptions(descriptor_pb2.FieldOptions(), _b("\030\001"))
-_IPALLOCATIONPOLICY.fields_by_name["services_ipv4_cidr"].has_options = True
-_IPALLOCATIONPOLICY.fields_by_name[
-    "services_ipv4_cidr"
-]._options = _descriptor._ParseOptions(descriptor_pb2.FieldOptions(), _b("\030\001"))
-_CLUSTER_RESOURCELABELSENTRY.has_options = True
-_CLUSTER_RESOURCELABELSENTRY._options = _descriptor._ParseOptions(
-    descriptor_pb2.MessageOptions(), _b("8\001")
-)
-_CLUSTER.fields_by_name["zone"].has_options = True
-_CLUSTER.fields_by_name["zone"]._options = _descriptor._ParseOptions(
-    descriptor_pb2.FieldOptions(), _b("\030\001")
-)
-_CLUSTER.fields_by_name["current_node_version"].has_options = True
-_CLUSTER.fields_by_name["current_node_version"]._options = _descriptor._ParseOptions(
-    descriptor_pb2.FieldOptions(), _b("\030\001")
-)
-_CLUSTER.fields_by_name["instance_group_urls"].has_options = True
-_CLUSTER.fields_by_name["instance_group_urls"]._options = _descriptor._ParseOptions(
-    descriptor_pb2.FieldOptions(), _b("\030\001")
-)
-_OPERATION.fields_by_name["zone"].has_options = True
-_OPERATION.fields_by_name["zone"]._options = _descriptor._ParseOptions(
-    descriptor_pb2.FieldOptions(), _b("\030\001")
-)
-_CREATECLUSTERREQUEST.fields_by_name["project_id"].has_options = True
-_CREATECLUSTERREQUEST.fields_by_name["project_id"]._options = _descriptor._ParseOptions(
-    descriptor_pb2.FieldOptions(), _b("\030\001")
-)
-_CREATECLUSTERREQUEST.fields_by_name["zone"].has_options = True
-_CREATECLUSTERREQUEST.fields_by_name["zone"]._options = _descriptor._ParseOptions(
-    descriptor_pb2.FieldOptions(), _b("\030\001")
-)
-_GETCLUSTERREQUEST.fields_by_name["project_id"].has_options = True
-_GETCLUSTERREQUEST.fields_by_name["project_id"]._options = _descriptor._ParseOptions(
-    descriptor_pb2.FieldOptions(), _b("\030\001")
-)
-_GETCLUSTERREQUEST.fields_by_name["zone"].has_options = True
-_GETCLUSTERREQUEST.fields_by_name["zone"]._options = _descriptor._ParseOptions(
-    descriptor_pb2.FieldOptions(), _b("\030\001")
-)
-_GETCLUSTERREQUEST.fields_by_name["cluster_id"].has_options = True
-_GETCLUSTERREQUEST.fields_by_name["cluster_id"]._options = _descriptor._ParseOptions(
-    descriptor_pb2.FieldOptions(), _b("\030\001")
-)
-_UPDATECLUSTERREQUEST.fields_by_name["project_id"].has_options = True
-_UPDATECLUSTERREQUEST.fields_by_name["project_id"]._options = _descriptor._ParseOptions(
-    descriptor_pb2.FieldOptions(), _b("\030\001")
-)
-_UPDATECLUSTERREQUEST.fields_by_name["zone"].has_options = True
-_UPDATECLUSTERREQUEST.fields_by_name["zone"]._options = _descriptor._ParseOptions(
-    descriptor_pb2.FieldOptions(), _b("\030\001")
-)
-_UPDATECLUSTERREQUEST.fields_by_name["cluster_id"].has_options = True
-_UPDATECLUSTERREQUEST.fields_by_name["cluster_id"]._options = _descriptor._ParseOptions(
-    descriptor_pb2.FieldOptions(), _b("\030\001")
-)
-_UPDATENODEPOOLREQUEST.fields_by_name["project_id"].has_options = True
-_UPDATENODEPOOLREQUEST.fields_by_name[
-    "project_id"
-]._options = _descriptor._ParseOptions(descriptor_pb2.FieldOptions(), _b("\030\001"))
-_UPDATENODEPOOLREQUEST.fields_by_name["zone"].has_options = True
-_UPDATENODEPOOLREQUEST.fields_by_name["zone"]._options = _descriptor._ParseOptions(
-    descriptor_pb2.FieldOptions(), _b("\030\001")
-)
-_UPDATENODEPOOLREQUEST.fields_by_name["cluster_id"].has_options = True
-_UPDATENODEPOOLREQUEST.fields_by_name[
-    "cluster_id"
-]._options = _descriptor._ParseOptions(descriptor_pb2.FieldOptions(), _b("\030\001"))
-_UPDATENODEPOOLREQUEST.fields_by_name["node_pool_id"].has_options = True
-_UPDATENODEPOOLREQUEST.fields_by_name[
-    "node_pool_id"
-]._options = _descriptor._ParseOptions(descriptor_pb2.FieldOptions(), _b("\030\001"))
-_SETNODEPOOLAUTOSCALINGREQUEST.fields_by_name["project_id"].has_options = True
-_SETNODEPOOLAUTOSCALINGREQUEST.fields_by_name[
-    "project_id"
-]._options = _descriptor._ParseOptions(descriptor_pb2.FieldOptions(), _b("\030\001"))
-_SETNODEPOOLAUTOSCALINGREQUEST.fields_by_name["zone"].has_options = True
-_SETNODEPOOLAUTOSCALINGREQUEST.fields_by_name[
-    "zone"
-]._options = _descriptor._ParseOptions(descriptor_pb2.FieldOptions(), _b("\030\001"))
-_SETNODEPOOLAUTOSCALINGREQUEST.fields_by_name["cluster_id"].has_options = True
-_SETNODEPOOLAUTOSCALINGREQUEST.fields_by_name[
-    "cluster_id"
-]._options = _descriptor._ParseOptions(descriptor_pb2.FieldOptions(), _b("\030\001"))
-_SETNODEPOOLAUTOSCALINGREQUEST.fields_by_name["node_pool_id"].has_options = True
-_SETNODEPOOLAUTOSCALINGREQUEST.fields_by_name[
-    "node_pool_id"
-]._options = _descriptor._ParseOptions(descriptor_pb2.FieldOptions(), _b("\030\001"))
-_SETLOGGINGSERVICEREQUEST.fields_by_name["project_id"].has_options = True
-_SETLOGGINGSERVICEREQUEST.fields_by_name[
-    "project_id"
-]._options = _descriptor._ParseOptions(descriptor_pb2.FieldOptions(), _b("\030\001"))
-_SETLOGGINGSERVICEREQUEST.fields_by_name["cluster_id"].has_options = True
-_SETLOGGINGSERVICEREQUEST.fields_by_name[
-    "cluster_id"
-]._options = _descriptor._ParseOptions(descriptor_pb2.FieldOptions(), _b("\030\001"))
-_SETMONITORINGSERVICEREQUEST.fields_by_name["project_id"].has_options = True
-_SETMONITORINGSERVICEREQUEST.fields_by_name[
-    "project_id"
-]._options = _descriptor._ParseOptions(descriptor_pb2.FieldOptions(), _b("\030\001"))
-_SETMONITORINGSERVICEREQUEST.fields_by_name["zone"].has_options = True
-_SETMONITORINGSERVICEREQUEST.fields_by_name[
-    "zone"
-]._options = _descriptor._ParseOptions(descriptor_pb2.FieldOptions(), _b("\030\001"))
-_SETMONITORINGSERVICEREQUEST.fields_by_name["cluster_id"].has_options = True
-_SETMONITORINGSERVICEREQUEST.fields_by_name[
-    "cluster_id"
-]._options = _descriptor._ParseOptions(descriptor_pb2.FieldOptions(), _b("\030\001"))
-_SETADDONSCONFIGREQUEST.fields_by_name["project_id"].has_options = True
-_SETADDONSCONFIGREQUEST.fields_by_name[
-    "project_id"
-]._options = _descriptor._ParseOptions(descriptor_pb2.FieldOptions(), _b("\030\001"))
-_SETADDONSCONFIGREQUEST.fields_by_name["zone"].has_options = True
-_SETADDONSCONFIGREQUEST.fields_by_name["zone"]._options = _descriptor._ParseOptions(
-    descriptor_pb2.FieldOptions(), _b("\030\001")
-)
-_SETADDONSCONFIGREQUEST.fields_by_name["cluster_id"].has_options = True
-_SETADDONSCONFIGREQUEST.fields_by_name[
-    "cluster_id"
-]._options = _descriptor._ParseOptions(descriptor_pb2.FieldOptions(), _b("\030\001"))
-_SETLOCATIONSREQUEST.fields_by_name["project_id"].has_options = True
-_SETLOCATIONSREQUEST.fields_by_name["project_id"]._options = _descriptor._ParseOptions(
-    descriptor_pb2.FieldOptions(), _b("\030\001")
-)
-_SETLOCATIONSREQUEST.fields_by_name["zone"].has_options = True
-_SETLOCATIONSREQUEST.fields_by_name["zone"]._options = _descriptor._ParseOptions(
-    descriptor_pb2.FieldOptions(), _b("\030\001")
-)
-_SETLOCATIONSREQUEST.fields_by_name["cluster_id"].has_options = True
-_SETLOCATIONSREQUEST.fields_by_name["cluster_id"]._options = _descriptor._ParseOptions(
-    descriptor_pb2.FieldOptions(), _b("\030\001")
-)
-_UPDATEMASTERREQUEST.fields_by_name["project_id"].has_options = True
-_UPDATEMASTERREQUEST.fields_by_name["project_id"]._options = _descriptor._ParseOptions(
-    descriptor_pb2.FieldOptions(), _b("\030\001")
-)
-_UPDATEMASTERREQUEST.fields_by_name["zone"].has_options = True
-_UPDATEMASTERREQUEST.fields_by_name["zone"]._options = _descriptor._ParseOptions(
-    descriptor_pb2.FieldOptions(), _b("\030\001")
-)
-_UPDATEMASTERREQUEST.fields_by_name["cluster_id"].has_options = True
-_UPDATEMASTERREQUEST.fields_by_name["cluster_id"]._options = _descriptor._ParseOptions(
-    descriptor_pb2.FieldOptions(), _b("\030\001")
-)
-_SETMASTERAUTHREQUEST.fields_by_name["project_id"].has_options = True
-_SETMASTERAUTHREQUEST.fields_by_name["project_id"]._options = _descriptor._ParseOptions(
-    descriptor_pb2.FieldOptions(), _b("\030\001")
-)
-_SETMASTERAUTHREQUEST.fields_by_name["zone"].has_options = True
-_SETMASTERAUTHREQUEST.fields_by_name["zone"]._options = _descriptor._ParseOptions(
-    descriptor_pb2.FieldOptions(), _b("\030\001")
-)
-_SETMASTERAUTHREQUEST.fields_by_name["cluster_id"].has_options = True
-_SETMASTERAUTHREQUEST.fields_by_name["cluster_id"]._options = _descriptor._ParseOptions(
-    descriptor_pb2.FieldOptions(), _b("\030\001")
-)
-_DELETECLUSTERREQUEST.fields_by_name["project_id"].has_options = True
-_DELETECLUSTERREQUEST.fields_by_name["project_id"]._options = _descriptor._ParseOptions(
-    descriptor_pb2.FieldOptions(), _b("\030\001")
-)
-_DELETECLUSTERREQUEST.fields_by_name["zone"].has_options = True
-_DELETECLUSTERREQUEST.fields_by_name["zone"]._options = _descriptor._ParseOptions(
-    descriptor_pb2.FieldOptions(), _b("\030\001")
-)
-_DELETECLUSTERREQUEST.fields_by_name["cluster_id"].has_options = True
-_DELETECLUSTERREQUEST.fields_by_name["cluster_id"]._options = _descriptor._ParseOptions(
-    descriptor_pb2.FieldOptions(), _b("\030\001")
-)
-_LISTCLUSTERSREQUEST.fields_by_name["project_id"].has_options = True
-_LISTCLUSTERSREQUEST.fields_by_name["project_id"]._options = _descriptor._ParseOptions(
-    descriptor_pb2.FieldOptions(), _b("\030\001")
-)
-_LISTCLUSTERSREQUEST.fields_by_name["zone"].has_options = True
-_LISTCLUSTERSREQUEST.fields_by_name["zone"]._options = _descriptor._ParseOptions(
-    descriptor_pb2.FieldOptions(), _b("\030\001")
-)
-_GETOPERATIONREQUEST.fields_by_name["project_id"].has_options = True
-_GETOPERATIONREQUEST.fields_by_name["project_id"]._options = _descriptor._ParseOptions(
-    descriptor_pb2.FieldOptions(), _b("\030\001")
-)
-_GETOPERATIONREQUEST.fields_by_name["zone"].has_options = True
-_GETOPERATIONREQUEST.fields_by_name["zone"]._options = _descriptor._ParseOptions(
-    descriptor_pb2.FieldOptions(), _b("\030\001")
-)
-_GETOPERATIONREQUEST.fields_by_name["operation_id"].has_options = True
-_GETOPERATIONREQUEST.fields_by_name[
-    "operation_id"
-]._options = _descriptor._ParseOptions(descriptor_pb2.FieldOptions(), _b("\030\001"))
-_LISTOPERATIONSREQUEST.fields_by_name["project_id"].has_options = True
-_LISTOPERATIONSREQUEST.fields_by_name[
-    "project_id"
-]._options = _descriptor._ParseOptions(descriptor_pb2.FieldOptions(), _b("\030\001"))
-_LISTOPERATIONSREQUEST.fields_by_name["zone"].has_options = True
-_LISTOPERATIONSREQUEST.fields_by_name["zone"]._options = _descriptor._ParseOptions(
-    descriptor_pb2.FieldOptions(), _b("\030\001")
-)
-_CANCELOPERATIONREQUEST.fields_by_name["project_id"].has_options = True
-_CANCELOPERATIONREQUEST.fields_by_name[
-    "project_id"
-]._options = _descriptor._ParseOptions(descriptor_pb2.FieldOptions(), _b("\030\001"))
-_CANCELOPERATIONREQUEST.fields_by_name["zone"].has_options = True
-_CANCELOPERATIONREQUEST.fields_by_name["zone"]._options = _descriptor._ParseOptions(
-    descriptor_pb2.FieldOptions(), _b("\030\001")
-)
-_CANCELOPERATIONREQUEST.fields_by_name["operation_id"].has_options = True
-_CANCELOPERATIONREQUEST.fields_by_name[
-    "operation_id"
-]._options = _descriptor._ParseOptions(descriptor_pb2.FieldOptions(), _b("\030\001"))
-_GETSERVERCONFIGREQUEST.fields_by_name["project_id"].has_options = True
-_GETSERVERCONFIGREQUEST.fields_by_name[
-    "project_id"
-]._options = _descriptor._ParseOptions(descriptor_pb2.FieldOptions(), _b("\030\001"))
-_GETSERVERCONFIGREQUEST.fields_by_name["zone"].has_options = True
-_GETSERVERCONFIGREQUEST.fields_by_name["zone"]._options = _descriptor._ParseOptions(
-    descriptor_pb2.FieldOptions(), _b("\030\001")
-)
-_CREATENODEPOOLREQUEST.fields_by_name["project_id"].has_options = True
-_CREATENODEPOOLREQUEST.fields_by_name[
-    "project_id"
-]._options = _descriptor._ParseOptions(descriptor_pb2.FieldOptions(), _b("\030\001"))
-_CREATENODEPOOLREQUEST.fields_by_name["zone"].has_options = True
-_CREATENODEPOOLREQUEST.fields_by_name["zone"]._options = _descriptor._ParseOptions(
-    descriptor_pb2.FieldOptions(), _b("\030\001")
-)
-_CREATENODEPOOLREQUEST.fields_by_name["cluster_id"].has_options = True
-_CREATENODEPOOLREQUEST.fields_by_name[
-    "cluster_id"
-]._options = _descriptor._ParseOptions(descriptor_pb2.FieldOptions(), _b("\030\001"))
-_DELETENODEPOOLREQUEST.fields_by_name["project_id"].has_options = True
-_DELETENODEPOOLREQUEST.fields_by_name[
-    "project_id"
-]._options = _descriptor._ParseOptions(descriptor_pb2.FieldOptions(), _b("\030\001"))
-_DELETENODEPOOLREQUEST.fields_by_name["zone"].has_options = True
-_DELETENODEPOOLREQUEST.fields_by_name["zone"]._options = _descriptor._ParseOptions(
-    descriptor_pb2.FieldOptions(), _b("\030\001")
-)
-_DELETENODEPOOLREQUEST.fields_by_name["cluster_id"].has_options = True
-_DELETENODEPOOLREQUEST.fields_by_name[
-    "cluster_id"
-]._options = _descriptor._ParseOptions(descriptor_pb2.FieldOptions(), _b("\030\001"))
-_DELETENODEPOOLREQUEST.fields_by_name["node_pool_id"].has_options = True
-_DELETENODEPOOLREQUEST.fields_by_name[
-    "node_pool_id"
-]._options = _descriptor._ParseOptions(descriptor_pb2.FieldOptions(), _b("\030\001"))
-_LISTNODEPOOLSREQUEST.fields_by_name["project_id"].has_options = True
-_LISTNODEPOOLSREQUEST.fields_by_name["project_id"]._options = _descriptor._ParseOptions(
-    descriptor_pb2.FieldOptions(), _b("\030\001")
-)
-_LISTNODEPOOLSREQUEST.fields_by_name["zone"].has_options = True
-_LISTNODEPOOLSREQUEST.fields_by_name["zone"]._options = _descriptor._ParseOptions(
-    descriptor_pb2.FieldOptions(), _b("\030\001")
-)
-_LISTNODEPOOLSREQUEST.fields_by_name["cluster_id"].has_options = True
-_LISTNODEPOOLSREQUEST.fields_by_name["cluster_id"]._options = _descriptor._ParseOptions(
-    descriptor_pb2.FieldOptions(), _b("\030\001")
-)
-_GETNODEPOOLREQUEST.fields_by_name["project_id"].has_options = True
-_GETNODEPOOLREQUEST.fields_by_name["project_id"]._options = _descriptor._ParseOptions(
-    descriptor_pb2.FieldOptions(), _b("\030\001")
-)
-_GETNODEPOOLREQUEST.fields_by_name["zone"].has_options = True
-_GETNODEPOOLREQUEST.fields_by_name["zone"]._options = _descriptor._ParseOptions(
-    descriptor_pb2.FieldOptions(), _b("\030\001")
-)
-_GETNODEPOOLREQUEST.fields_by_name["cluster_id"].has_options = True
-_GETNODEPOOLREQUEST.fields_by_name["cluster_id"]._options = _descriptor._ParseOptions(
-    descriptor_pb2.FieldOptions(), _b("\030\001")
-)
-_GETNODEPOOLREQUEST.fields_by_name["node_pool_id"].has_options = True
-_GETNODEPOOLREQUEST.fields_by_name["node_pool_id"]._options = _descriptor._ParseOptions(
-    descriptor_pb2.FieldOptions(), _b("\030\001")
-)
-_SETNODEPOOLMANAGEMENTREQUEST.fields_by_name["project_id"].has_options = True
-_SETNODEPOOLMANAGEMENTREQUEST.fields_by_name[
-    "project_id"
-]._options = _descriptor._ParseOptions(descriptor_pb2.FieldOptions(), _b("\030\001"))
-_SETNODEPOOLMANAGEMENTREQUEST.fields_by_name["zone"].has_options = True
-_SETNODEPOOLMANAGEMENTREQUEST.fields_by_name[
-    "zone"
-]._options = _descriptor._ParseOptions(descriptor_pb2.FieldOptions(), _b("\030\001"))
-_SETNODEPOOLMANAGEMENTREQUEST.fields_by_name["cluster_id"].has_options = True
-_SETNODEPOOLMANAGEMENTREQUEST.fields_by_name[
-    "cluster_id"
-]._options = _descriptor._ParseOptions(descriptor_pb2.FieldOptions(), _b("\030\001"))
-_SETNODEPOOLMANAGEMENTREQUEST.fields_by_name["node_pool_id"].has_options = True
-_SETNODEPOOLMANAGEMENTREQUEST.fields_by_name[
-    "node_pool_id"
-]._options = _descriptor._ParseOptions(descriptor_pb2.FieldOptions(), _b("\030\001"))
-_SETNODEPOOLSIZEREQUEST.fields_by_name["project_id"].has_options = True
-_SETNODEPOOLSIZEREQUEST.fields_by_name[
-    "project_id"
-]._options = _descriptor._ParseOptions(descriptor_pb2.FieldOptions(), _b("\030\001"))
-_SETNODEPOOLSIZEREQUEST.fields_by_name["zone"].has_options = True
-_SETNODEPOOLSIZEREQUEST.fields_by_name["zone"]._options = _descriptor._ParseOptions(
-    descriptor_pb2.FieldOptions(), _b("\030\001")
-)
-_SETNODEPOOLSIZEREQUEST.fields_by_name["cluster_id"].has_options = True
-_SETNODEPOOLSIZEREQUEST.fields_by_name[
-    "cluster_id"
-]._options = _descriptor._ParseOptions(descriptor_pb2.FieldOptions(), _b("\030\001"))
-_SETNODEPOOLSIZEREQUEST.fields_by_name["node_pool_id"].has_options = True
-_SETNODEPOOLSIZEREQUEST.fields_by_name[
-    "node_pool_id"
-]._options = _descriptor._ParseOptions(descriptor_pb2.FieldOptions(), _b("\030\001"))
-_ROLLBACKNODEPOOLUPGRADEREQUEST.fields_by_name["project_id"].has_options = True
-_ROLLBACKNODEPOOLUPGRADEREQUEST.fields_by_name[
-    "project_id"
-]._options = _descriptor._ParseOptions(descriptor_pb2.FieldOptions(), _b("\030\001"))
-_ROLLBACKNODEPOOLUPGRADEREQUEST.fields_by_name["zone"].has_options = True
-_ROLLBACKNODEPOOLUPGRADEREQUEST.fields_by_name[
-    "zone"
-]._options = _descriptor._ParseOptions(descriptor_pb2.FieldOptions(), _b("\030\001"))
-_ROLLBACKNODEPOOLUPGRADEREQUEST.fields_by_name["cluster_id"].has_options = True
-_ROLLBACKNODEPOOLUPGRADEREQUEST.fields_by_name[
-    "cluster_id"
-]._options = _descriptor._ParseOptions(descriptor_pb2.FieldOptions(), _b("\030\001"))
-_ROLLBACKNODEPOOLUPGRADEREQUEST.fields_by_name["node_pool_id"].has_options = True
-_ROLLBACKNODEPOOLUPGRADEREQUEST.fields_by_name[
-    "node_pool_id"
-]._options = _descriptor._ParseOptions(descriptor_pb2.FieldOptions(), _b("\030\001"))
-_SETLABELSREQUEST_RESOURCELABELSENTRY.has_options = True
-_SETLABELSREQUEST_RESOURCELABELSENTRY._options = _descriptor._ParseOptions(
-    descriptor_pb2.MessageOptions(), _b("8\001")
-)
-_SETLABELSREQUEST.fields_by_name["project_id"].has_options = True
-_SETLABELSREQUEST.fields_by_name["project_id"]._options = _descriptor._ParseOptions(
-    descriptor_pb2.FieldOptions(), _b("\030\001")
-)
-_SETLABELSREQUEST.fields_by_name["zone"].has_options = True
-_SETLABELSREQUEST.fields_by_name["zone"]._options = _descriptor._ParseOptions(
-    descriptor_pb2.FieldOptions(), _b("\030\001")
-)
-_SETLABELSREQUEST.fields_by_name["cluster_id"].has_options = True
-_SETLABELSREQUEST.fields_by_name["cluster_id"]._options = _descriptor._ParseOptions(
-    descriptor_pb2.FieldOptions(), _b("\030\001")
-)
-_SETLEGACYABACREQUEST.fields_by_name["project_id"].has_options = True
-_SETLEGACYABACREQUEST.fields_by_name["project_id"]._options = _descriptor._ParseOptions(
-    descriptor_pb2.FieldOptions(), _b("\030\001")
-)
-_SETLEGACYABACREQUEST.fields_by_name["zone"].has_options = True
-_SETLEGACYABACREQUEST.fields_by_name["zone"]._options = _descriptor._ParseOptions(
-    descriptor_pb2.FieldOptions(), _b("\030\001")
-)
-_SETLEGACYABACREQUEST.fields_by_name["cluster_id"].has_options = True
-_SETLEGACYABACREQUEST.fields_by_name["cluster_id"]._options = _descriptor._ParseOptions(
-    descriptor_pb2.FieldOptions(), _b("\030\001")
-)
-_STARTIPROTATIONREQUEST.fields_by_name["project_id"].has_options = True
-_STARTIPROTATIONREQUEST.fields_by_name[
-    "project_id"
-]._options = _descriptor._ParseOptions(descriptor_pb2.FieldOptions(), _b("\030\001"))
-_STARTIPROTATIONREQUEST.fields_by_name["zone"].has_options = True
-_STARTIPROTATIONREQUEST.fields_by_name["zone"]._options = _descriptor._ParseOptions(
-    descriptor_pb2.FieldOptions(), _b("\030\001")
-)
-_STARTIPROTATIONREQUEST.fields_by_name["cluster_id"].has_options = True
-_STARTIPROTATIONREQUEST.fields_by_name[
-    "cluster_id"
-]._options = _descriptor._ParseOptions(descriptor_pb2.FieldOptions(), _b("\030\001"))
-_COMPLETEIPROTATIONREQUEST.fields_by_name["project_id"].has_options = True
-_COMPLETEIPROTATIONREQUEST.fields_by_name[
-    "project_id"
-]._options = _descriptor._ParseOptions(descriptor_pb2.FieldOptions(), _b("\030\001"))
-_COMPLETEIPROTATIONREQUEST.fields_by_name["zone"].has_options = True
-_COMPLETEIPROTATIONREQUEST.fields_by_name["zone"]._options = _descriptor._ParseOptions(
-    descriptor_pb2.FieldOptions(), _b("\030\001")
-)
-_COMPLETEIPROTATIONREQUEST.fields_by_name["cluster_id"].has_options = True
-_COMPLETEIPROTATIONREQUEST.fields_by_name[
-    "cluster_id"
-]._options = _descriptor._ParseOptions(descriptor_pb2.FieldOptions(), _b("\030\001"))
-_SETNETWORKPOLICYREQUEST.fields_by_name["project_id"].has_options = True
-_SETNETWORKPOLICYREQUEST.fields_by_name[
-    "project_id"
-]._options = _descriptor._ParseOptions(descriptor_pb2.FieldOptions(), _b("\030\001"))
-_SETNETWORKPOLICYREQUEST.fields_by_name["zone"].has_options = True
-_SETNETWORKPOLICYREQUEST.fields_by_name["zone"]._options = _descriptor._ParseOptions(
-    descriptor_pb2.FieldOptions(), _b("\030\001")
-)
-_SETNETWORKPOLICYREQUEST.fields_by_name["cluster_id"].has_options = True
-_SETNETWORKPOLICYREQUEST.fields_by_name[
-    "cluster_id"
-]._options = _descriptor._ParseOptions(descriptor_pb2.FieldOptions(), _b("\030\001"))
+DESCRIPTOR._options = None
+_NODECONFIG_METADATAENTRY._options = None
+_NODECONFIG_LABELSENTRY._options = None
+_IPALLOCATIONPOLICY.fields_by_name["cluster_ipv4_cidr"]._options = None
+_IPALLOCATIONPOLICY.fields_by_name["node_ipv4_cidr"]._options = None
+_IPALLOCATIONPOLICY.fields_by_name["services_ipv4_cidr"]._options = None
+_CLUSTER_RESOURCELABELSENTRY._options = None
+_CLUSTER.fields_by_name["zone"]._options = None
+_CLUSTER.fields_by_name["current_node_version"]._options = None
+_CLUSTER.fields_by_name["instance_group_urls"]._options = None
+_OPERATION.fields_by_name["zone"]._options = None
+_CREATECLUSTERREQUEST.fields_by_name["project_id"]._options = None
+_CREATECLUSTERREQUEST.fields_by_name["zone"]._options = None
+_GETCLUSTERREQUEST.fields_by_name["project_id"]._options = None
+_GETCLUSTERREQUEST.fields_by_name["zone"]._options = None
+_GETCLUSTERREQUEST.fields_by_name["cluster_id"]._options = None
+_UPDATECLUSTERREQUEST.fields_by_name["project_id"]._options = None
+_UPDATECLUSTERREQUEST.fields_by_name["zone"]._options = None
+_UPDATECLUSTERREQUEST.fields_by_name["cluster_id"]._options = None
+_UPDATENODEPOOLREQUEST.fields_by_name["project_id"]._options = None
+_UPDATENODEPOOLREQUEST.fields_by_name["zone"]._options = None
+_UPDATENODEPOOLREQUEST.fields_by_name["cluster_id"]._options = None
+_UPDATENODEPOOLREQUEST.fields_by_name["node_pool_id"]._options = None
+_SETNODEPOOLAUTOSCALINGREQUEST.fields_by_name["project_id"]._options = None
+_SETNODEPOOLAUTOSCALINGREQUEST.fields_by_name["zone"]._options = None
+_SETNODEPOOLAUTOSCALINGREQUEST.fields_by_name["cluster_id"]._options = None
+_SETNODEPOOLAUTOSCALINGREQUEST.fields_by_name["node_pool_id"]._options = None
+_SETLOGGINGSERVICEREQUEST.fields_by_name["project_id"]._options = None
+_SETLOGGINGSERVICEREQUEST.fields_by_name["cluster_id"]._options = None
+_SETMONITORINGSERVICEREQUEST.fields_by_name["project_id"]._options = None
+_SETMONITORINGSERVICEREQUEST.fields_by_name["zone"]._options = None
+_SETMONITORINGSERVICEREQUEST.fields_by_name["cluster_id"]._options = None
+_SETADDONSCONFIGREQUEST.fields_by_name["project_id"]._options = None
+_SETADDONSCONFIGREQUEST.fields_by_name["zone"]._options = None
+_SETADDONSCONFIGREQUEST.fields_by_name["cluster_id"]._options = None
+_SETLOCATIONSREQUEST.fields_by_name["project_id"]._options = None
+_SETLOCATIONSREQUEST.fields_by_name["zone"]._options = None
+_SETLOCATIONSREQUEST.fields_by_name["cluster_id"]._options = None
+_UPDATEMASTERREQUEST.fields_by_name["project_id"]._options = None
+_UPDATEMASTERREQUEST.fields_by_name["zone"]._options = None
+_UPDATEMASTERREQUEST.fields_by_name["cluster_id"]._options = None
+_SETMASTERAUTHREQUEST.fields_by_name["project_id"]._options = None
+_SETMASTERAUTHREQUEST.fields_by_name["zone"]._options = None
+_SETMASTERAUTHREQUEST.fields_by_name["cluster_id"]._options = None
+_DELETECLUSTERREQUEST.fields_by_name["project_id"]._options = None
+_DELETECLUSTERREQUEST.fields_by_name["zone"]._options = None
+_DELETECLUSTERREQUEST.fields_by_name["cluster_id"]._options = None
+_LISTCLUSTERSREQUEST.fields_by_name["project_id"]._options = None
+_LISTCLUSTERSREQUEST.fields_by_name["zone"]._options = None
+_GETOPERATIONREQUEST.fields_by_name["project_id"]._options = None
+_GETOPERATIONREQUEST.fields_by_name["zone"]._options = None
+_GETOPERATIONREQUEST.fields_by_name["operation_id"]._options = None
+_LISTOPERATIONSREQUEST.fields_by_name["project_id"]._options = None
+_LISTOPERATIONSREQUEST.fields_by_name["zone"]._options = None
+_CANCELOPERATIONREQUEST.fields_by_name["project_id"]._options = None
+_CANCELOPERATIONREQUEST.fields_by_name["zone"]._options = None
+_CANCELOPERATIONREQUEST.fields_by_name["operation_id"]._options = None
+_GETSERVERCONFIGREQUEST.fields_by_name["project_id"]._options = None
+_GETSERVERCONFIGREQUEST.fields_by_name["zone"]._options = None
+_CREATENODEPOOLREQUEST.fields_by_name["project_id"]._options = None
+_CREATENODEPOOLREQUEST.fields_by_name["zone"]._options = None
+_CREATENODEPOOLREQUEST.fields_by_name["cluster_id"]._options = None
+_DELETENODEPOOLREQUEST.fields_by_name["project_id"]._options = None
+_DELETENODEPOOLREQUEST.fields_by_name["zone"]._options = None
+_DELETENODEPOOLREQUEST.fields_by_name["cluster_id"]._options = None
+_DELETENODEPOOLREQUEST.fields_by_name["node_pool_id"]._options = None
+_LISTNODEPOOLSREQUEST.fields_by_name["project_id"]._options = None
+_LISTNODEPOOLSREQUEST.fields_by_name["zone"]._options = None
+_LISTNODEPOOLSREQUEST.fields_by_name["cluster_id"]._options = None
+_GETNODEPOOLREQUEST.fields_by_name["project_id"]._options = None
+_GETNODEPOOLREQUEST.fields_by_name["zone"]._options = None
+_GETNODEPOOLREQUEST.fields_by_name["cluster_id"]._options = None
+_GETNODEPOOLREQUEST.fields_by_name["node_pool_id"]._options = None
+_SETNODEPOOLMANAGEMENTREQUEST.fields_by_name["project_id"]._options = None
+_SETNODEPOOLMANAGEMENTREQUEST.fields_by_name["zone"]._options = None
+_SETNODEPOOLMANAGEMENTREQUEST.fields_by_name["cluster_id"]._options = None
+_SETNODEPOOLMANAGEMENTREQUEST.fields_by_name["node_pool_id"]._options = None
+_SETNODEPOOLSIZEREQUEST.fields_by_name["project_id"]._options = None
+_SETNODEPOOLSIZEREQUEST.fields_by_name["zone"]._options = None
+_SETNODEPOOLSIZEREQUEST.fields_by_name["cluster_id"]._options = None
+_SETNODEPOOLSIZEREQUEST.fields_by_name["node_pool_id"]._options = None
+_ROLLBACKNODEPOOLUPGRADEREQUEST.fields_by_name["project_id"]._options = None
+_ROLLBACKNODEPOOLUPGRADEREQUEST.fields_by_name["zone"]._options = None
+_ROLLBACKNODEPOOLUPGRADEREQUEST.fields_by_name["cluster_id"]._options = None
+_ROLLBACKNODEPOOLUPGRADEREQUEST.fields_by_name["node_pool_id"]._options = None
+_SETLABELSREQUEST_RESOURCELABELSENTRY._options = None
+_SETLABELSREQUEST.fields_by_name["project_id"]._options = None
+_SETLABELSREQUEST.fields_by_name["zone"]._options = None
+_SETLABELSREQUEST.fields_by_name["cluster_id"]._options = None
+_SETLEGACYABACREQUEST.fields_by_name["project_id"]._options = None
+_SETLEGACYABACREQUEST.fields_by_name["zone"]._options = None
+_SETLEGACYABACREQUEST.fields_by_name["cluster_id"]._options = None
+_STARTIPROTATIONREQUEST.fields_by_name["project_id"]._options = None
+_STARTIPROTATIONREQUEST.fields_by_name["zone"]._options = None
+_STARTIPROTATIONREQUEST.fields_by_name["cluster_id"]._options = None
+_COMPLETEIPROTATIONREQUEST.fields_by_name["project_id"]._options = None
+_COMPLETEIPROTATIONREQUEST.fields_by_name["zone"]._options = None
+_COMPLETEIPROTATIONREQUEST.fields_by_name["cluster_id"]._options = None
+_SETNETWORKPOLICYREQUEST.fields_by_name["project_id"]._options = None
+_SETNETWORKPOLICYREQUEST.fields_by_name["zone"]._options = None
+_SETNETWORKPOLICYREQUEST.fields_by_name["cluster_id"]._options = None
 
 _CLUSTERMANAGER = _descriptor.ServiceDescriptor(
     name="ClusterManager",
     full_name="google.container.v1.ClusterManager",
     file=DESCRIPTOR,
     index=0,
-    options=None,
+    serialized_options=None,
     serialized_start=11064,
     serialized_end=18435,
     methods=[
@@ -9943,11 +9511,8 @@ _CLUSTERMANAGER = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_LISTCLUSTERSREQUEST,
             output_type=_LISTCLUSTERSRESPONSE,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\002a\022,/v1/{parent=projects/*/locations/*}/clustersZ1\022//v1/projects/{project_id}/zones/{zone}/clusters"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\002a\022,/v1/{parent=projects/*/locations/*}/clustersZ1\022//v1/projects/{project_id}/zones/{zone}/clusters"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -9957,11 +9522,8 @@ _CLUSTERMANAGER = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_GETCLUSTERREQUEST,
             output_type=_CLUSTER,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\002n\022,/v1/{name=projects/*/locations/*/clusters/*}Z>\022</v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\002n\022,/v1/{name=projects/*/locations/*/clusters/*}Z>\022</v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -9971,11 +9533,8 @@ _CLUSTERMANAGER = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_CREATECLUSTERREQUEST,
             output_type=_OPERATION,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\002g",/v1/{parent=projects/*/locations/*}/clusters:\001*Z4"//v1/projects/{project_id}/zones/{zone}/clusters:\001*'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\002g",/v1/{parent=projects/*/locations/*}/clusters:\001*Z4"//v1/projects/{project_id}/zones/{zone}/clusters:\001*'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -9985,11 +9544,8 @@ _CLUSTERMANAGER = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_UPDATECLUSTERREQUEST,
             output_type=_OPERATION,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\002t\032,/v1/{name=projects/*/locations/*/clusters/*}:\001*ZA\032</v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}:\001*"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\002t\032,/v1/{name=projects/*/locations/*/clusters/*}:\001*ZA\032</v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}:\001*"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -9999,11 +9555,8 @@ _CLUSTERMANAGER = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_UPDATENODEPOOLREQUEST,
             output_type=_OPERATION,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\002\240\001\0328/v1/{name=projects/*/locations/*/clusters/*/nodePools/*}:\001*Za"\\/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/nodePools/{node_pool_id}/update:\001*'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\002\240\001\0328/v1/{name=projects/*/locations/*/clusters/*/nodePools/*}:\001*Za"\\/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/nodePools/{node_pool_id}/update:\001*'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -10013,11 +9566,8 @@ _CLUSTERMANAGER = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_SETNODEPOOLAUTOSCALINGREQUEST,
             output_type=_OPERATION,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\002\264\001"G/v1/{name=projects/*/locations/*/clusters/*/nodePools/*}:setAutoscaling:\001*Zf"a/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/nodePools/{node_pool_id}/autoscaling:\001*'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\002\264\001"G/v1/{name=projects/*/locations/*/clusters/*/nodePools/*}:setAutoscaling:\001*Zf"a/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/nodePools/{node_pool_id}/autoscaling:\001*'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -10027,11 +9577,8 @@ _CLUSTERMANAGER = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_SETLOGGINGSERVICEREQUEST,
             output_type=_OPERATION,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\002\207\001"7/v1/{name=projects/*/locations/*/clusters/*}:setLogging:\001*ZI"D/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/logging:\001*'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\002\207\001"7/v1/{name=projects/*/locations/*/clusters/*}:setLogging:\001*ZI"D/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/logging:\001*'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -10041,11 +9588,8 @@ _CLUSTERMANAGER = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_SETMONITORINGSERVICEREQUEST,
             output_type=_OPERATION,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\002\215\001":/v1/{name=projects/*/locations/*/clusters/*}:setMonitoring:\001*ZL"G/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/monitoring:\001*'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\002\215\001":/v1/{name=projects/*/locations/*/clusters/*}:setMonitoring:\001*ZL"G/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/monitoring:\001*'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -10055,11 +9599,8 @@ _CLUSTERMANAGER = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_SETADDONSCONFIGREQUEST,
             output_type=_OPERATION,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\002\205\001"6/v1/{name=projects/*/locations/*/clusters/*}:setAddons:\001*ZH"C/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/addons:\001*'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\002\205\001"6/v1/{name=projects/*/locations/*/clusters/*}:setAddons:\001*ZH"C/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/addons:\001*'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -10069,11 +9610,8 @@ _CLUSTERMANAGER = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_SETLOCATIONSREQUEST,
             output_type=_OPERATION,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\002\213\001"9/v1/{name=projects/*/locations/*/clusters/*}:setLocations:\001*ZK"F/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/locations:\001*'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\002\213\001"9/v1/{name=projects/*/locations/*/clusters/*}:setLocations:\001*ZK"F/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/locations:\001*'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -10083,11 +9621,8 @@ _CLUSTERMANAGER = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_UPDATEMASTERREQUEST,
             output_type=_OPERATION,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\002\210\001"9/v1/{name=projects/*/locations/*/clusters/*}:updateMaster:\001*ZH"C/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/master:\001*'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\002\210\001"9/v1/{name=projects/*/locations/*/clusters/*}:updateMaster:\001*ZH"C/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/master:\001*'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -10097,11 +9632,8 @@ _CLUSTERMANAGER = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_SETMASTERAUTHREQUEST,
             output_type=_OPERATION,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\002\220\001":/v1/{name=projects/*/locations/*/clusters/*}:setMasterAuth:\001*ZO"J/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}:setMasterAuth:\001*'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\002\220\001":/v1/{name=projects/*/locations/*/clusters/*}:setMasterAuth:\001*ZO"J/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}:setMasterAuth:\001*'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -10111,11 +9643,8 @@ _CLUSTERMANAGER = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_DELETECLUSTERREQUEST,
             output_type=_OPERATION,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\002n*,/v1/{name=projects/*/locations/*/clusters/*}Z>*</v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\002n*,/v1/{name=projects/*/locations/*/clusters/*}Z>*</v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -10125,11 +9654,8 @@ _CLUSTERMANAGER = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_LISTOPERATIONSREQUEST,
             output_type=_LISTOPERATIONSRESPONSE,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\002e\022./v1/{parent=projects/*/locations/*}/operationsZ3\0221/v1/projects/{project_id}/zones/{zone}/operations"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\002e\022./v1/{parent=projects/*/locations/*}/operationsZ3\0221/v1/projects/{project_id}/zones/{zone}/operations"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -10139,11 +9665,8 @@ _CLUSTERMANAGER = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_GETOPERATIONREQUEST,
             output_type=_OPERATION,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\002t\022./v1/{name=projects/*/locations/*/operations/*}ZB\022@/v1/projects/{project_id}/zones/{zone}/operations/{operation_id}"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\002t\022./v1/{name=projects/*/locations/*/operations/*}ZB\022@/v1/projects/{project_id}/zones/{zone}/operations/{operation_id}"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -10153,11 +9676,8 @@ _CLUSTERMANAGER = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_CANCELOPERATIONREQUEST,
             output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\002\210\001"5/v1/{name=projects/*/locations/*/operations/*}:cancel:\001*ZL"G/v1/projects/{project_id}/zones/{zone}/operations/{operation_id}:cancel:\001*'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\002\210\001"5/v1/{name=projects/*/locations/*/operations/*}:cancel:\001*ZL"G/v1/projects/{project_id}/zones/{zone}/operations/{operation_id}:cancel:\001*'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -10167,11 +9687,8 @@ _CLUSTERMANAGER = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_GETSERVERCONFIGREQUEST,
             output_type=_SERVERCONFIG,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\002g\022./v1/{name=projects/*/locations/*}/serverConfigZ5\0223/v1/projects/{project_id}/zones/{zone}/serverconfig"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\002g\022./v1/{name=projects/*/locations/*}/serverConfigZ5\0223/v1/projects/{project_id}/zones/{zone}/serverconfig"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -10181,11 +9698,8 @@ _CLUSTERMANAGER = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_LISTNODEPOOLSREQUEST,
             output_type=_LISTNODEPOOLSRESPONSE,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\002\204\001\0228/v1/{parent=projects/*/locations/*/clusters/*}/nodePoolsZH\022F/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/nodePools"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\002\204\001\0228/v1/{parent=projects/*/locations/*/clusters/*}/nodePoolsZH\022F/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/nodePools"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -10195,11 +9709,8 @@ _CLUSTERMANAGER = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_GETNODEPOOLREQUEST,
             output_type=_NODEPOOL,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\002\223\001\0228/v1/{name=projects/*/locations/*/clusters/*/nodePools/*}ZW\022U/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/nodePools/{node_pool_id}"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\002\223\001\0228/v1/{name=projects/*/locations/*/clusters/*/nodePools/*}ZW\022U/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/nodePools/{node_pool_id}"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -10209,11 +9720,8 @@ _CLUSTERMANAGER = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_CREATENODEPOOLREQUEST,
             output_type=_OPERATION,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\002\212\001"8/v1/{parent=projects/*/locations/*/clusters/*}/nodePools:\001*ZK"F/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/nodePools:\001*'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\002\212\001"8/v1/{parent=projects/*/locations/*/clusters/*}/nodePools:\001*ZK"F/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/nodePools:\001*'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -10223,11 +9731,8 @@ _CLUSTERMANAGER = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_DELETENODEPOOLREQUEST,
             output_type=_OPERATION,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\002\223\001*8/v1/{name=projects/*/locations/*/clusters/*/nodePools/*}ZW*U/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/nodePools/{node_pool_id}"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\002\223\001*8/v1/{name=projects/*/locations/*/clusters/*/nodePools/*}ZW*U/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/nodePools/{node_pool_id}"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -10237,11 +9742,8 @@ _CLUSTERMANAGER = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_ROLLBACKNODEPOOLUPGRADEREQUEST,
             output_type=_OPERATION,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\002\253\001"A/v1/{name=projects/*/locations/*/clusters/*/nodePools/*}:rollback:\001*Zc"^/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/nodePools/{node_pool_id}:rollback:\001*'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\002\253\001"A/v1/{name=projects/*/locations/*/clusters/*/nodePools/*}:rollback:\001*Zc"^/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/nodePools/{node_pool_id}:rollback:\001*'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -10251,11 +9753,8 @@ _CLUSTERMANAGER = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_SETNODEPOOLMANAGEMENTREQUEST,
             output_type=_OPERATION,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\002\265\001"F/v1/{name=projects/*/locations/*/clusters/*/nodePools/*}:setManagement:\001*Zh"c/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/nodePools/{node_pool_id}/setManagement:\001*'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\002\265\001"F/v1/{name=projects/*/locations/*/clusters/*/nodePools/*}:setManagement:\001*Zh"c/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/nodePools/{node_pool_id}/setManagement:\001*'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -10265,11 +9764,8 @@ _CLUSTERMANAGER = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_SETLABELSREQUEST,
             output_type=_OPERATION,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\002\225\001">/v1/{name=projects/*/locations/*/clusters/*}:setResourceLabels:\001*ZP"K/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/resourceLabels:\001*'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\002\225\001">/v1/{name=projects/*/locations/*/clusters/*}:setResourceLabels:\001*ZP"K/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/resourceLabels:\001*'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -10279,11 +9775,8 @@ _CLUSTERMANAGER = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_SETLEGACYABACREQUEST,
             output_type=_OPERATION,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\002\215\001":/v1/{name=projects/*/locations/*/clusters/*}:setLegacyAbac:\001*ZL"G/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/legacyAbac:\001*'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\002\215\001":/v1/{name=projects/*/locations/*/clusters/*}:setLegacyAbac:\001*ZL"G/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/legacyAbac:\001*'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -10293,11 +9786,8 @@ _CLUSTERMANAGER = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_STARTIPROTATIONREQUEST,
             output_type=_OPERATION,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\002\224\001"</v1/{name=projects/*/locations/*/clusters/*}:startIpRotation:\001*ZQ"L/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}:startIpRotation:\001*'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\002\224\001"</v1/{name=projects/*/locations/*/clusters/*}:startIpRotation:\001*ZQ"L/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}:startIpRotation:\001*'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -10307,11 +9797,8 @@ _CLUSTERMANAGER = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_COMPLETEIPROTATIONREQUEST,
             output_type=_OPERATION,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\002\232\001"?/v1/{name=projects/*/locations/*/clusters/*}:completeIpRotation:\001*ZT"O/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}:completeIpRotation:\001*'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\002\232\001"?/v1/{name=projects/*/locations/*/clusters/*}:completeIpRotation:\001*ZT"O/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}:completeIpRotation:\001*'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -10321,11 +9808,8 @@ _CLUSTERMANAGER = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_SETNODEPOOLSIZEREQUEST,
             output_type=_OPERATION,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\002\251\001"@/v1/{name=projects/*/locations/*/clusters/*/nodePools/*}:setSize:\001*Zb"]/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/nodePools/{node_pool_id}/setSize:\001*'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\002\251\001"@/v1/{name=projects/*/locations/*/clusters/*/nodePools/*}:setSize:\001*Zb"]/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/nodePools/{node_pool_id}/setSize:\001*'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -10335,11 +9819,8 @@ _CLUSTERMANAGER = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_SETNETWORKPOLICYREQUEST,
             output_type=_OPERATION,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\002\226\001"=/v1/{name=projects/*/locations/*/clusters/*}:setNetworkPolicy:\001*ZR"M/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}:setNetworkPolicy:\001*'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\002\226\001"=/v1/{name=projects/*/locations/*/clusters/*}:setNetworkPolicy:\001*ZR"M/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}:setNetworkPolicy:\001*'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -10349,11 +9830,8 @@ _CLUSTERMANAGER = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_SETMAINTENANCEPOLICYREQUEST,
             output_type=_OPERATION,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\002\236\001"A/v1/{name=projects/*/locations/*/clusters/*}:setMaintenancePolicy:\001*ZV"Q/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}:setMaintenancePolicy:\001*'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\002\236\001"A/v1/{name=projects/*/locations/*/clusters/*}:setMaintenancePolicy:\001*ZV"Q/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}:setMaintenancePolicy:\001*'
             ),
         ),
     ],

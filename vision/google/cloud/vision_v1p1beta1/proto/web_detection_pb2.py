@@ -8,7 +8,6 @@ from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
-from google.protobuf import descriptor_pb2
 
 # @@protoc_insertion_point(imports)
 
@@ -22,6 +21,9 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     name="google/cloud/vision_v1p1beta1/proto/web_detection.proto",
     package="google.cloud.vision.v1p1beta1",
     syntax="proto3",
+    serialized_options=_b(
+        "\n!com.google.cloud.vision.v1p1beta1B\021WebDetectionProtoP\001ZCgoogle.golang.org/genproto/googleapis/cloud/vision/v1p1beta1;vision\370\001\001"
+    ),
     serialized_pb=_b(
         '\n7google/cloud/vision_v1p1beta1/proto/web_detection.proto\x12\x1dgoogle.cloud.vision.v1p1beta1\x1a\x1cgoogle/api/annotations.proto"\x8c\x07\n\x0cWebDetection\x12K\n\x0cweb_entities\x18\x01 \x03(\x0b\x32\x35.google.cloud.vision.v1p1beta1.WebDetection.WebEntity\x12R\n\x14\x66ull_matching_images\x18\x02 \x03(\x0b\x32\x34.google.cloud.vision.v1p1beta1.WebDetection.WebImage\x12U\n\x17partial_matching_images\x18\x03 \x03(\x0b\x32\x34.google.cloud.vision.v1p1beta1.WebDetection.WebImage\x12W\n\x1apages_with_matching_images\x18\x04 \x03(\x0b\x32\x33.google.cloud.vision.v1p1beta1.WebDetection.WebPage\x12U\n\x17visually_similar_images\x18\x06 \x03(\x0b\x32\x34.google.cloud.vision.v1p1beta1.WebDetection.WebImage\x12O\n\x11\x62\x65st_guess_labels\x18\x08 \x03(\x0b\x32\x34.google.cloud.vision.v1p1beta1.WebDetection.WebLabel\x1a\x42\n\tWebEntity\x12\x11\n\tentity_id\x18\x01 \x01(\t\x12\r\n\x05score\x18\x02 \x01(\x02\x12\x13\n\x0b\x64\x65scription\x18\x03 \x01(\t\x1a&\n\x08WebImage\x12\x0b\n\x03url\x18\x01 \x01(\t\x12\r\n\x05score\x18\x02 \x01(\x02\x1a\xe4\x01\n\x07WebPage\x12\x0b\n\x03url\x18\x01 \x01(\t\x12\r\n\x05score\x18\x02 \x01(\x02\x12\x12\n\npage_title\x18\x03 \x01(\t\x12R\n\x14\x66ull_matching_images\x18\x04 \x03(\x0b\x32\x34.google.cloud.vision.v1p1beta1.WebDetection.WebImage\x12U\n\x17partial_matching_images\x18\x05 \x03(\x0b\x32\x34.google.cloud.vision.v1p1beta1.WebDetection.WebImage\x1a\x30\n\x08WebLabel\x12\r\n\x05label\x18\x01 \x01(\t\x12\x15\n\rlanguage_code\x18\x02 \x01(\tB\x80\x01\n!com.google.cloud.vision.v1p1beta1B\x11WebDetectionProtoP\x01ZCgoogle.golang.org/genproto/googleapis/cloud/vision/v1p1beta1;vision\xf8\x01\x01\x62\x06proto3'
     ),
@@ -51,7 +53,7 @@ _WEBDETECTION_WEBENTITY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -69,7 +71,7 @@ _WEBDETECTION_WEBENTITY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -87,14 +89,14 @@ _WEBDETECTION_WEBENTITY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -125,7 +127,7 @@ _WEBDETECTION_WEBIMAGE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -143,14 +145,14 @@ _WEBDETECTION_WEBIMAGE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -181,7 +183,7 @@ _WEBDETECTION_WEBPAGE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -199,7 +201,7 @@ _WEBDETECTION_WEBPAGE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -217,7 +219,7 @@ _WEBDETECTION_WEBPAGE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -235,7 +237,7 @@ _WEBDETECTION_WEBPAGE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -253,14 +255,14 @@ _WEBDETECTION_WEBPAGE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -291,7 +293,7 @@ _WEBDETECTION_WEBLABEL = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -309,14 +311,14 @@ _WEBDETECTION_WEBLABEL = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -347,7 +349,7 @@ _WEBDETECTION = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -365,7 +367,7 @@ _WEBDETECTION = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -383,7 +385,7 @@ _WEBDETECTION = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -401,7 +403,7 @@ _WEBDETECTION = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -419,7 +421,7 @@ _WEBDETECTION = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -437,7 +439,7 @@ _WEBDETECTION = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
@@ -449,7 +451,7 @@ _WEBDETECTION = _descriptor.Descriptor(
         _WEBDETECTION_WEBLABEL,
     ],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -609,11 +611,5 @@ _sym_db.RegisterMessage(WebDetection.WebPage)
 _sym_db.RegisterMessage(WebDetection.WebLabel)
 
 
-DESCRIPTOR.has_options = True
-DESCRIPTOR._options = _descriptor._ParseOptions(
-    descriptor_pb2.FileOptions(),
-    _b(
-        "\n!com.google.cloud.vision.v1p1beta1B\021WebDetectionProtoP\001ZCgoogle.golang.org/genproto/googleapis/cloud/vision/v1p1beta1;vision\370\001\001"
-    ),
-)
+DESCRIPTOR._options = None
 # @@protoc_insertion_point(module_scope)

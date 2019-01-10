@@ -1612,8 +1612,8 @@ class SecurityCenterClient(object):
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.securitycenter_v1beta1.types.Finding`
-            update_mask (Union[dict, ~google.cloud.securitycenter_v1beta1.types.FieldMask]): The FieldMask to use when updating the finding resource. This field is
-                ignored if the finding does not already exist and the finding is created.
+            update_mask (Union[dict, ~google.cloud.securitycenter_v1beta1.types.FieldMask]): The FieldMask to use when updating the finding resource. This field should
+                not be specified when creating a finding.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.securitycenter_v1beta1.types.FieldMask`
