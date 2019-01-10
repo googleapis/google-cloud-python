@@ -288,8 +288,8 @@ def _entity_from_protobuf(protobuf):
     """Deserialize an entity from a protobuffer.
 
     Args:
-        protobuf (google.cloud.datastore_v1.proto.entity.Entity): An
-            entity protobuf to be deserialized.
+        protobuf (google.cloud.datastore_v1.types.Entity): An entity protobuf
+            to be deserialized.
 
     Returns:
         .Model: The deserialized entity.
@@ -310,6 +310,35 @@ def _entity_from_protobuf(protobuf):
         prop._store_value(entity, value)
 
     return entity
+
+
+def _entity_to_protobuf(entity):
+    """Serialize an entity to a protobuffer.
+
+    Args:
+        entity (Model): The entity to be serialized.
+
+    Returns:
+        google.cloud.datastore_v1.types.Entity: The protocol buffer
+            representation.
+    """
+    # First, make a datastore entity
+    data = {}
+    for cls in type(entity).mro():
+        for prop in cls.__dict__.values():
+            if not isinstance(prop, Property) or prop._name in data:
+                continue
+
+            value = prop._get_base_value_unwrapped_as_list(entity)
+            if not prop._repeated:
+                value = value[0]
+            data[prop._name] = value
+
+    ds_entity = entity_module.Entity(entity._key._key)
+    ds_entity.update(data)
+
+    # Then, use datatore to get the protocol buffer
+    return helpers.entity_to_protobuf(ds_entity)
 
 
 def make_connection(*args, **kwargs):
