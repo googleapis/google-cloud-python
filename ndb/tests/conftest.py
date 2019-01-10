@@ -22,6 +22,7 @@ import os
 
 from google.cloud import environment_vars
 from google.cloud.ndb import model
+from google.cloud.ndb import _runstate
 
 import pytest
 
@@ -40,9 +41,11 @@ def reset_state(environ):
     """
     assert model.Property._FIND_METHODS_CACHE == {}
     assert model.Model._kind_map == {}
+    assert _runstate.states.stack == []
     yield
     model.Property._FIND_METHODS_CACHE.clear()
     model.Model._kind_map.clear()
+    del _runstate.states.stack[:]
 
 
 @pytest.fixture
@@ -68,3 +71,10 @@ def initialize_environment(request, environ):
         environ.pop(environment_vars.GCD_DATASET, None)
         environ.pop(environment_vars.GCD_HOST, None)
         environ.pop("GOOGLE_APPLICATION_CREDENTIALS", None)
+
+
+@pytest.fixture
+def runstate():
+    client = None
+    with _runstate.state_context(client) as state:
+        yield state

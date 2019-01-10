@@ -49,6 +49,8 @@ from google.api_core.exceptions import BadRequest
 from google.api_core.exceptions import Conflict
 from google.api_core.exceptions import Forbidden
 from google.api_core.exceptions import NotFound
+from google.api_core.exceptions import InternalServerError
+from google.api_core.exceptions import ServiceUnavailable
 from google.api_core.exceptions import TooManyRequests
 from google.cloud import bigquery
 from google.cloud.bigquery.dataset import Dataset
@@ -96,6 +98,10 @@ TIME_PARTITIONING_CLUSTERING_FIELDS_SCHEMA = [
         ],
     ),
 ]
+
+retry_storage_errors = RetryErrors(
+    (TooManyRequests, InternalServerError, ServiceUnavailable)
+)
 
 
 def _has_rows(result):
@@ -154,10 +160,12 @@ class TestBigQuery(unittest.TestCase):
             )
 
         retry_in_use = RetryErrors(BadRequest, error_predicate=_still_in_use)
-        retry_409_429 = RetryErrors((Conflict, TooManyRequests))
+        retry_storage_errors_conflict = RetryErrors(
+            (Conflict, TooManyRequests, InternalServerError, ServiceUnavailable)
+        )
         for doomed in self.to_delete:
             if isinstance(doomed, storage.Bucket):
-                retry_409_429(doomed.delete)(force=True)
+                retry_storage_errors_conflict(doomed.delete)(force=True)
             elif isinstance(doomed, (Dataset, bigquery.DatasetReference)):
                 retry_in_use(Config.CLIENT.delete_dataset)(doomed, delete_contents=True)
             elif isinstance(doomed, (Table, bigquery.TableReference)):
@@ -172,6 +180,14 @@ class TestBigQuery(unittest.TestCase):
 
         self.assertIsInstance(got, six.text_type)
         self.assertIn("@", got)
+
+    def _create_bucket(self, bucket_name, location=None):
+        storage_client = storage.Client()
+        bucket = storage_client.bucket(bucket_name)
+        retry_storage_errors(bucket.create)(location=location)
+        self.to_delete.append(bucket)
+
+        return bucket
 
     def test_create_dataset(self):
         DATASET_ID = _make_dataset_id("create_dataset")
@@ -683,12 +699,8 @@ class TestBigQuery(unittest.TestCase):
 
     def test_load_table_from_file_w_explicit_location(self):
         # Create a temporary bucket for extract files.
-        storage_client = storage.Client()
         bucket_name = "bq_load_table_eu_extract_test" + unique_resource_id()
-        bucket = storage_client.bucket(bucket_name)
-        bucket.location = "eu"
-        self.to_delete.append(bucket)
-        bucket.create()
+        self._create_bucket(bucket_name, location="eu")
 
         # Create a temporary dataset & table in the EU.
         table_bytes = six.BytesIO(b"a,3\nb,2\nc,1\n")
@@ -768,20 +780,12 @@ class TestBigQuery(unittest.TestCase):
                 table_ref, "gs://{}/letters-us.csv".format(bucket_name), location="US"
             ).result()
 
-    def _create_storage(self, bucket_name, blob_name):
-        storage_client = storage.Client()
-
-        # In the **very** rare case the bucket name is reserved, this
-        # fails with a ConnectionError.
-        bucket = storage_client.create_bucket(bucket_name)
-        self.to_delete.append(bucket)
-
-        return bucket.blob(blob_name)
-
     def _write_csv_to_storage(self, bucket_name, blob_name, header_row, data_rows):
         from google.cloud._testing import _NamedTemporaryFile
 
-        blob = self._create_storage(bucket_name, blob_name)
+        bucket = self._create_bucket(bucket_name)
+        blob = bucket.blob(blob_name)
+
         with _NamedTemporaryFile() as temp:
             with open(temp.name, "w") as csv_write:
                 writer = csv.writer(csv_write)
@@ -789,30 +793,26 @@ class TestBigQuery(unittest.TestCase):
                 writer.writerows(data_rows)
 
             with open(temp.name, "rb") as csv_read:
-                blob.upload_from_file(csv_read, content_type="text/csv")
+                retry_storage_errors(blob.upload_from_file)(
+                    csv_read, content_type="text/csv"
+                )
 
         self.to_delete.insert(0, blob)
         return "gs://{}/{}".format(bucket_name, blob_name)
 
     def _write_avro_to_storage(self, bucket_name, blob_name, avro_file):
-        blob = self._create_storage(bucket_name, blob_name)
-        blob.upload_from_file(avro_file, content_type="application/x-avro-binary")
+        bucket = self._create_bucket(bucket_name)
+        blob = bucket.blob(blob_name)
+        retry_storage_errors(blob.upload_from_file)(
+            avro_file, content_type="application/x-avro-binary"
+        )
         self.to_delete.insert(0, blob)
         return "gs://{}/{}".format(bucket_name, blob_name)
 
-    def _load_table_for_extract_table(
-        self, storage_client, rows, bucket_name, blob_name, table
-    ):
+    def _load_table_for_extract_table(self, bucket, blob_name, table, rows):
         from google.cloud._testing import _NamedTemporaryFile
 
-        gs_url = "gs://{}/{}".format(bucket_name, blob_name)
-
-        # In the **very** rare case the bucket name is reserved, this
-        # fails with a ConnectionError.
-        bucket = storage_client.create_bucket(bucket_name)
-        self.to_delete.append(bucket)
         blob = bucket.blob(blob_name)
-
         with _NamedTemporaryFile() as temp:
             with open(temp.name, "w") as csv_write:
                 writer = csv.writer(csv_write)
@@ -820,13 +820,17 @@ class TestBigQuery(unittest.TestCase):
                 writer.writerows(rows)
 
             with open(temp.name, "rb") as csv_read:
-                blob.upload_from_file(csv_read, content_type="text/csv")
+                retry_storage_errors(blob.upload_from_file)(
+                    csv_read, content_type="text/csv"
+                )
+
         self.to_delete.insert(0, blob)
 
         dataset = self.temp_dataset(table.dataset_id)
         table_ref = dataset.table(table.table_id)
         config = bigquery.LoadJobConfig()
         config.autodetect = True
+        gs_url = "gs://{}/{}".format(bucket.name, blob_name)
         job = Config.CLIENT.load_table_from_uri(gs_url, table_ref, job_config=config)
         # TODO(jba): do we need this retry now that we have job.result()?
         # Allow for 90 seconds of "warm up" before rows visible.  See
@@ -836,21 +840,16 @@ class TestBigQuery(unittest.TestCase):
         retry(job.reload)()
 
     def test_extract_table(self):
-        from google.cloud.storage import Client as StorageClient
-
-        storage_client = StorageClient()
         local_id = unique_resource_id()
         bucket_name = "bq_extract_test" + local_id
-        blob_name = "person_ages.csv"
+        source_blob_name = "person_ages.csv"
         dataset_id = _make_dataset_id("load_gcs_then_extract")
         table_id = "test_table"
         table_ref = Config.CLIENT.dataset(dataset_id).table(table_id)
         table = Table(table_ref)
         self.to_delete.insert(0, table)
-        self._load_table_for_extract_table(
-            storage_client, ROWS, bucket_name, blob_name, table_ref
-        )
-        bucket = storage_client.bucket(bucket_name)
+        bucket = self._create_bucket(bucket_name)
+        self._load_table_for_extract_table(bucket, source_blob_name, table_ref, ROWS)
         destination_blob_name = "person_ages_out.csv"
         destination = bucket.blob(destination_blob_name)
         destination_uri = "gs://{}/person_ages_out.csv".format(bucket_name)
@@ -859,7 +858,8 @@ class TestBigQuery(unittest.TestCase):
         job.result(timeout=100)
 
         self.to_delete.insert(0, destination)
-        got = destination.download_as_string().decode("utf-8")
+        got_bytes = retry_storage_errors(destination.download_as_string)()
+        got = got_bytes.decode("utf-8")
         self.assertIn("Bharney Rhubble", got)
 
     def test_copy_table(self):

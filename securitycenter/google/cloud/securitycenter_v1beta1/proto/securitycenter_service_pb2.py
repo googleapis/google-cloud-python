@@ -9,7 +9,6 @@ from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
-from google.protobuf import descriptor_pb2
 
 # @@protoc_insertion_point(imports)
 
@@ -48,6 +47,9 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     name="google/cloud/securitycenter_v1beta1/proto/securitycenter_service.proto",
     package="google.cloud.securitycenter.v1beta1",
     syntax="proto3",
+    serialized_options=_b(
+        "\n'com.google.cloud.securitycenter.v1beta1P\001ZQgoogle.golang.org/genproto/googleapis/cloud/securitycenter/v1beta1;securitycenter"
+    ),
     serialized_pb=_b(
         '\nFgoogle/cloud/securitycenter_v1beta1/proto/securitycenter_service.proto\x12#google.cloud.securitycenter.v1beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x35google/cloud/securitycenter_v1beta1/proto/asset.proto\x1a\x37google/cloud/securitycenter_v1beta1/proto/finding.proto\x1a\x45google/cloud/securitycenter_v1beta1/proto/organization_settings.proto\x1a>google/cloud/securitycenter_v1beta1/proto/security_marks.proto\x1a\x36google/cloud/securitycenter_v1beta1/proto/source.proto\x1a\x1egoogle/iam/v1/iam_policy.proto\x1a\x1agoogle/iam/v1/policy.proto\x1a#google/longrunning/operations.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto\x1a\x1cgoogle/protobuf/struct.proto\x1a\x1fgoogle/protobuf/timestamp.proto"y\n\x14\x43reateFindingRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x12\n\nfinding_id\x18\x02 \x01(\t\x12=\n\x07\x66inding\x18\x03 \x01(\x0b\x32,.google.cloud.securitycenter.v1beta1.Finding"b\n\x13\x43reateSourceRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12;\n\x06source\x18\x02 \x01(\x0b\x32+.google.cloud.securitycenter.v1beta1.Source".\n\x1eGetOrganizationSettingsRequest\x12\x0c\n\x04name\x18\x01 \x01(\t" \n\x10GetSourceRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"\xd1\x01\n\x12GroupAssetsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x02 \x01(\t\x12\x10\n\x08group_by\x18\x03 \x01(\t\x12\x33\n\x10\x63ompare_duration\x18\x04 \x01(\x0b\x32\x19.google.protobuf.Duration\x12-\n\tread_time\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x12\n\npage_token\x18\x07 \x01(\t\x12\x11\n\tpage_size\x18\x08 \x01(\x05"\xa9\x01\n\x13GroupAssetsResponse\x12J\n\x10group_by_results\x18\x01 \x03(\x0b\x32\x30.google.cloud.securitycenter.v1beta1.GroupResult\x12-\n\tread_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x17\n\x0fnext_page_token\x18\x03 \x01(\t"\x9e\x01\n\x14GroupFindingsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x02 \x01(\t\x12\x10\n\x08group_by\x18\x03 \x01(\t\x12-\n\tread_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x12\n\npage_token\x18\x05 \x01(\t\x12\x11\n\tpage_size\x18\x06 \x01(\x05"\xab\x01\n\x15GroupFindingsResponse\x12J\n\x10group_by_results\x18\x01 \x03(\x0b\x32\x30.google.cloud.securitycenter.v1beta1.GroupResult\x12-\n\tread_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x17\n\x0fnext_page_token\x18\x03 \x01(\t"\xbd\x01\n\x0bGroupResult\x12T\n\nproperties\x18\x01 \x03(\x0b\x32@.google.cloud.securitycenter.v1beta1.GroupResult.PropertiesEntry\x12\r\n\x05\x63ount\x18\x02 \x01(\x03\x1aI\n\x0fPropertiesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12%\n\x05value\x18\x02 \x01(\x0b\x32\x16.google.protobuf.Value:\x02\x38\x01"K\n\x12ListSourcesRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x12\n\npage_token\x18\x02 \x01(\t\x12\x11\n\tpage_size\x18\x07 \x01(\x05"l\n\x13ListSourcesResponse\x12<\n\x07sources\x18\x01 \x03(\x0b\x32+.google.cloud.securitycenter.v1beta1.Source\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"\x80\x02\n\x11ListAssetsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x02 \x01(\t\x12\x10\n\x08order_by\x18\x03 \x01(\t\x12-\n\tread_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x33\n\x10\x63ompare_duration\x18\x05 \x01(\x0b\x32\x19.google.protobuf.Duration\x12.\n\nfield_mask\x18\x07 \x01(\x0b\x32\x1a.google.protobuf.FieldMask\x12\x12\n\npage_token\x18\x08 \x01(\t\x12\x11\n\tpage_size\x18\t \x01(\x05"\xd6\x03\n\x12ListAssetsResponse\x12\x65\n\x13list_assets_results\x18\x01 \x03(\x0b\x32H.google.cloud.securitycenter.v1beta1.ListAssetsResponse.ListAssetsResult\x12-\n\tread_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x17\n\x0fnext_page_token\x18\x03 \x01(\t\x12\x12\n\ntotal_size\x18\x04 \x01(\x05\x1a\xfc\x01\n\x10ListAssetsResult\x12\x39\n\x05\x61sset\x18\x01 \x01(\x0b\x32*.google.cloud.securitycenter.v1beta1.Asset\x12]\n\x05state\x18\x02 \x01(\x0e\x32N.google.cloud.securitycenter.v1beta1.ListAssetsResponse.ListAssetsResult.State"N\n\x05State\x12\x15\n\x11STATE_UNSPECIFIED\x10\x00\x12\n\n\x06UNUSED\x10\x01\x12\t\n\x05\x41\x44\x44\x45\x44\x10\x02\x12\x0b\n\x07REMOVED\x10\x03\x12\n\n\x06\x41\x43TIVE\x10\x04"\xcd\x01\n\x13ListFindingsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x02 \x01(\t\x12\x10\n\x08order_by\x18\x03 \x01(\t\x12-\n\tread_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12.\n\nfield_mask\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.FieldMask\x12\x12\n\npage_token\x18\x06 \x01(\t\x12\x11\n\tpage_size\x18\x07 \x01(\x05"\xb2\x01\n\x14ListFindingsResponse\x12>\n\x08\x66indings\x18\x01 \x03(\x0b\x32,.google.cloud.securitycenter.v1beta1.Finding\x12-\n\tread_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x17\n\x0fnext_page_token\x18\x03 \x01(\t\x12\x12\n\ntotal_size\x18\x04 \x01(\x05"\x99\x01\n\x16SetFindingStateRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x41\n\x05state\x18\x02 \x01(\x0e\x32\x32.google.cloud.securitycenter.v1beta1.Finding.State\x12.\n\nstart_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp"*\n\x18RunAssetDiscoveryRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t"\x86\x01\n\x14UpdateFindingRequest\x12=\n\x07\x66inding\x18\x01 \x01(\x0b\x32,.google.cloud.securitycenter.v1beta1.Finding\x12/\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMask"\xae\x01\n!UpdateOrganizationSettingsRequest\x12X\n\x15organization_settings\x18\x01 \x01(\x0b\x32\x39.google.cloud.securitycenter.v1beta1.OrganizationSettings\x12/\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMask"\x83\x01\n\x13UpdateSourceRequest\x12;\n\x06source\x18\x01 \x01(\x0b\x32+.google.cloud.securitycenter.v1beta1.Source\x12/\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMask"\xc9\x01\n\x1aUpdateSecurityMarksRequest\x12J\n\x0esecurity_marks\x18\x01 \x01(\x0b\x32\x32.google.cloud.securitycenter.v1beta1.SecurityMarks\x12/\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMask\x12.\n\nstart_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp2\x80\x1c\n\x0eSecurityCenter\x12\xb0\x01\n\x0c\x43reateSource\x12\x38.google.cloud.securitycenter.v1beta1.CreateSourceRequest\x1a+.google.cloud.securitycenter.v1beta1.Source"9\x82\xd3\xe4\x93\x02\x33")/v1beta1/{parent=organizations/*}/sources:\x06source\x12\xbf\x01\n\rCreateFinding\x12\x39.google.cloud.securitycenter.v1beta1.CreateFindingRequest\x1a,.google.cloud.securitycenter.v1beta1.Finding"E\x82\xd3\xe4\x93\x02?"4/v1beta1/{parent=organizations/*/sources/*}/findings:\x07\x66inding\x12\x90\x01\n\x0cGetIamPolicy\x12".google.iam.v1.GetIamPolicyRequest\x1a\x15.google.iam.v1.Policy"E\x82\xd3\xe4\x93\x02?":/v1beta1/{resource=organizations/*/sources/*}:getIamPolicy:\x01*\x12\xd7\x01\n\x17GetOrganizationSettings\x12\x43.google.cloud.securitycenter.v1beta1.GetOrganizationSettingsRequest\x1a\x39.google.cloud.securitycenter.v1beta1.OrganizationSettings"<\x82\xd3\xe4\x93\x02\x36\x12\x34/v1beta1/{name=organizations/*/organizationSettings}\x12\xa2\x01\n\tGetSource\x12\x35.google.cloud.securitycenter.v1beta1.GetSourceRequest\x1a+.google.cloud.securitycenter.v1beta1.Source"1\x82\xd3\xe4\x93\x02+\x12)/v1beta1/{name=organizations/*/sources/*}\x12\xbb\x01\n\x0bGroupAssets\x12\x37.google.cloud.securitycenter.v1beta1.GroupAssetsRequest\x1a\x38.google.cloud.securitycenter.v1beta1.GroupAssetsResponse"9\x82\xd3\xe4\x93\x02\x33"./v1beta1/{parent=organizations/*}/assets:group:\x01*\x12\xcd\x01\n\rGroupFindings\x12\x39.google.cloud.securitycenter.v1beta1.GroupFindingsRequest\x1a:.google.cloud.securitycenter.v1beta1.GroupFindingsResponse"E\x82\xd3\xe4\x93\x02?":/v1beta1/{parent=organizations/*/sources/*}/findings:group:\x01*\x12\xaf\x01\n\nListAssets\x12\x36.google.cloud.securitycenter.v1beta1.ListAssetsRequest\x1a\x37.google.cloud.securitycenter.v1beta1.ListAssetsResponse"0\x82\xd3\xe4\x93\x02*\x12(/v1beta1/{parent=organizations/*}/assets\x12\xc1\x01\n\x0cListFindings\x12\x38.google.cloud.securitycenter.v1beta1.ListFindingsRequest\x1a\x39.google.cloud.securitycenter.v1beta1.ListFindingsResponse"<\x82\xd3\xe4\x93\x02\x36\x12\x34/v1beta1/{parent=organizations/*/sources/*}/findings\x12\xb3\x01\n\x0bListSources\x12\x37.google.cloud.securitycenter.v1beta1.ListSourcesRequest\x1a\x38.google.cloud.securitycenter.v1beta1.ListSourcesResponse"1\x82\xd3\xe4\x93\x02+\x12)/v1beta1/{parent=organizations/*}/sources\x12\xb3\x01\n\x11RunAssetDiscovery\x12=.google.cloud.securitycenter.v1beta1.RunAssetDiscoveryRequest\x1a\x1d.google.longrunning.Operation"@\x82\xd3\xe4\x93\x02:"5/v1beta1/{parent=organizations/*}/assets:runDiscovery:\x01*\x12\xc6\x01\n\x0fSetFindingState\x12;.google.cloud.securitycenter.v1beta1.SetFindingStateRequest\x1a,.google.cloud.securitycenter.v1beta1.Finding"H\x82\xd3\xe4\x93\x02\x42"=/v1beta1/{name=organizations/*/sources/*/findings/*}:setState:\x01*\x12\x90\x01\n\x0cSetIamPolicy\x12".google.iam.v1.SetIamPolicyRequest\x1a\x15.google.iam.v1.Policy"E\x82\xd3\xe4\x93\x02?":/v1beta1/{resource=organizations/*/sources/*}:setIamPolicy:\x01*\x12\xb6\x01\n\x12TestIamPermissions\x12(.google.iam.v1.TestIamPermissionsRequest\x1a).google.iam.v1.TestIamPermissionsResponse"K\x82\xd3\xe4\x93\x02\x45"@/v1beta1/{resource=organizations/*/sources/*}:testIamPermissions:\x01*\x12\xc7\x01\n\rUpdateFinding\x12\x39.google.cloud.securitycenter.v1beta1.UpdateFindingRequest\x1a,.google.cloud.securitycenter.v1beta1.Finding"M\x82\xd3\xe4\x93\x02G2</v1beta1/{finding.name=organizations/*/sources/*/findings/*}:\x07\x66inding\x12\x8a\x02\n\x1aUpdateOrganizationSettings\x12\x46.google.cloud.securitycenter.v1beta1.UpdateOrganizationSettingsRequest\x1a\x39.google.cloud.securitycenter.v1beta1.OrganizationSettings"i\x82\xd3\xe4\x93\x02\x63\x32J/v1beta1/{organization_settings.name=organizations/*/organizationSettings}:\x15organization_settings\x12\xb7\x01\n\x0cUpdateSource\x12\x38.google.cloud.securitycenter.v1beta1.UpdateSourceRequest\x1a+.google.cloud.securitycenter.v1beta1.Source"@\x82\xd3\xe4\x93\x02:20/v1beta1/{source.name=organizations/*/sources/*}:\x06source\x12\xd0\x02\n\x13UpdateSecurityMarks\x12?.google.cloud.securitycenter.v1beta1.UpdateSecurityMarksRequest\x1a\x32.google.cloud.securitycenter.v1beta1.SecurityMarks"\xc3\x01\x82\xd3\xe4\x93\x02\xbc\x01\x32\x45/v1beta1/{security_marks.name=organizations/*/assets/*/securityMarks}:\x0esecurity_marksZc2Q/v1beta1/{security_marks.name=organizations/*/sources/*/findings/*/securityMarks}:\x0esecurity_marksB~\n\'com.google.cloud.securitycenter.v1beta1P\x01ZQgoogle.golang.org/genproto/googleapis/cloud/securitycenter/v1beta1;securitycenterb\x06proto3'
     ),
@@ -77,23 +79,27 @@ _LISTASSETSRESPONSE_LISTASSETSRESULT_STATE = _descriptor.EnumDescriptor(
     file=DESCRIPTOR,
     values=[
         _descriptor.EnumValueDescriptor(
-            name="STATE_UNSPECIFIED", index=0, number=0, options=None, type=None
+            name="STATE_UNSPECIFIED",
+            index=0,
+            number=0,
+            serialized_options=None,
+            type=None,
         ),
         _descriptor.EnumValueDescriptor(
-            name="UNUSED", index=1, number=1, options=None, type=None
+            name="UNUSED", index=1, number=1, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="ADDED", index=2, number=2, options=None, type=None
+            name="ADDED", index=2, number=2, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="REMOVED", index=3, number=3, options=None, type=None
+            name="REMOVED", index=3, number=3, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="ACTIVE", index=4, number=4, options=None, type=None
+            name="ACTIVE", index=4, number=4, serialized_options=None, type=None
         ),
     ],
     containing_type=None,
-    options=None,
+    serialized_options=None,
     serialized_start=2754,
     serialized_end=2832,
 )
@@ -122,7 +128,7 @@ _CREATEFINDINGREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -140,7 +146,7 @@ _CREATEFINDINGREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -158,14 +164,14 @@ _CREATEFINDINGREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -197,7 +203,7 @@ _CREATESOURCEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -215,14 +221,14 @@ _CREATESOURCEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -254,14 +260,14 @@ _GETORGANIZATIONSETTINGSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -293,14 +299,14 @@ _GETSOURCEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -332,7 +338,7 @@ _GROUPASSETSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -350,7 +356,7 @@ _GROUPASSETSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -368,7 +374,7 @@ _GROUPASSETSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -386,7 +392,7 @@ _GROUPASSETSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -404,7 +410,7 @@ _GROUPASSETSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -422,7 +428,7 @@ _GROUPASSETSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -440,14 +446,14 @@ _GROUPASSETSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -479,7 +485,7 @@ _GROUPASSETSRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -497,7 +503,7 @@ _GROUPASSETSRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -515,14 +521,14 @@ _GROUPASSETSRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -554,7 +560,7 @@ _GROUPFINDINGSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -572,7 +578,7 @@ _GROUPFINDINGSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -590,7 +596,7 @@ _GROUPFINDINGSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -608,7 +614,7 @@ _GROUPFINDINGSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -626,7 +632,7 @@ _GROUPFINDINGSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -644,14 +650,14 @@ _GROUPFINDINGSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -683,7 +689,7 @@ _GROUPFINDINGSRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -701,7 +707,7 @@ _GROUPFINDINGSRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -719,14 +725,14 @@ _GROUPFINDINGSRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -758,7 +764,7 @@ _GROUPRESULT_PROPERTIESENTRY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -776,14 +782,14 @@ _GROUPRESULT_PROPERTIESENTRY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=_descriptor._ParseOptions(descriptor_pb2.MessageOptions(), _b("8\001")),
+    serialized_options=_b("8\001"),
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -814,7 +820,7 @@ _GROUPRESULT = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -832,14 +838,14 @@ _GROUPRESULT = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[_GROUPRESULT_PROPERTIESENTRY],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -871,7 +877,7 @@ _LISTSOURCESREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -889,7 +895,7 @@ _LISTSOURCESREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -907,14 +913,14 @@ _LISTSOURCESREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -946,7 +952,7 @@ _LISTSOURCESRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -964,14 +970,14 @@ _LISTSOURCESRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1003,7 +1009,7 @@ _LISTASSETSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1021,7 +1027,7 @@ _LISTASSETSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1039,7 +1045,7 @@ _LISTASSETSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1057,7 +1063,7 @@ _LISTASSETSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1075,7 +1081,7 @@ _LISTASSETSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1093,7 +1099,7 @@ _LISTASSETSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1111,7 +1117,7 @@ _LISTASSETSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1129,14 +1135,14 @@ _LISTASSETSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1168,7 +1174,7 @@ _LISTASSETSRESPONSE_LISTASSETSRESULT = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1186,14 +1192,14 @@ _LISTASSETSRESPONSE_LISTASSETSRESULT = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[_LISTASSETSRESPONSE_LISTASSETSRESULT_STATE],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1224,7 +1230,7 @@ _LISTASSETSRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1242,7 +1248,7 @@ _LISTASSETSRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1260,7 +1266,7 @@ _LISTASSETSRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1278,14 +1284,14 @@ _LISTASSETSRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[_LISTASSETSRESPONSE_LISTASSETSRESULT],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1317,7 +1323,7 @@ _LISTFINDINGSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1335,7 +1341,7 @@ _LISTFINDINGSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1353,7 +1359,7 @@ _LISTFINDINGSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1371,7 +1377,7 @@ _LISTFINDINGSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1389,7 +1395,7 @@ _LISTFINDINGSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1407,7 +1413,7 @@ _LISTFINDINGSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1425,14 +1431,14 @@ _LISTFINDINGSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1464,7 +1470,7 @@ _LISTFINDINGSRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1482,7 +1488,7 @@ _LISTFINDINGSRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1500,7 +1506,7 @@ _LISTFINDINGSRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1518,14 +1524,14 @@ _LISTFINDINGSRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1557,7 +1563,7 @@ _SETFINDINGSTATEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1575,7 +1581,7 @@ _SETFINDINGSTATEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1593,14 +1599,14 @@ _SETFINDINGSTATEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1632,14 +1638,14 @@ _RUNASSETDISCOVERYREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1671,7 +1677,7 @@ _UPDATEFINDINGREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1689,14 +1695,14 @@ _UPDATEFINDINGREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1728,7 +1734,7 @@ _UPDATEORGANIZATIONSETTINGSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1746,14 +1752,14 @@ _UPDATEORGANIZATIONSETTINGSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1785,7 +1791,7 @@ _UPDATESOURCEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1803,14 +1809,14 @@ _UPDATESOURCEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1842,7 +1848,7 @@ _UPDATESECURITYMARKSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1860,7 +1866,7 @@ _UPDATESECURITYMARKSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1878,14 +1884,14 @@ _UPDATESECURITYMARKSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -2678,8 +2684,7 @@ UpdateFindingRequest = _reflection.GeneratedProtocolMessageType(
           characters and greater than 0 characters in length.
       update_mask:
           The FieldMask to use when updating the finding resource. This
-          field is ignored if the finding does not already exist and the
-          finding is created.
+          field should not be specified when creating a finding.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.securitycenter.v1beta1.UpdateFindingRequest)
     ),
@@ -2750,24 +2755,15 @@ UpdateSecurityMarksRequest = _reflection.GeneratedProtocolMessageType(
 _sym_db.RegisterMessage(UpdateSecurityMarksRequest)
 
 
-DESCRIPTOR.has_options = True
-DESCRIPTOR._options = _descriptor._ParseOptions(
-    descriptor_pb2.FileOptions(),
-    _b(
-        "\n'com.google.cloud.securitycenter.v1beta1P\001ZQgoogle.golang.org/genproto/googleapis/cloud/securitycenter/v1beta1;securitycenter"
-    ),
-)
-_GROUPRESULT_PROPERTIESENTRY.has_options = True
-_GROUPRESULT_PROPERTIESENTRY._options = _descriptor._ParseOptions(
-    descriptor_pb2.MessageOptions(), _b("8\001")
-)
+DESCRIPTOR._options = None
+_GROUPRESULT_PROPERTIESENTRY._options = None
 
 _SECURITYCENTER = _descriptor.ServiceDescriptor(
     name="SecurityCenter",
     full_name="google.cloud.securitycenter.v1beta1.SecurityCenter",
     file=DESCRIPTOR,
     index=0,
-    options=None,
+    serialized_options=None,
     serialized_start=4076,
     serialized_end=7660,
     methods=[
@@ -2778,11 +2774,8 @@ _SECURITYCENTER = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_CREATESOURCEREQUEST,
             output_type=google_dot_cloud_dot_securitycenter__v1beta1_dot_proto_dot_source__pb2._SOURCE,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\0023")/v1beta1/{parent=organizations/*}/sources:\006source'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\0023")/v1beta1/{parent=organizations/*}/sources:\006source'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2792,11 +2785,8 @@ _SECURITYCENTER = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_CREATEFINDINGREQUEST,
             output_type=google_dot_cloud_dot_securitycenter__v1beta1_dot_proto_dot_finding__pb2._FINDING,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\002?"4/v1beta1/{parent=organizations/*/sources/*}/findings:\007finding'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\002?"4/v1beta1/{parent=organizations/*/sources/*}/findings:\007finding'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2806,11 +2796,8 @@ _SECURITYCENTER = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=google_dot_iam_dot_v1_dot_iam__policy__pb2._GETIAMPOLICYREQUEST,
             output_type=google_dot_iam_dot_v1_dot_policy__pb2._POLICY,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\002?":/v1beta1/{resource=organizations/*/sources/*}:getIamPolicy:\001*'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\002?":/v1beta1/{resource=organizations/*/sources/*}:getIamPolicy:\001*'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2820,11 +2807,8 @@ _SECURITYCENTER = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_GETORGANIZATIONSETTINGSREQUEST,
             output_type=google_dot_cloud_dot_securitycenter__v1beta1_dot_proto_dot_organization__settings__pb2._ORGANIZATIONSETTINGS,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\0026\0224/v1beta1/{name=organizations/*/organizationSettings}"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\0026\0224/v1beta1/{name=organizations/*/organizationSettings}"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2834,11 +2818,8 @@ _SECURITYCENTER = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_GETSOURCEREQUEST,
             output_type=google_dot_cloud_dot_securitycenter__v1beta1_dot_proto_dot_source__pb2._SOURCE,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\002+\022)/v1beta1/{name=organizations/*/sources/*}"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\002+\022)/v1beta1/{name=organizations/*/sources/*}"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2848,11 +2829,8 @@ _SECURITYCENTER = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_GROUPASSETSREQUEST,
             output_type=_GROUPASSETSRESPONSE,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\0023"./v1beta1/{parent=organizations/*}/assets:group:\001*'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\0023"./v1beta1/{parent=organizations/*}/assets:group:\001*'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2862,11 +2840,8 @@ _SECURITYCENTER = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_GROUPFINDINGSREQUEST,
             output_type=_GROUPFINDINGSRESPONSE,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\002?":/v1beta1/{parent=organizations/*/sources/*}/findings:group:\001*'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\002?":/v1beta1/{parent=organizations/*/sources/*}/findings:group:\001*'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2876,11 +2851,8 @@ _SECURITYCENTER = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_LISTASSETSREQUEST,
             output_type=_LISTASSETSRESPONSE,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\002*\022(/v1beta1/{parent=organizations/*}/assets"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\002*\022(/v1beta1/{parent=organizations/*}/assets"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2890,11 +2862,8 @@ _SECURITYCENTER = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_LISTFINDINGSREQUEST,
             output_type=_LISTFINDINGSRESPONSE,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\0026\0224/v1beta1/{parent=organizations/*/sources/*}/findings"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\0026\0224/v1beta1/{parent=organizations/*/sources/*}/findings"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2904,11 +2873,8 @@ _SECURITYCENTER = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_LISTSOURCESREQUEST,
             output_type=_LISTSOURCESRESPONSE,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\002+\022)/v1beta1/{parent=organizations/*}/sources"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\002+\022)/v1beta1/{parent=organizations/*}/sources"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2918,11 +2884,8 @@ _SECURITYCENTER = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_RUNASSETDISCOVERYREQUEST,
             output_type=google_dot_longrunning_dot_operations__pb2._OPERATION,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\002:"5/v1beta1/{parent=organizations/*}/assets:runDiscovery:\001*'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\002:"5/v1beta1/{parent=organizations/*}/assets:runDiscovery:\001*'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2932,11 +2895,8 @@ _SECURITYCENTER = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_SETFINDINGSTATEREQUEST,
             output_type=google_dot_cloud_dot_securitycenter__v1beta1_dot_proto_dot_finding__pb2._FINDING,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\002B"=/v1beta1/{name=organizations/*/sources/*/findings/*}:setState:\001*'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\002B"=/v1beta1/{name=organizations/*/sources/*/findings/*}:setState:\001*'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2946,11 +2906,8 @@ _SECURITYCENTER = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=google_dot_iam_dot_v1_dot_iam__policy__pb2._SETIAMPOLICYREQUEST,
             output_type=google_dot_iam_dot_v1_dot_policy__pb2._POLICY,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\002?":/v1beta1/{resource=organizations/*/sources/*}:setIamPolicy:\001*'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\002?":/v1beta1/{resource=organizations/*/sources/*}:setIamPolicy:\001*'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2960,11 +2917,8 @@ _SECURITYCENTER = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=google_dot_iam_dot_v1_dot_iam__policy__pb2._TESTIAMPERMISSIONSREQUEST,
             output_type=google_dot_iam_dot_v1_dot_iam__policy__pb2._TESTIAMPERMISSIONSRESPONSE,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\002E"@/v1beta1/{resource=organizations/*/sources/*}:testIamPermissions:\001*'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\002E"@/v1beta1/{resource=organizations/*/sources/*}:testIamPermissions:\001*'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2974,11 +2928,8 @@ _SECURITYCENTER = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_UPDATEFINDINGREQUEST,
             output_type=google_dot_cloud_dot_securitycenter__v1beta1_dot_proto_dot_finding__pb2._FINDING,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\002G2</v1beta1/{finding.name=organizations/*/sources/*/findings/*}:\007finding"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\002G2</v1beta1/{finding.name=organizations/*/sources/*/findings/*}:\007finding"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2988,11 +2939,8 @@ _SECURITYCENTER = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_UPDATEORGANIZATIONSETTINGSREQUEST,
             output_type=google_dot_cloud_dot_securitycenter__v1beta1_dot_proto_dot_organization__settings__pb2._ORGANIZATIONSETTINGS,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\002c2J/v1beta1/{organization_settings.name=organizations/*/organizationSettings}:\025organization_settings"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\002c2J/v1beta1/{organization_settings.name=organizations/*/organizationSettings}:\025organization_settings"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -3002,11 +2950,8 @@ _SECURITYCENTER = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_UPDATESOURCEREQUEST,
             output_type=google_dot_cloud_dot_securitycenter__v1beta1_dot_proto_dot_source__pb2._SOURCE,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\002:20/v1beta1/{source.name=organizations/*/sources/*}:\006source"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\002:20/v1beta1/{source.name=organizations/*/sources/*}:\006source"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -3016,11 +2961,8 @@ _SECURITYCENTER = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_UPDATESECURITYMARKSREQUEST,
             output_type=google_dot_cloud_dot_securitycenter__v1beta1_dot_proto_dot_security__marks__pb2._SECURITYMARKS,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\002\274\0012E/v1beta1/{security_marks.name=organizations/*/assets/*/securityMarks}:\016security_marksZc2Q/v1beta1/{security_marks.name=organizations/*/sources/*/findings/*/securityMarks}:\016security_marks"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\002\274\0012E/v1beta1/{security_marks.name=organizations/*/assets/*/securityMarks}:\016security_marksZc2Q/v1beta1/{security_marks.name=organizations/*/sources/*/findings/*/securityMarks}:\016security_marks"
             ),
         ),
     ],

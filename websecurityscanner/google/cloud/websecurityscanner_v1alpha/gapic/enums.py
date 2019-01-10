@@ -65,6 +65,21 @@ class Finding(object):
 
 
 class ScanConfig(object):
+    class TargetPlatform(enum.IntEnum):
+        """
+        Cloud platforms supported by Cloud Web Security Scanner.
+
+        Attributes:
+          TARGET_PLATFORM_UNSPECIFIED (int): The target platform is unknown. Requests with this enum value will be
+          rejected with INVALID\_ARGUMENT error.
+          APP_ENGINE (int): Google App Engine service.
+          COMPUTE (int): Google Compute Engine service.
+        """
+
+        TARGET_PLATFORM_UNSPECIFIED = 0
+        APP_ENGINE = 1
+        COMPUTE = 2
+
     class UserAgent(enum.IntEnum):
         """
         Type of user agents used for scanning.
@@ -80,21 +95,6 @@ class ScanConfig(object):
         CHROME_LINUX = 1
         CHROME_ANDROID = 2
         SAFARI_IPHONE = 3
-
-    class TargetPlatform(enum.IntEnum):
-        """
-        Cloud platforms supported by Cloud Web Security Scanner.
-
-        Attributes:
-          TARGET_PLATFORM_UNSPECIFIED (int): The target platform is unknown. Requests with this enum value will be
-          rejected with INVALID\_ARGUMENT error.
-          APP_ENGINE (int): Google App Engine service.
-          COMPUTE (int): Google Compute Engine service.
-        """
-
-        TARGET_PLATFORM_UNSPECIFIED = 0
-        APP_ENGINE = 1
-        COMPUTE = 2
 
 
 class ScanRun(object):

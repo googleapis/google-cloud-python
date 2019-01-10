@@ -95,7 +95,7 @@ class JobControllerGrpcTransport(object):
 
     @property
     def submit_job(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`JobControllerClient.submit_job`.
 
         Submits a job to a cluster.
 
@@ -108,7 +108,7 @@ class JobControllerGrpcTransport(object):
 
     @property
     def get_job(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`JobControllerClient.get_job`.
 
         Gets the resource representation for a job in a project.
 
@@ -121,7 +121,7 @@ class JobControllerGrpcTransport(object):
 
     @property
     def list_jobs(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`JobControllerClient.list_jobs`.
 
         Lists regions/{region}/jobs in a project.
 
@@ -134,7 +134,7 @@ class JobControllerGrpcTransport(object):
 
     @property
     def update_job(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`JobControllerClient.update_job`.
 
         Updates a job in a project.
 
@@ -147,7 +147,7 @@ class JobControllerGrpcTransport(object):
 
     @property
     def cancel_job(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`JobControllerClient.cancel_job`.
 
         Starts a job cancellation request. To access the job resource after
         cancellation, call
@@ -164,7 +164,7 @@ class JobControllerGrpcTransport(object):
 
     @property
     def delete_job(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`JobControllerClient.delete_job`.
 
         Deletes the job from the project. If the job is active, the delete
         fails, and the response returns ``FAILED_PRECONDITION``.

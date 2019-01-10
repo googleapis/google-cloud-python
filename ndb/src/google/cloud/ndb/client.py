@@ -21,9 +21,11 @@ from google.cloud import _helpers
 from google.cloud import client as google_client
 from google.cloud.datastore_v1.gapic import datastore_client
 
-DATASTORE_API_HOST = datastore_client.DatastoreClient.SERVICE_ADDRESS.rstrip(
-    ":443"
-)
+from google.cloud.ndb import _runstate
+
+DATASTORE_API_HOST = datastore_client.DatastoreClient.SERVICE_ADDRESS.rsplit(
+    ":", 1
+)[0]
 
 
 def _get_gcd_project():
@@ -60,6 +62,9 @@ _
 class Client(google_client.ClientWithProject):
     """An NDB client.
 
+    The NDB client must be created in order to use NDB, and any use of NDB must
+    be within the context of a call to :meth:`context`.
+
     Arguments:
         project (Optional[str]): The project to pass to proxied API methods. If
             not passed, falls back to the default inferred from the
@@ -73,15 +78,45 @@ class Client(google_client.ClientWithProject):
     SCOPE = ("https://www.googleapis.com/auth/datastore",)
     """The scopes required for authenticating as a Cloud Datastore consumer."""
 
-    secure = True
-    """Whether to use a secure connection for API calls."""
-
     def __init__(self, project=None, namespace=None, credentials=None):
         super(Client, self).__init__(project=project, credentials=credentials)
         self.namespace = namespace
         self.host = os.environ.get(
             environment_vars.GCD_HOST, DATASTORE_API_HOST
         )
+        self.secure = True
+
+    def context(self):
+        """Establish a context for a set of NDB calls.
+
+        This method provides a context manager which establishes the runtime
+        state for using NDB.
+
+        For example:
+
+        .. code-block:: python
+
+            from google.cloud import ndb
+
+            client = ndb.Client()
+            with client.context():
+                # Use NDB for some stuff
+                pass
+
+        Use of a context is required--NDB can only be used inside a running
+        context. The context is used to manage the connection to Google Cloud
+        Datastore, an event loop for asynchronous API calls, runtime caching
+        policy, and other essential runtime state.
+
+        Code within an asynchronous context should be single threaded.
+        Internally, a :class:`threading.local` instance is used to track the
+        current event loop.
+
+        In a web application, it is recommended that a single context be used
+        per HTTP request. This can typically be accomplished in a middleware
+        layer.
+        """
+        return _runstate.state_context(self)
 
     @property
     def _http(self):

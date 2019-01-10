@@ -9,7 +9,6 @@ from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
-from google.protobuf import descriptor_pb2
 
 # @@protoc_insertion_point(imports)
 
@@ -33,6 +32,9 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     name="google/cloud/bigquery/storage_v1beta1/proto/storage.proto",
     package="google.cloud.bigquery.storage.v1beta1",
     syntax="proto3",
+    serialized_options=_b(
+        "\n)com.google.cloud.bigquery.storage.v1beta1ZLgoogle.golang.org/genproto/googleapis/cloud/bigquery/storage/v1beta1;storage"
+    ),
     serialized_pb=_b(
         '\n9google/cloud/bigquery/storage_v1beta1/proto/storage.proto\x12%google.cloud.bigquery.storage.v1beta1\x1a\x36google/cloud/bigquery/storage_v1beta1/proto/avro.proto\x1a>google/cloud/bigquery/storage_v1beta1/proto/read_options.proto\x1a\x41google/cloud/bigquery/storage_v1beta1/proto/table_reference.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1fgoogle/protobuf/timestamp.proto")\n\x06Stream\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x11\n\trow_count\x18\x02 \x01(\x03"_\n\x0eStreamPosition\x12=\n\x06stream\x18\x01 \x01(\x0b\x32-.google.cloud.bigquery.storage.v1beta1.Stream\x12\x0e\n\x06offset\x18\x02 \x01(\x03"\x80\x03\n\x0bReadSession\x12\x0c\n\x04name\x18\x01 \x01(\t\x12/\n\x0b\x65xpire_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12H\n\x0b\x61vro_schema\x18\x05 \x01(\x0b\x32\x31.google.cloud.bigquery.storage.v1beta1.AvroSchemaH\x00\x12>\n\x07streams\x18\x04 \x03(\x0b\x32-.google.cloud.bigquery.storage.v1beta1.Stream\x12N\n\x0ftable_reference\x18\x07 \x01(\x0b\x32\x35.google.cloud.bigquery.storage.v1beta1.TableReference\x12N\n\x0ftable_modifiers\x18\x08 \x01(\x0b\x32\x35.google.cloud.bigquery.storage.v1beta1.TableModifiersB\x08\n\x06schema"\xf7\x02\n\x18\x43reateReadSessionRequest\x12N\n\x0ftable_reference\x18\x01 \x01(\x0b\x32\x35.google.cloud.bigquery.storage.v1beta1.TableReference\x12\x0e\n\x06parent\x18\x06 \x01(\t\x12N\n\x0ftable_modifiers\x18\x02 \x01(\x0b\x32\x35.google.cloud.bigquery.storage.v1beta1.TableModifiers\x12\x19\n\x11requested_streams\x18\x03 \x01(\x05\x12M\n\x0cread_options\x18\x04 \x01(\x0b\x32\x37.google.cloud.bigquery.storage.v1beta1.TableReadOptions\x12\x41\n\x06\x66ormat\x18\x05 \x01(\x0e\x32\x31.google.cloud.bigquery.storage.v1beta1.DataFormat"_\n\x0fReadRowsRequest\x12L\n\rread_position\x18\x01 \x01(\x0b\x32\x35.google.cloud.bigquery.storage.v1beta1.StreamPosition"+\n\x0cStreamStatus\x12\x1b\n\x13\x65stimated_row_count\x18\x01 \x01(\x03"*\n\x0eThrottleStatus\x12\x18\n\x10throttle_percent\x18\x01 \x01(\x05"\xf5\x01\n\x10ReadRowsResponse\x12\x44\n\tavro_rows\x18\x03 \x01(\x0b\x32/.google.cloud.bigquery.storage.v1beta1.AvroRowsH\x00\x12\x43\n\x06status\x18\x02 \x01(\x0b\x32\x33.google.cloud.bigquery.storage.v1beta1.StreamStatus\x12N\n\x0fthrottle_status\x18\x05 \x01(\x0b\x32\x35.google.cloud.bigquery.storage.v1beta1.ThrottleStatusB\x06\n\x04rows"\x86\x01\n$BatchCreateReadSessionStreamsRequest\x12\x43\n\x07session\x18\x01 \x01(\x0b\x32\x32.google.cloud.bigquery.storage.v1beta1.ReadSession\x12\x19\n\x11requested_streams\x18\x02 \x01(\x05"g\n%BatchCreateReadSessionStreamsResponse\x12>\n\x07streams\x18\x01 \x03(\x0b\x32-.google.cloud.bigquery.storage.v1beta1.Stream"V\n\x15\x46inalizeStreamRequest\x12=\n\x06stream\x18\x02 \x01(\x0b\x32-.google.cloud.bigquery.storage.v1beta1.Stream"`\n\x16SplitReadStreamRequest\x12\x46\n\x0foriginal_stream\x18\x01 \x01(\x0b\x32-.google.cloud.bigquery.storage.v1beta1.Stream"\xa9\x01\n\x17SplitReadStreamResponse\x12\x45\n\x0eprimary_stream\x18\x01 \x01(\x0b\x32-.google.cloud.bigquery.storage.v1beta1.Stream\x12G\n\x10remainder_stream\x18\x02 \x01(\x0b\x32-.google.cloud.bigquery.storage.v1beta1.Stream*3\n\nDataFormat\x12\x1b\n\x17\x44\x41TA_FORMAT_UNSPECIFIED\x10\x00\x12\x08\n\x04\x41VRO\x10\x01\x32\xdd\x05\n\x0f\x42igQueryStorage\x12\x8a\x01\n\x11\x43reateReadSession\x12?.google.cloud.bigquery.storage.v1beta1.CreateReadSessionRequest\x1a\x32.google.cloud.bigquery.storage.v1beta1.ReadSession"\x00\x12\x7f\n\x08ReadRows\x12\x36.google.cloud.bigquery.storage.v1beta1.ReadRowsRequest\x1a\x37.google.cloud.bigquery.storage.v1beta1.ReadRowsResponse"\x00\x30\x01\x12\xbc\x01\n\x1d\x42\x61tchCreateReadSessionStreams\x12K.google.cloud.bigquery.storage.v1beta1.BatchCreateReadSessionStreamsRequest\x1aL.google.cloud.bigquery.storage.v1beta1.BatchCreateReadSessionStreamsResponse"\x00\x12h\n\x0e\x46inalizeStream\x12<.google.cloud.bigquery.storage.v1beta1.FinalizeStreamRequest\x1a\x16.google.protobuf.Empty"\x00\x12\x92\x01\n\x0fSplitReadStream\x12=.google.cloud.bigquery.storage.v1beta1.SplitReadStreamRequest\x1a>.google.cloud.bigquery.storage.v1beta1.SplitReadStreamResponse"\x00\x42y\n)com.google.cloud.bigquery.storage.v1beta1ZLgoogle.golang.org/genproto/googleapis/cloud/bigquery/storage/v1beta1;storageb\x06proto3'
     ),
@@ -52,14 +54,18 @@ _DATAFORMAT = _descriptor.EnumDescriptor(
     file=DESCRIPTOR,
     values=[
         _descriptor.EnumValueDescriptor(
-            name="DATA_FORMAT_UNSPECIFIED", index=0, number=0, options=None, type=None
+            name="DATA_FORMAT_UNSPECIFIED",
+            index=0,
+            number=0,
+            serialized_options=None,
+            type=None,
         ),
         _descriptor.EnumValueDescriptor(
-            name="AVRO", index=1, number=1, options=None, type=None
+            name="AVRO", index=1, number=1, serialized_options=None, type=None
         ),
     ],
     containing_type=None,
-    options=None,
+    serialized_options=None,
     serialized_start=2288,
     serialized_end=2339,
 )
@@ -92,7 +98,7 @@ _STREAM = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -110,14 +116,14 @@ _STREAM = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -149,7 +155,7 @@ _STREAMPOSITION = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -167,14 +173,14 @@ _STREAMPOSITION = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -206,7 +212,7 @@ _READSESSION = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -224,7 +230,7 @@ _READSESSION = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -242,7 +248,7 @@ _READSESSION = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -260,7 +266,7 @@ _READSESSION = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -278,7 +284,7 @@ _READSESSION = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -296,14 +302,14 @@ _READSESSION = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -343,7 +349,7 @@ _CREATEREADSESSIONREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -361,7 +367,7 @@ _CREATEREADSESSIONREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -379,7 +385,7 @@ _CREATEREADSESSIONREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -397,7 +403,7 @@ _CREATEREADSESSIONREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -415,7 +421,7 @@ _CREATEREADSESSIONREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -433,14 +439,14 @@ _CREATEREADSESSIONREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -472,14 +478,14 @@ _READROWSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -511,14 +517,14 @@ _STREAMSTATUS = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -550,14 +556,14 @@ _THROTTLESTATUS = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -589,7 +595,7 @@ _READROWSRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -607,7 +613,7 @@ _READROWSRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -625,14 +631,14 @@ _READROWSRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -672,7 +678,7 @@ _BATCHCREATEREADSESSIONSTREAMSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -690,14 +696,14 @@ _BATCHCREATEREADSESSIONSTREAMSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -729,14 +735,14 @@ _BATCHCREATEREADSESSIONSTREAMSRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -768,14 +774,14 @@ _FINALIZESTREAMREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -807,14 +813,14 @@ _SPLITREADSTREAMREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -846,7 +852,7 @@ _SPLITREADSTREAMRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -864,14 +870,14 @@ _SPLITREADSTREAMRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1269,20 +1275,14 @@ SplitReadStreamResponse = _reflection.GeneratedProtocolMessageType(
 _sym_db.RegisterMessage(SplitReadStreamResponse)
 
 
-DESCRIPTOR.has_options = True
-DESCRIPTOR._options = _descriptor._ParseOptions(
-    descriptor_pb2.FileOptions(),
-    _b(
-        "\n)com.google.cloud.bigquery.storage.v1beta1ZLgoogle.golang.org/genproto/googleapis/cloud/bigquery/storage/v1beta1;storage"
-    ),
-)
+DESCRIPTOR._options = None
 
 _BIGQUERYSTORAGE = _descriptor.ServiceDescriptor(
     name="BigQueryStorage",
     full_name="google.cloud.bigquery.storage.v1beta1.BigQueryStorage",
     file=DESCRIPTOR,
     index=0,
-    options=None,
+    serialized_options=None,
     serialized_start=2342,
     serialized_end=3075,
     methods=[
@@ -1293,7 +1293,7 @@ _BIGQUERYSTORAGE = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_CREATEREADSESSIONREQUEST,
             output_type=_READSESSION,
-            options=None,
+            serialized_options=None,
         ),
         _descriptor.MethodDescriptor(
             name="ReadRows",
@@ -1302,7 +1302,7 @@ _BIGQUERYSTORAGE = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_READROWSREQUEST,
             output_type=_READROWSRESPONSE,
-            options=None,
+            serialized_options=None,
         ),
         _descriptor.MethodDescriptor(
             name="BatchCreateReadSessionStreams",
@@ -1311,7 +1311,7 @@ _BIGQUERYSTORAGE = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_BATCHCREATEREADSESSIONSTREAMSREQUEST,
             output_type=_BATCHCREATEREADSESSIONSTREAMSRESPONSE,
-            options=None,
+            serialized_options=None,
         ),
         _descriptor.MethodDescriptor(
             name="FinalizeStream",
@@ -1320,7 +1320,7 @@ _BIGQUERYSTORAGE = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_FINALIZESTREAMREQUEST,
             output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
-            options=None,
+            serialized_options=None,
         ),
         _descriptor.MethodDescriptor(
             name="SplitReadStream",
@@ -1329,7 +1329,7 @@ _BIGQUERYSTORAGE = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_SPLITREADSTREAMREQUEST,
             output_type=_SPLITREADSTREAMRESPONSE,
-            options=None,
+            serialized_options=None,
         ),
     ],
 )

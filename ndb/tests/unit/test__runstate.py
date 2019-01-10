@@ -17,14 +17,18 @@ import unittest
 from google.cloud.ndb import _runstate
 
 
-def test_ndb_context():
+def test_state_context():
     assert _runstate.states.current() is None
 
-    with _runstate.ndb_context():
+    client1 = object()
+    client2 = object()
+    with _runstate.state_context(client1):
         one = _runstate.current()
+        assert one.client is client1
 
-        with _runstate.ndb_context():
+        with _runstate.state_context(client2):
             two = _runstate.current()
+            assert two.client is client2
             assert one is not two
             two.eventloop = unittest.mock.Mock(spec=("run",))
             two.eventloop.run.assert_not_called()

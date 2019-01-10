@@ -8,7 +8,6 @@ from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
-from google.protobuf import descriptor_pb2
 
 # @@protoc_insertion_point(imports)
 
@@ -29,6 +28,9 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     name="google/cloud/monitoring_v3/proto/notification_service.proto",
     package="google.monitoring.v3",
     syntax="proto3",
+    serialized_options=_b(
+        "\n\030com.google.monitoring.v3B\030NotificationServiceProtoP\001Z>google.golang.org/genproto/googleapis/monitoring/v3;monitoring\252\002\032Google.Cloud.Monitoring.V3\312\002\032Google\\Cloud\\Monitoring\\V3"
+    ),
     serialized_pb=_b(
         '\n;google/cloud/monitoring_v3/proto/notification_service.proto\x12\x14google.monitoring.v3\x1a\x1cgoogle/api/annotations.proto\x1a\x33google/cloud/monitoring_v3/proto/notification.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto\x1a\x1cgoogle/protobuf/struct.proto\x1a\x1fgoogle/protobuf/timestamp.proto"`\n)ListNotificationChannelDescriptorsRequest\x12\x0c\n\x04name\x18\x04 \x01(\t\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t"\x97\x01\n*ListNotificationChannelDescriptorsResponse\x12P\n\x13\x63hannel_descriptors\x18\x01 \x03(\x0b\x32\x33.google.monitoring.v3.NotificationChannelDescriptor\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"7\n\'GetNotificationChannelDescriptorRequest\x12\x0c\n\x04name\x18\x03 \x01(\t"y\n CreateNotificationChannelRequest\x12\x0c\n\x04name\x18\x03 \x01(\t\x12G\n\x14notification_channel\x18\x02 \x01(\x0b\x32).google.monitoring.v3.NotificationChannel"x\n\x1fListNotificationChannelsRequest\x12\x0c\n\x04name\x18\x05 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x06 \x01(\t\x12\x10\n\x08order_by\x18\x07 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05\x12\x12\n\npage_token\x18\x04 \x01(\t"\x85\x01\n ListNotificationChannelsResponse\x12H\n\x15notification_channels\x18\x03 \x03(\x0b\x32).google.monitoring.v3.NotificationChannel\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"-\n\x1dGetNotificationChannelRequest\x12\x0c\n\x04name\x18\x03 \x01(\t"\x9c\x01\n UpdateNotificationChannelRequest\x12/\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMask\x12G\n\x14notification_channel\x18\x03 \x01(\x0b\x32).google.monitoring.v3.NotificationChannel"?\n DeleteNotificationChannelRequest\x12\x0c\n\x04name\x18\x03 \x01(\t\x12\r\n\x05\x66orce\x18\x05 \x01(\x08">\n.SendNotificationChannelVerificationCodeRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"n\n-GetNotificationChannelVerificationCodeRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12/\n\x0b\x65xpire_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp"o\n.GetNotificationChannelVerificationCodeResponse\x12\x0c\n\x04\x63ode\x18\x01 \x01(\t\x12/\n\x0b\x65xpire_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp">\n VerifyNotificationChannelRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0c\n\x04\x63ode\x18\x02 \x01(\t2\xbb\x10\n\x1aNotificationChannelService\x12\xe5\x01\n"ListNotificationChannelDescriptors\x12?.google.monitoring.v3.ListNotificationChannelDescriptorsRequest\x1a@.google.monitoring.v3.ListNotificationChannelDescriptorsResponse"<\x82\xd3\xe4\x93\x02\x36\x12\x34/v3/{name=projects/*}/notificationChannelDescriptors\x12\xd6\x01\n GetNotificationChannelDescriptor\x12=.google.monitoring.v3.GetNotificationChannelDescriptorRequest\x1a\x33.google.monitoring.v3.NotificationChannelDescriptor">\x82\xd3\xe4\x93\x02\x38\x12\x36/v3/{name=projects/*/notificationChannelDescriptors/*}\x12\xbd\x01\n\x18ListNotificationChannels\x12\x35.google.monitoring.v3.ListNotificationChannelsRequest\x1a\x36.google.monitoring.v3.ListNotificationChannelsResponse"2\x82\xd3\xe4\x93\x02,\x12*/v3/{name=projects/*}/notificationChannels\x12\xae\x01\n\x16GetNotificationChannel\x12\x33.google.monitoring.v3.GetNotificationChannelRequest\x1a).google.monitoring.v3.NotificationChannel"4\x82\xd3\xe4\x93\x02.\x12,/v3/{name=projects/*/notificationChannels/*}\x12\xc8\x01\n\x19\x43reateNotificationChannel\x12\x36.google.monitoring.v3.CreateNotificationChannelRequest\x1a).google.monitoring.v3.NotificationChannel"H\x82\xd3\xe4\x93\x02\x42"*/v3/{name=projects/*}/notificationChannels:\x14notification_channel\x12\xdf\x01\n\x19UpdateNotificationChannel\x12\x36.google.monitoring.v3.UpdateNotificationChannelRequest\x1a).google.monitoring.v3.NotificationChannel"_\x82\xd3\xe4\x93\x02Y2A/v3/{notification_channel.name=projects/*/notificationChannels/*}:\x14notification_channel\x12\xa1\x01\n\x19\x44\x65leteNotificationChannel\x12\x36.google.monitoring.v3.DeleteNotificationChannelRequest\x1a\x16.google.protobuf.Empty"4\x82\xd3\xe4\x93\x02.*,/v3/{name=projects/*/notificationChannels/*}\x12\xd5\x01\n\'SendNotificationChannelVerificationCode\x12\x44.google.monitoring.v3.SendNotificationChannelVerificationCodeRequest\x1a\x16.google.protobuf.Empty"L\x82\xd3\xe4\x93\x02\x46"A/v3/{name=projects/*/notificationChannels/*}:sendVerificationCode:\x01*\x12\x80\x02\n&GetNotificationChannelVerificationCode\x12\x43.google.monitoring.v3.GetNotificationChannelVerificationCodeRequest\x1a\x44.google.monitoring.v3.GetNotificationChannelVerificationCodeResponse"K\x82\xd3\xe4\x93\x02\x45"@/v3/{name=projects/*/notificationChannels/*}:getVerificationCode:\x01*\x12\xbe\x01\n\x19VerifyNotificationChannel\x12\x36.google.monitoring.v3.VerifyNotificationChannelRequest\x1a).google.monitoring.v3.NotificationChannel">\x82\xd3\xe4\x93\x02\x38"3/v3/{name=projects/*/notificationChannels/*}:verify:\x01*B\xb0\x01\n\x18\x63om.google.monitoring.v3B\x18NotificationServiceProtoP\x01Z>google.golang.org/genproto/googleapis/monitoring/v3;monitoring\xaa\x02\x1aGoogle.Cloud.Monitoring.V3\xca\x02\x1aGoogle\\Cloud\\Monitoring\\V3b\x06proto3'
     ),
@@ -65,7 +67,7 @@ _LISTNOTIFICATIONCHANNELDESCRIPTORSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -83,7 +85,7 @@ _LISTNOTIFICATIONCHANNELDESCRIPTORSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -101,14 +103,14 @@ _LISTNOTIFICATIONCHANNELDESCRIPTORSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -140,7 +142,7 @@ _LISTNOTIFICATIONCHANNELDESCRIPTORSRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -158,14 +160,14 @@ _LISTNOTIFICATIONCHANNELDESCRIPTORSRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -197,14 +199,14 @@ _GETNOTIFICATIONCHANNELDESCRIPTORREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -236,7 +238,7 @@ _CREATENOTIFICATIONCHANNELREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -254,14 +256,14 @@ _CREATENOTIFICATIONCHANNELREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -293,7 +295,7 @@ _LISTNOTIFICATIONCHANNELSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -311,7 +313,7 @@ _LISTNOTIFICATIONCHANNELSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -329,7 +331,7 @@ _LISTNOTIFICATIONCHANNELSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -347,7 +349,7 @@ _LISTNOTIFICATIONCHANNELSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -365,14 +367,14 @@ _LISTNOTIFICATIONCHANNELSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -404,7 +406,7 @@ _LISTNOTIFICATIONCHANNELSRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -422,14 +424,14 @@ _LISTNOTIFICATIONCHANNELSRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -461,14 +463,14 @@ _GETNOTIFICATIONCHANNELREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -500,7 +502,7 @@ _UPDATENOTIFICATIONCHANNELREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -518,14 +520,14 @@ _UPDATENOTIFICATIONCHANNELREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -557,7 +559,7 @@ _DELETENOTIFICATIONCHANNELREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -575,14 +577,14 @@ _DELETENOTIFICATIONCHANNELREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -614,14 +616,14 @@ _SENDNOTIFICATIONCHANNELVERIFICATIONCODEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -653,7 +655,7 @@ _GETNOTIFICATIONCHANNELVERIFICATIONCODEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -671,14 +673,14 @@ _GETNOTIFICATIONCHANNELVERIFICATIONCODEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -710,7 +712,7 @@ _GETNOTIFICATIONCHANNELVERIFICATIONCODERESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -728,14 +730,14 @@ _GETNOTIFICATIONCHANNELVERIFICATIONCODERESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -767,7 +769,7 @@ _VERIFYNOTIFICATIONCHANNELREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -785,14 +787,14 @@ _VERIFYNOTIFICATIONCHANNELREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1213,20 +1215,14 @@ VerifyNotificationChannelRequest = _reflection.GeneratedProtocolMessageType(
 _sym_db.RegisterMessage(VerifyNotificationChannelRequest)
 
 
-DESCRIPTOR.has_options = True
-DESCRIPTOR._options = _descriptor._ParseOptions(
-    descriptor_pb2.FileOptions(),
-    _b(
-        "\n\030com.google.monitoring.v3B\030NotificationServiceProtoP\001Z>google.golang.org/genproto/googleapis/monitoring/v3;monitoring\252\002\032Google.Cloud.Monitoring.V3\312\002\032Google\\Cloud\\Monitoring\\V3"
-    ),
-)
+DESCRIPTOR._options = None
 
 _NOTIFICATIONCHANNELSERVICE = _descriptor.ServiceDescriptor(
     name="NotificationChannelService",
     full_name="google.monitoring.v3.NotificationChannelService",
     file=DESCRIPTOR,
     index=0,
-    options=None,
+    serialized_options=None,
     serialized_start=1609,
     serialized_end=3716,
     methods=[
@@ -1237,11 +1233,8 @@ _NOTIFICATIONCHANNELSERVICE = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_LISTNOTIFICATIONCHANNELDESCRIPTORSREQUEST,
             output_type=_LISTNOTIFICATIONCHANNELDESCRIPTORSRESPONSE,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\0026\0224/v3/{name=projects/*}/notificationChannelDescriptors"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\0026\0224/v3/{name=projects/*}/notificationChannelDescriptors"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -1251,11 +1244,8 @@ _NOTIFICATIONCHANNELSERVICE = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_GETNOTIFICATIONCHANNELDESCRIPTORREQUEST,
             output_type=google_dot_cloud_dot_monitoring__v3_dot_proto_dot_notification__pb2._NOTIFICATIONCHANNELDESCRIPTOR,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\0028\0226/v3/{name=projects/*/notificationChannelDescriptors/*}"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\0028\0226/v3/{name=projects/*/notificationChannelDescriptors/*}"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -1265,11 +1255,8 @@ _NOTIFICATIONCHANNELSERVICE = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_LISTNOTIFICATIONCHANNELSREQUEST,
             output_type=_LISTNOTIFICATIONCHANNELSRESPONSE,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\002,\022*/v3/{name=projects/*}/notificationChannels"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\002,\022*/v3/{name=projects/*}/notificationChannels"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -1279,11 +1266,8 @@ _NOTIFICATIONCHANNELSERVICE = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_GETNOTIFICATIONCHANNELREQUEST,
             output_type=google_dot_cloud_dot_monitoring__v3_dot_proto_dot_notification__pb2._NOTIFICATIONCHANNEL,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\002.\022,/v3/{name=projects/*/notificationChannels/*}"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\002.\022,/v3/{name=projects/*/notificationChannels/*}"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -1293,11 +1277,8 @@ _NOTIFICATIONCHANNELSERVICE = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_CREATENOTIFICATIONCHANNELREQUEST,
             output_type=google_dot_cloud_dot_monitoring__v3_dot_proto_dot_notification__pb2._NOTIFICATIONCHANNEL,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\002B"*/v3/{name=projects/*}/notificationChannels:\024notification_channel'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\002B"*/v3/{name=projects/*}/notificationChannels:\024notification_channel'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -1307,11 +1288,8 @@ _NOTIFICATIONCHANNELSERVICE = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_UPDATENOTIFICATIONCHANNELREQUEST,
             output_type=google_dot_cloud_dot_monitoring__v3_dot_proto_dot_notification__pb2._NOTIFICATIONCHANNEL,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\002Y2A/v3/{notification_channel.name=projects/*/notificationChannels/*}:\024notification_channel"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\002Y2A/v3/{notification_channel.name=projects/*/notificationChannels/*}:\024notification_channel"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -1321,11 +1299,8 @@ _NOTIFICATIONCHANNELSERVICE = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_DELETENOTIFICATIONCHANNELREQUEST,
             output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\002.*,/v3/{name=projects/*/notificationChannels/*}"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\002.*,/v3/{name=projects/*/notificationChannels/*}"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -1335,11 +1310,8 @@ _NOTIFICATIONCHANNELSERVICE = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_SENDNOTIFICATIONCHANNELVERIFICATIONCODEREQUEST,
             output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\002F"A/v3/{name=projects/*/notificationChannels/*}:sendVerificationCode:\001*'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\002F"A/v3/{name=projects/*/notificationChannels/*}:sendVerificationCode:\001*'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -1349,11 +1321,8 @@ _NOTIFICATIONCHANNELSERVICE = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_GETNOTIFICATIONCHANNELVERIFICATIONCODEREQUEST,
             output_type=_GETNOTIFICATIONCHANNELVERIFICATIONCODERESPONSE,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\002E"@/v3/{name=projects/*/notificationChannels/*}:getVerificationCode:\001*'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\002E"@/v3/{name=projects/*/notificationChannels/*}:getVerificationCode:\001*'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -1363,11 +1332,8 @@ _NOTIFICATIONCHANNELSERVICE = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_VERIFYNOTIFICATIONCHANNELREQUEST,
             output_type=google_dot_cloud_dot_monitoring__v3_dot_proto_dot_notification__pb2._NOTIFICATIONCHANNEL,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\0028"3/v3/{name=projects/*/notificationChannels/*}:verify:\001*'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\0028"3/v3/{name=projects/*/notificationChannels/*}:verify:\001*'
             ),
         ),
     ],

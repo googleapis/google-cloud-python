@@ -18,20 +18,6 @@
 import enum
 
 
-class NullValue(enum.IntEnum):
-    """
-    ``NullValue`` is a singleton enumeration to represent the null value for
-    the ``Value`` type union.
-
-    The JSON representation for ``NullValue`` is JSON ``null``.
-
-    Attributes:
-      NULL_VALUE (int): Null value.
-    """
-
-    NULL_VALUE = 0
-
-
 class ComparisonType(enum.IntEnum):
     """
     Specifies an ordering relationship on two arguments, here called left and
@@ -56,30 +42,24 @@ class ComparisonType(enum.IntEnum):
     COMPARISON_NE = 6
 
 
-class ServiceTier(enum.IntEnum):
+class GroupResourceType(enum.IntEnum):
     """
-    The tier of service for a Workspace. Please see the `service tiers
-    documentation <https://cloud.google.com/monitoring/workspaces/tiers>`__
-    for more details.
+    The supported resource types that can be used as values of
+    ``group_resource.resource_type``. ``INSTANCE`` includes ``gce_instance``
+    and ``aws_ec2_instance`` resource types. The resource types ``gae_app``
+    and ``uptime_url`` are not valid here because group checks on App Engine
+    modules and URLs are not allowed.
 
     Attributes:
-      SERVICE_TIER_UNSPECIFIED (int): An invalid sentinel value, used to indicate that a tier has not
-      been provided explicitly.
-      SERVICE_TIER_BASIC (int): The Stackdriver Basic tier, a free tier of service that provides basic
-      features, a moderate allotment of logs, and access to built-in metrics.
-      A number of features are not available in this tier. For more details,
-      see `the service tiers
-      documentation <https://cloud.google.com/monitoring/workspaces/tiers>`__.
-      SERVICE_TIER_PREMIUM (int): The Stackdriver Premium tier, a higher, more expensive tier of service
-      that provides access to all Stackdriver features, lets you use
-      Stackdriver with AWS accounts, and has a larger allotments for logs and
-      metrics. For more details, see `the service tiers
-      documentation <https://cloud.google.com/monitoring/workspaces/tiers>`__.
+      RESOURCE_TYPE_UNSPECIFIED (int): Default value (not valid).
+      INSTANCE (int): A group of instances from Google Cloud Platform (GCP) or
+      Amazon Web Services (AWS).
+      AWS_ELB_LOAD_BALANCER (int): A group of Amazon ELB load balancers.
     """
 
-    SERVICE_TIER_UNSPECIFIED = 0
-    SERVICE_TIER_BASIC = 1
-    SERVICE_TIER_PREMIUM = 2
+    RESOURCE_TYPE_UNSPECIFIED = 0
+    INSTANCE = 1
+    AWS_ELB_LOAD_BALANCER = 2
 
 
 class LaunchStage(enum.IntEnum):
@@ -125,6 +105,46 @@ class LaunchStage(enum.IntEnum):
     DEPRECATED = 5
 
 
+class NullValue(enum.IntEnum):
+    """
+    ``NullValue`` is a singleton enumeration to represent the null value for
+    the ``Value`` type union.
+
+    The JSON representation for ``NullValue`` is JSON ``null``.
+
+    Attributes:
+      NULL_VALUE (int): Null value.
+    """
+
+    NULL_VALUE = 0
+
+
+class ServiceTier(enum.IntEnum):
+    """
+    The tier of service for a Workspace. Please see the `service tiers
+    documentation <https://cloud.google.com/monitoring/workspaces/tiers>`__
+    for more details.
+
+    Attributes:
+      SERVICE_TIER_UNSPECIFIED (int): An invalid sentinel value, used to indicate that a tier has not
+      been provided explicitly.
+      SERVICE_TIER_BASIC (int): The Stackdriver Basic tier, a free tier of service that provides basic
+      features, a moderate allotment of logs, and access to built-in metrics.
+      A number of features are not available in this tier. For more details,
+      see `the service tiers
+      documentation <https://cloud.google.com/monitoring/workspaces/tiers>`__.
+      SERVICE_TIER_PREMIUM (int): The Stackdriver Premium tier, a higher, more expensive tier of service
+      that provides access to all Stackdriver features, lets you use
+      Stackdriver with AWS accounts, and has a larger allotments for logs and
+      metrics. For more details, see `the service tiers
+      documentation <https://cloud.google.com/monitoring/workspaces/tiers>`__.
+    """
+
+    SERVICE_TIER_UNSPECIFIED = 0
+    SERVICE_TIER_BASIC = 1
+    SERVICE_TIER_PREMIUM = 2
+
+
 class UptimeCheckRegion(enum.IntEnum):
     """
     The regions from which an uptime check can be run.
@@ -145,42 +165,6 @@ class UptimeCheckRegion(enum.IntEnum):
     EUROPE = 2
     SOUTH_AMERICA = 3
     ASIA_PACIFIC = 4
-
-
-class GroupResourceType(enum.IntEnum):
-    """
-    The supported resource types that can be used as values of
-    ``group_resource.resource_type``. ``INSTANCE`` includes ``gce_instance``
-    and ``aws_ec2_instance`` resource types. The resource types ``gae_app``
-    and ``uptime_url`` are not valid here because group checks on App Engine
-    modules and URLs are not allowed.
-
-    Attributes:
-      RESOURCE_TYPE_UNSPECIFIED (int): Default value (not valid).
-      INSTANCE (int): A group of instances from Google Cloud Platform (GCP) or
-      Amazon Web Services (AWS).
-      AWS_ELB_LOAD_BALANCER (int): A group of Amazon ELB load balancers.
-    """
-
-    RESOURCE_TYPE_UNSPECIFIED = 0
-    INSTANCE = 1
-    AWS_ELB_LOAD_BALANCER = 2
-
-
-class LabelDescriptor(object):
-    class ValueType(enum.IntEnum):
-        """
-        Value types that can be used as label values.
-
-        Attributes:
-          STRING (int): A variable-length string. This is the default.
-          BOOL (int): Boolean; true or false.
-          INT64 (int): A 64-bit signed integer.
-        """
-
-        STRING = 0
-        BOOL = 1
-        INT64 = 2
 
 
 class Aggregation(object):
@@ -388,6 +372,62 @@ class Aggregation(object):
         REDUCE_PERCENTILE_05 = 12
 
 
+class AlertPolicy(object):
+    class ConditionCombinerType(enum.IntEnum):
+        """
+        Operators for combining conditions.
+
+        Attributes:
+          COMBINE_UNSPECIFIED (int): An unspecified combiner.
+          AND (int): Combine conditions using the logical ``AND`` operator. An incident is
+          created only if all conditions are met simultaneously. This combiner is
+          satisfied if all conditions are met, even if they are met on completely
+          different resources.
+          OR (int): Combine conditions using the logical ``OR`` operator. An incident is
+          created if any of the listed conditions is met.
+          AND_WITH_MATCHING_RESOURCE (int): Combine conditions using logical ``AND`` operator, but unlike the
+          regular ``AND`` option, an incident is created only if all conditions
+          are met simultaneously on at least one resource.
+        """
+
+        COMBINE_UNSPECIFIED = 0
+        AND = 1
+        OR = 2
+        AND_WITH_MATCHING_RESOURCE = 3
+
+
+class LabelDescriptor(object):
+    class ValueType(enum.IntEnum):
+        """
+        Value types that can be used as label values.
+
+        Attributes:
+          STRING (int): A variable-length string. This is the default.
+          BOOL (int): Boolean; true or false.
+          INT64 (int): A 64-bit signed integer.
+        """
+
+        STRING = 0
+        BOOL = 1
+        INT64 = 2
+
+
+class ListTimeSeriesRequest(object):
+    class TimeSeriesView(enum.IntEnum):
+        """
+        Controls which fields are returned by ``ListTimeSeries``.
+
+        Attributes:
+          FULL (int): Returns the identity of the metric(s), the time series,
+          and the time series data.
+          HEADERS (int): Returns the identity of the metric and the time series resource,
+          but not the time series data.
+        """
+
+        FULL = 0
+        HEADERS = 1
+
+
 class MetricDescriptor(object):
     class MetricKind(enum.IntEnum):
         """
@@ -434,30 +474,6 @@ class MetricDescriptor(object):
         MONEY = 6
 
 
-class AlertPolicy(object):
-    class ConditionCombinerType(enum.IntEnum):
-        """
-        Operators for combining conditions.
-
-        Attributes:
-          COMBINE_UNSPECIFIED (int): An unspecified combiner.
-          AND (int): Combine conditions using the logical ``AND`` operator. An incident is
-          created only if all conditions are met simultaneously. This combiner is
-          satisfied if all conditions are met, even if they are met on completely
-          different resources.
-          OR (int): Combine conditions using the logical ``OR`` operator. An incident is
-          created if any of the listed conditions is met.
-          AND_WITH_MATCHING_RESOURCE (int): Combine conditions using logical ``AND`` operator, but unlike the
-          regular ``AND`` option, an incident is created only if all conditions
-          are met simultaneously on at least one resource.
-        """
-
-        COMBINE_UNSPECIFIED = 0
-        AND = 1
-        OR = 2
-        AND_WITH_MATCHING_RESOURCE = 3
-
-
 class NotificationChannel(object):
     class VerificationStatus(enum.IntEnum):
         """
@@ -481,19 +497,3 @@ class NotificationChannel(object):
         VERIFICATION_STATUS_UNSPECIFIED = 0
         UNVERIFIED = 1
         VERIFIED = 2
-
-
-class ListTimeSeriesRequest(object):
-    class TimeSeriesView(enum.IntEnum):
-        """
-        Controls which fields are returned by ``ListTimeSeries``.
-
-        Attributes:
-          FULL (int): Returns the identity of the metric(s), the time series,
-          and the time series data.
-          HEADERS (int): Returns the identity of the metric and the time series resource,
-          but not the time series data.
-        """
-
-        FULL = 0
-        HEADERS = 1

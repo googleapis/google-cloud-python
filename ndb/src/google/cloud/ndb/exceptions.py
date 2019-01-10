@@ -38,13 +38,13 @@ class ContextError(Error):
     """Indicates an NDB call being made without a context.
 
     Raised whenever an NDB call is made outside of a context
-    established by :func:`~google.cloud.ndb.ndb_context`.
+    established by :meth:`google.cloud.ndb.client.Client.context`.
     """
 
     def __init__(self):
         super(ContextError, self).__init__(
             "No currently running event loop. Asynchronous calls must be made "
-            "in context established by google.cloud.ndb.ndb_context."
+            "in context established by google.cloud.ndb.Client.context."
         )
 
 

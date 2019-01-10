@@ -18,6 +18,24 @@
 import enum
 
 
+class ClusterOperationStatus(object):
+    class State(enum.IntEnum):
+        """
+        The operation state.
+
+        Attributes:
+          UNKNOWN (int): Unused.
+          PENDING (int): The operation has been created.
+          RUNNING (int): The operation is running.
+          DONE (int): The operation is done; either cancelled or completed.
+        """
+
+        UNKNOWN = 0
+        PENDING = 1
+        RUNNING = 2
+        DONE = 3
+
+
 class ClusterStatus(object):
     class State(enum.IntEnum):
         """
@@ -59,36 +77,6 @@ class ClusterStatus(object):
         UNSPECIFIED = 0
         UNHEALTHY = 1
         STALE_STATUS = 2
-
-
-class LoggingConfig(object):
-    class Level(enum.IntEnum):
-        """
-        The Log4j level for job execution. When running an `Apache
-        Hive <http://hive.apache.org/>`__ job, Cloud Dataproc configures the
-        Hive client to an equivalent verbosity level.
-
-        Attributes:
-          LEVEL_UNSPECIFIED (int): Level is unspecified. Use default level for log4j.
-          ALL (int): Use ALL level for log4j.
-          TRACE (int): Use TRACE level for log4j.
-          DEBUG (int): Use DEBUG level for log4j.
-          INFO (int): Use INFO level for log4j.
-          WARN (int): Use WARN level for log4j.
-          ERROR (int): Use ERROR level for log4j.
-          FATAL (int): Use FATAL level for log4j.
-          OFF (int): Turn off log4j.
-        """
-
-        LEVEL_UNSPECIFIED = 0
-        ALL = 1
-        TRACE = 2
-        DEBUG = 3
-        INFO = 4
-        WARN = 5
-        ERROR = 6
-        FATAL = 7
-        OFF = 8
 
 
 class JobStatus(object):
@@ -152,35 +140,6 @@ class JobStatus(object):
         STALE_STATUS = 3
 
 
-class YarnApplication(object):
-    class State(enum.IntEnum):
-        """
-        The application state, corresponding to
-        <code>YarnProtos.YarnApplicationStateProto</code>.
-
-        Attributes:
-          STATE_UNSPECIFIED (int): Status is unspecified.
-          NEW (int): Status is NEW.
-          NEW_SAVING (int): Status is NEW\_SAVING.
-          SUBMITTED (int): Status is SUBMITTED.
-          ACCEPTED (int): Status is ACCEPTED.
-          RUNNING (int): Status is RUNNING.
-          FINISHED (int): Status is FINISHED.
-          FAILED (int): Status is FAILED.
-          KILLED (int): Status is KILLED.
-        """
-
-        STATE_UNSPECIFIED = 0
-        NEW = 1
-        NEW_SAVING = 2
-        SUBMITTED = 3
-        ACCEPTED = 4
-        RUNNING = 5
-        FINISHED = 6
-        FAILED = 7
-        KILLED = 8
-
-
 class ListJobsRequest(object):
     class JobStateMatcher(enum.IntEnum):
         """
@@ -198,22 +157,34 @@ class ListJobsRequest(object):
         NON_ACTIVE = 2
 
 
-class ClusterOperationStatus(object):
-    class State(enum.IntEnum):
+class LoggingConfig(object):
+    class Level(enum.IntEnum):
         """
-        The operation state.
+        The Log4j level for job execution. When running an `Apache
+        Hive <http://hive.apache.org/>`__ job, Cloud Dataproc configures the
+        Hive client to an equivalent verbosity level.
 
         Attributes:
-          UNKNOWN (int): Unused.
-          PENDING (int): The operation has been created.
-          RUNNING (int): The operation is running.
-          DONE (int): The operation is done; either cancelled or completed.
+          LEVEL_UNSPECIFIED (int): Level is unspecified. Use default level for log4j.
+          ALL (int): Use ALL level for log4j.
+          TRACE (int): Use TRACE level for log4j.
+          DEBUG (int): Use DEBUG level for log4j.
+          INFO (int): Use INFO level for log4j.
+          WARN (int): Use WARN level for log4j.
+          ERROR (int): Use ERROR level for log4j.
+          FATAL (int): Use FATAL level for log4j.
+          OFF (int): Turn off log4j.
         """
 
-        UNKNOWN = 0
-        PENDING = 1
-        RUNNING = 2
-        DONE = 3
+        LEVEL_UNSPECIFIED = 0
+        ALL = 1
+        TRACE = 2
+        DEBUG = 3
+        INFO = 4
+        WARN = 5
+        ERROR = 6
+        FATAL = 7
+        OFF = 8
 
 
 class WorkflowMetadata(object):
@@ -255,3 +226,32 @@ class WorkflowNode(object):
         RUNNING = 3
         COMPLETED = 4
         FAILED = 5
+
+
+class YarnApplication(object):
+    class State(enum.IntEnum):
+        """
+        The application state, corresponding to
+        <code>YarnProtos.YarnApplicationStateProto</code>.
+
+        Attributes:
+          STATE_UNSPECIFIED (int): Status is unspecified.
+          NEW (int): Status is NEW.
+          NEW_SAVING (int): Status is NEW\_SAVING.
+          SUBMITTED (int): Status is SUBMITTED.
+          ACCEPTED (int): Status is ACCEPTED.
+          RUNNING (int): Status is RUNNING.
+          FINISHED (int): Status is FINISHED.
+          FAILED (int): Status is FAILED.
+          KILLED (int): Status is KILLED.
+        """
+
+        STATE_UNSPECIFIED = 0
+        NEW = 1
+        NEW_SAVING = 2
+        SUBMITTED = 3
+        ACCEPTED = 4
+        RUNNING = 5
+        FINISHED = 6
+        FAILED = 7
+        KILLED = 8

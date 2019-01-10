@@ -103,7 +103,7 @@ class AutoMlGrpcTransport(object):
 
     @property
     def create_dataset(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`AutoMlClient.create_dataset`.
 
         Creates a dataset.
 
@@ -116,7 +116,7 @@ class AutoMlGrpcTransport(object):
 
     @property
     def get_dataset(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`AutoMlClient.get_dataset`.
 
         Gets a dataset.
 
@@ -129,7 +129,7 @@ class AutoMlGrpcTransport(object):
 
     @property
     def list_datasets(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`AutoMlClient.list_datasets`.
 
         Lists datasets in a project.
 
@@ -142,7 +142,7 @@ class AutoMlGrpcTransport(object):
 
     @property
     def delete_dataset(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`AutoMlClient.delete_dataset`.
 
         Deletes a dataset and all of its contents. Returns empty response in the
         ``response`` field when it completes, and ``delete_details`` in the
@@ -157,7 +157,7 @@ class AutoMlGrpcTransport(object):
 
     @property
     def import_data(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`AutoMlClient.import_data`.
 
         Imports data into a dataset. Returns an empty response in the
         ``response`` field when it completes.
@@ -171,7 +171,7 @@ class AutoMlGrpcTransport(object):
 
     @property
     def export_data(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`AutoMlClient.export_data`.
 
         Exports dataset's data to a Google Cloud Storage bucket. Returns an
         empty response in the ``response`` field when it completes.
@@ -185,7 +185,7 @@ class AutoMlGrpcTransport(object):
 
     @property
     def create_model(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`AutoMlClient.create_model`.
 
         Creates a model. Returns a Model in the ``response`` field when it
         completes. When you create a model, several model evaluations are
@@ -201,7 +201,7 @@ class AutoMlGrpcTransport(object):
 
     @property
     def get_model(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`AutoMlClient.get_model`.
 
         Gets a model.
 
@@ -214,7 +214,7 @@ class AutoMlGrpcTransport(object):
 
     @property
     def list_models(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`AutoMlClient.list_models`.
 
         Lists models.
 
@@ -227,7 +227,7 @@ class AutoMlGrpcTransport(object):
 
     @property
     def delete_model(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`AutoMlClient.delete_model`.
 
         Deletes a model. If a model is already deployed, this only deletes the
         model in AutoML BE, and does not change the status of the deployed model
@@ -244,7 +244,7 @@ class AutoMlGrpcTransport(object):
 
     @property
     def deploy_model(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`AutoMlClient.deploy_model`.
 
         Deploys model. Returns a ``DeployModelResponse`` in the ``response``
         field when it completes.
@@ -258,7 +258,7 @@ class AutoMlGrpcTransport(object):
 
     @property
     def undeploy_model(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`AutoMlClient.undeploy_model`.
 
         Undeploys model. Returns an ``UndeployModelResponse`` in the
         ``response`` field when it completes.
@@ -272,7 +272,7 @@ class AutoMlGrpcTransport(object):
 
     @property
     def get_model_evaluation(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`AutoMlClient.get_model_evaluation`.
 
         Gets a model evaluation.
 
@@ -285,7 +285,7 @@ class AutoMlGrpcTransport(object):
 
     @property
     def list_model_evaluations(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`AutoMlClient.list_model_evaluations`.
 
         Lists model evaluations.
 

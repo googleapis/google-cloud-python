@@ -1,0 +1,32 @@
+{
+  "updateTime": "2019-01-09T13:12:41.014554Z",
+  "sources": [
+    {
+      "generator": {
+        "name": "artman",
+        "version": "0.16.5",
+        "dockerImage": "googleapis/artman@sha256:5a96c2c5c6f9570cc9556b63dc9ce1838777fd9166b5b64e43ad8e0ecee2fe2c"
+      }
+    },
+    {
+      "git": {
+        "name": "googleapis",
+        "remote": "https://github.com/googleapis/googleapis.git",
+        "sha": "659d66ec24bf40b35a41a0b79218d96ba3add3d3",
+        "internalRef": "228437827"
+      }
+    }
+  ],
+  "destinations": [
+    {
+      "client": {
+        "source": "googleapis",
+        "apiName": "bigquery-datatransfer",
+        "apiVersion": "v1",
+        "language": "python",
+        "generator": "gapic",
+        "config": "google/cloud/bigquery/storage/artman_bigquerystorage_v1beta1.yaml"
+      }
+    }
+  ]
+}

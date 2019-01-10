@@ -57,21 +57,6 @@ class CryptoKey(object):
         ASYMMETRIC_DECRYPT = 6
 
 
-class KeyOperationAttestation(object):
-    class AttestationFormat(enum.IntEnum):
-        """
-        Attestion formats provided by the HSM.
-
-        Attributes:
-          ATTESTATION_FORMAT_UNSPECIFIED (int)
-          CAVIUM_V1_COMPRESSED (int): Cavium HSM attestation compressed with gzip. Note that this format is
-          defined by Cavium and subject to change at any time.
-        """
-
-        ATTESTATION_FORMAT_UNSPECIFIED = 0
-        CAVIUM_V1_COMPRESSED = 3
-
-
 class CryptoKeyVersion(object):
     class CryptoKeyVersionAlgorithm(enum.IntEnum):
         """
@@ -176,3 +161,18 @@ class CryptoKeyVersion(object):
 
         CRYPTO_KEY_VERSION_VIEW_UNSPECIFIED = 0
         FULL = 1
+
+
+class KeyOperationAttestation(object):
+    class AttestationFormat(enum.IntEnum):
+        """
+        Attestion formats provided by the HSM.
+
+        Attributes:
+          ATTESTATION_FORMAT_UNSPECIFIED (int)
+          CAVIUM_V1_COMPRESSED (int): Cavium HSM attestation compressed with gzip. Note that this format is
+          defined by Cavium and subject to change at any time.
+        """
+
+        ATTESTATION_FORMAT_UNSPECIFIED = 0
+        CAVIUM_V1_COMPRESSED = 3
