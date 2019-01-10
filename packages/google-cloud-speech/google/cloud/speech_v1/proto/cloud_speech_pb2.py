@@ -1480,7 +1480,7 @@ RecognitionConfig = _reflection.GeneratedProtocolMessageType(
           details, see [AudioEncoding][google.cloud.speech.v1.Recognitio
           nConfig.AudioEncoding].
       enable_separate_recognition_per_channel:
-          This needs to be set to ‘true’ explicitly and
+          This needs to be set to ``true`` explicitly and
           ``audio_channel_count`` > 1 to get each channel recognized
           separately. The recognition result will contain a
           ``channel_tag`` field to state which channel that result
