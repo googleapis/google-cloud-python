@@ -25,7 +25,7 @@ common = gcp.CommonTemplates()
 library = gapic.py_library(
     "firestore",
     "v1beta1",
-    config_path="/google/firestore/artman_firestore.yaml",
+    config_path="/google/firestore/artman_firestore_v1beta1.yaml",
     artman_output_name="firestore-v1beta1",
 )
 
