@@ -78,10 +78,7 @@ def lookup(key, **options):
     _check_unsupported_options(options)
 
     batch = _get_batch(_LookupBatch, options)
-    batch_key = key.to_protobuf().SerializeToString()
-    future = tasklets.Future()
-    batch.setdefault(batch_key, []).append(future)
-    return future
+    return batch.add(key)
 
 
 def _get_batch(batch_cls, options):
@@ -112,16 +109,22 @@ def _get_batch(batch_cls, options):
     if batch is not None:
         return batch
 
+    def idle():
+        batch = batches.pop(options_key)
+        batch.idle_callback()
+
     batches[options_key] = batch = _LookupBatch(options)
-    _eventloop.add_idle(batch.idle_callback)
+    _eventloop.add_idle(idle)
     return batch
 
 
-class _LookupBatch(dict):
+class _LookupBatch:
     """Batch for Lookup requests.
 
-    Extends ``dict`` and expects to be used as a mapping from serialized key
-    protobuffers to lists of futures waiting for lookups for those keys.
+    Attributes:
+        options (Dict[str, Any]): See Args.
+        todo (Dict[bytes, List[tasklets.Future]]: Mapping of serialized key
+            protocol buffers to dependent futures.
 
     Args:
         options (Dict[str, Any]): The options for the request. For example,
@@ -131,13 +134,28 @@ class _LookupBatch(dict):
 
     def __init__(self, options):
         self.options = options
+        self.todo = {}
+
+    def add(self, key):
+        """Add a key to the batch to look up.
+
+        Args:
+            key (datastore.Key): The key to look up.
+
+        Returns:
+            tasklets.Future: A future for the eventual result.
+        """
+        todo_key = key.to_protobuf().SerializeToString()
+        future = tasklets.Future()
+        self.todo.setdefault(todo_key, []).append(future)
+        return future
 
     def idle_callback(self):
         """Perform a Datastore Lookup on all batched Lookup requests."""
         keys = []
-        for batch_key in self.keys():
+        for todo_key in self.todo.keys():
             key_pb = entity_pb2.Key()
-            key_pb.ParseFromString(batch_key)
+            key_pb.ParseFromString(todo_key)
             keys.append(key_pb)
 
         read_options = _get_read_options(self.options)
@@ -162,7 +180,7 @@ class _LookupBatch(dict):
         # waiting futures.
         exception = rpc.exception()
         if exception is not None:
-            for future in itertools.chain(*self.values()):
+            for future in itertools.chain(*self.todo.values()):
                 future.set_exception(exception)
             return
 
@@ -174,21 +192,23 @@ class _LookupBatch(dict):
         if results.deferred:
             next_batch = _get_batch(type(self), self.options)
             for key in results.deferred:
-                batch_key = key.SerializeToString()
-                next_batch.setdefault(batch_key, []).extend(self[batch_key])
+                todo_key = key.SerializeToString()
+                next_batch.todo.setdefault(todo_key, []).extend(
+                    self.todo[todo_key]
+                )
 
         # For all missing keys, set result to _NOT_FOUND and let callers decide
         # how to handle
         for result in results.missing:
-            batch_key = result.entity.key.SerializeToString()
-            for future in self[batch_key]:
+            todo_key = result.entity.key.SerializeToString()
+            for future in self.todo[todo_key]:
                 future.set_result(_NOT_FOUND)
 
         # For all found entities, set the result on their corresponding futures
         for result in results.found:
             entity = result.entity
-            batch_key = entity.key.SerializeToString()
-            for future in self[batch_key]:
+            todo_key = entity.key.SerializeToString()
+            for future in self.todo[todo_key]:
                 future.set_result(entity)
 
 

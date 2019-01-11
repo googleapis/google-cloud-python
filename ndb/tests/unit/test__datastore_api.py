@@ -77,11 +77,9 @@ class TestLookup:
         future3 = _api.lookup(_mock_key("bar"))
 
         batch = runstate.batches[_api._LookupBatch][()]
-        assert batch["foo"] == [future1, future2]
-        assert batch["bar"] == [future3]
-        runstate.eventloop.add_idle.assert_called_once_with(
-            batch.idle_callback
-        )
+        assert batch.todo["foo"] == [future1, future2]
+        assert batch.todo["bar"] == [future3]
+        assert runstate.eventloop.add_idle.call_count == 1
 
     @staticmethod
     def test_it_with_options(runstate):
@@ -92,11 +90,11 @@ class TestLookup:
 
         batches = runstate.batches[_api._LookupBatch]
         batch1 = batches[()]
-        assert batch1["foo"] == [future1]
-        assert batch1["bar"] == [future3]
+        assert batch1.todo["foo"] == [future1]
+        assert batch1.todo["bar"] == [future3]
 
         batch2 = batches[(("read_consistency", _api.EVENTUAL),)]
-        assert batch2 == {"foo": [future2]}
+        assert batch2.todo == {"foo": [future2]}
 
         add_idle = runstate.eventloop.add_idle
         assert add_idle.call_count == 2
@@ -105,6 +103,21 @@ class TestLookup:
     def test_it_with_bad_option(runstate):
         with pytest.raises(NotImplementedError):
             _api.lookup(_mock_key("foo"), foo="bar")
+
+    @staticmethod
+    def test_idle_callback(runstate):
+        runstate.eventloop = mock.Mock(spec=("add_idle", "run"))
+        future = _api.lookup(_mock_key("foo"))
+
+        batches = runstate.batches[_api._LookupBatch]
+        batch = batches[()]
+        assert batch.todo["foo"] == [future]
+
+        idle = runstate.eventloop.add_idle.call_args[0][0]
+        batch.idle_callback = mock.Mock()
+        idle()
+        batch.idle_callback.assert_called_once_with()
+        assert () not in batches
 
 
 class Test_LookupBatch:
@@ -122,7 +135,7 @@ class Test_LookupBatch:
         entity_pb2.Key = MockKey
         runstate.eventloop = mock.Mock(spec=("queue_rpc", "run"))
         batch = _api._LookupBatch({})
-        batch.update({"foo": ["one", "two"], "bar": ["three"]})
+        batch.todo.update({"foo": ["one", "two"], "bar": ["three"]})
         batch.idle_callback()
 
         called_with = _datastore_lookup.call_args[0]
@@ -140,7 +153,7 @@ class Test_LookupBatch:
     def test_lookup_callback_exception():
         future1, future2, future3 = (tasklets.Future() for _ in range(3))
         batch = _api._LookupBatch({})
-        batch.update({"foo": [future1, future2], "bar": [future3]})
+        batch.todo.update({"foo": [future1, future2], "bar": [future3]})
         error = Exception("Spurious error.")
 
         rpc = tasklets.Future()
@@ -159,7 +172,7 @@ class Test_LookupBatch:
 
         future1, future2, future3 = (tasklets.Future() for _ in range(3))
         batch = _api._LookupBatch({})
-        batch.update({"foo": [future1, future2], "bar": [future3]})
+        batch.todo.update({"foo": [future1, future2], "bar": [future3]})
 
         entity1 = mock.Mock(key=key_pb("foo"), spec=("key",))
         entity2 = mock.Mock(key=key_pb("bar"), spec=("key",))
@@ -190,7 +203,7 @@ class Test_LookupBatch:
 
         future1, future2, future3 = (tasklets.Future() for _ in range(3))
         batch = _api._LookupBatch({})
-        batch.update({"foo": [future1, future2], "bar": [future3]})
+        batch.todo.update({"foo": [future1, future2], "bar": [future3]})
 
         entity1 = mock.Mock(key=key_pb("foo"), spec=("key",))
         entity2 = mock.Mock(key=key_pb("bar"), spec=("key",))
@@ -222,7 +235,7 @@ class Test_LookupBatch:
         runstate.eventloop = mock.Mock(spec=("add_idle", "run"))
         future1, future2, future3 = (tasklets.Future() for _ in range(3))
         batch = _api._LookupBatch({})
-        batch.update({"foo": [future1, future2], "bar": [future3]})
+        batch.todo.update({"foo": [future1, future2], "bar": [future3]})
 
         response = mock.Mock(
             missing=[],
@@ -240,10 +253,8 @@ class Test_LookupBatch:
         assert future3.running()
 
         next_batch = runstate.batches[_api._LookupBatch][()]
-        assert next_batch == batch and next_batch is not batch
-        runstate.eventloop.add_idle.assert_called_once_with(
-            next_batch.idle_callback
-        )
+        assert next_batch.todo == batch.todo and next_batch is not batch
+        assert runstate.eventloop.add_idle.call_count == 1
 
     @staticmethod
     def test_found_missing_deferred(runstate):
@@ -255,7 +266,9 @@ class Test_LookupBatch:
         runstate.eventloop = mock.Mock(spec=("add_idle", "run"))
         future1, future2, future3 = (tasklets.Future() for _ in range(3))
         batch = _api._LookupBatch({})
-        batch.update({"foo": [future1], "bar": [future2], "baz": [future3]})
+        batch.todo.update(
+            {"foo": [future1], "bar": [future2], "baz": [future3]}
+        )
 
         entity1 = mock.Mock(key=key_pb("foo"), spec=("key",))
         entity2 = mock.Mock(key=key_pb("bar"), spec=("key",))
@@ -275,10 +288,8 @@ class Test_LookupBatch:
         assert future3.running()
 
         next_batch = runstate.batches[_api._LookupBatch][()]
-        assert next_batch == {"baz": [future3]}
-        runstate.eventloop.add_idle.assert_called_once_with(
-            next_batch.idle_callback
-        )
+        assert next_batch.todo == {"baz": [future3]}
+        assert runstate.eventloop.add_idle.call_count == 1
 
 
 @mock.patch("google.cloud.ndb._datastore_api.datastore_pb2")
