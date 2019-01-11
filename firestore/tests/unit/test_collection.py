@@ -191,11 +191,21 @@ class TestCollectionReference(unittest.TestCase):
 
     def test_add_auto_assigned(self):
         from google.cloud.firestore_v1beta1.proto import document_pb2
-        from google.cloud.firestore_v1beta1 import _helpers
         from google.cloud.firestore_v1beta1.document import DocumentReference
+        from google.cloud.firestore_v1beta1 import SERVER_TIMESTAMP
+        from google.cloud.firestore_v1beta1._helpers import pbs_for_set_no_merge
 
         # Create a minimal fake GAPIC add attach it to a real client.
-        firestore_api = mock.Mock(spec=["create_document"])
+        firestore_api = mock.Mock(spec=["create_document", "commit"])
+        write_result = mock.Mock(
+            update_time=mock.sentinel.update_time, spec=["update_time"]
+        )
+        commit_response = mock.Mock(
+            write_results=[write_result],
+            spec=["write_results", "commit_time"],
+            commit_time=mock.sentinel.commit_time,
+        )
+        firestore_api.commit.return_value = commit_response
         create_doc_response = document_pb2.Document()
         firestore_api.create_document.return_value = create_doc_response
         client = _make_client()
@@ -212,26 +222,32 @@ class TestCollectionReference(unittest.TestCase):
         create_doc_response.update_time.FromDatetime(datetime.datetime.utcnow())
         firestore_api.create_document.return_value = create_doc_response
 
-        # Actually call add() on our collection.
-        document_data = {"been": "here"}
+        # Actually call add() on our collection; include a transform to make
+        # sure transforms during adds work.
+        document_data = {"been": "here", "now": SERVER_TIMESTAMP}
         update_time, document_ref = collection.add(document_data)
 
         # Verify the response and the mocks.
-        self.assertIs(update_time, create_doc_response.update_time)
+        self.assertIs(update_time, mock.sentinel.update_time)
         self.assertIsInstance(document_ref, DocumentReference)
         self.assertIs(document_ref._client, client)
         expected_path = collection._path + (auto_assigned_id,)
         self.assertEqual(document_ref._path, expected_path)
 
-        expected_document_pb = document_pb2.Document(
-            fields=_helpers.encode_dict(document_data)
-        )
+        expected_document_pb = document_pb2.Document()
         firestore_api.create_document.assert_called_once_with(
             parent_path,
             collection_id=collection.id,
             document_id=None,
             document=expected_document_pb,
             mask=None,
+            metadata=client._rpc_metadata,
+        )
+        write_pbs = pbs_for_set_no_merge(document_ref._document_path, document_data)
+        firestore_api.commit.assert_called_once_with(
+            client._database_string,
+            write_pbs,
+            transaction=None,
             metadata=client._rpc_metadata,
         )
 
