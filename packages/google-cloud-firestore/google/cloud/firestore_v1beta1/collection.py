@@ -159,9 +159,8 @@ class CollectionReference(object):
         """
         if document_id is None:
             parent_path, expected_prefix = self._parent_info()
-            document_pb = document_pb2.Document(
-                fields=_helpers.encode_dict(document_data)
-            )
+
+            document_pb = document_pb2.Document()
 
             created_document_pb = self._client._firestore_api.create_document(
                 parent_path,
@@ -174,7 +173,8 @@ class CollectionReference(object):
 
             new_document_id = _helpers.get_doc_id(created_document_pb, expected_prefix)
             document_ref = self.document(new_document_id)
-            return created_document_pb.update_time, document_ref
+            set_result = document_ref.set(document_data)
+            return set_result.update_time, document_ref
         else:
             document_ref = self.document(document_id)
             write_result = document_ref.create(document_data)
