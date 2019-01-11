@@ -3,12 +3,10 @@ Changelog
 
 .. _changelog-0.9.0:
 
-0.9.0 / TBD
------------
+0.9.0 / 2019-01-11
+------------------
 
-Internal changes
-~~~~~~~~~~~~~~~~
-
+- Warn when deprecated ``private_key`` parameter is used (:issue:`240`)
 - **New dependency** Use the ``pydata-google-auth`` package for
   authentication. (:issue:`241`)
 
