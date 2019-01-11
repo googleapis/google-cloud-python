@@ -199,7 +199,7 @@ class Batch(base.Batch):
 
             try:
                 response = self._client.api.publish(self._topic, self._messages)
-            except google.api_core.exceptions.GoogleAPICallError as exc:
+            except google.api_core.exceptions.GoogleAPIError as exc:
                 # We failed to publish, set the exception on all futures and
                 # exit.
                 self._status = base.BatchStatus.ERROR

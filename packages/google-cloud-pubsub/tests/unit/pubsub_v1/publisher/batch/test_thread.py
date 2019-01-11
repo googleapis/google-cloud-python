@@ -221,6 +221,25 @@ def test_block__commmit_api_error():
         assert future.exception() == error
 
 
+def test_block__commmit_retry_error():
+    batch = create_batch()
+    futures = (
+        batch.publish({"data": b"blah blah blah"}),
+        batch.publish({"data": b"blah blah blah blah"}),
+    )
+
+    # Make the API throw an error when publishing.
+    error = google.api_core.exceptions.RetryError("uh oh", None)
+    patch = mock.patch.object(type(batch.client.api), "publish", side_effect=error)
+
+    with patch:
+        batch._commit()
+
+    for future in futures:
+        assert future.done()
+        assert future.exception() == error
+
+
 def test_monitor():
     batch = create_batch(max_latency=5.0)
     with mock.patch.object(time, "sleep") as sleep:
