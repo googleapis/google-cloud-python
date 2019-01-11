@@ -776,8 +776,8 @@ AppEngineHttpTarget = _reflection.GeneratedProtocolMessageType(
           handlers#reading_request_headers>`__.  In addition, some App
           Engine headers, which contain job-specific information, are
           also be sent to the job handler; see `request headers <https:/
-          /cloud.google.comappengine/docs/standard/python/config/cron#se
-          curing_urls_for_cron>`__.
+          /cloud.google.com/appengine/docs/standard/python/config/cron#s
+          ecuring_urls_for_cron>`__.
       body:
           Body.  HTTP request body. A request body is allowed only if
           the HTTP method is POST or PUT. It will result in invalid
