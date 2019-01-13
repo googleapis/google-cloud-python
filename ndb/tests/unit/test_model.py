@@ -21,6 +21,7 @@ import zlib
 from google.cloud import datastore
 from google.cloud.datastore import entity as entity_module
 from google.cloud.datastore import helpers
+from google.cloud.datastore_v1 import types as ds_types
 import pytest
 
 from google.cloud.ndb import _datastore_types
@@ -2915,6 +2916,56 @@ class Test_entity_from_protobuf:
         assert entity.key == "luck"
         assert entity._key.kind() == "ThisKind"
         assert entity._key.id() == 123
+
+
+class Test_entity_to_protobuf:
+    @staticmethod
+    def test_standard_case():
+        class ThisKind(model.Model):
+            a = model.IntegerProperty()
+            b = model.BooleanProperty()
+            c = model.PickleProperty()
+            d = model.StringProperty(repeated=True)
+            e = model.PickleProperty(repeated=True)
+            notaproperty = True
+
+        dill = {"sandwiches": ["turkey", "reuben"], "not_sandwiches": "tacos"}
+        gherkin = [{"a": {"b": "c"}, "d": 0}, [1, 2, 3], "himom"]
+        key = key_module.Key("ThisKind", 123, app="testing")
+
+        entity = ThisKind(
+            key=key,
+            a=42,
+            c=gherkin,
+            d=["foo", "bar", "baz"],
+            e=[gherkin, dill],
+        )
+
+        entity_pb = model._entity_to_protobuf(entity)
+        assert isinstance(entity_pb, ds_types.Entity)
+        assert entity_pb.properties["a"].integer_value == 42
+        assert entity_pb.properties["b"].null_value == 0
+        assert pickle.loads(entity_pb.properties["c"].blob_value) == gherkin
+        d_values = entity_pb.properties["d"].array_value.values
+        assert d_values[0].blob_value == b"foo"
+        assert d_values[1].blob_value == b"bar"
+        assert d_values[2].blob_value == b"baz"
+        e_values = entity_pb.properties["e"].array_value.values
+        assert pickle.loads(e_values[0].blob_value) == gherkin
+        assert pickle.loads(e_values[1].blob_value) == dill
+
+    @staticmethod
+    def test_property_named_key():
+        class ThisKind(model.Model):
+            key = model.StringProperty()
+
+        key = key_module.Key("ThisKind", 123, app="testing")
+        entity = ThisKind(key="not the key", _key=key)
+
+        entity_pb = model._entity_to_protobuf(entity)
+        assert entity_pb.properties["key"].blob_value == b"not the key"
+        assert entity_pb.key.path[0].kind == "ThisKind"
+        assert entity_pb.key.path[0].id == 123
 
 
 class TestExpando:
