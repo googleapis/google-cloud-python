@@ -39,6 +39,8 @@ __all__ = [
     "synctasklet",
     "tasklet",
     "toplevel",
+    "wait_all",
+    "wait_any",
 ]
 
 
@@ -205,6 +207,18 @@ class Future:
             :data:`False`: Always.
         """
         return False
+
+    @staticmethod
+    def wait_any(futures):
+        """Calls :func:`wait_any`."""
+        # For backwards compatibility
+        return wait_any(futures)
+
+    @staticmethod
+    def wait_all(futures):
+        """Calls :func:`wait_all`."""
+        # For backwards compatibility
+        return wait_all(futures)
 
 
 class _TaskletFuture(Future):
@@ -374,6 +388,39 @@ def tasklet(wrapped):
         return future
 
     return tasklet_wrapper
+
+
+def wait_any(futures):
+    """Wait for any of several futures to finish.
+
+    Args:
+        futures (Sequence[Future]): The futures to wait on.
+
+    Returns:
+        Future: The first future to be found to have finished.
+    """
+    if not futures:
+        return None
+
+    while True:
+        for future in futures:
+            if future.done():
+                return future
+
+        _eventloop.run1()
+
+
+def wait_all(futures):
+    """Wait for all of several futures to finish.
+
+    Args:
+        futures (Sequence[Future]): The futures to wait on.
+    """
+    if not futures:
+        return
+
+    for future in futures:
+        future.wait()
 
 
 def add_flow_exception(*args, **kwargs):
