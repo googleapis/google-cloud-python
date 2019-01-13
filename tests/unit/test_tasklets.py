@@ -182,6 +182,51 @@ class TestFuture:
         future = tasklets.Future()
         assert future.cancelled() is False
 
+    @staticmethod
+    @pytest.mark.usefixtures("runstate")
+    def test_wait_any():
+        futures = [tasklets.Future() for _ in range(3)]
+
+        def callback():
+            futures[1].set_result(42)
+
+        _eventloop.add_idle(callback)
+
+        future = tasklets.Future.wait_any(futures)
+        assert future is futures[1]
+        assert future.result() == 42
+
+    @staticmethod
+    def test_wait_any_no_futures():
+        assert tasklets.Future.wait_any(()) is None
+
+    @staticmethod
+    @pytest.mark.usefixtures("runstate")
+    def test_wait_all():
+        futures = [tasklets.Future() for _ in range(3)]
+
+        def make_callback(index, result):
+            def callback():
+                futures[index].set_result(result)
+
+            return callback
+
+        _eventloop.add_idle(make_callback(0, 42))
+        _eventloop.add_idle(make_callback(1, 43))
+        _eventloop.add_idle(make_callback(2, 44))
+
+        tasklets.Future.wait_all(futures)
+        assert futures[0].done()
+        assert futures[0].result() == 42
+        assert futures[1].done()
+        assert futures[1].result() == 43
+        assert futures[2].done()
+        assert futures[2].result() == 44
+
+    @staticmethod
+    def test_wait_all_no_futures():
+        assert tasklets.Future.wait_all(()) is None
+
 
 class Test_TaskletFuture:
     @staticmethod
@@ -365,6 +410,55 @@ class Test_tasklet:
         future = regular_function(8)
         assert isinstance(future, tasklets.Future)
         assert future.result() == 11
+
+
+class Test_wait_any:
+    @staticmethod
+    @pytest.mark.usefixtures("runstate")
+    def test_it():
+        futures = [tasklets.Future() for _ in range(3)]
+
+        def callback():
+            futures[1].set_result(42)
+
+        _eventloop.add_idle(callback)
+
+        future = tasklets.wait_any(futures)
+        assert future is futures[1]
+        assert future.result() == 42
+
+    @staticmethod
+    def test_it_no_futures():
+        assert tasklets.wait_any(()) is None
+
+
+class Test_wait_all:
+    @staticmethod
+    @pytest.mark.usefixtures("runstate")
+    def test_it():
+        futures = [tasklets.Future() for _ in range(3)]
+
+        def make_callback(index, result):
+            def callback():
+                futures[index].set_result(result)
+
+            return callback
+
+        _eventloop.add_idle(make_callback(0, 42))
+        _eventloop.add_idle(make_callback(1, 43))
+        _eventloop.add_idle(make_callback(2, 44))
+
+        tasklets.wait_all(futures)
+        assert futures[0].done()
+        assert futures[0].result() == 42
+        assert futures[1].done()
+        assert futures[1].result() == 43
+        assert futures[2].done()
+        assert futures[2].result() == 44
+
+    @staticmethod
+    def test_it_no_futures():
+        assert tasklets.wait_all(()) is None
 
 
 def test_get_context():
