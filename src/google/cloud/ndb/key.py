@@ -86,13 +86,15 @@ namespace. To explicitly select the empty namespace pass ``namespace=""``.
 
 
 import base64
-import os
 
 from google.cloud.datastore import _app_engine_key_pb2
 from google.cloud.datastore import key as _key_module
 import google.cloud.datastore
 
+from google.cloud.ndb import _datastore_api
 from google.cloud.ndb import exceptions
+from google.cloud.ndb import _runstate
+from google.cloud.ndb import tasklets
 
 
 __all__ = ["Key"]
@@ -132,8 +134,17 @@ class Key:
 
     .. testsetup:: *
 
+        from unittest import mock
+        from google.cloud.ndb import _runstate
+        client = mock.Mock(project="testing", spec=("project",))
+        context = _runstate.state_context(client)
+        context.__enter__()
         kind1, id1 = "Parent", "C"
         kind2, id2 = "Child", 42
+
+    .. testcleanup:: *
+
+        context.__exit__(None, None, None)
 
     .. doctest:: key-constructor-primary
 
@@ -694,37 +705,40 @@ class Key:
         raw_bytes = self.serialized()
         return base64.urlsafe_b64encode(raw_bytes).strip(b"=")
 
-    def get(self, **ctx_options):
+    def get(self, **options):
         """Synchronously get the entity for this key.
 
         Returns the retrieved :class:`.Model` or :data:`None` if there is no
         such entity.
 
         Args:
-            ctx_options (Dict[str, Any]): The context options for the request.
-                For example, ``{"read_policy": EVENTUAL_CONSISTENCY}``.
+            options (Dict[str, Any]): The options for the request. For
+                example, ``{"read_consistency": EVENTUAL}``.
 
-        Raises:
-            NotImplementedError: Always. The method has not yet been
-                implemented.
+        Returns:
+            Union[:class:`.Model`, :data:`None`]
         """
-        raise NotImplementedError
+        return self.get_async(**options).result()
 
-    def get_async(self, **ctx_options):
+    @tasklets.tasklet
+    def get_async(self, **options):
         """Asynchronously get the entity for this key.
 
-        The result for the returned future with either by the retrieved
+        The result for the returned future will either be the retrieved
         :class:`.Model` or :data:`None` if there is no such entity.
 
         Args:
-            ctx_options (Dict[str, Any]): The context options for the request.
-                For example, ``{"read_policy": EVENTUAL_CONSISTENCY}``.
+            options (Dict[str, Any]): The options for the request. For
+                example, ``{"read_consistency": EVENTUAL}``.
 
-        Raises:
-            NotImplementedError: Always. The method has not yet been
-                implemented.
+        Returns:
+            :class:`~google.cloud.ndb.tasklets.Future`
         """
-        raise NotImplementedError
+        from google.cloud.ndb import model  # avoid circular import
+
+        entity_pb = yield _datastore_api.lookup(self._key, **options)
+        if entity_pb is not _datastore_api._NOT_FOUND:
+            return model._entity_from_protobuf(entity_pb)
 
     def delete(self, **ctx_options):
         """Synchronously delete the entity for this key.
@@ -790,8 +804,9 @@ def _project_from_app(app, allow_empty=False):
 
     Args:
         app (str): The application value to be used. If the caller passes
-            :data:`None` then this will use the ``APPLICATION_ID`` environment
-            variable to determine the running application.
+            :data:`None` and ``allow_empty`` is :data:`False`, then this will
+            use the project set by the current client context. (See
+            :meth:`~client.Client.context`.)
         allow_empty (bool): Flag determining if an empty (i.e. :data:`None`)
             project is allowed. Defaults to :data:`False`.
 
@@ -801,7 +816,8 @@ def _project_from_app(app, allow_empty=False):
     if app is None:
         if allow_empty:
             return None
-        app = os.environ.get(_APP_ID_ENVIRONMENT, _APP_ID_DEFAULT)
+        client = _runstate.current().client
+        app = client.project
 
     # NOTE: This is the same behavior as in the helper
     #       ``google.cloud.datastore.key._clean_app()``.

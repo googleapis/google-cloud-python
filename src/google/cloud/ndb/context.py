@@ -15,13 +15,7 @@
 """Context for currently running tasks and transactions."""
 
 
-__all__ = [
-    "AutoBatcher",
-    "Context",
-    "ContextOptions",
-    "EVENTUAL_CONSISTENCY",
-    "TransactionOptions",
-]
+__all__ = ["AutoBatcher", "Context", "ContextOptions", "TransactionOptions"]
 
 
 class AutoBatcher:
@@ -43,9 +37,6 @@ class ContextOptions:
 
     def __init__(self, *args, **kwargs):
         raise NotImplementedError
-
-
-EVENTUAL_CONSISTENCY = 1
 
 
 class TransactionOptions:

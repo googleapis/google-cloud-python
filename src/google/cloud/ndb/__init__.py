@@ -28,6 +28,7 @@ __all__ = [
     "Client",
     "Context",
     "ContextOptions",
+    "EVENTUAL",
     "EVENTUAL_CONSISTENCY",
     "TransactionOptions",
     "Key",
@@ -125,8 +126,9 @@ from google.cloud.ndb.client import Client
 from google.cloud.ndb.context import AutoBatcher
 from google.cloud.ndb.context import Context
 from google.cloud.ndb.context import ContextOptions
-from google.cloud.ndb.context import EVENTUAL_CONSISTENCY
 from google.cloud.ndb.context import TransactionOptions
+from google.cloud.ndb._datastore_api import EVENTUAL
+from google.cloud.ndb._datastore_api import EVENTUAL_CONSISTENCY
 from google.cloud.ndb.key import Key
 from google.cloud.ndb.model import BlobKey
 from google.cloud.ndb.model import BlobKeyProperty

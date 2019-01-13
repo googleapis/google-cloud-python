@@ -43,10 +43,6 @@ class TestContextOptions:
             context.ContextOptions()
 
 
-def test_EVENTUAL_CONSISTENCY():
-    assert context.EVENTUAL_CONSISTENCY == 1
-
-
 class TestTransactionOptions:
     @staticmethod
     def test_constructor():
