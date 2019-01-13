@@ -49,24 +49,97 @@ _Event = collections.namedtuple(
 class EventLoop:
     """An event loop.
 
-    Instances of ``EventLoop`` are used to coordinate single thraded execution
+    Instances of ``EventLoop`` are used to coordinate single threaded execution
     of tasks and RPCs scheduled asynchronously.
+
+    Since the the ``EventLoop`` runs in the same thread as user code, it's best
+    to think of it as running tasks "on demand". Generally, when some piece of
+    code needs a result from a future, the future's
+    :meth:`~tasklets.Future.wait` method will end up calling
+    :meth:`~EventLoop.run1`, which will attempt to excecute a single task that
+    is queued in the loop. The future will continue to call
+    :meth:`~EventLoop.run1` until one of the callbacks ultimately puts that
+    future into it's ``done`` state, either by setting the result or setting an
+    exception.
+
+    The :meth:`~EventLoop.run` method, which consumes the entire queue before
+    returning, is usually only run when the end of the containing context is
+    reached. At this point, there can't be any code waiting for results from
+    the event loop, so any tasks still queued on the loop at this point, are
+    just being run without regard for their results. For example, a request
+    handler for a web application might write some objects to Datastore. This
+    makes sure those writes complete before we exit from the current context.
+
+    Ultimately, all data flows from calls to gRPC. gRPC handles asynchronous
+    API calls in its own handler thread, so we use a synchronized queue to
+    coordinate with gRPC. When a future from a gRPC call is added with
+    :meth:`~EventLoop.queue_rpc`, a done callback is added to the gRPC future
+    which causes it to push itself onto the synchronized queue when it is
+    finished, so we can process the result here in the event loop. From the
+    finished gRPC call, results will flow back up through whatever series of
+    other futures were waiting on those results and results derived from those
+    results.
+
+    This is somewhat of a work in progress. Initially this was ported (cargo
+    culted) from legacy NDB without a clear understanding of how all the pieces
+    would fit together or what all the different features were actually for. As
+    we've been forced to do some things a little differently with the rewrite,
+    it's not entirely clear that all of the features here have a purpose in the
+    rewrite, but it's still early to say definitively.
+
+    Currently, these are the seperate queues used by the event loop in the
+    order they are checked by :meth:`~EventLoop.run1`. For each call to
+    :meth:`~EventLoop.run1`, the first thing it finds is called:
+
+        current: These callbacks are called first, if there are any. In legacy
+            NDB, these were used by tasklets to queue calls to
+            ``_help_tasklet_along`` when a result from a yielded future was
+            ready. With the rewrite, I haven't seen any reason not to just go
+            ahead and call :meth:`~tasklets.TaskletFuture._advance_tasklet`
+            immediately when a result is available. If a good reason becomes
+            apparent in the course of the rewrite, this is subject to change.
+            Currently, nothing uses this.
+
+        idlers: Effectively, these are the same as ``current``, but just get
+            called afterwards. These currently are used for batching certain
+            calls to the back end. For example, if you call
+            :func:`_datastore_api.lookup`, a new batch is created, and the key
+            you're requesting is added to it. Subsequent calls add keys to the
+            same batch. When the batch is initialized, an idler is added to the
+            event loop which issues a single Datastore Lookup call for the
+            entire batch. Because the event loop is called "on demand", this
+            means this idler won't get called until something needs a result
+            out of the event loop, and the actual gRPC call is made at that
+            time.
+
+        queue: These are callbacks that are supposed to be run at (or after) a
+            certain time. Nothing uses these currently. It's not clear, yet,
+            what the use case was in legacy NDB.
+
+        rpcs: If all other queues are empty, and we are waiting on results of a
+            gRPC call, then we'll call :method:`queue.Queue.get` on the
+            synchronized queue, :attr:`~EventLoop.rpc_results`, to get the next
+            finished gRPC call. This is the only point where
+            :method:`~EventLoop.run1` might block. If the only thing to do is
+            wait for a gRPC call to finish, we may as well wait.
 
     Atrributes:
         current (deque): a FIFO list of (callback, args, kwds). These callbacks
-            run immediately when the eventloop runs.
+            run immediately when the eventloop runs. Not currently used.
         idlers (deque): a FIFO list of (callback, args, kwds). Thes callbacks
-            run only when no other RPCs need to be fired first.
-            For example, AutoBatcher uses idler to fire a batch RPC even before
-            the batch is full.
+            run only when no other RPCs need to be fired first. Used for
+            batching calls to the Datastore back end.
         inactive (int): Number of consecutive idlers that were noops. Reset
             to 0 whenever work is done by any callback, not necessarily by an
-            idler.
+            idler. Not currently used.
         queue (list): a sorted list of (absolute time in sec, callback, args,
             kwds), sorted by time. These callbacks run only after the said
-            time.
-        rpcs (dict): a map from RPC to (callback, args, kwds). Callback is
-            called when the RPC finishes.
+            time. Not currently used.
+        rpcs (dict): a map from RPC to callback. Callback is called when the
+            RPC finishes.
+        rpc_results (queue.Queue): A syncrhonized queue used to coordinate with
+            gRPC. As gRPC futures that we're waiting on are finished, they will
+            get added to this queue and then processed by the event loop.
     """
 
     __slots__ = (
