@@ -101,6 +101,13 @@ class Test_Blob(unittest.TestCase):
         self.assertEqual(blob._encryption_key, None)
         self.assertEqual(blob.kms_key_name, KMS_RESOURCE)
 
+    def test_ctor_with_generation(self):
+        BLOB_NAME = "blob-name"
+        GENERATION = 12345
+        bucket = _Bucket()
+        blob = self._make_one(BLOB_NAME, bucket=bucket, generation=GENERATION)
+        self.assertEqual(blob.generation, GENERATION)
+
     def _set_properties_helper(self, kms_key_name=None):
         import datetime
         from google.cloud._helpers import UTC
