@@ -10,6 +10,7 @@
    key
    model
    query
+   tasklets
    exceptions
    polymodel
    django-middleware

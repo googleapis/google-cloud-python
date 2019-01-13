@@ -43,8 +43,8 @@ class ContextError(Error):
 
     def __init__(self):
         super(ContextError, self).__init__(
-            "No currently running event loop. Asynchronous calls must be made "
-            "in context established by google.cloud.ndb.Client.context."
+            "No current context. NDB calls must be made in context "
+            "established by google.cloud.ndb.Client.context."
         )
 
 

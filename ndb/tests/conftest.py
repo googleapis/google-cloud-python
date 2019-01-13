@@ -20,6 +20,8 @@ modules.
 
 import os
 
+from unittest import mock
+
 from google.cloud import environment_vars
 from google.cloud.ndb import model
 from google.cloud.ndb import _runstate
@@ -78,3 +80,11 @@ def runstate():
     client = None
     with _runstate.state_context(client) as state:
         yield state
+
+
+@pytest.fixture()
+def client(runstate):
+    runstate.client = client = mock.Mock(
+        project="testing", namespace=None, spec=("project", "namespace")
+    )
+    return client
