@@ -73,7 +73,7 @@ class _PropertyMixin(object):
         raise NotImplementedError
 
     @property
-    def query_params(self):
+    def _query_params(self):
         """Default query parameters."""
         params = {}
         if self.user_project is not None:
@@ -118,7 +118,7 @@ class _PropertyMixin(object):
                        ``client`` stored on the current object.
         """
         client = self._require_client(client)
-        query_params = self.query_params
+        query_params = self._query_params
         # Pass only '?projection=noAcl' here because 'acl' and related
         # are handled via custom endpoints.
         query_params["projection"] = "noAcl"
@@ -172,7 +172,7 @@ class _PropertyMixin(object):
                        ``client`` stored on the current object.
         """
         client = self._require_client(client)
-        query_params = self.query_params
+        query_params = self._query_params
         # Pass '?projection=full' here because 'PATCH' documented not
         # to work properly w/ 'noAcl'.
         query_params["projection"] = "full"
@@ -201,7 +201,7 @@ class _PropertyMixin(object):
                        ``client`` stored on the current object.
         """
         client = self._require_client(client)
-        query_params = self.query_params
+        query_params = self._query_params
         query_params["projection"] = "full"
         api_response = client._connection.api_request(
             method="PUT",

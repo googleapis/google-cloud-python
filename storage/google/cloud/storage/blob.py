@@ -159,7 +159,13 @@ class Blob(_PropertyMixin):
     """
 
     def __init__(
-        self, name, bucket, chunk_size=None, encryption_key=None, kms_key_name=None
+        self,
+        name,
+        bucket,
+        chunk_size=None,
+        encryption_key=None,
+        kms_key_name=None,
+        generation=None,
     ):
         name = _bytes_to_unicode(name)
         super(Blob, self).__init__(name=name)
@@ -176,6 +182,9 @@ class Blob(_PropertyMixin):
 
         if kms_key_name is not None:
             self._properties["kmsKeyName"] = kms_key_name
+
+        if generation is not None:
+            self._properties["generation"] = generation
 
     @property
     def chunk_size(self):
@@ -266,7 +275,7 @@ class Blob(_PropertyMixin):
         return _get_encryption_headers(self._encryption_key)
 
     @property
-    def query_params(self):
+    def _query_params(self):
         """Default query parameters."""
         params = {}
         if self.generation is not None:

@@ -435,14 +435,21 @@ class Bucket(_PropertyMixin):
         return self._user_project
 
     @property
-    def query_params(self):
+    def _query_params(self):
         """Default query parameters."""
         params = {}
         if self.user_project is not None:
             params["userProject"] = self.user_project
         return params
 
-    def blob(self, blob_name, chunk_size=None, encryption_key=None, kms_key_name=None):
+    def blob(
+        self,
+        blob_name,
+        chunk_size=None,
+        encryption_key=None,
+        kms_key_name=None,
+        generation=None,
+    ):
         """Factory constructor for blob object.
 
         .. note::
@@ -465,6 +472,10 @@ class Bucket(_PropertyMixin):
         :param kms_key_name:
             Optional resource name of KMS key used to encrypt blob's content.
 
+        :type generation: long
+        :param generation: Optional. If present, selects a specific revision of
+                           this object.
+
         :rtype: :class:`google.cloud.storage.blob.Blob`
         :returns: The blob object created.
         """
@@ -474,6 +485,7 @@ class Bucket(_PropertyMixin):
             chunk_size=chunk_size,
             encryption_key=encryption_key,
             kms_key_name=kms_key_name,
+            generation=generation,
         )
 
     def notification(
