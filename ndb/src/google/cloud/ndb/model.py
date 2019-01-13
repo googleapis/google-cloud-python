@@ -16,7 +16,17 @@
 
 .. testsetup:: *
 
+    from unittest import mock
     from google.cloud import ndb
+    from google.cloud.ndb import _runstate
+
+    client = mock.Mock(project="testing", spec=("project",))
+    context = _runstate.state_context(client)
+    context.__enter__()
+
+.. testcleanup:: *
+
+    context.__exit__(None, None, None)
 """
 
 

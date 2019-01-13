@@ -212,6 +212,7 @@ intersphinx_mapping = {
         "https://googleapis.github.io/google-cloud-python/latest/",
         None,
     ),
+    "grpc": ("https://grpc.io/grpc/python/", None),
 }
 
 # Napoleon settings
