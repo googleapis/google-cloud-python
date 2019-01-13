@@ -183,11 +183,11 @@ class TestFuture:
         assert future.cancelled() is False
 
 
-class TestTaskletFuture:
+class Test_TaskletFuture:
     @staticmethod
     def test_constructor():
         generator = object()
-        future = tasklets.TaskletFuture(generator)
+        future = tasklets._TaskletFuture(generator)
         assert future.generator is generator
 
     @staticmethod
@@ -199,7 +199,7 @@ class TestTaskletFuture:
 
         generator = generator_function()
         next(generator)  # skip ahead to return
-        future = tasklets.TaskletFuture(generator)
+        future = tasklets._TaskletFuture(generator)
         future._advance_tasklet()
         assert future.result() == 42
 
@@ -214,7 +214,7 @@ class TestTaskletFuture:
 
         generator = generator_function()
         next(generator)  # skip ahead to return
-        future = tasklets.TaskletFuture(generator)
+        future = tasklets._TaskletFuture(generator)
         future._advance_tasklet()
         assert future.exception() is error
 
@@ -225,7 +225,7 @@ class TestTaskletFuture:
             yield 42
 
         generator = generator_function()
-        future = tasklets.TaskletFuture(generator)
+        future = tasklets._TaskletFuture(generator)
         with pytest.raises(RuntimeError):
             future._advance_tasklet()
 
@@ -238,7 +238,7 @@ class TestTaskletFuture:
 
         dependency = tasklets.Future()
         generator = generator_function(dependency)
-        future = tasklets.TaskletFuture(generator)
+        future = tasklets._TaskletFuture(generator)
         future._advance_tasklet()
         dependency.set_result(21)
         assert future.result() == 63
@@ -252,7 +252,7 @@ class TestTaskletFuture:
         error = Exception("Spurious error.")
         dependency = tasklets.Future()
         generator = generator_function(dependency)
-        future = tasklets.TaskletFuture(generator)
+        future = tasklets._TaskletFuture(generator)
         future._advance_tasklet()
         dependency.set_exception(error)
         assert future.exception() is error
@@ -270,7 +270,7 @@ class TestTaskletFuture:
         dependency.exception.return_value = None
         dependency.result.return_value = 8
         generator = generator_function(dependency)
-        future = tasklets.TaskletFuture(generator)
+        future = tasklets._TaskletFuture(generator)
         future._advance_tasklet()
 
         callback = dependency.add_done_callback.call_args[0][0]
@@ -287,18 +287,18 @@ class TestTaskletFuture:
 
         dependencies = (tasklets.Future(), tasklets.Future())
         generator = generator_function(dependencies)
-        future = tasklets.TaskletFuture(generator)
+        future = tasklets._TaskletFuture(generator)
         future._advance_tasklet()
         dependencies[0].set_result(8)
         dependencies[1].set_result(3)
         assert future.result() == 11
 
 
-class TestMultiFuture:
+class Test_MultiFuture:
     @staticmethod
     def test_success():
         dependencies = (tasklets.Future(), tasklets.Future())
-        future = tasklets.MultiFuture(dependencies)
+        future = tasklets._MultiFuture(dependencies)
         dependencies[0].set_result("one")
         dependencies[1].set_result("two")
         assert future.result() == ("one", "two")
@@ -306,7 +306,7 @@ class TestMultiFuture:
     @staticmethod
     def test_error():
         dependencies = (tasklets.Future(), tasklets.Future())
-        future = tasklets.MultiFuture(dependencies)
+        future = tasklets._MultiFuture(dependencies)
         error = Exception("Spurious error.")
         dependencies[0].set_exception(error)
         dependencies[1].set_result("two")
@@ -342,7 +342,7 @@ class Test_tasklet:
 
         dependency = tasklets.Future()
         future = generator(dependency)
-        assert isinstance(future, tasklets.TaskletFuture)
+        assert isinstance(future, tasklets._TaskletFuture)
         dependency.set_result(8)
         assert future.result() == 11
 
