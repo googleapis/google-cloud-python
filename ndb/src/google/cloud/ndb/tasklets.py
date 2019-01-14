@@ -394,7 +394,7 @@ def wait_any(futures):
     """Wait for any of several futures to finish.
 
     Args:
-        futures (Sequence[Future]): The futures to wait on.
+        futures (typing.Sequence[Future]): The futures to wait on.
 
     Returns:
         Future: The first future to be found to have finished.
@@ -414,7 +414,7 @@ def wait_all(futures):
     """Wait for all of several futures to finish.
 
     Args:
-        futures (Sequence[Future]): The futures to wait on.
+        futures (typing.Sequence[Future]): The futures to wait on.
     """
     if not futures:
         return
