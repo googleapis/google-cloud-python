@@ -113,7 +113,7 @@ def _get_batch(batch_cls, options):
         batch = batches.pop(options_key)
         batch.idle_callback()
 
-    batches[options_key] = batch = _LookupBatch(options)
+    batches[options_key] = batch = batch_cls(options)
     _eventloop.add_idle(idle)
     return batch
 
@@ -252,8 +252,7 @@ def _get_read_options(options):
         ValueError: When ``read_consistency`` is set to ``EVENTUAL`` and there
             is a transaction.
     """
-    state = _runstate.current()
-    transaction = options.get("transaction", state.transaction)
+    transaction = _get_transaction(options)
 
     read_consistency = options.get("read_consistency")
     if read_consistency is None:
@@ -267,6 +266,153 @@ def _get_read_options(options):
     return datastore_pb2.ReadOptions(
         read_consistency=read_consistency, transaction=transaction
     )
+
+
+def _get_transaction(options):
+    """Get the transaction for a request.
+
+    If specified, this will return the transaction from ``options``. Otherwise,
+    it will return the transaction for the current context.
+
+    Args:
+        options (Dict[str, Any]): The options for the request. Only
+            ``transaction`` will have any bearing here.
+
+    Returns:
+        Union[bytes, NoneType]: The transaction identifier, or :data:`None`.
+    """
+    state = _runstate.current()
+    return options.get("transaction", state.transaction)
+
+
+def put(entity_pb, **options):
+    """Store an entity in datastore.
+
+    The entity can be a new entity to be saved for the first time or an
+    existing entity that has been updated.
+
+    Args:
+        entity_pb (datastore_v1.types.Entity): The entity to be stored.
+        options (Dict[str, Any]): Options for this request.
+
+    Returns:
+        tasklets.Future: Result will be completed datastore key
+            (entity_pb2.Key) for the entity.
+    """
+    _check_unsupported_options(options)
+
+    batch = _get_batch(_CommitBatch, options)
+    return batch.put(entity_pb)
+
+
+class _CommitBatch:
+    """Batch for tracking a set of mutations for a commit.
+
+    Attributes:
+        options (Dict[str, Any]): See Args.
+        mutations (List[datastore_pb2.Mutation]): Sequence of mutation protocol
+            buffers accumumlated for this batch.
+        futures (List[tasklets.Future]): Sequence of futures for return results
+            of the commit. The i-th element of ``futures`` corresponds to the
+            i-th element of ``mutations``.`
+
+    Args:
+        options (Dict[str, Any]): The options for the request. Calls with
+            different options will be placed in different batches.
+    """
+
+    def __init__(self, options):
+        self.options = options
+        self.mutations = []
+        self.futures = []
+
+    def put(self, entity_pb):
+        """Add an entity to batch to be stored.
+
+        Args:
+            entity_pb (datastore_v1.types.Entity): The entity to be stored.
+
+        Returns:
+            tasklets.Future: Result will be completed datastore key
+                (entity_pb2.Key) for the entity.
+        """
+        future = tasklets.Future()
+        mutation = datastore_pb2.Mutation(upsert=entity_pb)
+        self.mutations.append(mutation)
+        self.futures.append(future)
+        return future
+
+    def idle_callback(self):
+        """Send the commit for this batch to Datastore."""
+        rpc = _datastore_commit(self.mutations, _get_transaction(self.options))
+        _eventloop.queue_rpc(rpc, self.commit_callback)
+
+    def commit_callback(self, rpc):
+        """Process the results of a commit request.
+
+        For each mutation, set the result to the key handed back from
+            Datastore. If a key wasn't allocated for the mutation, this will be
+            :data:`None`.
+
+        Args:
+            rpc (grpc.Future): If not an exception, the result will be an
+                instance of
+                :class:`google.cloud.datastore_v1.datastore_pb2.CommitResponse`
+        """
+        # If RPC has resulted in an exception, propagate that exception to all
+        # waiting futures.
+        exception = rpc.exception()
+        if exception is not None:
+            for future in self.futures:
+                future.set_exception(exception)
+            return
+
+        # "The i-th mutation result corresponds to the i-th mutation in the
+        # request."
+        #
+        # https://github.com/googleapis/googleapis/blob/master/google/datastore/v1/datastore.proto#L241
+        response = rpc.result()
+        results_futures = zip(response.mutation_results, self.futures)
+        for mutation_result, future in results_futures:
+            # Datastore only sends a key if one is allocated for the
+            # mutation. Confusingly, though, if a key isn't allocated, instead
+            # of getting None, we get a key with an empty path.
+            if mutation_result.key.path:
+                key = mutation_result.key
+            else:
+                key = None
+            future.set_result(key)
+
+
+def _datastore_commit(mutations, transaction):
+    """Call Commit on Datastore.
+
+    Args:
+        mutations (List[datastore_pb2.Mutation]): The changes to persist to
+            Datastore.
+        transaction (Union[bytes, NoneType]): The identifier for the
+            transaction for this commit, or :data:`None` if no transaction is
+            being used.
+
+    Returns:
+        grpc.Future: A future for
+            :class:`google.cloud.datastore_v1.datastore_pb2.CommitResponse`
+    """
+    if transaction is None:
+        mode = datastore_pb2.CommitRequest.NON_TRANSACTIONAL
+    else:
+        mode = datastore_pb2.CommitRequest.TRANSACTIONAL
+
+    client = _runstate.current().client
+    request = datastore_pb2.CommitRequest(
+        project_id=client.project,
+        mode=mode,
+        mutations=mutations,
+        transaction=transaction,
+    )
+
+    api = stub()
+    return api.Commit.future(request)
 
 
 _OPTIONS_SUPPORTED = {"transaction", "read_consistency", "read_policy"}

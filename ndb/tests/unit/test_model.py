@@ -29,6 +29,7 @@ from google.cloud.ndb import exceptions
 from google.cloud.ndb import key as key_module
 from google.cloud.ndb import model
 from google.cloud.ndb import query
+from google.cloud.ndb import tasklets
 import tests.unit.utils
 
 
@@ -2839,10 +2840,45 @@ class TestModel:
         assert model.Model._validate_key(value) is value
 
     @staticmethod
-    def test__put():
+    @pytest.mark.usefixtures("client")
+    @unittest.mock.patch("google.cloud.ndb.model._datastore_api")
+    def test__put_no_key(_datastore_api):
         entity = model.Model()
-        with pytest.raises(NotImplementedError):
-            entity._put()
+        _datastore_api.put.return_value = future = tasklets.Future()
+        future.set_result(None)
+
+        entity_pb = model._entity_to_protobuf(entity)
+        assert entity._put() == entity.key
+        _datastore_api.put.assert_called_once_with(entity_pb)
+
+    @staticmethod
+    @pytest.mark.usefixtures("client")
+    @unittest.mock.patch("google.cloud.ndb.model._datastore_api")
+    def test__put_w_key(_datastore_api):
+        entity = model.Model()
+        _datastore_api.put.return_value = future = tasklets.Future()
+
+        key = key_module.Key("SomeKind", 123)
+        future.set_result(key._key.to_protobuf())
+
+        entity_pb = model._entity_to_protobuf(entity)
+        assert entity._put() == key
+        _datastore_api.put.assert_called_once_with(entity_pb)
+
+    @staticmethod
+    @pytest.mark.usefixtures("client")
+    @unittest.mock.patch("google.cloud.ndb.model._datastore_api")
+    def test__put_async(_datastore_api):
+        entity = model.Model()
+        _datastore_api.put.return_value = future = tasklets.Future()
+
+        key = key_module.Key("SomeKind", 123)
+        future.set_result(key._key.to_protobuf())
+
+        entity_pb = model._entity_to_protobuf(entity)
+        tasklet_future = entity._put_async()
+        assert tasklet_future.result() == key
+        _datastore_api.put.assert_called_once_with(entity_pb)
 
     @staticmethod
     def test__lookup_model():
@@ -2953,6 +2989,7 @@ class Test_entity_to_protobuf:
         e_values = entity_pb.properties["e"].array_value.values
         assert pickle.loads(e_values[0].blob_value) == gherkin
         assert pickle.loads(e_values[1].blob_value) == dill
+        assert "__key__" not in entity_pb.properties
 
     @staticmethod
     def test_property_named_key():
@@ -2966,6 +3003,45 @@ class Test_entity_to_protobuf:
         assert entity_pb.properties["key"].blob_value == b"not the key"
         assert entity_pb.key.path[0].kind == "ThisKind"
         assert entity_pb.key.path[0].id == 123
+
+    @staticmethod
+    def test_override_property():
+        class ThatKind(model.Model):
+            a = model.StringProperty()
+
+        class ThisKind(ThatKind):
+            a = model.IntegerProperty()
+            b = model.BooleanProperty()
+            c = model.PickleProperty()
+            d = model.StringProperty(repeated=True)
+            e = model.PickleProperty(repeated=True)
+            notaproperty = True
+
+        dill = {"sandwiches": ["turkey", "reuben"], "not_sandwiches": "tacos"}
+        gherkin = [{"a": {"b": "c"}, "d": 0}, [1, 2, 3], "himom"]
+        key = key_module.Key("ThisKind", 123, app="testing")
+
+        entity = ThisKind(
+            key=key,
+            a=42,
+            c=gherkin,
+            d=["foo", "bar", "baz"],
+            e=[gherkin, dill],
+        )
+
+        entity_pb = model._entity_to_protobuf(entity)
+        assert isinstance(entity_pb, ds_types.Entity)
+        assert entity_pb.properties["a"].integer_value == 42
+        assert entity_pb.properties["b"].null_value == 0
+        assert pickle.loads(entity_pb.properties["c"].blob_value) == gherkin
+        d_values = entity_pb.properties["d"].array_value.values
+        assert d_values[0].blob_value == b"foo"
+        assert d_values[1].blob_value == b"bar"
+        assert d_values[2].blob_value == b"baz"
+        e_values = entity_pb.properties["e"].array_value.values
+        assert pickle.loads(e_values[0].blob_value) == gherkin
+        assert pickle.loads(e_values[1].blob_value) == dill
+        assert "__key__" not in entity_pb.properties
 
 
 class TestExpando:
