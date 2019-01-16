@@ -41,6 +41,20 @@ def test_rst_add_newline():
         assert convert_text.call_count == 0
 
 
+def test_rst_force_add_newline():
+    with mock.patch.object(pypandoc, 'convert_text') as convert_text:
+        s = 'The hail in Wales'
+        assert utils.rst(s, nl=True) == s + '\n'
+        assert convert_text.call_count == 0
+
+
+def test_rst_disable_add_newline():
+    with mock.patch.object(pypandoc, 'convert_text') as convert_text:
+        s = 'The hail in Wales\nfalls mainly on the snails.'
+        assert utils.rst(s, nl=False) == s
+        assert convert_text.call_count == 0
+
+
 def test_rst_pad_close_quote():
     with mock.patch.object(pypandoc, 'convert_text') as convert_text:
         s = 'A value, as in "foo"'

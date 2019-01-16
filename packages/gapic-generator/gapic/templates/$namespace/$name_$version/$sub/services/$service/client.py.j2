@@ -2,7 +2,7 @@
 
 {% block content %}
 import pkg_resources
-from typing import Mapping, Optional, Sequence, Tuple, Union
+from typing import Mapping, Optional, Sequence, Tuple, Type, Union
 
 from google.api_core import gapic_v1
 from google.api_core import retry
@@ -62,7 +62,7 @@ class {{ service.name }}:
         """{{ method.meta.doc|rst(width=72, indent=8) }}
 
         Args:
-            request ({{ method.input.ident.sphinx }}):
+            request (:class:`{{ method.input.ident.sphinx }}`):
                 The request object.{{ ' ' -}}
                 {{ method.input.meta.doc|wrap(width=72, offset=36, indent=16) }}
             retry (~.retry.Retry): Designation of what errors, if any,
@@ -158,15 +158,15 @@ class {{ service.name }}:
 
     @classmethod
     def get_transport_class(cls,
-            label: str = None) -> {{ service.name }}Transport:
+            label: str = None) -> Type[{{ service.name }}Transport]:
         """Return an appropriate transport class.
 
         Args:
-            label (str): The name of the desired transport. If none is
+            label: The name of the desired transport. If none is
                 provided, then the first transport in the registry is used.
 
         Returns:
-            Type[{{ service.name }}Transport]: The transport class to use.
+            The transport class to use.
         """
         # If a specific transport is requested, return that one.
         if label:

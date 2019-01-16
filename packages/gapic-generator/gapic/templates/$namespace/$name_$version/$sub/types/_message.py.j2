@@ -1,11 +1,21 @@
 class {{ message.name }}({{ p }}.Message):
-    """{{ message.meta.doc|rst(indent=4) }}"""
-    {# Iterate over nested enums. -#}
-    {% for enum in message.nested_enums.values() %}{% filter indent -%}
-        {% include '$namespace/$name_$version/$sub/types/_enum.py.j2' %}
-    {% endfilter %}{% endfor -%}
+    """{{ message.meta.doc|rst(indent=4) }}{% if message.fields|length %}
 
-    {#- Iterate over nested messages. -#}
+    Attributes:
+    {%- for field in message.fields.values() %}
+        {{ field.name }} ({{ field.ident.sphinx }}):
+            {{ field.meta.doc|rst(indent=12, nl=False) }}
+    {%- endfor %}
+    {% endif -%}
+    """
+    {# Iterate over nested enums. -#}
+    {% for enum in message.nested_enums.values() -%}
+        {% filter indent %}
+            {%- include '$namespace/$name_$version/$sub/types/_enum.py.j2' %}
+        {% endfilter %}
+    {% endfor -%}
+
+    {# Iterate over nested messages. -#}
     {% for submessage in message.nested_messages.values() -%}
         {% with message = submessage %}{% filter indent %}
             {%- include '$namespace/$name_$version/$sub/types/_message.py.j2' %}
@@ -13,11 +23,10 @@ class {{ message.name }}({{ p }}.Message):
     {% endfor -%}
 
     {# Iterate over fields. -#}
-    {%- for field in message.fields.values() %}
+    {% for field in message.fields.values() -%}
     {{ field.name }} = {{ p }}.{% if field.repeated %}Repeated{% endif %}Field({{ p }}.{{ field.proto_type }}, number={{ field.number }}
     {%- if field.enum or field.message %},
         {{ field.proto_type.lower() }}={{ field.type.ident.rel(message.ident) }},
     {% endif %})
-    """{{ field.meta.doc|rst(indent=4) }}"""
-    {% endfor %}
+    {% endfor -%}
 {{ '\n\n' }}

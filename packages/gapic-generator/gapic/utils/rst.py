@@ -19,12 +19,18 @@ import pypandoc
 from gapic.utils.lines import wrap
 
 
-def rst(text, width=72, indent=0, source_format='commonmark'):
+def rst(text: str, width: int = 72, indent: int = 0, nl: bool = None,
+        source_format: str = 'commonmark'):
     """Convert the given text to ReStructured Text.
 
     Args:
         text (str): The text to convert.
         width (int): The number of columns.
+        indent (int): The number of columns to indent each line of text
+            (except the first).
+        nl (bool): Whether to append a trailing newline.
+            Defaults to appending a newline if the result is more than
+            one line long.
         source_format (str): The source format. This is ``commonmark`` by
             default, which is what is used by convention in protocol buffers.
 
@@ -36,12 +42,16 @@ def rst(text, width=72, indent=0, source_format='commonmark'):
     # (This makes code generation significantly faster; calling out to pandoc
     # is by far the most expensive thing we do.)
     if not re.search(r'[|*`_[\]]', text):
-        answer = wrap(text, width=width, indent=indent, offset=indent + 3)
+        answer = wrap(text,
+            indent=indent,
+            offset=indent + 3,
+            width=width - indent,
+        )
     else:
         # Convert from CommonMark to ReStructured Text.
         answer = pypandoc.convert_text(text, 'rst',
             format=source_format,
-            extra_args=['--columns=%d' % width],
+            extra_args=['--columns=%d' % (width - indent)],
         ).strip().replace('\n', f"\n{' ' * indent}")
 
     # Add a newline to the end of the document if any line breaks are
@@ -49,7 +59,7 @@ def rst(text, width=72, indent=0, source_format='commonmark'):
     #
     # This causes the closing """ to be on the subsequent line only when
     # appropriate.
-    if '\n' in answer:
+    if nl or ('\n' in answer and nl is None):
         answer += '\n' + ' ' * indent
 
     # If the text ends in a double-quote, append a period.
