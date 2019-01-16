@@ -319,7 +319,8 @@ class ResumableUpload(UploadBase):
     def __init__(self, upload_url, chunk_size, headers=None):
         super(ResumableUpload, self).__init__(upload_url, headers=headers)
         if chunk_size % resumable_media.UPLOAD_CHUNK_SIZE != 0:
-            raise ValueError(u'256 KB must divide chunk size')
+            raise ValueError(u'{} KB must divide chunk size'.format(
+                resumable_media.UPLOAD_CHUNK_SIZE / 1024))
         self._chunk_size = chunk_size
         self._stream = None
         self._content_type = None
