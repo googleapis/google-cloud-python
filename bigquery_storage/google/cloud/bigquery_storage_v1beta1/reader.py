@@ -201,9 +201,7 @@ class ReadRowsStream(object):
         frames = []
         for block in self:
             dataframe = _to_dataframe_with_dtypes(
-                _avro_rows(block, avro_schema),
-                column_names,
-                dtypes
+                _avro_rows(block, avro_schema), column_names, dtypes
             )
             frames.append(dataframe)
         return pandas.concat(frames)

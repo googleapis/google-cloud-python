@@ -24,7 +24,7 @@ LOCAL_DEPS = (
     os.path.join('..', 'core'),
     # TODO: Move bigquery_storage back to dev_install once dtypes feature is
     #       released. Issue #7049
-    os.path.join('..', 'bigquery_storage'),
+    os.path.join('..', 'bigquery_storage[pandas,fastavro]'),
 )
 
 

@@ -283,8 +283,8 @@ def test_to_dataframe_w_scalars(class_under_test):
     got = reader.to_dataframe(read_session)
 
     expected = pandas.DataFrame(
-        list(itertools.chain.from_iterable(SCALAR_BLOCKS)),
-        columns=SCALAR_COLUMN_NAMES)
+        list(itertools.chain.from_iterable(SCALAR_BLOCKS)), columns=SCALAR_COLUMN_NAMES
+    )
     # fastavro provides its own UTC definition, so
     # compare the timestamp columns separately.
     got_ts = got["ts_col"]
@@ -306,28 +306,16 @@ def test_to_dataframe_w_scalars(class_under_test):
 
 def test_to_dataframe_w_dtypes(class_under_test):
     # TODOTODOTODOTODO
-    avro_schema = _bq_to_avro_schema([
-        {"name": "bigfloat", "type": "float64"},
-        {"name": "lilfloat", "type": "float64"},
-    ])
+    avro_schema = _bq_to_avro_schema(
+        [
+            {"name": "bigfloat", "type": "float64"},
+            {"name": "lilfloat", "type": "float64"},
+        ]
+    )
     read_session = _generate_read_session(avro_schema)
     blocks = [
-        [
-            {
-                "bigfloat": 1.25,
-                "lilfloat": 30.5,
-            },
-            {
-                "bigfloat": 2.5,
-                "lilfloat": 21.125,
-            }
-        ],
-        [
-            {
-                "bigfloat": 3.75,
-                "lilfloat": 11.0,
-            }
-        ]
+        [{"bigfloat": 1.25, "lilfloat": 30.5}, {"bigfloat": 2.5, "lilfloat": 21.125}],
+        [{"bigfloat": 3.75, "lilfloat": 11.0}],
     ]
     avro_blocks = _bq_to_avro_blocks(blocks, avro_schema)
 
@@ -341,7 +329,8 @@ def test_to_dataframe_w_dtypes(class_under_test):
             "bigfloat": [1.25, 2.5, 3.75],
             "lilfloat": pandas.Series([30.5, 21.125, 11.0], dtype="float16"),
         },
-        columns=["bigfloat", "lilfloat"])
+        columns=["bigfloat", "lilfloat"],
+    )
     pandas.testing.assert_frame_equal(
         got.reset_index(drop=True),  # reset_index to ignore row labels
         expected.reset_index(drop=True),
