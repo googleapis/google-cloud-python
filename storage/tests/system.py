@@ -1538,16 +1538,6 @@ class TestIAMConfiguration(unittest.TestCase):
         ok_response = requests.get(blob.public_url)
         self.assertEqual(ok_response.content, payload)
 
-        # XXX: Work around 400 error: "Cannot disable object policies because
-        # default object acls are not empty."
-        response = Config.CLIENT._connection.api_request(
-            method="PATCH",
-            path=bucket.path,
-            data={},
-            query_params={'predefinedDefaultObjectAcl': 'private'},
-            _target_object=bucket,
-        )
-
         bucket.iam_configuration.bucket_policy_only = True
         bucket.patch()
 
@@ -1573,16 +1563,6 @@ class TestIAMConfiguration(unittest.TestCase):
         # Preserve ACLs before setting BPO
         bucket_acl_before = list(bucket.acl)
         blob_acl_before = list(bucket.acl)
-
-        # XXX: Work around 400 error: "Cannot disable object policies because
-        # default object acls are not empty."
-        response = Config.CLIENT._connection.api_request(
-            method="PATCH",
-            path=bucket.path,
-            data={},
-            query_params={'predefinedDefaultObjectAcl': 'private'},
-            _target_object=bucket,
-        )
 
         # Set BPO
         bucket.iam_configuration.bucket_policy_only = True
