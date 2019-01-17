@@ -1543,19 +1543,6 @@ class TestIAMConfiguration(unittest.TestCase):
         with self.assertRaises(exceptions.BadRequest):
             bucket.acl.reload()
 
-        # XXX This should raise, but doesn't as of 2018-01-08T19:00:00Z
-        #with self.assertRaises(exceptions.BadRequest):
-        #    bucket.acl.clear()
-
-        # XXX The blob ACL get / set stuff raises 403, rather than 400.
-        #with self.assertRaises(exceptions.BadRequest):
-        with self.assertRaises(exceptions.Forbidden):
-            blob.acl.reload()
-
-        #with self.assertRaises(exceptions.BadRequest):
-        with self.assertRaises(exceptions.Forbidden):
-            blob.acl.clear()
-
         # Clear BPO
         bucket.iam_configuration.bucket_policy_only = False
         bucket.patch()
