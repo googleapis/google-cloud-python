@@ -186,14 +186,14 @@ class Client(object):
             subscription (str): The name of the subscription. The
                 subscription should have already been created (for example,
                 by using :meth:`create_subscription`).
-            callback (Callable[~.pubsub_v1.subscriber.message.Message]):
+            callback (Callable[~google.cloud.pubsub_v1.subscriber.message.Message]):
                 The callback function. This function receives the message as
                 its only argument and will be called from a different thread/
                 process depending on the scheduling strategy.
-            flow_control (~.pubsub_v1.types.FlowControl): The flow control
+            flow_control (~google.cloud.pubsub_v1.types.FlowControl): The flow control
                 settings. Use this to prevent situations where you are
                 inundated with too many messages at once.
-            scheduler (~.pubsub_v1.subscriber.scheduler.Scheduler): An optional
+            scheduler (~google.cloud.pubsub_v1.subscriber.scheduler.Scheduler): An optional
                 *scheduler* to use when executing the callback. This controls
                 how callbacks are executed concurrently.
 
