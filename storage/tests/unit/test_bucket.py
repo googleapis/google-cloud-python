@@ -175,6 +175,108 @@ class Test_LifecycleRuleSetStorageClass(unittest.TestCase):
         self.assertEqual(dict(rule), resource)
 
 
+class Test_IAMConfiguration(unittest.TestCase):
+    @staticmethod
+    def _get_target_class():
+        from google.cloud.storage.bucket import IAMConfiguration
+
+        return IAMConfiguration
+
+    def _make_one(self, bucket, **kw):
+        return self._get_target_class()(bucket, **kw)
+
+    @staticmethod
+    def _make_bucket():
+        from google.cloud.storage.bucket import Bucket
+
+        return mock.create_autospec(Bucket, instance=True)
+
+    def test_ctor_defaults(self):
+        bucket = self._make_bucket()
+
+        config = self._make_one(bucket)
+
+        self.assertIs(config.bucket, bucket)
+        self.assertFalse(config.bucket_policy_only)
+        self.assertIsNone(config.locked_time)
+
+    def test_ctor_explicit(self):
+        import datetime
+        import pytz
+
+        bucket = self._make_bucket()
+        now = datetime.datetime.utcnow().replace(tzinfo=pytz.UTC)
+
+        config = self._make_one(bucket, enabled=True, locked_time=now)
+
+        self.assertIs(config.bucket, bucket)
+        self.assertTrue(config.bucket_policy_only)
+        self.assertEqual(config.locked_time, now)
+
+    def test_from_api_repr_w_empty_resource(self):
+        klass = self._get_target_class()
+        bucket = self._make_bucket()
+        resource = {}
+
+        config = klass.from_api_repr(resource, bucket)
+
+        self.assertIs(config.bucket, bucket)
+        self.assertFalse(config.bucket_policy_only)
+        self.assertIsNone(config.locked_time)
+
+    def test_from_api_repr_w_empty_bpo(self):
+        klass = self._get_target_class()
+        bucket = self._make_bucket()
+        resource = {"bucketPolicyOnly": {}}
+
+        config = klass.from_api_repr(resource, bucket)
+
+        self.assertIs(config.bucket, bucket)
+        self.assertFalse(config.bucket_policy_only)
+        self.assertIsNone(config.locked_time)
+
+    def test_from_api_repr_w_disabled(self):
+        klass = self._get_target_class()
+        bucket = self._make_bucket()
+        resource = {"bucketPolicyOnly": {"enabled": False}}
+
+        config = klass.from_api_repr(resource, bucket)
+
+        self.assertIs(config.bucket, bucket)
+        self.assertFalse(config.bucket_policy_only)
+        self.assertIsNone(config.locked_time)
+
+    def test_from_api_repr_w_enabled(self):
+        import datetime
+        import pytz
+        from google.cloud._helpers import _datetime_to_rfc3339
+
+        klass = self._get_target_class()
+        bucket = self._make_bucket()
+        now = datetime.datetime.utcnow().replace(tzinfo=pytz.UTC)
+        resource = {
+            "bucketPolicyOnly": {
+                "enabled": True,
+                "lockedTime": _datetime_to_rfc3339(now),
+            }
+        }
+
+        config = klass.from_api_repr(resource, bucket)
+
+        self.assertIs(config.bucket, bucket)
+        self.assertTrue(config.bucket_policy_only)
+        self.assertEqual(config.locked_time, now)
+
+    def test_bucket_policy_only_setter(self):
+        bucket = self._make_bucket()
+        config = self._make_one(bucket)
+
+        config.bucket_policy_only = True
+
+        self.assertTrue(config["bucketPolicyOnly"]["enabled"])
+        bucket._patch_property.assert_called_once_with("iamConfiguration", config)
+
+
 class Test_Bucket(unittest.TestCase):
     @staticmethod
     def _get_target_class():
@@ -1092,6 +1194,44 @@ class Test_Bucket(unittest.TestCase):
             bucket_module._LOCATION_SETTER_MESSAGE, DeprecationWarning, stacklevel=2
         )
 
+    def test_iam_configuration_policy_missing(self):
+        from google.cloud.storage.bucket import IAMConfiguration
+
+        NAME = "name"
+        bucket = self._make_one(name=NAME)
+
+        config = bucket.iam_configuration
+
+        self.assertIsInstance(config, IAMConfiguration)
+        self.assertIs(config.bucket, bucket)
+        self.assertFalse(config.bucket_policy_only)
+        self.assertIsNone(config.locked_time)
+
+    def test_iam_configuration_policy_w_entry(self):
+        import datetime
+        import pytz
+        from google.cloud._helpers import _datetime_to_rfc3339
+        from google.cloud.storage.bucket import IAMConfiguration
+
+        now = datetime.datetime.utcnow().replace(tzinfo=pytz.UTC)
+        NAME = "name"
+        properties = {
+            "iamConfiguration": {
+                "bucketPolicyOnly": {
+                    "enabled": True,
+                    "lockedTime": _datetime_to_rfc3339(now),
+                }
+            }
+        }
+        bucket = self._make_one(name=NAME, properties=properties)
+
+        config = bucket.iam_configuration
+
+        self.assertIsInstance(config, IAMConfiguration)
+        self.assertIs(config.bucket, bucket)
+        self.assertTrue(config.bucket_policy_only)
+        self.assertEqual(config.locked_time, now)
+
     def test_lifecycle_rules_getter_unknown_action_type(self):
         NAME = "name"
         BOGUS_RULE = {"action": {"type": "Bogus"}, "condition": {"age": 42}}
@@ -1474,103 +1614,6 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(
             bucket._properties["retentionPolicy"]["retentionPeriod"], str(period)
         )
-
-    def test_iam_configuration_bucket_policy_only_w_empty_resource(self):
-        bucket = self._make_one()
-
-        self.assertFalse(bucket.iam_configuration_bucket_policy_only)
-
-    def test_iam_configuration_bucket_policy_only_w_empty_bpo(self):
-        properties = {
-            "iamConfiguration": {
-                "bucketPolicyOnly": {},
-            }
-        }
-        bucket = self._make_one(properties=properties)
-
-        self.assertFalse(bucket.iam_configuration_bucket_policy_only)
-
-    def test_iam_configuration_bucket_policy_only_w_disabled(self):
-        properties = {
-            "iamConfiguration": {
-                "bucketPolicyOnly": {"enabled": False},
-            }
-        }
-        bucket = self._make_one(properties=properties)
-
-        self.assertFalse(bucket.iam_configuration_bucket_policy_only)
-
-    def test_iam_configuration_bucket_policy_only_w_enabled(self):
-        import datetime
-        import pytz
-        from google.cloud._helpers import _datetime_to_rfc3339
-
-        now = datetime.datetime.utcnow().replace(tzinfo=pytz.UTC)
-        properties = {
-            "iamConfiguration": {
-                "bucketPolicyOnly": {
-                    "enabled": True,
-                    "lockedTime": _datetime_to_rfc3339(now),
-                }
-            }
-        }
-        bucket = self._make_one(properties=properties)
-
-        self.assertTrue(bucket.iam_configuration_bucket_policy_only)
-
-    def test_iam_configuration_bucket_policy_only_only_setter(self):
-        bucket = self._make_one()
-        bucket._patch_property = mock.Mock()
-
-        bucket.iam_configuration_bucket_policy_only = True
-
-        config = bucket._properties["iamConfiguration"]
-
-        self.assertTrue(config["bucketPolicyOnly"]["enabled"])
-        bucket._patch_property.assert_called_once_with("iamConfiguration", config)
-
-    def test_iam_configuration_locked_time_w_empty_resource(self):
-        bucket = self._make_one()
-
-        self.assertIsNone(bucket.iam_configuration_locked_time)
-
-    def test_iam_configuration_locked_time_w_empty_bpo(self):
-        properties = {
-            "iamConfiguration": {
-                "bucketPolicyOnly": {},
-            }
-        }
-        bucket = self._make_one(properties=properties)
-
-        self.assertIsNone(bucket.iam_configuration_locked_time)
-
-    def test_iam_configuration_locked_time_w_disabled(self):
-        properties = {
-            "iamConfiguration": {
-                "bucketPolicyOnly": {"enabled": False},
-            }
-        }
-        bucket = self._make_one(properties=properties)
-
-        self.assertIsNone(bucket.iam_configuration_locked_time)
-
-    def test_iam_configuration_locked_time_w_enabled(self):
-        import datetime
-        import pytz
-        from google.cloud._helpers import _datetime_to_rfc3339
-
-        now = datetime.datetime.utcnow().replace(tzinfo=pytz.UTC)
-        properties = {
-            "iamConfiguration": {
-                "bucketPolicyOnly": {
-                    "enabled": True,
-                    "lockedTime": _datetime_to_rfc3339(now),
-                }
-            }
-        }
-        bucket = self._make_one(properties=properties)
-
-        self.assertEqual(bucket.iam_configuration_locked_time, now)
 
     def test_self_link(self):
         SELF_LINK = "http://example.com/self/"
