@@ -134,3 +134,33 @@ def cover(session):
     session.run("coverage", "report", "--show-missing", "--fail-under=100")
 
     session.run("coverage", "erase")
+
+
+@nox.session(python='3.6')
+def docs(session):
+    """Build the docs."""
+
+    # Install Sphinx and also this package.
+    session.chdir(os.path.realpath(os.path.dirname(__file__)))
+    session.install('-r', os.path.join('docs', 'requirements.txt'))
+    for local_dep in LOCAL_DEPS:
+        session.install("-e", local_dep)
+    session.install("-e", ".")
+
+    # Remove old stuff
+    build_dir = os.path.join('docs', '_build')
+    session.run("rm", "-rf", build_dir)
+
+    # Build the docs!
+    doctrees_dir = os.path.join(build_dir, 'doctrees')
+    html_dir = os.path.join(build_dir, 'html')
+    session.run(
+        'sphinx-build',
+        '-W',  # warnings as errors
+        '-T',  # show full traceback on exception
+        '-N',  # no color
+        '-b', 'html',
+        '-d', doctrees_dir,
+        'docs',
+        html_dir,
+    )
