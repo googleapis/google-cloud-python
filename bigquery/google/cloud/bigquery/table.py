@@ -16,6 +16,7 @@
 
 from __future__ import absolute_import
 
+import collections
 import copy
 import datetime
 import json
@@ -1315,14 +1316,24 @@ class RowIterator(HTTPIterator):
         """int: The total number of rows in the table."""
         return self._total_rows
 
-    def _to_dataframe_tabledata_list(self):
-        """Use (slower, but free) tabledata.list to construct a DataFrame."""
-        column_headers = [field.name for field in self.schema]
-        # Use generator, rather than pulling the whole rowset into memory.
-        rows = (row.values() for row in iter(self))
-        return pandas.DataFrame(rows, columns=column_headers)
+    def _to_dataframe_dtypes(self, page, column_names, dtypes):
+        columns = collections.defaultdict(list)
+        for row in page:
+            for column in column_names:
+                columns[column].append(row[column])
+        for column in dtypes:
+            columns[column] = pandas.Series(columns[column], dtype=dtypes[column])
+        return pandas.DataFrame(columns, columns=column_names)
 
-    def _to_dataframe_bqstorage(self, bqstorage_client):
+    def _to_dataframe_tabledata_list(self, dtypes):
+        """Use (slower, but free) tabledata.list to construct a DataFrame."""
+        column_names = [field.name for field in self.schema]
+        frames = []
+        for page in iter(self.pages):
+            frames.append(self._to_dataframe_dtypes(page, column_names, dtypes))
+        return pandas.concat(frames)
+
+    def _to_dataframe_bqstorage(self, bqstorage_client, dtypes):
         """Use (faster, but billable) BQ Storage API to construct DataFrame."""
         import concurrent.futures
         from google.cloud import bigquery_storage_v1beta1
@@ -1360,7 +1371,7 @@ class RowIterator(HTTPIterator):
         def get_dataframe(stream):
             position = bigquery_storage_v1beta1.types.StreamPosition(stream=stream)
             rowstream = bqstorage_client.read_rows(position)
-            return rowstream.to_dataframe(session)
+            return rowstream.to_dataframe(session, dtypes=dtypes)
 
         with concurrent.futures.ThreadPoolExecutor() as pool:
             frames = pool.map(get_dataframe, session.streams)
@@ -1369,16 +1380,16 @@ class RowIterator(HTTPIterator):
         # the end using manually-parsed schema.
         return pandas.concat(frames)[columns]
 
-    def to_dataframe(self, bqstorage_client=None):
+    def to_dataframe(self, bqstorage_client=None, dtypes=None):
         """Create a pandas DataFrame from the query results.
 
         Args:
             bqstorage_client ( \
                 google.cloud.bigquery_storage_v1beta1.BigQueryStorageClient \
             ):
-                Optional. A BigQuery Storage API client. If supplied, use the
-                faster BigQuery Storage API to fetch rows from BigQuery. This
-                API is a billable API.
+                **Alpha Feature** Optional. A BigQuery Storage API client. If
+                supplied, use the faster BigQuery Storage API to fetch rows
+                from BigQuery. This API is a billable API.
 
                 This method requires the ``fastavro`` and
                 ``google-cloud-bigquery-storage`` libraries.
@@ -1389,6 +1400,13 @@ class RowIterator(HTTPIterator):
                 **Caution**: There is a known issue reading small anonymous
                 query result tables with the BQ Storage API. Write your query
                 results to a destination table to work around this issue.
+            dtypes ( \
+                Map[str, Union[str, pandas.Series.dtype]] \
+            ):
+                Optional. A dictionary of column names pandas ``dtype``s. The
+                provided ``dtype`` is used when constructing the series for
+                the column specified. Otherwise, the default pandas behavior
+                is used.
 
         Returns:
             pandas.DataFrame:
@@ -1402,11 +1420,13 @@ class RowIterator(HTTPIterator):
         """
         if pandas is None:
             raise ValueError(_NO_PANDAS_ERROR)
+        if dtypes is None:
+            dtypes = {}
 
         if bqstorage_client is not None:
-            return self._to_dataframe_bqstorage(bqstorage_client)
+            return self._to_dataframe_bqstorage(bqstorage_client, dtypes)
         else:
-            return self._to_dataframe_tabledata_list()
+            return self._to_dataframe_tabledata_list(dtypes)
 
 
 class _EmptyRowIterator(object):

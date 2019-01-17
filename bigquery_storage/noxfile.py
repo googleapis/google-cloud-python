@@ -43,7 +43,6 @@ def default(session):
     session.run(
         'py.test',
         '--quiet',
-        '--cov=google.cloud.bigquery_storage',
         '--cov=google.cloud.bigquery_storage_v1beta1',
         '--cov=tests.unit',
         '--cov-append',
