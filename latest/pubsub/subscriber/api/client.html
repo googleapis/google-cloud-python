@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Subscriber Client API &#8212; google-cloud 8c2d0fd documentation</title>
+    <title>Subscriber Client API &#8212; google-cloud d4c0869 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -1174,13 +1174,13 @@ synchronous pull method.</p>
 <li><strong>subscription</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the subscription. The
 subscription should have already been created (for example,
 by using <a class="reference internal" href="#google.cloud.pubsub_v1.subscriber.client.Client.create_subscription" title="google.cloud.pubsub_v1.subscriber.client.Client.create_subscription"><code class="xref py py-meth docutils literal notranslate"><span class="pre">create_subscription()</span></code></a>).</li>
-<li><strong>callback</strong> (<em>Callable</em><em>[</em><em>Message</em><em>]</em>) – The callback function. This function receives the message as
+<li><strong>callback</strong> (<em>Callable</em><em>[</em><a class="reference internal" href="message.html#google.cloud.pubsub_v1.subscriber.message.Message" title="google.cloud.pubsub_v1.subscriber.message.Message"><em>Message</em></a><em>]</em>) – The callback function. This function receives the message as
 its only argument and will be called from a different thread/
 process depending on the scheduling strategy.</li>
-<li><strong>flow_control</strong> (<em>FlowControl</em>) – The flow control
+<li><strong>flow_control</strong> (<a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.FlowControl" title="google.cloud.pubsub_v1.types.FlowControl"><em>FlowControl</em></a>) – The flow control
 settings. Use this to prevent situations where you are
 inundated with too many messages at once.</li>
-<li><strong>scheduler</strong> (<em>Scheduler</em>) – An optional
+<li><strong>scheduler</strong> (<a class="reference internal" href="scheduler.html#google.cloud.pubsub_v1.subscriber.scheduler.Scheduler" title="google.cloud.pubsub_v1.subscriber.scheduler.Scheduler"><em>Scheduler</em></a>) – An optional
 <em>scheduler</em> to use when executing the callback. This controls
 how callbacks are executed concurrently.</li>
 </ul>
