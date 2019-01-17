@@ -1733,13 +1733,22 @@ class TestBigQuery(unittest.TestCase):
                     ),
                 ],
             ),
+            SF("bigfloat_col", "FLOAT", mode="NULLABLE"),
+            SF("smallfloat_col", "FLOAT", mode="NULLABLE"),
         ]
         record = {
             "nested_string": "another string value",
             "nested_repeated": [0, 1, 2],
             "nested_record": {"nested_nested_string": "some deep insight"},
         }
-        to_insert = [{"string_col": "Some value", "record_col": record}]
+        to_insert = [
+            {
+                "string_col": "Some value",
+                "record_col": record,
+                "bigfloat_col": 3.14,
+                "smallfloat_col": 2.72,
+            }
+        ]
         rows = [json.dumps(row) for row in to_insert]
         body = six.BytesIO("{}\n".format("\n".join(rows)).encode("ascii"))
         table_id = "test_table"
@@ -1753,11 +1762,13 @@ class TestBigQuery(unittest.TestCase):
         # Load a table using a local JSON file from memory.
         Config.CLIENT.load_table_from_file(body, table, job_config=job_config).result()
 
-        df = Config.CLIENT.list_rows(table, selected_fields=schema).to_dataframe()
+        df = Config.CLIENT.list_rows(table, selected_fields=schema).to_dataframe(
+            dtypes={"smallfloat_col": "float16"}
+        )
 
         self.assertIsInstance(df, pandas.DataFrame)
         self.assertEqual(len(df), 1)  # verify the number of rows
-        exp_columns = ["string_col", "record_col"]
+        exp_columns = ["string_col", "record_col", "bigfloat_col", "smallfloat_col"]
         self.assertEqual(list(df), exp_columns)  # verify the column names
         row = df.iloc[0]
         # verify the row content
@@ -1769,6 +1780,9 @@ class TestBigQuery(unittest.TestCase):
             row["record_col"]["nested_record"]["nested_nested_string"],
             "some deep insight",
         )
+        # verify dtypes
+        self.assertEqual(df.dtypes["bigfloat_col"].name, "float64")
+        self.assertEqual(df.dtypes["smallfloat_col"].name, "float16")
 
     def test_list_rows_empty_table(self):
         from google.cloud.bigquery.table import RowIterator
