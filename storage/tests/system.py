@@ -1517,35 +1517,6 @@ class TestIAMConfiguration(unittest.TestCase):
         with self.assertRaises(exceptions.BadRequest):
             blob_acl.save()
 
-    @unittest.expectedFailure  # Until rollout completes, ETA 2019-01-10
-    def test_existing_bucket_set_bpo(self):
-        import requests
-
-        new_bucket_name = "set-bpo" + unique_resource_id("-")
-        self.assertRaises(
-            exceptions.NotFound, Config.CLIENT.get_bucket, new_bucket_name
-        )
-        bucket = retry_429(Config.CLIENT.create_bucket)(new_bucket_name)
-        self.case_buckets_to_delete.append(new_bucket_name)
-
-        blob_name = "my-blob.txt"
-        blob = bucket.blob(blob_name)
-        payload = b"DEADBEEF"
-        blob.upload_from_string(payload)
-
-        blob.make_public()
-
-        ok_response = requests.get(blob.public_url)
-        self.assertEqual(ok_response.content, payload)
-
-        bucket.iam_configuration.bucket_policy_only = True
-        bucket.patch()
-
-        failed_response = requests.get(blob.public_url)
-        #XXX: the request for downloading the object via its public URL does
-        #     *not* fail as of 2019-01-08T18:43:00Z
-        self.assertEqual(failed_response.status_code, 403)
-
     def test_bpo_set_unset_preserves_acls(self):
         new_bucket_name = "bpo-acls" + unique_resource_id("-")
         self.assertRaises(
