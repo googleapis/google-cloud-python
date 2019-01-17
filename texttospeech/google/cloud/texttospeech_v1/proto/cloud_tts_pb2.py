@@ -26,7 +26,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n com.google.cloud.texttospeech.v1B\021TextToSpeechProtoP\001ZHgoogle.golang.org/genproto/googleapis/cloud/texttospeech/v1;texttospeech\370\001\001\252\002\034Google.Cloud.TextToSpeech.V1\312\002\034Google\\Cloud\\TextToSpeech\\V1"
     ),
     serialized_pb=_b(
-        '\n2google/cloud/texttospeech_v1/proto/cloud_tts.proto\x12\x1cgoogle.cloud.texttospeech.v1\x1a\x1cgoogle/api/annotations.proto"*\n\x11ListVoicesRequest\x12\x15\n\rlanguage_code\x18\x01 \x01(\t"I\n\x12ListVoicesResponse\x12\x33\n\x06voices\x18\x01 \x03(\x0b\x32#.google.cloud.texttospeech.v1.Voice"\x94\x01\n\x05Voice\x12\x16\n\x0elanguage_codes\x18\x01 \x03(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x42\n\x0bssml_gender\x18\x03 \x01(\x0e\x32-.google.cloud.texttospeech.v1.SsmlVoiceGender\x12!\n\x19natural_sample_rate_hertz\x18\x04 \x01(\x05"\xda\x01\n\x17SynthesizeSpeechRequest\x12;\n\x05input\x18\x01 \x01(\x0b\x32,.google.cloud.texttospeech.v1.SynthesisInput\x12\x41\n\x05voice\x18\x02 \x01(\x0b\x32\x32.google.cloud.texttospeech.v1.VoiceSelectionParams\x12?\n\x0c\x61udio_config\x18\x03 \x01(\x0b\x32).google.cloud.texttospeech.v1.AudioConfig"@\n\x0eSynthesisInput\x12\x0e\n\x04text\x18\x01 \x01(\tH\x00\x12\x0e\n\x04ssml\x18\x02 \x01(\tH\x00\x42\x0e\n\x0cinput_source"\x7f\n\x14VoiceSelectionParams\x12\x15\n\rlanguage_code\x18\x01 \x01(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x42\n\x0bssml_gender\x18\x03 \x01(\x0e\x32-.google.cloud.texttospeech.v1.SsmlVoiceGender"\xab\x01\n\x0b\x41udioConfig\x12\x43\n\x0e\x61udio_encoding\x18\x01 \x01(\x0e\x32+.google.cloud.texttospeech.v1.AudioEncoding\x12\x15\n\rspeaking_rate\x18\x02 \x01(\x01\x12\r\n\x05pitch\x18\x03 \x01(\x01\x12\x16\n\x0evolume_gain_db\x18\x04 \x01(\x01\x12\x19\n\x11sample_rate_hertz\x18\x05 \x01(\x05"1\n\x18SynthesizeSpeechResponse\x12\x15\n\raudio_content\x18\x01 \x01(\x0c*W\n\x0fSsmlVoiceGender\x12!\n\x1dSSML_VOICE_GENDER_UNSPECIFIED\x10\x00\x12\x08\n\x04MALE\x10\x01\x12\n\n\x06\x46\x45MALE\x10\x02\x12\x0b\n\x07NEUTRAL\x10\x03*T\n\rAudioEncoding\x12\x1e\n\x1a\x41UDIO_ENCODING_UNSPECIFIED\x10\x00\x12\x0c\n\x08LINEAR16\x10\x01\x12\x07\n\x03MP3\x10\x02\x12\x0c\n\x08OGG_OPUS\x10\x03\x32\xb8\x02\n\x0cTextToSpeech\x12\x83\x01\n\nListVoices\x12/.google.cloud.texttospeech.v1.ListVoicesRequest\x1a\x30.google.cloud.texttospeech.v1.ListVoicesResponse"\x12\x82\xd3\xe4\x93\x02\x0c\x12\n/v1/voices\x12\xa1\x01\n\x10SynthesizeSpeech\x12\x35.google.cloud.texttospeech.v1.SynthesizeSpeechRequest\x1a\x36.google.cloud.texttospeech.v1.SynthesizeSpeechResponse"\x1e\x82\xd3\xe4\x93\x02\x18"\x13/v1/text:synthesize:\x01*B\xc2\x01\n com.google.cloud.texttospeech.v1B\x11TextToSpeechProtoP\x01ZHgoogle.golang.org/genproto/googleapis/cloud/texttospeech/v1;texttospeech\xf8\x01\x01\xaa\x02\x1cGoogle.Cloud.TextToSpeech.V1\xca\x02\x1cGoogle\\Cloud\\TextToSpeech\\V1b\x06proto3'
+        '\n2google/cloud/texttospeech_v1/proto/cloud_tts.proto\x12\x1cgoogle.cloud.texttospeech.v1\x1a\x1cgoogle/api/annotations.proto"*\n\x11ListVoicesRequest\x12\x15\n\rlanguage_code\x18\x01 \x01(\t"I\n\x12ListVoicesResponse\x12\x33\n\x06voices\x18\x01 \x03(\x0b\x32#.google.cloud.texttospeech.v1.Voice"\x94\x01\n\x05Voice\x12\x16\n\x0elanguage_codes\x18\x01 \x03(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x42\n\x0bssml_gender\x18\x03 \x01(\x0e\x32-.google.cloud.texttospeech.v1.SsmlVoiceGender\x12!\n\x19natural_sample_rate_hertz\x18\x04 \x01(\x05"\xda\x01\n\x17SynthesizeSpeechRequest\x12;\n\x05input\x18\x01 \x01(\x0b\x32,.google.cloud.texttospeech.v1.SynthesisInput\x12\x41\n\x05voice\x18\x02 \x01(\x0b\x32\x32.google.cloud.texttospeech.v1.VoiceSelectionParams\x12?\n\x0c\x61udio_config\x18\x03 \x01(\x0b\x32).google.cloud.texttospeech.v1.AudioConfig"@\n\x0eSynthesisInput\x12\x0e\n\x04text\x18\x01 \x01(\tH\x00\x12\x0e\n\x04ssml\x18\x02 \x01(\tH\x00\x42\x0e\n\x0cinput_source"\x7f\n\x14VoiceSelectionParams\x12\x15\n\rlanguage_code\x18\x01 \x01(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x42\n\x0bssml_gender\x18\x03 \x01(\x0e\x32-.google.cloud.texttospeech.v1.SsmlVoiceGender"\xc7\x01\n\x0b\x41udioConfig\x12\x43\n\x0e\x61udio_encoding\x18\x01 \x01(\x0e\x32+.google.cloud.texttospeech.v1.AudioEncoding\x12\x15\n\rspeaking_rate\x18\x02 \x01(\x01\x12\r\n\x05pitch\x18\x03 \x01(\x01\x12\x16\n\x0evolume_gain_db\x18\x04 \x01(\x01\x12\x19\n\x11sample_rate_hertz\x18\x05 \x01(\x05\x12\x1a\n\x12\x65\x66\x66\x65\x63ts_profile_id\x18\x06 \x03(\t"1\n\x18SynthesizeSpeechResponse\x12\x15\n\raudio_content\x18\x01 \x01(\x0c*W\n\x0fSsmlVoiceGender\x12!\n\x1dSSML_VOICE_GENDER_UNSPECIFIED\x10\x00\x12\x08\n\x04MALE\x10\x01\x12\n\n\x06\x46\x45MALE\x10\x02\x12\x0b\n\x07NEUTRAL\x10\x03*T\n\rAudioEncoding\x12\x1e\n\x1a\x41UDIO_ENCODING_UNSPECIFIED\x10\x00\x12\x0c\n\x08LINEAR16\x10\x01\x12\x07\n\x03MP3\x10\x02\x12\x0c\n\x08OGG_OPUS\x10\x03\x32\xb8\x02\n\x0cTextToSpeech\x12\x83\x01\n\nListVoices\x12/.google.cloud.texttospeech.v1.ListVoicesRequest\x1a\x30.google.cloud.texttospeech.v1.ListVoicesResponse"\x12\x82\xd3\xe4\x93\x02\x0c\x12\n/v1/voices\x12\xa1\x01\n\x10SynthesizeSpeech\x12\x35.google.cloud.texttospeech.v1.SynthesizeSpeechRequest\x1a\x36.google.cloud.texttospeech.v1.SynthesizeSpeechResponse"\x1e\x82\xd3\xe4\x93\x02\x18"\x13/v1/text:synthesize:\x01*B\xc2\x01\n com.google.cloud.texttospeech.v1B\x11TextToSpeechProtoP\x01ZHgoogle.golang.org/genproto/googleapis/cloud/texttospeech/v1;texttospeech\xf8\x01\x01\xaa\x02\x1cGoogle.Cloud.TextToSpeech.V1\xca\x02\x1cGoogle\\Cloud\\TextToSpeech\\V1b\x06proto3'
     ),
     dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR],
 )
@@ -56,8 +56,8 @@ _SSMLVOICEGENDER = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=1025,
-    serialized_end=1112,
+    serialized_start=1053,
+    serialized_end=1140,
 )
 _sym_db.RegisterEnumDescriptor(_SSMLVOICEGENDER)
 
@@ -87,8 +87,8 @@ _AUDIOENCODING = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=1114,
-    serialized_end=1198,
+    serialized_start=1142,
+    serialized_end=1226,
 )
 _sym_db.RegisterEnumDescriptor(_AUDIOENCODING)
 
@@ -586,6 +586,24 @@ _AUDIOCONFIG = _descriptor.Descriptor(
             serialized_options=None,
             file=DESCRIPTOR,
         ),
+        _descriptor.FieldDescriptor(
+            name="effects_profile_id",
+            full_name="google.cloud.texttospeech.v1.AudioConfig.effects_profile_id",
+            index=5,
+            number=6,
+            type=9,
+            cpp_type=9,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
     ],
     extensions=[],
     nested_types=[],
@@ -596,7 +614,7 @@ _AUDIOCONFIG = _descriptor.Descriptor(
     extension_ranges=[],
     oneofs=[],
     serialized_start=801,
-    serialized_end=972,
+    serialized_end=1000,
 )
 
 
@@ -634,8 +652,8 @@ _SYNTHESIZESPEECHRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=974,
-    serialized_end=1023,
+    serialized_start=1002,
+    serialized_end=1051,
 )
 
 _LISTVOICESRESPONSE.fields_by_name["voices"].message_type = _VOICE
@@ -873,6 +891,13 @@ AudioConfig = _reflection.GeneratedProtocolMessageType(
           quality), unless the specified sample rate is not supported
           for the encoding chosen, in which case it will fail the
           request and return [google.rpc.Code.INVALID\_ARGUMENT][].
+      effects_profile_id:
+          An identifier which selects 'audio effects' profiles that are
+          applied on (post synthesized) text to speech. Effects are
+          applied on top of each other in the order they are given. See
+          `audio-profiles <https:%20//cloud.google.com/text-to-
+          speech/docs/audio-profiles>`__ for current supported profile
+          ids.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.texttospeech.v1.AudioConfig)
     ),
@@ -910,8 +935,8 @@ _TEXTTOSPEECH = _descriptor.ServiceDescriptor(
     file=DESCRIPTOR,
     index=0,
     serialized_options=None,
-    serialized_start=1201,
-    serialized_end=1513,
+    serialized_start=1229,
+    serialized_end=1541,
     methods=[
         _descriptor.MethodDescriptor(
             name="ListVoices",

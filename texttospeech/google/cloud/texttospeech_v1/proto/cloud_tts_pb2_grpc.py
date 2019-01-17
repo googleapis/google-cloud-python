@@ -33,8 +33,7 @@ class TextToSpeechServicer(object):
   """
 
     def ListVoices(self, request, context):
-        """Returns a list of [Voice][google.cloud.texttospeech.v1.Voice]
-    supported for synthesis.
+        """Returns a list of Voice supported for synthesis.
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
