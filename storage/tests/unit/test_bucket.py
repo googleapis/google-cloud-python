@@ -360,6 +360,21 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(blob._encryption_key, KEY)
         self.assertIsNone(blob.kms_key_name)
 
+    def test_blob_w_generation(self):
+        from google.cloud.storage.blob import Blob
+
+        BUCKET_NAME = "BUCKET_NAME"
+        BLOB_NAME = "BLOB_NAME"
+        GENERATION = 123
+
+        bucket = self._make_one(name=BUCKET_NAME)
+        blob = bucket.blob(BLOB_NAME, generation=GENERATION)
+        self.assertIsInstance(blob, Blob)
+        self.assertIs(blob.bucket, bucket)
+        self.assertIs(blob.client, bucket.client)
+        self.assertEqual(blob.name, BLOB_NAME)
+        self.assertEqual(blob.generation, GENERATION)
+
     def test_blob_w_kms_key_name(self):
         from google.cloud.storage.blob import Blob
 
