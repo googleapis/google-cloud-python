@@ -344,8 +344,8 @@ class Blob(_PropertyMixin):
                             the URL. Defaults to the credentials stored on the
                             client used.
 
-        :raises :exc:`TypeError` when expiration is not a valid type.
-        :raises :exc:`AttributeError` if credentials is not an instance
+        :raises: :exc:`TypeError` when expiration is not a valid type.
+        :raises: :exc:`AttributeError` if credentials is not an instance
                 of :class:`google.auth.credentials.Signing`.
 
         :rtype: str

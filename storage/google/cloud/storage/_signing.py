@@ -32,7 +32,7 @@ def ensure_signed_credentials(credentials):
     :param credentials: The credentials used to create a private key
                         for signing text.
 
-    :raises :exc:`AttributeError` if credentials is not an instance
+    :raises: :exc:`AttributeError` if credentials is not an instance
             of :class:`google.auth.credentials.Signing`.
     """
     if not isinstance(credentials, google.auth.credentials.Signing):
@@ -62,7 +62,7 @@ def get_signed_query_params(credentials, expiration, string_to_sign):
     :type string_to_sign: str
     :param string_to_sign: The string to be signed by the credentials.
 
-    :raises :exc:`AttributeError` if credentials is not an instance
+    :raises: :exc:`AttributeError` if credentials is not an instance
             of :class:`google.auth.credentials.Signing`.
 
     :rtype: dict
@@ -86,7 +86,7 @@ def get_expiration_seconds(expiration):
     :type expiration: int, long, datetime.datetime, datetime.timedelta
     :param expiration: When the signed URL should expire.
 
-    :raises :exc:`TypeError` when expiration is not a valid type.
+    :raises: :exc:`TypeError` when expiration is not a valid type.
 
     :rtype: int
     :returns: a timestamp as an absolute number of seconds.
@@ -188,8 +188,8 @@ def generate_signed_url(
     :param generation: (Optional) A value that indicates which generation of
                        the resource to fetch.
 
-    :raises :exc:`TypeError` when expiration is not a valid type.
-    :raises :exc:`AttributeError` if credentials is not an instance
+    :raises: :exc:`TypeError` when expiration is not a valid type.
+    :raises: :exc:`AttributeError` if credentials is not an instance
             of :class:`google.auth.credentials.Signing`.
 
     :rtype: str
