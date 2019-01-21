@@ -28,9 +28,12 @@ NOW = datetime.datetime.utcnow  # To be replaced by tests.
 def ensure_signed_credentials(credentials):
     """Raise AttributeError if the credentials are unsigned.
 
-    :type credentials: :class:`google.auth.credentials.Signer`
+    :type credentials: :class:`google.auth.credentials.Signing`
     :param credentials: The credentials used to create a private key
                         for signing text.
+
+    :raises: :exc:`AttributeError` if credentials is not an instance
+            of :class:`google.auth.credentials.Signing`.
     """
     if not isinstance(credentials, google.auth.credentials.Signing):
         auth_uri = (
@@ -49,7 +52,7 @@ def ensure_signed_credentials(credentials):
 def get_signed_query_params(credentials, expiration, string_to_sign):
     """Gets query parameters for creating a signed URL.
 
-    :type credentials: :class:`google.auth.credentials.Signer`
+    :type credentials: :class:`google.auth.credentials.Signing`
     :param credentials: The credentials used to create a private key
                         for signing text.
 
@@ -59,7 +62,8 @@ def get_signed_query_params(credentials, expiration, string_to_sign):
     :type string_to_sign: str
     :param string_to_sign: The string to be signed by the credentials.
 
-    :raises AttributeError: If :meth: sign_blob is unavailable.
+    :raises: :exc:`AttributeError` if credentials is not an instance
+            of :class:`google.auth.credentials.Signing`.
 
     :rtype: dict
     :returns: Query parameters matching the signing credentials with a
@@ -82,7 +86,7 @@ def get_expiration_seconds(expiration):
     :type expiration: int, long, datetime.datetime, datetime.timedelta
     :param expiration: When the signed URL should expire.
 
-    :raises TypeError: When expiration is not an integer.
+    :raises: :exc:`TypeError` when expiration is not a valid type.
 
     :rtype: int
     :returns: a timestamp as an absolute number of seconds.
@@ -183,6 +187,10 @@ def generate_signed_url(
     :type generation: str
     :param generation: (Optional) A value that indicates which generation of
                        the resource to fetch.
+
+    :raises: :exc:`TypeError` when expiration is not a valid type.
+    :raises: :exc:`AttributeError` if credentials is not an instance
+            of :class:`google.auth.credentials.Signing`.
 
     :rtype: str
     :returns: A signed URL you can use to access the resource
