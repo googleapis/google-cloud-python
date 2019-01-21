@@ -320,7 +320,7 @@ class IAMConfiguration(dict):
 
     @property
     def bucket_policy_only(self):
-        """Is the bucket configured to allow only IAM policy?
+        """If set, access checks only use bucket-level IAM policies or above.
 
         :rtype: bool
         :returns: whether the bucket is configured to allow only IAM.
@@ -336,10 +336,17 @@ class IAMConfiguration(dict):
 
     @property
     def locked_time(self):
-        """When was the bucket configured to allow only IAM policy?
+        """Deadline for changing :attr:`bucket_policy_only` from true to false.
+
+        If the bucket's :attr:`bucket_policy_only` is true, this property
+        is time time after which that setting becomes immutable.
+
+        If the bucket's :attr:`bucket_policy_only` is false, this property
+        is ``None``.
 
         :rtype: Union[:class:`datetime.datetime`, None]
-        :returns:  (readonly) the time the bucket's IAM-only policy was set.
+        :returns:  (readonly) Time after which :attr:`bucket_policy_only` will
+                   be frozen as true.
         """
         bpo = self.get("bucketPolicyOnly", {})
         stamp = bpo.get("lockedTime")
