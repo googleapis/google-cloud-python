@@ -39,8 +39,8 @@ class Proto:
 
     file_pb2: descriptor_pb2.FileDescriptorProto
     services: Mapping[str, wrappers.Service]
-    messages: Mapping[str, wrappers.MessageType]
-    enums: Mapping[str, wrappers.EnumType]
+    all_messages: Mapping[str, wrappers.MessageType]
+    all_enums: Mapping[str, wrappers.EnumType]
     file_to_generate: bool
     meta: metadata.Metadata = dataclasses.field(
         default_factory=metadata.Metadata,
@@ -72,6 +72,22 @@ class Proto:
             prior_protos=prior_protos or {},
         ).proto
 
+    @cached_property
+    def enums(self) -> Mapping[str, wrappers.EnumType]:
+        """Return top-level enums on the proto."""
+        return collections.OrderedDict([
+            (k, v) for k, v in self.all_enums.items()
+            if not v.meta.address.parent
+        ])
+
+    @cached_property
+    def messages(self) -> Mapping[str, wrappers.MessageType]:
+        """Return top-level messages on the proto."""
+        return collections.OrderedDict([
+            (k, v) for k, v in self.all_messages.items()
+            if not v.meta.address.parent
+        ])
+
     @property
     def module_name(self) -> str:
         """Return the appropriate module name for this service.
@@ -90,15 +106,15 @@ class Proto:
         used for imports.
         """
         # Add names of all enums, messages, and fields.
-        answer = {e.name for e in self.enums.values()}
-        for message in self.messages.values():
+        answer = {e.name for e in self.all_enums.values()}
+        for message in self.all_messages.values():
             answer = answer.union({f.name for f in message.fields.values()})
             answer.add(message.name)
 
         # Identify any import module names where the same module name is used
         # from distinct packages.
         modules = {}
-        for t in chain(*[m.field_types for m in self.messages.values()]):
+        for t in chain(*[m.field_types for m in self.all_messages.values()]):
             modules.setdefault(t.ident.module, set())
             modules[t.ident.module].add(t.ident.package)
         for module_name, packages in modules.items():
@@ -131,29 +147,6 @@ class Proto:
 
         # Done; return the sorted sequence.
         return tuple(sorted(list(answer)))
-
-    @cached_property
-    def top(self) -> 'Proto':
-        """Return a proto shim which is only aware of top-level objects.
-
-        This is useful in a situation where a template wishes to iterate
-        over only those messages and enums that are at the top level of the
-        file.
-        """
-        return type(self)(
-            file_pb2=self.file_pb2,
-            services=self.services,
-            messages=collections.OrderedDict([
-                (k, v) for k, v in self.messages.items()
-                if not v.meta.address.parent
-            ]),
-            enums=collections.OrderedDict([
-                (k, v) for k, v in self.enums.items()
-                if not v.meta.address.parent
-            ]),
-            file_to_generate=False,
-            meta=self.meta,
-        )
 
     def disambiguate(self, string: str) -> str:
         """Return a disambiguated string for the context of this proto.
@@ -222,14 +215,14 @@ class API:
     def enums(self) -> Mapping[str, wrappers.EnumType]:
         """Return a map of all enums available in the API."""
         return collections.ChainMap({},
-            *[p.enums for p in self.protos.values()],
+            *[p.all_enums for p in self.protos.values()],
         )
 
     @cached_property
     def messages(self) -> Mapping[str, wrappers.MessageType]:
         """Return a map of all messages available in the API."""
         return collections.ChainMap({},
-            *[p.messages for p in self.protos.values()],
+            *[p.all_messages for p in self.protos.values()],
         )
 
     @cached_property
@@ -298,9 +291,9 @@ class _ProtoBuilder:
                  file_to_generate: bool,
                  naming: api_naming.Naming,
                  prior_protos: Mapping[str, Proto] = None):
-        self.messages = {}
-        self.enums = {}
-        self.services = {}
+        self.proto_messages = {}
+        self.proto_enums = {}
+        self.proto_services = {}
         self.file_descriptor = file_descriptor
         self.file_to_generate = file_to_generate
         self.prior_protos = prior_protos or {}
@@ -348,12 +341,12 @@ class _ProtoBuilder:
         # In this situation, we would not have come across the message yet,
         # and the field would have its original textual reference to the
         # message (`type_name`) but not its resolved message wrapper.
-        for message in self.messages.values():
+        for message in self.proto_messages.values():
             for field in message.fields.values():
                 if field.type_name and not any((field.message, field.enum)):
                     object.__setattr__(
                         field, 'message',
-                        self.messages[field.type_name.lstrip('.')],
+                        self.proto_messages[field.type_name.lstrip('.')],
                     )
 
         # Only generate the service if this is a target file to be generated.
@@ -372,11 +365,11 @@ class _ProtoBuilder:
         # This has everything but is ignorant of naming collisions in the
         # ultimate file that will be written.
         naive = Proto(
-            enums=self.enums,
+            all_enums=self.proto_enums,
+            all_messages=self.proto_messages,
             file_pb2=self.file_descriptor,
             file_to_generate=self.file_to_generate,
-            messages=self.messages,
-            services=self.services,
+            services=self.proto_services,
             meta=metadata.Metadata(
                 address=self.address,
             ),
@@ -391,13 +384,13 @@ class _ProtoBuilder:
         # Note: The services bind to themselves, because services get their
         # own output files.
         return dataclasses.replace(naive,
-            enums=collections.OrderedDict([
+            all_enums=collections.OrderedDict([
                 (k, v.with_context(collisions=naive.names))
-                for k, v in naive.enums.items()
+                for k, v in naive.all_enums.items()
             ]),
-            messages=collections.OrderedDict([
+            all_messages=collections.OrderedDict([
                 (k, v.with_context(collisions=naive.names))
-                for k, v in naive.messages.items()
+                for k, v in naive.all_messages.items()
             ]),
             services=collections.OrderedDict([
                 (k, v.with_context(collisions=v.names))
@@ -407,15 +400,15 @@ class _ProtoBuilder:
         )
 
     @cached_property
-    def all_enums(self) -> Mapping[str, wrappers.EnumType]:
-        return collections.ChainMap({}, self.enums,
-            *[p.enums for p in self.prior_protos.values()],
+    def api_enums(self) -> Mapping[str, wrappers.EnumType]:
+        return collections.ChainMap({}, self.proto_enums,
+            *[p.all_enums for p in self.prior_protos.values()],
         )
 
     @cached_property
-    def all_messages(self) -> Mapping[str, wrappers.MessageType]:
-        return collections.ChainMap({}, self.messages,
-            *[p.messages for p in self.prior_protos.values()],
+    def api_messages(self) -> Mapping[str, wrappers.MessageType]:
+        return collections.ChainMap({}, self.proto_messages,
+            *[p.all_messages for p in self.prior_protos.values()],
         )
 
     def _get_operation_type(self,
@@ -493,7 +486,7 @@ class _ProtoBuilder:
         # naming rules to trust that they will never collide.
         #
         # Note: If this field is a recursive reference to its own message,
-        # then the message will not be in `all_messages` yet (because the
+        # then the message will not be in `api_messages` yet (because the
         # message wrapper is not yet created, because it needs this object
         # first) and this will be None. This case is addressed in the
         # `_load_message` method.
@@ -501,8 +494,8 @@ class _ProtoBuilder:
         for field_pb, i in zip(field_pbs, range(0, sys.maxsize)):
             answer[field_pb.name] = wrappers.Field(
                 field_pb=field_pb,
-                enum=self.all_enums.get(field_pb.type_name.lstrip('.')),
-                message=self.all_messages.get(field_pb.type_name.lstrip('.')),
+                enum=self.api_enums.get(field_pb.type_name.lstrip('.')),
+                message=self.api_messages.get(field_pb.type_name.lstrip('.')),
                 meta=metadata.Metadata(
                     address=address.child(field_pb.name, path + (i,)),
                     documentation=self.docs.get(path + (i,), self.EMPTY),
@@ -536,7 +529,7 @@ class _ProtoBuilder:
 
             # If the output type is google.longrunning.Operation, we use
             # a specialized object in its place.
-            output_type = self.all_messages[meth_pb.output_type.lstrip('.')]
+            output_type = self.api_messages[meth_pb.output_type.lstrip('.')]
             if meth_pb.output_type.endswith('google.longrunning.Operation'):
                 if not lro.response_type or not lro.metadata_type:
                     raise TypeError(
@@ -545,17 +538,17 @@ class _ProtoBuilder:
                         'metadata type.',
                     )
                 output_type = self._get_operation_type(
-                    response_type=self.all_messages[
+                    response_type=self.api_messages[
                         address.resolve(lro.response_type)
                     ],
-                    metadata_type=self.all_messages.get(
+                    metadata_type=self.api_messages.get(
                         address.resolve(lro.metadata_type),
                     ),
                 )
 
             # Create the method wrapper object.
             answer[meth_pb.name] = wrappers.Method(
-                input=self.all_messages[meth_pb.input_type.lstrip('.')],
+                input=self.api_messages[meth_pb.input_type.lstrip('.')],
                 method_pb=meth_pb,
                 meta=metadata.Metadata(
                     address=address.child(meth_pb.name, path + (i,)),
@@ -610,7 +603,7 @@ class _ProtoBuilder:
         ))
 
         # Create a message correspoding to this descriptor.
-        self.messages[address.proto] = wrappers.MessageType(
+        self.proto_messages[address.proto] = wrappers.MessageType(
             fields=fields,
             message_pb=message_pb,
             nested_enums=nested_enums,
@@ -620,7 +613,7 @@ class _ProtoBuilder:
                 documentation=self.docs.get(path, self.EMPTY),
             ),
         )
-        return self.messages[address.proto]
+        return self.proto_messages[address.proto]
 
     def _load_enum(self,
             enum: descriptor_pb2.EnumDescriptorProto,
@@ -642,7 +635,7 @@ class _ProtoBuilder:
             ))
 
         # Load the enum itself.
-        self.enums[address.proto] = wrappers.EnumType(
+        self.proto_enums[address.proto] = wrappers.EnumType(
             enum_pb=enum,
             meta=metadata.Metadata(
                 address=address,
@@ -650,7 +643,7 @@ class _ProtoBuilder:
             ),
             values=values,
         )
-        return self.enums[address.proto]
+        return self.proto_enums[address.proto]
 
     def _load_service(self,
             service: descriptor_pb2.ServiceDescriptorProto,
@@ -668,7 +661,7 @@ class _ProtoBuilder:
         )
 
         # Load the comments for the service itself.
-        self.services[address.proto] = wrappers.Service(
+        self.proto_services[address.proto] = wrappers.Service(
             meta=metadata.Metadata(
                 address=address,
                 documentation=self.docs.get(path, self.EMPTY),
@@ -676,4 +669,4 @@ class _ProtoBuilder:
             methods=methods,
             service_pb=service,
         )
-        return self.services[address.proto]
+        return self.proto_services[address.proto]

@@ -20,21 +20,21 @@ __protobuf__ = {{ p }}.module(
     marshal='{{ api.naming.proto_package }}',
     {% endif -%}
     manifest={
-    {%- for enum in proto.top.enums.values() %}
+    {%- for enum in proto.enums.values() %}
         '{{ enum.name }}',
     {%- endfor %}
-    {%- for message in proto.top.messages.values() %}
+    {%- for message in proto.messages.values() %}
         '{{ message.name }}',
     {%- endfor %}
     },
 )
 
 
-{% for enum in proto.top.enums.values() -%}
+{% for enum in proto.enums.values() -%}
     {% include '$namespace/$name_$version/$sub/types/_enum.py.j2' with context %}
 {% endfor %}
 
-{% for message in proto.top.messages.values() -%}
+{% for message in proto.messages.values() -%}
     {% include "$namespace/$name_$version/$sub/types/_message.py.j2" with context %}
 {% endfor %}
 {% endwith %}

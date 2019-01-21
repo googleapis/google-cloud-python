@@ -332,14 +332,14 @@ def test_messages_nested():
     bar = 'google.example.v3.Foo.Bar'
 
     # Get the message.
-    assert len(proto.messages) == 2
-    assert proto.messages[foo].name == 'Foo'
-    assert proto.messages[bar].name == 'Bar'
+    assert len(proto.all_messages) == 2
+    assert proto.all_messages[foo].name == 'Foo'
+    assert proto.all_messages[bar].name == 'Bar'
 
-    # Assert that the `top` shim only shows top-level messages.
-    assert len(proto.top.messages) == 1
-    assert proto.top.messages[foo] is proto.messages[foo]
-    assert bar not in proto.top.messages
+    # Assert that the `messages` property only shows top-level messages.
+    assert len(proto.messages) == 1
+    assert proto.messages[foo] is proto.messages[foo]
+    assert bar not in proto.messages
 
 
 def test_services():
