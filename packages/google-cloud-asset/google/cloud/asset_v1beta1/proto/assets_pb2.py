@@ -446,14 +446,14 @@ TimeWindow = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_TIMEWINDOW,
         __module__="google.cloud.asset_v1beta1.proto.assets_pb2",
-        __doc__="""A time window of [start\_time, end\_time).
+        __doc__="""A time window of (start\_time, end\_time].
   
   
   Attributes:
       start_time:
-          Start time of the time window (inclusive).
+          Start time of the time window (exclusive).
       end_time:
-          End time of the time window (exclusive). Current timestamp if
+          End time of the time window (inclusive). Current timestamp if
           not specified.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.asset.v1beta1.TimeWindow)
@@ -479,7 +479,7 @@ Asset = _reflection.GeneratedProtocolMessageType(
           See https://cloud.google.com/apis/design/resource_names#full_resource_name
           for more information.
       asset_type:
-          Type of the asset. Example: "google.compute.disk".
+          Type of the asset. Example: "google.compute.Disk".
       resource:
           Representation of the resource.
       iam_policy:
