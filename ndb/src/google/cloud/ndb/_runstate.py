@@ -26,6 +26,7 @@ class State:
         self.eventloop = None
         self.stub = None
         self.batches = {}
+        self.transaction = None
 
 
 class LocalStates(threading.local):

@@ -30,7 +30,6 @@ __all__ = [
     "get_context",
     "make_context",
     "make_default_context",
-    "MultiFuture",
     "QueueFuture",
     "ReducingFuture",
     "Return",
@@ -39,8 +38,9 @@ __all__ = [
     "sleep",
     "synctasklet",
     "tasklet",
-    "TaskletFuture",
     "toplevel",
+    "wait_all",
+    "wait_any",
 ]
 
 
@@ -175,18 +175,22 @@ class Future:
         attribute of that exception.
 
         Returns:
-            Union[traceback, None]: The traceback, or None.
+            Union[types.TracebackType, None]: The traceback, or None.
         """
         if self._exception:
             return self._exception.__traceback__
 
     def add_done_callback(self, callback):
-        """Add a callback function to be run upon task completion.
+        """Add a callback function to be run upon task completion. Will run
+        immediately if task has already finished.
 
         Args:
             callback (Callable): The function to execute.
         """
-        self._callbacks.append(callback)
+        if self._done:
+            callback(self)
+        else:
+            self._callbacks.append(callback)
 
     def cancel(self):
         """Cancel the task for this future.
@@ -200,26 +204,39 @@ class Future:
         """Get whether task for this future has been cancelled.
 
         Returns:
-            False: Always.
+            :data:`False`: Always.
         """
         return False
 
+    @staticmethod
+    def wait_any(futures):
+        """Calls :func:`wait_any`."""
+        # For backwards compatibility
+        return wait_any(futures)
 
-class TaskletFuture(Future):
+    @staticmethod
+    def wait_all(futures):
+        """Calls :func:`wait_all`."""
+        # For backwards compatibility
+        return wait_all(futures)
+
+
+class _TaskletFuture(Future):
     """A future which waits on a tasklet.
 
     A future of this type wraps a generator derived from calling a tasklet. A
     tasklet's generator is expected to yield future objects, either an instance
-    of :class:`ndb.Future` or :class:`grpc.Future'. The result of each yielded
-    future is then sent back into the generator until the generator has
+    of :class:`Future` or :class:`grpc.Future`. The result of each
+    yielded future is then sent back into the generator until the generator has
     completed and either returned a value or raised an exception.
 
     Args:
-        Generator[Union[ndb.Future, grpc.Future], Any, Any]: The generator.
+        typing.Generator[Union[tasklets.Future, grpc.Future], Any, Any]: The
+            generator.
     """
 
     def __init__(self, generator):
-        super(TaskletFuture, self).__init__()
+        super(_TaskletFuture, self).__init__()
         self.generator = generator
 
     def _advance_tasklet(self, send_value=None, error=None):
@@ -248,8 +265,15 @@ class TaskletFuture(Future):
         # parallel yield.
 
         def done_callback(yielded):
-            # To be called when a future dependency has completed.
-            # Advance the tasklet with the yielded value or error.
+            # To be called when a future dependency has completed.  Advance the
+            # tasklet with the yielded value or error.
+            #
+            # It might be worth noting that legacy NDB added a callback to the
+            # event loop which, in turn, called _help_tasklet_along. I don't
+            # see a compelling reason not to go ahead and call _advance_tasklet
+            # immediately here, rather than queue it up to be called soon by
+            # the event loop. This is subject to change if the reason for the
+            # indirection in the original implementation becomes apparent.
             error = yielded.exception()
             if error:
                 self._advance_tasklet(error=error)
@@ -263,7 +287,7 @@ class TaskletFuture(Future):
             _eventloop.queue_rpc(yielded, done_callback)
 
         elif isinstance(yielded, (list, tuple)):
-            future = MultiFuture(yielded)
+            future = _MultiFuture(yielded)
             future.add_done_callback(done_callback)
 
         else:
@@ -273,10 +297,10 @@ class TaskletFuture(Future):
 
 
 def _get_return_value(stop):
-    """Inspect StopIteration instance for return value of tasklet.
+    """Inspect `StopIteration` instance for return value of tasklet.
 
     Args:
-        stop (StopIteration): The StopIteration exception for the finished
+        stop (StopIteration): The `StopIteration` exception for the finished
             tasklet.
     """
     if len(stop.args) == 1:
@@ -286,19 +310,19 @@ def _get_return_value(stop):
         return stop.args
 
 
-class MultiFuture(Future):
+class _MultiFuture(Future):
     """A future which depends on multiple other futures.
 
     This future will be done when either all dependencies have results or when
     one dependency has raised an exception.
 
     Args:
-        dependencies (Sequence[google.cloud.ndb.tasklets.Future]): A sequence
-            of the futures this future depends on.
+        dependencies (typing.Sequence[tasklets.Future]): A sequence of the
+            futures this future depends on.
     """
 
     def __init__(self, dependencies):
-        super(MultiFuture, self).__init__()
+        super(_MultiFuture, self).__init__()
         self._dependencies = dependencies
 
         for dependency in dependencies:
@@ -353,7 +377,7 @@ def tasklet(wrapped):
 
         if isinstance(returned, types.GeneratorType):
             # We have a tasklet
-            future = TaskletFuture(returned)
+            future = _TaskletFuture(returned)
             future._advance_tasklet()
 
         else:
@@ -364,6 +388,39 @@ def tasklet(wrapped):
         return future
 
     return tasklet_wrapper
+
+
+def wait_any(futures):
+    """Wait for any of several futures to finish.
+
+    Args:
+        futures (typing.Sequence[Future]): The futures to wait on.
+
+    Returns:
+        Future: The first future to be found to have finished.
+    """
+    if not futures:
+        return None
+
+    while True:
+        for future in futures:
+            if future.done():
+                return future
+
+        _eventloop.run1()
+
+
+def wait_all(futures):
+    """Wait for all of several futures to finish.
+
+    Args:
+        futures (typing.Sequence[Future]): The futures to wait on.
+    """
+    if not futures:
+        return
+
+    for future in futures:
+        future.wait()
 
 
 def add_flow_exception(*args, **kwargs):
@@ -396,7 +453,16 @@ class ReducingFuture:
         raise NotImplementedError
 
 
-Return = StopIteration
+class Return(StopIteration):
+    """Alias for `StopIteration`.
+
+    Older programs written with NDB may ``raise Return(result)`` in a tasklet.
+    This is no longer necessary, but it is included for backwards
+    compatibility. Tasklets should simply ``return`` their result.
+    """
+
+    # For reasons I don't entirely understand, Sphinx pukes if we just assign:
+    # Return = StopIteration
 
 
 class SerialQueueFuture:

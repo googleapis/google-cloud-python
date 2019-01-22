@@ -1472,21 +1472,22 @@ class TestRowIterator(unittest.TestCase):
             SchemaField("start_timestamp", "TIMESTAMP"),
             SchemaField("seconds", "INT64"),
             SchemaField("miles", "FLOAT64"),
+            SchemaField("km", "FLOAT64"),
             SchemaField("payment_type", "STRING"),
             SchemaField("complete", "BOOL"),
             SchemaField("date", "DATE"),
         ]
         row_data = [
-            ["1.4338368E9", "420", "1.1", "Cash", "true", "1999-12-01"],
-            ["1.3878117E9", "2580", "17.7", "Cash", "false", "1953-06-14"],
-            ["1.3855653E9", "2280", "4.4", "Credit", "true", "1981-11-04"],
+            ["1.4338368E9", "420", "1.1", "1.77", "Cash", "true", "1999-12-01"],
+            ["1.3878117E9", "2580", "17.7", "28.5", "Cash", "false", "1953-06-14"],
+            ["1.3855653E9", "2280", "4.4", "7.1", "Credit", "true", "1981-11-04"],
         ]
         rows = [{"f": [{"v": field} for field in row]} for row in row_data]
         path = "/foo"
         api_request = mock.Mock(return_value={"rows": rows})
         row_iterator = RowIterator(_mock_client(), api_request, path, schema)
 
-        df = row_iterator.to_dataframe()
+        df = row_iterator.to_dataframe(dtypes={"km": "float16"})
 
         self.assertIsInstance(df, pandas.DataFrame)
         self.assertEqual(len(df), 3)  # verify the number of rows
@@ -1496,6 +1497,7 @@ class TestRowIterator(unittest.TestCase):
         self.assertEqual(df.start_timestamp.dtype.name, "datetime64[ns, UTC]")
         self.assertEqual(df.seconds.dtype.name, "int64")
         self.assertEqual(df.miles.dtype.name, "float64")
+        self.assertEqual(df.km.dtype.name, "float16")
         self.assertEqual(df.payment_type.dtype.name, "object")
         self.assertEqual(df.complete.dtype.name, "bool")
         self.assertEqual(df.date.dtype.name, "object")

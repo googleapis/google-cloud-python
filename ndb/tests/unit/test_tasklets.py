@@ -71,6 +71,14 @@ class TestFuture:
         callback2.assert_called_once_with(future)
 
     @staticmethod
+    def test_add_done_callback_already_done():
+        callback = mock.Mock()
+        future = tasklets.Future()
+        future.set_result(42)
+        future.add_done_callback(callback)
+        callback.assert_called_once_with(future)
+
+    @staticmethod
     def test_set_exception():
         future = tasklets.Future()
         error = Exception("Spurious Error")
@@ -174,12 +182,57 @@ class TestFuture:
         future = tasklets.Future()
         assert future.cancelled() is False
 
+    @staticmethod
+    @pytest.mark.usefixtures("runstate")
+    def test_wait_any():
+        futures = [tasklets.Future() for _ in range(3)]
 
-class TestTaskletFuture:
+        def callback():
+            futures[1].set_result(42)
+
+        _eventloop.add_idle(callback)
+
+        future = tasklets.Future.wait_any(futures)
+        assert future is futures[1]
+        assert future.result() == 42
+
+    @staticmethod
+    def test_wait_any_no_futures():
+        assert tasklets.Future.wait_any(()) is None
+
+    @staticmethod
+    @pytest.mark.usefixtures("runstate")
+    def test_wait_all():
+        futures = [tasklets.Future() for _ in range(3)]
+
+        def make_callback(index, result):
+            def callback():
+                futures[index].set_result(result)
+
+            return callback
+
+        _eventloop.add_idle(make_callback(0, 42))
+        _eventloop.add_idle(make_callback(1, 43))
+        _eventloop.add_idle(make_callback(2, 44))
+
+        tasklets.Future.wait_all(futures)
+        assert futures[0].done()
+        assert futures[0].result() == 42
+        assert futures[1].done()
+        assert futures[1].result() == 43
+        assert futures[2].done()
+        assert futures[2].result() == 44
+
+    @staticmethod
+    def test_wait_all_no_futures():
+        assert tasklets.Future.wait_all(()) is None
+
+
+class Test_TaskletFuture:
     @staticmethod
     def test_constructor():
         generator = object()
-        future = tasklets.TaskletFuture(generator)
+        future = tasklets._TaskletFuture(generator)
         assert future.generator is generator
 
     @staticmethod
@@ -191,7 +244,7 @@ class TestTaskletFuture:
 
         generator = generator_function()
         next(generator)  # skip ahead to return
-        future = tasklets.TaskletFuture(generator)
+        future = tasklets._TaskletFuture(generator)
         future._advance_tasklet()
         assert future.result() == 42
 
@@ -206,7 +259,7 @@ class TestTaskletFuture:
 
         generator = generator_function()
         next(generator)  # skip ahead to return
-        future = tasklets.TaskletFuture(generator)
+        future = tasklets._TaskletFuture(generator)
         future._advance_tasklet()
         assert future.exception() is error
 
@@ -217,7 +270,7 @@ class TestTaskletFuture:
             yield 42
 
         generator = generator_function()
-        future = tasklets.TaskletFuture(generator)
+        future = tasklets._TaskletFuture(generator)
         with pytest.raises(RuntimeError):
             future._advance_tasklet()
 
@@ -230,7 +283,7 @@ class TestTaskletFuture:
 
         dependency = tasklets.Future()
         generator = generator_function(dependency)
-        future = tasklets.TaskletFuture(generator)
+        future = tasklets._TaskletFuture(generator)
         future._advance_tasklet()
         dependency.set_result(21)
         assert future.result() == 63
@@ -244,7 +297,7 @@ class TestTaskletFuture:
         error = Exception("Spurious error.")
         dependency = tasklets.Future()
         generator = generator_function(dependency)
-        future = tasklets.TaskletFuture(generator)
+        future = tasklets._TaskletFuture(generator)
         future._advance_tasklet()
         dependency.set_exception(error)
         assert future.exception() is error
@@ -262,7 +315,7 @@ class TestTaskletFuture:
         dependency.exception.return_value = None
         dependency.result.return_value = 8
         generator = generator_function(dependency)
-        future = tasklets.TaskletFuture(generator)
+        future = tasklets._TaskletFuture(generator)
         future._advance_tasklet()
 
         callback = dependency.add_done_callback.call_args[0][0]
@@ -279,18 +332,18 @@ class TestTaskletFuture:
 
         dependencies = (tasklets.Future(), tasklets.Future())
         generator = generator_function(dependencies)
-        future = tasklets.TaskletFuture(generator)
+        future = tasklets._TaskletFuture(generator)
         future._advance_tasklet()
         dependencies[0].set_result(8)
         dependencies[1].set_result(3)
         assert future.result() == 11
 
 
-class TestMultiFuture:
+class Test_MultiFuture:
     @staticmethod
     def test_success():
         dependencies = (tasklets.Future(), tasklets.Future())
-        future = tasklets.MultiFuture(dependencies)
+        future = tasklets._MultiFuture(dependencies)
         dependencies[0].set_result("one")
         dependencies[1].set_result("two")
         assert future.result() == ("one", "two")
@@ -298,7 +351,7 @@ class TestMultiFuture:
     @staticmethod
     def test_error():
         dependencies = (tasklets.Future(), tasklets.Future())
-        future = tasklets.MultiFuture(dependencies)
+        future = tasklets._MultiFuture(dependencies)
         error = Exception("Spurious error.")
         dependencies[0].set_exception(error)
         dependencies[1].set_result("two")
@@ -334,7 +387,7 @@ class Test_tasklet:
 
         dependency = tasklets.Future()
         future = generator(dependency)
-        assert isinstance(future, tasklets.TaskletFuture)
+        assert isinstance(future, tasklets._TaskletFuture)
         dependency.set_result(8)
         assert future.result() == 11
 
@@ -357,6 +410,55 @@ class Test_tasklet:
         future = regular_function(8)
         assert isinstance(future, tasklets.Future)
         assert future.result() == 11
+
+
+class Test_wait_any:
+    @staticmethod
+    @pytest.mark.usefixtures("runstate")
+    def test_it():
+        futures = [tasklets.Future() for _ in range(3)]
+
+        def callback():
+            futures[1].set_result(42)
+
+        _eventloop.add_idle(callback)
+
+        future = tasklets.wait_any(futures)
+        assert future is futures[1]
+        assert future.result() == 42
+
+    @staticmethod
+    def test_it_no_futures():
+        assert tasklets.wait_any(()) is None
+
+
+class Test_wait_all:
+    @staticmethod
+    @pytest.mark.usefixtures("runstate")
+    def test_it():
+        futures = [tasklets.Future() for _ in range(3)]
+
+        def make_callback(index, result):
+            def callback():
+                futures[index].set_result(result)
+
+            return callback
+
+        _eventloop.add_idle(make_callback(0, 42))
+        _eventloop.add_idle(make_callback(1, 43))
+        _eventloop.add_idle(make_callback(2, 44))
+
+        tasklets.wait_all(futures)
+        assert futures[0].done()
+        assert futures[0].result() == 42
+        assert futures[1].done()
+        assert futures[1].result() == 43
+        assert futures[2].done()
+        assert futures[2].result() == 44
+
+    @staticmethod
+    def test_it_no_futures():
+        assert tasklets.wait_all(()) is None
 
 
 def test_get_context():
@@ -389,7 +491,7 @@ class TestReducingFuture:
 
 
 def test_Return():
-    assert tasklets.Return is StopIteration
+    assert issubclass(tasklets.Return, StopIteration)
 
 
 class TestSerialQueueFuture:

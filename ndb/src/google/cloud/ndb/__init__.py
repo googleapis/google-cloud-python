@@ -28,6 +28,7 @@ __all__ = [
     "Client",
     "Context",
     "ContextOptions",
+    "EVENTUAL",
     "EVENTUAL_CONSISTENCY",
     "TransactionOptions",
     "Key",
@@ -108,7 +109,6 @@ __all__ = [
     "get_context",
     "make_context",
     "make_default_context",
-    "MultiFuture",
     "QueueFuture",
     "ReducingFuture",
     "Return",
@@ -125,8 +125,9 @@ from google.cloud.ndb.client import Client
 from google.cloud.ndb.context import AutoBatcher
 from google.cloud.ndb.context import Context
 from google.cloud.ndb.context import ContextOptions
-from google.cloud.ndb.context import EVENTUAL_CONSISTENCY
 from google.cloud.ndb.context import TransactionOptions
+from google.cloud.ndb._datastore_api import EVENTUAL
+from google.cloud.ndb._datastore_api import EVENTUAL_CONSISTENCY
 from google.cloud.ndb.key import Key
 from google.cloud.ndb.model import BlobKey
 from google.cloud.ndb.model import BlobKeyProperty
@@ -208,7 +209,6 @@ from google.cloud.ndb.tasklets import Future
 from google.cloud.ndb.tasklets import get_context
 from google.cloud.ndb.tasklets import make_context
 from google.cloud.ndb.tasklets import make_default_context
-from google.cloud.ndb.tasklets import MultiFuture
 from google.cloud.ndb.tasklets import QueueFuture
 from google.cloud.ndb.tasklets import ReducingFuture
 from google.cloud.ndb.tasklets import Return

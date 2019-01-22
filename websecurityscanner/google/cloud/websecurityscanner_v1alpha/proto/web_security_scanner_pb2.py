@@ -8,7 +8,6 @@ from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
-from google.protobuf import descriptor_pb2
 
 # @@protoc_insertion_point(imports)
 
@@ -39,6 +38,9 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     name="google/cloud/websecurityscanner_v1alpha/proto/web_security_scanner.proto",
     package="google.cloud.websecurityscanner.v1alpha",
     syntax="proto3",
+    serialized_options=_b(
+        "\n+com.google.cloud.websecurityscanner.v1alphaB\027WebSecurityScannerProtoP\001ZYgoogle.golang.org/genproto/googleapis/cloud/websecurityscanner/v1alpha;websecurityscanner"
+    ),
     serialized_pb=_b(
         '\nHgoogle/cloud/websecurityscanner_v1alpha/proto/web_security_scanner.proto\x12\'google.cloud.websecurityscanner.v1alpha\x1a\x1cgoogle/api/annotations.proto\x1a?google/cloud/websecurityscanner_v1alpha/proto/crawled_url.proto\x1a;google/cloud/websecurityscanner_v1alpha/proto/finding.proto\x1a\x46google/cloud/websecurityscanner_v1alpha/proto/finding_type_stats.proto\x1a?google/cloud/websecurityscanner_v1alpha/proto/scan_config.proto\x1a<google/cloud/websecurityscanner_v1alpha/proto/scan_run.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto"s\n\x17\x43reateScanConfigRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12H\n\x0bscan_config\x18\x02 \x01(\x0b\x32\x33.google.cloud.websecurityscanner.v1alpha.ScanConfig"\'\n\x17\x44\x65leteScanConfigRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"$\n\x14GetScanConfigRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"O\n\x16ListScanConfigsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x12\n\npage_token\x18\x02 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05"\x94\x01\n\x17UpdateScanConfigRequest\x12H\n\x0bscan_config\x18\x02 \x01(\x0b\x32\x33.google.cloud.websecurityscanner.v1alpha.ScanConfig\x12/\n\x0bupdate_mask\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.FieldMask"}\n\x17ListScanConfigsResponse\x12I\n\x0cscan_configs\x18\x01 \x03(\x0b\x32\x33.google.cloud.websecurityscanner.v1alpha.ScanConfig\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"#\n\x13StartScanRunRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"!\n\x11GetScanRunRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"L\n\x13ListScanRunsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x12\n\npage_token\x18\x02 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05"t\n\x14ListScanRunsResponse\x12\x43\n\tscan_runs\x18\x01 \x03(\x0b\x32\x30.google.cloud.websecurityscanner.v1alpha.ScanRun\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t""\n\x12StopScanRunRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"O\n\x16ListCrawledUrlsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x12\n\npage_token\x18\x02 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05"}\n\x17ListCrawledUrlsResponse\x12I\n\x0c\x63rawled_urls\x18\x01 \x03(\x0b\x32\x33.google.cloud.websecurityscanner.v1alpha.CrawledUrl\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"!\n\x11GetFindingRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"\\\n\x13ListFindingsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x02 \x01(\t\x12\x12\n\npage_token\x18\x03 \x01(\t\x12\x11\n\tpage_size\x18\x04 \x01(\x05"s\n\x14ListFindingsResponse\x12\x42\n\x08\x66indings\x18\x01 \x03(\x0b\x32\x30.google.cloud.websecurityscanner.v1alpha.Finding\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"-\n\x1bListFindingTypeStatsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t"u\n\x1cListFindingTypeStatsResponse\x12U\n\x12\x66inding_type_stats\x18\x01 \x03(\x0b\x32\x39.google.cloud.websecurityscanner.v1alpha.FindingTypeStats2\xd0\x14\n\x12WebSecurityScanner\x12\xc8\x01\n\x10\x43reateScanConfig\x12@.google.cloud.websecurityscanner.v1alpha.CreateScanConfigRequest\x1a\x33.google.cloud.websecurityscanner.v1alpha.ScanConfig"=\x82\xd3\xe4\x93\x02\x37"(/v1alpha/{parent=projects/*}/scanConfigs:\x0bscan_config\x12\x9e\x01\n\x10\x44\x65leteScanConfig\x12@.google.cloud.websecurityscanner.v1alpha.DeleteScanConfigRequest\x1a\x16.google.protobuf.Empty"0\x82\xd3\xe4\x93\x02**(/v1alpha/{name=projects/*/scanConfigs/*}\x12\xb5\x01\n\rGetScanConfig\x12=.google.cloud.websecurityscanner.v1alpha.GetScanConfigRequest\x1a\x33.google.cloud.websecurityscanner.v1alpha.ScanConfig"0\x82\xd3\xe4\x93\x02*\x12(/v1alpha/{name=projects/*/scanConfigs/*}\x12\xc6\x01\n\x0fListScanConfigs\x12?.google.cloud.websecurityscanner.v1alpha.ListScanConfigsRequest\x1a@.google.cloud.websecurityscanner.v1alpha.ListScanConfigsResponse"0\x82\xd3\xe4\x93\x02*\x12(/v1alpha/{parent=projects/*}/scanConfigs\x12\xd4\x01\n\x10UpdateScanConfig\x12@.google.cloud.websecurityscanner.v1alpha.UpdateScanConfigRequest\x1a\x33.google.cloud.websecurityscanner.v1alpha.ScanConfig"I\x82\xd3\xe4\x93\x02\x43\x32\x34/v1alpha/{scan_config.name=projects/*/scanConfigs/*}:\x0bscan_config\x12\xb9\x01\n\x0cStartScanRun\x12<.google.cloud.websecurityscanner.v1alpha.StartScanRunRequest\x1a\x30.google.cloud.websecurityscanner.v1alpha.ScanRun"9\x82\xd3\xe4\x93\x02\x33"./v1alpha/{name=projects/*/scanConfigs/*}:start:\x01*\x12\xb7\x01\n\nGetScanRun\x12:.google.cloud.websecurityscanner.v1alpha.GetScanRunRequest\x1a\x30.google.cloud.websecurityscanner.v1alpha.ScanRun";\x82\xd3\xe4\x93\x02\x35\x12\x33/v1alpha/{name=projects/*/scanConfigs/*/scanRuns/*}\x12\xc8\x01\n\x0cListScanRuns\x12<.google.cloud.websecurityscanner.v1alpha.ListScanRunsRequest\x1a=.google.cloud.websecurityscanner.v1alpha.ListScanRunsResponse";\x82\xd3\xe4\x93\x02\x35\x12\x33/v1alpha/{parent=projects/*/scanConfigs/*}/scanRuns\x12\xc1\x01\n\x0bStopScanRun\x12;.google.cloud.websecurityscanner.v1alpha.StopScanRunRequest\x1a\x30.google.cloud.websecurityscanner.v1alpha.ScanRun"C\x82\xd3\xe4\x93\x02="8/v1alpha/{name=projects/*/scanConfigs/*/scanRuns/*}:stop:\x01*\x12\xdf\x01\n\x0fListCrawledUrls\x12?.google.cloud.websecurityscanner.v1alpha.ListCrawledUrlsRequest\x1a@.google.cloud.websecurityscanner.v1alpha.ListCrawledUrlsResponse"I\x82\xd3\xe4\x93\x02\x43\x12\x41/v1alpha/{parent=projects/*/scanConfigs/*/scanRuns/*}/crawledUrls\x12\xc2\x01\n\nGetFinding\x12:.google.cloud.websecurityscanner.v1alpha.GetFindingRequest\x1a\x30.google.cloud.websecurityscanner.v1alpha.Finding"F\x82\xd3\xe4\x93\x02@\x12>/v1alpha/{name=projects/*/scanConfigs/*/scanRuns/*/findings/*}\x12\xd3\x01\n\x0cListFindings\x12<.google.cloud.websecurityscanner.v1alpha.ListFindingsRequest\x1a=.google.cloud.websecurityscanner.v1alpha.ListFindingsResponse"F\x82\xd3\xe4\x93\x02@\x12>/v1alpha/{parent=projects/*/scanConfigs/*/scanRuns/*}/findings\x12\xf3\x01\n\x14ListFindingTypeStats\x12\x44.google.cloud.websecurityscanner.v1alpha.ListFindingTypeStatsRequest\x1a\x45.google.cloud.websecurityscanner.v1alpha.ListFindingTypeStatsResponse"N\x82\xd3\xe4\x93\x02H\x12\x46/v1alpha/{parent=projects/*/scanConfigs/*/scanRuns/*}/findingTypeStatsB\xa3\x01\n+com.google.cloud.websecurityscanner.v1alphaB\x17WebSecurityScannerProtoP\x01ZYgoogle.golang.org/genproto/googleapis/cloud/websecurityscanner/v1alpha;websecurityscannerb\x06proto3'
     ),
@@ -77,7 +79,7 @@ _CREATESCANCONFIGREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -95,14 +97,14 @@ _CREATESCANCONFIGREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -134,14 +136,14 @@ _DELETESCANCONFIGREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -173,14 +175,14 @@ _GETSCANCONFIGREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -212,7 +214,7 @@ _LISTSCANCONFIGSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -230,7 +232,7 @@ _LISTSCANCONFIGSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -248,14 +250,14 @@ _LISTSCANCONFIGSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -287,7 +289,7 @@ _UPDATESCANCONFIGREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -305,14 +307,14 @@ _UPDATESCANCONFIGREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -344,7 +346,7 @@ _LISTSCANCONFIGSRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -362,14 +364,14 @@ _LISTSCANCONFIGSRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -401,14 +403,14 @@ _STARTSCANRUNREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -440,14 +442,14 @@ _GETSCANRUNREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -479,7 +481,7 @@ _LISTSCANRUNSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -497,7 +499,7 @@ _LISTSCANRUNSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -515,14 +517,14 @@ _LISTSCANRUNSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -554,7 +556,7 @@ _LISTSCANRUNSRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -572,14 +574,14 @@ _LISTSCANRUNSRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -611,14 +613,14 @@ _STOPSCANRUNREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -650,7 +652,7 @@ _LISTCRAWLEDURLSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -668,7 +670,7 @@ _LISTCRAWLEDURLSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -686,14 +688,14 @@ _LISTCRAWLEDURLSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -725,7 +727,7 @@ _LISTCRAWLEDURLSRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -743,14 +745,14 @@ _LISTCRAWLEDURLSRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -782,14 +784,14 @@ _GETFINDINGREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -821,7 +823,7 @@ _LISTFINDINGSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -839,7 +841,7 @@ _LISTFINDINGSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -857,7 +859,7 @@ _LISTFINDINGSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -875,14 +877,14 @@ _LISTFINDINGSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -914,7 +916,7 @@ _LISTFINDINGSRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -932,14 +934,14 @@ _LISTFINDINGSRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -971,14 +973,14 @@ _LISTFINDINGTYPESTATSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1010,14 +1012,14 @@ _LISTFINDINGTYPESTATSRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1496,20 +1498,14 @@ ListFindingTypeStatsResponse = _reflection.GeneratedProtocolMessageType(
 _sym_db.RegisterMessage(ListFindingTypeStatsResponse)
 
 
-DESCRIPTOR.has_options = True
-DESCRIPTOR._options = _descriptor._ParseOptions(
-    descriptor_pb2.FileOptions(),
-    _b(
-        "\n+com.google.cloud.websecurityscanner.v1alphaB\027WebSecurityScannerProtoP\001ZYgoogle.golang.org/genproto/googleapis/cloud/websecurityscanner/v1alpha;websecurityscanner"
-    ),
-)
+DESCRIPTOR._options = None
 
 _WEBSECURITYSCANNER = _descriptor.ServiceDescriptor(
     name="WebSecurityScanner",
     full_name="google.cloud.websecurityscanner.v1alpha.WebSecurityScanner",
     file=DESCRIPTOR,
     index=0,
-    options=None,
+    serialized_options=None,
     serialized_start=2015,
     serialized_end=4655,
     methods=[
@@ -1520,11 +1516,8 @@ _WEBSECURITYSCANNER = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_CREATESCANCONFIGREQUEST,
             output_type=google_dot_cloud_dot_websecurityscanner__v1alpha_dot_proto_dot_scan__config__pb2._SCANCONFIG,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\0027"(/v1alpha/{parent=projects/*}/scanConfigs:\013scan_config'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\0027"(/v1alpha/{parent=projects/*}/scanConfigs:\013scan_config'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -1534,9 +1527,8 @@ _WEBSECURITYSCANNER = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_DELETESCANCONFIGREQUEST,
             output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b("\202\323\344\223\002**(/v1alpha/{name=projects/*/scanConfigs/*}"),
+            serialized_options=_b(
+                "\202\323\344\223\002**(/v1alpha/{name=projects/*/scanConfigs/*}"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -1546,11 +1538,8 @@ _WEBSECURITYSCANNER = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_GETSCANCONFIGREQUEST,
             output_type=google_dot_cloud_dot_websecurityscanner__v1alpha_dot_proto_dot_scan__config__pb2._SCANCONFIG,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\002*\022(/v1alpha/{name=projects/*/scanConfigs/*}"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\002*\022(/v1alpha/{name=projects/*/scanConfigs/*}"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -1560,11 +1549,8 @@ _WEBSECURITYSCANNER = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_LISTSCANCONFIGSREQUEST,
             output_type=_LISTSCANCONFIGSRESPONSE,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\002*\022(/v1alpha/{parent=projects/*}/scanConfigs"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\002*\022(/v1alpha/{parent=projects/*}/scanConfigs"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -1574,11 +1560,8 @@ _WEBSECURITYSCANNER = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_UPDATESCANCONFIGREQUEST,
             output_type=google_dot_cloud_dot_websecurityscanner__v1alpha_dot_proto_dot_scan__config__pb2._SCANCONFIG,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\002C24/v1alpha/{scan_config.name=projects/*/scanConfigs/*}:\013scan_config"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\002C24/v1alpha/{scan_config.name=projects/*/scanConfigs/*}:\013scan_config"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -1588,11 +1571,8 @@ _WEBSECURITYSCANNER = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_STARTSCANRUNREQUEST,
             output_type=google_dot_cloud_dot_websecurityscanner__v1alpha_dot_proto_dot_scan__run__pb2._SCANRUN,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\0023"./v1alpha/{name=projects/*/scanConfigs/*}:start:\001*'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\0023"./v1alpha/{name=projects/*/scanConfigs/*}:start:\001*'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -1602,11 +1582,8 @@ _WEBSECURITYSCANNER = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_GETSCANRUNREQUEST,
             output_type=google_dot_cloud_dot_websecurityscanner__v1alpha_dot_proto_dot_scan__run__pb2._SCANRUN,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\0025\0223/v1alpha/{name=projects/*/scanConfigs/*/scanRuns/*}"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\0025\0223/v1alpha/{name=projects/*/scanConfigs/*/scanRuns/*}"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -1616,11 +1593,8 @@ _WEBSECURITYSCANNER = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_LISTSCANRUNSREQUEST,
             output_type=_LISTSCANRUNSRESPONSE,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\0025\0223/v1alpha/{parent=projects/*/scanConfigs/*}/scanRuns"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\0025\0223/v1alpha/{parent=projects/*/scanConfigs/*}/scanRuns"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -1630,11 +1604,8 @@ _WEBSECURITYSCANNER = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_STOPSCANRUNREQUEST,
             output_type=google_dot_cloud_dot_websecurityscanner__v1alpha_dot_proto_dot_scan__run__pb2._SCANRUN,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\002="8/v1alpha/{name=projects/*/scanConfigs/*/scanRuns/*}:stop:\001*'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\002="8/v1alpha/{name=projects/*/scanConfigs/*/scanRuns/*}:stop:\001*'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -1644,11 +1615,8 @@ _WEBSECURITYSCANNER = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_LISTCRAWLEDURLSREQUEST,
             output_type=_LISTCRAWLEDURLSRESPONSE,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\002C\022A/v1alpha/{parent=projects/*/scanConfigs/*/scanRuns/*}/crawledUrls"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\002C\022A/v1alpha/{parent=projects/*/scanConfigs/*/scanRuns/*}/crawledUrls"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -1658,11 +1626,8 @@ _WEBSECURITYSCANNER = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_GETFINDINGREQUEST,
             output_type=google_dot_cloud_dot_websecurityscanner__v1alpha_dot_proto_dot_finding__pb2._FINDING,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\002@\022>/v1alpha/{name=projects/*/scanConfigs/*/scanRuns/*/findings/*}"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\002@\022>/v1alpha/{name=projects/*/scanConfigs/*/scanRuns/*/findings/*}"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -1672,11 +1637,8 @@ _WEBSECURITYSCANNER = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_LISTFINDINGSREQUEST,
             output_type=_LISTFINDINGSRESPONSE,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\002@\022>/v1alpha/{parent=projects/*/scanConfigs/*/scanRuns/*}/findings"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\002@\022>/v1alpha/{parent=projects/*/scanConfigs/*/scanRuns/*}/findings"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -1686,11 +1648,8 @@ _WEBSECURITYSCANNER = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_LISTFINDINGTYPESTATSREQUEST,
             output_type=_LISTFINDINGTYPESTATSRESPONSE,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\002H\022F/v1alpha/{parent=projects/*/scanConfigs/*/scanRuns/*}/findingTypeStats"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\002H\022F/v1alpha/{parent=projects/*/scanConfigs/*/scanRuns/*}/findingTypeStats"
             ),
         ),
     ],

@@ -34,7 +34,7 @@ dependencies = [
     'google-resumable-media >= 0.3.1',
 ]
 extras = {
-    'bqstorage': 'google-cloud-bigquery-storage<=2.0.0dev',
+    'bqstorage': 'google-cloud-bigquery-storage >= 0.2.0dev1, <2.0.0dev',
     'pandas': 'pandas>=0.17.1',
     # Exclude PyArrow dependency from Windows Python 2.7.
     'pyarrow: platform_system != "Windows" or python_version >= "3.4"':

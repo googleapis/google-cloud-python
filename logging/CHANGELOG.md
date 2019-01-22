@@ -4,6 +4,20 @@
 
 [1]: https://pypi.org/project/google-cloud-logging/#history
 
+## 1.10.0
+
+01-17-2019 15:37 PST
+
+
+### Implementation Changes
+- Change WriteLogEntries retry policy.
+- Protoc-generated serialization update. ([#7088](https://github.com/googleapis/google-cloud-python/pull/7088))
+- GAPIC generation fixes. ([#7061](https://github.com/googleapis/google-cloud-python/pull/7061))
+
+### Internal / Testing Changes
+- Update copyright headers.
+- Use 'python-3.6' for 'blacken' run. ([#7064](https://github.com/googleapis/google-cloud-python/pull/7064))
+
 ## 1.9.1
 
 12-17-2018 16:49 PST

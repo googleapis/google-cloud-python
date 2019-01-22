@@ -8,7 +8,6 @@ from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
-from google.protobuf import descriptor_pb2
 
 # @@protoc_insertion_point(imports)
 
@@ -25,6 +24,9 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     name="google/cloud/bigtable/admin_v2/proto/instance.proto",
     package="google.bigtable.admin.v2",
     syntax="proto3",
+    serialized_options=_b(
+        "\n\034com.google.bigtable.admin.v2B\rInstanceProtoP\001Z=google.golang.org/genproto/googleapis/bigtable/admin/v2;admin\252\002\036Google.Cloud.Bigtable.Admin.V2\312\002\036Google\\Cloud\\Bigtable\\Admin\\V2"
+    ),
     serialized_pb=_b(
         '\n3google/cloud/bigtable/admin_v2/proto/instance.proto\x12\x18google.bigtable.admin.v2\x1a\x1cgoogle/api/annotations.proto\x1a\x31google/cloud/bigtable/admin_v2/proto/common.proto"\x83\x03\n\x08Instance\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x02 \x01(\t\x12\x37\n\x05state\x18\x03 \x01(\x0e\x32(.google.bigtable.admin.v2.Instance.State\x12\x35\n\x04type\x18\x04 \x01(\x0e\x32\'.google.bigtable.admin.v2.Instance.Type\x12>\n\x06labels\x18\x05 \x03(\x0b\x32..google.bigtable.admin.v2.Instance.LabelsEntry\x1a-\n\x0bLabelsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01"5\n\x05State\x12\x13\n\x0fSTATE_NOT_KNOWN\x10\x00\x12\t\n\x05READY\x10\x01\x12\x0c\n\x08\x43REATING\x10\x02"=\n\x04Type\x12\x14\n\x10TYPE_UNSPECIFIED\x10\x00\x12\x0e\n\nPRODUCTION\x10\x01\x12\x0f\n\x0b\x44\x45VELOPMENT\x10\x02"\x8e\x02\n\x07\x43luster\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x10\n\x08location\x18\x02 \x01(\t\x12\x36\n\x05state\x18\x03 \x01(\x0e\x32\'.google.bigtable.admin.v2.Cluster.State\x12\x13\n\x0bserve_nodes\x18\x04 \x01(\x05\x12\x43\n\x14\x64\x65\x66\x61ult_storage_type\x18\x05 \x01(\x0e\x32%.google.bigtable.admin.v2.StorageType"Q\n\x05State\x12\x13\n\x0fSTATE_NOT_KNOWN\x10\x00\x12\t\n\x05READY\x10\x01\x12\x0c\n\x08\x43REATING\x10\x02\x12\x0c\n\x08RESIZING\x10\x03\x12\x0c\n\x08\x44ISABLED\x10\x04"\x82\x03\n\nAppProfile\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0c\n\x04\x65tag\x18\x02 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x03 \x01(\t\x12g\n\x1dmulti_cluster_routing_use_any\x18\x05 \x01(\x0b\x32>.google.bigtable.admin.v2.AppProfile.MultiClusterRoutingUseAnyH\x00\x12[\n\x16single_cluster_routing\x18\x06 \x01(\x0b\x32\x39.google.bigtable.admin.v2.AppProfile.SingleClusterRoutingH\x00\x1a\x1b\n\x19MultiClusterRoutingUseAny\x1aN\n\x14SingleClusterRouting\x12\x12\n\ncluster_id\x18\x01 \x01(\t\x12"\n\x1a\x61llow_transactional_writes\x18\x02 \x01(\x08\x42\x10\n\x0erouting_policyB\xb0\x01\n\x1c\x63om.google.bigtable.admin.v2B\rInstanceProtoP\x01Z=google.golang.org/genproto/googleapis/bigtable/admin/v2;admin\xaa\x02\x1eGoogle.Cloud.Bigtable.Admin.V2\xca\x02\x1eGoogle\\Cloud\\Bigtable\\Admin\\V2b\x06proto3'
     ),
@@ -42,17 +44,21 @@ _INSTANCE_STATE = _descriptor.EnumDescriptor(
     file=DESCRIPTOR,
     values=[
         _descriptor.EnumValueDescriptor(
-            name="STATE_NOT_KNOWN", index=0, number=0, options=None, type=None
+            name="STATE_NOT_KNOWN",
+            index=0,
+            number=0,
+            serialized_options=None,
+            type=None,
         ),
         _descriptor.EnumValueDescriptor(
-            name="READY", index=1, number=1, options=None, type=None
+            name="READY", index=1, number=1, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="CREATING", index=2, number=2, options=None, type=None
+            name="CREATING", index=2, number=2, serialized_options=None, type=None
         ),
     ],
     containing_type=None,
-    options=None,
+    serialized_options=None,
     serialized_start=434,
     serialized_end=487,
 )
@@ -65,17 +71,21 @@ _INSTANCE_TYPE = _descriptor.EnumDescriptor(
     file=DESCRIPTOR,
     values=[
         _descriptor.EnumValueDescriptor(
-            name="TYPE_UNSPECIFIED", index=0, number=0, options=None, type=None
+            name="TYPE_UNSPECIFIED",
+            index=0,
+            number=0,
+            serialized_options=None,
+            type=None,
         ),
         _descriptor.EnumValueDescriptor(
-            name="PRODUCTION", index=1, number=1, options=None, type=None
+            name="PRODUCTION", index=1, number=1, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="DEVELOPMENT", index=2, number=2, options=None, type=None
+            name="DEVELOPMENT", index=2, number=2, serialized_options=None, type=None
         ),
     ],
     containing_type=None,
-    options=None,
+    serialized_options=None,
     serialized_start=489,
     serialized_end=550,
 )
@@ -88,23 +98,27 @@ _CLUSTER_STATE = _descriptor.EnumDescriptor(
     file=DESCRIPTOR,
     values=[
         _descriptor.EnumValueDescriptor(
-            name="STATE_NOT_KNOWN", index=0, number=0, options=None, type=None
+            name="STATE_NOT_KNOWN",
+            index=0,
+            number=0,
+            serialized_options=None,
+            type=None,
         ),
         _descriptor.EnumValueDescriptor(
-            name="READY", index=1, number=1, options=None, type=None
+            name="READY", index=1, number=1, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="CREATING", index=2, number=2, options=None, type=None
+            name="CREATING", index=2, number=2, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="RESIZING", index=3, number=3, options=None, type=None
+            name="RESIZING", index=3, number=3, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="DISABLED", index=4, number=4, options=None, type=None
+            name="DISABLED", index=4, number=4, serialized_options=None, type=None
         ),
     ],
     containing_type=None,
-    options=None,
+    serialized_options=None,
     serialized_start=742,
     serialized_end=823,
 )
@@ -133,7 +147,7 @@ _INSTANCE_LABELSENTRY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -151,14 +165,14 @@ _INSTANCE_LABELSENTRY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=_descriptor._ParseOptions(descriptor_pb2.MessageOptions(), _b("8\001")),
+    serialized_options=_b("8\001"),
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -189,7 +203,7 @@ _INSTANCE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -207,7 +221,7 @@ _INSTANCE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -225,7 +239,7 @@ _INSTANCE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -243,7 +257,7 @@ _INSTANCE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -261,14 +275,14 @@ _INSTANCE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[_INSTANCE_LABELSENTRY],
     enum_types=[_INSTANCE_STATE, _INSTANCE_TYPE],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -300,7 +314,7 @@ _CLUSTER = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -318,7 +332,7 @@ _CLUSTER = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -336,7 +350,7 @@ _CLUSTER = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -354,7 +368,7 @@ _CLUSTER = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -372,14 +386,14 @@ _CLUSTER = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[_CLUSTER_STATE],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -399,7 +413,7 @@ _APPPROFILE_MULTICLUSTERROUTINGUSEANY = _descriptor.Descriptor(
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -430,7 +444,7 @@ _APPPROFILE_SINGLECLUSTERROUTING = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -448,14 +462,14 @@ _APPPROFILE_SINGLECLUSTERROUTING = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -486,7 +500,7 @@ _APPPROFILE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -504,7 +518,7 @@ _APPPROFILE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -522,7 +536,7 @@ _APPPROFILE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -540,7 +554,7 @@ _APPPROFILE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -558,7 +572,7 @@ _APPPROFILE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
@@ -568,7 +582,7 @@ _APPPROFILE = _descriptor.Descriptor(
         _APPPROFILE_SINGLECLUSTERROUTING,
     ],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -794,15 +808,6 @@ _sym_db.RegisterMessage(AppProfile.MultiClusterRoutingUseAny)
 _sym_db.RegisterMessage(AppProfile.SingleClusterRouting)
 
 
-DESCRIPTOR.has_options = True
-DESCRIPTOR._options = _descriptor._ParseOptions(
-    descriptor_pb2.FileOptions(),
-    _b(
-        "\n\034com.google.bigtable.admin.v2B\rInstanceProtoP\001Z=google.golang.org/genproto/googleapis/bigtable/admin/v2;admin\252\002\036Google.Cloud.Bigtable.Admin.V2\312\002\036Google\\Cloud\\Bigtable\\Admin\\V2"
-    ),
-)
-_INSTANCE_LABELSENTRY.has_options = True
-_INSTANCE_LABELSENTRY._options = _descriptor._ParseOptions(
-    descriptor_pb2.MessageOptions(), _b("8\001")
-)
+DESCRIPTOR._options = None
+_INSTANCE_LABELSENTRY._options = None
 # @@protoc_insertion_point(module_scope)
