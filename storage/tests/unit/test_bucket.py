@@ -197,8 +197,8 @@ class Test_IAMConfiguration(unittest.TestCase):
         config = self._make_one(bucket)
 
         self.assertIs(config.bucket, bucket)
-        self.assertFalse(config.bucket_policy_only)
-        self.assertIsNone(config.locked_time)
+        self.assertFalse(config.bucket_policy_only_enabled)
+        self.assertIsNone(config.bucket_policy_only_locked_time)
 
     def test_ctor_explicit(self):
         import datetime
@@ -207,11 +207,13 @@ class Test_IAMConfiguration(unittest.TestCase):
         bucket = self._make_bucket()
         now = datetime.datetime.utcnow().replace(tzinfo=pytz.UTC)
 
-        config = self._make_one(bucket, enabled=True, locked_time=now)
+        config = self._make_one(
+            bucket, bucket_policy_only_enabled=True, bucket_policy_only_locked_time=now
+        )
 
         self.assertIs(config.bucket, bucket)
-        self.assertTrue(config.bucket_policy_only)
-        self.assertEqual(config.locked_time, now)
+        self.assertTrue(config.bucket_policy_only_enabled)
+        self.assertEqual(config.bucket_policy_only_locked_time, now)
 
     def test_from_api_repr_w_empty_resource(self):
         klass = self._get_target_class()
@@ -221,8 +223,8 @@ class Test_IAMConfiguration(unittest.TestCase):
         config = klass.from_api_repr(resource, bucket)
 
         self.assertIs(config.bucket, bucket)
-        self.assertFalse(config.bucket_policy_only)
-        self.assertIsNone(config.locked_time)
+        self.assertFalse(config.bucket_policy_only_enabled)
+        self.assertIsNone(config.bucket_policy_only_locked_time)
 
     def test_from_api_repr_w_empty_bpo(self):
         klass = self._get_target_class()
@@ -232,8 +234,8 @@ class Test_IAMConfiguration(unittest.TestCase):
         config = klass.from_api_repr(resource, bucket)
 
         self.assertIs(config.bucket, bucket)
-        self.assertFalse(config.bucket_policy_only)
-        self.assertIsNone(config.locked_time)
+        self.assertFalse(config.bucket_policy_only_enabled)
+        self.assertIsNone(config.bucket_policy_only_locked_time)
 
     def test_from_api_repr_w_disabled(self):
         klass = self._get_target_class()
@@ -243,8 +245,8 @@ class Test_IAMConfiguration(unittest.TestCase):
         config = klass.from_api_repr(resource, bucket)
 
         self.assertIs(config.bucket, bucket)
-        self.assertFalse(config.bucket_policy_only)
-        self.assertIsNone(config.locked_time)
+        self.assertFalse(config.bucket_policy_only_enabled)
+        self.assertIsNone(config.bucket_policy_only_locked_time)
 
     def test_from_api_repr_w_enabled(self):
         import datetime
@@ -264,14 +266,14 @@ class Test_IAMConfiguration(unittest.TestCase):
         config = klass.from_api_repr(resource, bucket)
 
         self.assertIs(config.bucket, bucket)
-        self.assertTrue(config.bucket_policy_only)
-        self.assertEqual(config.locked_time, now)
+        self.assertTrue(config.bucket_policy_only_enabled)
+        self.assertEqual(config.bucket_policy_only_locked_time, now)
 
-    def test_bucket_policy_only_setter(self):
+    def test_bucket_policy_only_enabled_setter(self):
         bucket = self._make_bucket()
         config = self._make_one(bucket)
 
-        config.bucket_policy_only = True
+        config.bucket_policy_only_enabled = True
 
         self.assertTrue(config["bucketPolicyOnly"]["enabled"])
         bucket._patch_property.assert_called_once_with("iamConfiguration", config)
@@ -1204,8 +1206,8 @@ class Test_Bucket(unittest.TestCase):
 
         self.assertIsInstance(config, IAMConfiguration)
         self.assertIs(config.bucket, bucket)
-        self.assertFalse(config.bucket_policy_only)
-        self.assertIsNone(config.locked_time)
+        self.assertFalse(config.bucket_policy_only_enabled)
+        self.assertIsNone(config.bucket_policy_only_locked_time)
 
     def test_iam_configuration_policy_w_entry(self):
         import datetime
@@ -1229,8 +1231,8 @@ class Test_Bucket(unittest.TestCase):
 
         self.assertIsInstance(config, IAMConfiguration)
         self.assertIs(config.bucket, bucket)
-        self.assertTrue(config.bucket_policy_only)
-        self.assertEqual(config.locked_time, now)
+        self.assertTrue(config.bucket_policy_only_enabled)
+        self.assertEqual(config.bucket_policy_only_locked_time, now)
 
     def test_lifecycle_rules_getter_unknown_action_type(self):
         NAME = "name"

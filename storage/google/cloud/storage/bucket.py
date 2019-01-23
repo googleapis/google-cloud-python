@@ -278,17 +278,24 @@ class IAMConfiguration(dict):
     :type bucket: :class:`Bucket`
     :params bucket: Bucket for which this instance is the policy.
 
-    :type enabled: bool
-    :params enabled: (optional) whether the IAM-only policy is enabled for the bucket.
+    :type bucket_policy_only_enabled: bool
+    :params bucket_policy_only_enabled: (optional) whether the IAM-only policy is enabled for the bucket.
 
-    :type locked_time: :class:`datetime.datetime`
-    :params locked_time: (optional) When the bucket's IAM-only policy was ehabled.  This value should normally only be set by the back-end API.
+    :type bucket_policy_only_locked_time: :class:`datetime.datetime`
+    :params bucket_policy_only_locked_time: (optional) When the bucket's IAM-only policy was ehabled.  This value should normally only be set by the back-end API.
     """
 
-    def __init__(self, bucket, enabled=False, locked_time=None):
-        data = {"bucketPolicyOnly": {"enabled": enabled}}
-        if locked_time is not None:
-            data["bucketPolicyOnly"]["lockedTime"] = _datetime_to_rfc3339(locked_time)
+    def __init__(
+        self,
+        bucket,
+        bucket_policy_only_enabled=False,
+        bucket_policy_only_locked_time=None,
+    ):
+        data = {"bucketPolicyOnly": {"enabled": bucket_policy_only_enabled}}
+        if bucket_policy_only_locked_time is not None:
+            data["bucketPolicyOnly"]["lockedTime"] = _datetime_to_rfc3339(
+                bucket_policy_only_locked_time
+            )
         super(IAMConfiguration, self).__init__(data)
         self._bucket = bucket
 
@@ -319,7 +326,7 @@ class IAMConfiguration(dict):
         return self._bucket
 
     @property
-    def bucket_policy_only(self):
+    def bucket_policy_only_enabled(self):
         """If set, access checks only use bucket-level IAM policies or above.
 
         :rtype: bool
@@ -328,24 +335,24 @@ class IAMConfiguration(dict):
         bpo = self.get("bucketPolicyOnly", {})
         return bpo.get("enabled", False)
 
-    @bucket_policy_only.setter
-    def bucket_policy_only(self, value):
+    @bucket_policy_only_enabled.setter
+    def bucket_policy_only_enabled(self, value):
         bpo = self.setdefault("bucketPolicyOnly", {})
         bpo["enabled"] = bool(value)
         self.bucket._patch_property("iamConfiguration", self)
 
     @property
-    def locked_time(self):
-        """Deadline for changing :attr:`bucket_policy_only` from true to false.
+    def bucket_policy_only_locked_time(self):
+        """Deadline for changing :attr:`bucket_policy_only_enabled` from true to false.
 
-        If the bucket's :attr:`bucket_policy_only` is true, this property
+        If the bucket's :attr:`bucket_policy_only_enabled` is true, this property
         is time time after which that setting becomes immutable.
 
-        If the bucket's :attr:`bucket_policy_only` is false, this property
+        If the bucket's :attr:`bucket_policy_only_enabled` is false, this property
         is ``None``.
 
         :rtype: Union[:class:`datetime.datetime`, None]
-        :returns:  (readonly) Time after which :attr:`bucket_policy_only` will
+        :returns:  (readonly) Time after which :attr:`bucket_policy_only_enabled` will
                    be frozen as true.
         """
         bpo = self.get("bucketPolicyOnly", {})

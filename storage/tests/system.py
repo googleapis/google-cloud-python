@@ -1487,7 +1487,7 @@ class TestIAMConfiguration(unittest.TestCase):
             exceptions.NotFound, Config.CLIENT.get_bucket, new_bucket_name
         )
         bucket = Config.CLIENT.bucket(new_bucket_name)
-        bucket.iam_configuration.bucket_policy_only = True
+        bucket.iam_configuration.bucket_policy_only_enabled = True
         retry_429(bucket.create)()
         self.case_buckets_to_delete.append(new_bucket_name)
 
@@ -1536,7 +1536,7 @@ class TestIAMConfiguration(unittest.TestCase):
         blob_acl_before = list(bucket.acl)
 
         # Set BPO
-        bucket.iam_configuration.bucket_policy_only = True
+        bucket.iam_configuration.bucket_policy_only_enabled = True
         bucket.patch()
 
         # While BPO is set, cannot get / set ACLs
@@ -1544,7 +1544,7 @@ class TestIAMConfiguration(unittest.TestCase):
             bucket.acl.reload()
 
         # Clear BPO
-        bucket.iam_configuration.bucket_policy_only = False
+        bucket.iam_configuration.bucket_policy_only_enabled = False
         bucket.patch()
 
         # Query ACLs after clearing BPO
