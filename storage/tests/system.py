@@ -1529,7 +1529,6 @@ class TestIAMConfiguration(unittest.TestCase):
         blob = bucket.blob(blob_name)
         payload = b"DEADBEEF"
         blob.upload_from_string(payload)
-        blob_policy = blob.get_iam_policy()
 
         # Preserve ACLs before setting BPO
         bucket_acl_before = list(bucket.acl)
