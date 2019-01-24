@@ -194,3 +194,4 @@ _sym_db.RegisterMessage(SecurityMarks.MarksEntry)
 DESCRIPTOR._options = None
 _SECURITYMARKS_MARKSENTRY._options = None
 # @@protoc_insertion_point(module_scope)
+# -*- coding: utf-8 -*-

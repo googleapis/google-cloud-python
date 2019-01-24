@@ -151,3 +151,4 @@ _sym_db.RegisterMessage(Source)
 
 DESCRIPTOR._options = None
 # @@protoc_insertion_point(module_scope)
+# -*- coding: utf-8 -*-
