@@ -29,7 +29,10 @@ excludes = ["README.rst", "setup.py", "nox*.py", "docs/conf.py", "docs/index.rst
 # ----------------------------------------------------------------------------
 for version in ["v2beta2", "v2beta3"]:
     library = gapic.py_library(
-        "tasks", version, config_path=f"artman_cloudtasks_{version}.yaml"
+        "tasks",
+        version,
+        config_path=f"artman_cloudtasks_{version}.yaml",
+        include_protos=True,
     )
 
     s.copy(library, excludes=excludes)
@@ -68,7 +71,7 @@ s.replace(
     "\g<1>...             'service': 'default',\n"
     "\g<1>...         },\n"
     "\g<1>...     },\n"
-    "\g<1>... }\n"
+    "\g<1>... }\n",
 )
 
 
