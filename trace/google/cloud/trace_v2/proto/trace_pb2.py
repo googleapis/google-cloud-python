@@ -1907,3 +1907,4 @@ _sym_db.RegisterMessage(TruncatableString)
 DESCRIPTOR._options = None
 _SPAN_ATTRIBUTES_ATTRIBUTEMAPENTRY._options = None
 # @@protoc_insertion_point(module_scope)
+# -*- coding: utf-8 -*-
