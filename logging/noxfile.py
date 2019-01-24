@@ -29,7 +29,7 @@ UNIT_TEST_DEPS = (
     'pytest',
     'pytest-cov',
     'flask',
-    'webapp2',
+    #'webapp2',
     'webob',
 )
 

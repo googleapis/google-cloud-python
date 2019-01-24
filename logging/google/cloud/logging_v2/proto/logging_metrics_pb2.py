@@ -963,3 +963,4 @@ _sym_db.RegisterServiceDescriptor(_METRICSSERVICEV2)
 DESCRIPTOR.services_by_name["MetricsServiceV2"] = _METRICSSERVICEV2
 
 # @@protoc_insertion_point(module_scope)
+# -*- coding: utf-8 -*-
