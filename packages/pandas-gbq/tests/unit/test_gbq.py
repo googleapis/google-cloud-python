@@ -429,11 +429,6 @@ def test_read_gbq_with_invalid_dialect():
     assert "is not valid for dialect" in str(excinfo.value)
 
 
-def test_read_gbq_without_dialect_warns_future_change():
-    with pytest.warns(FutureWarning):
-        gbq.read_gbq("SELECT 1")
-
-
 def test_generate_bq_schema_deprecated():
     # 11121 Deprecation of generate_bq_schema
     with pytest.warns(FutureWarning):

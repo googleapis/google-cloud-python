@@ -302,7 +302,7 @@ class GbqConnector(object):
         reauth=False,
         private_key=None,
         auth_local_webserver=False,
-        dialect="legacy",
+        dialect="standard",
         location=None,
         credentials=None,
     ):
@@ -732,8 +732,8 @@ def read_gbq(
             http://google-auth-oauthlib.readthedocs.io/en/latest/reference/google_auth_oauthlib.flow.html#google_auth_oauthlib.flow.InstalledAppFlow.run_console
 
         .. versionadded:: 0.2.0
-    dialect : str, default 'legacy'
-        Note: The default value is changing to 'standard' in a future verion.
+    dialect : str, default 'standard'
+        Note: The default value changed to 'standard' in version 0.10.0.
 
         SQL syntax dialect to use. Value can be one of:
 
@@ -796,14 +796,7 @@ def read_gbq(
         dialect = context.dialect
 
     if dialect is None:
-        dialect = "legacy"
-        warnings.warn(
-            'The default value for dialect is changing to "standard" in a '
-            'future version. Pass in dialect="legacy" or set '
-            'pandas_gbq.context.dialect="legacy" to disable this warning.',
-            FutureWarning,
-            stacklevel=2,
-        )
+        dialect = "standard"
 
     _test_google_api_imports()
 
