@@ -79,10 +79,13 @@ def load_chunks(
 
     chunks = encode_chunks(dataframe, chunksize=chunksize)
     for remaining_rows, chunk_buffer in chunks:
-        yield remaining_rows
-        client.load_table_from_file(
-            chunk_buffer,
-            destination_table,
-            job_config=job_config,
-            location=location,
-        ).result()
+        try:
+            yield remaining_rows
+            client.load_table_from_file(
+                chunk_buffer,
+                destination_table,
+                job_config=job_config,
+                location=location,
+            ).result()
+        finally:
+            chunk_buffer.close()
