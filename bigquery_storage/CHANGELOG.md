@@ -17,7 +17,6 @@
 - Update copyright headers
 - Protoc-generated serialization update. ([#7076](https://github.com/googleapis/google-cloud-python/pull/7076))
 - BigQuery Storage: run 'blacken' during synth ([#7047](https://github.com/googleapis/google-cloud-python/pull/7047))
--
 
 ## 0.1.1
 
