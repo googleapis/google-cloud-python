@@ -174,6 +174,8 @@ class HttpMethod(enum.IntEnum):
       HEAD (int): HTTP HEAD
       PUT (int): HTTP PUT
       DELETE (int): HTTP DELETE
+      PATCH (int): HTTP PATCH
+      OPTIONS (int): HTTP OPTIONS
     """
 
     HTTP_METHOD_UNSPECIFIED = 0
@@ -182,6 +184,8 @@ class HttpMethod(enum.IntEnum):
     HEAD = 3
     PUT = 4
     DELETE = 5
+    PATCH = 6
+    OPTIONS = 7
 
 
 class Queue(object):

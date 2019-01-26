@@ -456,23 +456,17 @@ Queue = _reflection.GeneratedProtocolMessageType(
           https://cloud.google.com/about/locations/. -  ``QUEUE_ID`` can
           contain letters ([A-Za-z]), numbers ([0-9]), or    hyphens
           (-). The maximum length is 100 characters.
-      queue_type:
-          Caller-specified and required in [CreateQueue][google.cloud.ta
-          sks.v2beta3.CloudTasks.CreateQueue][], after which the queue
-          config type becomes output only, though fields within the
-          config are mutable.  The queue's type.  The type applies to
-          all tasks in the queue.
       app_engine_http_queue:
-          App Engine HTTP queue.  An App Engine queue is a queue that
-          has an [AppEngineHttpQueue][google.cloud.tasks.v2beta3.AppEngi
-          neHttpQueue] type.
+          [AppEngineHttpQueue][google.cloud.tasks.v2beta3.AppEngineHttpQ
+          ueue] settings apply only to [App Engine
+          tasks][google.cloud.tasks.v2beta3.AppEngineHttpRequest] in
+          this queue.
       rate_limits:
           Rate limits for task dispatches.
           [rate\_limits][google.cloud.tasks.v2beta3.Queue.rate\_limits]
           and [retry\_config][google.cloud.tasks.v2beta3.Queue.retry\_co
-          nfig] are related because they both control task attempts
-          however they control how tasks are attempted in different
-          ways:  -
+          nfig] are related because they both control task attempts.
+          However they control task attempts in different ways:  -
           [rate\_limits][google.cloud.tasks.v2beta3.Queue.rate\_limits]
           controls the total rate of dispatches from a queue (i.e. all
           traffic    dispatched from the queue, regardless of whether
@@ -481,7 +475,15 @@ Queue = _reflection.GeneratedProtocolMessageType(
           controls what happens to particular a task after its first
           attempt    fails. That is,    [retry\_config][google.cloud.tas
           ks.v2beta3.Queue.retry\_config]    controls task retries (the
-          second attempt, third attempt, etc).
+          second attempt, third attempt, etc).  The queue's actual
+          dispatch rate is the result of:  -  Number of tasks in the
+          queue -  User-specified throttling: [rate
+          limits][Queue.RateLimits] [retry
+          configuration][Queue.RetryConfig], and the [queue's
+          state][google.cloud.tasks.v2beta3.Queue.state]. -  System
+          throttling due to ``429`` (Too Many Requests) or ``503``
+          (Service Unavailable) responses from the worker, high error
+          rates, or    to smooth sudden large traffic spikes.
       retry_config:
           Settings that determine the retry behavior.  -  For tasks
           created using Cloud Tasks: the queue-level retry settings
