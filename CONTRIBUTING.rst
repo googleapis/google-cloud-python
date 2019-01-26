@@ -70,7 +70,7 @@ We use `nox <https://nox.readthedocs.io/en/latest/>`__ to instrument our tests.
 - To test your changes, run unit tests with ``nox``::
 
     $ nox -f datastore/noxfile.py -s unit-2.7
-    $ nox -f datastore/noxfile.py -s unit-3.4
+    $ nox -f datastore/noxfile.py -s unit-3.6
     $ ...
 
   .. note::
