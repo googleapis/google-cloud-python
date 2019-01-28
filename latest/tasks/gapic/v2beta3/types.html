@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Types for Cloud Tasks API Client &#8212; google-cloud 879274d documentation</title>
+    <title>Types for Cloud Tasks API Client &#8212; google-cloud 5f2999a documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -91,7 +91,12 @@ Google IAM permission for the project and the following scope:</p>
 same project as the queue. For more information, see <a class="reference external" href="https://cloud.google.com/appengine/docs/standard/python/how-requests-are-routed">How Requests are
 Routed</a>
 and how routing is affected by <a class="reference external" href="https://cloud.google.com/appengine/docs/python/config/dispatchref">dispatch
-files</a>.</p>
+files</a>.
+Traffic is encrypted during transport and never leaves Google
+datacenters. Because this traffic is carried over a communication
+mechanism internal to Google, you cannot explicitly set the protocol
+(for example, HTTP or HTTPS). The request to the handler, however, will
+appear to have used the HTTP protocol.</p>
 <p>The [AppEngineRouting][google.cloud.tasks.v2beta3.AppEngineRouting] used
 to construct the URL that the task is delivered to can be set at the
 queue-level or task-level:</p>
@@ -108,6 +113,13 @@ app_engine_routing][google.cloud.tasks.v2beta3.AppEngineHttpRequest.app_engine_r
 <code class="docutils literal notranslate"><span class="pre">+</span></code>
 [relative_uri][google.cloud.tasks.v2beta3.AppEngineHttpRequest.relative_uri]</li>
 </ul>
+<p>Tasks can be dispatched to secure app handlers, unsecure app handlers,
+and URIs restricted with
+<code class="docutils literal notranslate"><span class="pre">`login:</span> <span class="pre">admin</span></code> &lt;<a class="reference external" href="https://cloud.google.com/appengine/docs/standard/python/config/appref">https://cloud.google.com/appengine/docs/standard/python/config/appref</a>&gt;`_.
+Because tasks are not run as any user, they cannot be dispatched to URIs
+restricted with
+<code class="docutils literal notranslate"><span class="pre">`login:</span> <span class="pre">required</span></code> &lt;<a class="reference external" href="https://cloud.google.com/appengine/docs/standard/python/config/appref">https://cloud.google.com/appengine/docs/standard/python/config/appref</a>&gt;`_
+Task dispatches also do not follow redirects.</p>
 <p>The task attempt has succeeded if the app’s request handler returns an
 HTTP response code in the range [<code class="docutils literal notranslate"><span class="pre">200</span></code> - <code class="docutils literal notranslate"><span class="pre">299</span></code>]. <code class="docutils literal notranslate"><span class="pre">503</span></code> is
 considered an App Engine system error instead of an application error.
@@ -206,14 +218,8 @@ with an incompatible
 <dt id="google.cloud.tasks_v2beta3.types.AppEngineRouting">
 <em class="property">class </em><code class="descclassname">google.cloud.tasks_v2beta3.types.</code><code class="descname">AppEngineRouting</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.AppEngineRouting" title="Permalink to this definition">#</a></dt>
 <dd><p>App Engine Routing.</p>
-<p>Specifies the target URI. Since this target type dispatches tasks to
-secure app handlers, unsecure app handlers, and URIs restricted with
-<code class="docutils literal notranslate"><span class="pre">`login:</span> <span class="pre">admin</span></code> &lt;<a class="reference external" href="https://cloud.google.com/appengine/docs/standard/python/config/appref">https://cloud.google.com/appengine/docs/standard/python/config/appref</a>&gt;`_
-the protocol (for example, HTTP or HTTPS) cannot be explictly specified.
-Task dispatches do not follow redirects and cannot target URI paths
-restricted with
-<code class="docutils literal notranslate"><span class="pre">`login:</span> <span class="pre">required</span></code> &lt;<a class="reference external" href="https://cloud.google.com/appengine/docs/standard/python/config/appref">https://cloud.google.com/appengine/docs/standard/python/config/appref</a>&gt;`_
-because tasks are not run as any user.</p>
+<p>Defines routing characteristics specific to App Engine - service,
+version, and instance.</p>
 <p>For more information about services, versions, and instances see <a class="reference external" href="https://cloud.google.com/appengine/docs/python/an-overview-of-app-engine">An
 Overview of App
 Engine</a>,
@@ -323,7 +329,7 @@ microsecond.</p>
 <dl class="attribute">
 <dt id="google.cloud.tasks_v2beta3.types.Attempt.response_status">
 <code class="descname">response_status</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.Attempt.response_status" title="Permalink to this definition">#</a></dt>
-<dd><p>Output only. The response from the target for this attempt.
+<dd><p>Output only. The response from the worker for this attempt.
 If <code class="docutils literal notranslate"><span class="pre">response_time</span></code> is unset, then the task has not been
 attempted or is currently running and the <code class="docutils literal notranslate"><span class="pre">response_status</span></code>
 field is meaningless.</p>
@@ -990,21 +996,12 @@ contain letters ([A-Za-z]), numbers ([0-9]), or    hyphens
 </dd></dl>
 
 <dl class="attribute">
-<dt id="google.cloud.tasks_v2beta3.types.Queue.queue_type">
-<code class="descname">queue_type</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.Queue.queue_type" title="Permalink to this definition">#</a></dt>
-<dd><p>Caller-specified and required in [CreateQueue][google.cloud.ta
-sks.v2beta3.CloudTasks.CreateQueue][], after which the queue
-config type becomes output only, though fields within the
-config are mutable.  The queue’s type.  The type applies to
-all tasks in the queue.</p>
-</dd></dl>
-
-<dl class="attribute">
 <dt id="google.cloud.tasks_v2beta3.types.Queue.app_engine_http_queue">
 <code class="descname">app_engine_http_queue</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.Queue.app_engine_http_queue" title="Permalink to this definition">#</a></dt>
-<dd><p>App Engine HTTP queue.  An App Engine queue is a queue that
-has an [AppEngineHttpQueue][google.cloud.tasks.v2beta3.AppEngi
-neHttpQueue] type.</p>
+<dd><p>[AppEngineHttpQueue][google.cloud.tasks.v2beta3.AppEngineHttpQ
+ueue] settings apply only to [App Engine
+tasks][google.cloud.tasks.v2beta3.AppEngineHttpRequest] in
+this queue.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1013,9 +1010,8 @@ neHttpQueue] type.</p>
 <dd><p>Rate limits for task dispatches.
 [rate_limits][google.cloud.tasks.v2beta3.Queue.rate_limits]
 and [retry_config][google.cloud.tasks.v2beta3.Queue.retry_co
-nfig] are related because they both control task attempts
-however they control how tasks are attempted in different
-ways:  -
+nfig] are related because they both control task attempts.
+However they control task attempts in different ways:  -
 [rate_limits][google.cloud.tasks.v2beta3.Queue.rate_limits]
 controls the total rate of dispatches from a queue (i.e. all
 traffic    dispatched from the queue, regardless of whether
@@ -1024,7 +1020,15 @@ _config][google.cloud.tasks.v2beta3.Queue.retry_config]
 controls what happens to particular a task after its first
 attempt    fails. That is,    [retry_config][google.cloud.tas
 ks.v2beta3.Queue.retry_config]    controls task retries (the
-second attempt, third attempt, etc).</p>
+second attempt, third attempt, etc).  The queue’s actual
+dispatch rate is the result of:  -  Number of tasks in the
+queue -  User-specified throttling: [rate
+limits][Queue.RateLimits] [retry
+configuration][Queue.RetryConfig], and the [queue’s
+state][google.cloud.tasks.v2beta3.Queue.state]. -  System
+throttling due to <code class="docutils literal notranslate"><span class="pre">429</span></code> (Too Many Requests) or <code class="docutils literal notranslate"><span class="pre">503</span></code>
+(Service Unavailable) responses from the worker, high error
+rates, or    to smooth sudden large traffic spikes.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1351,19 +1355,15 @@ characters.</p>
 <dl class="attribute">
 <dt id="google.cloud.tasks_v2beta3.types.Task.payload_type">
 <code class="descname">payload_type</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.Task.payload_type" title="Permalink to this definition">#</a></dt>
-<dd><p>Required.  The task’s payload is used by the task’s target to
-process the task. A payload is valid only if it is compatible
-with the queue’s target.</p>
+<dd><p>Required. The message to send to the worker.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.tasks_v2beta3.types.Task.app_engine_http_request">
 <code class="descname">app_engine_http_request</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.Task.app_engine_http_request" title="Permalink to this definition">#</a></dt>
-<dd><p>App Engine HTTP request that is sent to the task’s target. Can
-be set only if [app_engine_http_queue][google.cloud.tasks.v
-2beta3.Queue.app_engine_http_queue] is set on the queue.
-An App Engine task is a task that has [AppEngineHttpRequest][g
-oogle.cloud.tasks.v2beta3.AppEngineHttpRequest] set.</p>
+<dd><p>HTTP request that is sent to the App Engine app handler.  An
+App Engine task is a task that has [AppEngineHttpRequest][goog
+le.cloud.tasks.v2beta3.AppEngineHttpRequest] set.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1380,6 +1380,36 @@ microsecond.</p>
 <code class="descname">create_time</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.Task.create_time" title="Permalink to this definition">#</a></dt>
 <dd><p>Output only. The time that the task was created.
 <code class="docutils literal notranslate"><span class="pre">create_time</span></code> will be truncated to the nearest second.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.tasks_v2beta3.types.Task.dispatch_deadline">
+<code class="descname">dispatch_deadline</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.Task.dispatch_deadline" title="Permalink to this definition">#</a></dt>
+<dd><p>The deadline for requests sent to the worker. If the worker
+does not respond by this deadline then the request is
+cancelled and the attempt is marked as a <code class="docutils literal notranslate"><span class="pre">DEADLINE_EXCEEDED</span></code>
+failure. Cloud Tasks will retry the task according to the
+[RetryConfig][google.cloud.tasks.v2beta3.RetryConfig].  Note
+that when the request is cancelled, Cloud Tasks will stop
+listing for the response, but whether the worker stops
+processing depends on the worker. For example, if the worker
+is stuck, it may not react to cancelled requests.  The default
+and maximum values depend on the type of request:  -  For [App
+Engine
+tasks][google.cloud.tasks.v2beta3.AppEngineHttpRequest], 0
+indicates    that the request has the default deadline. The
+default deadline    depends on the <a class="reference external" href="https://cloud.google.com/appengine/docs/standard/go/how-instances-are-managed#instance_scaling">scaling    type</a>    of the service:
+10 minutes for standard apps with automatic scaling,    24
+hours for standard apps with manual and basic scaling, and 60
+minutes for flex apps. If the request deadline is set, it must
+be in    the interval [15 seconds, 24 hours 15 seconds].
+Regardless of the    task’s <code class="docutils literal notranslate"><span class="pre">dispatch_deadline</span></code>, the app
+handler will not run for longer    than than the service’s
+timeout. We recommend setting the    <code class="docutils literal notranslate"><span class="pre">dispatch_deadline</span></code> to
+at most a few seconds more than the app    handler’s timeout.
+For more information see    <a class="reference external" href="https://cloud.google.com/tasks/docs/creating-appengine-handlers#timeouts">Timeouts</a>.  <code class="docutils literal notranslate"><span class="pre">dispatch_deadline</span></code> will be
+truncated to the nearest millisecond. The deadline is an
+approximate deadline.</p>
 </dd></dl>
 
 <dl class="attribute">
