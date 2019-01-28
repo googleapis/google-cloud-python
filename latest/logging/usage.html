@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Writing log entries &#8212; google-cloud ae9e7c2 documentation</title>
+    <title>Writing log entries &#8212; google-cloud 879274d documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -51,6 +51,20 @@ which to associate the entries:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">logger</span><span class="o">.</span><span class="n">log_struct</span><span class="p">(</span>
     <span class="p">{</span><span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;My second entry&quot;</span><span class="p">,</span> <span class="s2">&quot;weather&quot;</span><span class="p">:</span> <span class="s2">&quot;partly cloudy&quot;</span><span class="p">}</span>
 <span class="p">)</span>  <span class="c1"># API call</span>
+</pre></div>
+</div>
+<p>Write a simple text entry and resource to the logger.</p>
+<p>Supported Resource values are listed at <a class="reference external" href="https://cloud.google.com/logging/docs/api/v2/resource-list">Monitored Resource Types</a></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">google.cloud.logging.resource</span> <span class="k">import</span> <span class="n">Resource</span>
+<span class="n">res</span> <span class="o">=</span> <span class="n">Resource</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s2">&quot;generic_node&quot;</span><span class="p">,</span>
+    <span class="n">labels</span><span class="o">=</span><span class="p">{</span>
+       <span class="s1">&#39;location&#39;</span><span class="p">:</span> <span class="s1">&#39;us-central1-a&#39;</span><span class="p">,</span>
+       <span class="s1">&#39;namespace&#39;</span><span class="p">:</span> <span class="s1">&#39;default&#39;</span><span class="p">,</span>
+       <span class="s1">&#39;node_id&#39;</span><span class="p">:</span> <span class="s1">&#39;10.10.10.1&#39;</span>
+    <span class="p">})</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">log_struct</span><span class="p">(</span>
+    <span class="p">{</span><span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;My first entry&quot;</span><span class="p">,</span> <span class="s2">&quot;weather&quot;</span><span class="p">:</span> <span class="s2">&quot;partly cloudy&quot;</span><span class="p">},</span> <span class="n">resource</span><span class="o">=</span><span class="n">res</span>
+<span class="p">)</span>
 </pre></div>
 </div>
 </div>
