@@ -63,10 +63,6 @@ _NO_ORDERS_FOR_CURSOR = (
     "come from fields set in ``order_by()``."
 )
 _MISMATCH_CURSOR_W_ORDER_BY = "The cursor {!r} does not match the order fields {!r}."
-_EMPTY_DOC_TEMPLATE = (
-    "Unexpected server response. All responses other than the first must "
-    "contain a document. The response at index {} was\n{}."
-)
 
 
 class Query(object):
@@ -725,12 +721,6 @@ class Query(object):
         Yields:
             ~.firestore_v1beta1.document.DocumentSnapshot: The next
             document that fulfills the query.
-
-        Raises:
-            ValueError: If the first response in the stream is empty, but
-                then more responses follow.
-            ValueError: If a response other than the first does not contain
-                a document.
         """
         parent_path, expected_prefix = self._parent._parent_info()
         response_iterator = self._client._firestore_api.run_query(
@@ -740,24 +730,11 @@ class Query(object):
             metadata=self._client._rpc_metadata,
         )
 
-        empty_stream = False
-        for index, response_pb in enumerate(response_iterator):
-            if empty_stream:
-                raise ValueError(
-                    "First response in stream was empty",
-                    "Received second response",
-                    response_pb,
-                )
-
-            snapshot, skipped_results = _query_response_to_snapshot(
-                response_pb, self._parent, expected_prefix
+        for response in response_iterator:
+            snapshot = _query_response_to_snapshot(
+                response, self._parent, expected_prefix
             )
-            if snapshot is None:
-                if index != 0:
-                    msg = _EMPTY_DOC_TEMPLATE.format(index, response_pb)
-                    raise ValueError(msg)
-                empty_stream = skipped_results == 0
-            else:
+            if snapshot is not None:
                 yield snapshot
 
     def on_snapshot(self, callback):
@@ -964,13 +941,12 @@ def _query_response_to_snapshot(response_pb, collection, expected_prefix):
             directly from ``collection`` via :meth:`_parent_info`.
 
     Returns:
-        Tuple[Optional[~.firestore.document.DocumentSnapshot], int]: A
-        snapshot of the data returned in the query and the number of skipped
-        results. If ``response_pb.document`` is not set, the snapshot will be
-        :data:`None`.
+        Optional[~.firestore.document.DocumentSnapshot]: A
+        snapshot of the data returned in the query. If ``response_pb.document``
+        is not set, the snapshot will be :data:`None`.
     """
     if not response_pb.HasField("document"):
-        return None, response_pb.skipped_results
+        return None
 
     document_id = _helpers.get_doc_id(response_pb.document, expected_prefix)
     reference = collection.document(document_id)
@@ -983,4 +959,4 @@ def _query_response_to_snapshot(response_pb, collection, expected_prefix):
         create_time=response_pb.document.create_time,
         update_time=response_pb.document.update_time,
     )
-    return snapshot, response_pb.skipped_results
+    return snapshot
