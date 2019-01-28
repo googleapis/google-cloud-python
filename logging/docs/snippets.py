@@ -133,6 +133,19 @@ def logger_usage(client, to_delete):
     )  # API call
     # [END logger_log_struct]
 
+    # [START logger_log_resource_text]
+    from google.cloud.logging.resource import Resource
+    res = Resource(type="generic_node",
+        labels={
+           'location': 'us-central1-a',
+           'namespace': 'default',
+           'node_id': '10.10.10.1'
+        })
+    logger.log_struct(
+        {"message": "My first entry", "weather": "partly cloudy"}, resource=res
+    )
+    # [END logger_log_resource_text]
+
     # [START logger_list_entries]
     from google.cloud.logging import DESCENDING
 
