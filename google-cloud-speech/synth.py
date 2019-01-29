@@ -28,7 +28,7 @@ versions = ["v1p1beta1", "v1"]
 # Generate speech GAPIC layer
 # ----------------------------------------------------------------------------
 for version in versions:
-    library = gapic.py_library("speech", version)
+    library = gapic.py_library("speech", version, include_protos=True,)
 
     # Don't move over __init__.py, as we modify it to make the generated client
     # use helpers.py.
