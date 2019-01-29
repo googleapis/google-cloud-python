@@ -49,7 +49,6 @@ def showcase(session):
         session.log('Note: Showcase must be running for these tests to work.')
         session.log('See https://github.com/googleapis/gapic-showcase')
         session.log('-' * 70)
-        session.run('lsof', '-i', '4tcp:7469', '-sTCP:LISTEN', silent=True)
 
     # Install pytest and gapic-generator-python
     session.install('pytest')
