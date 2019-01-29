@@ -1137,13 +1137,7 @@ class TestQuery(unittest.TestCase):
 
         get_response = query.get()
         self.assertIsInstance(get_response, types.GeneratorType)
-        with self.assertRaises(ValueError) as exc_info:
-            list(get_response)
-
-        exc_args = exc_info.exception.args
-        self.assertEqual(len(exc_args), 3)
-        self.assertIs(exc_args[2], empty_response2)
-        self.assertIsNot(empty_response1, empty_response2)
+        self.assertEqual(list(get_response), [])
 
         # Verify the mock call.
         parent_path, _ = parent._parent_info()
@@ -1193,8 +1187,6 @@ class TestQuery(unittest.TestCase):
         )
 
     def test_get_empty_after_first_response(self):
-        from google.cloud.firestore_v1beta1.query import _EMPTY_DOC_TEMPLATE
-
         # Create a minimal fake GAPIC.
         firestore_api = mock.Mock(spec=["run_query"])
 
@@ -1217,13 +1209,11 @@ class TestQuery(unittest.TestCase):
         query = self._make_one(parent)
         get_response = query.get()
         self.assertIsInstance(get_response, types.GeneratorType)
-        with self.assertRaises(ValueError) as exc_info:
-            list(get_response)
-
-        exc_args = exc_info.exception.args
-        self.assertEqual(len(exc_args), 1)
-        msg = _EMPTY_DOC_TEMPLATE.format(1, response_pb2)
-        self.assertEqual(exc_args[0], msg)
+        returned = list(get_response)
+        self.assertEqual(len(returned), 1)
+        snapshot = returned[0]
+        self.assertEqual(snapshot.reference._path, ("charles", "bark"))
+        self.assertEqual(snapshot.to_dict(), data)
 
         # Verify the mock call.
         parent_path, _ = parent._parent_info()
@@ -1468,16 +1458,14 @@ class Test__query_response_to_snapshot(unittest.TestCase):
 
     def test_empty(self):
         response_pb = _make_query_response()
-        snapshot, skipped_results = self._call_fut(response_pb, None, None)
+        snapshot = self._call_fut(response_pb, None, None)
         self.assertIsNone(snapshot)
-        self.assertEqual(skipped_results, 0)
 
     def test_after_offset(self):
         skipped_results = 410
         response_pb = _make_query_response(skipped_results=skipped_results)
-        snapshot, skipped_results = self._call_fut(response_pb, None, None)
+        snapshot = self._call_fut(response_pb, None, None)
         self.assertIsNone(snapshot)
-        self.assertEqual(skipped_results, skipped_results)
 
     def test_response(self):
         from google.cloud.firestore_v1beta1.document import DocumentSnapshot
@@ -1492,10 +1480,7 @@ class Test__query_response_to_snapshot(unittest.TestCase):
         data = {"a": 901, "b": True}
         response_pb = _make_query_response(name=name, data=data)
 
-        snapshot, skipped_results = self._call_fut(
-            response_pb, collection, expected_prefix
-        )
-        self.assertEqual(skipped_results, 0)
+        snapshot = self._call_fut(response_pb, collection, expected_prefix)
         self.assertIsInstance(snapshot, DocumentSnapshot)
         expected_path = collection._path + (doc_id,)
         self.assertEqual(snapshot.reference._path, expected_path)

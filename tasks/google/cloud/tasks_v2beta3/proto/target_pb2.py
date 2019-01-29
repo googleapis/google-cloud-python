@@ -26,7 +26,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n\036com.google.cloud.tasks.v2beta3B\013TargetProtoP\001Z?google.golang.org/genproto/googleapis/cloud/tasks/v2beta3;tasks"
     ),
     serialized_pb=_b(
-        '\n-google/cloud/tasks_v2beta3/proto/target.proto\x12\x1agoogle.cloud.tasks.v2beta3\x1a\x1cgoogle/api/annotations.proto"g\n\x12\x41ppEngineHttpQueue\x12Q\n\x1b\x61pp_engine_routing_override\x18\x01 \x01(\x0b\x32,.google.cloud.tasks.v2beta3.AppEngineRouting"\xc1\x02\n\x14\x41ppEngineHttpRequest\x12;\n\x0bhttp_method\x18\x01 \x01(\x0e\x32&.google.cloud.tasks.v2beta3.HttpMethod\x12H\n\x12\x61pp_engine_routing\x18\x02 \x01(\x0b\x32,.google.cloud.tasks.v2beta3.AppEngineRouting\x12\x14\n\x0crelative_uri\x18\x03 \x01(\t\x12N\n\x07headers\x18\x04 \x03(\x0b\x32=.google.cloud.tasks.v2beta3.AppEngineHttpRequest.HeadersEntry\x12\x0c\n\x04\x62ody\x18\x05 \x01(\x0c\x1a.\n\x0cHeadersEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01"T\n\x10\x41ppEngineRouting\x12\x0f\n\x07service\x18\x01 \x01(\t\x12\x0f\n\x07version\x18\x02 \x01(\t\x12\x10\n\x08instance\x18\x03 \x01(\t\x12\x0c\n\x04host\x18\x04 \x01(\t*[\n\nHttpMethod\x12\x1b\n\x17HTTP_METHOD_UNSPECIFIED\x10\x00\x12\x08\n\x04POST\x10\x01\x12\x07\n\x03GET\x10\x02\x12\x08\n\x04HEAD\x10\x03\x12\x07\n\x03PUT\x10\x04\x12\n\n\x06\x44\x45LETE\x10\x05\x42p\n\x1e\x63om.google.cloud.tasks.v2beta3B\x0bTargetProtoP\x01Z?google.golang.org/genproto/googleapis/cloud/tasks/v2beta3;tasksb\x06proto3'
+        '\n-google/cloud/tasks_v2beta3/proto/target.proto\x12\x1agoogle.cloud.tasks.v2beta3\x1a\x1cgoogle/api/annotations.proto"g\n\x12\x41ppEngineHttpQueue\x12Q\n\x1b\x61pp_engine_routing_override\x18\x01 \x01(\x0b\x32,.google.cloud.tasks.v2beta3.AppEngineRouting"\xc1\x02\n\x14\x41ppEngineHttpRequest\x12;\n\x0bhttp_method\x18\x01 \x01(\x0e\x32&.google.cloud.tasks.v2beta3.HttpMethod\x12H\n\x12\x61pp_engine_routing\x18\x02 \x01(\x0b\x32,.google.cloud.tasks.v2beta3.AppEngineRouting\x12\x14\n\x0crelative_uri\x18\x03 \x01(\t\x12N\n\x07headers\x18\x04 \x03(\x0b\x32=.google.cloud.tasks.v2beta3.AppEngineHttpRequest.HeadersEntry\x12\x0c\n\x04\x62ody\x18\x05 \x01(\x0c\x1a.\n\x0cHeadersEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01"T\n\x10\x41ppEngineRouting\x12\x0f\n\x07service\x18\x01 \x01(\t\x12\x0f\n\x07version\x18\x02 \x01(\t\x12\x10\n\x08instance\x18\x03 \x01(\t\x12\x0c\n\x04host\x18\x04 \x01(\t*s\n\nHttpMethod\x12\x1b\n\x17HTTP_METHOD_UNSPECIFIED\x10\x00\x12\x08\n\x04POST\x10\x01\x12\x07\n\x03GET\x10\x02\x12\x08\n\x04HEAD\x10\x03\x12\x07\n\x03PUT\x10\x04\x12\n\n\x06\x44\x45LETE\x10\x05\x12\t\n\x05PATCH\x10\x06\x12\x0b\n\x07OPTIONS\x10\x07\x42p\n\x1e\x63om.google.cloud.tasks.v2beta3B\x0bTargetProtoP\x01Z?google.golang.org/genproto/googleapis/cloud/tasks/v2beta3;tasksb\x06proto3'
     ),
     dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR],
 )
@@ -59,11 +59,17 @@ _HTTPMETHOD = _descriptor.EnumDescriptor(
         _descriptor.EnumValueDescriptor(
             name="DELETE", index=5, number=5, serialized_options=None, type=None
         ),
+        _descriptor.EnumValueDescriptor(
+            name="PATCH", index=6, number=6, serialized_options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="OPTIONS", index=7, number=7, serialized_options=None, type=None
+        ),
     ],
     containing_type=None,
     serialized_options=None,
     serialized_start=622,
-    serialized_end=713,
+    serialized_end=737,
 )
 _sym_db.RegisterEnumDescriptor(_HTTPMETHOD)
 
@@ -74,6 +80,8 @@ GET = 2
 HEAD = 3
 PUT = 4
 DELETE = 5
+PATCH = 6
+OPTIONS = 7
 
 
 _APPENGINEHTTPQUEUE = _descriptor.Descriptor(
@@ -467,6 +475,11 @@ AppEngineHttpRequest = _reflection.GeneratedProtocolMessageType(
   Routed <https://cloud.google.com/appengine/docs/standard/python/how-requests-are-routed>`_
   and how routing is affected by `dispatch
   files <https://cloud.google.com/appengine/docs/python/config/dispatchref>`_.
+  Traffic is encrypted during transport and never leaves Google
+  datacenters. Because this traffic is carried over a communication
+  mechanism internal to Google, you cannot explicitly set the protocol
+  (for example, HTTP or HTTPS). The request to the handler, however, will
+  appear to have used the HTTP protocol.
   
   The [AppEngineRouting][google.cloud.tasks.v2beta3.AppEngineRouting] used
   to construct the URL that the task is delivered to can be set at the
@@ -483,6 +496,14 @@ AppEngineHttpRequest = _reflection.GeneratedProtocolMessageType(
   -  ``url =`` [host][google.cloud.tasks.v2beta3.AppEngineRouting.host]
      ``+``
      [relative\_uri][google.cloud.tasks.v2beta3.AppEngineHttpRequest.relative\_uri]
+  
+  Tasks can be dispatched to secure app handlers, unsecure app handlers,
+  and URIs restricted with
+  ```login: admin`` <https://cloud.google.com/appengine/docs/standard/python/config/appref>`_.
+  Because tasks are not run as any user, they cannot be dispatched to URIs
+  restricted with
+  ```login: required`` <https://cloud.google.com/appengine/docs/standard/python/config/appref>`_
+  Task dispatches also do not follow redirects.
   
   The task attempt has succeeded if the app's request handler returns an
   HTTP response code in the range [``200`` - ``299``]. ``503`` is
@@ -575,14 +596,8 @@ AppEngineRouting = _reflection.GeneratedProtocolMessageType(
         __module__="google.cloud.tasks_v2beta3.proto.target_pb2",
         __doc__="""App Engine Routing.
   
-  Specifies the target URI. Since this target type dispatches tasks to
-  secure app handlers, unsecure app handlers, and URIs restricted with
-  ```login: admin`` <https://cloud.google.com/appengine/docs/standard/python/config/appref>`_
-  the protocol (for example, HTTP or HTTPS) cannot be explictly specified.
-  Task dispatches do not follow redirects and cannot target URI paths
-  restricted with
-  ```login: required`` <https://cloud.google.com/appengine/docs/standard/python/config/appref>`_
-  because tasks are not run as any user.
+  Defines routing characteristics specific to App Engine - service,
+  version, and instance.
   
   For more information about services, versions, and instances see `An
   Overview of App
