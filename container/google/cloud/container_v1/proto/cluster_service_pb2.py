@@ -9841,3 +9841,4 @@ _sym_db.RegisterServiceDescriptor(_CLUSTERMANAGER)
 DESCRIPTOR.services_by_name["ClusterManager"] = _CLUSTERMANAGER
 
 # @@protoc_insertion_point(module_scope)
+# -*- coding: utf-8 -*-

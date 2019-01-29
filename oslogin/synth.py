@@ -27,6 +27,7 @@ library = gapic.py_library(
     "v1",
     config_path="/google/cloud/oslogin/artman_oslogin_v1.yaml",
     artman_output_name="os-login-v1",
+    include_protos=True,
 )
 
 s.move(library / "google/cloud/oslogin_v1")

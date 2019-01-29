@@ -23,10 +23,11 @@ common = gcp.CommonTemplates()
 # Generate error_reporting GAPIC layer
 # ----------------------------------------------------------------------------
 library = gapic.py_library(
-    "error_reporting",
+    "errorreporting",
     "v1beta1",
     config_path="/google/devtools/clouderrorreporting" "/artman_errorreporting.yaml",
     artman_output_name="error-reporting-v1beta1",
+    include_protos=True,
 )
 
 s.move(library / "google/cloud/errorreporting_v1beta1/proto")

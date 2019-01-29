@@ -22,7 +22,7 @@ common = gcp.CommonTemplates()
 # ----------------------------------------------------------------------------
 # Generate securitycenter GAPIC layer
 # ----------------------------------------------------------------------------
-library = gapic.py_library("securitycenter", "v1beta1")
+library = gapic.py_library("securitycenter", "v1beta1", include_protos=True,)
 
 s.move(
     library,

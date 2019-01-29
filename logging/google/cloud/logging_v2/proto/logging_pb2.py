@@ -1304,3 +1304,4 @@ _sym_db.RegisterServiceDescriptor(_LOGGINGSERVICEV2)
 DESCRIPTOR.services_by_name["LoggingServiceV2"] = _LOGGINGSERVICEV2
 
 # @@protoc_insertion_point(module_scope)
+# -*- coding: utf-8 -*-

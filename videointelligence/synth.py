@@ -28,7 +28,10 @@ versions = ["v1beta1", "v1beta2", "v1p1beta1", "v1p2beta1", "v1"]
 # ----------------------------------------------------------------------------
 for version in versions:
     library = gapic.py_library(
-        "videointelligence", version, artman_output_name=f"video-intelligence-{version}"
+        "videointelligence",
+        version,
+        artman_output_name=f"video-intelligence-{version}",
+        include_protos=True,
     )
 
     # TODO: stop excluding tests and nox.py (excluded as we lack system tests)

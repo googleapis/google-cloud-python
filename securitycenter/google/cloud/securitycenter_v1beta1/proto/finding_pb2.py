@@ -425,3 +425,4 @@ _sym_db.RegisterMessage(Finding.SourcePropertiesEntry)
 DESCRIPTOR._options = None
 _FINDING_SOURCEPROPERTIESENTRY._options = None
 # @@protoc_insertion_point(module_scope)
+# -*- coding: utf-8 -*-

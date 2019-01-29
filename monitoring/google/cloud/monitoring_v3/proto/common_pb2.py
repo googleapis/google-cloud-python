@@ -771,3 +771,4 @@ _sym_db.RegisterMessage(Aggregation)
 DESCRIPTOR._options = None
 _SERVICETIER._options = None
 # @@protoc_insertion_point(module_scope)
+# -*- coding: utf-8 -*-

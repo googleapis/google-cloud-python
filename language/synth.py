@@ -31,6 +31,7 @@ for version in versions:
         version,
         config_path=f"/google/cloud/language/artman_language_{version}.yaml",
         artman_output_name=f"language-{version}",
+        include_protos=True,
     )
 
     s.move(library / f"google/cloud/language_{version}/proto")

@@ -27,6 +27,7 @@ library = gapic.py_library(
     "v1beta1",
     config_path="/google/firestore/artman_firestore.yaml",
     artman_output_name="firestore-v1beta1",
+    include_protos=True,
 )
 
 s.move(library / "google/cloud/firestore_v1beta1/proto")
