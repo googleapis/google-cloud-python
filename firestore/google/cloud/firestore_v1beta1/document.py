@@ -118,6 +118,15 @@ class DocumentReference(object):
             return NotImplemented
 
     @property
+    def path(self):
+        """Database-relative for this document.
+
+        Returns:
+            str: The document's relative path.
+        """
+        return "/".join(self._path)
+
+    @property
     def _document_path(self):
         """Create and cache the full path for this document.
 

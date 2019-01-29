@@ -41,8 +41,10 @@ class TestDocumentReference(unittest.TestCase):
             collection_id1, document_id1, collection_id2, document_id2, client=client
         )
         self.assertIs(document._client, client)
-        expected_path = (collection_id1, document_id1, collection_id2, document_id2)
-        self.assertEqual(document._path, expected_path)
+        expected_path = "/".join(
+            (collection_id1, document_id1, collection_id2, document_id2)
+        )
+        self.assertEqual(document.path, expected_path)
 
     def test_constructor_invalid_path(self):
         with self.assertRaises(ValueError):
