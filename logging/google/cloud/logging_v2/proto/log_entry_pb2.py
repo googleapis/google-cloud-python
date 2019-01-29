@@ -857,3 +857,4 @@ _sym_db.RegisterMessage(LogEntrySourceLocation)
 DESCRIPTOR._options = None
 _LOGENTRY_LABELSENTRY._options = None
 # @@protoc_insertion_point(module_scope)
+# -*- coding: utf-8 -*-

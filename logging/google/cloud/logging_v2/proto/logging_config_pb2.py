@@ -1699,3 +1699,4 @@ _sym_db.RegisterServiceDescriptor(_CONFIGSERVICEV2)
 DESCRIPTOR.services_by_name["ConfigServiceV2"] = _CONFIGSERVICEV2
 
 # @@protoc_insertion_point(module_scope)
+# -*- coding: utf-8 -*-

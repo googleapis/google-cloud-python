@@ -26,7 +26,7 @@ versions = ["v1beta1", "v1"]
 # Generate texttospeech GAPIC layer
 # ----------------------------------------------------------------------------
 for version in versions:
-    library = gapic.py_library("texttospeech", version)
+    library = gapic.py_library("texttospeech", version, include_protos=True)
     s.move(library / f"google/cloud/texttospeech_{version}")
     s.move(library / f"tests/unit/gapic/{version}")
     s.move(library / f"docs/gapic/{version}")

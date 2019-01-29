@@ -31,6 +31,7 @@ v3_library = gapic.py_library(
     "v3",
     config_path="/google/monitoring/artman_monitoring.yaml",
     artman_output_name="monitoring-v3",
+    include_protos=True,
 )
 
 # don't copy nox.py, setup.py, README.rst, docs/index.rst

@@ -27,7 +27,10 @@ version = "v1"
 # Generate pubsub GAPIC layer
 # ----------------------------------------------------------------------------
 library = gapic.py_library(
-    "pubsub", version, config_path="/google/pubsub/artman_pubsub.yaml"
+    "pubsub",
+    version,
+    config_path="/google/pubsub/artman_pubsub.yaml",
+    include_protos=True,
 )
 s.move(
     library,
