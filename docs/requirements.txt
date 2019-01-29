@@ -11,6 +11,7 @@ grpcio-gcp >= 0.2.2
 -e automl/
 -e bigquery/
 -e bigquery_datatransfer/
+-e bigquery_storage/
 -e bigtable/
 -e container/
 -e dataproc/
