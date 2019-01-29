@@ -437,6 +437,64 @@ class TestCollectionReference(unittest.TestCase):
         self.assertIs(query._parent, collection)
         self.assertEqual(query._end_at, (doc_fields, False))
 
+    def _list_documents_helper(self, page_size=None):
+        from google.api_core.page_iterator import Iterator
+        from google.api_core.page_iterator import Page
+        from google.cloud.firestore_v1beta1.document import DocumentReference
+        from google.cloud.firestore_v1beta1.gapic.firestore_client import (
+            FirestoreClient,
+        )
+        from google.cloud.firestore_v1beta1.proto.document_pb2 import Document
+
+        class _Iterator(Iterator):
+            def __init__(self, pages):
+                super(_Iterator, self).__init__(client=None)
+                self._pages = pages
+
+            def _next_page(self):
+                if self._pages:
+                    page, self._pages = self._pages[0], self._pages[1:]
+                    return Page(self, page, self.item_to_value)
+
+        client = _make_client()
+        template = client._database_string + "/documents/{}"
+        document_ids = ["doc-1", "doc-2"]
+        documents = [
+            Document(name=template.format(document_id)) for document_id in document_ids
+        ]
+        iterator = _Iterator(pages=[documents])
+        api_client = mock.create_autospec(FirestoreClient)
+        api_client.list_documents.return_value = iterator
+        client._firestore_api_internal = api_client
+        collection = self._make_one("collection", client=client)
+
+        if page_size is not None:
+            documents = list(collection.list_documents(page_size=page_size))
+        else:
+            documents = list(collection.list_documents())
+
+        # Verify the response and the mocks.
+        self.assertEqual(len(documents), len(document_ids))
+        for document, document_id in zip(documents, document_ids):
+            self.assertIsInstance(document, DocumentReference)
+            self.assertEqual(document.parent, collection)
+            self.assertEqual(document.id, document_id)
+
+        parent, _ = collection._parent_info()
+        api_client.list_documents.assert_called_once_with(
+            parent,
+            collection.id,
+            page_size=page_size,
+            show_missing=True,
+            metadata=client._rpc_metadata,
+        )
+
+    def test_list_documents_wo_page_size(self):
+        self._list_documents_helper()
+
+    def test_list_documents_w_page_size(self):
+        self._list_documents_helper(page_size=25)
+
     @mock.patch("google.cloud.firestore_v1beta1.query.Query", autospec=True)
     def test_get(self, query_class):
         collection = self._make_one("collection")
