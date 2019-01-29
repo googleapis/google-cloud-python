@@ -75,8 +75,8 @@ def main(project_id='your-project-id', snapshot_millis=0):
     rows = reader.rows(session)
 
     # Do any local processing by iterating over the rows. The
-    # google-cloud-bigquery-storage client handles reconnecting to the API
-    # after any transient network errors or timeouts.
+    # google-cloud-bigquery-storage client reconnects to the API after any
+    # transient network errors or timeouts.
     names = set()
     states = set()
 
