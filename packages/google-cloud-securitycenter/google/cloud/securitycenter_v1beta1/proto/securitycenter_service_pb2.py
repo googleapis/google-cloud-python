@@ -2972,3 +2972,4 @@ _sym_db.RegisterServiceDescriptor(_SECURITYCENTER)
 DESCRIPTOR.services_by_name["SecurityCenter"] = _SECURITYCENTER
 
 # @@protoc_insertion_point(module_scope)
+# -*- coding: utf-8 -*-
