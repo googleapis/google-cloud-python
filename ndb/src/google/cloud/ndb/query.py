@@ -872,10 +872,101 @@ OR = DisjunctionNode
 
 
 class Query:
-    __slots__ = ()
+    # __slots__ = ()
 
-    def __init__(self, *args, **kwargs):
-        raise NotImplementedError
+    def __init__(self, kind=None, ancestor=None, filters=None, orders=None,
+                 app=None, namespace=None, default_options=None,
+                 projection=None, group_by=None):
+        if ancestor is not None:
+            if isinstance(ancestor, ParameterizedThing):
+                if isinstance(ancestor, ParameterizedFunction):
+                    if ancestor.func != 'key':
+                        raise TypeError("ancestor cannot be a GQL function"
+                                        "other than Key")
+            else:
+                if not isinstance(ancestor, model.Key):
+                    raise TypeError("ancestor must be a Key; "
+                                    F"received {ancestor}")
+                if not ancestor.id():
+                    raise ValueError("ancestor cannot be an incomplete key")
+                if app is not None:
+                    if app != ancestor.app():
+                        raise TypeError("ancestor/app id mismatch")
+                else:
+                    app = ancestor.app()  # CHECK IF THIS IS NEEDED
+                if namespace is not None:
+                    if namespace != ancestor.namespace():
+                        raise TypeError("ancestor/namespace mismatch")
+                else:
+                    namespace = ancestor.namespace()
+        if filters is not None:
+            if not isinstance(filters, Node):
+                raise TypeError("filters must be a query Node or None; "
+                                F"received {filters}")
+        if orders is not None:
+            if not isinstance(orders, (list,)):  # datastore_query.Order
+                raise TypeError("orders must be an Order instance or None; "
+                                F"received {orders}")
+        # if default_options is not None:  # Optional QueryOptions object.
+        #     if not isinstance(default_options, datastore_rpc.BaseConfiguration):
+        #         raise TypeError("default_options must be a Configuration or None; "
+        #                         F"received {default_options}")
+        #     if projection is not None:
+        #         if default_options.projection is not None:
+        #             raise TypeError("cannot use projection keyword argument and "
+        #                             "default_options.projection at the same time")
+        #         if default_options.keys_only is not None:
+        #             raise TypeError("cannot use projection keyword argument and "
+        #                             "default_options.keys_only at the same time")
+
+        self.kind = kind  # String.
+        self.ancestor = ancestor  # Key.
+        self.filters = filters  # Old: None or Node subclass; New: tuple[str, str, str]
+        self.orders = orders  # Old: None or datastore_query.Order instance; New: sequence of strings (variable name order)
+        self.app = app  # New: (variable names project)
+        self.namespace = namespace
+        self.default_options = default_options
+        # No default_options
+
+        # Not implemented  _check_properties
+        self.projection = None  # sequence of strings
+        if projection is not None:
+          if not projection:
+            raise TypeError('projection argument cannot be empty')
+          if not isinstance(projection, (tuple, list)):
+            raise TypeError("projection must be a tuple, list or None; "
+                            F"received {projection}")
+          self._check_properties(self._to_property_names(projection))
+          self.projection = tuple(projection)
+
+        self.group_by = None  # sequence of strings; New: (variable name distinct_on)
+        if group_by is not None:
+          if not group_by:
+            raise TypeError('group_by argument cannot be empty')
+          if not isinstance(group_by, (tuple, list)):
+            raise TypeError("group_by must be a tuple, list or None; "
+                            F"received {group_by}")
+          self._check_properties(self._to_property_names(group_by))
+          self.group_by = tuple(group_by)
+
+    def _to_property_names(self, properties):
+        if not isinstance(properties, (list, tuple)):
+          properties = [properties]  # It will be type-checked below.
+        fixed = []
+        for prop in properties:
+          if isinstance(prop, str):
+            fixed.append(prop)
+          elif isinstance(prop, model.Property):
+            fixed.append(prop._name)
+          else:
+            raise TypeError(
+                F"Unexpected property {prop}; should be string or Property")
+        return fixed
+
+    def _check_properties(self, fixed, **kwargs):
+        modelclass = model.Model._kind_map.get(self.__kind)
+        if modelclass is not None:
+          modelclass._check_properties(fixed, **kwargs)
 
 
 def gql(*args, **kwargs):
