@@ -8,7 +8,7 @@ Python Client for BigQuery Storage API (`Alpha`_)
 
 .. _Alpha: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/README.rst
 .. _BigQuery Storage API: https://cloud.google.com/bigquery
-.. _Client Library Documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/bigquery_storage/index.html
+.. _Client Library Documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/bigquery_storage/index.html
 .. _Product Documentation:  https://cloud.google.com/bigquery
 
 Quick Start
