@@ -2226,7 +2226,7 @@ def test_client_query_legacy_sql(client):
 
 
 def test_client_query_total_rows(client, capsys):
-    """Run a query an just check for how many rows."""
+    """Run a query and just check for how many rows."""
     # [START bigquery_query_total_rows]
     # from google.cloud import bigquery
     # client = bigquery.Client()
@@ -2245,7 +2245,7 @@ def test_client_query_total_rows(client, capsys):
     results = query_job.result()  # Waits for query to complete.
     next(iter(results))  # Fetch the first page of results, which contains total_rows.
     print("Got {} rows.".format(results.total_rows))
-    # [START bigquery_query_total_rows]
+    # [END bigquery_query_total_rows]
 
     out, _ = capsys.readouterr()
     assert "Got 100 rows." in out
