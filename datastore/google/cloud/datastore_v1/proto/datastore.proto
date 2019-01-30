@@ -14,18 +14,18 @@
 
 syntax = "proto3";
 
-package google.datastore.v1;
+package google.datastore.v1beta3;
 
 import "google/api/annotations.proto";
-import "google/datastore/v1/entity.proto";
-import "google/datastore/v1/query.proto";
+import "google/datastore/v1beta3/entity.proto";
+import "google/datastore/v1beta3/query.proto";
 
-option csharp_namespace = "Google.Cloud.Datastore.V1";
-option go_package = "google.golang.org/genproto/googleapis/datastore/v1;datastore";
+option csharp_namespace = "Google.Cloud.Datastore.V1Beta3";
+option go_package = "google.golang.org/genproto/googleapis/datastore/v1beta3;datastore";
 option java_multiple_files = true;
 option java_outer_classname = "DatastoreProto";
-option java_package = "com.google.datastore.v1";
-option php_namespace = "Google\\Cloud\\Datastore\\V1";
+option java_package = "com.google.datastore.v1beta3";
+option php_namespace = "Google\\Cloud\\Datastore\\V1beta3";
 
 
 // Each RPC normalizes the partition IDs of the keys in its input entities,
@@ -39,7 +39,7 @@ service Datastore {
   // Looks up entities by key.
   rpc Lookup(LookupRequest) returns (LookupResponse) {
     option (google.api.http) = {
-      post: "/v1/projects/{project_id}:lookup"
+      post: "/v1beta3/projects/{project_id}:lookup"
       body: "*"
     };
   }
@@ -47,7 +47,7 @@ service Datastore {
   // Queries for entities.
   rpc RunQuery(RunQueryRequest) returns (RunQueryResponse) {
     option (google.api.http) = {
-      post: "/v1/projects/{project_id}:runQuery"
+      post: "/v1beta3/projects/{project_id}:runQuery"
       body: "*"
     };
   }
@@ -55,7 +55,7 @@ service Datastore {
   // Begins a new transaction.
   rpc BeginTransaction(BeginTransactionRequest) returns (BeginTransactionResponse) {
     option (google.api.http) = {
-      post: "/v1/projects/{project_id}:beginTransaction"
+      post: "/v1beta3/projects/{project_id}:beginTransaction"
       body: "*"
     };
   }
@@ -64,7 +64,7 @@ service Datastore {
   // entities.
   rpc Commit(CommitRequest) returns (CommitResponse) {
     option (google.api.http) = {
-      post: "/v1/projects/{project_id}:commit"
+      post: "/v1beta3/projects/{project_id}:commit"
       body: "*"
     };
   }
@@ -72,7 +72,7 @@ service Datastore {
   // Rolls back a transaction.
   rpc Rollback(RollbackRequest) returns (RollbackResponse) {
     option (google.api.http) = {
-      post: "/v1/projects/{project_id}:rollback"
+      post: "/v1beta3/projects/{project_id}:rollback"
       body: "*"
     };
   }
@@ -81,7 +81,7 @@ service Datastore {
   // before it is inserted.
   rpc AllocateIds(AllocateIdsRequest) returns (AllocateIdsResponse) {
     option (google.api.http) = {
-      post: "/v1/projects/{project_id}:allocateIds"
+      post: "/v1beta3/projects/{project_id}:allocateIds"
       body: "*"
     };
   }
@@ -90,13 +90,13 @@ service Datastore {
   // Datastore.
   rpc ReserveIds(ReserveIdsRequest) returns (ReserveIdsResponse) {
     option (google.api.http) = {
-      post: "/v1/projects/{project_id}:reserveIds"
+      post: "/v1beta3/projects/{project_id}:reserveIds"
       body: "*"
     };
   }
 }
 
-// The request for [Datastore.Lookup][google.datastore.v1.Datastore.Lookup].
+// The request for [Datastore.Lookup][google.datastore.v1beta3.Datastore.Lookup].
 message LookupRequest {
   // The ID of the project against which to make the request.
   string project_id = 8;
@@ -108,7 +108,7 @@ message LookupRequest {
   repeated Key keys = 3;
 }
 
-// The response for [Datastore.Lookup][google.datastore.v1.Datastore.Lookup].
+// The response for [Datastore.Lookup][google.datastore.v1beta3.Datastore.Lookup].
 message LookupResponse {
   // Entities found as `ResultType.FULL` entities. The order of results in this
   // field is undefined and has no relation to the order of the keys in the
@@ -126,7 +126,7 @@ message LookupResponse {
   repeated Key deferred = 3;
 }
 
-// The request for [Datastore.RunQuery][google.datastore.v1.Datastore.RunQuery].
+// The request for [Datastore.RunQuery][google.datastore.v1beta3.Datastore.RunQuery].
 message RunQueryRequest {
   // The ID of the project against which to make the request.
   string project_id = 8;
@@ -150,7 +150,7 @@ message RunQueryRequest {
   }
 }
 
-// The response for [Datastore.RunQuery][google.datastore.v1.Datastore.RunQuery].
+// The response for [Datastore.RunQuery][google.datastore.v1beta3.Datastore.RunQuery].
 message RunQueryResponse {
   // A batch of query results (always present).
   QueryResultBatch batch = 1;
@@ -159,7 +159,7 @@ message RunQueryResponse {
   Query query = 2;
 }
 
-// The request for [Datastore.BeginTransaction][google.datastore.v1.Datastore.BeginTransaction].
+// The request for [Datastore.BeginTransaction][google.datastore.v1beta3.Datastore.BeginTransaction].
 message BeginTransactionRequest {
   // The ID of the project against which to make the request.
   string project_id = 8;
@@ -168,29 +168,29 @@ message BeginTransactionRequest {
   TransactionOptions transaction_options = 10;
 }
 
-// The response for [Datastore.BeginTransaction][google.datastore.v1.Datastore.BeginTransaction].
+// The response for [Datastore.BeginTransaction][google.datastore.v1beta3.Datastore.BeginTransaction].
 message BeginTransactionResponse {
   // The transaction identifier (always present).
   bytes transaction = 1;
 }
 
-// The request for [Datastore.Rollback][google.datastore.v1.Datastore.Rollback].
+// The request for [Datastore.Rollback][google.datastore.v1beta3.Datastore.Rollback].
 message RollbackRequest {
   // The ID of the project against which to make the request.
   string project_id = 8;
 
   // The transaction identifier, returned by a call to
-  // [Datastore.BeginTransaction][google.datastore.v1.Datastore.BeginTransaction].
+  // [Datastore.BeginTransaction][google.datastore.v1beta3.Datastore.BeginTransaction].
   bytes transaction = 1;
 }
 
-// The response for [Datastore.Rollback][google.datastore.v1.Datastore.Rollback].
+// The response for [Datastore.Rollback][google.datastore.v1beta3.Datastore.Rollback].
 // (an empty message).
 message RollbackResponse {
 
 }
 
-// The request for [Datastore.Commit][google.datastore.v1.Datastore.Commit].
+// The request for [Datastore.Commit][google.datastore.v1beta3.Datastore.Commit].
 message CommitRequest {
   // The modes available for commits.
   enum Mode {
@@ -215,7 +215,7 @@ message CommitRequest {
   oneof transaction_selector {
     // The identifier of the transaction associated with the commit. A
     // transaction identifier is returned by a call to
-    // [Datastore.BeginTransaction][google.datastore.v1.Datastore.BeginTransaction].
+    // [Datastore.BeginTransaction][google.datastore.v1beta3.Datastore.BeginTransaction].
     bytes transaction = 1;
   }
 
@@ -235,7 +235,7 @@ message CommitRequest {
   repeated Mutation mutations = 6;
 }
 
-// The response for [Datastore.Commit][google.datastore.v1.Datastore.Commit].
+// The response for [Datastore.Commit][google.datastore.v1beta3.Datastore.Commit].
 message CommitResponse {
   // The result of performing the mutations.
   // The i-th mutation result corresponds to the i-th mutation in the request.
@@ -246,7 +246,7 @@ message CommitResponse {
   int32 index_updates = 4;
 }
 
-// The request for [Datastore.AllocateIds][google.datastore.v1.Datastore.AllocateIds].
+// The request for [Datastore.AllocateIds][google.datastore.v1beta3.Datastore.AllocateIds].
 message AllocateIdsRequest {
   // The ID of the project against which to make the request.
   string project_id = 8;
@@ -256,14 +256,14 @@ message AllocateIdsRequest {
   repeated Key keys = 1;
 }
 
-// The response for [Datastore.AllocateIds][google.datastore.v1.Datastore.AllocateIds].
+// The response for [Datastore.AllocateIds][google.datastore.v1beta3.Datastore.AllocateIds].
 message AllocateIdsResponse {
   // The keys specified in the request (in the same order), each with
   // its key path completed with a newly allocated ID.
   repeated Key keys = 1;
 }
 
-// The request for [Datastore.ReserveIds][google.datastore.v1.Datastore.ReserveIds].
+// The request for [Datastore.ReserveIds][google.datastore.v1beta3.Datastore.ReserveIds].
 message ReserveIdsRequest {
   // The ID of the project against which to make the request.
   string project_id = 8;
@@ -276,7 +276,7 @@ message ReserveIdsRequest {
   repeated Key keys = 1;
 }
 
-// The response for [Datastore.ReserveIds][google.datastore.v1.Datastore.ReserveIds].
+// The response for [Datastore.ReserveIds][google.datastore.v1beta3.Datastore.ReserveIds].
 message ReserveIdsResponse {
 
 }
@@ -361,7 +361,7 @@ message ReadOptions {
 
     // The identifier of the transaction in which to read. A
     // transaction identifier is returned by a call to
-    // [Datastore.BeginTransaction][google.datastore.v1.Datastore.BeginTransaction].
+    // [Datastore.BeginTransaction][google.datastore.v1beta3.Datastore.BeginTransaction].
     bytes transaction = 2;
   }
 }
@@ -369,8 +369,8 @@ message ReadOptions {
 // Options for beginning a new transaction.
 //
 // Transactions can be created explicitly with calls to
-// [Datastore.BeginTransaction][google.datastore.v1.Datastore.BeginTransaction] or implicitly by setting
-// [ReadOptions.new_transaction][google.datastore.v1.ReadOptions.new_transaction] in read requests.
+// [Datastore.BeginTransaction][google.datastore.v1beta3.Datastore.BeginTransaction] or implicitly by setting
+// [ReadOptions.new_transaction][google.datastore.v1beta3.ReadOptions.new_transaction] in read requests.
 message TransactionOptions {
   // Options specific to read / write transactions.
   message ReadWrite {

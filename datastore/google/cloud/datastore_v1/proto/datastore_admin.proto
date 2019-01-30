@@ -1,4 +1,4 @@
-// Copyright 2018 Google Inc.
+// Copyright 2018 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,18 +14,18 @@
 
 syntax = "proto3";
 
-package google.datastore.admin.v1beta1;
+package google.datastore.admin.v1;
 
 import "google/api/annotations.proto";
+import "google/datastore/admin/v1/index.proto";
 import "google/longrunning/operations.proto";
 import "google/protobuf/timestamp.proto";
 
-option csharp_namespace = "Google.Cloud.Datastore.Admin.V1Beta1";
-option go_package = "google.golang.org/genproto/googleapis/datastore/admin/v1beta1;admin";
+option csharp_namespace = "Google.Cloud.Datastore.Admin.V1";
+option go_package = "google.golang.org/genproto/googleapis/datastore/admin/v1;admin";
 option java_multiple_files = true;
 option java_outer_classname = "DatastoreAdminProto";
-option java_package = "com.google.datastore.admin.v1beta1";
-
+option java_package = "com.google.datastore.admin.v1";
 
 // Google Cloud Datastore Admin API
 //
@@ -61,6 +61,15 @@ option java_package = "com.google.datastore.admin.v1beta1";
 // created for each export/import. The state (including any errors encountered)
 // of the export/import may be queried via the Operation resource.
 //
+// # Index
+//
+// The index service manages Cloud Datastore composite indexes.
+//
+// Index creation and deletion are performed asynchronously.
+// An Operation resource is created for each such asynchronous operation.
+// The state of the operation (including any errors encountered)
+// may be queried via the Operation resource.
+//
 // # Operation
 //
 // The Operations collection provides a record of actions performed for the
@@ -89,7 +98,7 @@ service DatastoreAdmin {
   // Cloud Storage.
   rpc ExportEntities(ExportEntitiesRequest) returns (google.longrunning.Operation) {
     option (google.api.http) = {
-      post: "/v1beta1/projects/{project_id}:export"
+      post: "/v1/projects/{project_id}:export"
       body: "*"
     };
   }
@@ -101,8 +110,24 @@ service DatastoreAdmin {
   // that a subset of the data has already been imported to Cloud Datastore.
   rpc ImportEntities(ImportEntitiesRequest) returns (google.longrunning.Operation) {
     option (google.api.http) = {
-      post: "/v1beta1/projects/{project_id}:import"
+      post: "/v1/projects/{project_id}:import"
       body: "*"
+    };
+  }
+
+  // Gets an index.
+  rpc GetIndex(GetIndexRequest) returns (Index) {
+    option (google.api.http) = {
+      get: "/v1/projects/{project_id}/indexes/{index_id}"
+    };
+  }
+
+  // Lists the indexes that match the specified filters.  Datastore uses an
+  // eventually consistent query to fetch the list of indexes and may
+  // occasionally return stale results.
+  rpc ListIndexes(ListIndexesRequest) returns (ListIndexesResponse) {
+    option (google.api.http) = {
+      get: "/v1/projects/{project_id}/indexes"
     };
   }
 }
@@ -168,7 +193,7 @@ message Progress {
 }
 
 // The request for
-// [google.datastore.admin.v1beta1.DatastoreAdmin.ExportEntities][google.datastore.admin.v1beta1.DatastoreAdmin.ExportEntities].
+// [google.datastore.admin.v1.DatastoreAdmin.ExportEntities][google.datastore.admin.v1.DatastoreAdmin.ExportEntities].
 message ExportEntitiesRequest {
   // Project ID against which to make the request.
   string project_id = 1;
@@ -192,8 +217,8 @@ message ExportEntitiesRequest {
   //
   // The resulting files will be nested deeper than the specified URL prefix.
   // The final output URL will be provided in the
-  // [google.datastore.admin.v1beta1.ExportEntitiesResponse.output_url][google.datastore.admin.v1beta1.ExportEntitiesResponse.output_url]
-  // field. That value should be used for subsequent ImportEntities operations.
+  // [google.datastore.admin.v1.ExportEntitiesResponse.output_url][google.datastore.admin.v1.ExportEntitiesResponse.output_url] field. That
+  // value should be used for subsequent ImportEntities operations.
   //
   // By nesting the data files deeper, the same Cloud Storage bucket can be used
   // in multiple ExportEntities operations without conflict.
@@ -201,7 +226,7 @@ message ExportEntitiesRequest {
 }
 
 // The request for
-// [google.datastore.admin.v1beta1.DatastoreAdmin.ImportEntities][google.datastore.admin.v1beta1.DatastoreAdmin.ImportEntities].
+// [google.datastore.admin.v1.DatastoreAdmin.ImportEntities][google.datastore.admin.v1.DatastoreAdmin.ImportEntities].
 message ImportEntitiesRequest {
   // Project ID against which to make the request.
   string project_id = 1;
@@ -221,7 +246,7 @@ message ImportEntitiesRequest {
   // considerations](https://cloud.google.com/storage/docs/naming#object-considerations).
   //
   // For more information, see
-  // [google.datastore.admin.v1beta1.ExportEntitiesResponse.output_url][google.datastore.admin.v1beta1.ExportEntitiesResponse.output_url].
+  // [google.datastore.admin.v1.ExportEntitiesResponse.output_url][google.datastore.admin.v1.ExportEntitiesResponse.output_url].
   string input_url = 3;
 
   // Optionally specify which kinds/namespaces are to be imported. If provided,
@@ -232,11 +257,11 @@ message ImportEntitiesRequest {
 }
 
 // The response for
-// [google.datastore.admin.v1beta1.DatastoreAdmin.ExportEntities][google.datastore.admin.v1beta1.DatastoreAdmin.ExportEntities].
+// [google.datastore.admin.v1.DatastoreAdmin.ExportEntities][google.datastore.admin.v1.DatastoreAdmin.ExportEntities].
 message ExportEntitiesResponse {
   // Location of the output metadata file. This can be used to begin an import
   // into Cloud Datastore (this project or another project). See
-  // [google.datastore.admin.v1beta1.ImportEntitiesRequest.input_url][google.datastore.admin.v1beta1.ImportEntitiesRequest.input_url].
+  // [google.datastore.admin.v1.ImportEntitiesRequest.input_url][google.datastore.admin.v1.ImportEntitiesRequest.input_url].
   // Only present if the operation completed successfully.
   string output_url = 1;
 }
@@ -257,9 +282,9 @@ message ExportEntitiesMetadata {
 
   // Location for the export metadata and data files. This will be the same
   // value as the
-  // [google.datastore.admin.v1beta1.ExportEntitiesRequest.output_url_prefix][google.datastore.admin.v1beta1.ExportEntitiesRequest.output_url_prefix]
+  // [google.datastore.admin.v1.ExportEntitiesRequest.output_url_prefix][google.datastore.admin.v1.ExportEntitiesRequest.output_url_prefix]
   // field. The final output location is provided in
-  // [google.datastore.admin.v1beta1.ExportEntitiesResponse.output_url][google.datastore.admin.v1beta1.ExportEntitiesResponse.output_url].
+  // [google.datastore.admin.v1.ExportEntitiesResponse.output_url][google.datastore.admin.v1.ExportEntitiesResponse.output_url].
   string output_url_prefix = 5;
 }
 
@@ -278,8 +303,7 @@ message ImportEntitiesMetadata {
   EntityFilter entity_filter = 4;
 
   // The location of the import metadata file. This will be the same value as
-  // the [google.datastore.admin.v1beta1.ExportEntitiesResponse.output_url][google.datastore.admin.v1beta1.ExportEntitiesResponse.output_url]
-  // field.
+  // the [google.datastore.admin.v1.ExportEntitiesResponse.output_url][google.datastore.admin.v1.ExportEntitiesResponse.output_url] field.
   string input_url = 5;
 }
 
@@ -316,6 +340,54 @@ message EntityFilter {
   repeated string namespace_ids = 2;
 }
 
+// The request for
+// [google.datastore.admin.v1.DatastoreAdmin.GetIndex][google.datastore.admin.v1.DatastoreAdmin.GetIndex].
+message GetIndexRequest {
+  // Project ID against which to make the request.
+  string project_id = 1;
+
+  // The resource ID of the index to get.
+  string index_id = 3;
+}
+
+// The request for
+// [google.datastore.admin.v1.DatastoreAdmin.ListIndexes][google.datastore.admin.v1.DatastoreAdmin.ListIndexes].
+message ListIndexesRequest {
+  // Project ID against which to make the request.
+  string project_id = 1;
+
+  string filter = 3;
+
+  // The maximum number of items to return.  If zero, then all results will be
+  // returned.
+  int32 page_size = 4;
+
+  // The next_page_token value returned from a previous List request, if any.
+  string page_token = 5;
+}
+
+// The response for
+// [google.datastore.admin.v1.DatastoreAdmin.ListIndexes][google.datastore.admin.v1.DatastoreAdmin.ListIndexes].
+message ListIndexesResponse {
+  // The indexes.
+  repeated Index indexes = 1;
+
+  // The standard List next-page token.
+  string next_page_token = 2;
+}
+
+// Metadata for Index operations.
+message IndexOperationMetadata {
+  // Metadata common to all Datastore Admin operations.
+  CommonMetadata common = 1;
+
+  // An estimate of the number of entities processed.
+  Progress progress_entities = 2;
+
+  // The index resource ID that this operation is acting on.
+  string index_id = 3;
+}
+
 // Operation types.
 enum OperationType {
   // Unspecified.
@@ -326,4 +398,10 @@ enum OperationType {
 
   // ImportEntities.
   IMPORT_ENTITIES = 2;
+
+  // CreateIndex.
+  CREATE_INDEX = 3;
+
+  // DeleteIndex.
+  DELETE_INDEX = 4;
 }
