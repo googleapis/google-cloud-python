@@ -1,4 +1,4 @@
-.. include:: ../../bigquery_storage/README.rst
+.. include:: README.rst
 
 API Reference
 -------------
