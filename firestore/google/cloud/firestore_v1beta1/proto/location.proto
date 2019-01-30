@@ -15,17 +15,18 @@
 
 syntax = "proto3";
 
-package google.firestore.admin.v1beta1;
+package google.firestore.admin.v1;
 
 import "google/api/annotations.proto";
 import "google/type/latlng.proto";
 
-option csharp_namespace = "Google.Cloud.Firestore.Admin.V1Beta1";
-option go_package = "google.golang.org/genproto/googleapis/firestore/admin/v1beta1;admin";
+option csharp_namespace = "Google.Cloud.Firestore.Admin.V1";
+option go_package = "google.golang.org/genproto/googleapis/firestore/admin/v1;admin";
 option java_multiple_files = true;
 option java_outer_classname = "LocationProto";
-option java_package = "com.google.firestore.admin.v1beta1";
+option java_package = "com.google.firestore.admin.v1";
 option objc_class_prefix = "GCFS";
+option php_namespace = "Google\\Cloud\\Firestore\\Admin\\V1";
 
 
 // The metadata message for [google.cloud.location.Location.metadata][google.cloud.location.Location.metadata].
