@@ -167,4 +167,3 @@ _sym_db.RegisterServiceDescriptor(_TRACESERVICE)
 DESCRIPTOR.services_by_name["TraceService"] = _TRACESERVICE
 
 # @@protoc_insertion_point(module_scope)
-# -*- coding: utf-8 -*-
