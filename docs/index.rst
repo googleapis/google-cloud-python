@@ -7,6 +7,7 @@
   AutoML <automl/index>
   BigQuery <bigquery/index>
   BigQuery Data-Transfer <bigquery_datatransfer/index>
+  BigQuery Storage <bigquery_storage/index>
   Bigtable <bigtable/index>
   Container <container/index>
   Dataproc <dataproc/index>
