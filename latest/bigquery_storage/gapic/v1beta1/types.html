@@ -1,0 +1,560 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Types for BigQuery Storage API Client &#8212; google-cloud 5183966 documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Python Client for Google Cloud Bigtable" href="../../../bigtable/index.html" />
+    <link rel="prev" title="Reader for BigQuery Storage API" href="reader.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="module-google.cloud.bigquery_storage_v1beta1.types">
+<span id="types-for-bigquery-storage-api-client"></span><h1>Types for BigQuery Storage API Client<a class="headerlink" href="#module-google.cloud.bigquery_storage_v1beta1.types" title="Permalink to this headline">#</a></h1>
+<dl class="class">
+<dt id="google.cloud.bigquery_storage_v1beta1.types.AvroRows">
+<em class="property">class </em><code class="descclassname">google.cloud.bigquery_storage_v1beta1.types.</code><code class="descname">AvroRows</code><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.types.AvroRows" title="Permalink to this definition">#</a></dt>
+<dd><p>Avro rows.</p>
+<dl class="attribute">
+<dt id="google.cloud.bigquery_storage_v1beta1.types.AvroRows.serialized_binary_rows">
+<code class="descname">serialized_binary_rows</code><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.types.AvroRows.serialized_binary_rows" title="Permalink to this definition">#</a></dt>
+<dd><p>Binary serialized rows in a block.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_storage_v1beta1.types.AvroRows.row_count">
+<code class="descname">row_count</code><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.types.AvroRows.row_count" title="Permalink to this definition">#</a></dt>
+<dd><p>The count of rows in the returning block.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.bigquery_storage_v1beta1.types.AvroSchema">
+<em class="property">class </em><code class="descclassname">google.cloud.bigquery_storage_v1beta1.types.</code><code class="descname">AvroSchema</code><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.types.AvroSchema" title="Permalink to this definition">#</a></dt>
+<dd><p>Avro schema.</p>
+<dl class="attribute">
+<dt id="google.cloud.bigquery_storage_v1beta1.types.AvroSchema.schema">
+<code class="descname">schema</code><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.types.AvroSchema.schema" title="Permalink to this definition">#</a></dt>
+<dd><p>Json serialized schema, as described at
+<a class="reference external" href="https://avro.apache.org/docs/1.8.1/spec.html">https://avro.apache.org/docs/1.8.1/spec.html</a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.bigquery_storage_v1beta1.types.BatchCreateReadSessionStreamsRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.bigquery_storage_v1beta1.types.</code><code class="descname">BatchCreateReadSessionStreamsRequest</code><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.types.BatchCreateReadSessionStreamsRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Information needed to request additional streams for an established read
+session.</p>
+<dl class="attribute">
+<dt id="google.cloud.bigquery_storage_v1beta1.types.BatchCreateReadSessionStreamsRequest.session">
+<code class="descname">session</code><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.types.BatchCreateReadSessionStreamsRequest.session" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. Must be a non-expired session obtained from a call
+to CreateReadSession. Only the name field needs to be set.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_storage_v1beta1.types.BatchCreateReadSessionStreamsRequest.requested_streams">
+<code class="descname">requested_streams</code><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.types.BatchCreateReadSessionStreamsRequest.requested_streams" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. Number of new streams requested. Must be positive.
+Number of added streams may be less than this, see
+CreateReadSessionRequest for more information.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.bigquery_storage_v1beta1.types.BatchCreateReadSessionStreamsResponse">
+<em class="property">class </em><code class="descclassname">google.cloud.bigquery_storage_v1beta1.types.</code><code class="descname">BatchCreateReadSessionStreamsResponse</code><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.types.BatchCreateReadSessionStreamsResponse" title="Permalink to this definition">#</a></dt>
+<dd><p>The response from <code class="docutils literal notranslate"><span class="pre">BatchCreateReadSessionStreams</span></code> returns the stream
+identifiers for the newly created streams.</p>
+<dl class="attribute">
+<dt id="google.cloud.bigquery_storage_v1beta1.types.BatchCreateReadSessionStreamsResponse.streams">
+<code class="descname">streams</code><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.types.BatchCreateReadSessionStreamsResponse.streams" title="Permalink to this definition">#</a></dt>
+<dd><p>Newly added streams.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.bigquery_storage_v1beta1.types.CreateReadSessionRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.bigquery_storage_v1beta1.types.</code><code class="descname">CreateReadSessionRequest</code><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.types.CreateReadSessionRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Creates a new read session, which may include additional options such as
+requested parallelism, projection filters and constraints.</p>
+<dl class="attribute">
+<dt id="google.cloud.bigquery_storage_v1beta1.types.CreateReadSessionRequest.table_reference">
+<code class="descname">table_reference</code><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.types.CreateReadSessionRequest.table_reference" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. Reference to the table to read.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_storage_v1beta1.types.CreateReadSessionRequest.parent">
+<code class="descname">parent</code><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.types.CreateReadSessionRequest.parent" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. String of the form “projects/your-project-id”
+indicating the project this ReadSession is associated with.
+This is the project that will be billed for usage.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_storage_v1beta1.types.CreateReadSessionRequest.table_modifiers">
+<code class="descname">table_modifiers</code><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.types.CreateReadSessionRequest.table_modifiers" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional. Any modifiers to the Table (e.g. snapshot
+timestamp).</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_storage_v1beta1.types.CreateReadSessionRequest.requested_streams">
+<code class="descname">requested_streams</code><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.types.CreateReadSessionRequest.requested_streams" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional. Initial number of streams. If unset or 0, we will
+provide a value of streams so as to produce reasonable
+throughput. Must be non-negative. The number of streams may be
+lower than the requested number, depending on the amount
+parallelism that is reasonable for the table and the maximum
+amount of parallelism allowed by the system.  Streams must be
+read starting from offset 0.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_storage_v1beta1.types.CreateReadSessionRequest.read_options">
+<code class="descname">read_options</code><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.types.CreateReadSessionRequest.read_options" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional. Read options for this session (e.g. column
+selection, filters).</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_storage_v1beta1.types.CreateReadSessionRequest.format">
+<code class="descname">format</code><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.types.CreateReadSessionRequest.format" title="Permalink to this definition">#</a></dt>
+<dd><p>Data output format. Currently default to Avro.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.bigquery_storage_v1beta1.types.Empty">
+<em class="property">class </em><code class="descclassname">google.cloud.bigquery_storage_v1beta1.types.</code><code class="descname">Empty</code><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.types.Empty" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.bigquery_storage_v1beta1.types.FinalizeStreamRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.bigquery_storage_v1beta1.types.</code><code class="descname">FinalizeStreamRequest</code><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.types.FinalizeStreamRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request information for invoking <code class="docutils literal notranslate"><span class="pre">FinalizeStream</span></code>.</p>
+<dl class="attribute">
+<dt id="google.cloud.bigquery_storage_v1beta1.types.FinalizeStreamRequest.stream">
+<code class="descname">stream</code><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.types.FinalizeStreamRequest.stream" title="Permalink to this definition">#</a></dt>
+<dd><p>Stream to finalize.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.bigquery_storage_v1beta1.types.ReadRowsRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.bigquery_storage_v1beta1.types.</code><code class="descname">ReadRowsRequest</code><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.types.ReadRowsRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Requesting row data via <code class="docutils literal notranslate"><span class="pre">ReadRows</span></code> must provide Stream position
+information.</p>
+<dl class="attribute">
+<dt id="google.cloud.bigquery_storage_v1beta1.types.ReadRowsRequest.read_position">
+<code class="descname">read_position</code><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.types.ReadRowsRequest.read_position" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. Identifier of the position in the stream to start
+reading from. The offset requested must be less than the last
+row read from ReadRows. Requesting a larger offset is
+undefined.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.bigquery_storage_v1beta1.types.ReadRowsResponse">
+<em class="property">class </em><code class="descclassname">google.cloud.bigquery_storage_v1beta1.types.</code><code class="descname">ReadRowsResponse</code><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.types.ReadRowsResponse" title="Permalink to this definition">#</a></dt>
+<dd><p>Response from calling <code class="docutils literal notranslate"><span class="pre">ReadRows</span></code> may include row data, progress and
+throttling information.</p>
+<dl class="attribute">
+<dt id="google.cloud.bigquery_storage_v1beta1.types.ReadRowsResponse.rows">
+<code class="descname">rows</code><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.types.ReadRowsResponse.rows" title="Permalink to this definition">#</a></dt>
+<dd><p>Row data is returned in format specified during session
+creation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_storage_v1beta1.types.ReadRowsResponse.avro_rows">
+<code class="descname">avro_rows</code><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.types.ReadRowsResponse.avro_rows" title="Permalink to this definition">#</a></dt>
+<dd><p>Serialized row data in AVRO format.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_storage_v1beta1.types.ReadRowsResponse.status">
+<code class="descname">status</code><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.types.ReadRowsResponse.status" title="Permalink to this definition">#</a></dt>
+<dd><p>Estimated stream statistics.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_storage_v1beta1.types.ReadRowsResponse.throttle_status">
+<code class="descname">throttle_status</code><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.types.ReadRowsResponse.throttle_status" title="Permalink to this definition">#</a></dt>
+<dd><p>Throttling status. If unset, the latest response still
+describes the current throttling status.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.bigquery_storage_v1beta1.types.ReadSession">
+<em class="property">class </em><code class="descclassname">google.cloud.bigquery_storage_v1beta1.types.</code><code class="descname">ReadSession</code><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.types.ReadSession" title="Permalink to this definition">#</a></dt>
+<dd><p>Information returned from a <code class="docutils literal notranslate"><span class="pre">CreateReadSession</span></code> request.</p>
+<dl class="attribute">
+<dt id="google.cloud.bigquery_storage_v1beta1.types.ReadSession.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.types.ReadSession.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Unique identifier for the session. In the form
+<code class="docutils literal notranslate"><span class="pre">projects/{project_id}/sessions/{session_id}</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_storage_v1beta1.types.ReadSession.expire_time">
+<code class="descname">expire_time</code><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.types.ReadSession.expire_time" title="Permalink to this definition">#</a></dt>
+<dd><p>Time at which the session becomes invalid. After this time,
+subsequent requests to read this Session will return errors.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_storage_v1beta1.types.ReadSession.schema">
+<code class="descname">schema</code><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.types.ReadSession.schema" title="Permalink to this definition">#</a></dt>
+<dd><p>The schema for the read. If read_options.selected_fields is
+set, the schema may be different from the table schema as it
+will only contain the selected fields.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_storage_v1beta1.types.ReadSession.avro_schema">
+<code class="descname">avro_schema</code><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.types.ReadSession.avro_schema" title="Permalink to this definition">#</a></dt>
+<dd><p>Avro schema.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_storage_v1beta1.types.ReadSession.streams">
+<code class="descname">streams</code><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.types.ReadSession.streams" title="Permalink to this definition">#</a></dt>
+<dd><p>Streams associated with this session.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_storage_v1beta1.types.ReadSession.table_reference">
+<code class="descname">table_reference</code><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.types.ReadSession.table_reference" title="Permalink to this definition">#</a></dt>
+<dd><p>Table that this ReadSession is reading from.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_storage_v1beta1.types.ReadSession.table_modifiers">
+<code class="descname">table_modifiers</code><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.types.ReadSession.table_modifiers" title="Permalink to this definition">#</a></dt>
+<dd><p>Any modifiers which are applied when reading from the
+specified table.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.bigquery_storage_v1beta1.types.SplitReadStreamRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.bigquery_storage_v1beta1.types.</code><code class="descname">SplitReadStreamRequest</code><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.types.SplitReadStreamRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request information for <code class="docutils literal notranslate"><span class="pre">SplitReadStream</span></code>.</p>
+<dl class="attribute">
+<dt id="google.cloud.bigquery_storage_v1beta1.types.SplitReadStreamRequest.original_stream">
+<code class="descname">original_stream</code><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.types.SplitReadStreamRequest.original_stream" title="Permalink to this definition">#</a></dt>
+<dd><p>Stream to split.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.bigquery_storage_v1beta1.types.SplitReadStreamResponse">
+<em class="property">class </em><code class="descclassname">google.cloud.bigquery_storage_v1beta1.types.</code><code class="descname">SplitReadStreamResponse</code><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.types.SplitReadStreamResponse" title="Permalink to this definition">#</a></dt>
+<dd><p>Response from <code class="docutils literal notranslate"><span class="pre">SplitReadStream</span></code>.</p>
+<dl class="attribute">
+<dt id="google.cloud.bigquery_storage_v1beta1.types.SplitReadStreamResponse.primary_stream">
+<code class="descname">primary_stream</code><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.types.SplitReadStreamResponse.primary_stream" title="Permalink to this definition">#</a></dt>
+<dd><p>Primary stream. Will contain the beginning portion of
+|original_stream|.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_storage_v1beta1.types.SplitReadStreamResponse.remainder_stream">
+<code class="descname">remainder_stream</code><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.types.SplitReadStreamResponse.remainder_stream" title="Permalink to this definition">#</a></dt>
+<dd><p>Remainder stream. Will contain the tail of
+|original_stream|.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.bigquery_storage_v1beta1.types.Stream">
+<em class="property">class </em><code class="descclassname">google.cloud.bigquery_storage_v1beta1.types.</code><code class="descname">Stream</code><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.types.Stream" title="Permalink to this definition">#</a></dt>
+<dd><p>Information about a single data stream within a read session.</p>
+<dl class="attribute">
+<dt id="google.cloud.bigquery_storage_v1beta1.types.Stream.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.types.Stream.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Name of the stream. In the form
+<code class="docutils literal notranslate"><span class="pre">/projects/{project_id}/stream/{stream_id}</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_storage_v1beta1.types.Stream.row_count">
+<code class="descname">row_count</code><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.types.Stream.row_count" title="Permalink to this definition">#</a></dt>
+<dd><p>Rows in the stream.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.bigquery_storage_v1beta1.types.StreamPosition">
+<em class="property">class </em><code class="descclassname">google.cloud.bigquery_storage_v1beta1.types.</code><code class="descname">StreamPosition</code><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.types.StreamPosition" title="Permalink to this definition">#</a></dt>
+<dd><p>Expresses a point within a given stream using an offset position.</p>
+<dl class="attribute">
+<dt id="google.cloud.bigquery_storage_v1beta1.types.StreamPosition.stream">
+<code class="descname">stream</code><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.types.StreamPosition.stream" title="Permalink to this definition">#</a></dt>
+<dd><p>Identifier for a given Stream.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_storage_v1beta1.types.StreamPosition.offset">
+<code class="descname">offset</code><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.types.StreamPosition.offset" title="Permalink to this definition">#</a></dt>
+<dd><p>Position in the stream.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.bigquery_storage_v1beta1.types.StreamStatus">
+<em class="property">class </em><code class="descclassname">google.cloud.bigquery_storage_v1beta1.types.</code><code class="descname">StreamStatus</code><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.types.StreamStatus" title="Permalink to this definition">#</a></dt>
+<dd><p>Progress information for a given Stream.</p>
+<dl class="attribute">
+<dt id="google.cloud.bigquery_storage_v1beta1.types.StreamStatus.estimated_row_count">
+<code class="descname">estimated_row_count</code><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.types.StreamStatus.estimated_row_count" title="Permalink to this definition">#</a></dt>
+<dd><p>Number of estimated rows in the current stream. May change
+over time as different readers in the stream progress at rates
+which are relatively fast or slow.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.bigquery_storage_v1beta1.types.TableModifiers">
+<em class="property">class </em><code class="descclassname">google.cloud.bigquery_storage_v1beta1.types.</code><code class="descname">TableModifiers</code><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.types.TableModifiers" title="Permalink to this definition">#</a></dt>
+<dd><p>All fields in this message optional.</p>
+<dl class="attribute">
+<dt id="google.cloud.bigquery_storage_v1beta1.types.TableModifiers.snapshot_time">
+<code class="descname">snapshot_time</code><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.types.TableModifiers.snapshot_time" title="Permalink to this definition">#</a></dt>
+<dd><p>The snapshot time of the table. If not set, interpreted as
+now.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.bigquery_storage_v1beta1.types.TableReadOptions">
+<em class="property">class </em><code class="descclassname">google.cloud.bigquery_storage_v1beta1.types.</code><code class="descname">TableReadOptions</code><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.types.TableReadOptions" title="Permalink to this definition">#</a></dt>
+<dd><p>Options dictating how we read a table.</p>
+<dl class="attribute">
+<dt id="google.cloud.bigquery_storage_v1beta1.types.TableReadOptions.selected_fields">
+<code class="descname">selected_fields</code><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.types.TableReadOptions.selected_fields" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional. Names of the fields in the table that should be
+read. If empty, all fields will be read. If the specified
+field is a nested field, all the sub-fields in the field will
+be selected. The output field order is unrelated to the order
+of fields in selected_fields.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_storage_v1beta1.types.TableReadOptions.row_restriction">
+<code class="descname">row_restriction</code><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.types.TableReadOptions.row_restriction" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional. SQL text filtering statement, similar to a WHERE
+clause in a query. Currently, we support combinations of
+predicates that are a comparison between a column and a
+constant value in SQL statement. Aggregates are not supported.
+Example: “a &gt; DATE ‘2014-9-27’ AND (b &gt; 5 and C LIKE ‘date’)”</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.bigquery_storage_v1beta1.types.TableReference">
+<em class="property">class </em><code class="descclassname">google.cloud.bigquery_storage_v1beta1.types.</code><code class="descname">TableReference</code><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.types.TableReference" title="Permalink to this definition">#</a></dt>
+<dd><p>Table reference that includes just the 3 strings needed to identify a
+table.</p>
+<dl class="attribute">
+<dt id="google.cloud.bigquery_storage_v1beta1.types.TableReference.project_id">
+<code class="descname">project_id</code><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.types.TableReference.project_id" title="Permalink to this definition">#</a></dt>
+<dd><p>The assigned project ID of the project.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_storage_v1beta1.types.TableReference.dataset_id">
+<code class="descname">dataset_id</code><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.types.TableReference.dataset_id" title="Permalink to this definition">#</a></dt>
+<dd><p>The ID of the dataset in the above project.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_storage_v1beta1.types.TableReference.table_id">
+<code class="descname">table_id</code><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.types.TableReference.table_id" title="Permalink to this definition">#</a></dt>
+<dd><p>The ID of the table in the above dataset.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.bigquery_storage_v1beta1.types.ThrottleStatus">
+<em class="property">class </em><code class="descclassname">google.cloud.bigquery_storage_v1beta1.types.</code><code class="descname">ThrottleStatus</code><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.types.ThrottleStatus" title="Permalink to this definition">#</a></dt>
+<dd><p>Information on if the current connection is being throttled.</p>
+<dl class="attribute">
+<dt id="google.cloud.bigquery_storage_v1beta1.types.ThrottleStatus.throttle_percent">
+<code class="descname">throttle_percent</code><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.types.ThrottleStatus.throttle_percent" title="Permalink to this definition">#</a></dt>
+<dd><p>How much this connection is being throttled. 0 is no
+throttling, 100 is completely throttled.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.bigquery_storage_v1beta1.types.Timestamp">
+<em class="property">class </em><code class="descclassname">google.cloud.bigquery_storage_v1beta1.types.</code><code class="descname">Timestamp</code><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.types.Timestamp" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">google-cloud</a></h1>
+
+
+
+<p class="blurb">Google Cloud Client Libraries for Python</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=GoogleCloudPlatform&repo=google-cloud-python&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../core/index.html">Core Libraries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../asset/index.html">Asset Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../automl/index.html">AutoML</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../bigquery/index.html">BigQuery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../bigquery_datatransfer/index.html">BigQuery Data-Transfer</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">BigQuery Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../bigtable/index.html">Bigtable</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../container/index.html">Container</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dataproc/index.html">Dataproc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../datastore/index.html">Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dlp/index.html">Data Loss Prevention</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dns/index.html">DNS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../firestore/index.html">Firestore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../iam/index.html">IAM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../iot/index.html">IoT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../kms/index.html">Key Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../language/index.html">Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pubsub/index.html">PubSub</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../oslogin/index.html">OSLogin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../redis/index.html">Redis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../resource-manager/index.html">Resource Manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../runtimeconfig/index.html">Python Client for Google Cloud RuntimeConfig</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../runtimeconfig/index.html#api-reference">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../scheduler/index.html">Scheduler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../securitycenter/index.html">Security Center</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../websecurityscanner/index.html">Security Scanner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../spanner/index.html">Spanner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../speech/index.html">Speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../storage/index.html">Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tasks/index.html">Tasks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../texttospeech/index.html">Text-to-Speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../translate/index.html">Translate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../vision/index.html">Vision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../videointelligence/index.html">Video Intelligence</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../error-reporting/index.html">Stackdriver Error Reporting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../logging/index.html">Stackdriver Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../monitoring/index.html">Stackdriver Monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../trace/index.html">Stackdriver Trace</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../releases.html">Release History</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Python Client for BigQuery Storage API (Alpha)</a><ul>
+      <li>Previous: <a href="reader.html" title="previous chapter">Reader for BigQuery Storage API</a></li>
+      <li>Next: <a href="../../../bigtable/index.html" title="next chapter">Python Client for Google Cloud Bigtable</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2014-2017, Google.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../../_sources/bigquery_storage/gapic/v1beta1/types.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/GoogleCloudPlatform/google-cloud-python" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>
