@@ -70,6 +70,22 @@ Windows
     <your-env>\Scripts\activate
     <your-env>\Scripts\pip.exe install google-cloud-bigquery-storage
 
+Optional Dependencies
+^^^^^^^^^^^^^^^^^^^^^
+
+Several features of ``google-cloud-bigquery-storage`` require additional
+dependencies.
+
+* Parse Avro blocks in a ``read_rows()`` stream using `fastavro
+  <https://fastavro.readthedocs.io/en/latest/>`_.
+
+  ``pip install google-cloud-bigquery-storage[fastavro]``
+
+* Write rows to a `pandas <http://pandas.pydata.org/pandas-docs/stable/>`_
+  dataframe.
+
+  ``pip install google-cloud-bigquery-storage[pandas,fastavro]``
+
 Next Steps
 ~~~~~~~~~~
 
