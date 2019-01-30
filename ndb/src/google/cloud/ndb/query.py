@@ -928,7 +928,6 @@ class Query:
         self.default_options = default_options
         # No default_options
 
-        # Not implemented  _check_properties
         self.projection = None  # sequence of strings
         if projection is not None:
           if not projection:
