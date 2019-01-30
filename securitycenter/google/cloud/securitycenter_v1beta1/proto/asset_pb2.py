@@ -452,4 +452,3 @@ _sym_db.RegisterMessage(Asset.ResourcePropertiesEntry)
 DESCRIPTOR._options = None
 _ASSET_RESOURCEPROPERTIESENTRY._options = None
 # @@protoc_insertion_point(module_scope)
-# -*- coding: utf-8 -*-
