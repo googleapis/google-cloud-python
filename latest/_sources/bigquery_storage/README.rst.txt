@@ -8,7 +8,7 @@ Python Client for BigQuery Storage API (`Alpha`_)
 
 .. _Alpha: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/README.rst
 .. _BigQuery Storage API: https://cloud.google.com/bigquery
-.. _Client Library Documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/bigquery_storage/index.html
+.. _Client Library Documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/bigquery_storage/index.html
 .. _Product Documentation:  https://cloud.google.com/bigquery
 
 Quick Start
@@ -69,6 +69,22 @@ Windows
     virtualenv <your-env>
     <your-env>\Scripts\activate
     <your-env>\Scripts\pip.exe install google-cloud-bigquery-storage
+
+Optional Dependencies
+^^^^^^^^^^^^^^^^^^^^^
+
+Several features of ``google-cloud-bigquery-storage`` require additional
+dependencies.
+
+* Parse Avro blocks in a ``read_rows()`` stream using `fastavro
+  <https://fastavro.readthedocs.io/en/latest/>`_.
+
+  ``pip install google-cloud-bigquery-storage[fastavro]``
+
+* Write rows to a `pandas <http://pandas.pydata.org/pandas-docs/stable/>`_
+  dataframe.
+
+  ``pip install google-cloud-bigquery-storage[pandas,fastavro]``
 
 Next Steps
 ~~~~~~~~~~
