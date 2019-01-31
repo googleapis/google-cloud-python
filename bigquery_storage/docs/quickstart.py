@@ -15,11 +15,9 @@
 import argparse
 
 
-
-def main(project_id='your-project-id', snapshot_millis=0):
+def main(project_id="your-project-id", snapshot_millis=0):
     # [START bigquerystorage_quickstart]
     from google.cloud import bigquery_storage_v1beta1
-
 
     # TODO(developer): Set the project_id variable.
     # project_id = 'your-project-id'
@@ -52,19 +50,15 @@ def main(project_id='your-project-id', snapshot_millis=0):
 
     parent = "projects/{}".format(project_id)
     session = client.create_read_session(
-        table_ref,
-        parent,
-        table_modifiers=modifiers,
-        read_options=read_options)  # API request.
+        table_ref, parent, table_modifiers=modifiers, read_options=read_options
+    )  # API request.
 
     # We'll use only a single stream for reading data from the table. Because
     # of dynamic sharding, this will yield all the rows in the table. However,
     # if you wanted to fan out multiple readers you could do so by having a
     # reader process each individual stream.
     reader = client.read_rows(
-        bigquery_storage_v1beta1.types.StreamPosition(
-            stream=session.streams[0],
-        )
+        bigquery_storage_v1beta1.types.StreamPosition(stream=session.streams[0])
     )
 
     # The read stream contains blocks of Avro-encoded bytes. The rows() method
@@ -90,7 +84,7 @@ def main(project_id='your-project-id', snapshot_millis=0):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument('project_id')
-    parser.add_argument('--snapshot_millis', default=0, type=int)
+    parser.add_argument("project_id")
+    parser.add_argument("--snapshot_millis", default=0, type=int)
     args = parser.parse_args()
     main(project_id=args.project_id)
