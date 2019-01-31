@@ -40,9 +40,11 @@ import zlib
 from google.cloud.datastore import entity as entity_module
 from google.cloud.datastore import helpers
 
+from google.cloud.ndb import _datastore_api
 from google.cloud.ndb import _datastore_types
 from google.cloud.ndb import exceptions
 from google.cloud.ndb import key as key_module
+from google.cloud.ndb import tasklets
 
 
 __all__ = [
@@ -336,7 +338,11 @@ def _entity_to_protobuf(entity):
     data = {}
     for cls in type(entity).mro():
         for prop in cls.__dict__.values():
-            if not isinstance(prop, Property) or prop._name in data:
+            if (
+                not isinstance(prop, Property)
+                or isinstance(prop, ModelKey)
+                or prop._name in data
+            ):
                 continue
 
             value = prop._get_base_value_unwrapped_as_list(entity)
@@ -344,7 +350,10 @@ def _entity_to_protobuf(entity):
                 value = value[0]
             data[prop._name] = value
 
-    ds_entity = entity_module.Entity(entity._key._key)
+    key = entity._key
+    if key is None:
+        key = key_module.Key(entity._get_kind(), None)
+    ds_entity = entity_module.Entity(key._key)
     ds_entity.update(data)
 
     # Then, use datatore to get the protocol buffer
@@ -3878,18 +3887,44 @@ class Model(metaclass=MetaModel):
         """
         return key
 
-    def _put(self, **ctx_options):
-        """Write this entity to Cloud Datastore.
+    def _put(self, **options):
+        """Synchronously write this entity to Cloud Datastore.
 
         If the operation creates or completes a key, the entity's key
         attribute is set to the new, complete key.
 
-        Raises:
-            NotImplementedError: Always. This is virtual (for now).
+        Arguments:
+            options (Dict[str, Any]): Options for this request.
+
+        Returns:
+            key.Key: The key for the entity. This is always a complete key.
         """
-        raise NotImplementedError
+        return self._put_async(**options).result()
 
     put = _put
+
+    @tasklets.tasklet
+    def _put_async(self, **options):
+        """Asynchronously write this entity to Cloud Datastore.
+
+        If the operation creates or completes a key, the entity's key
+        attribute is set to the new, complete key.
+
+        Arguments:
+            options (Dict[str, Any]): Options for this request.
+
+        Returns:
+            tasklets.Future: The eventual result will be the key for the
+                entity. This is always a complete key.
+        """
+        entity_pb = _entity_to_protobuf(self)
+        key_pb = yield _datastore_api.put(entity_pb, **options)
+        if key_pb:
+            ds_key = helpers.key_from_protobuf(key_pb)
+            self._key = key_module.Key._from_ds_key(ds_key)
+        return self._key
+
+    put_async = _put_async
 
 
 class Expando(Model):
