@@ -127,6 +127,27 @@ def system(session):
     session.run('py.test', '--quiet', 'tests/system/')
 
 
+@nox.session(python=['2.7', '3.6'])
+def snippets(session):
+    """Run the snippets test suite."""
+
+    # Sanity check: Only run snippets tests if the environment variable is set.
+    if not os.environ.get('GOOGLE_APPLICATION_CREDENTIALS', ''):
+        session.skip('Credentials must be set via environment variable.')
+
+    # Install all test dependencies, then install this package into the
+    # virtualenv's dist-packages.
+    session.install('pytest')
+    session.install('-e', os.path.join('..', 'test_utils'))
+    for local_dep in LOCAL_DEPS:
+        session.install('-e', local_dep)
+    session.install('-e', '.[pandas,fastavro]')
+
+    # Run py.test against the snippets tests.
+    session.run(
+        'py.test', 'docs', *session.posargs)
+
+
 @nox.session(python='3.6')
 def docs(session):
     """Build the docs."""
