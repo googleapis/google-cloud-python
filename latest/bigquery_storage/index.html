@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Python Client for BigQuery Storage API (Alpha) &#8212; google-cloud 4f1459e documentation</title>
+    <title>Python Client for BigQuery Storage API (Alpha) &#8212; google-cloud e5375aa documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -126,7 +126,6 @@ APIs that we cover.</li>
 <h2>Example Usage<a class="headerlink" href="#example-usage" title="Permalink to this headline">#</a></h2>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">bigquery_storage_v1beta1</span>
 
-
 <span class="c1"># TODO(developer): Set the project_id variable.</span>
 <span class="c1"># project_id = &#39;your-project-id&#39;</span>
 <span class="c1">#</span>
@@ -158,19 +157,15 @@ APIs that we cover.</li>
 
 <span class="n">parent</span> <span class="o">=</span> <span class="s2">&quot;projects/{}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">project_id</span><span class="p">)</span>
 <span class="n">session</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">create_read_session</span><span class="p">(</span>
-    <span class="n">table_ref</span><span class="p">,</span>
-    <span class="n">parent</span><span class="p">,</span>
-    <span class="n">table_modifiers</span><span class="o">=</span><span class="n">modifiers</span><span class="p">,</span>
-    <span class="n">read_options</span><span class="o">=</span><span class="n">read_options</span><span class="p">)</span>  <span class="c1"># API request.</span>
+    <span class="n">table_ref</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">table_modifiers</span><span class="o">=</span><span class="n">modifiers</span><span class="p">,</span> <span class="n">read_options</span><span class="o">=</span><span class="n">read_options</span>
+<span class="p">)</span>  <span class="c1"># API request.</span>
 
 <span class="c1"># We&#39;ll use only a single stream for reading data from the table. Because</span>
 <span class="c1"># of dynamic sharding, this will yield all the rows in the table. However,</span>
 <span class="c1"># if you wanted to fan out multiple readers you could do so by having a</span>
 <span class="c1"># reader process each individual stream.</span>
 <span class="n">reader</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">read_rows</span><span class="p">(</span>
-    <span class="n">bigquery_storage_v1beta1</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">StreamPosition</span><span class="p">(</span>
-        <span class="n">stream</span><span class="o">=</span><span class="n">session</span><span class="o">.</span><span class="n">streams</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
-    <span class="p">)</span>
+    <span class="n">bigquery_storage_v1beta1</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">StreamPosition</span><span class="p">(</span><span class="n">stream</span><span class="o">=</span><span class="n">session</span><span class="o">.</span><span class="n">streams</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 <span class="p">)</span>
 
 <span class="c1"># The read stream contains blocks of Avro-encoded bytes. The rows() method</span>
