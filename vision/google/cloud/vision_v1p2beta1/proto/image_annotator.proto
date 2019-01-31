@@ -1,4 +1,4 @@
-// Copyright 2017 Google Inc.
+// Copyright 2018 Google LLC.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -11,45 +11,63 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+//
 
 syntax = "proto3";
 
-package google.cloud.vision.v1p1beta1;
+package google.cloud.vision.v1;
 
 import "google/api/annotations.proto";
-import "google/cloud/vision/v1p1beta1/geometry.proto";
-import "google/cloud/vision/v1p1beta1/text_annotation.proto";
-import "google/cloud/vision/v1p1beta1/web_detection.proto";
+import "google/cloud/vision/v1/geometry.proto";
+import "google/cloud/vision/v1/product_search.proto";
+import "google/cloud/vision/v1/text_annotation.proto";
+import "google/cloud/vision/v1/web_detection.proto";
+import "google/longrunning/operations.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
 import "google/rpc/status.proto";
 import "google/type/color.proto";
 import "google/type/latlng.proto";
 
 option cc_enable_arenas = true;
-option go_package = "google.golang.org/genproto/googleapis/cloud/vision/v1p1beta1;vision";
+option go_package = "google.golang.org/genproto/googleapis/cloud/vision/v1;vision";
 option java_multiple_files = true;
 option java_outer_classname = "ImageAnnotatorProto";
-option java_package = "com.google.cloud.vision.v1p1beta1";
+option java_package = "com.google.cloud.vision.v1";
+option objc_class_prefix = "GCVN";
+
 
 // Service that performs Google Cloud Vision API detection tasks over client
 // images, such as face, landmark, logo, label, and text detection. The
 // ImageAnnotator service returns detected entities from the images.
 service ImageAnnotator {
   // Run image detection and annotation for a batch of images.
-  rpc BatchAnnotateImages(BatchAnnotateImagesRequest)
-      returns (BatchAnnotateImagesResponse) {
+  rpc BatchAnnotateImages(BatchAnnotateImagesRequest) returns (BatchAnnotateImagesResponse) {
     option (google.api.http) = {
-      post: "/v1p1beta1/images:annotate"
+      post: "/v1/images:annotate"
+      body: "*"
+    };
+  }
+
+  // Run asynchronous image detection and annotation for a list of generic
+  // files, such as PDF files, which may contain multiple pages and multiple
+  // images per page. Progress and results can be retrieved through the
+  // `google.longrunning.Operations` interface.
+  // `Operation.metadata` contains `OperationMetadata` (metadata).
+  // `Operation.response` contains `AsyncBatchAnnotateFilesResponse` (results).
+  rpc AsyncBatchAnnotateFiles(AsyncBatchAnnotateFilesRequest) returns (google.longrunning.Operation) {
+    option (google.api.http) = {
+      post: "/v1/files:asyncBatchAnnotate"
       body: "*"
     };
   }
 }
 
-// Users describe the type of Google Cloud Vision API tasks to perform over
-// images by using *Feature*s. Each Feature indicates a type of image
-// detection task to perform. Features encode the Cloud Vision API
-// vertical to operate on and the number of top-scoring results to return.
+// The type of Google Cloud Vision API detection to perform, and the maximum
+// number of results to return for that type. Multiple `Feature` objects can
+// be specified in the `features` list.
 message Feature {
-  // Type of image feature.
+  // Type of Google Cloud Vision API feature to be extracted.
   enum Type {
     // Unspecified feature type.
     TYPE_UNSPECIFIED = 0;
@@ -66,17 +84,21 @@ message Feature {
     // Run label detection.
     LABEL_DETECTION = 4;
 
-    // Run OCR.
+    // Run text detection / optical character recognition (OCR). Text detection
+    // is optimized for areas of text within a larger image; if the image is
+    // a document, use `DOCUMENT_TEXT_DETECTION` instead.
     TEXT_DETECTION = 5;
 
     // Run dense text document OCR. Takes precedence when both
-    // DOCUMENT_TEXT_DETECTION and TEXT_DETECTION are present.
+    // `DOCUMENT_TEXT_DETECTION` and `TEXT_DETECTION` are present.
     DOCUMENT_TEXT_DETECTION = 11;
 
-    // Run computer vision models to compute image safe-search properties.
+    // Run Safe Search to detect potentially unsafe
+    // or undesirable content.
     SAFE_SEARCH_DETECTION = 6;
 
-    // Compute a set of image properties, such as the image's dominant colors.
+    // Compute a set of image properties, such as the
+    // image's dominant colors.
     IMAGE_PROPERTIES = 7;
 
     // Run crop hints.
@@ -84,12 +106,19 @@ message Feature {
 
     // Run web detection.
     WEB_DETECTION = 10;
+
+    // Run Product Search.
+    PRODUCT_SEARCH = 12;
+
+    // Run localizer for object detection.
+    OBJECT_LOCALIZATION = 19;
   }
 
   // The feature type.
   Type type = 1;
 
-  // Maximum number of results of this type.
+  // Maximum number of results of this type. Does not apply to
+  // `TEXT_DETECTION`, `DOCUMENT_TEXT_DETECTION`, or `CROP_HINTS`.
   int32 max_results = 2;
 
   // Model to use for the feature.
@@ -98,25 +127,32 @@ message Feature {
   string model = 3;
 }
 
-// External image source (Google Cloud Storage image location).
+// External image source (Google Cloud Storage or web URL image location).
 message ImageSource {
-  // NOTE: For new code `image_uri` below is preferred.
-  // Google Cloud Storage image URI, which must be in the following form:
-  // `gs://bucket_name/object_name` (for details, see
+  // **Use `image_uri` instead.**
+  //
+  // The Google Cloud Storage  URI of the form
+  // `gs://bucket_name/object_name`. Object versioning is not supported. See
   // [Google Cloud Storage Request
-  // URIs](https://cloud.google.com/storage/docs/reference-uris)).
-  // NOTE: Cloud Storage object versioning is not supported.
+  // URIs](https://cloud.google.com/storage/docs/reference-uris) for more info.
   string gcs_image_uri = 1;
 
-  // Image URI which supports:
-  // 1) Google Cloud Storage image URI, which must be in the following form:
-  // `gs://bucket_name/object_name` (for details, see
-  // [Google Cloud Storage Request
-  // URIs](https://cloud.google.com/storage/docs/reference-uris)).
-  // NOTE: Cloud Storage object versioning is not supported.
-  // 2) Publicly accessible image HTTP/HTTPS URL.
-  // This is preferred over the legacy `gcs_image_uri` above. When both
-  // `gcs_image_uri` and `image_uri` are specified, `image_uri` takes
+  // The URI of the source image. Can be either:
+  //
+  // 1. A Google Cloud Storage URI of the form
+  //    `gs://bucket_name/object_name`. Object versioning is not supported. See
+  //    [Google Cloud Storage Request
+  //    URIs](https://cloud.google.com/storage/docs/reference-uris) for more
+  //    info.
+  //
+  // 2. A publicly-accessible image HTTP/HTTPS URL. When fetching images from
+  //    HTTP/HTTPS URLs, Google cannot guarantee that the request will be
+  //    completed. Your request may fail if the specified host denies the
+  //    request (e.g. due to request throttling or DOS prevention), or if Google
+  //    throttles requests to the site for abuse prevention. You should not
+  //    depend on externally-hosted images for production applications.
+  //
+  // When both `gcs_image_uri` and `image_uri` are specified, `image_uri` takes
   // precedence.
   string image_uri = 2;
 }
@@ -124,13 +160,13 @@ message ImageSource {
 // Client image to perform Google Cloud Vision API tasks over.
 message Image {
   // Image content, represented as a stream of bytes.
-  // Note: as with all `bytes` fields, protobuffers use a pure binary
+  // Note: As with all `bytes` fields, protobuffers use a pure binary
   // representation, whereas JSON representations use base64.
   bytes content = 1;
 
-  // Google Cloud Storage image location. If both `content` and `source`
-  // are provided for an image, `content` takes precedence and is
-  // used to perform the image annotation request.
+  // Google Cloud Storage image location, or publicly-accessible image
+  // URL. If both `content` and `source` are provided for an image, `content`
+  // takes precedence and is used to perform the image annotation request.
   ImageSource source = 2;
 }
 
@@ -339,7 +375,8 @@ message Property {
 // Set of detected entity features.
 message EntityAnnotation {
   // Opaque entity ID. Some IDs may be available in
-  // [Google Knowledge Graph Search API](https://developers.google.com/knowledge-graph/).
+  // [Google Knowledge Graph Search
+  // API](https://developers.google.com/knowledge-graph/).
   string mid = 1;
 
   // The language code for the locale in which the entity textual
@@ -352,11 +389,12 @@ message EntityAnnotation {
   // Overall score of the result. Range [0, 1].
   float score = 4;
 
+  // **Deprecated. Use `score` instead.**
   // The accuracy of the entity detection in an image.
   // For example, for an image in which the "Eiffel Tower" entity is detected,
   // this field represents the confidence that there is a tower in the query
   // image. Range [0, 1].
-  float confidence = 5;
+  float confidence = 5 [deprecated = true];
 
   // The relevancy of the ICA (Image Content Annotation) label to the
   // image. For example, the relevancy of "tower" is likely higher to an image
@@ -379,6 +417,26 @@ message EntityAnnotation {
   // Some entities may have optional user-supplied `Property` (name/value)
   // fields, such a score or string that qualifies the entity.
   repeated Property properties = 9;
+}
+
+// Set of detected objects with bounding boxes.
+message LocalizedObjectAnnotation {
+  // Object ID that should align with EntityAnnotation mid.
+  string mid = 1;
+
+  // The BCP-47 language code, such as "en-US" or "sr-Latn". For more
+  // information, see
+  // http://www.unicode.org/reports/tr35/#Unicode_locale_identifier.
+  string language_code = 2;
+
+  // Object name, expressed in its `language_code` language.
+  string name = 3;
+
+  // Score of the result. Range [0, 1].
+  float score = 4;
+
+  // Image region to which this object belongs. This must be populated.
+  BoundingPoly bounding_poly = 5;
 }
 
 // Set of features pertaining to the image, computed by computer vision
@@ -482,7 +540,7 @@ message WebDetectionParams {
 
 // Image context and/or feature-specific parameters.
 message ImageContext {
-  // lat/long rectangle that specifies the location of the image.
+  // Not used.
   LatLongRect lat_long_rect = 1;
 
   // List of languages to use for TEXT_DETECTION. In most cases, an empty value
@@ -497,6 +555,9 @@ message ImageContext {
 
   // Parameters for crop hints annotation request.
   CropHintsParams crop_hints_params = 4;
+
+  // Parameters for product search.
+  ProductSearchParams product_search_params = 5;
 
   // Parameters for web detection.
   WebDetectionParams web_detection_params = 6;
@@ -515,6 +576,17 @@ message AnnotateImageRequest {
   ImageContext image_context = 3;
 }
 
+// If an image was produced from a file (e.g. a PDF), this message gives
+// information about the source of that image.
+message ImageAnnotationContext {
+  // The URI of the file used to produce the image.
+  string uri = 1;
+
+  // If the file was a PDF or TIFF, this field gives the page number within
+  // the file used to produce the image.
+  int32 page_number = 2;
+}
+
 // Response to an image annotation request.
 message AnnotateImageResponse {
   // If present, face detection has completed successfully.
@@ -528,6 +600,10 @@ message AnnotateImageResponse {
 
   // If present, label detection has completed successfully.
   repeated EntityAnnotation label_annotations = 4;
+
+  // If present, localized object detection has completed successfully.
+  // This will be sorted descending by confidence score.
+  repeated LocalizedObjectAnnotation localized_object_annotations = 22;
 
   // If present, text (OCR) detection has completed successfully.
   repeated EntityAnnotation text_annotations = 5;
@@ -550,10 +626,27 @@ message AnnotateImageResponse {
   // If present, web detection has completed successfully.
   WebDetection web_detection = 13;
 
+  // If present, product search has completed successfully.
+  ProductSearchResults product_search_results = 14;
+
   // If set, represents the error message for the operation.
   // Note that filled-in image annotations are guaranteed to be
   // correct, even when `error` is set.
   google.rpc.Status error = 9;
+
+  // If present, contextual information is needed to understand where this image
+  // comes from.
+  ImageAnnotationContext context = 21;
+}
+
+// Response to a single file annotation request. A file may contain one or more
+// images, which individually have their own responses.
+message AnnotateFileResponse {
+  // Information about the file for which this response is generated.
+  InputConfig input_config = 1;
+
+  // Individual responses to images found within the file.
+  repeated AnnotateImageResponse responses = 2;
 }
 
 // Multiple image annotation requests are batched into a single service call.
@@ -566,6 +659,127 @@ message BatchAnnotateImagesRequest {
 message BatchAnnotateImagesResponse {
   // Individual responses to image annotation requests within the batch.
   repeated AnnotateImageResponse responses = 1;
+}
+
+// An offline file annotation request.
+message AsyncAnnotateFileRequest {
+  // Required. Information about the input file.
+  InputConfig input_config = 1;
+
+  // Required. Requested features.
+  repeated Feature features = 2;
+
+  // Additional context that may accompany the image(s) in the file.
+  ImageContext image_context = 3;
+
+  // Required. The desired output location and metadata (e.g. format).
+  OutputConfig output_config = 4;
+}
+
+// The response for a single offline file annotation request.
+message AsyncAnnotateFileResponse {
+  // The output location and metadata from AsyncAnnotateFileRequest.
+  OutputConfig output_config = 1;
+}
+
+// Multiple async file annotation requests are batched into a single service
+// call.
+message AsyncBatchAnnotateFilesRequest {
+  // Individual async file annotation requests for this batch.
+  repeated AsyncAnnotateFileRequest requests = 1;
+}
+
+// Response to an async batch file annotation request.
+message AsyncBatchAnnotateFilesResponse {
+  // The list of file annotation responses, one for each request in
+  // AsyncBatchAnnotateFilesRequest.
+  repeated AsyncAnnotateFileResponse responses = 1;
+}
+
+// The desired input location and metadata.
+message InputConfig {
+  // The Google Cloud Storage location to read the input from.
+  GcsSource gcs_source = 1;
+
+  // The type of the file. Currently only "application/pdf" and "image/tiff"
+  // are supported. Wildcards are not supported.
+  string mime_type = 2;
+}
+
+// The desired output location and metadata.
+message OutputConfig {
+  // The Google Cloud Storage location to write the output(s) to.
+  GcsDestination gcs_destination = 1;
+
+  // The max number of response protos to put into each output JSON file on
+  // Google Cloud Storage.
+  // The valid range is [1, 100]. If not specified, the default value is 20.
+  //
+  // For example, for one pdf file with 100 pages, 100 response protos will
+  // be generated. If `batch_size` = 20, then 5 json files each
+  // containing 20 response protos will be written under the prefix
+  // `gcs_destination`.`uri`.
+  //
+  // Currently, batch_size only applies to GcsDestination, with potential future
+  // support for other output configurations.
+  int32 batch_size = 2;
+}
+
+// The Google Cloud Storage location where the input will be read from.
+message GcsSource {
+  // Google Cloud Storage URI for the input file. This must only be a
+  // Google Cloud Storage object. Wildcards are not currently supported.
+  string uri = 1;
+}
+
+// The Google Cloud Storage location where the output will be written to.
+message GcsDestination {
+  // Google Cloud Storage URI where the results will be stored. Results will
+  // be in JSON format and preceded by its corresponding input URI. This field
+  // can either represent a single file, or a prefix for multiple outputs.
+  // Prefixes must end in a `/`.
+  //
+  // Examples:
+  //
+  // *    File: gs://bucket-name/filename.json
+  // *    Prefix: gs://bucket-name/prefix/here/
+  // *    File: gs://bucket-name/prefix/here
+  //
+  // If multiple outputs, each response is still AnnotateFileResponse, each of
+  // which contains some subset of the full list of AnnotateImageResponse.
+  // Multiple outputs can happen if, for example, the output JSON is too large
+  // and overflows into multiple sharded files.
+  string uri = 1;
+}
+
+// Contains metadata for the BatchAnnotateImages operation.
+message OperationMetadata {
+  // Batch operation states.
+  enum State {
+    // Invalid.
+    STATE_UNSPECIFIED = 0;
+
+    // Request is received.
+    CREATED = 1;
+
+    // Request is actively being processed.
+    RUNNING = 2;
+
+    // The batch processing is done.
+    DONE = 3;
+
+    // The batch processing was cancelled.
+    CANCELLED = 4;
+  }
+
+  // Current state of the batch operation.
+  State state = 1;
+
+  // The time when the batch request was received.
+  google.protobuf.Timestamp create_time = 5;
+
+  // The time when the operation result was last updated.
+  google.protobuf.Timestamp update_time = 6;
 }
 
 // A bucketized representation of likelihood, which is intended to give clients

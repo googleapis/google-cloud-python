@@ -1,4 +1,4 @@
-// Copyright 2018 Google Inc.
+// Copyright 2018 Google LLC.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -11,13 +11,14 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+//
 
 syntax = "proto3";
 
-package google.cloud.vision.v1p3beta1;
+package google.cloud.vision.v1;
 
 import "google/api/annotations.proto";
-import "google/cloud/vision/v1p3beta1/geometry.proto";
+import "google/cloud/vision/v1/geometry.proto";
 import "google/longrunning/operations.proto";
 import "google/protobuf/empty.proto";
 import "google/protobuf/field_mask.proto";
@@ -25,25 +26,26 @@ import "google/protobuf/timestamp.proto";
 import "google/rpc/status.proto";
 
 option cc_enable_arenas = true;
-option go_package = "google.golang.org/genproto/googleapis/cloud/vision/v1p3beta1;vision";
+option go_package = "google.golang.org/genproto/googleapis/cloud/vision/v1;vision";
 option java_multiple_files = true;
 option java_outer_classname = "ProductSearchServiceProto";
-option java_package = "com.google.cloud.vision.v1p3beta1";
+option java_package = "com.google.cloud.vision.v1";
+option objc_class_prefix = "GCVN";
 
 
 // Manages Products and ProductSets of reference images for use in product
 // search. It uses the following resource model:
 //
-// - The API has a collection of [ProductSet][google.cloud.vision.v1p3beta1.ProductSet] resources, named
+// - The API has a collection of [ProductSet][google.cloud.vision.v1.ProductSet] resources, named
 // `projects/*/locations/*/productSets/*`, which acts as a way to put different
 // products into groups to limit identification.
 //
 // In parallel,
 //
-// - The API has a collection of [Product][google.cloud.vision.v1p3beta1.Product] resources, named
+// - The API has a collection of [Product][google.cloud.vision.v1.Product] resources, named
 //   `projects/*/locations/*/products/*`
 //
-// - Each [Product][google.cloud.vision.v1p3beta1.Product] has a collection of [ReferenceImage][google.cloud.vision.v1p3beta1.ReferenceImage] resources, named
+// - Each [Product][google.cloud.vision.v1.Product] has a collection of [ReferenceImage][google.cloud.vision.v1.ReferenceImage] resources, named
 //   `projects/*/locations/*/products/*/referenceImages/*`
 service ProductSearch {
   // Creates and returns a new ProductSet resource.
@@ -54,7 +56,7 @@ service ProductSearch {
   //   4096 characters.
   rpc CreateProductSet(CreateProductSetRequest) returns (ProductSet) {
     option (google.api.http) = {
-      post: "/v1p3beta1/{parent=projects/*/locations/*}/productSets"
+      post: "/v1/{parent=projects/*/locations/*}/productSets"
       body: "product_set"
     };
   }
@@ -67,7 +69,7 @@ service ProductSearch {
   //   than 1.
   rpc ListProductSets(ListProductSetsRequest) returns (ListProductSetsResponse) {
     option (google.api.http) = {
-      get: "/v1p3beta1/{parent=projects/*/locations/*}/productSets"
+      get: "/v1/{parent=projects/*/locations/*}/productSets"
     };
   }
 
@@ -78,7 +80,7 @@ service ProductSearch {
   // * Returns NOT_FOUND if the ProductSet does not exist.
   rpc GetProductSet(GetProductSetRequest) returns (ProductSet) {
     option (google.api.http) = {
-      get: "/v1p3beta1/{name=projects/*/locations/*/productSets/*}"
+      get: "/v1/{name=projects/*/locations/*/productSets/*}"
     };
   }
 
@@ -92,13 +94,13 @@ service ProductSearch {
   //   missing from the request or longer than 4096 characters.
   rpc UpdateProductSet(UpdateProductSetRequest) returns (ProductSet) {
     option (google.api.http) = {
-      patch: "/v1p3beta1/{product_set.name=projects/*/locations/*/productSets/*}"
+      patch: "/v1/{product_set.name=projects/*/locations/*/productSets/*}"
       body: "product_set"
     };
   }
 
-  // Permanently deletes a ProductSet. All Products and ReferenceImages in the
-  // ProductSet will be deleted.
+  // Permanently deletes a ProductSet. Products and ReferenceImages in the
+  // ProductSet are not deleted.
   //
   // The actual image files are not deleted from Google Cloud Storage.
   //
@@ -107,7 +109,7 @@ service ProductSearch {
   // * Returns NOT_FOUND if the ProductSet does not exist.
   rpc DeleteProductSet(DeleteProductSetRequest) returns (google.protobuf.Empty) {
     option (google.api.http) = {
-      delete: "/v1p3beta1/{name=projects/*/locations/*/productSets/*}"
+      delete: "/v1/{name=projects/*/locations/*/productSets/*}"
     };
   }
 
@@ -121,7 +123,7 @@ service ProductSearch {
   // * Returns INVALID_ARGUMENT if product_category is missing or invalid.
   rpc CreateProduct(CreateProductRequest) returns (Product) {
     option (google.api.http) = {
-      post: "/v1p3beta1/{parent=projects/*/locations/*}/products"
+      post: "/v1/{parent=projects/*/locations/*}/products"
       body: "product"
     };
   }
@@ -133,7 +135,7 @@ service ProductSearch {
   // * Returns INVALID_ARGUMENT if page_size is greater than 100 or less than 1.
   rpc ListProducts(ListProductsRequest) returns (ListProductsResponse) {
     option (google.api.http) = {
-      get: "/v1p3beta1/{parent=projects/*/locations/*}/products"
+      get: "/v1/{parent=projects/*/locations/*}/products"
     };
   }
 
@@ -144,12 +146,13 @@ service ProductSearch {
   // * Returns NOT_FOUND if the Product does not exist.
   rpc GetProduct(GetProductRequest) returns (Product) {
     option (google.api.http) = {
-      get: "/v1p3beta1/{name=projects/*/locations/*/products/*}"
+      get: "/v1/{name=projects/*/locations/*/products/*}"
     };
   }
 
   // Makes changes to a Product resource.
-  // Only display_name, description and labels can be updated right now.
+  // Only the `display_name`, `description`, and `labels` fields can be updated
+  // right now.
   //
   // If labels are updated, the change will not be reflected in queries until
   // the next index time.
@@ -164,7 +167,7 @@ service ProductSearch {
   // * Returns INVALID_ARGUMENT if product_category is present in update_mask.
   rpc UpdateProduct(UpdateProductRequest) returns (Product) {
     option (google.api.http) = {
-      patch: "/v1p3beta1/{product.name=projects/*/locations/*/products/*}"
+      patch: "/v1/{product.name=projects/*/locations/*/products/*}"
       body: "product"
     };
   }
@@ -180,7 +183,7 @@ service ProductSearch {
   // * Returns NOT_FOUND if the product does not exist.
   rpc DeleteProduct(DeleteProductRequest) returns (google.protobuf.Empty) {
     option (google.api.http) = {
-      delete: "/v1p3beta1/{name=projects/*/locations/*/products/*}"
+      delete: "/v1/{name=projects/*/locations/*/products/*}"
     };
   }
 
@@ -205,7 +208,7 @@ service ProductSearch {
   // * Returns INVALID_ARGUMENT if bounding_poly contains more than 10 polygons.
   rpc CreateReferenceImage(CreateReferenceImageRequest) returns (ReferenceImage) {
     option (google.api.http) = {
-      post: "/v1p3beta1/{parent=projects/*/locations/*/products/*}/referenceImages"
+      post: "/v1/{parent=projects/*/locations/*/products/*}/referenceImages"
       body: "reference_image"
     };
   }
@@ -223,7 +226,7 @@ service ProductSearch {
   // * Returns NOT_FOUND if the reference image does not exist.
   rpc DeleteReferenceImage(DeleteReferenceImageRequest) returns (google.protobuf.Empty) {
     option (google.api.http) = {
-      delete: "/v1p3beta1/{name=projects/*/locations/*/products/*/referenceImages/*}"
+      delete: "/v1/{name=projects/*/locations/*/products/*/referenceImages/*}"
     };
   }
 
@@ -236,7 +239,7 @@ service ProductSearch {
   //   than 1.
   rpc ListReferenceImages(ListReferenceImagesRequest) returns (ListReferenceImagesResponse) {
     option (google.api.http) = {
-      get: "/v1p3beta1/{parent=projects/*/locations/*/products/*}/referenceImages"
+      get: "/v1/{parent=projects/*/locations/*/products/*}/referenceImages"
     };
   }
 
@@ -247,7 +250,7 @@ service ProductSearch {
   // * Returns NOT_FOUND if the specified image does not exist.
   rpc GetReferenceImage(GetReferenceImageRequest) returns (ReferenceImage) {
     option (google.api.http) = {
-      get: "/v1p3beta1/{name=projects/*/locations/*/products/*/referenceImages/*}"
+      get: "/v1/{name=projects/*/locations/*/products/*/referenceImages/*}"
     };
   }
 
@@ -261,7 +264,7 @@ service ProductSearch {
   // * Returns NOT_FOUND if the Product or the ProductSet doesn't exist.
   rpc AddProductToProductSet(AddProductToProductSetRequest) returns (google.protobuf.Empty) {
     option (google.api.http) = {
-      post: "/v1p3beta1/{name=projects/*/locations/*/productSets/*}:addProduct"
+      post: "/v1/{name=projects/*/locations/*/productSets/*}:addProduct"
       body: "*"
     };
   }
@@ -273,7 +276,7 @@ service ProductSearch {
   // * Returns NOT_FOUND If the Product is not found under the ProductSet.
   rpc RemoveProductFromProductSet(RemoveProductFromProductSetRequest) returns (google.protobuf.Empty) {
     option (google.api.http) = {
-      post: "/v1p3beta1/{name=projects/*/locations/*/productSets/*}:removeProduct"
+      post: "/v1/{name=projects/*/locations/*/productSets/*}:removeProduct"
       body: "*"
     };
   }
@@ -287,7 +290,7 @@ service ProductSearch {
   // * Returns INVALID_ARGUMENT if page_size is greater than 100 or less than 1.
   rpc ListProductsInProductSet(ListProductsInProductSetRequest) returns (ListProductsInProductSetResponse) {
     option (google.api.http) = {
-      get: "/v1p3beta1/{name=projects/*/locations/*/productSets/*}/products"
+      get: "/v1/{name=projects/*/locations/*/productSets/*}/products"
     };
   }
 
@@ -301,10 +304,10 @@ service ProductSearch {
   //
   // The input source of this method is a csv file on Google Cloud Storage.
   // For the format of the csv file please see
-  // [ImportProductSetsGcsSource.csv_file_uri][google.cloud.vision.v1p3beta1.ImportProductSetsGcsSource.csv_file_uri].
+  // [ImportProductSetsGcsSource.csv_file_uri][google.cloud.vision.v1.ImportProductSetsGcsSource.csv_file_uri].
   rpc ImportProductSets(ImportProductSetsRequest) returns (google.longrunning.Operation) {
     option (google.api.http) = {
-      post: "/v1p3beta1/{parent=projects/*/locations/*}/productSets:import"
+      post: "/v1/{parent=projects/*/locations/*}/productSets:import"
       body: "*"
     };
   }
@@ -340,7 +343,7 @@ message Product {
   string description = 3;
 
   // The category for the product identified by the reference image. This should
-  // be either "homegoods" or "apparel".
+  // be either "homegoods", "apparel", or "toys".
   //
   // This field is immutable.
   string product_category = 4;
@@ -478,7 +481,7 @@ message UpdateProductRequest {
   // The [FieldMask][google.protobuf.FieldMask] that specifies which fields
   // to update.
   // If update_mask isn't specified, all mutable fields are to be updated.
-  // Valid mask paths include `product_labels`, `display_name` and
+  // Valid mask paths include `product_labels`, `display_name`, and
   // `description`.
   google.protobuf.FieldMask update_mask = 2;
 }
@@ -692,59 +695,65 @@ message ListProductsInProductSetResponse {
 message ImportProductSetsGcsSource {
   // The Google Cloud Storage URI of the input csv file.
   //
-  // The URI must start with gs://
+  // The URI must start with `gs://`.
   //
   // The format of the input csv file should be one image per line.
-  // In each line, there are 6 columns.
-  // 1. image_uri
-  // 2, image_id
-  // 3. product_set_id
-  // 4. product_id
-  // 5, product_category
-  // 6, product_display_name
-  // 7, labels
-  // 8. bounding_poly
+  // In each line, there are 8 columns.
   //
-  // Columns 1, 3, 4, and 5 are required, other columns are optional. A new
-  // ProductSet/Product with the same id will be created on the fly
-  // if the ProductSet/Product specified by product_set_id/product_id does not
-  // exist.
+  // 1.  image-uri
+  // 2.  image-id
+  // 3.  product-set-id
+  // 4.  product-id
+  // 5.  product-category
+  // 6.  product-display-name
+  // 7.  labels
+  // 8.  bounding-poly
   //
-  // The image_id field is optional but has to be unique if provided. If it is
-  // empty, we will automatically assign an unique id to the image.
+  // The `image-uri`, `product-set-id`, `product-id`, and `product-category`
+  // columns are required. All other columns are optional.
   //
-  // The product_display_name field is optional. If it is empty, a space (" ")
-  // is used as the place holder for the product display_name, which can
-  // be updated later through the realtime API.
+  // If the `ProductSet` or `Product` specified by the `product-set-id` and
+  // `product-id` values does not exist, then the system will create a new
+  // `ProductSet` or `Product` for the image. In this case, the
+  // `product-display-name` column refers to
+  // [display_name][google.cloud.vision.v1.Product.display_name], the
+  // `product-category` column refers to
+  // [product_category][google.cloud.vision.v1.Product.product_category], and the
+  // `labels` column refers to [product_labels][google.cloud.vision.v1.Product.product_labels].
   //
-  // If the Product with product_id already exists, the fields
-  // product_display_name, product_category and labels are ignored.
+  // The `image-id` column is optional but must be unique if provided. If it is
+  // empty, the system will automatically assign a unique id to the image.
   //
-  // If a Product doesn't exist and needs to be created on the fly, the
-  // product_display_name field refers to [Product.display_name][google.cloud.vision.v1p3beta1.Product.display_name], the
-  // product_category field refers to [Product.product_category][google.cloud.vision.v1p3beta1.Product.product_category], and the
-  // labels field refers to [Product.labels][].
+  // The `product-display-name` column is optional. If it is empty, the system
+  // sets the [display_name][google.cloud.vision.v1.Product.display_name] field for the product to a
+  // space (" "). You can update the `display_name` later by using the API.
   //
-  // Labels (optional) should be a line containing a list of comma-separated
-  // key-value pairs, with the format
-  //     "key_1=value_1,key_2=value_2,...,key_n=value_n".
+  // If a `Product` with the specified `product-id` already exists, then the
+  // system ignores the `product-display-name`, `product-category`, and `labels`
+  // columns.
   //
-  // The bounding_poly (optional) field is used to identify one region of
-  // interest from the image in the same manner as CreateReferenceImage. If no
-  // bounding_poly is specified, the system will try to detect regions of
-  // interest automatically.
+  // The `labels` column (optional) is a line containing a list of
+  // comma-separated key-value pairs, in the following format:
   //
-  // Note that the pipeline will resize the image if the image resolution is too
-  // large to process (above 20MP).
+  //     "key_1=value_1,key_2=value_2,...,key_n=value_n"
   //
-  // Also note that at most one bounding_poly is allowed per line. If the image
-  // contains multiple regions of interest, the csv should contain one line per
-  // region of interest.
+  // The `bounding-poly` column (optional) identifies one region of
+  // interest from the image in the same manner as `CreateReferenceImage`. If
+  // you do not specify the `bounding-poly` column, then the system will try to
+  // detect regions of interest automatically.
   //
-  // The bounding_poly column should contain an even number of comma-separated
-  // numbers, with the format "p1_x,p1_y,p2_x,p2_y,...,pn_x,pn_y". Nonnegative
-  // integers should be used for absolute bounding polygons, and float values
-  // in [0, 1] should be used for normalized bounding polygons.
+  // At most one `bounding-poly` column is allowed per line. If the image
+  // contains multiple regions of interest, add a line to the CSV file that
+  // includes the same product information, and the `bounding-poly` values for
+  // each region of interest.
+  //
+  // The `bounding-poly` column must contain an even number of comma-separated
+  // numbers, in the format "p1_x,p1_y,p2_x,p2_y,...,pn_x,pn_y". Use
+  // non-negative integers for absolute bounding polygons, and float values
+  // in [0, 1] for normalized bounding polygons.
+  //
+  // The system will resize the image if the image resolution is too
+  // large to process (larger than 20MP).
   string csv_file_uri = 1;
 }
 
