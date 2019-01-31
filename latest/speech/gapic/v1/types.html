@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Types for Cloud Speech API Client &#8212; google-cloud fd19a75 documentation</title>
+    <title>Types for Cloud Speech API Client &#8212; google-cloud 4f1459e documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -335,6 +335,20 @@ sampling). This field is optional for <code class="docutils literal notranslate"
 audio files and required for all other audio formats. For
 details, see [AudioEncoding][google.cloud.speech.v1.Recognitio
 nConfig.AudioEncoding].</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.speech_v1.types.RecognitionConfig.audio_channel_count">
+<code class="descname">audio_channel_count</code><a class="headerlink" href="#google.cloud.speech_v1.types.RecognitionConfig.audio_channel_count" title="Permalink to this definition">#</a></dt>
+<dd><p><em>Optional</em> The number of channels in the input audio data.
+ONLY set this for MULTI-CHANNEL recognition. Valid values for
+LINEAR16 and FLAC are <code class="docutils literal notranslate"><span class="pre">1</span></code>-<code class="docutils literal notranslate"><span class="pre">8</span></code>. Valid values for OGG_OPUS
+are ‘1’-‘254’. Valid value for MULAW, AMR, AMR_WB and
+SPEEX_WITH_HEADER_BYTE is only <code class="docutils literal notranslate"><span class="pre">1</span></code>. If <code class="docutils literal notranslate"><span class="pre">0</span></code> or omitted,
+defaults to one channel (mono). Note: We only recognize the
+first channel by default. To perform independent recognition
+on each channel set
+<code class="docutils literal notranslate"><span class="pre">enable_separate_recognition_per_channel</span></code> to ‘true’.</p>
 </dd></dl>
 
 <dl class="attribute">
