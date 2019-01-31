@@ -23,7 +23,8 @@ import quickstart
 def now_millis():
     return int(
         (datetime.datetime.utcnow() - datetime.datetime(1970, 1, 1)).total_seconds()
-        * 1000)
+        * 1000
+    )
 
 
 @pytest.fixture()
@@ -34,10 +35,10 @@ def project_id():
 def test_quickstart_wo_snapshot(capsys, project_id):
     quickstart.main(project_id)
     out, _ = capsys.readouterr()
-    assert 'WA' in out
+    assert "WA" in out
 
 
 def test_quickstart_with_snapshot(capsys, project_id):
     quickstart.main(project_id, now_millis() - 5000)
     out, _ = capsys.readouterr()
-    assert 'WA' in out
+    assert "WA" in out
