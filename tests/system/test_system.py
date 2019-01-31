@@ -122,3 +122,37 @@ def test_retrieve_two_entities_in_parallel(ds_entity):
     assert isinstance(entity2, SomeKind)
     assert entity2.foo == 65
     assert entity2.bar == "naan"
+
+
+@pytest.mark.usefixtures("client_context")
+def test_insert_entity():
+    class SomeKind(ndb.Model):
+        foo = ndb.IntegerProperty()
+        bar = ndb.StringProperty()
+
+    entity = SomeKind(foo=42, bar="none")
+    key = entity.put()
+
+    retrieved = key.get()
+    assert retrieved.foo == 42
+    assert retrieved.bar == "none"
+
+
+@pytest.mark.usefixtures("client_context")
+def test_update_entity(ds_entity):
+    entity_id = test_utils.system.unique_resource_id()
+    ds_entity("SomeKind", entity_id, foo=42, bar="none")
+
+    class SomeKind(ndb.Model):
+        foo = ndb.IntegerProperty()
+        bar = ndb.StringProperty()
+
+    key = ndb.Key("SomeKind", entity_id)
+    entity = key.get()
+    entity.foo = 56
+    entity.bar = "high"
+    assert entity.put() == key
+
+    retrieved = key.get()
+    assert retrieved.foo == 56
+    assert retrieved.bar == "high"
