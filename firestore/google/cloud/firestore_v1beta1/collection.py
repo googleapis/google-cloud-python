@@ -180,6 +180,33 @@ class CollectionReference(object):
             write_result = document_ref.create(document_data)
             return write_result.update_time, document_ref
 
+    def list_documents(self, page_size=None):
+        """List all subdocuments of the current collection.
+
+        Args:
+            page_size (Optional[int]]): The maximum number of documents
+            in each page of results from this request. Non-positive values
+            are ignored. Defaults to a sensible value set by the API.
+
+        Returns:
+            Sequence[~.firestore_v1beta1.collection.DocumentReference]:
+                iterator of subdocuments of the current collection. If the
+                collection does not exist at the time of `snapshot`, the
+                iterator will be empty
+        """
+        parent, _ = self._parent_info()
+
+        iterator = self._client._firestore_api.list_documents(
+            parent,
+            self.id,
+            page_size=page_size,
+            show_missing=True,
+            metadata=self._client._rpc_metadata,
+        )
+        iterator.collection = self
+        iterator.item_to_value = _item_to_document_ref
+        return iterator
+
     def select(self, field_paths):
         """Create a "select" query with this collection as parent.
 
@@ -428,3 +455,15 @@ def _auto_id():
         lowercase and letters.
     """
     return "".join(random.choice(_AUTO_ID_CHARS) for _ in six.moves.xrange(20))
+
+
+def _item_to_document_ref(iterator, item):
+    """Convert Document resource to document ref.
+
+    Args:
+        iterator (google.api_core.page_iterator.GRPCIterator):
+            iterator response
+        item (dict): document resource
+    """
+    document_id = item.name.split(_helpers.DOCUMENT_PATH_DELIMITER)[-1]
+    return iterator.collection.document(document_id)
