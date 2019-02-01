@@ -15,15 +15,15 @@
 
 syntax = "proto3";
 
-package google.cloud.dataproc.v1beta2;
+package google.cloud.dataproc.v1;
 
 import "google/api/annotations.proto";
 import "google/protobuf/timestamp.proto";
 
-option go_package = "google.golang.org/genproto/googleapis/cloud/dataproc/v1beta2;dataproc";
+option go_package = "google.golang.org/genproto/googleapis/cloud/dataproc/v1;dataproc";
 option java_multiple_files = true;
 option java_outer_classname = "OperationsProto";
-option java_package = "com.google.cloud.dataproc.v1beta2";
+option java_package = "com.google.cloud.dataproc.v1";
 
 
 // The status of the operation.
