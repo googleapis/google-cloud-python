@@ -1,4 +1,4 @@
-// Copyright 2018 Google Inc.
+// Copyright 2018 Google LLC.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -11,10 +11,11 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+//
 
 syntax = "proto3";
 
-package google.cloud.videointelligence.v1p1beta1;
+package google.cloud.videointelligence.v1p2beta1;
 
 import "google/api/annotations.proto";
 import "google/longrunning/operations.proto";
@@ -22,12 +23,12 @@ import "google/protobuf/duration.proto";
 import "google/protobuf/timestamp.proto";
 import "google/rpc/status.proto";
 
-option csharp_namespace = "Google.Cloud.VideoIntelligence.V1P1Beta1";
-option go_package = "google.golang.org/genproto/googleapis/cloud/videointelligence/v1p1beta1;videointelligence";
+option csharp_namespace = "Google.Cloud.VideoIntelligence.V1P2Beta1";
+option go_package = "google.golang.org/genproto/googleapis/cloud/videointelligence/v1p2beta1;videointelligence";
 option java_multiple_files = true;
 option java_outer_classname = "VideoIntelligenceServiceProto";
-option java_package = "com.google.cloud.videointelligence.v1p1beta1";
-option php_namespace = "Google\\Cloud\\VideoIntelligence\\V1p1beta1";
+option java_package = "com.google.cloud.videointelligence.v1p2beta1";
+option php_namespace = "Google\\Cloud\\VideoIntelligence\\V1p2beta1";
 
 
 // Service that implements Google Cloud Video Intelligence API.
@@ -38,7 +39,7 @@ service VideoIntelligenceService {
   // `Operation.response` contains `AnnotateVideoResponse` (results).
   rpc AnnotateVideo(AnnotateVideoRequest) returns (google.longrunning.Operation) {
     option (google.api.http) = {
-      post: "/v1p1beta1/videos:annotate"
+      post: "/v1p2beta1/videos:annotate"
       body: "*"
     };
   }
@@ -99,8 +100,8 @@ message VideoContext {
   // Config for EXPLICIT_CONTENT_DETECTION.
   ExplicitContentDetectionConfig explicit_content_detection_config = 4;
 
-  // Config for SPEECH_TRANSCRIPTION.
-  SpeechTranscriptionConfig speech_transcription_config = 6;
+  // Config for TEXT_DETECTION.
+  TextDetectionConfig text_detection_config = 8;
 }
 
 // Config for LABEL_DETECTION.
@@ -135,6 +136,16 @@ message ExplicitContentDetectionConfig {
   // Supported values: "builtin/stable" (the default if unset) and
   // "builtin/latest".
   string model = 1;
+}
+
+// Config for TEXT_DETECTION.
+message TextDetectionConfig {
+  // Language hint can be specified if the language to be detected is known a
+  // priori. It can increase the accuracy of the detection. Language hint must
+  // be language code in BCP-47 format.
+  //
+  // Automatic language detection is performed if no hint is provided.
+  repeated string language_hints = 1;
 }
 
 // Video segment.
@@ -217,9 +228,26 @@ message ExplicitContentAnnotation {
   repeated ExplicitContentFrame frames = 1;
 }
 
+// Normalized bounding box.
+// The normalized vertex coordinates are relative to the original image.
+// Range: [0, 1].
+message NormalizedBoundingBox {
+  // Left X coordinate.
+  float left = 1;
+
+  // Top Y coordinate.
+  float top = 2;
+
+  // Right X coordinate.
+  float right = 3;
+
+  // Bottom Y coordinate.
+  float bottom = 4;
+}
+
 // Annotation results for a single video.
 message VideoAnnotationResults {
-  // Output only. Video file location in
+  // Video file location in
   // [Google Cloud Storage](https://cloud.google.com/storage/).
   string input_uri = 1;
 
@@ -241,11 +269,16 @@ message VideoAnnotationResults {
   // Explicit content annotation.
   ExplicitContentAnnotation explicit_annotation = 7;
 
-  // Speech transcription.
-  repeated SpeechTranscription speech_transcriptions = 11;
+  // OCR text detection and tracking.
+  // Annotations for list of detected text snippets. Each will have list of
+  // frame information associated with it.
+  repeated TextAnnotation text_annotations = 12;
 
-  // Output only. If set, indicates an error. Note that for a single
-  // `AnnotateVideoRequest` some videos may succeed and some may fail.
+  // Annotations for list of objects detected and tracked in video.
+  repeated ObjectTrackingAnnotation object_annotations = 14;
+
+  // If set, indicates an error. Note that for a single `AnnotateVideoRequest`
+  // some videos may succeed and some may fail.
   google.rpc.Status error = 9;
 }
 
@@ -259,18 +292,18 @@ message AnnotateVideoResponse {
 
 // Annotation progress for a single video.
 message VideoAnnotationProgress {
-  // Output only. Video file location in
+  // Video file location in
   // [Google Cloud Storage](https://cloud.google.com/storage/).
   string input_uri = 1;
 
-  // Output only. Approximate percentage processed thus far. Guaranteed to be
+  // Approximate percentage processed thus far. Guaranteed to be
   // 100 when fully processed.
   int32 progress_percent = 2;
 
-  // Output only. Time when the request was received.
+  // Time when the request was received.
   google.protobuf.Timestamp start_time = 3;
 
-  // Output only. Time of the most recent update.
+  // Time of the most recent update.
   google.protobuf.Timestamp update_time = 4;
 }
 
@@ -282,100 +315,97 @@ message AnnotateVideoProgress {
   repeated VideoAnnotationProgress annotation_progress = 1;
 }
 
-// Config for SPEECH_TRANSCRIPTION.
-message SpeechTranscriptionConfig {
-  // *Required* The language of the supplied audio as a
-  // [BCP-47](https://www.rfc-editor.org/rfc/bcp/bcp47.txt) language tag.
-  // Example: "en-US".
-  // See [Language Support](https://cloud.google.com/speech/docs/languages)
-  // for a list of the currently supported language codes.
-  string language_code = 1;
+// A vertex represents a 2D point in the image.
+// NOTE: the normalized vertex coordinates are relative to the original image
+// and range from 0 to 1.
+message NormalizedVertex {
+  // X coordinate.
+  float x = 1;
 
-  // *Optional* Maximum number of recognition hypotheses to be returned.
-  // Specifically, the maximum number of `SpeechRecognitionAlternative` messages
-  // within each `SpeechRecognitionResult`. The server may return fewer than
-  // `max_alternatives`. Valid values are `0`-`30`. A value of `0` or `1` will
-  // return a maximum of one. If omitted, will return a maximum of one.
-  int32 max_alternatives = 2;
-
-  // *Optional* If set to `true`, the server will attempt to filter out
-  // profanities, replacing all but the initial character in each filtered word
-  // with asterisks, e.g. "f***". If set to `false` or omitted, profanities
-  // won't be filtered out.
-  bool filter_profanity = 3;
-
-  // *Optional* A means to provide context to assist the speech recognition.
-  repeated SpeechContext speech_contexts = 4;
-
-  // *Optional* If 'true', adds punctuation to recognition result hypotheses.
-  // This feature is only available in select languages. Setting this for
-  // requests in other languages has no effect at all. The default 'false' value
-  // does not add punctuation to result hypotheses. NOTE: "This is currently
-  // offered as an experimental service, complimentary to all users. In the
-  // future this may be exclusively available as a premium feature."
-  bool enable_automatic_punctuation = 5;
-
-  // *Optional* For file formats, such as MXF or MKV, supporting multiple audio
-  // tracks, specify up to two tracks. Default: track 0.
-  repeated int32 audio_tracks = 6;
+  // Y coordinate.
+  float y = 2;
 }
 
-// Provides "hints" to the speech recognizer to favor specific words and phrases
-// in the results.
-message SpeechContext {
-  // *Optional* A list of strings containing words and phrases "hints" so that
-  // the speech recognition is more likely to recognize them. This can be used
-  // to improve the accuracy for specific words and phrases, for example, if
-  // specific commands are typically spoken by the user. This can also be used
-  // to add additional words to the vocabulary of the recognizer. See
-  // [usage limits](https://cloud.google.com/speech/limits#content).
-  repeated string phrases = 1;
+// Normalized bounding polygon for text (that might not be aligned with axis).
+// Contains list of the corner points in clockwise order starting from
+// top-left corner. For example, for a rectangular bounding box:
+// When the text is horizontal it might look like:
+//         0----1
+//         |    |
+//         3----2
+//
+// When it's clockwise rotated 180 degrees around the top-left corner it
+// becomes:
+//         2----3
+//         |    |
+//         1----0
+//
+// and the vertex order will still be (0, 1, 2, 3). Note that values can be less
+// than 0, or greater than 1 due to trignometric calculations for location of
+// the box.
+message NormalizedBoundingPoly {
+  // Normalized vertices of the bounding polygon.
+  repeated NormalizedVertex vertices = 1;
 }
 
-// A speech recognition result corresponding to a portion of the audio.
-message SpeechTranscription {
-  // Output only. May contain one or more recognition hypotheses (up to the
-  // maximum specified in `max_alternatives`).
-  // These alternatives are ordered in terms of accuracy, with the top (first)
-  // alternative being the most probable, as ranked by the recognizer.
-  repeated SpeechRecognitionAlternative alternatives = 1;
-}
+// Video segment level annotation results for text detection.
+message TextSegment {
+  // Video segment where a text snippet was detected.
+  VideoSegment segment = 1;
 
-// Alternative hypotheses (a.k.a. n-best list).
-message SpeechRecognitionAlternative {
-  // Output only. Transcript text representing the words that the user spoke.
-  string transcript = 1;
-
-  // Output only. The confidence estimate between 0.0 and 1.0. A higher number
-  // indicates an estimated greater likelihood that the recognized words are
-  // correct. This field is typically provided only for the top hypothesis, and
-  // only for `is_final=true` results. Clients should not rely on the
-  // `confidence` field as it is not guaranteed to be accurate or consistent.
-  // The default of 0.0 is a sentinel value indicating `confidence` was not set.
+  // Confidence for the track of detected text. It is calculated as the highest
+  // over all frames where OCR detected text appears.
   float confidence = 2;
 
-  // Output only. A list of word-specific information for each recognized word.
-  repeated WordInfo words = 3;
+  // Information related to the frames where OCR detected text appears.
+  repeated TextFrame frames = 3;
 }
 
-// Word-specific information for recognized words. Word information is only
-// included in the response when certain request parameters are set, such
-// as `enable_word_time_offsets`.
-message WordInfo {
-  // Output only. Time offset relative to the beginning of the audio, and
-  // corresponding to the start of the spoken word. This field is only set if
-  // `enable_word_time_offsets=true` and only in the top hypothesis. This is an
-  // experimental feature and the accuracy of the time offset can vary.
-  google.protobuf.Duration start_time = 1;
+// Video frame level annotation results for text annotation (OCR).
+// Contains information regarding timestamp and bounding box locations for the
+// frames containing detected OCR text snippets.
+message TextFrame {
+  // Bounding polygon of the detected text for this frame.
+  NormalizedBoundingPoly rotated_bounding_box = 1;
 
-  // Output only. Time offset relative to the beginning of the audio, and
-  // corresponding to the end of the spoken word. This field is only set if
-  // `enable_word_time_offsets=true` and only in the top hypothesis. This is an
-  // experimental feature and the accuracy of the time offset can vary.
-  google.protobuf.Duration end_time = 2;
+  // Timestamp of this frame.
+  google.protobuf.Duration time_offset = 2;
+}
 
-  // Output only. The word corresponding to this set of information.
-  string word = 3;
+// Annotations related to one detected OCR text snippet. This will contain the
+// corresponding text, confidence value, and frame level information for each
+// detection.
+message TextAnnotation {
+  // The detected text.
+  string text = 1;
+
+  // All video segments where OCR detected text appears.
+  repeated TextSegment segments = 2;
+}
+
+// Video frame level annotations for object detection and tracking. This field
+// stores per frame location, time offset, and confidence.
+message ObjectTrackingFrame {
+  // The normalized bounding box location of this object track for the frame.
+  NormalizedBoundingBox normalized_bounding_box = 1;
+
+  // The timestamp of the frame in microseconds.
+  google.protobuf.Duration time_offset = 2;
+}
+
+// Annotations corresponding to one tracked object.
+message ObjectTrackingAnnotation {
+  // Entity to specify the object category that this track is labeled as.
+  Entity entity = 1;
+
+  // Object category's labeling confidence of this track.
+  float confidence = 4;
+
+  // Information corresponding to all frames where this object track appears.
+  repeated ObjectTrackingFrame frames = 2;
+
+  // Each object track corresponds to one video segment where it appears.
+  VideoSegment segment = 3;
 }
 
 // Video annotation feature.
@@ -392,8 +422,11 @@ enum Feature {
   // Explicit content detection.
   EXPLICIT_CONTENT_DETECTION = 3;
 
-  // Speech transcription.
-  SPEECH_TRANSCRIPTION = 6;
+  // OCR text detection and tracking.
+  TEXT_DETECTION = 7;
+
+  // Object detection and tracking.
+  OBJECT_TRACKING = 9;
 }
 
 // Label detection mode.
