@@ -15,7 +15,7 @@
 
 syntax = "proto3";
 
-package google.cloud.speech.v1p1beta1;
+package google.cloud.speech.v1;
 
 import "google/api/annotations.proto";
 import "google/longrunning/operations.proto";
@@ -26,10 +26,10 @@ import "google/protobuf/timestamp.proto";
 import "google/rpc/status.proto";
 
 option cc_enable_arenas = true;
-option go_package = "google.golang.org/genproto/googleapis/cloud/speech/v1p1beta1;speech";
+option go_package = "google.golang.org/genproto/googleapis/cloud/speech/v1;speech";
 option java_multiple_files = true;
 option java_outer_classname = "SpeechProto";
-option java_package = "com.google.cloud.speech.v1p1beta1";
+option java_package = "com.google.cloud.speech.v1";
 
 
 // Service that implements Google Cloud Speech API.
@@ -38,7 +38,7 @@ service Speech {
   // has been sent and processed.
   rpc Recognize(RecognizeRequest) returns (RecognizeResponse) {
     option (google.api.http) = {
-      post: "/v1p1beta1/speech:recognize"
+      post: "/v1/speech:recognize"
       body: "*"
     };
   }
@@ -49,7 +49,7 @@ service Speech {
   // a `LongRunningRecognizeResponse` message.
   rpc LongRunningRecognize(LongRunningRecognizeRequest) returns (google.longrunning.Operation) {
     option (google.api.http) = {
-      post: "/v1p1beta1/speech:longrunningrecognize"
+      post: "/v1/speech:longrunningrecognize"
       body: "*"
     };
   }
@@ -203,7 +203,7 @@ message RecognitionConfig {
 
   // Encoding of audio data sent in all `RecognitionAudio` messages.
   // This field is optional for `FLAC` and `WAV` audio files and required
-  // for all other audio formats. For details, see [AudioEncoding][google.cloud.speech.v1p1beta1.RecognitionConfig.AudioEncoding].
+  // for all other audio formats. For details, see [AudioEncoding][google.cloud.speech.v1.RecognitionConfig.AudioEncoding].
   AudioEncoding encoding = 1;
 
   // Sample rate in Hertz of the audio data sent in all
@@ -212,7 +212,7 @@ message RecognitionConfig {
   // source to 16000 Hz. If that's not possible, use the native sample rate of
   // the audio source (instead of re-sampling).
   // This field is optional for `FLAC` and `WAV` audio files and required
-  // for all other audio formats. For details, see [AudioEncoding][google.cloud.speech.v1p1beta1.RecognitionConfig.AudioEncoding].
+  // for all other audio formats. For details, see [AudioEncoding][google.cloud.speech.v1.RecognitionConfig.AudioEncoding].
   int32 sample_rate_hertz = 2;
 
   // *Optional* The number of channels in the input audio data.
@@ -226,7 +226,7 @@ message RecognitionConfig {
   // `enable_separate_recognition_per_channel` to 'true'.
   int32 audio_channel_count = 7;
 
-  // This needs to be set to ‘true’ explicitly and `audio_channel_count` > 1
+  // This needs to be set to `true` explicitly and `audio_channel_count` > 1
   // to get each channel recognized separately. The recognition result will
   // contain a `channel_tag` field to state which channel that result belongs
   // to. If this is not true, we will only recognize the first channel. The
@@ -240,20 +240,6 @@ message RecognitionConfig {
   // See [Language Support](/speech-to-text/docs/languages)
   // for a list of the currently supported language codes.
   string language_code = 3;
-
-  // *Optional* A list of up to 3 additional
-  // [BCP-47](https://www.rfc-editor.org/rfc/bcp/bcp47.txt) language tags,
-  // listing possible alternative languages of the supplied audio.
-  // See [Language Support](/speech-to-text/docs/languages)
-  // for a list of the currently supported language codes.
-  // If alternative languages are listed, recognition result will contain
-  // recognition in the most likely language detected including the main
-  // language_code. The recognition result will include the language tag
-  // of the language detected in the audio.
-  // Note: This feature is only supported for Voice Command and Voice Search
-  // use cases and performance may vary for other use cases (e.g., phone call
-  // transcription).
-  repeated string alternative_language_codes = 18;
 
   // *Optional* Maximum number of recognition hypotheses to be returned.
   // Specifically, the maximum number of `SpeechRecognitionAlternative` messages
@@ -269,7 +255,7 @@ message RecognitionConfig {
   // won't be filtered out.
   bool profanity_filter = 5;
 
-  // *Optional* array of [SpeechContext][google.cloud.speech.v1p1beta1.SpeechContext].
+  // *Optional* array of [SpeechContext][google.cloud.speech.v1.SpeechContext].
   // A means to provide context to assist the speech recognition. For more
   // information, see [Phrase Hints](/speech-to-text/docs/basics#phrase-hints).
   repeated SpeechContext speech_contexts = 6;
@@ -280,11 +266,6 @@ message RecognitionConfig {
   // `false`.
   bool enable_word_time_offsets = 8;
 
-  // *Optional* If `true`, the top result includes a list of words and the
-  // confidence for those words. If `false`, no word-level confidence
-  // information is returned. The default is `false`.
-  bool enable_word_confidence = 15;
-
   // *Optional* If 'true', adds punctuation to recognition result hypotheses.
   // This feature is only available in select languages. Setting this for
   // requests in other languages has no effect at all.
@@ -293,26 +274,6 @@ message RecognitionConfig {
   // to all users. In the future this may be exclusively available as a
   // premium feature.
   bool enable_automatic_punctuation = 11;
-
-  // *Optional* If 'true', enables speaker detection for each recognized word in
-  // the top alternative of the recognition result using a speaker_tag provided
-  // in the WordInfo.
-  // Note: When this is true, we send all the words from the beginning of the
-  // audio for the top alternative in every consecutive STREAMING responses.
-  // This is done in order to improve our speaker tags as our models learn to
-  // identify the speakers in the conversation over time.
-  // For non-streaming requests, the diarization results will be provided only
-  // in the top alternative of the FINAL SpeechRecognitionResult.
-  bool enable_speaker_diarization = 16;
-
-  // *Optional*
-  // If set, specifies the estimated number of speakers in the conversation.
-  // If not set, defaults to '2'.
-  // Ignored unless enable_speaker_diarization is set to true."
-  int32 diarization_speaker_count = 17;
-
-  // *Optional* Metadata regarding this request.
-  RecognitionMetadata metadata = 9;
 
   // *Optional* Which model to select for the given request. Select the model
   // best suited to your domain to get best results. If a model is not
@@ -364,137 +325,6 @@ message RecognitionConfig {
   // `use_enhanced` to true and you have not enabled audio logging, then you
   // will receive an error.
   bool use_enhanced = 14;
-}
-
-// Description of audio data to be recognized.
-message RecognitionMetadata {
-  // Use case categories that the audio recognition request can be described
-  // by.
-  enum InteractionType {
-    // Use case is either unknown or is something other than one of the other
-    // values below.
-    INTERACTION_TYPE_UNSPECIFIED = 0;
-
-    // Multiple people in a conversation or discussion. For example in a
-    // meeting with two or more people actively participating. Typically
-    // all the primary people speaking would be in the same room (if not,
-    // see PHONE_CALL)
-    DISCUSSION = 1;
-
-    // One or more persons lecturing or presenting to others, mostly
-    // uninterrupted.
-    PRESENTATION = 2;
-
-    // A phone-call or video-conference in which two or more people, who are
-    // not in the same room, are actively participating.
-    PHONE_CALL = 3;
-
-    // A recorded message intended for another person to listen to.
-    VOICEMAIL = 4;
-
-    // Professionally produced audio (eg. TV Show, Podcast).
-    PROFESSIONALLY_PRODUCED = 5;
-
-    // Transcribe spoken questions and queries into text.
-    VOICE_SEARCH = 6;
-
-    // Transcribe voice commands, such as for controlling a device.
-    VOICE_COMMAND = 7;
-
-    // Transcribe speech to text to create a written document, such as a
-    // text-message, email or report.
-    DICTATION = 8;
-  }
-
-  // Enumerates the types of capture settings describing an audio file.
-  enum MicrophoneDistance {
-    // Audio type is not known.
-    MICROPHONE_DISTANCE_UNSPECIFIED = 0;
-
-    // The audio was captured from a closely placed microphone. Eg. phone,
-    // dictaphone, or handheld microphone. Generally if there speaker is within
-    // 1 meter of the microphone.
-    NEARFIELD = 1;
-
-    // The speaker if within 3 meters of the microphone.
-    MIDFIELD = 2;
-
-    // The speaker is more than 3 meters away from the microphone.
-    FARFIELD = 3;
-  }
-
-  // The original media the speech was recorded on.
-  enum OriginalMediaType {
-    // Unknown original media type.
-    ORIGINAL_MEDIA_TYPE_UNSPECIFIED = 0;
-
-    // The speech data is an audio recording.
-    AUDIO = 1;
-
-    // The speech data originally recorded on a video.
-    VIDEO = 2;
-  }
-
-  // The type of device the speech was recorded with.
-  enum RecordingDeviceType {
-    // The recording device is unknown.
-    RECORDING_DEVICE_TYPE_UNSPECIFIED = 0;
-
-    // Speech was recorded on a smartphone.
-    SMARTPHONE = 1;
-
-    // Speech was recorded using a personal computer or tablet.
-    PC = 2;
-
-    // Speech was recorded over a phone line.
-    PHONE_LINE = 3;
-
-    // Speech was recorded in a vehicle.
-    VEHICLE = 4;
-
-    // Speech was recorded outdoors.
-    OTHER_OUTDOOR_DEVICE = 5;
-
-    // Speech was recorded indoors.
-    OTHER_INDOOR_DEVICE = 6;
-  }
-
-  // The use case most closely describing the audio content to be recognized.
-  InteractionType interaction_type = 1;
-
-  // The industry vertical to which this speech recognition request most
-  // closely applies. This is most indicative of the topics contained
-  // in the audio.  Use the 6-digit NAICS code to identify the industry
-  // vertical - see https://www.naics.com/search/.
-  uint32 industry_naics_code_of_audio = 3;
-
-  // The audio type that most closely describes the audio being recognized.
-  MicrophoneDistance microphone_distance = 4;
-
-  // The original media the speech was recorded on.
-  OriginalMediaType original_media_type = 5;
-
-  // The type of device the speech was recorded with.
-  RecordingDeviceType recording_device_type = 6;
-
-  // The device used to make the recording.  Examples 'Nexus 5X' or
-  // 'Polycom SoundStation IP 6000' or 'POTS' or 'VoIP' or
-  // 'Cardioid Microphone'.
-  string recording_device_name = 7;
-
-  // Mime type of the original audio file.  For example `audio/m4a`,
-  // `audio/x-alaw-basic`, `audio/mp3`, `audio/3gpp`.
-  // A list of possible audio mime types is maintained at
-  // http://www.iana.org/assignments/media-types/media-types.xhtml#audio
-  string original_mime_type = 8;
-
-  // Obfuscated (privacy-protected) ID of the user, to identify number of
-  // unique users using the service.
-  int64 obfuscated_id = 9;
-
-  // Description of the content. Eg. "Recordings of federal supreme court
-  // hearings from 2012".
-  string audio_topic = 10;
 }
 
 // Provides "hints" to the speech recognizer to favor specific words and phrases
@@ -670,20 +500,10 @@ message StreamingRecognitionResult {
   // The default of 0.0 is a sentinel value indicating `stability` was not set.
   float stability = 3;
 
-  // Output only. Time offset of the end of this result relative to the
-  // beginning of the audio.
-  google.protobuf.Duration result_end_time = 4;
-
   // For multi-channel audio, this is the channel number corresponding to the
   // recognized result for the audio from that channel.
   // For audio_channel_count = N, its output values can range from '1' to 'N'.
   int32 channel_tag = 5;
-
-  // Output only. The
-  // [BCP-47](https://www.rfc-editor.org/rfc/bcp/bcp47.txt) language tag of the
-  // language in this result. This language code was detected to have the most
-  // likelihood of being spoken in the audio.
-  string language_code = 6;
 }
 
 // A speech recognition result corresponding to a portion of the audio.
@@ -698,12 +518,6 @@ message SpeechRecognitionResult {
   // recognized result for the audio from that channel.
   // For audio_channel_count = N, its output values can range from '1' to 'N'.
   int32 channel_tag = 2;
-
-  // Output only. The
-  // [BCP-47](https://www.rfc-editor.org/rfc/bcp/bcp47.txt) language tag of the
-  // language in this result. This language code was detected to have the most
-  // likelihood of being spoken in the audio.
-  string language_code = 5;
 }
 
 // Alternative hypotheses (a.k.a. n-best list).
@@ -746,20 +560,4 @@ message WordInfo {
 
   // Output only. The word corresponding to this set of information.
   string word = 3;
-
-  // Output only. The confidence estimate between 0.0 and 1.0. A higher number
-  // indicates an estimated greater likelihood that the recognized words are
-  // correct. This field is set only for the top alternative of a non-streaming
-  // result or, of a streaming result where `is_final=true`.
-  // This field is not guaranteed to be accurate and users should not rely on it
-  // to be always provided.
-  // The default of 0.0 is a sentinel value indicating `confidence` was not set.
-  float confidence = 4;
-
-  // Output only. A distinct integer value is assigned for every speaker within
-  // the audio. This field specifies which one of those speakers was detected to
-  // have spoken this word. Value ranges from '1' to diarization_speaker_count.
-  // speaker_tag is set if enable_speaker_diarization = 'true' and only in the
-  // top alternative.
-  int32 speaker_tag = 5;
 }
