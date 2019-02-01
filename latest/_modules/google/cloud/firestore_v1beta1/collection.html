@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.firestore_v1beta1.collection &#8212; google-cloud cb78e78 documentation</title>
+    <title>google.cloud.firestore_v1beta1.collection &#8212; google-cloud cc73246 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -215,6 +215,33 @@
             <span class="n">document_ref</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">document</span><span class="p">(</span><span class="n">document_id</span><span class="p">)</span>
             <span class="n">write_result</span> <span class="o">=</span> <span class="n">document_ref</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">document_data</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">write_result</span><span class="o">.</span><span class="n">update_time</span><span class="p">,</span> <span class="n">document_ref</span></div>
+
+<div class="viewcode-block" id="CollectionReference.list_documents"><a class="viewcode-back" href="../../../../firestore/collection.html#google.cloud.firestore_v1beta1.collection.CollectionReference.list_documents">[docs]</a>    <span class="k">def</span> <span class="nf">list_documents</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">page_size</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;List all subdocuments of the current collection.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            page_size (Optional[int]]): The maximum number of documents</span>
+<span class="sd">            in each page of results from this request. Non-positive values</span>
+<span class="sd">            are ignored. Defaults to a sensible value set by the API.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Sequence[~.firestore_v1beta1.collection.DocumentReference]:</span>
+<span class="sd">                iterator of subdocuments of the current collection. If the</span>
+<span class="sd">                collection does not exist at the time of `snapshot`, the</span>
+<span class="sd">                iterator will be empty</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">parent</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parent_info</span><span class="p">()</span>
+
+        <span class="n">iterator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_firestore_api</span><span class="o">.</span><span class="n">list_documents</span><span class="p">(</span>
+            <span class="n">parent</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+            <span class="n">page_size</span><span class="o">=</span><span class="n">page_size</span><span class="p">,</span>
+            <span class="n">show_missing</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">metadata</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_rpc_metadata</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">iterator</span><span class="o">.</span><span class="n">collection</span> <span class="o">=</span> <span class="bp">self</span>
+        <span class="n">iterator</span><span class="o">.</span><span class="n">item_to_value</span> <span class="o">=</span> <span class="n">_item_to_document_ref</span>
+        <span class="k">return</span> <span class="n">iterator</span></div>
 
 <div class="viewcode-block" id="CollectionReference.select"><a class="viewcode-back" href="../../../../firestore/collection.html#google.cloud.firestore_v1beta1.collection.CollectionReference.select">[docs]</a>    <span class="k">def</span> <span class="nf">select</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field_paths</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create a &quot;select&quot; query with this collection as parent.</span>
@@ -464,6 +491,18 @@
 <span class="sd">        lowercase and letters.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">_AUTO_ID_CHARS</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">six</span><span class="o">.</span><span class="n">moves</span><span class="o">.</span><span class="n">xrange</span><span class="p">(</span><span class="mi">20</span><span class="p">))</span>
+
+
+<span class="k">def</span> <span class="nf">_item_to_document_ref</span><span class="p">(</span><span class="n">iterator</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Convert Document resource to document ref.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        iterator (google.api_core.page_iterator.GRPCIterator):</span>
+<span class="sd">            iterator response</span>
+<span class="sd">        item (dict): document resource</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">document_id</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">_helpers</span><span class="o">.</span><span class="n">DOCUMENT_PATH_DELIMITER</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">iterator</span><span class="o">.</span><span class="n">collection</span><span class="o">.</span><span class="n">document</span><span class="p">(</span><span class="n">document_id</span><span class="p">)</span>
 </pre></div>
 
           </div>
