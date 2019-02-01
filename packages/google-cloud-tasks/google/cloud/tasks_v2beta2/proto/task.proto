@@ -1,4 +1,4 @@
-// Copyright 2018 Google LLC.
+// Copyright 2018 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -11,27 +11,25 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-//
 
 syntax = "proto3";
 
-package google.cloud.tasks.v2beta3;
+package google.cloud.tasks.v2beta2;
 
 import "google/api/annotations.proto";
-import "google/cloud/tasks/v2beta3/target.proto";
-import "google/protobuf/duration.proto";
+import "google/cloud/tasks/v2beta2/target.proto";
 import "google/protobuf/timestamp.proto";
 import "google/rpc/status.proto";
 
-option go_package = "google.golang.org/genproto/googleapis/cloud/tasks/v2beta3;tasks";
+option go_package = "google.golang.org/genproto/googleapis/cloud/tasks/v2beta2;tasks";
 option java_multiple_files = true;
 option java_outer_classname = "TaskProto";
-option java_package = "com.google.cloud.tasks.v2beta3";
+option java_package = "com.google.cloud.tasks.v2beta2";
 
 
 // A unit of scheduled work.
 message Task {
-  // The view specifies a subset of [Task][google.cloud.tasks.v2beta3.Task] data.
+  // The view specifies a subset of [Task][google.cloud.tasks.v2beta2.Task] data.
   //
   // When a task is returned in a response, not all
   // information is retrieved by default because some data, such as
@@ -46,21 +44,22 @@ message Task {
     // sensitive data.
     //
     // This view does not include the
-    // [body in AppEngineHttpRequest][google.cloud.tasks.v2beta3.AppEngineHttpRequest.body].
-    // Bodies are desirable to return only when needed, because they
-    // can be large and because of the sensitivity of the data that you
-    // choose to store in it.
+    // ([payload in AppEngineHttpRequest][google.cloud.tasks.v2beta2.AppEngineHttpRequest] and
+    // [payload in PullMessage][google.cloud.tasks.v2beta2.PullMessage.payload]). These payloads are
+    // desirable to return only when needed, because they can be large
+    // and because of the sensitivity of the data that you choose to
+    // store in it.
     BASIC = 1;
 
     // All information is returned.
     //
-    // Authorization for [FULL][google.cloud.tasks.v2beta3.Task.View.FULL] requires
+    // Authorization for [FULL][google.cloud.tasks.v2beta2.Task.View.FULL] requires
     // `cloudtasks.tasks.fullView` [Google IAM](https://cloud.google.com/iam/)
-    // permission on the [Queue][google.cloud.tasks.v2beta3.Queue] resource.
+    // permission on the [Queue][google.cloud.tasks.v2beta2.Queue] resource.
     FULL = 2;
   }
 
-  // Optionally caller-specified in [CreateTask][google.cloud.tasks.v2beta3.CloudTasks.CreateTask].
+  // Optionally caller-specified in [CreateTask][google.cloud.tasks.v2beta2.CloudTasks.CreateTask].
   //
   // The task name.
   //
@@ -81,81 +80,80 @@ message Task {
   //   hyphens (-), or underscores (_). The maximum length is 500 characters.
   string name = 1;
 
-  // Required. The message to send to the worker.
+  // Required.
+  //
+  // The task's payload is used by the task's target to process the task.
+  // A payload is valid only if it is compatible with the queue's target.
   oneof payload_type {
-    // HTTP request that is sent to the App Engine app handler.
+    // App Engine HTTP request that is sent to the task's target. Can
+    // be set only if
+    // [app_engine_http_target][google.cloud.tasks.v2beta2.Queue.app_engine_http_target] is set
+    // on the queue.
     //
-    // An App Engine task is a task that has [AppEngineHttpRequest][google.cloud.tasks.v2beta3.AppEngineHttpRequest] set.
+    // An App Engine task is a task that has [AppEngineHttpRequest][google.cloud.tasks.v2beta2.AppEngineHttpRequest] set.
     AppEngineHttpRequest app_engine_http_request = 3;
+
+    // [LeaseTasks][google.cloud.tasks.v2beta2.CloudTasks.LeaseTasks] to process the task. Can be
+    // set only if [pull_target][google.cloud.tasks.v2beta2.Queue.pull_target] is set on the queue.
+    //
+    // A pull task is a task that has [PullMessage][google.cloud.tasks.v2beta2.PullMessage] set.
+    PullMessage pull_message = 4;
   }
 
   // The time when the task is scheduled to be attempted.
   //
   // For App Engine queues, this is when the task will be attempted or retried.
   //
+  // For pull queues, this is the time when the task is available to
+  // be leased; if a task is currently leased, this is the time when
+  // the current lease expires, that is, the time that the task was
+  // leased plus the [lease_duration][google.cloud.tasks.v2beta2.LeaseTasksRequest.lease_duration].
+  //
   // `schedule_time` will be truncated to the nearest microsecond.
-  google.protobuf.Timestamp schedule_time = 4;
+  google.protobuf.Timestamp schedule_time = 5;
 
   // Output only. The time that the task was created.
   //
   // `create_time` will be truncated to the nearest second.
-  google.protobuf.Timestamp create_time = 5;
+  google.protobuf.Timestamp create_time = 6;
 
-  // The deadline for requests sent to the worker. If the worker does not
-  // respond by this deadline then the request is cancelled and the attempt
-  // is marked as a `DEADLINE_EXCEEDED` failure. Cloud Tasks will retry the
-  // task according to the [RetryConfig][google.cloud.tasks.v2beta3.RetryConfig].
-  //
-  // Note that when the request is cancelled, Cloud Tasks will stop listing for
-  // the response, but whether the worker stops processing depends on the
-  // worker. For example, if the worker is stuck, it may not react to cancelled
-  // requests.
-  //
-  // The default and maximum values depend on the type of request:
-  //
-  //
-  // * For [App Engine tasks][google.cloud.tasks.v2beta3.AppEngineHttpRequest], 0 indicates that the
-  //   request has the default deadline. The default deadline depends on the
-  //   [scaling type](https://cloud.google.com/appengine/docs/standard/go/how-instances-are-managed#instance_scaling)
-  //   of the service: 10 minutes for standard apps with automatic scaling, 24
-  //   hours for standard apps with manual and basic scaling, and 60 minutes for
-  //   flex apps. If the request deadline is set, it must be in the interval [15
-  //   seconds, 24 hours 15 seconds]. Regardless of the task's
-  //   `dispatch_deadline`, the app handler will not run for longer than than
-  //   the service's timeout. We recommend setting the `dispatch_deadline` to
-  //   at most a few seconds more than the app handler's timeout. For more
-  //   information see
-  //   [Timeouts](https://cloud.google.com/tasks/docs/creating-appengine-handlers#timeouts).
-  //
-  // `dispatch_deadline` will be truncated to the nearest millisecond. The
-  // deadline is an approximate deadline.
-  google.protobuf.Duration dispatch_deadline = 12;
+  // Output only. The task status.
+  TaskStatus status = 7;
 
+  // Output only. The view specifies which subset of the [Task][google.cloud.tasks.v2beta2.Task] has
+  // been returned.
+  View view = 8;
+}
+
+// Status of the task.
+message TaskStatus {
   // Output only. The number of attempts dispatched.
   //
   // This count includes tasks which have been dispatched but haven't
   // received a response.
-  int32 dispatch_count = 6;
+  int32 attempt_dispatch_count = 1;
 
   // Output only. The number of attempts which have received a response.
-  int32 response_count = 7;
+  //
+  // This field is not calculated for [pull tasks][google.cloud.tasks.v2beta2.PullMessage].
+  int32 attempt_response_count = 2;
 
   // Output only. The status of the task's first attempt.
   //
-  // Only [dispatch_time][google.cloud.tasks.v2beta3.Attempt.dispatch_time] will be set.
-  // The other [Attempt][google.cloud.tasks.v2beta3.Attempt] information is not retained by Cloud Tasks.
-  Attempt first_attempt = 8;
+  // Only [dispatch_time][google.cloud.tasks.v2beta2.AttemptStatus.dispatch_time] will be set.
+  // The other [AttemptStatus][google.cloud.tasks.v2beta2.AttemptStatus] information is not retained by Cloud Tasks.
+  //
+  // This field is not calculated for [pull tasks][google.cloud.tasks.v2beta2.PullMessage].
+  AttemptStatus first_attempt_status = 3;
 
   // Output only. The status of the task's last attempt.
-  Attempt last_attempt = 9;
-
-  // Output only. The view specifies which subset of the [Task][google.cloud.tasks.v2beta3.Task] has
-  // been returned.
-  View view = 10;
+  //
+  // This field is not calculated for [pull tasks][google.cloud.tasks.v2beta2.PullMessage].
+  AttemptStatus last_attempt_status = 4;
 }
 
 // The status of a task attempt.
-message Attempt {
+message AttemptStatus {
   // Output only. The time that this attempt was scheduled.
   //
   // `schedule_time` will be truncated to the nearest microsecond.
@@ -171,9 +169,9 @@ message Attempt {
   // `response_time` will be truncated to the nearest microsecond.
   google.protobuf.Timestamp response_time = 3;
 
-  // Output only. The response from the worker for this attempt.
+  // Output only. The response from the target for this attempt.
   //
-  // If `response_time` is unset, then the task has not been attempted or is
-  // currently running and the `response_status` field is meaningless.
+  // If the task has not been attempted or the task is currently running
+  // then the response status is unset.
   google.rpc.Status response_status = 4;
 }
