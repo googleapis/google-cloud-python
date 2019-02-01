@@ -15,17 +15,17 @@
 
 syntax = "proto3";
 
-package google.cloud.dataproc.v1beta2;
+package google.cloud.dataproc.v1;
 
 import "google/api/annotations.proto";
 import "google/protobuf/empty.proto";
 import "google/protobuf/field_mask.proto";
 import "google/protobuf/timestamp.proto";
 
-option go_package = "google.golang.org/genproto/googleapis/cloud/dataproc/v1beta2;dataproc";
+option go_package = "google.golang.org/genproto/googleapis/cloud/dataproc/v1;dataproc";
 option java_multiple_files = true;
 option java_outer_classname = "JobsProto";
-option java_package = "com.google.cloud.dataproc.v1beta2";
+option java_package = "com.google.cloud.dataproc.v1";
 
 
 // The JobController provides methods to manage jobs.
@@ -33,7 +33,7 @@ service JobController {
   // Submits a job to a cluster.
   rpc SubmitJob(SubmitJobRequest) returns (Job) {
     option (google.api.http) = {
-      post: "/v1beta2/projects/{project_id}/regions/{region}/jobs:submit"
+      post: "/v1/projects/{project_id}/regions/{region}/jobs:submit"
       body: "*"
     };
   }
@@ -41,32 +41,32 @@ service JobController {
   // Gets the resource representation for a job in a project.
   rpc GetJob(GetJobRequest) returns (Job) {
     option (google.api.http) = {
-      get: "/v1beta2/projects/{project_id}/regions/{region}/jobs/{job_id}"
+      get: "/v1/projects/{project_id}/regions/{region}/jobs/{job_id}"
     };
   }
 
   // Lists regions/{region}/jobs in a project.
   rpc ListJobs(ListJobsRequest) returns (ListJobsResponse) {
     option (google.api.http) = {
-      get: "/v1beta2/projects/{project_id}/regions/{region}/jobs"
+      get: "/v1/projects/{project_id}/regions/{region}/jobs"
     };
   }
 
   // Updates a job in a project.
   rpc UpdateJob(UpdateJobRequest) returns (Job) {
     option (google.api.http) = {
-      patch: "/v1beta2/projects/{project_id}/regions/{region}/jobs/{job_id}"
+      patch: "/v1/projects/{project_id}/regions/{region}/jobs/{job_id}"
       body: "job"
     };
   }
 
   // Starts a job cancellation request. To access the job resource
   // after cancellation, call
-  // [regions/{region}/jobs.list](/dataproc/docs/reference/rest/v1beta2/projects.regions.jobs/list) or
-  // [regions/{region}/jobs.get](/dataproc/docs/reference/rest/v1beta2/projects.regions.jobs/get).
+  // [regions/{region}/jobs.list](/dataproc/docs/reference/rest/v1/projects.regions.jobs/list) or
+  // [regions/{region}/jobs.get](/dataproc/docs/reference/rest/v1/projects.regions.jobs/get).
   rpc CancelJob(CancelJobRequest) returns (Job) {
     option (google.api.http) = {
-      post: "/v1beta2/projects/{project_id}/regions/{region}/jobs/{job_id}:cancel"
+      post: "/v1/projects/{project_id}/regions/{region}/jobs/{job_id}:cancel"
       body: "*"
     };
   }
@@ -75,7 +75,7 @@ service JobController {
   // and the response returns `FAILED_PRECONDITION`.
   rpc DeleteJob(DeleteJobRequest) returns (google.protobuf.Empty) {
     option (google.api.http) = {
-      delete: "/v1beta2/projects/{project_id}/regions/{region}/jobs/{job_id}"
+      delete: "/v1/projects/{project_id}/regions/{region}/jobs/{job_id}"
     };
   }
 }
@@ -577,10 +577,6 @@ message Job {
   // be changed before final release.
   repeated YarnApplication yarn_applications = 9;
 
-  // Output only. The email address of the user submitting the job. For jobs
-  // submitted on the cluster, the address is <code>username@hostname</code>.
-  string submitted_by = 10;
-
   // Output only. A URI pointing to the location of the stdout of the job's
   // driver program.
   string driver_output_resource_uri = 17;
@@ -633,9 +629,9 @@ message SubmitJobRequest {
   Job job = 2;
 
   // Optional. A unique id used to identify the request. If the server
-  // receives two [SubmitJobRequest][google.cloud.dataproc.v1beta2.SubmitJobRequest] requests  with the same
+  // receives two [SubmitJobRequest][google.cloud.dataproc.v1.SubmitJobRequest] requests  with the same
   // id, then the second request will be ignored and the
-  // first [Job][google.cloud.dataproc.v1beta2.Job] created and stored in the backend
+  // first [Job][google.cloud.dataproc.v1.Job] created and stored in the backend
   // is returned.
   //
   // It is recommended to always set this value to a
