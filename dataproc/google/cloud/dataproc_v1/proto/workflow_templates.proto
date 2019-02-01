@@ -15,19 +15,19 @@
 
 syntax = "proto3";
 
-package google.cloud.dataproc.v1beta2;
+package google.cloud.dataproc.v1;
 
 import "google/api/annotations.proto";
-import "google/cloud/dataproc/v1beta2/clusters.proto";
-import "google/cloud/dataproc/v1beta2/jobs.proto";
+import "google/cloud/dataproc/v1/clusters.proto";
+import "google/cloud/dataproc/v1/jobs.proto";
 import "google/longrunning/operations.proto";
 import "google/protobuf/empty.proto";
 import "google/protobuf/timestamp.proto";
 
-option go_package = "google.golang.org/genproto/googleapis/cloud/dataproc/v1beta2;dataproc";
+option go_package = "google.golang.org/genproto/googleapis/cloud/dataproc/v1;dataproc";
 option java_multiple_files = true;
 option java_outer_classname = "WorkflowTemplatesProto";
-option java_package = "com.google.cloud.dataproc.v1beta2";
+option java_package = "com.google.cloud.dataproc.v1";
 
 
 // The API interface for managing Workflow Templates in the
@@ -36,10 +36,10 @@ service WorkflowTemplateService {
   // Creates new workflow template.
   rpc CreateWorkflowTemplate(CreateWorkflowTemplateRequest) returns (WorkflowTemplate) {
     option (google.api.http) = {
-      post: "/v1beta2/{parent=projects/*/regions/*}/workflowTemplates"
+      post: "/v1/{parent=projects/*/locations/*}/workflowTemplates"
       body: "template"
       additional_bindings {
-        post: "/v1beta2/{parent=projects/*/locations/*}/workflowTemplates"
+        post: "/v1/{parent=projects/*/regions/*}/workflowTemplates"
         body: "template"
       }
     };
@@ -51,9 +51,9 @@ service WorkflowTemplateService {
   // version parameter.
   rpc GetWorkflowTemplate(GetWorkflowTemplateRequest) returns (WorkflowTemplate) {
     option (google.api.http) = {
-      get: "/v1beta2/{name=projects/*/regions/*/workflowTemplates/*}"
+      get: "/v1/{name=projects/*/locations/*/workflowTemplates/*}"
       additional_bindings {
-        get: "/v1beta2/{name=projects/*/locations/*/workflowTemplates/*}"
+        get: "/v1/{name=projects/*/regions/*/workflowTemplates/*}"
       }
     };
   }
@@ -71,17 +71,17 @@ service WorkflowTemplateService {
   // clusters to be deleted.
   //
   // The [Operation.metadata][google.longrunning.Operation.metadata] will be
-  // [WorkflowMetadata][google.cloud.dataproc.v1beta2.WorkflowMetadata].
+  // [WorkflowMetadata][google.cloud.dataproc.v1.WorkflowMetadata].
   //
   // On successful completion,
   // [Operation.response][google.longrunning.Operation.response] will be
   // [Empty][google.protobuf.Empty].
   rpc InstantiateWorkflowTemplate(InstantiateWorkflowTemplateRequest) returns (google.longrunning.Operation) {
     option (google.api.http) = {
-      post: "/v1beta2/{name=projects/*/regions/*/workflowTemplates/*}:instantiate"
+      post: "/v1/{name=projects/*/locations/*/workflowTemplates/*}:instantiate"
       body: "*"
       additional_bindings {
-        post: "/v1beta2/{name=projects/*/locations/*/workflowTemplates/*}:instantiate"
+        post: "/v1/{name=projects/*/regions/*/workflowTemplates/*}:instantiate"
         body: "*"
       }
     };
@@ -90,8 +90,8 @@ service WorkflowTemplateService {
   // Instantiates a template and begins execution.
   //
   // This method is equivalent to executing the sequence
-  // [CreateWorkflowTemplate][google.cloud.dataproc.v1beta2.WorkflowTemplateService.CreateWorkflowTemplate], [InstantiateWorkflowTemplate][google.cloud.dataproc.v1beta2.WorkflowTemplateService.InstantiateWorkflowTemplate],
-  // [DeleteWorkflowTemplate][google.cloud.dataproc.v1beta2.WorkflowTemplateService.DeleteWorkflowTemplate].
+  // [CreateWorkflowTemplate][google.cloud.dataproc.v1.WorkflowTemplateService.CreateWorkflowTemplate], [InstantiateWorkflowTemplate][google.cloud.dataproc.v1.WorkflowTemplateService.InstantiateWorkflowTemplate],
+  // [DeleteWorkflowTemplate][google.cloud.dataproc.v1.WorkflowTemplateService.DeleteWorkflowTemplate].
   //
   // The returned Operation can be used to track execution of
   // workflow by polling
@@ -104,17 +104,17 @@ service WorkflowTemplateService {
   // clusters to be deleted.
   //
   // The [Operation.metadata][google.longrunning.Operation.metadata] will be
-  // [WorkflowMetadata][google.cloud.dataproc.v1beta2.WorkflowMetadata].
+  // [WorkflowMetadata][google.cloud.dataproc.v1.WorkflowMetadata].
   //
   // On successful completion,
   // [Operation.response][google.longrunning.Operation.response] will be
   // [Empty][google.protobuf.Empty].
   rpc InstantiateInlineWorkflowTemplate(InstantiateInlineWorkflowTemplateRequest) returns (google.longrunning.Operation) {
     option (google.api.http) = {
-      post: "/v1beta2/{parent=projects/*/locations/*}/workflowTemplates:instantiateInline"
+      post: "/v1/{parent=projects/*/locations/*}/workflowTemplates:instantiateInline"
       body: "template"
       additional_bindings {
-        post: "/v1beta2/{parent=projects/*/regions/*}/workflowTemplates:instantiateInline"
+        post: "/v1/{parent=projects/*/regions/*}/workflowTemplates:instantiateInline"
         body: "template"
       }
     };
@@ -124,10 +124,10 @@ service WorkflowTemplateService {
   // must contain version that matches the current server version.
   rpc UpdateWorkflowTemplate(UpdateWorkflowTemplateRequest) returns (WorkflowTemplate) {
     option (google.api.http) = {
-      put: "/v1beta2/{template.name=projects/*/regions/*/workflowTemplates/*}"
+      put: "/v1/{template.name=projects/*/locations/*/workflowTemplates/*}"
       body: "template"
       additional_bindings {
-        put: "/v1beta2/{template.name=projects/*/locations/*/workflowTemplates/*}"
+        put: "/v1/{template.name=projects/*/regions/*/workflowTemplates/*}"
         body: "template"
       }
     };
@@ -136,9 +136,9 @@ service WorkflowTemplateService {
   // Lists workflows that match the specified filter in the request.
   rpc ListWorkflowTemplates(ListWorkflowTemplatesRequest) returns (ListWorkflowTemplatesResponse) {
     option (google.api.http) = {
-      get: "/v1beta2/{parent=projects/*/regions/*}/workflowTemplates"
+      get: "/v1/{parent=projects/*/locations/*}/workflowTemplates"
       additional_bindings {
-        get: "/v1beta2/{parent=projects/*/locations/*}/workflowTemplates"
+        get: "/v1/{parent=projects/*/regions/*}/workflowTemplates"
       }
     };
   }
@@ -146,9 +146,9 @@ service WorkflowTemplateService {
   // Deletes a workflow template. It does not cancel in-progress workflows.
   rpc DeleteWorkflowTemplate(DeleteWorkflowTemplateRequest) returns (google.protobuf.Empty) {
     option (google.api.http) = {
-      delete: "/v1beta2/{name=projects/*/regions/*/workflowTemplates/*}"
+      delete: "/v1/{name=projects/*/locations/*/workflowTemplates/*}"
       additional_bindings {
-        delete: "/v1beta2/{name=projects/*/locations/*/workflowTemplates/*}"
+        delete: "/v1/{name=projects/*/regions/*/workflowTemplates/*}"
       }
     };
   }
@@ -276,7 +276,7 @@ message OrderedJob {
   //
   // The step id is used as prefix for job id, as job
   // `goog-dataproc-workflow-step-id` label, and in
-  // [prerequisiteStepIds][google.cloud.dataproc.v1beta2.OrderedJob.prerequisite_step_ids] field from other
+  // [prerequisiteStepIds][google.cloud.dataproc.v1.OrderedJob.prerequisite_step_ids] field from other
   // steps.
   //
   // The id must contain only letters (a-z, A-Z), numbers (0-9),
@@ -345,7 +345,8 @@ message TemplateParameter {
   string name = 1;
 
   // Required. Paths to all fields that the parameter replaces.
-  // A field is allowed to appear in at most one parameter's list of field paths.
+  // A field is allowed to appear in at most one parameter's list of field
+  // paths.
   //
   // A field path is similar in syntax to a [google.protobuf.FieldMask][google.protobuf.FieldMask].
   // For example, a field path that references the zone field of a workflow
@@ -498,7 +499,7 @@ message WorkflowNode {
   // The workflow node state.
   enum NodeState {
     // State is unspecified.
-    NODE_STATUS_UNSPECIFIED = 0;
+    NODE_STATE_UNSPECIFIED = 0;
 
     // The node is awaiting prerequisite node to finish.
     BLOCKED = 1;
@@ -573,9 +574,6 @@ message InstantiateWorkflowTemplateRequest {
   // workflow template.
   int32 version = 2;
 
-  // Deprecated. Please use `request_id` field instead.
-  string instance_id = 3 [deprecated = true];
-
   // Optional. A tag that prevents multiple concurrent workflow
   // instances with the same tag from running. This mitigates risk of
   // concurrent instances started due to retries.
@@ -589,7 +587,7 @@ message InstantiateWorkflowTemplateRequest {
 
   // Optional. Map from parameter names to values that should be used for those
   // parameters. Values may not exceed 100 characters.
-  map<string, string> parameters = 4;
+  map<string, string> parameters = 6;
 }
 
 // A request to instantiate an inline workflow template.
@@ -602,9 +600,6 @@ message InstantiateInlineWorkflowTemplateRequest {
   // Required. The workflow template to instantiate.
   WorkflowTemplate template = 2;
 
-  // Deprecated. Please use `request_id` field instead.
-  string instance_id = 3;
-
   // Optional. A tag that prevents multiple concurrent workflow
   // instances with the same tag from running. This mitigates risk of
   // concurrent instances started due to retries.
@@ -614,7 +609,7 @@ message InstantiateInlineWorkflowTemplateRequest {
   //
   // The tag must contain only letters (a-z, A-Z), numbers (0-9),
   // underscores (_), and hyphens (-). The maximum length is 40 characters.
-  string request_id = 4;
+  string request_id = 3;
 }
 
 // A request to update a workflow template.
@@ -645,8 +640,8 @@ message ListWorkflowTemplatesResponse {
   // Output only. WorkflowTemplates list.
   repeated WorkflowTemplate templates = 1;
 
-  // Output only. This token is included in the response if there are more results
-  // to fetch. To fetch additional results, provide this value as the
+  // Output only. This token is included in the response if there are more
+  // results to fetch. To fetch additional results, provide this value as the
   // page_token in a subsequent <code>ListWorkflowTemplatesRequest</code>.
   string next_page_token = 2;
 }
