@@ -872,7 +872,29 @@ OR = DisjunctionNode
 
 
 class Query:
-    # __slots__ = ()
+    """Query object.
+
+    Args:
+        kind (str): The kind of query.
+        ancestor (Key): The key of the ancestor to which this query's are
+            restricted.
+        filters (Union[Node, tuple]): Node representing a filter expression
+            tree. Property filters applied by this query. The sequence
+            is ``(property_name, operator, value)``.
+        orders (Union[datastore_query.Order, list]): The field names used to
+            order query results. Renamed `order` in google.cloud.datastore.
+        app (str): The namespace to restrict results. If not passed, uses the
+            client's value. Renamed `project` in google.cloud.datastore.
+        namespace (str): The namespace to which to restrict results.
+            If not passed, uses the client's value.
+        default_options (QueryOptions): QueryOptions object.
+        projection (Union[list, tuple]): The fields returned as part of the
+            query results.
+        group_by (Union[list, tuple]): The field names used to group query
+            results. Renamed distinct_on in google.cloud.datastore.
+
+    Raises: TypeError if any of the arguments are invalid.
+    """
 
     def __init__(self, kind=None, ancestor=None, filters=None, orders=None,
                  app=None, namespace=None, default_options=None,
@@ -893,7 +915,7 @@ class Query:
                     if app != ancestor.app():
                         raise TypeError("ancestor/app id mismatch")
                 else:
-                    app = ancestor.app()  # CHECK IF THIS IS NEEDED
+                    app = ancestor.app()
                 if namespace is not None:
                     if namespace != ancestor.namespace():
                         raise TypeError("ancestor/namespace mismatch")
@@ -919,16 +941,15 @@ class Query:
         #             raise TypeError("cannot use projection keyword argument and "
         #                             "default_options.keys_only at the same time")
 
-        self.kind = kind  # String.
-        self.ancestor = ancestor  # Key.
-        self.filters = filters  # Old: None or Node subclass; New: tuple[str, str, str]
-        self.orders = orders  # Old: None or datastore_query.Order instance; New: sequence of strings (variable name order)
-        self.app = app  # New: (variable names project)
+        self.kind = kind
+        self.ancestor = ancestor
+        self.filters = filters
+        self.orders = orders
+        self.app = app
         self.namespace = namespace
         self.default_options = default_options
-        # No default_options
 
-        self.projection = None  # sequence of strings
+        self.projection = None
         if projection is not None:
           if not projection:
             raise TypeError('projection argument cannot be empty')
@@ -938,7 +959,7 @@ class Query:
           self._check_properties(self._to_property_names(projection))
           self.projection = tuple(projection)
 
-        self.group_by = None  # sequence of strings; New: (variable name distinct_on)
+        self.group_by = None
         if group_by is not None:
           if not group_by:
             raise TypeError('group_by argument cannot be empty')
@@ -950,7 +971,7 @@ class Query:
 
     def _to_property_names(self, properties):
         if not isinstance(properties, (list, tuple)):
-          properties = [properties]  # It will be type-checked below.
+          properties = [properties]
         fixed = []
         for prop in properties:
           if isinstance(prop, str):
