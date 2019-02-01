@@ -2778,8 +2778,33 @@ class QueryJob(_AsyncJob):
         dest_table = Table(dest_table_ref, schema=schema)
         return self._client.list_rows(dest_table, retry=retry)
 
-    def to_dataframe(self):
+    def to_dataframe(self, bqstorage_client=None, dtypes=None):
         """Return a pandas DataFrame from a QueryJob
+
+        Args:
+            bqstorage_client ( \
+                google.cloud.bigquery_storage_v1beta1.BigQueryStorageClient \
+            ):
+                **Alpha Feature** Optional. A BigQuery Storage API client. If
+                supplied, use the faster BigQuery Storage API to fetch rows
+                from BigQuery. This API is a billable API.
+
+                This method requires the ``fastavro`` and
+                ``google-cloud-bigquery-storage`` libraries.
+
+                Reading from a specific partition or snapshot is not
+                currently supported by this method.
+
+                **Caution**: There is a known issue reading small anonymous
+                query result tables with the BQ Storage API. Write your query
+                results to a destination table to work around this issue.
+            dtypes ( \
+                Map[str, Union[str, pandas.Series.dtype]] \
+            ):
+                Optional. A dictionary of column names pandas ``dtype``s. The
+                provided ``dtype`` is used when constructing the series for
+                the column specified. Otherwise, the default pandas behavior
+                is used.
 
         Returns:
             A :class:`~pandas.DataFrame` populated with row data and column
@@ -2789,7 +2814,9 @@ class QueryJob(_AsyncJob):
         Raises:
             ValueError: If the `pandas` library cannot be imported.
         """
-        return self.result().to_dataframe()
+        return self.result().to_dataframe(
+            bqstorage_client=bqstorage_client, dtypes=dtypes
+        )
 
     def __iter__(self):
         return iter(self.result())

@@ -1441,7 +1441,19 @@ class _EmptyRowIterator(object):
     pages = ()
     total_rows = 0
 
-    def to_dataframe(self):
+    def to_dataframe(self, bqstorage_client=None, dtypes=None):
+        """Create an empty dataframe.
+
+        Args:
+            bqstorage_client (Any):
+                Ignored. Added for compatibility with RowIterator.
+            dtypes (Any):
+                Ignored. Added for compatibility with RowIterator.
+
+        Returns:
+            pandas.DataFrame:
+                An empty :class:`~pandas.DataFrame`.
+        """
         if pandas is None:
             raise ValueError(_NO_PANDAS_ERROR)
         return pandas.DataFrame()
