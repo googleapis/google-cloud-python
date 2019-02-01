@@ -1,4 +1,4 @@
-// Copyright 2018 Google Inc.
+// Copyright 2017 Google Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,21 +14,19 @@
 
 syntax = "proto3";
 
-package google.cloud.videointelligence.v1p1beta1;
+package google.cloud.videointelligence.v1beta1;
 
 import "google/api/annotations.proto";
 import "google/longrunning/operations.proto";
-import "google/protobuf/duration.proto";
 import "google/protobuf/timestamp.proto";
 import "google/rpc/status.proto";
 
-option csharp_namespace = "Google.Cloud.VideoIntelligence.V1P1Beta1";
-option go_package = "google.golang.org/genproto/googleapis/cloud/videointelligence/v1p1beta1;videointelligence";
+option csharp_namespace = "Google.Cloud.VideoIntelligence.V1Beta1";
+option go_package = "google.golang.org/genproto/googleapis/cloud/videointelligence/v1beta1;videointelligence";
 option java_multiple_files = true;
 option java_outer_classname = "VideoIntelligenceServiceProto";
-option java_package = "com.google.cloud.videointelligence.v1p1beta1";
-option php_namespace = "Google\\Cloud\\VideoIntelligence\\V1p1beta1";
-
+option java_package = "com.google.cloud.videointelligence.v1beta1";
+option php_namespace = "Google\\Cloud\\VideoIntelligence\\V1beta1";
 
 // Service that implements Google Cloud Video Intelligence API.
 service VideoIntelligenceService {
@@ -37,10 +35,7 @@ service VideoIntelligenceService {
   // `Operation.metadata` contains `AnnotateVideoProgress` (progress).
   // `Operation.response` contains `AnnotateVideoResponse` (results).
   rpc AnnotateVideo(AnnotateVideoRequest) returns (google.longrunning.Operation) {
-    option (google.api.http) = {
-      post: "/v1p1beta1/videos:annotate"
-      body: "*"
-    };
+    option (google.api.http) = { post: "/v1beta1/videos:annotate" body: "*" };
   }
 }
 
@@ -58,10 +53,9 @@ message AnnotateVideoRequest {
   // in the request as `input_content`. If set, `input_content` should be unset.
   string input_uri = 1;
 
-  // The video data bytes.
-  // If unset, the input video(s) should be specified via `input_uri`.
-  // If set, `input_uri` should be unset.
-  bytes input_content = 6;
+  // The video data bytes. Encoding: base64. If unset, the input video(s)
+  // should be specified via `input_uri`. If set, `input_uri` should be unset.
+  string input_content = 6;
 
   // Requested video annotation features.
   repeated Feature features = 2;
@@ -86,167 +80,157 @@ message AnnotateVideoRequest {
 // Video context and/or feature-specific parameters.
 message VideoContext {
   // Video segments to annotate. The segments may overlap and are not required
-  // to be contiguous or span the whole video. If unspecified, each video is
-  // treated as a single segment.
+  // to be contiguous or span the whole video. If unspecified, each video
+  // is treated as a single segment.
   repeated VideoSegment segments = 1;
 
-  // Config for LABEL_DETECTION.
-  LabelDetectionConfig label_detection_config = 2;
-
-  // Config for SHOT_CHANGE_DETECTION.
-  ShotChangeDetectionConfig shot_change_detection_config = 3;
-
-  // Config for EXPLICIT_CONTENT_DETECTION.
-  ExplicitContentDetectionConfig explicit_content_detection_config = 4;
-
-  // Config for SPEECH_TRANSCRIPTION.
-  SpeechTranscriptionConfig speech_transcription_config = 6;
-}
-
-// Config for LABEL_DETECTION.
-message LabelDetectionConfig {
-  // What labels should be detected with LABEL_DETECTION, in addition to
-  // video-level labels or segment-level labels.
-  // If unspecified, defaults to `SHOT_MODE`.
-  LabelDetectionMode label_detection_mode = 1;
+  // If label detection has been requested, what labels should be detected
+  // in addition to video-level labels or segment-level labels. If unspecified,
+  // defaults to `SHOT_MODE`.
+  LabelDetectionMode label_detection_mode = 2;
 
   // Whether the video has been shot from a stationary (i.e. non-moving) camera.
   // When set to true, might improve detection accuracy for moving objects.
-  // Should be used with `SHOT_AND_FRAME_MODE` enabled.
-  bool stationary_camera = 2;
+  bool stationary_camera = 3;
 
   // Model to use for label detection.
-  // Supported values: "builtin/stable" (the default if unset) and
-  // "builtin/latest".
-  string model = 3;
-}
+  // Supported values: "latest" and "stable" (the default).
+  string label_detection_model = 4;
 
-// Config for SHOT_CHANGE_DETECTION.
-message ShotChangeDetectionConfig {
+  // Model to use for face detection.
+  // Supported values: "latest" and "stable" (the default).
+  string face_detection_model = 5;
+
   // Model to use for shot change detection.
-  // Supported values: "builtin/stable" (the default if unset) and
-  // "builtin/latest".
-  string model = 1;
-}
+  // Supported values: "latest" and "stable" (the default).
+  string shot_change_detection_model = 6;
 
-// Config for EXPLICIT_CONTENT_DETECTION.
-message ExplicitContentDetectionConfig {
-  // Model to use for explicit content detection.
-  // Supported values: "builtin/stable" (the default if unset) and
-  // "builtin/latest".
-  string model = 1;
+  // Model to use for safe search detection.
+  // Supported values: "latest" and "stable" (the default).
+  string safe_search_detection_model = 7;
 }
 
 // Video segment.
 message VideoSegment {
-  // Time-offset, relative to the beginning of the video,
-  // corresponding to the start of the segment (inclusive).
-  google.protobuf.Duration start_time_offset = 1;
+  // Start offset in microseconds (inclusive). Unset means 0.
+  int64 start_time_offset = 1;
 
-  // Time-offset, relative to the beginning of the video,
-  // corresponding to the end of the segment (inclusive).
-  google.protobuf.Duration end_time_offset = 2;
+  // End offset in microseconds (inclusive). Unset means 0.
+  int64 end_time_offset = 2;
 }
 
-// Video segment level annotation results for label detection.
-message LabelSegment {
-  // Video segment where a label was detected.
+// Label location.
+message LabelLocation {
+  // Video segment. Set to [-1, -1] for video-level labels.
+  // Set to [timestamp, timestamp] for frame-level labels.
+  // Otherwise, corresponds to one of `AnnotateSpec.segments`
+  // (if specified) or to shot boundaries (if requested).
   VideoSegment segment = 1;
 
   // Confidence that the label is accurate. Range: [0, 1].
   float confidence = 2;
-}
 
-// Video frame level annotation results for label detection.
-message LabelFrame {
-  // Time-offset, relative to the beginning of the video, corresponding to the
-  // video frame for this location.
-  google.protobuf.Duration time_offset = 1;
-
-  // Confidence that the label is accurate. Range: [0, 1].
-  float confidence = 2;
-}
-
-// Detected entity from video analysis.
-message Entity {
-  // Opaque entity ID. Some IDs may be available in
-  // [Google Knowledge Graph Search
-  // API](https://developers.google.com/knowledge-graph/).
-  string entity_id = 1;
-
-  // Textual description, e.g. `Fixed-gear bicycle`.
-  string description = 2;
-
-  // Language code for `description` in BCP-47 format.
-  string language_code = 3;
+  // Label level.
+  LabelLevel level = 3;
 }
 
 // Label annotation.
 message LabelAnnotation {
-  // Detected entity.
-  Entity entity = 1;
+  // Textual description, e.g. `Fixed-gear bicycle`.
+  string description = 1;
 
-  // Common categories for the detected entity.
-  // E.g. when the label is `Terrier` the category is likely `dog`. And in some
-  // cases there might be more than one categories e.g. `Terrier` could also be
-  // a `pet`.
-  repeated Entity category_entities = 2;
+  // Language code for `description` in BCP-47 format.
+  string language_code = 2;
 
-  // All video segments where a label was detected.
-  repeated LabelSegment segments = 3;
-
-  // All video frames where a label was detected.
-  repeated LabelFrame frames = 4;
+  // Where the label was detected and with what confidence.
+  repeated LabelLocation locations = 3;
 }
 
-// Video frame level annotation results for explicit content.
-message ExplicitContentFrame {
-  // Time-offset, relative to the beginning of the video, corresponding to the
-  // video frame for this location.
-  google.protobuf.Duration time_offset = 1;
+// Safe search annotation (based on per-frame visual signals only).
+// If no unsafe content has been detected in a frame, no annotations
+// are present for that frame. If only some types of unsafe content
+// have been detected in a frame, the likelihood is set to `UNKNOWN`
+// for all other types of unsafe content.
+message SafeSearchAnnotation {
+  // Likelihood of adult content.
+  Likelihood adult = 1;
 
-  // Likelihood of the pornography content..
-  Likelihood pornography_likelihood = 2;
+  // Likelihood that an obvious modification was made to the original
+  // version to make it appear funny or offensive.
+  Likelihood spoof = 2;
+
+  // Likelihood of medical content.
+  Likelihood medical = 3;
+
+  // Likelihood of violent content.
+  Likelihood violent = 4;
+
+  // Likelihood of racy content.
+  Likelihood racy = 5;
+
+  // Video time offset in microseconds.
+  int64 time_offset = 6;
 }
 
-// Explicit content annotation (based on per-frame visual signals only).
-// If no explicit content has been detected in a frame, no annotations are
-// present for that frame.
-message ExplicitContentAnnotation {
-  // All video frames where explicit content was detected.
-  repeated ExplicitContentFrame frames = 1;
+// Bounding box.
+message BoundingBox {
+  // Left X coordinate.
+  int32 left = 1;
+
+  // Right X coordinate.
+  int32 right = 2;
+
+  // Bottom Y coordinate.
+  int32 bottom = 3;
+
+  // Top Y coordinate.
+  int32 top = 4;
+}
+
+// Face location.
+message FaceLocation {
+  // Bounding box in a frame.
+  BoundingBox bounding_box = 1;
+
+  // Video time offset in microseconds.
+  int64 time_offset = 2;
+}
+
+// Face annotation.
+message FaceAnnotation {
+  // Thumbnail of a representative face view (in JPEG format). Encoding: base64.
+  string thumbnail = 1;
+
+  // All locations where a face was detected.
+  // Faces are detected and tracked on a per-video basis
+  // (as opposed to across multiple videos).
+  repeated VideoSegment segments = 2;
+
+  // Face locations at one frame per second.
+  repeated FaceLocation locations = 3;
 }
 
 // Annotation results for a single video.
 message VideoAnnotationResults {
-  // Output only. Video file location in
+  // Video file location in
   // [Google Cloud Storage](https://cloud.google.com/storage/).
   string input_uri = 1;
 
-  // Label annotations on video level or user specified segment level.
-  // There is exactly one element for each unique label.
-  repeated LabelAnnotation segment_label_annotations = 2;
+  // Label annotations. There is exactly one element for each unique label.
+  repeated LabelAnnotation label_annotations = 2;
 
-  // Label annotations on shot level.
-  // There is exactly one element for each unique label.
-  repeated LabelAnnotation shot_label_annotations = 3;
-
-  // Label annotations on frame level.
-  // There is exactly one element for each unique label.
-  repeated LabelAnnotation frame_label_annotations = 4;
+  // Face annotations. There is exactly one element for each unique face.
+  repeated FaceAnnotation face_annotations = 3;
 
   // Shot annotations. Each shot is represented as a video segment.
-  repeated VideoSegment shot_annotations = 6;
+  repeated VideoSegment shot_annotations = 4;
 
-  // Explicit content annotation.
-  ExplicitContentAnnotation explicit_annotation = 7;
+  // Safe search annotations.
+  repeated SafeSearchAnnotation safe_search_annotations = 6;
 
-  // Speech transcription.
-  repeated SpeechTranscription speech_transcriptions = 11;
-
-  // Output only. If set, indicates an error. Note that for a single
-  // `AnnotateVideoRequest` some videos may succeed and some may fail.
-  google.rpc.Status error = 9;
+  // If set, indicates an error. Note that for a single `AnnotateVideoRequest`
+  // some videos may succeed and some may fail.
+  google.rpc.Status error = 5;
 }
 
 // Video annotation response. Included in the `response`
@@ -259,18 +243,18 @@ message AnnotateVideoResponse {
 
 // Annotation progress for a single video.
 message VideoAnnotationProgress {
-  // Output only. Video file location in
+  // Video file location in
   // [Google Cloud Storage](https://cloud.google.com/storage/).
   string input_uri = 1;
 
-  // Output only. Approximate percentage processed thus far. Guaranteed to be
-  // 100 when fully processed.
+  // Approximate percentage processed thus far.
+  // Guaranteed to be 100 when fully processed.
   int32 progress_percent = 2;
 
-  // Output only. Time when the request was received.
+  // Time when the request was received.
   google.protobuf.Timestamp start_time = 3;
 
-  // Output only. Time of the most recent update.
+  // Time of the most recent update.
   google.protobuf.Timestamp update_time = 4;
 }
 
@@ -282,102 +266,6 @@ message AnnotateVideoProgress {
   repeated VideoAnnotationProgress annotation_progress = 1;
 }
 
-// Config for SPEECH_TRANSCRIPTION.
-message SpeechTranscriptionConfig {
-  // *Required* The language of the supplied audio as a
-  // [BCP-47](https://www.rfc-editor.org/rfc/bcp/bcp47.txt) language tag.
-  // Example: "en-US".
-  // See [Language Support](https://cloud.google.com/speech/docs/languages)
-  // for a list of the currently supported language codes.
-  string language_code = 1;
-
-  // *Optional* Maximum number of recognition hypotheses to be returned.
-  // Specifically, the maximum number of `SpeechRecognitionAlternative` messages
-  // within each `SpeechRecognitionResult`. The server may return fewer than
-  // `max_alternatives`. Valid values are `0`-`30`. A value of `0` or `1` will
-  // return a maximum of one. If omitted, will return a maximum of one.
-  int32 max_alternatives = 2;
-
-  // *Optional* If set to `true`, the server will attempt to filter out
-  // profanities, replacing all but the initial character in each filtered word
-  // with asterisks, e.g. "f***". If set to `false` or omitted, profanities
-  // won't be filtered out.
-  bool filter_profanity = 3;
-
-  // *Optional* A means to provide context to assist the speech recognition.
-  repeated SpeechContext speech_contexts = 4;
-
-  // *Optional* If 'true', adds punctuation to recognition result hypotheses.
-  // This feature is only available in select languages. Setting this for
-  // requests in other languages has no effect at all. The default 'false' value
-  // does not add punctuation to result hypotheses. NOTE: "This is currently
-  // offered as an experimental service, complimentary to all users. In the
-  // future this may be exclusively available as a premium feature."
-  bool enable_automatic_punctuation = 5;
-
-  // *Optional* For file formats, such as MXF or MKV, supporting multiple audio
-  // tracks, specify up to two tracks. Default: track 0.
-  repeated int32 audio_tracks = 6;
-}
-
-// Provides "hints" to the speech recognizer to favor specific words and phrases
-// in the results.
-message SpeechContext {
-  // *Optional* A list of strings containing words and phrases "hints" so that
-  // the speech recognition is more likely to recognize them. This can be used
-  // to improve the accuracy for specific words and phrases, for example, if
-  // specific commands are typically spoken by the user. This can also be used
-  // to add additional words to the vocabulary of the recognizer. See
-  // [usage limits](https://cloud.google.com/speech/limits#content).
-  repeated string phrases = 1;
-}
-
-// A speech recognition result corresponding to a portion of the audio.
-message SpeechTranscription {
-  // Output only. May contain one or more recognition hypotheses (up to the
-  // maximum specified in `max_alternatives`).
-  // These alternatives are ordered in terms of accuracy, with the top (first)
-  // alternative being the most probable, as ranked by the recognizer.
-  repeated SpeechRecognitionAlternative alternatives = 1;
-}
-
-// Alternative hypotheses (a.k.a. n-best list).
-message SpeechRecognitionAlternative {
-  // Output only. Transcript text representing the words that the user spoke.
-  string transcript = 1;
-
-  // Output only. The confidence estimate between 0.0 and 1.0. A higher number
-  // indicates an estimated greater likelihood that the recognized words are
-  // correct. This field is typically provided only for the top hypothesis, and
-  // only for `is_final=true` results. Clients should not rely on the
-  // `confidence` field as it is not guaranteed to be accurate or consistent.
-  // The default of 0.0 is a sentinel value indicating `confidence` was not set.
-  float confidence = 2;
-
-  // Output only. A list of word-specific information for each recognized word.
-  repeated WordInfo words = 3;
-}
-
-// Word-specific information for recognized words. Word information is only
-// included in the response when certain request parameters are set, such
-// as `enable_word_time_offsets`.
-message WordInfo {
-  // Output only. Time offset relative to the beginning of the audio, and
-  // corresponding to the start of the spoken word. This field is only set if
-  // `enable_word_time_offsets=true` and only in the top hypothesis. This is an
-  // experimental feature and the accuracy of the time offset can vary.
-  google.protobuf.Duration start_time = 1;
-
-  // Output only. Time offset relative to the beginning of the audio, and
-  // corresponding to the end of the spoken word. This field is only set if
-  // `enable_word_time_offsets=true` and only in the top hypothesis. This is an
-  // experimental feature and the accuracy of the time offset can vary.
-  google.protobuf.Duration end_time = 2;
-
-  // Output only. The word corresponding to this set of information.
-  string word = 3;
-}
-
 // Video annotation feature.
 enum Feature {
   // Unspecified.
@@ -386,14 +274,33 @@ enum Feature {
   // Label detection. Detect objects, such as dog or flower.
   LABEL_DETECTION = 1;
 
+  // Human face detection and tracking.
+  FACE_DETECTION = 2;
+
   // Shot change detection.
-  SHOT_CHANGE_DETECTION = 2;
+  SHOT_CHANGE_DETECTION = 3;
 
-  // Explicit content detection.
-  EXPLICIT_CONTENT_DETECTION = 3;
+  // Safe search detection.
+  SAFE_SEARCH_DETECTION = 4;
+}
 
-  // Speech transcription.
-  SPEECH_TRANSCRIPTION = 6;
+// Label level (scope).
+enum LabelLevel {
+  // Unspecified.
+  LABEL_LEVEL_UNSPECIFIED = 0;
+
+  // Video-level. Corresponds to the whole video.
+  VIDEO_LEVEL = 1;
+
+  // Segment-level. Corresponds to one of `AnnotateSpec.segments`.
+  SEGMENT_LEVEL = 2;
+
+  // Shot-level. Corresponds to a single shot (i.e. a series of frames
+  // without a major camera position or background change).
+  SHOT_LEVEL = 3;
+
+  // Frame-level. Corresponds to a single video frame.
+  FRAME_LEVEL = 4;
 }
 
 // Label detection mode.
@@ -413,8 +320,8 @@ enum LabelDetectionMode {
 
 // Bucketized representation of likelihood.
 enum Likelihood {
-  // Unspecified likelihood.
-  LIKELIHOOD_UNSPECIFIED = 0;
+  // Unknown likelihood.
+  UNKNOWN = 0;
 
   // Very unlikely.
   VERY_UNLIKELY = 1;
