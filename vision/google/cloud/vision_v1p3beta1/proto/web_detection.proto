@@ -1,4 +1,4 @@
-// Copyright 2017 Google Inc.
+// Copyright 2018 Google Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,15 +14,16 @@
 
 syntax = "proto3";
 
-package google.cloud.vision.v1p1beta1;
+package google.cloud.vision.v1p3beta1;
 
 import "google/api/annotations.proto";
 
 option cc_enable_arenas = true;
-option go_package = "google.golang.org/genproto/googleapis/cloud/vision/v1p1beta1;vision";
+option go_package = "google.golang.org/genproto/googleapis/cloud/vision/v1p3beta1;vision";
 option java_multiple_files = true;
 option java_outer_classname = "WebDetectionProto";
-option java_package = "com.google.cloud.vision.v1p1beta1";
+option java_package = "com.google.cloud.vision.v1p3beta1";
+
 
 // Relevant information for the image from the Internet.
 message WebDetection {
