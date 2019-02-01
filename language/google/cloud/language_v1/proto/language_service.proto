@@ -14,14 +14,14 @@
 
 syntax = "proto3";
 
-package google.cloud.language.v1beta1;
+package google.cloud.language.v1;
 
 import "google/api/annotations.proto";
 
-option go_package = "google.golang.org/genproto/googleapis/cloud/language/v1beta1;language";
+option go_package = "google.golang.org/genproto/googleapis/cloud/language/v1;language";
 option java_multiple_files = true;
 option java_outer_classname = "LanguageServiceProto";
-option java_package = "com.google.cloud.language.v1beta1";
+option java_package = "com.google.cloud.language.v1";
 
 
 // Provides text analysis operations such as sentiment analysis and entity
@@ -29,27 +29,38 @@ option java_package = "com.google.cloud.language.v1beta1";
 service LanguageService {
   // Analyzes the sentiment of the provided text.
   rpc AnalyzeSentiment(AnalyzeSentimentRequest) returns (AnalyzeSentimentResponse) {
-    option (google.api.http) = { post: "/v1beta1/documents:analyzeSentiment" body: "*" };
+    option (google.api.http) = { post: "/v1/documents:analyzeSentiment" body: "*" };
   }
 
   // Finds named entities (currently proper names and common nouns) in the text
   // along with entity types, salience, mentions for each entity, and
   // other properties.
   rpc AnalyzeEntities(AnalyzeEntitiesRequest) returns (AnalyzeEntitiesResponse) {
-    option (google.api.http) = { post: "/v1beta1/documents:analyzeEntities" body: "*" };
+    option (google.api.http) = { post: "/v1/documents:analyzeEntities" body: "*" };
+  }
+
+  // Finds entities, similar to [AnalyzeEntities][google.cloud.language.v1.LanguageService.AnalyzeEntities] in the text and analyzes
+  // sentiment associated with each entity and its mentions.
+  rpc AnalyzeEntitySentiment(AnalyzeEntitySentimentRequest) returns (AnalyzeEntitySentimentResponse) {
+    option (google.api.http) = { post: "/v1/documents:analyzeEntitySentiment" body: "*" };
   }
 
   // Analyzes the syntax of the text and provides sentence boundaries and
   // tokenization along with part of speech tags, dependency trees, and other
   // properties.
   rpc AnalyzeSyntax(AnalyzeSyntaxRequest) returns (AnalyzeSyntaxResponse) {
-    option (google.api.http) = { post: "/v1beta1/documents:analyzeSyntax" body: "*" };
+    option (google.api.http) = { post: "/v1/documents:analyzeSyntax" body: "*" };
+  }
+
+  // Classifies a document into categories.
+  rpc ClassifyText(ClassifyTextRequest) returns (ClassifyTextResponse) {
+    option (google.api.http) = { post: "/v1/documents:classifyText" body: "*" };
   }
 
   // A convenience method that provides all the features that analyzeSentiment,
   // analyzeEntities, and analyzeSyntax provide in one call.
   rpc AnnotateText(AnnotateTextRequest) returns (AnnotateTextResponse) {
-    option (google.api.http) = { post: "/v1beta1/documents:annotateText" body: "*" };
+    option (google.api.http) = { post: "/v1/documents:annotateText" body: "*" };
   }
 }
 
@@ -89,7 +100,7 @@ message Document {
   // The language of the document (if not specified, the language is
   // automatically detected). Both ISO and BCP-47 language codes are
   // accepted.<br>
-  // [Language Support](https://cloud.google.com/natural-language/docs/languages)
+  // [Language Support](/natural-language/docs/languages)
   // lists currently supported languages for each API method.
   // If the language (either specified by the caller or automatically detected)
   // is not supported by the called API method, an `INVALID_ARGUMENT` error
@@ -103,7 +114,7 @@ message Sentence {
   TextSpan text = 1;
 
   // For calls to [AnalyzeSentiment][] or if
-  // [AnnotateTextRequest.Features.extract_document_sentiment][google.cloud.language.v1beta1.AnnotateTextRequest.Features.extract_document_sentiment] is set to
+  // [AnnotateTextRequest.Features.extract_document_sentiment][google.cloud.language.v1.AnnotateTextRequest.Features.extract_document_sentiment] is set to
   // true, this field will contain the sentiment for the sentence.
   Sentiment sentiment = 2;
 }
@@ -162,6 +173,12 @@ message Entity {
   // The mentions of this entity in the input document. The API currently
   // supports proper noun mentions.
   repeated EntityMention mentions = 5;
+
+  // For calls to [AnalyzeEntitySentiment][] or if
+  // [AnnotateTextRequest.Features.extract_entity_sentiment][google.cloud.language.v1.AnnotateTextRequest.Features.extract_entity_sentiment] is set to
+  // true, this field will contain the aggregate sentiment expressed for this
+  // entity in the provided document.
+  Sentiment sentiment = 6;
 }
 
 // Represents the smallest syntactic building block of the text.
@@ -182,11 +199,6 @@ message Token {
 // Represents the feeling associated with the entire text or entities in
 // the text.
 message Sentiment {
-  // DEPRECATED FIELD - This field is being deprecated in
-  // favor of score. Please refer to our documentation at
-  // https://cloud.google.com/natural-language/docs for more information.
-  float polarity = 1;
-
   // A non-negative number in the [0, +inf) range, which represents
   // the absolute magnitude of sentiment regardless of score (positive or
   // negative).
@@ -197,7 +209,9 @@ message Sentiment {
   float score = 3;
 }
 
-// Represents part of speech information for a token.
+// Represents part of speech information for a token. Parts of speech
+// are as defined in
+// http://www.lrec-conf.org/proceedings/lrec2012/pdf/274_Paper.pdf
 message PartOfSpeech {
   // The part of speech tags enum.
   enum Tag {
@@ -525,7 +539,9 @@ message PartOfSpeech {
   Voice voice = 12;
 }
 
-// Represents dependency parse tree information for a token.
+// Represents dependency parse tree information for a token. (For more
+// information on dependency labels, see
+// http://www.aclweb.org/anthology/P13-2017
 message DependencyEdge {
   // The parse label enum for the token.
   enum Label {
@@ -759,6 +775,24 @@ message DependencyEdge {
 
     // Dislocated relation (for fronted/topicalized elements)
     DISLOCATED = 76;
+
+    // Aspect marker
+    ASP = 77;
+
+    // Genitive modifier
+    GMOD = 78;
+
+    // Genitive object
+    GOBJ = 79;
+
+    // Infinitival modifier
+    INFMOD = 80;
+
+    // Measure
+    MES = 81;
+
+    // Nominal complement of a noun
+    NCOMP = 82;
   }
 
   // Represents the head of this token in the dependency tree.
@@ -792,6 +826,12 @@ message EntityMention {
 
   // The type of the entity mention.
   Type type = 2;
+
+  // For calls to [AnalyzeEntitySentiment][] or if
+  // [AnnotateTextRequest.Features.extract_entity_sentiment][google.cloud.language.v1.AnnotateTextRequest.Features.extract_entity_sentiment] is set to
+  // true, this field will contain the sentiment expressed for this mention of
+  // the entity in the provided document.
+  Sentiment sentiment = 3;
 }
 
 // Represents an output piece of text.
@@ -800,8 +840,18 @@ message TextSpan {
   string content = 1;
 
   // The API calculates the beginning offset of the content in the original
-  // document according to the [EncodingType][google.cloud.language.v1beta1.EncodingType] specified in the API request.
+  // document according to the [EncodingType][google.cloud.language.v1.EncodingType] specified in the API request.
   int32 begin_offset = 2;
+}
+
+// Represents a category returned from the text classifier.
+message ClassificationCategory {
+  // The name of the category representing the document.
+  string name = 1;
+
+  // The classifier's confidence of the category. Number represents how certain
+  // the classifier is that this category represents the given text.
+  float confidence = 2;
 }
 
 // The sentiment analysis request message.
@@ -809,8 +859,7 @@ message AnalyzeSentimentRequest {
   // Input document.
   Document document = 1;
 
-  // The encoding type used by the API to calculate sentence offsets for the
-  // sentence sentiment.
+  // The encoding type used by the API to calculate sentence offsets.
   EncodingType encoding_type = 2;
 }
 
@@ -821,11 +870,31 @@ message AnalyzeSentimentResponse {
 
   // The language of the text, which will be the same as the language specified
   // in the request or, if not specified, the automatically-detected language.
-  // See [Document.language][google.cloud.language.v1beta1.Document.language] field for more details.
+  // See [Document.language][google.cloud.language.v1.Document.language] field for more details.
   string language = 2;
 
   // The sentiment for all the sentences in the document.
   repeated Sentence sentences = 3;
+}
+
+// The entity-level sentiment analysis request message.
+message AnalyzeEntitySentimentRequest {
+  // Input document.
+  Document document = 1;
+
+  // The encoding type used by the API to calculate offsets.
+  EncodingType encoding_type = 2;
+}
+
+// The entity-level sentiment analysis response message.
+message AnalyzeEntitySentimentResponse {
+  // The recognized entities in the input document with associated sentiments.
+  repeated Entity entities = 1;
+
+  // The language of the text, which will be the same as the language specified
+  // in the request or, if not specified, the automatically-detected language.
+  // See [Document.language][google.cloud.language.v1.Document.language] field for more details.
+  string language = 2;
 }
 
 // The entity analysis request message.
@@ -844,7 +913,7 @@ message AnalyzeEntitiesResponse {
 
   // The language of the text, which will be the same as the language specified
   // in the request or, if not specified, the automatically-detected language.
-  // See [Document.language][google.cloud.language.v1beta1.Document.language] field for more details.
+  // See [Document.language][google.cloud.language.v1.Document.language] field for more details.
   string language = 2;
 }
 
@@ -867,8 +936,20 @@ message AnalyzeSyntaxResponse {
 
   // The language of the text, which will be the same as the language specified
   // in the request or, if not specified, the automatically-detected language.
-  // See [Document.language][google.cloud.language.v1beta1.Document.language] field for more details.
+  // See [Document.language][google.cloud.language.v1.Document.language] field for more details.
   string language = 3;
+}
+
+// The document classification request message.
+message ClassifyTextRequest {
+  // Input document.
+  Document document = 1;
+}
+
+// The document classification response message.
+message ClassifyTextResponse {
+  // Categories representing the input document.
+  repeated ClassificationCategory categories = 1;
 }
 
 // The request message for the text annotation API, which can perform multiple
@@ -885,6 +966,12 @@ message AnnotateTextRequest {
 
     // Extract document-level sentiment.
     bool extract_document_sentiment = 3;
+
+    // Extract entities and their associated sentiment.
+    bool extract_entity_sentiment = 4;
+
+    // Classify the full document into categories.
+    bool classify_text = 6;
   }
 
   // Input document.
@@ -900,27 +987,30 @@ message AnnotateTextRequest {
 // The text annotations response message.
 message AnnotateTextResponse {
   // Sentences in the input document. Populated if the user enables
-  // [AnnotateTextRequest.Features.extract_syntax][google.cloud.language.v1beta1.AnnotateTextRequest.Features.extract_syntax].
+  // [AnnotateTextRequest.Features.extract_syntax][google.cloud.language.v1.AnnotateTextRequest.Features.extract_syntax].
   repeated Sentence sentences = 1;
 
   // Tokens, along with their syntactic information, in the input document.
   // Populated if the user enables
-  // [AnnotateTextRequest.Features.extract_syntax][google.cloud.language.v1beta1.AnnotateTextRequest.Features.extract_syntax].
+  // [AnnotateTextRequest.Features.extract_syntax][google.cloud.language.v1.AnnotateTextRequest.Features.extract_syntax].
   repeated Token tokens = 2;
 
   // Entities, along with their semantic information, in the input document.
   // Populated if the user enables
-  // [AnnotateTextRequest.Features.extract_entities][google.cloud.language.v1beta1.AnnotateTextRequest.Features.extract_entities].
+  // [AnnotateTextRequest.Features.extract_entities][google.cloud.language.v1.AnnotateTextRequest.Features.extract_entities].
   repeated Entity entities = 3;
 
   // The overall sentiment for the document. Populated if the user enables
-  // [AnnotateTextRequest.Features.extract_document_sentiment][google.cloud.language.v1beta1.AnnotateTextRequest.Features.extract_document_sentiment].
+  // [AnnotateTextRequest.Features.extract_document_sentiment][google.cloud.language.v1.AnnotateTextRequest.Features.extract_document_sentiment].
   Sentiment document_sentiment = 4;
 
   // The language of the text, which will be the same as the language specified
   // in the request or, if not specified, the automatically-detected language.
-  // See [Document.language][google.cloud.language.v1beta1.Document.language] field for more details.
+  // See [Document.language][google.cloud.language.v1.Document.language] field for more details.
   string language = 5;
+
+  // Categories identified in the input document.
+  repeated ClassificationCategory categories = 6;
 }
 
 // Represents the text encoding that the caller uses to process the output.
