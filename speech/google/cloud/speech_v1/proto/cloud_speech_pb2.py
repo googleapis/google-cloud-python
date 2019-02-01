@@ -1995,4 +1995,3 @@ _sym_db.RegisterServiceDescriptor(_SPEECH)
 DESCRIPTOR.services_by_name["Speech"] = _SPEECH
 
 # @@protoc_insertion_point(module_scope)
-# -*- coding: utf-8 -*-
