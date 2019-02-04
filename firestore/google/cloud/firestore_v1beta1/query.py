@@ -753,8 +753,8 @@ class Query(object):
             db = firestore.Client()
             query_ref = db.collection(u'users').where("user", "==", u'Ada')
 
-            def on_snapshot(query_snapshot):
-                for doc in query_snapshot.documents:
+            def on_snapshot(docs, changes, read_time):
+                for doc in docs:
                     print(u'{} => {}'.format(doc.id, doc.to_dict()))
 
             # Watch this query
