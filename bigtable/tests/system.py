@@ -94,6 +94,7 @@ retry_429 = RetryErrors(TooManyRequests, max_tries=9)
 
 def setUpModule():
     from google.cloud.exceptions import GrpcRendezvous
+    from google.cloud.bigtable.enums import Instance
 
     Config.IN_EMULATOR = os.getenv(BIGTABLE_EMULATOR) is not None
 
@@ -107,9 +108,10 @@ def setUpModule():
     Config.CLUSTER = Config.INSTANCE.cluster(
         CLUSTER_ID, location_id=LOCATION_ID, serve_nodes=SERVE_NODES)
     Config.INSTANCE_DATA = Config.CLIENT.instance(
-        INSTANCE_ID_DATA, labels=LABELS)
+        INSTANCE_ID_DATA, instance_type=Instance.Type.DEVELOPMENT,
+        labels=LABELS)
     Config.CLUSTER_DATA = Config.INSTANCE_DATA.cluster(
-        CLUSTER_ID_DATA, location_id=LOCATION_ID, serve_nodes=SERVE_NODES)
+        CLUSTER_ID_DATA, location_id=LOCATION_ID)
 
     if not Config.IN_EMULATOR:
         retry = RetryErrors(GrpcRendezvous, error_predicate=_retry_on_unavailable)
