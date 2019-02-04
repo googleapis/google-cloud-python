@@ -10,7 +10,7 @@
 
 ### New Features
 
-- Add arguments to select `dtypes` and use BQ Storage API to 'QueryJob.to_dataframe()'. ([#7241](https://github.com/googleapis/google-cloud-python/pull/7241))
+- Add arguments to select `dtypes` and use BQ Storage API to `QueryJob.to_dataframe()`. ([#7241](https://github.com/googleapis/google-cloud-python/pull/7241))
 
 ### Documentation
 
