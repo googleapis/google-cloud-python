@@ -403,7 +403,7 @@ class Table(object):
                       considered inclusive. The default is False (exclusive).
 
         :type row_set: :class:`row_set.RowSet`
-        :param filter_: (Optional) The row set containing multiple row keys and
+        :param row_set: (Optional) The row set containing multiple row keys and
                         row_ranges.
 
         :type retry: :class:`~google.api_core.retry.Retry`
@@ -459,7 +459,7 @@ class Table(object):
                         each row.
 
         :type row_set: :class:`row_set.RowSet`
-        :param filter_: (Optional) The row set containing multiple row keys and
+        :param row_set: (Optional) The row set containing multiple row keys and
                         row_ranges.
 
         :rtype: :class:`.PartialRowData`
@@ -884,7 +884,7 @@ def _create_row_request(
     :param app_profile_id: (Optional) The unique name of the AppProfile.
 
     :type row_set: :class:`row_set.RowSet`
-    :param filter_: (Optional) The row set containing multiple row keys and
+    :param row_set: (Optional) The row set containing multiple row keys and
                     row_ranges.
 
     :rtype: :class:`data_messages_v2_pb2.ReadRowsRequest`
