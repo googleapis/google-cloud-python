@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery.job.QueryJob &#8212; google-cloud cc73246 documentation</title>
+    <title>google.cloud.bigquery.job.QueryJob &#8212; google-cloud 850785b documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -83,7 +83,7 @@
 <tr class="row-odd"><td><a class="reference internal" href="#google.cloud.bigquery.job.QueryJob.to_api_repr" title="google.cloud.bigquery.job.QueryJob.to_api_repr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_api_repr</span></code></a>()</td>
 <td>Generate a resource for <code class="xref py py-meth docutils literal notranslate"><span class="pre">_begin()</span></code>.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#google.cloud.bigquery.job.QueryJob.to_dataframe" title="google.cloud.bigquery.job.QueryJob.to_dataframe"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_dataframe</span></code></a>()</td>
+<tr class="row-even"><td><a class="reference internal" href="#google.cloud.bigquery.job.QueryJob.to_dataframe" title="google.cloud.bigquery.job.QueryJob.to_dataframe"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_dataframe</span></code></a>([bqstorage_client,&nbsp;dtypes])</td>
 <td>Return a pandas DataFrame from a QueryJob</td>
 </tr>
 </tbody>
@@ -659,17 +659,38 @@ from job statistics.</p>
 
 <dl class="method">
 <dt id="google.cloud.bigquery.job.QueryJob.to_dataframe">
-<code class="descname">to_dataframe</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/google/cloud/bigquery/job.html#QueryJob.to_dataframe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.job.QueryJob.to_dataframe" title="Permalink to this definition">#</a></dt>
+<code class="descname">to_dataframe</code><span class="sig-paren">(</span><em>bqstorage_client=None</em>, <em>dtypes=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/google/cloud/bigquery/job.html#QueryJob.to_dataframe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.job.QueryJob.to_dataframe" title="Permalink to this definition">#</a></dt>
 <dd><p>Return a pandas DataFrame from a QueryJob</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.24.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code></a> populated with row data and column
-headers from the query results. The column headers are derived
-from the destination table’s schema.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>bqstorage_client</strong> (<a class="reference internal" href="../../bigquery_storage/gapic/v1beta1/api.html#google.cloud.bigquery_storage_v1beta1.BigQueryStorageClient" title="google.cloud.bigquery_storage_v1beta1.BigQueryStorageClient"><em>google.cloud.bigquery_storage_v1beta1.BigQueryStorageClient</em></a>) – <p><strong>Alpha Feature</strong> Optional. A BigQuery Storage API client. If
+supplied, use the faster BigQuery Storage API to fetch rows
+from BigQuery. This API is a billable API.</p>
+<p>This method requires the <code class="docutils literal notranslate"><span class="pre">fastavro</span></code> and
+<code class="docutils literal notranslate"><span class="pre">google-cloud-bigquery-storage</span></code> libraries.</p>
+<p>Reading from a specific partition or snapshot is not
+currently supported by this method.</p>
+<p><strong>Caution</strong>: There is a known issue reading small anonymous
+query result tables with the BQ Storage API. Write your query
+results to a destination table to work around this issue.</p>
+</li>
+<li><strong>dtypes</strong> (<em>Map</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>pandas.Series.dtype</em><em>]</em><em>]</em>) – Optional. A dictionary of column names pandas <code class="docutils literal notranslate"><span class="pre">dtype``s.</span> <span class="pre">The</span>
+<span class="pre">provided</span> <span class="pre">``dtype</span></code> is used when constructing the series for
+the column specified. Otherwise, the default pandas behavior
+is used.</li>
+</ul>
+</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the <cite>pandas</cite> library cannot be imported.</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.24.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code></a> populated with row data and column
+headers from the query results. The column headers are derived
+from the destination table’s schema.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the <cite>pandas</cite> library cannot be imported.</p>
+</td>
 </tr>
 </tbody>
 </table>
@@ -868,7 +889,7 @@ not yet completed.</td>
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.3</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.4</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

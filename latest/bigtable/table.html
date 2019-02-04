@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Table &#8212; google-cloud cc73246 documentation</title>
+    <title>Table &#8212; google-cloud 850785b documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -541,7 +541,7 @@ specified row(s). If unset, reads every column in
 each row.</li>
 <li><strong>end_inclusive</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – (Optional) Whether the <code class="docutils literal notranslate"><span class="pre">end_key</span></code> should be
 considered inclusive. The default is False (exclusive).</li>
-<li><strong>filter</strong> – (Optional) The row set containing multiple row keys and
+<li><strong>row_set</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">row_set.RowSet</span></code>) – (Optional) The row set containing multiple row keys and
 row_ranges.</li>
 <li><strong>retry</strong> (<a class="reference internal" href="../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><code class="xref py py-class docutils literal notranslate"><span class="pre">Retry</span></code></a>) – (Optional) Retry delay and deadline arguments. To override, the
 default value <code class="xref py py-attr docutils literal notranslate"><span class="pre">DEFAULT_RETRY_READ_ROWS</span></code> can be used and
@@ -713,7 +713,7 @@ all results.</li>
 <li><strong>filter</strong> (<a class="reference internal" href="row-filters.html#google.cloud.bigtable.row_filters.RowFilter" title="google.cloud.bigtable.row_filters.RowFilter"><code class="xref py py-class docutils literal notranslate"><span class="pre">RowFilter</span></code></a>) – (Optional) The filter to apply to the contents of the
 specified row(s). If unset, reads every column in
 each row.</li>
-<li><strong>filter</strong> – (Optional) The row set containing multiple row keys and
+<li><strong>row_set</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">row_set.RowSet</span></code>) – (Optional) The row set containing multiple row keys and
 row_ranges.</li>
 </ul>
 </td>
@@ -847,7 +847,7 @@ row_ranges.</li>
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.3</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.4</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |
