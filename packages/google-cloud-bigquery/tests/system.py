@@ -48,6 +48,7 @@ from google.api_core.exceptions import PreconditionFailed
 from google.api_core.exceptions import BadRequest
 from google.api_core.exceptions import Conflict
 from google.api_core.exceptions import Forbidden
+from google.api_core.exceptions import GoogleAPICallError
 from google.api_core.exceptions import NotFound
 from google.api_core.exceptions import InternalServerError
 from google.api_core.exceptions import ServiceUnavailable
@@ -765,17 +766,17 @@ class TestBigQuery(unittest.TestCase):
         self.assertTrue(eu_query.done)
 
         # Cannot query from US.
-        with self.assertRaises(BadRequest):
+        with self.assertRaises(GoogleAPICallError):
             list(client.query(query_string, location="US", job_config=query_config))
 
         # Cannot copy from US.
-        with self.assertRaises(BadRequest):
+        with self.assertRaises(GoogleAPICallError):
             client.copy_table(
                 table_ref, dataset.table("letters2_us"), location="US"
             ).result()
 
         # Cannot extract from US.
-        with self.assertRaises(BadRequest):
+        with self.assertRaises(GoogleAPICallError):
             client.extract_table(
                 table_ref, "gs://{}/letters-us.csv".format(bucket_name), location="US"
             ).result()
