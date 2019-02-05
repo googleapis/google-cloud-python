@@ -153,7 +153,7 @@ class Subscription(object):
         Types of changes that users can subscribe to in an incident.
 
         Attributes:
-          EVENT_TYPE_UNSPECIFIED (int): An event\_type that's not specified is an error.
+          EVENT_TYPE_UNSPECIFIED (int): An event_type that's not specified is an error.
           EVENT_TYPE_TITLE_CHANGE (int): The incident's title has changed.
           EVENT_TYPE_SYNOPSIS_CHANGE (int): The incident's synopsis has changed.
           EVENT_TYPE_STAGE_CHANGE (int): The incident's stage has changed.

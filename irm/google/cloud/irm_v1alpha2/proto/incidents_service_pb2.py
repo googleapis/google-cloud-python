@@ -3229,7 +3229,7 @@ GetIncidentRequest = _reflection.GeneratedProtocolMessageType(
   Attributes:
       name:
           Resource name of the incident, e.g.
-          "projects/{project\_id}/incidents/{incident\_id}".
+          "projects/{project_id}/incidents/{incident_id}".
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.irm.v1alpha2.GetIncidentRequest)
     ),
@@ -3268,12 +3268,12 @@ SearchSimilarIncidentsRequest = _reflection.GeneratedProtocolMessageType(
   Attributes:
       name:
           Resource name of the incident or signal, e.g.
-          "projects/{project\_id}/incidents/{incident\_id}".
+          "projects/{project_id}/incidents/{incident_id}".
       page_size:
           Number of similar incidents to return.
       page_token:
           Page token from an earlier query, as returned in
-          'next\_page\_token'.
+          'next_page_token'.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.irm.v1alpha2.SearchSimilarIncidentsRequest)
     ),
@@ -3331,7 +3331,7 @@ CreateAnnotationRequest = _reflection.GeneratedProtocolMessageType(
   Attributes:
       parent:
           Resource name of the incident, e.g.
-          "projects/{project\_id}/incidents/{incident\_id}".
+          "projects/{project_id}/incidents/{incident_id}".
       annotation:
           Only annotation.content is an input argument.
   """,
@@ -3352,7 +3352,7 @@ ListAnnotationsRequest = _reflection.GeneratedProtocolMessageType(
   Attributes:
       parent:
           Resource name of the incident, e.g.
-          "projects/{project\_id}/incidents/{incident\_id}".
+          "projects/{project_id}/incidents/{incident_id}".
       page_size:
           Number of annotations to return.
       page_token:
@@ -3396,9 +3396,9 @@ CreateTagRequest = _reflection.GeneratedProtocolMessageType(
   Attributes:
       parent:
           Resource name of the incident, e.g.
-          "projects/{project\_id}/incidents/{incident\_id}".
+          "projects/{project_id}/incidents/{incident_id}".
       tag:
-          Tag to create. Only tag.display\_name is an input argument.
+          Tag to create. Only tag.display_name is an input argument.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.irm.v1alpha2.CreateTagRequest)
     ),
@@ -3435,7 +3435,7 @@ ListTagsRequest = _reflection.GeneratedProtocolMessageType(
   Attributes:
       parent:
           Resource name of the incident, e.g.
-          "projects/{project\_id}/incidents/{incident\_id}".
+          "projects/{project_id}/incidents/{incident_id}".
       page_size:
           Number of tags to return.
       page_token:
@@ -3527,8 +3527,8 @@ ListSignalsRequest = _reflection.GeneratedProtocolMessageType(
           Maximum number of ``signals`` to return in the response.
       page_token:
           Page token from an earlier query, as returned in
-          ``next_page_token``. All field values except for page\_size
-          and page\_token should be the same as the original query (may
+          ``next_page_token``. All field values except for page_size
+          and page_token should be the same as the original query (may
           return an error or unexpected data otherwise).
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.irm.v1alpha2.ListSignalsRequest)
@@ -3568,7 +3568,7 @@ GetSignalRequest = _reflection.GeneratedProtocolMessageType(
   Attributes:
       name:
           Resource name of the Signal resource, e.g.
-          "projects/{project\_id}/signals/{signal\_id}".
+          "projects/{project_id}/signals/{signal_id}".
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.irm.v1alpha2.GetSignalRequest)
     ),
@@ -3607,7 +3607,7 @@ AcknowledgeSignalRequest = _reflection.GeneratedProtocolMessageType(
   Attributes:
       name:
           Resource name of the Signal resource, e.g.
-          "projects/{project\_id}/signals/{signal\_id}".
+          "projects/{project_id}/signals/{signal_id}".
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.irm.v1alpha2.AcknowledgeSignalRequest)
     ),
@@ -3644,20 +3644,20 @@ SearchIncidentsRequest = _reflection.GeneratedProtocolMessageType(
           An expression that defines which incidents to return.  Search
           atoms can be used to match certain specific fields. Otherwise,
           plain text will match text fields in the incident.  Search
-          atoms: \* ``start`` - (timestamp) The time the incident
-          started. \* ``stage`` - The stage of the incident, one of
+          atoms: * ``start`` - (timestamp) The time the incident
+          started. * ``stage`` - The stage of the incident, one of
           detected, triaged, mitigated, resolved, documented, or
           duplicate (which correspond to values in the Incident.Stage
           enum). These are ordered, so ``stage<resolved`` is equivalent
-          to ``stage:detected OR stage:triaged OR stage:mitigated``. \*
+          to ``stage:detected OR stage:triaged OR stage:mitigated``. *
           ``severity`` - (Incident.Severity) The severity of the
           incident. + Supports matching on a specific severity (e.g.,
           ``severity:major``) or on a range (e.g., ``severity>medium``,
-          ``severity<=minor``, etc.).  Timestamp formats: \* yyyy-MM-dd
+          ``severity<=minor``, etc.).  Timestamp formats: * yyyy-MM-dd
           - an absolute date, treated as a calendar-day-wide window. In
           other words, the "<" operator will match dates before that
           date, the ">" operator will match dates after that date, and
-          the ":" or "=" operators will match the entire day. \* Nd
+          the ":" or "=" operators will match the entire day. * Nd
           (e.g. 7d) - a relative number of days ago, treated as a moment
           in time (as opposed to a day-wide span) a multiple of 24 hours
           ago (as opposed to calendar days). In the case of daylight
@@ -3677,7 +3677,7 @@ SearchIncidentsRequest = _reflection.GeneratedProtocolMessageType(
           incidents which started on or before    November 11, 2018. -
           ``start:2018-11-28`` - matches incidents which started on
           November    11,  2018.   -  ``start>7d`` - matches incidents
-          which started after the point in    time 7\*24 hours ago -
+          which started after the point in    time 7*24 hours ago -
           ``start>180d`` - similar to 7d, but likely to cross the
           daylight    savings time boundary, so the end time will be 1
           hour different from    "now." -  ``foo AND start>90d AND
@@ -3690,8 +3690,8 @@ SearchIncidentsRequest = _reflection.GeneratedProtocolMessageType(
           ``next_page_token``.
       time_zone:
           The time zone name. It should be an IANA TZ name, such as
-          "America/Los\_Angeles". For more information, see https://en.w
-          ikipedia.org/wiki/List\_of\_tz\_database\_time\_zones. If no
+          "America/Los_Angeles". For more information, see https://en.w
+          ikipedia.org/wiki/List_of_tz_database_time_zones. If no
           time zone is specified, the default is UTC.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.irm.v1alpha2.SearchIncidentsRequest)
@@ -3741,7 +3741,7 @@ EscalateIncidentRequest = _reflection.GeneratedProtocolMessageType(
           Tags to add. Tags identical to existing tags will be ignored.
       roles:
           Roles to add or update. Existing roles with the same type (and
-          title, for TYPE\_OTHER roles) will be updated.
+          title, for TYPE_OTHER roles) will be updated.
       artifacts:
           Artifacts to add. All artifacts are added without checking for
           duplicates.
@@ -3789,7 +3789,7 @@ CreateArtifactRequest = _reflection.GeneratedProtocolMessageType(
   Attributes:
       parent:
           Resource name of the incident, e.g.
-          "projects/{project\_id}/incidents/{incident\_id}".
+          "projects/{project_id}/incidents/{incident_id}".
       artifact:
           The artifact to create.
   """,
@@ -3810,7 +3810,7 @@ ListArtifactsRequest = _reflection.GeneratedProtocolMessageType(
   Attributes:
       parent:
           Resource name of the incident, e.g.
-          "projects/{project\_id}/incidents/{incident\_id}".
+          "projects/{project_id}/incidents/{incident_id}".
       page_size:
           Number of artifacts to return.
       page_token:
@@ -3943,7 +3943,7 @@ SendShiftHandoffRequest = _reflection.GeneratedProtocolMessageType(
     Attributes:
         name:
             Resource name of the incident, e.g.
-            "projects/{project\_id}/incidents/{incident\_id}".
+            "projects/{project_id}/incidents/{incident_id}".
     """,
                 # @@protoc_insertion_point(class_scope:google.cloud.irm.v1alpha2.SendShiftHandoffRequest.Incident)
             ),
@@ -3995,7 +3995,7 @@ SendShiftHandoffResponse = _reflection.GeneratedProtocolMessageType(
           Content type string, e.g. 'text/plain' or 'text/html'.
       content:
           The contents of the handoff that was sent or would have been
-          sent (if the request was preview\_only). This will typically
+          sent (if the request was preview_only). This will typically
           contain a full HTML document.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.irm.v1alpha2.SendShiftHandoffResponse)
@@ -4015,7 +4015,7 @@ CreateSubscriptionRequest = _reflection.GeneratedProtocolMessageType(
   Attributes:
       parent:
           Resource name of the incident, e.g.
-          "projects/{project\_id}/incidents/{incident\_id}".
+          "projects/{project_id}/incidents/{incident_id}".
       subscription:
           The subscription to create.
   """,
@@ -4036,7 +4036,7 @@ ListSubscriptionsRequest = _reflection.GeneratedProtocolMessageType(
   Attributes:
       parent:
           Resource name of the incident, e.g.
-          "projects/{project\_id}/incidents/{incident\_id}".
+          "projects/{project_id}/incidents/{incident_id}".
       page_size:
           Number of subscriptions to return.
       page_token:
@@ -4098,7 +4098,7 @@ CreateIncidentRoleAssignmentRequest = _reflection.GeneratedProtocolMessageType(
   Attributes:
       parent:
           Resource name of the incident, e.g.
-          "projects/{project\_id}/incidents/{incident\_id}".
+          "projects/{project_id}/incidents/{incident_id}".
       incident_role_assignment:
           Role assignment to create.
   """,
@@ -4137,7 +4137,7 @@ ListIncidentRoleAssignmentsRequest = _reflection.GeneratedProtocolMessageType(
   Attributes:
       parent:
           Resource name of the incident, e.g.
-          "projects/{project\_id}/incidents/{incident\_id}".
+          "projects/{project_id}/incidents/{incident_id}".
       page_size:
           Number of assignments to return.
       page_token:
@@ -4247,7 +4247,7 @@ CancelIncidentRoleHandoverRequest = _reflection.GeneratedProtocolMessageType(
           Resource name of the role assignment.
       new_assignee:
           Person who was proposed as the next assignee (i.e.
-          IncidentRoleAssignment.proposed\_assignee) and whose proposal
+          IncidentRoleAssignment.proposed_assignee) and whose proposal
           is being cancelled.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.irm.v1alpha2.CancelIncidentRoleHandoverRequest)

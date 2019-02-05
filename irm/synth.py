@@ -36,6 +36,18 @@ library = gapic.py_library(
 excludes = ["README.rst", "nox*.py", "setup.py", "docs/index.rst"]
 s.move(library, excludes=excludes)
 
+# Fix docstrings
+s.replace("google/**/*.py", r"\\_", "_")
+s.replace("google/**/incidents_service_pb2.py", r"""\\\*""", r"""*""")
+s.replace("google/**/incident_service_client.py", r"""\\\*""", r"""*""")
+s.replace("google/**/incident_service_client.py",
+r"""        This will fail if:
+           a\. there are too many \(50\) subscriptions in the incident already
+           b\. a subscription using the given channel already exists""",
+r"""        This will fail if:
+        a. there are too many (50) subscriptions in the incident already
+        b. a subscription using the given channel already exists"""
+)
 
 # ----------------------------------------------------------------------------
 # Add templated files

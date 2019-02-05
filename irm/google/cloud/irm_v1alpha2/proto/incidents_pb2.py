@@ -1674,7 +1674,7 @@ Signal = _reflection.GeneratedProtocolMessageType(
   Attributes:
       name:
           Resource name of the signal, e.g.
-          "projects/{project\_id}/signals/{signal\_id}".
+          "projects/{project_id}/signals/{signal_id}".
       etag:
           Etag to validate the object is unchanged for a read-modify-
           write operation. An empty etag will overwrite other changes.
@@ -1712,8 +1712,8 @@ Annotation = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       name:
-          Resource name of the annotation, e.g. "projects/{project\_id}/
-          incidents/{incident\_id}/annotations/{annotation\_id}".
+          Resource name of the annotation, e.g. "projects/{project_id}/
+          incidents/{incident_id}/annotations/{annotation_id}".
       author:
           Output only. Author of the annotation.
       create_time:
@@ -1737,8 +1737,8 @@ Tag = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       name:
-          Resource name of a tag, e.g., "projects/{project\_id}/incident
-          s/{incident\_id}/tags/{tag\_id}"
+          Resource name of a tag, e.g., "projects/{project_id}/incident
+          s/{incident_id}/tags/{tag_id}"
       display_name:
           Display name of the resource (e.g., "cause:rollout").
           Immutable.
@@ -1766,7 +1766,7 @@ Synopsis = _reflection.GeneratedProtocolMessageType(
           Content type string, e.g. 'text/plain' or 'text/html'.
       content:
           Textual content of the synopsis. It can be plain text or
-          markdown as indicated by the content\_type.
+          markdown as indicated by the content_type.
       update_time:
           Last updated timestamp.
       author:
@@ -1789,7 +1789,7 @@ Incident = _reflection.GeneratedProtocolMessageType(
   Attributes:
       name:
           Output only. Resource name of the incident, e.g.
-          "projects/{project\_id}/incidents/{incident\_id}".
+          "projects/{project_id}/incidents/{incident_id}".
       title:
           One-line summary of the incident.
       escalation_level:
@@ -1827,12 +1827,12 @@ IncidentRole = _reflection.GeneratedProtocolMessageType(
       type:
           The type of role. The role type is immutable in role
           assignments. Each role type can only be used once per
-          incident, except for TYPE\_OTHER.
+          incident, except for TYPE_OTHER.
       title:
-          Output only unless TYPE\_OTHER is used. Title of the role. For
-          TYPE\_OTHER, must be unique within an incident.
+          Output only unless TYPE_OTHER is used. Title of the role. For
+          TYPE_OTHER, must be unique within an incident.
       description:
-          Output only unless TYPE\_OTHER is used. Description of the
+          Output only unless TYPE_OTHER is used. Description of the
           role.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.irm.v1alpha2.IncidentRole)
@@ -1851,8 +1851,8 @@ IncidentRoleAssignment = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       name:
-          Output only. Resource name such as "projects/{project\_id}/inc
-          idents/{incident\_id}/role\_assignments/{role\_id}".
+          Output only. Resource name such as "projects/{project_id}/inc
+          idents/{incident_id}/role_assignments/{role_id}".
       etag:
           Output only. Etag for this version of the resource. Must be
           specified in update requests and match the current version in
@@ -1898,8 +1898,8 @@ Artifact = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       name:
-          Output only. Resource name such as "projects/{project\_id}/inc
-          idents/{incident\_id}/artifacts/{artifact\_id}".
+          Output only. Resource name such as "projects/{project_id}/inc
+          idents/{incident_id}/artifacts/{artifact_id}".
       display_name:
           User provided name of an artifact.
       etag:
@@ -1987,8 +1987,8 @@ Subscription = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       name:
-          Output only. Resource name such as "projects/{project\_id}/inc
-          idents/{incident\_id}/subscriptions/{subscription\_id}".
+          Output only. Resource name such as "projects/{project_id}/inc
+          idents/{incident_id}/subscriptions/{subscription_id}".
       etag:
           Output only. Etag for this version of the resource. Must be
           specified in update requests and match the current version in

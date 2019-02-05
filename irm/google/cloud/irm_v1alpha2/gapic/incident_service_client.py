@@ -330,7 +330,7 @@ class IncidentServiceClient(object):
 
         Args:
             name (str): Resource name of the incident, e.g.
-                "projects/{project\_id}/incidents/{incident\_id}".
+                "projects/{project_id}/incidents/{incident_id}".
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -409,20 +409,20 @@ class IncidentServiceClient(object):
                 Search atoms can be used to match certain specific fields. Otherwise,
                 plain text will match text fields in the incident.
 
-                Search atoms: \* ``start`` - (timestamp) The time the incident started.
-                \* ``stage`` - The stage of the incident, one of detected, triaged,
+                Search atoms: * ``start`` - (timestamp) The time the incident started.
+                * ``stage`` - The stage of the incident, one of detected, triaged,
                 mitigated, resolved, documented, or duplicate (which correspond to
                 values in the Incident.Stage enum). These are ordered, so
                 ``stage<resolved`` is equivalent to
-                ``stage:detected OR stage:triaged OR stage:mitigated``. \* ``severity``
+                ``stage:detected OR stage:triaged OR stage:mitigated``. * ``severity``
                 - (Incident.Severity) The severity of the incident. + Supports matching
                 on a specific severity (e.g., ``severity:major``) or on a range (e.g.,
                 ``severity>medium``, ``severity<=minor``, etc.).
 
-                Timestamp formats: \* yyyy-MM-dd - an absolute date, treated as a
+                Timestamp formats: * yyyy-MM-dd - an absolute date, treated as a
                 calendar-day-wide window. In other words, the "<" operator will match
                 dates before that date, the ">" operator will match dates after that
-                date, and the ":" or "=" operators will match the entire day. \* Nd
+                date, and the ":" or "=" operators will match the entire day. * Nd
                 (e.g. 7d) - a relative number of days ago, treated as a moment in time
                 (as opposed to a day-wide span) a multiple of 24 hours ago (as opposed
                 to calendar days). In the case of daylight savings time, it will apply
@@ -453,7 +453,7 @@ class IncidentServiceClient(object):
                 2018.
 
                 -  ``start>7d`` - matches incidents which started after the point in
-                   time 7\*24 hours ago
+                   time 7*24 hours ago
                 -  ``start>180d`` - similar to 7d, but likely to cross the daylight
                    savings time boundary, so the end time will be 1 hour different from
                    "now."
@@ -465,8 +465,8 @@ class IncidentServiceClient(object):
                 streaming is performed per-page, this determines the maximum number
                 of resources in a page.
             time_zone (str): The time zone name. It should be an IANA TZ name, such as
-                "America/Los\_Angeles". For more information, see
-                https://en.wikipedia.org/wiki/List\_of\_tz\_database\_time\_zones. If no
+                "America/Los_Angeles". For more information, see
+                https://en.wikipedia.org/wiki/List_of_tz_database_time_zones. If no
                 time zone is specified, the default is UTC.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
@@ -622,7 +622,7 @@ class IncidentServiceClient(object):
 
         Args:
             name (str): Resource name of the incident or signal, e.g.
-                "projects/{project\_id}/incidents/{incident\_id}".
+                "projects/{project_id}/incidents/{incident_id}".
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
                 resource, this parameter does not affect the return value. If page
@@ -705,7 +705,7 @@ class IncidentServiceClient(object):
 
         Args:
             parent (str): Resource name of the incident, e.g.
-                "projects/{project\_id}/incidents/{incident\_id}".
+                "projects/{project_id}/incidents/{incident_id}".
             annotation (Union[dict, ~google.cloud.irm_v1alpha2.types.Annotation]): Only annotation.content is an input argument.
 
                 If a dict is provided, it must be of the same form as the protobuf
@@ -782,7 +782,7 @@ class IncidentServiceClient(object):
 
         Args:
             parent (str): Resource name of the incident, e.g.
-                "projects/{project\_id}/incidents/{incident\_id}".
+                "projects/{project_id}/incidents/{incident_id}".
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
                 resource, this parameter does not affect the return value. If page
@@ -931,8 +931,8 @@ class IncidentServiceClient(object):
 
         Args:
             parent (str): Resource name of the incident, e.g.
-                "projects/{project\_id}/incidents/{incident\_id}".
-            tag (Union[dict, ~google.cloud.irm_v1alpha2.types.Tag]): Tag to create. Only tag.display\_name is an input argument.
+                "projects/{project_id}/incidents/{incident_id}".
+            tag (Union[dict, ~google.cloud.irm_v1alpha2.types.Tag]): Tag to create. Only tag.display_name is an input argument.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.irm_v1alpha2.types.Tag`
@@ -1058,7 +1058,7 @@ class IncidentServiceClient(object):
 
         Args:
             parent (str): Resource name of the incident, e.g.
-                "projects/{project\_id}/incidents/{incident\_id}".
+                "projects/{project_id}/incidents/{incident_id}".
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
                 resource, this parameter does not affect the return value. If page
@@ -1297,7 +1297,7 @@ class IncidentServiceClient(object):
 
         Args:
             name (str): Resource name of the Signal resource, e.g.
-                "projects/{project\_id}/signals/{signal\_id}".
+                "projects/{project_id}/signals/{signal_id}".
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -1423,7 +1423,7 @@ class IncidentServiceClient(object):
 
         Args:
             name (str): Resource name of the Signal resource, e.g.
-                "projects/{project\_id}/signals/{signal\_id}".
+                "projects/{project_id}/signals/{signal_id}".
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -1503,7 +1503,7 @@ class IncidentServiceClient(object):
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.irm_v1alpha2.types.Tag`
             roles (list[Union[dict, ~google.cloud.irm_v1alpha2.types.IncidentRoleAssignment]]): Roles to add or update. Existing roles with the same type (and title,
-                for TYPE\_OTHER roles) will be updated.
+                for TYPE_OTHER roles) will be updated.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.irm_v1alpha2.types.IncidentRoleAssignment`
@@ -1578,7 +1578,7 @@ class IncidentServiceClient(object):
 
         Args:
             parent (str): Resource name of the incident, e.g.
-                "projects/{project\_id}/incidents/{incident\_id}".
+                "projects/{project_id}/incidents/{incident_id}".
             artifact (Union[dict, ~google.cloud.irm_v1alpha2.types.Artifact]): The artifact to create.
 
                 If a dict is provided, it must be of the same form as the protobuf
@@ -1654,7 +1654,7 @@ class IncidentServiceClient(object):
 
         Args:
             parent (str): Resource name of the incident, e.g.
-                "projects/{project\_id}/incidents/{incident\_id}".
+                "projects/{project_id}/incidents/{incident_id}".
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
                 resource, this parameter does not affect the return value. If page
@@ -1991,8 +1991,8 @@ class IncidentServiceClient(object):
         """
         Creates a new subscription.
         This will fail if:
-           a. there are too many (50) subscriptions in the incident already
-           b. a subscription using the given channel already exists
+        a. there are too many (50) subscriptions in the incident already
+        b. a subscription using the given channel already exists
 
         Example:
             >>> from google.cloud import irm_v1alpha2
@@ -2008,7 +2008,7 @@ class IncidentServiceClient(object):
 
         Args:
             parent (str): Resource name of the incident, e.g.
-                "projects/{project\_id}/incidents/{incident\_id}".
+                "projects/{project_id}/incidents/{incident_id}".
             subscription (Union[dict, ~google.cloud.irm_v1alpha2.types.Subscription]): The subscription to create.
 
                 If a dict is provided, it must be of the same form as the protobuf
@@ -2084,7 +2084,7 @@ class IncidentServiceClient(object):
 
         Args:
             parent (str): Resource name of the incident, e.g.
-                "projects/{project\_id}/incidents/{incident\_id}".
+                "projects/{project_id}/incidents/{incident_id}".
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
                 resource, this parameter does not affect the return value. If page
@@ -2223,7 +2223,7 @@ class IncidentServiceClient(object):
 
         Args:
             parent (str): Resource name of the incident, e.g.
-                "projects/{project\_id}/incidents/{incident\_id}".
+                "projects/{project_id}/incidents/{incident_id}".
             incident_role_assignment (Union[dict, ~google.cloud.irm_v1alpha2.types.IncidentRoleAssignment]): Role assignment to create.
 
                 If a dict is provided, it must be of the same form as the protobuf
@@ -2360,7 +2360,7 @@ class IncidentServiceClient(object):
 
         Args:
             parent (str): Resource name of the incident, e.g.
-                "projects/{project\_id}/incidents/{incident\_id}".
+                "projects/{project_id}/incidents/{incident_id}".
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
                 resource, this parameter does not affect the return value. If page
@@ -2498,9 +2498,9 @@ class IncidentServiceClient(object):
         metadata=None,
     ):
         """
-        Confirms a role handover. This will fail if the 'proposed\_assignee'
-        field of the IncidentRoleAssignment is not equal to the 'new\_assignee'
-        field of the request. If the caller is not the new\_assignee,
+        Confirms a role handover. This will fail if the 'proposed_assignee'
+        field of the IncidentRoleAssignment is not equal to the 'new_assignee'
+        field of the request. If the caller is not the new_assignee,
         ForceIncidentRoleHandover should be used instead.
 
         Example:
@@ -2570,9 +2570,9 @@ class IncidentServiceClient(object):
         metadata=None,
     ):
         """
-        Forces a role handover. This will fail if the 'proposed\_assignee' field
-        of the IncidentRoleAssignment is not equal to the 'new\_assignee' field
-        of the request. If the caller is the new\_assignee,
+        Forces a role handover. This will fail if the 'proposed_assignee' field
+        of the IncidentRoleAssignment is not equal to the 'new_assignee' field
+        of the request. If the caller is the new_assignee,
         ConfirmIncidentRoleHandover should be used instead.
 
         Example:
@@ -2642,8 +2642,8 @@ class IncidentServiceClient(object):
         metadata=None,
     ):
         """
-        Cancels a role handover. This will fail if the 'proposed\_assignee'
-        field of the IncidentRoleAssignment is not equal to the 'new\_assignee'
+        Cancels a role handover. This will fail if the 'proposed_assignee'
+        field of the IncidentRoleAssignment is not equal to the 'new_assignee'
         field of the request.
 
         Example:
@@ -2661,7 +2661,7 @@ class IncidentServiceClient(object):
         Args:
             name (str): Resource name of the role assignment.
             new_assignee (Union[dict, ~google.cloud.irm_v1alpha2.types.User]): Person who was proposed as the next assignee (i.e.
-                IncidentRoleAssignment.proposed\_assignee) and whose proposal is being
+                IncidentRoleAssignment.proposed_assignee) and whose proposal is being
                 cancelled.
 
                 If a dict is provided, it must be of the same form as the protobuf
