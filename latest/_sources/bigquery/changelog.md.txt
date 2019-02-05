@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
+## 1.9.0
+
+02-04-2019 13:28 PST
+
+### New Features
+
+- Add arguments to select `dtypes` and use BQ Storage API to `QueryJob.to_dataframe()`. ([#7241](https://github.com/googleapis/google-cloud-python/pull/7241))
+
+### Documentation
+
+- Add sample for fetching `total_rows` from query results. ([#7217](https://github.com/googleapis/google-cloud-python/pull/7217))
+
 ## 1.8.1
 
 12-17-2018 17:53 PST
