@@ -26,7 +26,6 @@ release_status = 'Development Status :: 3 - Alpha'
 dependencies = [
     'google-api-core[grpc] >= 1.6.0, < 2.0.0dev',
     'google-cloud-monitoring',
-    'enum34; python_version < "3.4"',
 ]
 
 package_root = os.path.abspath(os.path.dirname(__file__))
