@@ -17,6 +17,7 @@
   Firestore <firestore/index>
   IAM <iam/index>
   IoT <iot/index>
+  IRM <irm/index>
   Key Management <kms/index>
   Language <language/index>
   PubSub <pubsub/index>
