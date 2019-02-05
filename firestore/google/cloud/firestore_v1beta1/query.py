@@ -18,10 +18,9 @@ A :class:`~.firestore_v1beta1.query.Query` can be created directly from
 a :class:`~.firestore_v1beta1.collection.Collection` and that can be
 a more common way to create a query than direct usage of the constructor.
 """
-
-
 import copy
 import math
+import warnings
 
 from google.protobuf import wrappers_pb2
 import six
@@ -696,6 +695,15 @@ class Query(object):
         return query_pb2.StructuredQuery(**query_kwargs)
 
     def get(self, transaction=None):
+        """Deprecated alias for :meth:`stream`."""
+        warnings.warn(
+            "'Query.get' is deprecated:  please use 'Query.stream' instead.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        return self.stream(transaction=transaction)
+
+    def stream(self, transaction=None):
         """Read the documents in the collection that match this query.
 
         This sends a ``RunQuery`` RPC and then returns an iterator which
