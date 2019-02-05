@@ -497,24 +497,59 @@ class TestCollectionReference(unittest.TestCase):
 
     @mock.patch("google.cloud.firestore_v1beta1.query.Query", autospec=True)
     def test_get(self, query_class):
+        import warnings
+
         collection = self._make_one("collection")
-        get_response = collection.get()
+        with warnings.catch_warnings(record=True) as warned:
+            get_response = collection.get()
 
         query_class.assert_called_once_with(collection)
         query_instance = query_class.return_value
-        self.assertIs(get_response, query_instance.get.return_value)
-        query_instance.get.assert_called_once_with(transaction=None)
+        self.assertIs(get_response, query_instance.stream.return_value)
+        query_instance.stream.assert_called_once_with(transaction=None)
+
+        # Verify the deprecation
+        self.assertEqual(len(warned), 1)
+        self.assertIs(warned[0].category, DeprecationWarning)
 
     @mock.patch("google.cloud.firestore_v1beta1.query.Query", autospec=True)
     def test_get_with_transaction(self, query_class):
+        import warnings
+
         collection = self._make_one("collection")
         transaction = mock.sentinel.txn
-        get_response = collection.get(transaction=transaction)
+        with warnings.catch_warnings(record=True) as warned:
+            get_response = collection.get(transaction=transaction)
 
         query_class.assert_called_once_with(collection)
         query_instance = query_class.return_value
-        self.assertIs(get_response, query_instance.get.return_value)
-        query_instance.get.assert_called_once_with(transaction=transaction)
+        self.assertIs(get_response, query_instance.stream.return_value)
+        query_instance.stream.assert_called_once_with(transaction=transaction)
+
+        # Verify the deprecation
+        self.assertEqual(len(warned), 1)
+        self.assertIs(warned[0].category, DeprecationWarning)
+
+    @mock.patch("google.cloud.firestore_v1beta1.query.Query", autospec=True)
+    def test_stream(self, query_class):
+        collection = self._make_one("collection")
+        stream_response = collection.stream()
+
+        query_class.assert_called_once_with(collection)
+        query_instance = query_class.return_value
+        self.assertIs(stream_response, query_instance.stream.return_value)
+        query_instance.stream.assert_called_once_with(transaction=None)
+
+    @mock.patch("google.cloud.firestore_v1beta1.query.Query", autospec=True)
+    def test_stream_with_transaction(self, query_class):
+        collection = self._make_one("collection")
+        transaction = mock.sentinel.txn
+        stream_response = collection.stream(transaction=transaction)
+
+        query_class.assert_called_once_with(collection)
+        query_instance = query_class.return_value
+        self.assertIs(stream_response, query_instance.stream.return_value)
+        query_instance.stream.assert_called_once_with(transaction=transaction)
 
     @mock.patch("google.cloud.firestore_v1beta1.collection.Watch", autospec=True)
     def test_on_snapshot(self, watch):

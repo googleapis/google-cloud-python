@@ -13,9 +13,8 @@
 # limitations under the License.
 
 """Classes for representing collections for the Google Cloud Firestore API."""
-
-
 import random
+import warnings
 
 import six
 
@@ -384,6 +383,15 @@ class CollectionReference(object):
         return query.end_at(document_fields)
 
     def get(self, transaction=None):
+        """Deprecated alias for :meth:`stream`."""
+        warnings.warn(
+            "'Collection.get' is deprecated:  please use 'Collection.stream' instead.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        return self.stream(transaction=transaction)
+
+    def stream(self, transaction=None):
         """Read the documents in this collection.
 
         This sends a ``RunQuery`` RPC and then returns an iterator which
@@ -411,7 +419,7 @@ class CollectionReference(object):
             document that fulfills the query.
         """
         query = query_mod.Query(self)
-        return query.get(transaction=transaction)
+        return query.stream(transaction=transaction)
 
     def on_snapshot(self, callback):
         """Monitor the documents in this collection.
