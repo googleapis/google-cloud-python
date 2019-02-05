@@ -17,7 +17,6 @@
   Firestore <firestore/index>
   IAM <iam/index>
   IoT <iot/index>
-  IRM <irm/index>
   Key Management <kms/index>
   Language <language/index>
   PubSub <pubsub/index>
@@ -37,6 +36,7 @@
   Vision <vision/index>
   Video Intelligence <videointelligence/index>
   Stackdriver Error Reporting <error-reporting/index>
+  Stackdriver Incident Response & Managment <irm/index>
   Stackdriver Logging <logging/index>
   Stackdriver Monitoring <monitoring/index>
   Stackdriver Trace <trace/index>
