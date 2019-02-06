@@ -1537,7 +1537,7 @@ class Blob(_PropertyMixin):
             raise ValueError("Invalid storage class: %s" % (new_class,))
 
         # Update current blob's storage class prior to rewrite
-        self._patch_property('storageClass', new_class)
+        self._patch_property("storageClass", new_class)
 
         # Execute consecutive rewrite operations until operation is done
         token, _, _ = self.rewrite(self)
