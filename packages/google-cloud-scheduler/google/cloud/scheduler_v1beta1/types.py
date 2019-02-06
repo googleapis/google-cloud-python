@@ -19,12 +19,10 @@ import sys
 
 from google.api_core.protobuf_helpers import get_messages
 
-from google.api import http_pb2
 from google.cloud.scheduler_v1beta1.proto import cloudscheduler_pb2
 from google.cloud.scheduler_v1beta1.proto import job_pb2
 from google.cloud.scheduler_v1beta1.proto import target_pb2
 from google.protobuf import any_pb2
-from google.protobuf import descriptor_pb2
 from google.protobuf import duration_pb2
 from google.protobuf import empty_pb2
 from google.protobuf import field_mask_pb2
@@ -32,9 +30,7 @@ from google.protobuf import timestamp_pb2
 from google.rpc import status_pb2
 
 _shared_modules = [
-    http_pb2,
     any_pb2,
-    descriptor_pb2,
     duration_pb2,
     empty_pb2,
     field_mask_pb2,
