@@ -852,6 +852,15 @@ class Test_record_field_to_json(unittest.TestCase):
         converted = self._call_fut(fields, original)
         self.assertEqual(converted, {'one': '42', 'two': 'two'})
 
+    def test_w_missing_nullable(self):
+        fields = [
+            _make_field('INT64', name='one', mode='NULLABLE'),
+            _make_field('STRING', name='two', mode='NULLABLE'),
+        ]
+        original = {'one': 42}
+        converted = self._call_fut(fields, original)
+        self.assertEqual(converted, {'one': '42', 'two': None})
+
 
 class Test_snake_to_camel_case(unittest.TestCase):
     def _call_fut(self, value):
