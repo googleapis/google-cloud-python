@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Types for Cloud Key Management Service (KMS) API Client &#8212; google-cloud e833399 documentation</title>
+    <title>Types for Cloud Key Management Service (KMS) API Client &#8212; google-cloud 8e9f8fe documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -110,94 +110,6 @@ key version’s
 </dd></dl>
 
 </dd></dl>
-
-<dl class="class">
-<dt id="google.cloud.kms_v1.types.AuditData">
-<em class="property">class </em><code class="descclassname">google.cloud.kms_v1.types.</code><code class="descname">AuditData</code><a class="headerlink" href="#google.cloud.kms_v1.types.AuditData" title="Permalink to this definition">#</a></dt>
-<dd><p>Audit log information specific to Cloud IAM. This message is serialized
-as an <code class="docutils literal notranslate"><span class="pre">Any</span></code> type in the <code class="docutils literal notranslate"><span class="pre">ServiceData</span></code> message of an <code class="docutils literal notranslate"><span class="pre">AuditLog</span></code>
-message.</p>
-<dl class="attribute">
-<dt id="google.cloud.kms_v1.types.AuditData.policy_delta">
-<code class="descname">policy_delta</code><a class="headerlink" href="#google.cloud.kms_v1.types.AuditData.policy_delta" title="Permalink to this definition">#</a></dt>
-<dd><p>Policy delta between the original policy and the newly set
-policy.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="google.cloud.kms_v1.types.Binding">
-<em class="property">class </em><code class="descclassname">google.cloud.kms_v1.types.</code><code class="descname">Binding</code><a class="headerlink" href="#google.cloud.kms_v1.types.Binding" title="Permalink to this definition">#</a></dt>
-<dd><p>Associates <code class="docutils literal notranslate"><span class="pre">members</span></code> with a <code class="docutils literal notranslate"><span class="pre">role</span></code>.</p>
-<dl class="attribute">
-<dt id="google.cloud.kms_v1.types.Binding.role">
-<code class="descname">role</code><a class="headerlink" href="#google.cloud.kms_v1.types.Binding.role" title="Permalink to this definition">#</a></dt>
-<dd><p>Role that is assigned to <code class="docutils literal notranslate"><span class="pre">members</span></code>. For example,
-<code class="docutils literal notranslate"><span class="pre">roles/viewer</span></code>, <code class="docutils literal notranslate"><span class="pre">roles/editor</span></code>, or <code class="docutils literal notranslate"><span class="pre">roles/owner</span></code>.
-Required</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.kms_v1.types.Binding.members">
-<code class="descname">members</code><a class="headerlink" href="#google.cloud.kms_v1.types.Binding.members" title="Permalink to this definition">#</a></dt>
-<dd><p>Specifies the identities requesting access for a Cloud
-Platform resource. <code class="docutils literal notranslate"><span class="pre">members</span></code> can have the following values:
--  <code class="docutils literal notranslate"><span class="pre">allUsers</span></code>: A special identifier that represents anyone
-who is on    the internet; with or without a Google account.
--  <code class="docutils literal notranslate"><span class="pre">allAuthenticatedUsers</span></code>: A special identifier that
-represents    anyone who is authenticated with a Google
-account or a service    account.  -  <code class="docutils literal notranslate"><span class="pre">user:{emailid}</span></code>: An
-email address that represents a specific    Google account.
-For example, <code class="docutils literal notranslate"><span class="pre">alice&#64;gmail.com</span></code> or    <code class="docutils literal notranslate"><span class="pre">joe&#64;example.com</span></code>.  -
-<code class="docutils literal notranslate"><span class="pre">serviceAccount:{emailid}</span></code>: An email address that represents
-a    service account. For example,    <code class="docutils literal notranslate"><span class="pre">my-other-</span>
-<span class="pre">app&#64;appspot.gserviceaccount.com</span></code>.  -  <code class="docutils literal notranslate"><span class="pre">group:{emailid}</span></code>: An
-email address that represents a Google group.    For example,
-<code class="docutils literal notranslate"><span class="pre">admins&#64;example.com</span></code>.  -  <code class="docutils literal notranslate"><span class="pre">domain:{domain}</span></code>: A Google Apps
-domain name that represents all    the users of that domain.
-For example, <code class="docutils literal notranslate"><span class="pre">google.com</span></code> or    <code class="docutils literal notranslate"><span class="pre">example.com</span></code>.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="google.cloud.kms_v1.types.BindingDelta">
-<em class="property">class </em><code class="descclassname">google.cloud.kms_v1.types.</code><code class="descname">BindingDelta</code><a class="headerlink" href="#google.cloud.kms_v1.types.BindingDelta" title="Permalink to this definition">#</a></dt>
-<dd><p>One delta entry for Binding. Each individual change (only one member in
-each entry) to a binding will be a separate entry.</p>
-<dl class="attribute">
-<dt id="google.cloud.kms_v1.types.BindingDelta.action">
-<code class="descname">action</code><a class="headerlink" href="#google.cloud.kms_v1.types.BindingDelta.action" title="Permalink to this definition">#</a></dt>
-<dd><p>The action that was performed on a Binding. Required</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.kms_v1.types.BindingDelta.role">
-<code class="descname">role</code><a class="headerlink" href="#google.cloud.kms_v1.types.BindingDelta.role" title="Permalink to this definition">#</a></dt>
-<dd><p>Role that is assigned to <code class="docutils literal notranslate"><span class="pre">members</span></code>. For example,
-<code class="docutils literal notranslate"><span class="pre">roles/viewer</span></code>, <code class="docutils literal notranslate"><span class="pre">roles/editor</span></code>, or <code class="docutils literal notranslate"><span class="pre">roles/owner</span></code>.
-Required</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.kms_v1.types.BindingDelta.member">
-<code class="descname">member</code><a class="headerlink" href="#google.cloud.kms_v1.types.BindingDelta.member" title="Permalink to this definition">#</a></dt>
-<dd><p>A single identity requesting access for a Cloud Platform
-resource. Follows the same format of Binding.members. Required</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="google.cloud.kms_v1.types.BoolValue">
-<em class="property">class </em><code class="descclassname">google.cloud.kms_v1.types.</code><code class="descname">BoolValue</code><a class="headerlink" href="#google.cloud.kms_v1.types.BoolValue" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="class">
-<dt id="google.cloud.kms_v1.types.BytesValue">
-<em class="property">class </em><code class="descclassname">google.cloud.kms_v1.types.</code><code class="descname">BytesValue</code><a class="headerlink" href="#google.cloud.kms_v1.types.BytesValue" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.kms_v1.types.CreateCryptoKeyRequest">
@@ -527,11 +439,6 @@ ose.ENCRYPT_DECRYPT].</p>
 </dd></dl>
 
 <dl class="class">
-<dt id="google.cloud.kms_v1.types.CustomHttpPattern">
-<em class="property">class </em><code class="descclassname">google.cloud.kms_v1.types.</code><code class="descname">CustomHttpPattern</code><a class="headerlink" href="#google.cloud.kms_v1.types.CustomHttpPattern" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="class">
 <dt id="google.cloud.kms_v1.types.DecryptRequest">
 <em class="property">class </em><code class="descclassname">google.cloud.kms_v1.types.</code><code class="descname">DecryptRequest</code><a class="headerlink" href="#google.cloud.kms_v1.types.DecryptRequest" title="Permalink to this definition">#</a></dt>
 <dd><p>Request message for
@@ -573,21 +480,6 @@ kms.v1.EncryptRequest.additional_authenticated_data].</p>
 <dd><p>The decrypted data originally supplied in [EncryptRequest.plai
 ntext][google.cloud.kms.v1.EncryptRequest.plaintext].</p>
 </dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="google.cloud.kms_v1.types.DescriptorProto">
-<em class="property">class </em><code class="descclassname">google.cloud.kms_v1.types.</code><code class="descname">DescriptorProto</code><a class="headerlink" href="#google.cloud.kms_v1.types.DescriptorProto" title="Permalink to this definition">#</a></dt>
-<dd><dl class="class">
-<dt id="google.cloud.kms_v1.types.DescriptorProto.ExtensionRange">
-<em class="property">class </em><code class="descname">ExtensionRange</code><a class="headerlink" href="#google.cloud.kms_v1.types.DescriptorProto.ExtensionRange" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="class">
-<dt id="google.cloud.kms_v1.types.DescriptorProto.ReservedRange">
-<em class="property">class </em><code class="descname">ReservedRange</code><a class="headerlink" href="#google.cloud.kms_v1.types.DescriptorProto.ReservedRange" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
 
 </dd></dl>
 
@@ -636,11 +528,6 @@ digest.</p>
 </dd></dl>
 
 </dd></dl>
-
-<dl class="class">
-<dt id="google.cloud.kms_v1.types.DoubleValue">
-<em class="property">class </em><code class="descclassname">google.cloud.kms_v1.types.</code><code class="descname">DoubleValue</code><a class="headerlink" href="#google.cloud.kms_v1.types.DoubleValue" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.kms_v1.types.Duration">
@@ -720,79 +607,9 @@ in encryption.</p>
 </dd></dl>
 
 <dl class="class">
-<dt id="google.cloud.kms_v1.types.EnumDescriptorProto">
-<em class="property">class </em><code class="descclassname">google.cloud.kms_v1.types.</code><code class="descname">EnumDescriptorProto</code><a class="headerlink" href="#google.cloud.kms_v1.types.EnumDescriptorProto" title="Permalink to this definition">#</a></dt>
-<dd><dl class="class">
-<dt id="google.cloud.kms_v1.types.EnumDescriptorProto.EnumReservedRange">
-<em class="property">class </em><code class="descname">EnumReservedRange</code><a class="headerlink" href="#google.cloud.kms_v1.types.EnumDescriptorProto.EnumReservedRange" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="google.cloud.kms_v1.types.EnumOptions">
-<em class="property">class </em><code class="descclassname">google.cloud.kms_v1.types.</code><code class="descname">EnumOptions</code><a class="headerlink" href="#google.cloud.kms_v1.types.EnumOptions" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="class">
-<dt id="google.cloud.kms_v1.types.EnumValueDescriptorProto">
-<em class="property">class </em><code class="descclassname">google.cloud.kms_v1.types.</code><code class="descname">EnumValueDescriptorProto</code><a class="headerlink" href="#google.cloud.kms_v1.types.EnumValueDescriptorProto" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="class">
-<dt id="google.cloud.kms_v1.types.EnumValueOptions">
-<em class="property">class </em><code class="descclassname">google.cloud.kms_v1.types.</code><code class="descname">EnumValueOptions</code><a class="headerlink" href="#google.cloud.kms_v1.types.EnumValueOptions" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="class">
-<dt id="google.cloud.kms_v1.types.ExtensionRangeOptions">
-<em class="property">class </em><code class="descclassname">google.cloud.kms_v1.types.</code><code class="descname">ExtensionRangeOptions</code><a class="headerlink" href="#google.cloud.kms_v1.types.ExtensionRangeOptions" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="class">
-<dt id="google.cloud.kms_v1.types.FieldDescriptorProto">
-<em class="property">class </em><code class="descclassname">google.cloud.kms_v1.types.</code><code class="descname">FieldDescriptorProto</code><a class="headerlink" href="#google.cloud.kms_v1.types.FieldDescriptorProto" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="class">
 <dt id="google.cloud.kms_v1.types.FieldMask">
 <em class="property">class </em><code class="descclassname">google.cloud.kms_v1.types.</code><code class="descname">FieldMask</code><a class="headerlink" href="#google.cloud.kms_v1.types.FieldMask" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
-
-<dl class="class">
-<dt id="google.cloud.kms_v1.types.FieldOptions">
-<em class="property">class </em><code class="descclassname">google.cloud.kms_v1.types.</code><code class="descname">FieldOptions</code><a class="headerlink" href="#google.cloud.kms_v1.types.FieldOptions" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="class">
-<dt id="google.cloud.kms_v1.types.FileDescriptorProto">
-<em class="property">class </em><code class="descclassname">google.cloud.kms_v1.types.</code><code class="descname">FileDescriptorProto</code><a class="headerlink" href="#google.cloud.kms_v1.types.FileDescriptorProto" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="class">
-<dt id="google.cloud.kms_v1.types.FileDescriptorSet">
-<em class="property">class </em><code class="descclassname">google.cloud.kms_v1.types.</code><code class="descname">FileDescriptorSet</code><a class="headerlink" href="#google.cloud.kms_v1.types.FileDescriptorSet" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="class">
-<dt id="google.cloud.kms_v1.types.FileOptions">
-<em class="property">class </em><code class="descclassname">google.cloud.kms_v1.types.</code><code class="descname">FileOptions</code><a class="headerlink" href="#google.cloud.kms_v1.types.FileOptions" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="class">
-<dt id="google.cloud.kms_v1.types.FloatValue">
-<em class="property">class </em><code class="descclassname">google.cloud.kms_v1.types.</code><code class="descname">FloatValue</code><a class="headerlink" href="#google.cloud.kms_v1.types.FloatValue" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="class">
-<dt id="google.cloud.kms_v1.types.GeneratedCodeInfo">
-<em class="property">class </em><code class="descclassname">google.cloud.kms_v1.types.</code><code class="descname">GeneratedCodeInfo</code><a class="headerlink" href="#google.cloud.kms_v1.types.GeneratedCodeInfo" title="Permalink to this definition">#</a></dt>
-<dd><dl class="class">
-<dt id="google.cloud.kms_v1.types.GeneratedCodeInfo.Annotation">
-<em class="property">class </em><code class="descname">Annotation</code><a class="headerlink" href="#google.cloud.kms_v1.types.GeneratedCodeInfo.Annotation" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.kms_v1.types.GetCryptoKeyRequest">
@@ -819,21 +636,6 @@ in encryption.</p>
 <dd><p>The [name][google.cloud.kms.v1.CryptoKeyVersion.name] of the
 [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] to
 get.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="google.cloud.kms_v1.types.GetIamPolicyRequest">
-<em class="property">class </em><code class="descclassname">google.cloud.kms_v1.types.</code><code class="descname">GetIamPolicyRequest</code><a class="headerlink" href="#google.cloud.kms_v1.types.GetIamPolicyRequest" title="Permalink to this definition">#</a></dt>
-<dd><p>Request message for <code class="docutils literal notranslate"><span class="pre">GetIamPolicy</span></code> method.</p>
-<dl class="attribute">
-<dt id="google.cloud.kms_v1.types.GetIamPolicyRequest.resource">
-<code class="descname">resource</code><a class="headerlink" href="#google.cloud.kms_v1.types.GetIamPolicyRequest.resource" title="Permalink to this definition">#</a></dt>
-<dd><p>REQUIRED: The resource for which the policy is being
-requested. <code class="docutils literal notranslate"><span class="pre">resource</span></code> is usually specified as a path. For
-example, a Project resource is specified as
-<code class="docutils literal notranslate"><span class="pre">projects/{project}</span></code>.</p>
 </dd></dl>
 
 </dd></dl>
@@ -866,26 +668,6 @@ public key to get.</p>
 </dd></dl>
 
 </dd></dl>
-
-<dl class="class">
-<dt id="google.cloud.kms_v1.types.Http">
-<em class="property">class </em><code class="descclassname">google.cloud.kms_v1.types.</code><code class="descname">Http</code><a class="headerlink" href="#google.cloud.kms_v1.types.Http" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="class">
-<dt id="google.cloud.kms_v1.types.HttpRule">
-<em class="property">class </em><code class="descclassname">google.cloud.kms_v1.types.</code><code class="descname">HttpRule</code><a class="headerlink" href="#google.cloud.kms_v1.types.HttpRule" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="class">
-<dt id="google.cloud.kms_v1.types.Int32Value">
-<em class="property">class </em><code class="descclassname">google.cloud.kms_v1.types.</code><code class="descname">Int32Value</code><a class="headerlink" href="#google.cloud.kms_v1.types.Int32Value" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="class">
-<dt id="google.cloud.kms_v1.types.Int64Value">
-<em class="property">class </em><code class="descclassname">google.cloud.kms_v1.types.</code><code class="descname">Int64Value</code><a class="headerlink" href="#google.cloud.kms_v1.types.Int64Value" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.kms_v1.types.KeyOperationAttestation">
@@ -1136,11 +918,6 @@ that matched the query.</p>
 </dd></dl>
 
 <dl class="class">
-<dt id="google.cloud.kms_v1.types.ListValue">
-<em class="property">class </em><code class="descclassname">google.cloud.kms_v1.types.</code><code class="descname">ListValue</code><a class="headerlink" href="#google.cloud.kms_v1.types.ListValue" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="class">
 <dt id="google.cloud.kms_v1.types.LocationMetadata">
 <em class="property">class </em><code class="descclassname">google.cloud.kms_v1.types.</code><code class="descname">LocationMetadata</code><a class="headerlink" href="#google.cloud.kms_v1.types.LocationMetadata" title="Permalink to this definition">#</a></dt>
 <dd><p>Cloud KMS metadata for the given
@@ -1153,106 +930,6 @@ with [protection_level][google.cloud.kms.v1.CryptoKeyVersionT
 emplate.protection_level]
 [HSM][google.cloud.kms.v1.ProtectionLevel.HSM] can be created
 in this location.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="google.cloud.kms_v1.types.MessageOptions">
-<em class="property">class </em><code class="descclassname">google.cloud.kms_v1.types.</code><code class="descname">MessageOptions</code><a class="headerlink" href="#google.cloud.kms_v1.types.MessageOptions" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="class">
-<dt id="google.cloud.kms_v1.types.MethodDescriptorProto">
-<em class="property">class </em><code class="descclassname">google.cloud.kms_v1.types.</code><code class="descname">MethodDescriptorProto</code><a class="headerlink" href="#google.cloud.kms_v1.types.MethodDescriptorProto" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="class">
-<dt id="google.cloud.kms_v1.types.MethodOptions">
-<em class="property">class </em><code class="descclassname">google.cloud.kms_v1.types.</code><code class="descname">MethodOptions</code><a class="headerlink" href="#google.cloud.kms_v1.types.MethodOptions" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="class">
-<dt id="google.cloud.kms_v1.types.OneofDescriptorProto">
-<em class="property">class </em><code class="descclassname">google.cloud.kms_v1.types.</code><code class="descname">OneofDescriptorProto</code><a class="headerlink" href="#google.cloud.kms_v1.types.OneofDescriptorProto" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="class">
-<dt id="google.cloud.kms_v1.types.OneofOptions">
-<em class="property">class </em><code class="descclassname">google.cloud.kms_v1.types.</code><code class="descname">OneofOptions</code><a class="headerlink" href="#google.cloud.kms_v1.types.OneofOptions" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="class">
-<dt id="google.cloud.kms_v1.types.Policy">
-<em class="property">class </em><code class="descclassname">google.cloud.kms_v1.types.</code><code class="descname">Policy</code><a class="headerlink" href="#google.cloud.kms_v1.types.Policy" title="Permalink to this definition">#</a></dt>
-<dd><p>Defines an Identity and Access Management (IAM) policy. It is used to
-specify access control policies for Cloud Platform resources.</p>
-<p>A <code class="docutils literal notranslate"><span class="pre">Policy</span></code> consists of a list of <code class="docutils literal notranslate"><span class="pre">bindings</span></code>. A <code class="docutils literal notranslate"><span class="pre">Binding</span></code> binds a
-list of <code class="docutils literal notranslate"><span class="pre">members</span></code> to a <code class="docutils literal notranslate"><span class="pre">role</span></code>, where the members can be user
-accounts, Google groups, Google domains, and service accounts. A
-<code class="docutils literal notranslate"><span class="pre">role</span></code> is a named list of permissions defined by IAM.</p>
-<p><strong>Example</strong></p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-  <span class="s2">&quot;bindings&quot;</span><span class="p">:</span> <span class="p">[</span>
-    <span class="p">{</span>
-      <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;roles/owner&quot;</span><span class="p">,</span>
-      <span class="s2">&quot;members&quot;</span><span class="p">:</span> <span class="p">[</span>
-        <span class="s2">&quot;user:mike@example.com&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;group:admins@example.com&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;domain:google.com&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;serviceAccount:my-other-app@appspot.gserviceaccount.com&quot;</span><span class="p">,</span>
-      <span class="p">]</span>
-    <span class="p">},</span>
-    <span class="p">{</span>
-      <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;roles/viewer&quot;</span><span class="p">,</span>
-      <span class="s2">&quot;members&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;user:sean@example.com&quot;</span><span class="p">]</span>
-    <span class="p">}</span>
-  <span class="p">]</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-<p>For a description of IAM and its features, see the <a class="reference external" href="https://cloud.google.com/iam">IAM developer’s
-guide</a>.</p>
-<dl class="attribute">
-<dt id="google.cloud.kms_v1.types.Policy.version">
-<code class="descname">version</code><a class="headerlink" href="#google.cloud.kms_v1.types.Policy.version" title="Permalink to this definition">#</a></dt>
-<dd><p>Version of the <code class="docutils literal notranslate"><span class="pre">Policy</span></code>. The default version is 0.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.kms_v1.types.Policy.bindings">
-<code class="descname">bindings</code><a class="headerlink" href="#google.cloud.kms_v1.types.Policy.bindings" title="Permalink to this definition">#</a></dt>
-<dd><p>Associates a list of <code class="docutils literal notranslate"><span class="pre">members</span></code> to a <code class="docutils literal notranslate"><span class="pre">role</span></code>. Multiple
-<code class="docutils literal notranslate"><span class="pre">bindings</span></code> must not be specified for the same <code class="docutils literal notranslate"><span class="pre">role</span></code>.
-<code class="docutils literal notranslate"><span class="pre">bindings</span></code> with no members will result in an error.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.kms_v1.types.Policy.etag">
-<code class="descname">etag</code><a class="headerlink" href="#google.cloud.kms_v1.types.Policy.etag" title="Permalink to this definition">#</a></dt>
-<dd><p><code class="docutils literal notranslate"><span class="pre">etag</span></code> is used for optimistic concurrency control as a way
-to help prevent simultaneous updates of a policy from
-overwriting each other. It is strongly suggested that systems
-make use of the <code class="docutils literal notranslate"><span class="pre">etag</span></code> in the read-modify-write cycle to
-perform policy updates in order to avoid race conditions: An
-<code class="docutils literal notranslate"><span class="pre">etag</span></code> is returned in the response to <code class="docutils literal notranslate"><span class="pre">getIamPolicy</span></code>, and
-systems are expected to put that etag in the request to
-<code class="docutils literal notranslate"><span class="pre">setIamPolicy</span></code> to ensure that their change will be applied
-to the same version of the policy.  If no <code class="docutils literal notranslate"><span class="pre">etag</span></code> is provided
-in the call to <code class="docutils literal notranslate"><span class="pre">setIamPolicy</span></code>, then the existing policy is
-overwritten blindly.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="google.cloud.kms_v1.types.PolicyDelta">
-<em class="property">class </em><code class="descclassname">google.cloud.kms_v1.types.</code><code class="descname">PolicyDelta</code><a class="headerlink" href="#google.cloud.kms_v1.types.PolicyDelta" title="Permalink to this definition">#</a></dt>
-<dd><p>The difference delta between two policies.</p>
-<dl class="attribute">
-<dt id="google.cloud.kms_v1.types.PolicyDelta.binding_deltas">
-<code class="descname">binding_deltas</code><a class="headerlink" href="#google.cloud.kms_v1.types.PolicyDelta.binding_deltas" title="Permalink to this definition">#</a></dt>
-<dd><p>The delta for Bindings between two policies.</p>
 </dd></dl>
 
 </dd></dl>
@@ -1298,124 +975,9 @@ restore.</p>
 </dd></dl>
 
 <dl class="class">
-<dt id="google.cloud.kms_v1.types.ServiceDescriptorProto">
-<em class="property">class </em><code class="descclassname">google.cloud.kms_v1.types.</code><code class="descname">ServiceDescriptorProto</code><a class="headerlink" href="#google.cloud.kms_v1.types.ServiceDescriptorProto" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="class">
-<dt id="google.cloud.kms_v1.types.ServiceOptions">
-<em class="property">class </em><code class="descclassname">google.cloud.kms_v1.types.</code><code class="descname">ServiceOptions</code><a class="headerlink" href="#google.cloud.kms_v1.types.ServiceOptions" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="class">
-<dt id="google.cloud.kms_v1.types.SetIamPolicyRequest">
-<em class="property">class </em><code class="descclassname">google.cloud.kms_v1.types.</code><code class="descname">SetIamPolicyRequest</code><a class="headerlink" href="#google.cloud.kms_v1.types.SetIamPolicyRequest" title="Permalink to this definition">#</a></dt>
-<dd><p>Request message for <code class="docutils literal notranslate"><span class="pre">SetIamPolicy</span></code> method.</p>
-<dl class="attribute">
-<dt id="google.cloud.kms_v1.types.SetIamPolicyRequest.resource">
-<code class="descname">resource</code><a class="headerlink" href="#google.cloud.kms_v1.types.SetIamPolicyRequest.resource" title="Permalink to this definition">#</a></dt>
-<dd><p>REQUIRED: The resource for which the policy is being
-specified. <code class="docutils literal notranslate"><span class="pre">resource</span></code> is usually specified as a path. For
-example, a Project resource is specified as
-<code class="docutils literal notranslate"><span class="pre">projects/{project}</span></code>.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.kms_v1.types.SetIamPolicyRequest.policy">
-<code class="descname">policy</code><a class="headerlink" href="#google.cloud.kms_v1.types.SetIamPolicyRequest.policy" title="Permalink to this definition">#</a></dt>
-<dd><p>REQUIRED: The complete policy to be applied to the
-<code class="docutils literal notranslate"><span class="pre">resource</span></code>. The size of the policy is limited to a few 10s
-of KB. An empty policy is a valid policy but certain Cloud
-Platform services (such as Projects) might reject them.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="google.cloud.kms_v1.types.SourceCodeInfo">
-<em class="property">class </em><code class="descclassname">google.cloud.kms_v1.types.</code><code class="descname">SourceCodeInfo</code><a class="headerlink" href="#google.cloud.kms_v1.types.SourceCodeInfo" title="Permalink to this definition">#</a></dt>
-<dd><dl class="class">
-<dt id="google.cloud.kms_v1.types.SourceCodeInfo.Location">
-<em class="property">class </em><code class="descname">Location</code><a class="headerlink" href="#google.cloud.kms_v1.types.SourceCodeInfo.Location" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="google.cloud.kms_v1.types.StringValue">
-<em class="property">class </em><code class="descclassname">google.cloud.kms_v1.types.</code><code class="descname">StringValue</code><a class="headerlink" href="#google.cloud.kms_v1.types.StringValue" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="class">
-<dt id="google.cloud.kms_v1.types.Struct">
-<em class="property">class </em><code class="descclassname">google.cloud.kms_v1.types.</code><code class="descname">Struct</code><a class="headerlink" href="#google.cloud.kms_v1.types.Struct" title="Permalink to this definition">#</a></dt>
-<dd><dl class="class">
-<dt id="google.cloud.kms_v1.types.Struct.FieldsEntry">
-<em class="property">class </em><code class="descname">FieldsEntry</code><a class="headerlink" href="#google.cloud.kms_v1.types.Struct.FieldsEntry" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="google.cloud.kms_v1.types.TestIamPermissionsRequest">
-<em class="property">class </em><code class="descclassname">google.cloud.kms_v1.types.</code><code class="descname">TestIamPermissionsRequest</code><a class="headerlink" href="#google.cloud.kms_v1.types.TestIamPermissionsRequest" title="Permalink to this definition">#</a></dt>
-<dd><p>Request message for <code class="docutils literal notranslate"><span class="pre">TestIamPermissions</span></code> method.</p>
-<dl class="attribute">
-<dt id="google.cloud.kms_v1.types.TestIamPermissionsRequest.resource">
-<code class="descname">resource</code><a class="headerlink" href="#google.cloud.kms_v1.types.TestIamPermissionsRequest.resource" title="Permalink to this definition">#</a></dt>
-<dd><p>REQUIRED: The resource for which the policy detail is being
-requested. <code class="docutils literal notranslate"><span class="pre">resource</span></code> is usually specified as a path. For
-example, a Project resource is specified as
-<code class="docutils literal notranslate"><span class="pre">projects/{project}</span></code>.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.kms_v1.types.TestIamPermissionsRequest.permissions">
-<code class="descname">permissions</code><a class="headerlink" href="#google.cloud.kms_v1.types.TestIamPermissionsRequest.permissions" title="Permalink to this definition">#</a></dt>
-<dd><p>The set of permissions to check for the <code class="docutils literal notranslate"><span class="pre">resource</span></code>.
-Permissions with wildcards (such as ‘*’ or ‘storage.*’) are
-not allowed. For more information see <a class="reference external" href="https://cloud.google.com/iam/docs/overview#permissions">IAM Overview</a>.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="google.cloud.kms_v1.types.TestIamPermissionsResponse">
-<em class="property">class </em><code class="descclassname">google.cloud.kms_v1.types.</code><code class="descname">TestIamPermissionsResponse</code><a class="headerlink" href="#google.cloud.kms_v1.types.TestIamPermissionsResponse" title="Permalink to this definition">#</a></dt>
-<dd><p>Response message for <code class="docutils literal notranslate"><span class="pre">TestIamPermissions</span></code> method.</p>
-<dl class="attribute">
-<dt id="google.cloud.kms_v1.types.TestIamPermissionsResponse.permissions">
-<code class="descname">permissions</code><a class="headerlink" href="#google.cloud.kms_v1.types.TestIamPermissionsResponse.permissions" title="Permalink to this definition">#</a></dt>
-<dd><p>A subset of <code class="docutils literal notranslate"><span class="pre">TestPermissionsRequest.permissions</span></code> that the
-caller is allowed.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="class">
 <dt id="google.cloud.kms_v1.types.Timestamp">
 <em class="property">class </em><code class="descclassname">google.cloud.kms_v1.types.</code><code class="descname">Timestamp</code><a class="headerlink" href="#google.cloud.kms_v1.types.Timestamp" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
-
-<dl class="class">
-<dt id="google.cloud.kms_v1.types.UInt32Value">
-<em class="property">class </em><code class="descclassname">google.cloud.kms_v1.types.</code><code class="descname">UInt32Value</code><a class="headerlink" href="#google.cloud.kms_v1.types.UInt32Value" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="class">
-<dt id="google.cloud.kms_v1.types.UInt64Value">
-<em class="property">class </em><code class="descclassname">google.cloud.kms_v1.types.</code><code class="descname">UInt64Value</code><a class="headerlink" href="#google.cloud.kms_v1.types.UInt64Value" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="class">
-<dt id="google.cloud.kms_v1.types.UninterpretedOption">
-<em class="property">class </em><code class="descclassname">google.cloud.kms_v1.types.</code><code class="descname">UninterpretedOption</code><a class="headerlink" href="#google.cloud.kms_v1.types.UninterpretedOption" title="Permalink to this definition">#</a></dt>
-<dd><dl class="class">
-<dt id="google.cloud.kms_v1.types.UninterpretedOption.NamePart">
-<em class="property">class </em><code class="descname">NamePart</code><a class="headerlink" href="#google.cloud.kms_v1.types.UninterpretedOption.NamePart" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.kms_v1.types.UpdateCryptoKeyPrimaryVersionRequest">
@@ -1478,11 +1040,6 @@ updated values.</p>
 </dd></dl>
 
 </dd></dl>
-
-<dl class="class">
-<dt id="google.cloud.kms_v1.types.Value">
-<em class="property">class </em><code class="descclassname">google.cloud.kms_v1.types.</code><code class="descname">Value</code><a class="headerlink" href="#google.cloud.kms_v1.types.Value" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
 
 </div>
 
