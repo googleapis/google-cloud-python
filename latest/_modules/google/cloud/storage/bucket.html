@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.storage.bucket &#8212; google-cloud 1e075fd documentation</title>
+    <title>google.cloud.storage.bucket &#8212; google-cloud f9f05fa documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -306,6 +306,96 @@
         <span class="n">instance</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">action</span><span class="p">[</span><span class="s2">&quot;storageClass&quot;</span><span class="p">],</span> <span class="n">_factory</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="n">instance</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">resource</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">instance</span></div></div>
+
+
+<div class="viewcode-block" id="IAMConfiguration"><a class="viewcode-back" href="../../../../storage/buckets.html#google.cloud.storage.bucket.IAMConfiguration">[docs]</a><span class="k">class</span> <span class="nc">IAMConfiguration</span><span class="p">(</span><span class="nb">dict</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Map a bucket&#39;s IAM configuration.</span>
+
+<span class="sd">    :type bucket: :class:`Bucket`</span>
+<span class="sd">    :params bucket: Bucket for which this instance is the policy.</span>
+
+<span class="sd">    :type bucket_policy_only_enabled: bool</span>
+<span class="sd">    :params bucket_policy_only_enabled: (optional) whether the IAM-only policy is enabled for the bucket.</span>
+
+<span class="sd">    :type bucket_policy_only_locked_time: :class:`datetime.datetime`</span>
+<span class="sd">    :params bucket_policy_only_locked_time: (optional) When the bucket&#39;s IAM-only policy was ehabled.  This value should normally only be set by the back-end API.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">bucket</span><span class="p">,</span>
+        <span class="n">bucket_policy_only_enabled</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">bucket_policy_only_locked_time</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;bucketPolicyOnly&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;enabled&quot;</span><span class="p">:</span> <span class="n">bucket_policy_only_enabled</span><span class="p">}}</span>
+        <span class="k">if</span> <span class="n">bucket_policy_only_locked_time</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">data</span><span class="p">[</span><span class="s2">&quot;bucketPolicyOnly&quot;</span><span class="p">][</span><span class="s2">&quot;lockedTime&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_datetime_to_rfc3339</span><span class="p">(</span>
+                <span class="n">bucket_policy_only_locked_time</span>
+            <span class="p">)</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">IAMConfiguration</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_bucket</span> <span class="o">=</span> <span class="n">bucket</span>
+
+<div class="viewcode-block" id="IAMConfiguration.from_api_repr"><a class="viewcode-back" href="../../../../storage/buckets.html#google.cloud.storage.bucket.IAMConfiguration.from_api_repr">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">resource</span><span class="p">,</span> <span class="n">bucket</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Factory:  construct instance from resource.</span>
+
+<span class="sd">        :type bucket: :class:`Bucket`</span>
+<span class="sd">        :params bucket: Bucket for which this instance is the policy.</span>
+
+<span class="sd">        :type resource: dict</span>
+<span class="sd">        :param resource: mapping as returned from API call.</span>
+
+<span class="sd">        :rtype: :class:`IAMConfiguration`</span>
+<span class="sd">        :returns: Instance created from resource.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">instance</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">bucket</span><span class="p">)</span>
+        <span class="n">instance</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">resource</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">instance</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">bucket</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Bucket for which this instance is the policy.</span>
+
+<span class="sd">        :rtype: :class:`Bucket`</span>
+<span class="sd">        :returns: the instance&#39;s bucket.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bucket</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">bucket_policy_only_enabled</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;If set, access checks only use bucket-level IAM policies or above.</span>
+
+<span class="sd">        :rtype: bool</span>
+<span class="sd">        :returns: whether the bucket is configured to allow only IAM.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">bpo</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;bucketPolicyOnly&quot;</span><span class="p">,</span> <span class="p">{})</span>
+        <span class="k">return</span> <span class="n">bpo</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;enabled&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+
+    <span class="nd">@bucket_policy_only_enabled</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">bucket_policy_only_enabled</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="n">bpo</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;bucketPolicyOnly&quot;</span><span class="p">,</span> <span class="p">{})</span>
+        <span class="n">bpo</span><span class="p">[</span><span class="s2">&quot;enabled&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bucket</span><span class="o">.</span><span class="n">_patch_property</span><span class="p">(</span><span class="s2">&quot;iamConfiguration&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">bucket_policy_only_locked_time</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Deadline for changing :attr:`bucket_policy_only_enabled` from true to false.</span>
+
+<span class="sd">        If the bucket&#39;s :attr:`bucket_policy_only_enabled` is true, this property</span>
+<span class="sd">        is time time after which that setting becomes immutable.</span>
+
+<span class="sd">        If the bucket&#39;s :attr:`bucket_policy_only_enabled` is false, this property</span>
+<span class="sd">        is ``None``.</span>
+
+<span class="sd">        :rtype: Union[:class:`datetime.datetime`, None]</span>
+<span class="sd">        :returns:  (readonly) Time after which :attr:`bucket_policy_only_enabled` will</span>
+<span class="sd">                   be frozen as true.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">bpo</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;bucketPolicyOnly&quot;</span><span class="p">,</span> <span class="p">{})</span>
+        <span class="n">stamp</span> <span class="o">=</span> <span class="n">bpo</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;lockedTime&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">stamp</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">stamp</span> <span class="o">=</span> <span class="n">_rfc3339_to_datetime</span><span class="p">(</span><span class="n">stamp</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">stamp</span></div>
 
 
 <div class="viewcode-block" id="Bucket"><a class="viewcode-back" href="../../../../storage/buckets.html#google.cloud.storage.bucket.Bucket">[docs]</a><span class="k">class</span> <span class="nc">Bucket</span><span class="p">(</span><span class="n">_PropertyMixin</span><span class="p">):</span>
@@ -1169,6 +1259,16 @@
 <span class="sd">                  resource has not been loaded from the server.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">iam_configuration</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Retrieve IAM configuration for this bucket.</span>
+
+<span class="sd">        :rtype: :class:`IAMConfiguration`</span>
+<span class="sd">        :returns: an instance for managing the bucket&#39;s IAM configuration.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;iamConfiguration&quot;</span><span class="p">,</span> <span class="p">{})</span>
+        <span class="k">return</span> <span class="n">IAMConfiguration</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">info</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">lifecycle_rules</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
