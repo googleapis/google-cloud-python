@@ -19,14 +19,12 @@ import sys
 
 from google.api_core.protobuf_helpers import get_messages
 
-from google.api import http_pb2
 from google.cloud.dataproc_v1beta2.proto import clusters_pb2
 from google.cloud.dataproc_v1beta2.proto import jobs_pb2
 from google.cloud.dataproc_v1beta2.proto import operations_pb2 as proto_operations_pb2
 from google.cloud.dataproc_v1beta2.proto import workflow_templates_pb2
 from google.longrunning import operations_pb2 as longrunning_operations_pb2
 from google.protobuf import any_pb2
-from google.protobuf import descriptor_pb2
 from google.protobuf import duration_pb2
 from google.protobuf import empty_pb2
 from google.protobuf import field_mask_pb2
@@ -34,10 +32,8 @@ from google.protobuf import timestamp_pb2
 from google.rpc import status_pb2
 
 _shared_modules = [
-    http_pb2,
     longrunning_operations_pb2,
     any_pb2,
-    descriptor_pb2,
     duration_pb2,
     empty_pb2,
     field_mask_pb2,
