@@ -19,31 +19,13 @@ import sys
 
 from google.api_core.protobuf_helpers import get_messages
 
-from google.api import http_pb2
 from google.cloud.kms_v1.proto import resources_pb2
 from google.cloud.kms_v1.proto import service_pb2
-from google.iam.v1 import iam_policy_pb2
-from google.iam.v1 import policy_pb2
-from google.iam.v1.logging import audit_data_pb2
-from google.protobuf import descriptor_pb2
 from google.protobuf import duration_pb2
 from google.protobuf import field_mask_pb2
-from google.protobuf import struct_pb2
 from google.protobuf import timestamp_pb2
-from google.protobuf import wrappers_pb2
 
-_shared_modules = [
-    http_pb2,
-    iam_policy_pb2,
-    policy_pb2,
-    audit_data_pb2,
-    descriptor_pb2,
-    duration_pb2,
-    field_mask_pb2,
-    struct_pb2,
-    timestamp_pb2,
-    wrappers_pb2,
-]
+_shared_modules = [duration_pb2, field_mask_pb2, timestamp_pb2]
 
 _local_modules = [resources_pb2, service_pb2]
 
