@@ -776,7 +776,7 @@ class Test_time_to_json(unittest.TestCase):
         self.assertEqual(self._call_fut(when), "12:13:41")
 
 
-def _make_field(field_type, mode='NULLABLE', name='testing', fields=()):
+def _make_field(field_type, mode="NULLABLE", name="testing", fields=()):
     from google.cloud.bigquery.schema import SchemaField
 
     return SchemaField(name=name, field_type=field_type, mode=mode, fields=fields)
@@ -789,13 +789,13 @@ class Test_scalar_field_to_json(unittest.TestCase):
         return _scalar_field_to_json(field, value)
 
     def test_w_unknown_field_type(self):
-        field = _make_field('UNKNOWN')
+        field = _make_field("UNKNOWN")
         original = object()
         converted = self._call_fut(field, original)
         self.assertIs(converted, original)
 
     def test_w_known_field_type(self):
-        field = _make_field('INT64')
+        field = _make_field("INT64")
         original = 42
         converted = self._call_fut(field, original)
         self.assertEqual(converted, str(original))
@@ -808,18 +808,18 @@ class Test_repeated_field_to_json(unittest.TestCase):
         return _repeated_field_to_json(field, value)
 
     def test_w_empty(self):
-        field = _make_field('INT64', mode='REPEATED')
+        field = _make_field("INT64", mode="REPEATED")
         original = []
         converted = self._call_fut(field, original)
         self.assertEqual(converted, original)
-        self.assertEqual(field.mode, 'REPEATED')
+        self.assertEqual(field.mode, "REPEATED")
 
     def test_w_non_empty(self):
-        field = _make_field('INT64', mode='REPEATED')
+        field = _make_field("INT64", mode="REPEATED")
         original = [42]
         converted = self._call_fut(field, original)
         self.assertEqual(converted, [str(value) for value in original])
-        self.assertEqual(field.mode, 'REPEATED')
+        self.assertEqual(field.mode, "REPEATED")
 
 
 class Test_record_field_to_json(unittest.TestCase):
@@ -836,30 +836,30 @@ class Test_record_field_to_json(unittest.TestCase):
 
     def test_w_non_empty_list(self):
         fields = [
-            _make_field('INT64', name='one', mode='NULLABLE'),
-            _make_field('STRING', name='two', mode='NULLABLE'),
+            _make_field("INT64", name="one", mode="NULLABLE"),
+            _make_field("STRING", name="two", mode="NULLABLE"),
         ]
-        original = [42, 'two']
+        original = [42, "two"]
         converted = self._call_fut(fields, original)
-        self.assertEqual(converted, {'one': '42', 'two': 'two'})
+        self.assertEqual(converted, {"one": "42", "two": "two"})
 
     def test_w_non_empty_dict(self):
         fields = [
-            _make_field('INT64', name='one', mode='NULLABLE'),
-            _make_field('STRING', name='two', mode='NULLABLE'),
+            _make_field("INT64", name="one", mode="NULLABLE"),
+            _make_field("STRING", name="two", mode="NULLABLE"),
         ]
-        original = {'one': 42, 'two': 'two'}
+        original = {"one": 42, "two": "two"}
         converted = self._call_fut(fields, original)
-        self.assertEqual(converted, {'one': '42', 'two': 'two'})
+        self.assertEqual(converted, {"one": "42", "two": "two"})
 
     def test_w_missing_nullable(self):
         fields = [
-            _make_field('INT64', name='one', mode='NULLABLE'),
-            _make_field('STRING', name='two', mode='NULLABLE'),
+            _make_field("INT64", name="one", mode="NULLABLE"),
+            _make_field("STRING", name="two", mode="NULLABLE"),
         ]
-        original = {'one': 42}
+        original = {"one": 42}
         converted = self._call_fut(fields, original)
-        self.assertEqual(converted, {'one': '42', 'two': None})
+        self.assertEqual(converted, {"one": "42", "two": None})
 
 
 class Test_field_to_json(unittest.TestCase):
@@ -869,29 +869,29 @@ class Test_field_to_json(unittest.TestCase):
         return _field_to_json(field, value)
 
     def test_w_none(self):
-        field = _make_field('INT64')
+        field = _make_field("INT64")
         original = None
         converted = self._call_fut(field, original)
         self.assertIsNone(converted)
 
     def test_w_repeated(self):
-        field = _make_field('INT64', mode='REPEATED')
+        field = _make_field("INT64", mode="REPEATED")
         original = [42, 17]
         converted = self._call_fut(field, original)
         self.assertEqual(converted, [str(value) for value in original])
 
     def test_w_record(self):
         subfields = [
-            _make_field('INT64', name='one'),
-            _make_field('STRING', name='two'),
+            _make_field("INT64", name="one"),
+            _make_field("STRING", name="two"),
         ]
-        field = _make_field('RECORD', fields=subfields)
-        original = {'one': 42, 'two': 'two'}
+        field = _make_field("RECORD", fields=subfields)
+        original = {"one": 42, "two": "two"}
         converted = self._call_fut(field, original)
-        self.assertEqual(converted, {'one': '42', 'two': 'two'})
+        self.assertEqual(converted, {"one": "42", "two": "two"})
 
     def test_w_scalar(self):
-        field = _make_field('INT64')
+        field = _make_field("INT64")
         original = 42
         converted = self._call_fut(field, original)
         self.assertEqual(converted, str(original))
