@@ -19,11 +19,9 @@ import sys
 
 from google.api_core.protobuf_helpers import get_messages
 
-from google.api import http_pb2
 from google.cloud.dlp_v2.proto import dlp_pb2
 from google.cloud.dlp_v2.proto import storage_pb2
 from google.protobuf import any_pb2
-from google.protobuf import descriptor_pb2
 from google.protobuf import duration_pb2
 from google.protobuf import empty_pb2
 from google.protobuf import field_mask_pb2
@@ -33,9 +31,7 @@ from google.type import date_pb2
 from google.type import timeofday_pb2
 
 _shared_modules = [
-    http_pb2,
     any_pb2,
-    descriptor_pb2,
     duration_pb2,
     empty_pb2,
     field_mask_pb2,
