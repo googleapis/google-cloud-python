@@ -19,15 +19,12 @@ import sys
 
 from google.api_core.protobuf_helpers import get_messages
 
-from google.api import http_pb2
 from google.cloud.vision_v1p2beta1.proto import geometry_pb2
 from google.cloud.vision_v1p2beta1.proto import image_annotator_pb2
 from google.cloud.vision_v1p2beta1.proto import text_annotation_pb2
 from google.cloud.vision_v1p2beta1.proto import web_detection_pb2
 from google.longrunning import operations_pb2
 from google.protobuf import any_pb2
-from google.protobuf import descriptor_pb2
-from google.protobuf import empty_pb2
 from google.protobuf import timestamp_pb2
 from google.protobuf import wrappers_pb2
 from google.rpc import status_pb2
@@ -35,11 +32,8 @@ from google.type import color_pb2
 from google.type import latlng_pb2
 
 _shared_modules = [
-    http_pb2,
     operations_pb2,
     any_pb2,
-    descriptor_pb2,
-    empty_pb2,
     timestamp_pb2,
     wrappers_pb2,
     status_pb2,
