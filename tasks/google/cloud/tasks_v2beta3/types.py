@@ -19,7 +19,6 @@ import sys
 
 from google.api_core.protobuf_helpers import get_messages
 
-from google.api import http_pb2
 from google.cloud.tasks_v2beta3.proto import cloudtasks_pb2
 from google.cloud.tasks_v2beta3.proto import queue_pb2
 from google.cloud.tasks_v2beta3.proto import target_pb2
@@ -27,7 +26,6 @@ from google.cloud.tasks_v2beta3.proto import task_pb2
 from google.iam.v1 import iam_policy_pb2
 from google.iam.v1 import policy_pb2
 from google.protobuf import any_pb2
-from google.protobuf import descriptor_pb2
 from google.protobuf import duration_pb2
 from google.protobuf import empty_pb2
 from google.protobuf import field_mask_pb2
@@ -35,11 +33,9 @@ from google.protobuf import timestamp_pb2
 from google.rpc import status_pb2
 
 _shared_modules = [
-    http_pb2,
     iam_policy_pb2,
     policy_pb2,
     any_pb2,
-    descriptor_pb2,
     duration_pb2,
     empty_pb2,
     field_mask_pb2,
