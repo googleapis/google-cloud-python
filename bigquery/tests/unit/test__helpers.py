@@ -776,10 +776,10 @@ class Test_time_to_json(unittest.TestCase):
         self.assertEqual(self._call_fut(when), "12:13:41")
 
 
-def _make_field(field_type, mode='NULLABLE'):
+def _make_field(field_type, mode='NULLABLE', name='testing'):
     from google.cloud.bigquery.schema import SchemaField
 
-    return SchemaField(name='testing', field_type=field_type, mode=mode)
+    return SchemaField(name=name, field_type=field_type, mode=mode)
 
 
 class Test_scalar_field_to_json(unittest.TestCase):
@@ -820,6 +820,37 @@ class Test_repeated_field_to_json(unittest.TestCase):
         converted = self._call_fut(field, original)
         self.assertEqual(converted, [str(value) for value in original])
         self.assertEqual(field.mode, 'REPEATED')
+
+
+class Test_record_field_to_json(unittest.TestCase):
+    def _call_fut(self, field, value):
+        from google.cloud.bigquery._helpers import _record_field_to_json
+
+        return _record_field_to_json(field, value)
+
+    def test_w_empty(self):
+        fields = []
+        original = []
+        converted = self._call_fut(fields, original)
+        self.assertEqual(converted, {})
+
+    def test_w_non_empty_list(self):
+        fields = [
+            _make_field('INT64', name='one', mode='NULLABLE'),
+            _make_field('STRING', name='two', mode='NULLABLE'),
+        ]
+        original = [42, 'two']
+        converted = self._call_fut(fields, original)
+        self.assertEqual(converted, {'one': '42', 'two': 'two'})
+
+    def test_w_non_empty_dict(self):
+        fields = [
+            _make_field('INT64', name='one', mode='NULLABLE'),
+            _make_field('STRING', name='two', mode='NULLABLE'),
+        ]
+        original = {'one': 42, 'two': 'two'}
+        converted = self._call_fut(fields, original)
+        self.assertEqual(converted, {'one': '42', 'two': 'two'})
 
 
 class Test_snake_to_camel_case(unittest.TestCase):
