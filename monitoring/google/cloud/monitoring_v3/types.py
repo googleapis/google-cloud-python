@@ -20,7 +20,6 @@ import sys
 from google.api_core.protobuf_helpers import get_messages
 
 from google.api import distribution_pb2
-from google.api import http_pb2
 from google.api import label_pb2
 from google.api import metric_pb2 as api_metric_pb2
 from google.api import monitored_resource_pb2
@@ -39,7 +38,6 @@ from google.cloud.monitoring_v3.proto import span_context_pb2
 from google.cloud.monitoring_v3.proto import uptime_pb2
 from google.cloud.monitoring_v3.proto import uptime_service_pb2
 from google.protobuf import any_pb2
-from google.protobuf import descriptor_pb2
 from google.protobuf import duration_pb2
 from google.protobuf import empty_pb2
 from google.protobuf import field_mask_pb2
@@ -50,12 +48,10 @@ from google.rpc import status_pb2
 
 _shared_modules = [
     distribution_pb2,
-    http_pb2,
     label_pb2,
     api_metric_pb2,
     monitored_resource_pb2,
     any_pb2,
-    descriptor_pb2,
     duration_pb2,
     empty_pb2,
     field_mask_pb2,
