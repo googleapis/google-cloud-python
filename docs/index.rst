@@ -36,7 +36,7 @@
   Vision <vision/index>
   Video Intelligence <videointelligence/index>
   Stackdriver Error Reporting <error-reporting/index>
-  Stackdriver Incident Response & Managment <irm/index>
+  Stackdriver Incident Response & Management <irm/index>
   Stackdriver Logging <logging/index>
   Stackdriver Monitoring <monitoring/index>
   Stackdriver Trace <trace/index>
