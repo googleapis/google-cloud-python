@@ -27,4 +27,3 @@ class TestKeyManagementServiceClient(object):
         location = "global"
         parent = client.location_path(project_id, location)
         response = client.list_key_rings(parent)
-        response_list = list(response)
