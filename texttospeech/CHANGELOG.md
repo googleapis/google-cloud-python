@@ -4,6 +4,25 @@
 
 [1]: https://pypi.org/project/google-cloud-texttospeech/#history
 
+## 0.4.0
+
+02-07-2019 15:21 PST
+
+
+### Implementation Changes
+- Pick up stub docstring fix in GAPIC generator. ([#6984](https://github.com/googleapis/google-cloud-python/pull/6984))
+
+### New Features
+- Protoc updates to include effects_profile_id. ([#7097](https://github.com/googleapis/google-cloud-python/pull/7097))
+
+### Documentation
+- Fix `Client Library Documentation` link ([#7109](https://github.com/googleapis/google-cloud-python/pull/7109))
+
+### Internal / Testing Changes
+- Copy proto files alongside protoc versions.
+- Add protos as an artifact to library ([#7205](https://github.com/googleapis/google-cloud-python/pull/7205))
+- Update copyright headers and docstring quoting
+
 ## 0.3.0
 
 12-18-2018 09:54 PST
