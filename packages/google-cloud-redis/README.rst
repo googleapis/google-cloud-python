@@ -17,7 +17,7 @@ Cloud Platform.
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-redis.svg
    :target: https://pypi.org/project/google-cloud-redis/
 .. _Google Cloud Memorystore for Redis API: https://cloud.google.com/memorystore/
-.. _Client Library Documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/redis/index.html
+.. _Client Library Documentation: https://googleapis.github.io/google-cloud-python/latest/redis/index.html
 .. _Product Documentation:  https://cloud.google.com/memorystore/
 
 Quick Start
@@ -33,7 +33,7 @@ In order to use this library, you first need to go through the following steps:
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
 .. _Enable the Google Cloud Memorystore for Redis API.:  https://console.cloud.google.com/apis/library/redis.googleapis.com
-.. _Setup Authentication.: https://googlecloudplatform.github.io/google-cloud-python/latest/core/auth.html
+.. _Setup Authentication.: https://googleapis.github.io/google-cloud-python/latest/core/auth.html
 
 Installation
 ~~~~~~~~~~~~
