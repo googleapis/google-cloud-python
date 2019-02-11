@@ -30,7 +30,7 @@ class IncidentServiceGrpcTransport(object):
 
     # The scopes needed to make gRPC calls to all of the methods defined
     # in this service.
-    _OAUTH_SCOPES = ()
+    _OAUTH_SCOPES = ("https://www.googleapis.com/auth/cloud-platform",)
 
     def __init__(
         self, channel=None, credentials=None, address="irm.googleapis.com:443"

@@ -40,7 +40,7 @@ def lint(session):
     session.run("flake8", "google", "tests")
 
 
-@nox.session(python="3.7")
+@nox.session(python="3.6")
 def blacken(session):
     """Run black.
 
