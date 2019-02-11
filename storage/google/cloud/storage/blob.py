@@ -20,7 +20,7 @@
                         json_api/v1/objects
 .. _customer-supplied: https://cloud.google.com/storage/docs/\
                        encryption#customer-supplied
-.. _google-resumable-media: https://googlecloudplatform.github.io/\
+.. _google-resumable-media: https://googleapis.github.io/\
                             google-resumable-media-python/latest/\
                             google.resumable_media.requests.html
 """
