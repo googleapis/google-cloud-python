@@ -106,12 +106,14 @@ def setUpModule():
 
     Config.INSTANCE = Config.CLIENT.instance(INSTANCE_ID, labels=LABELS)
     Config.CLUSTER = Config.INSTANCE.cluster(
-        CLUSTER_ID, location_id=LOCATION_ID, serve_nodes=SERVE_NODES)
+        CLUSTER_ID, location_id=LOCATION_ID, serve_nodes=SERVE_NODES
+    )
     Config.INSTANCE_DATA = Config.CLIENT.instance(
-        INSTANCE_ID_DATA, instance_type=Instance.Type.DEVELOPMENT,
-        labels=LABELS)
+        INSTANCE_ID_DATA, instance_type=Instance.Type.DEVELOPMENT, labels=LABELS
+    )
     Config.CLUSTER_DATA = Config.INSTANCE_DATA.cluster(
-        CLUSTER_ID_DATA, location_id=LOCATION_ID)
+        CLUSTER_ID_DATA, location_id=LOCATION_ID
+    )
 
     if not Config.IN_EMULATOR:
         retry = RetryErrors(GrpcRendezvous, error_predicate=_retry_on_unavailable)
@@ -125,8 +127,7 @@ def setUpModule():
         # After listing, create the test instances.
         created_op = Config.INSTANCE.create(clusters=[Config.CLUSTER])
         created_op.result(timeout=10)
-        created_op = Config.INSTANCE_DATA.create(
-            clusters=[Config.CLUSTER_DATA])
+        created_op = Config.INSTANCE_DATA.create(clusters=[Config.CLUSTER_DATA])
         created_op.result(timeout=10)
 
 
@@ -694,8 +695,7 @@ class TestTableAdminAPI(unittest.TestCase):
 
     def test_create_table_with_split_keys(self):
         temp_table_id = "foo-bar-baz-split-table"
-        initial_split_keys = [b"split_key_1", b"split_key_10",
-                              b"split_key_20"]
+        initial_split_keys = [b"split_key_1", b"split_key_10", b"split_key_20"]
         temp_table = Config.INSTANCE_DATA.table(temp_table_id)
         temp_table.create(initial_split_keys=initial_split_keys)
         self.tables_to_delete.append(temp_table)
