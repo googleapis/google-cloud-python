@@ -21,6 +21,7 @@ grpcio-gcp >= 0.2.2
 -e firestore/
 -e iam/
 -e iot/
+-e irm/
 -e kms/
 -e language/
 -e logging/
