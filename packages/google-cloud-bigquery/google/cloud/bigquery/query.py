@@ -230,7 +230,9 @@ class ArrayQueryParameter(_AbstractQueryParameter):
     def _from_api_repr_scalar(cls, resource):
         name = resource.get("name")
         array_type = resource["parameterType"]["arrayType"]["type"]
-        values = [value["value"] for value in resource["parameterValue"]["arrayValues"]]
+        parameter_value = resource.get("parameterValue", {})
+        array_values = parameter_value.get("arrayValues", ())
+        values = [value["value"] for value in array_values]
         converted = [
             _QUERY_PARAMS_FROM_JSON[array_type](value, None) for value in values
         ]
