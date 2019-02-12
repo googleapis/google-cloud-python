@@ -1,0 +1,39 @@
+{
+  "updateTime": "2019-02-11T19:14:29.087436Z",
+  "sources": [
+    {
+      "generator": {
+        "name": "artman",
+        "version": "0.16.11",
+        "dockerImage": "googleapis/artman@sha256:34191bf23693554c7dcf6a252004e0cd042074fd062751ccca884c7c5887a78a"
+      }
+    },
+    {
+      "git": {
+        "name": "googleapis",
+        "remote": "https://github.com/googleapis/googleapis.git",
+        "sha": "6d8420babe176ceffa5a652904c7e185b13a15ad",
+        "internalRef": "233410232"
+      }
+    },
+    {
+      "template": {
+        "name": "python_library",
+        "origin": "synthtool.gcp",
+        "version": "2019.1.16"
+      }
+    }
+  ],
+  "destinations": [
+    {
+      "client": {
+        "source": "googleapis",
+        "apiName": "irm",
+        "apiVersion": "v1alpha2",
+        "language": "python",
+        "generator": "gapic",
+        "config": "google/cloud/irm/artman_irm_v1alpha2.yaml"
+      }
+    }
+  ]
+}
