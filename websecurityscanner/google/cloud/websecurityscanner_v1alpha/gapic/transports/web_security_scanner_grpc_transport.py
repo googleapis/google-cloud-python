@@ -27,17 +27,14 @@ class WebSecurityScannerGrpcTransport(object):
     which can be used to take advantage of advanced
     features of gRPC.
     """
-
     # The scopes needed to make gRPC calls to all of the methods defined
     # in this service.
-    _OAUTH_SCOPES = ("https://www.googleapis.com/auth/cloud-platform",)
+    _OAUTH_SCOPES = ('https://www.googleapis.com/auth/cloud-platform', )
 
-    def __init__(
-        self,
-        channel=None,
-        credentials=None,
-        address="websecurityscanner.googleapis.com:443",
-    ):
+    def __init__(self,
+                 channel=None,
+                 credentials=None,
+                 address='websecurityscanner.googleapis.com:443'):
         """Instantiate the transport class.
 
         Args:
@@ -55,27 +52,29 @@ class WebSecurityScannerGrpcTransport(object):
         # exception (channels come with credentials baked in already).
         if channel is not None and credentials is not None:
             raise ValueError(
-                "The `channel` and `credentials` arguments are mutually " "exclusive."
-            )
+                'The `channel` and `credentials` arguments are mutually '
+                'exclusive.', )
 
         # Create the channel.
         if channel is None:
-            channel = self.create_channel(address=address, credentials=credentials)
+            channel = self.create_channel(
+                address=address,
+                credentials=credentials,
+            )
 
         self._channel = channel
 
         # gRPC uses objects called "stubs" that are bound to the
         # channel and provide a basic method for each RPC.
         self._stubs = {
-            "web_security_scanner_stub": web_security_scanner_pb2_grpc.WebSecurityScannerStub(
-                channel
-            )
+            'web_security_scanner_stub':
+            web_security_scanner_pb2_grpc.WebSecurityScannerStub(channel),
         }
 
     @classmethod
-    def create_channel(
-        cls, address="websecurityscanner.googleapis.com:443", credentials=None
-    ):
+    def create_channel(cls,
+                       address='websecurityscanner.googleapis.com:443',
+                       credentials=None):
         """Create and return a gRPC channel object.
 
         Args:
@@ -90,7 +89,9 @@ class WebSecurityScannerGrpcTransport(object):
             grpc.Channel: A gRPC channel object.
         """
         return google.api_core.grpc_helpers.create_channel(
-            address, credentials=credentials, scopes=cls._OAUTH_SCOPES
+            address,
+            credentials=credentials,
+            scopes=cls._OAUTH_SCOPES,
         )
 
     @property
@@ -113,7 +114,7 @@ class WebSecurityScannerGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["web_security_scanner_stub"].CreateScanConfig
+        return self._stubs['web_security_scanner_stub'].CreateScanConfig
 
     @property
     def delete_scan_config(self):
@@ -126,7 +127,7 @@ class WebSecurityScannerGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["web_security_scanner_stub"].DeleteScanConfig
+        return self._stubs['web_security_scanner_stub'].DeleteScanConfig
 
     @property
     def get_scan_config(self):
@@ -139,7 +140,7 @@ class WebSecurityScannerGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["web_security_scanner_stub"].GetScanConfig
+        return self._stubs['web_security_scanner_stub'].GetScanConfig
 
     @property
     def list_scan_configs(self):
@@ -152,7 +153,7 @@ class WebSecurityScannerGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["web_security_scanner_stub"].ListScanConfigs
+        return self._stubs['web_security_scanner_stub'].ListScanConfigs
 
     @property
     def update_scan_config(self):
@@ -165,7 +166,7 @@ class WebSecurityScannerGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["web_security_scanner_stub"].UpdateScanConfig
+        return self._stubs['web_security_scanner_stub'].UpdateScanConfig
 
     @property
     def start_scan_run(self):
@@ -178,7 +179,7 @@ class WebSecurityScannerGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["web_security_scanner_stub"].StartScanRun
+        return self._stubs['web_security_scanner_stub'].StartScanRun
 
     @property
     def get_scan_run(self):
@@ -191,7 +192,7 @@ class WebSecurityScannerGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["web_security_scanner_stub"].GetScanRun
+        return self._stubs['web_security_scanner_stub'].GetScanRun
 
     @property
     def list_scan_runs(self):
@@ -205,7 +206,7 @@ class WebSecurityScannerGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["web_security_scanner_stub"].ListScanRuns
+        return self._stubs['web_security_scanner_stub'].ListScanRuns
 
     @property
     def stop_scan_run(self):
@@ -218,7 +219,7 @@ class WebSecurityScannerGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["web_security_scanner_stub"].StopScanRun
+        return self._stubs['web_security_scanner_stub'].StopScanRun
 
     @property
     def list_crawled_urls(self):
@@ -231,7 +232,7 @@ class WebSecurityScannerGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["web_security_scanner_stub"].ListCrawledUrls
+        return self._stubs['web_security_scanner_stub'].ListCrawledUrls
 
     @property
     def get_finding(self):
@@ -244,7 +245,7 @@ class WebSecurityScannerGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["web_security_scanner_stub"].GetFinding
+        return self._stubs['web_security_scanner_stub'].GetFinding
 
     @property
     def list_findings(self):
@@ -257,7 +258,7 @@ class WebSecurityScannerGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["web_security_scanner_stub"].ListFindings
+        return self._stubs['web_security_scanner_stub'].ListFindings
 
     @property
     def list_finding_type_stats(self):
@@ -270,4 +271,4 @@ class WebSecurityScannerGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["web_security_scanner_stub"].ListFindingTypeStats
+        return self._stubs['web_security_scanner_stub'].ListFindingTypeStats
