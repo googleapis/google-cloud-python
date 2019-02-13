@@ -41,9 +41,6 @@ def reset_state(environ):
     - ``model.Property._FIND_METHODS_CACHE``
     - ``model.Model._kind_map``
     """
-    assert model.Property._FIND_METHODS_CACHE == {}
-    assert model.Model._kind_map == {}
-    assert _runstate.states.stack == []
     yield
     model.Property._FIND_METHODS_CACHE.clear()
     model.Model._kind_map.clear()
