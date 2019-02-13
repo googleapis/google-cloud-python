@@ -4,6 +4,23 @@
 
 [1]: https://pypi.org/project/google-cloud-kms/#history
 
+## 1.0.0
+
+02-13-2019 10:53 PST
+
+### Implementation Changes
+- Remove unused message exports. ([#7270](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/7270))
+- Pick up stub docstring fix in GAPIC generator. ([#6974](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6974))
+
+### Documentation
+- Updated client library documentation URLs. ([#7307](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/7307))
+
+### Internal / Testing Changes
+- Add KMS system test ([#7304](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/7304))
+- Add protos as an artifact to library ([#7205](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/7205))
+- Update copyright headers
+- Protoc-generated serialization update. ([#7086](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/7086))
+
 ## 0.2.1
 
 12-18-2018 09:24 PST
