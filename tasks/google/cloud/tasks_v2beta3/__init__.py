@@ -26,4 +26,8 @@ class CloudTasksClient(cloud_tasks_client.CloudTasksClient):
     enums = enums
 
 
-__all__ = ("enums", "types", "CloudTasksClient")
+__all__ = (
+    'enums',
+    'types',
+    'CloudTasksClient',
+)
