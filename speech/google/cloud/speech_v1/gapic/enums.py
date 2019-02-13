@@ -71,7 +71,6 @@ class RecognitionConfig(object):
           RTP header is replaced with a single byte containing the block length.
           Only Speex wideband is supported. ``sample_rate_hertz`` must be 16000.
         """
-
         ENCODING_UNSPECIFIED = 0
         LINEAR16 = 1
         FLAC = 2
@@ -98,6 +97,5 @@ class StreamingRecognizeResponse(object):
           sent if ``single_utterance`` was set to ``true``, and is not used
           otherwise.
         """
-
         SPEECH_EVENT_UNSPECIFIED = 0
         END_OF_SINGLE_UTTERANCE = 1
