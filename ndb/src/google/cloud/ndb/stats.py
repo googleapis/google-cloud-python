@@ -50,7 +50,7 @@ class BaseStatistic(model.Model):
             the statistic instance.
         count (int): attribute is the total number of occurrences of the
             statistic in Cloud Datastore.
-        timestamp (DateTime): the time the statistic instance was written to Cloud
+        timestamp (datetime.datetime): the time the statistic instance was written to Cloud
             Datastore.
     """
 
