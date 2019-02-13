@@ -27,14 +27,13 @@ import google.api_core.path_template
 import grpc
 
 from google.cloud.iam_credentials_v1.gapic import iam_credentials_client_config
-from google.cloud.iam_credentials_v1.gapic.transports import (
-    iam_credentials_grpc_transport,
-)
+from google.cloud.iam_credentials_v1.gapic.transports import iam_credentials_grpc_transport
 from google.cloud.iam_credentials_v1.proto import common_pb2
 from google.cloud.iam_credentials_v1.proto import iamcredentials_pb2_grpc
 from google.protobuf import duration_pb2
 
-_GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution("google-cloud-iam").version
+_GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
+    'google-cloud-iam', ).version
 
 
 class IAMCredentialsClient(object):
@@ -50,12 +49,12 @@ class IAMCredentialsClient(object):
     more.
     """
 
-    SERVICE_ADDRESS = "iamcredentials.googleapis.com:443"
+    SERVICE_ADDRESS = 'iamcredentials.googleapis.com:443'
     """The default address of the service."""
 
     # The name of the interface for this client. This is the key used to
     # find the method configuration in the client_config dictionary.
-    _INTERFACE_NAME = "google.iam.credentials.v1.IAMCredentials"
+    _INTERFACE_NAME = 'google.iam.credentials.v1.IAMCredentials'
 
     @classmethod
     def from_service_account_file(cls, filename, *args, **kwargs):
@@ -71,8 +70,9 @@ class IAMCredentialsClient(object):
         Returns:
             IAMCredentialsClient: The constructed client.
         """
-        credentials = service_account.Credentials.from_service_account_file(filename)
-        kwargs["credentials"] = credentials
+        credentials = service_account.Credentials.from_service_account_file(
+            filename)
+        kwargs['credentials'] = credentials
         return cls(*args, **kwargs)
 
     from_service_account_json = from_service_account_file
@@ -81,19 +81,17 @@ class IAMCredentialsClient(object):
     def service_account_path(cls, project, service_account):
         """Return a fully-qualified service_account string."""
         return google.api_core.path_template.expand(
-            "projects/{project}/serviceAccounts/{service_account}",
+            'projects/{project}/serviceAccounts/{service_account}',
             project=project,
             service_account=service_account,
         )
 
-    def __init__(
-        self,
-        transport=None,
-        channel=None,
-        credentials=None,
-        client_config=None,
-        client_info=None,
-    ):
+    def __init__(self,
+                 transport=None,
+                 channel=None,
+                 credentials=None,
+                 client_config=None,
+                 client_info=None):
         """Constructor.
 
         Args:
@@ -127,19 +125,18 @@ class IAMCredentialsClient(object):
         # Raise deprecation warnings for things we want to go away.
         if client_config is not None:
             warnings.warn(
-                "The `client_config` argument is deprecated.",
+                'The `client_config` argument is deprecated.',
                 PendingDeprecationWarning,
-                stacklevel=2,
-            )
+                stacklevel=2)
         else:
             client_config = iam_credentials_client_config.config
 
         if channel:
             warnings.warn(
-                "The `channel` argument is deprecated; use " "`transport` instead.",
+                'The `channel` argument is deprecated; use '
+                '`transport` instead.',
                 PendingDeprecationWarning,
-                stacklevel=2,
-            )
+                stacklevel=2)
 
         # Instantiate the transport.
         # The transport is responsible for handling serialization and
@@ -148,24 +145,25 @@ class IAMCredentialsClient(object):
             if callable(transport):
                 self.transport = transport(
                     credentials=credentials,
-                    default_class=iam_credentials_grpc_transport.IamCredentialsGrpcTransport,
+                    default_class=iam_credentials_grpc_transport.
+                    IamCredentialsGrpcTransport,
                 )
             else:
                 if credentials:
                     raise ValueError(
-                        "Received both a transport instance and "
-                        "credentials; these are mutually exclusive."
-                    )
+                        'Received both a transport instance and '
+                        'credentials; these are mutually exclusive.')
                 self.transport = transport
         else:
             self.transport = iam_credentials_grpc_transport.IamCredentialsGrpcTransport(
-                address=self.SERVICE_ADDRESS, channel=channel, credentials=credentials
+                address=self.SERVICE_ADDRESS,
+                channel=channel,
+                credentials=credentials,
             )
 
         if client_info is None:
             client_info = google.api_core.gapic_v1.client_info.ClientInfo(
-                gapic_version=_GAPIC_LIBRARY_VERSION
-            )
+                gapic_version=_GAPIC_LIBRARY_VERSION, )
         else:
             client_info.gapic_version = _GAPIC_LIBRARY_VERSION
         self._client_info = client_info
@@ -175,8 +173,7 @@ class IAMCredentialsClient(object):
         # (Ordinarily, these are the defaults specified in the `*_config.py`
         # file next to this one.)
         self._method_configs = google.api_core.gapic_v1.config.parse_method_configs(
-            client_config["interfaces"][self._INTERFACE_NAME]
-        )
+            client_config['interfaces'][self._INTERFACE_NAME], )
 
         # Save a dictionary of cached API call functions.
         # These are the actual callables which invoke the proper
@@ -185,16 +182,14 @@ class IAMCredentialsClient(object):
         self._inner_api_calls = {}
 
     # Service calls
-    def generate_access_token(
-        self,
-        name,
-        scope,
-        delegates=None,
-        lifetime=None,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
+    def generate_access_token(self,
+                              name,
+                              scope,
+                              delegates=None,
+                              lifetime=None,
+                              retry=google.api_core.gapic_v1.method.DEFAULT,
+                              timeout=google.api_core.gapic_v1.method.DEFAULT,
+                              metadata=None):
         """
         Generates an OAuth 2.0 access token for a service account.
 
@@ -254,33 +249,34 @@ class IAMCredentialsClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if "generate_access_token" not in self._inner_api_calls:
+        if 'generate_access_token' not in self._inner_api_calls:
             self._inner_api_calls[
-                "generate_access_token"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.generate_access_token,
-                default_retry=self._method_configs["GenerateAccessToken"].retry,
-                default_timeout=self._method_configs["GenerateAccessToken"].timeout,
-                client_info=self._client_info,
-            )
+                'generate_access_token'] = google.api_core.gapic_v1.method.wrap_method(
+                    self.transport.generate_access_token,
+                    default_retry=self._method_configs['GenerateAccessToken'].
+                    retry,
+                    default_timeout=self.
+                    _method_configs['GenerateAccessToken'].timeout,
+                    client_info=self._client_info,
+                )
 
         request = common_pb2.GenerateAccessTokenRequest(
-            name=name, scope=scope, delegates=delegates, lifetime=lifetime
+            name=name,
+            scope=scope,
+            delegates=delegates,
+            lifetime=lifetime,
         )
-        return self._inner_api_calls["generate_access_token"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
+        return self._inner_api_calls['generate_access_token'](
+            request, retry=retry, timeout=timeout, metadata=metadata)
 
-    def generate_id_token(
-        self,
-        name,
-        audience,
-        delegates=None,
-        include_email=None,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
+    def generate_id_token(self,
+                          name,
+                          audience,
+                          delegates=None,
+                          include_email=None,
+                          retry=google.api_core.gapic_v1.method.DEFAULT,
+                          timeout=google.api_core.gapic_v1.method.DEFAULT,
+                          metadata=None):
         """
         Generates an OpenID Connect ID token for a service account.
 
@@ -333,15 +329,16 @@ class IAMCredentialsClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if "generate_id_token" not in self._inner_api_calls:
+        if 'generate_id_token' not in self._inner_api_calls:
             self._inner_api_calls[
-                "generate_id_token"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.generate_id_token,
-                default_retry=self._method_configs["GenerateIdToken"].retry,
-                default_timeout=self._method_configs["GenerateIdToken"].timeout,
-                client_info=self._client_info,
-            )
+                'generate_id_token'] = google.api_core.gapic_v1.method.wrap_method(
+                    self.transport.generate_id_token,
+                    default_retry=self._method_configs['GenerateIdToken'].
+                    retry,
+                    default_timeout=self._method_configs['GenerateIdToken'].
+                    timeout,
+                    client_info=self._client_info,
+                )
 
         request = common_pb2.GenerateIdTokenRequest(
             name=name,
@@ -349,19 +346,16 @@ class IAMCredentialsClient(object):
             delegates=delegates,
             include_email=include_email,
         )
-        return self._inner_api_calls["generate_id_token"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
+        return self._inner_api_calls['generate_id_token'](
+            request, retry=retry, timeout=timeout, metadata=metadata)
 
-    def sign_blob(
-        self,
-        name,
-        payload,
-        delegates=None,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
+    def sign_blob(self,
+                  name,
+                  payload,
+                  delegates=None,
+                  retry=google.api_core.gapic_v1.method.DEFAULT,
+                  timeout=google.api_core.gapic_v1.method.DEFAULT,
+                  metadata=None):
         """
         Signs a blob using a service account's system-managed private key.
 
@@ -411,32 +405,30 @@ class IAMCredentialsClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if "sign_blob" not in self._inner_api_calls:
+        if 'sign_blob' not in self._inner_api_calls:
             self._inner_api_calls[
-                "sign_blob"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.sign_blob,
-                default_retry=self._method_configs["SignBlob"].retry,
-                default_timeout=self._method_configs["SignBlob"].timeout,
-                client_info=self._client_info,
-            )
+                'sign_blob'] = google.api_core.gapic_v1.method.wrap_method(
+                    self.transport.sign_blob,
+                    default_retry=self._method_configs['SignBlob'].retry,
+                    default_timeout=self._method_configs['SignBlob'].timeout,
+                    client_info=self._client_info,
+                )
 
         request = common_pb2.SignBlobRequest(
-            name=name, payload=payload, delegates=delegates
+            name=name,
+            payload=payload,
+            delegates=delegates,
         )
-        return self._inner_api_calls["sign_blob"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
+        return self._inner_api_calls['sign_blob'](
+            request, retry=retry, timeout=timeout, metadata=metadata)
 
-    def sign_jwt(
-        self,
-        name,
-        payload,
-        delegates=None,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
+    def sign_jwt(self,
+                 name,
+                 payload,
+                 delegates=None,
+                 retry=google.api_core.gapic_v1.method.DEFAULT,
+                 timeout=google.api_core.gapic_v1.method.DEFAULT,
+                 metadata=None):
         """
         Signs a JWT using a service account's system-managed private key.
 
@@ -486,32 +478,31 @@ class IAMCredentialsClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if "sign_jwt" not in self._inner_api_calls:
+        if 'sign_jwt' not in self._inner_api_calls:
             self._inner_api_calls[
-                "sign_jwt"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.sign_jwt,
-                default_retry=self._method_configs["SignJwt"].retry,
-                default_timeout=self._method_configs["SignJwt"].timeout,
-                client_info=self._client_info,
-            )
+                'sign_jwt'] = google.api_core.gapic_v1.method.wrap_method(
+                    self.transport.sign_jwt,
+                    default_retry=self._method_configs['SignJwt'].retry,
+                    default_timeout=self._method_configs['SignJwt'].timeout,
+                    client_info=self._client_info,
+                )
 
         request = common_pb2.SignJwtRequest(
-            name=name, payload=payload, delegates=delegates
+            name=name,
+            payload=payload,
+            delegates=delegates,
         )
-        return self._inner_api_calls["sign_jwt"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
+        return self._inner_api_calls['sign_jwt'](
+            request, retry=retry, timeout=timeout, metadata=metadata)
 
     def generate_identity_binding_access_token(
-        self,
-        name,
-        scope,
-        jwt,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
+            self,
+            name,
+            scope,
+            jwt,
+            retry=google.api_core.gapic_v1.method.DEFAULT,
+            timeout=google.api_core.gapic_v1.method.DEFAULT,
+            metadata=None):
         """
         Exchange a JWT signed by third party identity provider to an OAuth 2.0
         access token
@@ -589,23 +580,21 @@ class IAMCredentialsClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if "generate_identity_binding_access_token" not in self._inner_api_calls:
+        if 'generate_identity_binding_access_token' not in self._inner_api_calls:
             self._inner_api_calls[
-                "generate_identity_binding_access_token"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.generate_identity_binding_access_token,
-                default_retry=self._method_configs[
-                    "GenerateIdentityBindingAccessToken"
-                ].retry,
-                default_timeout=self._method_configs[
-                    "GenerateIdentityBindingAccessToken"
-                ].timeout,
-                client_info=self._client_info,
-            )
+                'generate_identity_binding_access_token'] = google.api_core.gapic_v1.method.wrap_method(
+                    self.transport.generate_identity_binding_access_token,
+                    default_retry=self._method_configs[
+                        'GenerateIdentityBindingAccessToken'].retry,
+                    default_timeout=self._method_configs[
+                        'GenerateIdentityBindingAccessToken'].timeout,
+                    client_info=self._client_info,
+                )
 
         request = common_pb2.GenerateIdentityBindingAccessTokenRequest(
-            name=name, scope=scope, jwt=jwt
+            name=name,
+            scope=scope,
+            jwt=jwt,
         )
-        return self._inner_api_calls["generate_identity_binding_access_token"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
+        return self._inner_api_calls['generate_identity_binding_access_token'](
+            request, retry=retry, timeout=timeout, metadata=metadata)

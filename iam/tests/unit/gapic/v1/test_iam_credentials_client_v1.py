@@ -50,7 +50,10 @@ class ChannelStub(object):
         self.responses = responses
         self.requests = []
 
-    def unary_unary(self, method, request_serializer=None, response_deserializer=None):
+    def unary_unary(self,
+                    method,
+                    request_serializer=None,
+                    response_deserializer=None):
         return MultiCallableStub(method, self)
 
 
@@ -61,39 +64,41 @@ class CustomException(Exception):
 class TestIAMCredentialsClient(object):
     def test_generate_access_token(self):
         # Setup Expected Response
-        access_token = "accessToken-1938933922"
-        expected_response = {"access_token": access_token}
-        expected_response = common_pb2.GenerateAccessTokenResponse(**expected_response)
+        access_token = 'accessToken-1938933922'
+        expected_response = {'access_token': access_token}
+        expected_response = common_pb2.GenerateAccessTokenResponse(
+            **expected_response)
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
         with patch as create_channel:
             create_channel.return_value = channel
             client = iam_credentials_v1.IAMCredentialsClient()
 
         # Setup Request
-        name = client.service_account_path("[PROJECT]", "[SERVICE_ACCOUNT]")
+        name = client.service_account_path('[PROJECT]', '[SERVICE_ACCOUNT]')
         scope = []
 
         response = client.generate_access_token(name, scope)
         assert expected_response == response
 
         assert len(channel.requests) == 1
-        expected_request = common_pb2.GenerateAccessTokenRequest(name=name, scope=scope)
+        expected_request = common_pb2.GenerateAccessTokenRequest(
+            name=name, scope=scope)
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
     def test_generate_access_token_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
         with patch as create_channel:
             create_channel.return_value = channel
             client = iam_credentials_v1.IAMCredentialsClient()
 
         # Setup request
-        name = client.service_account_path("[PROJECT]", "[SERVICE_ACCOUNT]")
+        name = client.service_account_path('[PROJECT]', '[SERVICE_ACCOUNT]')
         scope = []
 
         with pytest.raises(CustomException):
@@ -101,170 +106,171 @@ class TestIAMCredentialsClient(object):
 
     def test_generate_id_token(self):
         # Setup Expected Response
-        token = "token110541305"
-        expected_response = {"token": token}
-        expected_response = common_pb2.GenerateIdTokenResponse(**expected_response)
+        token = 'token110541305'
+        expected_response = {'token': token}
+        expected_response = common_pb2.GenerateIdTokenResponse(
+            **expected_response)
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
         with patch as create_channel:
             create_channel.return_value = channel
             client = iam_credentials_v1.IAMCredentialsClient()
 
         # Setup Request
-        name = client.service_account_path("[PROJECT]", "[SERVICE_ACCOUNT]")
-        audience = "audience975628804"
+        name = client.service_account_path('[PROJECT]', '[SERVICE_ACCOUNT]')
+        audience = 'audience975628804'
 
         response = client.generate_id_token(name, audience)
         assert expected_response == response
 
         assert len(channel.requests) == 1
         expected_request = common_pb2.GenerateIdTokenRequest(
-            name=name, audience=audience
-        )
+            name=name, audience=audience)
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
     def test_generate_id_token_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
         with patch as create_channel:
             create_channel.return_value = channel
             client = iam_credentials_v1.IAMCredentialsClient()
 
         # Setup request
-        name = client.service_account_path("[PROJECT]", "[SERVICE_ACCOUNT]")
-        audience = "audience975628804"
+        name = client.service_account_path('[PROJECT]', '[SERVICE_ACCOUNT]')
+        audience = 'audience975628804'
 
         with pytest.raises(CustomException):
             client.generate_id_token(name, audience)
 
     def test_sign_blob(self):
         # Setup Expected Response
-        key_id = "keyId-1134673157"
-        signed_blob = b"-32"
-        expected_response = {"key_id": key_id, "signed_blob": signed_blob}
+        key_id = 'keyId-1134673157'
+        signed_blob = b'-32'
+        expected_response = {'key_id': key_id, 'signed_blob': signed_blob}
         expected_response = common_pb2.SignBlobResponse(**expected_response)
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
         with patch as create_channel:
             create_channel.return_value = channel
             client = iam_credentials_v1.IAMCredentialsClient()
 
         # Setup Request
-        name = client.service_account_path("[PROJECT]", "[SERVICE_ACCOUNT]")
-        payload = b"-114"
+        name = client.service_account_path('[PROJECT]', '[SERVICE_ACCOUNT]')
+        payload = b'-114'
 
         response = client.sign_blob(name, payload)
         assert expected_response == response
 
         assert len(channel.requests) == 1
-        expected_request = common_pb2.SignBlobRequest(name=name, payload=payload)
+        expected_request = common_pb2.SignBlobRequest(
+            name=name, payload=payload)
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
     def test_sign_blob_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
         with patch as create_channel:
             create_channel.return_value = channel
             client = iam_credentials_v1.IAMCredentialsClient()
 
         # Setup request
-        name = client.service_account_path("[PROJECT]", "[SERVICE_ACCOUNT]")
-        payload = b"-114"
+        name = client.service_account_path('[PROJECT]', '[SERVICE_ACCOUNT]')
+        payload = b'-114'
 
         with pytest.raises(CustomException):
             client.sign_blob(name, payload)
 
     def test_sign_jwt(self):
         # Setup Expected Response
-        key_id = "keyId-1134673157"
-        signed_jwt = "signedJwt-979546844"
-        expected_response = {"key_id": key_id, "signed_jwt": signed_jwt}
+        key_id = 'keyId-1134673157'
+        signed_jwt = 'signedJwt-979546844'
+        expected_response = {'key_id': key_id, 'signed_jwt': signed_jwt}
         expected_response = common_pb2.SignJwtResponse(**expected_response)
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
         with patch as create_channel:
             create_channel.return_value = channel
             client = iam_credentials_v1.IAMCredentialsClient()
 
         # Setup Request
-        name = client.service_account_path("[PROJECT]", "[SERVICE_ACCOUNT]")
-        payload = "-114"
+        name = client.service_account_path('[PROJECT]', '[SERVICE_ACCOUNT]')
+        payload = '-114'
 
         response = client.sign_jwt(name, payload)
         assert expected_response == response
 
         assert len(channel.requests) == 1
-        expected_request = common_pb2.SignJwtRequest(name=name, payload=payload)
+        expected_request = common_pb2.SignJwtRequest(
+            name=name, payload=payload)
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
     def test_sign_jwt_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
         with patch as create_channel:
             create_channel.return_value = channel
             client = iam_credentials_v1.IAMCredentialsClient()
 
         # Setup request
-        name = client.service_account_path("[PROJECT]", "[SERVICE_ACCOUNT]")
-        payload = "-114"
+        name = client.service_account_path('[PROJECT]', '[SERVICE_ACCOUNT]')
+        payload = '-114'
 
         with pytest.raises(CustomException):
             client.sign_jwt(name, payload)
 
     def test_generate_identity_binding_access_token(self):
         # Setup Expected Response
-        access_token = "accessToken-1938933922"
-        expected_response = {"access_token": access_token}
+        access_token = 'accessToken-1938933922'
+        expected_response = {'access_token': access_token}
         expected_response = common_pb2.GenerateIdentityBindingAccessTokenResponse(
-            **expected_response
-        )
+            **expected_response)
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
         with patch as create_channel:
             create_channel.return_value = channel
             client = iam_credentials_v1.IAMCredentialsClient()
 
         # Setup Request
-        name = client.service_account_path("[PROJECT]", "[SERVICE_ACCOUNT]")
+        name = client.service_account_path('[PROJECT]', '[SERVICE_ACCOUNT]')
         scope = []
-        jwt = "jwt105671"
+        jwt = 'jwt105671'
 
-        response = client.generate_identity_binding_access_token(name, scope, jwt)
+        response = client.generate_identity_binding_access_token(
+            name, scope, jwt)
         assert expected_response == response
 
         assert len(channel.requests) == 1
         expected_request = common_pb2.GenerateIdentityBindingAccessTokenRequest(
-            name=name, scope=scope, jwt=jwt
-        )
+            name=name, scope=scope, jwt=jwt)
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
     def test_generate_identity_binding_access_token_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
         with patch as create_channel:
             create_channel.return_value = channel
             client = iam_credentials_v1.IAMCredentialsClient()
 
         # Setup request
-        name = client.service_account_path("[PROJECT]", "[SERVICE_ACCOUNT]")
+        name = client.service_account_path('[PROJECT]', '[SERVICE_ACCOUNT]')
         scope = []
-        jwt = "jwt105671"
+        jwt = 'jwt105671'
 
         with pytest.raises(CustomException):
             client.generate_identity_binding_access_token(name, scope, jwt)
