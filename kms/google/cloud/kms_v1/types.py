@@ -25,9 +25,16 @@ from google.protobuf import duration_pb2
 from google.protobuf import field_mask_pb2
 from google.protobuf import timestamp_pb2
 
-_shared_modules = [duration_pb2, field_mask_pb2, timestamp_pb2]
+_shared_modules = [
+    duration_pb2,
+    field_mask_pb2,
+    timestamp_pb2,
+]
 
-_local_modules = [resources_pb2, service_pb2]
+_local_modules = [
+    resources_pb2,
+    service_pb2,
+]
 
 names = []
 
@@ -37,7 +44,7 @@ for module in _shared_modules:
         names.append(name)
 for module in _local_modules:
     for name, message in get_messages(module).items():
-        message.__module__ = "google.cloud.kms_v1.types"
+        message.__module__ = 'google.cloud.kms_v1.types'
         setattr(sys.modules[__name__], name, message)
         names.append(name)
 
