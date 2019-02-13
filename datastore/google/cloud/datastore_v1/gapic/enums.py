@@ -28,7 +28,6 @@ class NullValue(enum.IntEnum):
     Attributes:
       NULL_VALUE (int): Null value.
     """
-
     NULL_VALUE = 0
 
 
@@ -44,7 +43,6 @@ class CommitRequest(object):
           `here <https://cloud.google.com/datastore/docs/concepts/transactions>`__.
           NON_TRANSACTIONAL (int): Non-transactional: The mutations may not apply as all or none.
         """
-
         MODE_UNSPECIFIED = 0
         TRANSACTIONAL = 1
         NON_TRANSACTIONAL = 2
@@ -59,7 +57,6 @@ class CompositeFilter(object):
           OPERATOR_UNSPECIFIED (int): Unspecified. This value must not be used.
           AND (int): The results are required to satisfy each of the combined filters.
         """
-
         OPERATOR_UNSPECIFIED = 0
         AND = 1
 
@@ -80,7 +77,6 @@ class EntityResult(object):
           PROJECTION (int): A projected subset of properties. The entity may have no key.
           KEY_ONLY (int): Only the key.
         """
-
         RESULT_TYPE_UNSPECIFIED = 0
         FULL = 1
         PROJECTION = 2
@@ -101,7 +97,6 @@ class PropertyFilter(object):
           EQUAL (int): Equal.
           HAS_ANCESTOR (int): Has ancestor.
         """
-
         OPERATOR_UNSPECIFIED = 0
         LESS_THAN = 1
         LESS_THAN_OR_EQUAL = 2
@@ -121,7 +116,6 @@ class PropertyOrder(object):
           ASCENDING (int): Ascending.
           DESCENDING (int): Descending.
         """
-
         DIRECTION_UNSPECIFIED = 0
         ASCENDING = 1
         DESCENDING = 2
@@ -140,7 +134,6 @@ class QueryResultBatch(object):
           cursor.
           NO_MORE_RESULTS (int): The query is finished, and there are no more results.
         """
-
         MORE_RESULTS_TYPE_UNSPECIFIED = 0
         NOT_FINISHED = 1
         MORE_RESULTS_AFTER_LIMIT = 2
@@ -158,7 +151,6 @@ class ReadOptions(object):
           STRONG (int): Strong consistency.
           EVENTUAL (int): Eventual consistency.
         """
-
         READ_CONSISTENCY_UNSPECIFIED = 0
         STRONG = 1
         EVENTUAL = 2
