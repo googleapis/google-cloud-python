@@ -46,12 +46,12 @@ class BaseStatistic(model.Model):
     """Base Statistic Model class.
 
     Attributes:
-      bytes: the total number of bytes taken up in Cloud Datastore for the
-      statistic instance.
-      count: attribute is the total number of occurrences of the statistic
-      in Cloud Datastore.
-      timestamp: the time the statistic instance was written to Cloud
-      Datastore.
+        bytes (int): the total number of bytes taken up in Cloud Datastore for
+            the statistic instance.
+        count (int): attribute is the total number of occurrences of the
+            statistic in Cloud Datastore.
+        timestamp (DateTime): the time the statistic instance was written to Cloud
+            Datastore.
     """
 
     __slots__ = ()
@@ -59,13 +59,10 @@ class BaseStatistic(model.Model):
     # This is necessary for the _get_kind() classmethod override.
     STORED_KIND_NAME = "__BaseStatistic__"
 
-    # The number of bytes that is taken up.
     bytes = model.IntegerProperty()
 
-    # The number of entity records.
     count = model.IntegerProperty()
 
-    # When this statistic was inserted into Cloud Datastore.
     timestamp = model.DateTimeProperty()
 
     @classmethod
@@ -78,21 +75,18 @@ class BaseKindStatistic(BaseStatistic):
     """Base Statistic Model class for stats associated with kinds.
 
     Attributes:
-      kind_name: the name of the kind associated with the statistic instance.
-      entity_bytes: the number of bytes taken up to store the statistic
-        in Cloud Datastore minus the cost of storing indices.
+        kind_name (str): the name of the kind associated with the statistic
+            instance.
+        entity_bytes (int): the number of bytes taken up to store the statistic
+            in Cloud Datastore minus the cost of storing indices.
     """
 
     __slots__ = ()
 
     STORED_KIND_NAME = "__BaseKindStatistic__"
 
-    # The name of the kind.
     kind_name = model.StringProperty()
 
-    # The number of bytes that is taken up in entity table. entity_bytes does
-    # not reflect the storage allocated for indexes, either built-in or
-    # composite indexes.
     entity_bytes = model.IntegerProperty(default=0)
 
 
@@ -104,33 +98,28 @@ class GlobalStat(BaseStatistic):
     up.
 
     Attributes:
-      entity_bytes: the number of bytes taken up to store the statistic
-        in Cloud Datastore minus the cost of storing indices.
-      builtin_index_bytes: the number of bytes taken up to store builtin-in
-        index entries
-      builtin_index_count: the number of built-in index entries.
-      composite_index_bytes: the number of bytes taken up to store composite
-        index entries
-      composite_index_count: the number of composite index entries.
+        entity_bytes (int): the number of bytes taken up to store the statistic
+            in Cloud Datastore minus the cost of storing indices.
+        builtin_index_bytes (int): the number of bytes taken up to store
+            built-in index entries.
+        builtin_index_count (int): the number of built-in index entries.
+        composite_index_bytes (int): the number of bytes taken up to store
+            composite index entries.
+        composite_index_count (int): the number of composite index entries.
     """
 
     __slots__ = ()
 
     STORED_KIND_NAME = "__Stat_Total__"
 
-    # The number of bytes that is taken up in entity storage.
     entity_bytes = model.IntegerProperty(default=0)
 
-    # The number of bytes taken up for built-in index entries.
     builtin_index_bytes = model.IntegerProperty(default=0)
 
-    # The number of built-in index entries.
     builtin_index_count = model.IntegerProperty(default=0)
 
-    # The number of bytes taken up for composite index entries.
     composite_index_bytes = model.IntegerProperty(default=0)
 
-    # The number of composite indexes entries.
     composite_index_count = model.IntegerProperty(default=0)
 
 
@@ -143,37 +132,32 @@ class NamespaceStat(BaseStatistic):
     number of entities stored and the total number of bytes they take up.
 
     Attributes:
-      subject_namespace: the namespace associated with the statistic instance.
-      entity_bytes: the number of bytes taken up to store the statistic
-        in Cloud Datastore minus the cost of storing indices.
-      builtin_index_bytes: the number of bytes taken up to store builtin-in
-        index entries
-      builtin_index_count: the number of built-in index entries.
-      composite_index_bytes: the number of bytes taken up to store composite
-        index entries
-      composite_index_count: the number of composite index entries.
+        subject_namespace (str): the namespace associated with the statistic
+            instance.
+        entity_bytes (int): the number of bytes taken up to store the statistic
+            in Cloud Datastore minus the cost of storing indices.
+        builtin_index_bytes (int): the number of bytes taken up to store
+            builtin-in index entries.
+        builtin_index_count (int): the number of built-in index entries.
+        composite_index_bytes (int): the number of bytes taken up to store
+            composite index entries.
+        composite_index_count (int): the number of composite index entries.
     """
 
     __slots__ = ()
 
     STORED_KIND_NAME = "__Stat_Namespace__"
 
-    # The namespace name this NamespaceStat refers to.
     subject_namespace = model.StringProperty()
 
-    # The number of bytes that is taken up in entity storage.
     entity_bytes = model.IntegerProperty(default=0)
 
-    # The number of bytes taken up for built-in index entries.
     builtin_index_bytes = model.IntegerProperty(default=0)
 
-    # The number of built-in index entries.
     builtin_index_count = model.IntegerProperty(default=0)
 
-    # The number of bytes taken up for composite index entries.
     composite_index_bytes = model.IntegerProperty(default=0)
 
-    # The number of composite indexes entries.
     composite_index_count = model.IntegerProperty(default=0)
 
 
@@ -184,28 +168,24 @@ class KindStat(BaseKindStatistic):
     application's datastore.  This stat contains per-Kind statistics.
 
     Attributes:
-      builtin_index_bytes: the number of bytes taken up to store builtin-in
-        index entries
-      builtin_index_count: the number of built-in index entries.
-      composite_index_bytes: the number of bytes taken up to store composite
-        index entries
-      composite_index_count: the number of composite index entries.
+        builtin_index_bytes (int): the number of bytes taken up to store
+            built-in index entries.
+        builtin_index_count (int): the number of built-in index entries.
+        composite_index_bytes (int): the number of bytes taken up to store
+            composite index entries.
+        composite_index_count (int): the number of composite index entries.
     """
 
     __slots__ = ()
 
     STORED_KIND_NAME = "__Stat_Kind__"
 
-    # The number of bytes taken up for built-in index entries.
     builtin_index_bytes = model.IntegerProperty(default=0)
 
-    # The number of built-in index entries.
     builtin_index_count = model.IntegerProperty(default=0)
 
-    # The number of bytes taken up for composite index entries.
     composite_index_bytes = model.IntegerProperty(default=0)
 
-    # The number of composite indexes entries.
     composite_index_count = model.IntegerProperty(default=0)
 
 
@@ -227,7 +207,7 @@ class KindNonRootEntityStat(BaseKindStatistic):
 
     There is an instance of the KindNonRootEntityStat for every Kind that is in
     the application's datastore that is a not a root entity.  This stat contains
-    statistics regarding thse non root entity instances.
+    statistics regarding these non root entity instances.
     """
 
     __slots__ = ()
@@ -243,28 +223,25 @@ class PropertyTypeStat(BaseStatistic):
     application in its datastore.
 
     Attributes:
-      property_type: the property type associated with the statistic instance.
-      entity_bytes: the number of bytes taken up to store the statistic
-        in Cloud Datastore minus the cost of storing indices.
-      builtin_index_bytes: the number of bytes taken up to store builtin-in
-        index entries
-      builtin_index_count: the number of built-in index entries.
+        property_type (str): the property type associated with the statistic
+            instance.
+        entity_bytes (int): the number of bytes taken up to store the statistic
+            in Cloud Datastore minus the cost of storing indices.
+        builtin_index_bytes (int): the number of bytes taken up to store
+        built-in index entries.
+        builtin_index_count (int): the number of built-in index entries.
     """
 
     __slots__ = ()
 
     STORED_KIND_NAME = "__Stat_PropertyType__"
 
-    # The name of the property_type.
     property_type = model.StringProperty()
 
-    # The number of bytes that is taken up in entity storage.
     entity_bytes = model.IntegerProperty(default=0)
 
-    # The number of bytes taken up for built-in index entries.
     builtin_index_bytes = model.IntegerProperty(default=0)
 
-    # The number of built-in index entries.
     builtin_index_count = model.IntegerProperty(default=0)
 
 
@@ -275,23 +252,21 @@ class KindPropertyTypeStat(BaseKindStatistic):
     (kind, property_type) tuple in the application's datastore.
 
     Attributes:
-      property_type: the property type associated with the statistic instance.
-      builtin_index_bytes: the number of bytes taken up to store builtin-in
-        index entries
-      builtin_index_count: the number of built-in index entries.
+        property_type (str): the property type associated with the statistic
+            instance.
+        builtin_index_bytes (int): the number of bytes taken up to store\
+            built-in index entries.
+        builtin_index_count (int): the number of built-in index entries.
     """
 
     __slots__ = ()
 
     STORED_KIND_NAME = "__Stat_PropertyType_Kind__"
 
-    # The name of the property_type.
     property_type = model.StringProperty()
 
-    # The number of bytes taken up for built-in index entries.
     builtin_index_bytes = model.IntegerProperty(default=0)
 
-    # The number of built-in index entries.
     builtin_index_count = model.IntegerProperty(default=0)
 
 
@@ -302,24 +277,21 @@ class KindPropertyNameStat(BaseKindStatistic):
     (kind, property_name) tuple in the application's datastore.
 
     Attributes:
-      property_name: the name of the property associated with the statistic
-        instance.
-      builtin_index_bytes: the number of bytes taken up to store builtin-in
-        index entries
-      builtin_index_count: the number of built-in index entries.
+        property_name (str): the name of the property associated with the
+            statistic instance.
+        builtin_index_bytes (int): the number of bytes taken up to store
+            built-in index entries.
+        builtin_index_count (int): the number of built-in index entries.
     """
 
     __slots__ = ()
 
     STORED_KIND_NAME = "__Stat_PropertyName_Kind__"
 
-    # The name of the property.
     property_name = model.StringProperty()
 
-    # The number of bytes taken up for built-in index entries.
     builtin_index_bytes = model.IntegerProperty(default=0)
 
-    # The number of built-in index entries.
     builtin_index_count = model.IntegerProperty(default=0)
 
 
@@ -331,28 +303,25 @@ class KindPropertyNamePropertyTypeStat(BaseKindStatistic):
     (kind, property_name, property_type) tuple in the application's datastore.
 
     Attributes:
-      property_type: the property type associated with the statistic instance.
-      property_name: the name of the property associated with the statistic
-        instance.
-      builtin_index_bytes: the number of bytes taken up to store builtin-in
-        index entries
-      builtin_index_count: the number of built-in index entries.
+      property_type (str): the property type associated with the statistic
+          instance.
+      property_name (str): the name of the property associated with the
+          statistic instance.
+      builtin_index_bytes (int): the number of bytes taken up to store
+          built-in index entries
+      builtin_index_count (int): the number of built-in index entries.
     """
 
     __slots__ = ()
 
     STORED_KIND_NAME = "__Stat_PropertyType_PropertyName_Kind__"
 
-    # The name of the property type.
     property_type = model.StringProperty()
 
-    # The name of the property.
     property_name = model.StringProperty()
 
-    # The number of bytes taken up for built-in index entries.
     builtin_index_bytes = model.IntegerProperty(default=0)
 
-    # The number of built-in index entries.
     builtin_index_count = model.IntegerProperty(default=0)
 
 
@@ -363,19 +332,18 @@ class KindCompositeIndexStat(BaseStatistic):
     (kind, composite_index_id) tuple in the application's datastore indexes.
 
     Attributes:
-      index_id: the id of the composite index associated with the statistic
-        instance.
-      kind_name: the name of the kind associated with the statistic instance.
+        index_id (int): the id of the composite index associated with the
+            statistic instance.
+        kind_name (str): the name of the kind associated with the statistic
+            instance.
     """
 
     __slots__ = ()
 
     STORED_KIND_NAME = "__Stat_Kind_CompositeIndex__"
 
-    # The id of the composite index
     index_id = model.IntegerProperty()
 
-    # The name of the kind.
     kind_name = model.StringProperty()
 
 
@@ -388,8 +356,8 @@ class KindCompositeIndexStat(BaseStatistic):
 class NamespaceGlobalStat(GlobalStat):
     """GlobalStat equivalent for a specific namespace.
 
-    These may be found in each specific namespace and represent stats for
-    that particular namespace.
+    These may be found in each specific namespace and represent stats for that
+    particular namespace.
     """
 
     __slots__ = ()
@@ -400,8 +368,8 @@ class NamespaceGlobalStat(GlobalStat):
 class NamespaceKindStat(KindStat):
     """KindStat equivalent for a specific namespace.
 
-    These may be found in each specific namespace and represent stats for
-    that particular namespace.
+    These may be found in each specific namespace and represent stats for that
+    particular namespace.
     """
 
     __slots__ = ()
@@ -412,8 +380,8 @@ class NamespaceKindStat(KindStat):
 class NamespaceKindRootEntityStat(KindRootEntityStat):
     """KindRootEntityStat equivalent for a specific namespace.
 
-    These may be found in each specific namespace and represent stats for
-    that particular namespace.
+    These may be found in each specific namespace and represent stats for that
+    particular namespace.
     """
 
     __slots__ = ()
@@ -424,8 +392,8 @@ class NamespaceKindRootEntityStat(KindRootEntityStat):
 class NamespaceKindNonRootEntityStat(KindNonRootEntityStat):
     """KindNonRootEntityStat equivalent for a specific namespace.
 
-    These may be found in each specific namespace and represent stats for
-    that particular namespace.
+    These may be found in each specific namespace and represent stats for that
+    particular namespace.
     """
 
     __slots__ = ()
@@ -436,8 +404,8 @@ class NamespaceKindNonRootEntityStat(KindNonRootEntityStat):
 class NamespacePropertyTypeStat(PropertyTypeStat):
     """PropertyTypeStat equivalent for a specific namespace.
 
-    These may be found in each specific namespace and represent stats for
-    that particular namespace.
+    These may be found in each specific namespace and represent stats for that
+    particular namespace.
     """
 
     __slots__ = ()
@@ -448,8 +416,8 @@ class NamespacePropertyTypeStat(PropertyTypeStat):
 class NamespaceKindPropertyTypeStat(KindPropertyTypeStat):
     """KindPropertyTypeStat equivalent for a specific namespace.
 
-    These may be found in each specific namespace and represent stats for
-    that particular namespace.
+    These may be found in each specific namespace and represent stats for that
+    particular namespace.
     """
 
     __slots__ = ()
@@ -460,8 +428,8 @@ class NamespaceKindPropertyTypeStat(KindPropertyTypeStat):
 class NamespaceKindPropertyNameStat(KindPropertyNameStat):
     """KindPropertyNameStat equivalent for a specific namespace.
 
-    These may be found in each specific namespace and represent stats for
-    that particular namespace.
+    These may be found in each specific namespace and represent stats for that
+    particular namespace.
     """
 
     __slots__ = ()
@@ -474,8 +442,8 @@ class NamespaceKindPropertyNamePropertyTypeStat(
 ):
     """KindPropertyNamePropertyTypeStat equivalent for a specific namespace.
 
-    These may be found in each specific namespace and represent stats for
-    that particular namespace.
+    These may be found in each specific namespace and represent stats for that
+    particular namespace.
     """
 
     __slots__ = ()
@@ -486,8 +454,8 @@ class NamespaceKindPropertyNamePropertyTypeStat(
 class NamespaceKindCompositeIndexStat(KindCompositeIndexStat):
     """KindCompositeIndexStat equivalent for a specific namespace.
 
-    These may be found in each specific namespace and represent stats for
-    that particular namespace.
+    These may be found in each specific namespace and represent stats for that
+    particular namespace.
     """
 
     __slots__ = ()
