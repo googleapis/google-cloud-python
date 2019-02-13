@@ -20,4 +20,8 @@ from google.cloud.securitycenter_v1beta1 import SecurityCenterClient
 from google.cloud.securitycenter_v1beta1 import enums
 from google.cloud.securitycenter_v1beta1 import types
 
-__all__ = ("enums", "types", "SecurityCenterClient")
+__all__ = (
+    'enums',
+    'types',
+    'SecurityCenterClient',
+)
