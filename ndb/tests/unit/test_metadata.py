@@ -22,11 +22,36 @@ def test___all__():
     tests.unit.utils.verify___all__(metadata)
 
 
+class Test_BaseMetadata:
+    @staticmethod
+    def test_cannot_instantiate():
+        with pytest.raises(TypeError):
+            metadata._BaseMetadata()
+
+
 class TestEntityGroup:
     @staticmethod
     def test_constructor():
-        with pytest.raises(NotImplementedError):
-            metadata.EntityGroup()
+        entity_group = metadata.EntityGroup()
+
+
+class TestKind:
+    @staticmethod
+    def test_constructor():
+        kind = metadata.Kind()
+
+
+class TestNamespace:
+
+    @staticmethod
+    def test_constructor():
+        namespace = metadata.Namespace()
+
+
+class TestProperty:
+    @staticmethod
+    def test_constructor():
+        property = metadata.Property()
 
 
 def test_get_entity_group_version():
@@ -52,24 +77,3 @@ def test_get_properties_of_kind():
 def test_get_representations_of_kind():
     with pytest.raises(NotImplementedError):
         metadata.get_representations_of_kind()
-
-
-class TestKind:
-    @staticmethod
-    def test_constructor():
-        with pytest.raises(NotImplementedError):
-            metadata.Kind()
-
-
-class TestNamespace:
-    @staticmethod
-    def test_constructor():
-        with pytest.raises(NotImplementedError):
-            metadata.Namespace()
-
-
-class TestProperty:
-    @staticmethod
-    def test_constructor():
-        with pytest.raises(NotImplementedError):
-            metadata.Property()
