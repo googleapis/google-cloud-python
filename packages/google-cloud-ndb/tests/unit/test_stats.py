@@ -12,158 +12,409 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import pytest
+import datetime
 
 from google.cloud.ndb import stats
 import tests.unit.utils
+
+
+DEFAULTS = {
+    "bytes": 4,
+    "count": 2,
+    "timestamp": datetime.datetime.utcfromtimestamp(40),
+}
 
 
 def test___all__():
     tests.unit.utils.verify___all__(stats)
 
 
-class TestBaseKindStatistic:
-    @staticmethod
-    def test_constructor():
-        with pytest.raises(NotImplementedError):
-            stats.BaseKindStatistic()
-
-
 class TestBaseStatistic:
     @staticmethod
+    def test_get_kind():
+        kind = stats.BaseStatistic.STORED_KIND_NAME
+        assert stats.BaseStatistic._get_kind() == kind
+
+    @staticmethod
     def test_constructor():
-        with pytest.raises(NotImplementedError):
-            stats.BaseStatistic()
+        stat = stats.BaseStatistic(**DEFAULTS)
+        assert stat.bytes == 4
+        assert stat.count == 2
+
+
+class TestBaseKindStatistic:
+    @staticmethod
+    def test_get_kind():
+        kind = stats.BaseKindStatistic.STORED_KIND_NAME
+        assert stats.BaseKindStatistic._get_kind() == kind
+
+    @staticmethod
+    def test_constructor():
+        stat = stats.BaseKindStatistic(kind_name="test_stat", **DEFAULTS)
+        assert stat.bytes == 4
+        assert stat.count == 2
+        assert stat.kind_name == "test_stat"
+        assert stat.entity_bytes == 0
 
 
 class TestGlobalStat:
     @staticmethod
-    def test_constructor():
-        with pytest.raises(NotImplementedError):
-            stats.GlobalStat()
+    def test_get_kind():
+        kind = stats.GlobalStat.STORED_KIND_NAME
+        assert stats.GlobalStat._get_kind() == kind
 
-
-class TestKindCompositeIndexStat:
     @staticmethod
     def test_constructor():
-        with pytest.raises(NotImplementedError):
-            stats.KindCompositeIndexStat()
-
-
-class TestKindNonRootEntityStat:
-    @staticmethod
-    def test_constructor():
-        with pytest.raises(NotImplementedError):
-            stats.KindNonRootEntityStat()
-
-
-class TestKindPropertyNamePropertyTypeStat:
-    @staticmethod
-    def test_constructor():
-        with pytest.raises(NotImplementedError):
-            stats.KindPropertyNamePropertyTypeStat()
-
-
-class TestKindPropertyNameStat:
-    @staticmethod
-    def test_constructor():
-        with pytest.raises(NotImplementedError):
-            stats.KindPropertyNameStat()
-
-
-class TestKindPropertyTypeStat:
-    @staticmethod
-    def test_constructor():
-        with pytest.raises(NotImplementedError):
-            stats.KindPropertyTypeStat()
-
-
-class TestKindRootEntityStat:
-    @staticmethod
-    def test_constructor():
-        with pytest.raises(NotImplementedError):
-            stats.KindRootEntityStat()
-
-
-class TestKindStat:
-    @staticmethod
-    def test_constructor():
-        with pytest.raises(NotImplementedError):
-            stats.KindStat()
-
-
-class TestNamespaceGlobalStat:
-    @staticmethod
-    def test_constructor():
-        with pytest.raises(NotImplementedError):
-            stats.NamespaceGlobalStat()
-
-
-class TestNamespaceKindCompositeIndexStat:
-    @staticmethod
-    def test_constructor():
-        with pytest.raises(NotImplementedError):
-            stats.NamespaceKindCompositeIndexStat()
-
-
-class TestNamespaceKindNonRootEntityStat:
-    @staticmethod
-    def test_constructor():
-        with pytest.raises(NotImplementedError):
-            stats.NamespaceKindNonRootEntityStat()
-
-
-class TestNamespaceKindPropertyNamePropertyTypeStat:
-    @staticmethod
-    def test_constructor():
-        with pytest.raises(NotImplementedError):
-            stats.NamespaceKindPropertyNamePropertyTypeStat()
-
-
-class TestNamespaceKindPropertyNameStat:
-    @staticmethod
-    def test_constructor():
-        with pytest.raises(NotImplementedError):
-            stats.NamespaceKindPropertyNameStat()
-
-
-class TestNamespaceKindPropertyTypeStat:
-    @staticmethod
-    def test_constructor():
-        with pytest.raises(NotImplementedError):
-            stats.NamespaceKindPropertyTypeStat()
-
-
-class TestNamespaceKindRootEntityStat:
-    @staticmethod
-    def test_constructor():
-        with pytest.raises(NotImplementedError):
-            stats.NamespaceKindRootEntityStat()
-
-
-class TestNamespaceKindStat:
-    @staticmethod
-    def test_constructor():
-        with pytest.raises(NotImplementedError):
-            stats.NamespaceKindStat()
-
-
-class TestNamespacePropertyTypeStat:
-    @staticmethod
-    def test_constructor():
-        with pytest.raises(NotImplementedError):
-            stats.NamespacePropertyTypeStat()
+        stat = stats.GlobalStat(composite_index_count=5, **DEFAULTS)
+        assert stat.bytes == 4
+        assert stat.count == 2
+        assert stat.entity_bytes == 0
+        assert stat.builtin_index_bytes == 0
+        assert stat.builtin_index_count == 0
+        assert stat.composite_index_bytes == 0
+        assert stat.composite_index_count == 5
 
 
 class TestNamespaceStat:
     @staticmethod
+    def test_get_kind():
+        kind = stats.NamespaceStat.STORED_KIND_NAME
+        assert stats.NamespaceStat._get_kind() == kind
+
+    @staticmethod
     def test_constructor():
-        with pytest.raises(NotImplementedError):
-            stats.NamespaceStat()
+        stat = stats.NamespaceStat(subject_namespace="test", **DEFAULTS)
+        assert stat.bytes == 4
+        assert stat.count == 2
+        assert stat.subject_namespace == "test"
+        assert stat.entity_bytes == 0
+        assert stat.builtin_index_bytes == 0
+        assert stat.builtin_index_count == 0
+        assert stat.composite_index_bytes == 0
+        assert stat.composite_index_count == 0
+
+
+class TestKindStat:
+    @staticmethod
+    def test_get_kind():
+        kind = stats.KindStat.STORED_KIND_NAME
+        assert stats.KindStat._get_kind() == kind
+
+    @staticmethod
+    def test_constructor():
+        stat = stats.KindStat(
+            kind_name="test_stat", composite_index_count=2, **DEFAULTS
+        )
+        assert stat.bytes == 4
+        assert stat.count == 2
+        assert stat.kind_name == "test_stat"
+        assert stat.entity_bytes == 0
+        assert stat.builtin_index_bytes == 0
+        assert stat.builtin_index_count == 0
+        assert stat.composite_index_bytes == 0
+        assert stat.composite_index_count == 2
+
+
+class TestKindRootEntityStat:
+    @staticmethod
+    def test_get_kind():
+        kind = stats.KindRootEntityStat.STORED_KIND_NAME
+        assert stats.KindRootEntityStat._get_kind() == kind
+
+    @staticmethod
+    def test_constructor():
+        stat = stats.KindRootEntityStat(kind_name="test_stat", **DEFAULTS)
+        assert stat.bytes == 4
+        assert stat.count == 2
+        assert stat.kind_name == "test_stat"
+        assert stat.entity_bytes == 0
+
+
+class TestKindNonRootEntityStat:
+    @staticmethod
+    def test_get_kind():
+        kind = stats.KindNonRootEntityStat.STORED_KIND_NAME
+        assert stats.KindNonRootEntityStat._get_kind() == kind
+
+    @staticmethod
+    def test_constructor():
+        stat = stats.KindNonRootEntityStat(kind_name="test_stat", **DEFAULTS)
+        assert stat.bytes == 4
+        assert stat.count == 2
+        assert stat.kind_name == "test_stat"
+        assert stat.entity_bytes == 0
 
 
 class TestPropertyTypeStat:
     @staticmethod
+    def test_get_kind():
+        kind = stats.PropertyTypeStat.STORED_KIND_NAME
+        assert stats.PropertyTypeStat._get_kind() == kind
+
+    @staticmethod
     def test_constructor():
-        with pytest.raises(NotImplementedError):
-            stats.PropertyTypeStat()
+        stat = stats.PropertyTypeStat(
+            property_type="test_property", **DEFAULTS
+        )
+        assert stat.bytes == 4
+        assert stat.count == 2
+        assert stat.property_type == "test_property"
+        assert stat.entity_bytes == 0
+        assert stat.builtin_index_bytes == 0
+        assert stat.builtin_index_count == 0
+
+
+class TestKindPropertyTypeStat:
+    @staticmethod
+    def test_get_kind():
+        kind = stats.KindPropertyTypeStat.STORED_KIND_NAME
+        assert stats.KindPropertyTypeStat._get_kind() == kind
+
+    @staticmethod
+    def test_constructor():
+        stat = stats.KindPropertyTypeStat(
+            kind_name="test_stat", property_type="test_property", **DEFAULTS
+        )
+        assert stat.bytes == 4
+        assert stat.count == 2
+        assert stat.kind_name == "test_stat"
+        assert stat.entity_bytes == 0
+        assert stat.property_type == "test_property"
+        assert stat.builtin_index_bytes == 0
+        assert stat.builtin_index_count == 0
+
+
+class TestKindPropertyNameStat:
+    @staticmethod
+    def test_get_kind():
+        kind = stats.KindPropertyNameStat.STORED_KIND_NAME
+        assert stats.KindPropertyNameStat._get_kind() == kind
+
+    @staticmethod
+    def test_constructor():
+        stat = stats.KindPropertyNameStat(
+            kind_name="test_stat", property_name="test_property", **DEFAULTS
+        )
+        assert stat.bytes == 4
+        assert stat.count == 2
+        assert stat.kind_name == "test_stat"
+        assert stat.entity_bytes == 0
+        assert stat.property_name == "test_property"
+        assert stat.builtin_index_bytes == 0
+        assert stat.builtin_index_count == 0
+
+
+class TestKindPropertyNamePropertyTypeStat:
+    @staticmethod
+    def test_get_kind():
+        kind = stats.KindPropertyNamePropertyTypeStat.STORED_KIND_NAME
+        assert stats.KindPropertyNamePropertyTypeStat._get_kind() == kind
+
+    @staticmethod
+    def test_constructor():
+        stat = stats.KindPropertyNamePropertyTypeStat(
+            kind_name="test_stat",
+            property_name="test_name",
+            property_type="test_type",
+            **DEFAULTS
+        )
+        assert stat.bytes == 4
+        assert stat.count == 2
+        assert stat.kind_name == "test_stat"
+        assert stat.entity_bytes == 0
+        assert stat.property_type == "test_type"
+        assert stat.property_name == "test_name"
+        assert stat.builtin_index_bytes == 0
+        assert stat.builtin_index_count == 0
+
+
+class TestKindCompositeIndexStat:
+    @staticmethod
+    def test_get_kind():
+        kind = stats.KindCompositeIndexStat.STORED_KIND_NAME
+        assert stats.KindCompositeIndexStat._get_kind() == kind
+
+    @staticmethod
+    def test_constructor():
+        stat = stats.KindCompositeIndexStat(
+            index_id=1, kind_name="test_kind", **DEFAULTS
+        )
+        assert stat.bytes == 4
+        assert stat.count == 2
+        assert stat.index_id == 1
+        assert stat.kind_name == "test_kind"
+
+
+class TestNamespaceGlobalStat:
+    @staticmethod
+    def test_get_kind():
+        kind = stats.NamespaceGlobalStat.STORED_KIND_NAME
+        assert stats.NamespaceGlobalStat._get_kind() == kind
+
+    @staticmethod
+    def test_constructor():
+        stat = stats.NamespaceGlobalStat(composite_index_count=5, **DEFAULTS)
+        assert stat.bytes == 4
+        assert stat.count == 2
+        assert stat.entity_bytes == 0
+        assert stat.builtin_index_bytes == 0
+        assert stat.builtin_index_count == 0
+        assert stat.composite_index_bytes == 0
+        assert stat.composite_index_count == 5
+
+
+class TestNamespaceKindCompositeIndexStat:
+    @staticmethod
+    def test_get_kind():
+        kind = stats.NamespaceKindCompositeIndexStat.STORED_KIND_NAME
+        assert stats.NamespaceKindCompositeIndexStat._get_kind() == kind
+
+    @staticmethod
+    def test_constructor():
+        stat = stats.NamespaceKindCompositeIndexStat(
+            index_id=1, kind_name="test_kind", **DEFAULTS
+        )
+        assert stat.bytes == 4
+        assert stat.count == 2
+        assert stat.index_id == 1
+        assert stat.kind_name == "test_kind"
+
+
+class TestNamespaceKindNonRootEntityStat:
+    @staticmethod
+    def test_get_kind():
+        kind = stats.NamespaceKindNonRootEntityStat.STORED_KIND_NAME
+        assert stats.NamespaceKindNonRootEntityStat._get_kind() == kind
+
+    @staticmethod
+    def test_constructor():
+        stat = stats.NamespaceKindNonRootEntityStat(
+            kind_name="test_stat", **DEFAULTS
+        )
+        assert stat.bytes == 4
+        assert stat.count == 2
+        assert stat.kind_name == "test_stat"
+        assert stat.entity_bytes == 0
+
+
+class TestNamespaceKindPropertyNamePropertyTypeStat:
+    @staticmethod
+    def test_get_kind():
+        kind = stats.NamespaceKindPropertyNamePropertyTypeStat.STORED_KIND_NAME
+        assert (
+            stats.NamespaceKindPropertyNamePropertyTypeStat._get_kind() == kind
+        )
+
+    @staticmethod
+    def test_constructor():
+        stat = stats.NamespaceKindPropertyNamePropertyTypeStat(
+            kind_name="test_stat",
+            property_name="test_name",
+            property_type="test_type",
+            **DEFAULTS
+        )
+        assert stat.bytes == 4
+        assert stat.count == 2
+        assert stat.kind_name == "test_stat"
+        assert stat.entity_bytes == 0
+        assert stat.property_type == "test_type"
+        assert stat.property_name == "test_name"
+        assert stat.builtin_index_bytes == 0
+        assert stat.builtin_index_count == 0
+
+
+class TestNamespaceKindPropertyNameStat:
+    @staticmethod
+    def test_get_kind():
+        kind = stats.NamespaceKindPropertyNameStat.STORED_KIND_NAME
+        assert stats.NamespaceKindPropertyNameStat._get_kind() == kind
+
+    @staticmethod
+    def test_constructor():
+        stat = stats.NamespaceKindPropertyNameStat(
+            kind_name="test_stat", property_name="test_property", **DEFAULTS
+        )
+        assert stat.bytes == 4
+        assert stat.count == 2
+        assert stat.kind_name == "test_stat"
+        assert stat.entity_bytes == 0
+        assert stat.property_name == "test_property"
+        assert stat.builtin_index_bytes == 0
+        assert stat.builtin_index_count == 0
+
+
+class TestNamespaceKindPropertyTypeStat:
+    @staticmethod
+    def test_get_kind():
+        kind = stats.NamespaceKindPropertyTypeStat.STORED_KIND_NAME
+        assert stats.NamespaceKindPropertyTypeStat._get_kind() == kind
+
+    @staticmethod
+    def test_constructor():
+        stat = stats.NamespaceKindPropertyTypeStat(
+            kind_name="test_stat", property_type="test_property", **DEFAULTS
+        )
+        assert stat.bytes == 4
+        assert stat.count == 2
+        assert stat.kind_name == "test_stat"
+        assert stat.entity_bytes == 0
+        assert stat.property_type == "test_property"
+        assert stat.builtin_index_bytes == 0
+        assert stat.builtin_index_count == 0
+
+
+class TestNamespaceKindRootEntityStat:
+    @staticmethod
+    def test_get_kind():
+        kind = stats.NamespaceKindRootEntityStat.STORED_KIND_NAME
+        assert stats.NamespaceKindRootEntityStat._get_kind() == kind
+
+    @staticmethod
+    def test_constructor():
+        stat = stats.NamespaceKindRootEntityStat(
+            kind_name="test_stat", **DEFAULTS
+        )
+        assert stat.bytes == 4
+        assert stat.count == 2
+        assert stat.kind_name == "test_stat"
+        assert stat.entity_bytes == 0
+
+
+class TestNamespacePropertyTypeStat:
+    @staticmethod
+    def test_get_kind():
+        kind = stats.NamespacePropertyTypeStat.STORED_KIND_NAME
+        assert stats.NamespacePropertyTypeStat._get_kind() == kind
+
+    @staticmethod
+    def test_constructor():
+        stat = stats.NamespacePropertyTypeStat(
+            property_type="test_property", **DEFAULTS
+        )
+        assert stat.bytes == 4
+        assert stat.count == 2
+        assert stat.property_type == "test_property"
+        assert stat.entity_bytes == 0
+        assert stat.builtin_index_bytes == 0
+        assert stat.builtin_index_count == 0
+
+
+class TestNamespaceKindStat:
+    @staticmethod
+    def test_get_kind():
+        kind = stats.NamespaceKindStat.STORED_KIND_NAME
+        assert stats.NamespaceKindStat._get_kind() == kind
+
+    @staticmethod
+    def test_constructor():
+        stat = stats.NamespaceKindStat(
+            kind_name="test_stat", composite_index_count=2, **DEFAULTS
+        )
+        assert stat.bytes == 4
+        assert stat.count == 2
+        assert stat.kind_name == "test_stat"
+        assert stat.entity_bytes == 0
+        assert stat.builtin_index_bytes == 0
+        assert stat.builtin_index_count == 0
+        assert stat.composite_index_bytes == 0
+        assert stat.composite_index_count == 2
