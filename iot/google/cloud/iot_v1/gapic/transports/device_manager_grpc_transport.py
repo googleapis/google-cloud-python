@@ -27,17 +27,17 @@ class DeviceManagerGrpcTransport(object):
     which can be used to take advantage of advanced
     features of gRPC.
     """
-
     # The scopes needed to make gRPC calls to all of the methods defined
     # in this service.
     _OAUTH_SCOPES = (
-        "https://www.googleapis.com/auth/cloud-platform",
-        "https://www.googleapis.com/auth/cloudiot",
+        'https://www.googleapis.com/auth/cloud-platform',
+        'https://www.googleapis.com/auth/cloudiot',
     )
 
-    def __init__(
-        self, channel=None, credentials=None, address="cloudiot.googleapis.com:443"
-    ):
+    def __init__(self,
+                 channel=None,
+                 credentials=None,
+                 address='cloudiot.googleapis.com:443'):
         """Instantiate the transport class.
 
         Args:
@@ -55,23 +55,29 @@ class DeviceManagerGrpcTransport(object):
         # exception (channels come with credentials baked in already).
         if channel is not None and credentials is not None:
             raise ValueError(
-                "The `channel` and `credentials` arguments are mutually " "exclusive."
-            )
+                'The `channel` and `credentials` arguments are mutually '
+                'exclusive.', )
 
         # Create the channel.
         if channel is None:
-            channel = self.create_channel(address=address, credentials=credentials)
+            channel = self.create_channel(
+                address=address,
+                credentials=credentials,
+            )
 
         self._channel = channel
 
         # gRPC uses objects called "stubs" that are bound to the
         # channel and provide a basic method for each RPC.
         self._stubs = {
-            "device_manager_stub": device_manager_pb2_grpc.DeviceManagerStub(channel)
+            'device_manager_stub':
+            device_manager_pb2_grpc.DeviceManagerStub(channel),
         }
 
     @classmethod
-    def create_channel(cls, address="cloudiot.googleapis.com:443", credentials=None):
+    def create_channel(cls,
+                       address='cloudiot.googleapis.com:443',
+                       credentials=None):
         """Create and return a gRPC channel object.
 
         Args:
@@ -86,7 +92,9 @@ class DeviceManagerGrpcTransport(object):
             grpc.Channel: A gRPC channel object.
         """
         return google.api_core.grpc_helpers.create_channel(
-            address, credentials=credentials, scopes=cls._OAUTH_SCOPES
+            address,
+            credentials=credentials,
+            scopes=cls._OAUTH_SCOPES,
         )
 
     @property
@@ -109,7 +117,7 @@ class DeviceManagerGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["device_manager_stub"].CreateDeviceRegistry
+        return self._stubs['device_manager_stub'].CreateDeviceRegistry
 
     @property
     def get_device_registry(self):
@@ -122,7 +130,7 @@ class DeviceManagerGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["device_manager_stub"].GetDeviceRegistry
+        return self._stubs['device_manager_stub'].GetDeviceRegistry
 
     @property
     def update_device_registry(self):
@@ -135,7 +143,7 @@ class DeviceManagerGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["device_manager_stub"].UpdateDeviceRegistry
+        return self._stubs['device_manager_stub'].UpdateDeviceRegistry
 
     @property
     def delete_device_registry(self):
@@ -148,7 +156,7 @@ class DeviceManagerGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["device_manager_stub"].DeleteDeviceRegistry
+        return self._stubs['device_manager_stub'].DeleteDeviceRegistry
 
     @property
     def list_device_registries(self):
@@ -161,7 +169,7 @@ class DeviceManagerGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["device_manager_stub"].ListDeviceRegistries
+        return self._stubs['device_manager_stub'].ListDeviceRegistries
 
     @property
     def create_device(self):
@@ -174,7 +182,7 @@ class DeviceManagerGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["device_manager_stub"].CreateDevice
+        return self._stubs['device_manager_stub'].CreateDevice
 
     @property
     def get_device(self):
@@ -187,7 +195,7 @@ class DeviceManagerGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["device_manager_stub"].GetDevice
+        return self._stubs['device_manager_stub'].GetDevice
 
     @property
     def update_device(self):
@@ -200,7 +208,7 @@ class DeviceManagerGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["device_manager_stub"].UpdateDevice
+        return self._stubs['device_manager_stub'].UpdateDevice
 
     @property
     def delete_device(self):
@@ -213,7 +221,7 @@ class DeviceManagerGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["device_manager_stub"].DeleteDevice
+        return self._stubs['device_manager_stub'].DeleteDevice
 
     @property
     def list_devices(self):
@@ -226,7 +234,7 @@ class DeviceManagerGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["device_manager_stub"].ListDevices
+        return self._stubs['device_manager_stub'].ListDevices
 
     @property
     def modify_cloud_to_device_config(self):
@@ -241,7 +249,7 @@ class DeviceManagerGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["device_manager_stub"].ModifyCloudToDeviceConfig
+        return self._stubs['device_manager_stub'].ModifyCloudToDeviceConfig
 
     @property
     def list_device_config_versions(self):
@@ -255,7 +263,7 @@ class DeviceManagerGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["device_manager_stub"].ListDeviceConfigVersions
+        return self._stubs['device_manager_stub'].ListDeviceConfigVersions
 
     @property
     def list_device_states(self):
@@ -269,7 +277,7 @@ class DeviceManagerGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["device_manager_stub"].ListDeviceStates
+        return self._stubs['device_manager_stub'].ListDeviceStates
 
     @property
     def set_iam_policy(self):
@@ -283,7 +291,7 @@ class DeviceManagerGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["device_manager_stub"].SetIamPolicy
+        return self._stubs['device_manager_stub'].SetIamPolicy
 
     @property
     def get_iam_policy(self):
@@ -298,7 +306,7 @@ class DeviceManagerGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["device_manager_stub"].GetIamPolicy
+        return self._stubs['device_manager_stub'].GetIamPolicy
 
     @property
     def test_iam_permissions(self):
@@ -313,7 +321,7 @@ class DeviceManagerGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["device_manager_stub"].TestIamPermissions
+        return self._stubs['device_manager_stub'].TestIamPermissions
 
     @property
     def send_command_to_device(self):
@@ -338,7 +346,7 @@ class DeviceManagerGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["device_manager_stub"].SendCommandToDevice
+        return self._stubs['device_manager_stub'].SendCommandToDevice
 
     @property
     def bind_device_to_gateway(self):
@@ -351,7 +359,7 @@ class DeviceManagerGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["device_manager_stub"].BindDeviceToGateway
+        return self._stubs['device_manager_stub'].BindDeviceToGateway
 
     @property
     def unbind_device_from_gateway(self):
@@ -364,4 +372,4 @@ class DeviceManagerGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["device_manager_stub"].UnbindDeviceFromGateway
+        return self._stubs['device_manager_stub'].UnbindDeviceFromGateway

@@ -39,7 +39,10 @@ _shared_modules = [
     status_pb2,
 ]
 
-_local_modules = [device_manager_pb2, resources_pb2]
+_local_modules = [
+    device_manager_pb2,
+    resources_pb2,
+]
 
 names = []
 
@@ -49,7 +52,7 @@ for module in _shared_modules:
         names.append(name)
 for module in _local_modules:
     for name, message in get_messages(module).items():
-        message.__module__ = "google.cloud.iot_v1.types"
+        message.__module__ = 'google.cloud.iot_v1.types'
         setattr(sys.modules[__name__], name, message)
         names.append(name)
 
