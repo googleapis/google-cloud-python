@@ -65,9 +65,10 @@ class Namespace(_BaseMetadata):
         """Return the Key for a namespace.
 
     Args:
-      namespace: A string giving the namespace whose key is requested.
+        namespace (str): A string giving the namespace whose key is requested.
+
     Returns:
-      The Key for the namespace.
+        key.Key: The Key for the namespace.
     """
         if namespace:
             return model.Key(cls.KIND_NAME, namespace)
@@ -79,9 +80,10 @@ class Namespace(_BaseMetadata):
         """Return the namespace specified by a given __namespace__ key.
 
     Args:
-      key: key whose name is requested.
+        key (key.Key): key whose name is requested.
+
     Returns:
-      The namespace specified by key.
+        str: The namespace specified by key.
     """
         return key.string_id() or ""
 
@@ -101,9 +103,10 @@ class Kind(_BaseMetadata):
         """Return the __kind__ key for kind.
 
     Args:
-      kind: kind whose key is requested.
+        kind (Kind): kind whose key is requested.
+
     Returns:
-      The key for kind.
+        key.Key: key for kind.
     """
         return model.Key(cls.KIND_NAME, kind)
 
@@ -112,9 +115,10 @@ class Kind(_BaseMetadata):
         """Return the kind specified by a given __kind__ key.
 
     Args:
-      key: key whose name is requested.
+        key (key.Key): key whose name is requested.
+
     Returns:
-      The kind specified by key.
+        Kind: The kind specified by key.
     """
         return key.id()
 
@@ -141,9 +145,10 @@ class Property(_BaseMetadata):
         """Return the __property__ key for kind.
 
     Args:
-      kind: kind whose key is requested.
+        kind (Kind): kind whose key is requested.
+
     Returns:
-      The parent key for __property__ keys of kind.
+        key.Key: The parent key for __property__ keys of kind.
     """
         return model.Key(Kind.KIND_NAME, kind)
 
@@ -152,10 +157,11 @@ class Property(_BaseMetadata):
         """Return the __property__ key for property of kind.
 
     Args:
-      kind: kind whose key is requested.
-      property: property whose key is requested.
+        kind (Kind): kind whose key is requested.
+        property (Property): property whose key is requested.
+
     Returns:
-      The key for property of kind.
+        key.Key: The key for property of kind.
     """
         return model.Key(Kind.KIND_NAME, kind, Property.KIND_NAME, property)
 
@@ -164,9 +170,10 @@ class Property(_BaseMetadata):
         """Return the kind specified by a given __property__ key.
 
     Args:
-      key: key whose kind name is requested.
+        key (key.Key): key whose kind name is requested.
+
     Returns:
-      The kind specified by key.
+        Kind: The kind specified by key.
     """
         if key.kind() == Kind.KIND_NAME:
             return key.id()
@@ -178,9 +185,11 @@ class Property(_BaseMetadata):
         """Return the property specified by a given __property__ key.
 
     Args:
-      key: key whose property name is requested.
+        key (key.Key): key whose property name is requested.
+
     Returns:
-      property specified by key, or None if the key specified only a kind.
+        Property: property specified by key, or None if the key specified only a
+            kind.
     """
         if key.kind() == Kind.KIND_NAME:
             return None
@@ -208,9 +217,10 @@ class EntityGroup(_BaseMetadata):
         """Return the key for the entity group containing key.
 
     Args:
-      key: a key for an entity group whose __entity_group__ key you want.
+        key (key.Key): a key for an entity group whose __entity_group__ key you want.
+
     Returns:
-      The __entity_group__ key for the entity group containing key.
+        key.Key: The __entity_group__ key for the entity group containing key.
     """
         return model.Key(cls.KIND_NAME, cls.ID, parent=key.root())
 
