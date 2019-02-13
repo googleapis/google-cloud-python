@@ -36,4 +36,6 @@ google.cloud.bigquery.table.EncryptionConfiguration
     <p>
 
 .. autoclass:: EncryptionConfiguration
+   :show-inheritance:
+   :inherited-members:
    :members:

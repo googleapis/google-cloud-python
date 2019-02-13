@@ -31,4 +31,6 @@ google.cloud.bigquery.magics.Context
     <p>
 
 .. autoclass:: Context
+   :show-inheritance:
+   :inherited-members:
    :members:

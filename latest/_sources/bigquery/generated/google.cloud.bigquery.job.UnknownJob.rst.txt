@@ -83,4 +83,6 @@ google.cloud.bigquery.job.UnknownJob
     <p>
 
 .. autoclass:: UnknownJob
+   :show-inheritance:
+   :inherited-members:
    :members:

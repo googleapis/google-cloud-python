@@ -44,4 +44,6 @@ google.cloud.bigquery.dataset.DatasetReference
     <p>
 
 .. autoclass:: DatasetReference
+   :show-inheritance:
+   :inherited-members:
    :members:

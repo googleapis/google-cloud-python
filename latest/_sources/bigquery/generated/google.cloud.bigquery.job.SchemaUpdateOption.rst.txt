@@ -25,4 +25,6 @@ google.cloud.bigquery.job.SchemaUpdateOption
     <p>
 
 .. autoclass:: SchemaUpdateOption
+   :show-inheritance:
+   :inherited-members:
    :members:

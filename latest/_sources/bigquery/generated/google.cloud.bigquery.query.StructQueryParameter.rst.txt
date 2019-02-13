@@ -33,4 +33,6 @@ google.cloud.bigquery.query.StructQueryParameter
     <p>
 
 .. autoclass:: StructQueryParameter
+   :show-inheritance:
+   :inherited-members:
    :members:

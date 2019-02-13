@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery.job.QueryJobConfig &#8212; google-cloud f4e3942 documentation</title>
+    <title>google.cloud.bigquery.job.QueryJobConfig &#8212; google-cloud 04118f1 documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -44,7 +44,7 @@
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_api_repr</span></code>(resource)</td>
+<tr class="row-odd"><td><a class="reference internal" href="#google.cloud.bigquery.job.QueryJobConfig.from_api_repr" title="google.cloud.bigquery.job.QueryJobConfig.from_api_repr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_api_repr</span></code></a>(resource)</td>
 <td>Factory: construct a job configuration given its API representation</td>
 </tr>
 <tr class="row-even"><td><a class="reference internal" href="#google.cloud.bigquery.job.QueryJobConfig.to_api_repr" title="google.cloud.bigquery.job.QueryJobConfig.to_api_repr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_api_repr</span></code></a>()</td>
@@ -83,7 +83,7 @@
 <tr class="row-even"><td><a class="reference internal" href="#google.cloud.bigquery.job.QueryJobConfig.flatten_results" title="google.cloud.bigquery.job.QueryJobConfig.flatten_results"><code class="xref py py-obj docutils literal notranslate"><span class="pre">flatten_results</span></code></a></td>
 <td>Flatten nested/repeated fields in results.</td>
 </tr>
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">labels</span></code></td>
+<tr class="row-odd"><td><a class="reference internal" href="#google.cloud.bigquery.job.QueryJobConfig.labels" title="google.cloud.bigquery.job.QueryJobConfig.labels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">labels</span></code></a></td>
 <td>Labels for the job.</td>
 </tr>
 <tr class="row-even"><td><a class="reference internal" href="#google.cloud.bigquery.job.QueryJobConfig.maximum_billing_tier" title="google.cloud.bigquery.job.QueryJobConfig.maximum_billing_tier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">maximum_billing_tier</span></code></a></td>
@@ -126,7 +126,8 @@
 <p><dl class="class">
 <dt id="google.cloud.bigquery.job.QueryJobConfig">
 <em class="property">class </em><code class="descclassname">google.cloud.bigquery.job.</code><code class="descname">QueryJobConfig</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/google/cloud/bigquery/job.html#QueryJobConfig"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.job.QueryJobConfig" title="Permalink to this definition">#</a></dt>
-<dd><p>Configuration options for query jobs.</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.bigquery.job._JobConfig</span></code></p>
+<p>Configuration options for query jobs.</p>
 <p>All properties in this class are optional. Values which are <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a> -&gt;
 server defaults. Set properties on the constructed configuration by using
 the property name as the name of a keyword argument.</p>
@@ -266,6 +267,44 @@ costs.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)">bool</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="google.cloud.bigquery.job.QueryJobConfig.from_api_repr">
+<em class="property">classmethod </em><code class="descname">from_api_repr</code><span class="sig-paren">(</span><em>resource</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.bigquery.job.QueryJobConfig.from_api_repr" title="Permalink to this definition">#</a></dt>
+<dd><p>Factory: construct a job configuration given its API representation</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>resource</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – An extract job configuration in the same representation as is
+returned from the API.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.bigquery.job._JobConfig</span></code></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Configuration parsed from <code class="docutils literal notranslate"><span class="pre">resource</span></code>.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery.job.QueryJobConfig.labels">
+<code class="descname">labels</code><a class="headerlink" href="#google.cloud.bigquery.job.QueryJobConfig.labels" title="Permalink to this definition">#</a></dt>
+<dd><p>Labels for the job.</p>
+<p>This method always returns a dict. To change a job’s labels,
+modify the dict, then call <code class="docutils literal notranslate"><span class="pre">Client.update_job</span></code>. To delete a
+label, set its value to <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a> before updating.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If <code class="docutils literal notranslate"><span class="pre">value</span></code> type is invalid.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Type:</th><td class="field-body">Dict[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a>]</td>
 </tr>
 </tbody>
 </table>

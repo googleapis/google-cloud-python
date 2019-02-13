@@ -55,4 +55,6 @@ google.cloud.bigquery.job.QueryJobConfig
     <p>
 
 .. autoclass:: QueryJobConfig
+   :show-inheritance:
+   :inherited-members:
    :members:

@@ -26,4 +26,6 @@ google.cloud.bigquery.job.WriteDisposition
     <p>
 
 .. autoclass:: WriteDisposition
+   :show-inheritance:
+   :inherited-members:
    :members:

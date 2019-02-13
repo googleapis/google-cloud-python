@@ -24,4 +24,6 @@ google.cloud.bigquery.query.UDFResource
     <p>
 
 .. autoclass:: UDFResource
+   :show-inheritance:
+   :inherited-members:
    :members:

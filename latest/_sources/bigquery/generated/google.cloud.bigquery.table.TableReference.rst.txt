@@ -45,4 +45,6 @@ google.cloud.bigquery.table.TableReference
     <p>
 
 .. autoclass:: TableReference
+   :show-inheritance:
+   :inherited-members:
    :members:

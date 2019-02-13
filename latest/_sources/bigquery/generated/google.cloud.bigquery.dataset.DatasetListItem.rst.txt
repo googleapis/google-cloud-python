@@ -38,4 +38,6 @@ google.cloud.bigquery.dataset.DatasetListItem
     <p>
 
 .. autoclass:: DatasetListItem
+   :show-inheritance:
+   :inherited-members:
    :members:

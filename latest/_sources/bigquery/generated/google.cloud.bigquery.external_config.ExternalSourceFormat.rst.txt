@@ -29,4 +29,6 @@ google.cloud.bigquery.external\_config.ExternalSourceFormat
     <p>
 
 .. autoclass:: ExternalSourceFormat
+   :show-inheritance:
+   :inherited-members:
    :members:

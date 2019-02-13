@@ -86,4 +86,6 @@ google.cloud.bigquery.job.CopyJob
     <p>
 
 .. autoclass:: CopyJob
+   :show-inheritance:
+   :inherited-members:
    :members:

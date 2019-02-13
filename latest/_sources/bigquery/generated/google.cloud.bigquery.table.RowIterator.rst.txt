@@ -35,4 +35,6 @@ google.cloud.bigquery.table.RowIterator
     <p>
 
 .. autoclass:: RowIterator
+   :show-inheritance:
+   :inherited-members:
    :members:

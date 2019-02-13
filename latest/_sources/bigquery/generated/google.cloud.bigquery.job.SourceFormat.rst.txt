@@ -29,4 +29,6 @@ google.cloud.bigquery.job.SourceFormat
     <p>
 
 .. autoclass:: SourceFormat
+   :show-inheritance:
+   :inherited-members:
    :members:

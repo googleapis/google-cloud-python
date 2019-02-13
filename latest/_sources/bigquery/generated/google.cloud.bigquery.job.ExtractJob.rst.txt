@@ -88,4 +88,6 @@ google.cloud.bigquery.job.ExtractJob
     <p>
 
 .. autoclass:: ExtractJob
+   :show-inheritance:
+   :inherited-members:
    :members:

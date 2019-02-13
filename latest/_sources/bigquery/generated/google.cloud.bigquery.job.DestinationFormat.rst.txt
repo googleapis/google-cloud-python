@@ -26,4 +26,6 @@ google.cloud.bigquery.job.DestinationFormat
     <p>
 
 .. autoclass:: DestinationFormat
+   :show-inheritance:
+   :inherited-members:
    :members:

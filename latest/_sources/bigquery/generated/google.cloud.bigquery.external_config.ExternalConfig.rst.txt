@@ -43,4 +43,6 @@ google.cloud.bigquery.external\_config.ExternalConfig
     <p>
 
 .. autoclass:: ExternalConfig
+   :show-inheritance:
+   :inherited-members:
    :members:

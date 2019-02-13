@@ -47,4 +47,6 @@ google.cloud.bigquery.table.TableListItem
     <p>
 
 .. autoclass:: TableListItem
+   :show-inheritance:
+   :inherited-members:
    :members:

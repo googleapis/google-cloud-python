@@ -41,4 +41,6 @@ google.cloud.bigquery.external\_config.BigtableColumn
     <p>
 
 .. autoclass:: BigtableColumn
+   :show-inheritance:
+   :inherited-members:
    :members:

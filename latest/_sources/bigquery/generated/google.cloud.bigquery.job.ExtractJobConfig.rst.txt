@@ -40,4 +40,6 @@ google.cloud.bigquery.job.ExtractJobConfig
     <p>
 
 .. autoclass:: ExtractJobConfig
+   :show-inheritance:
+   :inherited-members:
    :members:

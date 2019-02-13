@@ -39,4 +39,6 @@ google.cloud.bigquery.table.TimePartitioning
     <p>
 
 .. autoclass:: TimePartitioning
+   :show-inheritance:
+   :inherited-members:
    :members:

@@ -41,4 +41,6 @@ google.cloud.bigquery.external\_config.CSVOptions
     <p>
 
 .. autoclass:: CSVOptions
+   :show-inheritance:
+   :inherited-members:
    :members:

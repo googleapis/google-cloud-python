@@ -27,4 +27,6 @@ google.cloud.bigquery.job.Compression
     <p>
 
 .. autoclass:: Compression
+   :show-inheritance:
+   :inherited-members:
    :members:

@@ -115,4 +115,6 @@ google.cloud.bigquery.client.Client
     <p>
 
 .. autoclass:: Client
+   :show-inheritance:
+   :inherited-members:
    :members:

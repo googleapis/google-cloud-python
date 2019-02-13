@@ -69,4 +69,6 @@ google.cloud.bigquery.table.Table
     <p>
 
 .. autoclass:: Table
+   :show-inheritance:
+   :inherited-members:
    :members:

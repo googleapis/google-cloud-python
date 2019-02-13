@@ -36,4 +36,6 @@ google.cloud.bigquery.table.Row
     <p>
 
 .. autoclass:: Row
+   :show-inheritance:
+   :inherited-members:
    :members:

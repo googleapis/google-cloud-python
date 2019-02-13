@@ -33,4 +33,6 @@ google.cloud.bigquery.query.ScalarQueryParameter
     <p>
 
 .. autoclass:: ScalarQueryParameter
+   :show-inheritance:
+   :inherited-members:
    :members:

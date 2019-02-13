@@ -119,4 +119,6 @@ google.cloud.bigquery.job.QueryJob
     <p>
 
 .. autoclass:: QueryJob
+   :show-inheritance:
+   :inherited-members:
    :members:

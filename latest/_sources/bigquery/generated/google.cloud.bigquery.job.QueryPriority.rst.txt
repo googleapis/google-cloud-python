@@ -25,4 +25,6 @@ google.cloud.bigquery.job.QueryPriority
     <p>
 
 .. autoclass:: QueryPriority
+   :show-inheritance:
+   :inherited-members:
    :members:

@@ -56,4 +56,6 @@ google.cloud.bigquery.dataset.Dataset
     <p>
 
 .. autoclass:: Dataset
+   :show-inheritance:
+   :inherited-members:
    :members:

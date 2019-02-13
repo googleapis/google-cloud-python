@@ -25,4 +25,6 @@ google.cloud.bigquery.job.CreateDisposition
     <p>
 
 .. autoclass:: CreateDisposition
+   :show-inheritance:
+   :inherited-members:
    :members:

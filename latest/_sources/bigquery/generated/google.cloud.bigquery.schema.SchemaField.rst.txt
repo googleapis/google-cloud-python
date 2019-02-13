@@ -41,4 +41,6 @@ google.cloud.bigquery.schema.SchemaField
     <p>
 
 .. autoclass:: SchemaField
+   :show-inheritance:
+   :inherited-members:
    :members:
