@@ -50,7 +50,10 @@ class ChannelStub(object):
         self.responses = responses
         self.requests = []
 
-    def unary_unary(self, method, request_serializer=None, response_deserializer=None):
+    def unary_unary(self,
+                    method,
+                    request_serializer=None,
+                    response_deserializer=None):
         return MultiCallableStub(method, self)
 
 
@@ -63,18 +66,17 @@ class TestReportErrorsServiceClient(object):
         # Setup Expected Response
         expected_response = {}
         expected_response = report_errors_service_pb2.ReportErrorEventResponse(
-            **expected_response
-        )
+            **expected_response)
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
         with patch as create_channel:
             create_channel.return_value = channel
             client = errorreporting_v1beta1.ReportErrorsServiceClient()
 
         # Setup Request
-        project_name = client.project_path("[PROJECT]")
+        project_name = client.project_path('[PROJECT]')
         event = {}
 
         response = client.report_error_event(project_name, event)
@@ -82,21 +84,20 @@ class TestReportErrorsServiceClient(object):
 
         assert len(channel.requests) == 1
         expected_request = report_errors_service_pb2.ReportErrorEventRequest(
-            project_name=project_name, event=event
-        )
+            project_name=project_name, event=event)
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
     def test_report_error_event_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
         with patch as create_channel:
             create_channel.return_value = channel
             client = errorreporting_v1beta1.ReportErrorsServiceClient()
 
         # Setup request
-        project_name = client.project_path("[PROJECT]")
+        project_name = client.project_path('[PROJECT]')
         event = {}
 
         with pytest.raises(CustomException):
