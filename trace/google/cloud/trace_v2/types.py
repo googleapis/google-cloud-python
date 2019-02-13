@@ -27,9 +27,18 @@ from google.protobuf import timestamp_pb2
 from google.protobuf import wrappers_pb2
 from google.rpc import status_pb2
 
-_shared_modules = [any_pb2, empty_pb2, timestamp_pb2, wrappers_pb2, status_pb2]
+_shared_modules = [
+    any_pb2,
+    empty_pb2,
+    timestamp_pb2,
+    wrappers_pb2,
+    status_pb2,
+]
 
-_local_modules = [trace_pb2, tracing_pb2]
+_local_modules = [
+    trace_pb2,
+    tracing_pb2,
+]
 
 names = []
 
@@ -39,7 +48,7 @@ for module in _shared_modules:
         names.append(name)
 for module in _local_modules:
     for name, message in get_messages(module).items():
-        message.__module__ = "google.cloud.trace_v2.types"
+        message.__module__ = 'google.cloud.trace_v2.types'
         setattr(sys.modules[__name__], name, message)
         names.append(name)
 
