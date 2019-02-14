@@ -28,32 +28,25 @@ import google.api_core.operations_v1
 import grpc
 
 from google.cloud.videointelligence_v1p2beta1.gapic import enums
-from google.cloud.videointelligence_v1p2beta1.gapic import (
-    video_intelligence_service_client_config,
-)
-from google.cloud.videointelligence_v1p2beta1.gapic.transports import (
-    video_intelligence_service_grpc_transport,
-)
+from google.cloud.videointelligence_v1p2beta1.gapic import video_intelligence_service_client_config
+from google.cloud.videointelligence_v1p2beta1.gapic.transports import video_intelligence_service_grpc_transport
 from google.cloud.videointelligence_v1p2beta1.proto import video_intelligence_pb2
 from google.cloud.videointelligence_v1p2beta1.proto import video_intelligence_pb2_grpc
 from google.longrunning import operations_pb2
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
-    "google-cloud-videointelligence"
-).version
+    'google-cloud-videointelligence', ).version
 
 
 class VideoIntelligenceServiceClient(object):
     """Service that implements Google Cloud Video Intelligence API."""
 
-    SERVICE_ADDRESS = "videointelligence.googleapis.com:443"
+    SERVICE_ADDRESS = 'videointelligence.googleapis.com:443'
     """The default address of the service."""
 
     # The name of the interface for this client. This is the key used to
     # find the method configuration in the client_config dictionary.
-    _INTERFACE_NAME = (
-        "google.cloud.videointelligence.v1p2beta1.VideoIntelligenceService"
-    )
+    _INTERFACE_NAME = 'google.cloud.videointelligence.v1p2beta1.VideoIntelligenceService'
 
     @classmethod
     def from_service_account_file(cls, filename, *args, **kwargs):
@@ -69,20 +62,19 @@ class VideoIntelligenceServiceClient(object):
         Returns:
             VideoIntelligenceServiceClient: The constructed client.
         """
-        credentials = service_account.Credentials.from_service_account_file(filename)
-        kwargs["credentials"] = credentials
+        credentials = service_account.Credentials.from_service_account_file(
+            filename)
+        kwargs['credentials'] = credentials
         return cls(*args, **kwargs)
 
     from_service_account_json = from_service_account_file
 
-    def __init__(
-        self,
-        transport=None,
-        channel=None,
-        credentials=None,
-        client_config=None,
-        client_info=None,
-    ):
+    def __init__(self,
+                 transport=None,
+                 channel=None,
+                 credentials=None,
+                 client_config=None,
+                 client_info=None):
         """Constructor.
 
         Args:
@@ -116,19 +108,18 @@ class VideoIntelligenceServiceClient(object):
         # Raise deprecation warnings for things we want to go away.
         if client_config is not None:
             warnings.warn(
-                "The `client_config` argument is deprecated.",
+                'The `client_config` argument is deprecated.',
                 PendingDeprecationWarning,
-                stacklevel=2,
-            )
+                stacklevel=2)
         else:
             client_config = video_intelligence_service_client_config.config
 
         if channel:
             warnings.warn(
-                "The `channel` argument is deprecated; use " "`transport` instead.",
+                'The `channel` argument is deprecated; use '
+                '`transport` instead.',
                 PendingDeprecationWarning,
-                stacklevel=2,
-            )
+                stacklevel=2)
 
         # Instantiate the transport.
         # The transport is responsible for handling serialization and
@@ -137,24 +128,25 @@ class VideoIntelligenceServiceClient(object):
             if callable(transport):
                 self.transport = transport(
                     credentials=credentials,
-                    default_class=video_intelligence_service_grpc_transport.VideoIntelligenceServiceGrpcTransport,
+                    default_class=video_intelligence_service_grpc_transport.
+                    VideoIntelligenceServiceGrpcTransport,
                 )
             else:
                 if credentials:
                     raise ValueError(
-                        "Received both a transport instance and "
-                        "credentials; these are mutually exclusive."
-                    )
+                        'Received both a transport instance and '
+                        'credentials; these are mutually exclusive.')
                 self.transport = transport
         else:
             self.transport = video_intelligence_service_grpc_transport.VideoIntelligenceServiceGrpcTransport(
-                address=self.SERVICE_ADDRESS, channel=channel, credentials=credentials
+                address=self.SERVICE_ADDRESS,
+                channel=channel,
+                credentials=credentials,
             )
 
         if client_info is None:
             client_info = google.api_core.gapic_v1.client_info.ClientInfo(
-                gapic_version=_GAPIC_LIBRARY_VERSION
-            )
+                gapic_version=_GAPIC_LIBRARY_VERSION, )
         else:
             client_info.gapic_version = _GAPIC_LIBRARY_VERSION
         self._client_info = client_info
@@ -164,8 +156,7 @@ class VideoIntelligenceServiceClient(object):
         # (Ordinarily, these are the defaults specified in the `*_config.py`
         # file next to this one.)
         self._method_configs = google.api_core.gapic_v1.config.parse_method_configs(
-            client_config["interfaces"][self._INTERFACE_NAME]
-        )
+            client_config['interfaces'][self._INTERFACE_NAME], )
 
         # Save a dictionary of cached API call functions.
         # These are the actual callables which invoke the proper
@@ -174,18 +165,16 @@ class VideoIntelligenceServiceClient(object):
         self._inner_api_calls = {}
 
     # Service calls
-    def annotate_video(
-        self,
-        input_uri=None,
-        input_content=None,
-        features=None,
-        video_context=None,
-        output_uri=None,
-        location_id=None,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
+    def annotate_video(self,
+                       input_uri=None,
+                       input_content=None,
+                       features=None,
+                       video_context=None,
+                       output_uri=None,
+                       location_id=None,
+                       retry=google.api_core.gapic_v1.method.DEFAULT,
+                       timeout=google.api_core.gapic_v1.method.DEFAULT,
+                       metadata=None):
         """
         Performs asynchronous video annotation. Progress and results can be
         retrieved through the ``google.longrunning.Operations`` interface.
@@ -262,15 +251,15 @@ class VideoIntelligenceServiceClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if "annotate_video" not in self._inner_api_calls:
+        if 'annotate_video' not in self._inner_api_calls:
             self._inner_api_calls[
-                "annotate_video"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.annotate_video,
-                default_retry=self._method_configs["AnnotateVideo"].retry,
-                default_timeout=self._method_configs["AnnotateVideo"].timeout,
-                client_info=self._client_info,
-            )
+                'annotate_video'] = google.api_core.gapic_v1.method.wrap_method(
+                    self.transport.annotate_video,
+                    default_retry=self._method_configs['AnnotateVideo'].retry,
+                    default_timeout=self._method_configs['AnnotateVideo'].
+                    timeout,
+                    client_info=self._client_info,
+                )
 
         request = video_intelligence_pb2.AnnotateVideoRequest(
             input_uri=input_uri,
@@ -280,9 +269,8 @@ class VideoIntelligenceServiceClient(object):
             output_uri=output_uri,
             location_id=location_id,
         )
-        operation = self._inner_api_calls["annotate_video"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
+        operation = self._inner_api_calls['annotate_video'](
+            request, retry=retry, timeout=timeout, metadata=metadata)
         return google.api_core.operation.from_gapic(
             operation,
             self.transport._operations_client,
