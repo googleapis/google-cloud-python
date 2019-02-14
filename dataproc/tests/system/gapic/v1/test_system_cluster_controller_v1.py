@@ -23,9 +23,9 @@ from google.cloud.dataproc_v1.proto import clusters_pb2
 
 class TestSystemClusterController(object):
     def test_list_clusters(self):
-        project_id = os.environ["PROJECT_ID"]
+        project_id = os.environ['PROJECT_ID']
 
         client = dataproc_v1.ClusterControllerClient()
         project_id_2 = project_id
-        region = "global"
+        region = 'global'
         response = client.list_clusters(project_id_2, region)
