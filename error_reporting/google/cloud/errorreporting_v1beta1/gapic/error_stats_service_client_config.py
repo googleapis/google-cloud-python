@@ -3,7 +3,7 @@ config = {
         "google.devtools.clouderrorreporting.v1beta1.ErrorStatsService": {
             "retry_codes": {
                 "idempotent": ["DEADLINE_EXCEEDED", "UNAVAILABLE"],
-                "non_idempotent": [],
+                "non_idempotent": []
             },
             "retry_params": {
                 "default": {
@@ -13,26 +13,26 @@ config = {
                     "initial_rpc_timeout_millis": 20000,
                     "rpc_timeout_multiplier": 1.0,
                     "max_rpc_timeout_millis": 20000,
-                    "total_timeout_millis": 600000,
+                    "total_timeout_millis": 600000
                 }
             },
             "methods": {
                 "ListGroupStats": {
                     "timeout_millis": 60000,
                     "retry_codes_name": "idempotent",
-                    "retry_params_name": "default",
+                    "retry_params_name": "default"
                 },
                 "ListEvents": {
                     "timeout_millis": 60000,
                     "retry_codes_name": "idempotent",
-                    "retry_params_name": "default",
+                    "retry_params_name": "default"
                 },
                 "DeleteEvents": {
                     "timeout_millis": 60000,
                     "retry_codes_name": "idempotent",
-                    "retry_params_name": "default",
-                },
-            },
+                    "retry_params_name": "default"
+                }
+            }
         }
     }
 }
