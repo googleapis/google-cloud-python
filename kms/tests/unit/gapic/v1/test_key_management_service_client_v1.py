@@ -57,7 +57,10 @@ class ChannelStub(object):
         self.responses = responses
         self.requests = []
 
-    def unary_unary(self, method, request_serializer=None, response_deserializer=None):
+    def unary_unary(self,
+                    method,
+                    request_serializer=None,
+                    response_deserializer=None):
         return MultiCallableStub(method, self)
 
 
@@ -68,26 +71,27 @@ class CustomException(Exception):
 class TestKeyManagementServiceClient(object):
     def test_list_key_rings(self):
         # Setup Expected Response
-        next_page_token = ""
+        next_page_token = ''
         total_size = 705419236
         key_rings_element = {}
         key_rings = [key_rings_element]
         expected_response = {
-            "next_page_token": next_page_token,
-            "total_size": total_size,
-            "key_rings": key_rings,
+            'next_page_token': next_page_token,
+            'total_size': total_size,
+            'key_rings': key_rings
         }
-        expected_response = service_pb2.ListKeyRingsResponse(**expected_response)
+        expected_response = service_pb2.ListKeyRingsResponse(
+            **expected_response)
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
         with patch as create_channel:
             create_channel.return_value = channel
             client = kms_v1.KeyManagementServiceClient()
 
         # Setup Request
-        parent = client.location_path("[PROJECT]", "[LOCATION]")
+        parent = client.location_path('[PROJECT]', '[LOCATION]')
 
         paged_list_response = client.list_key_rings(parent)
         resources = list(paged_list_response)
@@ -102,13 +106,13 @@ class TestKeyManagementServiceClient(object):
 
     def test_list_key_rings_exception(self):
         channel = ChannelStub(responses=[CustomException()])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
         with patch as create_channel:
             create_channel.return_value = channel
             client = kms_v1.KeyManagementServiceClient()
 
         # Setup request
-        parent = client.location_path("[PROJECT]", "[LOCATION]")
+        parent = client.location_path('[PROJECT]', '[LOCATION]')
 
         paged_list_response = client.list_key_rings(parent)
         with pytest.raises(CustomException):
@@ -116,26 +120,27 @@ class TestKeyManagementServiceClient(object):
 
     def test_list_crypto_keys(self):
         # Setup Expected Response
-        next_page_token = ""
+        next_page_token = ''
         total_size = 705419236
         crypto_keys_element = {}
         crypto_keys = [crypto_keys_element]
         expected_response = {
-            "next_page_token": next_page_token,
-            "total_size": total_size,
-            "crypto_keys": crypto_keys,
+            'next_page_token': next_page_token,
+            'total_size': total_size,
+            'crypto_keys': crypto_keys
         }
-        expected_response = service_pb2.ListCryptoKeysResponse(**expected_response)
+        expected_response = service_pb2.ListCryptoKeysResponse(
+            **expected_response)
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
         with patch as create_channel:
             create_channel.return_value = channel
             client = kms_v1.KeyManagementServiceClient()
 
         # Setup Request
-        parent = client.key_ring_path("[PROJECT]", "[LOCATION]", "[KEY_RING]")
+        parent = client.key_ring_path('[PROJECT]', '[LOCATION]', '[KEY_RING]')
 
         paged_list_response = client.list_crypto_keys(parent)
         resources = list(paged_list_response)
@@ -150,13 +155,13 @@ class TestKeyManagementServiceClient(object):
 
     def test_list_crypto_keys_exception(self):
         channel = ChannelStub(responses=[CustomException()])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
         with patch as create_channel:
             create_channel.return_value = channel
             client = kms_v1.KeyManagementServiceClient()
 
         # Setup request
-        parent = client.key_ring_path("[PROJECT]", "[LOCATION]", "[KEY_RING]")
+        parent = client.key_ring_path('[PROJECT]', '[LOCATION]', '[KEY_RING]')
 
         paged_list_response = client.list_crypto_keys(parent)
         with pytest.raises(CustomException):
@@ -164,30 +169,28 @@ class TestKeyManagementServiceClient(object):
 
     def test_list_crypto_key_versions(self):
         # Setup Expected Response
-        next_page_token = ""
+        next_page_token = ''
         total_size = 705419236
         crypto_key_versions_element = {}
         crypto_key_versions = [crypto_key_versions_element]
         expected_response = {
-            "next_page_token": next_page_token,
-            "total_size": total_size,
-            "crypto_key_versions": crypto_key_versions,
+            'next_page_token': next_page_token,
+            'total_size': total_size,
+            'crypto_key_versions': crypto_key_versions
         }
         expected_response = service_pb2.ListCryptoKeyVersionsResponse(
-            **expected_response
-        )
+            **expected_response)
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
         with patch as create_channel:
             create_channel.return_value = channel
             client = kms_v1.KeyManagementServiceClient()
 
         # Setup Request
-        parent = client.crypto_key_path(
-            "[PROJECT]", "[LOCATION]", "[KEY_RING]", "[CRYPTO_KEY]"
-        )
+        parent = client.crypto_key_path('[PROJECT]', '[LOCATION]',
+                                        '[KEY_RING]', '[CRYPTO_KEY]')
 
         paged_list_response = client.list_crypto_key_versions(parent)
         resources = list(paged_list_response)
@@ -196,21 +199,21 @@ class TestKeyManagementServiceClient(object):
         assert expected_response.crypto_key_versions[0] == resources[0]
 
         assert len(channel.requests) == 1
-        expected_request = service_pb2.ListCryptoKeyVersionsRequest(parent=parent)
+        expected_request = service_pb2.ListCryptoKeyVersionsRequest(
+            parent=parent)
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
     def test_list_crypto_key_versions_exception(self):
         channel = ChannelStub(responses=[CustomException()])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
         with patch as create_channel:
             create_channel.return_value = channel
             client = kms_v1.KeyManagementServiceClient()
 
         # Setup request
-        parent = client.crypto_key_path(
-            "[PROJECT]", "[LOCATION]", "[KEY_RING]", "[CRYPTO_KEY]"
-        )
+        parent = client.crypto_key_path('[PROJECT]', '[LOCATION]',
+                                        '[KEY_RING]', '[CRYPTO_KEY]')
 
         paged_list_response = client.list_crypto_key_versions(parent)
         with pytest.raises(CustomException):
@@ -218,19 +221,19 @@ class TestKeyManagementServiceClient(object):
 
     def test_get_key_ring(self):
         # Setup Expected Response
-        name_2 = "name2-1052831874"
-        expected_response = {"name": name_2}
+        name_2 = 'name2-1052831874'
+        expected_response = {'name': name_2}
         expected_response = resources_pb2.KeyRing(**expected_response)
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
         with patch as create_channel:
             create_channel.return_value = channel
             client = kms_v1.KeyManagementServiceClient()
 
         # Setup Request
-        name = client.key_ring_path("[PROJECT]", "[LOCATION]", "[KEY_RING]")
+        name = client.key_ring_path('[PROJECT]', '[LOCATION]', '[KEY_RING]')
 
         response = client.get_key_ring(name)
         assert expected_response == response
@@ -243,34 +246,33 @@ class TestKeyManagementServiceClient(object):
     def test_get_key_ring_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
         with patch as create_channel:
             create_channel.return_value = channel
             client = kms_v1.KeyManagementServiceClient()
 
         # Setup request
-        name = client.key_ring_path("[PROJECT]", "[LOCATION]", "[KEY_RING]")
+        name = client.key_ring_path('[PROJECT]', '[LOCATION]', '[KEY_RING]')
 
         with pytest.raises(CustomException):
             client.get_key_ring(name)
 
     def test_get_crypto_key(self):
         # Setup Expected Response
-        name_2 = "name2-1052831874"
-        expected_response = {"name": name_2}
+        name_2 = 'name2-1052831874'
+        expected_response = {'name': name_2}
         expected_response = resources_pb2.CryptoKey(**expected_response)
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
         with patch as create_channel:
             create_channel.return_value = channel
             client = kms_v1.KeyManagementServiceClient()
 
         # Setup Request
-        name = client.crypto_key_path(
-            "[PROJECT]", "[LOCATION]", "[KEY_RING]", "[CRYPTO_KEY]"
-        )
+        name = client.crypto_key_path('[PROJECT]', '[LOCATION]', '[KEY_RING]',
+                                      '[CRYPTO_KEY]')
 
         response = client.get_crypto_key(name)
         assert expected_response == response
@@ -283,40 +285,35 @@ class TestKeyManagementServiceClient(object):
     def test_get_crypto_key_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
         with patch as create_channel:
             create_channel.return_value = channel
             client = kms_v1.KeyManagementServiceClient()
 
         # Setup request
-        name = client.crypto_key_path(
-            "[PROJECT]", "[LOCATION]", "[KEY_RING]", "[CRYPTO_KEY]"
-        )
+        name = client.crypto_key_path('[PROJECT]', '[LOCATION]', '[KEY_RING]',
+                                      '[CRYPTO_KEY]')
 
         with pytest.raises(CustomException):
             client.get_crypto_key(name)
 
     def test_get_crypto_key_version(self):
         # Setup Expected Response
-        name_2 = "name2-1052831874"
-        expected_response = {"name": name_2}
+        name_2 = 'name2-1052831874'
+        expected_response = {'name': name_2}
         expected_response = resources_pb2.CryptoKeyVersion(**expected_response)
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
         with patch as create_channel:
             create_channel.return_value = channel
             client = kms_v1.KeyManagementServiceClient()
 
         # Setup Request
-        name = client.crypto_key_version_path(
-            "[PROJECT]",
-            "[LOCATION]",
-            "[KEY_RING]",
-            "[CRYPTO_KEY]",
-            "[CRYPTO_KEY_VERSION]",
-        )
+        name = client.crypto_key_version_path('[PROJECT]', '[LOCATION]',
+                                              '[KEY_RING]', '[CRYPTO_KEY]',
+                                              '[CRYPTO_KEY_VERSION]')
 
         response = client.get_crypto_key_version(name)
         assert expected_response == response
@@ -329,39 +326,35 @@ class TestKeyManagementServiceClient(object):
     def test_get_crypto_key_version_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
         with patch as create_channel:
             create_channel.return_value = channel
             client = kms_v1.KeyManagementServiceClient()
 
         # Setup request
-        name = client.crypto_key_version_path(
-            "[PROJECT]",
-            "[LOCATION]",
-            "[KEY_RING]",
-            "[CRYPTO_KEY]",
-            "[CRYPTO_KEY_VERSION]",
-        )
+        name = client.crypto_key_version_path('[PROJECT]', '[LOCATION]',
+                                              '[KEY_RING]', '[CRYPTO_KEY]',
+                                              '[CRYPTO_KEY_VERSION]')
 
         with pytest.raises(CustomException):
             client.get_crypto_key_version(name)
 
     def test_create_key_ring(self):
         # Setup Expected Response
-        name = "name3373707"
-        expected_response = {"name": name}
+        name = 'name3373707'
+        expected_response = {'name': name}
         expected_response = resources_pb2.KeyRing(**expected_response)
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
         with patch as create_channel:
             create_channel.return_value = channel
             client = kms_v1.KeyManagementServiceClient()
 
         # Setup Request
-        parent = client.location_path("[PROJECT]", "[LOCATION]")
-        key_ring_id = "keyRingId-2056646742"
+        parent = client.location_path('[PROJECT]', '[LOCATION]')
+        key_ring_id = 'keyRingId-2056646742'
         key_ring = {}
 
         response = client.create_key_ring(parent, key_ring_id, key_ring)
@@ -369,22 +362,21 @@ class TestKeyManagementServiceClient(object):
 
         assert len(channel.requests) == 1
         expected_request = service_pb2.CreateKeyRingRequest(
-            parent=parent, key_ring_id=key_ring_id, key_ring=key_ring
-        )
+            parent=parent, key_ring_id=key_ring_id, key_ring=key_ring)
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
     def test_create_key_ring_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
         with patch as create_channel:
             create_channel.return_value = channel
             client = kms_v1.KeyManagementServiceClient()
 
         # Setup request
-        parent = client.location_path("[PROJECT]", "[LOCATION]")
-        key_ring_id = "keyRingId-2056646742"
+        parent = client.location_path('[PROJECT]', '[LOCATION]')
+        key_ring_id = 'keyRingId-2056646742'
         key_ring = {}
 
         with pytest.raises(CustomException):
@@ -392,29 +384,29 @@ class TestKeyManagementServiceClient(object):
 
     def test_create_crypto_key(self):
         # Setup Expected Response
-        name = "name3373707"
-        expected_response = {"name": name}
+        name = 'name3373707'
+        expected_response = {'name': name}
         expected_response = resources_pb2.CryptoKey(**expected_response)
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
         with patch as create_channel:
             create_channel.return_value = channel
             client = kms_v1.KeyManagementServiceClient()
 
         # Setup Request
-        parent = client.key_ring_path("[PROJECT]", "[LOCATION]", "[KEY_RING]")
-        crypto_key_id = "my-app-key"
+        parent = client.key_ring_path('[PROJECT]', '[LOCATION]', '[KEY_RING]')
+        crypto_key_id = 'my-app-key'
         purpose = enums.CryptoKey.CryptoKeyPurpose.ENCRYPT_DECRYPT
         seconds = 2147483647
-        next_rotation_time = {"seconds": seconds}
+        next_rotation_time = {'seconds': seconds}
         seconds_2 = 604800
-        rotation_period = {"seconds": seconds_2}
+        rotation_period = {'seconds': seconds_2}
         crypto_key = {
-            "purpose": purpose,
-            "next_rotation_time": next_rotation_time,
-            "rotation_period": rotation_period,
+            'purpose': purpose,
+            'next_rotation_time': next_rotation_time,
+            'rotation_period': rotation_period
         }
 
         response = client.create_crypto_key(parent, crypto_key_id, crypto_key)
@@ -422,31 +414,30 @@ class TestKeyManagementServiceClient(object):
 
         assert len(channel.requests) == 1
         expected_request = service_pb2.CreateCryptoKeyRequest(
-            parent=parent, crypto_key_id=crypto_key_id, crypto_key=crypto_key
-        )
+            parent=parent, crypto_key_id=crypto_key_id, crypto_key=crypto_key)
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
     def test_create_crypto_key_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
         with patch as create_channel:
             create_channel.return_value = channel
             client = kms_v1.KeyManagementServiceClient()
 
         # Setup request
-        parent = client.key_ring_path("[PROJECT]", "[LOCATION]", "[KEY_RING]")
-        crypto_key_id = "my-app-key"
+        parent = client.key_ring_path('[PROJECT]', '[LOCATION]', '[KEY_RING]')
+        crypto_key_id = 'my-app-key'
         purpose = enums.CryptoKey.CryptoKeyPurpose.ENCRYPT_DECRYPT
         seconds = 2147483647
-        next_rotation_time = {"seconds": seconds}
+        next_rotation_time = {'seconds': seconds}
         seconds_2 = 604800
-        rotation_period = {"seconds": seconds_2}
+        rotation_period = {'seconds': seconds_2}
         crypto_key = {
-            "purpose": purpose,
-            "next_rotation_time": next_rotation_time,
-            "rotation_period": rotation_period,
+            'purpose': purpose,
+            'next_rotation_time': next_rotation_time,
+            'rotation_period': rotation_period
         }
 
         with pytest.raises(CustomException):
@@ -454,21 +445,20 @@ class TestKeyManagementServiceClient(object):
 
     def test_create_crypto_key_version(self):
         # Setup Expected Response
-        name = "name3373707"
-        expected_response = {"name": name}
+        name = 'name3373707'
+        expected_response = {'name': name}
         expected_response = resources_pb2.CryptoKeyVersion(**expected_response)
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
         with patch as create_channel:
             create_channel.return_value = channel
             client = kms_v1.KeyManagementServiceClient()
 
         # Setup Request
-        parent = client.crypto_key_path(
-            "[PROJECT]", "[LOCATION]", "[KEY_RING]", "[CRYPTO_KEY]"
-        )
+        parent = client.crypto_key_path('[PROJECT]', '[LOCATION]',
+                                        '[KEY_RING]', '[CRYPTO_KEY]')
         crypto_key_version = {}
 
         response = client.create_crypto_key_version(parent, crypto_key_version)
@@ -476,23 +466,21 @@ class TestKeyManagementServiceClient(object):
 
         assert len(channel.requests) == 1
         expected_request = service_pb2.CreateCryptoKeyVersionRequest(
-            parent=parent, crypto_key_version=crypto_key_version
-        )
+            parent=parent, crypto_key_version=crypto_key_version)
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
     def test_create_crypto_key_version_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
         with patch as create_channel:
             create_channel.return_value = channel
             client = kms_v1.KeyManagementServiceClient()
 
         # Setup request
-        parent = client.crypto_key_path(
-            "[PROJECT]", "[LOCATION]", "[KEY_RING]", "[CRYPTO_KEY]"
-        )
+        parent = client.crypto_key_path('[PROJECT]', '[LOCATION]',
+                                        '[KEY_RING]', '[CRYPTO_KEY]')
         crypto_key_version = {}
 
         with pytest.raises(CustomException):
@@ -500,13 +488,13 @@ class TestKeyManagementServiceClient(object):
 
     def test_update_crypto_key(self):
         # Setup Expected Response
-        name = "name3373707"
-        expected_response = {"name": name}
+        name = 'name3373707'
+        expected_response = {'name': name}
         expected_response = resources_pb2.CryptoKey(**expected_response)
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
         with patch as create_channel:
             create_channel.return_value = channel
             client = kms_v1.KeyManagementServiceClient()
@@ -520,15 +508,14 @@ class TestKeyManagementServiceClient(object):
 
         assert len(channel.requests) == 1
         expected_request = service_pb2.UpdateCryptoKeyRequest(
-            crypto_key=crypto_key, update_mask=update_mask
-        )
+            crypto_key=crypto_key, update_mask=update_mask)
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
     def test_update_crypto_key_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
         with patch as create_channel:
             create_channel.return_value = channel
             client = kms_v1.KeyManagementServiceClient()
@@ -542,13 +529,13 @@ class TestKeyManagementServiceClient(object):
 
     def test_update_crypto_key_version(self):
         # Setup Expected Response
-        name = "name3373707"
-        expected_response = {"name": name}
+        name = 'name3373707'
+        expected_response = {'name': name}
         expected_response = resources_pb2.CryptoKeyVersion(**expected_response)
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
         with patch as create_channel:
             create_channel.return_value = channel
             client = kms_v1.KeyManagementServiceClient()
@@ -557,20 +544,20 @@ class TestKeyManagementServiceClient(object):
         crypto_key_version = {}
         update_mask = {}
 
-        response = client.update_crypto_key_version(crypto_key_version, update_mask)
+        response = client.update_crypto_key_version(crypto_key_version,
+                                                    update_mask)
         assert expected_response == response
 
         assert len(channel.requests) == 1
         expected_request = service_pb2.UpdateCryptoKeyVersionRequest(
-            crypto_key_version=crypto_key_version, update_mask=update_mask
-        )
+            crypto_key_version=crypto_key_version, update_mask=update_mask)
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
     def test_update_crypto_key_version_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
         with patch as create_channel:
             create_channel.return_value = channel
             client = kms_v1.KeyManagementServiceClient()
@@ -584,260 +571,239 @@ class TestKeyManagementServiceClient(object):
 
     def test_encrypt(self):
         # Setup Expected Response
-        name_2 = "name2-1052831874"
-        ciphertext = b"-72"
-        expected_response = {"name": name_2, "ciphertext": ciphertext}
+        name_2 = 'name2-1052831874'
+        ciphertext = b'-72'
+        expected_response = {'name': name_2, 'ciphertext': ciphertext}
         expected_response = service_pb2.EncryptResponse(**expected_response)
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
         with patch as create_channel:
             create_channel.return_value = channel
             client = kms_v1.KeyManagementServiceClient()
 
         # Setup Request
-        name = client.crypto_key_path_path(
-            "[PROJECT]", "[LOCATION]", "[KEY_RING]", "[CRYPTO_KEY_PATH]"
-        )
-        plaintext = b"-9"
+        name = client.crypto_key_path_path('[PROJECT]', '[LOCATION]',
+                                           '[KEY_RING]', '[CRYPTO_KEY_PATH]')
+        plaintext = b'-9'
 
         response = client.encrypt(name, plaintext)
         assert expected_response == response
 
         assert len(channel.requests) == 1
-        expected_request = service_pb2.EncryptRequest(name=name, plaintext=plaintext)
+        expected_request = service_pb2.EncryptRequest(
+            name=name, plaintext=plaintext)
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
     def test_encrypt_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
         with patch as create_channel:
             create_channel.return_value = channel
             client = kms_v1.KeyManagementServiceClient()
 
         # Setup request
-        name = client.crypto_key_path_path(
-            "[PROJECT]", "[LOCATION]", "[KEY_RING]", "[CRYPTO_KEY_PATH]"
-        )
-        plaintext = b"-9"
+        name = client.crypto_key_path_path('[PROJECT]', '[LOCATION]',
+                                           '[KEY_RING]', '[CRYPTO_KEY_PATH]')
+        plaintext = b'-9'
 
         with pytest.raises(CustomException):
             client.encrypt(name, plaintext)
 
     def test_decrypt(self):
         # Setup Expected Response
-        plaintext = b"-9"
-        expected_response = {"plaintext": plaintext}
+        plaintext = b'-9'
+        expected_response = {'plaintext': plaintext}
         expected_response = service_pb2.DecryptResponse(**expected_response)
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
         with patch as create_channel:
             create_channel.return_value = channel
             client = kms_v1.KeyManagementServiceClient()
 
         # Setup Request
-        name = client.crypto_key_path(
-            "[PROJECT]", "[LOCATION]", "[KEY_RING]", "[CRYPTO_KEY]"
-        )
-        ciphertext = b"-72"
+        name = client.crypto_key_path('[PROJECT]', '[LOCATION]', '[KEY_RING]',
+                                      '[CRYPTO_KEY]')
+        ciphertext = b'-72'
 
         response = client.decrypt(name, ciphertext)
         assert expected_response == response
 
         assert len(channel.requests) == 1
-        expected_request = service_pb2.DecryptRequest(name=name, ciphertext=ciphertext)
+        expected_request = service_pb2.DecryptRequest(
+            name=name, ciphertext=ciphertext)
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
     def test_decrypt_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
         with patch as create_channel:
             create_channel.return_value = channel
             client = kms_v1.KeyManagementServiceClient()
 
         # Setup request
-        name = client.crypto_key_path(
-            "[PROJECT]", "[LOCATION]", "[KEY_RING]", "[CRYPTO_KEY]"
-        )
-        ciphertext = b"-72"
+        name = client.crypto_key_path('[PROJECT]', '[LOCATION]', '[KEY_RING]',
+                                      '[CRYPTO_KEY]')
+        ciphertext = b'-72'
 
         with pytest.raises(CustomException):
             client.decrypt(name, ciphertext)
 
     def test_update_crypto_key_primary_version(self):
         # Setup Expected Response
-        name_2 = "name2-1052831874"
-        expected_response = {"name": name_2}
+        name_2 = 'name2-1052831874'
+        expected_response = {'name': name_2}
         expected_response = resources_pb2.CryptoKey(**expected_response)
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
         with patch as create_channel:
             create_channel.return_value = channel
             client = kms_v1.KeyManagementServiceClient()
 
         # Setup Request
-        name = client.crypto_key_path(
-            "[PROJECT]", "[LOCATION]", "[KEY_RING]", "[CRYPTO_KEY]"
-        )
-        crypto_key_version_id = "cryptoKeyVersionId729489152"
+        name = client.crypto_key_path('[PROJECT]', '[LOCATION]', '[KEY_RING]',
+                                      '[CRYPTO_KEY]')
+        crypto_key_version_id = 'cryptoKeyVersionId729489152'
 
-        response = client.update_crypto_key_primary_version(name, crypto_key_version_id)
+        response = client.update_crypto_key_primary_version(
+            name, crypto_key_version_id)
         assert expected_response == response
 
         assert len(channel.requests) == 1
         expected_request = service_pb2.UpdateCryptoKeyPrimaryVersionRequest(
-            name=name, crypto_key_version_id=crypto_key_version_id
-        )
+            name=name, crypto_key_version_id=crypto_key_version_id)
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
     def test_update_crypto_key_primary_version_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
         with patch as create_channel:
             create_channel.return_value = channel
             client = kms_v1.KeyManagementServiceClient()
 
         # Setup request
-        name = client.crypto_key_path(
-            "[PROJECT]", "[LOCATION]", "[KEY_RING]", "[CRYPTO_KEY]"
-        )
-        crypto_key_version_id = "cryptoKeyVersionId729489152"
+        name = client.crypto_key_path('[PROJECT]', '[LOCATION]', '[KEY_RING]',
+                                      '[CRYPTO_KEY]')
+        crypto_key_version_id = 'cryptoKeyVersionId729489152'
 
         with pytest.raises(CustomException):
-            client.update_crypto_key_primary_version(name, crypto_key_version_id)
+            client.update_crypto_key_primary_version(name,
+                                                     crypto_key_version_id)
 
     def test_destroy_crypto_key_version(self):
         # Setup Expected Response
-        name_2 = "name2-1052831874"
-        expected_response = {"name": name_2}
+        name_2 = 'name2-1052831874'
+        expected_response = {'name': name_2}
         expected_response = resources_pb2.CryptoKeyVersion(**expected_response)
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
         with patch as create_channel:
             create_channel.return_value = channel
             client = kms_v1.KeyManagementServiceClient()
 
         # Setup Request
-        name = client.crypto_key_version_path(
-            "[PROJECT]",
-            "[LOCATION]",
-            "[KEY_RING]",
-            "[CRYPTO_KEY]",
-            "[CRYPTO_KEY_VERSION]",
-        )
+        name = client.crypto_key_version_path('[PROJECT]', '[LOCATION]',
+                                              '[KEY_RING]', '[CRYPTO_KEY]',
+                                              '[CRYPTO_KEY_VERSION]')
 
         response = client.destroy_crypto_key_version(name)
         assert expected_response == response
 
         assert len(channel.requests) == 1
-        expected_request = service_pb2.DestroyCryptoKeyVersionRequest(name=name)
+        expected_request = service_pb2.DestroyCryptoKeyVersionRequest(
+            name=name)
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
     def test_destroy_crypto_key_version_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
         with patch as create_channel:
             create_channel.return_value = channel
             client = kms_v1.KeyManagementServiceClient()
 
         # Setup request
-        name = client.crypto_key_version_path(
-            "[PROJECT]",
-            "[LOCATION]",
-            "[KEY_RING]",
-            "[CRYPTO_KEY]",
-            "[CRYPTO_KEY_VERSION]",
-        )
+        name = client.crypto_key_version_path('[PROJECT]', '[LOCATION]',
+                                              '[KEY_RING]', '[CRYPTO_KEY]',
+                                              '[CRYPTO_KEY_VERSION]')
 
         with pytest.raises(CustomException):
             client.destroy_crypto_key_version(name)
 
     def test_restore_crypto_key_version(self):
         # Setup Expected Response
-        name_2 = "name2-1052831874"
-        expected_response = {"name": name_2}
+        name_2 = 'name2-1052831874'
+        expected_response = {'name': name_2}
         expected_response = resources_pb2.CryptoKeyVersion(**expected_response)
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
         with patch as create_channel:
             create_channel.return_value = channel
             client = kms_v1.KeyManagementServiceClient()
 
         # Setup Request
-        name = client.crypto_key_version_path(
-            "[PROJECT]",
-            "[LOCATION]",
-            "[KEY_RING]",
-            "[CRYPTO_KEY]",
-            "[CRYPTO_KEY_VERSION]",
-        )
+        name = client.crypto_key_version_path('[PROJECT]', '[LOCATION]',
+                                              '[KEY_RING]', '[CRYPTO_KEY]',
+                                              '[CRYPTO_KEY_VERSION]')
 
         response = client.restore_crypto_key_version(name)
         assert expected_response == response
 
         assert len(channel.requests) == 1
-        expected_request = service_pb2.RestoreCryptoKeyVersionRequest(name=name)
+        expected_request = service_pb2.RestoreCryptoKeyVersionRequest(
+            name=name)
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
     def test_restore_crypto_key_version_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
         with patch as create_channel:
             create_channel.return_value = channel
             client = kms_v1.KeyManagementServiceClient()
 
         # Setup request
-        name = client.crypto_key_version_path(
-            "[PROJECT]",
-            "[LOCATION]",
-            "[KEY_RING]",
-            "[CRYPTO_KEY]",
-            "[CRYPTO_KEY_VERSION]",
-        )
+        name = client.crypto_key_version_path('[PROJECT]', '[LOCATION]',
+                                              '[KEY_RING]', '[CRYPTO_KEY]',
+                                              '[CRYPTO_KEY_VERSION]')
 
         with pytest.raises(CustomException):
             client.restore_crypto_key_version(name)
 
     def test_get_public_key(self):
         # Setup Expected Response
-        pem = "pem110872"
-        expected_response = {"pem": pem}
+        pem = 'pem110872'
+        expected_response = {'pem': pem}
         expected_response = resources_pb2.PublicKey(**expected_response)
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
         with patch as create_channel:
             create_channel.return_value = channel
             client = kms_v1.KeyManagementServiceClient()
 
         # Setup Request
-        name = client.crypto_key_version_path(
-            "[PROJECT]",
-            "[LOCATION]",
-            "[KEY_RING]",
-            "[CRYPTO_KEY]",
-            "[CRYPTO_KEY_VERSION]",
-        )
+        name = client.crypto_key_version_path('[PROJECT]', '[LOCATION]',
+                                              '[KEY_RING]', '[CRYPTO_KEY]',
+                                              '[CRYPTO_KEY_VERSION]')
 
         response = client.get_public_key(name)
         assert expected_response == response
@@ -850,124 +816,106 @@ class TestKeyManagementServiceClient(object):
     def test_get_public_key_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
         with patch as create_channel:
             create_channel.return_value = channel
             client = kms_v1.KeyManagementServiceClient()
 
         # Setup request
-        name = client.crypto_key_version_path(
-            "[PROJECT]",
-            "[LOCATION]",
-            "[KEY_RING]",
-            "[CRYPTO_KEY]",
-            "[CRYPTO_KEY_VERSION]",
-        )
+        name = client.crypto_key_version_path('[PROJECT]', '[LOCATION]',
+                                              '[KEY_RING]', '[CRYPTO_KEY]',
+                                              '[CRYPTO_KEY_VERSION]')
 
         with pytest.raises(CustomException):
             client.get_public_key(name)
 
     def test_asymmetric_decrypt(self):
         # Setup Expected Response
-        plaintext = b"-9"
-        expected_response = {"plaintext": plaintext}
-        expected_response = service_pb2.AsymmetricDecryptResponse(**expected_response)
+        plaintext = b'-9'
+        expected_response = {'plaintext': plaintext}
+        expected_response = service_pb2.AsymmetricDecryptResponse(
+            **expected_response)
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
         with patch as create_channel:
             create_channel.return_value = channel
             client = kms_v1.KeyManagementServiceClient()
 
         # Setup Request
-        name = client.crypto_key_version_path(
-            "[PROJECT]",
-            "[LOCATION]",
-            "[KEY_RING]",
-            "[CRYPTO_KEY]",
-            "[CRYPTO_KEY_VERSION]",
-        )
-        ciphertext = b"-72"
+        name = client.crypto_key_version_path('[PROJECT]', '[LOCATION]',
+                                              '[KEY_RING]', '[CRYPTO_KEY]',
+                                              '[CRYPTO_KEY_VERSION]')
+        ciphertext = b'-72'
 
         response = client.asymmetric_decrypt(name, ciphertext)
         assert expected_response == response
 
         assert len(channel.requests) == 1
         expected_request = service_pb2.AsymmetricDecryptRequest(
-            name=name, ciphertext=ciphertext
-        )
+            name=name, ciphertext=ciphertext)
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
     def test_asymmetric_decrypt_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
         with patch as create_channel:
             create_channel.return_value = channel
             client = kms_v1.KeyManagementServiceClient()
 
         # Setup request
-        name = client.crypto_key_version_path(
-            "[PROJECT]",
-            "[LOCATION]",
-            "[KEY_RING]",
-            "[CRYPTO_KEY]",
-            "[CRYPTO_KEY_VERSION]",
-        )
-        ciphertext = b"-72"
+        name = client.crypto_key_version_path('[PROJECT]', '[LOCATION]',
+                                              '[KEY_RING]', '[CRYPTO_KEY]',
+                                              '[CRYPTO_KEY_VERSION]')
+        ciphertext = b'-72'
 
         with pytest.raises(CustomException):
             client.asymmetric_decrypt(name, ciphertext)
 
     def test_asymmetric_sign(self):
         # Setup Expected Response
-        signature = b"-100"
-        expected_response = {"signature": signature}
-        expected_response = service_pb2.AsymmetricSignResponse(**expected_response)
+        signature = b'-100'
+        expected_response = {'signature': signature}
+        expected_response = service_pb2.AsymmetricSignResponse(
+            **expected_response)
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
         with patch as create_channel:
             create_channel.return_value = channel
             client = kms_v1.KeyManagementServiceClient()
 
         # Setup Request
-        name = client.crypto_key_version_path(
-            "[PROJECT]",
-            "[LOCATION]",
-            "[KEY_RING]",
-            "[CRYPTO_KEY]",
-            "[CRYPTO_KEY_VERSION]",
-        )
+        name = client.crypto_key_version_path('[PROJECT]', '[LOCATION]',
+                                              '[KEY_RING]', '[CRYPTO_KEY]',
+                                              '[CRYPTO_KEY_VERSION]')
         digest = {}
 
         response = client.asymmetric_sign(name, digest)
         assert expected_response == response
 
         assert len(channel.requests) == 1
-        expected_request = service_pb2.AsymmetricSignRequest(name=name, digest=digest)
+        expected_request = service_pb2.AsymmetricSignRequest(
+            name=name, digest=digest)
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
     def test_asymmetric_sign_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
         with patch as create_channel:
             create_channel.return_value = channel
             client = kms_v1.KeyManagementServiceClient()
 
         # Setup request
-        name = client.crypto_key_version_path(
-            "[PROJECT]",
-            "[LOCATION]",
-            "[KEY_RING]",
-            "[CRYPTO_KEY]",
-            "[CRYPTO_KEY_VERSION]",
-        )
+        name = client.crypto_key_version_path('[PROJECT]', '[LOCATION]',
+                                              '[KEY_RING]', '[CRYPTO_KEY]',
+                                              '[CRYPTO_KEY_VERSION]')
         digest = {}
 
         with pytest.raises(CustomException):
@@ -976,19 +924,20 @@ class TestKeyManagementServiceClient(object):
     def test_set_iam_policy(self):
         # Setup Expected Response
         version = 351608024
-        etag = b"21"
-        expected_response = {"version": version, "etag": etag}
+        etag = b'21'
+        expected_response = {'version': version, 'etag': etag}
         expected_response = policy_pb2.Policy(**expected_response)
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
         with patch as create_channel:
             create_channel.return_value = channel
             client = kms_v1.KeyManagementServiceClient()
 
         # Setup Request
-        resource = client.key_ring_path("[PROJECT]", "[LOCATION]", "[KEY_RING]")
+        resource = client.key_ring_path('[PROJECT]', '[LOCATION]',
+                                        '[KEY_RING]')
         policy = {}
 
         response = client.set_iam_policy(resource, policy)
@@ -996,21 +945,21 @@ class TestKeyManagementServiceClient(object):
 
         assert len(channel.requests) == 1
         expected_request = iam_policy_pb2.SetIamPolicyRequest(
-            resource=resource, policy=policy
-        )
+            resource=resource, policy=policy)
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
     def test_set_iam_policy_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
         with patch as create_channel:
             create_channel.return_value = channel
             client = kms_v1.KeyManagementServiceClient()
 
         # Setup request
-        resource = client.key_ring_path("[PROJECT]", "[LOCATION]", "[KEY_RING]")
+        resource = client.key_ring_path('[PROJECT]', '[LOCATION]',
+                                        '[KEY_RING]')
         policy = {}
 
         with pytest.raises(CustomException):
@@ -1019,38 +968,41 @@ class TestKeyManagementServiceClient(object):
     def test_get_iam_policy(self):
         # Setup Expected Response
         version = 351608024
-        etag = b"21"
-        expected_response = {"version": version, "etag": etag}
+        etag = b'21'
+        expected_response = {'version': version, 'etag': etag}
         expected_response = policy_pb2.Policy(**expected_response)
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
         with patch as create_channel:
             create_channel.return_value = channel
             client = kms_v1.KeyManagementServiceClient()
 
         # Setup Request
-        resource = client.key_ring_path("[PROJECT]", "[LOCATION]", "[KEY_RING]")
+        resource = client.key_ring_path('[PROJECT]', '[LOCATION]',
+                                        '[KEY_RING]')
 
         response = client.get_iam_policy(resource)
         assert expected_response == response
 
         assert len(channel.requests) == 1
-        expected_request = iam_policy_pb2.GetIamPolicyRequest(resource=resource)
+        expected_request = iam_policy_pb2.GetIamPolicyRequest(
+            resource=resource)
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
     def test_get_iam_policy_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
         with patch as create_channel:
             create_channel.return_value = channel
             client = kms_v1.KeyManagementServiceClient()
 
         # Setup request
-        resource = client.key_ring_path("[PROJECT]", "[LOCATION]", "[KEY_RING]")
+        resource = client.key_ring_path('[PROJECT]', '[LOCATION]',
+                                        '[KEY_RING]')
 
         with pytest.raises(CustomException):
             client.get_iam_policy(resource)
@@ -1059,18 +1011,18 @@ class TestKeyManagementServiceClient(object):
         # Setup Expected Response
         expected_response = {}
         expected_response = iam_policy_pb2.TestIamPermissionsResponse(
-            **expected_response
-        )
+            **expected_response)
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
         with patch as create_channel:
             create_channel.return_value = channel
             client = kms_v1.KeyManagementServiceClient()
 
         # Setup Request
-        resource = client.key_ring_path("[PROJECT]", "[LOCATION]", "[KEY_RING]")
+        resource = client.key_ring_path('[PROJECT]', '[LOCATION]',
+                                        '[KEY_RING]')
         permissions = []
 
         response = client.test_iam_permissions(resource, permissions)
@@ -1078,21 +1030,21 @@ class TestKeyManagementServiceClient(object):
 
         assert len(channel.requests) == 1
         expected_request = iam_policy_pb2.TestIamPermissionsRequest(
-            resource=resource, permissions=permissions
-        )
+            resource=resource, permissions=permissions)
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
     def test_test_iam_permissions_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
         with patch as create_channel:
             create_channel.return_value = channel
             client = kms_v1.KeyManagementServiceClient()
 
         # Setup request
-        resource = client.key_ring_path("[PROJECT]", "[LOCATION]", "[KEY_RING]")
+        resource = client.key_ring_path('[PROJECT]', '[LOCATION]',
+                                        '[KEY_RING]')
         permissions = []
 
         with pytest.raises(CustomException):

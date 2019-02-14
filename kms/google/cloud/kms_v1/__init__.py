@@ -22,10 +22,13 @@ from google.cloud.kms_v1.gapic import key_management_service_client
 
 
 class KeyManagementServiceClient(
-    key_management_service_client.KeyManagementServiceClient
-):
+        key_management_service_client.KeyManagementServiceClient):
     __doc__ = key_management_service_client.KeyManagementServiceClient.__doc__
     enums = enums
 
 
-__all__ = ("enums", "types", "KeyManagementServiceClient")
+__all__ = (
+    'enums',
+    'types',
+    'KeyManagementServiceClient',
+)
