@@ -29,7 +29,13 @@ from google.rpc import status_pb2
 from google.type import color_pb2
 from google.type import latlng_pb2
 
-_shared_modules = [any_pb2, wrappers_pb2, status_pb2, color_pb2, latlng_pb2]
+_shared_modules = [
+    any_pb2,
+    wrappers_pb2,
+    status_pb2,
+    color_pb2,
+    latlng_pb2,
+]
 
 _local_modules = [
     geometry_pb2,
@@ -46,7 +52,7 @@ for module in _shared_modules:
         names.append(name)
 for module in _local_modules:
     for name, message in get_messages(module).items():
-        message.__module__ = "google.cloud.vision_v1p1beta1.types"
+        message.__module__ = 'google.cloud.vision_v1p1beta1.types'
         setattr(sys.modules[__name__], name, message)
         names.append(name)
 
