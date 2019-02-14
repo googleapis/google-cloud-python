@@ -27,17 +27,14 @@ class IamCredentialsGrpcTransport(object):
     which can be used to take advantage of advanced
     features of gRPC.
     """
-
     # The scopes needed to make gRPC calls to all of the methods defined
     # in this service.
-    _OAUTH_SCOPES = ("https://www.googleapis.com/auth/cloud-platform",)
+    _OAUTH_SCOPES = ('https://www.googleapis.com/auth/cloud-platform', )
 
-    def __init__(
-        self,
-        channel=None,
-        credentials=None,
-        address="iamcredentials.googleapis.com:443",
-    ):
+    def __init__(self,
+                 channel=None,
+                 credentials=None,
+                 address='iamcredentials.googleapis.com:443'):
         """Instantiate the transport class.
 
         Args:
@@ -55,25 +52,29 @@ class IamCredentialsGrpcTransport(object):
         # exception (channels come with credentials baked in already).
         if channel is not None and credentials is not None:
             raise ValueError(
-                "The `channel` and `credentials` arguments are mutually " "exclusive."
-            )
+                'The `channel` and `credentials` arguments are mutually '
+                'exclusive.', )
 
         # Create the channel.
         if channel is None:
-            channel = self.create_channel(address=address, credentials=credentials)
+            channel = self.create_channel(
+                address=address,
+                credentials=credentials,
+            )
 
         self._channel = channel
 
         # gRPC uses objects called "stubs" that are bound to the
         # channel and provide a basic method for each RPC.
         self._stubs = {
-            "iam_credentials_stub": iamcredentials_pb2_grpc.IAMCredentialsStub(channel)
+            'iam_credentials_stub':
+            iamcredentials_pb2_grpc.IAMCredentialsStub(channel),
         }
 
     @classmethod
-    def create_channel(
-        cls, address="iamcredentials.googleapis.com:443", credentials=None
-    ):
+    def create_channel(cls,
+                       address='iamcredentials.googleapis.com:443',
+                       credentials=None):
         """Create and return a gRPC channel object.
 
         Args:
@@ -88,7 +89,9 @@ class IamCredentialsGrpcTransport(object):
             grpc.Channel: A gRPC channel object.
         """
         return google.api_core.grpc_helpers.create_channel(
-            address, credentials=credentials, scopes=cls._OAUTH_SCOPES
+            address,
+            credentials=credentials,
+            scopes=cls._OAUTH_SCOPES,
         )
 
     @property
@@ -111,7 +114,7 @@ class IamCredentialsGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["iam_credentials_stub"].GenerateAccessToken
+        return self._stubs['iam_credentials_stub'].GenerateAccessToken
 
     @property
     def generate_id_token(self):
@@ -124,7 +127,7 @@ class IamCredentialsGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["iam_credentials_stub"].GenerateIdToken
+        return self._stubs['iam_credentials_stub'].GenerateIdToken
 
     @property
     def sign_blob(self):
@@ -137,7 +140,7 @@ class IamCredentialsGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["iam_credentials_stub"].SignBlob
+        return self._stubs['iam_credentials_stub'].SignBlob
 
     @property
     def sign_jwt(self):
@@ -150,7 +153,7 @@ class IamCredentialsGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["iam_credentials_stub"].SignJwt
+        return self._stubs['iam_credentials_stub'].SignJwt
 
     @property
     def generate_identity_binding_access_token(self):
@@ -164,4 +167,5 @@ class IamCredentialsGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["iam_credentials_stub"].GenerateIdentityBindingAccessToken
+        return self._stubs[
+            'iam_credentials_stub'].GenerateIdentityBindingAccessToken
