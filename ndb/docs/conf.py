@@ -39,6 +39,7 @@ nitpick_ignore = [
     ("py:obj", "google.cloud.datastore._app_engine_key_pb2.Reference"),
     ("py:class", "google.cloud.datastore._app_engine_key_pb2.Reference"),
     ("py:class", "google.cloud.datastore_v1.proto.entity_pb2.Entity"),
+    ("py:class", "google.cloud.ndb.metadata._BaseMetadata"),
     ("py:class", ".."),
     ("py:class", "Any"),
     ("py:class", "Callable"),
