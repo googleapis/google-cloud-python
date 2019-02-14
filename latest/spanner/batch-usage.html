@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Batching Modifications &#8212; google-cloud fd126fd documentation</title>
+    <title>Batching Modifications &#8212; google-cloud 01d48f2 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -38,7 +38,7 @@
   <div class="section" id="batching-modifications">
 <h1>Batching Modifications<a class="headerlink" href="#batching-modifications" title="Permalink to this headline">#</a></h1>
 <p>A <code class="xref py py-class docutils literal notranslate"><span class="pre">Batch</span></code> represents a set of data
-modification operations to be performed on tables in a dataset.  Use of a
+modification operations to be performed on tables in a database.  Use of a
 <code class="docutils literal notranslate"><span class="pre">Batch</span></code> does not require creating an explicit
 <code class="xref py py-class docutils literal notranslate"><span class="pre">Snapshot</span></code> or
 <code class="xref py py-class docutils literal notranslate"><span class="pre">Transaction</span></code>.  Until
@@ -46,7 +46,14 @@ modification operations to be performed on tables in a dataset.  Use of a
 no changes are propagated to the back-end.</p>
 <div class="section" id="starting-a-batch">
 <h2>Starting a Batch<a class="headerlink" href="#starting-a-batch" title="Permalink to this headline">#</a></h2>
-<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">batch</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">batch</span><span class="p">()</span>
+<p>Construct a <code class="xref py py-class docutils literal notranslate"><span class="pre">Batch</span></code> object from a <code class="xref py py-class docutils literal notranslate"><span class="pre">Database</span></code> object:</p>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">spanner</span>
+
+<span class="n">client</span> <span class="o">=</span> <span class="n">spanner</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
+<span class="n">instance</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">instance</span><span class="p">(</span><span class="n">INSTANCE_NAME</span><span class="p">)</span>
+<span class="n">database</span> <span class="o">=</span> <span class="n">instance</span><span class="o">.</span><span class="n">database</span><span class="p">(</span><span class="n">DATABASE_NAME</span><span class="p">)</span>
+
+<span class="n">batch</span> <span class="o">=</span> <span class="n">database</span><span class="o">.</span><span class="n">batch</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -165,12 +172,16 @@ API call.</p>
 if the <code class="docutils literal notranslate"><span class="pre">with</span></code> block exits without raising an exception.</p>
 <div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">google.cloud.spanner.keyset</span> <span class="k">import</span> <span class="n">KeySet</span>
 
+<span class="n">client</span> <span class="o">=</span> <span class="n">spanner</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
+<span class="n">instance</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">instance</span><span class="p">(</span><span class="n">INSTANCE_NAME</span><span class="p">)</span>
+<span class="n">database</span> <span class="o">=</span> <span class="n">instance</span><span class="o">.</span><span class="n">database</span><span class="p">(</span><span class="n">DATABASE_NAME</span><span class="p">)</span>
+
 <span class="n">to_delete</span> <span class="o">=</span> <span class="n">KeySet</span><span class="p">(</span><span class="n">keys</span><span class="o">=</span><span class="p">[</span>
     <span class="p">(</span><span class="s1">&#39;bharney@example.com&#39;</span><span class="p">,)</span>
     <span class="p">(</span><span class="s1">&#39;nonesuch@example.com&#39;</span><span class="p">,)</span>
 <span class="p">])</span>
 
-<span class="k">with</span> <span class="n">session</span><span class="o">.</span><span class="n">batch</span><span class="p">()</span> <span class="k">as</span> <span class="n">batch</span><span class="p">:</span>
+<span class="k">with</span> <span class="n">database</span><span class="o">.</span><span class="n">batch</span><span class="p">()</span> <span class="k">as</span> <span class="n">batch</span><span class="p">:</span>
 
     <span class="n">batch</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span>
         <span class="s1">&#39;citizens&#39;</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;email&#39;</span><span class="p">,</span> <span class="s1">&#39;first_name&#39;</span><span class="p">,</span> <span class="s1">&#39;last_name&#39;</span><span class="p">,</span> <span class="s1">&#39;age&#39;</span><span class="p">],</span>
