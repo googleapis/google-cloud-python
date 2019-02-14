@@ -1381,7 +1381,8 @@ class RowIterator(HTTPIterator):
         return pandas.concat(frames)[columns]
 
     def to_dataframe(self, bqstorage_client=None, dtypes=None):
-        """Create a pandas DataFrame from the query results.
+        """Create a pandas DataFrame by loading all pages of a query.
+           
 
         Args:
             bqstorage_client ( \
