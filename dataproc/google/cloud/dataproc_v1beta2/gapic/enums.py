@@ -29,7 +29,6 @@ class ClusterOperationStatus(object):
           RUNNING (int): The operation is running.
           DONE (int): The operation is done; either cancelled or completed.
         """
-
         UNKNOWN = 0
         PENDING = 1
         RUNNING = 2
@@ -49,7 +48,6 @@ class ClusterStatus(object):
           DELETING (int): The cluster is being deleted. It cannot be used.
           UPDATING (int): The cluster is being updated. It continues to accept and process jobs.
         """
-
         UNKNOWN = 0
         CREATING = 1
         RUNNING = 2
@@ -73,7 +71,6 @@ class ClusterStatus(object):
 
           Applies to RUNNING state.
         """
-
         UNSPECIFIED = 0
         UNHEALTHY = 1
         STALE_STATUS = 2
@@ -101,7 +98,6 @@ class JobStatus(object):
 
           Applies to restartable jobs only.
         """
-
         STATE_UNSPECIFIED = 0
         PENDING = 1
         SETUP_DONE = 8
@@ -133,7 +129,6 @@ class JobStatus(object):
 
           Applies to RUNNING state.
         """
-
         UNSPECIFIED = 0
         SUBMITTED = 1
         QUEUED = 2
@@ -151,7 +146,6 @@ class ListJobsRequest(object):
           CANCEL\_PENDING.
           NON_ACTIVE (int): Only match jobs in terminal states: CANCELLED, DONE, or ERROR.
         """
-
         ALL = 0
         ACTIVE = 1
         NON_ACTIVE = 2
@@ -175,7 +169,6 @@ class LoggingConfig(object):
           FATAL (int): Use FATAL level for log4j.
           OFF (int): Turn off log4j.
         """
-
         LEVEL_UNSPECIFIED = 0
         ALL = 1
         TRACE = 2
@@ -198,7 +191,6 @@ class WorkflowMetadata(object):
           RUNNING (int): The operation is running.
           DONE (int): The operation is done; either cancelled or completed.
         """
-
         UNKNOWN = 0
         PENDING = 1
         RUNNING = 2
@@ -219,7 +211,6 @@ class WorkflowNode(object):
           FAILED (int): The node failed. A node can be marked FAILED because
           its ancestor or peer failed.
         """
-
         NODE_STATUS_UNSPECIFIED = 0
         BLOCKED = 1
         RUNNABLE = 2
@@ -245,7 +236,6 @@ class YarnApplication(object):
           FAILED (int): Status is FAILED.
           KILLED (int): Status is KILLED.
         """
-
         STATE_UNSPECIFIED = 0
         NEW = 1
         NEW_SAVING = 2

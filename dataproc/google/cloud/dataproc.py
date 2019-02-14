@@ -23,9 +23,9 @@ from google.cloud.dataproc_v1 import enums
 from google.cloud.dataproc_v1 import types
 
 __all__ = (
-    "enums",
-    "types",
-    "ClusterControllerClient",
-    "JobControllerClient",
-    "WorkflowTemplateServiceClient",
+    'enums',
+    'types',
+    'ClusterControllerClient',
+    'JobControllerClient',
+    'WorkflowTemplateServiceClient',
 )
