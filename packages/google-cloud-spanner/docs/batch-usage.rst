@@ -2,7 +2,7 @@ Batching Modifications
 ######################
 
 A :class:`~google.cloud.spanner.batch.Batch` represents a set of data
-modification operations to be performed on tables in a dataset.  Use of a
+modification operations to be performed on tables in a database.  Use of a
 ``Batch`` does not require creating an explicit
 :class:`~google.cloud.spanner.snapshot.Snapshot` or
 :class:`~google.cloud.spanner.transaction.Transaction`.  Until
@@ -13,9 +13,17 @@ no changes are propagated to the back-end.
 Starting a Batch
 ----------------
 
+Construct a :class:`~google.cloud.spanner.batch.Batch` object from a :class:`~google.cloud.spanner.database.Database` object:
+
 .. code:: python
 
-    batch = client.batch()
+    from google.cloud import spanner
+
+    client = spanner.Client()
+    instance = client.instance(INSTANCE_NAME)
+    database = instance.database(DATABASE_NAME)
+
+    batch = database.batch()
 
 
 Inserting records using a Batch
@@ -159,12 +167,16 @@ if the ``with`` block exits without raising an exception.
 
     from google.cloud.spanner.keyset import KeySet
 
+    client = spanner.Client()
+    instance = client.instance(INSTANCE_NAME)
+    database = instance.database(DATABASE_NAME)
+
     to_delete = KeySet(keys=[
         ('bharney@example.com',)
         ('nonesuch@example.com',)
     ])
 
-    with session.batch() as batch:
+    with database.batch() as batch:
 
         batch.insert(
             'citizens', columns=['email', 'first_name', 'last_name', 'age'],
