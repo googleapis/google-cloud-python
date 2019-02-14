@@ -26,4 +26,8 @@ class IncidentServiceClient(incident_service_client.IncidentServiceClient):
     enums = enums
 
 
-__all__ = ("enums", "types", "IncidentServiceClient")
+__all__ = (
+    'enums',
+    'types',
+    'IncidentServiceClient',
+)

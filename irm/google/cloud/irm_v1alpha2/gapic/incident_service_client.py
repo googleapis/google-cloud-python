@@ -37,18 +37,19 @@ from google.cloud.irm_v1alpha2.proto import incidents_service_pb2_grpc
 from google.protobuf import empty_pb2
 from google.protobuf import field_mask_pb2
 
-_GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution("google-cloud-irm").version
+_GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
+    'google-cloud-irm', ).version
 
 
 class IncidentServiceClient(object):
     """The Incident API for Incident Response & Management."""
 
-    SERVICE_ADDRESS = "irm.googleapis.com:443"
+    SERVICE_ADDRESS = 'irm.googleapis.com:443'
     """The default address of the service."""
 
     # The name of the interface for this client. This is the key used to
     # find the method configuration in the client_config dictionary.
-    _INTERFACE_NAME = "google.cloud.irm.v1alpha2.IncidentService"
+    _INTERFACE_NAME = 'google.cloud.irm.v1alpha2.IncidentService'
 
     @classmethod
     def from_service_account_file(cls, filename, *args, **kwargs):
@@ -64,8 +65,9 @@ class IncidentServiceClient(object):
         Returns:
             IncidentServiceClient: The constructed client.
         """
-        credentials = service_account.Credentials.from_service_account_file(filename)
-        kwargs["credentials"] = credentials
+        credentials = service_account.Credentials.from_service_account_file(
+            filename)
+        kwargs['credentials'] = credentials
         return cls(*args, **kwargs)
 
     from_service_account_json = from_service_account_file
@@ -74,14 +76,15 @@ class IncidentServiceClient(object):
     def project_path(cls, project):
         """Return a fully-qualified project string."""
         return google.api_core.path_template.expand(
-            "projects/{project}", project=project
+            'projects/{project}',
+            project=project,
         )
 
     @classmethod
     def incident_path(cls, project, incident):
         """Return a fully-qualified incident string."""
         return google.api_core.path_template.expand(
-            "projects/{project}/incidents/{incident}",
+            'projects/{project}/incidents/{incident}',
             project=project,
             incident=incident,
         )
@@ -90,7 +93,7 @@ class IncidentServiceClient(object):
     def annotation_path(cls, project, incident, annotation):
         """Return a fully-qualified annotation string."""
         return google.api_core.path_template.expand(
-            "projects/{project}/incidents/{incident}/annotations/{annotation}",
+            'projects/{project}/incidents/{incident}/annotations/{annotation}',
             project=project,
             incident=incident,
             annotation=annotation,
@@ -100,7 +103,7 @@ class IncidentServiceClient(object):
     def artifact_path(cls, project, incident, artifact):
         """Return a fully-qualified artifact string."""
         return google.api_core.path_template.expand(
-            "projects/{project}/incidents/{incident}/artifacts/{artifact}",
+            'projects/{project}/incidents/{incident}/artifacts/{artifact}',
             project=project,
             incident=incident,
             artifact=artifact,
@@ -110,7 +113,7 @@ class IncidentServiceClient(object):
     def role_assignment_path(cls, project, incident, role_assignment):
         """Return a fully-qualified role_assignment string."""
         return google.api_core.path_template.expand(
-            "projects/{project}/incidents/{incident}/roleAssignments/{role_assignment}",
+            'projects/{project}/incidents/{incident}/roleAssignments/{role_assignment}',
             project=project,
             incident=incident,
             role_assignment=role_assignment,
@@ -120,7 +123,7 @@ class IncidentServiceClient(object):
     def subscription_path(cls, project, incident, subscription):
         """Return a fully-qualified subscription string."""
         return google.api_core.path_template.expand(
-            "projects/{project}/incidents/{incident}/subscriptions/{subscription}",
+            'projects/{project}/incidents/{incident}/subscriptions/{subscription}',
             project=project,
             incident=incident,
             subscription=subscription,
@@ -130,7 +133,7 @@ class IncidentServiceClient(object):
     def tag_path(cls, project, incident, tag):
         """Return a fully-qualified tag string."""
         return google.api_core.path_template.expand(
-            "projects/{project}/incidents/{incident}/tags/{tag}",
+            'projects/{project}/incidents/{incident}/tags/{tag}',
             project=project,
             incident=incident,
             tag=tag,
@@ -140,17 +143,17 @@ class IncidentServiceClient(object):
     def signal_path(cls, project, signal):
         """Return a fully-qualified signal string."""
         return google.api_core.path_template.expand(
-            "projects/{project}/signals/{signal}", project=project, signal=signal
+            'projects/{project}/signals/{signal}',
+            project=project,
+            signal=signal,
         )
 
-    def __init__(
-        self,
-        transport=None,
-        channel=None,
-        credentials=None,
-        client_config=None,
-        client_info=None,
-    ):
+    def __init__(self,
+                 transport=None,
+                 channel=None,
+                 credentials=None,
+                 client_config=None,
+                 client_info=None):
         """Constructor.
 
         Args:
@@ -184,19 +187,18 @@ class IncidentServiceClient(object):
         # Raise deprecation warnings for things we want to go away.
         if client_config is not None:
             warnings.warn(
-                "The `client_config` argument is deprecated.",
+                'The `client_config` argument is deprecated.',
                 PendingDeprecationWarning,
-                stacklevel=2,
-            )
+                stacklevel=2)
         else:
             client_config = incident_service_client_config.config
 
         if channel:
             warnings.warn(
-                "The `channel` argument is deprecated; use " "`transport` instead.",
+                'The `channel` argument is deprecated; use '
+                '`transport` instead.',
                 PendingDeprecationWarning,
-                stacklevel=2,
-            )
+                stacklevel=2)
 
         # Instantiate the transport.
         # The transport is responsible for handling serialization and
@@ -205,24 +207,25 @@ class IncidentServiceClient(object):
             if callable(transport):
                 self.transport = transport(
                     credentials=credentials,
-                    default_class=incident_service_grpc_transport.IncidentServiceGrpcTransport,
+                    default_class=incident_service_grpc_transport.
+                    IncidentServiceGrpcTransport,
                 )
             else:
                 if credentials:
                     raise ValueError(
-                        "Received both a transport instance and "
-                        "credentials; these are mutually exclusive."
-                    )
+                        'Received both a transport instance and '
+                        'credentials; these are mutually exclusive.')
                 self.transport = transport
         else:
             self.transport = incident_service_grpc_transport.IncidentServiceGrpcTransport(
-                address=self.SERVICE_ADDRESS, channel=channel, credentials=credentials
+                address=self.SERVICE_ADDRESS,
+                channel=channel,
+                credentials=credentials,
             )
 
         if client_info is None:
             client_info = google.api_core.gapic_v1.client_info.ClientInfo(
-                gapic_version=_GAPIC_LIBRARY_VERSION
-            )
+                gapic_version=_GAPIC_LIBRARY_VERSION, )
         else:
             client_info.gapic_version = _GAPIC_LIBRARY_VERSION
         self._client_info = client_info
@@ -232,8 +235,7 @@ class IncidentServiceClient(object):
         # (Ordinarily, these are the defaults specified in the `*_config.py`
         # file next to this one.)
         self._method_configs = google.api_core.gapic_v1.config.parse_method_configs(
-            client_config["interfaces"][self._INTERFACE_NAME]
-        )
+            client_config['interfaces'][self._INTERFACE_NAME], )
 
         # Save a dictionary of cached API call functions.
         # These are the actual callables which invoke the proper
@@ -242,14 +244,12 @@ class IncidentServiceClient(object):
         self._inner_api_calls = {}
 
     # Service calls
-    def create_incident(
-        self,
-        incident,
-        parent,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
+    def create_incident(self,
+                        incident,
+                        parent,
+                        retry=google.api_core.gapic_v1.method.DEFAULT,
+                        timeout=google.api_core.gapic_v1.method.DEFAULT,
+                        metadata=None):
         """
         Creates a new incident.
 
@@ -292,30 +292,28 @@ class IncidentServiceClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if "create_incident" not in self._inner_api_calls:
+        if 'create_incident' not in self._inner_api_calls:
             self._inner_api_calls[
-                "create_incident"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.create_incident,
-                default_retry=self._method_configs["CreateIncident"].retry,
-                default_timeout=self._method_configs["CreateIncident"].timeout,
-                client_info=self._client_info,
-            )
+                'create_incident'] = google.api_core.gapic_v1.method.wrap_method(
+                    self.transport.create_incident,
+                    default_retry=self._method_configs['CreateIncident'].retry,
+                    default_timeout=self._method_configs['CreateIncident'].
+                    timeout,
+                    client_info=self._client_info,
+                )
 
         request = incidents_service_pb2.CreateIncidentRequest(
-            incident=incident, parent=parent
+            incident=incident,
+            parent=parent,
         )
-        return self._inner_api_calls["create_incident"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
+        return self._inner_api_calls['create_incident'](
+            request, retry=retry, timeout=timeout, metadata=metadata)
 
-    def get_incident(
-        self,
-        name,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
+    def get_incident(self,
+                     name,
+                     retry=google.api_core.gapic_v1.method.DEFAULT,
+                     timeout=google.api_core.gapic_v1.method.DEFAULT,
+                     metadata=None):
         """
         Returns an incident by name.
 
@@ -351,31 +349,28 @@ class IncidentServiceClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if "get_incident" not in self._inner_api_calls:
+        if 'get_incident' not in self._inner_api_calls:
             self._inner_api_calls[
-                "get_incident"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.get_incident,
-                default_retry=self._method_configs["GetIncident"].retry,
-                default_timeout=self._method_configs["GetIncident"].timeout,
-                client_info=self._client_info,
-            )
+                'get_incident'] = google.api_core.gapic_v1.method.wrap_method(
+                    self.transport.get_incident,
+                    default_retry=self._method_configs['GetIncident'].retry,
+                    default_timeout=self._method_configs['GetIncident'].
+                    timeout,
+                    client_info=self._client_info,
+                )
 
-        request = incidents_service_pb2.GetIncidentRequest(name=name)
-        return self._inner_api_calls["get_incident"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
+        request = incidents_service_pb2.GetIncidentRequest(name=name, )
+        return self._inner_api_calls['get_incident'](
+            request, retry=retry, timeout=timeout, metadata=metadata)
 
-    def search_incidents(
-        self,
-        parent,
-        query=None,
-        page_size=None,
-        time_zone=None,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
+    def search_incidents(self,
+                         parent,
+                         query=None,
+                         page_size=None,
+                         time_zone=None,
+                         retry=google.api_core.gapic_v1.method.DEFAULT,
+                         timeout=google.api_core.gapic_v1.method.DEFAULT,
+                         metadata=None):
         """
         Returns a list of incidents.
         Incidents are ordered by start time, with the most recent incidents first.
@@ -491,42 +486,43 @@ class IncidentServiceClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if "search_incidents" not in self._inner_api_calls:
+        if 'search_incidents' not in self._inner_api_calls:
             self._inner_api_calls[
-                "search_incidents"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.search_incidents,
-                default_retry=self._method_configs["SearchIncidents"].retry,
-                default_timeout=self._method_configs["SearchIncidents"].timeout,
-                client_info=self._client_info,
-            )
+                'search_incidents'] = google.api_core.gapic_v1.method.wrap_method(
+                    self.transport.search_incidents,
+                    default_retry=self._method_configs['SearchIncidents'].
+                    retry,
+                    default_timeout=self._method_configs['SearchIncidents'].
+                    timeout,
+                    client_info=self._client_info,
+                )
 
         request = incidents_service_pb2.SearchIncidentsRequest(
-            parent=parent, query=query, page_size=page_size, time_zone=time_zone
+            parent=parent,
+            query=query,
+            page_size=page_size,
+            time_zone=time_zone,
         )
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(
-                self._inner_api_calls["search_incidents"],
+                self._inner_api_calls['search_incidents'],
                 retry=retry,
                 timeout=timeout,
-                metadata=metadata,
-            ),
+                metadata=metadata),
             request=request,
-            items_field="incidents",
-            request_token_field="page_token",
-            response_token_field="next_page_token",
+            items_field='incidents',
+            request_token_field='page_token',
+            response_token_field='next_page_token',
         )
         return iterator
 
-    def update_incident(
-        self,
-        incident,
-        update_mask=None,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
+    def update_incident(self,
+                        incident,
+                        update_mask=None,
+                        retry=google.api_core.gapic_v1.method.DEFAULT,
+                        timeout=google.api_core.gapic_v1.method.DEFAULT,
+                        metadata=None):
         """
         Updates an existing incident.
 
@@ -569,31 +565,30 @@ class IncidentServiceClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if "update_incident" not in self._inner_api_calls:
+        if 'update_incident' not in self._inner_api_calls:
             self._inner_api_calls[
-                "update_incident"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.update_incident,
-                default_retry=self._method_configs["UpdateIncident"].retry,
-                default_timeout=self._method_configs["UpdateIncident"].timeout,
-                client_info=self._client_info,
-            )
+                'update_incident'] = google.api_core.gapic_v1.method.wrap_method(
+                    self.transport.update_incident,
+                    default_retry=self._method_configs['UpdateIncident'].retry,
+                    default_timeout=self._method_configs['UpdateIncident'].
+                    timeout,
+                    client_info=self._client_info,
+                )
 
         request = incidents_service_pb2.UpdateIncidentRequest(
-            incident=incident, update_mask=update_mask
+            incident=incident,
+            update_mask=update_mask,
         )
-        return self._inner_api_calls["update_incident"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
+        return self._inner_api_calls['update_incident'](
+            request, retry=retry, timeout=timeout, metadata=metadata)
 
     def search_similar_incidents(
-        self,
-        name,
-        page_size=None,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
+            self,
+            name,
+            page_size=None,
+            retry=google.api_core.gapic_v1.method.DEFAULT,
+            timeout=google.api_core.gapic_v1.method.DEFAULT,
+            metadata=None):
         """
         Returns a list of incidents that are "similar" to the specified incident
         or signal. This functionality is provided on a best-effort basis and the
@@ -651,42 +646,41 @@ class IncidentServiceClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if "search_similar_incidents" not in self._inner_api_calls:
+        if 'search_similar_incidents' not in self._inner_api_calls:
             self._inner_api_calls[
-                "search_similar_incidents"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.search_similar_incidents,
-                default_retry=self._method_configs["SearchSimilarIncidents"].retry,
-                default_timeout=self._method_configs["SearchSimilarIncidents"].timeout,
-                client_info=self._client_info,
-            )
+                'search_similar_incidents'] = google.api_core.gapic_v1.method.wrap_method(
+                    self.transport.search_similar_incidents,
+                    default_retry=self.
+                    _method_configs['SearchSimilarIncidents'].retry,
+                    default_timeout=self.
+                    _method_configs['SearchSimilarIncidents'].timeout,
+                    client_info=self._client_info,
+                )
 
         request = incidents_service_pb2.SearchSimilarIncidentsRequest(
-            name=name, page_size=page_size
+            name=name,
+            page_size=page_size,
         )
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(
-                self._inner_api_calls["search_similar_incidents"],
+                self._inner_api_calls['search_similar_incidents'],
                 retry=retry,
                 timeout=timeout,
-                metadata=metadata,
-            ),
+                metadata=metadata),
             request=request,
-            items_field="results",
-            request_token_field="page_token",
-            response_token_field="next_page_token",
+            items_field='results',
+            request_token_field='page_token',
+            response_token_field='next_page_token',
         )
         return iterator
 
-    def create_annotation(
-        self,
-        parent,
-        annotation,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
+    def create_annotation(self,
+                          parent,
+                          annotation,
+                          retry=google.api_core.gapic_v1.method.DEFAULT,
+                          timeout=google.api_core.gapic_v1.method.DEFAULT,
+                          metadata=None):
         """
         Creates an annotation on an existing incident. Only 'text/plain' and
         'text/markdown' annotations can be created via this method.
@@ -730,31 +724,30 @@ class IncidentServiceClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if "create_annotation" not in self._inner_api_calls:
+        if 'create_annotation' not in self._inner_api_calls:
             self._inner_api_calls[
-                "create_annotation"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.create_annotation,
-                default_retry=self._method_configs["CreateAnnotation"].retry,
-                default_timeout=self._method_configs["CreateAnnotation"].timeout,
-                client_info=self._client_info,
-            )
+                'create_annotation'] = google.api_core.gapic_v1.method.wrap_method(
+                    self.transport.create_annotation,
+                    default_retry=self._method_configs['CreateAnnotation'].
+                    retry,
+                    default_timeout=self._method_configs['CreateAnnotation'].
+                    timeout,
+                    client_info=self._client_info,
+                )
 
         request = incidents_service_pb2.CreateAnnotationRequest(
-            parent=parent, annotation=annotation
+            parent=parent,
+            annotation=annotation,
         )
-        return self._inner_api_calls["create_annotation"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
+        return self._inner_api_calls['create_annotation'](
+            request, retry=retry, timeout=timeout, metadata=metadata)
 
-    def list_annotations(
-        self,
-        parent,
-        page_size=None,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
+    def list_annotations(self,
+                         parent,
+                         page_size=None,
+                         retry=google.api_core.gapic_v1.method.DEFAULT,
+                         timeout=google.api_core.gapic_v1.method.DEFAULT,
+                         metadata=None):
         """
         Lists annotations that are part of an incident. No assumptions should be
         made on the content-type of the annotation returned.
@@ -811,42 +804,41 @@ class IncidentServiceClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if "list_annotations" not in self._inner_api_calls:
+        if 'list_annotations' not in self._inner_api_calls:
             self._inner_api_calls[
-                "list_annotations"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.list_annotations,
-                default_retry=self._method_configs["ListAnnotations"].retry,
-                default_timeout=self._method_configs["ListAnnotations"].timeout,
-                client_info=self._client_info,
-            )
+                'list_annotations'] = google.api_core.gapic_v1.method.wrap_method(
+                    self.transport.list_annotations,
+                    default_retry=self._method_configs['ListAnnotations'].
+                    retry,
+                    default_timeout=self._method_configs['ListAnnotations'].
+                    timeout,
+                    client_info=self._client_info,
+                )
 
         request = incidents_service_pb2.ListAnnotationsRequest(
-            parent=parent, page_size=page_size
+            parent=parent,
+            page_size=page_size,
         )
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(
-                self._inner_api_calls["list_annotations"],
+                self._inner_api_calls['list_annotations'],
                 retry=retry,
                 timeout=timeout,
-                metadata=metadata,
-            ),
+                metadata=metadata),
             request=request,
-            items_field="annotations",
-            request_token_field="page_token",
-            response_token_field="next_page_token",
+            items_field='annotations',
+            request_token_field='page_token',
+            response_token_field='next_page_token',
         )
         return iterator
 
-    def update_annotation(
-        self,
-        annotation,
-        update_mask=None,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
+    def update_annotation(self,
+                          annotation,
+                          update_mask=None,
+                          retry=google.api_core.gapic_v1.method.DEFAULT,
+                          timeout=google.api_core.gapic_v1.method.DEFAULT,
+                          metadata=None):
         """
         Updates an annotation on an existing incident.
 
@@ -889,31 +881,30 @@ class IncidentServiceClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if "update_annotation" not in self._inner_api_calls:
+        if 'update_annotation' not in self._inner_api_calls:
             self._inner_api_calls[
-                "update_annotation"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.update_annotation,
-                default_retry=self._method_configs["UpdateAnnotation"].retry,
-                default_timeout=self._method_configs["UpdateAnnotation"].timeout,
-                client_info=self._client_info,
-            )
+                'update_annotation'] = google.api_core.gapic_v1.method.wrap_method(
+                    self.transport.update_annotation,
+                    default_retry=self._method_configs['UpdateAnnotation'].
+                    retry,
+                    default_timeout=self._method_configs['UpdateAnnotation'].
+                    timeout,
+                    client_info=self._client_info,
+                )
 
         request = incidents_service_pb2.UpdateAnnotationRequest(
-            annotation=annotation, update_mask=update_mask
+            annotation=annotation,
+            update_mask=update_mask,
         )
-        return self._inner_api_calls["update_annotation"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
+        return self._inner_api_calls['update_annotation'](
+            request, retry=retry, timeout=timeout, metadata=metadata)
 
-    def create_tag(
-        self,
-        parent,
-        tag,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
+    def create_tag(self,
+                   parent,
+                   tag,
+                   retry=google.api_core.gapic_v1.method.DEFAULT,
+                   timeout=google.api_core.gapic_v1.method.DEFAULT,
+                   metadata=None):
         """
         Creates a tag on an existing incident.
 
@@ -956,28 +947,27 @@ class IncidentServiceClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if "create_tag" not in self._inner_api_calls:
+        if 'create_tag' not in self._inner_api_calls:
             self._inner_api_calls[
-                "create_tag"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.create_tag,
-                default_retry=self._method_configs["CreateTag"].retry,
-                default_timeout=self._method_configs["CreateTag"].timeout,
-                client_info=self._client_info,
-            )
+                'create_tag'] = google.api_core.gapic_v1.method.wrap_method(
+                    self.transport.create_tag,
+                    default_retry=self._method_configs['CreateTag'].retry,
+                    default_timeout=self._method_configs['CreateTag'].timeout,
+                    client_info=self._client_info,
+                )
 
-        request = incidents_service_pb2.CreateTagRequest(parent=parent, tag=tag)
-        return self._inner_api_calls["create_tag"](
-            request, retry=retry, timeout=timeout, metadata=metadata
+        request = incidents_service_pb2.CreateTagRequest(
+            parent=parent,
+            tag=tag,
         )
+        return self._inner_api_calls['create_tag'](
+            request, retry=retry, timeout=timeout, metadata=metadata)
 
-    def delete_tag(
-        self,
-        name,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
+    def delete_tag(self,
+                   name,
+                   retry=google.api_core.gapic_v1.method.DEFAULT,
+                   timeout=google.api_core.gapic_v1.method.DEFAULT,
+                   metadata=None):
         """
         Deletes an existing tag.
 
@@ -1009,29 +999,25 @@ class IncidentServiceClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if "delete_tag" not in self._inner_api_calls:
+        if 'delete_tag' not in self._inner_api_calls:
             self._inner_api_calls[
-                "delete_tag"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.delete_tag,
-                default_retry=self._method_configs["DeleteTag"].retry,
-                default_timeout=self._method_configs["DeleteTag"].timeout,
-                client_info=self._client_info,
-            )
+                'delete_tag'] = google.api_core.gapic_v1.method.wrap_method(
+                    self.transport.delete_tag,
+                    default_retry=self._method_configs['DeleteTag'].retry,
+                    default_timeout=self._method_configs['DeleteTag'].timeout,
+                    client_info=self._client_info,
+                )
 
-        request = incidents_service_pb2.DeleteTagRequest(name=name)
-        self._inner_api_calls["delete_tag"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
+        request = incidents_service_pb2.DeleteTagRequest(name=name, )
+        self._inner_api_calls['delete_tag'](
+            request, retry=retry, timeout=timeout, metadata=metadata)
 
-    def list_tags(
-        self,
-        parent,
-        page_size=None,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
+    def list_tags(self,
+                  parent,
+                  page_size=None,
+                  retry=google.api_core.gapic_v1.method.DEFAULT,
+                  timeout=google.api_core.gapic_v1.method.DEFAULT,
+                  metadata=None):
         """
         Lists tags that are part of an incident.
 
@@ -1087,42 +1073,39 @@ class IncidentServiceClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if "list_tags" not in self._inner_api_calls:
+        if 'list_tags' not in self._inner_api_calls:
             self._inner_api_calls[
-                "list_tags"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.list_tags,
-                default_retry=self._method_configs["ListTags"].retry,
-                default_timeout=self._method_configs["ListTags"].timeout,
-                client_info=self._client_info,
-            )
+                'list_tags'] = google.api_core.gapic_v1.method.wrap_method(
+                    self.transport.list_tags,
+                    default_retry=self._method_configs['ListTags'].retry,
+                    default_timeout=self._method_configs['ListTags'].timeout,
+                    client_info=self._client_info,
+                )
 
         request = incidents_service_pb2.ListTagsRequest(
-            parent=parent, page_size=page_size
+            parent=parent,
+            page_size=page_size,
         )
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(
-                self._inner_api_calls["list_tags"],
+                self._inner_api_calls['list_tags'],
                 retry=retry,
                 timeout=timeout,
-                metadata=metadata,
-            ),
+                metadata=metadata),
             request=request,
-            items_field="tags",
-            request_token_field="page_token",
-            response_token_field="next_page_token",
+            items_field='tags',
+            request_token_field='page_token',
+            response_token_field='next_page_token',
         )
         return iterator
 
-    def create_signal(
-        self,
-        parent,
-        signal,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
+    def create_signal(self,
+                      parent,
+                      signal,
+                      retry=google.api_core.gapic_v1.method.DEFAULT,
+                      timeout=google.api_core.gapic_v1.method.DEFAULT,
+                      metadata=None):
         """
         Creates a new signal.
 
@@ -1165,32 +1148,30 @@ class IncidentServiceClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if "create_signal" not in self._inner_api_calls:
+        if 'create_signal' not in self._inner_api_calls:
             self._inner_api_calls[
-                "create_signal"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.create_signal,
-                default_retry=self._method_configs["CreateSignal"].retry,
-                default_timeout=self._method_configs["CreateSignal"].timeout,
-                client_info=self._client_info,
-            )
+                'create_signal'] = google.api_core.gapic_v1.method.wrap_method(
+                    self.transport.create_signal,
+                    default_retry=self._method_configs['CreateSignal'].retry,
+                    default_timeout=self._method_configs['CreateSignal'].
+                    timeout,
+                    client_info=self._client_info,
+                )
 
         request = incidents_service_pb2.CreateSignalRequest(
-            parent=parent, signal=signal
+            parent=parent,
+            signal=signal,
         )
-        return self._inner_api_calls["create_signal"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
+        return self._inner_api_calls['create_signal'](
+            request, retry=retry, timeout=timeout, metadata=metadata)
 
-    def list_signals(
-        self,
-        parent,
-        filter_=None,
-        page_size=None,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
+    def list_signals(self,
+                     parent,
+                     filter_=None,
+                     page_size=None,
+                     retry=google.api_core.gapic_v1.method.DEFAULT,
+                     timeout=google.api_core.gapic_v1.method.DEFAULT,
+                     metadata=None):
         """
         Lists signals that are part of an incident.
         Signals are returned in reverse chronological order.
@@ -1248,41 +1229,40 @@ class IncidentServiceClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if "list_signals" not in self._inner_api_calls:
+        if 'list_signals' not in self._inner_api_calls:
             self._inner_api_calls[
-                "list_signals"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.list_signals,
-                default_retry=self._method_configs["ListSignals"].retry,
-                default_timeout=self._method_configs["ListSignals"].timeout,
-                client_info=self._client_info,
-            )
+                'list_signals'] = google.api_core.gapic_v1.method.wrap_method(
+                    self.transport.list_signals,
+                    default_retry=self._method_configs['ListSignals'].retry,
+                    default_timeout=self._method_configs['ListSignals'].
+                    timeout,
+                    client_info=self._client_info,
+                )
 
         request = incidents_service_pb2.ListSignalsRequest(
-            parent=parent, filter=filter_, page_size=page_size
+            parent=parent,
+            filter=filter_,
+            page_size=page_size,
         )
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(
-                self._inner_api_calls["list_signals"],
+                self._inner_api_calls['list_signals'],
                 retry=retry,
                 timeout=timeout,
-                metadata=metadata,
-            ),
+                metadata=metadata),
             request=request,
-            items_field="signals",
-            request_token_field="page_token",
-            response_token_field="next_page_token",
+            items_field='signals',
+            request_token_field='page_token',
+            response_token_field='next_page_token',
         )
         return iterator
 
-    def get_signal(
-        self,
-        name,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
+    def get_signal(self,
+                   name,
+                   retry=google.api_core.gapic_v1.method.DEFAULT,
+                   timeout=google.api_core.gapic_v1.method.DEFAULT,
+                   metadata=None):
         """
         Returns a signal by name.
 
@@ -1318,29 +1298,25 @@ class IncidentServiceClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if "get_signal" not in self._inner_api_calls:
+        if 'get_signal' not in self._inner_api_calls:
             self._inner_api_calls[
-                "get_signal"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.get_signal,
-                default_retry=self._method_configs["GetSignal"].retry,
-                default_timeout=self._method_configs["GetSignal"].timeout,
-                client_info=self._client_info,
-            )
+                'get_signal'] = google.api_core.gapic_v1.method.wrap_method(
+                    self.transport.get_signal,
+                    default_retry=self._method_configs['GetSignal'].retry,
+                    default_timeout=self._method_configs['GetSignal'].timeout,
+                    client_info=self._client_info,
+                )
 
-        request = incidents_service_pb2.GetSignalRequest(name=name)
-        return self._inner_api_calls["get_signal"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
+        request = incidents_service_pb2.GetSignalRequest(name=name, )
+        return self._inner_api_calls['get_signal'](
+            request, retry=retry, timeout=timeout, metadata=metadata)
 
-    def update_signal(
-        self,
-        signal,
-        update_mask=None,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
+    def update_signal(self,
+                      signal,
+                      update_mask=None,
+                      retry=google.api_core.gapic_v1.method.DEFAULT,
+                      timeout=google.api_core.gapic_v1.method.DEFAULT,
+                      metadata=None):
         """
         Updates an existing signal (e.g. to assign/unassign it to an
         incident).
@@ -1384,30 +1360,28 @@ class IncidentServiceClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if "update_signal" not in self._inner_api_calls:
+        if 'update_signal' not in self._inner_api_calls:
             self._inner_api_calls[
-                "update_signal"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.update_signal,
-                default_retry=self._method_configs["UpdateSignal"].retry,
-                default_timeout=self._method_configs["UpdateSignal"].timeout,
-                client_info=self._client_info,
-            )
+                'update_signal'] = google.api_core.gapic_v1.method.wrap_method(
+                    self.transport.update_signal,
+                    default_retry=self._method_configs['UpdateSignal'].retry,
+                    default_timeout=self._method_configs['UpdateSignal'].
+                    timeout,
+                    client_info=self._client_info,
+                )
 
         request = incidents_service_pb2.UpdateSignalRequest(
-            signal=signal, update_mask=update_mask
+            signal=signal,
+            update_mask=update_mask,
         )
-        return self._inner_api_calls["update_signal"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
+        return self._inner_api_calls['update_signal'](
+            request, retry=retry, timeout=timeout, metadata=metadata)
 
-    def acknowledge_signal(
-        self,
-        name,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
+    def acknowledge_signal(self,
+                           name,
+                           retry=google.api_core.gapic_v1.method.DEFAULT,
+                           timeout=google.api_core.gapic_v1.method.DEFAULT,
+                           metadata=None):
         """
         Acks a signal. This acknowledges the signal in the underlying system,
         indicating that the caller takes responsibility for looking into this.
@@ -1444,33 +1418,31 @@ class IncidentServiceClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if "acknowledge_signal" not in self._inner_api_calls:
+        if 'acknowledge_signal' not in self._inner_api_calls:
             self._inner_api_calls[
-                "acknowledge_signal"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.acknowledge_signal,
-                default_retry=self._method_configs["AcknowledgeSignal"].retry,
-                default_timeout=self._method_configs["AcknowledgeSignal"].timeout,
-                client_info=self._client_info,
-            )
+                'acknowledge_signal'] = google.api_core.gapic_v1.method.wrap_method(
+                    self.transport.acknowledge_signal,
+                    default_retry=self._method_configs['AcknowledgeSignal'].
+                    retry,
+                    default_timeout=self._method_configs['AcknowledgeSignal'].
+                    timeout,
+                    client_info=self._client_info,
+                )
 
-        request = incidents_service_pb2.AcknowledgeSignalRequest(name=name)
-        return self._inner_api_calls["acknowledge_signal"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
+        request = incidents_service_pb2.AcknowledgeSignalRequest(name=name, )
+        return self._inner_api_calls['acknowledge_signal'](
+            request, retry=retry, timeout=timeout, metadata=metadata)
 
-    def escalate_incident(
-        self,
-        incident,
-        update_mask=None,
-        subscriptions=None,
-        tags=None,
-        roles=None,
-        artifacts=None,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
+    def escalate_incident(self,
+                          incident,
+                          update_mask=None,
+                          subscriptions=None,
+                          tags=None,
+                          roles=None,
+                          artifacts=None,
+                          retry=google.api_core.gapic_v1.method.DEFAULT,
+                          timeout=google.api_core.gapic_v1.method.DEFAULT,
+                          metadata=None):
         """
         Escalates an incident.
 
@@ -1531,15 +1503,16 @@ class IncidentServiceClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if "escalate_incident" not in self._inner_api_calls:
+        if 'escalate_incident' not in self._inner_api_calls:
             self._inner_api_calls[
-                "escalate_incident"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.escalate_incident,
-                default_retry=self._method_configs["EscalateIncident"].retry,
-                default_timeout=self._method_configs["EscalateIncident"].timeout,
-                client_info=self._client_info,
-            )
+                'escalate_incident'] = google.api_core.gapic_v1.method.wrap_method(
+                    self.transport.escalate_incident,
+                    default_retry=self._method_configs['EscalateIncident'].
+                    retry,
+                    default_timeout=self._method_configs['EscalateIncident'].
+                    timeout,
+                    client_info=self._client_info,
+                )
 
         request = incidents_service_pb2.EscalateIncidentRequest(
             incident=incident,
@@ -1549,18 +1522,15 @@ class IncidentServiceClient(object):
             roles=roles,
             artifacts=artifacts,
         )
-        return self._inner_api_calls["escalate_incident"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
+        return self._inner_api_calls['escalate_incident'](
+            request, retry=retry, timeout=timeout, metadata=metadata)
 
-    def create_artifact(
-        self,
-        parent,
-        artifact,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
+    def create_artifact(self,
+                        parent,
+                        artifact,
+                        retry=google.api_core.gapic_v1.method.DEFAULT,
+                        timeout=google.api_core.gapic_v1.method.DEFAULT,
+                        metadata=None):
         """
         Creates a new artifact.
 
@@ -1603,31 +1573,29 @@ class IncidentServiceClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if "create_artifact" not in self._inner_api_calls:
+        if 'create_artifact' not in self._inner_api_calls:
             self._inner_api_calls[
-                "create_artifact"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.create_artifact,
-                default_retry=self._method_configs["CreateArtifact"].retry,
-                default_timeout=self._method_configs["CreateArtifact"].timeout,
-                client_info=self._client_info,
-            )
+                'create_artifact'] = google.api_core.gapic_v1.method.wrap_method(
+                    self.transport.create_artifact,
+                    default_retry=self._method_configs['CreateArtifact'].retry,
+                    default_timeout=self._method_configs['CreateArtifact'].
+                    timeout,
+                    client_info=self._client_info,
+                )
 
         request = incidents_service_pb2.CreateArtifactRequest(
-            parent=parent, artifact=artifact
+            parent=parent,
+            artifact=artifact,
         )
-        return self._inner_api_calls["create_artifact"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
+        return self._inner_api_calls['create_artifact'](
+            request, retry=retry, timeout=timeout, metadata=metadata)
 
-    def list_artifacts(
-        self,
-        parent,
-        page_size=None,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
+    def list_artifacts(self,
+                       parent,
+                       page_size=None,
+                       retry=google.api_core.gapic_v1.method.DEFAULT,
+                       timeout=google.api_core.gapic_v1.method.DEFAULT,
+                       metadata=None):
         """
         Returns a list of artifacts for an incident.
 
@@ -1683,42 +1651,40 @@ class IncidentServiceClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if "list_artifacts" not in self._inner_api_calls:
+        if 'list_artifacts' not in self._inner_api_calls:
             self._inner_api_calls[
-                "list_artifacts"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.list_artifacts,
-                default_retry=self._method_configs["ListArtifacts"].retry,
-                default_timeout=self._method_configs["ListArtifacts"].timeout,
-                client_info=self._client_info,
-            )
+                'list_artifacts'] = google.api_core.gapic_v1.method.wrap_method(
+                    self.transport.list_artifacts,
+                    default_retry=self._method_configs['ListArtifacts'].retry,
+                    default_timeout=self._method_configs['ListArtifacts'].
+                    timeout,
+                    client_info=self._client_info,
+                )
 
         request = incidents_service_pb2.ListArtifactsRequest(
-            parent=parent, page_size=page_size
+            parent=parent,
+            page_size=page_size,
         )
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(
-                self._inner_api_calls["list_artifacts"],
+                self._inner_api_calls['list_artifacts'],
                 retry=retry,
                 timeout=timeout,
-                metadata=metadata,
-            ),
+                metadata=metadata),
             request=request,
-            items_field="artifacts",
-            request_token_field="page_token",
-            response_token_field="next_page_token",
+            items_field='artifacts',
+            request_token_field='page_token',
+            response_token_field='next_page_token',
         )
         return iterator
 
-    def update_artifact(
-        self,
-        artifact,
-        update_mask=None,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
+    def update_artifact(self,
+                        artifact,
+                        update_mask=None,
+                        retry=google.api_core.gapic_v1.method.DEFAULT,
+                        timeout=google.api_core.gapic_v1.method.DEFAULT,
+                        metadata=None):
         """
         Updates an existing artifact.
 
@@ -1761,30 +1727,28 @@ class IncidentServiceClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if "update_artifact" not in self._inner_api_calls:
+        if 'update_artifact' not in self._inner_api_calls:
             self._inner_api_calls[
-                "update_artifact"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.update_artifact,
-                default_retry=self._method_configs["UpdateArtifact"].retry,
-                default_timeout=self._method_configs["UpdateArtifact"].timeout,
-                client_info=self._client_info,
-            )
+                'update_artifact'] = google.api_core.gapic_v1.method.wrap_method(
+                    self.transport.update_artifact,
+                    default_retry=self._method_configs['UpdateArtifact'].retry,
+                    default_timeout=self._method_configs['UpdateArtifact'].
+                    timeout,
+                    client_info=self._client_info,
+                )
 
         request = incidents_service_pb2.UpdateArtifactRequest(
-            artifact=artifact, update_mask=update_mask
+            artifact=artifact,
+            update_mask=update_mask,
         )
-        return self._inner_api_calls["update_artifact"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
+        return self._inner_api_calls['update_artifact'](
+            request, retry=retry, timeout=timeout, metadata=metadata)
 
-    def delete_artifact(
-        self,
-        name,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
+    def delete_artifact(self,
+                        name,
+                        retry=google.api_core.gapic_v1.method.DEFAULT,
+                        timeout=google.api_core.gapic_v1.method.DEFAULT,
+                        metadata=None):
         """
         Deletes an existing artifact.
 
@@ -1816,28 +1780,26 @@ class IncidentServiceClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if "delete_artifact" not in self._inner_api_calls:
+        if 'delete_artifact' not in self._inner_api_calls:
             self._inner_api_calls[
-                "delete_artifact"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.delete_artifact,
-                default_retry=self._method_configs["DeleteArtifact"].retry,
-                default_timeout=self._method_configs["DeleteArtifact"].timeout,
-                client_info=self._client_info,
-            )
+                'delete_artifact'] = google.api_core.gapic_v1.method.wrap_method(
+                    self.transport.delete_artifact,
+                    default_retry=self._method_configs['DeleteArtifact'].retry,
+                    default_timeout=self._method_configs['DeleteArtifact'].
+                    timeout,
+                    client_info=self._client_info,
+                )
 
-        request = incidents_service_pb2.DeleteArtifactRequest(name=name)
-        self._inner_api_calls["delete_artifact"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
+        request = incidents_service_pb2.DeleteArtifactRequest(name=name, )
+        self._inner_api_calls['delete_artifact'](
+            request, retry=retry, timeout=timeout, metadata=metadata)
 
     def get_shift_handoff_presets(
-        self,
-        parent,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
+            self,
+            parent,
+            retry=google.api_core.gapic_v1.method.DEFAULT,
+            timeout=google.api_core.gapic_v1.method.DEFAULT,
+            metadata=None):
         """
         Returns "presets" specific to shift handoff (see SendShiftHandoff), e.g.
         default values for handoff message fields.
@@ -1874,35 +1836,34 @@ class IncidentServiceClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if "get_shift_handoff_presets" not in self._inner_api_calls:
+        if 'get_shift_handoff_presets' not in self._inner_api_calls:
             self._inner_api_calls[
-                "get_shift_handoff_presets"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.get_shift_handoff_presets,
-                default_retry=self._method_configs["GetShiftHandoffPresets"].retry,
-                default_timeout=self._method_configs["GetShiftHandoffPresets"].timeout,
-                client_info=self._client_info,
-            )
+                'get_shift_handoff_presets'] = google.api_core.gapic_v1.method.wrap_method(
+                    self.transport.get_shift_handoff_presets,
+                    default_retry=self.
+                    _method_configs['GetShiftHandoffPresets'].retry,
+                    default_timeout=self.
+                    _method_configs['GetShiftHandoffPresets'].timeout,
+                    client_info=self._client_info,
+                )
 
-        request = incidents_service_pb2.GetShiftHandoffPresetsRequest(parent=parent)
-        return self._inner_api_calls["get_shift_handoff_presets"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
+        request = incidents_service_pb2.GetShiftHandoffPresetsRequest(
+            parent=parent, )
+        return self._inner_api_calls['get_shift_handoff_presets'](
+            request, retry=retry, timeout=timeout, metadata=metadata)
 
-    def send_shift_handoff(
-        self,
-        parent,
-        recipients,
-        subject,
-        cc=None,
-        notes_content_type=None,
-        notes_content=None,
-        incidents=None,
-        preview_only=None,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
+    def send_shift_handoff(self,
+                           parent,
+                           recipients,
+                           subject,
+                           cc=None,
+                           notes_content_type=None,
+                           notes_content=None,
+                           incidents=None,
+                           preview_only=None,
+                           retry=google.api_core.gapic_v1.method.DEFAULT,
+                           timeout=google.api_core.gapic_v1.method.DEFAULT,
+                           metadata=None):
         """
         Sends a summary of the shift for oncall handoff.
 
@@ -1956,15 +1917,16 @@ class IncidentServiceClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if "send_shift_handoff" not in self._inner_api_calls:
+        if 'send_shift_handoff' not in self._inner_api_calls:
             self._inner_api_calls[
-                "send_shift_handoff"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.send_shift_handoff,
-                default_retry=self._method_configs["SendShiftHandoff"].retry,
-                default_timeout=self._method_configs["SendShiftHandoff"].timeout,
-                client_info=self._client_info,
-            )
+                'send_shift_handoff'] = google.api_core.gapic_v1.method.wrap_method(
+                    self.transport.send_shift_handoff,
+                    default_retry=self._method_configs['SendShiftHandoff'].
+                    retry,
+                    default_timeout=self._method_configs['SendShiftHandoff'].
+                    timeout,
+                    client_info=self._client_info,
+                )
 
         request = incidents_service_pb2.SendShiftHandoffRequest(
             parent=parent,
@@ -1976,18 +1938,15 @@ class IncidentServiceClient(object):
             incidents=incidents,
             preview_only=preview_only,
         )
-        return self._inner_api_calls["send_shift_handoff"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
+        return self._inner_api_calls['send_shift_handoff'](
+            request, retry=retry, timeout=timeout, metadata=metadata)
 
-    def create_subscription(
-        self,
-        parent,
-        subscription,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
+    def create_subscription(self,
+                            parent,
+                            subscription,
+                            retry=google.api_core.gapic_v1.method.DEFAULT,
+                            timeout=google.api_core.gapic_v1.method.DEFAULT,
+                            metadata=None):
         """
         Creates a new subscription.
         This will fail if:
@@ -2033,31 +1992,30 @@ class IncidentServiceClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if "create_subscription" not in self._inner_api_calls:
+        if 'create_subscription' not in self._inner_api_calls:
             self._inner_api_calls[
-                "create_subscription"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.create_subscription,
-                default_retry=self._method_configs["CreateSubscription"].retry,
-                default_timeout=self._method_configs["CreateSubscription"].timeout,
-                client_info=self._client_info,
-            )
+                'create_subscription'] = google.api_core.gapic_v1.method.wrap_method(
+                    self.transport.create_subscription,
+                    default_retry=self._method_configs['CreateSubscription'].
+                    retry,
+                    default_timeout=self._method_configs['CreateSubscription'].
+                    timeout,
+                    client_info=self._client_info,
+                )
 
         request = incidents_service_pb2.CreateSubscriptionRequest(
-            parent=parent, subscription=subscription
+            parent=parent,
+            subscription=subscription,
         )
-        return self._inner_api_calls["create_subscription"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
+        return self._inner_api_calls['create_subscription'](
+            request, retry=retry, timeout=timeout, metadata=metadata)
 
-    def list_subscriptions(
-        self,
-        parent,
-        page_size=None,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
+    def list_subscriptions(self,
+                           parent,
+                           page_size=None,
+                           retry=google.api_core.gapic_v1.method.DEFAULT,
+                           timeout=google.api_core.gapic_v1.method.DEFAULT,
+                           metadata=None):
         """
         Returns a list of subscriptions for an incident.
 
@@ -2113,41 +2071,40 @@ class IncidentServiceClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if "list_subscriptions" not in self._inner_api_calls:
+        if 'list_subscriptions' not in self._inner_api_calls:
             self._inner_api_calls[
-                "list_subscriptions"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.list_subscriptions,
-                default_retry=self._method_configs["ListSubscriptions"].retry,
-                default_timeout=self._method_configs["ListSubscriptions"].timeout,
-                client_info=self._client_info,
-            )
+                'list_subscriptions'] = google.api_core.gapic_v1.method.wrap_method(
+                    self.transport.list_subscriptions,
+                    default_retry=self._method_configs['ListSubscriptions'].
+                    retry,
+                    default_timeout=self._method_configs['ListSubscriptions'].
+                    timeout,
+                    client_info=self._client_info,
+                )
 
         request = incidents_service_pb2.ListSubscriptionsRequest(
-            parent=parent, page_size=page_size
+            parent=parent,
+            page_size=page_size,
         )
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(
-                self._inner_api_calls["list_subscriptions"],
+                self._inner_api_calls['list_subscriptions'],
                 retry=retry,
                 timeout=timeout,
-                metadata=metadata,
-            ),
+                metadata=metadata),
             request=request,
-            items_field="subscriptions",
-            request_token_field="page_token",
-            response_token_field="next_page_token",
+            items_field='subscriptions',
+            request_token_field='page_token',
+            response_token_field='next_page_token',
         )
         return iterator
 
-    def delete_subscription(
-        self,
-        name,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
+    def delete_subscription(self,
+                            name,
+                            retry=google.api_core.gapic_v1.method.DEFAULT,
+                            timeout=google.api_core.gapic_v1.method.DEFAULT,
+                            metadata=None):
         """
         Deletes an existing subscription.
 
@@ -2179,29 +2136,28 @@ class IncidentServiceClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if "delete_subscription" not in self._inner_api_calls:
+        if 'delete_subscription' not in self._inner_api_calls:
             self._inner_api_calls[
-                "delete_subscription"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.delete_subscription,
-                default_retry=self._method_configs["DeleteSubscription"].retry,
-                default_timeout=self._method_configs["DeleteSubscription"].timeout,
-                client_info=self._client_info,
-            )
+                'delete_subscription'] = google.api_core.gapic_v1.method.wrap_method(
+                    self.transport.delete_subscription,
+                    default_retry=self._method_configs['DeleteSubscription'].
+                    retry,
+                    default_timeout=self._method_configs['DeleteSubscription'].
+                    timeout,
+                    client_info=self._client_info,
+                )
 
-        request = incidents_service_pb2.DeleteSubscriptionRequest(name=name)
-        self._inner_api_calls["delete_subscription"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
+        request = incidents_service_pb2.DeleteSubscriptionRequest(name=name, )
+        self._inner_api_calls['delete_subscription'](
+            request, retry=retry, timeout=timeout, metadata=metadata)
 
     def create_incident_role_assignment(
-        self,
-        parent,
-        incident_role_assignment,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
+            self,
+            parent,
+            incident_role_assignment,
+            retry=google.api_core.gapic_v1.method.DEFAULT,
+            timeout=google.api_core.gapic_v1.method.DEFAULT,
+            metadata=None):
         """
         Creates a role assignment on an existing incident. Normally, the user field
         will be set when assigning a role to oneself, and the next field will be
@@ -2248,34 +2204,30 @@ class IncidentServiceClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if "create_incident_role_assignment" not in self._inner_api_calls:
+        if 'create_incident_role_assignment' not in self._inner_api_calls:
             self._inner_api_calls[
-                "create_incident_role_assignment"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.create_incident_role_assignment,
-                default_retry=self._method_configs[
-                    "CreateIncidentRoleAssignment"
-                ].retry,
-                default_timeout=self._method_configs[
-                    "CreateIncidentRoleAssignment"
-                ].timeout,
-                client_info=self._client_info,
-            )
+                'create_incident_role_assignment'] = google.api_core.gapic_v1.method.wrap_method(
+                    self.transport.create_incident_role_assignment,
+                    default_retry=self.
+                    _method_configs['CreateIncidentRoleAssignment'].retry,
+                    default_timeout=self.
+                    _method_configs['CreateIncidentRoleAssignment'].timeout,
+                    client_info=self._client_info,
+                )
 
         request = incidents_service_pb2.CreateIncidentRoleAssignmentRequest(
-            parent=parent, incident_role_assignment=incident_role_assignment
+            parent=parent,
+            incident_role_assignment=incident_role_assignment,
         )
-        return self._inner_api_calls["create_incident_role_assignment"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
+        return self._inner_api_calls['create_incident_role_assignment'](
+            request, retry=retry, timeout=timeout, metadata=metadata)
 
     def delete_incident_role_assignment(
-        self,
-        name,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
+            self,
+            name,
+            retry=google.api_core.gapic_v1.method.DEFAULT,
+            timeout=google.api_core.gapic_v1.method.DEFAULT,
+            metadata=None):
         """
         Deletes an existing role assignment.
 
@@ -2307,33 +2259,29 @@ class IncidentServiceClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if "delete_incident_role_assignment" not in self._inner_api_calls:
+        if 'delete_incident_role_assignment' not in self._inner_api_calls:
             self._inner_api_calls[
-                "delete_incident_role_assignment"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.delete_incident_role_assignment,
-                default_retry=self._method_configs[
-                    "DeleteIncidentRoleAssignment"
-                ].retry,
-                default_timeout=self._method_configs[
-                    "DeleteIncidentRoleAssignment"
-                ].timeout,
-                client_info=self._client_info,
-            )
+                'delete_incident_role_assignment'] = google.api_core.gapic_v1.method.wrap_method(
+                    self.transport.delete_incident_role_assignment,
+                    default_retry=self.
+                    _method_configs['DeleteIncidentRoleAssignment'].retry,
+                    default_timeout=self.
+                    _method_configs['DeleteIncidentRoleAssignment'].timeout,
+                    client_info=self._client_info,
+                )
 
-        request = incidents_service_pb2.DeleteIncidentRoleAssignmentRequest(name=name)
-        self._inner_api_calls["delete_incident_role_assignment"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
+        request = incidents_service_pb2.DeleteIncidentRoleAssignmentRequest(
+            name=name, )
+        self._inner_api_calls['delete_incident_role_assignment'](
+            request, retry=retry, timeout=timeout, metadata=metadata)
 
     def list_incident_role_assignments(
-        self,
-        parent,
-        page_size=None,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
+            self,
+            parent,
+            page_size=None,
+            retry=google.api_core.gapic_v1.method.DEFAULT,
+            timeout=google.api_core.gapic_v1.method.DEFAULT,
+            metadata=None):
         """
         Lists role assignments that are part of an incident.
 
@@ -2389,44 +2337,42 @@ class IncidentServiceClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if "list_incident_role_assignments" not in self._inner_api_calls:
+        if 'list_incident_role_assignments' not in self._inner_api_calls:
             self._inner_api_calls[
-                "list_incident_role_assignments"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.list_incident_role_assignments,
-                default_retry=self._method_configs["ListIncidentRoleAssignments"].retry,
-                default_timeout=self._method_configs[
-                    "ListIncidentRoleAssignments"
-                ].timeout,
-                client_info=self._client_info,
-            )
+                'list_incident_role_assignments'] = google.api_core.gapic_v1.method.wrap_method(
+                    self.transport.list_incident_role_assignments,
+                    default_retry=self.
+                    _method_configs['ListIncidentRoleAssignments'].retry,
+                    default_timeout=self.
+                    _method_configs['ListIncidentRoleAssignments'].timeout,
+                    client_info=self._client_info,
+                )
 
         request = incidents_service_pb2.ListIncidentRoleAssignmentsRequest(
-            parent=parent, page_size=page_size
+            parent=parent,
+            page_size=page_size,
         )
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(
-                self._inner_api_calls["list_incident_role_assignments"],
+                self._inner_api_calls['list_incident_role_assignments'],
                 retry=retry,
                 timeout=timeout,
-                metadata=metadata,
-            ),
+                metadata=metadata),
             request=request,
-            items_field="incident_role_assignments",
-            request_token_field="page_token",
-            response_token_field="next_page_token",
+            items_field='incident_role_assignments',
+            request_token_field='page_token',
+            response_token_field='next_page_token',
         )
         return iterator
 
     def request_incident_role_handover(
-        self,
-        name,
-        new_assignee,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
+            self,
+            name,
+            new_assignee,
+            retry=google.api_core.gapic_v1.method.DEFAULT,
+            timeout=google.api_core.gapic_v1.method.DEFAULT,
+            metadata=None):
         """
         Starts a role handover. The proposed assignee will receive an email
         notifying them of the assignment. This will fail if a role handover is
@@ -2470,33 +2416,31 @@ class IncidentServiceClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if "request_incident_role_handover" not in self._inner_api_calls:
+        if 'request_incident_role_handover' not in self._inner_api_calls:
             self._inner_api_calls[
-                "request_incident_role_handover"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.request_incident_role_handover,
-                default_retry=self._method_configs["RequestIncidentRoleHandover"].retry,
-                default_timeout=self._method_configs[
-                    "RequestIncidentRoleHandover"
-                ].timeout,
-                client_info=self._client_info,
-            )
+                'request_incident_role_handover'] = google.api_core.gapic_v1.method.wrap_method(
+                    self.transport.request_incident_role_handover,
+                    default_retry=self.
+                    _method_configs['RequestIncidentRoleHandover'].retry,
+                    default_timeout=self.
+                    _method_configs['RequestIncidentRoleHandover'].timeout,
+                    client_info=self._client_info,
+                )
 
         request = incidents_service_pb2.RequestIncidentRoleHandoverRequest(
-            name=name, new_assignee=new_assignee
+            name=name,
+            new_assignee=new_assignee,
         )
-        return self._inner_api_calls["request_incident_role_handover"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
+        return self._inner_api_calls['request_incident_role_handover'](
+            request, retry=retry, timeout=timeout, metadata=metadata)
 
     def confirm_incident_role_handover(
-        self,
-        name,
-        new_assignee,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
+            self,
+            name,
+            new_assignee,
+            retry=google.api_core.gapic_v1.method.DEFAULT,
+            timeout=google.api_core.gapic_v1.method.DEFAULT,
+            metadata=None):
         """
         Confirms a role handover. This will fail if the 'proposed_assignee'
         field of the IncidentRoleAssignment is not equal to the 'new_assignee'
@@ -2542,33 +2486,31 @@ class IncidentServiceClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if "confirm_incident_role_handover" not in self._inner_api_calls:
+        if 'confirm_incident_role_handover' not in self._inner_api_calls:
             self._inner_api_calls[
-                "confirm_incident_role_handover"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.confirm_incident_role_handover,
-                default_retry=self._method_configs["ConfirmIncidentRoleHandover"].retry,
-                default_timeout=self._method_configs[
-                    "ConfirmIncidentRoleHandover"
-                ].timeout,
-                client_info=self._client_info,
-            )
+                'confirm_incident_role_handover'] = google.api_core.gapic_v1.method.wrap_method(
+                    self.transport.confirm_incident_role_handover,
+                    default_retry=self.
+                    _method_configs['ConfirmIncidentRoleHandover'].retry,
+                    default_timeout=self.
+                    _method_configs['ConfirmIncidentRoleHandover'].timeout,
+                    client_info=self._client_info,
+                )
 
         request = incidents_service_pb2.ConfirmIncidentRoleHandoverRequest(
-            name=name, new_assignee=new_assignee
+            name=name,
+            new_assignee=new_assignee,
         )
-        return self._inner_api_calls["confirm_incident_role_handover"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
+        return self._inner_api_calls['confirm_incident_role_handover'](
+            request, retry=retry, timeout=timeout, metadata=metadata)
 
     def force_incident_role_handover(
-        self,
-        name,
-        new_assignee,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
+            self,
+            name,
+            new_assignee,
+            retry=google.api_core.gapic_v1.method.DEFAULT,
+            timeout=google.api_core.gapic_v1.method.DEFAULT,
+            metadata=None):
         """
         Forces a role handover. This will fail if the 'proposed_assignee' field
         of the IncidentRoleAssignment is not equal to the 'new_assignee' field
@@ -2614,33 +2556,31 @@ class IncidentServiceClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if "force_incident_role_handover" not in self._inner_api_calls:
+        if 'force_incident_role_handover' not in self._inner_api_calls:
             self._inner_api_calls[
-                "force_incident_role_handover"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.force_incident_role_handover,
-                default_retry=self._method_configs["ForceIncidentRoleHandover"].retry,
-                default_timeout=self._method_configs[
-                    "ForceIncidentRoleHandover"
-                ].timeout,
-                client_info=self._client_info,
-            )
+                'force_incident_role_handover'] = google.api_core.gapic_v1.method.wrap_method(
+                    self.transport.force_incident_role_handover,
+                    default_retry=self.
+                    _method_configs['ForceIncidentRoleHandover'].retry,
+                    default_timeout=self.
+                    _method_configs['ForceIncidentRoleHandover'].timeout,
+                    client_info=self._client_info,
+                )
 
         request = incidents_service_pb2.ForceIncidentRoleHandoverRequest(
-            name=name, new_assignee=new_assignee
+            name=name,
+            new_assignee=new_assignee,
         )
-        return self._inner_api_calls["force_incident_role_handover"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
+        return self._inner_api_calls['force_incident_role_handover'](
+            request, retry=retry, timeout=timeout, metadata=metadata)
 
     def cancel_incident_role_handover(
-        self,
-        name,
-        new_assignee,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
+            self,
+            name,
+            new_assignee,
+            retry=google.api_core.gapic_v1.method.DEFAULT,
+            timeout=google.api_core.gapic_v1.method.DEFAULT,
+            metadata=None):
         """
         Cancels a role handover. This will fail if the 'proposed_assignee'
         field of the IncidentRoleAssignment is not equal to the 'new_assignee'
@@ -2686,21 +2626,20 @@ class IncidentServiceClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if "cancel_incident_role_handover" not in self._inner_api_calls:
+        if 'cancel_incident_role_handover' not in self._inner_api_calls:
             self._inner_api_calls[
-                "cancel_incident_role_handover"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.cancel_incident_role_handover,
-                default_retry=self._method_configs["CancelIncidentRoleHandover"].retry,
-                default_timeout=self._method_configs[
-                    "CancelIncidentRoleHandover"
-                ].timeout,
-                client_info=self._client_info,
-            )
+                'cancel_incident_role_handover'] = google.api_core.gapic_v1.method.wrap_method(
+                    self.transport.cancel_incident_role_handover,
+                    default_retry=self.
+                    _method_configs['CancelIncidentRoleHandover'].retry,
+                    default_timeout=self.
+                    _method_configs['CancelIncidentRoleHandover'].timeout,
+                    client_info=self._client_info,
+                )
 
         request = incidents_service_pb2.CancelIncidentRoleHandoverRequest(
-            name=name, new_assignee=new_assignee
+            name=name,
+            new_assignee=new_assignee,
         )
-        return self._inner_api_calls["cancel_incident_role_handover"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
+        return self._inner_api_calls['cancel_incident_role_handover'](
+            request, retry=retry, timeout=timeout, metadata=metadata)

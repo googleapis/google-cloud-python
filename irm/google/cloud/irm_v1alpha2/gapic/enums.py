@@ -30,7 +30,6 @@ class Artifact(object):
           TYPE_SOURCE_CONTROL_CHANGE (int): A source control change.
           TYPE_JIRA_ISSUE (int): A JIRA issue.
         """
-
         TYPE_UNSPECIFIED = 0
         TYPE_URL = 1
         TYPE_ISSUE = 2
@@ -49,7 +48,6 @@ class Incident(object):
           and legacy incidents.
           ESCALATION_LEVEL_ORGANIZATION (int): The incident has been escalated to the organizational level.
         """
-
         ESCALATION_LEVEL_UNSPECIFIED = 0
         ESCALATION_LEVEL_ORGANIZATION = 1
 
@@ -65,7 +63,6 @@ class Incident(object):
           SEVERITY_MINOR (int): Minor incident.
           SEVERITY_NEGLIGIBLE (int): Negligible incident.
         """
-
         SEVERITY_UNSPECIFIED = 0
         SEVERITY_HUGE = 1
         SEVERITY_MAJOR = 2
@@ -90,7 +87,6 @@ class Incident(object):
           follow-up tasks.
           STAGE_DOCUMENTED (int): Postmortem for the incident was written.
         """
-
         STAGE_UNSPECIFIED = 0
         STAGE_DETECTED = 4
         STAGE_TRIAGED = 1
@@ -120,7 +116,6 @@ class IncidentRole(object):
           TYPE_OTHER (int): User-specified roles. One example is a Planning Lead, who keeps track of
           the incident. Another is an assistant Incident Commander.
         """
-
         TYPE_UNSPECIFIED = 0
         TYPE_INCIDENT_COMMANDER = 1
         TYPE_COMMUNICATIONS_LEAD = 2
@@ -141,7 +136,6 @@ class Signal(object):
           STATE_OPEN (int): Firing
           STATE_CLOSED (int): Non-firing
         """
-
         STATE_UNSPECIFIED = 0
         STATE_OPEN = 1
         STATE_CLOSED = 2
@@ -161,7 +155,6 @@ class Subscription(object):
           EVENT_TYPE_ANNOTATION_ADD (int): A new annotation has been added to the incident.
           EVENT_TYPE_ANNOTATION_CHANGE (int): An annotation has been modified.
         """
-
         EVENT_TYPE_UNSPECIFIED = 0
         EVENT_TYPE_TITLE_CHANGE = 1
         EVENT_TYPE_SYNOPSIS_CHANGE = 2

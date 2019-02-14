@@ -2,3206 +2,2003 @@
 # source: google/cloud/irm_v1alpha2/proto/incidents_service.proto
 
 import sys
-
-_b = sys.version_info[0] < 3 and (lambda x: x) or (lambda x: x.encode("latin1"))
+_b=sys.version_info[0]<3 and (lambda x:x) or (lambda x:x.encode('latin1'))
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
-
 # @@protoc_insertion_point(imports)
 
 _sym_db = _symbol_database.Default()
 
 
 from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
-from google.cloud.irm_v1alpha2.proto import (
-    incidents_pb2 as google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2,
-)
+from google.cloud.irm_v1alpha2.proto import incidents_pb2 as google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2
 from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 from google.protobuf import field_mask_pb2 as google_dot_protobuf_dot_field__mask__pb2
 from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__pb2
 
 
 DESCRIPTOR = _descriptor.FileDescriptor(
-    name="google/cloud/irm_v1alpha2/proto/incidents_service.proto",
-    package="google.cloud.irm.v1alpha2",
-    syntax="proto3",
-    serialized_options=_b(
-        "\n#com.google.irm.service.v1alpha2.apiP\001Z<google.golang.org/genproto/googleapis/cloud/irm/v1alpha2;irm\370\001\001"
-    ),
-    serialized_pb=_b(
-        '\n7google/cloud/irm_v1alpha2/proto/incidents_service.proto\x12\x19google.cloud.irm.v1alpha2\x1a\x1cgoogle/api/annotations.proto\x1a/google/cloud/irm_v1alpha2/proto/incidents.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto\x1a\x1fgoogle/protobuf/timestamp.proto"^\n\x15\x43reateIncidentRequest\x12\x35\n\x08incident\x18\x01 \x01(\x0b\x32#.google.cloud.irm.v1alpha2.Incident\x12\x0e\n\x06parent\x18\x02 \x01(\t""\n\x12GetIncidentRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"\x7f\n\x15UpdateIncidentRequest\x12\x35\n\x08incident\x18\x01 \x01(\x0b\x32#.google.cloud.irm.v1alpha2.Incident\x12/\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMask"T\n\x1dSearchSimilarIncidentsRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t"\xcd\x01\n\x1eSearchSimilarIncidentsResponse\x12Q\n\x07results\x18\x01 \x03(\x0b\x32@.google.cloud.irm.v1alpha2.SearchSimilarIncidentsResponse.Result\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\x1a?\n\x06Result\x12\x35\n\x08incident\x18\x01 \x01(\x0b\x32#.google.cloud.irm.v1alpha2.Incident"d\n\x17\x43reateAnnotationRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x39\n\nannotation\x18\x02 \x01(\x0b\x32%.google.cloud.irm.v1alpha2.Annotation"O\n\x16ListAnnotationsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t"n\n\x17ListAnnotationsResponse\x12:\n\x0b\x61nnotations\x18\x01 \x03(\x0b\x32%.google.cloud.irm.v1alpha2.Annotation\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"O\n\x10\x43reateTagRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12+\n\x03tag\x18\x02 \x01(\x0b\x32\x1e.google.cloud.irm.v1alpha2.Tag" \n\x10\x44\x65leteTagRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"H\n\x0fListTagsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t"Y\n\x10ListTagsResponse\x12,\n\x04tags\x18\x01 \x03(\x0b\x32\x1e.google.cloud.irm.v1alpha2.Tag\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"\x85\x01\n\x17UpdateAnnotationRequest\x12\x39\n\nannotation\x18\x01 \x01(\x0b\x32%.google.cloud.irm.v1alpha2.Annotation\x12/\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMask"X\n\x13\x43reateSignalRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x31\n\x06signal\x18\x02 \x01(\x0b\x32!.google.cloud.irm.v1alpha2.Signal"[\n\x12ListSignalsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x02 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05\x12\x12\n\npage_token\x18\x04 \x01(\t"b\n\x13ListSignalsResponse\x12\x32\n\x07signals\x18\x01 \x03(\x0b\x32!.google.cloud.irm.v1alpha2.Signal\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t" \n\x10GetSignalRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"y\n\x13UpdateSignalRequest\x12\x31\n\x06signal\x18\x01 \x01(\x0b\x32!.google.cloud.irm.v1alpha2.Signal\x12/\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMask"(\n\x18\x41\x63knowledgeSignalRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"\x1b\n\x19\x41\x63knowledgeSignalResponse"q\n\x16SearchIncidentsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\r\n\x05query\x18\x02 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05\x12\x12\n\npage_token\x18\x04 \x01(\t\x12\x11\n\ttime_zone\x18\x05 \x01(\t"j\n\x17SearchIncidentsResponse\x12\x36\n\tincidents\x18\x01 \x03(\x0b\x32#.google.cloud.irm.v1alpha2.Incident\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"\xe9\x02\n\x17\x45scalateIncidentRequest\x12\x35\n\x08incident\x18\x01 \x01(\x0b\x32#.google.cloud.irm.v1alpha2.Incident\x12/\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMask\x12>\n\rsubscriptions\x18\x03 \x03(\x0b\x32\'.google.cloud.irm.v1alpha2.Subscription\x12,\n\x04tags\x18\x04 \x03(\x0b\x32\x1e.google.cloud.irm.v1alpha2.Tag\x12@\n\x05roles\x18\x05 \x03(\x0b\x32\x31.google.cloud.irm.v1alpha2.IncidentRoleAssignment\x12\x36\n\tartifacts\x18\x06 \x03(\x0b\x32#.google.cloud.irm.v1alpha2.Artifact"\xaf\x02\n\x18\x45scalateIncidentResponse\x12\x35\n\x08incident\x18\x01 \x01(\x0b\x32#.google.cloud.irm.v1alpha2.Incident\x12>\n\rsubscriptions\x18\x02 \x03(\x0b\x32\'.google.cloud.irm.v1alpha2.Subscription\x12,\n\x04tags\x18\x03 \x03(\x0b\x32\x1e.google.cloud.irm.v1alpha2.Tag\x12\x36\n\x05roles\x18\x04 \x03(\x0b\x32\'.google.cloud.irm.v1alpha2.IncidentRole\x12\x36\n\tartifacts\x18\x05 \x03(\x0b\x32#.google.cloud.irm.v1alpha2.Artifact"^\n\x15\x43reateArtifactRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x35\n\x08\x61rtifact\x18\x02 \x01(\x0b\x32#.google.cloud.irm.v1alpha2.Artifact"M\n\x14ListArtifactsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t"h\n\x15ListArtifactsResponse\x12\x36\n\tartifacts\x18\x01 \x03(\x0b\x32#.google.cloud.irm.v1alpha2.Artifact\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"\x7f\n\x15UpdateArtifactRequest\x12\x35\n\x08\x61rtifact\x18\x01 \x01(\x0b\x32#.google.cloud.irm.v1alpha2.Artifact\x12/\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMask"%\n\x15\x44\x65leteArtifactRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"/\n\x1dGetShiftHandoffPresetsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t"F\n\x13ShiftHandoffPresets\x12\x12\n\nrecipients\x18\x01 \x03(\t\x12\n\n\x02\x63\x63\x18\x02 \x03(\t\x12\x0f\n\x07subject\x18\x03 \x01(\t"\x8d\x02\n\x17SendShiftHandoffRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x12\n\nrecipients\x18\x02 \x03(\t\x12\n\n\x02\x63\x63\x18\x03 \x03(\t\x12\x0f\n\x07subject\x18\x04 \x01(\t\x12\x1a\n\x12notes_content_type\x18\x05 \x01(\t\x12\x15\n\rnotes_content\x18\x06 \x01(\t\x12N\n\tincidents\x18\x07 \x03(\x0b\x32;.google.cloud.irm.v1alpha2.SendShiftHandoffRequest.Incident\x12\x14\n\x0cpreview_only\x18\x08 \x01(\x08\x1a\x18\n\x08Incident\x12\x0c\n\x04name\x18\x01 \x01(\t"A\n\x18SendShiftHandoffResponse\x12\x14\n\x0c\x63ontent_type\x18\x01 \x01(\t\x12\x0f\n\x07\x63ontent\x18\x02 \x01(\t"j\n\x19\x43reateSubscriptionRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12=\n\x0csubscription\x18\x02 \x01(\x0b\x32\'.google.cloud.irm.v1alpha2.Subscription"Q\n\x18ListSubscriptionsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t"t\n\x19ListSubscriptionsResponse\x12>\n\rsubscriptions\x18\x01 \x03(\x0b\x32\'.google.cloud.irm.v1alpha2.Subscription\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t")\n\x19\x44\x65leteSubscriptionRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"\x8a\x01\n#CreateIncidentRoleAssignmentRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12S\n\x18incident_role_assignment\x18\x02 \x01(\x0b\x32\x31.google.cloud.irm.v1alpha2.IncidentRoleAssignment"3\n#DeleteIncidentRoleAssignmentRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"[\n"ListIncidentRoleAssignmentsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t"\x94\x01\n#ListIncidentRoleAssignmentsResponse\x12T\n\x19incident_role_assignments\x18\x01 \x03(\x0b\x32\x31.google.cloud.irm.v1alpha2.IncidentRoleAssignment\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"i\n"RequestIncidentRoleHandoverRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x35\n\x0cnew_assignee\x18\x02 \x01(\x0b\x32\x1f.google.cloud.irm.v1alpha2.User"i\n"ConfirmIncidentRoleHandoverRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x35\n\x0cnew_assignee\x18\x02 \x01(\x0b\x32\x1f.google.cloud.irm.v1alpha2.User"g\n ForceIncidentRoleHandoverRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x35\n\x0cnew_assignee\x18\x02 \x01(\x0b\x32\x1f.google.cloud.irm.v1alpha2.User"h\n!CancelIncidentRoleHandoverRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x35\n\x0cnew_assignee\x18\x02 \x01(\x0b\x32\x1f.google.cloud.irm.v1alpha2.User2\x87\x30\n\x0fIncidentService\x12\xa2\x01\n\x0e\x43reateIncident\x12\x30.google.cloud.irm.v1alpha2.CreateIncidentRequest\x1a#.google.cloud.irm.v1alpha2.Incident"9\x82\xd3\xe4\x93\x02\x33"\'/v1alpha2/{parent=projects/*}/incidents:\x08incident\x12\x92\x01\n\x0bGetIncident\x12-.google.cloud.irm.v1alpha2.GetIncidentRequest\x1a#.google.cloud.irm.v1alpha2.Incident"/\x82\xd3\xe4\x93\x02)\x12\'/v1alpha2/{name=projects/*/incidents/*}\x12\xb0\x01\n\x0fSearchIncidents\x12\x31.google.cloud.irm.v1alpha2.SearchIncidentsRequest\x1a\x32.google.cloud.irm.v1alpha2.SearchIncidentsResponse"6\x82\xd3\xe4\x93\x02\x30\x12./v1alpha2/{parent=projects/*}/incidents:search\x12\xab\x01\n\x0eUpdateIncident\x12\x30.google.cloud.irm.v1alpha2.UpdateIncidentRequest\x1a#.google.cloud.irm.v1alpha2.Incident"B\x82\xd3\xe4\x93\x02<20/v1alpha2/{incident.name=projects/*/incidents/*}:\x08incident\x12\x8c\x02\n\x16SearchSimilarIncidents\x12\x38.google.cloud.irm.v1alpha2.SearchSimilarIncidentsRequest\x1a\x39.google.cloud.irm.v1alpha2.SearchSimilarIncidentsResponse"}\x82\xd3\xe4\x93\x02w\x12\x35/v1alpha2/{name=projects/*/incidents/*}:searchSimilarZ>\x12</v1alpha2/{name=projects/*/signals/*}:searchSimilarIncidents\x12\xb8\x01\n\x10\x43reateAnnotation\x12\x32.google.cloud.irm.v1alpha2.CreateAnnotationRequest\x1a%.google.cloud.irm.v1alpha2.Annotation"I\x82\xd3\xe4\x93\x02\x43"5/v1alpha2/{parent=projects/*/incidents/*}/annotations:\nannotation\x12\xb7\x01\n\x0fListAnnotations\x12\x31.google.cloud.irm.v1alpha2.ListAnnotationsRequest\x1a\x32.google.cloud.irm.v1alpha2.ListAnnotationsResponse"=\x82\xd3\xe4\x93\x02\x37\x12\x35/v1alpha2/{parent=projects/*/incidents/*}/annotations\x12\xc3\x01\n\x10UpdateAnnotation\x12\x32.google.cloud.irm.v1alpha2.UpdateAnnotationRequest\x1a%.google.cloud.irm.v1alpha2.Annotation"T\x82\xd3\xe4\x93\x02N2@/v1alpha2/{annotation.name=projects/*/incidents/*/annotations/*}:\nannotation\x12\x95\x01\n\tCreateTag\x12+.google.cloud.irm.v1alpha2.CreateTagRequest\x1a\x1e.google.cloud.irm.v1alpha2.Tag";\x82\xd3\xe4\x93\x02\x35"./v1alpha2/{parent=projects/*/incidents/*}/tags:\x03tag\x12\x88\x01\n\tDeleteTag\x12+.google.cloud.irm.v1alpha2.DeleteTagRequest\x1a\x16.google.protobuf.Empty"6\x82\xd3\xe4\x93\x02\x30*./v1alpha2/{name=projects/*/incidents/*/tags/*}\x12\x9b\x01\n\x08ListTags\x12*.google.cloud.irm.v1alpha2.ListTagsRequest\x1a+.google.cloud.irm.v1alpha2.ListTagsResponse"6\x82\xd3\xe4\x93\x02\x30\x12./v1alpha2/{parent=projects/*/incidents/*}/tags\x12\x98\x01\n\x0c\x43reateSignal\x12..google.cloud.irm.v1alpha2.CreateSignalRequest\x1a!.google.cloud.irm.v1alpha2.Signal"5\x82\xd3\xe4\x93\x02/"%/v1alpha2/{parent=projects/*}/signals:\x06signal\x12\x9b\x01\n\x0bListSignals\x12-.google.cloud.irm.v1alpha2.ListSignalsRequest\x1a..google.cloud.irm.v1alpha2.ListSignalsResponse"-\x82\xd3\xe4\x93\x02\'\x12%/v1alpha2/{parent=projects/*}/signals\x12\x8a\x01\n\tGetSignal\x12+.google.cloud.irm.v1alpha2.GetSignalRequest\x1a!.google.cloud.irm.v1alpha2.Signal"-\x82\xd3\xe4\x93\x02\'\x12%/v1alpha2/{name=projects/*/signals/*}\x12\x9f\x01\n\x0cUpdateSignal\x12..google.cloud.irm.v1alpha2.UpdateSignalRequest\x1a!.google.cloud.irm.v1alpha2.Signal"<\x82\xd3\xe4\x93\x02\x36\x32,/v1alpha2/{signal.name=projects/*/signals/*}:\x06signal\x12\xb4\x01\n\x11\x41\x63knowledgeSignal\x12\x33.google.cloud.irm.v1alpha2.AcknowledgeSignalRequest\x1a\x34.google.cloud.irm.v1alpha2.AcknowledgeSignalResponse"4\x82\xd3\xe4\x93\x02.")/v1alpha2/{name=projects/*/signals/*}:ack:\x01*\x12\xc1\x01\n\x10\x45scalateIncident\x12\x32.google.cloud.irm.v1alpha2.EscalateIncidentRequest\x1a\x33.google.cloud.irm.v1alpha2.EscalateIncidentResponse"D\x82\xd3\xe4\x93\x02>"9/v1alpha2/{incident.name=projects/*/incidents/*}:escalate:\x01*\x12\xae\x01\n\x0e\x43reateArtifact\x12\x30.google.cloud.irm.v1alpha2.CreateArtifactRequest\x1a#.google.cloud.irm.v1alpha2.Artifact"E\x82\xd3\xe4\x93\x02?"3/v1alpha2/{parent=projects/*/incidents/*}/artifacts:\x08\x61rtifact\x12\xaf\x01\n\rListArtifacts\x12/.google.cloud.irm.v1alpha2.ListArtifactsRequest\x1a\x30.google.cloud.irm.v1alpha2.ListArtifactsResponse";\x82\xd3\xe4\x93\x02\x35\x12\x33/v1alpha2/{parent=projects/*/incidents/*}/artifacts\x12\xb7\x01\n\x0eUpdateArtifact\x12\x30.google.cloud.irm.v1alpha2.UpdateArtifactRequest\x1a#.google.cloud.irm.v1alpha2.Artifact"N\x82\xd3\xe4\x93\x02H2</v1alpha2/{artifact.name=projects/*/incidents/*/artifacts/*}:\x08\x61rtifact\x12\x97\x01\n\x0e\x44\x65leteArtifact\x12\x30.google.cloud.irm.v1alpha2.DeleteArtifactRequest\x1a\x16.google.protobuf.Empty";\x82\xd3\xe4\x93\x02\x35*3/v1alpha2/{name=projects/*/incidents/*/artifacts/*}\x12\xbd\x01\n\x16GetShiftHandoffPresets\x12\x38.google.cloud.irm.v1alpha2.GetShiftHandoffPresetsRequest\x1a..google.cloud.irm.v1alpha2.ShiftHandoffPresets"9\x82\xd3\xe4\x93\x02\x33\x12\x31/v1alpha2/{parent=projects/*}/shiftHandoffPresets\x12\xb7\x01\n\x10SendShiftHandoff\x12\x32.google.cloud.irm.v1alpha2.SendShiftHandoffRequest\x1a\x33.google.cloud.irm.v1alpha2.SendShiftHandoffResponse":\x82\xd3\xe4\x93\x02\x34"//v1alpha2/{parent=projects/*}/shiftHandoff:send:\x01*\x12\xc2\x01\n\x12\x43reateSubscription\x12\x34.google.cloud.irm.v1alpha2.CreateSubscriptionRequest\x1a\'.google.cloud.irm.v1alpha2.Subscription"M\x82\xd3\xe4\x93\x02G"7/v1alpha2/{parent=projects/*/incidents/*}/subscriptions:\x0csubscription\x12\xbf\x01\n\x11ListSubscriptions\x12\x33.google.cloud.irm.v1alpha2.ListSubscriptionsRequest\x1a\x34.google.cloud.irm.v1alpha2.ListSubscriptionsResponse"?\x82\xd3\xe4\x93\x02\x39\x12\x37/v1alpha2/{parent=projects/*/incidents/*}/subscriptions\x12\xa3\x01\n\x12\x44\x65leteSubscription\x12\x34.google.cloud.irm.v1alpha2.DeleteSubscriptionRequest\x1a\x16.google.protobuf.Empty"?\x82\xd3\xe4\x93\x02\x39*7/v1alpha2/{name=projects/*/incidents/*/subscriptions/*}\x12\xd7\x01\n\x1c\x43reateIncidentRoleAssignment\x12>.google.cloud.irm.v1alpha2.CreateIncidentRoleAssignmentRequest\x1a\x31.google.cloud.irm.v1alpha2.IncidentRoleAssignment"D\x82\xd3\xe4\x93\x02>"9/v1alpha2/{parent=projects/*/incidents/*}/roleAssignments:\x01*\x12\xb9\x01\n\x1c\x44\x65leteIncidentRoleAssignment\x12>.google.cloud.irm.v1alpha2.DeleteIncidentRoleAssignmentRequest\x1a\x16.google.protobuf.Empty"A\x82\xd3\xe4\x93\x02;*9/v1alpha2/{name=projects/*/incidents/*/roleAssignments/*}\x12\xdf\x01\n\x1bListIncidentRoleAssignments\x12=.google.cloud.irm.v1alpha2.ListIncidentRoleAssignmentsRequest\x1a>.google.cloud.irm.v1alpha2.ListIncidentRoleAssignmentsResponse"A\x82\xd3\xe4\x93\x02;\x12\x39/v1alpha2/{parent=projects/*/incidents/*}/roleAssignments\x12\xe5\x01\n\x1bRequestIncidentRoleHandover\x12=.google.cloud.irm.v1alpha2.RequestIncidentRoleHandoverRequest\x1a\x31.google.cloud.irm.v1alpha2.IncidentRoleAssignment"T\x82\xd3\xe4\x93\x02N"I/v1alpha2/{name=projects/*/incidents/*/roleAssignments/*}:requestHandover:\x01*\x12\xe5\x01\n\x1b\x43onfirmIncidentRoleHandover\x12=.google.cloud.irm.v1alpha2.ConfirmIncidentRoleHandoverRequest\x1a\x31.google.cloud.irm.v1alpha2.IncidentRoleAssignment"T\x82\xd3\xe4\x93\x02N"I/v1alpha2/{name=projects/*/incidents/*/roleAssignments/*}:confirmHandover:\x01*\x12\xdf\x01\n\x19\x46orceIncidentRoleHandover\x12;.google.cloud.irm.v1alpha2.ForceIncidentRoleHandoverRequest\x1a\x31.google.cloud.irm.v1alpha2.IncidentRoleAssignment"R\x82\xd3\xe4\x93\x02L"G/v1alpha2/{name=projects/*/incidents/*/roleAssignments/*}:forceHandover:\x01*\x12\xe2\x01\n\x1a\x43\x61ncelIncidentRoleHandover\x12<.google.cloud.irm.v1alpha2.CancelIncidentRoleHandoverRequest\x1a\x31.google.cloud.irm.v1alpha2.IncidentRoleAssignment"S\x82\xd3\xe4\x93\x02M"H/v1alpha2/{name=projects/*/incidents/*/roleAssignments/*}:cancelHandover:\x01*Bh\n#com.google.irm.service.v1alpha2.apiP\x01Z<google.golang.org/genproto/googleapis/cloud/irm/v1alpha2;irm\xf8\x01\x01\x62\x06proto3'
-    ),
-    dependencies=[
-        google_dot_api_dot_annotations__pb2.DESCRIPTOR,
-        google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2.DESCRIPTOR,
-        google_dot_protobuf_dot_empty__pb2.DESCRIPTOR,
-        google_dot_protobuf_dot_field__mask__pb2.DESCRIPTOR,
-        google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,
-    ],
-)
+  name='google/cloud/irm_v1alpha2/proto/incidents_service.proto',
+  package='google.cloud.irm.v1alpha2',
+  syntax='proto3',
+  serialized_options=_b('\n#com.google.irm.service.v1alpha2.apiP\001Z<google.golang.org/genproto/googleapis/cloud/irm/v1alpha2;irm\370\001\001'),
+  serialized_pb=_b('\n7google/cloud/irm_v1alpha2/proto/incidents_service.proto\x12\x19google.cloud.irm.v1alpha2\x1a\x1cgoogle/api/annotations.proto\x1a/google/cloud/irm_v1alpha2/proto/incidents.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"^\n\x15\x43reateIncidentRequest\x12\x35\n\x08incident\x18\x01 \x01(\x0b\x32#.google.cloud.irm.v1alpha2.Incident\x12\x0e\n\x06parent\x18\x02 \x01(\t\"\"\n\x12GetIncidentRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"\x7f\n\x15UpdateIncidentRequest\x12\x35\n\x08incident\x18\x01 \x01(\x0b\x32#.google.cloud.irm.v1alpha2.Incident\x12/\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMask\"T\n\x1dSearchSimilarIncidentsRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t\"\xcd\x01\n\x1eSearchSimilarIncidentsResponse\x12Q\n\x07results\x18\x01 \x03(\x0b\x32@.google.cloud.irm.v1alpha2.SearchSimilarIncidentsResponse.Result\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\x1a?\n\x06Result\x12\x35\n\x08incident\x18\x01 \x01(\x0b\x32#.google.cloud.irm.v1alpha2.Incident\"d\n\x17\x43reateAnnotationRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x39\n\nannotation\x18\x02 \x01(\x0b\x32%.google.cloud.irm.v1alpha2.Annotation\"O\n\x16ListAnnotationsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t\"n\n\x17ListAnnotationsResponse\x12:\n\x0b\x61nnotations\x18\x01 \x03(\x0b\x32%.google.cloud.irm.v1alpha2.Annotation\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\"O\n\x10\x43reateTagRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12+\n\x03tag\x18\x02 \x01(\x0b\x32\x1e.google.cloud.irm.v1alpha2.Tag\" \n\x10\x44\x65leteTagRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"H\n\x0fListTagsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t\"Y\n\x10ListTagsResponse\x12,\n\x04tags\x18\x01 \x03(\x0b\x32\x1e.google.cloud.irm.v1alpha2.Tag\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\"\x85\x01\n\x17UpdateAnnotationRequest\x12\x39\n\nannotation\x18\x01 \x01(\x0b\x32%.google.cloud.irm.v1alpha2.Annotation\x12/\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMask\"X\n\x13\x43reateSignalRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x31\n\x06signal\x18\x02 \x01(\x0b\x32!.google.cloud.irm.v1alpha2.Signal\"[\n\x12ListSignalsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x02 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05\x12\x12\n\npage_token\x18\x04 \x01(\t\"b\n\x13ListSignalsResponse\x12\x32\n\x07signals\x18\x01 \x03(\x0b\x32!.google.cloud.irm.v1alpha2.Signal\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\" \n\x10GetSignalRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"y\n\x13UpdateSignalRequest\x12\x31\n\x06signal\x18\x01 \x01(\x0b\x32!.google.cloud.irm.v1alpha2.Signal\x12/\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMask\"(\n\x18\x41\x63knowledgeSignalRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"\x1b\n\x19\x41\x63knowledgeSignalResponse\"q\n\x16SearchIncidentsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\r\n\x05query\x18\x02 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05\x12\x12\n\npage_token\x18\x04 \x01(\t\x12\x11\n\ttime_zone\x18\x05 \x01(\t\"j\n\x17SearchIncidentsResponse\x12\x36\n\tincidents\x18\x01 \x03(\x0b\x32#.google.cloud.irm.v1alpha2.Incident\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\"\xe9\x02\n\x17\x45scalateIncidentRequest\x12\x35\n\x08incident\x18\x01 \x01(\x0b\x32#.google.cloud.irm.v1alpha2.Incident\x12/\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMask\x12>\n\rsubscriptions\x18\x03 \x03(\x0b\x32\'.google.cloud.irm.v1alpha2.Subscription\x12,\n\x04tags\x18\x04 \x03(\x0b\x32\x1e.google.cloud.irm.v1alpha2.Tag\x12@\n\x05roles\x18\x05 \x03(\x0b\x32\x31.google.cloud.irm.v1alpha2.IncidentRoleAssignment\x12\x36\n\tartifacts\x18\x06 \x03(\x0b\x32#.google.cloud.irm.v1alpha2.Artifact\"\xaf\x02\n\x18\x45scalateIncidentResponse\x12\x35\n\x08incident\x18\x01 \x01(\x0b\x32#.google.cloud.irm.v1alpha2.Incident\x12>\n\rsubscriptions\x18\x02 \x03(\x0b\x32\'.google.cloud.irm.v1alpha2.Subscription\x12,\n\x04tags\x18\x03 \x03(\x0b\x32\x1e.google.cloud.irm.v1alpha2.Tag\x12\x36\n\x05roles\x18\x04 \x03(\x0b\x32\'.google.cloud.irm.v1alpha2.IncidentRole\x12\x36\n\tartifacts\x18\x05 \x03(\x0b\x32#.google.cloud.irm.v1alpha2.Artifact\"^\n\x15\x43reateArtifactRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x35\n\x08\x61rtifact\x18\x02 \x01(\x0b\x32#.google.cloud.irm.v1alpha2.Artifact\"M\n\x14ListArtifactsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t\"h\n\x15ListArtifactsResponse\x12\x36\n\tartifacts\x18\x01 \x03(\x0b\x32#.google.cloud.irm.v1alpha2.Artifact\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\"\x7f\n\x15UpdateArtifactRequest\x12\x35\n\x08\x61rtifact\x18\x01 \x01(\x0b\x32#.google.cloud.irm.v1alpha2.Artifact\x12/\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMask\"%\n\x15\x44\x65leteArtifactRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"/\n\x1dGetShiftHandoffPresetsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\"F\n\x13ShiftHandoffPresets\x12\x12\n\nrecipients\x18\x01 \x03(\t\x12\n\n\x02\x63\x63\x18\x02 \x03(\t\x12\x0f\n\x07subject\x18\x03 \x01(\t\"\x8d\x02\n\x17SendShiftHandoffRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x12\n\nrecipients\x18\x02 \x03(\t\x12\n\n\x02\x63\x63\x18\x03 \x03(\t\x12\x0f\n\x07subject\x18\x04 \x01(\t\x12\x1a\n\x12notes_content_type\x18\x05 \x01(\t\x12\x15\n\rnotes_content\x18\x06 \x01(\t\x12N\n\tincidents\x18\x07 \x03(\x0b\x32;.google.cloud.irm.v1alpha2.SendShiftHandoffRequest.Incident\x12\x14\n\x0cpreview_only\x18\x08 \x01(\x08\x1a\x18\n\x08Incident\x12\x0c\n\x04name\x18\x01 \x01(\t\"A\n\x18SendShiftHandoffResponse\x12\x14\n\x0c\x63ontent_type\x18\x01 \x01(\t\x12\x0f\n\x07\x63ontent\x18\x02 \x01(\t\"j\n\x19\x43reateSubscriptionRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12=\n\x0csubscription\x18\x02 \x01(\x0b\x32\'.google.cloud.irm.v1alpha2.Subscription\"Q\n\x18ListSubscriptionsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t\"t\n\x19ListSubscriptionsResponse\x12>\n\rsubscriptions\x18\x01 \x03(\x0b\x32\'.google.cloud.irm.v1alpha2.Subscription\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\")\n\x19\x44\x65leteSubscriptionRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"\x8a\x01\n#CreateIncidentRoleAssignmentRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12S\n\x18incident_role_assignment\x18\x02 \x01(\x0b\x32\x31.google.cloud.irm.v1alpha2.IncidentRoleAssignment\"3\n#DeleteIncidentRoleAssignmentRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"[\n\"ListIncidentRoleAssignmentsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t\"\x94\x01\n#ListIncidentRoleAssignmentsResponse\x12T\n\x19incident_role_assignments\x18\x01 \x03(\x0b\x32\x31.google.cloud.irm.v1alpha2.IncidentRoleAssignment\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\"i\n\"RequestIncidentRoleHandoverRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x35\n\x0cnew_assignee\x18\x02 \x01(\x0b\x32\x1f.google.cloud.irm.v1alpha2.User\"i\n\"ConfirmIncidentRoleHandoverRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x35\n\x0cnew_assignee\x18\x02 \x01(\x0b\x32\x1f.google.cloud.irm.v1alpha2.User\"g\n ForceIncidentRoleHandoverRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x35\n\x0cnew_assignee\x18\x02 \x01(\x0b\x32\x1f.google.cloud.irm.v1alpha2.User\"h\n!CancelIncidentRoleHandoverRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x35\n\x0cnew_assignee\x18\x02 \x01(\x0b\x32\x1f.google.cloud.irm.v1alpha2.User2\x87\x30\n\x0fIncidentService\x12\xa2\x01\n\x0e\x43reateIncident\x12\x30.google.cloud.irm.v1alpha2.CreateIncidentRequest\x1a#.google.cloud.irm.v1alpha2.Incident\"9\x82\xd3\xe4\x93\x02\x33\"\'/v1alpha2/{parent=projects/*}/incidents:\x08incident\x12\x92\x01\n\x0bGetIncident\x12-.google.cloud.irm.v1alpha2.GetIncidentRequest\x1a#.google.cloud.irm.v1alpha2.Incident\"/\x82\xd3\xe4\x93\x02)\x12\'/v1alpha2/{name=projects/*/incidents/*}\x12\xb0\x01\n\x0fSearchIncidents\x12\x31.google.cloud.irm.v1alpha2.SearchIncidentsRequest\x1a\x32.google.cloud.irm.v1alpha2.SearchIncidentsResponse\"6\x82\xd3\xe4\x93\x02\x30\x12./v1alpha2/{parent=projects/*}/incidents:search\x12\xab\x01\n\x0eUpdateIncident\x12\x30.google.cloud.irm.v1alpha2.UpdateIncidentRequest\x1a#.google.cloud.irm.v1alpha2.Incident\"B\x82\xd3\xe4\x93\x02<20/v1alpha2/{incident.name=projects/*/incidents/*}:\x08incident\x12\x8c\x02\n\x16SearchSimilarIncidents\x12\x38.google.cloud.irm.v1alpha2.SearchSimilarIncidentsRequest\x1a\x39.google.cloud.irm.v1alpha2.SearchSimilarIncidentsResponse\"}\x82\xd3\xe4\x93\x02w\x12\x35/v1alpha2/{name=projects/*/incidents/*}:searchSimilarZ>\x12</v1alpha2/{name=projects/*/signals/*}:searchSimilarIncidents\x12\xb8\x01\n\x10\x43reateAnnotation\x12\x32.google.cloud.irm.v1alpha2.CreateAnnotationRequest\x1a%.google.cloud.irm.v1alpha2.Annotation\"I\x82\xd3\xe4\x93\x02\x43\"5/v1alpha2/{parent=projects/*/incidents/*}/annotations:\nannotation\x12\xb7\x01\n\x0fListAnnotations\x12\x31.google.cloud.irm.v1alpha2.ListAnnotationsRequest\x1a\x32.google.cloud.irm.v1alpha2.ListAnnotationsResponse\"=\x82\xd3\xe4\x93\x02\x37\x12\x35/v1alpha2/{parent=projects/*/incidents/*}/annotations\x12\xc3\x01\n\x10UpdateAnnotation\x12\x32.google.cloud.irm.v1alpha2.UpdateAnnotationRequest\x1a%.google.cloud.irm.v1alpha2.Annotation\"T\x82\xd3\xe4\x93\x02N2@/v1alpha2/{annotation.name=projects/*/incidents/*/annotations/*}:\nannotation\x12\x95\x01\n\tCreateTag\x12+.google.cloud.irm.v1alpha2.CreateTagRequest\x1a\x1e.google.cloud.irm.v1alpha2.Tag\";\x82\xd3\xe4\x93\x02\x35\"./v1alpha2/{parent=projects/*/incidents/*}/tags:\x03tag\x12\x88\x01\n\tDeleteTag\x12+.google.cloud.irm.v1alpha2.DeleteTagRequest\x1a\x16.google.protobuf.Empty\"6\x82\xd3\xe4\x93\x02\x30*./v1alpha2/{name=projects/*/incidents/*/tags/*}\x12\x9b\x01\n\x08ListTags\x12*.google.cloud.irm.v1alpha2.ListTagsRequest\x1a+.google.cloud.irm.v1alpha2.ListTagsResponse\"6\x82\xd3\xe4\x93\x02\x30\x12./v1alpha2/{parent=projects/*/incidents/*}/tags\x12\x98\x01\n\x0c\x43reateSignal\x12..google.cloud.irm.v1alpha2.CreateSignalRequest\x1a!.google.cloud.irm.v1alpha2.Signal\"5\x82\xd3\xe4\x93\x02/\"%/v1alpha2/{parent=projects/*}/signals:\x06signal\x12\x9b\x01\n\x0bListSignals\x12-.google.cloud.irm.v1alpha2.ListSignalsRequest\x1a..google.cloud.irm.v1alpha2.ListSignalsResponse\"-\x82\xd3\xe4\x93\x02\'\x12%/v1alpha2/{parent=projects/*}/signals\x12\x8a\x01\n\tGetSignal\x12+.google.cloud.irm.v1alpha2.GetSignalRequest\x1a!.google.cloud.irm.v1alpha2.Signal\"-\x82\xd3\xe4\x93\x02\'\x12%/v1alpha2/{name=projects/*/signals/*}\x12\x9f\x01\n\x0cUpdateSignal\x12..google.cloud.irm.v1alpha2.UpdateSignalRequest\x1a!.google.cloud.irm.v1alpha2.Signal\"<\x82\xd3\xe4\x93\x02\x36\x32,/v1alpha2/{signal.name=projects/*/signals/*}:\x06signal\x12\xb4\x01\n\x11\x41\x63knowledgeSignal\x12\x33.google.cloud.irm.v1alpha2.AcknowledgeSignalRequest\x1a\x34.google.cloud.irm.v1alpha2.AcknowledgeSignalResponse\"4\x82\xd3\xe4\x93\x02.\")/v1alpha2/{name=projects/*/signals/*}:ack:\x01*\x12\xc1\x01\n\x10\x45scalateIncident\x12\x32.google.cloud.irm.v1alpha2.EscalateIncidentRequest\x1a\x33.google.cloud.irm.v1alpha2.EscalateIncidentResponse\"D\x82\xd3\xe4\x93\x02>\"9/v1alpha2/{incident.name=projects/*/incidents/*}:escalate:\x01*\x12\xae\x01\n\x0e\x43reateArtifact\x12\x30.google.cloud.irm.v1alpha2.CreateArtifactRequest\x1a#.google.cloud.irm.v1alpha2.Artifact\"E\x82\xd3\xe4\x93\x02?\"3/v1alpha2/{parent=projects/*/incidents/*}/artifacts:\x08\x61rtifact\x12\xaf\x01\n\rListArtifacts\x12/.google.cloud.irm.v1alpha2.ListArtifactsRequest\x1a\x30.google.cloud.irm.v1alpha2.ListArtifactsResponse\";\x82\xd3\xe4\x93\x02\x35\x12\x33/v1alpha2/{parent=projects/*/incidents/*}/artifacts\x12\xb7\x01\n\x0eUpdateArtifact\x12\x30.google.cloud.irm.v1alpha2.UpdateArtifactRequest\x1a#.google.cloud.irm.v1alpha2.Artifact\"N\x82\xd3\xe4\x93\x02H2</v1alpha2/{artifact.name=projects/*/incidents/*/artifacts/*}:\x08\x61rtifact\x12\x97\x01\n\x0e\x44\x65leteArtifact\x12\x30.google.cloud.irm.v1alpha2.DeleteArtifactRequest\x1a\x16.google.protobuf.Empty\";\x82\xd3\xe4\x93\x02\x35*3/v1alpha2/{name=projects/*/incidents/*/artifacts/*}\x12\xbd\x01\n\x16GetShiftHandoffPresets\x12\x38.google.cloud.irm.v1alpha2.GetShiftHandoffPresetsRequest\x1a..google.cloud.irm.v1alpha2.ShiftHandoffPresets\"9\x82\xd3\xe4\x93\x02\x33\x12\x31/v1alpha2/{parent=projects/*}/shiftHandoffPresets\x12\xb7\x01\n\x10SendShiftHandoff\x12\x32.google.cloud.irm.v1alpha2.SendShiftHandoffRequest\x1a\x33.google.cloud.irm.v1alpha2.SendShiftHandoffResponse\":\x82\xd3\xe4\x93\x02\x34\"//v1alpha2/{parent=projects/*}/shiftHandoff:send:\x01*\x12\xc2\x01\n\x12\x43reateSubscription\x12\x34.google.cloud.irm.v1alpha2.CreateSubscriptionRequest\x1a\'.google.cloud.irm.v1alpha2.Subscription\"M\x82\xd3\xe4\x93\x02G\"7/v1alpha2/{parent=projects/*/incidents/*}/subscriptions:\x0csubscription\x12\xbf\x01\n\x11ListSubscriptions\x12\x33.google.cloud.irm.v1alpha2.ListSubscriptionsRequest\x1a\x34.google.cloud.irm.v1alpha2.ListSubscriptionsResponse\"?\x82\xd3\xe4\x93\x02\x39\x12\x37/v1alpha2/{parent=projects/*/incidents/*}/subscriptions\x12\xa3\x01\n\x12\x44\x65leteSubscription\x12\x34.google.cloud.irm.v1alpha2.DeleteSubscriptionRequest\x1a\x16.google.protobuf.Empty\"?\x82\xd3\xe4\x93\x02\x39*7/v1alpha2/{name=projects/*/incidents/*/subscriptions/*}\x12\xd7\x01\n\x1c\x43reateIncidentRoleAssignment\x12>.google.cloud.irm.v1alpha2.CreateIncidentRoleAssignmentRequest\x1a\x31.google.cloud.irm.v1alpha2.IncidentRoleAssignment\"D\x82\xd3\xe4\x93\x02>\"9/v1alpha2/{parent=projects/*/incidents/*}/roleAssignments:\x01*\x12\xb9\x01\n\x1c\x44\x65leteIncidentRoleAssignment\x12>.google.cloud.irm.v1alpha2.DeleteIncidentRoleAssignmentRequest\x1a\x16.google.protobuf.Empty\"A\x82\xd3\xe4\x93\x02;*9/v1alpha2/{name=projects/*/incidents/*/roleAssignments/*}\x12\xdf\x01\n\x1bListIncidentRoleAssignments\x12=.google.cloud.irm.v1alpha2.ListIncidentRoleAssignmentsRequest\x1a>.google.cloud.irm.v1alpha2.ListIncidentRoleAssignmentsResponse\"A\x82\xd3\xe4\x93\x02;\x12\x39/v1alpha2/{parent=projects/*/incidents/*}/roleAssignments\x12\xe5\x01\n\x1bRequestIncidentRoleHandover\x12=.google.cloud.irm.v1alpha2.RequestIncidentRoleHandoverRequest\x1a\x31.google.cloud.irm.v1alpha2.IncidentRoleAssignment\"T\x82\xd3\xe4\x93\x02N\"I/v1alpha2/{name=projects/*/incidents/*/roleAssignments/*}:requestHandover:\x01*\x12\xe5\x01\n\x1b\x43onfirmIncidentRoleHandover\x12=.google.cloud.irm.v1alpha2.ConfirmIncidentRoleHandoverRequest\x1a\x31.google.cloud.irm.v1alpha2.IncidentRoleAssignment\"T\x82\xd3\xe4\x93\x02N\"I/v1alpha2/{name=projects/*/incidents/*/roleAssignments/*}:confirmHandover:\x01*\x12\xdf\x01\n\x19\x46orceIncidentRoleHandover\x12;.google.cloud.irm.v1alpha2.ForceIncidentRoleHandoverRequest\x1a\x31.google.cloud.irm.v1alpha2.IncidentRoleAssignment\"R\x82\xd3\xe4\x93\x02L\"G/v1alpha2/{name=projects/*/incidents/*/roleAssignments/*}:forceHandover:\x01*\x12\xe2\x01\n\x1a\x43\x61ncelIncidentRoleHandover\x12<.google.cloud.irm.v1alpha2.CancelIncidentRoleHandoverRequest\x1a\x31.google.cloud.irm.v1alpha2.IncidentRoleAssignment\"S\x82\xd3\xe4\x93\x02M\"H/v1alpha2/{name=projects/*/incidents/*/roleAssignments/*}:cancelHandover:\x01*Bh\n#com.google.irm.service.v1alpha2.apiP\x01Z<google.golang.org/genproto/googleapis/cloud/irm/v1alpha2;irm\xf8\x01\x01\x62\x06proto3')
+  ,
+  dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR,google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2.DESCRIPTOR,google_dot_protobuf_dot_empty__pb2.DESCRIPTOR,google_dot_protobuf_dot_field__mask__pb2.DESCRIPTOR,google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,])
+
+
 
 
 _CREATEINCIDENTREQUEST = _descriptor.Descriptor(
-    name="CreateIncidentRequest",
-    full_name="google.cloud.irm.v1alpha2.CreateIncidentRequest",
-    filename=None,
-    file=DESCRIPTOR,
-    containing_type=None,
-    fields=[
-        _descriptor.FieldDescriptor(
-            name="incident",
-            full_name="google.cloud.irm.v1alpha2.CreateIncidentRequest.incident",
-            index=0,
-            number=1,
-            type=11,
-            cpp_type=10,
-            label=1,
-            has_default_value=False,
-            default_value=None,
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-        _descriptor.FieldDescriptor(
-            name="parent",
-            full_name="google.cloud.irm.v1alpha2.CreateIncidentRequest.parent",
-            index=1,
-            number=2,
-            type=9,
-            cpp_type=9,
-            label=1,
-            has_default_value=False,
-            default_value=_b("").decode("utf-8"),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-    ],
-    extensions=[],
-    nested_types=[],
-    enum_types=[],
-    serialized_options=None,
-    is_extendable=False,
-    syntax="proto3",
-    extension_ranges=[],
-    oneofs=[],
-    serialized_start=261,
-    serialized_end=355,
+  name='CreateIncidentRequest',
+  full_name='google.cloud.irm.v1alpha2.CreateIncidentRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='incident', full_name='google.cloud.irm.v1alpha2.CreateIncidentRequest.incident', index=0,
+      number=1, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='parent', full_name='google.cloud.irm.v1alpha2.CreateIncidentRequest.parent', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=261,
+  serialized_end=355,
 )
 
 
 _GETINCIDENTREQUEST = _descriptor.Descriptor(
-    name="GetIncidentRequest",
-    full_name="google.cloud.irm.v1alpha2.GetIncidentRequest",
-    filename=None,
-    file=DESCRIPTOR,
-    containing_type=None,
-    fields=[
-        _descriptor.FieldDescriptor(
-            name="name",
-            full_name="google.cloud.irm.v1alpha2.GetIncidentRequest.name",
-            index=0,
-            number=1,
-            type=9,
-            cpp_type=9,
-            label=1,
-            has_default_value=False,
-            default_value=_b("").decode("utf-8"),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        )
-    ],
-    extensions=[],
-    nested_types=[],
-    enum_types=[],
-    serialized_options=None,
-    is_extendable=False,
-    syntax="proto3",
-    extension_ranges=[],
-    oneofs=[],
-    serialized_start=357,
-    serialized_end=391,
+  name='GetIncidentRequest',
+  full_name='google.cloud.irm.v1alpha2.GetIncidentRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='name', full_name='google.cloud.irm.v1alpha2.GetIncidentRequest.name', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=357,
+  serialized_end=391,
 )
 
 
 _UPDATEINCIDENTREQUEST = _descriptor.Descriptor(
-    name="UpdateIncidentRequest",
-    full_name="google.cloud.irm.v1alpha2.UpdateIncidentRequest",
-    filename=None,
-    file=DESCRIPTOR,
-    containing_type=None,
-    fields=[
-        _descriptor.FieldDescriptor(
-            name="incident",
-            full_name="google.cloud.irm.v1alpha2.UpdateIncidentRequest.incident",
-            index=0,
-            number=1,
-            type=11,
-            cpp_type=10,
-            label=1,
-            has_default_value=False,
-            default_value=None,
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-        _descriptor.FieldDescriptor(
-            name="update_mask",
-            full_name="google.cloud.irm.v1alpha2.UpdateIncidentRequest.update_mask",
-            index=1,
-            number=2,
-            type=11,
-            cpp_type=10,
-            label=1,
-            has_default_value=False,
-            default_value=None,
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-    ],
-    extensions=[],
-    nested_types=[],
-    enum_types=[],
-    serialized_options=None,
-    is_extendable=False,
-    syntax="proto3",
-    extension_ranges=[],
-    oneofs=[],
-    serialized_start=393,
-    serialized_end=520,
+  name='UpdateIncidentRequest',
+  full_name='google.cloud.irm.v1alpha2.UpdateIncidentRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='incident', full_name='google.cloud.irm.v1alpha2.UpdateIncidentRequest.incident', index=0,
+      number=1, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='update_mask', full_name='google.cloud.irm.v1alpha2.UpdateIncidentRequest.update_mask', index=1,
+      number=2, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=393,
+  serialized_end=520,
 )
 
 
 _SEARCHSIMILARINCIDENTSREQUEST = _descriptor.Descriptor(
-    name="SearchSimilarIncidentsRequest",
-    full_name="google.cloud.irm.v1alpha2.SearchSimilarIncidentsRequest",
-    filename=None,
-    file=DESCRIPTOR,
-    containing_type=None,
-    fields=[
-        _descriptor.FieldDescriptor(
-            name="name",
-            full_name="google.cloud.irm.v1alpha2.SearchSimilarIncidentsRequest.name",
-            index=0,
-            number=1,
-            type=9,
-            cpp_type=9,
-            label=1,
-            has_default_value=False,
-            default_value=_b("").decode("utf-8"),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-        _descriptor.FieldDescriptor(
-            name="page_size",
-            full_name="google.cloud.irm.v1alpha2.SearchSimilarIncidentsRequest.page_size",
-            index=1,
-            number=2,
-            type=5,
-            cpp_type=1,
-            label=1,
-            has_default_value=False,
-            default_value=0,
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-        _descriptor.FieldDescriptor(
-            name="page_token",
-            full_name="google.cloud.irm.v1alpha2.SearchSimilarIncidentsRequest.page_token",
-            index=2,
-            number=3,
-            type=9,
-            cpp_type=9,
-            label=1,
-            has_default_value=False,
-            default_value=_b("").decode("utf-8"),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-    ],
-    extensions=[],
-    nested_types=[],
-    enum_types=[],
-    serialized_options=None,
-    is_extendable=False,
-    syntax="proto3",
-    extension_ranges=[],
-    oneofs=[],
-    serialized_start=522,
-    serialized_end=606,
+  name='SearchSimilarIncidentsRequest',
+  full_name='google.cloud.irm.v1alpha2.SearchSimilarIncidentsRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='name', full_name='google.cloud.irm.v1alpha2.SearchSimilarIncidentsRequest.name', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='page_size', full_name='google.cloud.irm.v1alpha2.SearchSimilarIncidentsRequest.page_size', index=1,
+      number=2, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='page_token', full_name='google.cloud.irm.v1alpha2.SearchSimilarIncidentsRequest.page_token', index=2,
+      number=3, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=522,
+  serialized_end=606,
 )
 
 
 _SEARCHSIMILARINCIDENTSRESPONSE_RESULT = _descriptor.Descriptor(
-    name="Result",
-    full_name="google.cloud.irm.v1alpha2.SearchSimilarIncidentsResponse.Result",
-    filename=None,
-    file=DESCRIPTOR,
-    containing_type=None,
-    fields=[
-        _descriptor.FieldDescriptor(
-            name="incident",
-            full_name="google.cloud.irm.v1alpha2.SearchSimilarIncidentsResponse.Result.incident",
-            index=0,
-            number=1,
-            type=11,
-            cpp_type=10,
-            label=1,
-            has_default_value=False,
-            default_value=None,
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        )
-    ],
-    extensions=[],
-    nested_types=[],
-    enum_types=[],
-    serialized_options=None,
-    is_extendable=False,
-    syntax="proto3",
-    extension_ranges=[],
-    oneofs=[],
-    serialized_start=751,
-    serialized_end=814,
+  name='Result',
+  full_name='google.cloud.irm.v1alpha2.SearchSimilarIncidentsResponse.Result',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='incident', full_name='google.cloud.irm.v1alpha2.SearchSimilarIncidentsResponse.Result.incident', index=0,
+      number=1, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=751,
+  serialized_end=814,
 )
 
 _SEARCHSIMILARINCIDENTSRESPONSE = _descriptor.Descriptor(
-    name="SearchSimilarIncidentsResponse",
-    full_name="google.cloud.irm.v1alpha2.SearchSimilarIncidentsResponse",
-    filename=None,
-    file=DESCRIPTOR,
-    containing_type=None,
-    fields=[
-        _descriptor.FieldDescriptor(
-            name="results",
-            full_name="google.cloud.irm.v1alpha2.SearchSimilarIncidentsResponse.results",
-            index=0,
-            number=1,
-            type=11,
-            cpp_type=10,
-            label=3,
-            has_default_value=False,
-            default_value=[],
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-        _descriptor.FieldDescriptor(
-            name="next_page_token",
-            full_name="google.cloud.irm.v1alpha2.SearchSimilarIncidentsResponse.next_page_token",
-            index=1,
-            number=2,
-            type=9,
-            cpp_type=9,
-            label=1,
-            has_default_value=False,
-            default_value=_b("").decode("utf-8"),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-    ],
-    extensions=[],
-    nested_types=[_SEARCHSIMILARINCIDENTSRESPONSE_RESULT],
-    enum_types=[],
-    serialized_options=None,
-    is_extendable=False,
-    syntax="proto3",
-    extension_ranges=[],
-    oneofs=[],
-    serialized_start=609,
-    serialized_end=814,
+  name='SearchSimilarIncidentsResponse',
+  full_name='google.cloud.irm.v1alpha2.SearchSimilarIncidentsResponse',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='results', full_name='google.cloud.irm.v1alpha2.SearchSimilarIncidentsResponse.results', index=0,
+      number=1, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='next_page_token', full_name='google.cloud.irm.v1alpha2.SearchSimilarIncidentsResponse.next_page_token', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[_SEARCHSIMILARINCIDENTSRESPONSE_RESULT, ],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=609,
+  serialized_end=814,
 )
 
 
 _CREATEANNOTATIONREQUEST = _descriptor.Descriptor(
-    name="CreateAnnotationRequest",
-    full_name="google.cloud.irm.v1alpha2.CreateAnnotationRequest",
-    filename=None,
-    file=DESCRIPTOR,
-    containing_type=None,
-    fields=[
-        _descriptor.FieldDescriptor(
-            name="parent",
-            full_name="google.cloud.irm.v1alpha2.CreateAnnotationRequest.parent",
-            index=0,
-            number=1,
-            type=9,
-            cpp_type=9,
-            label=1,
-            has_default_value=False,
-            default_value=_b("").decode("utf-8"),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-        _descriptor.FieldDescriptor(
-            name="annotation",
-            full_name="google.cloud.irm.v1alpha2.CreateAnnotationRequest.annotation",
-            index=1,
-            number=2,
-            type=11,
-            cpp_type=10,
-            label=1,
-            has_default_value=False,
-            default_value=None,
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-    ],
-    extensions=[],
-    nested_types=[],
-    enum_types=[],
-    serialized_options=None,
-    is_extendable=False,
-    syntax="proto3",
-    extension_ranges=[],
-    oneofs=[],
-    serialized_start=816,
-    serialized_end=916,
+  name='CreateAnnotationRequest',
+  full_name='google.cloud.irm.v1alpha2.CreateAnnotationRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='parent', full_name='google.cloud.irm.v1alpha2.CreateAnnotationRequest.parent', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='annotation', full_name='google.cloud.irm.v1alpha2.CreateAnnotationRequest.annotation', index=1,
+      number=2, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=816,
+  serialized_end=916,
 )
 
 
 _LISTANNOTATIONSREQUEST = _descriptor.Descriptor(
-    name="ListAnnotationsRequest",
-    full_name="google.cloud.irm.v1alpha2.ListAnnotationsRequest",
-    filename=None,
-    file=DESCRIPTOR,
-    containing_type=None,
-    fields=[
-        _descriptor.FieldDescriptor(
-            name="parent",
-            full_name="google.cloud.irm.v1alpha2.ListAnnotationsRequest.parent",
-            index=0,
-            number=1,
-            type=9,
-            cpp_type=9,
-            label=1,
-            has_default_value=False,
-            default_value=_b("").decode("utf-8"),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-        _descriptor.FieldDescriptor(
-            name="page_size",
-            full_name="google.cloud.irm.v1alpha2.ListAnnotationsRequest.page_size",
-            index=1,
-            number=2,
-            type=5,
-            cpp_type=1,
-            label=1,
-            has_default_value=False,
-            default_value=0,
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-        _descriptor.FieldDescriptor(
-            name="page_token",
-            full_name="google.cloud.irm.v1alpha2.ListAnnotationsRequest.page_token",
-            index=2,
-            number=3,
-            type=9,
-            cpp_type=9,
-            label=1,
-            has_default_value=False,
-            default_value=_b("").decode("utf-8"),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-    ],
-    extensions=[],
-    nested_types=[],
-    enum_types=[],
-    serialized_options=None,
-    is_extendable=False,
-    syntax="proto3",
-    extension_ranges=[],
-    oneofs=[],
-    serialized_start=918,
-    serialized_end=997,
+  name='ListAnnotationsRequest',
+  full_name='google.cloud.irm.v1alpha2.ListAnnotationsRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='parent', full_name='google.cloud.irm.v1alpha2.ListAnnotationsRequest.parent', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='page_size', full_name='google.cloud.irm.v1alpha2.ListAnnotationsRequest.page_size', index=1,
+      number=2, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='page_token', full_name='google.cloud.irm.v1alpha2.ListAnnotationsRequest.page_token', index=2,
+      number=3, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=918,
+  serialized_end=997,
 )
 
 
 _LISTANNOTATIONSRESPONSE = _descriptor.Descriptor(
-    name="ListAnnotationsResponse",
-    full_name="google.cloud.irm.v1alpha2.ListAnnotationsResponse",
-    filename=None,
-    file=DESCRIPTOR,
-    containing_type=None,
-    fields=[
-        _descriptor.FieldDescriptor(
-            name="annotations",
-            full_name="google.cloud.irm.v1alpha2.ListAnnotationsResponse.annotations",
-            index=0,
-            number=1,
-            type=11,
-            cpp_type=10,
-            label=3,
-            has_default_value=False,
-            default_value=[],
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-        _descriptor.FieldDescriptor(
-            name="next_page_token",
-            full_name="google.cloud.irm.v1alpha2.ListAnnotationsResponse.next_page_token",
-            index=1,
-            number=2,
-            type=9,
-            cpp_type=9,
-            label=1,
-            has_default_value=False,
-            default_value=_b("").decode("utf-8"),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-    ],
-    extensions=[],
-    nested_types=[],
-    enum_types=[],
-    serialized_options=None,
-    is_extendable=False,
-    syntax="proto3",
-    extension_ranges=[],
-    oneofs=[],
-    serialized_start=999,
-    serialized_end=1109,
+  name='ListAnnotationsResponse',
+  full_name='google.cloud.irm.v1alpha2.ListAnnotationsResponse',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='annotations', full_name='google.cloud.irm.v1alpha2.ListAnnotationsResponse.annotations', index=0,
+      number=1, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='next_page_token', full_name='google.cloud.irm.v1alpha2.ListAnnotationsResponse.next_page_token', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=999,
+  serialized_end=1109,
 )
 
 
 _CREATETAGREQUEST = _descriptor.Descriptor(
-    name="CreateTagRequest",
-    full_name="google.cloud.irm.v1alpha2.CreateTagRequest",
-    filename=None,
-    file=DESCRIPTOR,
-    containing_type=None,
-    fields=[
-        _descriptor.FieldDescriptor(
-            name="parent",
-            full_name="google.cloud.irm.v1alpha2.CreateTagRequest.parent",
-            index=0,
-            number=1,
-            type=9,
-            cpp_type=9,
-            label=1,
-            has_default_value=False,
-            default_value=_b("").decode("utf-8"),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-        _descriptor.FieldDescriptor(
-            name="tag",
-            full_name="google.cloud.irm.v1alpha2.CreateTagRequest.tag",
-            index=1,
-            number=2,
-            type=11,
-            cpp_type=10,
-            label=1,
-            has_default_value=False,
-            default_value=None,
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-    ],
-    extensions=[],
-    nested_types=[],
-    enum_types=[],
-    serialized_options=None,
-    is_extendable=False,
-    syntax="proto3",
-    extension_ranges=[],
-    oneofs=[],
-    serialized_start=1111,
-    serialized_end=1190,
+  name='CreateTagRequest',
+  full_name='google.cloud.irm.v1alpha2.CreateTagRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='parent', full_name='google.cloud.irm.v1alpha2.CreateTagRequest.parent', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='tag', full_name='google.cloud.irm.v1alpha2.CreateTagRequest.tag', index=1,
+      number=2, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1111,
+  serialized_end=1190,
 )
 
 
 _DELETETAGREQUEST = _descriptor.Descriptor(
-    name="DeleteTagRequest",
-    full_name="google.cloud.irm.v1alpha2.DeleteTagRequest",
-    filename=None,
-    file=DESCRIPTOR,
-    containing_type=None,
-    fields=[
-        _descriptor.FieldDescriptor(
-            name="name",
-            full_name="google.cloud.irm.v1alpha2.DeleteTagRequest.name",
-            index=0,
-            number=1,
-            type=9,
-            cpp_type=9,
-            label=1,
-            has_default_value=False,
-            default_value=_b("").decode("utf-8"),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        )
-    ],
-    extensions=[],
-    nested_types=[],
-    enum_types=[],
-    serialized_options=None,
-    is_extendable=False,
-    syntax="proto3",
-    extension_ranges=[],
-    oneofs=[],
-    serialized_start=1192,
-    serialized_end=1224,
+  name='DeleteTagRequest',
+  full_name='google.cloud.irm.v1alpha2.DeleteTagRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='name', full_name='google.cloud.irm.v1alpha2.DeleteTagRequest.name', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1192,
+  serialized_end=1224,
 )
 
 
 _LISTTAGSREQUEST = _descriptor.Descriptor(
-    name="ListTagsRequest",
-    full_name="google.cloud.irm.v1alpha2.ListTagsRequest",
-    filename=None,
-    file=DESCRIPTOR,
-    containing_type=None,
-    fields=[
-        _descriptor.FieldDescriptor(
-            name="parent",
-            full_name="google.cloud.irm.v1alpha2.ListTagsRequest.parent",
-            index=0,
-            number=1,
-            type=9,
-            cpp_type=9,
-            label=1,
-            has_default_value=False,
-            default_value=_b("").decode("utf-8"),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-        _descriptor.FieldDescriptor(
-            name="page_size",
-            full_name="google.cloud.irm.v1alpha2.ListTagsRequest.page_size",
-            index=1,
-            number=2,
-            type=5,
-            cpp_type=1,
-            label=1,
-            has_default_value=False,
-            default_value=0,
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-        _descriptor.FieldDescriptor(
-            name="page_token",
-            full_name="google.cloud.irm.v1alpha2.ListTagsRequest.page_token",
-            index=2,
-            number=3,
-            type=9,
-            cpp_type=9,
-            label=1,
-            has_default_value=False,
-            default_value=_b("").decode("utf-8"),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-    ],
-    extensions=[],
-    nested_types=[],
-    enum_types=[],
-    serialized_options=None,
-    is_extendable=False,
-    syntax="proto3",
-    extension_ranges=[],
-    oneofs=[],
-    serialized_start=1226,
-    serialized_end=1298,
+  name='ListTagsRequest',
+  full_name='google.cloud.irm.v1alpha2.ListTagsRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='parent', full_name='google.cloud.irm.v1alpha2.ListTagsRequest.parent', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='page_size', full_name='google.cloud.irm.v1alpha2.ListTagsRequest.page_size', index=1,
+      number=2, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='page_token', full_name='google.cloud.irm.v1alpha2.ListTagsRequest.page_token', index=2,
+      number=3, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1226,
+  serialized_end=1298,
 )
 
 
 _LISTTAGSRESPONSE = _descriptor.Descriptor(
-    name="ListTagsResponse",
-    full_name="google.cloud.irm.v1alpha2.ListTagsResponse",
-    filename=None,
-    file=DESCRIPTOR,
-    containing_type=None,
-    fields=[
-        _descriptor.FieldDescriptor(
-            name="tags",
-            full_name="google.cloud.irm.v1alpha2.ListTagsResponse.tags",
-            index=0,
-            number=1,
-            type=11,
-            cpp_type=10,
-            label=3,
-            has_default_value=False,
-            default_value=[],
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-        _descriptor.FieldDescriptor(
-            name="next_page_token",
-            full_name="google.cloud.irm.v1alpha2.ListTagsResponse.next_page_token",
-            index=1,
-            number=2,
-            type=9,
-            cpp_type=9,
-            label=1,
-            has_default_value=False,
-            default_value=_b("").decode("utf-8"),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-    ],
-    extensions=[],
-    nested_types=[],
-    enum_types=[],
-    serialized_options=None,
-    is_extendable=False,
-    syntax="proto3",
-    extension_ranges=[],
-    oneofs=[],
-    serialized_start=1300,
-    serialized_end=1389,
+  name='ListTagsResponse',
+  full_name='google.cloud.irm.v1alpha2.ListTagsResponse',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='tags', full_name='google.cloud.irm.v1alpha2.ListTagsResponse.tags', index=0,
+      number=1, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='next_page_token', full_name='google.cloud.irm.v1alpha2.ListTagsResponse.next_page_token', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1300,
+  serialized_end=1389,
 )
 
 
 _UPDATEANNOTATIONREQUEST = _descriptor.Descriptor(
-    name="UpdateAnnotationRequest",
-    full_name="google.cloud.irm.v1alpha2.UpdateAnnotationRequest",
-    filename=None,
-    file=DESCRIPTOR,
-    containing_type=None,
-    fields=[
-        _descriptor.FieldDescriptor(
-            name="annotation",
-            full_name="google.cloud.irm.v1alpha2.UpdateAnnotationRequest.annotation",
-            index=0,
-            number=1,
-            type=11,
-            cpp_type=10,
-            label=1,
-            has_default_value=False,
-            default_value=None,
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-        _descriptor.FieldDescriptor(
-            name="update_mask",
-            full_name="google.cloud.irm.v1alpha2.UpdateAnnotationRequest.update_mask",
-            index=1,
-            number=2,
-            type=11,
-            cpp_type=10,
-            label=1,
-            has_default_value=False,
-            default_value=None,
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-    ],
-    extensions=[],
-    nested_types=[],
-    enum_types=[],
-    serialized_options=None,
-    is_extendable=False,
-    syntax="proto3",
-    extension_ranges=[],
-    oneofs=[],
-    serialized_start=1392,
-    serialized_end=1525,
+  name='UpdateAnnotationRequest',
+  full_name='google.cloud.irm.v1alpha2.UpdateAnnotationRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='annotation', full_name='google.cloud.irm.v1alpha2.UpdateAnnotationRequest.annotation', index=0,
+      number=1, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='update_mask', full_name='google.cloud.irm.v1alpha2.UpdateAnnotationRequest.update_mask', index=1,
+      number=2, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1392,
+  serialized_end=1525,
 )
 
 
 _CREATESIGNALREQUEST = _descriptor.Descriptor(
-    name="CreateSignalRequest",
-    full_name="google.cloud.irm.v1alpha2.CreateSignalRequest",
-    filename=None,
-    file=DESCRIPTOR,
-    containing_type=None,
-    fields=[
-        _descriptor.FieldDescriptor(
-            name="parent",
-            full_name="google.cloud.irm.v1alpha2.CreateSignalRequest.parent",
-            index=0,
-            number=1,
-            type=9,
-            cpp_type=9,
-            label=1,
-            has_default_value=False,
-            default_value=_b("").decode("utf-8"),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-        _descriptor.FieldDescriptor(
-            name="signal",
-            full_name="google.cloud.irm.v1alpha2.CreateSignalRequest.signal",
-            index=1,
-            number=2,
-            type=11,
-            cpp_type=10,
-            label=1,
-            has_default_value=False,
-            default_value=None,
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-    ],
-    extensions=[],
-    nested_types=[],
-    enum_types=[],
-    serialized_options=None,
-    is_extendable=False,
-    syntax="proto3",
-    extension_ranges=[],
-    oneofs=[],
-    serialized_start=1527,
-    serialized_end=1615,
+  name='CreateSignalRequest',
+  full_name='google.cloud.irm.v1alpha2.CreateSignalRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='parent', full_name='google.cloud.irm.v1alpha2.CreateSignalRequest.parent', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='signal', full_name='google.cloud.irm.v1alpha2.CreateSignalRequest.signal', index=1,
+      number=2, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1527,
+  serialized_end=1615,
 )
 
 
 _LISTSIGNALSREQUEST = _descriptor.Descriptor(
-    name="ListSignalsRequest",
-    full_name="google.cloud.irm.v1alpha2.ListSignalsRequest",
-    filename=None,
-    file=DESCRIPTOR,
-    containing_type=None,
-    fields=[
-        _descriptor.FieldDescriptor(
-            name="parent",
-            full_name="google.cloud.irm.v1alpha2.ListSignalsRequest.parent",
-            index=0,
-            number=1,
-            type=9,
-            cpp_type=9,
-            label=1,
-            has_default_value=False,
-            default_value=_b("").decode("utf-8"),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-        _descriptor.FieldDescriptor(
-            name="filter",
-            full_name="google.cloud.irm.v1alpha2.ListSignalsRequest.filter",
-            index=1,
-            number=2,
-            type=9,
-            cpp_type=9,
-            label=1,
-            has_default_value=False,
-            default_value=_b("").decode("utf-8"),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-        _descriptor.FieldDescriptor(
-            name="page_size",
-            full_name="google.cloud.irm.v1alpha2.ListSignalsRequest.page_size",
-            index=2,
-            number=3,
-            type=5,
-            cpp_type=1,
-            label=1,
-            has_default_value=False,
-            default_value=0,
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-        _descriptor.FieldDescriptor(
-            name="page_token",
-            full_name="google.cloud.irm.v1alpha2.ListSignalsRequest.page_token",
-            index=3,
-            number=4,
-            type=9,
-            cpp_type=9,
-            label=1,
-            has_default_value=False,
-            default_value=_b("").decode("utf-8"),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-    ],
-    extensions=[],
-    nested_types=[],
-    enum_types=[],
-    serialized_options=None,
-    is_extendable=False,
-    syntax="proto3",
-    extension_ranges=[],
-    oneofs=[],
-    serialized_start=1617,
-    serialized_end=1708,
+  name='ListSignalsRequest',
+  full_name='google.cloud.irm.v1alpha2.ListSignalsRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='parent', full_name='google.cloud.irm.v1alpha2.ListSignalsRequest.parent', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='filter', full_name='google.cloud.irm.v1alpha2.ListSignalsRequest.filter', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='page_size', full_name='google.cloud.irm.v1alpha2.ListSignalsRequest.page_size', index=2,
+      number=3, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='page_token', full_name='google.cloud.irm.v1alpha2.ListSignalsRequest.page_token', index=3,
+      number=4, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1617,
+  serialized_end=1708,
 )
 
 
 _LISTSIGNALSRESPONSE = _descriptor.Descriptor(
-    name="ListSignalsResponse",
-    full_name="google.cloud.irm.v1alpha2.ListSignalsResponse",
-    filename=None,
-    file=DESCRIPTOR,
-    containing_type=None,
-    fields=[
-        _descriptor.FieldDescriptor(
-            name="signals",
-            full_name="google.cloud.irm.v1alpha2.ListSignalsResponse.signals",
-            index=0,
-            number=1,
-            type=11,
-            cpp_type=10,
-            label=3,
-            has_default_value=False,
-            default_value=[],
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-        _descriptor.FieldDescriptor(
-            name="next_page_token",
-            full_name="google.cloud.irm.v1alpha2.ListSignalsResponse.next_page_token",
-            index=1,
-            number=2,
-            type=9,
-            cpp_type=9,
-            label=1,
-            has_default_value=False,
-            default_value=_b("").decode("utf-8"),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-    ],
-    extensions=[],
-    nested_types=[],
-    enum_types=[],
-    serialized_options=None,
-    is_extendable=False,
-    syntax="proto3",
-    extension_ranges=[],
-    oneofs=[],
-    serialized_start=1710,
-    serialized_end=1808,
+  name='ListSignalsResponse',
+  full_name='google.cloud.irm.v1alpha2.ListSignalsResponse',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='signals', full_name='google.cloud.irm.v1alpha2.ListSignalsResponse.signals', index=0,
+      number=1, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='next_page_token', full_name='google.cloud.irm.v1alpha2.ListSignalsResponse.next_page_token', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1710,
+  serialized_end=1808,
 )
 
 
 _GETSIGNALREQUEST = _descriptor.Descriptor(
-    name="GetSignalRequest",
-    full_name="google.cloud.irm.v1alpha2.GetSignalRequest",
-    filename=None,
-    file=DESCRIPTOR,
-    containing_type=None,
-    fields=[
-        _descriptor.FieldDescriptor(
-            name="name",
-            full_name="google.cloud.irm.v1alpha2.GetSignalRequest.name",
-            index=0,
-            number=1,
-            type=9,
-            cpp_type=9,
-            label=1,
-            has_default_value=False,
-            default_value=_b("").decode("utf-8"),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        )
-    ],
-    extensions=[],
-    nested_types=[],
-    enum_types=[],
-    serialized_options=None,
-    is_extendable=False,
-    syntax="proto3",
-    extension_ranges=[],
-    oneofs=[],
-    serialized_start=1810,
-    serialized_end=1842,
+  name='GetSignalRequest',
+  full_name='google.cloud.irm.v1alpha2.GetSignalRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='name', full_name='google.cloud.irm.v1alpha2.GetSignalRequest.name', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1810,
+  serialized_end=1842,
 )
 
 
 _UPDATESIGNALREQUEST = _descriptor.Descriptor(
-    name="UpdateSignalRequest",
-    full_name="google.cloud.irm.v1alpha2.UpdateSignalRequest",
-    filename=None,
-    file=DESCRIPTOR,
-    containing_type=None,
-    fields=[
-        _descriptor.FieldDescriptor(
-            name="signal",
-            full_name="google.cloud.irm.v1alpha2.UpdateSignalRequest.signal",
-            index=0,
-            number=1,
-            type=11,
-            cpp_type=10,
-            label=1,
-            has_default_value=False,
-            default_value=None,
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-        _descriptor.FieldDescriptor(
-            name="update_mask",
-            full_name="google.cloud.irm.v1alpha2.UpdateSignalRequest.update_mask",
-            index=1,
-            number=2,
-            type=11,
-            cpp_type=10,
-            label=1,
-            has_default_value=False,
-            default_value=None,
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-    ],
-    extensions=[],
-    nested_types=[],
-    enum_types=[],
-    serialized_options=None,
-    is_extendable=False,
-    syntax="proto3",
-    extension_ranges=[],
-    oneofs=[],
-    serialized_start=1844,
-    serialized_end=1965,
+  name='UpdateSignalRequest',
+  full_name='google.cloud.irm.v1alpha2.UpdateSignalRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='signal', full_name='google.cloud.irm.v1alpha2.UpdateSignalRequest.signal', index=0,
+      number=1, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='update_mask', full_name='google.cloud.irm.v1alpha2.UpdateSignalRequest.update_mask', index=1,
+      number=2, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1844,
+  serialized_end=1965,
 )
 
 
 _ACKNOWLEDGESIGNALREQUEST = _descriptor.Descriptor(
-    name="AcknowledgeSignalRequest",
-    full_name="google.cloud.irm.v1alpha2.AcknowledgeSignalRequest",
-    filename=None,
-    file=DESCRIPTOR,
-    containing_type=None,
-    fields=[
-        _descriptor.FieldDescriptor(
-            name="name",
-            full_name="google.cloud.irm.v1alpha2.AcknowledgeSignalRequest.name",
-            index=0,
-            number=1,
-            type=9,
-            cpp_type=9,
-            label=1,
-            has_default_value=False,
-            default_value=_b("").decode("utf-8"),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        )
-    ],
-    extensions=[],
-    nested_types=[],
-    enum_types=[],
-    serialized_options=None,
-    is_extendable=False,
-    syntax="proto3",
-    extension_ranges=[],
-    oneofs=[],
-    serialized_start=1967,
-    serialized_end=2007,
+  name='AcknowledgeSignalRequest',
+  full_name='google.cloud.irm.v1alpha2.AcknowledgeSignalRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='name', full_name='google.cloud.irm.v1alpha2.AcknowledgeSignalRequest.name', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1967,
+  serialized_end=2007,
 )
 
 
 _ACKNOWLEDGESIGNALRESPONSE = _descriptor.Descriptor(
-    name="AcknowledgeSignalResponse",
-    full_name="google.cloud.irm.v1alpha2.AcknowledgeSignalResponse",
-    filename=None,
-    file=DESCRIPTOR,
-    containing_type=None,
-    fields=[],
-    extensions=[],
-    nested_types=[],
-    enum_types=[],
-    serialized_options=None,
-    is_extendable=False,
-    syntax="proto3",
-    extension_ranges=[],
-    oneofs=[],
-    serialized_start=2009,
-    serialized_end=2036,
+  name='AcknowledgeSignalResponse',
+  full_name='google.cloud.irm.v1alpha2.AcknowledgeSignalResponse',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=2009,
+  serialized_end=2036,
 )
 
 
 _SEARCHINCIDENTSREQUEST = _descriptor.Descriptor(
-    name="SearchIncidentsRequest",
-    full_name="google.cloud.irm.v1alpha2.SearchIncidentsRequest",
-    filename=None,
-    file=DESCRIPTOR,
-    containing_type=None,
-    fields=[
-        _descriptor.FieldDescriptor(
-            name="parent",
-            full_name="google.cloud.irm.v1alpha2.SearchIncidentsRequest.parent",
-            index=0,
-            number=1,
-            type=9,
-            cpp_type=9,
-            label=1,
-            has_default_value=False,
-            default_value=_b("").decode("utf-8"),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-        _descriptor.FieldDescriptor(
-            name="query",
-            full_name="google.cloud.irm.v1alpha2.SearchIncidentsRequest.query",
-            index=1,
-            number=2,
-            type=9,
-            cpp_type=9,
-            label=1,
-            has_default_value=False,
-            default_value=_b("").decode("utf-8"),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-        _descriptor.FieldDescriptor(
-            name="page_size",
-            full_name="google.cloud.irm.v1alpha2.SearchIncidentsRequest.page_size",
-            index=2,
-            number=3,
-            type=5,
-            cpp_type=1,
-            label=1,
-            has_default_value=False,
-            default_value=0,
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-        _descriptor.FieldDescriptor(
-            name="page_token",
-            full_name="google.cloud.irm.v1alpha2.SearchIncidentsRequest.page_token",
-            index=3,
-            number=4,
-            type=9,
-            cpp_type=9,
-            label=1,
-            has_default_value=False,
-            default_value=_b("").decode("utf-8"),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-        _descriptor.FieldDescriptor(
-            name="time_zone",
-            full_name="google.cloud.irm.v1alpha2.SearchIncidentsRequest.time_zone",
-            index=4,
-            number=5,
-            type=9,
-            cpp_type=9,
-            label=1,
-            has_default_value=False,
-            default_value=_b("").decode("utf-8"),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-    ],
-    extensions=[],
-    nested_types=[],
-    enum_types=[],
-    serialized_options=None,
-    is_extendable=False,
-    syntax="proto3",
-    extension_ranges=[],
-    oneofs=[],
-    serialized_start=2038,
-    serialized_end=2151,
+  name='SearchIncidentsRequest',
+  full_name='google.cloud.irm.v1alpha2.SearchIncidentsRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='parent', full_name='google.cloud.irm.v1alpha2.SearchIncidentsRequest.parent', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='query', full_name='google.cloud.irm.v1alpha2.SearchIncidentsRequest.query', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='page_size', full_name='google.cloud.irm.v1alpha2.SearchIncidentsRequest.page_size', index=2,
+      number=3, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='page_token', full_name='google.cloud.irm.v1alpha2.SearchIncidentsRequest.page_token', index=3,
+      number=4, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='time_zone', full_name='google.cloud.irm.v1alpha2.SearchIncidentsRequest.time_zone', index=4,
+      number=5, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=2038,
+  serialized_end=2151,
 )
 
 
 _SEARCHINCIDENTSRESPONSE = _descriptor.Descriptor(
-    name="SearchIncidentsResponse",
-    full_name="google.cloud.irm.v1alpha2.SearchIncidentsResponse",
-    filename=None,
-    file=DESCRIPTOR,
-    containing_type=None,
-    fields=[
-        _descriptor.FieldDescriptor(
-            name="incidents",
-            full_name="google.cloud.irm.v1alpha2.SearchIncidentsResponse.incidents",
-            index=0,
-            number=1,
-            type=11,
-            cpp_type=10,
-            label=3,
-            has_default_value=False,
-            default_value=[],
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-        _descriptor.FieldDescriptor(
-            name="next_page_token",
-            full_name="google.cloud.irm.v1alpha2.SearchIncidentsResponse.next_page_token",
-            index=1,
-            number=2,
-            type=9,
-            cpp_type=9,
-            label=1,
-            has_default_value=False,
-            default_value=_b("").decode("utf-8"),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-    ],
-    extensions=[],
-    nested_types=[],
-    enum_types=[],
-    serialized_options=None,
-    is_extendable=False,
-    syntax="proto3",
-    extension_ranges=[],
-    oneofs=[],
-    serialized_start=2153,
-    serialized_end=2259,
+  name='SearchIncidentsResponse',
+  full_name='google.cloud.irm.v1alpha2.SearchIncidentsResponse',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='incidents', full_name='google.cloud.irm.v1alpha2.SearchIncidentsResponse.incidents', index=0,
+      number=1, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='next_page_token', full_name='google.cloud.irm.v1alpha2.SearchIncidentsResponse.next_page_token', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=2153,
+  serialized_end=2259,
 )
 
 
 _ESCALATEINCIDENTREQUEST = _descriptor.Descriptor(
-    name="EscalateIncidentRequest",
-    full_name="google.cloud.irm.v1alpha2.EscalateIncidentRequest",
-    filename=None,
-    file=DESCRIPTOR,
-    containing_type=None,
-    fields=[
-        _descriptor.FieldDescriptor(
-            name="incident",
-            full_name="google.cloud.irm.v1alpha2.EscalateIncidentRequest.incident",
-            index=0,
-            number=1,
-            type=11,
-            cpp_type=10,
-            label=1,
-            has_default_value=False,
-            default_value=None,
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-        _descriptor.FieldDescriptor(
-            name="update_mask",
-            full_name="google.cloud.irm.v1alpha2.EscalateIncidentRequest.update_mask",
-            index=1,
-            number=2,
-            type=11,
-            cpp_type=10,
-            label=1,
-            has_default_value=False,
-            default_value=None,
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-        _descriptor.FieldDescriptor(
-            name="subscriptions",
-            full_name="google.cloud.irm.v1alpha2.EscalateIncidentRequest.subscriptions",
-            index=2,
-            number=3,
-            type=11,
-            cpp_type=10,
-            label=3,
-            has_default_value=False,
-            default_value=[],
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-        _descriptor.FieldDescriptor(
-            name="tags",
-            full_name="google.cloud.irm.v1alpha2.EscalateIncidentRequest.tags",
-            index=3,
-            number=4,
-            type=11,
-            cpp_type=10,
-            label=3,
-            has_default_value=False,
-            default_value=[],
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-        _descriptor.FieldDescriptor(
-            name="roles",
-            full_name="google.cloud.irm.v1alpha2.EscalateIncidentRequest.roles",
-            index=4,
-            number=5,
-            type=11,
-            cpp_type=10,
-            label=3,
-            has_default_value=False,
-            default_value=[],
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-        _descriptor.FieldDescriptor(
-            name="artifacts",
-            full_name="google.cloud.irm.v1alpha2.EscalateIncidentRequest.artifacts",
-            index=5,
-            number=6,
-            type=11,
-            cpp_type=10,
-            label=3,
-            has_default_value=False,
-            default_value=[],
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-    ],
-    extensions=[],
-    nested_types=[],
-    enum_types=[],
-    serialized_options=None,
-    is_extendable=False,
-    syntax="proto3",
-    extension_ranges=[],
-    oneofs=[],
-    serialized_start=2262,
-    serialized_end=2623,
+  name='EscalateIncidentRequest',
+  full_name='google.cloud.irm.v1alpha2.EscalateIncidentRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='incident', full_name='google.cloud.irm.v1alpha2.EscalateIncidentRequest.incident', index=0,
+      number=1, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='update_mask', full_name='google.cloud.irm.v1alpha2.EscalateIncidentRequest.update_mask', index=1,
+      number=2, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='subscriptions', full_name='google.cloud.irm.v1alpha2.EscalateIncidentRequest.subscriptions', index=2,
+      number=3, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='tags', full_name='google.cloud.irm.v1alpha2.EscalateIncidentRequest.tags', index=3,
+      number=4, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='roles', full_name='google.cloud.irm.v1alpha2.EscalateIncidentRequest.roles', index=4,
+      number=5, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='artifacts', full_name='google.cloud.irm.v1alpha2.EscalateIncidentRequest.artifacts', index=5,
+      number=6, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=2262,
+  serialized_end=2623,
 )
 
 
 _ESCALATEINCIDENTRESPONSE = _descriptor.Descriptor(
-    name="EscalateIncidentResponse",
-    full_name="google.cloud.irm.v1alpha2.EscalateIncidentResponse",
-    filename=None,
-    file=DESCRIPTOR,
-    containing_type=None,
-    fields=[
-        _descriptor.FieldDescriptor(
-            name="incident",
-            full_name="google.cloud.irm.v1alpha2.EscalateIncidentResponse.incident",
-            index=0,
-            number=1,
-            type=11,
-            cpp_type=10,
-            label=1,
-            has_default_value=False,
-            default_value=None,
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-        _descriptor.FieldDescriptor(
-            name="subscriptions",
-            full_name="google.cloud.irm.v1alpha2.EscalateIncidentResponse.subscriptions",
-            index=1,
-            number=2,
-            type=11,
-            cpp_type=10,
-            label=3,
-            has_default_value=False,
-            default_value=[],
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-        _descriptor.FieldDescriptor(
-            name="tags",
-            full_name="google.cloud.irm.v1alpha2.EscalateIncidentResponse.tags",
-            index=2,
-            number=3,
-            type=11,
-            cpp_type=10,
-            label=3,
-            has_default_value=False,
-            default_value=[],
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-        _descriptor.FieldDescriptor(
-            name="roles",
-            full_name="google.cloud.irm.v1alpha2.EscalateIncidentResponse.roles",
-            index=3,
-            number=4,
-            type=11,
-            cpp_type=10,
-            label=3,
-            has_default_value=False,
-            default_value=[],
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-        _descriptor.FieldDescriptor(
-            name="artifacts",
-            full_name="google.cloud.irm.v1alpha2.EscalateIncidentResponse.artifacts",
-            index=4,
-            number=5,
-            type=11,
-            cpp_type=10,
-            label=3,
-            has_default_value=False,
-            default_value=[],
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-    ],
-    extensions=[],
-    nested_types=[],
-    enum_types=[],
-    serialized_options=None,
-    is_extendable=False,
-    syntax="proto3",
-    extension_ranges=[],
-    oneofs=[],
-    serialized_start=2626,
-    serialized_end=2929,
+  name='EscalateIncidentResponse',
+  full_name='google.cloud.irm.v1alpha2.EscalateIncidentResponse',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='incident', full_name='google.cloud.irm.v1alpha2.EscalateIncidentResponse.incident', index=0,
+      number=1, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='subscriptions', full_name='google.cloud.irm.v1alpha2.EscalateIncidentResponse.subscriptions', index=1,
+      number=2, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='tags', full_name='google.cloud.irm.v1alpha2.EscalateIncidentResponse.tags', index=2,
+      number=3, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='roles', full_name='google.cloud.irm.v1alpha2.EscalateIncidentResponse.roles', index=3,
+      number=4, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='artifacts', full_name='google.cloud.irm.v1alpha2.EscalateIncidentResponse.artifacts', index=4,
+      number=5, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=2626,
+  serialized_end=2929,
 )
 
 
 _CREATEARTIFACTREQUEST = _descriptor.Descriptor(
-    name="CreateArtifactRequest",
-    full_name="google.cloud.irm.v1alpha2.CreateArtifactRequest",
-    filename=None,
-    file=DESCRIPTOR,
-    containing_type=None,
-    fields=[
-        _descriptor.FieldDescriptor(
-            name="parent",
-            full_name="google.cloud.irm.v1alpha2.CreateArtifactRequest.parent",
-            index=0,
-            number=1,
-            type=9,
-            cpp_type=9,
-            label=1,
-            has_default_value=False,
-            default_value=_b("").decode("utf-8"),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-        _descriptor.FieldDescriptor(
-            name="artifact",
-            full_name="google.cloud.irm.v1alpha2.CreateArtifactRequest.artifact",
-            index=1,
-            number=2,
-            type=11,
-            cpp_type=10,
-            label=1,
-            has_default_value=False,
-            default_value=None,
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-    ],
-    extensions=[],
-    nested_types=[],
-    enum_types=[],
-    serialized_options=None,
-    is_extendable=False,
-    syntax="proto3",
-    extension_ranges=[],
-    oneofs=[],
-    serialized_start=2931,
-    serialized_end=3025,
+  name='CreateArtifactRequest',
+  full_name='google.cloud.irm.v1alpha2.CreateArtifactRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='parent', full_name='google.cloud.irm.v1alpha2.CreateArtifactRequest.parent', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='artifact', full_name='google.cloud.irm.v1alpha2.CreateArtifactRequest.artifact', index=1,
+      number=2, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=2931,
+  serialized_end=3025,
 )
 
 
 _LISTARTIFACTSREQUEST = _descriptor.Descriptor(
-    name="ListArtifactsRequest",
-    full_name="google.cloud.irm.v1alpha2.ListArtifactsRequest",
-    filename=None,
-    file=DESCRIPTOR,
-    containing_type=None,
-    fields=[
-        _descriptor.FieldDescriptor(
-            name="parent",
-            full_name="google.cloud.irm.v1alpha2.ListArtifactsRequest.parent",
-            index=0,
-            number=1,
-            type=9,
-            cpp_type=9,
-            label=1,
-            has_default_value=False,
-            default_value=_b("").decode("utf-8"),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-        _descriptor.FieldDescriptor(
-            name="page_size",
-            full_name="google.cloud.irm.v1alpha2.ListArtifactsRequest.page_size",
-            index=1,
-            number=2,
-            type=5,
-            cpp_type=1,
-            label=1,
-            has_default_value=False,
-            default_value=0,
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-        _descriptor.FieldDescriptor(
-            name="page_token",
-            full_name="google.cloud.irm.v1alpha2.ListArtifactsRequest.page_token",
-            index=2,
-            number=3,
-            type=9,
-            cpp_type=9,
-            label=1,
-            has_default_value=False,
-            default_value=_b("").decode("utf-8"),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-    ],
-    extensions=[],
-    nested_types=[],
-    enum_types=[],
-    serialized_options=None,
-    is_extendable=False,
-    syntax="proto3",
-    extension_ranges=[],
-    oneofs=[],
-    serialized_start=3027,
-    serialized_end=3104,
+  name='ListArtifactsRequest',
+  full_name='google.cloud.irm.v1alpha2.ListArtifactsRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='parent', full_name='google.cloud.irm.v1alpha2.ListArtifactsRequest.parent', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='page_size', full_name='google.cloud.irm.v1alpha2.ListArtifactsRequest.page_size', index=1,
+      number=2, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='page_token', full_name='google.cloud.irm.v1alpha2.ListArtifactsRequest.page_token', index=2,
+      number=3, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=3027,
+  serialized_end=3104,
 )
 
 
 _LISTARTIFACTSRESPONSE = _descriptor.Descriptor(
-    name="ListArtifactsResponse",
-    full_name="google.cloud.irm.v1alpha2.ListArtifactsResponse",
-    filename=None,
-    file=DESCRIPTOR,
-    containing_type=None,
-    fields=[
-        _descriptor.FieldDescriptor(
-            name="artifacts",
-            full_name="google.cloud.irm.v1alpha2.ListArtifactsResponse.artifacts",
-            index=0,
-            number=1,
-            type=11,
-            cpp_type=10,
-            label=3,
-            has_default_value=False,
-            default_value=[],
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-        _descriptor.FieldDescriptor(
-            name="next_page_token",
-            full_name="google.cloud.irm.v1alpha2.ListArtifactsResponse.next_page_token",
-            index=1,
-            number=2,
-            type=9,
-            cpp_type=9,
-            label=1,
-            has_default_value=False,
-            default_value=_b("").decode("utf-8"),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-    ],
-    extensions=[],
-    nested_types=[],
-    enum_types=[],
-    serialized_options=None,
-    is_extendable=False,
-    syntax="proto3",
-    extension_ranges=[],
-    oneofs=[],
-    serialized_start=3106,
-    serialized_end=3210,
+  name='ListArtifactsResponse',
+  full_name='google.cloud.irm.v1alpha2.ListArtifactsResponse',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='artifacts', full_name='google.cloud.irm.v1alpha2.ListArtifactsResponse.artifacts', index=0,
+      number=1, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='next_page_token', full_name='google.cloud.irm.v1alpha2.ListArtifactsResponse.next_page_token', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=3106,
+  serialized_end=3210,
 )
 
 
 _UPDATEARTIFACTREQUEST = _descriptor.Descriptor(
-    name="UpdateArtifactRequest",
-    full_name="google.cloud.irm.v1alpha2.UpdateArtifactRequest",
-    filename=None,
-    file=DESCRIPTOR,
-    containing_type=None,
-    fields=[
-        _descriptor.FieldDescriptor(
-            name="artifact",
-            full_name="google.cloud.irm.v1alpha2.UpdateArtifactRequest.artifact",
-            index=0,
-            number=1,
-            type=11,
-            cpp_type=10,
-            label=1,
-            has_default_value=False,
-            default_value=None,
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-        _descriptor.FieldDescriptor(
-            name="update_mask",
-            full_name="google.cloud.irm.v1alpha2.UpdateArtifactRequest.update_mask",
-            index=1,
-            number=2,
-            type=11,
-            cpp_type=10,
-            label=1,
-            has_default_value=False,
-            default_value=None,
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-    ],
-    extensions=[],
-    nested_types=[],
-    enum_types=[],
-    serialized_options=None,
-    is_extendable=False,
-    syntax="proto3",
-    extension_ranges=[],
-    oneofs=[],
-    serialized_start=3212,
-    serialized_end=3339,
+  name='UpdateArtifactRequest',
+  full_name='google.cloud.irm.v1alpha2.UpdateArtifactRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='artifact', full_name='google.cloud.irm.v1alpha2.UpdateArtifactRequest.artifact', index=0,
+      number=1, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='update_mask', full_name='google.cloud.irm.v1alpha2.UpdateArtifactRequest.update_mask', index=1,
+      number=2, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=3212,
+  serialized_end=3339,
 )
 
 
 _DELETEARTIFACTREQUEST = _descriptor.Descriptor(
-    name="DeleteArtifactRequest",
-    full_name="google.cloud.irm.v1alpha2.DeleteArtifactRequest",
-    filename=None,
-    file=DESCRIPTOR,
-    containing_type=None,
-    fields=[
-        _descriptor.FieldDescriptor(
-            name="name",
-            full_name="google.cloud.irm.v1alpha2.DeleteArtifactRequest.name",
-            index=0,
-            number=1,
-            type=9,
-            cpp_type=9,
-            label=1,
-            has_default_value=False,
-            default_value=_b("").decode("utf-8"),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        )
-    ],
-    extensions=[],
-    nested_types=[],
-    enum_types=[],
-    serialized_options=None,
-    is_extendable=False,
-    syntax="proto3",
-    extension_ranges=[],
-    oneofs=[],
-    serialized_start=3341,
-    serialized_end=3378,
+  name='DeleteArtifactRequest',
+  full_name='google.cloud.irm.v1alpha2.DeleteArtifactRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='name', full_name='google.cloud.irm.v1alpha2.DeleteArtifactRequest.name', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=3341,
+  serialized_end=3378,
 )
 
 
 _GETSHIFTHANDOFFPRESETSREQUEST = _descriptor.Descriptor(
-    name="GetShiftHandoffPresetsRequest",
-    full_name="google.cloud.irm.v1alpha2.GetShiftHandoffPresetsRequest",
-    filename=None,
-    file=DESCRIPTOR,
-    containing_type=None,
-    fields=[
-        _descriptor.FieldDescriptor(
-            name="parent",
-            full_name="google.cloud.irm.v1alpha2.GetShiftHandoffPresetsRequest.parent",
-            index=0,
-            number=1,
-            type=9,
-            cpp_type=9,
-            label=1,
-            has_default_value=False,
-            default_value=_b("").decode("utf-8"),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        )
-    ],
-    extensions=[],
-    nested_types=[],
-    enum_types=[],
-    serialized_options=None,
-    is_extendable=False,
-    syntax="proto3",
-    extension_ranges=[],
-    oneofs=[],
-    serialized_start=3380,
-    serialized_end=3427,
+  name='GetShiftHandoffPresetsRequest',
+  full_name='google.cloud.irm.v1alpha2.GetShiftHandoffPresetsRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='parent', full_name='google.cloud.irm.v1alpha2.GetShiftHandoffPresetsRequest.parent', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=3380,
+  serialized_end=3427,
 )
 
 
 _SHIFTHANDOFFPRESETS = _descriptor.Descriptor(
-    name="ShiftHandoffPresets",
-    full_name="google.cloud.irm.v1alpha2.ShiftHandoffPresets",
-    filename=None,
-    file=DESCRIPTOR,
-    containing_type=None,
-    fields=[
-        _descriptor.FieldDescriptor(
-            name="recipients",
-            full_name="google.cloud.irm.v1alpha2.ShiftHandoffPresets.recipients",
-            index=0,
-            number=1,
-            type=9,
-            cpp_type=9,
-            label=3,
-            has_default_value=False,
-            default_value=[],
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-        _descriptor.FieldDescriptor(
-            name="cc",
-            full_name="google.cloud.irm.v1alpha2.ShiftHandoffPresets.cc",
-            index=1,
-            number=2,
-            type=9,
-            cpp_type=9,
-            label=3,
-            has_default_value=False,
-            default_value=[],
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-        _descriptor.FieldDescriptor(
-            name="subject",
-            full_name="google.cloud.irm.v1alpha2.ShiftHandoffPresets.subject",
-            index=2,
-            number=3,
-            type=9,
-            cpp_type=9,
-            label=1,
-            has_default_value=False,
-            default_value=_b("").decode("utf-8"),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-    ],
-    extensions=[],
-    nested_types=[],
-    enum_types=[],
-    serialized_options=None,
-    is_extendable=False,
-    syntax="proto3",
-    extension_ranges=[],
-    oneofs=[],
-    serialized_start=3429,
-    serialized_end=3499,
+  name='ShiftHandoffPresets',
+  full_name='google.cloud.irm.v1alpha2.ShiftHandoffPresets',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='recipients', full_name='google.cloud.irm.v1alpha2.ShiftHandoffPresets.recipients', index=0,
+      number=1, type=9, cpp_type=9, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='cc', full_name='google.cloud.irm.v1alpha2.ShiftHandoffPresets.cc', index=1,
+      number=2, type=9, cpp_type=9, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='subject', full_name='google.cloud.irm.v1alpha2.ShiftHandoffPresets.subject', index=2,
+      number=3, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=3429,
+  serialized_end=3499,
 )
 
 
 _SENDSHIFTHANDOFFREQUEST_INCIDENT = _descriptor.Descriptor(
-    name="Incident",
-    full_name="google.cloud.irm.v1alpha2.SendShiftHandoffRequest.Incident",
-    filename=None,
-    file=DESCRIPTOR,
-    containing_type=None,
-    fields=[
-        _descriptor.FieldDescriptor(
-            name="name",
-            full_name="google.cloud.irm.v1alpha2.SendShiftHandoffRequest.Incident.name",
-            index=0,
-            number=1,
-            type=9,
-            cpp_type=9,
-            label=1,
-            has_default_value=False,
-            default_value=_b("").decode("utf-8"),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        )
-    ],
-    extensions=[],
-    nested_types=[],
-    enum_types=[],
-    serialized_options=None,
-    is_extendable=False,
-    syntax="proto3",
-    extension_ranges=[],
-    oneofs=[],
-    serialized_start=3747,
-    serialized_end=3771,
+  name='Incident',
+  full_name='google.cloud.irm.v1alpha2.SendShiftHandoffRequest.Incident',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='name', full_name='google.cloud.irm.v1alpha2.SendShiftHandoffRequest.Incident.name', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=3747,
+  serialized_end=3771,
 )
 
 _SENDSHIFTHANDOFFREQUEST = _descriptor.Descriptor(
-    name="SendShiftHandoffRequest",
-    full_name="google.cloud.irm.v1alpha2.SendShiftHandoffRequest",
-    filename=None,
-    file=DESCRIPTOR,
-    containing_type=None,
-    fields=[
-        _descriptor.FieldDescriptor(
-            name="parent",
-            full_name="google.cloud.irm.v1alpha2.SendShiftHandoffRequest.parent",
-            index=0,
-            number=1,
-            type=9,
-            cpp_type=9,
-            label=1,
-            has_default_value=False,
-            default_value=_b("").decode("utf-8"),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-        _descriptor.FieldDescriptor(
-            name="recipients",
-            full_name="google.cloud.irm.v1alpha2.SendShiftHandoffRequest.recipients",
-            index=1,
-            number=2,
-            type=9,
-            cpp_type=9,
-            label=3,
-            has_default_value=False,
-            default_value=[],
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-        _descriptor.FieldDescriptor(
-            name="cc",
-            full_name="google.cloud.irm.v1alpha2.SendShiftHandoffRequest.cc",
-            index=2,
-            number=3,
-            type=9,
-            cpp_type=9,
-            label=3,
-            has_default_value=False,
-            default_value=[],
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-        _descriptor.FieldDescriptor(
-            name="subject",
-            full_name="google.cloud.irm.v1alpha2.SendShiftHandoffRequest.subject",
-            index=3,
-            number=4,
-            type=9,
-            cpp_type=9,
-            label=1,
-            has_default_value=False,
-            default_value=_b("").decode("utf-8"),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-        _descriptor.FieldDescriptor(
-            name="notes_content_type",
-            full_name="google.cloud.irm.v1alpha2.SendShiftHandoffRequest.notes_content_type",
-            index=4,
-            number=5,
-            type=9,
-            cpp_type=9,
-            label=1,
-            has_default_value=False,
-            default_value=_b("").decode("utf-8"),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-        _descriptor.FieldDescriptor(
-            name="notes_content",
-            full_name="google.cloud.irm.v1alpha2.SendShiftHandoffRequest.notes_content",
-            index=5,
-            number=6,
-            type=9,
-            cpp_type=9,
-            label=1,
-            has_default_value=False,
-            default_value=_b("").decode("utf-8"),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-        _descriptor.FieldDescriptor(
-            name="incidents",
-            full_name="google.cloud.irm.v1alpha2.SendShiftHandoffRequest.incidents",
-            index=6,
-            number=7,
-            type=11,
-            cpp_type=10,
-            label=3,
-            has_default_value=False,
-            default_value=[],
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-        _descriptor.FieldDescriptor(
-            name="preview_only",
-            full_name="google.cloud.irm.v1alpha2.SendShiftHandoffRequest.preview_only",
-            index=7,
-            number=8,
-            type=8,
-            cpp_type=7,
-            label=1,
-            has_default_value=False,
-            default_value=False,
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-    ],
-    extensions=[],
-    nested_types=[_SENDSHIFTHANDOFFREQUEST_INCIDENT],
-    enum_types=[],
-    serialized_options=None,
-    is_extendable=False,
-    syntax="proto3",
-    extension_ranges=[],
-    oneofs=[],
-    serialized_start=3502,
-    serialized_end=3771,
+  name='SendShiftHandoffRequest',
+  full_name='google.cloud.irm.v1alpha2.SendShiftHandoffRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='parent', full_name='google.cloud.irm.v1alpha2.SendShiftHandoffRequest.parent', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='recipients', full_name='google.cloud.irm.v1alpha2.SendShiftHandoffRequest.recipients', index=1,
+      number=2, type=9, cpp_type=9, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='cc', full_name='google.cloud.irm.v1alpha2.SendShiftHandoffRequest.cc', index=2,
+      number=3, type=9, cpp_type=9, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='subject', full_name='google.cloud.irm.v1alpha2.SendShiftHandoffRequest.subject', index=3,
+      number=4, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='notes_content_type', full_name='google.cloud.irm.v1alpha2.SendShiftHandoffRequest.notes_content_type', index=4,
+      number=5, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='notes_content', full_name='google.cloud.irm.v1alpha2.SendShiftHandoffRequest.notes_content', index=5,
+      number=6, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='incidents', full_name='google.cloud.irm.v1alpha2.SendShiftHandoffRequest.incidents', index=6,
+      number=7, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='preview_only', full_name='google.cloud.irm.v1alpha2.SendShiftHandoffRequest.preview_only', index=7,
+      number=8, type=8, cpp_type=7, label=1,
+      has_default_value=False, default_value=False,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[_SENDSHIFTHANDOFFREQUEST_INCIDENT, ],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=3502,
+  serialized_end=3771,
 )
 
 
 _SENDSHIFTHANDOFFRESPONSE = _descriptor.Descriptor(
-    name="SendShiftHandoffResponse",
-    full_name="google.cloud.irm.v1alpha2.SendShiftHandoffResponse",
-    filename=None,
-    file=DESCRIPTOR,
-    containing_type=None,
-    fields=[
-        _descriptor.FieldDescriptor(
-            name="content_type",
-            full_name="google.cloud.irm.v1alpha2.SendShiftHandoffResponse.content_type",
-            index=0,
-            number=1,
-            type=9,
-            cpp_type=9,
-            label=1,
-            has_default_value=False,
-            default_value=_b("").decode("utf-8"),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-        _descriptor.FieldDescriptor(
-            name="content",
-            full_name="google.cloud.irm.v1alpha2.SendShiftHandoffResponse.content",
-            index=1,
-            number=2,
-            type=9,
-            cpp_type=9,
-            label=1,
-            has_default_value=False,
-            default_value=_b("").decode("utf-8"),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-    ],
-    extensions=[],
-    nested_types=[],
-    enum_types=[],
-    serialized_options=None,
-    is_extendable=False,
-    syntax="proto3",
-    extension_ranges=[],
-    oneofs=[],
-    serialized_start=3773,
-    serialized_end=3838,
+  name='SendShiftHandoffResponse',
+  full_name='google.cloud.irm.v1alpha2.SendShiftHandoffResponse',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='content_type', full_name='google.cloud.irm.v1alpha2.SendShiftHandoffResponse.content_type', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='content', full_name='google.cloud.irm.v1alpha2.SendShiftHandoffResponse.content', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=3773,
+  serialized_end=3838,
 )
 
 
 _CREATESUBSCRIPTIONREQUEST = _descriptor.Descriptor(
-    name="CreateSubscriptionRequest",
-    full_name="google.cloud.irm.v1alpha2.CreateSubscriptionRequest",
-    filename=None,
-    file=DESCRIPTOR,
-    containing_type=None,
-    fields=[
-        _descriptor.FieldDescriptor(
-            name="parent",
-            full_name="google.cloud.irm.v1alpha2.CreateSubscriptionRequest.parent",
-            index=0,
-            number=1,
-            type=9,
-            cpp_type=9,
-            label=1,
-            has_default_value=False,
-            default_value=_b("").decode("utf-8"),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-        _descriptor.FieldDescriptor(
-            name="subscription",
-            full_name="google.cloud.irm.v1alpha2.CreateSubscriptionRequest.subscription",
-            index=1,
-            number=2,
-            type=11,
-            cpp_type=10,
-            label=1,
-            has_default_value=False,
-            default_value=None,
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-    ],
-    extensions=[],
-    nested_types=[],
-    enum_types=[],
-    serialized_options=None,
-    is_extendable=False,
-    syntax="proto3",
-    extension_ranges=[],
-    oneofs=[],
-    serialized_start=3840,
-    serialized_end=3946,
+  name='CreateSubscriptionRequest',
+  full_name='google.cloud.irm.v1alpha2.CreateSubscriptionRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='parent', full_name='google.cloud.irm.v1alpha2.CreateSubscriptionRequest.parent', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='subscription', full_name='google.cloud.irm.v1alpha2.CreateSubscriptionRequest.subscription', index=1,
+      number=2, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=3840,
+  serialized_end=3946,
 )
 
 
 _LISTSUBSCRIPTIONSREQUEST = _descriptor.Descriptor(
-    name="ListSubscriptionsRequest",
-    full_name="google.cloud.irm.v1alpha2.ListSubscriptionsRequest",
-    filename=None,
-    file=DESCRIPTOR,
-    containing_type=None,
-    fields=[
-        _descriptor.FieldDescriptor(
-            name="parent",
-            full_name="google.cloud.irm.v1alpha2.ListSubscriptionsRequest.parent",
-            index=0,
-            number=1,
-            type=9,
-            cpp_type=9,
-            label=1,
-            has_default_value=False,
-            default_value=_b("").decode("utf-8"),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-        _descriptor.FieldDescriptor(
-            name="page_size",
-            full_name="google.cloud.irm.v1alpha2.ListSubscriptionsRequest.page_size",
-            index=1,
-            number=2,
-            type=5,
-            cpp_type=1,
-            label=1,
-            has_default_value=False,
-            default_value=0,
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-        _descriptor.FieldDescriptor(
-            name="page_token",
-            full_name="google.cloud.irm.v1alpha2.ListSubscriptionsRequest.page_token",
-            index=2,
-            number=3,
-            type=9,
-            cpp_type=9,
-            label=1,
-            has_default_value=False,
-            default_value=_b("").decode("utf-8"),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-    ],
-    extensions=[],
-    nested_types=[],
-    enum_types=[],
-    serialized_options=None,
-    is_extendable=False,
-    syntax="proto3",
-    extension_ranges=[],
-    oneofs=[],
-    serialized_start=3948,
-    serialized_end=4029,
+  name='ListSubscriptionsRequest',
+  full_name='google.cloud.irm.v1alpha2.ListSubscriptionsRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='parent', full_name='google.cloud.irm.v1alpha2.ListSubscriptionsRequest.parent', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='page_size', full_name='google.cloud.irm.v1alpha2.ListSubscriptionsRequest.page_size', index=1,
+      number=2, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='page_token', full_name='google.cloud.irm.v1alpha2.ListSubscriptionsRequest.page_token', index=2,
+      number=3, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=3948,
+  serialized_end=4029,
 )
 
 
 _LISTSUBSCRIPTIONSRESPONSE = _descriptor.Descriptor(
-    name="ListSubscriptionsResponse",
-    full_name="google.cloud.irm.v1alpha2.ListSubscriptionsResponse",
-    filename=None,
-    file=DESCRIPTOR,
-    containing_type=None,
-    fields=[
-        _descriptor.FieldDescriptor(
-            name="subscriptions",
-            full_name="google.cloud.irm.v1alpha2.ListSubscriptionsResponse.subscriptions",
-            index=0,
-            number=1,
-            type=11,
-            cpp_type=10,
-            label=3,
-            has_default_value=False,
-            default_value=[],
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-        _descriptor.FieldDescriptor(
-            name="next_page_token",
-            full_name="google.cloud.irm.v1alpha2.ListSubscriptionsResponse.next_page_token",
-            index=1,
-            number=2,
-            type=9,
-            cpp_type=9,
-            label=1,
-            has_default_value=False,
-            default_value=_b("").decode("utf-8"),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-    ],
-    extensions=[],
-    nested_types=[],
-    enum_types=[],
-    serialized_options=None,
-    is_extendable=False,
-    syntax="proto3",
-    extension_ranges=[],
-    oneofs=[],
-    serialized_start=4031,
-    serialized_end=4147,
+  name='ListSubscriptionsResponse',
+  full_name='google.cloud.irm.v1alpha2.ListSubscriptionsResponse',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='subscriptions', full_name='google.cloud.irm.v1alpha2.ListSubscriptionsResponse.subscriptions', index=0,
+      number=1, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='next_page_token', full_name='google.cloud.irm.v1alpha2.ListSubscriptionsResponse.next_page_token', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=4031,
+  serialized_end=4147,
 )
 
 
 _DELETESUBSCRIPTIONREQUEST = _descriptor.Descriptor(
-    name="DeleteSubscriptionRequest",
-    full_name="google.cloud.irm.v1alpha2.DeleteSubscriptionRequest",
-    filename=None,
-    file=DESCRIPTOR,
-    containing_type=None,
-    fields=[
-        _descriptor.FieldDescriptor(
-            name="name",
-            full_name="google.cloud.irm.v1alpha2.DeleteSubscriptionRequest.name",
-            index=0,
-            number=1,
-            type=9,
-            cpp_type=9,
-            label=1,
-            has_default_value=False,
-            default_value=_b("").decode("utf-8"),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        )
-    ],
-    extensions=[],
-    nested_types=[],
-    enum_types=[],
-    serialized_options=None,
-    is_extendable=False,
-    syntax="proto3",
-    extension_ranges=[],
-    oneofs=[],
-    serialized_start=4149,
-    serialized_end=4190,
+  name='DeleteSubscriptionRequest',
+  full_name='google.cloud.irm.v1alpha2.DeleteSubscriptionRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='name', full_name='google.cloud.irm.v1alpha2.DeleteSubscriptionRequest.name', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=4149,
+  serialized_end=4190,
 )
 
 
 _CREATEINCIDENTROLEASSIGNMENTREQUEST = _descriptor.Descriptor(
-    name="CreateIncidentRoleAssignmentRequest",
-    full_name="google.cloud.irm.v1alpha2.CreateIncidentRoleAssignmentRequest",
-    filename=None,
-    file=DESCRIPTOR,
-    containing_type=None,
-    fields=[
-        _descriptor.FieldDescriptor(
-            name="parent",
-            full_name="google.cloud.irm.v1alpha2.CreateIncidentRoleAssignmentRequest.parent",
-            index=0,
-            number=1,
-            type=9,
-            cpp_type=9,
-            label=1,
-            has_default_value=False,
-            default_value=_b("").decode("utf-8"),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-        _descriptor.FieldDescriptor(
-            name="incident_role_assignment",
-            full_name="google.cloud.irm.v1alpha2.CreateIncidentRoleAssignmentRequest.incident_role_assignment",
-            index=1,
-            number=2,
-            type=11,
-            cpp_type=10,
-            label=1,
-            has_default_value=False,
-            default_value=None,
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-    ],
-    extensions=[],
-    nested_types=[],
-    enum_types=[],
-    serialized_options=None,
-    is_extendable=False,
-    syntax="proto3",
-    extension_ranges=[],
-    oneofs=[],
-    serialized_start=4193,
-    serialized_end=4331,
+  name='CreateIncidentRoleAssignmentRequest',
+  full_name='google.cloud.irm.v1alpha2.CreateIncidentRoleAssignmentRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='parent', full_name='google.cloud.irm.v1alpha2.CreateIncidentRoleAssignmentRequest.parent', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='incident_role_assignment', full_name='google.cloud.irm.v1alpha2.CreateIncidentRoleAssignmentRequest.incident_role_assignment', index=1,
+      number=2, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=4193,
+  serialized_end=4331,
 )
 
 
 _DELETEINCIDENTROLEASSIGNMENTREQUEST = _descriptor.Descriptor(
-    name="DeleteIncidentRoleAssignmentRequest",
-    full_name="google.cloud.irm.v1alpha2.DeleteIncidentRoleAssignmentRequest",
-    filename=None,
-    file=DESCRIPTOR,
-    containing_type=None,
-    fields=[
-        _descriptor.FieldDescriptor(
-            name="name",
-            full_name="google.cloud.irm.v1alpha2.DeleteIncidentRoleAssignmentRequest.name",
-            index=0,
-            number=1,
-            type=9,
-            cpp_type=9,
-            label=1,
-            has_default_value=False,
-            default_value=_b("").decode("utf-8"),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        )
-    ],
-    extensions=[],
-    nested_types=[],
-    enum_types=[],
-    serialized_options=None,
-    is_extendable=False,
-    syntax="proto3",
-    extension_ranges=[],
-    oneofs=[],
-    serialized_start=4333,
-    serialized_end=4384,
+  name='DeleteIncidentRoleAssignmentRequest',
+  full_name='google.cloud.irm.v1alpha2.DeleteIncidentRoleAssignmentRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='name', full_name='google.cloud.irm.v1alpha2.DeleteIncidentRoleAssignmentRequest.name', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=4333,
+  serialized_end=4384,
 )
 
 
 _LISTINCIDENTROLEASSIGNMENTSREQUEST = _descriptor.Descriptor(
-    name="ListIncidentRoleAssignmentsRequest",
-    full_name="google.cloud.irm.v1alpha2.ListIncidentRoleAssignmentsRequest",
-    filename=None,
-    file=DESCRIPTOR,
-    containing_type=None,
-    fields=[
-        _descriptor.FieldDescriptor(
-            name="parent",
-            full_name="google.cloud.irm.v1alpha2.ListIncidentRoleAssignmentsRequest.parent",
-            index=0,
-            number=1,
-            type=9,
-            cpp_type=9,
-            label=1,
-            has_default_value=False,
-            default_value=_b("").decode("utf-8"),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-        _descriptor.FieldDescriptor(
-            name="page_size",
-            full_name="google.cloud.irm.v1alpha2.ListIncidentRoleAssignmentsRequest.page_size",
-            index=1,
-            number=2,
-            type=5,
-            cpp_type=1,
-            label=1,
-            has_default_value=False,
-            default_value=0,
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-        _descriptor.FieldDescriptor(
-            name="page_token",
-            full_name="google.cloud.irm.v1alpha2.ListIncidentRoleAssignmentsRequest.page_token",
-            index=2,
-            number=3,
-            type=9,
-            cpp_type=9,
-            label=1,
-            has_default_value=False,
-            default_value=_b("").decode("utf-8"),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-    ],
-    extensions=[],
-    nested_types=[],
-    enum_types=[],
-    serialized_options=None,
-    is_extendable=False,
-    syntax="proto3",
-    extension_ranges=[],
-    oneofs=[],
-    serialized_start=4386,
-    serialized_end=4477,
+  name='ListIncidentRoleAssignmentsRequest',
+  full_name='google.cloud.irm.v1alpha2.ListIncidentRoleAssignmentsRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='parent', full_name='google.cloud.irm.v1alpha2.ListIncidentRoleAssignmentsRequest.parent', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='page_size', full_name='google.cloud.irm.v1alpha2.ListIncidentRoleAssignmentsRequest.page_size', index=1,
+      number=2, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='page_token', full_name='google.cloud.irm.v1alpha2.ListIncidentRoleAssignmentsRequest.page_token', index=2,
+      number=3, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=4386,
+  serialized_end=4477,
 )
 
 
 _LISTINCIDENTROLEASSIGNMENTSRESPONSE = _descriptor.Descriptor(
-    name="ListIncidentRoleAssignmentsResponse",
-    full_name="google.cloud.irm.v1alpha2.ListIncidentRoleAssignmentsResponse",
-    filename=None,
-    file=DESCRIPTOR,
-    containing_type=None,
-    fields=[
-        _descriptor.FieldDescriptor(
-            name="incident_role_assignments",
-            full_name="google.cloud.irm.v1alpha2.ListIncidentRoleAssignmentsResponse.incident_role_assignments",
-            index=0,
-            number=1,
-            type=11,
-            cpp_type=10,
-            label=3,
-            has_default_value=False,
-            default_value=[],
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-        _descriptor.FieldDescriptor(
-            name="next_page_token",
-            full_name="google.cloud.irm.v1alpha2.ListIncidentRoleAssignmentsResponse.next_page_token",
-            index=1,
-            number=2,
-            type=9,
-            cpp_type=9,
-            label=1,
-            has_default_value=False,
-            default_value=_b("").decode("utf-8"),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-    ],
-    extensions=[],
-    nested_types=[],
-    enum_types=[],
-    serialized_options=None,
-    is_extendable=False,
-    syntax="proto3",
-    extension_ranges=[],
-    oneofs=[],
-    serialized_start=4480,
-    serialized_end=4628,
+  name='ListIncidentRoleAssignmentsResponse',
+  full_name='google.cloud.irm.v1alpha2.ListIncidentRoleAssignmentsResponse',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='incident_role_assignments', full_name='google.cloud.irm.v1alpha2.ListIncidentRoleAssignmentsResponse.incident_role_assignments', index=0,
+      number=1, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='next_page_token', full_name='google.cloud.irm.v1alpha2.ListIncidentRoleAssignmentsResponse.next_page_token', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=4480,
+  serialized_end=4628,
 )
 
 
 _REQUESTINCIDENTROLEHANDOVERREQUEST = _descriptor.Descriptor(
-    name="RequestIncidentRoleHandoverRequest",
-    full_name="google.cloud.irm.v1alpha2.RequestIncidentRoleHandoverRequest",
-    filename=None,
-    file=DESCRIPTOR,
-    containing_type=None,
-    fields=[
-        _descriptor.FieldDescriptor(
-            name="name",
-            full_name="google.cloud.irm.v1alpha2.RequestIncidentRoleHandoverRequest.name",
-            index=0,
-            number=1,
-            type=9,
-            cpp_type=9,
-            label=1,
-            has_default_value=False,
-            default_value=_b("").decode("utf-8"),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-        _descriptor.FieldDescriptor(
-            name="new_assignee",
-            full_name="google.cloud.irm.v1alpha2.RequestIncidentRoleHandoverRequest.new_assignee",
-            index=1,
-            number=2,
-            type=11,
-            cpp_type=10,
-            label=1,
-            has_default_value=False,
-            default_value=None,
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-    ],
-    extensions=[],
-    nested_types=[],
-    enum_types=[],
-    serialized_options=None,
-    is_extendable=False,
-    syntax="proto3",
-    extension_ranges=[],
-    oneofs=[],
-    serialized_start=4630,
-    serialized_end=4735,
+  name='RequestIncidentRoleHandoverRequest',
+  full_name='google.cloud.irm.v1alpha2.RequestIncidentRoleHandoverRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='name', full_name='google.cloud.irm.v1alpha2.RequestIncidentRoleHandoverRequest.name', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='new_assignee', full_name='google.cloud.irm.v1alpha2.RequestIncidentRoleHandoverRequest.new_assignee', index=1,
+      number=2, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=4630,
+  serialized_end=4735,
 )
 
 
 _CONFIRMINCIDENTROLEHANDOVERREQUEST = _descriptor.Descriptor(
-    name="ConfirmIncidentRoleHandoverRequest",
-    full_name="google.cloud.irm.v1alpha2.ConfirmIncidentRoleHandoverRequest",
-    filename=None,
-    file=DESCRIPTOR,
-    containing_type=None,
-    fields=[
-        _descriptor.FieldDescriptor(
-            name="name",
-            full_name="google.cloud.irm.v1alpha2.ConfirmIncidentRoleHandoverRequest.name",
-            index=0,
-            number=1,
-            type=9,
-            cpp_type=9,
-            label=1,
-            has_default_value=False,
-            default_value=_b("").decode("utf-8"),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-        _descriptor.FieldDescriptor(
-            name="new_assignee",
-            full_name="google.cloud.irm.v1alpha2.ConfirmIncidentRoleHandoverRequest.new_assignee",
-            index=1,
-            number=2,
-            type=11,
-            cpp_type=10,
-            label=1,
-            has_default_value=False,
-            default_value=None,
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-    ],
-    extensions=[],
-    nested_types=[],
-    enum_types=[],
-    serialized_options=None,
-    is_extendable=False,
-    syntax="proto3",
-    extension_ranges=[],
-    oneofs=[],
-    serialized_start=4737,
-    serialized_end=4842,
+  name='ConfirmIncidentRoleHandoverRequest',
+  full_name='google.cloud.irm.v1alpha2.ConfirmIncidentRoleHandoverRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='name', full_name='google.cloud.irm.v1alpha2.ConfirmIncidentRoleHandoverRequest.name', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='new_assignee', full_name='google.cloud.irm.v1alpha2.ConfirmIncidentRoleHandoverRequest.new_assignee', index=1,
+      number=2, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=4737,
+  serialized_end=4842,
 )
 
 
 _FORCEINCIDENTROLEHANDOVERREQUEST = _descriptor.Descriptor(
-    name="ForceIncidentRoleHandoverRequest",
-    full_name="google.cloud.irm.v1alpha2.ForceIncidentRoleHandoverRequest",
-    filename=None,
-    file=DESCRIPTOR,
-    containing_type=None,
-    fields=[
-        _descriptor.FieldDescriptor(
-            name="name",
-            full_name="google.cloud.irm.v1alpha2.ForceIncidentRoleHandoverRequest.name",
-            index=0,
-            number=1,
-            type=9,
-            cpp_type=9,
-            label=1,
-            has_default_value=False,
-            default_value=_b("").decode("utf-8"),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-        _descriptor.FieldDescriptor(
-            name="new_assignee",
-            full_name="google.cloud.irm.v1alpha2.ForceIncidentRoleHandoverRequest.new_assignee",
-            index=1,
-            number=2,
-            type=11,
-            cpp_type=10,
-            label=1,
-            has_default_value=False,
-            default_value=None,
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-    ],
-    extensions=[],
-    nested_types=[],
-    enum_types=[],
-    serialized_options=None,
-    is_extendable=False,
-    syntax="proto3",
-    extension_ranges=[],
-    oneofs=[],
-    serialized_start=4844,
-    serialized_end=4947,
+  name='ForceIncidentRoleHandoverRequest',
+  full_name='google.cloud.irm.v1alpha2.ForceIncidentRoleHandoverRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='name', full_name='google.cloud.irm.v1alpha2.ForceIncidentRoleHandoverRequest.name', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='new_assignee', full_name='google.cloud.irm.v1alpha2.ForceIncidentRoleHandoverRequest.new_assignee', index=1,
+      number=2, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=4844,
+  serialized_end=4947,
 )
 
 
 _CANCELINCIDENTROLEHANDOVERREQUEST = _descriptor.Descriptor(
-    name="CancelIncidentRoleHandoverRequest",
-    full_name="google.cloud.irm.v1alpha2.CancelIncidentRoleHandoverRequest",
-    filename=None,
-    file=DESCRIPTOR,
-    containing_type=None,
-    fields=[
-        _descriptor.FieldDescriptor(
-            name="name",
-            full_name="google.cloud.irm.v1alpha2.CancelIncidentRoleHandoverRequest.name",
-            index=0,
-            number=1,
-            type=9,
-            cpp_type=9,
-            label=1,
-            has_default_value=False,
-            default_value=_b("").decode("utf-8"),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-        _descriptor.FieldDescriptor(
-            name="new_assignee",
-            full_name="google.cloud.irm.v1alpha2.CancelIncidentRoleHandoverRequest.new_assignee",
-            index=1,
-            number=2,
-            type=11,
-            cpp_type=10,
-            label=1,
-            has_default_value=False,
-            default_value=None,
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-    ],
-    extensions=[],
-    nested_types=[],
-    enum_types=[],
-    serialized_options=None,
-    is_extendable=False,
-    syntax="proto3",
-    extension_ranges=[],
-    oneofs=[],
-    serialized_start=4949,
-    serialized_end=5053,
+  name='CancelIncidentRoleHandoverRequest',
+  full_name='google.cloud.irm.v1alpha2.CancelIncidentRoleHandoverRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='name', full_name='google.cloud.irm.v1alpha2.CancelIncidentRoleHandoverRequest.name', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='new_assignee', full_name='google.cloud.irm.v1alpha2.CancelIncidentRoleHandoverRequest.new_assignee', index=1,
+      number=2, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=4949,
+  serialized_end=5053,
 )
 
-_CREATEINCIDENTREQUEST.fields_by_name[
-    "incident"
-].message_type = (
-    google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2._INCIDENT
-)
-_UPDATEINCIDENTREQUEST.fields_by_name[
-    "incident"
-].message_type = (
-    google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2._INCIDENT
-)
-_UPDATEINCIDENTREQUEST.fields_by_name[
-    "update_mask"
-].message_type = google_dot_protobuf_dot_field__mask__pb2._FIELDMASK
-_SEARCHSIMILARINCIDENTSRESPONSE_RESULT.fields_by_name[
-    "incident"
-].message_type = (
-    google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2._INCIDENT
-)
+_CREATEINCIDENTREQUEST.fields_by_name['incident'].message_type = google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2._INCIDENT
+_UPDATEINCIDENTREQUEST.fields_by_name['incident'].message_type = google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2._INCIDENT
+_UPDATEINCIDENTREQUEST.fields_by_name['update_mask'].message_type = google_dot_protobuf_dot_field__mask__pb2._FIELDMASK
+_SEARCHSIMILARINCIDENTSRESPONSE_RESULT.fields_by_name['incident'].message_type = google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2._INCIDENT
 _SEARCHSIMILARINCIDENTSRESPONSE_RESULT.containing_type = _SEARCHSIMILARINCIDENTSRESPONSE
-_SEARCHSIMILARINCIDENTSRESPONSE.fields_by_name[
-    "results"
-].message_type = _SEARCHSIMILARINCIDENTSRESPONSE_RESULT
-_CREATEANNOTATIONREQUEST.fields_by_name[
-    "annotation"
-].message_type = (
-    google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2._ANNOTATION
-)
-_LISTANNOTATIONSRESPONSE.fields_by_name[
-    "annotations"
-].message_type = (
-    google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2._ANNOTATION
-)
-_CREATETAGREQUEST.fields_by_name[
-    "tag"
-].message_type = google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2._TAG
-_LISTTAGSRESPONSE.fields_by_name[
-    "tags"
-].message_type = google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2._TAG
-_UPDATEANNOTATIONREQUEST.fields_by_name[
-    "annotation"
-].message_type = (
-    google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2._ANNOTATION
-)
-_UPDATEANNOTATIONREQUEST.fields_by_name[
-    "update_mask"
-].message_type = google_dot_protobuf_dot_field__mask__pb2._FIELDMASK
-_CREATESIGNALREQUEST.fields_by_name[
-    "signal"
-].message_type = google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2._SIGNAL
-_LISTSIGNALSRESPONSE.fields_by_name[
-    "signals"
-].message_type = google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2._SIGNAL
-_UPDATESIGNALREQUEST.fields_by_name[
-    "signal"
-].message_type = google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2._SIGNAL
-_UPDATESIGNALREQUEST.fields_by_name[
-    "update_mask"
-].message_type = google_dot_protobuf_dot_field__mask__pb2._FIELDMASK
-_SEARCHINCIDENTSRESPONSE.fields_by_name[
-    "incidents"
-].message_type = (
-    google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2._INCIDENT
-)
-_ESCALATEINCIDENTREQUEST.fields_by_name[
-    "incident"
-].message_type = (
-    google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2._INCIDENT
-)
-_ESCALATEINCIDENTREQUEST.fields_by_name[
-    "update_mask"
-].message_type = google_dot_protobuf_dot_field__mask__pb2._FIELDMASK
-_ESCALATEINCIDENTREQUEST.fields_by_name[
-    "subscriptions"
-].message_type = (
-    google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2._SUBSCRIPTION
-)
-_ESCALATEINCIDENTREQUEST.fields_by_name[
-    "tags"
-].message_type = google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2._TAG
-_ESCALATEINCIDENTREQUEST.fields_by_name[
-    "roles"
-].message_type = (
-    google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2._INCIDENTROLEASSIGNMENT
-)
-_ESCALATEINCIDENTREQUEST.fields_by_name[
-    "artifacts"
-].message_type = (
-    google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2._ARTIFACT
-)
-_ESCALATEINCIDENTRESPONSE.fields_by_name[
-    "incident"
-].message_type = (
-    google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2._INCIDENT
-)
-_ESCALATEINCIDENTRESPONSE.fields_by_name[
-    "subscriptions"
-].message_type = (
-    google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2._SUBSCRIPTION
-)
-_ESCALATEINCIDENTRESPONSE.fields_by_name[
-    "tags"
-].message_type = google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2._TAG
-_ESCALATEINCIDENTRESPONSE.fields_by_name[
-    "roles"
-].message_type = (
-    google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2._INCIDENTROLE
-)
-_ESCALATEINCIDENTRESPONSE.fields_by_name[
-    "artifacts"
-].message_type = (
-    google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2._ARTIFACT
-)
-_CREATEARTIFACTREQUEST.fields_by_name[
-    "artifact"
-].message_type = (
-    google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2._ARTIFACT
-)
-_LISTARTIFACTSRESPONSE.fields_by_name[
-    "artifacts"
-].message_type = (
-    google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2._ARTIFACT
-)
-_UPDATEARTIFACTREQUEST.fields_by_name[
-    "artifact"
-].message_type = (
-    google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2._ARTIFACT
-)
-_UPDATEARTIFACTREQUEST.fields_by_name[
-    "update_mask"
-].message_type = google_dot_protobuf_dot_field__mask__pb2._FIELDMASK
+_SEARCHSIMILARINCIDENTSRESPONSE.fields_by_name['results'].message_type = _SEARCHSIMILARINCIDENTSRESPONSE_RESULT
+_CREATEANNOTATIONREQUEST.fields_by_name['annotation'].message_type = google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2._ANNOTATION
+_LISTANNOTATIONSRESPONSE.fields_by_name['annotations'].message_type = google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2._ANNOTATION
+_CREATETAGREQUEST.fields_by_name['tag'].message_type = google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2._TAG
+_LISTTAGSRESPONSE.fields_by_name['tags'].message_type = google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2._TAG
+_UPDATEANNOTATIONREQUEST.fields_by_name['annotation'].message_type = google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2._ANNOTATION
+_UPDATEANNOTATIONREQUEST.fields_by_name['update_mask'].message_type = google_dot_protobuf_dot_field__mask__pb2._FIELDMASK
+_CREATESIGNALREQUEST.fields_by_name['signal'].message_type = google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2._SIGNAL
+_LISTSIGNALSRESPONSE.fields_by_name['signals'].message_type = google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2._SIGNAL
+_UPDATESIGNALREQUEST.fields_by_name['signal'].message_type = google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2._SIGNAL
+_UPDATESIGNALREQUEST.fields_by_name['update_mask'].message_type = google_dot_protobuf_dot_field__mask__pb2._FIELDMASK
+_SEARCHINCIDENTSRESPONSE.fields_by_name['incidents'].message_type = google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2._INCIDENT
+_ESCALATEINCIDENTREQUEST.fields_by_name['incident'].message_type = google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2._INCIDENT
+_ESCALATEINCIDENTREQUEST.fields_by_name['update_mask'].message_type = google_dot_protobuf_dot_field__mask__pb2._FIELDMASK
+_ESCALATEINCIDENTREQUEST.fields_by_name['subscriptions'].message_type = google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2._SUBSCRIPTION
+_ESCALATEINCIDENTREQUEST.fields_by_name['tags'].message_type = google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2._TAG
+_ESCALATEINCIDENTREQUEST.fields_by_name['roles'].message_type = google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2._INCIDENTROLEASSIGNMENT
+_ESCALATEINCIDENTREQUEST.fields_by_name['artifacts'].message_type = google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2._ARTIFACT
+_ESCALATEINCIDENTRESPONSE.fields_by_name['incident'].message_type = google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2._INCIDENT
+_ESCALATEINCIDENTRESPONSE.fields_by_name['subscriptions'].message_type = google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2._SUBSCRIPTION
+_ESCALATEINCIDENTRESPONSE.fields_by_name['tags'].message_type = google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2._TAG
+_ESCALATEINCIDENTRESPONSE.fields_by_name['roles'].message_type = google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2._INCIDENTROLE
+_ESCALATEINCIDENTRESPONSE.fields_by_name['artifacts'].message_type = google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2._ARTIFACT
+_CREATEARTIFACTREQUEST.fields_by_name['artifact'].message_type = google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2._ARTIFACT
+_LISTARTIFACTSRESPONSE.fields_by_name['artifacts'].message_type = google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2._ARTIFACT
+_UPDATEARTIFACTREQUEST.fields_by_name['artifact'].message_type = google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2._ARTIFACT
+_UPDATEARTIFACTREQUEST.fields_by_name['update_mask'].message_type = google_dot_protobuf_dot_field__mask__pb2._FIELDMASK
 _SENDSHIFTHANDOFFREQUEST_INCIDENT.containing_type = _SENDSHIFTHANDOFFREQUEST
-_SENDSHIFTHANDOFFREQUEST.fields_by_name[
-    "incidents"
-].message_type = _SENDSHIFTHANDOFFREQUEST_INCIDENT
-_CREATESUBSCRIPTIONREQUEST.fields_by_name[
-    "subscription"
-].message_type = (
-    google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2._SUBSCRIPTION
-)
-_LISTSUBSCRIPTIONSRESPONSE.fields_by_name[
-    "subscriptions"
-].message_type = (
-    google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2._SUBSCRIPTION
-)
-_CREATEINCIDENTROLEASSIGNMENTREQUEST.fields_by_name[
-    "incident_role_assignment"
-].message_type = (
-    google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2._INCIDENTROLEASSIGNMENT
-)
-_LISTINCIDENTROLEASSIGNMENTSRESPONSE.fields_by_name[
-    "incident_role_assignments"
-].message_type = (
-    google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2._INCIDENTROLEASSIGNMENT
-)
-_REQUESTINCIDENTROLEHANDOVERREQUEST.fields_by_name[
-    "new_assignee"
-].message_type = google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2._USER
-_CONFIRMINCIDENTROLEHANDOVERREQUEST.fields_by_name[
-    "new_assignee"
-].message_type = google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2._USER
-_FORCEINCIDENTROLEHANDOVERREQUEST.fields_by_name[
-    "new_assignee"
-].message_type = google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2._USER
-_CANCELINCIDENTROLEHANDOVERREQUEST.fields_by_name[
-    "new_assignee"
-].message_type = google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2._USER
-DESCRIPTOR.message_types_by_name["CreateIncidentRequest"] = _CREATEINCIDENTREQUEST
-DESCRIPTOR.message_types_by_name["GetIncidentRequest"] = _GETINCIDENTREQUEST
-DESCRIPTOR.message_types_by_name["UpdateIncidentRequest"] = _UPDATEINCIDENTREQUEST
-DESCRIPTOR.message_types_by_name[
-    "SearchSimilarIncidentsRequest"
-] = _SEARCHSIMILARINCIDENTSREQUEST
-DESCRIPTOR.message_types_by_name[
-    "SearchSimilarIncidentsResponse"
-] = _SEARCHSIMILARINCIDENTSRESPONSE
-DESCRIPTOR.message_types_by_name["CreateAnnotationRequest"] = _CREATEANNOTATIONREQUEST
-DESCRIPTOR.message_types_by_name["ListAnnotationsRequest"] = _LISTANNOTATIONSREQUEST
-DESCRIPTOR.message_types_by_name["ListAnnotationsResponse"] = _LISTANNOTATIONSRESPONSE
-DESCRIPTOR.message_types_by_name["CreateTagRequest"] = _CREATETAGREQUEST
-DESCRIPTOR.message_types_by_name["DeleteTagRequest"] = _DELETETAGREQUEST
-DESCRIPTOR.message_types_by_name["ListTagsRequest"] = _LISTTAGSREQUEST
-DESCRIPTOR.message_types_by_name["ListTagsResponse"] = _LISTTAGSRESPONSE
-DESCRIPTOR.message_types_by_name["UpdateAnnotationRequest"] = _UPDATEANNOTATIONREQUEST
-DESCRIPTOR.message_types_by_name["CreateSignalRequest"] = _CREATESIGNALREQUEST
-DESCRIPTOR.message_types_by_name["ListSignalsRequest"] = _LISTSIGNALSREQUEST
-DESCRIPTOR.message_types_by_name["ListSignalsResponse"] = _LISTSIGNALSRESPONSE
-DESCRIPTOR.message_types_by_name["GetSignalRequest"] = _GETSIGNALREQUEST
-DESCRIPTOR.message_types_by_name["UpdateSignalRequest"] = _UPDATESIGNALREQUEST
-DESCRIPTOR.message_types_by_name["AcknowledgeSignalRequest"] = _ACKNOWLEDGESIGNALREQUEST
-DESCRIPTOR.message_types_by_name[
-    "AcknowledgeSignalResponse"
-] = _ACKNOWLEDGESIGNALRESPONSE
-DESCRIPTOR.message_types_by_name["SearchIncidentsRequest"] = _SEARCHINCIDENTSREQUEST
-DESCRIPTOR.message_types_by_name["SearchIncidentsResponse"] = _SEARCHINCIDENTSRESPONSE
-DESCRIPTOR.message_types_by_name["EscalateIncidentRequest"] = _ESCALATEINCIDENTREQUEST
-DESCRIPTOR.message_types_by_name["EscalateIncidentResponse"] = _ESCALATEINCIDENTRESPONSE
-DESCRIPTOR.message_types_by_name["CreateArtifactRequest"] = _CREATEARTIFACTREQUEST
-DESCRIPTOR.message_types_by_name["ListArtifactsRequest"] = _LISTARTIFACTSREQUEST
-DESCRIPTOR.message_types_by_name["ListArtifactsResponse"] = _LISTARTIFACTSRESPONSE
-DESCRIPTOR.message_types_by_name["UpdateArtifactRequest"] = _UPDATEARTIFACTREQUEST
-DESCRIPTOR.message_types_by_name["DeleteArtifactRequest"] = _DELETEARTIFACTREQUEST
-DESCRIPTOR.message_types_by_name[
-    "GetShiftHandoffPresetsRequest"
-] = _GETSHIFTHANDOFFPRESETSREQUEST
-DESCRIPTOR.message_types_by_name["ShiftHandoffPresets"] = _SHIFTHANDOFFPRESETS
-DESCRIPTOR.message_types_by_name["SendShiftHandoffRequest"] = _SENDSHIFTHANDOFFREQUEST
-DESCRIPTOR.message_types_by_name["SendShiftHandoffResponse"] = _SENDSHIFTHANDOFFRESPONSE
-DESCRIPTOR.message_types_by_name[
-    "CreateSubscriptionRequest"
-] = _CREATESUBSCRIPTIONREQUEST
-DESCRIPTOR.message_types_by_name["ListSubscriptionsRequest"] = _LISTSUBSCRIPTIONSREQUEST
-DESCRIPTOR.message_types_by_name[
-    "ListSubscriptionsResponse"
-] = _LISTSUBSCRIPTIONSRESPONSE
-DESCRIPTOR.message_types_by_name[
-    "DeleteSubscriptionRequest"
-] = _DELETESUBSCRIPTIONREQUEST
-DESCRIPTOR.message_types_by_name[
-    "CreateIncidentRoleAssignmentRequest"
-] = _CREATEINCIDENTROLEASSIGNMENTREQUEST
-DESCRIPTOR.message_types_by_name[
-    "DeleteIncidentRoleAssignmentRequest"
-] = _DELETEINCIDENTROLEASSIGNMENTREQUEST
-DESCRIPTOR.message_types_by_name[
-    "ListIncidentRoleAssignmentsRequest"
-] = _LISTINCIDENTROLEASSIGNMENTSREQUEST
-DESCRIPTOR.message_types_by_name[
-    "ListIncidentRoleAssignmentsResponse"
-] = _LISTINCIDENTROLEASSIGNMENTSRESPONSE
-DESCRIPTOR.message_types_by_name[
-    "RequestIncidentRoleHandoverRequest"
-] = _REQUESTINCIDENTROLEHANDOVERREQUEST
-DESCRIPTOR.message_types_by_name[
-    "ConfirmIncidentRoleHandoverRequest"
-] = _CONFIRMINCIDENTROLEHANDOVERREQUEST
-DESCRIPTOR.message_types_by_name[
-    "ForceIncidentRoleHandoverRequest"
-] = _FORCEINCIDENTROLEHANDOVERREQUEST
-DESCRIPTOR.message_types_by_name[
-    "CancelIncidentRoleHandoverRequest"
-] = _CANCELINCIDENTROLEHANDOVERREQUEST
+_SENDSHIFTHANDOFFREQUEST.fields_by_name['incidents'].message_type = _SENDSHIFTHANDOFFREQUEST_INCIDENT
+_CREATESUBSCRIPTIONREQUEST.fields_by_name['subscription'].message_type = google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2._SUBSCRIPTION
+_LISTSUBSCRIPTIONSRESPONSE.fields_by_name['subscriptions'].message_type = google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2._SUBSCRIPTION
+_CREATEINCIDENTROLEASSIGNMENTREQUEST.fields_by_name['incident_role_assignment'].message_type = google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2._INCIDENTROLEASSIGNMENT
+_LISTINCIDENTROLEASSIGNMENTSRESPONSE.fields_by_name['incident_role_assignments'].message_type = google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2._INCIDENTROLEASSIGNMENT
+_REQUESTINCIDENTROLEHANDOVERREQUEST.fields_by_name['new_assignee'].message_type = google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2._USER
+_CONFIRMINCIDENTROLEHANDOVERREQUEST.fields_by_name['new_assignee'].message_type = google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2._USER
+_FORCEINCIDENTROLEHANDOVERREQUEST.fields_by_name['new_assignee'].message_type = google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2._USER
+_CANCELINCIDENTROLEHANDOVERREQUEST.fields_by_name['new_assignee'].message_type = google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2._USER
+DESCRIPTOR.message_types_by_name['CreateIncidentRequest'] = _CREATEINCIDENTREQUEST
+DESCRIPTOR.message_types_by_name['GetIncidentRequest'] = _GETINCIDENTREQUEST
+DESCRIPTOR.message_types_by_name['UpdateIncidentRequest'] = _UPDATEINCIDENTREQUEST
+DESCRIPTOR.message_types_by_name['SearchSimilarIncidentsRequest'] = _SEARCHSIMILARINCIDENTSREQUEST
+DESCRIPTOR.message_types_by_name['SearchSimilarIncidentsResponse'] = _SEARCHSIMILARINCIDENTSRESPONSE
+DESCRIPTOR.message_types_by_name['CreateAnnotationRequest'] = _CREATEANNOTATIONREQUEST
+DESCRIPTOR.message_types_by_name['ListAnnotationsRequest'] = _LISTANNOTATIONSREQUEST
+DESCRIPTOR.message_types_by_name['ListAnnotationsResponse'] = _LISTANNOTATIONSRESPONSE
+DESCRIPTOR.message_types_by_name['CreateTagRequest'] = _CREATETAGREQUEST
+DESCRIPTOR.message_types_by_name['DeleteTagRequest'] = _DELETETAGREQUEST
+DESCRIPTOR.message_types_by_name['ListTagsRequest'] = _LISTTAGSREQUEST
+DESCRIPTOR.message_types_by_name['ListTagsResponse'] = _LISTTAGSRESPONSE
+DESCRIPTOR.message_types_by_name['UpdateAnnotationRequest'] = _UPDATEANNOTATIONREQUEST
+DESCRIPTOR.message_types_by_name['CreateSignalRequest'] = _CREATESIGNALREQUEST
+DESCRIPTOR.message_types_by_name['ListSignalsRequest'] = _LISTSIGNALSREQUEST
+DESCRIPTOR.message_types_by_name['ListSignalsResponse'] = _LISTSIGNALSRESPONSE
+DESCRIPTOR.message_types_by_name['GetSignalRequest'] = _GETSIGNALREQUEST
+DESCRIPTOR.message_types_by_name['UpdateSignalRequest'] = _UPDATESIGNALREQUEST
+DESCRIPTOR.message_types_by_name['AcknowledgeSignalRequest'] = _ACKNOWLEDGESIGNALREQUEST
+DESCRIPTOR.message_types_by_name['AcknowledgeSignalResponse'] = _ACKNOWLEDGESIGNALRESPONSE
+DESCRIPTOR.message_types_by_name['SearchIncidentsRequest'] = _SEARCHINCIDENTSREQUEST
+DESCRIPTOR.message_types_by_name['SearchIncidentsResponse'] = _SEARCHINCIDENTSRESPONSE
+DESCRIPTOR.message_types_by_name['EscalateIncidentRequest'] = _ESCALATEINCIDENTREQUEST
+DESCRIPTOR.message_types_by_name['EscalateIncidentResponse'] = _ESCALATEINCIDENTRESPONSE
+DESCRIPTOR.message_types_by_name['CreateArtifactRequest'] = _CREATEARTIFACTREQUEST
+DESCRIPTOR.message_types_by_name['ListArtifactsRequest'] = _LISTARTIFACTSREQUEST
+DESCRIPTOR.message_types_by_name['ListArtifactsResponse'] = _LISTARTIFACTSRESPONSE
+DESCRIPTOR.message_types_by_name['UpdateArtifactRequest'] = _UPDATEARTIFACTREQUEST
+DESCRIPTOR.message_types_by_name['DeleteArtifactRequest'] = _DELETEARTIFACTREQUEST
+DESCRIPTOR.message_types_by_name['GetShiftHandoffPresetsRequest'] = _GETSHIFTHANDOFFPRESETSREQUEST
+DESCRIPTOR.message_types_by_name['ShiftHandoffPresets'] = _SHIFTHANDOFFPRESETS
+DESCRIPTOR.message_types_by_name['SendShiftHandoffRequest'] = _SENDSHIFTHANDOFFREQUEST
+DESCRIPTOR.message_types_by_name['SendShiftHandoffResponse'] = _SENDSHIFTHANDOFFRESPONSE
+DESCRIPTOR.message_types_by_name['CreateSubscriptionRequest'] = _CREATESUBSCRIPTIONREQUEST
+DESCRIPTOR.message_types_by_name['ListSubscriptionsRequest'] = _LISTSUBSCRIPTIONSREQUEST
+DESCRIPTOR.message_types_by_name['ListSubscriptionsResponse'] = _LISTSUBSCRIPTIONSRESPONSE
+DESCRIPTOR.message_types_by_name['DeleteSubscriptionRequest'] = _DELETESUBSCRIPTIONREQUEST
+DESCRIPTOR.message_types_by_name['CreateIncidentRoleAssignmentRequest'] = _CREATEINCIDENTROLEASSIGNMENTREQUEST
+DESCRIPTOR.message_types_by_name['DeleteIncidentRoleAssignmentRequest'] = _DELETEINCIDENTROLEASSIGNMENTREQUEST
+DESCRIPTOR.message_types_by_name['ListIncidentRoleAssignmentsRequest'] = _LISTINCIDENTROLEASSIGNMENTSREQUEST
+DESCRIPTOR.message_types_by_name['ListIncidentRoleAssignmentsResponse'] = _LISTINCIDENTROLEASSIGNMENTSRESPONSE
+DESCRIPTOR.message_types_by_name['RequestIncidentRoleHandoverRequest'] = _REQUESTINCIDENTROLEHANDOVERREQUEST
+DESCRIPTOR.message_types_by_name['ConfirmIncidentRoleHandoverRequest'] = _CONFIRMINCIDENTROLEHANDOVERREQUEST
+DESCRIPTOR.message_types_by_name['ForceIncidentRoleHandoverRequest'] = _FORCEINCIDENTROLEHANDOVERREQUEST
+DESCRIPTOR.message_types_by_name['CancelIncidentRoleHandoverRequest'] = _CANCELINCIDENTROLEHANDOVERREQUEST
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
-CreateIncidentRequest = _reflection.GeneratedProtocolMessageType(
-    "CreateIncidentRequest",
-    (_message.Message,),
-    dict(
-        DESCRIPTOR=_CREATEINCIDENTREQUEST,
-        __module__="google.cloud.irm_v1alpha2.proto.incidents_service_pb2",
-        __doc__="""Request for the CreateIncident method.
+CreateIncidentRequest = _reflection.GeneratedProtocolMessageType('CreateIncidentRequest', (_message.Message,), dict(
+  DESCRIPTOR = _CREATEINCIDENTREQUEST,
+  __module__ = 'google.cloud.irm_v1alpha2.proto.incidents_service_pb2'
+  ,
+  __doc__ = """Request for the CreateIncident method.
   
   
   Attributes:
@@ -3212,18 +2009,15 @@ CreateIncidentRequest = _reflection.GeneratedProtocolMessageType(
           incident belongs to. The name is of the form
           ``projects/{project_id_or_number}`` .
   """,
-        # @@protoc_insertion_point(class_scope:google.cloud.irm.v1alpha2.CreateIncidentRequest)
-    ),
-)
+  # @@protoc_insertion_point(class_scope:google.cloud.irm.v1alpha2.CreateIncidentRequest)
+  ))
 _sym_db.RegisterMessage(CreateIncidentRequest)
 
-GetIncidentRequest = _reflection.GeneratedProtocolMessageType(
-    "GetIncidentRequest",
-    (_message.Message,),
-    dict(
-        DESCRIPTOR=_GETINCIDENTREQUEST,
-        __module__="google.cloud.irm_v1alpha2.proto.incidents_service_pb2",
-        __doc__="""Request for the GetIncident method.
+GetIncidentRequest = _reflection.GeneratedProtocolMessageType('GetIncidentRequest', (_message.Message,), dict(
+  DESCRIPTOR = _GETINCIDENTREQUEST,
+  __module__ = 'google.cloud.irm_v1alpha2.proto.incidents_service_pb2'
+  ,
+  __doc__ = """Request for the GetIncident method.
   
   
   Attributes:
@@ -3231,18 +2025,15 @@ GetIncidentRequest = _reflection.GeneratedProtocolMessageType(
           Resource name of the incident, e.g.
           "projects/{project_id}/incidents/{incident_id}".
   """,
-        # @@protoc_insertion_point(class_scope:google.cloud.irm.v1alpha2.GetIncidentRequest)
-    ),
-)
+  # @@protoc_insertion_point(class_scope:google.cloud.irm.v1alpha2.GetIncidentRequest)
+  ))
 _sym_db.RegisterMessage(GetIncidentRequest)
 
-UpdateIncidentRequest = _reflection.GeneratedProtocolMessageType(
-    "UpdateIncidentRequest",
-    (_message.Message,),
-    dict(
-        DESCRIPTOR=_UPDATEINCIDENTREQUEST,
-        __module__="google.cloud.irm_v1alpha2.proto.incidents_service_pb2",
-        __doc__="""Request for the UpdateIncident method.
+UpdateIncidentRequest = _reflection.GeneratedProtocolMessageType('UpdateIncidentRequest', (_message.Message,), dict(
+  DESCRIPTOR = _UPDATEINCIDENTREQUEST,
+  __module__ = 'google.cloud.irm_v1alpha2.proto.incidents_service_pb2'
+  ,
+  __doc__ = """Request for the UpdateIncident method.
   
   
   Attributes:
@@ -3251,18 +2042,15 @@ UpdateIncidentRequest = _reflection.GeneratedProtocolMessageType(
       update_mask:
           List of fields that should be updated.
   """,
-        # @@protoc_insertion_point(class_scope:google.cloud.irm.v1alpha2.UpdateIncidentRequest)
-    ),
-)
+  # @@protoc_insertion_point(class_scope:google.cloud.irm.v1alpha2.UpdateIncidentRequest)
+  ))
 _sym_db.RegisterMessage(UpdateIncidentRequest)
 
-SearchSimilarIncidentsRequest = _reflection.GeneratedProtocolMessageType(
-    "SearchSimilarIncidentsRequest",
-    (_message.Message,),
-    dict(
-        DESCRIPTOR=_SEARCHSIMILARINCIDENTSREQUEST,
-        __module__="google.cloud.irm_v1alpha2.proto.incidents_service_pb2",
-        __doc__="""Request for the SearchSimilarIncidents method.
+SearchSimilarIncidentsRequest = _reflection.GeneratedProtocolMessageType('SearchSimilarIncidentsRequest', (_message.Message,), dict(
+  DESCRIPTOR = _SEARCHSIMILARINCIDENTSREQUEST,
+  __module__ = 'google.cloud.irm_v1alpha2.proto.incidents_service_pb2'
+  ,
+  __doc__ = """Request for the SearchSimilarIncidents method.
   
   
   Attributes:
@@ -3275,22 +2063,17 @@ SearchSimilarIncidentsRequest = _reflection.GeneratedProtocolMessageType(
           Page token from an earlier query, as returned in
           'next_page_token'.
   """,
-        # @@protoc_insertion_point(class_scope:google.cloud.irm.v1alpha2.SearchSimilarIncidentsRequest)
-    ),
-)
+  # @@protoc_insertion_point(class_scope:google.cloud.irm.v1alpha2.SearchSimilarIncidentsRequest)
+  ))
 _sym_db.RegisterMessage(SearchSimilarIncidentsRequest)
 
-SearchSimilarIncidentsResponse = _reflection.GeneratedProtocolMessageType(
-    "SearchSimilarIncidentsResponse",
-    (_message.Message,),
-    dict(
-        Result=_reflection.GeneratedProtocolMessageType(
-            "Result",
-            (_message.Message,),
-            dict(
-                DESCRIPTOR=_SEARCHSIMILARINCIDENTSRESPONSE_RESULT,
-                __module__="google.cloud.irm_v1alpha2.proto.incidents_service_pb2",
-                __doc__="""A single search result, i.e. an incident with (potentially) additional
+SearchSimilarIncidentsResponse = _reflection.GeneratedProtocolMessageType('SearchSimilarIncidentsResponse', (_message.Message,), dict(
+
+  Result = _reflection.GeneratedProtocolMessageType('Result', (_message.Message,), dict(
+    DESCRIPTOR = _SEARCHSIMILARINCIDENTSRESPONSE_RESULT,
+    __module__ = 'google.cloud.irm_v1alpha2.proto.incidents_service_pb2'
+    ,
+    __doc__ = """A single search result, i.e. an incident with (potentially) additional
     information.
     
     
@@ -3299,12 +2082,13 @@ SearchSimilarIncidentsResponse = _reflection.GeneratedProtocolMessageType(
             An incident that is "similar" to the incident or signal
             specified in the request.
     """,
-                # @@protoc_insertion_point(class_scope:google.cloud.irm.v1alpha2.SearchSimilarIncidentsResponse.Result)
-            ),
-        ),
-        DESCRIPTOR=_SEARCHSIMILARINCIDENTSRESPONSE,
-        __module__="google.cloud.irm_v1alpha2.proto.incidents_service_pb2",
-        __doc__="""Response for the SearchSimilarIncidents method.
+    # @@protoc_insertion_point(class_scope:google.cloud.irm.v1alpha2.SearchSimilarIncidentsResponse.Result)
+    ))
+  ,
+  DESCRIPTOR = _SEARCHSIMILARINCIDENTSRESPONSE,
+  __module__ = 'google.cloud.irm_v1alpha2.proto.incidents_service_pb2'
+  ,
+  __doc__ = """Response for the SearchSimilarIncidents method.
   
   
   Attributes:
@@ -3313,19 +2097,16 @@ SearchSimilarIncidentsResponse = _reflection.GeneratedProtocolMessageType(
       next_page_token:
           Page token to fetch the next set of similar incidents.
   """,
-        # @@protoc_insertion_point(class_scope:google.cloud.irm.v1alpha2.SearchSimilarIncidentsResponse)
-    ),
-)
+  # @@protoc_insertion_point(class_scope:google.cloud.irm.v1alpha2.SearchSimilarIncidentsResponse)
+  ))
 _sym_db.RegisterMessage(SearchSimilarIncidentsResponse)
 _sym_db.RegisterMessage(SearchSimilarIncidentsResponse.Result)
 
-CreateAnnotationRequest = _reflection.GeneratedProtocolMessageType(
-    "CreateAnnotationRequest",
-    (_message.Message,),
-    dict(
-        DESCRIPTOR=_CREATEANNOTATIONREQUEST,
-        __module__="google.cloud.irm_v1alpha2.proto.incidents_service_pb2",
-        __doc__="""Request for the CreateAnnotation method.
+CreateAnnotationRequest = _reflection.GeneratedProtocolMessageType('CreateAnnotationRequest', (_message.Message,), dict(
+  DESCRIPTOR = _CREATEANNOTATIONREQUEST,
+  __module__ = 'google.cloud.irm_v1alpha2.proto.incidents_service_pb2'
+  ,
+  __doc__ = """Request for the CreateAnnotation method.
   
   
   Attributes:
@@ -3335,18 +2116,15 @@ CreateAnnotationRequest = _reflection.GeneratedProtocolMessageType(
       annotation:
           Only annotation.content is an input argument.
   """,
-        # @@protoc_insertion_point(class_scope:google.cloud.irm.v1alpha2.CreateAnnotationRequest)
-    ),
-)
+  # @@protoc_insertion_point(class_scope:google.cloud.irm.v1alpha2.CreateAnnotationRequest)
+  ))
 _sym_db.RegisterMessage(CreateAnnotationRequest)
 
-ListAnnotationsRequest = _reflection.GeneratedProtocolMessageType(
-    "ListAnnotationsRequest",
-    (_message.Message,),
-    dict(
-        DESCRIPTOR=_LISTANNOTATIONSREQUEST,
-        __module__="google.cloud.irm_v1alpha2.proto.incidents_service_pb2",
-        __doc__="""Request for the ListAnnotations method.
+ListAnnotationsRequest = _reflection.GeneratedProtocolMessageType('ListAnnotationsRequest', (_message.Message,), dict(
+  DESCRIPTOR = _LISTANNOTATIONSREQUEST,
+  __module__ = 'google.cloud.irm_v1alpha2.proto.incidents_service_pb2'
+  ,
+  __doc__ = """Request for the ListAnnotations method.
   
   
   Attributes:
@@ -3359,18 +2137,15 @@ ListAnnotationsRequest = _reflection.GeneratedProtocolMessageType(
           Page token from an earlier query, as returned in
           ``next_page_token``.
   """,
-        # @@protoc_insertion_point(class_scope:google.cloud.irm.v1alpha2.ListAnnotationsRequest)
-    ),
-)
+  # @@protoc_insertion_point(class_scope:google.cloud.irm.v1alpha2.ListAnnotationsRequest)
+  ))
 _sym_db.RegisterMessage(ListAnnotationsRequest)
 
-ListAnnotationsResponse = _reflection.GeneratedProtocolMessageType(
-    "ListAnnotationsResponse",
-    (_message.Message,),
-    dict(
-        DESCRIPTOR=_LISTANNOTATIONSRESPONSE,
-        __module__="google.cloud.irm_v1alpha2.proto.incidents_service_pb2",
-        __doc__="""Response for the ListAnnotations method.
+ListAnnotationsResponse = _reflection.GeneratedProtocolMessageType('ListAnnotationsResponse', (_message.Message,), dict(
+  DESCRIPTOR = _LISTANNOTATIONSRESPONSE,
+  __module__ = 'google.cloud.irm_v1alpha2.proto.incidents_service_pb2'
+  ,
+  __doc__ = """Response for the ListAnnotations method.
   
   
   Attributes:
@@ -3379,18 +2154,15 @@ ListAnnotationsResponse = _reflection.GeneratedProtocolMessageType(
       next_page_token:
           Page token to fetch the next set of annotations.
   """,
-        # @@protoc_insertion_point(class_scope:google.cloud.irm.v1alpha2.ListAnnotationsResponse)
-    ),
-)
+  # @@protoc_insertion_point(class_scope:google.cloud.irm.v1alpha2.ListAnnotationsResponse)
+  ))
 _sym_db.RegisterMessage(ListAnnotationsResponse)
 
-CreateTagRequest = _reflection.GeneratedProtocolMessageType(
-    "CreateTagRequest",
-    (_message.Message,),
-    dict(
-        DESCRIPTOR=_CREATETAGREQUEST,
-        __module__="google.cloud.irm_v1alpha2.proto.incidents_service_pb2",
-        __doc__="""Request for the CreateTag method.
+CreateTagRequest = _reflection.GeneratedProtocolMessageType('CreateTagRequest', (_message.Message,), dict(
+  DESCRIPTOR = _CREATETAGREQUEST,
+  __module__ = 'google.cloud.irm_v1alpha2.proto.incidents_service_pb2'
+  ,
+  __doc__ = """Request for the CreateTag method.
   
   
   Attributes:
@@ -3400,36 +2172,30 @@ CreateTagRequest = _reflection.GeneratedProtocolMessageType(
       tag:
           Tag to create. Only tag.display_name is an input argument.
   """,
-        # @@protoc_insertion_point(class_scope:google.cloud.irm.v1alpha2.CreateTagRequest)
-    ),
-)
+  # @@protoc_insertion_point(class_scope:google.cloud.irm.v1alpha2.CreateTagRequest)
+  ))
 _sym_db.RegisterMessage(CreateTagRequest)
 
-DeleteTagRequest = _reflection.GeneratedProtocolMessageType(
-    "DeleteTagRequest",
-    (_message.Message,),
-    dict(
-        DESCRIPTOR=_DELETETAGREQUEST,
-        __module__="google.cloud.irm_v1alpha2.proto.incidents_service_pb2",
-        __doc__="""Request for the DeleteTag method.
+DeleteTagRequest = _reflection.GeneratedProtocolMessageType('DeleteTagRequest', (_message.Message,), dict(
+  DESCRIPTOR = _DELETETAGREQUEST,
+  __module__ = 'google.cloud.irm_v1alpha2.proto.incidents_service_pb2'
+  ,
+  __doc__ = """Request for the DeleteTag method.
   
   
   Attributes:
       name:
           Resource name of the tag.
   """,
-        # @@protoc_insertion_point(class_scope:google.cloud.irm.v1alpha2.DeleteTagRequest)
-    ),
-)
+  # @@protoc_insertion_point(class_scope:google.cloud.irm.v1alpha2.DeleteTagRequest)
+  ))
 _sym_db.RegisterMessage(DeleteTagRequest)
 
-ListTagsRequest = _reflection.GeneratedProtocolMessageType(
-    "ListTagsRequest",
-    (_message.Message,),
-    dict(
-        DESCRIPTOR=_LISTTAGSREQUEST,
-        __module__="google.cloud.irm_v1alpha2.proto.incidents_service_pb2",
-        __doc__="""Request for the ListTagsForIncident method.
+ListTagsRequest = _reflection.GeneratedProtocolMessageType('ListTagsRequest', (_message.Message,), dict(
+  DESCRIPTOR = _LISTTAGSREQUEST,
+  __module__ = 'google.cloud.irm_v1alpha2.proto.incidents_service_pb2'
+  ,
+  __doc__ = """Request for the ListTagsForIncident method.
   
   
   Attributes:
@@ -3442,18 +2208,15 @@ ListTagsRequest = _reflection.GeneratedProtocolMessageType(
           Page token from an earlier query, as returned in
           ``next_page_token``.
   """,
-        # @@protoc_insertion_point(class_scope:google.cloud.irm.v1alpha2.ListTagsRequest)
-    ),
-)
+  # @@protoc_insertion_point(class_scope:google.cloud.irm.v1alpha2.ListTagsRequest)
+  ))
 _sym_db.RegisterMessage(ListTagsRequest)
 
-ListTagsResponse = _reflection.GeneratedProtocolMessageType(
-    "ListTagsResponse",
-    (_message.Message,),
-    dict(
-        DESCRIPTOR=_LISTTAGSRESPONSE,
-        __module__="google.cloud.irm_v1alpha2.proto.incidents_service_pb2",
-        __doc__="""Response for the ListTagsForIncident method.
+ListTagsResponse = _reflection.GeneratedProtocolMessageType('ListTagsResponse', (_message.Message,), dict(
+  DESCRIPTOR = _LISTTAGSRESPONSE,
+  __module__ = 'google.cloud.irm_v1alpha2.proto.incidents_service_pb2'
+  ,
+  __doc__ = """Response for the ListTagsForIncident method.
   
   
   Attributes:
@@ -3462,18 +2225,15 @@ ListTagsResponse = _reflection.GeneratedProtocolMessageType(
       next_page_token:
           Page token to fetch the next set of tags.
   """,
-        # @@protoc_insertion_point(class_scope:google.cloud.irm.v1alpha2.ListTagsResponse)
-    ),
-)
+  # @@protoc_insertion_point(class_scope:google.cloud.irm.v1alpha2.ListTagsResponse)
+  ))
 _sym_db.RegisterMessage(ListTagsResponse)
 
-UpdateAnnotationRequest = _reflection.GeneratedProtocolMessageType(
-    "UpdateAnnotationRequest",
-    (_message.Message,),
-    dict(
-        DESCRIPTOR=_UPDATEANNOTATIONREQUEST,
-        __module__="google.cloud.irm_v1alpha2.proto.incidents_service_pb2",
-        __doc__="""Request for the UpdateAnnotation method.
+UpdateAnnotationRequest = _reflection.GeneratedProtocolMessageType('UpdateAnnotationRequest', (_message.Message,), dict(
+  DESCRIPTOR = _UPDATEANNOTATIONREQUEST,
+  __module__ = 'google.cloud.irm_v1alpha2.proto.incidents_service_pb2'
+  ,
+  __doc__ = """Request for the UpdateAnnotation method.
   
   
   Attributes:
@@ -3482,18 +2242,15 @@ UpdateAnnotationRequest = _reflection.GeneratedProtocolMessageType(
       update_mask:
           List of fields that should be updated.
   """,
-        # @@protoc_insertion_point(class_scope:google.cloud.irm.v1alpha2.UpdateAnnotationRequest)
-    ),
-)
+  # @@protoc_insertion_point(class_scope:google.cloud.irm.v1alpha2.UpdateAnnotationRequest)
+  ))
 _sym_db.RegisterMessage(UpdateAnnotationRequest)
 
-CreateSignalRequest = _reflection.GeneratedProtocolMessageType(
-    "CreateSignalRequest",
-    (_message.Message,),
-    dict(
-        DESCRIPTOR=_CREATESIGNALREQUEST,
-        __module__="google.cloud.irm_v1alpha2.proto.incidents_service_pb2",
-        __doc__="""Request for the CreateSignal method.
+CreateSignalRequest = _reflection.GeneratedProtocolMessageType('CreateSignalRequest', (_message.Message,), dict(
+  DESCRIPTOR = _CREATESIGNALREQUEST,
+  __module__ = 'google.cloud.irm_v1alpha2.proto.incidents_service_pb2'
+  ,
+  __doc__ = """Request for the CreateSignal method.
   
   
   Attributes:
@@ -3503,18 +2260,15 @@ CreateSignalRequest = _reflection.GeneratedProtocolMessageType(
       signal:
           The signal to create.
   """,
-        # @@protoc_insertion_point(class_scope:google.cloud.irm.v1alpha2.CreateSignalRequest)
-    ),
-)
+  # @@protoc_insertion_point(class_scope:google.cloud.irm.v1alpha2.CreateSignalRequest)
+  ))
 _sym_db.RegisterMessage(CreateSignalRequest)
 
-ListSignalsRequest = _reflection.GeneratedProtocolMessageType(
-    "ListSignalsRequest",
-    (_message.Message,),
-    dict(
-        DESCRIPTOR=_LISTSIGNALSREQUEST,
-        __module__="google.cloud.irm_v1alpha2.proto.incidents_service_pb2",
-        __doc__="""Request for the ListSignals method.
+ListSignalsRequest = _reflection.GeneratedProtocolMessageType('ListSignalsRequest', (_message.Message,), dict(
+  DESCRIPTOR = _LISTSIGNALSREQUEST,
+  __module__ = 'google.cloud.irm_v1alpha2.proto.incidents_service_pb2'
+  ,
+  __doc__ = """Request for the ListSignals method.
   
   
   Attributes:
@@ -3531,18 +2285,15 @@ ListSignalsRequest = _reflection.GeneratedProtocolMessageType(
           and page_token should be the same as the original query (may
           return an error or unexpected data otherwise).
   """,
-        # @@protoc_insertion_point(class_scope:google.cloud.irm.v1alpha2.ListSignalsRequest)
-    ),
-)
+  # @@protoc_insertion_point(class_scope:google.cloud.irm.v1alpha2.ListSignalsRequest)
+  ))
 _sym_db.RegisterMessage(ListSignalsRequest)
 
-ListSignalsResponse = _reflection.GeneratedProtocolMessageType(
-    "ListSignalsResponse",
-    (_message.Message,),
-    dict(
-        DESCRIPTOR=_LISTSIGNALSRESPONSE,
-        __module__="google.cloud.irm_v1alpha2.proto.incidents_service_pb2",
-        __doc__="""Response for the ListSignals method.
+ListSignalsResponse = _reflection.GeneratedProtocolMessageType('ListSignalsResponse', (_message.Message,), dict(
+  DESCRIPTOR = _LISTSIGNALSRESPONSE,
+  __module__ = 'google.cloud.irm_v1alpha2.proto.incidents_service_pb2'
+  ,
+  __doc__ = """Response for the ListSignals method.
   
   
   Attributes:
@@ -3551,18 +2302,15 @@ ListSignalsResponse = _reflection.GeneratedProtocolMessageType(
       next_page_token:
           Page token to fetch the next set of signals.
   """,
-        # @@protoc_insertion_point(class_scope:google.cloud.irm.v1alpha2.ListSignalsResponse)
-    ),
-)
+  # @@protoc_insertion_point(class_scope:google.cloud.irm.v1alpha2.ListSignalsResponse)
+  ))
 _sym_db.RegisterMessage(ListSignalsResponse)
 
-GetSignalRequest = _reflection.GeneratedProtocolMessageType(
-    "GetSignalRequest",
-    (_message.Message,),
-    dict(
-        DESCRIPTOR=_GETSIGNALREQUEST,
-        __module__="google.cloud.irm_v1alpha2.proto.incidents_service_pb2",
-        __doc__="""Request for the GetSignal method.
+GetSignalRequest = _reflection.GeneratedProtocolMessageType('GetSignalRequest', (_message.Message,), dict(
+  DESCRIPTOR = _GETSIGNALREQUEST,
+  __module__ = 'google.cloud.irm_v1alpha2.proto.incidents_service_pb2'
+  ,
+  __doc__ = """Request for the GetSignal method.
   
   
   Attributes:
@@ -3570,18 +2318,15 @@ GetSignalRequest = _reflection.GeneratedProtocolMessageType(
           Resource name of the Signal resource, e.g.
           "projects/{project_id}/signals/{signal_id}".
   """,
-        # @@protoc_insertion_point(class_scope:google.cloud.irm.v1alpha2.GetSignalRequest)
-    ),
-)
+  # @@protoc_insertion_point(class_scope:google.cloud.irm.v1alpha2.GetSignalRequest)
+  ))
 _sym_db.RegisterMessage(GetSignalRequest)
 
-UpdateSignalRequest = _reflection.GeneratedProtocolMessageType(
-    "UpdateSignalRequest",
-    (_message.Message,),
-    dict(
-        DESCRIPTOR=_UPDATESIGNALREQUEST,
-        __module__="google.cloud.irm_v1alpha2.proto.incidents_service_pb2",
-        __doc__="""Request for the UpdateSignal method.
+UpdateSignalRequest = _reflection.GeneratedProtocolMessageType('UpdateSignalRequest', (_message.Message,), dict(
+  DESCRIPTOR = _UPDATESIGNALREQUEST,
+  __module__ = 'google.cloud.irm_v1alpha2.proto.incidents_service_pb2'
+  ,
+  __doc__ = """Request for the UpdateSignal method.
   
   
   Attributes:
@@ -3590,18 +2335,15 @@ UpdateSignalRequest = _reflection.GeneratedProtocolMessageType(
       update_mask:
           List of fields that should be updated.
   """,
-        # @@protoc_insertion_point(class_scope:google.cloud.irm.v1alpha2.UpdateSignalRequest)
-    ),
-)
+  # @@protoc_insertion_point(class_scope:google.cloud.irm.v1alpha2.UpdateSignalRequest)
+  ))
 _sym_db.RegisterMessage(UpdateSignalRequest)
 
-AcknowledgeSignalRequest = _reflection.GeneratedProtocolMessageType(
-    "AcknowledgeSignalRequest",
-    (_message.Message,),
-    dict(
-        DESCRIPTOR=_ACKNOWLEDGESIGNALREQUEST,
-        __module__="google.cloud.irm_v1alpha2.proto.incidents_service_pb2",
-        __doc__="""Request for the AcknowledgeSignal method.
+AcknowledgeSignalRequest = _reflection.GeneratedProtocolMessageType('AcknowledgeSignalRequest', (_message.Message,), dict(
+  DESCRIPTOR = _ACKNOWLEDGESIGNALREQUEST,
+  __module__ = 'google.cloud.irm_v1alpha2.proto.incidents_service_pb2'
+  ,
+  __doc__ = """Request for the AcknowledgeSignal method.
   
   
   Attributes:
@@ -3609,31 +2351,25 @@ AcknowledgeSignalRequest = _reflection.GeneratedProtocolMessageType(
           Resource name of the Signal resource, e.g.
           "projects/{project_id}/signals/{signal_id}".
   """,
-        # @@protoc_insertion_point(class_scope:google.cloud.irm.v1alpha2.AcknowledgeSignalRequest)
-    ),
-)
+  # @@protoc_insertion_point(class_scope:google.cloud.irm.v1alpha2.AcknowledgeSignalRequest)
+  ))
 _sym_db.RegisterMessage(AcknowledgeSignalRequest)
 
-AcknowledgeSignalResponse = _reflection.GeneratedProtocolMessageType(
-    "AcknowledgeSignalResponse",
-    (_message.Message,),
-    dict(
-        DESCRIPTOR=_ACKNOWLEDGESIGNALRESPONSE,
-        __module__="google.cloud.irm_v1alpha2.proto.incidents_service_pb2",
-        __doc__="""Response of the AcknowledgeSignal method.
+AcknowledgeSignalResponse = _reflection.GeneratedProtocolMessageType('AcknowledgeSignalResponse', (_message.Message,), dict(
+  DESCRIPTOR = _ACKNOWLEDGESIGNALRESPONSE,
+  __module__ = 'google.cloud.irm_v1alpha2.proto.incidents_service_pb2'
+  ,
+  __doc__ = """Response of the AcknowledgeSignal method.
   """,
-        # @@protoc_insertion_point(class_scope:google.cloud.irm.v1alpha2.AcknowledgeSignalResponse)
-    ),
-)
+  # @@protoc_insertion_point(class_scope:google.cloud.irm.v1alpha2.AcknowledgeSignalResponse)
+  ))
 _sym_db.RegisterMessage(AcknowledgeSignalResponse)
 
-SearchIncidentsRequest = _reflection.GeneratedProtocolMessageType(
-    "SearchIncidentsRequest",
-    (_message.Message,),
-    dict(
-        DESCRIPTOR=_SEARCHINCIDENTSREQUEST,
-        __module__="google.cloud.irm_v1alpha2.proto.incidents_service_pb2",
-        __doc__="""Request for the SearchIncidents method.
+SearchIncidentsRequest = _reflection.GeneratedProtocolMessageType('SearchIncidentsRequest', (_message.Message,), dict(
+  DESCRIPTOR = _SEARCHINCIDENTSREQUEST,
+  __module__ = 'google.cloud.irm_v1alpha2.proto.incidents_service_pb2'
+  ,
+  __doc__ = """Request for the SearchIncidents method.
   
   
   Attributes:
@@ -3694,18 +2430,15 @@ SearchIncidentsRequest = _reflection.GeneratedProtocolMessageType(
           ikipedia.org/wiki/List_of_tz_database_time_zones. If no
           time zone is specified, the default is UTC.
   """,
-        # @@protoc_insertion_point(class_scope:google.cloud.irm.v1alpha2.SearchIncidentsRequest)
-    ),
-)
+  # @@protoc_insertion_point(class_scope:google.cloud.irm.v1alpha2.SearchIncidentsRequest)
+  ))
 _sym_db.RegisterMessage(SearchIncidentsRequest)
 
-SearchIncidentsResponse = _reflection.GeneratedProtocolMessageType(
-    "SearchIncidentsResponse",
-    (_message.Message,),
-    dict(
-        DESCRIPTOR=_SEARCHINCIDENTSRESPONSE,
-        __module__="google.cloud.irm_v1alpha2.proto.incidents_service_pb2",
-        __doc__="""Response for the SearchIncidents method.
+SearchIncidentsResponse = _reflection.GeneratedProtocolMessageType('SearchIncidentsResponse', (_message.Message,), dict(
+  DESCRIPTOR = _SEARCHINCIDENTSRESPONSE,
+  __module__ = 'google.cloud.irm_v1alpha2.proto.incidents_service_pb2'
+  ,
+  __doc__ = """Response for the SearchIncidents method.
   
   
   Attributes:
@@ -3714,18 +2447,15 @@ SearchIncidentsResponse = _reflection.GeneratedProtocolMessageType(
       next_page_token:
           Page token to fetch the next set of incidents.
   """,
-        # @@protoc_insertion_point(class_scope:google.cloud.irm.v1alpha2.SearchIncidentsResponse)
-    ),
-)
+  # @@protoc_insertion_point(class_scope:google.cloud.irm.v1alpha2.SearchIncidentsResponse)
+  ))
 _sym_db.RegisterMessage(SearchIncidentsResponse)
 
-EscalateIncidentRequest = _reflection.GeneratedProtocolMessageType(
-    "EscalateIncidentRequest",
-    (_message.Message,),
-    dict(
-        DESCRIPTOR=_ESCALATEINCIDENTREQUEST,
-        __module__="google.cloud.irm_v1alpha2.proto.incidents_service_pb2",
-        __doc__="""Request to escalate an incident.
+EscalateIncidentRequest = _reflection.GeneratedProtocolMessageType('EscalateIncidentRequest', (_message.Message,), dict(
+  DESCRIPTOR = _ESCALATEINCIDENTREQUEST,
+  __module__ = 'google.cloud.irm_v1alpha2.proto.incidents_service_pb2'
+  ,
+  __doc__ = """Request to escalate an incident.
   
   
   Attributes:
@@ -3746,18 +2476,15 @@ EscalateIncidentRequest = _reflection.GeneratedProtocolMessageType(
           Artifacts to add. All artifacts are added without checking for
           duplicates.
   """,
-        # @@protoc_insertion_point(class_scope:google.cloud.irm.v1alpha2.EscalateIncidentRequest)
-    ),
-)
+  # @@protoc_insertion_point(class_scope:google.cloud.irm.v1alpha2.EscalateIncidentRequest)
+  ))
 _sym_db.RegisterMessage(EscalateIncidentRequest)
 
-EscalateIncidentResponse = _reflection.GeneratedProtocolMessageType(
-    "EscalateIncidentResponse",
-    (_message.Message,),
-    dict(
-        DESCRIPTOR=_ESCALATEINCIDENTRESPONSE,
-        __module__="google.cloud.irm_v1alpha2.proto.incidents_service_pb2",
-        __doc__="""Response for EscalateIncident.
+EscalateIncidentResponse = _reflection.GeneratedProtocolMessageType('EscalateIncidentResponse', (_message.Message,), dict(
+  DESCRIPTOR = _ESCALATEINCIDENTRESPONSE,
+  __module__ = 'google.cloud.irm_v1alpha2.proto.incidents_service_pb2'
+  ,
+  __doc__ = """Response for EscalateIncident.
   
   
   Attributes:
@@ -3772,18 +2499,15 @@ EscalateIncidentResponse = _reflection.GeneratedProtocolMessageType(
       artifacts:
           New or modified artifacts.
   """,
-        # @@protoc_insertion_point(class_scope:google.cloud.irm.v1alpha2.EscalateIncidentResponse)
-    ),
-)
+  # @@protoc_insertion_point(class_scope:google.cloud.irm.v1alpha2.EscalateIncidentResponse)
+  ))
 _sym_db.RegisterMessage(EscalateIncidentResponse)
 
-CreateArtifactRequest = _reflection.GeneratedProtocolMessageType(
-    "CreateArtifactRequest",
-    (_message.Message,),
-    dict(
-        DESCRIPTOR=_CREATEARTIFACTREQUEST,
-        __module__="google.cloud.irm_v1alpha2.proto.incidents_service_pb2",
-        __doc__="""Request for the CreateArtifact method.
+CreateArtifactRequest = _reflection.GeneratedProtocolMessageType('CreateArtifactRequest', (_message.Message,), dict(
+  DESCRIPTOR = _CREATEARTIFACTREQUEST,
+  __module__ = 'google.cloud.irm_v1alpha2.proto.incidents_service_pb2'
+  ,
+  __doc__ = """Request for the CreateArtifact method.
   
   
   Attributes:
@@ -3793,18 +2517,15 @@ CreateArtifactRequest = _reflection.GeneratedProtocolMessageType(
       artifact:
           The artifact to create.
   """,
-        # @@protoc_insertion_point(class_scope:google.cloud.irm.v1alpha2.CreateArtifactRequest)
-    ),
-)
+  # @@protoc_insertion_point(class_scope:google.cloud.irm.v1alpha2.CreateArtifactRequest)
+  ))
 _sym_db.RegisterMessage(CreateArtifactRequest)
 
-ListArtifactsRequest = _reflection.GeneratedProtocolMessageType(
-    "ListArtifactsRequest",
-    (_message.Message,),
-    dict(
-        DESCRIPTOR=_LISTARTIFACTSREQUEST,
-        __module__="google.cloud.irm_v1alpha2.proto.incidents_service_pb2",
-        __doc__="""Request for the ListArtifacts method.
+ListArtifactsRequest = _reflection.GeneratedProtocolMessageType('ListArtifactsRequest', (_message.Message,), dict(
+  DESCRIPTOR = _LISTARTIFACTSREQUEST,
+  __module__ = 'google.cloud.irm_v1alpha2.proto.incidents_service_pb2'
+  ,
+  __doc__ = """Request for the ListArtifacts method.
   
   
   Attributes:
@@ -3817,18 +2538,15 @@ ListArtifactsRequest = _reflection.GeneratedProtocolMessageType(
           Page token from an earlier query, as returned in
           ``next_page_token``.
   """,
-        # @@protoc_insertion_point(class_scope:google.cloud.irm.v1alpha2.ListArtifactsRequest)
-    ),
-)
+  # @@protoc_insertion_point(class_scope:google.cloud.irm.v1alpha2.ListArtifactsRequest)
+  ))
 _sym_db.RegisterMessage(ListArtifactsRequest)
 
-ListArtifactsResponse = _reflection.GeneratedProtocolMessageType(
-    "ListArtifactsResponse",
-    (_message.Message,),
-    dict(
-        DESCRIPTOR=_LISTARTIFACTSRESPONSE,
-        __module__="google.cloud.irm_v1alpha2.proto.incidents_service_pb2",
-        __doc__="""Response for the ListArtifacts method.
+ListArtifactsResponse = _reflection.GeneratedProtocolMessageType('ListArtifactsResponse', (_message.Message,), dict(
+  DESCRIPTOR = _LISTARTIFACTSRESPONSE,
+  __module__ = 'google.cloud.irm_v1alpha2.proto.incidents_service_pb2'
+  ,
+  __doc__ = """Response for the ListArtifacts method.
   
   
   Attributes:
@@ -3837,18 +2555,15 @@ ListArtifactsResponse = _reflection.GeneratedProtocolMessageType(
       next_page_token:
           Page token to fetch the next set of artifacts.
   """,
-        # @@protoc_insertion_point(class_scope:google.cloud.irm.v1alpha2.ListArtifactsResponse)
-    ),
-)
+  # @@protoc_insertion_point(class_scope:google.cloud.irm.v1alpha2.ListArtifactsResponse)
+  ))
 _sym_db.RegisterMessage(ListArtifactsResponse)
 
-UpdateArtifactRequest = _reflection.GeneratedProtocolMessageType(
-    "UpdateArtifactRequest",
-    (_message.Message,),
-    dict(
-        DESCRIPTOR=_UPDATEARTIFACTREQUEST,
-        __module__="google.cloud.irm_v1alpha2.proto.incidents_service_pb2",
-        __doc__="""Request for the UpdateArtifact method.
+UpdateArtifactRequest = _reflection.GeneratedProtocolMessageType('UpdateArtifactRequest', (_message.Message,), dict(
+  DESCRIPTOR = _UPDATEARTIFACTREQUEST,
+  __module__ = 'google.cloud.irm_v1alpha2.proto.incidents_service_pb2'
+  ,
+  __doc__ = """Request for the UpdateArtifact method.
   
   
   Attributes:
@@ -3857,36 +2572,30 @@ UpdateArtifactRequest = _reflection.GeneratedProtocolMessageType(
       update_mask:
           List of fields that should be updated.
   """,
-        # @@protoc_insertion_point(class_scope:google.cloud.irm.v1alpha2.UpdateArtifactRequest)
-    ),
-)
+  # @@protoc_insertion_point(class_scope:google.cloud.irm.v1alpha2.UpdateArtifactRequest)
+  ))
 _sym_db.RegisterMessage(UpdateArtifactRequest)
 
-DeleteArtifactRequest = _reflection.GeneratedProtocolMessageType(
-    "DeleteArtifactRequest",
-    (_message.Message,),
-    dict(
-        DESCRIPTOR=_DELETEARTIFACTREQUEST,
-        __module__="google.cloud.irm_v1alpha2.proto.incidents_service_pb2",
-        __doc__="""Request for deleting an artifact.
+DeleteArtifactRequest = _reflection.GeneratedProtocolMessageType('DeleteArtifactRequest', (_message.Message,), dict(
+  DESCRIPTOR = _DELETEARTIFACTREQUEST,
+  __module__ = 'google.cloud.irm_v1alpha2.proto.incidents_service_pb2'
+  ,
+  __doc__ = """Request for deleting an artifact.
   
   
   Attributes:
       name:
           Resource name of the artifact.
   """,
-        # @@protoc_insertion_point(class_scope:google.cloud.irm.v1alpha2.DeleteArtifactRequest)
-    ),
-)
+  # @@protoc_insertion_point(class_scope:google.cloud.irm.v1alpha2.DeleteArtifactRequest)
+  ))
 _sym_db.RegisterMessage(DeleteArtifactRequest)
 
-GetShiftHandoffPresetsRequest = _reflection.GeneratedProtocolMessageType(
-    "GetShiftHandoffPresetsRequest",
-    (_message.Message,),
-    dict(
-        DESCRIPTOR=_GETSHIFTHANDOFFPRESETSREQUEST,
-        __module__="google.cloud.irm_v1alpha2.proto.incidents_service_pb2",
-        __doc__="""GetShiftHandoffPresets RPC request.
+GetShiftHandoffPresetsRequest = _reflection.GeneratedProtocolMessageType('GetShiftHandoffPresetsRequest', (_message.Message,), dict(
+  DESCRIPTOR = _GETSHIFTHANDOFFPRESETSREQUEST,
+  __module__ = 'google.cloud.irm_v1alpha2.proto.incidents_service_pb2'
+  ,
+  __doc__ = """GetShiftHandoffPresets RPC request.
   
   
   Attributes:
@@ -3894,18 +2603,15 @@ GetShiftHandoffPresetsRequest = _reflection.GeneratedProtocolMessageType(
           Resource name of the Stackdriver project that the presets
           belong to. e.g. ``projects/{project_id}``
   """,
-        # @@protoc_insertion_point(class_scope:google.cloud.irm.v1alpha2.GetShiftHandoffPresetsRequest)
-    ),
-)
+  # @@protoc_insertion_point(class_scope:google.cloud.irm.v1alpha2.GetShiftHandoffPresetsRequest)
+  ))
 _sym_db.RegisterMessage(GetShiftHandoffPresetsRequest)
 
-ShiftHandoffPresets = _reflection.GeneratedProtocolMessageType(
-    "ShiftHandoffPresets",
-    (_message.Message,),
-    dict(
-        DESCRIPTOR=_SHIFTHANDOFFPRESETS,
-        __module__="google.cloud.irm_v1alpha2.proto.incidents_service_pb2",
-        __doc__="""GetShiftHandoffPresets RPC response.
+ShiftHandoffPresets = _reflection.GeneratedProtocolMessageType('ShiftHandoffPresets', (_message.Message,), dict(
+  DESCRIPTOR = _SHIFTHANDOFFPRESETS,
+  __module__ = 'google.cloud.irm_v1alpha2.proto.incidents_service_pb2'
+  ,
+  __doc__ = """GetShiftHandoffPresets RPC response.
   
   
   Attributes:
@@ -3920,22 +2626,17 @@ ShiftHandoffPresets = _reflection.GeneratedProtocolMessageType(
       subject:
           A suggested subject for the shift handoff email. Can be empty.
   """,
-        # @@protoc_insertion_point(class_scope:google.cloud.irm.v1alpha2.ShiftHandoffPresets)
-    ),
-)
+  # @@protoc_insertion_point(class_scope:google.cloud.irm.v1alpha2.ShiftHandoffPresets)
+  ))
 _sym_db.RegisterMessage(ShiftHandoffPresets)
 
-SendShiftHandoffRequest = _reflection.GeneratedProtocolMessageType(
-    "SendShiftHandoffRequest",
-    (_message.Message,),
-    dict(
-        Incident=_reflection.GeneratedProtocolMessageType(
-            "Incident",
-            (_message.Message,),
-            dict(
-                DESCRIPTOR=_SENDSHIFTHANDOFFREQUEST_INCIDENT,
-                __module__="google.cloud.irm_v1alpha2.proto.incidents_service_pb2",
-                __doc__="""Describes an incident for inclusion in the handoff. This is wrapped in a
+SendShiftHandoffRequest = _reflection.GeneratedProtocolMessageType('SendShiftHandoffRequest', (_message.Message,), dict(
+
+  Incident = _reflection.GeneratedProtocolMessageType('Incident', (_message.Message,), dict(
+    DESCRIPTOR = _SENDSHIFTHANDOFFREQUEST_INCIDENT,
+    __module__ = 'google.cloud.irm_v1alpha2.proto.incidents_service_pb2'
+    ,
+    __doc__ = """Describes an incident for inclusion in the handoff. This is wrapped in a
     message to provide flexibility for potentially attaching additional data
     to each incident in the future.
     
@@ -3945,12 +2646,13 @@ SendShiftHandoffRequest = _reflection.GeneratedProtocolMessageType(
             Resource name of the incident, e.g.
             "projects/{project_id}/incidents/{incident_id}".
     """,
-                # @@protoc_insertion_point(class_scope:google.cloud.irm.v1alpha2.SendShiftHandoffRequest.Incident)
-            ),
-        ),
-        DESCRIPTOR=_SENDSHIFTHANDOFFREQUEST,
-        __module__="google.cloud.irm_v1alpha2.proto.incidents_service_pb2",
-        __doc__="""SendShiftHandoff and PreviewShiftHandoff RPC request.
+    # @@protoc_insertion_point(class_scope:google.cloud.irm.v1alpha2.SendShiftHandoffRequest.Incident)
+    ))
+  ,
+  DESCRIPTOR = _SENDSHIFTHANDOFFREQUEST,
+  __module__ = 'google.cloud.irm_v1alpha2.proto.incidents_service_pb2'
+  ,
+  __doc__ = """SendShiftHandoff and PreviewShiftHandoff RPC request.
   
   
   Attributes:
@@ -3975,19 +2677,16 @@ SendShiftHandoffRequest = _reflection.GeneratedProtocolMessageType(
           If set to true a ShiftHandoffResponse will be returned but the
           handoff will not actually be sent.
   """,
-        # @@protoc_insertion_point(class_scope:google.cloud.irm.v1alpha2.SendShiftHandoffRequest)
-    ),
-)
+  # @@protoc_insertion_point(class_scope:google.cloud.irm.v1alpha2.SendShiftHandoffRequest)
+  ))
 _sym_db.RegisterMessage(SendShiftHandoffRequest)
 _sym_db.RegisterMessage(SendShiftHandoffRequest.Incident)
 
-SendShiftHandoffResponse = _reflection.GeneratedProtocolMessageType(
-    "SendShiftHandoffResponse",
-    (_message.Message,),
-    dict(
-        DESCRIPTOR=_SENDSHIFTHANDOFFRESPONSE,
-        __module__="google.cloud.irm_v1alpha2.proto.incidents_service_pb2",
-        __doc__="""SendShiftHandoff and PreviewShiftHandoff RPC response.
+SendShiftHandoffResponse = _reflection.GeneratedProtocolMessageType('SendShiftHandoffResponse', (_message.Message,), dict(
+  DESCRIPTOR = _SENDSHIFTHANDOFFRESPONSE,
+  __module__ = 'google.cloud.irm_v1alpha2.proto.incidents_service_pb2'
+  ,
+  __doc__ = """SendShiftHandoff and PreviewShiftHandoff RPC response.
   
   
   Attributes:
@@ -3998,18 +2697,15 @@ SendShiftHandoffResponse = _reflection.GeneratedProtocolMessageType(
           sent (if the request was preview_only). This will typically
           contain a full HTML document.
   """,
-        # @@protoc_insertion_point(class_scope:google.cloud.irm.v1alpha2.SendShiftHandoffResponse)
-    ),
-)
+  # @@protoc_insertion_point(class_scope:google.cloud.irm.v1alpha2.SendShiftHandoffResponse)
+  ))
 _sym_db.RegisterMessage(SendShiftHandoffResponse)
 
-CreateSubscriptionRequest = _reflection.GeneratedProtocolMessageType(
-    "CreateSubscriptionRequest",
-    (_message.Message,),
-    dict(
-        DESCRIPTOR=_CREATESUBSCRIPTIONREQUEST,
-        __module__="google.cloud.irm_v1alpha2.proto.incidents_service_pb2",
-        __doc__="""Request for the CreateSubscription method.
+CreateSubscriptionRequest = _reflection.GeneratedProtocolMessageType('CreateSubscriptionRequest', (_message.Message,), dict(
+  DESCRIPTOR = _CREATESUBSCRIPTIONREQUEST,
+  __module__ = 'google.cloud.irm_v1alpha2.proto.incidents_service_pb2'
+  ,
+  __doc__ = """Request for the CreateSubscription method.
   
   
   Attributes:
@@ -4019,18 +2715,15 @@ CreateSubscriptionRequest = _reflection.GeneratedProtocolMessageType(
       subscription:
           The subscription to create.
   """,
-        # @@protoc_insertion_point(class_scope:google.cloud.irm.v1alpha2.CreateSubscriptionRequest)
-    ),
-)
+  # @@protoc_insertion_point(class_scope:google.cloud.irm.v1alpha2.CreateSubscriptionRequest)
+  ))
 _sym_db.RegisterMessage(CreateSubscriptionRequest)
 
-ListSubscriptionsRequest = _reflection.GeneratedProtocolMessageType(
-    "ListSubscriptionsRequest",
-    (_message.Message,),
-    dict(
-        DESCRIPTOR=_LISTSUBSCRIPTIONSREQUEST,
-        __module__="google.cloud.irm_v1alpha2.proto.incidents_service_pb2",
-        __doc__="""Request for the ListSubscriptions method.
+ListSubscriptionsRequest = _reflection.GeneratedProtocolMessageType('ListSubscriptionsRequest', (_message.Message,), dict(
+  DESCRIPTOR = _LISTSUBSCRIPTIONSREQUEST,
+  __module__ = 'google.cloud.irm_v1alpha2.proto.incidents_service_pb2'
+  ,
+  __doc__ = """Request for the ListSubscriptions method.
   
   
   Attributes:
@@ -4043,18 +2736,15 @@ ListSubscriptionsRequest = _reflection.GeneratedProtocolMessageType(
           Page token from an earlier query, as returned in
           ``next_page_token``.
   """,
-        # @@protoc_insertion_point(class_scope:google.cloud.irm.v1alpha2.ListSubscriptionsRequest)
-    ),
-)
+  # @@protoc_insertion_point(class_scope:google.cloud.irm.v1alpha2.ListSubscriptionsRequest)
+  ))
 _sym_db.RegisterMessage(ListSubscriptionsRequest)
 
-ListSubscriptionsResponse = _reflection.GeneratedProtocolMessageType(
-    "ListSubscriptionsResponse",
-    (_message.Message,),
-    dict(
-        DESCRIPTOR=_LISTSUBSCRIPTIONSRESPONSE,
-        __module__="google.cloud.irm_v1alpha2.proto.incidents_service_pb2",
-        __doc__="""Response for the ListSubscriptions method.
+ListSubscriptionsResponse = _reflection.GeneratedProtocolMessageType('ListSubscriptionsResponse', (_message.Message,), dict(
+  DESCRIPTOR = _LISTSUBSCRIPTIONSRESPONSE,
+  __module__ = 'google.cloud.irm_v1alpha2.proto.incidents_service_pb2'
+  ,
+  __doc__ = """Response for the ListSubscriptions method.
   
   
   Attributes:
@@ -4063,36 +2753,30 @@ ListSubscriptionsResponse = _reflection.GeneratedProtocolMessageType(
       next_page_token:
           Page token to fetch the next set of subscriptions.
   """,
-        # @@protoc_insertion_point(class_scope:google.cloud.irm.v1alpha2.ListSubscriptionsResponse)
-    ),
-)
+  # @@protoc_insertion_point(class_scope:google.cloud.irm.v1alpha2.ListSubscriptionsResponse)
+  ))
 _sym_db.RegisterMessage(ListSubscriptionsResponse)
 
-DeleteSubscriptionRequest = _reflection.GeneratedProtocolMessageType(
-    "DeleteSubscriptionRequest",
-    (_message.Message,),
-    dict(
-        DESCRIPTOR=_DELETESUBSCRIPTIONREQUEST,
-        __module__="google.cloud.irm_v1alpha2.proto.incidents_service_pb2",
-        __doc__="""Request for deleting a subscription.
+DeleteSubscriptionRequest = _reflection.GeneratedProtocolMessageType('DeleteSubscriptionRequest', (_message.Message,), dict(
+  DESCRIPTOR = _DELETESUBSCRIPTIONREQUEST,
+  __module__ = 'google.cloud.irm_v1alpha2.proto.incidents_service_pb2'
+  ,
+  __doc__ = """Request for deleting a subscription.
   
   
   Attributes:
       name:
           Resource name of the subscription.
   """,
-        # @@protoc_insertion_point(class_scope:google.cloud.irm.v1alpha2.DeleteSubscriptionRequest)
-    ),
-)
+  # @@protoc_insertion_point(class_scope:google.cloud.irm.v1alpha2.DeleteSubscriptionRequest)
+  ))
 _sym_db.RegisterMessage(DeleteSubscriptionRequest)
 
-CreateIncidentRoleAssignmentRequest = _reflection.GeneratedProtocolMessageType(
-    "CreateIncidentRoleAssignmentRequest",
-    (_message.Message,),
-    dict(
-        DESCRIPTOR=_CREATEINCIDENTROLEASSIGNMENTREQUEST,
-        __module__="google.cloud.irm_v1alpha2.proto.incidents_service_pb2",
-        __doc__="""Request for creating a role assignment.
+CreateIncidentRoleAssignmentRequest = _reflection.GeneratedProtocolMessageType('CreateIncidentRoleAssignmentRequest', (_message.Message,), dict(
+  DESCRIPTOR = _CREATEINCIDENTROLEASSIGNMENTREQUEST,
+  __module__ = 'google.cloud.irm_v1alpha2.proto.incidents_service_pb2'
+  ,
+  __doc__ = """Request for creating a role assignment.
   
   
   Attributes:
@@ -4102,36 +2786,30 @@ CreateIncidentRoleAssignmentRequest = _reflection.GeneratedProtocolMessageType(
       incident_role_assignment:
           Role assignment to create.
   """,
-        # @@protoc_insertion_point(class_scope:google.cloud.irm.v1alpha2.CreateIncidentRoleAssignmentRequest)
-    ),
-)
+  # @@protoc_insertion_point(class_scope:google.cloud.irm.v1alpha2.CreateIncidentRoleAssignmentRequest)
+  ))
 _sym_db.RegisterMessage(CreateIncidentRoleAssignmentRequest)
 
-DeleteIncidentRoleAssignmentRequest = _reflection.GeneratedProtocolMessageType(
-    "DeleteIncidentRoleAssignmentRequest",
-    (_message.Message,),
-    dict(
-        DESCRIPTOR=_DELETEINCIDENTROLEASSIGNMENTREQUEST,
-        __module__="google.cloud.irm_v1alpha2.proto.incidents_service_pb2",
-        __doc__="""Request for deleting a role assignment.
+DeleteIncidentRoleAssignmentRequest = _reflection.GeneratedProtocolMessageType('DeleteIncidentRoleAssignmentRequest', (_message.Message,), dict(
+  DESCRIPTOR = _DELETEINCIDENTROLEASSIGNMENTREQUEST,
+  __module__ = 'google.cloud.irm_v1alpha2.proto.incidents_service_pb2'
+  ,
+  __doc__ = """Request for deleting a role assignment.
   
   
   Attributes:
       name:
           Resource name of the role assignment.
   """,
-        # @@protoc_insertion_point(class_scope:google.cloud.irm.v1alpha2.DeleteIncidentRoleAssignmentRequest)
-    ),
-)
+  # @@protoc_insertion_point(class_scope:google.cloud.irm.v1alpha2.DeleteIncidentRoleAssignmentRequest)
+  ))
 _sym_db.RegisterMessage(DeleteIncidentRoleAssignmentRequest)
 
-ListIncidentRoleAssignmentsRequest = _reflection.GeneratedProtocolMessageType(
-    "ListIncidentRoleAssignmentsRequest",
-    (_message.Message,),
-    dict(
-        DESCRIPTOR=_LISTINCIDENTROLEASSIGNMENTSREQUEST,
-        __module__="google.cloud.irm_v1alpha2.proto.incidents_service_pb2",
-        __doc__="""Request to list role assignments of an incident.
+ListIncidentRoleAssignmentsRequest = _reflection.GeneratedProtocolMessageType('ListIncidentRoleAssignmentsRequest', (_message.Message,), dict(
+  DESCRIPTOR = _LISTINCIDENTROLEASSIGNMENTSREQUEST,
+  __module__ = 'google.cloud.irm_v1alpha2.proto.incidents_service_pb2'
+  ,
+  __doc__ = """Request to list role assignments of an incident.
   
   
   Attributes:
@@ -4144,18 +2822,15 @@ ListIncidentRoleAssignmentsRequest = _reflection.GeneratedProtocolMessageType(
           Page token from an earlier query, as returned in
           ``next_page_token``.
   """,
-        # @@protoc_insertion_point(class_scope:google.cloud.irm.v1alpha2.ListIncidentRoleAssignmentsRequest)
-    ),
-)
+  # @@protoc_insertion_point(class_scope:google.cloud.irm.v1alpha2.ListIncidentRoleAssignmentsRequest)
+  ))
 _sym_db.RegisterMessage(ListIncidentRoleAssignmentsRequest)
 
-ListIncidentRoleAssignmentsResponse = _reflection.GeneratedProtocolMessageType(
-    "ListIncidentRoleAssignmentsResponse",
-    (_message.Message,),
-    dict(
-        DESCRIPTOR=_LISTINCIDENTROLEASSIGNMENTSRESPONSE,
-        __module__="google.cloud.irm_v1alpha2.proto.incidents_service_pb2",
-        __doc__="""Response for the ListIncidentRoleAssignments method.
+ListIncidentRoleAssignmentsResponse = _reflection.GeneratedProtocolMessageType('ListIncidentRoleAssignmentsResponse', (_message.Message,), dict(
+  DESCRIPTOR = _LISTINCIDENTROLEASSIGNMENTSRESPONSE,
+  __module__ = 'google.cloud.irm_v1alpha2.proto.incidents_service_pb2'
+  ,
+  __doc__ = """Response for the ListIncidentRoleAssignments method.
   
   
   Attributes:
@@ -4164,18 +2839,15 @@ ListIncidentRoleAssignmentsResponse = _reflection.GeneratedProtocolMessageType(
       next_page_token:
           Page token to fetch the next set of assignments.
   """,
-        # @@protoc_insertion_point(class_scope:google.cloud.irm.v1alpha2.ListIncidentRoleAssignmentsResponse)
-    ),
-)
+  # @@protoc_insertion_point(class_scope:google.cloud.irm.v1alpha2.ListIncidentRoleAssignmentsResponse)
+  ))
 _sym_db.RegisterMessage(ListIncidentRoleAssignmentsResponse)
 
-RequestIncidentRoleHandoverRequest = _reflection.GeneratedProtocolMessageType(
-    "RequestIncidentRoleHandoverRequest",
-    (_message.Message,),
-    dict(
-        DESCRIPTOR=_REQUESTINCIDENTROLEHANDOVERREQUEST,
-        __module__="google.cloud.irm_v1alpha2.proto.incidents_service_pb2",
-        __doc__="""Request to start a role handover.
+RequestIncidentRoleHandoverRequest = _reflection.GeneratedProtocolMessageType('RequestIncidentRoleHandoverRequest', (_message.Message,), dict(
+  DESCRIPTOR = _REQUESTINCIDENTROLEHANDOVERREQUEST,
+  __module__ = 'google.cloud.irm_v1alpha2.proto.incidents_service_pb2'
+  ,
+  __doc__ = """Request to start a role handover.
   
   
   Attributes:
@@ -4184,18 +2856,15 @@ RequestIncidentRoleHandoverRequest = _reflection.GeneratedProtocolMessageType(
       new_assignee:
           The proposed assignee.
   """,
-        # @@protoc_insertion_point(class_scope:google.cloud.irm.v1alpha2.RequestIncidentRoleHandoverRequest)
-    ),
-)
+  # @@protoc_insertion_point(class_scope:google.cloud.irm.v1alpha2.RequestIncidentRoleHandoverRequest)
+  ))
 _sym_db.RegisterMessage(RequestIncidentRoleHandoverRequest)
 
-ConfirmIncidentRoleHandoverRequest = _reflection.GeneratedProtocolMessageType(
-    "ConfirmIncidentRoleHandoverRequest",
-    (_message.Message,),
-    dict(
-        DESCRIPTOR=_CONFIRMINCIDENTROLEHANDOVERREQUEST,
-        __module__="google.cloud.irm_v1alpha2.proto.incidents_service_pb2",
-        __doc__="""Request to confirm a role handover.
+ConfirmIncidentRoleHandoverRequest = _reflection.GeneratedProtocolMessageType('ConfirmIncidentRoleHandoverRequest', (_message.Message,), dict(
+  DESCRIPTOR = _CONFIRMINCIDENTROLEHANDOVERREQUEST,
+  __module__ = 'google.cloud.irm_v1alpha2.proto.incidents_service_pb2'
+  ,
+  __doc__ = """Request to confirm a role handover.
   
   
   Attributes:
@@ -4206,18 +2875,15 @@ ConfirmIncidentRoleHandoverRequest = _reflection.GeneratedProtocolMessageType(
           should be the current user; otherwise ForceRoleHandover should
           be called.
   """,
-        # @@protoc_insertion_point(class_scope:google.cloud.irm.v1alpha2.ConfirmIncidentRoleHandoverRequest)
-    ),
-)
+  # @@protoc_insertion_point(class_scope:google.cloud.irm.v1alpha2.ConfirmIncidentRoleHandoverRequest)
+  ))
 _sym_db.RegisterMessage(ConfirmIncidentRoleHandoverRequest)
 
-ForceIncidentRoleHandoverRequest = _reflection.GeneratedProtocolMessageType(
-    "ForceIncidentRoleHandoverRequest",
-    (_message.Message,),
-    dict(
-        DESCRIPTOR=_FORCEINCIDENTROLEHANDOVERREQUEST,
-        __module__="google.cloud.irm_v1alpha2.proto.incidents_service_pb2",
-        __doc__="""Request to force a role handover.
+ForceIncidentRoleHandoverRequest = _reflection.GeneratedProtocolMessageType('ForceIncidentRoleHandoverRequest', (_message.Message,), dict(
+  DESCRIPTOR = _FORCEINCIDENTROLEHANDOVERREQUEST,
+  __module__ = 'google.cloud.irm_v1alpha2.proto.incidents_service_pb2'
+  ,
+  __doc__ = """Request to force a role handover.
   
   
   Attributes:
@@ -4228,18 +2894,15 @@ ForceIncidentRoleHandoverRequest = _reflection.GeneratedProtocolMessageType(
           should not be the current user; otherwise ConfirmRoleHandover
           should be called.
   """,
-        # @@protoc_insertion_point(class_scope:google.cloud.irm.v1alpha2.ForceIncidentRoleHandoverRequest)
-    ),
-)
+  # @@protoc_insertion_point(class_scope:google.cloud.irm.v1alpha2.ForceIncidentRoleHandoverRequest)
+  ))
 _sym_db.RegisterMessage(ForceIncidentRoleHandoverRequest)
 
-CancelIncidentRoleHandoverRequest = _reflection.GeneratedProtocolMessageType(
-    "CancelIncidentRoleHandoverRequest",
-    (_message.Message,),
-    dict(
-        DESCRIPTOR=_CANCELINCIDENTROLEHANDOVERREQUEST,
-        __module__="google.cloud.irm_v1alpha2.proto.incidents_service_pb2",
-        __doc__="""Request to cancel a role handover.
+CancelIncidentRoleHandoverRequest = _reflection.GeneratedProtocolMessageType('CancelIncidentRoleHandoverRequest', (_message.Message,), dict(
+  DESCRIPTOR = _CANCELINCIDENTROLEHANDOVERREQUEST,
+  __module__ = 'google.cloud.irm_v1alpha2.proto.incidents_service_pb2'
+  ,
+  __doc__ = """Request to cancel a role handover.
   
   
   Attributes:
@@ -4250,390 +2913,322 @@ CancelIncidentRoleHandoverRequest = _reflection.GeneratedProtocolMessageType(
           IncidentRoleAssignment.proposed_assignee) and whose proposal
           is being cancelled.
   """,
-        # @@protoc_insertion_point(class_scope:google.cloud.irm.v1alpha2.CancelIncidentRoleHandoverRequest)
-    ),
-)
+  # @@protoc_insertion_point(class_scope:google.cloud.irm.v1alpha2.CancelIncidentRoleHandoverRequest)
+  ))
 _sym_db.RegisterMessage(CancelIncidentRoleHandoverRequest)
 
 
 DESCRIPTOR._options = None
 
 _INCIDENTSERVICE = _descriptor.ServiceDescriptor(
-    name="IncidentService",
-    full_name="google.cloud.irm.v1alpha2.IncidentService",
-    file=DESCRIPTOR,
+  name='IncidentService',
+  full_name='google.cloud.irm.v1alpha2.IncidentService',
+  file=DESCRIPTOR,
+  index=0,
+  serialized_options=None,
+  serialized_start=5056,
+  serialized_end=11207,
+  methods=[
+  _descriptor.MethodDescriptor(
+    name='CreateIncident',
+    full_name='google.cloud.irm.v1alpha2.IncidentService.CreateIncident',
     index=0,
-    serialized_options=None,
-    serialized_start=5056,
-    serialized_end=11207,
-    methods=[
-        _descriptor.MethodDescriptor(
-            name="CreateIncident",
-            full_name="google.cloud.irm.v1alpha2.IncidentService.CreateIncident",
-            index=0,
-            containing_service=None,
-            input_type=_CREATEINCIDENTREQUEST,
-            output_type=google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2._INCIDENT,
-            serialized_options=_b(
-                "\202\323\344\223\0023\"'/v1alpha2/{parent=projects/*}/incidents:\010incident"
-            ),
-        ),
-        _descriptor.MethodDescriptor(
-            name="GetIncident",
-            full_name="google.cloud.irm.v1alpha2.IncidentService.GetIncident",
-            index=1,
-            containing_service=None,
-            input_type=_GETINCIDENTREQUEST,
-            output_type=google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2._INCIDENT,
-            serialized_options=_b(
-                "\202\323\344\223\002)\022'/v1alpha2/{name=projects/*/incidents/*}"
-            ),
-        ),
-        _descriptor.MethodDescriptor(
-            name="SearchIncidents",
-            full_name="google.cloud.irm.v1alpha2.IncidentService.SearchIncidents",
-            index=2,
-            containing_service=None,
-            input_type=_SEARCHINCIDENTSREQUEST,
-            output_type=_SEARCHINCIDENTSRESPONSE,
-            serialized_options=_b(
-                "\202\323\344\223\0020\022./v1alpha2/{parent=projects/*}/incidents:search"
-            ),
-        ),
-        _descriptor.MethodDescriptor(
-            name="UpdateIncident",
-            full_name="google.cloud.irm.v1alpha2.IncidentService.UpdateIncident",
-            index=3,
-            containing_service=None,
-            input_type=_UPDATEINCIDENTREQUEST,
-            output_type=google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2._INCIDENT,
-            serialized_options=_b(
-                "\202\323\344\223\002<20/v1alpha2/{incident.name=projects/*/incidents/*}:\010incident"
-            ),
-        ),
-        _descriptor.MethodDescriptor(
-            name="SearchSimilarIncidents",
-            full_name="google.cloud.irm.v1alpha2.IncidentService.SearchSimilarIncidents",
-            index=4,
-            containing_service=None,
-            input_type=_SEARCHSIMILARINCIDENTSREQUEST,
-            output_type=_SEARCHSIMILARINCIDENTSRESPONSE,
-            serialized_options=_b(
-                "\202\323\344\223\002w\0225/v1alpha2/{name=projects/*/incidents/*}:searchSimilarZ>\022</v1alpha2/{name=projects/*/signals/*}:searchSimilarIncidents"
-            ),
-        ),
-        _descriptor.MethodDescriptor(
-            name="CreateAnnotation",
-            full_name="google.cloud.irm.v1alpha2.IncidentService.CreateAnnotation",
-            index=5,
-            containing_service=None,
-            input_type=_CREATEANNOTATIONREQUEST,
-            output_type=google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2._ANNOTATION,
-            serialized_options=_b(
-                '\202\323\344\223\002C"5/v1alpha2/{parent=projects/*/incidents/*}/annotations:\nannotation'
-            ),
-        ),
-        _descriptor.MethodDescriptor(
-            name="ListAnnotations",
-            full_name="google.cloud.irm.v1alpha2.IncidentService.ListAnnotations",
-            index=6,
-            containing_service=None,
-            input_type=_LISTANNOTATIONSREQUEST,
-            output_type=_LISTANNOTATIONSRESPONSE,
-            serialized_options=_b(
-                "\202\323\344\223\0027\0225/v1alpha2/{parent=projects/*/incidents/*}/annotations"
-            ),
-        ),
-        _descriptor.MethodDescriptor(
-            name="UpdateAnnotation",
-            full_name="google.cloud.irm.v1alpha2.IncidentService.UpdateAnnotation",
-            index=7,
-            containing_service=None,
-            input_type=_UPDATEANNOTATIONREQUEST,
-            output_type=google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2._ANNOTATION,
-            serialized_options=_b(
-                "\202\323\344\223\002N2@/v1alpha2/{annotation.name=projects/*/incidents/*/annotations/*}:\nannotation"
-            ),
-        ),
-        _descriptor.MethodDescriptor(
-            name="CreateTag",
-            full_name="google.cloud.irm.v1alpha2.IncidentService.CreateTag",
-            index=8,
-            containing_service=None,
-            input_type=_CREATETAGREQUEST,
-            output_type=google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2._TAG,
-            serialized_options=_b(
-                '\202\323\344\223\0025"./v1alpha2/{parent=projects/*/incidents/*}/tags:\003tag'
-            ),
-        ),
-        _descriptor.MethodDescriptor(
-            name="DeleteTag",
-            full_name="google.cloud.irm.v1alpha2.IncidentService.DeleteTag",
-            index=9,
-            containing_service=None,
-            input_type=_DELETETAGREQUEST,
-            output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
-            serialized_options=_b(
-                "\202\323\344\223\0020*./v1alpha2/{name=projects/*/incidents/*/tags/*}"
-            ),
-        ),
-        _descriptor.MethodDescriptor(
-            name="ListTags",
-            full_name="google.cloud.irm.v1alpha2.IncidentService.ListTags",
-            index=10,
-            containing_service=None,
-            input_type=_LISTTAGSREQUEST,
-            output_type=_LISTTAGSRESPONSE,
-            serialized_options=_b(
-                "\202\323\344\223\0020\022./v1alpha2/{parent=projects/*/incidents/*}/tags"
-            ),
-        ),
-        _descriptor.MethodDescriptor(
-            name="CreateSignal",
-            full_name="google.cloud.irm.v1alpha2.IncidentService.CreateSignal",
-            index=11,
-            containing_service=None,
-            input_type=_CREATESIGNALREQUEST,
-            output_type=google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2._SIGNAL,
-            serialized_options=_b(
-                '\202\323\344\223\002/"%/v1alpha2/{parent=projects/*}/signals:\006signal'
-            ),
-        ),
-        _descriptor.MethodDescriptor(
-            name="ListSignals",
-            full_name="google.cloud.irm.v1alpha2.IncidentService.ListSignals",
-            index=12,
-            containing_service=None,
-            input_type=_LISTSIGNALSREQUEST,
-            output_type=_LISTSIGNALSRESPONSE,
-            serialized_options=_b(
-                "\202\323\344\223\002'\022%/v1alpha2/{parent=projects/*}/signals"
-            ),
-        ),
-        _descriptor.MethodDescriptor(
-            name="GetSignal",
-            full_name="google.cloud.irm.v1alpha2.IncidentService.GetSignal",
-            index=13,
-            containing_service=None,
-            input_type=_GETSIGNALREQUEST,
-            output_type=google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2._SIGNAL,
-            serialized_options=_b(
-                "\202\323\344\223\002'\022%/v1alpha2/{name=projects/*/signals/*}"
-            ),
-        ),
-        _descriptor.MethodDescriptor(
-            name="UpdateSignal",
-            full_name="google.cloud.irm.v1alpha2.IncidentService.UpdateSignal",
-            index=14,
-            containing_service=None,
-            input_type=_UPDATESIGNALREQUEST,
-            output_type=google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2._SIGNAL,
-            serialized_options=_b(
-                "\202\323\344\223\00262,/v1alpha2/{signal.name=projects/*/signals/*}:\006signal"
-            ),
-        ),
-        _descriptor.MethodDescriptor(
-            name="AcknowledgeSignal",
-            full_name="google.cloud.irm.v1alpha2.IncidentService.AcknowledgeSignal",
-            index=15,
-            containing_service=None,
-            input_type=_ACKNOWLEDGESIGNALREQUEST,
-            output_type=_ACKNOWLEDGESIGNALRESPONSE,
-            serialized_options=_b(
-                '\202\323\344\223\002.")/v1alpha2/{name=projects/*/signals/*}:ack:\001*'
-            ),
-        ),
-        _descriptor.MethodDescriptor(
-            name="EscalateIncident",
-            full_name="google.cloud.irm.v1alpha2.IncidentService.EscalateIncident",
-            index=16,
-            containing_service=None,
-            input_type=_ESCALATEINCIDENTREQUEST,
-            output_type=_ESCALATEINCIDENTRESPONSE,
-            serialized_options=_b(
-                '\202\323\344\223\002>"9/v1alpha2/{incident.name=projects/*/incidents/*}:escalate:\001*'
-            ),
-        ),
-        _descriptor.MethodDescriptor(
-            name="CreateArtifact",
-            full_name="google.cloud.irm.v1alpha2.IncidentService.CreateArtifact",
-            index=17,
-            containing_service=None,
-            input_type=_CREATEARTIFACTREQUEST,
-            output_type=google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2._ARTIFACT,
-            serialized_options=_b(
-                '\202\323\344\223\002?"3/v1alpha2/{parent=projects/*/incidents/*}/artifacts:\010artifact'
-            ),
-        ),
-        _descriptor.MethodDescriptor(
-            name="ListArtifacts",
-            full_name="google.cloud.irm.v1alpha2.IncidentService.ListArtifacts",
-            index=18,
-            containing_service=None,
-            input_type=_LISTARTIFACTSREQUEST,
-            output_type=_LISTARTIFACTSRESPONSE,
-            serialized_options=_b(
-                "\202\323\344\223\0025\0223/v1alpha2/{parent=projects/*/incidents/*}/artifacts"
-            ),
-        ),
-        _descriptor.MethodDescriptor(
-            name="UpdateArtifact",
-            full_name="google.cloud.irm.v1alpha2.IncidentService.UpdateArtifact",
-            index=19,
-            containing_service=None,
-            input_type=_UPDATEARTIFACTREQUEST,
-            output_type=google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2._ARTIFACT,
-            serialized_options=_b(
-                "\202\323\344\223\002H2</v1alpha2/{artifact.name=projects/*/incidents/*/artifacts/*}:\010artifact"
-            ),
-        ),
-        _descriptor.MethodDescriptor(
-            name="DeleteArtifact",
-            full_name="google.cloud.irm.v1alpha2.IncidentService.DeleteArtifact",
-            index=20,
-            containing_service=None,
-            input_type=_DELETEARTIFACTREQUEST,
-            output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
-            serialized_options=_b(
-                "\202\323\344\223\0025*3/v1alpha2/{name=projects/*/incidents/*/artifacts/*}"
-            ),
-        ),
-        _descriptor.MethodDescriptor(
-            name="GetShiftHandoffPresets",
-            full_name="google.cloud.irm.v1alpha2.IncidentService.GetShiftHandoffPresets",
-            index=21,
-            containing_service=None,
-            input_type=_GETSHIFTHANDOFFPRESETSREQUEST,
-            output_type=_SHIFTHANDOFFPRESETS,
-            serialized_options=_b(
-                "\202\323\344\223\0023\0221/v1alpha2/{parent=projects/*}/shiftHandoffPresets"
-            ),
-        ),
-        _descriptor.MethodDescriptor(
-            name="SendShiftHandoff",
-            full_name="google.cloud.irm.v1alpha2.IncidentService.SendShiftHandoff",
-            index=22,
-            containing_service=None,
-            input_type=_SENDSHIFTHANDOFFREQUEST,
-            output_type=_SENDSHIFTHANDOFFRESPONSE,
-            serialized_options=_b(
-                '\202\323\344\223\0024"//v1alpha2/{parent=projects/*}/shiftHandoff:send:\001*'
-            ),
-        ),
-        _descriptor.MethodDescriptor(
-            name="CreateSubscription",
-            full_name="google.cloud.irm.v1alpha2.IncidentService.CreateSubscription",
-            index=23,
-            containing_service=None,
-            input_type=_CREATESUBSCRIPTIONREQUEST,
-            output_type=google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2._SUBSCRIPTION,
-            serialized_options=_b(
-                '\202\323\344\223\002G"7/v1alpha2/{parent=projects/*/incidents/*}/subscriptions:\014subscription'
-            ),
-        ),
-        _descriptor.MethodDescriptor(
-            name="ListSubscriptions",
-            full_name="google.cloud.irm.v1alpha2.IncidentService.ListSubscriptions",
-            index=24,
-            containing_service=None,
-            input_type=_LISTSUBSCRIPTIONSREQUEST,
-            output_type=_LISTSUBSCRIPTIONSRESPONSE,
-            serialized_options=_b(
-                "\202\323\344\223\0029\0227/v1alpha2/{parent=projects/*/incidents/*}/subscriptions"
-            ),
-        ),
-        _descriptor.MethodDescriptor(
-            name="DeleteSubscription",
-            full_name="google.cloud.irm.v1alpha2.IncidentService.DeleteSubscription",
-            index=25,
-            containing_service=None,
-            input_type=_DELETESUBSCRIPTIONREQUEST,
-            output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
-            serialized_options=_b(
-                "\202\323\344\223\0029*7/v1alpha2/{name=projects/*/incidents/*/subscriptions/*}"
-            ),
-        ),
-        _descriptor.MethodDescriptor(
-            name="CreateIncidentRoleAssignment",
-            full_name="google.cloud.irm.v1alpha2.IncidentService.CreateIncidentRoleAssignment",
-            index=26,
-            containing_service=None,
-            input_type=_CREATEINCIDENTROLEASSIGNMENTREQUEST,
-            output_type=google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2._INCIDENTROLEASSIGNMENT,
-            serialized_options=_b(
-                '\202\323\344\223\002>"9/v1alpha2/{parent=projects/*/incidents/*}/roleAssignments:\001*'
-            ),
-        ),
-        _descriptor.MethodDescriptor(
-            name="DeleteIncidentRoleAssignment",
-            full_name="google.cloud.irm.v1alpha2.IncidentService.DeleteIncidentRoleAssignment",
-            index=27,
-            containing_service=None,
-            input_type=_DELETEINCIDENTROLEASSIGNMENTREQUEST,
-            output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
-            serialized_options=_b(
-                "\202\323\344\223\002;*9/v1alpha2/{name=projects/*/incidents/*/roleAssignments/*}"
-            ),
-        ),
-        _descriptor.MethodDescriptor(
-            name="ListIncidentRoleAssignments",
-            full_name="google.cloud.irm.v1alpha2.IncidentService.ListIncidentRoleAssignments",
-            index=28,
-            containing_service=None,
-            input_type=_LISTINCIDENTROLEASSIGNMENTSREQUEST,
-            output_type=_LISTINCIDENTROLEASSIGNMENTSRESPONSE,
-            serialized_options=_b(
-                "\202\323\344\223\002;\0229/v1alpha2/{parent=projects/*/incidents/*}/roleAssignments"
-            ),
-        ),
-        _descriptor.MethodDescriptor(
-            name="RequestIncidentRoleHandover",
-            full_name="google.cloud.irm.v1alpha2.IncidentService.RequestIncidentRoleHandover",
-            index=29,
-            containing_service=None,
-            input_type=_REQUESTINCIDENTROLEHANDOVERREQUEST,
-            output_type=google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2._INCIDENTROLEASSIGNMENT,
-            serialized_options=_b(
-                '\202\323\344\223\002N"I/v1alpha2/{name=projects/*/incidents/*/roleAssignments/*}:requestHandover:\001*'
-            ),
-        ),
-        _descriptor.MethodDescriptor(
-            name="ConfirmIncidentRoleHandover",
-            full_name="google.cloud.irm.v1alpha2.IncidentService.ConfirmIncidentRoleHandover",
-            index=30,
-            containing_service=None,
-            input_type=_CONFIRMINCIDENTROLEHANDOVERREQUEST,
-            output_type=google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2._INCIDENTROLEASSIGNMENT,
-            serialized_options=_b(
-                '\202\323\344\223\002N"I/v1alpha2/{name=projects/*/incidents/*/roleAssignments/*}:confirmHandover:\001*'
-            ),
-        ),
-        _descriptor.MethodDescriptor(
-            name="ForceIncidentRoleHandover",
-            full_name="google.cloud.irm.v1alpha2.IncidentService.ForceIncidentRoleHandover",
-            index=31,
-            containing_service=None,
-            input_type=_FORCEINCIDENTROLEHANDOVERREQUEST,
-            output_type=google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2._INCIDENTROLEASSIGNMENT,
-            serialized_options=_b(
-                '\202\323\344\223\002L"G/v1alpha2/{name=projects/*/incidents/*/roleAssignments/*}:forceHandover:\001*'
-            ),
-        ),
-        _descriptor.MethodDescriptor(
-            name="CancelIncidentRoleHandover",
-            full_name="google.cloud.irm.v1alpha2.IncidentService.CancelIncidentRoleHandover",
-            index=32,
-            containing_service=None,
-            input_type=_CANCELINCIDENTROLEHANDOVERREQUEST,
-            output_type=google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2._INCIDENTROLEASSIGNMENT,
-            serialized_options=_b(
-                '\202\323\344\223\002M"H/v1alpha2/{name=projects/*/incidents/*/roleAssignments/*}:cancelHandover:\001*'
-            ),
-        ),
-    ],
-)
+    containing_service=None,
+    input_type=_CREATEINCIDENTREQUEST,
+    output_type=google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2._INCIDENT,
+    serialized_options=_b('\202\323\344\223\0023\"\'/v1alpha2/{parent=projects/*}/incidents:\010incident'),
+  ),
+  _descriptor.MethodDescriptor(
+    name='GetIncident',
+    full_name='google.cloud.irm.v1alpha2.IncidentService.GetIncident',
+    index=1,
+    containing_service=None,
+    input_type=_GETINCIDENTREQUEST,
+    output_type=google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2._INCIDENT,
+    serialized_options=_b('\202\323\344\223\002)\022\'/v1alpha2/{name=projects/*/incidents/*}'),
+  ),
+  _descriptor.MethodDescriptor(
+    name='SearchIncidents',
+    full_name='google.cloud.irm.v1alpha2.IncidentService.SearchIncidents',
+    index=2,
+    containing_service=None,
+    input_type=_SEARCHINCIDENTSREQUEST,
+    output_type=_SEARCHINCIDENTSRESPONSE,
+    serialized_options=_b('\202\323\344\223\0020\022./v1alpha2/{parent=projects/*}/incidents:search'),
+  ),
+  _descriptor.MethodDescriptor(
+    name='UpdateIncident',
+    full_name='google.cloud.irm.v1alpha2.IncidentService.UpdateIncident',
+    index=3,
+    containing_service=None,
+    input_type=_UPDATEINCIDENTREQUEST,
+    output_type=google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2._INCIDENT,
+    serialized_options=_b('\202\323\344\223\002<20/v1alpha2/{incident.name=projects/*/incidents/*}:\010incident'),
+  ),
+  _descriptor.MethodDescriptor(
+    name='SearchSimilarIncidents',
+    full_name='google.cloud.irm.v1alpha2.IncidentService.SearchSimilarIncidents',
+    index=4,
+    containing_service=None,
+    input_type=_SEARCHSIMILARINCIDENTSREQUEST,
+    output_type=_SEARCHSIMILARINCIDENTSRESPONSE,
+    serialized_options=_b('\202\323\344\223\002w\0225/v1alpha2/{name=projects/*/incidents/*}:searchSimilarZ>\022</v1alpha2/{name=projects/*/signals/*}:searchSimilarIncidents'),
+  ),
+  _descriptor.MethodDescriptor(
+    name='CreateAnnotation',
+    full_name='google.cloud.irm.v1alpha2.IncidentService.CreateAnnotation',
+    index=5,
+    containing_service=None,
+    input_type=_CREATEANNOTATIONREQUEST,
+    output_type=google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2._ANNOTATION,
+    serialized_options=_b('\202\323\344\223\002C\"5/v1alpha2/{parent=projects/*/incidents/*}/annotations:\nannotation'),
+  ),
+  _descriptor.MethodDescriptor(
+    name='ListAnnotations',
+    full_name='google.cloud.irm.v1alpha2.IncidentService.ListAnnotations',
+    index=6,
+    containing_service=None,
+    input_type=_LISTANNOTATIONSREQUEST,
+    output_type=_LISTANNOTATIONSRESPONSE,
+    serialized_options=_b('\202\323\344\223\0027\0225/v1alpha2/{parent=projects/*/incidents/*}/annotations'),
+  ),
+  _descriptor.MethodDescriptor(
+    name='UpdateAnnotation',
+    full_name='google.cloud.irm.v1alpha2.IncidentService.UpdateAnnotation',
+    index=7,
+    containing_service=None,
+    input_type=_UPDATEANNOTATIONREQUEST,
+    output_type=google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2._ANNOTATION,
+    serialized_options=_b('\202\323\344\223\002N2@/v1alpha2/{annotation.name=projects/*/incidents/*/annotations/*}:\nannotation'),
+  ),
+  _descriptor.MethodDescriptor(
+    name='CreateTag',
+    full_name='google.cloud.irm.v1alpha2.IncidentService.CreateTag',
+    index=8,
+    containing_service=None,
+    input_type=_CREATETAGREQUEST,
+    output_type=google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2._TAG,
+    serialized_options=_b('\202\323\344\223\0025\"./v1alpha2/{parent=projects/*/incidents/*}/tags:\003tag'),
+  ),
+  _descriptor.MethodDescriptor(
+    name='DeleteTag',
+    full_name='google.cloud.irm.v1alpha2.IncidentService.DeleteTag',
+    index=9,
+    containing_service=None,
+    input_type=_DELETETAGREQUEST,
+    output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
+    serialized_options=_b('\202\323\344\223\0020*./v1alpha2/{name=projects/*/incidents/*/tags/*}'),
+  ),
+  _descriptor.MethodDescriptor(
+    name='ListTags',
+    full_name='google.cloud.irm.v1alpha2.IncidentService.ListTags',
+    index=10,
+    containing_service=None,
+    input_type=_LISTTAGSREQUEST,
+    output_type=_LISTTAGSRESPONSE,
+    serialized_options=_b('\202\323\344\223\0020\022./v1alpha2/{parent=projects/*/incidents/*}/tags'),
+  ),
+  _descriptor.MethodDescriptor(
+    name='CreateSignal',
+    full_name='google.cloud.irm.v1alpha2.IncidentService.CreateSignal',
+    index=11,
+    containing_service=None,
+    input_type=_CREATESIGNALREQUEST,
+    output_type=google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2._SIGNAL,
+    serialized_options=_b('\202\323\344\223\002/\"%/v1alpha2/{parent=projects/*}/signals:\006signal'),
+  ),
+  _descriptor.MethodDescriptor(
+    name='ListSignals',
+    full_name='google.cloud.irm.v1alpha2.IncidentService.ListSignals',
+    index=12,
+    containing_service=None,
+    input_type=_LISTSIGNALSREQUEST,
+    output_type=_LISTSIGNALSRESPONSE,
+    serialized_options=_b('\202\323\344\223\002\'\022%/v1alpha2/{parent=projects/*}/signals'),
+  ),
+  _descriptor.MethodDescriptor(
+    name='GetSignal',
+    full_name='google.cloud.irm.v1alpha2.IncidentService.GetSignal',
+    index=13,
+    containing_service=None,
+    input_type=_GETSIGNALREQUEST,
+    output_type=google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2._SIGNAL,
+    serialized_options=_b('\202\323\344\223\002\'\022%/v1alpha2/{name=projects/*/signals/*}'),
+  ),
+  _descriptor.MethodDescriptor(
+    name='UpdateSignal',
+    full_name='google.cloud.irm.v1alpha2.IncidentService.UpdateSignal',
+    index=14,
+    containing_service=None,
+    input_type=_UPDATESIGNALREQUEST,
+    output_type=google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2._SIGNAL,
+    serialized_options=_b('\202\323\344\223\00262,/v1alpha2/{signal.name=projects/*/signals/*}:\006signal'),
+  ),
+  _descriptor.MethodDescriptor(
+    name='AcknowledgeSignal',
+    full_name='google.cloud.irm.v1alpha2.IncidentService.AcknowledgeSignal',
+    index=15,
+    containing_service=None,
+    input_type=_ACKNOWLEDGESIGNALREQUEST,
+    output_type=_ACKNOWLEDGESIGNALRESPONSE,
+    serialized_options=_b('\202\323\344\223\002.\")/v1alpha2/{name=projects/*/signals/*}:ack:\001*'),
+  ),
+  _descriptor.MethodDescriptor(
+    name='EscalateIncident',
+    full_name='google.cloud.irm.v1alpha2.IncidentService.EscalateIncident',
+    index=16,
+    containing_service=None,
+    input_type=_ESCALATEINCIDENTREQUEST,
+    output_type=_ESCALATEINCIDENTRESPONSE,
+    serialized_options=_b('\202\323\344\223\002>\"9/v1alpha2/{incident.name=projects/*/incidents/*}:escalate:\001*'),
+  ),
+  _descriptor.MethodDescriptor(
+    name='CreateArtifact',
+    full_name='google.cloud.irm.v1alpha2.IncidentService.CreateArtifact',
+    index=17,
+    containing_service=None,
+    input_type=_CREATEARTIFACTREQUEST,
+    output_type=google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2._ARTIFACT,
+    serialized_options=_b('\202\323\344\223\002?\"3/v1alpha2/{parent=projects/*/incidents/*}/artifacts:\010artifact'),
+  ),
+  _descriptor.MethodDescriptor(
+    name='ListArtifacts',
+    full_name='google.cloud.irm.v1alpha2.IncidentService.ListArtifacts',
+    index=18,
+    containing_service=None,
+    input_type=_LISTARTIFACTSREQUEST,
+    output_type=_LISTARTIFACTSRESPONSE,
+    serialized_options=_b('\202\323\344\223\0025\0223/v1alpha2/{parent=projects/*/incidents/*}/artifacts'),
+  ),
+  _descriptor.MethodDescriptor(
+    name='UpdateArtifact',
+    full_name='google.cloud.irm.v1alpha2.IncidentService.UpdateArtifact',
+    index=19,
+    containing_service=None,
+    input_type=_UPDATEARTIFACTREQUEST,
+    output_type=google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2._ARTIFACT,
+    serialized_options=_b('\202\323\344\223\002H2</v1alpha2/{artifact.name=projects/*/incidents/*/artifacts/*}:\010artifact'),
+  ),
+  _descriptor.MethodDescriptor(
+    name='DeleteArtifact',
+    full_name='google.cloud.irm.v1alpha2.IncidentService.DeleteArtifact',
+    index=20,
+    containing_service=None,
+    input_type=_DELETEARTIFACTREQUEST,
+    output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
+    serialized_options=_b('\202\323\344\223\0025*3/v1alpha2/{name=projects/*/incidents/*/artifacts/*}'),
+  ),
+  _descriptor.MethodDescriptor(
+    name='GetShiftHandoffPresets',
+    full_name='google.cloud.irm.v1alpha2.IncidentService.GetShiftHandoffPresets',
+    index=21,
+    containing_service=None,
+    input_type=_GETSHIFTHANDOFFPRESETSREQUEST,
+    output_type=_SHIFTHANDOFFPRESETS,
+    serialized_options=_b('\202\323\344\223\0023\0221/v1alpha2/{parent=projects/*}/shiftHandoffPresets'),
+  ),
+  _descriptor.MethodDescriptor(
+    name='SendShiftHandoff',
+    full_name='google.cloud.irm.v1alpha2.IncidentService.SendShiftHandoff',
+    index=22,
+    containing_service=None,
+    input_type=_SENDSHIFTHANDOFFREQUEST,
+    output_type=_SENDSHIFTHANDOFFRESPONSE,
+    serialized_options=_b('\202\323\344\223\0024\"//v1alpha2/{parent=projects/*}/shiftHandoff:send:\001*'),
+  ),
+  _descriptor.MethodDescriptor(
+    name='CreateSubscription',
+    full_name='google.cloud.irm.v1alpha2.IncidentService.CreateSubscription',
+    index=23,
+    containing_service=None,
+    input_type=_CREATESUBSCRIPTIONREQUEST,
+    output_type=google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2._SUBSCRIPTION,
+    serialized_options=_b('\202\323\344\223\002G\"7/v1alpha2/{parent=projects/*/incidents/*}/subscriptions:\014subscription'),
+  ),
+  _descriptor.MethodDescriptor(
+    name='ListSubscriptions',
+    full_name='google.cloud.irm.v1alpha2.IncidentService.ListSubscriptions',
+    index=24,
+    containing_service=None,
+    input_type=_LISTSUBSCRIPTIONSREQUEST,
+    output_type=_LISTSUBSCRIPTIONSRESPONSE,
+    serialized_options=_b('\202\323\344\223\0029\0227/v1alpha2/{parent=projects/*/incidents/*}/subscriptions'),
+  ),
+  _descriptor.MethodDescriptor(
+    name='DeleteSubscription',
+    full_name='google.cloud.irm.v1alpha2.IncidentService.DeleteSubscription',
+    index=25,
+    containing_service=None,
+    input_type=_DELETESUBSCRIPTIONREQUEST,
+    output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
+    serialized_options=_b('\202\323\344\223\0029*7/v1alpha2/{name=projects/*/incidents/*/subscriptions/*}'),
+  ),
+  _descriptor.MethodDescriptor(
+    name='CreateIncidentRoleAssignment',
+    full_name='google.cloud.irm.v1alpha2.IncidentService.CreateIncidentRoleAssignment',
+    index=26,
+    containing_service=None,
+    input_type=_CREATEINCIDENTROLEASSIGNMENTREQUEST,
+    output_type=google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2._INCIDENTROLEASSIGNMENT,
+    serialized_options=_b('\202\323\344\223\002>\"9/v1alpha2/{parent=projects/*/incidents/*}/roleAssignments:\001*'),
+  ),
+  _descriptor.MethodDescriptor(
+    name='DeleteIncidentRoleAssignment',
+    full_name='google.cloud.irm.v1alpha2.IncidentService.DeleteIncidentRoleAssignment',
+    index=27,
+    containing_service=None,
+    input_type=_DELETEINCIDENTROLEASSIGNMENTREQUEST,
+    output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
+    serialized_options=_b('\202\323\344\223\002;*9/v1alpha2/{name=projects/*/incidents/*/roleAssignments/*}'),
+  ),
+  _descriptor.MethodDescriptor(
+    name='ListIncidentRoleAssignments',
+    full_name='google.cloud.irm.v1alpha2.IncidentService.ListIncidentRoleAssignments',
+    index=28,
+    containing_service=None,
+    input_type=_LISTINCIDENTROLEASSIGNMENTSREQUEST,
+    output_type=_LISTINCIDENTROLEASSIGNMENTSRESPONSE,
+    serialized_options=_b('\202\323\344\223\002;\0229/v1alpha2/{parent=projects/*/incidents/*}/roleAssignments'),
+  ),
+  _descriptor.MethodDescriptor(
+    name='RequestIncidentRoleHandover',
+    full_name='google.cloud.irm.v1alpha2.IncidentService.RequestIncidentRoleHandover',
+    index=29,
+    containing_service=None,
+    input_type=_REQUESTINCIDENTROLEHANDOVERREQUEST,
+    output_type=google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2._INCIDENTROLEASSIGNMENT,
+    serialized_options=_b('\202\323\344\223\002N\"I/v1alpha2/{name=projects/*/incidents/*/roleAssignments/*}:requestHandover:\001*'),
+  ),
+  _descriptor.MethodDescriptor(
+    name='ConfirmIncidentRoleHandover',
+    full_name='google.cloud.irm.v1alpha2.IncidentService.ConfirmIncidentRoleHandover',
+    index=30,
+    containing_service=None,
+    input_type=_CONFIRMINCIDENTROLEHANDOVERREQUEST,
+    output_type=google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2._INCIDENTROLEASSIGNMENT,
+    serialized_options=_b('\202\323\344\223\002N\"I/v1alpha2/{name=projects/*/incidents/*/roleAssignments/*}:confirmHandover:\001*'),
+  ),
+  _descriptor.MethodDescriptor(
+    name='ForceIncidentRoleHandover',
+    full_name='google.cloud.irm.v1alpha2.IncidentService.ForceIncidentRoleHandover',
+    index=31,
+    containing_service=None,
+    input_type=_FORCEINCIDENTROLEHANDOVERREQUEST,
+    output_type=google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2._INCIDENTROLEASSIGNMENT,
+    serialized_options=_b('\202\323\344\223\002L\"G/v1alpha2/{name=projects/*/incidents/*/roleAssignments/*}:forceHandover:\001*'),
+  ),
+  _descriptor.MethodDescriptor(
+    name='CancelIncidentRoleHandover',
+    full_name='google.cloud.irm.v1alpha2.IncidentService.CancelIncidentRoleHandover',
+    index=32,
+    containing_service=None,
+    input_type=_CANCELINCIDENTROLEHANDOVERREQUEST,
+    output_type=google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2._INCIDENTROLEASSIGNMENT,
+    serialized_options=_b('\202\323\344\223\002M\"H/v1alpha2/{name=projects/*/incidents/*/roleAssignments/*}:cancelHandover:\001*'),
+  ),
+])
 _sym_db.RegisterServiceDescriptor(_INCIDENTSERVICE)
 
-DESCRIPTOR.services_by_name["IncidentService"] = _INCIDENTSERVICE
+DESCRIPTOR.services_by_name['IncidentService'] = _INCIDENTSERVICE
 
 # @@protoc_insertion_point(module_scope)

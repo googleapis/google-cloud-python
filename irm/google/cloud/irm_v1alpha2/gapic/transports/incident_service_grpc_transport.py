@@ -27,14 +27,14 @@ class IncidentServiceGrpcTransport(object):
     which can be used to take advantage of advanced
     features of gRPC.
     """
-
     # The scopes needed to make gRPC calls to all of the methods defined
     # in this service.
-    _OAUTH_SCOPES = ("https://www.googleapis.com/auth/cloud-platform",)
+    _OAUTH_SCOPES = ('https://www.googleapis.com/auth/cloud-platform', )
 
-    def __init__(
-        self, channel=None, credentials=None, address="irm.googleapis.com:443"
-    ):
+    def __init__(self,
+                 channel=None,
+                 credentials=None,
+                 address='irm.googleapis.com:443'):
         """Instantiate the transport class.
 
         Args:
@@ -52,25 +52,28 @@ class IncidentServiceGrpcTransport(object):
         # exception (channels come with credentials baked in already).
         if channel is not None and credentials is not None:
             raise ValueError(
-                "The `channel` and `credentials` arguments are mutually " "exclusive."
-            )
+                'The `channel` and `credentials` arguments are mutually '
+                'exclusive.', )
 
         # Create the channel.
         if channel is None:
-            channel = self.create_channel(address=address, credentials=credentials)
+            channel = self.create_channel(
+                address=address,
+                credentials=credentials,
+            )
 
         self._channel = channel
 
         # gRPC uses objects called "stubs" that are bound to the
         # channel and provide a basic method for each RPC.
         self._stubs = {
-            "incident_service_stub": incidents_service_pb2_grpc.IncidentServiceStub(
-                channel
-            )
+            'incident_service_stub':
+            incidents_service_pb2_grpc.IncidentServiceStub(channel),
         }
 
     @classmethod
-    def create_channel(cls, address="irm.googleapis.com:443", credentials=None):
+    def create_channel(cls, address='irm.googleapis.com:443',
+                       credentials=None):
         """Create and return a gRPC channel object.
 
         Args:
@@ -85,7 +88,9 @@ class IncidentServiceGrpcTransport(object):
             grpc.Channel: A gRPC channel object.
         """
         return google.api_core.grpc_helpers.create_channel(
-            address, credentials=credentials, scopes=cls._OAUTH_SCOPES
+            address,
+            credentials=credentials,
+            scopes=cls._OAUTH_SCOPES,
         )
 
     @property
@@ -108,7 +113,7 @@ class IncidentServiceGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["incident_service_stub"].CreateIncident
+        return self._stubs['incident_service_stub'].CreateIncident
 
     @property
     def get_incident(self):
@@ -121,7 +126,7 @@ class IncidentServiceGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["incident_service_stub"].GetIncident
+        return self._stubs['incident_service_stub'].GetIncident
 
     @property
     def search_incidents(self):
@@ -135,7 +140,7 @@ class IncidentServiceGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["incident_service_stub"].SearchIncidents
+        return self._stubs['incident_service_stub'].SearchIncidents
 
     @property
     def update_incident(self):
@@ -148,7 +153,7 @@ class IncidentServiceGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["incident_service_stub"].UpdateIncident
+        return self._stubs['incident_service_stub'].UpdateIncident
 
     @property
     def search_similar_incidents(self):
@@ -163,7 +168,7 @@ class IncidentServiceGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["incident_service_stub"].SearchSimilarIncidents
+        return self._stubs['incident_service_stub'].SearchSimilarIncidents
 
     @property
     def create_annotation(self):
@@ -177,7 +182,7 @@ class IncidentServiceGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["incident_service_stub"].CreateAnnotation
+        return self._stubs['incident_service_stub'].CreateAnnotation
 
     @property
     def list_annotations(self):
@@ -191,7 +196,7 @@ class IncidentServiceGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["incident_service_stub"].ListAnnotations
+        return self._stubs['incident_service_stub'].ListAnnotations
 
     @property
     def update_annotation(self):
@@ -204,7 +209,7 @@ class IncidentServiceGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["incident_service_stub"].UpdateAnnotation
+        return self._stubs['incident_service_stub'].UpdateAnnotation
 
     @property
     def create_tag(self):
@@ -217,7 +222,7 @@ class IncidentServiceGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["incident_service_stub"].CreateTag
+        return self._stubs['incident_service_stub'].CreateTag
 
     @property
     def delete_tag(self):
@@ -230,7 +235,7 @@ class IncidentServiceGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["incident_service_stub"].DeleteTag
+        return self._stubs['incident_service_stub'].DeleteTag
 
     @property
     def list_tags(self):
@@ -243,7 +248,7 @@ class IncidentServiceGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["incident_service_stub"].ListTags
+        return self._stubs['incident_service_stub'].ListTags
 
     @property
     def create_signal(self):
@@ -256,7 +261,7 @@ class IncidentServiceGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["incident_service_stub"].CreateSignal
+        return self._stubs['incident_service_stub'].CreateSignal
 
     @property
     def list_signals(self):
@@ -270,7 +275,7 @@ class IncidentServiceGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["incident_service_stub"].ListSignals
+        return self._stubs['incident_service_stub'].ListSignals
 
     @property
     def get_signal(self):
@@ -283,7 +288,7 @@ class IncidentServiceGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["incident_service_stub"].GetSignal
+        return self._stubs['incident_service_stub'].GetSignal
 
     @property
     def update_signal(self):
@@ -297,7 +302,7 @@ class IncidentServiceGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["incident_service_stub"].UpdateSignal
+        return self._stubs['incident_service_stub'].UpdateSignal
 
     @property
     def acknowledge_signal(self):
@@ -311,7 +316,7 @@ class IncidentServiceGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["incident_service_stub"].AcknowledgeSignal
+        return self._stubs['incident_service_stub'].AcknowledgeSignal
 
     @property
     def escalate_incident(self):
@@ -324,7 +329,7 @@ class IncidentServiceGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["incident_service_stub"].EscalateIncident
+        return self._stubs['incident_service_stub'].EscalateIncident
 
     @property
     def create_artifact(self):
@@ -337,7 +342,7 @@ class IncidentServiceGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["incident_service_stub"].CreateArtifact
+        return self._stubs['incident_service_stub'].CreateArtifact
 
     @property
     def list_artifacts(self):
@@ -350,7 +355,7 @@ class IncidentServiceGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["incident_service_stub"].ListArtifacts
+        return self._stubs['incident_service_stub'].ListArtifacts
 
     @property
     def update_artifact(self):
@@ -363,7 +368,7 @@ class IncidentServiceGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["incident_service_stub"].UpdateArtifact
+        return self._stubs['incident_service_stub'].UpdateArtifact
 
     @property
     def delete_artifact(self):
@@ -376,7 +381,7 @@ class IncidentServiceGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["incident_service_stub"].DeleteArtifact
+        return self._stubs['incident_service_stub'].DeleteArtifact
 
     @property
     def get_shift_handoff_presets(self):
@@ -390,7 +395,7 @@ class IncidentServiceGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["incident_service_stub"].GetShiftHandoffPresets
+        return self._stubs['incident_service_stub'].GetShiftHandoffPresets
 
     @property
     def send_shift_handoff(self):
@@ -403,7 +408,7 @@ class IncidentServiceGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["incident_service_stub"].SendShiftHandoff
+        return self._stubs['incident_service_stub'].SendShiftHandoff
 
     @property
     def create_subscription(self):
@@ -419,7 +424,7 @@ class IncidentServiceGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["incident_service_stub"].CreateSubscription
+        return self._stubs['incident_service_stub'].CreateSubscription
 
     @property
     def list_subscriptions(self):
@@ -432,7 +437,7 @@ class IncidentServiceGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["incident_service_stub"].ListSubscriptions
+        return self._stubs['incident_service_stub'].ListSubscriptions
 
     @property
     def delete_subscription(self):
@@ -445,7 +450,7 @@ class IncidentServiceGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["incident_service_stub"].DeleteSubscription
+        return self._stubs['incident_service_stub'].DeleteSubscription
 
     @property
     def create_incident_role_assignment(self):
@@ -462,7 +467,8 @@ class IncidentServiceGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["incident_service_stub"].CreateIncidentRoleAssignment
+        return self._stubs[
+            'incident_service_stub'].CreateIncidentRoleAssignment
 
     @property
     def delete_incident_role_assignment(self):
@@ -475,7 +481,8 @@ class IncidentServiceGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["incident_service_stub"].DeleteIncidentRoleAssignment
+        return self._stubs[
+            'incident_service_stub'].DeleteIncidentRoleAssignment
 
     @property
     def list_incident_role_assignments(self):
@@ -488,7 +495,7 @@ class IncidentServiceGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["incident_service_stub"].ListIncidentRoleAssignments
+        return self._stubs['incident_service_stub'].ListIncidentRoleAssignments
 
     @property
     def request_incident_role_handover(self):
@@ -503,7 +510,7 @@ class IncidentServiceGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["incident_service_stub"].RequestIncidentRoleHandover
+        return self._stubs['incident_service_stub'].RequestIncidentRoleHandover
 
     @property
     def confirm_incident_role_handover(self):
@@ -519,7 +526,7 @@ class IncidentServiceGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["incident_service_stub"].ConfirmIncidentRoleHandover
+        return self._stubs['incident_service_stub'].ConfirmIncidentRoleHandover
 
     @property
     def force_incident_role_handover(self):
@@ -535,7 +542,7 @@ class IncidentServiceGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["incident_service_stub"].ForceIncidentRoleHandover
+        return self._stubs['incident_service_stub'].ForceIncidentRoleHandover
 
     @property
     def cancel_incident_role_handover(self):
@@ -550,4 +557,4 @@ class IncidentServiceGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["incident_service_stub"].CancelIncidentRoleHandover
+        return self._stubs['incident_service_stub'].CancelIncidentRoleHandover
