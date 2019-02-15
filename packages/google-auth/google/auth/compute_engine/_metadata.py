@@ -51,13 +51,15 @@ except ValueError:  # pragma: NO COVER
     _METADATA_DEFAULT_TIMEOUT = 3
 
 
-def ping(request, timeout=_METADATA_DEFAULT_TIMEOUT):
+def ping(request, timeout=_METADATA_DEFAULT_TIMEOUT, retry_count=3):
     """Checks to see if the metadata server is available.
 
     Args:
         request (google.auth.transport.Request): A callable used to make
             HTTP requests.
         timeout (int): How long to wait for the metadata server to respond.
+        retry_count (int): How many times to attempt connecting to metadata
+            server using above timeout.
 
     Returns:
         bool: True if the metadata server is reachable, False otherwise.
@@ -68,18 +70,23 @@ def ping(request, timeout=_METADATA_DEFAULT_TIMEOUT):
     #       could lead to false negatives in the event that we are on GCE, but
     #       the metadata resolution was particularly slow. The latter case is
     #       "unlikely".
-    try:
-        response = request(
-            url=_METADATA_IP_ROOT, method='GET', headers=_METADATA_HEADERS,
-            timeout=timeout)
+    retries = 0
+    while retries < retry_count:
+        try:
+            response = request(
+                url=_METADATA_IP_ROOT, method='GET', headers=_METADATA_HEADERS,
+                timeout=timeout)
 
-        metadata_flavor = response.headers.get(_METADATA_FLAVOR_HEADER)
-        return (response.status == http_client.OK and
-                metadata_flavor == _METADATA_FLAVOR_VALUE)
+            metadata_flavor = response.headers.get(_METADATA_FLAVOR_HEADER)
+            return (response.status == http_client.OK and
+                    metadata_flavor == _METADATA_FLAVOR_VALUE)
 
-    except exceptions.TransportError:
-        _LOGGER.info('Compute Engine Metadata server unavailable.')
-        return False
+        except exceptions.TransportError:
+            _LOGGER.info('Compute Engine Metadata server unavailable on'
+                         'attempt %s of %s', retries+1, retry_count)
+            retries += 1
+
+    return False
 
 
 def get(request, path, root=_METADATA_ROOT, recursive=False):
