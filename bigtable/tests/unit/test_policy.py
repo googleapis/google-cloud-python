@@ -39,10 +39,24 @@ class TestPolicy(unittest.TestCase):
 
     def test_ctor_explicit(self):
         VERSION = 17
-        ETAG = b"ETAG"
+        ETAG = u"ETAG"
         empty = frozenset()
         policy = self._make_one(ETAG, VERSION)
         self.assertEqual(policy.etag, ETAG)
+        self.assertEqual(policy.version, VERSION)
+        self.assertEqual(policy.bigtable_admins, empty)
+        self.assertEqual(policy.bigtable_readers, empty)
+        self.assertEqual(policy.bigtable_users, empty)
+        self.assertEqual(policy.bigtable_viewers, empty)
+        self.assertEqual(len(policy), 0)
+        self.assertEqual(dict(policy), {})
+
+    def test_ctor_w_bytes_etag(self):
+        VERSION = 17
+        ETAG = b"ETAG"
+        empty = frozenset()
+        policy = self._make_one(ETAG, VERSION)
+        self.assertEqual(policy.etag, ETAG.decode("UTF-8"))
         self.assertEqual(policy.version, VERSION)
         self.assertEqual(policy.bigtable_admins, empty)
         self.assertEqual(policy.bigtable_readers, empty)

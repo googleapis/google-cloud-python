@@ -13,7 +13,7 @@
 # limitations under the License.
 
 from google.api_core.iam import Policy as BasePolicy
-from google.cloud._helpers import _to_bytes
+from google.cloud._helpers import _bytes_to_unicode
 
 """IAM roles supported by Bigtable Instance resource"""
 BIGTABLE_ADMIN_ROLE = "roles/bigtable.admin"
@@ -73,7 +73,9 @@ class Policy(BasePolicy):
 
     def __init__(self, etag=None, version=None):
         BasePolicy.__init__(
-            self, etag=etag if etag is None else _to_bytes(etag), version=version
+            self,
+            etag=etag if etag is None else _bytes_to_unicode(etag),
+            version=version,
         )
 
     @property
