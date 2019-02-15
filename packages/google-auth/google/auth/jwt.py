@@ -40,7 +40,6 @@ You can also skip verification::
 
 """
 
-import base64
 import collections
 import copy
 import datetime
@@ -86,13 +85,19 @@ def encode(signer, payload, header=None, key_id=None):
         header['kid'] = key_id
 
     segments = [
-        base64.urlsafe_b64encode(json.dumps(header).encode('utf-8')),
-        base64.urlsafe_b64encode(json.dumps(payload).encode('utf-8')),
+        _helpers.unpadded_urlsafe_b64encode(
+            json.dumps(header).encode('utf-8')
+        ),
+        _helpers.unpadded_urlsafe_b64encode(
+            json.dumps(payload).encode('utf-8')
+        ),
     ]
 
     signing_input = b'.'.join(segments)
     signature = signer.sign(signing_input)
-    segments.append(base64.urlsafe_b64encode(signature))
+    segments.append(
+        _helpers.unpadded_urlsafe_b64encode(signature)
+    )
 
     return b'.'.join(segments)
 

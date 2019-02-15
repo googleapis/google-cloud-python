@@ -167,3 +167,15 @@ def test_padded_urlsafe_b64decode():
 
     for case, expected in cases:
         assert _helpers.padded_urlsafe_b64decode(case) == expected
+
+
+def test_unpadded_urlsafe_b64encode():
+    cases = [
+        (b'', b''),
+        (b'a', b'YQ'),
+        (b'aa', b'YWE'),
+        (b'aaa', b'YWFh'),
+    ]
+
+    for case, expected in cases:
+        assert _helpers.unpadded_urlsafe_b64encode(case) == expected
