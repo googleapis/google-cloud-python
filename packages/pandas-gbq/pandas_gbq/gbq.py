@@ -1,5 +1,4 @@
 import logging
-import os
 import time
 import warnings
 from collections import OrderedDict
@@ -69,7 +68,7 @@ def _check_google_client_version():
 def _test_google_api_imports():
 
     try:
-        import pydata_google_auth
+        import pydata_google_auth  # noqa
     except ImportError as ex:
         raise ImportError(
             "pandas-gbq requires pydata-google-auth: {0}".format(ex)

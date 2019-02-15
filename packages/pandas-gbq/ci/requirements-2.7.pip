@@ -1,0 +1,6 @@
+mock
+pandas==0.17.1
+google-auth==1.4.1
+google-auth-oauthlib==0.0.1
+google-cloud-bigquery==0.32.0
+pydata-google-auth==0.1.2

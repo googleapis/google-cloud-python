@@ -58,7 +58,6 @@ def mock_get_user_credentials(*args, **kwargs):
 
 @pytest.fixture(autouse=True)
 def no_auth(monkeypatch):
-    from pandas_gbq import auth
     import pydata_google_auth
 
     monkeypatch.setattr(pydata_google_auth, "default", mock_get_credentials)

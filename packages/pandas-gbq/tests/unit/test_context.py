@@ -46,11 +46,11 @@ def test_read_gbq_should_use_dialect(mock_bigquery_client):
     pandas_gbq.read_gbq("SELECT 1")
 
     _, kwargs = mock_bigquery_client.query.call_args
-    assert kwargs["job_config"].use_legacy_sql == True
+    assert kwargs["job_config"].use_legacy_sql
 
     pandas_gbq.context.dialect = "standard"
     pandas_gbq.read_gbq("SELECT 1")
 
     _, kwargs = mock_bigquery_client.query.call_args
-    assert kwargs["job_config"].use_legacy_sql == False
+    assert not kwargs["job_config"].use_legacy_sql
     pandas_gbq.context.dialect = None  # Reset the global state.

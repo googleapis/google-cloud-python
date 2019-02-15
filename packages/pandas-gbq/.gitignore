@@ -68,6 +68,8 @@ dist
 # wheel files
 *.whl
 **/wheelhouse/*
+pip-wheel-metadata
+
 # coverage
 .coverage
 .testmondata

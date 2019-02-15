@@ -1,48 +1,48 @@
 version: 2
 jobs:
   # Pip
-  "pip-2.7-0.19.2":
+  "pip-2.7":
     docker:
-      - image: python:2.7
-    environment:
-      PYTHON: "2.7"
-      PANDAS: "0.19.2"
+      - image: thekevjames/nox
     steps:
       - checkout
       - run: ci/config_auth.sh
-      - run: ci/run_pip.sh
-  "pip-3.5-0.18.1":
+      - run: nox -s unit-2.7 system-2.7
+
+  "pip-3.5":
     docker:
-      - image: python:3.5
-    environment:
-      PYTHON: "3.5"
-      PANDAS: "0.18.1"
+      - image: thekevjames/nox
     steps:
       - checkout
       - run: ci/config_auth.sh
-      - run: ci/run_pip.sh
-  "pip-3.6-MASTER":
+      - run: nox -s unit-3.5 system-3.5
+
+  "pip-3.6":
     docker:
-      - image: python:3.6
-    environment:
-      PYTHON: "3.6"
-      PANDAS: "MASTER"
+      - image: thekevjames/nox
     steps:
       - checkout
       - run: ci/config_auth.sh
-      - run: ci/run_pip.sh
-      # Coverage
-      - run: codecov
-  "pip-3.7-0.23.4":
+      - run: nox -s unit-3.6 system-3.6
+
+  "pip-3.7":
     docker:
-      - image: python:3.7
-    environment:
-      PYTHON: "3.7"
-      PANDAS: "0.23.4"
+      - image: thekevjames/nox
     steps:
       - checkout
       - run: ci/config_auth.sh
-      - run: ci/run_pip.sh
+      - run: nox -s unit-3.7 system-3.7 cover
+
+  "lint":
+    docker:
+      - image: thekevjames/nox
+    environment:
+      # Resolve "Python 3 was configured to use ASCII as encoding for the environment"
+      LC_ALL: C.UTF-8
+      LANG: C.UTF-8
+    steps:
+      - checkout
+      - run: nox -s lint
 
   # Conda
   "conda-3.6-0.20.1":
@@ -56,20 +56,13 @@ jobs:
       - run: ci/config_auth.sh
       - run: ci/run_conda.sh
 
-  lint:
-    docker:
-      - image: python:3.6
-    steps:
-      - checkout
-      - run: pip install nox
-      - run: nox -s lint
 workflows:
   version: 2
   build:
     jobs:
-      - "pip-2.7-0.19.2"
-      - "pip-3.5-0.18.1"
-      - "pip-3.6-MASTER"
-      - "pip-3.7-0.23.4"
-      - "conda-3.6-0.20.1"
+      - "pip-2.7"
+      - "pip-3.5"
+      - "pip-3.6"
+      - "pip-3.7"
       - lint
+      - "conda-3.6-0.20.1"

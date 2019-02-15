@@ -1,3 +1,5 @@
+--pre -f https://7933911d6844c6c53a7d-47bd50c35cd79bd838daf386af554a83.ssl.cf2.rackcdn.com/ pandas
 git+https://github.com/googleapis/google-cloud-python.git#egg=version_subpkg&subdirectory=api_core
 git+https://github.com/googleapis/google-cloud-python.git#egg=version_subpkg&subdirectory=core
 git+https://github.com/googleapis/google-cloud-python.git#egg=version_subpkg&subdirectory=bigquery
+pydata-google-auth==0.1.2
