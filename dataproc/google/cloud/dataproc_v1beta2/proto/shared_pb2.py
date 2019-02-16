@@ -2,13 +2,11 @@
 # source: google/cloud/dataproc_v1beta2/proto/shared.proto
 
 import sys
-
-_b = sys.version_info[0] < 3 and (lambda x: x) or (lambda x: x.encode("latin1"))
+_b=sys.version_info[0]<3 and (lambda x:x) or (lambda x:x.encode('latin1'))
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
-
 # @@protoc_insertion_point(imports)
 
 _sym_db = _symbol_database.Default()
@@ -18,17 +16,14 @@ from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
 
 
 DESCRIPTOR = _descriptor.FileDescriptor(
-    name="google/cloud/dataproc_v1beta2/proto/shared.proto",
-    package="google.cloud.dataproc.v1beta2",
-    syntax="proto3",
-    serialized_options=_b(
-        "\n!com.google.cloud.dataproc.v1beta2B\013SharedProtoP\001ZEgoogle.golang.org/genproto/googleapis/cloud/dataproc/v1beta2;dataproc"
-    ),
-    serialized_pb=_b(
-        "\n0google/cloud/dataproc_v1beta2/proto/shared.proto\x12\x1dgoogle.cloud.dataproc.v1beta2\x1a\x1cgoogle/api/annotations.protoBy\n!com.google.cloud.dataproc.v1beta2B\x0bSharedProtoP\x01ZEgoogle.golang.org/genproto/googleapis/cloud/dataproc/v1beta2;dataprocb\x06proto3"
-    ),
-    dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR],
-)
+  name='google/cloud/dataproc_v1beta2/proto/shared.proto',
+  package='google.cloud.dataproc.v1beta2',
+  syntax='proto3',
+  serialized_options=_b('\n!com.google.cloud.dataproc.v1beta2B\013SharedProtoP\001ZEgoogle.golang.org/genproto/googleapis/cloud/dataproc/v1beta2;dataproc'),
+  serialized_pb=_b('\n0google/cloud/dataproc_v1beta2/proto/shared.proto\x12\x1dgoogle.cloud.dataproc.v1beta2\x1a\x1cgoogle/api/annotations.protoBy\n!com.google.cloud.dataproc.v1beta2B\x0bSharedProtoP\x01ZEgoogle.golang.org/genproto/googleapis/cloud/dataproc/v1beta2;dataprocb\x06proto3')
+  ,
+  dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR,])
+
 
 
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
