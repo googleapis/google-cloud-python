@@ -153,3 +153,49 @@ class TestPolicy(unittest.TestCase):
         )
 
         self.assertEqual(policy.to_pb(), expected)
+
+    def test_from_api_repr_wo_etag(self):
+        VERSION = 17
+        empty = frozenset()
+        resource = {"version": VERSION}
+        klass = self._get_target_class()
+        policy = klass.from_api_repr(resource)
+        self.assertIsNone(policy.etag)
+        self.assertEqual(policy.version, VERSION)
+        self.assertEqual(policy.bigtable_admins, empty)
+        self.assertEqual(policy.bigtable_readers, empty)
+        self.assertEqual(policy.bigtable_users, empty)
+        self.assertEqual(policy.bigtable_viewers, empty)
+        self.assertEqual(len(policy), 0)
+        self.assertEqual(dict(policy), {})
+
+    def test_from_api_repr_w_etag(self):
+        import base64
+
+        ETAG = b"ETAG"
+        empty = frozenset()
+        resource = {"etag": base64.b64encode(ETAG).decode("ascii")}
+        klass = self._get_target_class()
+        policy = klass.from_api_repr(resource)
+        self.assertEqual(policy.etag, ETAG)
+        self.assertIsNone(policy.version)
+        self.assertEqual(policy.bigtable_admins, empty)
+        self.assertEqual(policy.bigtable_readers, empty)
+        self.assertEqual(policy.bigtable_users, empty)
+        self.assertEqual(policy.bigtable_viewers, empty)
+        self.assertEqual(len(policy), 0)
+        self.assertEqual(dict(policy), {})
+
+    def test_to_api_repr_wo_etag(self):
+        VERSION = 17
+        resource = {"version": VERSION}
+        policy = self._make_one(version=VERSION)
+        self.assertEqual(policy.to_api_repr(), resource)
+
+    def test_to_api_repr_w_etag(self):
+        import base64
+
+        ETAG = b"ETAG"
+        policy = self._make_one(etag=ETAG)
+        resource = {"etag": base64.b64encode(ETAG).decode("ascii")}
+        self.assertEqual(policy.to_api_repr(), resource)

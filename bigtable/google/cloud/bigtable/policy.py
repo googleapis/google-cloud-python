@@ -145,3 +145,41 @@ class Policy(BasePolicy):
                 for role in self
             ],
         )
+
+    @classmethod
+    def from_api_repr(cls, resource):
+        """Factory: create a policy from a JSON resource.
+
+        Overrides the base class version to store :attr:`etag` as bytes.
+
+        Args:
+            resource (dict): JSON policy resource returned by the
+            ``getIamPolicy`` REST API.
+
+        Returns:
+            :class:`Policy`: the parsed policy
+        """
+        etag = resource.get("etag")
+
+        if etag is not None:
+            resource = resource.copy()
+            resource["etag"] = base64.b64decode(etag.encode("ascii"))
+
+        return super(Policy, cls).from_api_repr(resource)
+
+    def to_api_repr(self):
+        """Render a JSON policy resource.
+
+        Overrides the base class version to convert :attr:`etag` from bytes
+        to JSON-compatible base64-encoded text.
+
+        Returns:
+            dict: a JSON resource to be passed to the
+            ``setIamPolicy`` REST API.
+        """
+        resource = super(Policy, self).to_api_repr()
+
+        if self.etag is not None:
+            resource["etag"] = base64.b64encode(self.etag).decode("ascii")
+
+        return resource
