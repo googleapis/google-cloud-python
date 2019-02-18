@@ -86,3 +86,70 @@ class TestPolicy(unittest.TestCase):
         policy = self._make_one()
         policy[BIGTABLE_VIEWER_ROLE] = [MEMBER]
         self.assertEqual(policy.bigtable_viewers, expected)
+
+    def test_from_pb_empty(self):
+        from google.iam.v1 import policy_pb2
+
+        empty = frozenset()
+        message = policy_pb2.Policy()
+        klass = self._get_target_class()
+        policy = klass.from_pb(message)
+        self.assertEqual(policy.etag, b"")
+        self.assertEqual(policy.version, 0)
+        self.assertEqual(policy.bigtable_admins, empty)
+        self.assertEqual(policy.bigtable_readers, empty)
+        self.assertEqual(policy.bigtable_users, empty)
+        self.assertEqual(policy.bigtable_viewers, empty)
+        self.assertEqual(len(policy), 0)
+        self.assertEqual(dict(policy), {})
+
+    def test_from_pb_non_empty(self):
+        from google.iam.v1 import policy_pb2
+        from google.cloud.bigtable.policy import BIGTABLE_ADMIN_ROLE
+
+        ETAG = b"ETAG"
+        VERSION = 17
+        members = ["serviceAccount:service_acc1@test.com", "user:user1@test.com"]
+        empty = frozenset()
+        message = policy_pb2.Policy(
+            etag=ETAG,
+            version=VERSION,
+            bindings=[{"role": BIGTABLE_ADMIN_ROLE, "members": members}],
+        )
+        klass = self._get_target_class()
+        policy = klass.from_pb(message)
+        self.assertEqual(policy.etag, ETAG)
+        self.assertEqual(policy.version, VERSION)
+        self.assertEqual(policy.bigtable_admins, set(members))
+        self.assertEqual(policy.bigtable_readers, empty)
+        self.assertEqual(policy.bigtable_users, empty)
+        self.assertEqual(policy.bigtable_viewers, empty)
+        self.assertEqual(len(policy), 1)
+        self.assertEqual(dict(policy), {BIGTABLE_ADMIN_ROLE: set(members)})
+
+    def test_to_pb_empty(self):
+        from google.iam.v1 import policy_pb2
+
+        policy = self._make_one()
+        expected = policy_pb2.Policy()
+
+        self.assertEqual(policy.to_pb(), expected)
+
+    def test_to_pb_explicit(self):
+        from google.iam.v1 import policy_pb2
+        from google.cloud.bigtable.policy import BIGTABLE_ADMIN_ROLE
+
+        VERSION = 17
+        ETAG = b"ETAG"
+        members = ["serviceAccount:service_acc1@test.com", "user:user1@test.com"]
+        policy = self._make_one(ETAG, VERSION)
+        policy[BIGTABLE_ADMIN_ROLE] = members
+        expected = policy_pb2.Policy(
+            etag=ETAG,
+            version=VERSION,
+            bindings=[
+                policy_pb2.Binding(role=BIGTABLE_ADMIN_ROLE, members=sorted(members))
+            ],
+        )
+
+        self.assertEqual(policy.to_pb(), expected)
