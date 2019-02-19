@@ -86,3 +86,20 @@ class BadFilterError(Error):
         self.filter = filter
         message = "invalid filter: {}.".format(self.filter).encode("utf-8")
         super(BadFilterError, self).__init__(message)
+
+
+class NoLongerImplementedError(NotImplementedError):
+    """Indicates a legacy function that is intentionally left unimplemented.
+
+    In the vast majority of cases, this should only be raised by classes,
+    functions, or methods that were only been used internally in legacy NDB and
+    are no longer necessary because of refactoring. Legacy NDB did a poor job
+    of distinguishing between internal and public API. Where we have determined
+    that something is probably not a part of the public API, we've removed it
+    in order to keep the supported API as clean as possible. It's possible that
+    in some cases we've guessed wrong. Get in touch with the NDB development
+    team if you think this is the case.
+    """
+
+    def __init__(self):
+        super(NoLongerImplementedError, self).__init__("No longer implemented")
