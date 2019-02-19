@@ -875,9 +875,8 @@ class Query:
     """Query object.
 
     Args:
-        kind (str): The kind of query.
-        ancestor (Key): The key of the ancestor to which this query's are
-            restricted.
+        kind (str): The kind of entities to be queried.
+        ancestor (Key): Entities returned will be descendants of `ancestor`.
         filters (Union[Node, tuple]): Node representing a filter expression
             tree. Property filters applied by this query. The sequence
             is ``(property_name, operator, value)``.
