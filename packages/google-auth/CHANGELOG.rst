@@ -1,6 +1,17 @@
 Changelog
 =========
 
+v1.6.3
+------
+
+02-15-2019 9:31 PST
+
+Implementation Changes
++++++++++++++
+
+- follow rfc 7515 : strip padding from JWS segments #324 (`#324 <https://github.com/googleapis/google-auth-library-python/pull/324>`_)
+- Add retry to _metadata.ping() (`#323 <https://github.com/googleapis/google-auth-library-python/pull/323>`_)
+
 v1.6.2
 ------
 
