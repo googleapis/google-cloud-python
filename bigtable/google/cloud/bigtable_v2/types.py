@@ -19,15 +19,13 @@ import sys
 
 from google.api_core.protobuf_helpers import get_messages
 
-from google.api import http_pb2
 from google.cloud.bigtable_v2.proto import bigtable_pb2
 from google.cloud.bigtable_v2.proto import data_pb2
 from google.protobuf import any_pb2
-from google.protobuf import descriptor_pb2
 from google.protobuf import wrappers_pb2
 from google.rpc import status_pb2
 
-_shared_modules = [http_pb2, any_pb2, descriptor_pb2, wrappers_pb2, status_pb2]
+_shared_modules = [any_pb2, wrappers_pb2, status_pb2]
 
 _local_modules = [bigtable_pb2, data_pb2]
 
