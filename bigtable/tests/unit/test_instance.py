@@ -641,7 +641,7 @@ class TestInstance(unittest.TestCase):
         version = 1
         etag = b"etag_v1"
         members = ["serviceAccount:service_acc1@test.com", "user:user1@test.com"]
-        bindings = [{"role": BIGTABLE_ADMIN_ROLE, "members": members}]
+        bindings = [{"role": BIGTABLE_ADMIN_ROLE, "members": sorted(members)}]
         iam_policy_pb = policy_pb2.Policy(version=version, etag=etag, bindings=bindings)
 
         # Patch the stub used by the API method.
@@ -661,8 +661,7 @@ class TestInstance(unittest.TestCase):
         result = instance.set_iam_policy(iam_policy)
 
         instance_api.set_iam_policy.assert_called_once_with(
-            resource=instance.name,
-            policy={"version": version, "etag": etag, "bindings": bindings},
+            resource=instance.name, policy=iam_policy_pb
         )
         self.assertEqual(result.version, version)
         self.assertEqual(result.etag, etag)
