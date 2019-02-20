@@ -1836,6 +1836,7 @@ class DlpServiceClient(object):
         parent,
         page_size=None,
         order_by=None,
+        filter_=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
         metadata=None,
@@ -1883,9 +1884,39 @@ class DlpServiceClient(object):
 
                 -  ``create_time``: corresponds to time the JobTrigger was created.
                 -  ``update_time``: corresponds to time the JobTrigger was last updated.
+                -  ``last_run_time``: corresponds to the last time the JobTrigger ran.
                 -  ``name``: corresponds to JobTrigger's name.
                 -  ``display_name``: corresponds to JobTrigger's display name.
                 -  ``status``: corresponds to JobTrigger's status.
+            filter_ (str): Optional. Allows filtering.
+
+                Supported syntax:
+
+                -  Filter expressions are made up of one or more restrictions.
+                -  Restrictions can be combined by ``AND`` or ``OR`` logical operators.
+                   A sequence of restrictions implicitly uses ``AND``.
+                -  A restriction has the form of ``<field> <operator> <value>``.
+                -  Supported fields/values for inspect jobs:
+
+                   -  ``status`` - HEALTHY\|PAUSED\|CANCELLED
+                   -  ``inspected_storage`` - DATASTORE\|CLOUD\_STORAGE\|BIGQUERY
+                   -  'last\_run\_time\` - RFC 3339 formatted timestamp, surrounded by
+                      quotation marks. Nanoseconds are ignored.
+                   -  'error\_count' - Number of errors that have occurred while
+                      running.
+
+                -  The operator must be ``=`` or ``!=`` for status and
+                   inspected\_storage.
+
+                Examples:
+
+                -  inspected\_storage = cloud\_storage AND status = HEALTHY
+                -  inspected\_storage = cloud\_storage OR inspected\_storage = bigquery
+                -  inspected\_storage = cloud\_storage AND (state = PAUSED OR state =
+                   HEALTHY)
+                -  last\_run\_time > "2017-12-12T00:00:00+00:00"
+
+                The length of this field should be no more than 500 characters.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -1920,7 +1951,7 @@ class DlpServiceClient(object):
             )
 
         request = dlp_pb2.ListJobTriggersRequest(
-            parent=parent, page_size=page_size, order_by=order_by
+            parent=parent, page_size=page_size, order_by=order_by, filter=filter_
         )
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,

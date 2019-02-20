@@ -125,6 +125,11 @@ class DlpServiceStub(object):
             request_serializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.DeleteJobTriggerRequest.SerializeToString,
             response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
         )
+        self.ActivateJobTrigger = channel.unary_unary(
+            "/google.privacy.dlp.v2.DlpService/ActivateJobTrigger",
+            request_serializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.ActivateJobTriggerRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.DlpJob.FromString,
+        )
         self.CreateDlpJob = channel.unary_unary(
             "/google.privacy.dlp.v2.DlpService/CreateDlpJob",
             request_serializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.CreateDlpJobRequest.SerializeToString,
@@ -379,6 +384,14 @@ class DlpServiceServicer(object):
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
+    def ActivateJobTrigger(self, request, context):
+        """Activate a job trigger. Causes the immediate execute of a trigger
+    instead of waiting on the trigger event to occur.
+    """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
     def CreateDlpJob(self, request, context):
         """Creates a new job to inspect storage or calculate risk metrics.
     See https://cloud.google.com/dlp/docs/inspecting-storage and
@@ -580,6 +593,11 @@ def add_DlpServiceServicer_to_server(servicer, server):
             servicer.DeleteJobTrigger,
             request_deserializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.DeleteJobTriggerRequest.FromString,
             response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
+        ),
+        "ActivateJobTrigger": grpc.unary_unary_rpc_method_handler(
+            servicer.ActivateJobTrigger,
+            request_deserializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.ActivateJobTriggerRequest.FromString,
+            response_serializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.DlpJob.SerializeToString,
         ),
         "CreateDlpJob": grpc.unary_unary_rpc_method_handler(
             servicer.CreateDlpJob,
