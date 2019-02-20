@@ -194,19 +194,6 @@ class IncidentServiceGrpcTransport(object):
         return self._stubs["incident_service_stub"].ListAnnotations
 
     @property
-    def update_annotation(self):
-        """Return the gRPC stub for :meth:`IncidentServiceClient.update_annotation`.
-
-        Updates an annotation on an existing incident.
-
-        Returns:
-            Callable: A callable which accepts the appropriate
-                deserialized request object and returns a
-                deserialized response object.
-        """
-        return self._stubs["incident_service_stub"].UpdateAnnotation
-
-    @property
     def create_tag(self):
         """Return the gRPC stub for :meth:`IncidentServiceClient.create_tag`.
 
@@ -259,8 +246,8 @@ class IncidentServiceGrpcTransport(object):
         return self._stubs["incident_service_stub"].CreateSignal
 
     @property
-    def list_signals(self):
-        """Return the gRPC stub for :meth:`IncidentServiceClient.list_signals`.
+    def search_signals(self):
+        """Return the gRPC stub for :meth:`IncidentServiceClient.search_signals`.
 
         Lists signals that are part of an incident.
         Signals are returned in reverse chronological order.
@@ -270,7 +257,7 @@ class IncidentServiceGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["incident_service_stub"].ListSignals
+        return self._stubs["incident_service_stub"].SearchSignals
 
     @property
     def get_signal(self):
@@ -289,7 +276,7 @@ class IncidentServiceGrpcTransport(object):
     def update_signal(self):
         """Return the gRPC stub for :meth:`IncidentServiceClient.update_signal`.
 
-        Updates an existing signal (e.g. to assign/unassign it to an
+        Updates an existing signal (for example, to assign/unassign it to an
         incident).
 
         Returns:
@@ -298,20 +285,6 @@ class IncidentServiceGrpcTransport(object):
                 deserialized response object.
         """
         return self._stubs["incident_service_stub"].UpdateSignal
-
-    @property
-    def acknowledge_signal(self):
-        """Return the gRPC stub for :meth:`IncidentServiceClient.acknowledge_signal`.
-
-        Acks a signal. This acknowledges the signal in the underlying system,
-        indicating that the caller takes responsibility for looking into this.
-
-        Returns:
-            Callable: A callable which accepts the appropriate
-                deserialized request object and returns a
-                deserialized response object.
-        """
-        return self._stubs["incident_service_stub"].AcknowledgeSignal
 
     @property
     def escalate_incident(self):
@@ -379,20 +352,6 @@ class IncidentServiceGrpcTransport(object):
         return self._stubs["incident_service_stub"].DeleteArtifact
 
     @property
-    def get_shift_handoff_presets(self):
-        """Return the gRPC stub for :meth:`IncidentServiceClient.get_shift_handoff_presets`.
-
-        Returns "presets" specific to shift handoff (see SendShiftHandoff), e.g.
-        default values for handoff message fields.
-
-        Returns:
-            Callable: A callable which accepts the appropriate
-                deserialized request object and returns a
-                deserialized response object.
-        """
-        return self._stubs["incident_service_stub"].GetShiftHandoffPresets
-
-    @property
     def send_shift_handoff(self):
         """Return the gRPC stub for :meth:`IncidentServiceClient.send_shift_handoff`.
 
@@ -420,6 +379,19 @@ class IncidentServiceGrpcTransport(object):
                 deserialized response object.
         """
         return self._stubs["incident_service_stub"].CreateSubscription
+
+    @property
+    def update_subscription(self):
+        """Return the gRPC stub for :meth:`IncidentServiceClient.update_subscription`.
+
+        Updates a subscription.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["incident_service_stub"].UpdateSubscription
 
     @property
     def list_subscriptions(self):

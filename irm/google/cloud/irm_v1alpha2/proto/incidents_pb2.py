@@ -18,6 +18,7 @@ from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
 from google.cloud.monitoring_v3.proto import (
     metric_service_pb2 as google_dot_cloud_dot_monitoring__v3_dot_proto_dot_metric__service__pb2,
 )
+from google.protobuf import duration_pb2 as google_dot_protobuf_dot_duration__pb2
 from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__pb2
 
 
@@ -29,11 +30,12 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n#com.google.irm.service.v1alpha2.apiP\001Z<google.golang.org/genproto/googleapis/cloud/irm/v1alpha2;irm\370\001\001"
     ),
     serialized_pb=_b(
-        '\n/google/cloud/irm_v1alpha2/proto/incidents.proto\x12\x19google.cloud.irm.v1alpha2\x1a\x1cgoogle/api/annotations.proto\x1a\x35google/cloud/monitoring_v3/proto/metric_service.proto\x1a\x1fgoogle/protobuf/timestamp.proto"2\n\x04User\x12\x11\n\x07user_id\x18\x01 \x01(\tH\x00\x12\x0f\n\x05\x65mail\x18\x02 \x01(\tH\x00\x42\x06\n\x04user"\xd0\x02\n\x06Signal\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0c\n\x04\x65tag\x18\x02 \x01(\t\x12\x10\n\x08incident\x18\x03 \x01(\t\x12/\n\x0b\x63reate_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x30\n\x07\x63reator\x18\x05 \x01(\x0b\x32\x1f.google.cloud.irm.v1alpha2.User\x12\r\n\x05title\x18\x06 \x01(\t\x12\x14\n\x0c\x63ontent_type\x18\x07 \x01(\t\x12\x0f\n\x07\x63ontent\x18\x08 \x01(\t\x12=\n\x0csignal_state\x18\t \x01(\x0e\x32\'.google.cloud.irm.v1alpha2.Signal.State"@\n\x05State\x12\x15\n\x11STATE_UNSPECIFIED\x10\x00\x12\x0e\n\nSTATE_OPEN\x10\x01\x12\x10\n\x0cSTATE_CLOSED\x10\x02"\x8d\x01\n\nAnnotation\x12\x0c\n\x04name\x18\x01 \x01(\t\x12/\n\x06\x61uthor\x18\x02 \x01(\x0b\x32\x1f.google.cloud.irm.v1alpha2.User\x12/\n\x0b\x63reate_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x0f\n\x07\x63ontent\x18\x04 \x01(\t"6\n\x03Tag\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x02 \x01(\t\x12\x0b\n\x03url\x18\x03 \x01(\t"\x93\x01\n\x08Synopsis\x12\x14\n\x0c\x63ontent_type\x18\x01 \x01(\t\x12\x0f\n\x07\x63ontent\x18\x02 \x01(\t\x12/\n\x0bupdate_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12/\n\x06\x61uthor\x18\x04 \x01(\x0b\x32\x1f.google.cloud.irm.v1alpha2.User"\xd4\x05\n\x08Incident\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\r\n\x05title\x18\x02 \x01(\t\x12M\n\x10\x65scalation_level\x18\x03 \x01(\x0e\x32\x33.google.cloud.irm.v1alpha2.Incident.EscalationLevel\x12\x0c\n\x04\x65tag\x18\x04 \x01(\t\x12>\n\x08severity\x18\x05 \x01(\x0e\x32,.google.cloud.irm.v1alpha2.Incident.Severity\x12\x38\n\x05stage\x18\x06 \x01(\x0e\x32).google.cloud.irm.v1alpha2.Incident.Stage\x12.\n\nstart_time\x18\x07 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x35\n\x08synopsis\x18\x08 \x01(\x0b\x32#.google.cloud.irm.v1alpha2.Synopsis"V\n\x0f\x45scalationLevel\x12 \n\x1c\x45SCALATION_LEVEL_UNSPECIFIED\x10\x00\x12!\n\x1d\x45SCALATION_LEVEL_ORGANIZATION\x10\x01"\x8d\x01\n\x08Severity\x12\x18\n\x14SEVERITY_UNSPECIFIED\x10\x00\x12\x11\n\rSEVERITY_HUGE\x10\x01\x12\x12\n\x0eSEVERITY_MAJOR\x10\x02\x12\x13\n\x0fSEVERITY_MEDIUM\x10\x03\x12\x12\n\x0eSEVERITY_MINOR\x10\x04\x12\x17\n\x13SEVERITY_NEGLIGIBLE\x10\x05"\x84\x01\n\x05Stage\x12\x15\n\x11STAGE_UNSPECIFIED\x10\x00\x12\x12\n\x0eSTAGE_DETECTED\x10\x04\x12\x11\n\rSTAGE_TRIAGED\x10\x01\x12\x13\n\x0fSTAGE_MITIGATED\x10\x02\x12\x12\n\x0eSTAGE_RESOLVED\x10\x03\x12\x14\n\x10STAGE_DOCUMENTED\x10\x05"\xd6\x02\n\x0cIncidentRole\x12:\n\x04type\x18\x01 \x01(\x0e\x32,.google.cloud.irm.v1alpha2.IncidentRole.Type\x12\r\n\x05title\x18\x02 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x03 \x01(\t"\xe5\x01\n\x04Type\x12\x14\n\x10TYPE_UNSPECIFIED\x10\x00\x12\x1b\n\x17TYPE_INCIDENT_COMMANDER\x10\x01\x12\x1c\n\x18TYPE_COMMUNICATIONS_LEAD\x10\x02\x12\x18\n\x14TYPE_OPERATIONS_LEAD\x10\x03\x12.\n*TYPE_EXTERNAL_CUSTOMER_COMMUNICATIONS_LEAD\x10\x04\x12\x17\n\x13TYPE_PRIMARY_ONCALL\x10\x05\x12\x19\n\x15TYPE_SECONDARY_ONCALL\x10\x06\x12\x0e\n\nTYPE_OTHER\x10\x07"\xda\x01\n\x16IncidentRoleAssignment\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0c\n\x04\x65tag\x18\x02 \x01(\t\x12\x35\n\x04role\x18\x03 \x01(\x0b\x32\'.google.cloud.irm.v1alpha2.IncidentRole\x12\x31\n\x08\x61ssignee\x18\x04 \x01(\x0b\x32\x1f.google.cloud.irm.v1alpha2.User\x12:\n\x11proposed_assignee\x18\x05 \x01(\x0b\x32\x1f.google.cloud.irm.v1alpha2.User"\xf2\x01\n\x08\x41rtifact\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x02 \x01(\t\x12\x0c\n\x04\x65tag\x18\x03 \x01(\t\x12\x0b\n\x03url\x18\x04 \x01(\t\x12\x36\n\x04type\x18\x05 \x01(\x0e\x32(.google.cloud.irm.v1alpha2.Artifact.Type"o\n\x04Type\x12\x14\n\x10TYPE_UNSPECIFIED\x10\x00\x12\x0c\n\x08TYPE_URL\x10\x01\x12\x0e\n\nTYPE_ISSUE\x10\x02\x12\x1e\n\x1aTYPE_SOURCE_CONTROL_CHANGE\x10\x03\x12\x13\n\x0fTYPE_JIRA_ISSUE\x10\x04"\x8e\x02\n\x14\x43ommunicationChannel\x12\x46\n\x05\x65mail\x18\x01 \x01(\x0b\x32\x35.google.cloud.irm.v1alpha2.CommunicationChannel.EmailH\x00\x12\x63\n\x14notification_channel\x18\x02 \x01(\x0b\x32\x43.google.cloud.irm.v1alpha2.CommunicationChannel.NotificationChannelH\x00\x1a\x18\n\x05\x45mail\x12\x0f\n\x07\x61\x64\x64ress\x18\x01 \x01(\t\x1a#\n\x13NotificationChannel\x12\x0c\n\x04name\x18\x01 \x01(\tB\n\n\x08\x65ndpoint"\xa6\x03\n\x0cSubscription\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0c\n\x04\x65tag\x18\x02 \x01(\t\x12M\n\x14subscription_channel\x18\x03 \x01(\x0b\x32/.google.cloud.irm.v1alpha2.CommunicationChannel\x12\x46\n\x0b\x65vent_types\x18\x04 \x03(\x0e\x32\x31.google.cloud.irm.v1alpha2.Subscription.EventType"\xe2\x01\n\tEventType\x12\x1a\n\x16\x45VENT_TYPE_UNSPECIFIED\x10\x00\x12\x1b\n\x17\x45VENT_TYPE_TITLE_CHANGE\x10\x01\x12\x1e\n\x1a\x45VENT_TYPE_SYNOPSIS_CHANGE\x10\x02\x12\x1b\n\x17\x45VENT_TYPE_STAGE_CHANGE\x10\x03\x12\x1e\n\x1a\x45VENT_TYPE_SEVERITY_CHANGE\x10\x04\x12\x1d\n\x19\x45VENT_TYPE_ANNOTATION_ADD\x10\x05\x12 \n\x1c\x45VENT_TYPE_ANNOTATION_CHANGE\x10\x06\x42h\n#com.google.irm.service.v1alpha2.apiP\x01Z<google.golang.org/genproto/googleapis/cloud/irm/v1alpha2;irm\xf8\x01\x01\x62\x06proto3'
+        '\n/google/cloud/irm_v1alpha2/proto/incidents.proto\x12\x19google.cloud.irm.v1alpha2\x1a\x1cgoogle/api/annotations.proto\x1a\x35google/cloud/monitoring_v3/proto/metric_service.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1fgoogle/protobuf/timestamp.proto"2\n\x04User\x12\x11\n\x07user_id\x18\x01 \x01(\tH\x00\x12\x0f\n\x05\x65mail\x18\x02 \x01(\tH\x00\x42\x06\n\x04user"\xc2\x04\n\x06Signal\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0c\n\x04\x65tag\x18\x02 \x01(\t\x12\x10\n\x08incident\x18\x03 \x01(\t\x12/\n\x0b\x63reate_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12.\n\nclose_time\x18\n \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12/\n\x0b\x64\x65tect_time\x18\x0f \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x30\n\x07\x63reator\x18\x05 \x01(\x0b\x32\x1f.google.cloud.irm.v1alpha2.User\x12\r\n\x05title\x18\x06 \x01(\t\x12\x14\n\x0c\x63ontent_type\x18\x07 \x01(\t\x12\x0f\n\x07\x63ontent\x18\x08 \x01(\t\x12=\n\x0csignal_state\x18\t \x01(\x0e\x32\'.google.cloud.irm.v1alpha2.Signal.State\x12J\n\x10signal_artifacts\x18\x10 \x03(\x0b\x32\x30.google.cloud.irm.v1alpha2.Signal.SignalArtifact\x1a\x43\n\x0eSignalArtifact\x12\x13\n\tuser_type\x18\x02 \x01(\tH\x00\x12\x0b\n\x03uri\x18\x03 \x01(\tB\x0f\n\rartifact_type"@\n\x05State\x12\x15\n\x11STATE_UNSPECIFIED\x10\x00\x12\x0e\n\nSTATE_OPEN\x10\x01\x12\x10\n\x0cSTATE_CLOSED\x10\x02"\x8d\x01\n\nAnnotation\x12\x0c\n\x04name\x18\x01 \x01(\t\x12/\n\x06\x61uthor\x18\x02 \x01(\x0b\x32\x1f.google.cloud.irm.v1alpha2.User\x12/\n\x0b\x63reate_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x0f\n\x07\x63ontent\x18\x04 \x01(\t")\n\x03Tag\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x02 \x01(\t"\x93\x01\n\x08Synopsis\x12\x14\n\x0c\x63ontent_type\x18\x01 \x01(\t\x12\x0f\n\x07\x63ontent\x18\x02 \x01(\t\x12/\n\x0bupdate_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12/\n\x06\x61uthor\x18\x04 \x01(\x0b\x32\x1f.google.cloud.irm.v1alpha2.User"\xc9\x08\n\x08Incident\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\r\n\x05title\x18\x02 \x01(\t\x12M\n\x10\x65scalation_level\x18\x03 \x01(\x0e\x32\x33.google.cloud.irm.v1alpha2.Incident.EscalationLevel\x12\x0c\n\x04\x65tag\x18\x04 \x01(\t\x12>\n\x08severity\x18\x05 \x01(\x0e\x32,.google.cloud.irm.v1alpha2.Incident.Severity\x12\x38\n\x05stage\x18\x06 \x01(\x0e\x32).google.cloud.irm.v1alpha2.Incident.Stage\x12\x1a\n\x12\x64uplicate_incident\x18\t \x01(\t\x12.\n\nstart_time\x18\x07 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x35\n\x08synopsis\x18\x08 \x01(\x0b\x32#.google.cloud.irm.v1alpha2.Synopsis\x12S\n\x13\x63ommunication_venue\x18\n \x01(\x0b\x32\x36.google.cloud.irm.v1alpha2.Incident.CommunicationVenue\x1a\xec\x01\n\x12\x43ommunicationVenue\x12\x0b\n\x03uri\x18\x01 \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x02 \x01(\t\x12X\n\x0c\x63hannel_type\x18\x03 \x01(\x0e\x32\x42.google.cloud.irm.v1alpha2.Incident.CommunicationVenue.ChannelType"Y\n\x0b\x43hannelType\x12\x1c\n\x18\x43HANNEL_TYPE_UNSPECIFIED\x10\x00\x12\x14\n\x10\x43HANNEL_TYPE_URI\x10\x01\x12\x16\n\x12\x43HANNEL_TYPE_SLACK\x10\x05"V\n\x0f\x45scalationLevel\x12 \n\x1c\x45SCALATION_LEVEL_UNSPECIFIED\x10\x00\x12!\n\x1d\x45SCALATION_LEVEL_ORGANIZATION\x10\x01"\x8d\x01\n\x08Severity\x12\x18\n\x14SEVERITY_UNSPECIFIED\x10\x00\x12\x11\n\rSEVERITY_HUGE\x10\x01\x12\x12\n\x0eSEVERITY_MAJOR\x10\x02\x12\x13\n\x0fSEVERITY_MEDIUM\x10\x03\x12\x12\n\x0eSEVERITY_MINOR\x10\x04\x12\x17\n\x13SEVERITY_NEGLIGIBLE\x10\x05"\x99\x01\n\x05Stage\x12\x15\n\x11STAGE_UNSPECIFIED\x10\x00\x12\x12\n\x0eSTAGE_DETECTED\x10\x04\x12\x11\n\rSTAGE_TRIAGED\x10\x01\x12\x13\n\x0fSTAGE_MITIGATED\x10\x02\x12\x12\n\x0eSTAGE_RESOLVED\x10\x03\x12\x14\n\x10STAGE_DOCUMENTED\x10\x05\x12\x13\n\x0fSTAGE_DUPLICATE\x10\x06"\xd6\x02\n\x0cIncidentRole\x12:\n\x04type\x18\x01 \x01(\x0e\x32,.google.cloud.irm.v1alpha2.IncidentRole.Type\x12\r\n\x05title\x18\x02 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x03 \x01(\t"\xe5\x01\n\x04Type\x12\x14\n\x10TYPE_UNSPECIFIED\x10\x00\x12\x1b\n\x17TYPE_INCIDENT_COMMANDER\x10\x01\x12\x1c\n\x18TYPE_COMMUNICATIONS_LEAD\x10\x02\x12\x18\n\x14TYPE_OPERATIONS_LEAD\x10\x03\x12.\n*TYPE_EXTERNAL_CUSTOMER_COMMUNICATIONS_LEAD\x10\x04\x12\x17\n\x13TYPE_PRIMARY_ONCALL\x10\x05\x12\x19\n\x15TYPE_SECONDARY_ONCALL\x10\x06\x12\x0e\n\nTYPE_OTHER\x10\x07"\xda\x01\n\x16IncidentRoleAssignment\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0c\n\x04\x65tag\x18\x02 \x01(\t\x12\x35\n\x04role\x18\x03 \x01(\x0b\x32\'.google.cloud.irm.v1alpha2.IncidentRole\x12\x31\n\x08\x61ssignee\x18\x04 \x01(\x0b\x32\x1f.google.cloud.irm.v1alpha2.User\x12:\n\x11proposed_assignee\x18\x05 \x01(\x0b\x32\x1f.google.cloud.irm.v1alpha2.User"\xc2\x01\n\x08\x41rtifact\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x02 \x01(\t\x12\x0c\n\x04\x65tag\x18\x03 \x01(\t\x12\x0b\n\x03url\x18\x04 \x01(\t\x12\x36\n\x04type\x18\x05 \x01(\x0e\x32(.google.cloud.irm.v1alpha2.Artifact.Type"?\n\x04Type\x12\x14\n\x10TYPE_UNSPECIFIED\x10\x00\x12\x0c\n\x08TYPE_URL\x10\x01\x12\x13\n\x0fTYPE_JIRA_ISSUE\x10\x04"\x8e\x02\n\x14\x43ommunicationChannel\x12\x46\n\x05\x65mail\x18\x01 \x01(\x0b\x32\x35.google.cloud.irm.v1alpha2.CommunicationChannel.EmailH\x00\x12\x63\n\x14notification_channel\x18\x02 \x01(\x0b\x32\x43.google.cloud.irm.v1alpha2.CommunicationChannel.NotificationChannelH\x00\x1a\x18\n\x05\x45mail\x12\x0f\n\x07\x61\x64\x64ress\x18\x01 \x01(\t\x1a#\n\x13NotificationChannel\x12\x0c\n\x04name\x18\x01 \x01(\tB\n\n\x08\x65ndpoint"\xa6\x03\n\x0cSubscription\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0c\n\x04\x65tag\x18\x02 \x01(\t\x12M\n\x14subscription_channel\x18\x03 \x01(\x0b\x32/.google.cloud.irm.v1alpha2.CommunicationChannel\x12\x46\n\x0b\x65vent_types\x18\x04 \x03(\x0e\x32\x31.google.cloud.irm.v1alpha2.Subscription.EventType"\xe2\x01\n\tEventType\x12\x1a\n\x16\x45VENT_TYPE_UNSPECIFIED\x10\x00\x12\x1b\n\x17\x45VENT_TYPE_TITLE_CHANGE\x10\x01\x12\x1e\n\x1a\x45VENT_TYPE_SYNOPSIS_CHANGE\x10\x02\x12\x1b\n\x17\x45VENT_TYPE_STAGE_CHANGE\x10\x03\x12\x1e\n\x1a\x45VENT_TYPE_SEVERITY_CHANGE\x10\x04\x12\x1d\n\x19\x45VENT_TYPE_ANNOTATION_ADD\x10\x05\x12 \n\x1c\x45VENT_TYPE_ANNOTATION_CHANGE\x10\x06\x42h\n#com.google.irm.service.v1alpha2.apiP\x01Z<google.golang.org/genproto/googleapis/cloud/irm/v1alpha2;irm\xf8\x01\x01\x62\x06proto3'
     ),
     dependencies=[
         google_dot_api_dot_annotations__pb2.DESCRIPTOR,
         google_dot_cloud_dot_monitoring__v3_dot_proto_dot_metric__service__pb2.DESCRIPTOR,
+        google_dot_protobuf_dot_duration__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,
     ],
 )
@@ -61,10 +63,45 @@ _SIGNAL_STATE = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=521,
-    serialized_end=585,
+    serialized_start=795,
+    serialized_end=859,
 )
 _sym_db.RegisterEnumDescriptor(_SIGNAL_STATE)
+
+_INCIDENT_COMMUNICATIONVENUE_CHANNELTYPE = _descriptor.EnumDescriptor(
+    name="ChannelType",
+    full_name="google.cloud.irm.v1alpha2.Incident.CommunicationVenue.ChannelType",
+    filename=None,
+    file=DESCRIPTOR,
+    values=[
+        _descriptor.EnumValueDescriptor(
+            name="CHANNEL_TYPE_UNSPECIFIED",
+            index=0,
+            number=0,
+            serialized_options=None,
+            type=None,
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="CHANNEL_TYPE_URI",
+            index=1,
+            number=1,
+            serialized_options=None,
+            type=None,
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="CHANNEL_TYPE_SLACK",
+            index=2,
+            number=5,
+            serialized_options=None,
+            type=None,
+        ),
+    ],
+    containing_type=None,
+    serialized_options=None,
+    serialized_start=1819,
+    serialized_end=1908,
+)
+_sym_db.RegisterEnumDescriptor(_INCIDENT_COMMUNICATIONVENUE_CHANNELTYPE)
 
 _INCIDENT_ESCALATIONLEVEL = _descriptor.EnumDescriptor(
     name="EscalationLevel",
@@ -89,8 +126,8 @@ _INCIDENT_ESCALATIONLEVEL = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=1297,
-    serialized_end=1383,
+    serialized_start=1910,
+    serialized_end=1996,
 )
 _sym_db.RegisterEnumDescriptor(_INCIDENT_ESCALATIONLEVEL)
 
@@ -133,8 +170,8 @@ _INCIDENT_SEVERITY = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=1386,
-    serialized_end=1527,
+    serialized_start=1999,
+    serialized_end=2140,
 )
 _sym_db.RegisterEnumDescriptor(_INCIDENT_SEVERITY)
 
@@ -174,11 +211,18 @@ _INCIDENT_STAGE = _descriptor.EnumDescriptor(
             serialized_options=None,
             type=None,
         ),
+        _descriptor.EnumValueDescriptor(
+            name="STAGE_DUPLICATE",
+            index=6,
+            number=6,
+            serialized_options=None,
+            type=None,
+        ),
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=1530,
-    serialized_end=1662,
+    serialized_start=2143,
+    serialized_end=2296,
 )
 _sym_db.RegisterEnumDescriptor(_INCIDENT_STAGE)
 
@@ -243,8 +287,8 @@ _INCIDENTROLE_TYPE = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=1778,
-    serialized_end=2007,
+    serialized_start=2412,
+    serialized_end=2641,
 )
 _sym_db.RegisterEnumDescriptor(_INCIDENTROLE_TYPE)
 
@@ -265,18 +309,8 @@ _ARTIFACT_TYPE = _descriptor.EnumDescriptor(
             name="TYPE_URL", index=1, number=1, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="TYPE_ISSUE", index=2, number=2, serialized_options=None, type=None
-        ),
-        _descriptor.EnumValueDescriptor(
-            name="TYPE_SOURCE_CONTROL_CHANGE",
-            index=3,
-            number=3,
-            serialized_options=None,
-            type=None,
-        ),
-        _descriptor.EnumValueDescriptor(
             name="TYPE_JIRA_ISSUE",
-            index=4,
+            index=2,
             number=4,
             serialized_options=None,
             type=None,
@@ -284,8 +318,8 @@ _ARTIFACT_TYPE = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=2362,
-    serialized_end=2473,
+    serialized_start=2996,
+    serialized_end=3059,
 )
 _sym_db.RegisterEnumDescriptor(_ARTIFACT_TYPE)
 
@@ -347,8 +381,8 @@ _SUBSCRIPTION_EVENTTYPE = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=2945,
-    serialized_end=3171,
+    serialized_start=3531,
+    serialized_end=3757,
 )
 _sym_db.RegisterEnumDescriptor(_SUBSCRIPTION_EVENTTYPE)
 
@@ -413,10 +447,74 @@ _USER = _descriptor.Descriptor(
             fields=[],
         )
     ],
-    serialized_start=196,
-    serialized_end=246,
+    serialized_start=228,
+    serialized_end=278,
 )
 
+
+_SIGNAL_SIGNALARTIFACT = _descriptor.Descriptor(
+    name="SignalArtifact",
+    full_name="google.cloud.irm.v1alpha2.Signal.SignalArtifact",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="user_type",
+            full_name="google.cloud.irm.v1alpha2.Signal.SignalArtifact.user_type",
+            index=0,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="uri",
+            full_name="google.cloud.irm.v1alpha2.Signal.SignalArtifact.uri",
+            index=1,
+            number=3,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[
+        _descriptor.OneofDescriptor(
+            name="artifact_type",
+            full_name="google.cloud.irm.v1alpha2.Signal.SignalArtifact.artifact_type",
+            index=0,
+            containing_type=None,
+            fields=[],
+        )
+    ],
+    serialized_start=726,
+    serialized_end=793,
+)
 
 _SIGNAL = _descriptor.Descriptor(
     name="Signal",
@@ -498,9 +596,45 @@ _SIGNAL = _descriptor.Descriptor(
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
+            name="close_time",
+            full_name="google.cloud.irm.v1alpha2.Signal.close_time",
+            index=4,
+            number=10,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="detect_time",
+            full_name="google.cloud.irm.v1alpha2.Signal.detect_time",
+            index=5,
+            number=15,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
             name="creator",
             full_name="google.cloud.irm.v1alpha2.Signal.creator",
-            index=4,
+            index=6,
             number=5,
             type=11,
             cpp_type=10,
@@ -518,7 +652,7 @@ _SIGNAL = _descriptor.Descriptor(
         _descriptor.FieldDescriptor(
             name="title",
             full_name="google.cloud.irm.v1alpha2.Signal.title",
-            index=5,
+            index=7,
             number=6,
             type=9,
             cpp_type=9,
@@ -536,7 +670,7 @@ _SIGNAL = _descriptor.Descriptor(
         _descriptor.FieldDescriptor(
             name="content_type",
             full_name="google.cloud.irm.v1alpha2.Signal.content_type",
-            index=6,
+            index=8,
             number=7,
             type=9,
             cpp_type=9,
@@ -554,7 +688,7 @@ _SIGNAL = _descriptor.Descriptor(
         _descriptor.FieldDescriptor(
             name="content",
             full_name="google.cloud.irm.v1alpha2.Signal.content",
-            index=7,
+            index=9,
             number=8,
             type=9,
             cpp_type=9,
@@ -572,7 +706,7 @@ _SIGNAL = _descriptor.Descriptor(
         _descriptor.FieldDescriptor(
             name="signal_state",
             full_name="google.cloud.irm.v1alpha2.Signal.signal_state",
-            index=8,
+            index=10,
             number=9,
             type=14,
             cpp_type=8,
@@ -587,17 +721,35 @@ _SIGNAL = _descriptor.Descriptor(
             serialized_options=None,
             file=DESCRIPTOR,
         ),
+        _descriptor.FieldDescriptor(
+            name="signal_artifacts",
+            full_name="google.cloud.irm.v1alpha2.Signal.signal_artifacts",
+            index=11,
+            number=16,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
     ],
     extensions=[],
-    nested_types=[],
+    nested_types=[_SIGNAL_SIGNALARTIFACT],
     enum_types=[_SIGNAL_STATE],
     serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=249,
-    serialized_end=585,
+    serialized_start=281,
+    serialized_end=859,
 )
 
 
@@ -689,8 +841,8 @@ _ANNOTATION = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=588,
-    serialized_end=729,
+    serialized_start=862,
+    serialized_end=1003,
 )
 
 
@@ -737,24 +889,6 @@ _TAG = _descriptor.Descriptor(
             serialized_options=None,
             file=DESCRIPTOR,
         ),
-        _descriptor.FieldDescriptor(
-            name="url",
-            full_name="google.cloud.irm.v1alpha2.Tag.url",
-            index=2,
-            number=3,
-            type=9,
-            cpp_type=9,
-            label=1,
-            has_default_value=False,
-            default_value=_b("").decode("utf-8"),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
     ],
     extensions=[],
     nested_types=[],
@@ -764,8 +898,8 @@ _TAG = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=731,
-    serialized_end=785,
+    serialized_start=1005,
+    serialized_end=1046,
 )
 
 
@@ -857,10 +991,84 @@ _SYNOPSIS = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=788,
-    serialized_end=935,
+    serialized_start=1049,
+    serialized_end=1196,
 )
 
+
+_INCIDENT_COMMUNICATIONVENUE = _descriptor.Descriptor(
+    name="CommunicationVenue",
+    full_name="google.cloud.irm.v1alpha2.Incident.CommunicationVenue",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="uri",
+            full_name="google.cloud.irm.v1alpha2.Incident.CommunicationVenue.uri",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="display_name",
+            full_name="google.cloud.irm.v1alpha2.Incident.CommunicationVenue.display_name",
+            index=1,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="channel_type",
+            full_name="google.cloud.irm.v1alpha2.Incident.CommunicationVenue.channel_type",
+            index=2,
+            number=3,
+            type=14,
+            cpp_type=8,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[_INCIDENT_COMMUNICATIONVENUE_CHANNELTYPE],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=1672,
+    serialized_end=1908,
+)
 
 _INCIDENT = _descriptor.Descriptor(
     name="Incident",
@@ -978,9 +1186,27 @@ _INCIDENT = _descriptor.Descriptor(
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
+            name="duplicate_incident",
+            full_name="google.cloud.irm.v1alpha2.Incident.duplicate_incident",
+            index=6,
+            number=9,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
             name="start_time",
             full_name="google.cloud.irm.v1alpha2.Incident.start_time",
-            index=6,
+            index=7,
             number=7,
             type=11,
             cpp_type=10,
@@ -998,8 +1224,26 @@ _INCIDENT = _descriptor.Descriptor(
         _descriptor.FieldDescriptor(
             name="synopsis",
             full_name="google.cloud.irm.v1alpha2.Incident.synopsis",
-            index=7,
+            index=8,
             number=8,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="communication_venue",
+            full_name="google.cloud.irm.v1alpha2.Incident.communication_venue",
+            index=9,
+            number=10,
             type=11,
             cpp_type=10,
             label=1,
@@ -1015,15 +1259,15 @@ _INCIDENT = _descriptor.Descriptor(
         ),
     ],
     extensions=[],
-    nested_types=[],
+    nested_types=[_INCIDENT_COMMUNICATIONVENUE],
     enum_types=[_INCIDENT_ESCALATIONLEVEL, _INCIDENT_SEVERITY, _INCIDENT_STAGE],
     serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=938,
-    serialized_end=1662,
+    serialized_start=1199,
+    serialized_end=2296,
 )
 
 
@@ -1097,8 +1341,8 @@ _INCIDENTROLE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1665,
-    serialized_end=2007,
+    serialized_start=2299,
+    serialized_end=2641,
 )
 
 
@@ -1208,8 +1452,8 @@ _INCIDENTROLEASSIGNMENT = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2010,
-    serialized_end=2228,
+    serialized_start=2644,
+    serialized_end=2862,
 )
 
 
@@ -1319,8 +1563,8 @@ _ARTIFACT = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2231,
-    serialized_end=2473,
+    serialized_start=2865,
+    serialized_end=3059,
 )
 
 
@@ -1358,8 +1602,8 @@ _COMMUNICATIONCHANNEL_EMAIL = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2673,
-    serialized_end=2697,
+    serialized_start=3259,
+    serialized_end=3283,
 )
 
 _COMMUNICATIONCHANNEL_NOTIFICATIONCHANNEL = _descriptor.Descriptor(
@@ -1396,8 +1640,8 @@ _COMMUNICATIONCHANNEL_NOTIFICATIONCHANNEL = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2699,
-    serialized_end=2734,
+    serialized_start=3285,
+    serialized_end=3320,
 )
 
 _COMMUNICATIONCHANNEL = _descriptor.Descriptor(
@@ -1463,8 +1707,8 @@ _COMMUNICATIONCHANNEL = _descriptor.Descriptor(
             fields=[],
         )
     ],
-    serialized_start=2476,
-    serialized_end=2746,
+    serialized_start=3062,
+    serialized_end=3332,
 )
 
 
@@ -1556,19 +1800,33 @@ _SUBSCRIPTION = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2749,
-    serialized_end=3171,
+    serialized_start=3335,
+    serialized_end=3757,
 )
 
 _USER.oneofs_by_name["user"].fields.append(_USER.fields_by_name["user_id"])
 _USER.fields_by_name["user_id"].containing_oneof = _USER.oneofs_by_name["user"]
 _USER.oneofs_by_name["user"].fields.append(_USER.fields_by_name["email"])
 _USER.fields_by_name["email"].containing_oneof = _USER.oneofs_by_name["user"]
+_SIGNAL_SIGNALARTIFACT.containing_type = _SIGNAL
+_SIGNAL_SIGNALARTIFACT.oneofs_by_name["artifact_type"].fields.append(
+    _SIGNAL_SIGNALARTIFACT.fields_by_name["user_type"]
+)
+_SIGNAL_SIGNALARTIFACT.fields_by_name[
+    "user_type"
+].containing_oneof = _SIGNAL_SIGNALARTIFACT.oneofs_by_name["artifact_type"]
 _SIGNAL.fields_by_name[
     "create_time"
 ].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
+_SIGNAL.fields_by_name[
+    "close_time"
+].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
+_SIGNAL.fields_by_name[
+    "detect_time"
+].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
 _SIGNAL.fields_by_name["creator"].message_type = _USER
 _SIGNAL.fields_by_name["signal_state"].enum_type = _SIGNAL_STATE
+_SIGNAL.fields_by_name["signal_artifacts"].message_type = _SIGNAL_SIGNALARTIFACT
 _SIGNAL_STATE.containing_type = _SIGNAL
 _ANNOTATION.fields_by_name["author"].message_type = _USER
 _ANNOTATION.fields_by_name[
@@ -1578,6 +1836,11 @@ _SYNOPSIS.fields_by_name[
     "update_time"
 ].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
 _SYNOPSIS.fields_by_name["author"].message_type = _USER
+_INCIDENT_COMMUNICATIONVENUE.fields_by_name[
+    "channel_type"
+].enum_type = _INCIDENT_COMMUNICATIONVENUE_CHANNELTYPE
+_INCIDENT_COMMUNICATIONVENUE.containing_type = _INCIDENT
+_INCIDENT_COMMUNICATIONVENUE_CHANNELTYPE.containing_type = _INCIDENT_COMMUNICATIONVENUE
 _INCIDENT.fields_by_name["escalation_level"].enum_type = _INCIDENT_ESCALATIONLEVEL
 _INCIDENT.fields_by_name["severity"].enum_type = _INCIDENT_SEVERITY
 _INCIDENT.fields_by_name["stage"].enum_type = _INCIDENT_STAGE
@@ -1585,6 +1848,9 @@ _INCIDENT.fields_by_name[
     "start_time"
 ].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
 _INCIDENT.fields_by_name["synopsis"].message_type = _SYNOPSIS
+_INCIDENT.fields_by_name[
+    "communication_venue"
+].message_type = _INCIDENT_COMMUNICATIONVENUE
 _INCIDENT_ESCALATIONLEVEL.containing_type = _INCIDENT
 _INCIDENT_SEVERITY.containing_type = _INCIDENT
 _INCIDENT_STAGE.containing_type = _INCIDENT
@@ -1646,8 +1912,8 @@ User = _reflection.GeneratedProtocolMessageType(
       user_id:
           Output only. User id that will allow to get additional
           information from People API. This field will be populated
-          implicitly if the caller creates or edits a resource (e.g.
-          posts an annotation).
+          implicitly if the caller creates or edits a resource (for
+          example, posts an annotation).
       email:
           Email address of the user. This must be associated with a
           Google account. This field will be set if the user is
@@ -1664,16 +1930,35 @@ Signal = _reflection.GeneratedProtocolMessageType(
     "Signal",
     (_message.Message,),
     dict(
+        SignalArtifact=_reflection.GeneratedProtocolMessageType(
+            "SignalArtifact",
+            (_message.Message,),
+            dict(
+                DESCRIPTOR=_SIGNAL_SIGNALARTIFACT,
+                __module__="google.cloud.irm_v1alpha2.proto.incidents_pb2",
+                __doc__="""An artifact associated with the Signal.
+    
+    
+    Attributes:
+        artifact_type:
+            The type of resource linked to
+        user_type:
+            A custom user type
+        uri:
+            The URI for the artifact.
+    """,
+                # @@protoc_insertion_point(class_scope:google.cloud.irm.v1alpha2.Signal.SignalArtifact)
+            ),
+        ),
         DESCRIPTOR=_SIGNAL,
         __module__="google.cloud.irm_v1alpha2.proto.incidents_pb2",
         __doc__="""A signal is a message calling attention to a (potential) incident. An
   example is a page based on a Stackdriver Alerting policy.
-  go/irm-glossary#signal
   
   
   Attributes:
       name:
-          Resource name of the signal, e.g.
+          Resource name of the signal, for example,
           "projects/{project_id}/signals/{signal_id}".
       etag:
           Etag to validate the object is unchanged for a read-modify-
@@ -1683,23 +1968,36 @@ Signal = _reflection.GeneratedProtocolMessageType(
           assigned to. May be empty if signal is unassigned.
       create_time:
           Output only. Time this signal was created.
+      close_time:
+          Output only. Time this signal was closed. This field is not
+          populated while the signal is still firing.
+      detect_time:
+          The time this Signal was first detected. This is identical to
+          create_time for Signals created by Stackdriver Alerting.
       creator:
           Output only. The user that created this signal for manually
           created signals. Empty if this signal was generated by a
-          system (e.g. an alerting system).
+          system (for example, Stackdriver Alerting).
       title:
           One-line summary of the signal. Immutable.
       content_type:
-          Content type string, e.g. 'text/plain' or'text/html'.
+          Content type string, for example, 'text/plain' or'text/html'.
       content:
-          Full message of the signal. Immutable.
+          Full message of the signal. Immutable for Signals created by
+          Stackdriver Alerting.
       signal_state:
-          Output only. The state of this signal.
+          The state of this signal. For Signals created by Stackdriver
+          Alerting this field is output only.
+      signal_artifacts:
+          A set of artifacts to additional resources for this Signal.
+          For example, a link to Stackdriver logging for the Signal.
+          Immutable for Signals created by Stackdriver Alerting.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.irm.v1alpha2.Signal)
     ),
 )
 _sym_db.RegisterMessage(Signal)
+_sym_db.RegisterMessage(Signal.SignalArtifact)
 
 Annotation = _reflection.GeneratedProtocolMessageType(
     "Annotation",
@@ -1712,8 +2010,9 @@ Annotation = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       name:
-          Resource name of the annotation, e.g. "projects/{project_id}/
-          incidents/{incident_id}/annotations/{annotation_id}".
+          Resource name of the annotation, for example, "projects/{proje
+          ct_id}/incidents/{incident_id}/annotations/{annotation_id}"
+          .
       author:
           Output only. Author of the annotation.
       create_time:
@@ -1737,14 +2036,11 @@ Tag = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       name:
-          Resource name of a tag, e.g., "projects/{project_id}/incident
-          s/{incident_id}/tags/{tag_id}"
+          Resource name of a tag, for example, "projects/{project_id}/i
+          ncidents/{incident_id}/tags/{tag_id}"
       display_name:
-          Display name of the resource (e.g., "cause:rollout").
+          Display name of the resource (for example, "cause:rollout").
           Immutable.
-      url:
-          Output only. For some tags (e.g., "bug:123"), provide a link
-          to the underlying resource. Optional.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.irm.v1alpha2.Tag)
     ),
@@ -1763,7 +2059,7 @@ Synopsis = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       content_type:
-          Content type string, e.g. 'text/plain' or 'text/html'.
+          Content type string, for example, 'text/plain' or 'text/html'.
       content:
           Textual content of the synopsis. It can be plain text or
           markdown as indicated by the content_type.
@@ -1781,6 +2077,27 @@ Incident = _reflection.GeneratedProtocolMessageType(
     "Incident",
     (_message.Message,),
     dict(
+        CommunicationVenue=_reflection.GeneratedProtocolMessageType(
+            "CommunicationVenue",
+            (_message.Message,),
+            dict(
+                DESCRIPTOR=_INCIDENT_COMMUNICATIONVENUE,
+                __module__="google.cloud.irm_v1alpha2.proto.incidents_pb2",
+                __doc__="""CommunicationVenue is a record of where conversations about an incident
+    are happening.
+    
+    
+    Attributes:
+        uri:
+            A URI to the web interface of the channel.
+        display_name:
+            A name representing the channel in IRM UI.
+        channel_type:
+            The type of channel/venue for incident communications.
+    """,
+                # @@protoc_insertion_point(class_scope:google.cloud.irm.v1alpha2.Incident.CommunicationVenue)
+            ),
+        ),
         DESCRIPTOR=_INCIDENT,
         __module__="google.cloud.irm_v1alpha2.proto.incidents_pb2",
         __doc__="""Representation of an incident.
@@ -1788,7 +2105,7 @@ Incident = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       name:
-          Output only. Resource name of the incident, e.g.
+          Output only. Resource name of the incident, for example,
           "projects/{project_id}/incidents/{incident_id}".
       title:
           One-line summary of the incident.
@@ -1801,6 +2118,14 @@ Incident = _reflection.GeneratedProtocolMessageType(
           Severity of the incident.
       stage:
           Stage of the incident.
+      duplicate_incident:
+          Resource name of the incident this incident is a duplicate of.
+          Empty if this incident is not a duplicate. An incident can
+          only be a duplicate of an incident that is not marked as a
+          duplicate already. Setting this to a non-empty value must also
+          set the stage to ``STAGE_DUPLICATE``. Unsetting this value
+          value must also update ``stage`` to a value other than
+          ``STAGE_DUPLICATE``.
       start_time:
           Output only. Time this incident started. Used to measure the
           'elapsed time'. Start time of an incident is the earliest
@@ -1808,11 +2133,15 @@ Incident = _reflection.GeneratedProtocolMessageType(
           incident if no Signals are assigned.
       synopsis:
           Output only. Synopsis of this incident.
+      communication_venue:
+          Location of communications for this incident. This is
+          informational only; IRM does not use this to send messages.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.irm.v1alpha2.Incident)
     ),
 )
 _sym_db.RegisterMessage(Incident)
+_sym_db.RegisterMessage(Incident.CommunicationVenue)
 
 IncidentRole = _reflection.GeneratedProtocolMessageType(
     "IncidentRole",
@@ -1875,8 +2204,8 @@ IncidentRoleAssignment = _reflection.GeneratedProtocolMessageType(
           ``proposed_assignee``: nil If she cancels, then the
           RoleAssignment is deleted. Let's say Alice has the role. Then
           the fields are: ``assignee``: Alice, ``proposed_assignee``:
-          nil If Alice is hit by a bus and Bob requests Carol to take
-          over, then the fields are: ``assignee``: Alice,
+          nil If Alice becomes incapacitated and Bob requests Carol to
+          take over, then the fields are: ``assignee``: Alice,
           ``proposed_assignee``: Carol After Carol accepts the handover,
           the fields are: ``assignee``: Carol, ``proposed_assignee``:
           nil Or if Carol refuses the handover, the fields are:
@@ -1931,7 +2260,7 @@ CommunicationChannel = _reflection.GeneratedProtocolMessageType(
     
     Attributes:
         address:
-            The email address, e.g. "user@example.com".
+            The email address, for example, "user@example.com".
     """,
                 # @@protoc_insertion_point(class_scope:google.cloud.irm.v1alpha2.CommunicationChannel.Email)
             ),
