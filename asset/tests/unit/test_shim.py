@@ -17,6 +17,7 @@
 import mock
 import pytest
 
+
 def test_shim_import():
     import google.cloud
     from google.cloud import asset
