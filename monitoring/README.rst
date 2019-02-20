@@ -10,7 +10,7 @@ with a few exceptions as noted on the individual method pages.
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. _Alpha: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/README.rst
+.. _Alpha: https://github.com/googleapis/google-cloud-python/blob/master/README.rst
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-monitoring.svg
    :target: https://pypi.org/project/google-cloud-monitoring/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-monitoring.svg
