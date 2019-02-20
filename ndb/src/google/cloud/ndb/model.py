@@ -18,10 +18,10 @@
 
     from unittest import mock
     from google.cloud import ndb
-    from google.cloud.ndb import _runstate
+    from google.cloud.ndb import context as context_module
 
     client = mock.Mock(project="testing", spec=("project",))
-    context = _runstate.state_context(client)
+    context = context_module.Context(client, stub=mock.Mock(spec=()))
     context.__enter__()
 
 .. testcleanup:: *
