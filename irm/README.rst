@@ -6,10 +6,10 @@ Python Client for Stackdriver Incident Response & Management API (`Alpha`_)
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. _Alpha: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/README.rst
-.. _Stackdriver Incident Response & Management API: https://cloud.google.com/irm
-.. _Client Library Documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/irm/usage.html
-.. _Product Documentation:  https://cloud.google.com/irm
+.. _Alpha: https://github.com/googleapis/google-cloud-python/blob/master/README.rst
+.. _Stackdriver Incident Response & Management API: https://cloud.google.com/incident-response/
+.. _Client Library Documentation: https://googleapis.github.io/google-cloud-python/latest/irm
+.. _Product Documentation:  https://cloud.google.com/incident-response/docs
 
 Quick Start
 -----------
@@ -24,7 +24,7 @@ In order to use this library, you first need to go through the following steps:
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
 .. _Enable the Stackdriver Incident Response & Management API.:  https://cloud.google.com/irm
-.. _Setup Authentication.: https://googlecloudplatform.github.io/google-cloud-python/latest/core/auth.html
+.. _Setup Authentication.: https://googleapis.github.io/google-cloud-python/latest/core/auth.html
 
 Installation
 ~~~~~~~~~~~~
@@ -72,4 +72,4 @@ Next Steps
    APIs that we cover.
 
 .. _Stackdriver Incident Response & Management API Product documentation:  https://cloud.google.com/irm
-.. _repository’s main README: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/README.rst
+.. _repository’s main README: https://github.com/googleapis/google-cloud-python/blob/master/README.rst
