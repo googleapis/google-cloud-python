@@ -13,7 +13,7 @@ Python Client for Cloud Security Command Center API (`Alpha`_)
    :target: https://pypi.org/project/google-cloud-securitycenter/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-securitycenter.svg
    :target: https://pypi.org/project/google-cloud-securitycenter/
-.. _Alpha: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/README.rst
+.. _Alpha: https://github.com/googleapis/google-cloud-python/blob/master/README.rst
 .. _Cloud Security Command Center API: https://cloud.google.com/security-command-center
 .. _Client Library Documentation: https://googleapis.github.io/google-cloud-python/latest/securitycenter/index.html
 .. _Product Documentation:  https://cloud.google.com/security-command-center
