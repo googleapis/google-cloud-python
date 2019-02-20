@@ -7,9 +7,9 @@ Python Client for Stackdriver Incident Response & Management API (`Alpha`_)
 - `Product Documentation`_
 
 .. _Alpha: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/README.rst
-.. _Stackdriver Incident Response & Management API: https://cloud.google.com/irm
-.. _Client Library Documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/irm/usage.html
-.. _Product Documentation:  https://cloud.google.com/irm
+.. _Stackdriver Incident Response & Management API: https://cloud.google.com/incident-response/
+.. _Client Library Documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/irm
+.. _Product Documentation:  https://cloud.google.com/incident-response/docs
 
 Quick Start
 -----------
