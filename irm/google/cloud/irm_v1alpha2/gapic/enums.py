@@ -26,15 +26,11 @@ class Artifact(object):
         Attributes:
           TYPE_UNSPECIFIED (int): External type is unspecified.
           TYPE_URL (int): URL.
-          TYPE_ISSUE (int): An issue.
-          TYPE_SOURCE_CONTROL_CHANGE (int): A source control change.
           TYPE_JIRA_ISSUE (int): A JIRA issue.
         """
 
         TYPE_UNSPECIFIED = 0
         TYPE_URL = 1
-        TYPE_ISSUE = 2
-        TYPE_SOURCE_CONTROL_CHANGE = 3
         TYPE_JIRA_ISSUE = 4
 
 
@@ -89,6 +85,9 @@ class Incident(object):
           STAGE_RESOLVED (int): This incident has been fully resolved, i.e. there are no immediate
           follow-up tasks.
           STAGE_DOCUMENTED (int): Postmortem for the incident was written.
+          STAGE_DUPLICATE (int): Stage for an incident with ``duplicate_incident``. This incident is not
+          authoritative anymore and the ``duplicate_incident`` should be used to
+          determine the stage.
         """
 
         STAGE_UNSPECIFIED = 0
@@ -97,6 +96,22 @@ class Incident(object):
         STAGE_MITIGATED = 2
         STAGE_RESOLVED = 3
         STAGE_DOCUMENTED = 5
+        STAGE_DUPLICATE = 6
+
+    class CommunicationVenue(object):
+        class ChannelType(enum.IntEnum):
+            """
+            The type of channel/venue for incident communications.
+
+            Attributes:
+              CHANNEL_TYPE_UNSPECIFIED (int): An unspecified communication channel.
+              CHANNEL_TYPE_URI (int): A communication channel that is represented by a generic URI.
+              CHANNEL_TYPE_SLACK (int): A communication channel that represents a Slack channel.
+            """
+
+            CHANNEL_TYPE_UNSPECIFIED = 0
+            CHANNEL_TYPE_URI = 1
+            CHANNEL_TYPE_SLACK = 5
 
 
 class IncidentRole(object):

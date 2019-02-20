@@ -55,11 +55,6 @@ class IncidentServiceStub(object):
             request_serializer=google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__service__pb2.ListAnnotationsRequest.SerializeToString,
             response_deserializer=google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__service__pb2.ListAnnotationsResponse.FromString,
         )
-        self.UpdateAnnotation = channel.unary_unary(
-            "/google.cloud.irm.v1alpha2.IncidentService/UpdateAnnotation",
-            request_serializer=google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__service__pb2.UpdateAnnotationRequest.SerializeToString,
-            response_deserializer=google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2.Annotation.FromString,
-        )
         self.CreateTag = channel.unary_unary(
             "/google.cloud.irm.v1alpha2.IncidentService/CreateTag",
             request_serializer=google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__service__pb2.CreateTagRequest.SerializeToString,
@@ -80,10 +75,10 @@ class IncidentServiceStub(object):
             request_serializer=google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__service__pb2.CreateSignalRequest.SerializeToString,
             response_deserializer=google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2.Signal.FromString,
         )
-        self.ListSignals = channel.unary_unary(
-            "/google.cloud.irm.v1alpha2.IncidentService/ListSignals",
-            request_serializer=google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__service__pb2.ListSignalsRequest.SerializeToString,
-            response_deserializer=google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__service__pb2.ListSignalsResponse.FromString,
+        self.SearchSignals = channel.unary_unary(
+            "/google.cloud.irm.v1alpha2.IncidentService/SearchSignals",
+            request_serializer=google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__service__pb2.SearchSignalsRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__service__pb2.SearchSignalsResponse.FromString,
         )
         self.GetSignal = channel.unary_unary(
             "/google.cloud.irm.v1alpha2.IncidentService/GetSignal",
@@ -94,11 +89,6 @@ class IncidentServiceStub(object):
             "/google.cloud.irm.v1alpha2.IncidentService/UpdateSignal",
             request_serializer=google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__service__pb2.UpdateSignalRequest.SerializeToString,
             response_deserializer=google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2.Signal.FromString,
-        )
-        self.AcknowledgeSignal = channel.unary_unary(
-            "/google.cloud.irm.v1alpha2.IncidentService/AcknowledgeSignal",
-            request_serializer=google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__service__pb2.AcknowledgeSignalRequest.SerializeToString,
-            response_deserializer=google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__service__pb2.AcknowledgeSignalResponse.FromString,
         )
         self.EscalateIncident = channel.unary_unary(
             "/google.cloud.irm.v1alpha2.IncidentService/EscalateIncident",
@@ -125,11 +115,6 @@ class IncidentServiceStub(object):
             request_serializer=google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__service__pb2.DeleteArtifactRequest.SerializeToString,
             response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
         )
-        self.GetShiftHandoffPresets = channel.unary_unary(
-            "/google.cloud.irm.v1alpha2.IncidentService/GetShiftHandoffPresets",
-            request_serializer=google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__service__pb2.GetShiftHandoffPresetsRequest.SerializeToString,
-            response_deserializer=google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__service__pb2.ShiftHandoffPresets.FromString,
-        )
         self.SendShiftHandoff = channel.unary_unary(
             "/google.cloud.irm.v1alpha2.IncidentService/SendShiftHandoff",
             request_serializer=google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__service__pb2.SendShiftHandoffRequest.SerializeToString,
@@ -138,6 +123,11 @@ class IncidentServiceStub(object):
         self.CreateSubscription = channel.unary_unary(
             "/google.cloud.irm.v1alpha2.IncidentService/CreateSubscription",
             request_serializer=google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__service__pb2.CreateSubscriptionRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2.Subscription.FromString,
+        )
+        self.UpdateSubscription = channel.unary_unary(
+            "/google.cloud.irm.v1alpha2.IncidentService/UpdateSubscription",
+            request_serializer=google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__service__pb2.UpdateSubscriptionRequest.SerializeToString,
             response_deserializer=google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2.Subscription.FromString,
         )
         self.ListSubscriptions = channel.unary_unary(
@@ -245,13 +235,6 @@ class IncidentServiceServicer(object):
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
-    def UpdateAnnotation(self, request, context):
-        """Updates an annotation on an existing incident.
-    """
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details("Method not implemented!")
-        raise NotImplementedError("Method not implemented!")
-
     def CreateTag(self, request, context):
         """Creates a tag on an existing incident.
     """
@@ -280,7 +263,7 @@ class IncidentServiceServicer(object):
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
-    def ListSignals(self, request, context):
+    def SearchSignals(self, request, context):
         """Lists signals that are part of an incident.
     Signals are returned in reverse chronological order.
     """
@@ -296,16 +279,8 @@ class IncidentServiceServicer(object):
         raise NotImplementedError("Method not implemented!")
 
     def UpdateSignal(self, request, context):
-        """Updates an existing signal (e.g. to assign/unassign it to an
+        """Updates an existing signal (for example, to assign/unassign it to an
     incident).
-    """
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details("Method not implemented!")
-        raise NotImplementedError("Method not implemented!")
-
-    def AcknowledgeSignal(self, request, context):
-        """Acks a signal. This acknowledges the signal in the underlying system,
-    indicating that the caller takes responsibility for looking into this.
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
@@ -346,14 +321,6 @@ class IncidentServiceServicer(object):
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
-    def GetShiftHandoffPresets(self, request, context):
-        """Returns "presets" specific to shift handoff (see SendShiftHandoff), e.g.
-    default values for handoff message fields.
-    """
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details("Method not implemented!")
-        raise NotImplementedError("Method not implemented!")
-
     def SendShiftHandoff(self, request, context):
         """Sends a summary of the shift for oncall handoff.
     """
@@ -366,6 +333,13 @@ class IncidentServiceServicer(object):
     This will fail if:
     a. there are too many (50) subscriptions in the incident already
     b. a subscription using the given channel already exists
+    """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
+    def UpdateSubscription(self, request, context):
+        """Updates a subscription.
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
@@ -486,11 +460,6 @@ def add_IncidentServiceServicer_to_server(servicer, server):
             request_deserializer=google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__service__pb2.ListAnnotationsRequest.FromString,
             response_serializer=google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__service__pb2.ListAnnotationsResponse.SerializeToString,
         ),
-        "UpdateAnnotation": grpc.unary_unary_rpc_method_handler(
-            servicer.UpdateAnnotation,
-            request_deserializer=google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__service__pb2.UpdateAnnotationRequest.FromString,
-            response_serializer=google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2.Annotation.SerializeToString,
-        ),
         "CreateTag": grpc.unary_unary_rpc_method_handler(
             servicer.CreateTag,
             request_deserializer=google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__service__pb2.CreateTagRequest.FromString,
@@ -511,10 +480,10 @@ def add_IncidentServiceServicer_to_server(servicer, server):
             request_deserializer=google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__service__pb2.CreateSignalRequest.FromString,
             response_serializer=google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2.Signal.SerializeToString,
         ),
-        "ListSignals": grpc.unary_unary_rpc_method_handler(
-            servicer.ListSignals,
-            request_deserializer=google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__service__pb2.ListSignalsRequest.FromString,
-            response_serializer=google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__service__pb2.ListSignalsResponse.SerializeToString,
+        "SearchSignals": grpc.unary_unary_rpc_method_handler(
+            servicer.SearchSignals,
+            request_deserializer=google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__service__pb2.SearchSignalsRequest.FromString,
+            response_serializer=google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__service__pb2.SearchSignalsResponse.SerializeToString,
         ),
         "GetSignal": grpc.unary_unary_rpc_method_handler(
             servicer.GetSignal,
@@ -525,11 +494,6 @@ def add_IncidentServiceServicer_to_server(servicer, server):
             servicer.UpdateSignal,
             request_deserializer=google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__service__pb2.UpdateSignalRequest.FromString,
             response_serializer=google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2.Signal.SerializeToString,
-        ),
-        "AcknowledgeSignal": grpc.unary_unary_rpc_method_handler(
-            servicer.AcknowledgeSignal,
-            request_deserializer=google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__service__pb2.AcknowledgeSignalRequest.FromString,
-            response_serializer=google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__service__pb2.AcknowledgeSignalResponse.SerializeToString,
         ),
         "EscalateIncident": grpc.unary_unary_rpc_method_handler(
             servicer.EscalateIncident,
@@ -556,11 +520,6 @@ def add_IncidentServiceServicer_to_server(servicer, server):
             request_deserializer=google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__service__pb2.DeleteArtifactRequest.FromString,
             response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
         ),
-        "GetShiftHandoffPresets": grpc.unary_unary_rpc_method_handler(
-            servicer.GetShiftHandoffPresets,
-            request_deserializer=google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__service__pb2.GetShiftHandoffPresetsRequest.FromString,
-            response_serializer=google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__service__pb2.ShiftHandoffPresets.SerializeToString,
-        ),
         "SendShiftHandoff": grpc.unary_unary_rpc_method_handler(
             servicer.SendShiftHandoff,
             request_deserializer=google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__service__pb2.SendShiftHandoffRequest.FromString,
@@ -569,6 +528,11 @@ def add_IncidentServiceServicer_to_server(servicer, server):
         "CreateSubscription": grpc.unary_unary_rpc_method_handler(
             servicer.CreateSubscription,
             request_deserializer=google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__service__pb2.CreateSubscriptionRequest.FromString,
+            response_serializer=google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2.Subscription.SerializeToString,
+        ),
+        "UpdateSubscription": grpc.unary_unary_rpc_method_handler(
+            servicer.UpdateSubscription,
+            request_deserializer=google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__service__pb2.UpdateSubscriptionRequest.FromString,
             response_serializer=google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2.Subscription.SerializeToString,
         ),
         "ListSubscriptions": grpc.unary_unary_rpc_method_handler(
