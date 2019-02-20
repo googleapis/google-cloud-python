@@ -66,7 +66,13 @@ class TestIncidentServiceClient(object):
         name = "name3373707"
         title = "title110371416"
         etag = "etag3123477"
-        expected_response = {"name": name, "title": title, "etag": etag}
+        duplicate_incident = "duplicateIncident-316496506"
+        expected_response = {
+            "name": name,
+            "title": title,
+            "etag": etag,
+            "duplicate_incident": duplicate_incident,
+        }
         expected_response = incidents_pb2.Incident(**expected_response)
 
         # Mock the API response
@@ -110,7 +116,13 @@ class TestIncidentServiceClient(object):
         name_2 = "name2-1052831874"
         title = "title110371416"
         etag = "etag3123477"
-        expected_response = {"name": name_2, "title": title, "etag": etag}
+        duplicate_incident = "duplicateIncident-316496506"
+        expected_response = {
+            "name": name_2,
+            "title": title,
+            "etag": etag,
+            "duplicate_incident": duplicate_incident,
+        }
         expected_response = incidents_pb2.Incident(**expected_response)
 
         # Mock the API response
@@ -195,7 +207,13 @@ class TestIncidentServiceClient(object):
         name = "name3373707"
         title = "title110371416"
         etag = "etag3123477"
-        expected_response = {"name": name, "title": title, "etag": etag}
+        duplicate_incident = "duplicateIncident-316496506"
+        expected_response = {
+            "name": name,
+            "title": title,
+            "etag": etag,
+            "duplicate_incident": duplicate_incident,
+        }
         expected_response = incidents_pb2.Incident(**expected_response)
 
         # Mock the API response
@@ -370,53 +388,11 @@ class TestIncidentServiceClient(object):
         with pytest.raises(CustomException):
             list(paged_list_response)
 
-    def test_update_annotation(self):
-        # Setup Expected Response
-        name = "name3373707"
-        content = "content951530617"
-        expected_response = {"name": name, "content": content}
-        expected_response = incidents_pb2.Annotation(**expected_response)
-
-        # Mock the API response
-        channel = ChannelStub(responses=[expected_response])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
-        with patch as create_channel:
-            create_channel.return_value = channel
-            client = irm_v1alpha2.IncidentServiceClient()
-
-        # Setup Request
-        annotation = {}
-
-        response = client.update_annotation(annotation)
-        assert expected_response == response
-
-        assert len(channel.requests) == 1
-        expected_request = incidents_service_pb2.UpdateAnnotationRequest(
-            annotation=annotation
-        )
-        actual_request = channel.requests[0][1]
-        assert expected_request == actual_request
-
-    def test_update_annotation_exception(self):
-        # Mock the API response
-        channel = ChannelStub(responses=[CustomException()])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
-        with patch as create_channel:
-            create_channel.return_value = channel
-            client = irm_v1alpha2.IncidentServiceClient()
-
-        # Setup request
-        annotation = {}
-
-        with pytest.raises(CustomException):
-            client.update_annotation(annotation)
-
     def test_create_tag(self):
         # Setup Expected Response
         name = "name3373707"
         display_name = "displayName1615086568"
-        url = "url116079"
-        expected_response = {"name": name, "display_name": display_name, "url": url}
+        expected_response = {"name": name, "display_name": display_name}
         expected_response = incidents_pb2.Tag(**expected_response)
 
         # Mock the API response
@@ -583,13 +559,13 @@ class TestIncidentServiceClient(object):
         with pytest.raises(CustomException):
             client.create_signal(parent, signal)
 
-    def test_list_signals(self):
+    def test_search_signals(self):
         # Setup Expected Response
         next_page_token = ""
         signals_element = {}
         signals = [signals_element]
         expected_response = {"next_page_token": next_page_token, "signals": signals}
-        expected_response = incidents_service_pb2.ListSignalsResponse(
+        expected_response = incidents_service_pb2.SearchSignalsResponse(
             **expected_response
         )
 
@@ -603,18 +579,18 @@ class TestIncidentServiceClient(object):
         # Setup Request
         parent = client.project_path("[PROJECT]")
 
-        paged_list_response = client.list_signals(parent)
+        paged_list_response = client.search_signals(parent)
         resources = list(paged_list_response)
         assert len(resources) == 1
 
         assert expected_response.signals[0] == resources[0]
 
         assert len(channel.requests) == 1
-        expected_request = incidents_service_pb2.ListSignalsRequest(parent=parent)
+        expected_request = incidents_service_pb2.SearchSignalsRequest(parent=parent)
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
-    def test_list_signals_exception(self):
+    def test_search_signals_exception(self):
         channel = ChannelStub(responses=[CustomException()])
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
@@ -624,7 +600,7 @@ class TestIncidentServiceClient(object):
         # Setup request
         parent = client.project_path("[PROJECT]")
 
-        paged_list_response = client.list_signals(parent)
+        paged_list_response = client.search_signals(parent)
         with pytest.raises(CustomException):
             list(paged_list_response)
 
@@ -727,45 +703,6 @@ class TestIncidentServiceClient(object):
 
         with pytest.raises(CustomException):
             client.update_signal(signal)
-
-    def test_acknowledge_signal(self):
-        # Setup Expected Response
-        expected_response = {}
-        expected_response = incidents_service_pb2.AcknowledgeSignalResponse(
-            **expected_response
-        )
-
-        # Mock the API response
-        channel = ChannelStub(responses=[expected_response])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
-        with patch as create_channel:
-            create_channel.return_value = channel
-            client = irm_v1alpha2.IncidentServiceClient()
-
-        # Setup Request
-        name = client.signal_path("[PROJECT]", "[SIGNAL]")
-
-        response = client.acknowledge_signal(name)
-        assert expected_response == response
-
-        assert len(channel.requests) == 1
-        expected_request = incidents_service_pb2.AcknowledgeSignalRequest(name=name)
-        actual_request = channel.requests[0][1]
-        assert expected_request == actual_request
-
-    def test_acknowledge_signal_exception(self):
-        # Mock the API response
-        channel = ChannelStub(responses=[CustomException()])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
-        with patch as create_channel:
-            create_channel.return_value = channel
-            client = irm_v1alpha2.IncidentServiceClient()
-
-        # Setup request
-        name = client.signal_path("[PROJECT]", "[SIGNAL]")
-
-        with pytest.raises(CustomException):
-            client.acknowledge_signal(name)
 
     def test_escalate_incident(self):
         # Setup Expected Response
@@ -982,48 +919,6 @@ class TestIncidentServiceClient(object):
         with pytest.raises(CustomException):
             client.delete_artifact(name)
 
-    def test_get_shift_handoff_presets(self):
-        # Setup Expected Response
-        subject = "subject-1867885268"
-        expected_response = {"subject": subject}
-        expected_response = incidents_service_pb2.ShiftHandoffPresets(
-            **expected_response
-        )
-
-        # Mock the API response
-        channel = ChannelStub(responses=[expected_response])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
-        with patch as create_channel:
-            create_channel.return_value = channel
-            client = irm_v1alpha2.IncidentServiceClient()
-
-        # Setup Request
-        parent = client.project_path("[PROJECT]")
-
-        response = client.get_shift_handoff_presets(parent)
-        assert expected_response == response
-
-        assert len(channel.requests) == 1
-        expected_request = incidents_service_pb2.GetShiftHandoffPresetsRequest(
-            parent=parent
-        )
-        actual_request = channel.requests[0][1]
-        assert expected_request == actual_request
-
-    def test_get_shift_handoff_presets_exception(self):
-        # Mock the API response
-        channel = ChannelStub(responses=[CustomException()])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
-        with patch as create_channel:
-            create_channel.return_value = channel
-            client = irm_v1alpha2.IncidentServiceClient()
-
-        # Setup request
-        parent = client.project_path("[PROJECT]")
-
-        with pytest.raises(CustomException):
-            client.get_shift_handoff_presets(parent)
-
     def test_send_shift_handoff(self):
         # Setup Expected Response
         content_type = "contentType831846208"
@@ -1113,6 +1008,47 @@ class TestIncidentServiceClient(object):
 
         with pytest.raises(CustomException):
             client.create_subscription(parent, subscription)
+
+    def test_update_subscription(self):
+        # Setup Expected Response
+        name = "name3373707"
+        etag = "etag3123477"
+        expected_response = {"name": name, "etag": etag}
+        expected_response = incidents_pb2.Subscription(**expected_response)
+
+        # Mock the API response
+        channel = ChannelStub(responses=[expected_response])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = irm_v1alpha2.IncidentServiceClient()
+
+        # Setup Request
+        subscription = {}
+
+        response = client.update_subscription(subscription)
+        assert expected_response == response
+
+        assert len(channel.requests) == 1
+        expected_request = incidents_service_pb2.UpdateSubscriptionRequest(
+            subscription=subscription
+        )
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_update_subscription_exception(self):
+        # Mock the API response
+        channel = ChannelStub(responses=[CustomException()])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = irm_v1alpha2.IncidentServiceClient()
+
+        # Setup request
+        subscription = {}
+
+        with pytest.raises(CustomException):
+            client.update_subscription(subscription)
 
     def test_list_subscriptions(self):
         # Setup Expected Response

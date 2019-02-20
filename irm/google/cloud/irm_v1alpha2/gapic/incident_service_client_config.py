@@ -52,11 +52,6 @@ config = {
                     "retry_codes_name": "idempotent",
                     "retry_params_name": "default",
                 },
-                "UpdateAnnotation": {
-                    "timeout_millis": 60000,
-                    "retry_codes_name": "non_idempotent",
-                    "retry_params_name": "default",
-                },
                 "CreateTag": {
                     "timeout_millis": 60000,
                     "retry_codes_name": "non_idempotent",
@@ -77,7 +72,7 @@ config = {
                     "retry_codes_name": "non_idempotent",
                     "retry_params_name": "default",
                 },
-                "ListSignals": {
+                "SearchSignals": {
                     "timeout_millis": 60000,
                     "retry_codes_name": "idempotent",
                     "retry_params_name": "default",
@@ -88,11 +83,6 @@ config = {
                     "retry_params_name": "default",
                 },
                 "UpdateSignal": {
-                    "timeout_millis": 60000,
-                    "retry_codes_name": "non_idempotent",
-                    "retry_params_name": "default",
-                },
-                "AcknowledgeSignal": {
                     "timeout_millis": 60000,
                     "retry_codes_name": "non_idempotent",
                     "retry_params_name": "default",
@@ -122,17 +112,17 @@ config = {
                     "retry_codes_name": "idempotent",
                     "retry_params_name": "default",
                 },
-                "GetShiftHandoffPresets": {
-                    "timeout_millis": 60000,
-                    "retry_codes_name": "idempotent",
-                    "retry_params_name": "default",
-                },
                 "SendShiftHandoff": {
                     "timeout_millis": 60000,
                     "retry_codes_name": "non_idempotent",
                     "retry_params_name": "default",
                 },
                 "CreateSubscription": {
+                    "timeout_millis": 60000,
+                    "retry_codes_name": "non_idempotent",
+                    "retry_params_name": "default",
+                },
+                "UpdateSubscription": {
                     "timeout_millis": 60000,
                     "retry_codes_name": "non_idempotent",
                     "retry_params_name": "default",
