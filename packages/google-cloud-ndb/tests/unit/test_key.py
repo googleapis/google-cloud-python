@@ -35,7 +35,7 @@ class TestKey:
     URLSAFE = b"agZzfmZpcmVyDwsSBEtpbmQiBVRoaW5nDA"
 
     @staticmethod
-    @pytest.mark.usefixtures("client")
+    @pytest.mark.usefixtures("in_context")
     def test_constructor_default():
         key = key_module.Key("Kind", 42)
 
@@ -50,7 +50,7 @@ class TestKey:
             key_module.Key(pairs=())
 
     @staticmethod
-    @pytest.mark.usefixtures("client")
+    @pytest.mark.usefixtures("in_context")
     def test_constructor_partial():
         with pytest.raises(ValueError):
             key_module.Key("Kind")
@@ -77,7 +77,7 @@ class TestKey:
             key_module.Key(object, 47)
 
     @staticmethod
-    @pytest.mark.usefixtures("client")
+    @pytest.mark.usefixtures("in_context")
     def test_constructor_kind_as_model():
         class Simple(model.Model):
             pass
@@ -132,7 +132,7 @@ class TestKey:
         )
 
     @staticmethod
-    @pytest.mark.usefixtures("client")
+    @pytest.mark.usefixtures("in_context")
     def test_constructor_with_pairs():
         key = key_module.Key(pairs=[("Kind", 1)])
 
@@ -142,7 +142,7 @@ class TestKey:
         assert key._reference is None
 
     @staticmethod
-    @pytest.mark.usefixtures("client")
+    @pytest.mark.usefixtures("in_context")
     def test_constructor_with_flat():
         key = key_module.Key(flat=["Kind", 1])
 
@@ -166,7 +166,7 @@ class TestKey:
         assert key._reference is None
 
     @staticmethod
-    @pytest.mark.usefixtures("client")
+    @pytest.mark.usefixtures("in_context")
     def test_constructor_with_namespace():
         key = key_module.Key("Kind", 1337, namespace="foo")
 
@@ -225,21 +225,21 @@ class TestKey:
         key_init.assert_not_called()
 
     @staticmethod
-    @pytest.mark.usefixtures("client")
+    @pytest.mark.usefixtures("in_context")
     def test___repr__defaults():
         key = key_module.Key("a", "b")
         assert repr(key) == "Key('a', 'b')"
         assert str(key) == "Key('a', 'b')"
 
     @staticmethod
-    @pytest.mark.usefixtures("client")
+    @pytest.mark.usefixtures("in_context")
     def test___repr__non_defaults():
         key = key_module.Key("X", 11, app="foo", namespace="bar")
         assert repr(key) == "Key('X', 11, app='foo', namespace='bar')"
         assert str(key) == "Key('X', 11, app='foo', namespace='bar')"
 
     @staticmethod
-    @pytest.mark.usefixtures("client")
+    @pytest.mark.usefixtures("in_context")
     def test___hash__():
         key1 = key_module.Key("a", 1)
         assert hash(key1) == hash(key1)
@@ -342,7 +342,7 @@ class TestKey:
         assert key == unpickled
 
     @staticmethod
-    @pytest.mark.usefixtures("client")
+    @pytest.mark.usefixtures("in_context")
     def test___setstate__bad_state():
         key = key_module.Key("a", "b")
 
@@ -355,7 +355,7 @@ class TestKey:
             key.__setstate__(state)
 
     @staticmethod
-    @pytest.mark.usefixtures("client")
+    @pytest.mark.usefixtures("in_context")
     def test_parent():
         key = key_module.Key("a", "b", "c", "d")
         parent = key.parent()
@@ -363,13 +363,13 @@ class TestKey:
         assert parent._reference is None
 
     @staticmethod
-    @pytest.mark.usefixtures("client")
+    @pytest.mark.usefixtures("in_context")
     def test_parent_top_level():
         key = key_module.Key("This", "key")
         assert key.parent() is None
 
     @staticmethod
-    @pytest.mark.usefixtures("client")
+    @pytest.mark.usefixtures("in_context")
     def test_root():
         key = key_module.Key("a", "b", "c", "d")
         root = key.root()
@@ -377,13 +377,13 @@ class TestKey:
         assert root._reference is None
 
     @staticmethod
-    @pytest.mark.usefixtures("client")
+    @pytest.mark.usefixtures("in_context")
     def test_root_top_level():
         key = key_module.Key("This", "key")
         assert key.root() is key
 
     @staticmethod
-    @pytest.mark.usefixtures("client")
+    @pytest.mark.usefixtures("in_context")
     def test_namespace():
         namespace = "my-space"
         key = key_module.Key("abc", 1, namespace=namespace)
@@ -397,14 +397,14 @@ class TestKey:
         assert key.app() == app[2:]
 
     @staticmethod
-    @pytest.mark.usefixtures("client")
+    @pytest.mark.usefixtures("in_context")
     def test_id():
         for id_or_name in ("x", 11, None):
             key = key_module.Key("Kind", id_or_name)
             assert key.id() == id_or_name
 
     @staticmethod
-    @pytest.mark.usefixtures("client")
+    @pytest.mark.usefixtures("in_context")
     def test_string_id():
         pairs = (("x", "x"), (11, None), (None, None))
         for id_or_name, expected in pairs:
@@ -412,7 +412,7 @@ class TestKey:
             assert key.string_id() == expected
 
     @staticmethod
-    @pytest.mark.usefixtures("client")
+    @pytest.mark.usefixtures("in_context")
     def test_integer_id():
         pairs = (("x", None), (11, 11), (None, None))
         for id_or_name, expected in pairs:
@@ -420,31 +420,31 @@ class TestKey:
             assert key.integer_id() == expected
 
     @staticmethod
-    @pytest.mark.usefixtures("client")
+    @pytest.mark.usefixtures("in_context")
     def test_pairs():
         key = key_module.Key("a", "b")
         assert key.pairs() == (("a", "b"),)
 
     @staticmethod
-    @pytest.mark.usefixtures("client")
+    @pytest.mark.usefixtures("in_context")
     def test_pairs_partial_key():
         key = key_module.Key("This", "key", "that", None)
         assert key.pairs() == (("This", "key"), ("that", None))
 
     @staticmethod
-    @pytest.mark.usefixtures("client")
+    @pytest.mark.usefixtures("in_context")
     def test_flat():
         key = key_module.Key("This", "key")
         assert key.flat() == ("This", "key")
 
     @staticmethod
-    @pytest.mark.usefixtures("client")
+    @pytest.mark.usefixtures("in_context")
     def test_flat_partial_key():
         key = key_module.Key("Kind", None)
         assert key.flat() == ("Kind", None)
 
     @staticmethod
-    @pytest.mark.usefixtures("client")
+    @pytest.mark.usefixtures("in_context")
     def test_kind():
         key = key_module.Key("This", "key")
         assert key.kind() == "This"
@@ -459,7 +459,7 @@ class TestKey:
         )
 
     @staticmethod
-    @pytest.mark.usefixtures("client")
+    @pytest.mark.usefixtures("in_context")
     def test_reference_cached():
         key = key_module.Key("This", "key")
         key._reference = unittest.mock.sentinel.reference
@@ -558,7 +558,7 @@ class TestKey:
             key_module.Key.from_old_key(None)
 
     @staticmethod
-    @pytest.mark.usefixtures("client")
+    @pytest.mark.usefixtures("in_context")
     def test_to_old_key():
         key = key_module.Key("a", "b")
         with pytest.raises(NotImplementedError):
@@ -579,9 +579,10 @@ class Test__project_from_app:
             assert key_module._project_from_app(app) == project
 
     @staticmethod
-    def test_app_fallback(client):
-        client.project = "s~jectpro"
-        assert key_module._project_from_app(None) == "jectpro"
+    def test_app_fallback(context):
+        context.client.project = "s~jectpro"
+        with context:
+            assert key_module._project_from_app(None) == "jectpro"
 
 
 class Test__from_reference:

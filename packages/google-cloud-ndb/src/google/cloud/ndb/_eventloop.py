@@ -368,13 +368,8 @@ def get_event_loop():
     Returns:
         EventLoop: The event loop for the current context.
     """
-    state = _runstate.current()
-
-    # Be lazy and avoid circular dependency with _runstate
-    if state.eventloop is None:
-        state.eventloop = EventLoop()
-
-    return state.eventloop
+    context = _runstate.current()
+    return context.eventloop
 
 
 def add_idle(callback, *args, **kwargs):
