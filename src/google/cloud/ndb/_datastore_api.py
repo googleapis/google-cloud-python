@@ -153,7 +153,7 @@ class _LookupBatch:
             tasklets.Future: A future for the eventual result.
         """
         todo_key = key.to_protobuf().SerializeToString()
-        future = tasklets.Future()
+        future = tasklets.Future(info="add({})".format(key))
         self.todo.setdefault(todo_key, []).append(future)
         return future
 
@@ -343,7 +343,7 @@ class _CommitBatch:
             tasklets.Future: Result will be completed datastore key
                 (entity_pb2.Key) for the entity.
         """
-        future = tasklets.Future()
+        future = tasklets.Future(info="put({})".format(entity_pb))
         mutation = datastore_pb2.Mutation(upsert=entity_pb)
         self.mutations.append(mutation)
         self.futures.append(future)
