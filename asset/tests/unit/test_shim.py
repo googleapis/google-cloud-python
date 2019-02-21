@@ -14,12 +14,8 @@
 # limitations under the License.
 """Unit tests."""
 
-import mock
-import pytest
-
 
 def test_shim_import():
-    import google.cloud
     from google.cloud import asset
 
     for name in asset.__all__:
