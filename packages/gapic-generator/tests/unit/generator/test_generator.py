@@ -260,5 +260,4 @@ def make_naming(**kwargs) -> naming.Naming:
     kwargs.setdefault('namespace', ('Google', 'Cloud'))
     kwargs.setdefault('version', 'v1')
     kwargs.setdefault('product_name', 'Hatstand')
-    kwargs.setdefault('product_url', 'https://cloud.google.com/hatstand/')
     return naming.Naming(**kwargs)

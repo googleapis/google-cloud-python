@@ -25,7 +25,7 @@ def test_signature_dispatch_field():
         ('foo', make_field(name='foo', type=T.Value('TYPE_INT32'))),
         ('bar', make_field(name='bar', type=T.Value('TYPE_BOOL'))),
     ))
-    signature = wrappers.MethodSignature(name='spam', fields=fields)
+    signature = wrappers.MethodSignature(fields=fields)
     assert signature.dispatch_field == fields['foo']
 
 
@@ -36,10 +36,8 @@ def test_signatures_magic_methods():
         ('bar', make_field(name='bar', type=T.Value('TYPE_BOOL'))),
     ))
     signatures = wrappers.MethodSignatures(all=(
-        wrappers.MethodSignature(name='spam', fields=fields),
-        wrappers.MethodSignature(name='eggs', fields={
-            'foo': fields['foo'],
-        }),
+        wrappers.MethodSignature(fields=fields),
+        wrappers.MethodSignature(fields={'foo': fields['foo']}),
     ))
     assert len(signatures) == 2
     assert tuple([i for i in signatures]) == signatures.all
@@ -64,11 +62,9 @@ def test_signatures_single_dispatch():
     )
     signatures = wrappers.MethodSignatures(all=(
         wrappers.MethodSignature(
-            name='spam',
             fields=collections.OrderedDict(fields),
         ),
         wrappers.MethodSignature(
-            name='eggs',
             fields=collections.OrderedDict(reversed(fields)),
         ),
     ))

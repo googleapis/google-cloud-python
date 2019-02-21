@@ -34,7 +34,8 @@ from itertools import chain
 from typing import Iterable, List, Mapping, Sequence, Set, Tuple, Union
 
 from google.api import annotations_pb2
-from google.api import signature_pb2
+from google.api import client_pb2
+from google.api import field_behavior_pb2
 from google.protobuf import descriptor_pb2
 
 from gapic import utils
@@ -92,7 +93,8 @@ class Field:
         Returns:
             bool: Whether this field is required.
         """
-        return bool(self.options.Extensions[annotations_pb2.required])
+        return (field_behavior_pb2.FieldBehavior.Value('REQUIRED') in
+                self.options.Extensions[field_behavior_pb2.field_behavior])
 
     @utils.cached_property
     def type(self) -> Union['MessageType', 'EnumType', 'PythonType']:
@@ -434,28 +436,22 @@ class Method:
         return tuple(answer)
 
     @utils.cached_property
-    def signatures(self) -> Tuple[signature_pb2.MethodSignature]:
+    def signatures(self) -> 'MethodSignatures':
         """Return the signature defined for this method."""
-        sig_pb2 = self.options.Extensions[annotations_pb2.method_signature]
-
-        # Sanity check: If there are no signatures (which should be by far
-        # the common case), just abort now.
-        if len(sig_pb2.fields) == 0:
-            return MethodSignatures(all=())
+        signatures = self.options.Extensions[client_pb2.method_signature]
 
         # Signatures are annotated with an `additional_signatures` key that
         # allows for specifying additional signatures. This is an uncommon
         # case but we still want to deal with it.
         answer = []
-        for sig in (sig_pb2,) + tuple(sig_pb2.additional_signatures):
+        for sig in signatures:
             # Build a MethodSignature object with the appropriate name
             # and fields. The fields are field objects, retrieved from
             # the method's `input` message.
             answer.append(MethodSignature(
-                name=sig.function_name if sig.function_name else self.name,
                 fields=collections.OrderedDict([
                     (f.split('.')[-1], self.input.get_field(*f.split('.')))
-                    for f in sig.fields
+                    for f in sig.split(',')
                 ]),
             ))
 
@@ -478,7 +474,6 @@ class Method:
 
 @dataclasses.dataclass(frozen=True)
 class MethodSignature:
-    name: str
     fields: Mapping[str, Field]
 
     @utils.cached_property
@@ -551,8 +546,8 @@ class Service:
         Returns:
             str: The hostname, with no protocol and no trailing ``/``.
         """
-        if self.options.Extensions[annotations_pb2.default_host]:
-            return self.options.Extensions[annotations_pb2.default_host]
+        if self.options.Extensions[client_pb2.default_host]:
+            return self.options.Extensions[client_pb2.default_host]
         return None
 
     @property
@@ -562,8 +557,10 @@ class Service:
         Returns:
             Sequence[str]: A sequence of OAuth scopes.
         """
-        oauth = self.options.Extensions[annotations_pb2.oauth]
-        return tuple(oauth.scopes)
+        # Return the OAuth scopes, split on comma.
+        return tuple([i.strip() for i in
+            self.options.Extensions[client_pb2.oauth_scopes].split(',')
+            if i])
 
     @property
     def module_name(self) -> str:

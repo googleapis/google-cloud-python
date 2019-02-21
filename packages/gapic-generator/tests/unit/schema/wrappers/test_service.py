@@ -15,8 +15,8 @@
 import typing
 
 from google.api import annotations_pb2
+from google.api import client_pb2
 from google.api import http_pb2
-from google.api import signature_pb2
 from google.protobuf import descriptor_pb2
 
 from gapic.schema import imp
@@ -103,7 +103,7 @@ def test_service_python_modules_signature():
                 type_name='a.b.c.v2.D',
             ),
         ),
-        method_signature=signature_pb2.MethodSignature(fields=['secs', 'd']),
+        method_signature='secs,d',
     )
     # type=5 is int, so nothing is added.
     assert service.python_modules == (
@@ -137,8 +137,8 @@ def make_service(name: str = 'Placeholder', host: str = '',
     # appropriate.
     service_pb = descriptor_pb2.ServiceDescriptorProto(name=name)
     if host:
-        service_pb.options.Extensions[annotations_pb2.default_host] = host
-    service_pb.options.Extensions[annotations_pb2.oauth].scopes.extend(scopes)
+        service_pb.options.Extensions[client_pb2.default_host] = host
+    service_pb.options.Extensions[client_pb2.oauth_scopes] = ','.join(scopes)
 
     # Return a service object to test.
     return wrappers.Service(
@@ -151,7 +151,7 @@ def make_service(name: str = 'Placeholder', host: str = '',
 #                         tests difficult to understand and maintain.
 def make_service_with_method_options(*,
         http_rule: http_pb2.HttpRule = None,
-        method_signature: signature_pb2.MethodSignature = None,
+        method_signature: str = '',
         in_fields: typing.Tuple[descriptor_pb2.FieldDescriptorProto] = ()
         ) -> wrappers.Service:
     # Declare a method with options enabled for long-running operations and
@@ -184,7 +184,7 @@ def get_method(name: str,
         lro_metadata_type: str = '', *,
         in_fields: typing.Tuple[descriptor_pb2.FieldDescriptorProto] = (),
         http_rule: http_pb2.HttpRule = None,
-        method_signature: signature_pb2.MethodSignature = None,
+        method_signature: str = '',
         ) -> wrappers.Method:
     input_ = get_message(in_type, fields=in_fields)
     output = get_message(out_type)
@@ -204,8 +204,8 @@ def get_method(name: str,
         ext_key = annotations_pb2.http
         method_pb.options.Extensions[ext_key].MergeFrom(http_rule)
     if method_signature:
-        ext_key = annotations_pb2.method_signature
-        method_pb.options.Extensions[ext_key].MergeFrom(method_signature)
+        ext_key = client_pb2.method_signature
+        method_pb.options.Extensions[ext_key].append(method_signature)
 
     return wrappers.Method(
         method_pb=method_pb,

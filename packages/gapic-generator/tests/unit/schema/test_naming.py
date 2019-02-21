@@ -14,8 +14,7 @@
 
 import pytest
 
-from google.api import annotations_pb2
-from google.api import metadata_pb2
+from google.api import client_pb2
 from google.protobuf import descriptor_pb2
 
 from gapic.schema import naming
@@ -116,8 +115,12 @@ def test_build_with_annotations():
         name='spanner.proto',
         package='google.spanner.v1',
     )
-    proto.options.Extensions[annotations_pb2.metadata].MergeFrom(
-        metadata_pb2.Metadata(package_namespace=['Google', 'Cloud']),
+    proto.options.Extensions[client_pb2.client_package].MergeFrom(
+        client_pb2.Package(
+            namespace=['Google', 'Cloud'],
+            title='Spanner',
+            version='v1',
+        ),
     )
     n = naming.Naming.build(proto)
     assert n.name == 'Spanner'
@@ -146,8 +149,8 @@ def test_inconsistent_metadata_error():
         name='spanner.proto',
         package='google.spanner.v1',
     )
-    proto1.options.Extensions[annotations_pb2.metadata].MergeFrom(
-        metadata_pb2.Metadata(package_namespace=['Google', 'Cloud']),
+    proto1.options.Extensions[client_pb2.client_package].MergeFrom(
+        client_pb2.Package(namespace=['Google', 'Cloud']),
     )
 
     # Set up the second proto.
@@ -156,9 +159,8 @@ def test_inconsistent_metadata_error():
         name='spanner2.proto',
         package='google.spanner.v1',
     )
-    proto2.options.Extensions[annotations_pb2.metadata].MergeFrom(
-        metadata_pb2.Metadata(package_namespace=['Google', 'Cloud'],
-                              package_name='Spanner'),
+    proto2.options.Extensions[client_pb2.client_package].MergeFrom(
+        client_pb2.Package(title='Spanner', namespace=['Google', 'Cloud']),
     )
 
     # This should error. Even though the data in the metadata is consistent,
@@ -193,5 +195,4 @@ def make_naming(**kwargs) -> naming.Naming:
     kwargs.setdefault('namespace', ('Google', 'Cloud'))
     kwargs.setdefault('version', 'v1')
     kwargs.setdefault('product_name', 'Hatstand')
-    kwargs.setdefault('product_url', 'https://cloud.google.com/hatstand/')
     return naming.Naming(**kwargs)

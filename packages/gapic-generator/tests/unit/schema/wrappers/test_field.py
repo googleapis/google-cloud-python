@@ -14,7 +14,7 @@
 
 import pytest
 
-from google.api import annotations_pb2
+from google.api import field_behavior_pb2
 from google.protobuf import descriptor_pb2
 
 from gapic.schema import wrappers
@@ -83,7 +83,9 @@ def test_not_repeated():
 
 def test_required():
     field = make_field()
-    field.options.Extensions[annotations_pb2.required] = True
+    field.options.Extensions[field_behavior_pb2.field_behavior].append(
+        field_behavior_pb2.FieldBehavior.Value('REQUIRED')
+    )
     assert field.required
 
 

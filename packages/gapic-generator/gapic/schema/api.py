@@ -23,7 +23,7 @@ import sys
 from itertools import chain
 from typing import Callable, List, Mapping, Sequence, Set, Tuple
 
-from google.api import annotations_pb2
+from google.longrunning import operations_pb2
 from google.protobuf import descriptor_pb2
 
 from gapic.schema import metadata
@@ -525,7 +525,7 @@ class _ProtoBuilder:
         # Iterate over the methods and collect them into a dictionary.
         answer = collections.OrderedDict()
         for meth_pb, i in zip(methods, range(0, sys.maxsize)):
-            lro = meth_pb.options.Extensions[annotations_pb2.operation]
+            lro = meth_pb.options.Extensions[operations_pb2.operation_info]
 
             # If the output type is google.longrunning.Operation, we use
             # a specialized object in its place.

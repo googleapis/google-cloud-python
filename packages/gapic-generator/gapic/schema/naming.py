@@ -17,7 +17,7 @@ import os
 import re
 from typing import Iterable, Sequence, Tuple
 
-from google.api import annotations_pb2
+from google.api import client_pb2
 from google.protobuf import descriptor_pb2
 
 from gapic import utils
@@ -37,8 +37,11 @@ class Naming:
     namespace: Tuple[str] = dataclasses.field(default_factory=tuple)
     version: str = ''
     product_name: str = ''
-    product_url: str = ''
     proto_package: str = ''
+
+    def __post_init__(self):
+        if not self.product_name:
+            self.__dict__['product_name'] = self.name
 
     @classmethod
     def build(cls,
@@ -118,38 +121,33 @@ class Naming:
         #
         # This creates a naming class non-empty metadata annotation and
         # uses Python's set logic to de-duplicate. There should only be one.
-        metadata_info = set()
+        explicit_pkgs = set()
         for fd in file_descriptors:
-            meta = fd.options.Extensions[annotations_pb2.metadata]
+            pkg = fd.options.Extensions[client_pb2.client_package]
             naming = cls(
-                name=meta.package_name or meta.product_name,
-                namespace=tuple(meta.package_namespace),
-                product_name=meta.product_name,
-                product_url=meta.product_uri,
-                version='',
+                name=pkg.title or pkg.product_title,
+                namespace=tuple(pkg.namespace),
+                version=pkg.version,
             )
             if naming:
-                metadata_info.add(naming)
+                explicit_pkgs.add(naming)
 
         # Sanity check: Ensure that any google.api.metadata provisions were
         # consistent.
-        if len(metadata_info) > 1:
+        if len(explicit_pkgs) > 1:
             raise ValueError(
-                'If the google.api.metadata annotation is provided in more '
-                'than one file, it must be consistent.',
+                'If the google.api.client_package annotation is provided in '
+                'more than one file, it must be consistent.',
             )
 
         # Merge the package naming information and the metadata naming
         # information, with the latter being preferred.
         # Return a Naming object which effectively merges them.
-        answer = package_info
-        if len(metadata_info):
-            for k, v in dataclasses.asdict(metadata_info.pop()).items():
-                # Sanity check: We only want to overwrite anything if the
-                # new value is truthy.
-                if v:
-                    answer = dataclasses.replace(answer, **{k: v})
-        return answer
+        if len(explicit_pkgs):
+            return dataclasses.replace(package_info,
+                **dataclasses.asdict(explicit_pkgs.pop()),
+            )
+        return package_info
 
     def __bool__(self):
         """Return True if any of the fields are truthy, False otherwise."""

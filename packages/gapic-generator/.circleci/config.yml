@@ -59,7 +59,7 @@ jobs:
       - run:
           name: Install nox and codecov.
           command: |
-            pip install --pre nox-automation
+            pip install nox
             pip install codecov
       - run:
           name: Run unit tests.
@@ -81,7 +81,7 @@ jobs:
       - run:
           name: Install nox and codecov.
           command: |
-            pip install --pre nox-automation
+            pip install nox
             pip install codecov
       - run:
           name: Run unit tests.
@@ -93,7 +93,7 @@ jobs:
   showcase:
     docker:
       - image: python:3.7-slim
-      - image: gcr.io/gapic-showcase/gapic-showcase:0.0.9
+      - image: gcr.io/gapic-showcase/gapic-showcase:0.0.12
     steps:
       - checkout
       - run:
@@ -103,7 +103,7 @@ jobs:
             apt-get install -y curl pandoc unzip
       - run:
           name: Install nox.
-          command: pip install --pre nox-automation
+          command: pip install nox
       - run:
           name: Install protoc 3.6.1.
           command: |
@@ -122,7 +122,7 @@ jobs:
       - checkout
       - run:
           name: Install nox.
-          command: pip install --pre nox-automation
+          command: pip install nox
       - run:
           name: Build the documentation.
           command: nox -s docs

@@ -16,8 +16,8 @@ import collections
 from typing import Sequence
 
 from google.api import annotations_pb2
+from google.api import client_pb2
 from google.api import http_pb2
-from google.api import signature_pb2
 from google.protobuf import descriptor_pb2
 
 from gapic.schema import metadata
@@ -47,9 +47,10 @@ def test_method_signature():
 
     # Edit the underlying method pb2 post-hoc to add the appropriate annotation
     # (google.api.signature).
-    method.options.Extensions[annotations_pb2.method_signature].MergeFrom(
-        signature_pb2.MethodSignature(fields=['int_field', 'float_field'])
-    )
+    method.options.Extensions[client_pb2.method_signature].append(','.join((
+        'int_field',
+        'float_field',
+    )))
 
     # We should get back just those two fields as part of the signature.
     assert len(method.signatures) == 1
@@ -73,8 +74,8 @@ def test_method_signature_nested():
 
     # Edit the underlying method pb2 post-hoc to add the appropriate annotation
     # (google.api.signature).
-    method.options.Extensions[annotations_pb2.method_signature].MergeFrom(
-        signature_pb2.MethodSignature(fields=['inner.int_field'])
+    method.options.Extensions[client_pb2.method_signature].append(
+        'inner.int_field',
     )
 
     # We should get back just those two fields as part of the signature.

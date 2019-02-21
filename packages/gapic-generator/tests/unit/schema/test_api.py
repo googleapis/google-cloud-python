@@ -17,8 +17,7 @@ from unittest import mock
 
 import pytest
 
-from google.api import annotations_pb2
-from google.api import longrunning_pb2
+from google.longrunning import operations_pb2
 from google.protobuf import descriptor_pb2
 
 from gapic.schema import api
@@ -461,8 +460,8 @@ def test_lro():
         input_type='google.example.v3.AsyncDoThingRequest',
         output_type='google.longrunning.Operation',
     )
-    method_pb2.options.Extensions[annotations_pb2.operation].MergeFrom(
-        longrunning_pb2.OperationData(
+    method_pb2.options.Extensions[operations_pb2.operation_info].MergeFrom(
+        operations_pb2.OperationInfo(
             response_type='google.example.v3.AsyncDoThingResponse',
             metadata_type='google.example.v3.AsyncDoThingMetadata',
         ),
@@ -606,5 +605,4 @@ def make_naming(**kwargs) -> naming.Naming:
     kwargs.setdefault('namespace', ('Google', 'Cloud'))
     kwargs.setdefault('version', 'v1')
     kwargs.setdefault('product_name', 'Hatstand')
-    kwargs.setdefault('product_url', 'https://cloud.google.com/hatstand/')
     return naming.Naming(**kwargs)
