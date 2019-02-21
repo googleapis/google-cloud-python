@@ -14,20 +14,90 @@
 
 """Context for currently running tasks and transactions."""
 
+import collections
+
+from google.cloud.ndb import _datastore_api
+from google.cloud.ndb import _eventloop
 from google.cloud.ndb import exceptions
+from google.cloud.ndb import _runstate
 
 
 __all__ = ["AutoBatcher", "Context", "ContextOptions", "TransactionOptions"]
 
 
-class AutoBatcher:
-    __slots__ = ()
-
-    def __init__(self, *args, **kwargs):
-        raise exceptions.NoLongerImplementedError()
+_ContextTuple = collections.namedtuple(
+    "_ContextTuple", ["client", "eventloop", "stub", "batches", "transaction"]
+)
 
 
-class Context:
+class _Context(_ContextTuple):
+    """Current runtime state.
+
+    Instances of this class hold on to runtime state such as the current event
+    loop, current transaction, etc. Instances are shallowly immutable, but
+    contain references to data structures which are mutable, such as the event
+    loop. A new context can be derived from an existing context using
+    :meth:`new`.
+
+    ``_Context`` instances can be used as context managers which push
+    themselves onto the thread local stack in ``_runstate`` and then pop
+    themselves back off on exit.
+
+    :class:`Context` is a subclass of :class:`_Context` which provides
+    only publicly facing interface. The use of two classes is only to provide a
+    distinction between public and private API.
+
+    Arguments:
+        client (client.Client): The NDB client for this context.
+    """
+
+    def __new__(
+        cls, client, eventloop=None, stub=None, batches=None, transaction=None
+    ):
+        if eventloop is None:
+            eventloop = _eventloop.EventLoop()
+
+        if stub is None:
+            stub = _datastore_api.make_stub(client)
+
+        if batches is None:
+            batches = {}
+
+        return super(_Context, cls).__new__(
+            cls,
+            client=client,
+            eventloop=eventloop,
+            stub=stub,
+            batches=batches,
+            transaction=transaction,
+        )
+
+    def new(self, **kwargs):
+        """Create a new :class:`_Context` instance.
+
+        New context will be the same as context except values from ``kwargs``
+        will be substituted.
+        """
+        state = {name: getattr(self, name) for name in self._fields}
+        state.update(kwargs)
+        return type(self)(**state)
+
+    def __enter__(self):
+        _runstate.contexts.push(self)
+        return self
+
+    def __exit__(self, *exc_info):
+        popped = _runstate.contexts.pop()
+
+        # If we've done this right, this will never happen. Including this
+        # check in an abundance of caution.
+        if popped is not self:
+            raise RuntimeError("Contexts stack is corrupted")
+
+
+class Context(_Context):
+    """User management of cache and other policy."""
+
     def clear_cache(self):
         """Clears the in-memory cache.
 
@@ -270,3 +340,10 @@ class TransactionOptions:
 
     def __init__(self, *args, **kwargs):
         raise NotImplementedError
+
+
+class AutoBatcher:
+    __slots__ = ()
+
+    def __init__(self, *args, **kwargs):
+        raise exceptions.NoLongerImplementedError()

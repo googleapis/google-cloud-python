@@ -47,7 +47,7 @@ class TestEntityGroup:
         assert entity_group.__dict__ == {"_values": {}}
 
     @staticmethod
-    @pytest.mark.usefixtures("client")
+    @pytest.mark.usefixtures("in_context")
     def test_key_for_entity_group():
         key = key_module.Key(
             metadata.EntityGroup.KIND_NAME,
@@ -70,19 +70,19 @@ class TestKind:
         assert kind.__dict__ == {"_values": {}}
 
     @staticmethod
-    @pytest.mark.usefixtures("client")
+    @pytest.mark.usefixtures("in_context")
     def test_key_for_kind():
         key = key_module.Key(metadata.Kind.KIND_NAME, "test")
         assert key == metadata.Kind.key_for_kind("test")
 
     @staticmethod
-    @pytest.mark.usefixtures("client")
+    @pytest.mark.usefixtures("in_context")
     def test_key_to_kind():
         key = key_module.Key(metadata.Kind.KIND_NAME, "test")
         assert metadata.Kind.key_to_kind(key) == "test"
 
     @staticmethod
-    @pytest.mark.usefixtures("client")
+    @pytest.mark.usefixtures("in_context")
     def test_kind_name():
         key = key_module.Key(metadata.Kind.KIND_NAME, "test")
         kind = metadata.Kind(key=key)
@@ -101,13 +101,13 @@ class TestNamespace:
         assert namespace.__dict__ == {"_values": {}}
 
     @staticmethod
-    @pytest.mark.usefixtures("client")
+    @pytest.mark.usefixtures("in_context")
     def test_key_for_namespace():
         key = key_module.Key(metadata.Namespace.KIND_NAME, "test")
         assert key == metadata.Namespace.key_for_namespace("test")
 
     @staticmethod
-    @pytest.mark.usefixtures("client")
+    @pytest.mark.usefixtures("in_context")
     def test_key_for_namespace_empty():
         key = key_module.Key(
             metadata.Namespace.KIND_NAME, metadata.Namespace.EMPTY_NAMESPACE_ID
@@ -115,13 +115,13 @@ class TestNamespace:
         assert key == metadata.Namespace.key_for_namespace("")
 
     @staticmethod
-    @pytest.mark.usefixtures("client")
+    @pytest.mark.usefixtures("in_context")
     def test_key_to_namespace():
         key = key_module.Key(metadata.Namespace.KIND_NAME, "test")
         assert metadata.Namespace.key_to_namespace(key) == "test"
 
     @staticmethod
-    @pytest.mark.usefixtures("client")
+    @pytest.mark.usefixtures("in_context")
     def test_namespace_name():
         key = key_module.Key(metadata.Namespace.KIND_NAME, "test")
         namespace = metadata.Namespace(key=key)
@@ -140,19 +140,19 @@ class TestProperty:
         assert property.__dict__ == {"_values": {}}
 
     @staticmethod
-    @pytest.mark.usefixtures("client")
+    @pytest.mark.usefixtures("in_context")
     def test_key_for_kind():
         key = key_module.Key(metadata.Kind.KIND_NAME, "test")
         assert key == metadata.Property.key_for_kind("test")
 
     @staticmethod
-    @pytest.mark.usefixtures("client")
+    @pytest.mark.usefixtures("in_context")
     def test_key_to_kind():
         kind = key_module.Key(metadata.Kind.KIND_NAME, "test")
         assert metadata.Property.key_to_kind(kind) == "test"
 
     @staticmethod
-    @pytest.mark.usefixtures("client")
+    @pytest.mark.usefixtures("in_context")
     def test_kind_name():
         key = key_module.Key(
             metadata.Kind.KIND_NAME,
@@ -164,7 +164,7 @@ class TestProperty:
         assert property.kind_name == "test"
 
     @staticmethod
-    @pytest.mark.usefixtures("client")
+    @pytest.mark.usefixtures("in_context")
     def test_key_for_property():
         key = key_module.Key(
             metadata.Kind.KIND_NAME,
@@ -175,19 +175,19 @@ class TestProperty:
         assert key == metadata.Property.key_for_property("test", "test2")
 
     @staticmethod
-    @pytest.mark.usefixtures("client")
+    @pytest.mark.usefixtures("in_context")
     def test_key_to_property():
         kind = key_module.Key(metadata.Property.KIND_NAME, "test")
         assert metadata.Property.key_to_property(kind) == "test"
 
     @staticmethod
-    @pytest.mark.usefixtures("client")
+    @pytest.mark.usefixtures("in_context")
     def test_key_to_property_only_kind():
         kind = key_module.Key(metadata.Kind.KIND_NAME, "test")
         assert metadata.Property.key_to_property(kind) is None
 
     @staticmethod
-    @pytest.mark.usefixtures("client")
+    @pytest.mark.usefixtures("in_context")
     def test_property_name():
         key = key_module.Key(
             metadata.Kind.KIND_NAME,
