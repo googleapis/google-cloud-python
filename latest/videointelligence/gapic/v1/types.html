@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Types for Cloud Video Intelligence API Client &#8212; google-cloud 7acde77 documentation</title>
+    <title>Types for Cloud Video Intelligence API Client &#8212; google-cloud 5087458 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -443,6 +443,112 @@ to the original image. Range: [0, 1].</p>
 </dd></dl>
 
 <dl class="class">
+<dt id="google.cloud.videointelligence_v1.types.NormalizedBoundingPoly">
+<em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1.types.</code><code class="descname">NormalizedBoundingPoly</code><a class="headerlink" href="#google.cloud.videointelligence_v1.types.NormalizedBoundingPoly" title="Permalink to this definition">#</a></dt>
+<dd><p>Normalized bounding polygon for text (that might not be aligned with
+axis). Contains list of the corner points in clockwise order starting
+from top-left corner. For example, for a rectangular bounding box: When
+the text is horizontal it might look like: 0—-1 | | 3—-2</p>
+<p>When it’s clockwise rotated 180 degrees around the top-left corner it
+becomes: 2—-3 | | 1—-0</p>
+<p>and the vertex order will still be (0, 1, 2, 3). Note that values can be
+less than 0, or greater than 1 due to trignometric calculations for
+location of the box.</p>
+<dl class="attribute">
+<dt id="google.cloud.videointelligence_v1.types.NormalizedBoundingPoly.vertices">
+<code class="descname">vertices</code><a class="headerlink" href="#google.cloud.videointelligence_v1.types.NormalizedBoundingPoly.vertices" title="Permalink to this definition">#</a></dt>
+<dd><p>Normalized vertices of the bounding polygon.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.videointelligence_v1.types.NormalizedVertex">
+<em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1.types.</code><code class="descname">NormalizedVertex</code><a class="headerlink" href="#google.cloud.videointelligence_v1.types.NormalizedVertex" title="Permalink to this definition">#</a></dt>
+<dd><p>X coordinate.</p>
+<dl class="attribute">
+<dt id="google.cloud.videointelligence_v1.types.NormalizedVertex.y">
+<code class="descname">y</code><a class="headerlink" href="#google.cloud.videointelligence_v1.types.NormalizedVertex.y" title="Permalink to this definition">#</a></dt>
+<dd><p>Y coordinate.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.videointelligence_v1.types.ObjectTrackingAnnotation">
+<em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1.types.</code><code class="descname">ObjectTrackingAnnotation</code><a class="headerlink" href="#google.cloud.videointelligence_v1.types.ObjectTrackingAnnotation" title="Permalink to this definition">#</a></dt>
+<dd><p>Annotations corresponding to one tracked object.</p>
+<dl class="attribute">
+<dt id="google.cloud.videointelligence_v1.types.ObjectTrackingAnnotation.track_info">
+<code class="descname">track_info</code><a class="headerlink" href="#google.cloud.videointelligence_v1.types.ObjectTrackingAnnotation.track_info" title="Permalink to this definition">#</a></dt>
+<dd><p>Different representation of tracking info in non-streaming
+batch and streaming modes.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.videointelligence_v1.types.ObjectTrackingAnnotation.segment">
+<code class="descname">segment</code><a class="headerlink" href="#google.cloud.videointelligence_v1.types.ObjectTrackingAnnotation.segment" title="Permalink to this definition">#</a></dt>
+<dd><p>Non-streaming batch mode ONLY. Each object track corresponds
+to one video segment where it appears.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.videointelligence_v1.types.ObjectTrackingAnnotation.track_id">
+<code class="descname">track_id</code><a class="headerlink" href="#google.cloud.videointelligence_v1.types.ObjectTrackingAnnotation.track_id" title="Permalink to this definition">#</a></dt>
+<dd><p>Streaming mode ONLY. In streaming mode, we do not know the end
+time of a tracked object before it is completed. Hence, there
+is no VideoSegment info returned. Instead, we provide a unique
+identifiable integer track_id so that the customers can
+correlate the results of the ongoing ObjectTrackAnnotation of
+the same track_id over time.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.videointelligence_v1.types.ObjectTrackingAnnotation.entity">
+<code class="descname">entity</code><a class="headerlink" href="#google.cloud.videointelligence_v1.types.ObjectTrackingAnnotation.entity" title="Permalink to this definition">#</a></dt>
+<dd><p>Entity to specify the object category that this track is
+labeled as.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.videointelligence_v1.types.ObjectTrackingAnnotation.confidence">
+<code class="descname">confidence</code><a class="headerlink" href="#google.cloud.videointelligence_v1.types.ObjectTrackingAnnotation.confidence" title="Permalink to this definition">#</a></dt>
+<dd><p>Object category’s labeling confidence of this track.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.videointelligence_v1.types.ObjectTrackingAnnotation.frames">
+<code class="descname">frames</code><a class="headerlink" href="#google.cloud.videointelligence_v1.types.ObjectTrackingAnnotation.frames" title="Permalink to this definition">#</a></dt>
+<dd><p>Information corresponding to all frames where this object
+track appears. Non-streaming batch mode: it may be one or
+multiple ObjectTrackingFrame messages in frames. Streaming
+mode: it can only be one ObjectTrackingFrame message in
+frames.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.videointelligence_v1.types.ObjectTrackingFrame">
+<em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1.types.</code><code class="descname">ObjectTrackingFrame</code><a class="headerlink" href="#google.cloud.videointelligence_v1.types.ObjectTrackingFrame" title="Permalink to this definition">#</a></dt>
+<dd><p>Video frame level annotations for object detection and tracking. This
+field stores per frame location, time offset, and confidence.</p>
+<dl class="attribute">
+<dt id="google.cloud.videointelligence_v1.types.ObjectTrackingFrame.normalized_bounding_box">
+<code class="descname">normalized_bounding_box</code><a class="headerlink" href="#google.cloud.videointelligence_v1.types.ObjectTrackingFrame.normalized_bounding_box" title="Permalink to this definition">#</a></dt>
+<dd><p>The normalized bounding box location of this object track for
+the frame.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.videointelligence_v1.types.ObjectTrackingFrame.time_offset">
+<code class="descname">time_offset</code><a class="headerlink" href="#google.cloud.videointelligence_v1.types.ObjectTrackingFrame.time_offset" title="Permalink to this definition">#</a></dt>
+<dd><p>The timestamp of the frame in microseconds.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="google.cloud.videointelligence_v1.types.Operation">
 <em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1.types.</code><code class="descname">Operation</code><a class="headerlink" href="#google.cloud.videointelligence_v1.types.Operation" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
@@ -633,6 +739,88 @@ word-level confidence information is returned. The default is
 <dd></dd></dl>
 
 <dl class="class">
+<dt id="google.cloud.videointelligence_v1.types.TextAnnotation">
+<em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1.types.</code><code class="descname">TextAnnotation</code><a class="headerlink" href="#google.cloud.videointelligence_v1.types.TextAnnotation" title="Permalink to this definition">#</a></dt>
+<dd><p>Annotations related to one detected OCR text snippet. This will contain
+the corresponding text, confidence value, and frame level information
+for each detection.</p>
+<dl class="attribute">
+<dt id="google.cloud.videointelligence_v1.types.TextAnnotation.text">
+<code class="descname">text</code><a class="headerlink" href="#google.cloud.videointelligence_v1.types.TextAnnotation.text" title="Permalink to this definition">#</a></dt>
+<dd><p>The detected text.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.videointelligence_v1.types.TextAnnotation.segments">
+<code class="descname">segments</code><a class="headerlink" href="#google.cloud.videointelligence_v1.types.TextAnnotation.segments" title="Permalink to this definition">#</a></dt>
+<dd><p>All video segments where OCR detected text appears.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.videointelligence_v1.types.TextDetectionConfig">
+<em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1.types.</code><code class="descname">TextDetectionConfig</code><a class="headerlink" href="#google.cloud.videointelligence_v1.types.TextDetectionConfig" title="Permalink to this definition">#</a></dt>
+<dd><p>Config for TEXT_DETECTION.</p>
+<dl class="attribute">
+<dt id="google.cloud.videointelligence_v1.types.TextDetectionConfig.language_hints">
+<code class="descname">language_hints</code><a class="headerlink" href="#google.cloud.videointelligence_v1.types.TextDetectionConfig.language_hints" title="Permalink to this definition">#</a></dt>
+<dd><p>Language hint can be specified if the language to be detected
+is known a priori. It can increase the accuracy of the
+detection. Language hint must be language code in BCP-47
+format.  Automatic language detection is performed if no hint
+is provided.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.videointelligence_v1.types.TextFrame">
+<em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1.types.</code><code class="descname">TextFrame</code><a class="headerlink" href="#google.cloud.videointelligence_v1.types.TextFrame" title="Permalink to this definition">#</a></dt>
+<dd><p>Video frame level annotation results for text annotation (OCR). Contains
+information regarding timestamp and bounding box locations for the
+frames containing detected OCR text snippets.</p>
+<dl class="attribute">
+<dt id="google.cloud.videointelligence_v1.types.TextFrame.rotated_bounding_box">
+<code class="descname">rotated_bounding_box</code><a class="headerlink" href="#google.cloud.videointelligence_v1.types.TextFrame.rotated_bounding_box" title="Permalink to this definition">#</a></dt>
+<dd><p>Bounding polygon of the detected text for this frame.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.videointelligence_v1.types.TextFrame.time_offset">
+<code class="descname">time_offset</code><a class="headerlink" href="#google.cloud.videointelligence_v1.types.TextFrame.time_offset" title="Permalink to this definition">#</a></dt>
+<dd><p>Timestamp of this frame.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.videointelligence_v1.types.TextSegment">
+<em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1.types.</code><code class="descname">TextSegment</code><a class="headerlink" href="#google.cloud.videointelligence_v1.types.TextSegment" title="Permalink to this definition">#</a></dt>
+<dd><p>Video segment level annotation results for text detection.</p>
+<dl class="attribute">
+<dt id="google.cloud.videointelligence_v1.types.TextSegment.segment">
+<code class="descname">segment</code><a class="headerlink" href="#google.cloud.videointelligence_v1.types.TextSegment.segment" title="Permalink to this definition">#</a></dt>
+<dd><p>Video segment where a text snippet was detected.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.videointelligence_v1.types.TextSegment.confidence">
+<code class="descname">confidence</code><a class="headerlink" href="#google.cloud.videointelligence_v1.types.TextSegment.confidence" title="Permalink to this definition">#</a></dt>
+<dd><p>Confidence for the track of detected text. It is calculated as
+the highest over all frames where OCR detected text appears.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.videointelligence_v1.types.TextSegment.frames">
+<code class="descname">frames</code><a class="headerlink" href="#google.cloud.videointelligence_v1.types.TextSegment.frames" title="Permalink to this definition">#</a></dt>
+<dd><p>Information related to the frames where OCR detected text
+appears.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="google.cloud.videointelligence_v1.types.Timestamp">
 <em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1.types.</code><code class="descname">Timestamp</code><a class="headerlink" href="#google.cloud.videointelligence_v1.types.Timestamp" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
@@ -725,6 +913,20 @@ face.</p>
 </dd></dl>
 
 <dl class="attribute">
+<dt id="google.cloud.videointelligence_v1.types.VideoAnnotationResults.text_annotations">
+<code class="descname">text_annotations</code><a class="headerlink" href="#google.cloud.videointelligence_v1.types.VideoAnnotationResults.text_annotations" title="Permalink to this definition">#</a></dt>
+<dd><p>OCR text detection and tracking. Annotations for list of
+detected text snippets. Each will have list of frame
+information associated with it.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.videointelligence_v1.types.VideoAnnotationResults.object_annotations">
+<code class="descname">object_annotations</code><a class="headerlink" href="#google.cloud.videointelligence_v1.types.VideoAnnotationResults.object_annotations" title="Permalink to this definition">#</a></dt>
+<dd><p>Annotations for list of objects detected and tracked in video.</p>
+</dd></dl>
+
+<dl class="attribute">
 <dt id="google.cloud.videointelligence_v1.types.VideoAnnotationResults.error">
 <code class="descname">error</code><a class="headerlink" href="#google.cloud.videointelligence_v1.types.VideoAnnotationResults.error" title="Permalink to this definition">#</a></dt>
 <dd><p>If set, indicates an error. Note that for a single
@@ -774,6 +976,12 @@ unspecified, each video is treated as a single segment.</p>
 <dt id="google.cloud.videointelligence_v1.types.VideoContext.speech_transcription_config">
 <code class="descname">speech_transcription_config</code><a class="headerlink" href="#google.cloud.videointelligence_v1.types.VideoContext.speech_transcription_config" title="Permalink to this definition">#</a></dt>
 <dd><p>Config for SPEECH_TRANSCRIPTION.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.videointelligence_v1.types.VideoContext.text_detection_config">
+<code class="descname">text_detection_config</code><a class="headerlink" href="#google.cloud.videointelligence_v1.types.VideoContext.text_detection_config" title="Permalink to this definition">#</a></dt>
+<dd><p>Config for TEXT_DETECTION.</p>
 </dd></dl>
 
 </dd></dl>
