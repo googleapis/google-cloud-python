@@ -55,11 +55,15 @@ class Future:
     that of the legacy Google App Engine NDB ``Future`` class.
     """
 
-    def __init__(self):
+    def __init__(self, info="Unknown"):
+        self.info = info
         self._done = False
         self._result = None
         self._callbacks = []
         self._exception = None
+
+    def __repr__(self):
+        return "{}({!r}) <{}>".format(type(self).__name__, self.info, id(self))
 
     def done(self):
         """Get whether future has finished its task.
@@ -235,8 +239,8 @@ class _TaskletFuture(Future):
             generator.
     """
 
-    def __init__(self, generator):
-        super(_TaskletFuture, self).__init__()
+    def __init__(self, generator, info="Unknown"):
+        super(_TaskletFuture, self).__init__(info=info)
         self.generator = generator
 
     def _advance_tasklet(self, send_value=None, error=None):
@@ -328,6 +332,13 @@ class _MultiFuture(Future):
         for dependency in dependencies:
             dependency.add_done_callback(self._dependency_done)
 
+    def __repr__(self):
+        return "{}({}) <{}>".format(
+            type(self).__name__,
+            ", ".join(map(repr, self._dependencies)),
+            id(self),
+        )
+
     def _dependency_done(self, dependency):
         if self._done:
             return
@@ -377,12 +388,12 @@ def tasklet(wrapped):
 
         if isinstance(returned, types.GeneratorType):
             # We have a tasklet
-            future = _TaskletFuture(returned)
+            future = _TaskletFuture(returned, info=wrapped.__name__)
             future._advance_tasklet()
 
         else:
             # We don't have a tasklet, but we fake it anyway
-            future = Future()
+            future = Future(info=wrapped.__name__)
             future.set_result(returned)
 
         return future
