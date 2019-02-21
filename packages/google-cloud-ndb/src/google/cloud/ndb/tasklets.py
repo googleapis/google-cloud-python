@@ -23,6 +23,7 @@ import types
 import grpc
 
 from google.cloud.ndb import _eventloop
+from google.cloud.ndb import _runstate
 
 __all__ = [
     "add_flow_exception",
@@ -239,19 +240,21 @@ class _TaskletFuture(Future):
             generator.
     """
 
-    def __init__(self, generator, info="Unknown"):
+    def __init__(self, generator, context, info="Unknown"):
         super(_TaskletFuture, self).__init__(info=info)
         self.generator = generator
+        self.context = context
 
     def _advance_tasklet(self, send_value=None, error=None):
         """Advance a tasklet one step by sending in a value or error."""
         try:
-            # Send the next value or exception into the generator
-            if error:
-                self.generator.throw(type(error), error)
+            with self.context:
+                # Send the next value or exception into the generator
+                if error:
+                    self.generator.throw(type(error), error)
 
-            # send_value will be None if this is the first time
-            yielded = self.generator.send(send_value)
+                # send_value will be None if this is the first time
+                yielded = self.generator.send(send_value)
 
         except StopIteration as stop:
             # Generator has signalled exit, get the return value. This tasklet
@@ -377,6 +380,8 @@ def tasklet(wrapped):
         # and create a future object and set the result to the function's
         # return value so that from the user perspective there is no problem.
         # This permissive behavior is inherited from legacy NDB.
+        context = _runstate.current()
+
         try:
             returned = wrapped(*args, **kwargs)
         except StopIteration as stop:
@@ -387,8 +392,8 @@ def tasklet(wrapped):
             returned = _get_return_value(stop)
 
         if isinstance(returned, types.GeneratorType):
-            # We have a tasklet
-            future = _TaskletFuture(returned, info=wrapped.__name__)
+            # We have a tasklet, start it
+            future = _TaskletFuture(returned, context, info=wrapped.__name__)
             future._advance_tasklet()
 
         else:
