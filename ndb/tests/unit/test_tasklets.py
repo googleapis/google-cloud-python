@@ -38,6 +38,19 @@ class TestFuture:
         future = tasklets.Future()
         assert future.running()
         assert not future.done()
+        assert future.info == "Unknown"
+
+    @staticmethod
+    def test_constructor_w_info():
+        future = tasklets.Future("Testing")
+        assert future.running()
+        assert not future.done()
+        assert future.info == "Testing"
+
+    @staticmethod
+    def test___repr__():
+        future = tasklets.Future("The Children")
+        assert repr(future) == "Future('The Children') <{}>".format(id(future))
 
     @staticmethod
     def test_set_result():
@@ -234,6 +247,14 @@ class Test_TaskletFuture:
         generator = object()
         future = tasklets._TaskletFuture(generator)
         assert future.generator is generator
+        assert future.info == "Unknown"
+
+    @staticmethod
+    def test___repr__():
+        future = tasklets._TaskletFuture(None, info="Female")
+        assert repr(future) == "_TaskletFuture('Female') <{}>".format(
+            id(future)
+        )
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")
@@ -340,6 +361,15 @@ class Test_TaskletFuture:
 
 
 class Test_MultiFuture:
+    @staticmethod
+    def test___repr__():
+        this, that = (tasklets.Future("this"), tasklets.Future("that"))
+        future = tasklets._MultiFuture((this, that))
+        assert repr(future) == (
+            "_MultiFuture(Future('this') <{}>,"
+            " Future('that') <{}>) <{}>".format(id(this), id(that), id(future))
+        )
+
     @staticmethod
     def test_success():
         dependencies = (tasklets.Future(), tasklets.Future())
