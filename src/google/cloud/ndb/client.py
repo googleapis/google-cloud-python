@@ -14,6 +14,7 @@
 
 """A client for NDB which manages credentials, project, namespace."""
 
+import contextlib
 import os
 
 from google.cloud import environment_vars
@@ -21,7 +22,7 @@ from google.cloud import _helpers
 from google.cloud import client as google_client
 from google.cloud.datastore_v1.gapic import datastore_client
 
-from google.cloud.ndb import _runstate
+from google.cloud.ndb import context as context_module
 
 DATASTORE_API_HOST = datastore_client.DatastoreClient.SERVICE_ADDRESS.rsplit(
     ":", 1
@@ -86,6 +87,7 @@ class Client(google_client.ClientWithProject):
         )
         self.secure = True
 
+    @contextlib.contextmanager
     def context(self):
         """Establish a context for a set of NDB calls.
 
@@ -116,7 +118,12 @@ class Client(google_client.ClientWithProject):
         per HTTP request. This can typically be accomplished in a middleware
         layer.
         """
-        return _runstate.state_context(self)
+        context = context_module.Context(self)
+        with context:
+            yield context
+
+        # Finish up any work left to do on the event loop
+        context.eventloop.run()
 
     @property
     def _http(self):

@@ -13,8 +13,12 @@
 # limitations under the License.
 
 import pytest
+from unittest import mock
 
 from google.cloud.ndb import context as context_module
+from google.cloud.ndb import _eventloop
+from google.cloud.ndb import exceptions
+from google.cloud.ndb import _runstate
 import tests.unit.utils
 
 
@@ -23,133 +27,181 @@ def test___all__():
 
 
 class TestContext:
+    def _make_one(self):
+        client = mock.Mock(spec=())
+        stub = mock.Mock(spec=())
+        return context_module.Context(client, stub=stub)
+
+    @mock.patch("google.cloud.ndb._datastore_api.make_stub")
+    def test_constructor_defaults(self, make_stub):
+        context = context_module.Context("client")
+        assert context.client == "client"
+        assert context.stub is make_stub.return_value
+        make_stub.assert_called_once_with("client")
+        assert isinstance(context.eventloop, _eventloop.EventLoop)
+        assert context.batches == {}
+        assert context.transaction is None
+
+    def test_constructor_overrides(self):
+        context = context_module.Context(
+            client="client",
+            stub="stub",
+            eventloop="eventloop",
+            batches="batches",
+            transaction="transaction",
+        )
+        assert context.client == "client"
+        assert context.stub == "stub"
+        assert context.eventloop == "eventloop"
+        assert context.batches == "batches"
+        assert context.transaction == "transaction"
+
+    def test_new_transaction(self):
+        context = self._make_one()
+        new_context = context.new(transaction="tx123")
+        assert new_context.transaction == "tx123"
+        assert context.transaction is None
+
+    def test_assert_as_context_manager(self):
+        context = self._make_one()
+        with context:
+            assert _runstate.current() is context
+        with pytest.raises(exceptions.ContextError):
+            _runstate.current()
+
+    def test_assert_as_context_manager_corrupted_stack(self):
+        context = self._make_one()
+        with pytest.raises(RuntimeError):
+            with context:
+                _runstate.contexts.push("foo")
+
     def test_clear_cache(self):
-        context = context_module.Context()
+        context = self._make_one()
         with pytest.raises(NotImplementedError):
             context.clear_cache()
 
     def test_flush(self):
-        context = context_module.Context()
+        context = self._make_one()
         with pytest.raises(NotImplementedError):
             context.flush()
 
     def test_get_cache_policy(self):
-        context = context_module.Context()
+        context = self._make_one()
         with pytest.raises(NotImplementedError):
             context.get_cache_policy()
 
     def test_get_datastore_policy(self):
-        context = context_module.Context()
+        context = self._make_one()
         with pytest.raises(NotImplementedError):
             context.get_datastore_policy()
 
     def test_get_memcache_policy(self):
-        context = context_module.Context()
+        context = self._make_one()
         with pytest.raises(NotImplementedError):
             context.get_memcache_policy()
 
     def test_get_memcache_timeout_policy(self):
-        context = context_module.Context()
+        context = self._make_one()
         with pytest.raises(NotImplementedError):
             context.get_memcache_timeout_policy()
 
     def test_set_cache_policy(self):
-        context = context_module.Context()
+        context = self._make_one()
         with pytest.raises(NotImplementedError):
             context.set_cache_policy(None)
 
     def test_set_datastore_policy(self):
-        context = context_module.Context()
+        context = self._make_one()
         with pytest.raises(NotImplementedError):
             context.set_datastore_policy(None)
 
     def test_set_memcache_policy(self):
-        context = context_module.Context()
+        context = self._make_one()
         with pytest.raises(NotImplementedError):
             context.set_memcache_policy(None)
 
     def test_set_memcache_timeout_policy(self):
-        context = context_module.Context()
+        context = self._make_one()
         with pytest.raises(NotImplementedError):
             context.set_memcache_timeout_policy(None)
 
     def test_call_on_commit(self):
-        context = context_module.Context()
+        context = self._make_one()
         with pytest.raises(NotImplementedError):
             context.call_on_commit(None)
 
     def test_in_transaction(self):
-        context = context_module.Context()
+        context = self._make_one()
         with pytest.raises(NotImplementedError):
             context.in_transaction()
 
     def test_default_cache_policy(self):
-        context = context_module.Context()
+        context = self._make_one()
         with pytest.raises(NotImplementedError):
             context.default_cache_policy(None)
 
     def test_default_datastore_policy(self):
-        context = context_module.Context()
+        context = self._make_one()
         with pytest.raises(NotImplementedError):
             context.default_datastore_policy(None)
 
     def test_default_memcache_policy(self):
-        context = context_module.Context()
+        context = self._make_one()
         with pytest.raises(NotImplementedError):
             context.default_memcache_policy(None)
 
     def test_default_memcache_timeout_policy(self):
-        context = context_module.Context()
+        context = self._make_one()
         with pytest.raises(NotImplementedError):
             context.default_memcache_timeout_policy(None)
 
     def test_memcache_add(self):
-        context = context_module.Context()
+        context = self._make_one()
         with pytest.raises(NotImplementedError):
             context.memcache_add()
 
     def test_memcache_cas(self):
-        context = context_module.Context()
+        context = self._make_one()
         with pytest.raises(NotImplementedError):
             context.memcache_cas()
 
     def test_memcache_decr(self):
-        context = context_module.Context()
+        context = self._make_one()
         with pytest.raises(NotImplementedError):
             context.memcache_decr()
 
     def test_memcache_replace(self):
-        context = context_module.Context()
+        context = self._make_one()
         with pytest.raises(NotImplementedError):
             context.memcache_replace()
 
     def test_memcache_set(self):
-        context = context_module.Context()
+        context = self._make_one()
         with pytest.raises(NotImplementedError):
             context.memcache_set()
 
     def test_memcache_delete(self):
-        context = context_module.Context()
+        context = self._make_one()
         with pytest.raises(NotImplementedError):
             context.memcache_delete()
 
     def test_memcache_get(self):
-        context = context_module.Context()
+        context = self._make_one()
         with pytest.raises(NotImplementedError):
             context.memcache_get()
 
     def test_memcache_gets(self):
-        context = context_module.Context()
+        context = self._make_one()
         with pytest.raises(NotImplementedError):
             context.memcache_gets()
 
     def test_memcache_incr(self):
-        context = context_module.Context()
+        context = self._make_one()
         with pytest.raises(NotImplementedError):
             context.memcache_incr()
 
     def test_urlfetch(self):
-        context = context_module.Context()
+        context = self._make_one()
         with pytest.raises(NotImplementedError):
             context.urlfetch()
 

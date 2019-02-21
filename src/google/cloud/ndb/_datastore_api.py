@@ -36,27 +36,34 @@ _NOT_FOUND = object()
 def stub():
     """Get the stub for the `Google Datastore` API.
 
-    Gets the stub from the current context, creating one if there isn't one
-    already.
+    Gets the stub from the current context.
 
     Returns:
         :class:`~google.cloud.datastore_v1.proto.datastore_pb2_grpc.DatastoreStub`:
             The stub instance.
     """
     state = _runstate.current()
-
-    if state.stub is None:
-        client = state.client
-        if client.secure:
-            channel = _helpers.make_secure_channel(
-                client._credentials, _http.DEFAULT_USER_AGENT, client.host
-            )
-        else:
-            channel = grpc.insecure_channel(client.host)
-
-        state.stub = datastore_pb2_grpc.DatastoreStub(channel)
-
     return state.stub
+
+
+def make_stub(client):
+    """Create the stub for the `Google Datastore` API.
+
+    Args:
+        client (client.Client): The NDB client.
+
+    Returns:
+        :class:`~google.cloud.datastore_v1.proto.datastore_pb2_grpc.DatastoreStub`:
+            The stub instance.
+    """
+    if client.secure:
+        channel = _helpers.make_secure_channel(
+            client._credentials, _http.DEFAULT_USER_AGENT, client.host
+        )
+    else:
+        channel = grpc.insecure_channel(client.host)
+
+    return datastore_pb2_grpc.DatastoreStub(channel)
 
 
 def lookup(key, **options):
