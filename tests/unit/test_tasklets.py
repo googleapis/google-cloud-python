@@ -18,6 +18,7 @@ import grpc
 import pytest
 
 from google.cloud.ndb import _eventloop
+from google.cloud.ndb import _runstate
 from google.cloud.ndb import tasklets
 
 import tests.unit.utils
@@ -245,33 +246,33 @@ class Test_TaskletFuture:
     @staticmethod
     def test_constructor():
         generator = object()
-        future = tasklets._TaskletFuture(generator)
+        context = object()
+        future = tasklets._TaskletFuture(generator, context)
         assert future.generator is generator
+        assert future.context is context
         assert future.info == "Unknown"
 
     @staticmethod
     def test___repr__():
-        future = tasklets._TaskletFuture(None, info="Female")
+        future = tasklets._TaskletFuture(None, None, info="Female")
         assert repr(future) == "_TaskletFuture('Female') <{}>".format(
             id(future)
         )
 
     @staticmethod
-    @pytest.mark.usefixtures("in_context")
-    def test__advance_tasklet_return():
+    def test__advance_tasklet_return(in_context):
         def generator_function():
             yield
             return 42
 
         generator = generator_function()
         next(generator)  # skip ahead to return
-        future = tasklets._TaskletFuture(generator)
+        future = tasklets._TaskletFuture(generator, in_context)
         future._advance_tasklet()
         assert future.result() == 42
 
     @staticmethod
-    @pytest.mark.usefixtures("in_context")
-    def test__advance_tasklet_generator_raises():
+    def test__advance_tasklet_generator_raises(in_context):
         error = Exception("Spurious error.")
 
         def generator_function():
@@ -280,45 +281,42 @@ class Test_TaskletFuture:
 
         generator = generator_function()
         next(generator)  # skip ahead to return
-        future = tasklets._TaskletFuture(generator)
+        future = tasklets._TaskletFuture(generator, in_context)
         future._advance_tasklet()
         assert future.exception() is error
 
     @staticmethod
-    @pytest.mark.usefixtures("in_context")
-    def test__advance_tasklet_bad_yield():
+    def test__advance_tasklet_bad_yield(in_context):
         def generator_function():
             yield 42
 
         generator = generator_function()
-        future = tasklets._TaskletFuture(generator)
+        future = tasklets._TaskletFuture(generator, in_context)
         with pytest.raises(RuntimeError):
             future._advance_tasklet()
 
     @staticmethod
-    @pytest.mark.usefixtures("in_context")
-    def test__advance_tasklet_dependency_returns():
+    def test__advance_tasklet_dependency_returns(in_context):
         def generator_function(dependency):
             some_value = yield dependency
             return some_value + 42
 
         dependency = tasklets.Future()
         generator = generator_function(dependency)
-        future = tasklets._TaskletFuture(generator)
+        future = tasklets._TaskletFuture(generator, in_context)
         future._advance_tasklet()
         dependency.set_result(21)
         assert future.result() == 63
 
     @staticmethod
-    @pytest.mark.usefixtures("in_context")
-    def test__advance_tasklet_dependency_raises():
+    def test__advance_tasklet_dependency_raises(in_context):
         def generator_function(dependency):
             yield dependency
 
         error = Exception("Spurious error.")
         dependency = tasklets.Future()
         generator = generator_function(dependency)
-        future = tasklets._TaskletFuture(generator)
+        future = tasklets._TaskletFuture(generator, in_context)
         future._advance_tasklet()
         dependency.set_exception(error)
         assert future.exception() is error
@@ -326,8 +324,7 @@ class Test_TaskletFuture:
             future.result()
 
     @staticmethod
-    @pytest.mark.usefixtures("in_context")
-    def test__advance_tasklet_yields_rpc():
+    def test__advance_tasklet_yields_rpc(in_context):
         def generator_function(dependency):
             value = yield dependency
             return value + 3
@@ -336,7 +333,7 @@ class Test_TaskletFuture:
         dependency.exception.return_value = None
         dependency.result.return_value = 8
         generator = generator_function(dependency)
-        future = tasklets._TaskletFuture(generator)
+        future = tasklets._TaskletFuture(generator, in_context)
         future._advance_tasklet()
 
         callback = dependency.add_done_callback.call_args[0][0]
@@ -345,19 +342,19 @@ class Test_TaskletFuture:
         assert future.result() == 11
 
     @staticmethod
-    @pytest.mark.usefixtures("in_context")
-    def test__advance_tasklet_parallel_yield():
+    def test__advance_tasklet_parallel_yield(in_context):
         def generator_function(dependencies):
             one, two = yield dependencies
             return one + two
 
         dependencies = (tasklets.Future(), tasklets.Future())
         generator = generator_function(dependencies)
-        future = tasklets._TaskletFuture(generator)
+        future = tasklets._TaskletFuture(generator, in_context)
         future._advance_tasklet()
         dependencies[0].set_result(8)
         dependencies[1].set_result(3)
         assert future.result() == 11
+        assert future.context is in_context
 
 
 class Test_MultiFuture:
@@ -409,6 +406,7 @@ class Test__get_return_value:
 
 class Test_tasklet:
     @staticmethod
+    @pytest.mark.usefixtures("in_context")
     def test_generator():
         @tasklets.tasklet
         def generator(dependency):
@@ -422,6 +420,7 @@ class Test_tasklet:
         assert future.result() == 11
 
     @staticmethod
+    @pytest.mark.usefixtures("in_context")
     def test_regular_function():
         @tasklets.tasklet
         def regular_function(value):
@@ -432,6 +431,7 @@ class Test_tasklet:
         assert future.result() == 11
 
     @staticmethod
+    @pytest.mark.usefixtures("in_context")
     def test_regular_function_raises_Return():
         @tasklets.tasklet
         def regular_function(value):
@@ -440,6 +440,28 @@ class Test_tasklet:
         future = regular_function(8)
         assert isinstance(future, tasklets.Future)
         assert future.result() == 11
+
+    @staticmethod
+    def test_context_management(in_context):
+        @tasklets.tasklet
+        def some_task(transaction, future):
+            assert _runstate.current().transaction == transaction
+            yield future
+            return _runstate.current().transaction
+
+        future_foo = tasklets.Future("foo")
+        with in_context.new(transaction="foo"):
+            task_foo = some_task("foo", future_foo)
+
+        future_bar = tasklets.Future("bar")
+        with in_context.new(transaction="bar"):
+            task_bar = some_task("bar", future_bar)
+
+        future_foo.set_result(None)
+        future_bar.set_result(None)
+
+        assert task_foo.result() == "foo"
+        assert task_bar.result() == "bar"
 
 
 class Test_wait_any:

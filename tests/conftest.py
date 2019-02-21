@@ -85,4 +85,4 @@ def context():
 @pytest.fixture
 def in_context(context):
     with context:
-        yield
+        yield context
