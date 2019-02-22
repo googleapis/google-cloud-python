@@ -439,6 +439,33 @@ def wait_all(futures):
         future.wait()
 
 
+class Return(StopIteration):
+    """Alias for `StopIteration`.
+
+    Older programs written with NDB may ``raise Return(result)`` in a tasklet.
+    This is no longer necessary, but it is included for backwards
+    compatibility. Tasklets should simply ``return`` their result.
+    """
+
+    # For reasons I don't entirely understand, Sphinx pukes if we just assign:
+    # Return = StopIteration
+
+
+def sleep(seconds):
+    """Sleep some amount of time in a tasklet.
+    Example:
+        ..code-block:: python
+            yield tasklets.sleep(0.5)  # Sleep for half a second.
+    Arguments:
+        seconds (float): Amount of time, in seconds, to sleep.
+    Returns:
+        Future: Future will be complete after ``seconds`` have elapsed.
+    """
+    future = Future(info="sleep({})".format(seconds))
+    _eventloop.queue_call(seconds, future.set_result, None)
+    return future
+
+
 def add_flow_exception(*args, **kwargs):
     raise NotImplementedError
 
@@ -469,18 +496,6 @@ class ReducingFuture:
         raise NotImplementedError
 
 
-class Return(StopIteration):
-    """Alias for `StopIteration`.
-
-    Older programs written with NDB may ``raise Return(result)`` in a tasklet.
-    This is no longer necessary, but it is included for backwards
-    compatibility. Tasklets should simply ``return`` their result.
-    """
-
-    # For reasons I don't entirely understand, Sphinx pukes if we just assign:
-    # Return = StopIteration
-
-
 class SerialQueueFuture:
     __slots__ = ()
 
@@ -489,10 +504,6 @@ class SerialQueueFuture:
 
 
 def set_context(*args, **kwargs):
-    raise NotImplementedError
-
-
-def sleep(*args, **kwargs):
     raise NotImplementedError
 
 

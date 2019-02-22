@@ -513,6 +513,15 @@ class Test_wait_all:
         assert tasklets.wait_all(()) is None
 
 
+@pytest.mark.usefixtures("in_context")
+@mock.patch("google.cloud.ndb._eventloop.time")
+def test_sleep(time_module, context):
+    time_module.time.side_effect = [0, 0, 1]
+    future = tasklets.sleep(1)
+    assert future.get_result() is None
+    time_module.sleep.assert_called_once_with(1)
+
+
 def test_get_context():
     with pytest.raises(NotImplementedError):
         tasklets.get_context()
@@ -556,11 +565,6 @@ class TestSerialQueueFuture:
 def test_set_context():
     with pytest.raises(NotImplementedError):
         tasklets.set_context()
-
-
-def test_sleep():
-    with pytest.raises(NotImplementedError):
-        tasklets.sleep()
 
 
 def test_synctasklet():
