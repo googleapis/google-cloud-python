@@ -36,27 +36,34 @@ _NOT_FOUND = object()
 def stub():
     """Get the stub for the `Google Datastore` API.
 
-    Gets the stub from the current context, creating one if there isn't one
-    already.
+    Gets the stub from the current context.
 
     Returns:
         :class:`~google.cloud.datastore_v1.proto.datastore_pb2_grpc.DatastoreStub`:
             The stub instance.
     """
     state = _runstate.current()
-
-    if state.stub is None:
-        client = state.client
-        if client.secure:
-            channel = _helpers.make_secure_channel(
-                client._credentials, _http.DEFAULT_USER_AGENT, client.host
-            )
-        else:
-            channel = grpc.insecure_channel(client.host)
-
-        state.stub = datastore_pb2_grpc.DatastoreStub(channel)
-
     return state.stub
+
+
+def make_stub(client):
+    """Create the stub for the `Google Datastore` API.
+
+    Args:
+        client (client.Client): The NDB client.
+
+    Returns:
+        :class:`~google.cloud.datastore_v1.proto.datastore_pb2_grpc.DatastoreStub`:
+            The stub instance.
+    """
+    if client.secure:
+        channel = _helpers.make_secure_channel(
+            client._credentials, _http.DEFAULT_USER_AGENT, client.host
+        )
+    else:
+        channel = grpc.insecure_channel(client.host)
+
+    return datastore_pb2_grpc.DatastoreStub(channel)
 
 
 def lookup(key, **options):
@@ -146,7 +153,7 @@ class _LookupBatch:
             tasklets.Future: A future for the eventual result.
         """
         todo_key = key.to_protobuf().SerializeToString()
-        future = tasklets.Future()
+        future = tasklets.Future(info="add({})".format(key))
         self.todo.setdefault(todo_key, []).append(future)
         return future
 
@@ -336,7 +343,7 @@ class _CommitBatch:
             tasklets.Future: Result will be completed datastore key
                 (entity_pb2.Key) for the entity.
         """
-        future = tasklets.Future()
+        future = tasklets.Future(info="put({})".format(entity_pb))
         mutation = datastore_pb2.Mutation(upsert=entity_pb)
         self.mutations.append(mutation)
         self.futures.append(future)

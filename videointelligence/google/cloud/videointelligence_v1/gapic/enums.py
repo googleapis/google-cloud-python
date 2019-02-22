@@ -29,6 +29,8 @@ class Feature(enum.IntEnum):
       EXPLICIT_CONTENT_DETECTION (int): Explicit content detection.
       FACE_DETECTION (int): Human face detection and tracking.
       SPEECH_TRANSCRIPTION (int): Speech transcription.
+      TEXT_DETECTION (int): OCR text detection and tracking.
+      OBJECT_TRACKING (int): Object detection and tracking.
     """
 
     FEATURE_UNSPECIFIED = 0
@@ -37,6 +39,8 @@ class Feature(enum.IntEnum):
     EXPLICIT_CONTENT_DETECTION = 3
     FACE_DETECTION = 4
     SPEECH_TRANSCRIPTION = 6
+    TEXT_DETECTION = 7
+    OBJECT_TRACKING = 9
 
 
 class LabelDetectionMode(enum.IntEnum):

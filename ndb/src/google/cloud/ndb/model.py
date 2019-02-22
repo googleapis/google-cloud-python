@@ -18,10 +18,10 @@
 
     from unittest import mock
     from google.cloud import ndb
-    from google.cloud.ndb import _runstate
+    from google.cloud.ndb import context as context_module
 
     client = mock.Mock(project="testing", spec=("project",))
-    context = _runstate.state_context(client)
+    context = context_module.Context(client, stub=mock.Mock(spec=()))
     context.__enter__()
 
 .. testcleanup:: *
@@ -110,7 +110,6 @@ __all__ = [
 
 _MEANING_PREDEFINED_ENTITY_USER = 20
 _MAX_STRING_LENGTH = 1500
-_NO_LONGER_IMPLEMENTED = "No longer used"
 Key = key_module.Key
 BlobKey = _datastore_types.BlobKey
 GeoPt = helpers.GeoPoint
@@ -293,7 +292,7 @@ class ModelAdapter:
     __slots__ = ()
 
     def __new__(self, *args, **kwargs):
-        raise NotImplementedError(_NO_LONGER_IMPLEMENTED)
+        raise exceptions.NoLongerImplementedError()
 
 
 def _entity_from_protobuf(protobuf):
@@ -1539,7 +1538,7 @@ class Property(ModelAttribute):
         Raises:
             NotImplementedError: Always. This method is deprecated.
         """
-        raise NotImplementedError(_NO_LONGER_IMPLEMENTED)
+        raise exceptions.NoLongerImplementedError()
 
     def _prepare_for_put(self, entity):
         """Allow this property to define a pre-put hook.
@@ -1768,7 +1767,7 @@ class BooleanProperty(Property):
         Raises:
             NotImplementedError: Always. This method is deprecated.
         """
-        raise NotImplementedError(_NO_LONGER_IMPLEMENTED)
+        raise exceptions.NoLongerImplementedError()
 
 
 class IntegerProperty(Property):
@@ -1817,7 +1816,7 @@ class IntegerProperty(Property):
         Raises:
             NotImplementedError: Always. This method is deprecated.
         """
-        raise NotImplementedError(_NO_LONGER_IMPLEMENTED)
+        raise exceptions.NoLongerImplementedError()
 
 
 class FloatProperty(Property):
@@ -1867,7 +1866,7 @@ class FloatProperty(Property):
         Raises:
             NotImplementedError: Always. This method is deprecated.
         """
-        raise NotImplementedError(_NO_LONGER_IMPLEMENTED)
+        raise exceptions.NoLongerImplementedError()
 
 
 class _CompressedValue:
@@ -2070,7 +2069,7 @@ class BlobProperty(Property):
         Raises:
             NotImplementedError: Always. This method is deprecated.
         """
-        raise NotImplementedError(_NO_LONGER_IMPLEMENTED)
+        raise exceptions.NoLongerImplementedError()
 
 
 class TextProperty(BlobProperty):
@@ -2279,7 +2278,7 @@ class GeoPtProperty(Property):
         Raises:
             NotImplementedError: Always. This method is deprecated.
         """
-        raise NotImplementedError(_NO_LONGER_IMPLEMENTED)
+        raise exceptions.NoLongerImplementedError()
 
 
 class PickleProperty(BlobProperty):
@@ -2777,7 +2776,7 @@ class UserProperty(Property):
         Raises:
             NotImplementedError: Always. This method is deprecated.
         """
-        raise NotImplementedError(_NO_LONGER_IMPLEMENTED)
+        raise exceptions.NoLongerImplementedError()
 
 
 class KeyProperty(Property):
@@ -3012,7 +3011,7 @@ class KeyProperty(Property):
         Raises:
             NotImplementedError: Always. This method is deprecated.
         """
-        raise NotImplementedError(_NO_LONGER_IMPLEMENTED)
+        raise exceptions.NoLongerImplementedError()
 
 
 class BlobKeyProperty(Property):
@@ -3052,7 +3051,7 @@ class BlobKeyProperty(Property):
         Raises:
             NotImplementedError: Always. This method is deprecated.
         """
-        raise NotImplementedError(_NO_LONGER_IMPLEMENTED)
+        raise exceptions.NoLongerImplementedError()
 
 
 class DateTimeProperty(Property):
@@ -3204,7 +3203,7 @@ class DateTimeProperty(Property):
         Raises:
             NotImplementedError: Always. This method is deprecated.
         """
-        raise NotImplementedError(_NO_LONGER_IMPLEMENTED)
+        raise exceptions.NoLongerImplementedError()
 
 
 class DateProperty(DateTimeProperty):

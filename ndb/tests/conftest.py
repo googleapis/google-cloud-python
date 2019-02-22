@@ -23,6 +23,7 @@ import os
 from unittest import mock
 
 from google.cloud import environment_vars
+from google.cloud.ndb import context as context_module
 from google.cloud.ndb import model
 from google.cloud.ndb import _runstate
 
@@ -41,13 +42,10 @@ def reset_state(environ):
     - ``model.Property._FIND_METHODS_CACHE``
     - ``model.Model._kind_map``
     """
-    assert model.Property._FIND_METHODS_CACHE == {}
-    assert model.Model._kind_map == {}
-    assert _runstate.states.stack == []
     yield
     model.Property._FIND_METHODS_CACHE.clear()
     model.Model._kind_map.clear()
-    del _runstate.states.stack[:]
+    del _runstate.contexts.stack[:]
 
 
 @pytest.fixture
@@ -76,15 +74,15 @@ def initialize_environment(request, environ):
 
 
 @pytest.fixture
-def runstate():
-    client = None
-    with _runstate.state_context(client) as state:
-        yield state
-
-
-@pytest.fixture()
-def client(runstate):
-    runstate.client = client = mock.Mock(
+def context():
+    client = mock.Mock(
         project="testing", namespace=None, spec=("project", "namespace")
     )
-    return client
+    context = context_module.Context(client, stub=mock.Mock(spec=()))
+    return context
+
+
+@pytest.fixture
+def in_context(context):
+    with context:
+        yield

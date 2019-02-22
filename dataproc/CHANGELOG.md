@@ -4,6 +4,25 @@
 
 [1]: https://pypi.org/project/google-cloud-dataproc/#history
 
+## 0.3.1
+
+02-15-2019 12:36 PST
+
+
+### Implementation Changes
+- Remove unused message exports. ([#7266](https://github.com/googleapis/google-cloud-python/pull/7266))
+- Protoc-generated serialization update.. ([#7079](https://github.com/googleapis/google-cloud-python/pull/7079))
+- Trivial housekeeping change to .proto files. ([#7067](https://github.com/googleapis/google-cloud-python/pull/7067))
+
+### Documentation
+- Updated client library documentation URLs. ([#7307](https://github.com/googleapis/google-cloud-python/pull/7307))
+- Pick up stub docstring fix in GAPIC generator. ([#6967](https://github.com/googleapis/google-cloud-python/pull/6967))
+
+### Internal / Testing Changes
+- Copy proto files alongside protoc versions.
+- Add protos as an artifact to library ([#7205](https://github.com/googleapis/google-cloud-python/pull/7205))
+- Update copyright headers
+
 ## 0.3.0
 
 12-17-2018 18:20 PST
