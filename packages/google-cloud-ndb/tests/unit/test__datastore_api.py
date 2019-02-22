@@ -61,6 +61,43 @@ class TestStub:
         grpc.insecure_channel.assert_called_once_with("thehost")
 
 
+class TestRemoteCall:
+    @staticmethod
+    def test_constructor():
+        call = _api.RemoteCall("future", "info")
+        assert call.future == "future"
+        assert call.info == "info"
+
+    @staticmethod
+    def test_repr():
+        call = _api.RemoteCall(None, "a remote call")
+        assert repr(call) == "a remote call"
+
+    @staticmethod
+    def test_exception():
+        error = Exception("Spurious error")
+        future = tasklets.Future()
+        future.set_exception(error)
+        call = _api.RemoteCall(future, "testing")
+        assert call.exception() is error
+
+    @staticmethod
+    def test_result():
+        future = tasklets.Future()
+        future.set_result("positive")
+        call = _api.RemoteCall(future, "testing")
+        assert call.result() == "positive"
+
+    @staticmethod
+    def test_add_done_callback():
+        future = tasklets.Future()
+        call = _api.RemoteCall(future, "testing")
+        callback = mock.Mock(spec=())
+        call.add_done_callback(callback)
+        future.set_result(None)
+        callback.assert_called_once_with(future)
+
+
 def _mock_key(key_str):
     key = mock.Mock(spec=("to_protobuf",))
     key.to_protobuf.return_value = protobuf = mock.Mock(
@@ -311,7 +348,7 @@ def test__datastore_lookup(datastore_pb2, context):
     with context.new(client=client, stub=stub) as context:
         context.stub.Lookup = Lookup = mock.Mock(spec=("future",))
         future = Lookup.future.return_value
-        assert _api._datastore_lookup(["foo", "bar"], None) is future
+        assert _api._datastore_lookup(["foo", "bar"], None).future is future
 
         datastore_pb2.LookupRequest.assert_called_once_with(
             project_id="theproject", keys=["foo", "bar"], read_options=None
@@ -516,7 +553,7 @@ class Test_datastore_commit:
         mutations = object()
         api = stub.return_value
         future = api.Commit.future.return_value
-        assert _api._datastore_commit(mutations, None) == future
+        assert _api._datastore_commit(mutations, None).future == future
 
         datastore_pb2.CommitRequest.assert_called_once_with(
             project_id="testing",
@@ -536,7 +573,7 @@ class Test_datastore_commit:
         mutations = object()
         api = stub.return_value
         future = api.Commit.future.return_value
-        assert _api._datastore_commit(mutations, b"tx123") == future
+        assert _api._datastore_commit(mutations, b"tx123").future == future
 
         datastore_pb2.CommitRequest.assert_called_once_with(
             project_id="testing",
