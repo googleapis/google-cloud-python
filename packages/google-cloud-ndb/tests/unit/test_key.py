@@ -499,6 +499,7 @@ class TestKey:
         assert key.urlsafe() == b"agFmcgULEgFkDA"
 
     @staticmethod
+    @pytest.mark.usefixtures("in_context")
     @unittest.mock.patch("google.cloud.ndb.key._datastore_api")
     @unittest.mock.patch("google.cloud.ndb.model._entity_from_protobuf")
     def test_get(_entity_from_protobuf, _datastore_api):
@@ -514,6 +515,7 @@ class TestKey:
         _entity_from_protobuf.assert_called_once_with("ds_entity")
 
     @staticmethod
+    @pytest.mark.usefixtures("in_context")
     @unittest.mock.patch("google.cloud.ndb.key._datastore_api")
     @unittest.mock.patch("google.cloud.ndb.model._entity_from_protobuf")
     def test_get_async(_entity_from_protobuf, _datastore_api):
@@ -530,6 +532,7 @@ class TestKey:
         _entity_from_protobuf.assert_called_once_with("ds_entity")
 
     @staticmethod
+    @pytest.mark.usefixtures("in_context")
     @unittest.mock.patch("google.cloud.ndb.key._datastore_api")
     def test_get_async_not_found(_datastore_api):
         ds_future = tasklets.Future()
