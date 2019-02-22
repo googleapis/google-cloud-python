@@ -53,6 +53,21 @@ class CloudRedisStub(object):
             request_serializer=google_dot_cloud_dot_redis__v1_dot_proto_dot_cloud__redis__pb2.UpdateInstanceRequest.SerializeToString,
             response_deserializer=google_dot_longrunning_dot_operations__pb2.Operation.FromString,
         )
+        self.ImportInstance = channel.unary_unary(
+            "/google.cloud.redis.v1.CloudRedis/ImportInstance",
+            request_serializer=google_dot_cloud_dot_redis__v1_dot_proto_dot_cloud__redis__pb2.ImportInstanceRequest.SerializeToString,
+            response_deserializer=google_dot_longrunning_dot_operations__pb2.Operation.FromString,
+        )
+        self.ExportInstance = channel.unary_unary(
+            "/google.cloud.redis.v1.CloudRedis/ExportInstance",
+            request_serializer=google_dot_cloud_dot_redis__v1_dot_proto_dot_cloud__redis__pb2.ExportInstanceRequest.SerializeToString,
+            response_deserializer=google_dot_longrunning_dot_operations__pb2.Operation.FromString,
+        )
+        self.FailoverInstance = channel.unary_unary(
+            "/google.cloud.redis.v1.CloudRedis/FailoverInstance",
+            request_serializer=google_dot_cloud_dot_redis__v1_dot_proto_dot_cloud__redis__pb2.FailoverInstanceRequest.SerializeToString,
+            response_deserializer=google_dot_longrunning_dot_operations__pb2.Operation.FromString,
+        )
         self.DeleteInstance = channel.unary_unary(
             "/google.cloud.redis.v1.CloudRedis/DeleteInstance",
             request_serializer=google_dot_cloud_dot_redis__v1_dot_proto_dot_cloud__redis__pb2.DeleteInstanceRequest.SerializeToString,
@@ -128,6 +143,40 @@ class CloudRedisServicer(object):
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
+    def ImportInstance(self, request, context):
+        """Import a Redis RDB snapshot file from GCS into a Redis instance.
+
+    Redis may stop serving during this operation. Instance state will be
+    IMPORTING for entire operation. When complete, the instance will contain
+    only data from the imported file.
+
+    The returned operation is automatically deleted after a few hours, so
+    there is no need to call DeleteOperation.
+    """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
+    def ExportInstance(self, request, context):
+        """Export Redis instance data into a Redis RDB format file in GCS.
+
+    Redis will continue serving during this operation.
+
+    The returned operation is automatically deleted after a few hours, so
+    there is no need to call DeleteOperation.
+    """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
+    def FailoverInstance(self, request, context):
+        """Failover the master role to current replica node against a specific
+    STANDARD tier redis instance.
+    """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
     def DeleteInstance(self, request, context):
         """Deletes a specific Redis instance.  Instance stops serving and data is
     deleted.
@@ -157,6 +206,21 @@ def add_CloudRedisServicer_to_server(servicer, server):
         "UpdateInstance": grpc.unary_unary_rpc_method_handler(
             servicer.UpdateInstance,
             request_deserializer=google_dot_cloud_dot_redis__v1_dot_proto_dot_cloud__redis__pb2.UpdateInstanceRequest.FromString,
+            response_serializer=google_dot_longrunning_dot_operations__pb2.Operation.SerializeToString,
+        ),
+        "ImportInstance": grpc.unary_unary_rpc_method_handler(
+            servicer.ImportInstance,
+            request_deserializer=google_dot_cloud_dot_redis__v1_dot_proto_dot_cloud__redis__pb2.ImportInstanceRequest.FromString,
+            response_serializer=google_dot_longrunning_dot_operations__pb2.Operation.SerializeToString,
+        ),
+        "ExportInstance": grpc.unary_unary_rpc_method_handler(
+            servicer.ExportInstance,
+            request_deserializer=google_dot_cloud_dot_redis__v1_dot_proto_dot_cloud__redis__pb2.ExportInstanceRequest.FromString,
+            response_serializer=google_dot_longrunning_dot_operations__pb2.Operation.SerializeToString,
+        ),
+        "FailoverInstance": grpc.unary_unary_rpc_method_handler(
+            servicer.FailoverInstance,
+            request_deserializer=google_dot_cloud_dot_redis__v1_dot_proto_dot_cloud__redis__pb2.FailoverInstanceRequest.FromString,
             response_serializer=google_dot_longrunning_dot_operations__pb2.Operation.SerializeToString,
         ),
         "DeleteInstance": grpc.unary_unary_rpc_method_handler(
