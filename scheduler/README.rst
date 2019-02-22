@@ -6,7 +6,7 @@ Python Client for Cloud Scheduler API (`Alpha`_)
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. _Alpha: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/README.rst
+.. _Alpha: https://github.com/googleapis/google-cloud-python/blob/master/README.rst
 .. _Cloud Scheduler API: https://cloud.google.com/scheduler
 .. _Client Library Documentation: https://googleapis.github.io/google-cloud-python/latest/scheduler/index.html
 .. _Product Documentation:  https://cloud.google.com/scheduler
@@ -81,4 +81,4 @@ Next Steps
    APIs that we cover.
 
 .. _Cloud Scheduler API Product documentation:  https://cloud.google.com/scheduler
-.. _repository’s main README: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/README.rst
+.. _repository’s main README: https://github.com/googleapis/google-cloud-python/blob/master/README.rst

@@ -38,6 +38,19 @@ class TestFuture:
         future = tasklets.Future()
         assert future.running()
         assert not future.done()
+        assert future.info == "Unknown"
+
+    @staticmethod
+    def test_constructor_w_info():
+        future = tasklets.Future("Testing")
+        assert future.running()
+        assert not future.done()
+        assert future.info == "Testing"
+
+    @staticmethod
+    def test___repr__():
+        future = tasklets.Future("The Children")
+        assert repr(future) == "Future('The Children') <{}>".format(id(future))
 
     @staticmethod
     def test_set_result():
@@ -183,7 +196,7 @@ class TestFuture:
         assert future.cancelled() is False
 
     @staticmethod
-    @pytest.mark.usefixtures("runstate")
+    @pytest.mark.usefixtures("in_context")
     def test_wait_any():
         futures = [tasklets.Future() for _ in range(3)]
 
@@ -201,7 +214,7 @@ class TestFuture:
         assert tasklets.Future.wait_any(()) is None
 
     @staticmethod
-    @pytest.mark.usefixtures("runstate")
+    @pytest.mark.usefixtures("in_context")
     def test_wait_all():
         futures = [tasklets.Future() for _ in range(3)]
 
@@ -234,9 +247,17 @@ class Test_TaskletFuture:
         generator = object()
         future = tasklets._TaskletFuture(generator)
         assert future.generator is generator
+        assert future.info == "Unknown"
 
     @staticmethod
-    @pytest.mark.usefixtures("runstate")
+    def test___repr__():
+        future = tasklets._TaskletFuture(None, info="Female")
+        assert repr(future) == "_TaskletFuture('Female') <{}>".format(
+            id(future)
+        )
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
     def test__advance_tasklet_return():
         def generator_function():
             yield
@@ -249,7 +270,7 @@ class Test_TaskletFuture:
         assert future.result() == 42
 
     @staticmethod
-    @pytest.mark.usefixtures("runstate")
+    @pytest.mark.usefixtures("in_context")
     def test__advance_tasklet_generator_raises():
         error = Exception("Spurious error.")
 
@@ -264,7 +285,7 @@ class Test_TaskletFuture:
         assert future.exception() is error
 
     @staticmethod
-    @pytest.mark.usefixtures("runstate")
+    @pytest.mark.usefixtures("in_context")
     def test__advance_tasklet_bad_yield():
         def generator_function():
             yield 42
@@ -275,7 +296,7 @@ class Test_TaskletFuture:
             future._advance_tasklet()
 
     @staticmethod
-    @pytest.mark.usefixtures("runstate")
+    @pytest.mark.usefixtures("in_context")
     def test__advance_tasklet_dependency_returns():
         def generator_function(dependency):
             some_value = yield dependency
@@ -289,7 +310,7 @@ class Test_TaskletFuture:
         assert future.result() == 63
 
     @staticmethod
-    @pytest.mark.usefixtures("runstate")
+    @pytest.mark.usefixtures("in_context")
     def test__advance_tasklet_dependency_raises():
         def generator_function(dependency):
             yield dependency
@@ -305,7 +326,7 @@ class Test_TaskletFuture:
             future.result()
 
     @staticmethod
-    @pytest.mark.usefixtures("runstate")
+    @pytest.mark.usefixtures("in_context")
     def test__advance_tasklet_yields_rpc():
         def generator_function(dependency):
             value = yield dependency
@@ -324,7 +345,7 @@ class Test_TaskletFuture:
         assert future.result() == 11
 
     @staticmethod
-    @pytest.mark.usefixtures("runstate")
+    @pytest.mark.usefixtures("in_context")
     def test__advance_tasklet_parallel_yield():
         def generator_function(dependencies):
             one, two = yield dependencies
@@ -340,6 +361,15 @@ class Test_TaskletFuture:
 
 
 class Test_MultiFuture:
+    @staticmethod
+    def test___repr__():
+        this, that = (tasklets.Future("this"), tasklets.Future("that"))
+        future = tasklets._MultiFuture((this, that))
+        assert repr(future) == (
+            "_MultiFuture(Future('this') <{}>,"
+            " Future('that') <{}>) <{}>".format(id(this), id(that), id(future))
+        )
+
     @staticmethod
     def test_success():
         dependencies = (tasklets.Future(), tasklets.Future())
@@ -414,7 +444,7 @@ class Test_tasklet:
 
 class Test_wait_any:
     @staticmethod
-    @pytest.mark.usefixtures("runstate")
+    @pytest.mark.usefixtures("in_context")
     def test_it():
         futures = [tasklets.Future() for _ in range(3)]
 
@@ -434,7 +464,7 @@ class Test_wait_any:
 
 class Test_wait_all:
     @staticmethod
-    @pytest.mark.usefixtures("runstate")
+    @pytest.mark.usefixtures("in_context")
     def test_it():
         futures = [tasklets.Future() for _ in range(3)]
 

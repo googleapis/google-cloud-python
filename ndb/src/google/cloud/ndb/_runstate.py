@@ -12,33 +12,23 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Management of current running state."""
+"""Management of current running context."""
 
-import contextlib
 import threading
 
 from google.cloud.ndb import exceptions
 
 
-class State:
-    def __init__(self, client):
-        self.client = client
-        self.eventloop = None
-        self.stub = None
-        self.batches = {}
-        self.transaction = None
-
-
-class LocalStates(threading.local):
-    """Maintain a thread local stack of contextual state."""
+class LocalContexts(threading.local):
+    """Maintain a thread local stack of contexts."""
 
     __slots__ = ("stack",)
 
     def __init__(self):
         self.stack = []
 
-    def push(self, state):
-        self.stack.append(state)
+    def push(self, context):
+        self.stack.append(context)
 
     def pop(self):
         return self.stack.pop(-1)
@@ -48,44 +38,24 @@ class LocalStates(threading.local):
             return self.stack[-1]
 
 
-states = LocalStates()
-
-
-@contextlib.contextmanager
-def state_context(client):
-    """Establish a context for a set of NDB calls.
-
-    Called from :meth:`google.cloud.ndb.client.Client.context` which has more
-    information.
-    """
-    state = State(client)
-    states.push(state)
-    yield state
-
-    # Finish up any work left to do on the event loop
-    if state.eventloop is not None:
-        state.eventloop.run()
-
-    # This will pop the same state pushed above unless someone is severely
-    # abusing our private data structure.
-    states.pop()
+contexts = LocalContexts()
 
 
 def current():
-    """Get the current context state.
+    """Get the current context.
 
     This function should be called within a context established by
     :meth:`google.cloud.ndb.client.Client.context`.
 
     Returns:
-        State: The state for the current context.
+        Context: The current context.
 
     Raises:
         .ContextError: If called outside of a context
             established by :meth:`google.cloud.ndb.client.Client.context`.
     """
-    state = states.current()
-    if state:
-        return state
+    context = contexts.current()
+    if context:
+        return context
 
     raise exceptions.ContextError()
