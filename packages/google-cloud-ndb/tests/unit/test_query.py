@@ -881,8 +881,32 @@ def test_OR():
 class TestQuery:
     @staticmethod
     def test_constructor():
-        with pytest.raises(NotImplementedError):
-            query.Query()
+        q = query.Query(kind='Foo')
+        assert q.kind == 'Foo'
+        assert q.ancestor == None
+        assert q.filters == None
+        assert q.orders == None
+
+    @staticmethod
+    def test_query_errors():
+        # with pytest.raises(TypeError):
+        #     query.Query(ancestor=
+        #                 query.ParameterizedFunction('user', query.Parameter(1)))
+        with pytest.raises(TypeError):
+            query.Query(ancestor=42)
+        # with pytest.raises(ValueError):
+        #     query.Query(ancestor=model.Key('X', None))
+        # with pytest.raises(TypeError):
+        #     query.Query(ancestor=model.Key('X', 1), app='another')
+        # with pytest.raises(TypeError):
+        #     query.Query(ancestor=model.Key('X', 1), namespace='another')
+        with pytest.raises(TypeError):
+            query.Query(filters=42)
+        with pytest.raises(TypeError):
+            query.Query(orders=42)
+        # with pytest.raises(TypeError):
+        #     query.Query(default_options=42)
+
 
 
 def test_gql():
