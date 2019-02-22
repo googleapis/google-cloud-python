@@ -38,6 +38,23 @@ def test_from_any_pb_success():
     assert in_message == out_message
 
 
+def test_from_any_pb_wrapped_success():
+    # Declare a message class conforming to wrapped messages.
+    class WrappedDate(object):
+        @classmethod
+        def pb(cls):
+            return date_pb2.Date
+
+    # Run the same test as `test_from_any_pb_success`, but using the
+    # wrapped class.
+    in_message = date_pb2.Date(year=1990)
+    in_message_any = any_pb2.Any()
+    in_message_any.Pack(in_message)
+    out_message = protobuf_helpers.from_any_pb(WrappedDate, in_message_any)
+
+    assert in_message == out_message
+
+
 def test_from_any_pb_failure():
     in_message = any_pb2.Any()
     in_message.Pack(date_pb2.Date(year=1990))
