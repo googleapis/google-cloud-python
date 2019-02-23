@@ -1,6 +1,5 @@
-google-auth
-google-auth-oauthlib
-google-cloud-bigquery==0.32.0
+pydata-google-auth
+google-cloud-bigquery==1.9.0
 pytest
 pytest-cov
 codecov

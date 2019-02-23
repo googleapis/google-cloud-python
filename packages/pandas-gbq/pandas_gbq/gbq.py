@@ -1,11 +1,9 @@
 import logging
 import time
 import warnings
-from collections import OrderedDict
 from datetime import datetime
 
 import numpy as np
-from pandas import DataFrame
 
 from pandas_gbq.exceptions import AccessDenied
 
@@ -37,7 +35,7 @@ def _check_google_client_version():
         raise ImportError("Could not import pkg_resources (setuptools).")
 
     # https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/bigquery/CHANGELOG.md
-    bigquery_minimum_version = pkg_resources.parse_version("0.32.0")
+    bigquery_minimum_version = pkg_resources.parse_version("1.9.0")
     BIGQUERY_INSTALLED_VERSION = pkg_resources.get_distribution(
         "google-cloud-bigquery"
     ).parsed_version
@@ -482,15 +480,16 @@ class GbqConnector(object):
             rows_iter = query_reply.result()
         except self.http_error as ex:
             self.process_http_error(ex)
-        result_rows = list(rows_iter)
-        total_rows = rows_iter.total_rows
-        schema = {
-            "fields": [field.to_api_repr() for field in rows_iter.schema]
-        }
 
-        logger.debug("Got {} rows.\n".format(total_rows))
+        schema_fields = [field.to_api_repr() for field in rows_iter.schema]
+        nullsafe_dtypes = _bqschema_to_nullsafe_dtypes(schema_fields)
+        df = rows_iter.to_dataframe(dtypes=nullsafe_dtypes)
 
-        return schema, result_rows
+        if df.empty:
+            df = _cast_empty_df_dtypes(schema_fields, df)
+
+        logger.debug("Got {} rows.\n".format(rows_iter.total_rows))
+        return df
 
     def load_data(
         self,
@@ -638,45 +637,62 @@ class GbqConnector(object):
         table.create(table_id, table_schema)
 
 
-def _parse_schema(schema_fields):
-    # see:
+def _bqschema_to_nullsafe_dtypes(schema_fields):
+    # Only specify dtype when the dtype allows nulls. Otherwise, use pandas's
+    # default dtype choice.
+    #
+    # See:
     # http://pandas.pydata.org/pandas-docs/dev/missing_data.html
     # #missing-data-casting-rules-and-indexing
     dtype_map = {
         "FLOAT": np.dtype(float),
+        # Even though TIMESTAMPs are timezone-aware in BigQuery, pandas doesn't
+        # support datetime64[ns, UTC] as dtype in DataFrame constructors. See:
+        # https://github.com/pandas-dev/pandas/issues/12513
         "TIMESTAMP": "datetime64[ns]",
         "TIME": "datetime64[ns]",
         "DATE": "datetime64[ns]",
         "DATETIME": "datetime64[ns]",
-        "BOOLEAN": bool,
-        "INTEGER": np.int64,
     }
 
+    dtypes = {}
     for field in schema_fields:
         name = str(field["name"])
         if field["mode"].upper() == "REPEATED":
-            yield name, object
-        else:
-            dtype = dtype_map.get(field["type"].upper())
-            yield name, dtype
+            continue
+
+        dtype = dtype_map.get(field["type"].upper())
+        if dtype:
+            dtypes[name] = dtype
+
+    return dtypes
 
 
-def _parse_data(schema, rows):
+def _cast_empty_df_dtypes(schema_fields, df):
+    """Cast any columns in an empty dataframe to correct type.
 
-    column_dtypes = OrderedDict(_parse_schema(schema["fields"]))
-    df = DataFrame(data=(iter(r) for r in rows), columns=column_dtypes.keys())
-
-    for column in df:
-        dtype = column_dtypes[column]
-        null_safe = (
-            df[column].notnull().all()
-            or dtype == float
-            or dtype == "datetime64[ns]"
+    In an empty dataframe, pandas cannot choose a dtype unless one is
+    explicitly provided. The _bqschema_to_nullsafe_dtypes() function only
+    provides dtypes when the dtype safely handles null values. This means
+    that empty int64 and boolean columns are incorrectly classified as
+    ``object``.
+    """
+    if not df.empty:
+        raise ValueError(
+            "DataFrame must be empty in order to cast non-nullsafe dtypes"
         )
-        if dtype and null_safe:
-            df[column] = df[column].astype(
-                column_dtypes[column], errors="ignore"
-            )
+
+    dtype_map = {"BOOLEAN": bool, "INTEGER": np.int64}
+
+    for field in schema_fields:
+        column = str(field["name"])
+        if field["mode"].upper() == "REPEATED":
+            continue
+
+        dtype = dtype_map.get(field["type"].upper())
+        if dtype:
+            df[column] = df[column].astype(dtype)
+
     return df
 
 
@@ -825,8 +841,8 @@ def read_gbq(
         credentials=credentials,
         private_key=private_key,
     )
-    schema, rows = connector.run_query(query, configuration=configuration)
-    final_df = _parse_data(schema, rows)
+
+    final_df = connector.run_query(query, configuration=configuration)
 
     # Reindex the DataFrame on the provided column
     if index_col is not None:

@@ -6,11 +6,12 @@ from datetime import datetime
 
 import google.oauth2.service_account
 import numpy as np
+import pandas
 import pandas.util.testing as tm
-import pytest
-import pytz
 from pandas import DataFrame, NaT, compat
 from pandas.compat import range, u
+import pytest
+import pytz
 
 from pandas_gbq import gbq
 
@@ -137,14 +138,6 @@ class TestGBQConnectorIntegration(object):
     def test_should_be_able_to_get_a_bigquery_client(self, gbq_connector):
         bigquery_client = gbq_connector.get_client()
         assert bigquery_client is not None
-
-    def test_should_be_able_to_get_schema_from_query(self, gbq_connector):
-        schema, pages = gbq_connector.run_query("SELECT 1")
-        assert schema is not None
-
-    def test_should_be_able_to_get_results_from_query(self, gbq_connector):
-        schema, pages = gbq_connector.run_query("SELECT 1")
-        assert pages is not None
 
 
 def test_should_read(project, credentials):
@@ -319,7 +312,8 @@ class TestReadGBQIntegration(object):
         tm.assert_frame_equal(
             df,
             DataFrame(
-                {"unix_epoch": [np.datetime64("1970-01-01T00:00:00.000000Z")]}
+                {"unix_epoch": ["1970-01-01T00:00:00.000000Z"]},
+                dtype="datetime64[ns]",
             ),
         )
 
@@ -334,11 +328,38 @@ class TestReadGBQIntegration(object):
         tm.assert_frame_equal(
             df,
             DataFrame(
-                {
-                    "valid_timestamp": [
-                        np.datetime64("2004-09-15T05:00:00.000000Z")
-                    ]
-                }
+                {"valid_timestamp": ["2004-09-15T05:00:00.000000Z"]},
+                dtype="datetime64[ns]",
+            ),
+        )
+
+    def test_should_properly_handle_datetime_unix_epoch(self, project_id):
+        query = 'SELECT DATETIME("1970-01-01 00:00:00") AS unix_epoch'
+        df = gbq.read_gbq(
+            query,
+            project_id=project_id,
+            credentials=self.credentials,
+            dialect="legacy",
+        )
+        tm.assert_frame_equal(
+            df,
+            DataFrame(
+                {"unix_epoch": ["1970-01-01T00:00:00"]}, dtype="datetime64[ns]"
+            ),
+        )
+
+    def test_should_properly_handle_arbitrary_datetime(self, project_id):
+        query = 'SELECT DATETIME("2004-09-15 05:00:00") AS valid_timestamp'
+        df = gbq.read_gbq(
+            query,
+            project_id=project_id,
+            credentials=self.credentials,
+            dialect="legacy",
+        )
+        tm.assert_frame_equal(
+            df,
+            DataFrame(
+                {"valid_timestamp": [np.datetime64("2004-09-15T05:00:00")]}
             ),
         )
 
@@ -346,7 +367,7 @@ class TestReadGBQIntegration(object):
         "expression, type_",
         [
             ("current_date()", "<M8[ns]"),
-            ("current_timestamp()", "<M8[ns]"),
+            ("current_timestamp()", "datetime64[ns]"),
             ("current_datetime()", "<M8[ns]"),
             ("TRUE", bool),
             ("FALSE", bool),
@@ -378,7 +399,19 @@ class TestReadGBQIntegration(object):
             credentials=self.credentials,
             dialect="legacy",
         )
-        tm.assert_frame_equal(df, DataFrame({"null_timestamp": [NaT]}))
+        tm.assert_frame_equal(
+            df, DataFrame({"null_timestamp": [NaT]}, dtype="datetime64[ns]")
+        )
+
+    def test_should_properly_handle_null_datetime(self, project_id):
+        query = "SELECT CAST(NULL AS DATETIME) AS null_datetime"
+        df = gbq.read_gbq(
+            query,
+            project_id=project_id,
+            credentials=self.credentials,
+            dialect="standard",
+        )
+        tm.assert_frame_equal(df, DataFrame({"null_datetime": [NaT]}))
 
     def test_should_properly_handle_null_boolean(self, project_id):
         query = "SELECT BOOLEAN(NULL) AS null_boolean"
@@ -549,17 +582,14 @@ class TestReadGBQIntegration(object):
             credentials=self.credentials,
             dialect="legacy",
         )
-        page_array = np.zeros(
-            (0,),
-            dtype=[
-                ("title", object),
-                ("id", np.dtype(int)),
-                ("is_bot", np.dtype(bool)),
-                ("ts", "M8[ns]"),
-            ],
-        )
+        empty_columns = {
+            "title": pandas.Series([], dtype=object),
+            "id": pandas.Series([], dtype=np.dtype(int)),
+            "is_bot": pandas.Series([], dtype=np.dtype(bool)),
+            "ts": pandas.Series([], dtype="datetime64[ns]"),
+        }
         expected_result = DataFrame(
-            page_array, columns=["title", "id", "is_bot", "ts"]
+            empty_columns, columns=["title", "id", "is_bot", "ts"]
         )
         tm.assert_frame_equal(df, expected_result, check_index_type=False)
 

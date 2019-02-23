@@ -2,8 +2,8 @@
 
 import pandas.util.testing as tm
 import pytest
+import numpy
 from pandas import DataFrame
-from pandas.compat.numpy import np_datetime64_compat
 
 import pandas_gbq.exceptions
 from pandas_gbq import gbq
@@ -22,7 +22,7 @@ pytestmark = pytest.mark.filter_warnings(
 def min_bq_version():
     import pkg_resources
 
-    return pkg_resources.parse_version("0.32.0")
+    return pkg_resources.parse_version("1.9.0")
 
 
 def mock_none_credentials(*args, **kwargs):
@@ -64,26 +64,23 @@ def no_auth(monkeypatch):
 
 
 @pytest.mark.parametrize(
-    ("input", "type_", "expected"),
+    ("type_", "expected"),
     [
-        (1, "INTEGER", int(1)),
-        (1, "FLOAT", float(1)),
-        pytest.param("false", "BOOLEAN", False, marks=pytest.mark.xfail),
-        pytest.param(
-            "0e9",
-            "TIMESTAMP",
-            np_datetime64_compat("1970-01-01T00:00:00Z"),
-            marks=pytest.mark.xfail,
-        ),
-        ("STRING", "STRING", "STRING"),
+        ("INTEGER", None),  # Can't handle NULL
+        ("BOOLEAN", None),  # Can't handle NULL
+        ("FLOAT", numpy.dtype(float)),
+        ("TIMESTAMP", "datetime64[ns]"),
+        ("DATETIME", "datetime64[ns]"),
     ],
 )
-def test_should_return_bigquery_correctly_typed(input, type_, expected):
-    result = gbq._parse_data(
-        dict(fields=[dict(name="x", type=type_, mode="NULLABLE")]),
-        rows=[[input]],
-    ).iloc[0, 0]
-    assert result == expected
+def test_should_return_bigquery_correctly_typed(type_, expected):
+    result = gbq._bqschema_to_nullsafe_dtypes(
+        [dict(name="x", type=type_, mode="NULLABLE")]
+    )
+    if not expected:
+        assert result == {}
+    else:
+        assert result == {"x": expected}
 
 
 def test_to_gbq_should_fail_if_invalid_table_name_passed():
@@ -261,21 +258,6 @@ def test_read_gbq_with_no_project_id_given_should_fail(monkeypatch):
 def test_read_gbq_with_inferred_project_id(monkeypatch):
     df = gbq.read_gbq("SELECT 1", dialect="standard")
     assert df is not None
-
-
-def test_that_parse_data_works_properly():
-    from google.cloud.bigquery.table import Row
-
-    test_schema = {
-        "fields": [{"mode": "NULLABLE", "name": "column_x", "type": "STRING"}]
-    }
-    field_to_index = {"column_x": 0}
-    values = ("row_value",)
-    test_page = [Row(values, field_to_index)]
-
-    test_output = gbq._parse_data(test_schema, test_page)
-    correct_output = DataFrame({"column_x": ["row_value"]})
-    tm.assert_frame_equal(test_output, correct_output)
 
 
 def test_read_gbq_with_invalid_private_key_json_should_fail():

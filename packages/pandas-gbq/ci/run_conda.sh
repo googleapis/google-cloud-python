@@ -21,7 +21,7 @@ fi
 
 REQ="ci/requirements-${PYTHON}-${PANDAS}"
 conda install -q --file "$REQ.conda";
-python setup.py develop
+python setup.py develop --no-deps
 
 # Run the tests
 $DIR/run_tests.sh
