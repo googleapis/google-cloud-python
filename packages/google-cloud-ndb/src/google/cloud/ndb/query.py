@@ -69,10 +69,14 @@ class ParameterizedThing:
     This exists purely for :func:`isinstance` checks.
     """
 
-    __slots__ = ()
-
     def __eq__(self, other):
         raise NotImplementedError
+
+    def __ne__(self, other):
+        eq = self.__eq__(other)
+        if eq is not NotImplemented:
+          eq = not eq
+        return eq
 
 
 class Parameter(ParameterizedThing):
@@ -141,10 +145,32 @@ class Parameter(ParameterizedThing):
 
 
 class ParameterizedFunction(ParameterizedThing):
-    __slots__ = ()
+    """Represents a GQL function with parameterized arguments.
 
-    def __init__(self, *args, **kwargs):
-        raise NotImplementedError
+    For example, ParameterizedFunction('key', [Parameter(1)]) stands for
+    the GQL syntax KEY(:1).
+    """
+
+    def __init__(self, func, values):
+        self.__func = func
+        self.__values = values
+
+    def __repr__(self):
+        return 'ParameterizedFunction(%r, %r)' % (self.__func, self.__values)
+
+    def __eq__(self, other):
+        if not isinstance(other, ParameterizedFunction):
+          return NotImplemented
+        return (self.__func == other.__func and
+                self.__values == other.__values)
+
+    @property
+    def func(self):
+        return self.__func
+
+    @property
+    def values(self):
+        return self.__values
 
 
 class Node:
@@ -983,7 +1009,7 @@ class Query:
         return fixed
 
     def _check_properties(self, fixed, **kwargs):
-        modelclass = model.Model._kind_map.get(self.__kind)
+        modelclass = model.Model._kind_map.get(self.kind)
         if modelclass is not None:
           modelclass._check_properties(fixed, **kwargs)
 

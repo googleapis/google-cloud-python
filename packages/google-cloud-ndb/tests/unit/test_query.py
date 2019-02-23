@@ -123,8 +123,9 @@ class TestParameter:
 class TestParameterizedFunction:
     @staticmethod
     def test_constructor():
-        with pytest.raises(NotImplementedError):
-            query.ParameterizedFunction()
+        q = query.ParameterizedFunction('user', query.Parameter(1))
+        assert q.func == 'user'
+        assert q.values == query.Parameter(1)
 
 
 class TestNode:
@@ -888,24 +889,39 @@ class TestQuery:
         assert q.orders == None
 
     @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_namespace():
+        q = query.Query(ancestor=model.Key('X', 1, namespace='namespace'))
+        assert q.namespace == 'namespace'
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
     def test_query_errors():
-        # with pytest.raises(TypeError):
-        #     query.Query(ancestor=
-        #                 query.ParameterizedFunction('user', query.Parameter(1)))
+        with pytest.raises(TypeError):
+            query.Query(ancestor=
+                        query.ParameterizedFunction('user', query.Parameter(1)))
         with pytest.raises(TypeError):
             query.Query(ancestor=42)
-        # with pytest.raises(ValueError):
-        #     query.Query(ancestor=model.Key('X', None))
-        # with pytest.raises(TypeError):
-        #     query.Query(ancestor=model.Key('X', 1), app='another')
-        # with pytest.raises(TypeError):
-        #     query.Query(ancestor=model.Key('X', 1), namespace='another')
+        with pytest.raises(ValueError):
+            query.Query(ancestor=model.Key('Kind', None))
+        with pytest.raises(TypeError):
+            query.Query(ancestor=model.Key('Kind', 1), app='another')
+        with pytest.raises(TypeError):
+            query.Query(ancestor=model.Key('X', 1), namespace='another')
         with pytest.raises(TypeError):
             query.Query(filters=42)
         with pytest.raises(TypeError):
             query.Query(orders=42)
         # with pytest.raises(TypeError):
         #     query.Query(default_options=42)
+        with pytest.raises(TypeError):
+            query.Query(projection="")
+        with pytest.raises(TypeError):
+            query.Query(projection=42)
+        with pytest.raises(TypeError):
+            query.Query(group_by="")
+        with pytest.raises(TypeError):
+            query.Query(group_by=42)
 
 
 
