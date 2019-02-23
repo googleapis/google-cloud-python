@@ -55,13 +55,22 @@ def from_any_pb(pb_type, any_pb):
         TypeError: if the message could not be converted.
     """
     msg = pb_type()
-    if not any_pb.Unpack(msg):
+
+    # Unwrap proto-plus wrapped messages.
+    if callable(getattr(pb_type, "pb", None)):
+        msg_pb = pb_type.pb(msg)
+    else:
+        msg_pb = msg
+
+    # Unpack the Any object and populate the protobuf message instance.
+    if not any_pb.Unpack(msg_pb):
         raise TypeError(
             "Could not convert {} to {}".format(
                 any_pb.__class__.__name__, pb_type.__name__
             )
         )
 
+    # Done; return the message.
     return msg
 
 
