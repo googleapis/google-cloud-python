@@ -64,6 +64,7 @@ def showcase(session):
                     f'download/v{showcase_version}/'
                     f'gapic-showcase-{showcase_version}.desc',
             '-L', '--output', os.path.join(tmp_dir, 'showcase.desc'),
+            external=True,
             silent=True,
         )
 
@@ -72,6 +73,7 @@ def showcase(session):
             f'--descriptor_set_in={tmp_dir}{os.path.sep}showcase.desc',
             f'--python_gapic_out={tmp_dir}',
             'google/showcase/v1alpha3/echo.proto',
+            external=True,
         )
 
         # Install the library.
