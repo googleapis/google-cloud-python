@@ -460,7 +460,9 @@ Queue = _reflection.GeneratedProtocolMessageType(
           [AppEngineHttpQueue][google.cloud.tasks.v2beta3.AppEngineHttpQ
           ueue] settings apply only to [App Engine
           tasks][google.cloud.tasks.v2beta3.AppEngineHttpRequest] in
-          this queue.
+          this queue. [Http
+          tasks][google.cloud.tasks.v2beta3.HttpRequest] are not
+          affected by this proto.
       rate_limits:
           Rate limits for task dispatches.
           [rate\_limits][google.cloud.tasks.v2beta3.Queue.rate\_limits]
