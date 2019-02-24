@@ -73,6 +73,7 @@ def showcase(session):
             f'--descriptor_set_in={tmp_dir}{os.path.sep}showcase.desc',
             f'--python_gapic_out={tmp_dir}',
             'google/showcase/v1alpha3/echo.proto',
+            'google/showcase/v1alpha3/identity.proto',
             external=True,
         )
 

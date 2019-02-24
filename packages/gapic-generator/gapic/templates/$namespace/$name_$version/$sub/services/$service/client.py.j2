@@ -77,6 +77,9 @@ class {{ service.name }}:
                 {{ method.output.meta.doc|wrap(width=72, indent=16) }}
         {%- endif %}
         """
+        # If we got a dictionary, coerce it.
+        request = {{ method.input.ident }}(request)
+
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = gapic_v1.method.wrap_method(

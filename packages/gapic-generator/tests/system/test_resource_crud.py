@@ -12,25 +12,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import pytest
 
-from google.showcase import Echo
-from google.showcase import Identity
-
-import grpc
-
-
-@pytest.fixture
-def echo():
-    transport = Echo.get_transport_class('grpc')(
-        channel=grpc.insecure_channel('localhost:7469'),
-    )
-    return Echo(transport=transport)
-
-
-@pytest.fixture
-def identity():
-    transport = Identity.get_transport_class('grpc')(
-        channel=grpc.insecure_channel('localhost:7469'),
-    )
-    return Identity(transport=transport)
+def test_crud_with_request(identity):
+    count = len(identity.list_users({}).users)
+    user = identity.create_user({'user': {
+        'display_name': 'Guido van Rossum',
+        'email': 'guido@guido.fake',
+    }})
+    try:
+        assert user.display_name == 'Guido van Rossum'
+        assert user.email == 'guido@guido.fake'
+        assert len(identity.list_users({}).users) == count + 1
+        assert identity.get_user({
+            'name': user.name,
+        }).display_name == 'Guido van Rossum'
+    finally:
+        identity.delete_user({'name': user.name})
