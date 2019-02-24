@@ -81,17 +81,23 @@ class {{ service.name }}HttpTransport({{ service.name }}Transport):
                 The request object.
                 {{ method.input.meta.doc|rst(width=72, indent=16) }}
             metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent alont with the request as metadata.
+                sent along with the request as metadata.
+        {%- if not method.void %}
 
         Returns:
             ~.{{ method.output.ident }}:
                 {{ method.output.meta.doc|rst(width=72, indent=16) }}
+        {%- endif %}
         """
         # Serialize the input.
+        {%- if method.input.ident.module.endswith('_pb2') %}
         data = request.SerializeToString()
+        {%- else %}
+        data = {{ method.input.ident }}.serialize(request)
+        {%- endif %}
 
         # Send the request.
-        response = self._session.post(
+        {% if not method.void %}response = {% endif %}self._session.post(
             'https://{host}/$rpc/{package}.{service}/{method}'.format(
                 host=self._host,
                 method='{{ method.name }}',
@@ -103,11 +109,13 @@ class {{ service.name }}HttpTransport({{ service.name }}Transport):
                 'content-type': 'application/x-protobuf',
             },
         )
+        {%- if not method.void %}
 
         # Return the response.
-        return {{ method.output.ident }}.FromString(
+        return {{ method.output.ident }}.{% if method.input.ident.module.endswith('_pb2') %}FromString{% else %}deserialize{% endif %}(
             response.content,
         )
+        {%- endif %}
     {%- endfor %}
 
 

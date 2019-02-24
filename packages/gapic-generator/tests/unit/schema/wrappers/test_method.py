@@ -88,6 +88,18 @@ def test_method_no_signature():
     assert len(make_method('Ping').signatures) == 0
 
 
+def test_method_void():
+    empty = make_message(name='Empty', package='google.protobuf')
+    method = make_method('Meh', output_message=empty)
+    assert method.void
+
+
+def test_method_not_void():
+    not_empty = make_message(name='OutputMessage', package='foo.bar.v1')
+    method = make_method('Meh', output_message=not_empty)
+    assert not method.void
+
+
 def test_method_field_headers_none():
     method = make_method('DoSomething')
     assert isinstance(method.field_headers, collections.Sequence)

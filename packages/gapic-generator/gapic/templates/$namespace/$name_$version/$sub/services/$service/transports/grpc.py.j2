@@ -111,8 +111,9 @@ class {{ service.name }}GrpcTransport({{ service.name }}Transport):
 
         Returns:
             Callable[[~.{{ method.input.name }}],
-                    ~.{{ method.output.name }}]:
-                {{ method.output.meta.doc|rst(width=72, indent=16) }}
+                    {% if method.void %}None{% else %}~.{{ method.output.name }}{% endif %}]:
+                A function that, when called, will call the underlying RPC
+                on the server.
         """
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
@@ -121,8 +122,8 @@ class {{ service.name }}GrpcTransport({{ service.name }}Transport):
         if '{{ method.name|snake_case }}' not in self._stubs:
             self._stubs['{{ method.name|snake_case }}'] = self.grpc_channel.{{ method.grpc_stub_type }}(
                 '/{{ '.'.join(method.meta.address.package) }}.{{ service.name }}/{{ method.name }}',
-                request_serializer={{ method.input.ident }}.serialize,
-                response_deserializer={{ method.output.ident }}.deserialize,
+                request_serializer={{ method.input.ident }}.{% if method.input.ident.module.endswith('_pb2') %}SerializeToString{% else %}serialize{% endif %},
+                response_deserializer={{ method.output.ident }}.{% if method.input.ident.module.endswith('_pb2') %}FromString{% else %}deserialize{% endif %},
             )
         return self._stubs['{{ method.name|snake_case }}']
     {%- endfor %}

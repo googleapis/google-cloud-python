@@ -58,6 +58,11 @@ class Address:
         Because we import modules as a whole, rather than individual
         members from modules, this is consistently `module.Name`.
         """
+        # Edge case: For google.protobuf.Empty, use None instead.
+        if self.proto == 'google.protobuf.Empty':
+            return 'None'
+
+        # Most (but not all) types are in a module.
         if self.module:
             # If collisions are registered and conflict with our module,
             # use the module alias instead.

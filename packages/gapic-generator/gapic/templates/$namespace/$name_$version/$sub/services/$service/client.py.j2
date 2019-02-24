@@ -70,10 +70,12 @@ class {{ service.name }}:
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
+        {%- if not method.void %}
 
         Returns:
             {{ method.output.ident.sphinx }}:
                 {{ method.output.meta.doc|wrap(width=72, indent=16) }}
+        {%- endif %}
         """
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -97,8 +99,12 @@ class {{ service.name }}:
         {%- endif %}
 
         # Send the request.
-        response = rpc(request, retry=retry,
-                       timeout=timeout, metadata=metadata)
+        {% if not method.void %}response = {% endif %}rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
         {%- if method.output.lro_response is defined %}
 
         # Wrap the response in an operation future
@@ -111,9 +117,11 @@ class {{ service.name }}:
             {%- endif %}
         )
         {%- endif %}
+        {%- if not method.void %}
 
         # Done; return the response.
         return response
+        {%- endif %}
 
     {% for signature in method.signatures.single_dispatch -%}
     @{{ method.name|snake_case }}.register
@@ -138,10 +146,12 @@ class {{ service.name }}:
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent alont with the request as metadata.
+        {%- if not method.void %}
 
         Returns:
             {{ method.output.ident.sphinx }}:
                 {{ method.output.meta.doc|wrap(width=72, indent=16) }}
+        {%- endif %}
         """
         return self.{{ method.name|snake_case }}(
             {{ method.input.ident }}(
@@ -158,7 +168,8 @@ class {{ service.name }}:
 
     @classmethod
     def get_transport_class(cls,
-            label: str = None) -> Type[{{ service.name }}Transport]:
+            label: str = None,
+            ) -> Type[{{ service.name }}Transport]:
         """Return an appropriate transport class.
 
         Args:

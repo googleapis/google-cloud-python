@@ -415,7 +415,9 @@ class Method:
     def ref_types(self) -> Sequence[Union[MessageType, EnumType]]:
         """Return types referenced by this method."""
         # Begin with the input (request) and output (response) messages.
-        answer = [self.input, self.output]
+        answer = [self.input]
+        if not self.void:
+            answer.append(self.output)
 
         # If this method has flattening that is honored, add its
         # composite types.
@@ -457,6 +459,11 @@ class Method:
 
         # Done; return a tuple of signatures.
         return MethodSignatures(all=tuple(answer))
+
+    @property
+    def void(self) -> bool:
+        """Return True if this method has no return value, False otherwise."""
+        return self.output.ident.proto == 'google.protobuf.Empty'
 
     def with_context(self, *, collisions: Set[str]) -> 'Method':
         """Return a derivative of this method with the provided context.

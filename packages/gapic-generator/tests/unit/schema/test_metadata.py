@@ -40,6 +40,15 @@ def test_address_str_parent():
     assert str(addr) == 'baz.spam.eggs.Bacon'
 
 
+def test_address_str_empty():
+    addr = metadata.Address(
+        package=('google', 'protobuf'),
+        module='empty_pb2',
+        name='Empty',
+    )
+    assert str(addr) == 'None'
+
+
 def test_address_proto():
     addr = metadata.Address(package=('foo', 'bar'), module='baz', name='Bacon')
     assert addr.proto == 'foo.bar.Bacon'
