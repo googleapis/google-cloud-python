@@ -59,7 +59,7 @@ class {{ service.name }}:
             timeout: float = None,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> {{ method.output.ident }}:
-        """{{ method.meta.doc|rst(width=72, indent=8) }}
+        r"""{{ method.meta.doc|rst(width=72, indent=8) }}
 
         Args:
             request (:class:`{{ method.input.ident.sphinx }}`):
@@ -126,7 +126,7 @@ class {{ service.name }}:
             timeout: float = None,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> {{ method.output.ident }}:
-        """{{ method.meta.doc|rst(width=72, indent=8) }}
+        r"""{{ method.meta.doc|rst(width=72, indent=8) }}
 
         Args:
             {%- for field in signature.fields.values() %}

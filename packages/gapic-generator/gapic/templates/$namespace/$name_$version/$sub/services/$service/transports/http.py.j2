@@ -71,7 +71,7 @@ class {{ service.name }}HttpTransport({{ service.name }}Transport):
             request: {{ method.input.ident }}, *,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> {{ method.output.ident }}:
-        """Call the {{- ' ' -}}
+        r"""Call the {{- ' ' -}}
         {{ (method.name|snake_case).replace('_',' ')|wrap(
                 width=70, offset=45, indent=8) }}
         {{- ' ' -}} method over HTTP.
