@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
 def test_unary_stream(echo):
     content = 'The hail in Wales falls mainly on the snails.'
     responses = echo.expand({
