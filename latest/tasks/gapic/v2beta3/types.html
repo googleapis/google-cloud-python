@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Types for Cloud Tasks API Client &#8212; google-cloud ca9e289 documentation</title>
+    <title>Types for Cloud Tasks API Client &#8212; google-cloud f91bae9 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -594,6 +594,104 @@ data that it contains.  Authorization for
 </dd></dl>
 
 <dl class="class">
+<dt id="google.cloud.tasks_v2beta3.types.HttpRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.tasks_v2beta3.types.</code><code class="descname">HttpRequest</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.HttpRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>HTTP request.</p>
+<p>Warning: This is an
+<a class="reference external" href="https://cloud.google.com/terms/launch-stages">alpha</a> feature. If you
+haven’t already joined, you can <a class="reference external" href="https://docs.google.com/forms/d/e/1FAIpQLSfc4uEy9CBHKYUSdnY1hdhKDCX7julVZHy3imOiR-XrU7bUNQ/viewform?usp=sf_link">use this form to sign
+up</a>.</p>
+<p>The task will be pushed to the worker as an HTTP request. If the worker
+or the redirected worker acknowledges the task by returning a successful
+HTTP response code ([<code class="docutils literal notranslate"><span class="pre">200</span></code> - <code class="docutils literal notranslate"><span class="pre">299</span></code>]), the task will removed from the
+queue. If any other HTTP response code is returned or no response is
+received, the task will be retried according to the following:</p>
+<ul class="simple">
+<li>User-specified throttling: [retry configuration][Queue.RetryConfig],
+[rate limits][Queue.RateLimits], and the [queue’s
+state][google.cloud.tasks.v2beta3.Queue.state].</li>
+<li>System throttling: To prevent the worker from overloading, Cloud
+Tasks may temporarily reduce the queue’s effective rate.
+User-specified settings will not be changed.</li>
+</ul>
+<p>System throttling happens because:</p>
+<ul class="simple">
+<li>Cloud Tasks backoffs on all errors. Normally the backoff specified in
+[rate limits][Queue.RateLimits] will be used. But if the worker
+returns <code class="docutils literal notranslate"><span class="pre">429</span></code> (Too Many Requests), <code class="docutils literal notranslate"><span class="pre">503</span></code> (Service Unavailable),
+or the rate of errors is high, Cloud Tasks will use a higher backoff
+rate. The retry specified in the <code class="docutils literal notranslate"><span class="pre">Retry-After</span></code> HTTP response header
+is considered.</li>
+<li>To prevent traffic spikes and to smooth sudden large traffic spikes,
+dispatches ramp up slowly when the queue is newly created or idle and
+if large numbers of tasks suddenly become available to dispatch (due
+to spikes in create task rates, the queue being unpaused, or many
+tasks that are scheduled at the same time).</li>
+</ul>
+<dl class="attribute">
+<dt id="google.cloud.tasks_v2beta3.types.HttpRequest.url">
+<code class="descname">url</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.HttpRequest.url" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The full url path that the request will be sent to.
+This string must begin with either “<a class="reference external" href="http://">http://</a>” or “<a class="reference external" href="https://">https://</a>”.
+Some examples are: <code class="docutils literal notranslate"><span class="pre">http://acme.com</span></code> and
+<code class="docutils literal notranslate"><span class="pre">https://acme.com/sales:8080</span></code>. Cloud Tasks will encode some
+characters for safety and compatibility. The maximum allowed
+URL length is 2083 characters after encoding.  The
+<code class="docutils literal notranslate"><span class="pre">Location</span></code> header response from a redirect response [<code class="docutils literal notranslate"><span class="pre">300</span></code>
+- <code class="docutils literal notranslate"><span class="pre">399</span></code>] may be followed. The redirect is not counted as a
+separate attempt.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.tasks_v2beta3.types.HttpRequest.http_method">
+<code class="descname">http_method</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.HttpRequest.http_method" title="Permalink to this definition">#</a></dt>
+<dd><p>The HTTP method to use for the request. The default is POST.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.tasks_v2beta3.types.HttpRequest.headers">
+<code class="descname">headers</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.HttpRequest.headers" title="Permalink to this definition">#</a></dt>
+<dd><p>HTTP request headers.  This map contains the header field
+names and values. Headers can be set when the [task is
+created][google.cloud.tasks.v2beta3.CloudTasks.CreateTask].
+These headers represent a subset of the headers that will
+accompany the task’s HTTP request. Some HTTP request headers
+will be ignored or replaced.  A partial list of headers that
+will be ignored or replaced is:  -  Host: This will be
+computed by Cloud Tasks and derived from
+[HttpRequest.url][google.cloud.tasks.v2beta3.HttpRequest.url].
+-  Content-Length: This will be computed by Cloud Tasks. -
+User-Agent: This will be set to <code class="docutils literal notranslate"><span class="pre">&quot;Google-Cloud-Tasks&quot;</span></code>. -
+X-Google-*: Google use only. -  X-AppEngine-*: Google use
+only.  <code class="docutils literal notranslate"><span class="pre">Content-Type</span></code> won’t be set by Cloud Tasks. You can
+explicitly set <code class="docutils literal notranslate"><span class="pre">Content-Type</span></code> to a media type when the [task
+is created][google.cloud.tasks.v2beta3.CloudTasks.CreateTask].
+For example, <code class="docutils literal notranslate"><span class="pre">Content-Type</span></code> can be set to
+<code class="docutils literal notranslate"><span class="pre">&quot;application/octet-stream&quot;</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;application/json&quot;</span></code>.
+Headers which can have multiple values (according to RFC2616)
+can be specified using comma-separated values.  The size of
+the headers must be less than 80KB.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.tasks_v2beta3.types.HttpRequest.body">
+<code class="descname">body</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.HttpRequest.body" title="Permalink to this definition">#</a></dt>
+<dd><p>HTTP request body.  A request body is allowed only if the
+[HTTP
+method][google.cloud.tasks.v2beta3.HttpRequest.http_method]
+is POST, PUT, or PATCH. It is an error to set body on a task
+with an incompatible
+[HttpMethod][google.cloud.tasks.v2beta3.HttpMethod].</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.tasks_v2beta3.types.HttpRequest.HeadersEntry">
+<em class="property">class </em><code class="descname">HeadersEntry</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.HttpRequest.HeadersEntry" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="google.cloud.tasks_v2beta3.types.ListQueuesRequest">
 <em class="property">class </em><code class="descclassname">google.cloud.tasks_v2beta3.types.</code><code class="descname">ListQueuesRequest</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.ListQueuesRequest" title="Permalink to this definition">#</a></dt>
 <dd><p>Request message for
@@ -881,7 +979,9 @@ contain letters ([A-Za-z]), numbers ([0-9]), or    hyphens
 <dd><p>[AppEngineHttpQueue][google.cloud.tasks.v2beta3.AppEngineHttpQ
 ueue] settings apply only to [App Engine
 tasks][google.cloud.tasks.v2beta3.AppEngineHttpRequest] in
-this queue.</p>
+this queue. [Http
+tasks][google.cloud.tasks.v2beta3.HttpRequest] are not
+affected by this proto.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1227,6 +1327,17 @@ le.cloud.tasks.v2beta3.AppEngineHttpRequest] set.</p>
 </dd></dl>
 
 <dl class="attribute">
+<dt id="google.cloud.tasks_v2beta3.types.Task.http_request">
+<code class="descname">http_request</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.Task.http_request" title="Permalink to this definition">#</a></dt>
+<dd><p>HTTP request that is sent to the task’s target.  Warning: This
+is an <a class="reference external" href="https://cloud.google.com/terms/launch-stages">alpha</a>
+feature. If you haven’t already joined, you can <a class="reference external" href="https://docs.google.com/forms/d/e/1FAIpQLSfc4uEy9CBHKYUSdnY1hdhKDCX7julVZHy3imOiR-XrU7bUNQ/viewform?usp=sf_link">use this form
+to sign up</a>.  An HTTP task is a task
+that has [HttpRequest][google.cloud.tasks.v2beta3.HttpRequest]
+set.</p>
+</dd></dl>
+
+<dl class="attribute">
 <dt id="google.cloud.tasks_v2beta3.types.Task.schedule_time">
 <code class="descname">schedule_time</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.Task.schedule_time" title="Permalink to this definition">#</a></dt>
 <dd><p>The time when the task is scheduled to be attempted.  For App
@@ -1254,8 +1365,10 @@ that when the request is cancelled, Cloud Tasks will stop
 listing for the response, but whether the worker stops
 processing depends on the worker. For example, if the worker
 is stuck, it may not react to cancelled requests.  The default
-and maximum values depend on the type of request:  -  For [App
-Engine
+and maximum values depend on the type of request:  -  For
+[HTTP tasks][google.cloud.tasks.v2beta3.HttpRequest], the
+default    is 10 minutes. The deadline must be in the interval
+[15 seconds, 30    minutes].  -  For [App Engine
 tasks][google.cloud.tasks.v2beta3.AppEngineHttpRequest], 0
 indicates    that the request has the default deadline. The
 default deadline    depends on the <a class="reference external" href="https://cloud.google.com/appengine/docs/standard/go/how-instances-are-managed#instance_scaling">scaling    type</a>    of the service:
@@ -1276,8 +1389,8 @@ approximate deadline.</p>
 <dt id="google.cloud.tasks_v2beta3.types.Task.dispatch_count">
 <code class="descname">dispatch_count</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.Task.dispatch_count" title="Permalink to this definition">#</a></dt>
 <dd><p>Output only. The number of attempts dispatched.  This count
-includes tasks which have been dispatched but haven’t received
-a response.</p>
+includes attempts which have been dispatched but haven’t
+received a response.</p>
 </dd></dl>
 
 <dl class="attribute">
