@@ -2364,11 +2364,12 @@ class Test_Blob(unittest.TestCase):
         self.assertEqual(rewritten, 33)
         self.assertEqual(size, 42)
 
-    def test_rewrite_generation(self):
+    def test_rewrite_w_generations(self):
         SOURCE_BLOB = "source"
         SOURCE_GENERATION = 42
         DEST_BLOB = "dest"
         DEST_BUCKET = "other-bucket"
+        DEST_GENERATION = 43
         TOKEN = "TOKEN"
         RESPONSE = {
             "totalBytesRewritten": 33,
@@ -2380,10 +2381,13 @@ class Test_Blob(unittest.TestCase):
         connection = _Connection(response)
         client = _Client(connection)
         source_bucket = _Bucket(client=client)
-        source_blob = self._make_one(SOURCE_BLOB, bucket=source_bucket)
-        source_blob._set_properties({"generation": SOURCE_GENERATION})
+        source_blob = self._make_one(
+            SOURCE_BLOB, bucket=source_bucket, generation=SOURCE_GENERATION
+        )
         dest_bucket = _Bucket(client=client, name=DEST_BUCKET)
-        dest_blob = self._make_one(DEST_BLOB, bucket=dest_bucket)
+        dest_blob = self._make_one(
+            DEST_BLOB, bucket=dest_bucket, generation=DEST_GENERATION
+        )
 
         token, rewritten, size = dest_blob.rewrite(source_blob)
 

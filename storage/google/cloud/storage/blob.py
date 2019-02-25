@@ -1511,16 +1511,15 @@ class Blob(_PropertyMixin):
         headers = _get_encryption_headers(self._encryption_key)
         headers.update(_get_encryption_headers(source._encryption_key, source=True))
 
-        query_params = {}
+        query_params = self._query_params
+        if "generation" in query_params:
+            del query_params["generation"]
 
         if token:
             query_params["rewriteToken"] = token
 
         if source.generation:
             query_params["sourceGeneration"] = source.generation
-
-        if self.user_project is not None:
-            query_params["userProject"] = self.user_project
 
         if self.kms_key_name is not None:
             query_params["destinationKmsKeyName"] = self.kms_key_name
