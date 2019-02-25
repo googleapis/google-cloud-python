@@ -86,6 +86,14 @@ class _PropertyMixin(object):
             client = self.client
         return client
 
+    def _encryption_headers(self):
+        """Return any encryption headers needed to fetch the object.
+
+        :rtype: dict
+        :returns: a mapping of encryption-related headers.
+        """
+        return {}
+
     def reload(self, client=None):
         """Reload properties from Cloud Storage.
 
@@ -103,7 +111,11 @@ class _PropertyMixin(object):
         if self.user_project is not None:
             query_params["userProject"] = self.user_project
         api_response = client._connection.api_request(
-            method="GET", path=self.path, query_params=query_params, _target_object=self
+            method="GET",
+            path=self.path,
+            query_params=query_params,
+            headers=self._encryption_headers(),
+            _target_object=self
         )
         self._set_properties(api_response)
 
