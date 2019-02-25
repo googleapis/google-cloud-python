@@ -49,7 +49,7 @@ Mac/Linux
     pip install virtualenv
     virtualenv <your-env>
     source <your-env>/bin/activate
-    <your-env>/bin/pip install google-cloud-jobs
+    <your-env>/bin/pip install google-cloud-talent
 
 
 Windows
@@ -60,7 +60,7 @@ Windows
     pip install virtualenv
     virtualenv <your-env>
     <your-env>\Scripts\activate
-    <your-env>\Scripts\pip.exe install google-cloud-jobs
+    <your-env>\Scripts\pip.exe install google-cloud-talent
 
 Next Steps
 ~~~~~~~~~~

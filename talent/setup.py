@@ -21,7 +21,7 @@ import setuptools
 # Package metadata.
 
 name = 'google-cloud-talent'
-description = 'Google Cloud Talent API client library'
+description = 'Google Cloud Talent Solution API client library'
 version = '0.1.0'
 # Should be one of:
 # 'Development Status :: 3 - Alpha'

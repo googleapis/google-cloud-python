@@ -28,7 +28,7 @@ excludes = ["setup.py", "nox*.py", "README.rst", "docs/conf.py", "docs/index.rst
 # Generate speech GAPIC layer
 # ----------------------------------------------------------------------------
 for version in versions:
-   library = gapic.py_library("talent", version, include_protos=True, artman_output_name=f"jobs-{version}")
+   library = gapic.py_library("talent", version, include_protos=True,)
    s.move(library, excludes=excludes)
 
 # ----------------------------------------------------------------------------

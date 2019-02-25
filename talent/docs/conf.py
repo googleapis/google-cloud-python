@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# google-cloud-jobs documentation build configuration file
+# google-cloud-talent documentation build configuration file
 #
 # This file is execfile()d with the current directory set to its
 # containing dir.
@@ -59,7 +59,7 @@ source_suffix = ".rst"
 master_doc = "index"
 
 # General information about the project.
-project = u"google-cloud-jobs"
+project = u"google-cloud-talent"
 copyright = u"2017, Google"
 author = u"Google APIs"
 
@@ -212,7 +212,7 @@ html_theme = "sphinx_rtd_theme"
 # html_search_scorer = 'scorer.js'
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = "google-cloud-jobs-doc"
+htmlhelp_basename = "google-cloud-talent-doc"
 
 # -- Options for LaTeX output ---------------------------------------------
 
@@ -233,8 +233,8 @@ latex_elements = {
 latex_documents = [
     (
         master_doc,
-        "google-cloud-jobs.tex",
-        u"google-cloud-jobs Documentation",
+        "google-cloud-talent.tex",
+        u"google-cloud-talent Documentation",
         author,
         "manual",
     )
@@ -265,7 +265,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, "google-cloud-jobs", u"google-cloud-jobs Documentation", [author], 1)
+    (master_doc, "google-cloud-talent", u"google-cloud-talent Documentation", [author], 1)
 ]
 
 # If true, show URL addresses after external links.
@@ -279,10 +279,10 @@ man_pages = [
 texinfo_documents = [
     (
         master_doc,
-        "google-cloud-jobs",
-        u"google-cloud-jobs Documentation",
+        "google-cloud-talent",
+        u"google-cloud-talent Documentation",
         author,
-        "google-cloud-jobs",
+        "google-cloud-talent",
         "GAPIC library for the {metadata.shortName} v4beta1 service",
         "APIs",
     )
