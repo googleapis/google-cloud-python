@@ -66,6 +66,41 @@ def make_stub(client):
     return datastore_pb2_grpc.DatastoreStub(channel)
 
 
+class RemoteCall:
+    """Represents a remote call.
+
+    This is primarily a wrapper for futures returned by gRPC. This holds some
+    information about the call to make debugging easier. Can be used for
+    anything that returns a future for something running outside of our own
+    event loop.
+
+    Arguments:
+        future (Union[grpc.Future, tasklets.Future]): The future handed back
+            from initiating the call.
+        info (str): Helpful human readable string about the call. This string
+            will be handed back verbatim by calls to :meth:`__repr__`.
+    """
+
+    def __init__(self, future, info):
+        self.future = future
+        self.info = info
+
+    def __repr__(self):
+        return self.info
+
+    def exception(self):
+        """Calls :meth:`grpc.Future.exception` on attr:`future`."""
+        return self.future.exception()
+
+    def result(self):
+        """Calls :meth:`grpc.Future.result` on attr:`future`."""
+        return self.future.result()
+
+    def add_done_callback(self, callback):
+        """Calls :meth:`grpc.Future.add_done_callback` on attr:`future`."""
+        return self.future.add_done_callback(callback)
+
+
 def lookup(key, **options):
     """Look up a Datastore entity.
 
@@ -179,7 +214,7 @@ class _LookupBatch:
         loaded into a new batch so they can be tried again.
 
         Args:
-            rpc (grpc.Future): If not an exception, the result will be an
+            rpc (RemoteCall): If not an exception, the result will be an
                 instance of
                 :class:`google.cloud.datastore_v1.datastore_pb.LookupResponse`
         """
@@ -229,7 +264,7 @@ def _datastore_lookup(keys, read_options):
             the request.
 
     Returns:
-        :class:`grpc.Future`: Future object for eventual result of lookup.
+        RemoteCall: Future object for eventual result of lookup.
     """
     client = _runstate.current().client
     request = datastore_pb2.LookupRequest(
@@ -239,7 +274,7 @@ def _datastore_lookup(keys, read_options):
     )
 
     api = stub()
-    return api.Lookup.future(request)
+    return RemoteCall(api.Lookup.future(request), "Lookup({})".format(request))
 
 
 def _get_read_options(options):
@@ -362,7 +397,7 @@ class _CommitBatch:
             :data:`None`.
 
         Args:
-            rpc (grpc.Future): If not an exception, the result will be an
+            rpc (RemoteCall): If not an exception, the result will be an
                 instance of
                 :class:`google.cloud.datastore_v1.datastore_pb2.CommitResponse`
         """
@@ -402,7 +437,7 @@ def _datastore_commit(mutations, transaction):
             being used.
 
     Returns:
-        grpc.Future: A future for
+        RemoteCall: A future for
             :class:`google.cloud.datastore_v1.datastore_pb2.CommitResponse`
     """
     if transaction is None:
@@ -419,7 +454,7 @@ def _datastore_commit(mutations, transaction):
     )
 
     api = stub()
-    return api.Commit.future(request)
+    return RemoteCall(api.Commit.future(request), "Commit({})".format(request))
 
 
 _OPTIONS_SUPPORTED = {"transaction", "read_consistency", "read_policy"}

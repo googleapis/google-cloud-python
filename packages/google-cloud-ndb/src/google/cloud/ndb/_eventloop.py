@@ -228,9 +228,10 @@ class EventLoop:
         """Add a gRPC call to the queue.
 
         Args:
-            rpc (:class:`grpc.Future`): The future for the gRPC call.
-            callback (Callable[[:class:`grpc.Future`], None]): Callback
-                function to execute when gRPC call has finished.
+            rpc (:class:`_datastore_api.RemoteCall`): The future for the gRPC
+                call.
+            callback (Callable[[:class:`_datastore_api.RemoteCall`], None]):
+                Callback function to execute when gRPC call has finished.
 
         gRPC handles its asynchronous calls in a separate processing thread, so
         we add our own callback to `rpc` which adds `rpc` to a synchronized
