@@ -19,7 +19,7 @@ from synthtool import gcp
 
 gapic = gcp.GAPICGenerator()
 common = gcp.CommonTemplates()
-versions = ["v1", "v1p1beta1", "v1p2beta1", "v1p3beta1"]
+versions = ["v1", "v1p1beta1", "v1p2beta1", "v1p3beta1", "v1p4beta1"]
 
 
 # ----------------------------------------------------------------------------
