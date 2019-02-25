@@ -36,6 +36,7 @@ grpcio-gcp >= 0.2.2
 -e securitycenter/
 -e spanner/
 -e speech/
+-e talent/
 -e tasks/
 -e texttospeech/
 -e trace/
