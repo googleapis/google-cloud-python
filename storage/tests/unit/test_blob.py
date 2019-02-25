@@ -308,6 +308,26 @@ class Test_Blob(unittest.TestCase):
         }
         self.assertEqual(blob._encryption_headers(), expected)
 
+    def test__query_params_default(self):
+        BLOB_NAME = "blob-name"
+        bucket = _Bucket()
+        blob = self._make_one(BLOB_NAME, bucket=bucket)
+        self.assertEqual(blob._query_params, {})
+
+    def test__query_params_w_user_project(self):
+        user_project = "user-project-123"
+        BLOB_NAME = "BLOB"
+        bucket = _Bucket(user_project=user_project)
+        blob = self._make_one(BLOB_NAME, bucket=bucket)
+        self.assertEqual(blob._query_params, {"userProject": user_project})
+
+    def test__query_params_w_generation(self):
+        generation = 123456
+        BLOB_NAME = "BLOB"
+        bucket = _Bucket()
+        blob = self._make_one(BLOB_NAME, bucket=bucket, generation=generation)
+        self.assertEqual(blob._query_params, {"generation": generation})
+
     def test_public_url(self):
         BLOB_NAME = "blob-name"
         bucket = _Bucket()
