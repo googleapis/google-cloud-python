@@ -72,14 +72,6 @@ class _PropertyMixin(object):
         """Abstract getter for the object user_project."""
         raise NotImplementedError
 
-    @property
-    def _query_params(self):
-        """Default query parameters."""
-        params = {}
-        if self.user_project is not None:
-            params["userProject"] = self.user_project
-        return params
-
     def _require_client(self, client):
         """Check client or verify over-ride.
 
@@ -107,6 +99,14 @@ class _PropertyMixin(object):
         """
         return {}
 
+    @property
+    def _query_params(self):
+        """Default query parameters."""
+        params = {}
+        if self.user_project is not None:
+            params["userProject"] = self.user_project
+        return params
+
     def reload(self, client=None):
         """Reload properties from Cloud Storage.
 
@@ -127,7 +127,7 @@ class _PropertyMixin(object):
             path=self.path,
             query_params=query_params,
             headers=self._encryption_headers(),
-            _target_object=self
+            _target_object=self,
         )
         self._set_properties(api_response)
 
