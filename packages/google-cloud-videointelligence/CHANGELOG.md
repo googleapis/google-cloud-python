@@ -4,6 +4,28 @@
 
 [1]: https://pypi.org/project/google-cloud-videointelligence/#history
 
+## 1.7.0
+
+02-25-2019 12:25 PST
+
+
+### Implementation Changes
+- Remove unused message exports. ([#7279](https://github.com/googleapis/google-cloud-python/pull/7279))
+- Protoc-generated serialization update. ([#7099](https://github.com/googleapis/google-cloud-python/pull/7099))
+
+### New Features
+- Add text detection / object tracking feature support (via sync). ([#7415](https://github.com/googleapis/google-cloud-python/pull/7415))
+
+### Documentation
+- Updated client library documentation URLs. ([#7307](https://github.com/googleapis/google-cloud-python/pull/7307))
+- Update copyright headers.
+- Pick up stub docstring fix in GAPIC generator. ([#6986](https://github.com/googleapis/google-cloud-python/pull/6986))
+
+### Internal / Testing Changes
+- Add clarifying comment to blacken nox target. ([#7407](https://github.com/googleapis/google-cloud-python/pull/7407))
+- Copy proto files alongside protoc versions.
+- Add protos as an artifact to library. ([#7205](https://github.com/googleapis/google-cloud-python/pull/7205))
+
 ## 1.6.1
 
 12-17-2018 17:09 PST
