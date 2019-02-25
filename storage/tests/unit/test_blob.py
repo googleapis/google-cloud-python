@@ -635,7 +635,7 @@ class Test_Blob(unittest.TestCase):
             },
         )
 
-    def test_delete(self):
+    def test_delete_wo_generation(self):
         BLOB_NAME = "blob-name"
         not_found_response = ({"status": http_client.NOT_FOUND}, b"")
         connection = _Connection(not_found_response)
@@ -645,7 +645,20 @@ class Test_Blob(unittest.TestCase):
         bucket._blobs[BLOB_NAME] = 1
         blob.delete()
         self.assertFalse(blob.exists())
-        self.assertEqual(bucket._deleted, [(BLOB_NAME, None, blob.generation)])
+        self.assertEqual(bucket._deleted, [(BLOB_NAME, None, None)])
+
+    def test_delete_w_generation(self):
+        BLOB_NAME = "blob-name"
+        GENERATION = 123456
+        not_found_response = ({"status": http_client.NOT_FOUND}, b"")
+        connection = _Connection(not_found_response)
+        client = _Client(connection)
+        bucket = _Bucket(client)
+        blob = self._make_one(BLOB_NAME, bucket=bucket, generation=GENERATION)
+        bucket._blobs[BLOB_NAME] = 1
+        blob.delete()
+        self.assertFalse(blob.exists())
+        self.assertEqual(bucket._deleted, [(BLOB_NAME, None, GENERATION)])
 
     def test__get_transport(self):
         client = mock.Mock(spec=[u"_credentials", "_http"])
