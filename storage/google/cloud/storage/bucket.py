@@ -925,22 +925,15 @@ class Bucket(_PropertyMixin):
 
         """
         client = self._require_client(client)
-        query_params = {}
+        blob = Blob(blob_name, bucket=self, generation=generation)
 
-        if generation is not None:
-            query_params["generation"] = generation
-
-        if self.user_project is not None:
-            query_params["userProject"] = self.user_project
-
-        blob_path = Blob.path_helper(self.path, blob_name)
         # We intentionally pass `_target_object=None` since a DELETE
         # request has no response value (whether in a standard request or
         # in a batch request).
         client._connection.api_request(
             method="DELETE",
-            path=blob_path,
-            query_params=query_params,
+            path=blob.path,
+            query_params=blob._query_params,
             _target_object=None,
         )
 
