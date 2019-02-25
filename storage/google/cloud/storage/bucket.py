@@ -689,7 +689,11 @@ class Bucket(_PropertyMixin):
         :returns: The blob object if it exists, otherwise None.
         """
         blob = Blob(
-            bucket=self, name=blob_name, encryption_key=encryption_key, **kwargs
+            bucket=self,
+            name=blob_name,
+            encryption_key=encryption_key,
+            generation=generation,
+            **kwargs
         )
         try:
             # NOTE: This will not fail immediately in a batch. However, when
