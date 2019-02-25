@@ -12,7 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import io
 import os
 import tempfile
 import re
@@ -419,7 +418,7 @@ class TestStorageWriteFiles(TestStorageFiles):
         gen0 = blob.generation
 
         # Upload a second generation of the blob
-        blob.upload_from_file(io.StringIO(six.text_type("gen1")))
+        blob.upload_from_string(b"gen1")
         gen1 = blob.generation
 
         blob0 = with_user_project.blob("SmallFile", generation=gen0)
@@ -438,7 +437,7 @@ class TestStorageWriteFiles(TestStorageFiles):
 
             # Exercise 'objects.get' (media) w/ userProject.
             self.assertEqual(blob0.download_as_string(), file_contents)
-            self.assertEqual(blob1.download_as_string(), "gen1")
+            self.assertEqual(blob1.download_as_string(), b"gen1")
 
             # Exercise 'objects.patch' w/ userProject.
             blob0.content_language = "en"
