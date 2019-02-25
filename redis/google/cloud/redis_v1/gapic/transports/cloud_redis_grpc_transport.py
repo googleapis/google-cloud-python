@@ -189,3 +189,55 @@ class CloudRedisGrpcTransport(object):
                 deserialized response object.
         """
         return self._stubs["cloud_redis_stub"].DeleteInstance
+
+    @property
+    def import_instance(self):
+        """Return the gRPC stub for :meth:`CloudRedisClient.import_instance`.
+
+        Import a Redis RDB snapshot file from GCS into a Redis instance.
+
+        Redis may stop serving during this operation. Instance state will be
+        IMPORTING for entire operation. When complete, the instance will contain
+        only data from the imported file.
+
+        The returned operation is automatically deleted after a few hours, so
+        there is no need to call DeleteOperation.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["cloud_redis_stub"].ImportInstance
+
+    @property
+    def export_instance(self):
+        """Return the gRPC stub for :meth:`CloudRedisClient.export_instance`.
+
+        Export Redis instance data into a Redis RDB format file in GCS.
+
+        Redis will continue serving during this operation.
+
+        The returned operation is automatically deleted after a few hours, so
+        there is no need to call DeleteOperation.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["cloud_redis_stub"].ExportInstance
+
+    @property
+    def failover_instance(self):
+        """Return the gRPC stub for :meth:`CloudRedisClient.failover_instance`.
+
+        Failover the master role to current replica node against a specific
+        STANDARD tier redis instance.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["cloud_redis_stub"].FailoverInstance

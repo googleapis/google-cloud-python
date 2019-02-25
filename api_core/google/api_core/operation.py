@@ -101,6 +101,18 @@ class Operation(polling.PollingFuture):
             self._metadata_type, self._operation.metadata
         )
 
+    @classmethod
+    def deserialize(self, payload):
+        """Deserialize a ``google.longrunning.Operation`` protocol buffer.
+
+        Args:
+            payload (bytes): A serialized operation protocol buffer.
+
+        Returns:
+            ~.operations_pb2.Operation: An Operation protobuf object.
+        """
+        return operations_pb2.Operation.FromString(payload)
+
     def _set_result_from_operation(self):
         """Set the result or exception from the operation if it is complete."""
         # This must be done in a lock to prevent the polling thread
