@@ -31,7 +31,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n\036com.google.cloud.tasks.v2beta3B\tTaskProtoP\001Z?google.golang.org/genproto/googleapis/cloud/tasks/v2beta3;tasks"
     ),
     serialized_pb=_b(
-        '\n+google/cloud/tasks_v2beta3/proto/task.proto\x12\x1agoogle.cloud.tasks.v2beta3\x1a\x1cgoogle/api/annotations.proto\x1a-google/cloud/tasks_v2beta3/proto/target.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x17google/rpc/status.proto"\xa2\x04\n\x04Task\x12\x0c\n\x04name\x18\x01 \x01(\t\x12S\n\x17\x61pp_engine_http_request\x18\x03 \x01(\x0b\x32\x30.google.cloud.tasks.v2beta3.AppEngineHttpRequestH\x00\x12\x31\n\rschedule_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12/\n\x0b\x63reate_time\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x34\n\x11\x64ispatch_deadline\x18\x0c \x01(\x0b\x32\x19.google.protobuf.Duration\x12\x16\n\x0e\x64ispatch_count\x18\x06 \x01(\x05\x12\x16\n\x0eresponse_count\x18\x07 \x01(\x05\x12:\n\rfirst_attempt\x18\x08 \x01(\x0b\x32#.google.cloud.tasks.v2beta3.Attempt\x12\x39\n\x0clast_attempt\x18\t \x01(\x0b\x32#.google.cloud.tasks.v2beta3.Attempt\x12\x33\n\x04view\x18\n \x01(\x0e\x32%.google.cloud.tasks.v2beta3.Task.View"1\n\x04View\x12\x14\n\x10VIEW_UNSPECIFIED\x10\x00\x12\t\n\x05\x42\x41SIC\x10\x01\x12\x08\n\x04\x46ULL\x10\x02\x42\x0e\n\x0cpayload_type"\xcf\x01\n\x07\x41ttempt\x12\x31\n\rschedule_time\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x31\n\rdispatch_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x31\n\rresponse_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12+\n\x0fresponse_status\x18\x04 \x01(\x0b\x32\x12.google.rpc.StatusBn\n\x1e\x63om.google.cloud.tasks.v2beta3B\tTaskProtoP\x01Z?google.golang.org/genproto/googleapis/cloud/tasks/v2beta3;tasksb\x06proto3'
+        '\n+google/cloud/tasks_v2beta3/proto/task.proto\x12\x1agoogle.cloud.tasks.v2beta3\x1a\x1cgoogle/api/annotations.proto\x1a-google/cloud/tasks_v2beta3/proto/target.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x17google/rpc/status.proto"\xe3\x04\n\x04Task\x12\x0c\n\x04name\x18\x01 \x01(\t\x12S\n\x17\x61pp_engine_http_request\x18\x03 \x01(\x0b\x32\x30.google.cloud.tasks.v2beta3.AppEngineHttpRequestH\x00\x12?\n\x0chttp_request\x18\x0b \x01(\x0b\x32\'.google.cloud.tasks.v2beta3.HttpRequestH\x00\x12\x31\n\rschedule_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12/\n\x0b\x63reate_time\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x34\n\x11\x64ispatch_deadline\x18\x0c \x01(\x0b\x32\x19.google.protobuf.Duration\x12\x16\n\x0e\x64ispatch_count\x18\x06 \x01(\x05\x12\x16\n\x0eresponse_count\x18\x07 \x01(\x05\x12:\n\rfirst_attempt\x18\x08 \x01(\x0b\x32#.google.cloud.tasks.v2beta3.Attempt\x12\x39\n\x0clast_attempt\x18\t \x01(\x0b\x32#.google.cloud.tasks.v2beta3.Attempt\x12\x33\n\x04view\x18\n \x01(\x0e\x32%.google.cloud.tasks.v2beta3.Task.View"1\n\x04View\x12\x14\n\x10VIEW_UNSPECIFIED\x10\x00\x12\t\n\x05\x42\x41SIC\x10\x01\x12\x08\n\x04\x46ULL\x10\x02\x42\x0e\n\x0cpayload_type"\xcf\x01\n\x07\x41ttempt\x12\x31\n\rschedule_time\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x31\n\rdispatch_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x31\n\rresponse_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12+\n\x0fresponse_status\x18\x04 \x01(\x0b\x32\x12.google.rpc.StatusBn\n\x1e\x63om.google.cloud.tasks.v2beta3B\tTaskProtoP\x01Z?google.golang.org/genproto/googleapis/cloud/tasks/v2beta3;tasksb\x06proto3'
     ),
     dependencies=[
         google_dot_api_dot_annotations__pb2.DESCRIPTOR,
@@ -65,8 +65,8 @@ _TASK_VIEW = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=724,
-    serialized_end=773,
+    serialized_start=789,
+    serialized_end=838,
 )
 _sym_db.RegisterEnumDescriptor(_TASK_VIEW)
 
@@ -115,9 +115,27 @@ _TASK = _descriptor.Descriptor(
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
+            name="http_request",
+            full_name="google.cloud.tasks.v2beta3.Task.http_request",
+            index=2,
+            number=11,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
             name="schedule_time",
             full_name="google.cloud.tasks.v2beta3.Task.schedule_time",
-            index=2,
+            index=3,
             number=4,
             type=11,
             cpp_type=10,
@@ -135,7 +153,7 @@ _TASK = _descriptor.Descriptor(
         _descriptor.FieldDescriptor(
             name="create_time",
             full_name="google.cloud.tasks.v2beta3.Task.create_time",
-            index=3,
+            index=4,
             number=5,
             type=11,
             cpp_type=10,
@@ -153,7 +171,7 @@ _TASK = _descriptor.Descriptor(
         _descriptor.FieldDescriptor(
             name="dispatch_deadline",
             full_name="google.cloud.tasks.v2beta3.Task.dispatch_deadline",
-            index=4,
+            index=5,
             number=12,
             type=11,
             cpp_type=10,
@@ -171,7 +189,7 @@ _TASK = _descriptor.Descriptor(
         _descriptor.FieldDescriptor(
             name="dispatch_count",
             full_name="google.cloud.tasks.v2beta3.Task.dispatch_count",
-            index=5,
+            index=6,
             number=6,
             type=5,
             cpp_type=1,
@@ -189,7 +207,7 @@ _TASK = _descriptor.Descriptor(
         _descriptor.FieldDescriptor(
             name="response_count",
             full_name="google.cloud.tasks.v2beta3.Task.response_count",
-            index=6,
+            index=7,
             number=7,
             type=5,
             cpp_type=1,
@@ -207,7 +225,7 @@ _TASK = _descriptor.Descriptor(
         _descriptor.FieldDescriptor(
             name="first_attempt",
             full_name="google.cloud.tasks.v2beta3.Task.first_attempt",
-            index=7,
+            index=8,
             number=8,
             type=11,
             cpp_type=10,
@@ -225,7 +243,7 @@ _TASK = _descriptor.Descriptor(
         _descriptor.FieldDescriptor(
             name="last_attempt",
             full_name="google.cloud.tasks.v2beta3.Task.last_attempt",
-            index=8,
+            index=9,
             number=9,
             type=11,
             cpp_type=10,
@@ -243,7 +261,7 @@ _TASK = _descriptor.Descriptor(
         _descriptor.FieldDescriptor(
             name="view",
             full_name="google.cloud.tasks.v2beta3.Task.view",
-            index=9,
+            index=10,
             number=10,
             type=14,
             cpp_type=8,
@@ -276,7 +294,7 @@ _TASK = _descriptor.Descriptor(
         )
     ],
     serialized_start=243,
-    serialized_end=789,
+    serialized_end=854,
 )
 
 
@@ -368,14 +386,19 @@ _ATTEMPT = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=792,
-    serialized_end=999,
+    serialized_start=857,
+    serialized_end=1064,
 )
 
 _TASK.fields_by_name[
     "app_engine_http_request"
 ].message_type = (
     google_dot_cloud_dot_tasks__v2beta3_dot_proto_dot_target__pb2._APPENGINEHTTPREQUEST
+)
+_TASK.fields_by_name[
+    "http_request"
+].message_type = (
+    google_dot_cloud_dot_tasks__v2beta3_dot_proto_dot_target__pb2._HTTPREQUEST
 )
 _TASK.fields_by_name[
     "schedule_time"
@@ -394,6 +417,10 @@ _TASK.oneofs_by_name["payload_type"].fields.append(
     _TASK.fields_by_name["app_engine_http_request"]
 )
 _TASK.fields_by_name["app_engine_http_request"].containing_oneof = _TASK.oneofs_by_name[
+    "payload_type"
+]
+_TASK.oneofs_by_name["payload_type"].fields.append(_TASK.fields_by_name["http_request"])
+_TASK.fields_by_name["http_request"].containing_oneof = _TASK.oneofs_by_name[
     "payload_type"
 ]
 _ATTEMPT.fields_by_name[
@@ -448,6 +475,15 @@ Task = _reflection.GeneratedProtocolMessageType(
           HTTP request that is sent to the App Engine app handler.  An
           App Engine task is a task that has [AppEngineHttpRequest][goog
           le.cloud.tasks.v2beta3.AppEngineHttpRequest] set.
+      http_request:
+          HTTP request that is sent to the task's target.  Warning: This
+          is an `alpha <https://cloud.google.com/terms/launch-stages>`_
+          feature. If you haven't already joined, you can `use this form
+          to sign up <https://docs.google.com/forms/d/e/1FAIpQLSfc4uEy9C
+          BHKYUSdnY1hdhKDCX7julVZHy3imOiR-
+          XrU7bUNQ/viewform?usp=sf_link>`_.  An HTTP task is a task
+          that has [HttpRequest][google.cloud.tasks.v2beta3.HttpRequest]
+          set.
       schedule_time:
           The time when the task is scheduled to be attempted.  For App
           Engine queues, this is when the task will be attempted or
@@ -466,8 +502,10 @@ Task = _reflection.GeneratedProtocolMessageType(
           listing for the response, but whether the worker stops
           processing depends on the worker. For example, if the worker
           is stuck, it may not react to cancelled requests.  The default
-          and maximum values depend on the type of request:  -  For [App
-          Engine
+          and maximum values depend on the type of request:  -  For
+          [HTTP tasks][google.cloud.tasks.v2beta3.HttpRequest], the
+          default    is 10 minutes. The deadline must be in the interval
+          [15 seconds, 30    minutes].  -  For [App Engine
           tasks][google.cloud.tasks.v2beta3.AppEngineHttpRequest], 0
           indicates    that the request has the default deadline. The
           default deadline    depends on the `scaling    type
@@ -488,8 +526,8 @@ Task = _reflection.GeneratedProtocolMessageType(
           approximate deadline.
       dispatch_count:
           Output only. The number of attempts dispatched.  This count
-          includes tasks which have been dispatched but haven't received
-          a response.
+          includes attempts which have been dispatched but haven't
+          received a response.
       response_count:
           Output only. The number of attempts which have received a
           response.
