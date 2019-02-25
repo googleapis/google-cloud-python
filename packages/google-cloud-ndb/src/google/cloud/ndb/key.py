@@ -91,9 +91,9 @@ from google.cloud.datastore import _app_engine_key_pb2
 from google.cloud.datastore import key as _key_module
 import google.cloud.datastore
 
+from google.cloud.ndb import context as context_module
 from google.cloud.ndb import _datastore_api
 from google.cloud.ndb import exceptions
-from google.cloud.ndb import _runstate
 from google.cloud.ndb import tasklets
 
 
@@ -137,7 +137,7 @@ class Key:
         from unittest import mock
         from google.cloud.ndb import context as context_module
         client = mock.Mock(project="testing", spec=("project",))
-        context = context_module.Context(client, stub=mock.Mock(spec=()))
+        context = context_module.Context(client, stub=mock.Mock(spec=())).use()
         context.__enter__()
         kind1, id1 = "Parent", "C"
         kind2, id2 = "Child", 42
@@ -816,7 +816,7 @@ def _project_from_app(app, allow_empty=False):
     if app is None:
         if allow_empty:
             return None
-        client = _runstate.current().client
+        client = context_module.get_context().client
         app = client.project
 
     # NOTE: This is the same behavior as in the helper

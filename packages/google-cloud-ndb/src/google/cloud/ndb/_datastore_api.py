@@ -24,8 +24,8 @@ from google.cloud.datastore_v1.proto import datastore_pb2
 from google.cloud.datastore_v1.proto import datastore_pb2_grpc
 from google.cloud.datastore_v1.proto import entity_pb2
 
+from google.cloud.ndb import context as context_module
 from google.cloud.ndb import _eventloop
-from google.cloud.ndb import _runstate
 from google.cloud.ndb import tasklets
 
 EVENTUAL = datastore_pb2.ReadOptions.EVENTUAL
@@ -42,8 +42,8 @@ def stub():
         :class:`~google.cloud.datastore_v1.proto.datastore_pb2_grpc.DatastoreStub`:
             The stub instance.
     """
-    state = _runstate.current()
-    return state.stub
+    context = context_module.get_context()
+    return context.stub
 
 
 def make_stub(client):
@@ -126,7 +126,7 @@ def lookup(key, **options):
 def _get_batch(batch_cls, options):
     """Gets a data structure for storing batched calls to Datastore Lookup.
 
-    The batch data structure is stored in the current run state. If there is
+    The batch data structure is stored in the current context. If there is
     not already a batch started, a new structure is created and an idle
     callback is added to the current event loop which will eventually perform
     the batch look up.
@@ -141,10 +141,10 @@ def _get_batch(batch_cls, options):
     Returns:
         batch_cls: An instance of the batch class.
     """
-    state = _runstate.current()
-    batches = state.batches.get(batch_cls)
+    context = context_module.get_context()
+    batches = context.batches.get(batch_cls)
     if batches is None:
-        state.batches[batch_cls] = batches = {}
+        context.batches[batch_cls] = batches = {}
 
     options_key = tuple(sorted(options.items()))
     batch = batches.get(options_key)
@@ -266,7 +266,7 @@ def _datastore_lookup(keys, read_options):
     Returns:
         RemoteCall: Future object for eventual result of lookup.
     """
-    client = _runstate.current().client
+    client = context_module.get_context().client
     request = datastore_pb2.LookupRequest(
         project_id=client.project,
         keys=[key for key in keys],
@@ -323,8 +323,8 @@ def _get_transaction(options):
     Returns:
         Union[bytes, NoneType]: The transaction identifier, or :data:`None`.
     """
-    state = _runstate.current()
-    return options.get("transaction", state.transaction)
+    context = context_module.get_context()
+    return options.get("transaction", context.transaction)
 
 
 def put(entity_pb, **options):
@@ -445,7 +445,7 @@ def _datastore_commit(mutations, transaction):
     else:
         mode = datastore_pb2.CommitRequest.TRANSACTIONAL
 
-    client = _runstate.current().client
+    client = context_module.get_context().client
     request = datastore_pb2.CommitRequest(
         project_id=client.project,
         mode=mode,

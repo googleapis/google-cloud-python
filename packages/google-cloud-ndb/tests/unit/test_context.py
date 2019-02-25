@@ -18,7 +18,6 @@ from unittest import mock
 from google.cloud.ndb import context as context_module
 from google.cloud.ndb import _eventloop
 from google.cloud.ndb import exceptions
-from google.cloud.ndb import _runstate
 import tests.unit.utils
 
 
@@ -62,18 +61,12 @@ class TestContext:
         assert new_context.transaction == "tx123"
         assert context.transaction is None
 
-    def test_assert_as_context_manager(self):
+    def test_use(self):
         context = self._make_one()
-        with context:
-            assert _runstate.current() is context
+        with context.use():
+            assert context_module.get_context() is context
         with pytest.raises(exceptions.ContextError):
-            _runstate.current()
-
-    def test_assert_as_context_manager_corrupted_stack(self):
-        context = self._make_one()
-        with pytest.raises(RuntimeError):
-            with context:
-                _runstate.contexts.push("foo")
+            context_module.get_context()
 
     def test_clear_cache(self):
         context = self._make_one()

@@ -315,7 +315,7 @@ class TestEventLoop:
 def test_get_event_loop(context):
     with pytest.raises(exceptions.ContextError):
         _eventloop.get_event_loop()
-    with context:
+    with context.use():
         loop = _eventloop.get_event_loop()
         assert isinstance(loop, _eventloop.EventLoop)
         assert _eventloop.get_event_loop() is loop
@@ -323,41 +323,41 @@ def test_get_event_loop(context):
 
 def test_add_idle(context):
     loop = unittest.mock.Mock(spec=("run", "add_idle"))
-    with context.new(eventloop=loop):
+    with context.new(eventloop=loop).use():
         _eventloop.add_idle("foo", "bar", baz="qux")
         loop.add_idle.assert_called_once_with("foo", "bar", baz="qux")
 
 
 def test_queue_call(context):
     loop = unittest.mock.Mock(spec=("run", "queue_call"))
-    with context.new(eventloop=loop):
+    with context.new(eventloop=loop).use():
         _eventloop.queue_call(42, "foo", "bar", baz="qux")
         loop.queue_call.assert_called_once_with(42, "foo", "bar", baz="qux")
 
 
 def test_queue_rpc(context):
     loop = unittest.mock.Mock(spec=("run", "queue_rpc"))
-    with context.new(eventloop=loop):
+    with context.new(eventloop=loop).use():
         _eventloop.queue_rpc("foo", "bar")
         loop.queue_rpc.assert_called_once_with("foo", "bar")
 
 
 def test_run(context):
     loop = unittest.mock.Mock(spec=("run",))
-    with context.new(eventloop=loop):
+    with context.new(eventloop=loop).use():
         _eventloop.run()
         loop.run.assert_called_once_with()
 
 
 def test_run0(context):
     loop = unittest.mock.Mock(spec=("run", "run0"))
-    with context.new(eventloop=loop):
+    with context.new(eventloop=loop).use():
         _eventloop.run0()
         loop.run0.assert_called_once_with()
 
 
 def test_run1(context):
     loop = unittest.mock.Mock(spec=("run", "run1"))
-    with context.new(eventloop=loop):
+    with context.new(eventloop=loop).use():
         _eventloop.run1()
         loop.run1.assert_called_once_with()

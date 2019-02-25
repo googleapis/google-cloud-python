@@ -22,13 +22,12 @@ import types
 
 import grpc
 
+from google.cloud.ndb import context as context_module
 from google.cloud.ndb import _eventloop
-from google.cloud.ndb import _runstate
 
 __all__ = [
     "add_flow_exception",
     "Future",
-    "get_context",
     "make_context",
     "make_default_context",
     "QueueFuture",
@@ -248,13 +247,16 @@ class _TaskletFuture(Future):
     def _advance_tasklet(self, send_value=None, error=None):
         """Advance a tasklet one step by sending in a value or error."""
         try:
-            with self.context:
+            with self.context.use():
                 # Send the next value or exception into the generator
                 if error:
                     self.generator.throw(type(error), error)
 
                 # send_value will be None if this is the first time
                 yielded = self.generator.send(send_value)
+
+                # Context may have changed in tasklet
+                self.context = context_module.get_context()
 
         except StopIteration as stop:
             # Generator has signalled exit, get the return value. This tasklet
@@ -380,7 +382,7 @@ def tasklet(wrapped):
         # and create a future object and set the result to the function's
         # return value so that from the user perspective there is no problem.
         # This permissive behavior is inherited from legacy NDB.
-        context = _runstate.current()
+        context = context_module.get_context()
 
         try:
             returned = wrapped(*args, **kwargs)
@@ -467,10 +469,6 @@ def sleep(seconds):
 
 
 def add_flow_exception(*args, **kwargs):
-    raise NotImplementedError
-
-
-def get_context(*args, **kwargs):
     raise NotImplementedError
 
 
