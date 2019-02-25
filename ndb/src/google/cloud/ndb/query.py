@@ -907,7 +907,7 @@ class Query:
             else:
                 if not isinstance(ancestor, model.Key):
                     raise TypeError("ancestor must be a Key; "
-                                    "received {ancestor}")
+                                    "received {ancestor}".format(ancestor))
                 if not ancestor.id():
                     raise ValueError("ancestor cannot be an incomplete key")
                 if app is not None:
@@ -923,15 +923,15 @@ class Query:
         if filters is not None:
             if not isinstance(filters, Node):
                 raise TypeError("filters must be a query Node or None; "
-                                "received {filters}")
+                                "received {filters}".format(filters))
         if orders is not None:
             if not isinstance(orders, (list,)):  # datastore_query.Order
                 raise TypeError("orders must be an Order instance or None; "
-                                "received {orders}")
+                                "received {orders}".format(orders))
         # if default_options is not None:  # Optional QueryOptions object.
         #     if not isinstance(default_options, datastore_rpc.BaseConfiguration):
         #         raise TypeError("default_options must be a Configuration or None; "
-        #                         "received {default_options}")
+        #                         "received {default_options}".format(default_options))
         #     if projection is not None:
         #         if default_options.projection is not None:
         #             raise TypeError("cannot use projection keyword argument and "
@@ -954,7 +954,7 @@ class Query:
             raise TypeError('projection argument cannot be empty')
           if not isinstance(projection, (tuple, list)):
             raise TypeError("projection must be a tuple, list or None; "
-                            "received {projection}")
+                            "received {projection}".format(projection))
           self._check_properties(self._to_property_names(projection))
           self.projection = tuple(projection)
 
@@ -964,7 +964,7 @@ class Query:
             raise TypeError('group_by argument cannot be empty')
           if not isinstance(group_by, (tuple, list)):
             raise TypeError("group_by must be a tuple, list or None; "
-                            "received {group_by}")
+                            "received {group_by}".format(group_by))
           self._check_properties(self._to_property_names(group_by))
           self.group_by = tuple(group_by)
 
@@ -978,8 +978,8 @@ class Query:
           elif isinstance(prop, model.Property):
             fixed.append(prop._name)
           else:
-            raise TypeError(
-                "Unexpected property {prop}; should be string or Property")
+            raise TypeError("Unexpected property {prop}; should be "
+                            "string or Property".format(prop))
         return fixed
 
     def _check_properties(self, fixed, **kwargs):
