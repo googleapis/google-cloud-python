@@ -18,7 +18,7 @@
 
 ### Documentation
 - Updated client library documentation URLs. ([#7307](https://github.com/googleapis/google-cloud-python/pull/7307))
-- Update copyright headers
+- Update copyright headers.
 - Pick up stub docstring fix in GAPIC generator. ([#6986](https://github.com/googleapis/google-cloud-python/pull/6986))
 
 ### Internal / Testing Changes
