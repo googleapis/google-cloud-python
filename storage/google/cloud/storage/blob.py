@@ -416,13 +416,8 @@ class Blob(_PropertyMixin):
         client = self._require_client(client)
         # We only need the status code (200 or not) so we seek to
         # minimize the returned payload.
-        query_params = {"fields": "name"}
-
-        if self.generation:
-            query_params["generation"] = self.generation
-
-        if self.user_project is not None:
-            query_params["userProject"] = self.user_project
+        query_params = self._query_params
+        query_params["fields"] = "name"
 
         try:
             # We intentionally pass `_target_object=None` since fields=name

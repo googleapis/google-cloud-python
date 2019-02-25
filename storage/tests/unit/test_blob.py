@@ -614,6 +614,27 @@ class Test_Blob(unittest.TestCase):
             },
         )
 
+    def test_exists_hit_w_generation(self):
+        BLOB_NAME = "blob-name"
+        GENERATION = 123456
+        found_response = ({"status": http_client.OK}, b"")
+        connection = _Connection(found_response)
+        client = _Client(connection)
+        bucket = _Bucket(client)
+        blob = self._make_one(BLOB_NAME, bucket=bucket, generation=GENERATION)
+        bucket._blobs[BLOB_NAME] = 1
+        self.assertTrue(blob.exists())
+        self.assertEqual(len(connection._requested), 1)
+        self.assertEqual(
+            connection._requested[0],
+            {
+                "method": "GET",
+                "path": "/b/name/o/{}".format(BLOB_NAME),
+                "query_params": {"fields": "name", "generation": GENERATION},
+                "_target_object": None,
+            },
+        )
+
     def test_delete(self):
         BLOB_NAME = "blob-name"
         not_found_response = ({"status": http_client.NOT_FOUND}, b"")
