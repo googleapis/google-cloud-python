@@ -693,12 +693,13 @@ class Test_Bucket(unittest.TestCase):
         NAME = "name"
         BLOB_NAME = "blob-name"
         GENERATION = 1512565576797178
-        connection = _Connection({"name": BLOB_NAME})
+        connection = _Connection({"name": BLOB_NAME, "generation": GENERATION})
         client = _Client(connection)
         bucket = self._make_one(name=NAME)
         blob = bucket.get_blob(BLOB_NAME, client=client, generation=GENERATION)
         self.assertIs(blob.bucket, bucket)
         self.assertEqual(blob.name, BLOB_NAME)
+        self.assertEqual(blob.generation, GENERATION)
         kw, = connection._requested
         expected_qp = {"generation": GENERATION, "projection": "noAcl"}
         self.assertEqual(kw["method"], "GET")
