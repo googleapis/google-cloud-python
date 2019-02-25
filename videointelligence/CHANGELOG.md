@@ -24,7 +24,7 @@
 ### Internal / Testing Changes
 - Add clarifying comment to blacken nox target. ([#7407](https://github.com/googleapis/google-cloud-python/pull/7407))
 - Copy proto files alongside protoc versions.
-- Add protos as an artifact to library ([#7205](https://github.com/googleapis/google-cloud-python/pull/7205))
+- Add protos as an artifact to library. ([#7205](https://github.com/googleapis/google-cloud-python/pull/7205))
 
 ## 1.6.1
 
