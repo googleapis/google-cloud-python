@@ -434,14 +434,6 @@ class Bucket(_PropertyMixin):
         """
         return self._user_project
 
-    @property
-    def _query_params(self):
-        """Default query parameters."""
-        params = {}
-        if self.user_project is not None:
-            params["userProject"] = self.user_project
-        return params
-
     def blob(
         self,
         blob_name,
