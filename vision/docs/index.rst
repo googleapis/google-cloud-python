@@ -107,7 +107,7 @@ An API and type reference is provided for ``v1p3beta1``:
     gapic/v1p3beta1/types
 
 
-An API and type reference is provided for this ``v1p2beta1``:
+An API and type reference is provided for ``v1p2beta1``:
 
 .. toctree::
     :maxdepth: 2
