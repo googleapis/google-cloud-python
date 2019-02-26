@@ -16,17 +16,17 @@
 - Pick up order-of-enum fix from GAPIC generator. ([#6881](https://github.com/googleapis/google-cloud-python/pull/6881))
 
 ### New Features
-- Add vision v1p4beta1 ([#7438](https://github.com/googleapis/google-cloud-python/pull/7438))
+- Add vision v1p4beta1. ([#7438](https://github.com/googleapis/google-cloud-python/pull/7438))
 
 ### Documentation
 - Updated client library documentation URLs. ([#7307](https://github.com/googleapis/google-cloud-python/pull/7307))
-- Update copyright headers
+- Update copyright headers.
 
 ### Internal / Testing Changes
 - Add clarifying comment to blacken nox target. ([#7408](https://github.com/googleapis/google-cloud-python/pull/7408))
 - Copy proto files alongside protoc versions
 - Vision: get system logo tests healthy. ([#7245](https://github.com/googleapis/google-cloud-python/pull/7245))
-- Add protos as an artifact to library ([#7205](https://github.com/googleapis/google-cloud-python/pull/7205))
+- Add protos as an artifact to library. ([#7205](https://github.com/googleapis/google-cloud-python/pull/7205))
 
 ## 0.35.2
 
