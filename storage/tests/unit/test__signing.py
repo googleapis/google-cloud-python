@@ -126,12 +126,12 @@ class Test_get_signed_query_params(unittest.TestCase):
         credentials.sign_bytes.assert_called_once_with(string_to_sign)
 
 
-class Test_generate_signed_url(unittest.TestCase):
+class Test_generate_signed_url_v2(unittest.TestCase):
     @staticmethod
     def _call_fut(*args, **kwargs):
-        from google.cloud.storage._signing import generate_signed_url
+        from google.cloud.storage._signing import generate_signed_url_v2
 
-        return generate_signed_url(*args, **kwargs)
+        return generate_signed_url_v2(*args, **kwargs)
 
     def _generate_helper(
         self, response_type=None, response_disposition=None, generation=None

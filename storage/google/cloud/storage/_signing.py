@@ -109,7 +109,7 @@ def get_expiration_seconds(expiration):
     return expiration
 
 
-def generate_signed_url(
+def generate_signed_url_v2(
     credentials,
     resource,
     expiration,
@@ -121,7 +121,7 @@ def generate_signed_url(
     response_disposition=None,
     generation=None,
 ):
-    """Generate signed URL to provide query-string auth'n to a resource.
+    """Generate a V2 signed URL to provide query-string auth'n to a resource.
 
     .. note::
 

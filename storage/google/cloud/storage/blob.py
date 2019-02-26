@@ -54,7 +54,7 @@ from google.cloud.exceptions import NotFound
 from google.api_core.iam import Policy
 from google.cloud.storage._helpers import _PropertyMixin
 from google.cloud.storage._helpers import _scalar_property
-from google.cloud.storage._signing import generate_signed_url
+from google.cloud.storage._signing import generate_signed_url_v2
 from google.cloud.storage.acl import ACL
 from google.cloud.storage.acl import ObjectACL
 
@@ -387,7 +387,7 @@ class Blob(_PropertyMixin):
             client = self._require_client(client)
             credentials = client._credentials
 
-        return generate_signed_url(
+        return generate_signed_url_v2(
             credentials,
             resource=resource,
             api_access_endpoint=_API_ACCESS_ENDPOINT,

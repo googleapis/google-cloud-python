@@ -364,7 +364,7 @@ class Test_Blob(unittest.TestCase):
         )
 
         SIGNER = _Signer()
-        with mock.patch("google.cloud.storage.blob.generate_signed_url", new=SIGNER):
+        with mock.patch("google.cloud.storage.blob.generate_signed_url_v2", new=SIGNER):
             signed_uri = blob.generate_signed_url(EXPIRATION, credentials=credentials)
             self.assertEqual(signed_uri, URI)
 
@@ -402,7 +402,7 @@ class Test_Blob(unittest.TestCase):
 
         SIGNER = _Signer()
         CONTENT_TYPE = "text/html"
-        with mock.patch("google.cloud.storage.blob.generate_signed_url", new=SIGNER):
+        with mock.patch("google.cloud.storage.blob.generate_signed_url_v2", new=SIGNER):
             signed_url = blob.generate_signed_url(EXPIRATION, content_type=CONTENT_TYPE)
             self.assertEqual(signed_url, URI)
 
@@ -437,7 +437,7 @@ class Test_Blob(unittest.TestCase):
         )
 
         SIGNER = _Signer()
-        with mock.patch("google.cloud.storage.blob.generate_signed_url", new=SIGNER):
+        with mock.patch("google.cloud.storage.blob.generate_signed_url_v2", new=SIGNER):
             signed_url = blob.generate_signed_url(EXPIRATION, method="get")
             self.assertEqual(signed_url, URI)
 
@@ -468,7 +468,7 @@ class Test_Blob(unittest.TestCase):
         )
 
         SIGNER = _Signer()
-        with mock.patch("google.cloud.storage.blob.generate_signed_url", new=SIGNER):
+        with mock.patch("google.cloud.storage.blob.generate_signed_url_v2", new=SIGNER):
             signed_url = blob.generate_signed_url(EXPIRATION)
             self.assertEqual(signed_url, URI)
 
@@ -498,7 +498,7 @@ class Test_Blob(unittest.TestCase):
         )
 
         SIGNER = _Signer()
-        with mock.patch("google.cloud.storage.blob.generate_signed_url", new=SIGNER):
+        with mock.patch("google.cloud.storage.blob.generate_signed_url_v2", new=SIGNER):
             signed_url = blob.generate_signed_url(EXPIRATION)
             self.assertEqual(signed_url, URI)
 
@@ -528,7 +528,7 @@ class Test_Blob(unittest.TestCase):
         )
 
         SIGNER = _Signer()
-        with mock.patch("google.cloud.storage.blob.generate_signed_url", new=SIGNER):
+        with mock.patch("google.cloud.storage.blob.generate_signed_url_v2", new=SIGNER):
             signed_uri = blob.generate_signed_url(EXPIRATION, method="POST")
             self.assertEqual(signed_uri, URI)
 
@@ -559,11 +559,11 @@ class Test_Blob(unittest.TestCase):
         Verify correct behavior of resumable upload URL generation
         """
         from google.cloud.storage._signing import get_expiration_seconds
-        from google.cloud.storage._signing import generate_signed_url
+        from google.cloud.storage._signing import generate_signed_url_v2
 
         expiry = get_expiration_seconds(datetime.timedelta(hours=1))
 
-        signed_url = generate_signed_url(
+        signed_url = generate_signed_url_v2(
             _make_credentials(), "a-bucket", expiry, method="RESUMABLE"
         )
 
