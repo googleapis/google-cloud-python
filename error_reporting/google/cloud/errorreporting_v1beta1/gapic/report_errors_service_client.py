@@ -195,6 +195,14 @@ class ReportErrorsServiceClient(object):
         """
         Report an individual error event.
 
+        This endpoint accepts either an OAuth token, or an API key for
+        authentication. To use an API key, append it to the URL as the value of
+        a ``key`` parameter. For example:
+
+        .. raw:: html
+        <pre>POST
+            https://clouderrorreporting.googleapis.com/v1beta1/projects/example-project/events:report?key=123ABC456</pre>
+
         Example:
             >>> from google.cloud import errorreporting_v1beta1
             >>>
