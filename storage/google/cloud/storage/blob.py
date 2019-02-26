@@ -55,6 +55,7 @@ from google.api_core.iam import Policy
 from google.cloud.storage._helpers import _PropertyMixin
 from google.cloud.storage._helpers import _scalar_property
 from google.cloud.storage._signing import generate_signed_url_v2
+from google.cloud.storage._signing import generate_signed_url_v4
 from google.cloud.storage.acl import ACL
 from google.cloud.storage.acl import ObjectACL
 
@@ -310,6 +311,7 @@ class Blob(_PropertyMixin):
         response_type=None,
         client=None,
         credentials=None,
+        version="v2",
     ):
         """Generates a signed URL for this blob.
 
@@ -371,6 +373,11 @@ class Blob(_PropertyMixin):
                             the URL. Defaults to the credentials stored on the
                             client used.
 
+        :type version: str
+        :param version: (Optional) The version of signed credential to create.
+                        Must be one of 'v2' | 'v4'.
+
+        :raises: :exc:`ValueError` when version is invalid.
         :raises: :exc:`TypeError` when expiration is not a valid type.
         :raises: :exc:`AttributeError` if credentials is not an instance
                 of :class:`google.auth.credentials.Signing`.
@@ -379,6 +386,9 @@ class Blob(_PropertyMixin):
         :returns: A signed URL you can use to access the resource
                   until expiration.
         """
+        if version not in ("v2", "v4"):
+            raise ValueError("'version' must be either 'v2' or 'v4'")
+
         resource = "/{bucket_name}/{quoted_name}".format(
             bucket_name=self.bucket.name, quoted_name=quote(self.name.encode("utf-8"))
         )
@@ -387,17 +397,30 @@ class Blob(_PropertyMixin):
             client = self._require_client(client)
             credentials = client._credentials
 
-        return generate_signed_url_v2(
-            credentials,
-            resource=resource,
-            api_access_endpoint=_API_ACCESS_ENDPOINT,
-            expiration=expiration,
-            method=method.upper(),
-            content_type=content_type,
-            response_type=response_type,
-            response_disposition=response_disposition,
-            generation=generation,
-        )
+        if version == "v2":
+            return generate_signed_url_v2(
+                credentials,
+                resource=resource,
+                api_access_endpoint=_API_ACCESS_ENDPOINT,
+                expiration=expiration,
+                method=method.upper(),
+                content_type=content_type,
+                response_type=response_type,
+                response_disposition=response_disposition,
+                generation=generation,
+            )
+        else:
+            return generate_signed_url_v4(
+                credentials,
+                resource=resource,
+                api_access_endpoint=_API_ACCESS_ENDPOINT,
+                expiration=expiration,
+                method=method.upper(),
+                content_type=content_type,
+                response_type=response_type,
+                response_disposition=response_disposition,
+                generation=generation,
+            )
 
     def exists(self, client=None):
         """Determines whether or not this blob exists.
