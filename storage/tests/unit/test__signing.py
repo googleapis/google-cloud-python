@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import base64
+import binascii
 import calendar
 import datetime
 import time
@@ -111,7 +112,7 @@ class Test_get_signed_query_params(unittest.TestCase):
     def test_it(self):
         sig_bytes = b"DEADBEEF"
         account_name = mock.sentinel.service_account_email
-        credentials = _make_credentials(signing=True, signer_email=account_name)
+        credentials = _make_credentials(signer_email=account_name)
         credentials.sign_bytes.return_value = sig_bytes
         expiration = 100
         string_to_sign = "dummy_signature"
@@ -138,9 +139,7 @@ class Test_generate_signed_url_v2(unittest.TestCase):
     ):
         endpoint = "http://api.example.com"
         resource = "/name/path"
-        credentials = _make_credentials(
-            signing=True, signer_email="service@example.com"
-        )
+        credentials = _make_credentials(signer_email="service@example.com")
         credentials.sign_bytes.return_value = b"DEADBEEF"
         signed = base64.b64encode(credentials.sign_bytes.return_value)
         signed = signed.decode("ascii")
@@ -207,10 +206,101 @@ class Test_generate_signed_url_v2(unittest.TestCase):
         )
 
 
-def _make_credentials(signing=False, signer_email=None):
+class Test_generate_signed_url_v4(unittest.TestCase):
+    @staticmethod
+    def _call_fut(*args, **kwargs):
+        from google.cloud.storage._signing import generate_signed_url_v4
+
+        return generate_signed_url_v4(*args, **kwargs)
+
+    def _generate_helper(
+        self,
+        expiration=1000,
+        response_type=None,
+        response_disposition=None,
+        generation=None,
+        headers=None,
+    ):
+        now = datetime.datetime(2019, 2, 26, 19, 53, 27)
+        endpoint = "http://api.example.com"
+        resource = "/name/path"
+        signer_email = "service@example.com"
+        credentials = _make_credentials(signer_email=signer_email)
+        credentials.sign_bytes.return_value = b"DEADBEEF"
+
+        with mock.patch("google.cloud.storage._signing.NOW", lambda: now):
+            url = self._call_fut(
+                credentials,
+                resource,
+                expiration,
+                api_access_endpoint=endpoint,
+                response_type=response_type,
+                response_disposition=response_disposition,
+                generation=generation,
+                headers=headers,
+            )
+
+        # Check the mock was called.
+        credentials.sign_bytes.assert_called_once()
+
+        scheme, netloc, path, qs, frag = urllib_parse.urlsplit(url)
+        self.assertEqual(scheme, "http")
+        self.assertEqual(netloc, "api.example.com")
+        self.assertEqual(path, resource)
+        self.assertEqual(frag, "")
+
+        # Check the URL parameters.
+        params = dict(urllib_parse.parse_qsl(qs))
+        self.assertEqual(params["X-Goog-Algorithm"], "GOOG4-RSA-SHA256")
+
+        now_date = now.date().strftime("%Y%m%d")
+        expected_cred = "{}/{}/auto/storage/goog4_request".format(
+            signer_email, now_date
+        )
+        self.assertEqual(params["X-Goog-Credential"], expected_cred)
+
+        now_stamp = now.strftime("%Y%m%dT%H%M%SZ")
+        self.assertEqual(params["X-Goog-Date"], now_stamp)
+        self.assertEqual(params["X-Goog-Expires"], str(expiration))
+
+        signed = binascii.hexlify(credentials.sign_bytes.return_value).decode("ascii")
+        self.assertEqual(params["x-goog-signature"], signed)
+
+        if response_type is not None:
+            self.assertEqual(params["response-content-type"], response_type)
+
+        if response_disposition is not None:
+            self.assertEqual(
+                params["response-content-disposition"], response_disposition
+            )
+
+        if generation is not None:
+            self.assertEqual(params["generation"], str(generation))
+
+    def test_w_expiration_too_long(self):
+        with self.assertRaises(ValueError):
+            self._generate_helper(expiration=datetime.timedelta(days=8))
+
+    def test_w_defaults(self):
+        self._generate_helper()
+
+    def test_w_response_type(self):
+        self._generate_helper(response_type="application/octets")
+
+    def test_w_response_disposition(self):
+        self._generate_helper(response_disposition="attachment")
+
+    def test_w_generation(self):
+        self._generate_helper(generation=12345)
+
+    def test_w_headers(self):
+        self._generate_helper(headers={"x-goog-foo": "bar"})
+
+
+def _make_credentials(signer_email=None):
     import google.auth.credentials
 
-    if signing:
+    if signer_email:
         credentials = mock.Mock(spec=google.auth.credentials.Signing)
         credentials.signer_email = signer_email
         return credentials

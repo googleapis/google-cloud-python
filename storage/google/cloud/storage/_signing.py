@@ -14,7 +14,9 @@
 
 
 import base64
+import binascii
 import datetime
+import hashlib
 
 import six
 
@@ -230,4 +232,173 @@ def generate_signed_url_v2(
         endpoint=api_access_endpoint,
         resource=resource,
         querystring=six.moves.urllib.parse.urlencode(query_params),
+    )
+
+
+SEVEN_DAYS = 7 * 24 * 60 * 60  # max expiration for V4 signed URLs.
+
+
+def generate_signed_url_v4(
+    credentials,
+    resource,
+    expiration,
+    api_access_endpoint="",
+    method="GET",
+    content_md5=None,
+    content_type=None,
+    response_type=None,
+    response_disposition=None,
+    generation=None,
+    headers=None,
+):
+    """Generate a V4 signed URL to provide query-string auth'n to a resource.
+
+    .. note::
+
+        Assumes ``credentials`` implements the
+        :class:`google.auth.credentials.Signing` interface. Also assumes
+        ``credentials`` has a ``service_account_email`` property which
+        identifies the credentials.
+
+    .. note::
+
+        If you are on Google Compute Engine, you can't generate a signed URL.
+        Follow `Issue 922`_ for updates on this. If you'd like to be able to
+        generate a signed URL from GCE, you can use a standard service account
+        from a JSON file rather than a GCE service account.
+
+    See headers `reference`_ for more details on optional arguments.
+
+    .. _Issue 922: https://github.com/GoogleCloudPlatform/\
+                   google-cloud-python/issues/922
+    .. _reference: https://cloud.google.com/storage/docs/reference-headers
+
+    :type credentials: :class:`google.auth.credentials.Signing`
+    :param credentials: Credentials object with an associated private key to
+                        sign text.
+
+    :type resource: str
+    :param resource: A pointer to a specific resource
+                     (typically, ``/bucket-name/path/to/blob.txt``).
+
+    :type expiration: :class:`int`, :class:`long`, :class:`datetime.datetime`,
+                      :class:`datetime.timedelta`
+    :param expiration: When the signed URL should expire.  Max value is
+                       seven days.
+
+    :type api_access_endpoint: str
+    :param api_access_endpoint: Optional URI base. Defaults to empty string.
+
+    :type method: str
+    :param method: The HTTP verb that will be used when requesting the URL.
+                   Defaults to ``'GET'``. If method is ``'RESUMABLE'`` then the
+                   signature will additionally contain the `x-goog-resumable`
+                   header, and the method changed to POST. See the signed URL
+                   docs regarding this flow:
+                   https://cloud.google.com/storage/docs/access-control/signed-urls
+
+
+    :type content_md5: str
+    :param content_md5: (Optional) The MD5 hash of the object referenced by
+                        ``resource``.
+
+    :type content_type: str
+    :param content_type: (Optional) The content type of the object referenced
+                         by ``resource``.
+
+    :type response_type: str
+    :param response_type: (Optional) Content type of responses to requests for
+                          the signed URL. Used to over-ride the content type of
+                          the underlying resource.
+
+    :type response_disposition: str
+    :param response_disposition: (Optional) Content disposition of responses to
+                                 requests for the signed URL.
+
+    :type generation: str
+    :param generation: (Optional) A value that indicates which generation of
+                       the resource to fetch.
+
+    :raises: :exc:`ValueError` when expiration is too large.
+    :raises: :exc:`TypeError` when expiration is not a valid type.
+    :raises: :exc:`AttributeError` if credentials is not an instance
+            of :class:`google.auth.credentials.Signing`.
+
+    :rtype: str
+    :returns: A signed URL you can use to access the resource
+              until expiration.
+    """
+    expiration = get_expiration_seconds(expiration)
+
+    if expiration > SEVEN_DAYS:
+        raise ValueError(
+            "Max allowed expiration is seven days (%d seconds)".format(SEVEN_DAYS)
+        )
+
+    ensure_signed_credentials(credentials)
+
+    now = NOW()
+    request_timestamp = now.strftime("%Y%m%dT%H%M%SZ")
+    datestamp = now.date().strftime("%Y%m%d")
+
+    client_email = credentials.signer_email
+    credential_scope = "{}/auto/storage/goog4_request".format(datestamp)
+    credential = "{}/{}".format(client_email, credential_scope)
+
+    if headers is None:
+        headers = {}
+
+    ordered_headers = sorted(headers.items())
+    canonical_headers = "\n".join(
+        ["{}:{}".format(key.lower(), val.strip()) for key, val in ordered_headers]
+    )
+    signed_headers = ";".join([key.lower() for key, _ in ordered_headers])
+
+    query_params = {
+        "X-Goog-Algorithm": "GOOG4-RSA-SHA256",
+        "X-Goog-Credential": credential,
+        "X-Goog-Date": request_timestamp,
+        "X-Goog-Expires": expiration,
+        "X-Goog-SignedHeaders": signed_headers,
+    }
+
+    if response_type is not None:
+        query_params["response-content-type"] = response_type
+
+    if response_disposition is not None:
+        query_params["response-content-disposition"] = response_disposition
+
+    if generation is not None:
+        query_params["generation"] = generation
+
+    ordered_query_params = sorted(query_params.items())
+    canonical_query_string = six.moves.urllib.parse.urlencode(ordered_query_params)
+
+    canonical_elements = [
+        method,
+        resource,
+        canonical_query_string,
+        canonical_headers,
+        signed_headers,
+        "UNSIGNED-PAYLOAD",
+    ]
+    canonical_request = "\n".join(canonical_elements)
+
+    canonical_request_hash = hashlib.sha256(
+        canonical_request.encode("ascii")
+    ).hexdigest()
+
+    string_elements = [
+        "GOOG4-RSA-SHA256",
+        request_timestamp,
+        credential_scope,
+        canonical_request_hash,
+    ]
+    string_to_sign = "\n".join(string_elements)
+
+    signature_bytes = credentials.sign_bytes(string_to_sign.encode("ascii"))
+    signature = binascii.hexlify(signature_bytes).decode("ascii")
+
+    return "{}{}?{}&x-goog-signature={}".format(
+        api_access_endpoint, resource, canonical_query_string, signature
     )
