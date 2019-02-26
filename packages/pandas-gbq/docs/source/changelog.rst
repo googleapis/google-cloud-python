@@ -6,6 +6,8 @@ Changelog
 0.10.0 / TBD
 ------------
 
+- This fixes a bug where pandas-gbq could not upload an empty database. (:issue:`237`)
+
 Dependency updates
 ~~~~~~~~~~~~~~~~~~
 

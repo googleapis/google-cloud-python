@@ -518,8 +518,8 @@ class GbqConnector(object):
                 chunks = tqdm.tqdm(chunks)
             for remaining_rows in chunks:
                 logger.info(
-                    "\rLoad is {0}% Complete".format(
-                        ((total_rows - remaining_rows) * 100) / total_rows
+                    "\r{} out of {} rows loaded.".format(
+                        total_rows - remaining_rows, total_rows
                     )
                 )
         except self.http_error as ex:

@@ -924,6 +924,28 @@ class TestToGBQIntegration(object):
         )
         assert result["num_rows"][0] == test_size
 
+    def test_upload_empty_data(self, project_id):
+        test_id = "data_with_0_rows"
+        test_size = 0
+        df = DataFrame()
+
+        gbq.to_gbq(
+            df,
+            self.destination_table + test_id,
+            project_id,
+            credentials=self.credentials,
+        )
+
+        result = gbq.read_gbq(
+            "SELECT COUNT(*) AS num_rows FROM {0}".format(
+                self.destination_table + test_id
+            ),
+            project_id=project_id,
+            credentials=self.credentials,
+            dialect="legacy",
+        )
+        assert result["num_rows"][0] == test_size
+
     def test_upload_data_if_table_exists_fail(self, project_id):
         test_id = "2"
         test_size = 10
