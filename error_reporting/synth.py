@@ -49,7 +49,8 @@ DISCARD_AUTH_BOILERPLATE = r"""
         a ``key`` parameter. For example:
 
         \.\. raw:: html
-        <pre>POST .*
+        <pre>POST
+            .*</pre>
 """
 
 targets = [
