@@ -25,7 +25,6 @@ from unittest import mock
 from google.cloud import environment_vars
 from google.cloud.ndb import context as context_module
 from google.cloud.ndb import model
-from google.cloud.ndb import _runstate
 
 import pytest
 
@@ -45,7 +44,6 @@ def reset_state(environ):
     yield
     model.Property._FIND_METHODS_CACHE.clear()
     model.Model._kind_map.clear()
-    del _runstate.contexts.stack[:]
 
 
 @pytest.fixture
@@ -84,5 +82,7 @@ def context():
 
 @pytest.fixture
 def in_context(context):
-    with context:
+    assert not context_module._state.context
+    with context.use():
         yield context
+    assert not context_module._state.context

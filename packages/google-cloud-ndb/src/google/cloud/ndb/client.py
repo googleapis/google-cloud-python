@@ -119,7 +119,7 @@ class Client(google_client.ClientWithProject):
         layer.
         """
         context = context_module.Context(self)
-        with context:
+        with context.use():
             yield context
 
         # Finish up any work left to do on the event loop

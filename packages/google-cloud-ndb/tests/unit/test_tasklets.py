@@ -17,8 +17,8 @@ from unittest import mock
 import grpc
 import pytest
 
+from google.cloud.ndb import context as context_module
 from google.cloud.ndb import _eventloop
-from google.cloud.ndb import _runstate
 from google.cloud.ndb import tasklets
 
 import tests.unit.utils
@@ -445,16 +445,16 @@ class Test_tasklet:
     def test_context_management(in_context):
         @tasklets.tasklet
         def some_task(transaction, future):
-            assert _runstate.current().transaction == transaction
+            assert context_module.get_context().transaction == transaction
             yield future
-            return _runstate.current().transaction
+            return context_module.get_context().transaction
 
         future_foo = tasklets.Future("foo")
-        with in_context.new(transaction="foo"):
+        with in_context.new(transaction="foo").use():
             task_foo = some_task("foo", future_foo)
 
         future_bar = tasklets.Future("bar")
-        with in_context.new(transaction="bar"):
+        with in_context.new(transaction="bar").use():
             task_bar = some_task("bar", future_bar)
 
         future_foo.set_result(None)
@@ -462,6 +462,37 @@ class Test_tasklet:
 
         assert task_foo.result() == "foo"
         assert task_bar.result() == "bar"
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_context_changed_in_tasklet():
+        @tasklets.tasklet
+        def some_task(transaction, future1, future2):
+            context = context_module.get_context()
+            assert context.transaction is None
+            with context.new(transaction=transaction).use():
+                assert context_module.get_context().transaction == transaction
+                yield future1
+                assert context_module.get_context().transaction == transaction
+                yield future2
+                assert context_module.get_context().transaction == transaction
+            assert context_module.get_context() is context
+
+        future_foo1 = tasklets.Future("foo1")
+        future_foo2 = tasklets.Future("foo2")
+        task_foo = some_task("foo", future_foo1, future_foo2)
+
+        future_bar1 = tasklets.Future("bar1")
+        future_bar2 = tasklets.Future("bar2")
+        task_bar = some_task("bar", future_bar1, future_bar2)
+
+        future_foo1.set_result(None)
+        future_bar1.set_result(None)
+        future_foo2.set_result(None)
+        future_bar2.set_result(None)
+
+        task_foo.check_success()
+        task_bar.check_success()
 
 
 class Test_wait_any:
@@ -520,11 +551,6 @@ def test_sleep(time_module, context):
     future = tasklets.sleep(1)
     assert future.get_result() is None
     time_module.sleep.assert_called_once_with(1)
-
-
-def test_get_context():
-    with pytest.raises(NotImplementedError):
-        tasklets.get_context()
 
 
 def test_make_context():

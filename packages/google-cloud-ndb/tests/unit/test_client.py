@@ -22,7 +22,7 @@ from google.cloud import environment_vars
 from google.cloud.datastore import _http
 
 from google.cloud.ndb import client as client_module
-from google.cloud.ndb import _runstate
+from google.cloud.ndb import context as context_module
 
 
 @contextlib.contextmanager
@@ -80,5 +80,5 @@ class TestClient:
             client = client_module.Client()
 
         with client.context():
-            state = _runstate.current()
-            assert state.client is client
+            context = context_module.get_context()
+            assert context.client is client

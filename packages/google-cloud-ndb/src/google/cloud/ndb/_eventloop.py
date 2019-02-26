@@ -21,7 +21,7 @@ import queue
 import uuid
 import time
 
-from google.cloud.ndb import _runstate
+from google.cloud.ndb import context as context_module
 
 __all__ = [
     "add_idle",
@@ -369,7 +369,7 @@ def get_event_loop():
     Returns:
         EventLoop: The event loop for the current context.
     """
-    context = _runstate.current()
+    context = context_module.get_context()
     return context.eventloop
 
 

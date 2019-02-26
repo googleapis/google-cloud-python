@@ -584,7 +584,7 @@ class Test__project_from_app:
     @staticmethod
     def test_app_fallback(context):
         context.client.project = "s~jectpro"
-        with context:
+        with context.use():
             assert key_module._project_from_app(None) == "jectpro"
 
 

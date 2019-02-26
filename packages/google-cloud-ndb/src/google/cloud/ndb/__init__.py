@@ -125,6 +125,7 @@ from google.cloud.ndb.client import Client
 from google.cloud.ndb.context import AutoBatcher
 from google.cloud.ndb.context import Context
 from google.cloud.ndb.context import ContextOptions
+from google.cloud.ndb.context import get_context
 from google.cloud.ndb.context import TransactionOptions
 from google.cloud.ndb._datastore_api import EVENTUAL
 from google.cloud.ndb._datastore_api import EVENTUAL_CONSISTENCY
@@ -206,7 +207,6 @@ from google.cloud.ndb.query import QueryOptions
 from google.cloud.ndb.query import RepeatedStructuredPropertyPredicate
 from google.cloud.ndb.tasklets import add_flow_exception
 from google.cloud.ndb.tasklets import Future
-from google.cloud.ndb.tasklets import get_context
 from google.cloud.ndb.tasklets import make_context
 from google.cloud.ndb.tasklets import make_default_context
 from google.cloud.ndb.tasklets import QueueFuture

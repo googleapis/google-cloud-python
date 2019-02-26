@@ -15,19 +15,58 @@
 """Context for currently running tasks and transactions."""
 
 import collections
+import contextlib
+import threading
 
 from google.cloud.ndb import _datastore_api
 from google.cloud.ndb import _eventloop
 from google.cloud.ndb import exceptions
-from google.cloud.ndb import _runstate
 
 
-__all__ = ["AutoBatcher", "Context", "ContextOptions", "TransactionOptions"]
+__all__ = [
+    "AutoBatcher",
+    "Context",
+    "ContextOptions",
+    "get_context",
+    "TransactionOptions",
+]
 
 
 _ContextTuple = collections.namedtuple(
     "_ContextTuple", ["client", "eventloop", "stub", "batches", "transaction"]
 )
+
+
+class _LocalState(threading.local):
+    """Thread local state."""
+
+    __slots__ = ("context",)
+
+    def __init__(self):
+        self.context = None
+
+
+_state = _LocalState()
+
+
+def get_context():
+    """Get the current context.
+
+    This function should be called within a context established by
+    :meth:`google.cloud.ndb.client.Client.context`.
+
+    Returns:
+        Context: The current context.
+
+    Raises:
+        .ContextError: If called outside of a context
+            established by :meth:`google.cloud.ndb.client.Client.context`.
+    """
+    context = _state.context
+    if context:
+        return context
+
+    raise exceptions.ContextError()
 
 
 class _Context(_ContextTuple):
@@ -38,10 +77,6 @@ class _Context(_ContextTuple):
     contain references to data structures which are mutable, such as the event
     loop. A new context can be derived from an existing context using
     :meth:`new`.
-
-    ``_Context`` instances can be used as context managers which push
-    themselves onto the thread local stack in ``_runstate`` and then pop
-    themselves back off on exit.
 
     :class:`Context` is a subclass of :class:`_Context` which provides
     only publicly facing interface. The use of two classes is only to provide a
@@ -82,17 +117,20 @@ class _Context(_ContextTuple):
         state.update(kwargs)
         return type(self)(**state)
 
-    def __enter__(self):
-        _runstate.contexts.push(self)
-        return self
+    @contextlib.contextmanager
+    def use(self):
+        """Use this context as the current context.
 
-    def __exit__(self, *exc_info):
-        popped = _runstate.contexts.pop()
-
-        # If we've done this right, this will never happen. Including this
-        # check in an abundance of caution.
-        if popped is not self:
-            raise RuntimeError("Contexts stack is corrupted")
+        This method returns a context manager for use with the ``with``
+        statement. Code inside the ``with`` context will see this context as
+        the current context.
+        """
+        prev_context = _state.context
+        _state.context = self
+        try:
+            yield self
+        finally:
+            _state.context = prev_context
 
 
 class Context(_Context):
