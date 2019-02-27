@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigtable.table &#8212; google-cloud 411feea documentation</title>
+    <title>google.cloud.bigtable.table &#8212; google-cloud 35e0349 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -53,6 +53,7 @@
 
 <span class="kn">from</span> <span class="nn">grpc</span> <span class="k">import</span> <span class="n">StatusCode</span>
 
+<span class="kn">from</span> <span class="nn">google.api_core</span> <span class="k">import</span> <span class="n">timeout</span>
 <span class="kn">from</span> <span class="nn">google.api_core.exceptions</span> <span class="k">import</span> <span class="n">RetryError</span>
 <span class="kn">from</span> <span class="nn">google.api_core.exceptions</span> <span class="k">import</span> <span class="n">NotFound</span>
 <span class="kn">from</span> <span class="nn">google.api_core.retry</span> <span class="k">import</span> <span class="n">if_exception_type</span>
@@ -136,10 +137,11 @@
 <span class="sd">    :param app_profile_id: (Optional) The unique name of the AppProfile.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table_id</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">app_profile_id</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table_id</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">mutation_timeout</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">app_profile_id</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">table_id</span> <span class="o">=</span> <span class="n">table_id</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_instance</span> <span class="o">=</span> <span class="n">instance</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_app_profile_id</span> <span class="o">=</span> <span class="n">app_profile_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mutation_timeout</span> <span class="o">=</span> <span class="n">mutation_timeout</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -539,7 +541,11 @@
 <span class="sd">                  sent. These will be in the same order as the `rows`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">retryable_mutate_rows</span> <span class="o">=</span> <span class="n">_RetryableMutateRowsWorker</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_instance</span><span class="o">.</span><span class="n">_client</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">rows</span><span class="p">,</span> <span class="n">app_profile_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_app_profile_id</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_instance</span><span class="o">.</span><span class="n">_client</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">rows</span><span class="p">,</span>
+            <span class="n">app_profile_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_app_profile_id</span><span class="p">,</span>
+            <span class="n">timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mutation_timeout</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="k">return</span> <span class="n">retryable_mutate_rows</span><span class="p">(</span><span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">)</span></div>
 
@@ -694,12 +700,13 @@
     <span class="p">)</span>
     <span class="c1"># pylint: enable=unsubscriptable-object</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">table_name</span><span class="p">,</span> <span class="n">rows</span><span class="p">,</span> <span class="n">app_profile_id</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">table_name</span><span class="p">,</span> <span class="n">rows</span><span class="p">,</span> <span class="n">app_profile_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">client</span> <span class="o">=</span> <span class="n">client</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">table_name</span> <span class="o">=</span> <span class="n">table_name</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">rows</span> <span class="o">=</span> <span class="n">rows</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">app_profile_id</span> <span class="o">=</span> <span class="n">app_profile_id</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">responses_statuses</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rows</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">timeout</span> <span class="o">=</span> <span class="n">timeout</span>
 
     <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">DEFAULT_RETRY</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Attempt to mutate all rows and retry rows with transient errors.</span>
@@ -765,7 +772,10 @@
         <span class="n">inner_api_calls</span> <span class="o">=</span> <span class="n">data_client</span><span class="o">.</span><span class="n">_inner_api_calls</span>
         <span class="k">if</span> <span class="s2">&quot;mutate_rows&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">inner_api_calls</span><span class="p">:</span>
             <span class="n">default_retry</span> <span class="o">=</span> <span class="p">(</span><span class="n">data_client</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span><span class="s2">&quot;MutateRows&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">retry</span><span class="p">,)</span>
-            <span class="n">default_timeout</span> <span class="o">=</span> <span class="n">data_client</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span><span class="s2">&quot;MutateRows&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">timeout</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">timeout</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">default_timeout</span> <span class="o">=</span> <span class="n">data_client</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span><span class="s2">&quot;MutateRows&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">timeout</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">default_timeout</span> <span class="o">=</span> <span class="n">timeout</span><span class="o">.</span><span class="n">ExponentialTimeout</span><span class="p">(</span><span class="n">deadline</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">timeout</span><span class="p">)</span>
             <span class="n">data_client</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span><span class="s2">&quot;mutate_rows&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">wrap_method</span><span class="p">(</span>
                 <span class="n">data_client</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">mutate_rows</span><span class="p">,</span>
                 <span class="n">default_retry</span><span class="o">=</span><span class="n">default_retry</span><span class="p">,</span>
