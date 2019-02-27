@@ -1628,10 +1628,12 @@ def _validate_key(value, entity=None):
         raise exceptions.BadValueError("Expected Key, got {!r}".format(value))
 
     if entity and type(entity) not in (Model, Expando):
-        if value.kind() != entity._get_kind():
+        # Need to use _class_name instead of _get_kind, to be able to
+        # return the correct kind if this is a polymodel
+        if value.kind() != entity._class_name():
             raise KindError(
                 "Expected Key kind to be {}; received "
-                "{}".format(entity._get_kind(), value.kind())
+                "{}".format(entity._class_name(), value.kind())
             )
 
     return value
@@ -3722,6 +3724,27 @@ class Model(metaclass=MetaModel):
         name of the class.
         """
         return cls.__name__
+
+    @classmethod
+    def _class_name(cls):
+        """A hook for polymodel to override.
+
+        For regular models and expandos this is just an alias for
+        _get_kind().  For PolyModel subclasses, it returns the class name
+        (as set in the 'class' attribute thereof), whereas _get_kind()
+        returns the kind (the class name of the root class of a specific
+        PolyModel hierarchy).
+        """
+        return cls._get_kind()
+
+    @classmethod
+    def _default_filters(cls):
+        """Return an iterable of filters that are always to be applied.
+
+        This is used by PolyModel to quietly insert a filter for the
+        current class name.
+        """
+        return ()
 
     def __hash__(self):
         """Not implemented hash function.

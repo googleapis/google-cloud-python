@@ -12,9 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import unittest.mock
 import pytest
 
+from google.cloud import datastore
+from google.cloud.datastore import helpers
+from google.cloud.ndb import model
 from google.cloud.ndb import polymodel
+from google.cloud.ndb import query
 import tests.unit.utils
 
 
@@ -22,8 +27,89 @@ def test___all__():
     tests.unit.utils.verify___all__(polymodel)
 
 
+class Test_ClassKeyProperty:
+    @staticmethod
+    def test_constructor():
+        prop = polymodel._ClassKeyProperty()
+        assert prop._name == polymodel._CLASS_KEY_PROPERTY
+
+    @staticmethod
+    def test__set_value():
+        prop = polymodel._ClassKeyProperty()
+        with pytest.raises(TypeError):
+            prop._set_value(None, None)
+
+    @staticmethod
+    def test__get_value():
+        prop = polymodel._ClassKeyProperty()
+        value = ["test"]
+        values = {prop._name: value}
+        entity = unittest.mock.Mock(
+            _projection=(prop._name,),
+            _values=values,
+            spec=("_projection", "_values"),
+        )
+        assert value is prop._get_value(entity)
+
+    @staticmethod
+    def test__prepare_for_put():
+        prop = polymodel._ClassKeyProperty()
+        value = ["test"]
+        values = {prop._name: value}
+        entity = unittest.mock.Mock(
+            _projection=(prop._name,),
+            _values=values,
+            spec=("_projection", "_values"),
+        )
+        assert prop._prepare_for_put(entity) is None
+
+
 class TestPolyModel:
     @staticmethod
     def test_constructor():
-        with pytest.raises(NotImplementedError):
-            polymodel.PolyModel()
+        model = polymodel.PolyModel()
+        assert model.__dict__ == {"_values": {}}
+
+    @staticmethod
+    def test_class_property():
+        class Animal(polymodel.PolyModel):
+            pass
+
+        class Feline(Animal):
+            pass
+
+        class Cat(Feline):
+            pass
+
+        cat = Cat()
+
+        assert cat._get_kind() == "Animal"
+        assert cat.class_ == ["Animal", "Feline", "Cat"]
+
+    @staticmethod
+    def test_default_filters():
+        class Animal(polymodel.PolyModel):
+            pass
+
+        class Cat(Animal):
+            pass
+
+        assert Animal._default_filters() == ()
+        assert Cat._default_filters() == (
+            query.FilterNode("class", "=", b"Cat"),
+        )
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_entity_from_protobuf():
+        class Animal(polymodel.PolyModel):
+            pass
+
+        class Cat(Animal):
+            pass
+
+        key = datastore.Key("Cat", 123, project="testing")
+        datastore_entity = datastore.Entity(key=key)
+        protobuf = helpers.entity_to_protobuf(datastore_entity)
+        entity = model._entity_from_protobuf(protobuf)
+        assert isinstance(entity, Cat)

@@ -1337,11 +1337,11 @@ class Test__validate_key:
 
         value = model.Key(Mine, "yours")
         entity = unittest.mock.Mock(spec=Mine)
-        entity._get_kind.return_value = "Mine"
+        entity._class_name.return_value = "Mine"
 
         result = model._validate_key(value, entity=entity)
         assert result is value
-        entity._get_kind.assert_called_once_with()
+        entity._class_name.assert_called_once_with()
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")
@@ -1351,13 +1351,13 @@ class Test__validate_key:
 
         value = model.Key(Mine, "yours")
         entity = unittest.mock.Mock(spec=Mine)
-        entity._get_kind.return_value = "NotMine"
+        entity._class_name.return_value = "NotMine"
 
         with pytest.raises(model.KindError):
             model._validate_key(value, entity=entity)
 
         calls = [unittest.mock.call(), unittest.mock.call()]
-        entity._get_kind.assert_has_calls(calls)
+        entity._class_name.assert_has_calls(calls)
 
 
 class TestModelKey:
@@ -2735,6 +2735,24 @@ class TestModel:
             pass
 
         assert Simple._get_kind() == "Simple"
+
+    @staticmethod
+    def test__class_name():
+        assert model.Model._class_name() == "Model"
+
+        class Simple(model.Model):
+            pass
+
+        assert Simple._class_name() == "Simple"
+
+    @staticmethod
+    def test__default_filters():
+        assert model.Model._default_filters() == ()
+
+        class Simple(model.Model):
+            pass
+
+        assert Simple._default_filters() == ()
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")
