@@ -553,7 +553,7 @@ class Instance(object):
         clusters = [Cluster.from_pb(cluster, self) for cluster in resp.clusters]
         return clusters, resp.failed_locations
 
-    def table(self, table_id, app_profile_id=None):
+    def table(self, table_id, mutation_timeout=None, app_profile_id=None):
         """Factory to create a table associated with this instance.
 
         For example:
@@ -571,7 +571,12 @@ class Instance(object):
         :rtype: :class:`Table <google.cloud.bigtable.table.Table>`
         :returns: The table owned by this instance.
         """
-        return Table(table_id, self, app_profile_id=app_profile_id)
+        return Table(
+            table_id,
+            self,
+            app_profile_id=app_profile_id,
+            mutation_timeout=mutation_timeout,
+        )
 
     def list_tables(self):
         """List the tables in this instance.

@@ -56,7 +56,9 @@ class MutationsBatcher(object):
     (5 MB).
     """
 
-    def __init__(self, table, flush_count=FLUSH_COUNT, max_row_bytes=MAX_ROW_BYTES):
+    def __init__(
+        self, table, flush_count=FLUSH_COUNT, max_row_bytes=MAX_ROW_BYTES
+    ):
         self.rows = []
         self.total_mutation_count = 0
         self.total_size = 0
@@ -144,7 +146,7 @@ class MutationsBatcher(object):
 
     def flush(self):
         """ Sends the current. batch to Cloud Bigtable. """
-        if len(self.rows) is not 0:
+        if len(self.rows) != 0:
             self.table.mutate_rows(self.rows)
             self.total_mutation_count = 0
             self.total_size = 0
