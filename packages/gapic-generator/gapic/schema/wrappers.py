@@ -31,7 +31,7 @@ import collections
 import dataclasses
 import re
 from itertools import chain
-from typing import Iterable, List, Mapping, Sequence, Set, Tuple, Union
+from typing import List, Mapping, Sequence, Set, Union
 
 from google.api import annotations_pb2
 from google.api import client_pb2
@@ -403,6 +403,31 @@ class Method:
             return tuple(re.findall(r'\{([a-z][\w\d_.]+)=', http.get))
         return ()
 
+    @utils.cached_property
+    def flattened_fields(self) -> Mapping[str, Field]:
+        """Return the signature defined for this method."""
+        answer = collections.OrderedDict()
+        signatures = self.options.Extensions[client_pb2.method_signature]
+
+        # Iterate over each signature and add the appropriate fields.
+        for sig in signatures:
+            # Get all of the individual fields.
+            fields = collections.OrderedDict([
+                (f, self.input.get_field(*f.split('.')))
+                for f in sig.split(',')
+            ])
+
+            # Sanity check: If any fields contain a message, we ignore the
+            # entire signature.
+            if any([i.message for i in fields.values()]):
+                continue
+
+            # Add the fields to the answer.
+            answer.update(fields)
+
+        # Done; return the flattened fields
+        return answer
+
     @property
     def grpc_stub_type(self) -> str:
         """Return the type of gRPC stub to use."""
@@ -424,8 +449,9 @@ class Method:
         #
         # This entails adding the module for any field on the signature
         # unless the field is a primitive.
-        for sig in self.signatures.single_dispatch:
-            answer += sig.composite_types
+        for field in self.flattened_fields.values():
+            if field.message or field.enum:
+                answer.append(field.type)
 
         # If this method has LRO, it is possible (albeit unlikely) that
         # the LRO messages reside in a different module.
@@ -436,29 +462,6 @@ class Method:
 
         # Done; return the answer.
         return tuple(answer)
-
-    @utils.cached_property
-    def signatures(self) -> 'MethodSignatures':
-        """Return the signature defined for this method."""
-        signatures = self.options.Extensions[client_pb2.method_signature]
-
-        # Signatures are annotated with an `additional_signatures` key that
-        # allows for specifying additional signatures. This is an uncommon
-        # case but we still want to deal with it.
-        answer = []
-        for sig in signatures:
-            # Build a MethodSignature object with the appropriate name
-            # and fields. The fields are field objects, retrieved from
-            # the method's `input` message.
-            answer.append(MethodSignature(
-                fields=collections.OrderedDict([
-                    (f.split('.')[-1], self.input.get_field(*f.split('.')))
-                    for f in sig.split(',')
-                ]),
-            ))
-
-        # Done; return a tuple of signatures.
-        return MethodSignatures(all=tuple(answer))
 
     @property
     def void(self) -> bool:
@@ -477,61 +480,6 @@ class Method:
             output=self.output.with_context(collisions=collisions),
             meta=self.meta.with_context(collisions=collisions),
         )
-
-
-@dataclasses.dataclass(frozen=True)
-class MethodSignature:
-    fields: Mapping[str, Field]
-
-    @utils.cached_property
-    def dispatch_field(self) -> Union[MessageType, EnumType, PythonType]:
-        """Return the first field.
-
-        This is what is used for `functools.singledispatch`."""
-        return next(iter(self.fields.values()))
-
-    @utils.cached_property
-    def composite_types(self) -> Sequence[Union[MessageType, EnumType]]:
-        """Return all composite types used in this signature."""
-        answer = []
-        for field in self.fields.values():
-            if field.message or field.enum:
-                answer.append(field.type)
-        return answer
-
-
-@dataclasses.dataclass(frozen=True)
-class MethodSignatures:
-    all: Tuple[MethodSignature]
-
-    def __getitem__(self, key: Union[int, slice]) -> MethodSignature:
-        return self.all[key]
-
-    def __iter__(self) -> Iterable[MethodSignature]:
-        return iter(self.all)
-
-    def __len__(self) -> int:
-        return len(self.all)
-
-    @utils.cached_property
-    def single_dispatch(self) -> Tuple[MethodSignature]:
-        """Return a tuple of signatures, grouped and deduped by dispatch type.
-
-        In the Python 3 templates, we only honor at most one method
-        signature per initial argument type, and only for primitives.
-
-        This method groups and deduplicates signatures and sends back only
-        the signatures that the template actually wants.
-
-        Returns:
-            Tuple[MethodSignature]: Method signatures to be used with
-                "single dispatch" routing.
-        """
-        answer = collections.OrderedDict()
-        for sig in [i for i in self.all
-                    if isinstance(i.dispatch_field.type, PythonType)]:
-            answer.setdefault(sig.dispatch_field.ident, sig)
-        return tuple(answer.values())
 
 
 @dataclasses.dataclass(frozen=True)

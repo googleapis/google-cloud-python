@@ -34,60 +34,6 @@ def test_method_types():
     assert method.output.name == 'Output'
 
 
-def test_method_signature():
-    # Set up a meaningful input message.
-    input_msg = make_message(name='Input', fields=(
-        make_field('int_field', type=5),
-        make_field('bool_field', type=8),
-        make_field('float_field', type=2),
-    ))
-
-    # Create the method.
-    method = make_method('SendStuff', input_message=input_msg)
-
-    # Edit the underlying method pb2 post-hoc to add the appropriate annotation
-    # (google.api.signature).
-    method.options.Extensions[client_pb2.method_signature].append(','.join((
-        'int_field',
-        'float_field',
-    )))
-
-    # We should get back just those two fields as part of the signature.
-    assert len(method.signatures) == 1
-    signature = method.signatures[0]
-    assert tuple(signature.fields.keys()) == ('int_field', 'float_field')
-
-
-def test_method_signature_nested():
-    # Set up a meaningful input message.
-    inner_msg = make_message(name='Inner', fields=(
-        make_field('int_field', type=5),
-        make_field('bool_field', type=8),
-        make_field('float_field', type=2),
-    ))
-    outer_msg = make_message(name='Outer', fields=(
-        make_field('inner', type=9, message=inner_msg),
-    ))
-
-    # Create the method.
-    method = make_method('SendStuff', input_message=outer_msg)
-
-    # Edit the underlying method pb2 post-hoc to add the appropriate annotation
-    # (google.api.signature).
-    method.options.Extensions[client_pb2.method_signature].append(
-        'inner.int_field',
-    )
-
-    # We should get back just those two fields as part of the signature.
-    assert len(method.signatures) == 1
-    signature = method.signatures[0]
-    assert tuple(signature.fields.keys()) == ('int_field',)
-
-
-def test_method_no_signature():
-    assert len(make_method('Ping').signatures) == 0
-
-
 def test_method_void():
     empty = make_message(name='Empty', package='google.protobuf')
     method = make_method('Meh', output_message=empty)
@@ -131,11 +77,30 @@ def test_method_stream_stream():
     assert method.grpc_stub_type == 'stream_stream'
 
 
+def test_method_flattened_fields():
+    a = make_field('a', type=5)  # int
+    b = make_field('b', type=5)
+    input_msg = make_message('Z', fields=(a, b))
+    method = make_method('F', input_message=input_msg, signatures=('a,b',))
+    assert len(method.flattened_fields) == 2
+    assert 'a' in method.flattened_fields
+    assert 'b' in method.flattened_fields
+
+
+def test_method_ignored_flattened_fields():
+    a = make_field('a', type=5)
+    b = make_field('b', type=11, message=make_message('Eggs'))
+    input_msg = make_message('Z', fields=(a, b))
+    method = make_method('F', input_message=input_msg, signatures=('a,b',))
+    assert len(method.flattened_fields) == 0
+
+
 def make_method(
         name: str, input_message: wrappers.MessageType = None,
         output_message: wrappers.MessageType = None,
         package: str = 'foo.bar.v1', module: str = 'baz',
         http_rule: http_pb2.HttpRule = None,
+        signatures: Sequence[str] = (),
         **kwargs) -> wrappers.Method:
     # Use default input and output messages if they are not provided.
     input_message = input_message or make_message('MethodInput')
@@ -153,6 +118,11 @@ def make_method(
     if http_rule:
         ext_key = annotations_pb2.http
         method_pb.options.Extensions[ext_key].MergeFrom(http_rule)
+
+    # If there are signatures, include them.
+    for sig in signatures:
+        ext_key = client_pb2.method_signature
+        method_pb.options.Extensions[ext_key].append(sig)
 
     # Instantiate the wrapper class.
     return wrappers.Method(

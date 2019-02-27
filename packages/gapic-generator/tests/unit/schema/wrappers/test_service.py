@@ -99,7 +99,7 @@ def test_service_python_modules_signature():
             descriptor_pb2.FieldDescriptorProto(name='secs', type=5),
             descriptor_pb2.FieldDescriptorProto(
                 name='d',
-                type=11,  # message
+                type=14,  # enum
                 type_name='a.b.c.v2.D',
             ),
         ),
@@ -159,7 +159,7 @@ def make_service_with_method_options(*,
     method = get_method(
         'DoBigThing',
         'foo.bar.ThingRequest',
-        'google.longrunning.operations.Operation',
+        'google.longrunning.operations_pb2.Operation',
         lro_response_type='foo.baz.ThingResponse',
         lro_metadata_type='foo.qux.ThingMetadata',
         in_fields=in_fields,
@@ -232,7 +232,7 @@ def get_message(dot_path: str, *,
     return wrappers.MessageType(
         fields={i.name: wrappers.Field(
             field_pb=i,
-            message=get_message(i.type_name) if i.type_name else None,
+            enum=get_enum(i.type_name) if i.type_name else None,
         ) for i in fields},
         nested_messages={},
         nested_enums={},
@@ -242,4 +242,18 @@ def get_message(dot_path: str, *,
             package=tuple(pkg),
             module=module,
         )),
+    )
+
+
+def get_enum(dot_path: str) -> wrappers.EnumType:
+    pieces = dot_path.split('.')
+    pkg, module, name = pieces[:-2], pieces[-2], pieces[-1]
+    return wrappers.EnumType(
+        enum_pb=descriptor_pb2.EnumDescriptorProto(name=name),
+        meta=metadata.Metadata(address=metadata.Address(
+            name=name,
+            package=tuple(pkg),
+            module=module,
+        )),
+        values=[],
     )
