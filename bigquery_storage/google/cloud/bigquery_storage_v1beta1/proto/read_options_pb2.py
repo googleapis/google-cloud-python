@@ -104,10 +104,13 @@ TableReadOptions = _reflection.GeneratedProtocolMessageType(
           of fields in selected\_fields.
       row_restriction:
           Optional. SQL text filtering statement, similar to a WHERE
-          clause in a query. Currently, we support combinations of
-          predicates that are a comparison between a column and a
-          constant value in SQL statement. Aggregates are not supported.
-          Example: "a > DATE '2014-9-27' AND (b > 5 and C LIKE 'date')"
+          clause in a query. Currently, only a single predicate that is
+          a comparison between a column and a constant value is
+          supported. Aggregates are not supported.  Examples:
+          "int\_field > 5" "date\_field = CAST('2014-9-27' as DATE)"
+          "nullable\_field is not NULL" "st\_equals(geo\_field,
+          st\_geofromtext("POINT(2, 2)"))" "numeric\_field BETWEEN 1.0
+          AND 5.0"
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.bigquery.storage.v1beta1.TableReadOptions)
     ),

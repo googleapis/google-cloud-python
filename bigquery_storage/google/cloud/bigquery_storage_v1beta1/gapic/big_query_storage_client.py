@@ -220,9 +220,9 @@ class BigQueryStorageClient(object):
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.bigquery_storage_v1beta1.types.TableReference`
-            parent (str): Required. String of the form "projects/your-project-id" indicating the
-                project this ReadSession is associated with. This is the project that will
-                be billed for usage.
+            parent (str): Required. String of the form ``projects/{project_id}`` indicating the
+                project this ReadSession is associated with. This is the project that
+                will be billed for usage.
             table_modifiers (Union[dict, ~google.cloud.bigquery_storage_v1beta1.types.TableModifiers]): Optional. Any modifiers to the Table (e.g. snapshot timestamp).
 
                 If a dict is provided, it must be of the same form as the protobuf
