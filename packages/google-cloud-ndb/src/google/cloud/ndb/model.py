@@ -2074,7 +2074,7 @@ class BlobProperty(Property):
         raise exceptions.NoLongerImplementedError()
 
 
-class TextProperty(BlobProperty):
+class TextProperty(Property):
     """An unindexed property that contains UTF-8 encoded text values.
 
     A :class:`TextProperty` is intended for values of unlimited length, hence
@@ -2172,12 +2172,12 @@ class TextProperty(BlobProperty):
             value (Union[bytes, str]): The value to be converted.
 
         Returns:
-            Optional[bytes]: The converted value. If ``value`` is a
-            :class:`str`, this will return the UTF-8 encoded bytes for it.
+            Optional[str]: The converted value. If ``value`` is a
+            :class:`bytes`, this will return the UTF-8 decoded ``str`` for it.
             Otherwise, it will return :data:`None`.
         """
-        if isinstance(value, str):
-            return value.encode("utf-8")
+        if isinstance(value, bytes):
+            return value.decode("utf-8")
 
     def _from_base_type(self, value):
         """Convert a value from the "base" value type for this property.

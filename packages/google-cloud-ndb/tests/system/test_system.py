@@ -51,17 +51,19 @@ def client_context():
 @pytest.mark.usefixtures("client_context")
 def test_retrieve_entity(ds_entity):
     entity_id = test_utils.system.unique_resource_id()
-    ds_entity("SomeKind", entity_id, foo=42, bar="none")
+    ds_entity("SomeKind", entity_id, foo=42, bar="none", baz=b"night")
 
     class SomeKind(ndb.Model):
         foo = ndb.IntegerProperty()
         bar = ndb.StringProperty()
+        baz = ndb.StringProperty()
 
     key = ndb.Key("SomeKind", entity_id)
     entity = key.get()
     assert isinstance(entity, SomeKind)
     assert entity.foo == 42
     assert entity.bar == "none"
+    assert entity.baz == "night"
 
 
 @pytest.mark.usefixtures("client_context")
@@ -136,6 +138,11 @@ def test_insert_entity():
     retrieved = key.get()
     assert retrieved.foo == 42
     assert retrieved.bar == "none"
+
+    # Make sure strings are stored as strings in datastore
+    ds_client = datastore.Client()
+    ds_entity = ds_client.get(key._key)
+    assert ds_entity["bar"] == "none"
 
 
 @pytest.mark.usefixtures("client_context")
