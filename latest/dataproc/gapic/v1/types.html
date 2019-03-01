@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Types for Google Cloud Dataproc API Client &#8212; google-cloud 915e116 documentation</title>
+    <title>Types for Google Cloud Dataproc API Client &#8212; google-cloud 588f405 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -343,10 +343,10 @@ completed. By default, executables are run on master and all
 worker nodes. You can test a node’s <code class="docutils literal notranslate"><span class="pre">role</span></code> metadata to run
 an executable on a master or worker node, as shown below using
 <code class="docutils literal notranslate"><span class="pre">curl</span></code> (you can also use <code class="docutils literal notranslate"><span class="pre">wget</span></code>):  ::      ROLE=$(curl -H
-Metadata-Flavor:Google http://metadata/computeMetadata/v1/inst
-ance/attributes/dataproc-role)     if [[ “${ROLE}” == ‘Master’
-]]; then       … master specific actions …     else
-… worker specific actions …     fi</p>
+Metadata-Flavor:Google     http://metadata/computeMetadata/v1/
+instance/attributes/dataproc-role)     if [[ “${ROLE}” ==
+‘Master’ ]]; then       … master specific actions …
+else       … worker specific actions …     fi</p>
 </dd></dl>
 
 <dl class="attribute">
