@@ -981,8 +981,8 @@ Stream = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       name:
-          Name of the stream. In the form
-          ``/projects/{project_id}/stream/{stream_id}``
+          Name of the stream, in the form ``projects/{project_id}/locati
+          ons/{location}/streams/{stream_id}``.
       row_count:
           Rows in the stream.
   """,
@@ -1022,8 +1022,8 @@ ReadSession = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       name:
-          Unique identifier for the session. In the form
-          ``projects/{project_id}/sessions/{session_id}``
+          Unique identifier for the session, in the form ``projects/{pro
+          ject_id}/locations/{location}/sessions/{session_id}``.
       expire_time:
           Time at which the session becomes invalid. After this time,
           subsequent requests to read this Session will return errors.
@@ -1060,7 +1060,7 @@ CreateReadSessionRequest = _reflection.GeneratedProtocolMessageType(
       table_reference:
           Required. Reference to the table to read.
       parent:
-          Required. String of the form "projects/your-project-id"
+          Required. String of the form ``projects/{project_id}``
           indicating the project this ReadSession is associated with.
           This is the project that will be billed for usage.
       table_modifiers:
