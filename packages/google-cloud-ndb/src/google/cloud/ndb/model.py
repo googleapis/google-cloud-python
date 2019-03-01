@@ -594,6 +594,7 @@ class Property(ModelAttribute):
         validator=None,
         verbose_name=None,
         write_empty_list=None,
+        **kwargs
     ):
         # NOTE: These explicitly avoid setting the values so that the
         #       instances will fall back to the class on lookup.
@@ -734,6 +735,9 @@ class Property(ModelAttribute):
         args = []
         cls = type(self)
         for name, is_keyword in self._constructor_info():
+            # for py 3.5 compatibility, kwargs is on signature, get rid of it
+            if name == "kwargs":
+                continue
             attr = "_{}".format(name)
             instance_val = getattr(self, attr)
             default_val = getattr(cls, attr)
@@ -1947,6 +1951,7 @@ class BlobProperty(Property):
         validator=None,
         verbose_name=None,
         write_empty_list=None,
+        **kwargs
     ):
         super(BlobProperty, self).__init__(
             name=name,
@@ -2373,6 +2378,7 @@ class JsonProperty(BlobProperty):
         validator=None,
         verbose_name=None,
         write_empty_list=None,
+        **kwargs
     ):
         super(JsonProperty, self).__init__(
             name=name,
@@ -2718,6 +2724,7 @@ class UserProperty(Property):
         validator=None,
         verbose_name=None,
         write_empty_list=None,
+        **kwargs
     ):
         super(UserProperty, self).__init__(
             name=name,
@@ -2850,6 +2857,7 @@ class KeyProperty(Property):
         validator=None,
         verbose_name=None,
         write_empty_list=None,
+        **kwargs
     ):
         name, kind = self._handle_positional(args, name, kind)
         super(KeyProperty, self).__init__(
@@ -3121,6 +3129,7 @@ class DateTimeProperty(Property):
         validator=None,
         verbose_name=None,
         write_empty_list=None,
+        **kwargs
     ):
         super(DateTimeProperty, self).__init__(
             name=name,
@@ -3866,7 +3875,7 @@ class Model(metaclass=MetaModel):
                 rest = None
             prop = cls._properties.get(name)
             if prop is None:
-                raise InvalidPropertyError(f"Unknown property {name}")
+                raise InvalidPropertyError("Unknown property {}".format(name))
             else:
                 prop._check_property(rest, require_indexed=require_indexed)
 
