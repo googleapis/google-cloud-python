@@ -2416,10 +2416,10 @@ ClusterConfig = _reflection.GeneratedProtocolMessageType(
           worker nodes. You can test a node's ``role`` metadata to run
           an executable on a master or worker node, as shown below using
           ``curl`` (you can also use ``wget``):  ::      ROLE=$(curl -H
-          Metadata-Flavor:Google http://metadata/computeMetadata/v1/inst
-          ance/attributes/dataproc-role)     if [[ "${ROLE}" == 'Master'
-          ]]; then       ... master specific actions ...     else
-          ... worker specific actions ...     fi
+          Metadata-Flavor:Google     http://metadata/computeMetadata/v1/
+          instance/attributes/dataproc-role)     if [[ "${ROLE}" ==
+          'Master' ]]; then       ... master specific actions ...
+          else       ... worker specific actions ...     fi
       encryption_config:
           Optional. Encryption settings for the cluster.
   """,
