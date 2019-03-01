@@ -84,7 +84,8 @@ class JobControllerServicer(object):
     def CancelJob(self, request, context):
         """Starts a job cancellation request. To access the job resource
     after cancellation, call
-    [regions/{region}/jobs.list](/dataproc/docs/reference/rest/v1beta2/projects.regions.jobs/list) or
+    [regions/{region}/jobs.list](/dataproc/docs/reference/rest/v1beta2/projects.regions.jobs/list)
+    or
     [regions/{region}/jobs.get](/dataproc/docs/reference/rest/v1beta2/projects.regions.jobs/get).
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
