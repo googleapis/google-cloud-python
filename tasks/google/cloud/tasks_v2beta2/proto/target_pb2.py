@@ -800,15 +800,16 @@ AppEngineRouting = _reflection.GeneratedProtocolMessageType(
           -  ``instance =``    [instance][google.cloud.tasks.v2beta2.App
           EngineRouting.instance]  -  ``instance_dot_service =``    [ins
           tance][google.cloud.tasks.v2beta2.AppEngineRouting.instance]
-          ``+ '.' +``
+          ``+ '.'   +``
           [service][google.cloud.tasks.v2beta2.AppEngineRouting.service]
           -  ``instance_dot_version =``    [instance][google.cloud.tasks
-          .v2beta2.AppEngineRouting.instance]    ``+ '.' +``
+          .v2beta2.AppEngineRouting.instance]    ``+ '.'   +``
           [version][google.cloud.tasks.v2beta2.AppEngineRouting.version]
           -  ``instance_dot_version_dot_service =``    [instance][google
-          .cloud.tasks.v2beta2.AppEngineRouting.instance]    ``+ '.' +``
+          .cloud.tasks.v2beta2.AppEngineRouting.instance]    ``+ '.'
+          +``
           [version][google.cloud.tasks.v2beta2.AppEngineRouting.version]
-          ``+ '.' +``
+          ``+ '.'   +``
           [service][google.cloud.tasks.v2beta2.AppEngineRouting.service]
           If
           [service][google.cloud.tasks.v2beta2.AppEngineRouting.service]
