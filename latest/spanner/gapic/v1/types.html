@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Spanner Client Types &#8212; google-cloud 35e0349 documentation</title>
+    <title>Spanner Client Types &#8212; google-cloud 915e116 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -52,6 +52,18 @@
 <dt id="google.cloud.spanner_v1.types.BeginTransactionRequest.options">
 <code class="descname">options</code><a class="headerlink" href="#google.cloud.spanner_v1.types.BeginTransactionRequest.options" title="Permalink to this definition">#</a></dt>
 <dd><p>Required. Options for the new transaction.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">options</code></dt>
+<dd><p>Field google.spanner.v1.BeginTransactionRequest.options</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">session</code></dt>
+<dd><p>Field google.spanner.v1.BeginTransactionRequest.session</p>
 </dd></dl>
 
 </dd></dl>
@@ -101,6 +113,30 @@ All mutations are applied atomically, in the order they appear
 in this list.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">mutations</code></dt>
+<dd><p>Field google.spanner.v1.CommitRequest.mutations</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">session</code></dt>
+<dd><p>Field google.spanner.v1.CommitRequest.session</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">single_use_transaction</code></dt>
+<dd><p>Field google.spanner.v1.CommitRequest.single_use_transaction</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">transaction_id</code></dt>
+<dd><p>Field google.spanner.v1.CommitRequest.transaction_id</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -112,6 +148,12 @@ in this list.</p>
 <code class="descname">commit_timestamp</code><a class="headerlink" href="#google.cloud.spanner_v1.types.CommitResponse.commit_timestamp" title="Permalink to this definition">#</a></dt>
 <dd><p>The Cloud Spanner timestamp at which the transaction
 committed.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">commit_timestamp</code></dt>
+<dd><p>Field google.spanner.v1.CommitResponse.commit_timestamp</p>
 </dd></dl>
 
 </dd></dl>
@@ -133,12 +175,36 @@ committed.</p>
 <dd><p>The session to create.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">database</code></dt>
+<dd><p>Field google.spanner.v1.CreateSessionRequest.database</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">session</code></dt>
+<dd><p>Field google.spanner.v1.CreateSessionRequest.session</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.spanner_v1.types.CustomHttpPattern">
 <em class="property">class </em><code class="descclassname">google.cloud.spanner_v1.types.</code><code class="descname">CustomHttpPattern</code><a class="headerlink" href="#google.cloud.spanner_v1.types.CustomHttpPattern" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.CustomHttpPattern.kind">
+<code class="descname">kind</code><a class="headerlink" href="#google.cloud.spanner_v1.types.CustomHttpPattern.kind" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.api.CustomHttpPattern.kind</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.CustomHttpPattern.path">
+<code class="descname">path</code><a class="headerlink" href="#google.cloud.spanner_v1.types.CustomHttpPattern.path" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.api.CustomHttpPattern.path</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.spanner_v1.types.DeleteSessionRequest">
@@ -151,6 +217,12 @@ committed.</p>
 <dd><p>Required. The name of the session to delete.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.spanner.v1.DeleteSessionRequest.name</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -159,19 +231,121 @@ committed.</p>
 <dd><dl class="class">
 <dt id="google.cloud.spanner_v1.types.DescriptorProto.ExtensionRange">
 <em class="property">class </em><code class="descname">ExtensionRange</code><a class="headerlink" href="#google.cloud.spanner_v1.types.DescriptorProto.ExtensionRange" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.DescriptorProto.ExtensionRange.end">
+<code class="descname">end</code><a class="headerlink" href="#google.cloud.spanner_v1.types.DescriptorProto.ExtensionRange.end" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.DescriptorProto.ExtensionRange.end</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.DescriptorProto.ExtensionRange.options">
+<code class="descname">options</code><a class="headerlink" href="#google.cloud.spanner_v1.types.DescriptorProto.ExtensionRange.options" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.DescriptorProto.ExtensionRange.options</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.DescriptorProto.ExtensionRange.start">
+<code class="descname">start</code><a class="headerlink" href="#google.cloud.spanner_v1.types.DescriptorProto.ExtensionRange.start" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.DescriptorProto.ExtensionRange.start</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.spanner_v1.types.DescriptorProto.ReservedRange">
 <em class="property">class </em><code class="descname">ReservedRange</code><a class="headerlink" href="#google.cloud.spanner_v1.types.DescriptorProto.ReservedRange" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.DescriptorProto.ReservedRange.end">
+<code class="descname">end</code><a class="headerlink" href="#google.cloud.spanner_v1.types.DescriptorProto.ReservedRange.end" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.DescriptorProto.ReservedRange.end</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.DescriptorProto.ReservedRange.start">
+<code class="descname">start</code><a class="headerlink" href="#google.cloud.spanner_v1.types.DescriptorProto.ReservedRange.start" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.DescriptorProto.ReservedRange.start</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.DescriptorProto.enum_type">
+<code class="descname">enum_type</code><a class="headerlink" href="#google.cloud.spanner_v1.types.DescriptorProto.enum_type" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.DescriptorProto.enum_type</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.DescriptorProto.extension">
+<code class="descname">extension</code><a class="headerlink" href="#google.cloud.spanner_v1.types.DescriptorProto.extension" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.DescriptorProto.extension</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.DescriptorProto.extension_range">
+<code class="descname">extension_range</code><a class="headerlink" href="#google.cloud.spanner_v1.types.DescriptorProto.extension_range" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.DescriptorProto.extension_range</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.DescriptorProto.field">
+<code class="descname">field</code><a class="headerlink" href="#google.cloud.spanner_v1.types.DescriptorProto.field" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.DescriptorProto.field</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.DescriptorProto.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.spanner_v1.types.DescriptorProto.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.DescriptorProto.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.DescriptorProto.nested_type">
+<code class="descname">nested_type</code><a class="headerlink" href="#google.cloud.spanner_v1.types.DescriptorProto.nested_type" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.DescriptorProto.nested_type</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.DescriptorProto.oneof_decl">
+<code class="descname">oneof_decl</code><a class="headerlink" href="#google.cloud.spanner_v1.types.DescriptorProto.oneof_decl" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.DescriptorProto.oneof_decl</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.DescriptorProto.options">
+<code class="descname">options</code><a class="headerlink" href="#google.cloud.spanner_v1.types.DescriptorProto.options" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.DescriptorProto.options</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.DescriptorProto.reserved_name">
+<code class="descname">reserved_name</code><a class="headerlink" href="#google.cloud.spanner_v1.types.DescriptorProto.reserved_name" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.DescriptorProto.reserved_name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.DescriptorProto.reserved_range">
+<code class="descname">reserved_range</code><a class="headerlink" href="#google.cloud.spanner_v1.types.DescriptorProto.reserved_range" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.DescriptorProto.reserved_range</p>
+</dd></dl>
 
 </dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.spanner_v1.types.Duration">
 <em class="property">class </em><code class="descclassname">google.cloud.spanner_v1.types.</code><code class="descname">Duration</code><a class="headerlink" href="#google.cloud.spanner_v1.types.Duration" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.Duration.nanos">
+<code class="descname">nanos</code><a class="headerlink" href="#google.cloud.spanner_v1.types.Duration.nanos" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.Duration.nanos</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.Duration.seconds">
+<code class="descname">seconds</code><a class="headerlink" href="#google.cloud.spanner_v1.types.Duration.seconds" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.Duration.seconds</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.spanner_v1.types.Empty">
@@ -184,24 +358,114 @@ committed.</p>
 <dd><dl class="class">
 <dt id="google.cloud.spanner_v1.types.EnumDescriptorProto.EnumReservedRange">
 <em class="property">class </em><code class="descname">EnumReservedRange</code><a class="headerlink" href="#google.cloud.spanner_v1.types.EnumDescriptorProto.EnumReservedRange" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.EnumDescriptorProto.EnumReservedRange.end">
+<code class="descname">end</code><a class="headerlink" href="#google.cloud.spanner_v1.types.EnumDescriptorProto.EnumReservedRange.end" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.EnumDescriptorProto.EnumReservedRange.end</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.EnumDescriptorProto.EnumReservedRange.start">
+<code class="descname">start</code><a class="headerlink" href="#google.cloud.spanner_v1.types.EnumDescriptorProto.EnumReservedRange.start" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.EnumDescriptorProto.EnumReservedRange.start</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.EnumDescriptorProto.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.spanner_v1.types.EnumDescriptorProto.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.EnumDescriptorProto.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.EnumDescriptorProto.options">
+<code class="descname">options</code><a class="headerlink" href="#google.cloud.spanner_v1.types.EnumDescriptorProto.options" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.EnumDescriptorProto.options</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.EnumDescriptorProto.reserved_name">
+<code class="descname">reserved_name</code><a class="headerlink" href="#google.cloud.spanner_v1.types.EnumDescriptorProto.reserved_name" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.EnumDescriptorProto.reserved_name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.EnumDescriptorProto.reserved_range">
+<code class="descname">reserved_range</code><a class="headerlink" href="#google.cloud.spanner_v1.types.EnumDescriptorProto.reserved_range" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.EnumDescriptorProto.reserved_range</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.EnumDescriptorProto.value">
+<code class="descname">value</code><a class="headerlink" href="#google.cloud.spanner_v1.types.EnumDescriptorProto.value" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.EnumDescriptorProto.value</p>
+</dd></dl>
 
 </dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.spanner_v1.types.EnumOptions">
 <em class="property">class </em><code class="descclassname">google.cloud.spanner_v1.types.</code><code class="descname">EnumOptions</code><a class="headerlink" href="#google.cloud.spanner_v1.types.EnumOptions" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.EnumOptions.allow_alias">
+<code class="descname">allow_alias</code><a class="headerlink" href="#google.cloud.spanner_v1.types.EnumOptions.allow_alias" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.EnumOptions.allow_alias</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.EnumOptions.deprecated">
+<code class="descname">deprecated</code><a class="headerlink" href="#google.cloud.spanner_v1.types.EnumOptions.deprecated" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.EnumOptions.deprecated</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.EnumOptions.uninterpreted_option">
+<code class="descname">uninterpreted_option</code><a class="headerlink" href="#google.cloud.spanner_v1.types.EnumOptions.uninterpreted_option" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.EnumOptions.uninterpreted_option</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.spanner_v1.types.EnumValueDescriptorProto">
 <em class="property">class </em><code class="descclassname">google.cloud.spanner_v1.types.</code><code class="descname">EnumValueDescriptorProto</code><a class="headerlink" href="#google.cloud.spanner_v1.types.EnumValueDescriptorProto" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.EnumValueDescriptorProto.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.spanner_v1.types.EnumValueDescriptorProto.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.EnumValueDescriptorProto.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.EnumValueDescriptorProto.number">
+<code class="descname">number</code><a class="headerlink" href="#google.cloud.spanner_v1.types.EnumValueDescriptorProto.number" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.EnumValueDescriptorProto.number</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.EnumValueDescriptorProto.options">
+<code class="descname">options</code><a class="headerlink" href="#google.cloud.spanner_v1.types.EnumValueDescriptorProto.options" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.EnumValueDescriptorProto.options</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.spanner_v1.types.EnumValueOptions">
 <em class="property">class </em><code class="descclassname">google.cloud.spanner_v1.types.</code><code class="descname">EnumValueOptions</code><a class="headerlink" href="#google.cloud.spanner_v1.types.EnumValueOptions" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.EnumValueOptions.deprecated">
+<code class="descname">deprecated</code><a class="headerlink" href="#google.cloud.spanner_v1.types.EnumValueOptions.deprecated" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.EnumValueOptions.deprecated</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.EnumValueOptions.uninterpreted_option">
+<code class="descname">uninterpreted_option</code><a class="headerlink" href="#google.cloud.spanner_v1.types.EnumValueOptions.uninterpreted_option" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.EnumValueOptions.uninterpreted_option</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.spanner_v1.types.ExecuteSqlRequest">
@@ -317,39 +581,417 @@ statements. Ignored for queries.</p>
 <dl class="class">
 <dt id="google.cloud.spanner_v1.types.ExecuteSqlRequest.ParamTypesEntry">
 <em class="property">class </em><code class="descname">ParamTypesEntry</code><a class="headerlink" href="#google.cloud.spanner_v1.types.ExecuteSqlRequest.ParamTypesEntry" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.ExecuteSqlRequest.ParamTypesEntry.key">
+<code class="descname">key</code><a class="headerlink" href="#google.cloud.spanner_v1.types.ExecuteSqlRequest.ParamTypesEntry.key" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.spanner.v1.ExecuteSqlRequest.ParamTypesEntry.key</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.ExecuteSqlRequest.ParamTypesEntry.value">
+<code class="descname">value</code><a class="headerlink" href="#google.cloud.spanner_v1.types.ExecuteSqlRequest.ParamTypesEntry.value" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.spanner.v1.ExecuteSqlRequest.ParamTypesEntry.value</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">param_types</code></dt>
+<dd><p>Field google.spanner.v1.ExecuteSqlRequest.param_types</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">params</code></dt>
+<dd><p>Field google.spanner.v1.ExecuteSqlRequest.params</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">partition_token</code></dt>
+<dd><p>Field google.spanner.v1.ExecuteSqlRequest.partition_token</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">query_mode</code></dt>
+<dd><p>Field google.spanner.v1.ExecuteSqlRequest.query_mode</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">resume_token</code></dt>
+<dd><p>Field google.spanner.v1.ExecuteSqlRequest.resume_token</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">seqno</code></dt>
+<dd><p>Field google.spanner.v1.ExecuteSqlRequest.seqno</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">session</code></dt>
+<dd><p>Field google.spanner.v1.ExecuteSqlRequest.session</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">sql</code></dt>
+<dd><p>Field google.spanner.v1.ExecuteSqlRequest.sql</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">transaction</code></dt>
+<dd><p>Field google.spanner.v1.ExecuteSqlRequest.transaction</p>
+</dd></dl>
 
 </dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.spanner_v1.types.ExtensionRangeOptions">
 <em class="property">class </em><code class="descclassname">google.cloud.spanner_v1.types.</code><code class="descname">ExtensionRangeOptions</code><a class="headerlink" href="#google.cloud.spanner_v1.types.ExtensionRangeOptions" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.ExtensionRangeOptions.uninterpreted_option">
+<code class="descname">uninterpreted_option</code><a class="headerlink" href="#google.cloud.spanner_v1.types.ExtensionRangeOptions.uninterpreted_option" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.ExtensionRangeOptions.uninterpreted_option</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.spanner_v1.types.FieldDescriptorProto">
 <em class="property">class </em><code class="descclassname">google.cloud.spanner_v1.types.</code><code class="descname">FieldDescriptorProto</code><a class="headerlink" href="#google.cloud.spanner_v1.types.FieldDescriptorProto" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.FieldDescriptorProto.default_value">
+<code class="descname">default_value</code><a class="headerlink" href="#google.cloud.spanner_v1.types.FieldDescriptorProto.default_value" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FieldDescriptorProto.default_value</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.FieldDescriptorProto.extendee">
+<code class="descname">extendee</code><a class="headerlink" href="#google.cloud.spanner_v1.types.FieldDescriptorProto.extendee" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FieldDescriptorProto.extendee</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.FieldDescriptorProto.json_name">
+<code class="descname">json_name</code><a class="headerlink" href="#google.cloud.spanner_v1.types.FieldDescriptorProto.json_name" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FieldDescriptorProto.json_name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.FieldDescriptorProto.label">
+<code class="descname">label</code><a class="headerlink" href="#google.cloud.spanner_v1.types.FieldDescriptorProto.label" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FieldDescriptorProto.label</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.FieldDescriptorProto.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.spanner_v1.types.FieldDescriptorProto.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FieldDescriptorProto.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.FieldDescriptorProto.number">
+<code class="descname">number</code><a class="headerlink" href="#google.cloud.spanner_v1.types.FieldDescriptorProto.number" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FieldDescriptorProto.number</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.FieldDescriptorProto.oneof_index">
+<code class="descname">oneof_index</code><a class="headerlink" href="#google.cloud.spanner_v1.types.FieldDescriptorProto.oneof_index" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FieldDescriptorProto.oneof_index</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.FieldDescriptorProto.options">
+<code class="descname">options</code><a class="headerlink" href="#google.cloud.spanner_v1.types.FieldDescriptorProto.options" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FieldDescriptorProto.options</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.FieldDescriptorProto.type">
+<code class="descname">type</code><a class="headerlink" href="#google.cloud.spanner_v1.types.FieldDescriptorProto.type" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FieldDescriptorProto.type</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.FieldDescriptorProto.type_name">
+<code class="descname">type_name</code><a class="headerlink" href="#google.cloud.spanner_v1.types.FieldDescriptorProto.type_name" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FieldDescriptorProto.type_name</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.spanner_v1.types.FieldOptions">
 <em class="property">class </em><code class="descclassname">google.cloud.spanner_v1.types.</code><code class="descname">FieldOptions</code><a class="headerlink" href="#google.cloud.spanner_v1.types.FieldOptions" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.FieldOptions.ctype">
+<code class="descname">ctype</code><a class="headerlink" href="#google.cloud.spanner_v1.types.FieldOptions.ctype" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FieldOptions.ctype</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.FieldOptions.deprecated">
+<code class="descname">deprecated</code><a class="headerlink" href="#google.cloud.spanner_v1.types.FieldOptions.deprecated" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FieldOptions.deprecated</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.FieldOptions.jstype">
+<code class="descname">jstype</code><a class="headerlink" href="#google.cloud.spanner_v1.types.FieldOptions.jstype" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FieldOptions.jstype</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.FieldOptions.lazy">
+<code class="descname">lazy</code><a class="headerlink" href="#google.cloud.spanner_v1.types.FieldOptions.lazy" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FieldOptions.lazy</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.FieldOptions.packed">
+<code class="descname">packed</code><a class="headerlink" href="#google.cloud.spanner_v1.types.FieldOptions.packed" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FieldOptions.packed</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.FieldOptions.uninterpreted_option">
+<code class="descname">uninterpreted_option</code><a class="headerlink" href="#google.cloud.spanner_v1.types.FieldOptions.uninterpreted_option" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FieldOptions.uninterpreted_option</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.FieldOptions.weak">
+<code class="descname">weak</code><a class="headerlink" href="#google.cloud.spanner_v1.types.FieldOptions.weak" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FieldOptions.weak</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.spanner_v1.types.FileDescriptorProto">
 <em class="property">class </em><code class="descclassname">google.cloud.spanner_v1.types.</code><code class="descname">FileDescriptorProto</code><a class="headerlink" href="#google.cloud.spanner_v1.types.FileDescriptorProto" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.FileDescriptorProto.dependency">
+<code class="descname">dependency</code><a class="headerlink" href="#google.cloud.spanner_v1.types.FileDescriptorProto.dependency" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileDescriptorProto.dependency</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.FileDescriptorProto.enum_type">
+<code class="descname">enum_type</code><a class="headerlink" href="#google.cloud.spanner_v1.types.FileDescriptorProto.enum_type" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileDescriptorProto.enum_type</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.FileDescriptorProto.extension">
+<code class="descname">extension</code><a class="headerlink" href="#google.cloud.spanner_v1.types.FileDescriptorProto.extension" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileDescriptorProto.extension</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.FileDescriptorProto.message_type">
+<code class="descname">message_type</code><a class="headerlink" href="#google.cloud.spanner_v1.types.FileDescriptorProto.message_type" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileDescriptorProto.message_type</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.FileDescriptorProto.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.spanner_v1.types.FileDescriptorProto.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileDescriptorProto.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.FileDescriptorProto.options">
+<code class="descname">options</code><a class="headerlink" href="#google.cloud.spanner_v1.types.FileDescriptorProto.options" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileDescriptorProto.options</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.FileDescriptorProto.package">
+<code class="descname">package</code><a class="headerlink" href="#google.cloud.spanner_v1.types.FileDescriptorProto.package" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileDescriptorProto.package</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.FileDescriptorProto.public_dependency">
+<code class="descname">public_dependency</code><a class="headerlink" href="#google.cloud.spanner_v1.types.FileDescriptorProto.public_dependency" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileDescriptorProto.public_dependency</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.FileDescriptorProto.service">
+<code class="descname">service</code><a class="headerlink" href="#google.cloud.spanner_v1.types.FileDescriptorProto.service" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileDescriptorProto.service</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.FileDescriptorProto.source_code_info">
+<code class="descname">source_code_info</code><a class="headerlink" href="#google.cloud.spanner_v1.types.FileDescriptorProto.source_code_info" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileDescriptorProto.source_code_info</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.FileDescriptorProto.syntax">
+<code class="descname">syntax</code><a class="headerlink" href="#google.cloud.spanner_v1.types.FileDescriptorProto.syntax" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileDescriptorProto.syntax</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.FileDescriptorProto.weak_dependency">
+<code class="descname">weak_dependency</code><a class="headerlink" href="#google.cloud.spanner_v1.types.FileDescriptorProto.weak_dependency" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileDescriptorProto.weak_dependency</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.spanner_v1.types.FileDescriptorSet">
 <em class="property">class </em><code class="descclassname">google.cloud.spanner_v1.types.</code><code class="descname">FileDescriptorSet</code><a class="headerlink" href="#google.cloud.spanner_v1.types.FileDescriptorSet" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.FileDescriptorSet.file">
+<code class="descname">file</code><a class="headerlink" href="#google.cloud.spanner_v1.types.FileDescriptorSet.file" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileDescriptorSet.file</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.spanner_v1.types.FileOptions">
 <em class="property">class </em><code class="descclassname">google.cloud.spanner_v1.types.</code><code class="descname">FileOptions</code><a class="headerlink" href="#google.cloud.spanner_v1.types.FileOptions" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.FileOptions.cc_enable_arenas">
+<code class="descname">cc_enable_arenas</code><a class="headerlink" href="#google.cloud.spanner_v1.types.FileOptions.cc_enable_arenas" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileOptions.cc_enable_arenas</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.FileOptions.cc_generic_services">
+<code class="descname">cc_generic_services</code><a class="headerlink" href="#google.cloud.spanner_v1.types.FileOptions.cc_generic_services" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileOptions.cc_generic_services</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.FileOptions.csharp_namespace">
+<code class="descname">csharp_namespace</code><a class="headerlink" href="#google.cloud.spanner_v1.types.FileOptions.csharp_namespace" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileOptions.csharp_namespace</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.FileOptions.deprecated">
+<code class="descname">deprecated</code><a class="headerlink" href="#google.cloud.spanner_v1.types.FileOptions.deprecated" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileOptions.deprecated</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.FileOptions.go_package">
+<code class="descname">go_package</code><a class="headerlink" href="#google.cloud.spanner_v1.types.FileOptions.go_package" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileOptions.go_package</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.FileOptions.java_generate_equals_and_hash">
+<code class="descname">java_generate_equals_and_hash</code><a class="headerlink" href="#google.cloud.spanner_v1.types.FileOptions.java_generate_equals_and_hash" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileOptions.java_generate_equals_and_hash</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.FileOptions.java_generic_services">
+<code class="descname">java_generic_services</code><a class="headerlink" href="#google.cloud.spanner_v1.types.FileOptions.java_generic_services" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileOptions.java_generic_services</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.FileOptions.java_multiple_files">
+<code class="descname">java_multiple_files</code><a class="headerlink" href="#google.cloud.spanner_v1.types.FileOptions.java_multiple_files" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileOptions.java_multiple_files</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.FileOptions.java_outer_classname">
+<code class="descname">java_outer_classname</code><a class="headerlink" href="#google.cloud.spanner_v1.types.FileOptions.java_outer_classname" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileOptions.java_outer_classname</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.FileOptions.java_package">
+<code class="descname">java_package</code><a class="headerlink" href="#google.cloud.spanner_v1.types.FileOptions.java_package" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileOptions.java_package</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.FileOptions.java_string_check_utf8">
+<code class="descname">java_string_check_utf8</code><a class="headerlink" href="#google.cloud.spanner_v1.types.FileOptions.java_string_check_utf8" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileOptions.java_string_check_utf8</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.FileOptions.objc_class_prefix">
+<code class="descname">objc_class_prefix</code><a class="headerlink" href="#google.cloud.spanner_v1.types.FileOptions.objc_class_prefix" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileOptions.objc_class_prefix</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.FileOptions.optimize_for">
+<code class="descname">optimize_for</code><a class="headerlink" href="#google.cloud.spanner_v1.types.FileOptions.optimize_for" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileOptions.optimize_for</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.FileOptions.php_class_prefix">
+<code class="descname">php_class_prefix</code><a class="headerlink" href="#google.cloud.spanner_v1.types.FileOptions.php_class_prefix" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileOptions.php_class_prefix</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.FileOptions.php_generic_services">
+<code class="descname">php_generic_services</code><a class="headerlink" href="#google.cloud.spanner_v1.types.FileOptions.php_generic_services" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileOptions.php_generic_services</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.FileOptions.php_metadata_namespace">
+<code class="descname">php_metadata_namespace</code><a class="headerlink" href="#google.cloud.spanner_v1.types.FileOptions.php_metadata_namespace" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileOptions.php_metadata_namespace</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.FileOptions.php_namespace">
+<code class="descname">php_namespace</code><a class="headerlink" href="#google.cloud.spanner_v1.types.FileOptions.php_namespace" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileOptions.php_namespace</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.FileOptions.py_generic_services">
+<code class="descname">py_generic_services</code><a class="headerlink" href="#google.cloud.spanner_v1.types.FileOptions.py_generic_services" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileOptions.py_generic_services</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.FileOptions.ruby_package">
+<code class="descname">ruby_package</code><a class="headerlink" href="#google.cloud.spanner_v1.types.FileOptions.ruby_package" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileOptions.ruby_package</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.FileOptions.swift_prefix">
+<code class="descname">swift_prefix</code><a class="headerlink" href="#google.cloud.spanner_v1.types.FileOptions.swift_prefix" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileOptions.swift_prefix</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.FileOptions.uninterpreted_option">
+<code class="descname">uninterpreted_option</code><a class="headerlink" href="#google.cloud.spanner_v1.types.FileOptions.uninterpreted_option" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileOptions.uninterpreted_option</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.spanner_v1.types.GeneratedCodeInfo">
@@ -357,7 +999,37 @@ statements. Ignored for queries.</p>
 <dd><dl class="class">
 <dt id="google.cloud.spanner_v1.types.GeneratedCodeInfo.Annotation">
 <em class="property">class </em><code class="descname">Annotation</code><a class="headerlink" href="#google.cloud.spanner_v1.types.GeneratedCodeInfo.Annotation" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.GeneratedCodeInfo.Annotation.begin">
+<code class="descname">begin</code><a class="headerlink" href="#google.cloud.spanner_v1.types.GeneratedCodeInfo.Annotation.begin" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.GeneratedCodeInfo.Annotation.begin</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.GeneratedCodeInfo.Annotation.end">
+<code class="descname">end</code><a class="headerlink" href="#google.cloud.spanner_v1.types.GeneratedCodeInfo.Annotation.end" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.GeneratedCodeInfo.Annotation.end</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.GeneratedCodeInfo.Annotation.path">
+<code class="descname">path</code><a class="headerlink" href="#google.cloud.spanner_v1.types.GeneratedCodeInfo.Annotation.path" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.GeneratedCodeInfo.Annotation.path</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.GeneratedCodeInfo.Annotation.source_file">
+<code class="descname">source_file</code><a class="headerlink" href="#google.cloud.spanner_v1.types.GeneratedCodeInfo.Annotation.source_file" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.GeneratedCodeInfo.Annotation.source_file</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.GeneratedCodeInfo.annotation">
+<code class="descname">annotation</code><a class="headerlink" href="#google.cloud.spanner_v1.types.GeneratedCodeInfo.annotation" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.GeneratedCodeInfo.annotation</p>
+</dd></dl>
 
 </dd></dl>
 
@@ -371,17 +1043,95 @@ statements. Ignored for queries.</p>
 <dd><p>Required. The name of the session to retrieve.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.spanner.v1.GetSessionRequest.name</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.spanner_v1.types.Http">
 <em class="property">class </em><code class="descclassname">google.cloud.spanner_v1.types.</code><code class="descname">Http</code><a class="headerlink" href="#google.cloud.spanner_v1.types.Http" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.Http.fully_decode_reserved_expansion">
+<code class="descname">fully_decode_reserved_expansion</code><a class="headerlink" href="#google.cloud.spanner_v1.types.Http.fully_decode_reserved_expansion" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.api.Http.fully_decode_reserved_expansion</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.Http.rules">
+<code class="descname">rules</code><a class="headerlink" href="#google.cloud.spanner_v1.types.Http.rules" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.api.Http.rules</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.spanner_v1.types.HttpRule">
 <em class="property">class </em><code class="descclassname">google.cloud.spanner_v1.types.</code><code class="descname">HttpRule</code><a class="headerlink" href="#google.cloud.spanner_v1.types.HttpRule" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.HttpRule.additional_bindings">
+<code class="descname">additional_bindings</code><a class="headerlink" href="#google.cloud.spanner_v1.types.HttpRule.additional_bindings" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.api.HttpRule.additional_bindings</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.HttpRule.body">
+<code class="descname">body</code><a class="headerlink" href="#google.cloud.spanner_v1.types.HttpRule.body" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.api.HttpRule.body</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.HttpRule.custom">
+<code class="descname">custom</code><a class="headerlink" href="#google.cloud.spanner_v1.types.HttpRule.custom" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.api.HttpRule.custom</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.HttpRule.delete">
+<code class="descname">delete</code><a class="headerlink" href="#google.cloud.spanner_v1.types.HttpRule.delete" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.api.HttpRule.delete</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.HttpRule.get">
+<code class="descname">get</code><a class="headerlink" href="#google.cloud.spanner_v1.types.HttpRule.get" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.api.HttpRule.get</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.HttpRule.patch">
+<code class="descname">patch</code><a class="headerlink" href="#google.cloud.spanner_v1.types.HttpRule.patch" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.api.HttpRule.patch</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.HttpRule.post">
+<code class="descname">post</code><a class="headerlink" href="#google.cloud.spanner_v1.types.HttpRule.post" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.api.HttpRule.post</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.HttpRule.put">
+<code class="descname">put</code><a class="headerlink" href="#google.cloud.spanner_v1.types.HttpRule.put" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.api.HttpRule.put</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.HttpRule.response_body">
+<code class="descname">response_body</code><a class="headerlink" href="#google.cloud.spanner_v1.types.HttpRule.response_body" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.api.HttpRule.response_body</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.HttpRule.selector">
+<code class="descname">selector</code><a class="headerlink" href="#google.cloud.spanner_v1.types.HttpRule.selector" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.api.HttpRule.selector</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.spanner_v1.types.KeyRange">
@@ -512,6 +1262,30 @@ first <code class="docutils literal notranslate"><span class="pre">len(end_close
 <code class="docutils literal notranslate"><span class="pre">len(end_open)</span></code> key columns exactly match <code class="docutils literal notranslate"><span class="pre">end_open</span></code>.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">end_closed</code></dt>
+<dd><p>Field google.spanner.v1.KeyRange.end_closed</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">end_open</code></dt>
+<dd><p>Field google.spanner.v1.KeyRange.end_open</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">start_closed</code></dt>
+<dd><p>Field google.spanner.v1.KeyRange.start_closed</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">start_open</code></dt>
+<dd><p>Field google.spanner.v1.KeyRange.start_open</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -548,6 +1322,24 @@ about key range specifications.</p>
 that this <code class="docutils literal notranslate"><span class="pre">KeySet</span></code> matches all keys in the table or index.
 Note that any keys specified in <code class="docutils literal notranslate"><span class="pre">keys</span></code> or <code class="docutils literal notranslate"><span class="pre">ranges</span></code> are
 only yielded once.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">all</code></dt>
+<dd><p>Field google.spanner.v1.KeySet.all</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">keys</code></dt>
+<dd><p>Field google.spanner.v1.KeySet.keys</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">ranges</code></dt>
+<dd><p>Field google.spanner.v1.KeySet.ranges</p>
 </dd></dl>
 
 </dd></dl>
@@ -590,6 +1382,30 @@ session has the label “env” and the value    of the label
 contains the string “dev”.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">database</code></dt>
+<dd><p>Field google.spanner.v1.ListSessionsRequest.database</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">filter</code></dt>
+<dd><p>Field google.spanner.v1.ListSessionsRequest.filter</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">page_size</code></dt>
+<dd><p>Field google.spanner.v1.ListSessionsRequest.page_size</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">page_token</code></dt>
+<dd><p>Field google.spanner.v1.ListSessionsRequest.page_token</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -610,27 +1426,129 @@ contains the string “dev”.</p>
 fetch more of the matching sessions.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">next_page_token</code></dt>
+<dd><p>Field google.spanner.v1.ListSessionsResponse.next_page_token</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">sessions</code></dt>
+<dd><p>Field google.spanner.v1.ListSessionsResponse.sessions</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.spanner_v1.types.ListValue">
 <em class="property">class </em><code class="descclassname">google.cloud.spanner_v1.types.</code><code class="descname">ListValue</code><a class="headerlink" href="#google.cloud.spanner_v1.types.ListValue" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.ListValue.values">
+<code class="descname">values</code><a class="headerlink" href="#google.cloud.spanner_v1.types.ListValue.values" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.ListValue.values</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.spanner_v1.types.MessageOptions">
 <em class="property">class </em><code class="descclassname">google.cloud.spanner_v1.types.</code><code class="descname">MessageOptions</code><a class="headerlink" href="#google.cloud.spanner_v1.types.MessageOptions" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.MessageOptions.deprecated">
+<code class="descname">deprecated</code><a class="headerlink" href="#google.cloud.spanner_v1.types.MessageOptions.deprecated" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.MessageOptions.deprecated</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.MessageOptions.map_entry">
+<code class="descname">map_entry</code><a class="headerlink" href="#google.cloud.spanner_v1.types.MessageOptions.map_entry" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.MessageOptions.map_entry</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.MessageOptions.message_set_wire_format">
+<code class="descname">message_set_wire_format</code><a class="headerlink" href="#google.cloud.spanner_v1.types.MessageOptions.message_set_wire_format" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.MessageOptions.message_set_wire_format</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.MessageOptions.no_standard_descriptor_accessor">
+<code class="descname">no_standard_descriptor_accessor</code><a class="headerlink" href="#google.cloud.spanner_v1.types.MessageOptions.no_standard_descriptor_accessor" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.MessageOptions.no_standard_descriptor_accessor</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.MessageOptions.uninterpreted_option">
+<code class="descname">uninterpreted_option</code><a class="headerlink" href="#google.cloud.spanner_v1.types.MessageOptions.uninterpreted_option" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.MessageOptions.uninterpreted_option</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.spanner_v1.types.MethodDescriptorProto">
 <em class="property">class </em><code class="descclassname">google.cloud.spanner_v1.types.</code><code class="descname">MethodDescriptorProto</code><a class="headerlink" href="#google.cloud.spanner_v1.types.MethodDescriptorProto" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.MethodDescriptorProto.client_streaming">
+<code class="descname">client_streaming</code><a class="headerlink" href="#google.cloud.spanner_v1.types.MethodDescriptorProto.client_streaming" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.MethodDescriptorProto.client_streaming</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.MethodDescriptorProto.input_type">
+<code class="descname">input_type</code><a class="headerlink" href="#google.cloud.spanner_v1.types.MethodDescriptorProto.input_type" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.MethodDescriptorProto.input_type</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.MethodDescriptorProto.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.spanner_v1.types.MethodDescriptorProto.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.MethodDescriptorProto.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.MethodDescriptorProto.options">
+<code class="descname">options</code><a class="headerlink" href="#google.cloud.spanner_v1.types.MethodDescriptorProto.options" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.MethodDescriptorProto.options</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.MethodDescriptorProto.output_type">
+<code class="descname">output_type</code><a class="headerlink" href="#google.cloud.spanner_v1.types.MethodDescriptorProto.output_type" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.MethodDescriptorProto.output_type</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.MethodDescriptorProto.server_streaming">
+<code class="descname">server_streaming</code><a class="headerlink" href="#google.cloud.spanner_v1.types.MethodDescriptorProto.server_streaming" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.MethodDescriptorProto.server_streaming</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.spanner_v1.types.MethodOptions">
 <em class="property">class </em><code class="descclassname">google.cloud.spanner_v1.types.</code><code class="descname">MethodOptions</code><a class="headerlink" href="#google.cloud.spanner_v1.types.MethodOptions" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.MethodOptions.deprecated">
+<code class="descname">deprecated</code><a class="headerlink" href="#google.cloud.spanner_v1.types.MethodOptions.deprecated" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.MethodOptions.deprecated</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.MethodOptions.idempotency_level">
+<code class="descname">idempotency_level</code><a class="headerlink" href="#google.cloud.spanner_v1.types.MethodOptions.idempotency_level" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.MethodOptions.idempotency_level</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.MethodOptions.uninterpreted_option">
+<code class="descname">uninterpreted_option</code><a class="headerlink" href="#google.cloud.spanner_v1.types.MethodOptions.uninterpreted_option" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.MethodOptions.uninterpreted_option</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.spanner_v1.types.Mutation">
@@ -703,6 +1621,18 @@ Delete is idempotent. The transaction will succeed even if
 some or all rows do not exist.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">key_set</code></dt>
+<dd><p>Field google.spanner.v1.Mutation.Delete.key_set</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">table</code></dt>
+<dd><p>Field google.spanner.v1.Mutation.Delete.table</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -744,6 +1674,54 @@ Individual values in each list are encoded as described
 [here][google.spanner.v1.TypeCode].</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">columns</code></dt>
+<dd><p>Field google.spanner.v1.Mutation.Write.columns</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">table</code></dt>
+<dd><p>Field google.spanner.v1.Mutation.Write.table</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">values</code></dt>
+<dd><p>Field google.spanner.v1.Mutation.Write.values</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">delete</code></dt>
+<dd><p>Field google.spanner.v1.Mutation.delete</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">insert</code></dt>
+<dd><p>Field google.spanner.v1.Mutation.insert</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">insert_or_update</code></dt>
+<dd><p>Field google.spanner.v1.Mutation.insert_or_update</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">replace</code></dt>
+<dd><p>Field google.spanner.v1.Mutation.replace</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">update</code></dt>
+<dd><p>Field google.spanner.v1.Mutation.update</p>
 </dd></dl>
 
 </dd></dl>
@@ -751,12 +1729,30 @@ Individual values in each list are encoded as described
 <dl class="class">
 <dt id="google.cloud.spanner_v1.types.OneofDescriptorProto">
 <em class="property">class </em><code class="descclassname">google.cloud.spanner_v1.types.</code><code class="descname">OneofDescriptorProto</code><a class="headerlink" href="#google.cloud.spanner_v1.types.OneofDescriptorProto" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.OneofDescriptorProto.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.spanner_v1.types.OneofDescriptorProto.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.OneofDescriptorProto.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.OneofDescriptorProto.options">
+<code class="descname">options</code><a class="headerlink" href="#google.cloud.spanner_v1.types.OneofDescriptorProto.options" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.OneofDescriptorProto.options</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.spanner_v1.types.OneofOptions">
 <em class="property">class </em><code class="descclassname">google.cloud.spanner_v1.types.</code><code class="descname">OneofOptions</code><a class="headerlink" href="#google.cloud.spanner_v1.types.OneofOptions" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.OneofOptions.uninterpreted_option">
+<code class="descname">uninterpreted_option</code><a class="headerlink" href="#google.cloud.spanner_v1.types.OneofOptions.uninterpreted_option" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.OneofOptions.uninterpreted_option</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.spanner_v1.types.PartialResultSet">
@@ -851,6 +1847,36 @@ last response in the stream. This field will also be present
 in the last response for DML statements.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">chunked_value</code></dt>
+<dd><p>Field google.spanner.v1.PartialResultSet.chunked_value</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">metadata</code></dt>
+<dd><p>Field google.spanner.v1.PartialResultSet.metadata</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">resume_token</code></dt>
+<dd><p>Field google.spanner.v1.PartialResultSet.resume_token</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">stats</code></dt>
+<dd><p>Field google.spanner.v1.PartialResultSet.stats</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">values</code></dt>
+<dd><p>Field google.spanner.v1.PartialResultSet.values</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -863,6 +1889,12 @@ in the last response for DML statements.</p>
 <dd><p>This token can be passed to Read, StreamingRead, ExecuteSql,
 or ExecuteStreamingSql requests to restrict the results to
 those identified by this partition token.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">partition_token</code></dt>
+<dd><p>Field google.spanner.v1.Partition.partition_token</p>
 </dd></dl>
 
 </dd></dl>
@@ -891,6 +1923,18 @@ number of workers available. The default for this option is
 currently 10,000. The maximum value is currently 200,000. This
 is only a hint. The actual number of partitions returned may
 be smaller or larger than this maximum count request.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">max_partitions</code></dt>
+<dd><p>Field google.spanner.v1.PartitionOptions.max_partitions</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">partition_size_bytes</code></dt>
+<dd><p>Field google.spanner.v1.PartitionOptions.partition_size_bytes</p>
 </dd></dl>
 
 </dd></dl>
@@ -968,7 +2012,55 @@ created.</p>
 <dl class="class">
 <dt id="google.cloud.spanner_v1.types.PartitionQueryRequest.ParamTypesEntry">
 <em class="property">class </em><code class="descname">ParamTypesEntry</code><a class="headerlink" href="#google.cloud.spanner_v1.types.PartitionQueryRequest.ParamTypesEntry" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.PartitionQueryRequest.ParamTypesEntry.key">
+<code class="descname">key</code><a class="headerlink" href="#google.cloud.spanner_v1.types.PartitionQueryRequest.ParamTypesEntry.key" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.spanner.v1.PartitionQueryRequest.ParamTypesEntry.key</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.PartitionQueryRequest.ParamTypesEntry.value">
+<code class="descname">value</code><a class="headerlink" href="#google.cloud.spanner_v1.types.PartitionQueryRequest.ParamTypesEntry.value" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.spanner.v1.PartitionQueryRequest.ParamTypesEntry.value</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">param_types</code></dt>
+<dd><p>Field google.spanner.v1.PartitionQueryRequest.param_types</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">params</code></dt>
+<dd><p>Field google.spanner.v1.PartitionQueryRequest.params</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">partition_options</code></dt>
+<dd><p>Field google.spanner.v1.PartitionQueryRequest.partition_options</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">session</code></dt>
+<dd><p>Field google.spanner.v1.PartitionQueryRequest.session</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">sql</code></dt>
+<dd><p>Field google.spanner.v1.PartitionQueryRequest.sql</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">transaction</code></dt>
+<dd><p>Field google.spanner.v1.PartitionQueryRequest.transaction</p>
+</dd></dl>
 
 </dd></dl>
 
@@ -1042,6 +2134,48 @@ rows.</p>
 created.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">columns</code></dt>
+<dd><p>Field google.spanner.v1.PartitionReadRequest.columns</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">index</code></dt>
+<dd><p>Field google.spanner.v1.PartitionReadRequest.index</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">key_set</code></dt>
+<dd><p>Field google.spanner.v1.PartitionReadRequest.key_set</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">partition_options</code></dt>
+<dd><p>Field google.spanner.v1.PartitionReadRequest.partition_options</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">session</code></dt>
+<dd><p>Field google.spanner.v1.PartitionReadRequest.session</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">table</code></dt>
+<dd><p>Field google.spanner.v1.PartitionReadRequest.table</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">transaction</code></dt>
+<dd><p>Field google.spanner.v1.PartitionReadRequest.transaction</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -1060,6 +2194,18 @@ created.</p>
 <dt id="google.cloud.spanner_v1.types.PartitionResponse.transaction">
 <code class="descname">transaction</code><a class="headerlink" href="#google.cloud.spanner_v1.types.PartitionResponse.transaction" title="Permalink to this definition">#</a></dt>
 <dd><p>Transaction created by this request.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">partitions</code></dt>
+<dd><p>Field google.spanner.v1.PartitionResponse.partitions</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">transaction</code></dt>
+<dd><p>Field google.spanner.v1.PartitionResponse.transaction</p>
 </dd></dl>
 
 </dd></dl>
@@ -1160,6 +2306,24 @@ operator. The corresponding <code class="docutils literal notranslate"><span cla
 the variable names assigned to the columns.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">child_index</code></dt>
+<dd><p>Field google.spanner.v1.PlanNode.ChildLink.child_index</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">type</code></dt>
+<dd><p>Field google.spanner.v1.PlanNode.ChildLink.type</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">variable</code></dt>
+<dd><p>Field google.spanner.v1.PlanNode.ChildLink.variable</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -1187,8 +2351,74 @@ subquery may not necessarily be a direct child of this node.</p>
 <dl class="class">
 <dt id="google.cloud.spanner_v1.types.PlanNode.ShortRepresentation.SubqueriesEntry">
 <em class="property">class </em><code class="descname">SubqueriesEntry</code><a class="headerlink" href="#google.cloud.spanner_v1.types.PlanNode.ShortRepresentation.SubqueriesEntry" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.PlanNode.ShortRepresentation.SubqueriesEntry.key">
+<code class="descname">key</code><a class="headerlink" href="#google.cloud.spanner_v1.types.PlanNode.ShortRepresentation.SubqueriesEntry.key" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.spanner.v1.PlanNode.ShortRepresentation.SubqueriesEntry.key</p>
+</dd></dl>
 
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.PlanNode.ShortRepresentation.SubqueriesEntry.value">
+<code class="descname">value</code><a class="headerlink" href="#google.cloud.spanner_v1.types.PlanNode.ShortRepresentation.SubqueriesEntry.value" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.spanner.v1.PlanNode.ShortRepresentation.SubqueriesEntry.value</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">description</code></dt>
+<dd><p>Field google.spanner.v1.PlanNode.ShortRepresentation.description</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">subqueries</code></dt>
+<dd><p>Field google.spanner.v1.PlanNode.ShortRepresentation.subqueries</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">child_links</code></dt>
+<dd><p>Field google.spanner.v1.PlanNode.child_links</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">display_name</code></dt>
+<dd><p>Field google.spanner.v1.PlanNode.display_name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">execution_stats</code></dt>
+<dd><p>Field google.spanner.v1.PlanNode.execution_stats</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">index</code></dt>
+<dd><p>Field google.spanner.v1.PlanNode.index</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">kind</code></dt>
+<dd><p>Field google.spanner.v1.PlanNode.kind</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">metadata</code></dt>
+<dd><p>Field google.spanner.v1.PlanNode.metadata</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">short_representation</code></dt>
+<dd><p>Field google.spanner.v1.PlanNode.short_representation</p>
 </dd></dl>
 
 </dd></dl>
@@ -1204,6 +2434,12 @@ subquery may not necessarily be a direct child of this node.</p>
 order starting with the plan root. Each
 [PlanNode][google.spanner.v1.PlanNode]’s <code class="docutils literal notranslate"><span class="pre">id</span></code> corresponds to
 its index in <code class="docutils literal notranslate"><span class="pre">plan_nodes</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">plan_nodes</code></dt>
+<dd><p>Field google.spanner.v1.QueryPlan.plan_nodes</p>
 </dd></dl>
 
 </dd></dl>
@@ -1305,6 +2541,60 @@ message and the PartitionReadRequest message used to create
 this partition_token.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">columns</code></dt>
+<dd><p>Field google.spanner.v1.ReadRequest.columns</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">index</code></dt>
+<dd><p>Field google.spanner.v1.ReadRequest.index</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">key_set</code></dt>
+<dd><p>Field google.spanner.v1.ReadRequest.key_set</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">limit</code></dt>
+<dd><p>Field google.spanner.v1.ReadRequest.limit</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">partition_token</code></dt>
+<dd><p>Field google.spanner.v1.ReadRequest.partition_token</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">resume_token</code></dt>
+<dd><p>Field google.spanner.v1.ReadRequest.resume_token</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">session</code></dt>
+<dd><p>Field google.spanner.v1.ReadRequest.session</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">table</code></dt>
+<dd><p>Field google.spanner.v1.ReadRequest.table</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">transaction</code></dt>
+<dd><p>Field google.spanner.v1.ReadRequest.transaction</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -1344,6 +2634,24 @@ may or may not be populated, based on the [ExecuteSqlRequest.q
 uery_mode][google.spanner.v1.ExecuteSqlRequest.query_mode].</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">metadata</code></dt>
+<dd><p>Field google.spanner.v1.ResultSet.metadata</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">rows</code></dt>
+<dd><p>Field google.spanner.v1.ResultSet.rows</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">stats</code></dt>
+<dd><p>Field google.spanner.v1.ResultSet.stats</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -1367,6 +2675,18 @@ set. For example, a SQL query like <code class="docutils literal notranslate"><s
 <code class="descname">transaction</code><a class="headerlink" href="#google.cloud.spanner_v1.types.ResultSetMetadata.transaction" title="Permalink to this definition">#</a></dt>
 <dd><p>If the read or SQL query began a transaction as a side-effect,
 the information about the new transaction is yielded here.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">row_type</code></dt>
+<dd><p>Field google.spanner.v1.ResultSetMetadata.row_type</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">transaction</code></dt>
+<dd><p>Field google.spanner.v1.ResultSetMetadata.transaction</p>
 </dd></dl>
 
 </dd></dl>
@@ -1413,6 +2733,30 @@ modified.</p>
 returns a lower bound of the rows modified.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">query_plan</code></dt>
+<dd><p>Field google.spanner.v1.ResultSetStats.query_plan</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">query_stats</code></dt>
+<dd><p>Field google.spanner.v1.ResultSetStats.query_stats</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">row_count_exact</code></dt>
+<dd><p>Field google.spanner.v1.ResultSetStats.row_count_exact</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">row_count_lower_bound</code></dt>
+<dd><p>Field google.spanner.v1.ResultSetStats.row_count_lower_bound</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -1432,17 +2776,59 @@ running.</p>
 <dd><p>Required. The transaction to roll back.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">session</code></dt>
+<dd><p>Field google.spanner.v1.RollbackRequest.session</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">transaction_id</code></dt>
+<dd><p>Field google.spanner.v1.RollbackRequest.transaction_id</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.spanner_v1.types.ServiceDescriptorProto">
 <em class="property">class </em><code class="descclassname">google.cloud.spanner_v1.types.</code><code class="descname">ServiceDescriptorProto</code><a class="headerlink" href="#google.cloud.spanner_v1.types.ServiceDescriptorProto" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.ServiceDescriptorProto.method">
+<code class="descname">method</code><a class="headerlink" href="#google.cloud.spanner_v1.types.ServiceDescriptorProto.method" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.ServiceDescriptorProto.method</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.ServiceDescriptorProto.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.spanner_v1.types.ServiceDescriptorProto.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.ServiceDescriptorProto.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.ServiceDescriptorProto.options">
+<code class="descname">options</code><a class="headerlink" href="#google.cloud.spanner_v1.types.ServiceDescriptorProto.options" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.ServiceDescriptorProto.options</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.spanner_v1.types.ServiceOptions">
 <em class="property">class </em><code class="descclassname">google.cloud.spanner_v1.types.</code><code class="descname">ServiceOptions</code><a class="headerlink" href="#google.cloud.spanner_v1.types.ServiceOptions" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.ServiceOptions.deprecated">
+<code class="descname">deprecated</code><a class="headerlink" href="#google.cloud.spanner_v1.types.ServiceOptions.deprecated" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.ServiceOptions.deprecated</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.ServiceOptions.uninterpreted_option">
+<code class="descname">uninterpreted_option</code><a class="headerlink" href="#google.cloud.spanner_v1.types.ServiceOptions.uninterpreted_option" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.ServiceOptions.uninterpreted_option</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.spanner_v1.types.Session">
@@ -1486,7 +2872,43 @@ time.</p>
 <dl class="class">
 <dt id="google.cloud.spanner_v1.types.Session.LabelsEntry">
 <em class="property">class </em><code class="descname">LabelsEntry</code><a class="headerlink" href="#google.cloud.spanner_v1.types.Session.LabelsEntry" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.Session.LabelsEntry.key">
+<code class="descname">key</code><a class="headerlink" href="#google.cloud.spanner_v1.types.Session.LabelsEntry.key" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.spanner.v1.Session.LabelsEntry.key</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.Session.LabelsEntry.value">
+<code class="descname">value</code><a class="headerlink" href="#google.cloud.spanner_v1.types.Session.LabelsEntry.value" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.spanner.v1.Session.LabelsEntry.value</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">approximate_last_use_time</code></dt>
+<dd><p>Field google.spanner.v1.Session.approximate_last_use_time</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">create_time</code></dt>
+<dd><p>Field google.spanner.v1.Session.create_time</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">labels</code></dt>
+<dd><p>Field google.spanner.v1.Session.labels</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.spanner.v1.Session.name</p>
+</dd></dl>
 
 </dd></dl>
 
@@ -1496,7 +2918,43 @@ time.</p>
 <dd><dl class="class">
 <dt id="google.cloud.spanner_v1.types.SourceCodeInfo.Location">
 <em class="property">class </em><code class="descname">Location</code><a class="headerlink" href="#google.cloud.spanner_v1.types.SourceCodeInfo.Location" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.SourceCodeInfo.Location.leading_comments">
+<code class="descname">leading_comments</code><a class="headerlink" href="#google.cloud.spanner_v1.types.SourceCodeInfo.Location.leading_comments" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.SourceCodeInfo.Location.leading_comments</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.SourceCodeInfo.Location.leading_detached_comments">
+<code class="descname">leading_detached_comments</code><a class="headerlink" href="#google.cloud.spanner_v1.types.SourceCodeInfo.Location.leading_detached_comments" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.SourceCodeInfo.Location.leading_detached_comments</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.SourceCodeInfo.Location.path">
+<code class="descname">path</code><a class="headerlink" href="#google.cloud.spanner_v1.types.SourceCodeInfo.Location.path" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.SourceCodeInfo.Location.path</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.SourceCodeInfo.Location.span">
+<code class="descname">span</code><a class="headerlink" href="#google.cloud.spanner_v1.types.SourceCodeInfo.Location.span" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.SourceCodeInfo.Location.span</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.SourceCodeInfo.Location.trailing_comments">
+<code class="descname">trailing_comments</code><a class="headerlink" href="#google.cloud.spanner_v1.types.SourceCodeInfo.Location.trailing_comments" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.SourceCodeInfo.Location.trailing_comments</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.SourceCodeInfo.location">
+<code class="descname">location</code><a class="headerlink" href="#google.cloud.spanner_v1.types.SourceCodeInfo.location" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.SourceCodeInfo.location</p>
+</dd></dl>
 
 </dd></dl>
 
@@ -1506,7 +2964,25 @@ time.</p>
 <dd><dl class="class">
 <dt id="google.cloud.spanner_v1.types.Struct.FieldsEntry">
 <em class="property">class </em><code class="descname">FieldsEntry</code><a class="headerlink" href="#google.cloud.spanner_v1.types.Struct.FieldsEntry" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.Struct.FieldsEntry.key">
+<code class="descname">key</code><a class="headerlink" href="#google.cloud.spanner_v1.types.Struct.FieldsEntry.key" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.Struct.FieldsEntry.key</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.Struct.FieldsEntry.value">
+<code class="descname">value</code><a class="headerlink" href="#google.cloud.spanner_v1.types.Struct.FieldsEntry.value" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.Struct.FieldsEntry.value</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.Struct.fields">
+<code class="descname">fields</code><a class="headerlink" href="#google.cloud.spanner_v1.types.Struct.fields" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.Struct.fields</p>
+</dd></dl>
 
 </dd></dl>
 
@@ -1549,6 +3025,24 @@ multiple fields with the same name.</p>
 <dd><p>The type of the field.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.spanner.v1.StructType.Field.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">type</code></dt>
+<dd><p>Field google.spanner.v1.StructType.Field.type</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">fields</code></dt>
+<dd><p>Field google.spanner.v1.StructType.fields</p>
 </dd></dl>
 
 </dd></dl>
@@ -1556,7 +3050,19 @@ multiple fields with the same name.</p>
 <dl class="class">
 <dt id="google.cloud.spanner_v1.types.Timestamp">
 <em class="property">class </em><code class="descclassname">google.cloud.spanner_v1.types.</code><code class="descname">Timestamp</code><a class="headerlink" href="#google.cloud.spanner_v1.types.Timestamp" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.Timestamp.nanos">
+<code class="descname">nanos</code><a class="headerlink" href="#google.cloud.spanner_v1.types.Timestamp.nanos" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.Timestamp.nanos</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.Timestamp.seconds">
+<code class="descname">seconds</code><a class="headerlink" href="#google.cloud.spanner_v1.types.Timestamp.seconds" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.Timestamp.seconds</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.spanner_v1.types.Transaction">
@@ -1583,6 +3089,18 @@ Options.ReadOnly.return_read_timestamp][google.spanner.v1.Tr
 ansactionOptions.ReadOnly.return_read_timestamp].  A
 timestamp in RFC3339 UTC “Zulu” format, accurate to
 nanoseconds. Example: <code class="docutils literal notranslate"><span class="pre">&quot;2014-10-02T15:01:23.045123456Z&quot;</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">id</code></dt>
+<dd><p>Field google.spanner.v1.Transaction.id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">read_timestamp</code></dt>
+<dd><p>Field google.spanner.v1.Transaction.read_timestamp</p>
 </dd></dl>
 
 </dd></dl>
@@ -1929,6 +3447,42 @@ in the [Transaction][google.spanner.v1.Transaction] message
 that describes the transaction.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">exact_staleness</code></dt>
+<dd><p>Field google.spanner.v1.TransactionOptions.ReadOnly.exact_staleness</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">max_staleness</code></dt>
+<dd><p>Field google.spanner.v1.TransactionOptions.ReadOnly.max_staleness</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">min_read_timestamp</code></dt>
+<dd><p>Field google.spanner.v1.TransactionOptions.ReadOnly.min_read_timestamp</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">read_timestamp</code></dt>
+<dd><p>Field google.spanner.v1.TransactionOptions.ReadOnly.read_timestamp</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">return_read_timestamp</code></dt>
+<dd><p>Field google.spanner.v1.TransactionOptions.ReadOnly.return_read_timestamp</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">strong</code></dt>
+<dd><p>Field google.spanner.v1.TransactionOptions.ReadOnly.strong</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -1936,6 +3490,24 @@ that describes the transaction.</p>
 <em class="property">class </em><code class="descname">ReadWrite</code><a class="headerlink" href="#google.cloud.spanner_v1.types.TransactionOptions.ReadWrite" title="Permalink to this definition">#</a></dt>
 <dd><p>Message type to initiate a read-write transaction. Currently this
 transaction type has no options.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">partitioned_dml</code></dt>
+<dd><p>Field google.spanner.v1.TransactionOptions.partitioned_dml</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">read_only</code></dt>
+<dd><p>Field google.spanner.v1.TransactionOptions.read_only</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">read_write</code></dt>
+<dd><p>Field google.spanner.v1.TransactionOptions.read_write</p>
 </dd></dl>
 
 </dd></dl>
@@ -1980,6 +3552,24 @@ data.transaction], which is a
 [Transaction][google.spanner.v1.Transaction].</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">begin</code></dt>
+<dd><p>Field google.spanner.v1.TransactionSelector.begin</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">id</code></dt>
+<dd><p>Field google.spanner.v1.TransactionSelector.id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">single_use</code></dt>
+<dd><p>Field google.spanner.v1.TransactionSelector.single_use</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -2011,6 +3601,24 @@ type.</p>
 fields.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">array_element_type</code></dt>
+<dd><p>Field google.spanner.v1.Type.array_element_type</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">code</code></dt>
+<dd><p>Field google.spanner.v1.Type.code</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">struct_type</code></dt>
+<dd><p>Field google.spanner.v1.Type.struct_type</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -2019,14 +3627,104 @@ fields.</p>
 <dd><dl class="class">
 <dt id="google.cloud.spanner_v1.types.UninterpretedOption.NamePart">
 <em class="property">class </em><code class="descname">NamePart</code><a class="headerlink" href="#google.cloud.spanner_v1.types.UninterpretedOption.NamePart" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.UninterpretedOption.NamePart.is_extension">
+<code class="descname">is_extension</code><a class="headerlink" href="#google.cloud.spanner_v1.types.UninterpretedOption.NamePart.is_extension" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.UninterpretedOption.NamePart.is_extension</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.UninterpretedOption.NamePart.name_part">
+<code class="descname">name_part</code><a class="headerlink" href="#google.cloud.spanner_v1.types.UninterpretedOption.NamePart.name_part" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.UninterpretedOption.NamePart.name_part</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.UninterpretedOption.aggregate_value">
+<code class="descname">aggregate_value</code><a class="headerlink" href="#google.cloud.spanner_v1.types.UninterpretedOption.aggregate_value" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.UninterpretedOption.aggregate_value</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.UninterpretedOption.double_value">
+<code class="descname">double_value</code><a class="headerlink" href="#google.cloud.spanner_v1.types.UninterpretedOption.double_value" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.UninterpretedOption.double_value</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.UninterpretedOption.identifier_value">
+<code class="descname">identifier_value</code><a class="headerlink" href="#google.cloud.spanner_v1.types.UninterpretedOption.identifier_value" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.UninterpretedOption.identifier_value</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.UninterpretedOption.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.spanner_v1.types.UninterpretedOption.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.UninterpretedOption.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.UninterpretedOption.negative_int_value">
+<code class="descname">negative_int_value</code><a class="headerlink" href="#google.cloud.spanner_v1.types.UninterpretedOption.negative_int_value" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.UninterpretedOption.negative_int_value</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.UninterpretedOption.positive_int_value">
+<code class="descname">positive_int_value</code><a class="headerlink" href="#google.cloud.spanner_v1.types.UninterpretedOption.positive_int_value" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.UninterpretedOption.positive_int_value</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.UninterpretedOption.string_value">
+<code class="descname">string_value</code><a class="headerlink" href="#google.cloud.spanner_v1.types.UninterpretedOption.string_value" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.UninterpretedOption.string_value</p>
+</dd></dl>
 
 </dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.spanner_v1.types.Value">
 <em class="property">class </em><code class="descclassname">google.cloud.spanner_v1.types.</code><code class="descname">Value</code><a class="headerlink" href="#google.cloud.spanner_v1.types.Value" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.Value.bool_value">
+<code class="descname">bool_value</code><a class="headerlink" href="#google.cloud.spanner_v1.types.Value.bool_value" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.Value.bool_value</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.Value.list_value">
+<code class="descname">list_value</code><a class="headerlink" href="#google.cloud.spanner_v1.types.Value.list_value" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.Value.list_value</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.Value.null_value">
+<code class="descname">null_value</code><a class="headerlink" href="#google.cloud.spanner_v1.types.Value.null_value" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.Value.null_value</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.Value.number_value">
+<code class="descname">number_value</code><a class="headerlink" href="#google.cloud.spanner_v1.types.Value.number_value" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.Value.number_value</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.Value.string_value">
+<code class="descname">string_value</code><a class="headerlink" href="#google.cloud.spanner_v1.types.Value.string_value" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.Value.string_value</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.Value.struct_value">
+<code class="descname">struct_value</code><a class="headerlink" href="#google.cloud.spanner_v1.types.Value.struct_value" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.Value.struct_value</p>
+</dd></dl>
+
+</dd></dl>
 
 </div>
 

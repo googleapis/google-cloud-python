@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Types for IAM Service Account Credentials API Client &#8212; google-cloud 35e0349 documentation</title>
+    <title>Types for IAM Service Account Credentials API Client &#8212; google-cloud 915e116 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -40,7 +40,19 @@
 <dl class="class">
 <dt id="google.cloud.iam_credentials_v1.types.Duration">
 <em class="property">class </em><code class="descclassname">google.cloud.iam_credentials_v1.types.</code><code class="descname">Duration</code><a class="headerlink" href="#google.cloud.iam_credentials_v1.types.Duration" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.iam_credentials_v1.types.Duration.nanos">
+<code class="descname">nanos</code><a class="headerlink" href="#google.cloud.iam_credentials_v1.types.Duration.nanos" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.Duration.nanos</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.iam_credentials_v1.types.Duration.seconds">
+<code class="descname">seconds</code><a class="headerlink" href="#google.cloud.iam_credentials_v1.types.Duration.seconds" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.Duration.seconds</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.iam_credentials_v1.types.GenerateAccessTokenRequest">
@@ -85,6 +97,30 @@ a value is not specified, the token’s lifetime will be set to
 a default value of one hour.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">delegates</code></dt>
+<dd><p>Field google.iam.credentials.v1.GenerateAccessTokenRequest.delegates</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">lifetime</code></dt>
+<dd><p>Field google.iam.credentials.v1.GenerateAccessTokenRequest.lifetime</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.iam.credentials.v1.GenerateAccessTokenRequest.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">scope</code></dt>
+<dd><p>Field google.iam.credentials.v1.GenerateAccessTokenRequest.scope</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -100,6 +136,18 @@ a default value of one hour.</p>
 <dt id="google.cloud.iam_credentials_v1.types.GenerateAccessTokenResponse.expire_time">
 <code class="descname">expire_time</code><a class="headerlink" href="#google.cloud.iam_credentials_v1.types.GenerateAccessTokenResponse.expire_time" title="Permalink to this definition">#</a></dt>
 <dd><p>Token expiration time. The expiration time is always set.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">access_token</code></dt>
+<dd><p>Field google.iam.credentials.v1.GenerateAccessTokenResponse.access_token</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">expire_time</code></dt>
+<dd><p>Field google.iam.credentials.v1.GenerateAccessTokenResponse.expire_time</p>
 </dd></dl>
 
 </dd></dl>
@@ -144,6 +192,30 @@ this token grants access to.</p>
 <code class="docutils literal notranslate"><span class="pre">email_verified</span></code> claims.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">audience</code></dt>
+<dd><p>Field google.iam.credentials.v1.GenerateIdTokenRequest.audience</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">delegates</code></dt>
+<dd><p>Field google.iam.credentials.v1.GenerateIdTokenRequest.delegates</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">include_email</code></dt>
+<dd><p>Field google.iam.credentials.v1.GenerateIdTokenRequest.include_email</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.iam.credentials.v1.GenerateIdTokenRequest.name</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -153,6 +225,12 @@ this token grants access to.</p>
 <dt id="google.cloud.iam_credentials_v1.types.GenerateIdTokenResponse.token">
 <code class="descname">token</code><a class="headerlink" href="#google.cloud.iam_credentials_v1.types.GenerateIdTokenResponse.token" title="Permalink to this definition">#</a></dt>
 <dd><p>The OpenId Connect ID token.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">token</code></dt>
+<dd><p>Field google.iam.credentials.v1.GenerateIdTokenResponse.token</p>
 </dd></dl>
 
 </dd></dl>
@@ -214,6 +292,24 @@ serialized as JSON without whitespace.  Example header: {
 “value” } }</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">jwt</code></dt>
+<dd><p>Field google.iam.credentials.v1.GenerateIdentityBindingAccessTokenRequest.jwt</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.iam.credentials.v1.GenerateIdentityBindingAccessTokenRequest.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">scope</code></dt>
+<dd><p>Field google.iam.credentials.v1.GenerateIdentityBindingAccessTokenRequest.scope</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -229,6 +325,18 @@ serialized as JSON without whitespace.  Example header: {
 <dt id="google.cloud.iam_credentials_v1.types.GenerateIdentityBindingAccessTokenResponse.expire_time">
 <code class="descname">expire_time</code><a class="headerlink" href="#google.cloud.iam_credentials_v1.types.GenerateIdentityBindingAccessTokenResponse.expire_time" title="Permalink to this definition">#</a></dt>
 <dd><p>Token expiration time. The expiration time is always set.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">access_token</code></dt>
+<dd><p>Field google.iam.credentials.v1.GenerateIdentityBindingAccessTokenResponse.access_token</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">expire_time</code></dt>
+<dd><p>Field google.iam.credentials.v1.GenerateIdentityBindingAccessTokenResponse.expire_time</p>
 </dd></dl>
 
 </dd></dl>
@@ -264,6 +372,24 @@ request.  The delegates must have the following format:
 <dd><p>The bytes to sign.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">delegates</code></dt>
+<dd><p>Field google.iam.credentials.v1.SignBlobRequest.delegates</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.iam.credentials.v1.SignBlobRequest.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">payload</code></dt>
+<dd><p>Field google.iam.credentials.v1.SignBlobRequest.payload</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -279,6 +405,18 @@ request.  The delegates must have the following format:
 <dt id="google.cloud.iam_credentials_v1.types.SignBlobResponse.signed_blob">
 <code class="descname">signed_blob</code><a class="headerlink" href="#google.cloud.iam_credentials_v1.types.SignBlobResponse.signed_blob" title="Permalink to this definition">#</a></dt>
 <dd><p>The signed blob.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">key_id</code></dt>
+<dd><p>Field google.iam.credentials.v1.SignBlobResponse.key_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">signed_blob</code></dt>
+<dd><p>Field google.iam.credentials.v1.SignBlobResponse.signed_blob</p>
 </dd></dl>
 
 </dd></dl>
@@ -315,6 +453,24 @@ request.  The delegates must have the following format:
 Claims Set.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">delegates</code></dt>
+<dd><p>Field google.iam.credentials.v1.SignJwtRequest.delegates</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.iam.credentials.v1.SignJwtRequest.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">payload</code></dt>
+<dd><p>Field google.iam.credentials.v1.SignJwtRequest.payload</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -332,12 +488,36 @@ Claims Set.</p>
 <dd><p>The signed JWT.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">key_id</code></dt>
+<dd><p>Field google.iam.credentials.v1.SignJwtResponse.key_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">signed_jwt</code></dt>
+<dd><p>Field google.iam.credentials.v1.SignJwtResponse.signed_jwt</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.iam_credentials_v1.types.Timestamp">
 <em class="property">class </em><code class="descclassname">google.cloud.iam_credentials_v1.types.</code><code class="descname">Timestamp</code><a class="headerlink" href="#google.cloud.iam_credentials_v1.types.Timestamp" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.iam_credentials_v1.types.Timestamp.nanos">
+<code class="descname">nanos</code><a class="headerlink" href="#google.cloud.iam_credentials_v1.types.Timestamp.nanos" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.Timestamp.nanos</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.iam_credentials_v1.types.Timestamp.seconds">
+<code class="descname">seconds</code><a class="headerlink" href="#google.cloud.iam_credentials_v1.types.Timestamp.seconds" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.Timestamp.seconds</p>
+</dd></dl>
+
+</dd></dl>
 
 </div>
 

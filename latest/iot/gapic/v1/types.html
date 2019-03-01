@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Types for Cloud IoT API Client &#8212; google-cloud 35e0349 documentation</title>
+    <title>Types for Cloud IoT API Client &#8212; google-cloud 915e116 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -40,7 +40,19 @@
 <dl class="class">
 <dt id="google.cloud.iot_v1.types.Any">
 <em class="property">class </em><code class="descclassname">google.cloud.iot_v1.types.</code><code class="descname">Any</code><a class="headerlink" href="#google.cloud.iot_v1.types.Any" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.iot_v1.types.Any.type_url">
+<code class="descname">type_url</code><a class="headerlink" href="#google.cloud.iot_v1.types.Any.type_url" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.Any.type_url</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.Any.value">
+<code class="descname">value</code><a class="headerlink" href="#google.cloud.iot_v1.types.Any.value" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.Any.value</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.iot_v1.types.BindDeviceToGatewayRequest">
@@ -66,6 +78,24 @@ ID or the user-defined device identifier.</p>
 <dd><p>The device to associate with the specified gateway. The value
 of <code class="docutils literal notranslate"><span class="pre">device_id</span></code> can be either the device numeric ID or the
 user-defined device identifier.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">device_id</code></dt>
+<dd><p>Field google.cloud.iot.v1.BindDeviceToGatewayRequest.device_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">gateway_id</code></dt>
+<dd><p>Field google.cloud.iot.v1.BindDeviceToGatewayRequest.gateway_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">parent</code></dt>
+<dd><p>Field google.cloud.iot.v1.BindDeviceToGatewayRequest.parent</p>
 </dd></dl>
 
 </dd></dl>
@@ -109,6 +139,18 @@ domain name that represents all    the users of that domain.
 For example, <code class="docutils literal notranslate"><span class="pre">google.com</span></code> or    <code class="docutils literal notranslate"><span class="pre">example.com</span></code>.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">members</code></dt>
+<dd><p>Field google.iam.v1.Binding.members</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">role</code></dt>
+<dd><p>Field google.iam.v1.Binding.role</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -137,6 +179,24 @@ Required</p>
 resource. Follows the same format of Binding.members. Required</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">action</code></dt>
+<dd><p>Field google.iam.v1.BindingDelta.action</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">member</code></dt>
+<dd><p>Field google.iam.v1.BindingDelta.member</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">role</code></dt>
+<dd><p>Field google.iam.v1.BindingDelta.role</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -157,6 +217,18 @@ be created. For example, <code class="docutils literal notranslate"><span class=
 <dd><p>The device registry. The field <code class="docutils literal notranslate"><span class="pre">name</span></code> must be empty. The
 server will generate that field from the device registry
 <code class="docutils literal notranslate"><span class="pre">id</span></code> provided and the <code class="docutils literal notranslate"><span class="pre">parent</span></code> field.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">device_registry</code></dt>
+<dd><p>Field google.cloud.iot.v1.CreateDeviceRegistryRequest.device_registry</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">parent</code></dt>
+<dd><p>Field google.cloud.iot.v1.CreateDeviceRegistryRequest.parent</p>
 </dd></dl>
 
 </dd></dl>
@@ -181,6 +253,18 @@ empty. The server generates <code class="docutils literal notranslate"><span cla
 <code class="docutils literal notranslate"><span class="pre">id</span></code> and the <code class="docutils literal notranslate"><span class="pre">parent</span></code> field.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">device</code></dt>
+<dd><p>Field google.cloud.iot.v1.CreateDeviceRequest.device</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">parent</code></dt>
+<dd><p>Field google.cloud.iot.v1.CreateDeviceRequest.parent</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -193,6 +277,12 @@ empty. The server generates <code class="docutils literal notranslate"><span cla
 <dd><p>The name of the device registry. For example,
 <code class="docutils literal notranslate"><span class="pre">projects/example-project/locations/us-</span>
 <span class="pre">central1/registries/my-registry</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.cloud.iot.v1.DeleteDeviceRegistryRequest.name</p>
 </dd></dl>
 
 </dd></dl>
@@ -209,6 +299,12 @@ empty. The server generates <code class="docutils literal notranslate"><span cla
 <span class="pre">central1/registries/registry0/devices/device0</span></code> or
 <code class="docutils literal notranslate"><span class="pre">projects/p0/locations/us-</span>
 <span class="pre">central1/registries/registry0/devices/{num_id}</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.cloud.iot.v1.DeleteDeviceRequest.name</p>
 </dd></dl>
 
 </dd></dl>
@@ -375,7 +471,121 @@ key-value pairs is 500.</p>
 <dl class="class">
 <dt id="google.cloud.iot_v1.types.Device.MetadataEntry">
 <em class="property">class </em><code class="descname">MetadataEntry</code><a class="headerlink" href="#google.cloud.iot_v1.types.Device.MetadataEntry" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.iot_v1.types.Device.MetadataEntry.key">
+<code class="descname">key</code><a class="headerlink" href="#google.cloud.iot_v1.types.Device.MetadataEntry.key" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.cloud.iot.v1.Device.MetadataEntry.key</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.Device.MetadataEntry.value">
+<code class="descname">value</code><a class="headerlink" href="#google.cloud.iot_v1.types.Device.MetadataEntry.value" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.cloud.iot.v1.Device.MetadataEntry.value</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">blocked</code></dt>
+<dd><p>Field google.cloud.iot.v1.Device.blocked</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">config</code></dt>
+<dd><p>Field google.cloud.iot.v1.Device.config</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">credentials</code></dt>
+<dd><p>Field google.cloud.iot.v1.Device.credentials</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">gateway_config</code></dt>
+<dd><p>Field google.cloud.iot.v1.Device.gateway_config</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">id</code></dt>
+<dd><p>Field google.cloud.iot.v1.Device.id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">last_config_ack_time</code></dt>
+<dd><p>Field google.cloud.iot.v1.Device.last_config_ack_time</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">last_config_send_time</code></dt>
+<dd><p>Field google.cloud.iot.v1.Device.last_config_send_time</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">last_error_status</code></dt>
+<dd><p>Field google.cloud.iot.v1.Device.last_error_status</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">last_error_time</code></dt>
+<dd><p>Field google.cloud.iot.v1.Device.last_error_time</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">last_event_time</code></dt>
+<dd><p>Field google.cloud.iot.v1.Device.last_event_time</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">last_heartbeat_time</code></dt>
+<dd><p>Field google.cloud.iot.v1.Device.last_heartbeat_time</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">last_state_time</code></dt>
+<dd><p>Field google.cloud.iot.v1.Device.last_state_time</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">log_level</code></dt>
+<dd><p>Field google.cloud.iot.v1.Device.log_level</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">metadata</code></dt>
+<dd><p>Field google.cloud.iot.v1.Device.metadata</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.cloud.iot.v1.Device.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">num_id</code></dt>
+<dd><p>Field google.cloud.iot.v1.Device.num_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">state</code></dt>
+<dd><p>Field google.cloud.iot.v1.Device.state</p>
+</dd></dl>
 
 </dd></dl>
 
@@ -422,6 +632,30 @@ acknowledged. This timestamp is set by Cloud IoT Core.</p>
 <dd><p>The device configuration data.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">binary_data</code></dt>
+<dd><p>Field google.cloud.iot.v1.DeviceConfig.binary_data</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">cloud_update_time</code></dt>
+<dd><p>Field google.cloud.iot.v1.DeviceConfig.cloud_update_time</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">device_ack_time</code></dt>
+<dd><p>Field google.cloud.iot.v1.DeviceConfig.device_ack_time</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">version</code></dt>
+<dd><p>Field google.cloud.iot.v1.DeviceConfig.version</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -458,6 +692,18 @@ different from every registry-level certificate.</p>
 This credential will be ignored for new client authentication
 requests after this timestamp; however, it will not be
 automatically deleted.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">expiration_time</code></dt>
+<dd><p>Field google.cloud.iot.v1.DeviceCredential.expiration_time</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">public_key</code></dt>
+<dd><p>Field google.cloud.iot.v1.DeviceCredential.public_key</p>
 </dd></dl>
 
 </dd></dl>
@@ -545,6 +791,54 @@ connect even if its registry credentials are revoked, deleted,
 or modified.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">credentials</code></dt>
+<dd><p>Field google.cloud.iot.v1.DeviceRegistry.credentials</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">event_notification_configs</code></dt>
+<dd><p>Field google.cloud.iot.v1.DeviceRegistry.event_notification_configs</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">http_config</code></dt>
+<dd><p>Field google.cloud.iot.v1.DeviceRegistry.http_config</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">id</code></dt>
+<dd><p>Field google.cloud.iot.v1.DeviceRegistry.id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">log_level</code></dt>
+<dd><p>Field google.cloud.iot.v1.DeviceRegistry.log_level</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">mqtt_config</code></dt>
+<dd><p>Field google.cloud.iot.v1.DeviceRegistry.mqtt_config</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.cloud.iot.v1.DeviceRegistry.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">state_notification_config</code></dt>
+<dd><p>Field google.cloud.iot.v1.DeviceRegistry.state_notification_config</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -562,6 +856,18 @@ in Cloud IoT Core.</p>
 <dt id="google.cloud.iot_v1.types.DeviceState.binary_data">
 <code class="descname">binary_data</code><a class="headerlink" href="#google.cloud.iot_v1.types.DeviceState.binary_data" title="Permalink to this definition">#</a></dt>
 <dd><p>The device state data.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">binary_data</code></dt>
+<dd><p>Field google.cloud.iot.v1.DeviceState.binary_data</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">update_time</code></dt>
+<dd><p>Field google.cloud.iot.v1.DeviceState.update_time</p>
 </dd></dl>
 
 </dd></dl>
@@ -592,12 +898,30 @@ supported for state changes.</p>
 <code class="docutils literal notranslate"><span class="pre">projects/myProject/topics/deviceEvents</span></code>.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">pubsub_topic_name</code></dt>
+<dd><p>Field google.cloud.iot.v1.EventNotificationConfig.pubsub_topic_name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">subfolder_matches</code></dt>
+<dd><p>Field google.cloud.iot.v1.EventNotificationConfig.subfolder_matches</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.iot_v1.types.FieldMask">
 <em class="property">class </em><code class="descclassname">google.cloud.iot_v1.types.</code><code class="descname">FieldMask</code><a class="headerlink" href="#google.cloud.iot_v1.types.FieldMask" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.iot_v1.types.FieldMask.paths">
+<code class="descname">paths</code><a class="headerlink" href="#google.cloud.iot_v1.types.FieldMask.paths" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FieldMask.paths</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.iot_v1.types.GatewayConfig">
@@ -628,6 +952,30 @@ recently.</p>
 <code class="descname">last_accessed_gateway_time</code><a class="headerlink" href="#google.cloud.iot_v1.types.GatewayConfig.last_accessed_gateway_time" title="Permalink to this definition">#</a></dt>
 <dd><p>[Output only] The most recent time at which the device
 accessed the gateway specified in <code class="docutils literal notranslate"><span class="pre">last_accessed_gateway</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">gateway_auth_method</code></dt>
+<dd><p>Field google.cloud.iot.v1.GatewayConfig.gateway_auth_method</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">gateway_type</code></dt>
+<dd><p>Field google.cloud.iot.v1.GatewayConfig.gateway_type</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">last_accessed_gateway_id</code></dt>
+<dd><p>Field google.cloud.iot.v1.GatewayConfig.last_accessed_gateway_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">last_accessed_gateway_time</code></dt>
+<dd><p>Field google.cloud.iot.v1.GatewayConfig.last_accessed_gateway_time</p>
 </dd></dl>
 
 </dd></dl>
@@ -672,6 +1020,24 @@ if <code class="docutils literal notranslate"><span class="pre">456</span></code
 the device with <code class="docutils literal notranslate"><span class="pre">num_id</span></code> 456 is bound.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">associations_device_id</code></dt>
+<dd><p>Field google.cloud.iot.v1.GatewayListOptions.associations_device_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">associations_gateway_id</code></dt>
+<dd><p>Field google.cloud.iot.v1.GatewayListOptions.associations_gateway_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">gateway_type</code></dt>
+<dd><p>Field google.cloud.iot.v1.GatewayListOptions.gateway_type</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -684,6 +1050,12 @@ the device with <code class="docutils literal notranslate"><span class="pre">num
 <dd><p>The name of the device registry. For example,
 <code class="docutils literal notranslate"><span class="pre">projects/example-project/locations/us-</span>
 <span class="pre">central1/registries/my-registry</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.cloud.iot.v1.GetDeviceRegistryRequest.name</p>
 </dd></dl>
 
 </dd></dl>
@@ -710,6 +1082,18 @@ response. If the field mask is unset or empty, all fields are
 returned.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">field_mask</code></dt>
+<dd><p>Field google.cloud.iot.v1.GetDeviceRequest.field_mask</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.cloud.iot.v1.GetDeviceRequest.name</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -725,6 +1109,12 @@ example, a Project resource is specified as
 <code class="docutils literal notranslate"><span class="pre">projects/{project}</span></code>.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">resource</code></dt>
+<dd><p>Field google.iam.v1.GetIamPolicyRequest.resource</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -737,6 +1127,12 @@ example, a Project resource is specified as
 <dd><p>If enabled, allows devices to use DeviceService via the HTTP
 protocol. Otherwise, any requests to DeviceService will fail
 for this registry.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">http_enabled_state</code></dt>
+<dd><p>Field google.cloud.iot.v1.HttpConfig.http_enabled_state</p>
 </dd></dl>
 
 </dd></dl>
@@ -764,6 +1160,18 @@ versions retained is 10. If this value is zero, it will return
 all the versions available.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.cloud.iot.v1.ListDeviceConfigVersionsRequest.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">num_versions</code></dt>
+<dd><p>Field google.cloud.iot.v1.ListDeviceConfigVersionsRequest.num_versions</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -776,6 +1184,12 @@ all the versions available.</p>
 <dd><p>The device configuration for the last few versions. Versions
 are listed in decreasing order, starting from the most recent
 one.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">device_configs</code></dt>
+<dd><p>Field google.cloud.iot.v1.ListDeviceConfigVersionsResponse.device_configs</p>
 </dd></dl>
 
 </dd></dl>
@@ -810,6 +1224,24 @@ continuation of a prior <code class="docutils literal notranslate"><span class="
 system should return the next page of data.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">page_size</code></dt>
+<dd><p>Field google.cloud.iot.v1.ListDeviceRegistriesRequest.page_size</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">page_token</code></dt>
+<dd><p>Field google.cloud.iot.v1.ListDeviceRegistriesRequest.page_token</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">parent</code></dt>
+<dd><p>Field google.cloud.iot.v1.ListDeviceRegistriesRequest.parent</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -828,6 +1260,18 @@ system should return the next page of data.</p>
 <dd><p>If not empty, indicates that there may be more registries that
 match the request; this value should be passed in a new
 <code class="docutils literal notranslate"><span class="pre">ListDeviceRegistriesRequest</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">device_registries</code></dt>
+<dd><p>Field google.cloud.iot.v1.ListDeviceRegistriesResponse.device_registries</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">next_page_token</code></dt>
+<dd><p>Field google.cloud.iot.v1.ListDeviceRegistriesResponse.next_page_token</p>
 </dd></dl>
 
 </dd></dl>
@@ -855,6 +1299,18 @@ order of update time. The maximum number of states retained is
 available.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.cloud.iot.v1.ListDeviceStatesRequest.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">num_states</code></dt>
+<dd><p>Field google.cloud.iot.v1.ListDeviceStatesRequest.num_states</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -867,6 +1323,12 @@ available.</p>
 <dd><p>The last few device states. States are listed in descending
 order of server update time, starting from the most recent
 one.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">device_states</code></dt>
+<dd><p>Field google.cloud.iot.v1.ListDeviceStatesResponse.device_states</p>
 </dd></dl>
 
 </dd></dl>
@@ -931,6 +1393,48 @@ indicates that this is a continuation of a prior
 page of data.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">device_ids</code></dt>
+<dd><p>Field google.cloud.iot.v1.ListDevicesRequest.device_ids</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">device_num_ids</code></dt>
+<dd><p>Field google.cloud.iot.v1.ListDevicesRequest.device_num_ids</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">field_mask</code></dt>
+<dd><p>Field google.cloud.iot.v1.ListDevicesRequest.field_mask</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">gateway_list_options</code></dt>
+<dd><p>Field google.cloud.iot.v1.ListDevicesRequest.gateway_list_options</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">page_size</code></dt>
+<dd><p>Field google.cloud.iot.v1.ListDevicesRequest.page_size</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">page_token</code></dt>
+<dd><p>Field google.cloud.iot.v1.ListDevicesRequest.page_token</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">parent</code></dt>
+<dd><p>Field google.cloud.iot.v1.ListDevicesRequest.parent</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -949,6 +1453,18 @@ page of data.</p>
 <dd><p>If not empty, indicates that there may be more devices that
 match the request; this value should be passed in a new
 <code class="docutils literal notranslate"><span class="pre">ListDevicesRequest</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">devices</code></dt>
+<dd><p>Field google.cloud.iot.v1.ListDevicesResponse.devices</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">next_page_token</code></dt>
+<dd><p>Field google.cloud.iot.v1.ListDevicesResponse.next_page_token</p>
 </dd></dl>
 
 </dd></dl>
@@ -984,6 +1500,24 @@ updates without losing data.</p>
 <dd><p>The configuration data for the device.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">binary_data</code></dt>
+<dd><p>Field google.cloud.iot.v1.ModifyCloudToDeviceConfigRequest.binary_data</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.cloud.iot.v1.ModifyCloudToDeviceConfigRequest.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">version_to_update</code></dt>
+<dd><p>Field google.cloud.iot.v1.ModifyCloudToDeviceConfigRequest.version_to_update</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -995,6 +1529,12 @@ updates without losing data.</p>
 <code class="descname">mqtt_enabled_state</code><a class="headerlink" href="#google.cloud.iot_v1.types.MqttConfig.mqtt_enabled_state" title="Permalink to this definition">#</a></dt>
 <dd><p>If enabled, allows connections using the MQTT protocol.
 Otherwise, MQTT connections to this registry will fail.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">mqtt_enabled_state</code></dt>
+<dd><p>Field google.cloud.iot.v1.MqttConfig.mqtt_enabled_state</p>
 </dd></dl>
 
 </dd></dl>
@@ -1060,6 +1600,24 @@ in the call to <code class="docutils literal notranslate"><span class="pre">setI
 overwritten blindly.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">bindings</code></dt>
+<dd><p>Field google.iam.v1.Policy.bindings</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">etag</code></dt>
+<dd><p>Field google.iam.v1.Policy.etag</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">version</code></dt>
+<dd><p>Field google.iam.v1.Policy.version</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -1070,6 +1628,12 @@ overwritten blindly.</p>
 <dt id="google.cloud.iot_v1.types.PolicyDelta.binding_deltas">
 <code class="descname">binding_deltas</code><a class="headerlink" href="#google.cloud.iot_v1.types.PolicyDelta.binding_deltas" title="Permalink to this definition">#</a></dt>
 <dd><p>The delta for Bindings between two policies.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">binding_deltas</code></dt>
+<dd><p>Field google.iam.v1.PolicyDelta.binding_deltas</p>
 </dd></dl>
 
 </dd></dl>
@@ -1097,6 +1661,24 @@ overwritten blindly.</p>
 certificates.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">certificate</code></dt>
+<dd><p>Field google.cloud.iot.v1.PublicKeyCertificate.certificate</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">format</code></dt>
+<dd><p>Field google.cloud.iot.v1.PublicKeyCertificate.format</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">x509_details</code></dt>
+<dd><p>Field google.cloud.iot.v1.PublicKeyCertificate.x509_details</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -1113,6 +1695,18 @@ certificates.</p>
 <dt id="google.cloud.iot_v1.types.PublicKeyCredential.key">
 <code class="descname">key</code><a class="headerlink" href="#google.cloud.iot_v1.types.PublicKeyCredential.key" title="Permalink to this definition">#</a></dt>
 <dd><p>The key data.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">format</code></dt>
+<dd><p>Field google.cloud.iot.v1.PublicKeyCredential.format</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">key</code></dt>
+<dd><p>Field google.cloud.iot.v1.PublicKeyCredential.key</p>
 </dd></dl>
 
 </dd></dl>
@@ -1132,6 +1726,12 @@ certificates.</p>
 <code class="descname">public_key_certificate</code><a class="headerlink" href="#google.cloud.iot_v1.types.RegistryCredential.public_key_certificate" title="Permalink to this definition">#</a></dt>
 <dd><p>A public key certificate used to verify the device
 credentials.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">public_key_certificate</code></dt>
+<dd><p>Field google.cloud.iot.v1.RegistryCredential.public_key_certificate</p>
 </dd></dl>
 
 </dd></dl>
@@ -1168,6 +1768,24 @@ and must not contain any MQTT wildcards (“+” or “#”) or null
 characters.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">binary_data</code></dt>
+<dd><p>Field google.cloud.iot.v1.SendCommandToDeviceRequest.binary_data</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.cloud.iot.v1.SendCommandToDeviceRequest.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">subfolder</code></dt>
+<dd><p>Field google.cloud.iot.v1.SendCommandToDeviceRequest.subfolder</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -1198,6 +1816,18 @@ of KB. An empty policy is a valid policy but certain Cloud
 Platform services (such as Projects) might reject them.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">policy</code></dt>
+<dd><p>Field google.iam.v1.SetIamPolicyRequest.policy</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">resource</code></dt>
+<dd><p>Field google.iam.v1.SetIamPolicyRequest.resource</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -1212,12 +1842,36 @@ device.</p>
 <code class="docutils literal notranslate"><span class="pre">projects/myProject/topics/deviceEvents</span></code>.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">pubsub_topic_name</code></dt>
+<dd><p>Field google.cloud.iot.v1.StateNotificationConfig.pubsub_topic_name</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.iot_v1.types.Status">
 <em class="property">class </em><code class="descclassname">google.cloud.iot_v1.types.</code><code class="descname">Status</code><a class="headerlink" href="#google.cloud.iot_v1.types.Status" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.iot_v1.types.Status.code">
+<code class="descname">code</code><a class="headerlink" href="#google.cloud.iot_v1.types.Status.code" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.rpc.Status.code</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.Status.details">
+<code class="descname">details</code><a class="headerlink" href="#google.cloud.iot_v1.types.Status.details" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.rpc.Status.details</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.Status.message">
+<code class="descname">message</code><a class="headerlink" href="#google.cloud.iot_v1.types.Status.message" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.rpc.Status.message</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.iot_v1.types.TestIamPermissionsRequest">
@@ -1240,6 +1894,18 @@ Permissions with wildcards (such as ‘*’ or ‘storage.*’) are
 not allowed. For more information see <a class="reference external" href="https://cloud.google.com/iam/docs/overview#permissions">IAM Overview</a>.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">permissions</code></dt>
+<dd><p>Field google.iam.v1.TestIamPermissionsRequest.permissions</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">resource</code></dt>
+<dd><p>Field google.iam.v1.TestIamPermissionsRequest.resource</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -1253,12 +1919,30 @@ not allowed. For more information see <a class="reference external" href="https:
 caller is allowed.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">permissions</code></dt>
+<dd><p>Field google.iam.v1.TestIamPermissionsResponse.permissions</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.iot_v1.types.Timestamp">
 <em class="property">class </em><code class="descclassname">google.cloud.iot_v1.types.</code><code class="descname">Timestamp</code><a class="headerlink" href="#google.cloud.iot_v1.types.Timestamp" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.iot_v1.types.Timestamp.nanos">
+<code class="descname">nanos</code><a class="headerlink" href="#google.cloud.iot_v1.types.Timestamp.nanos" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.Timestamp.nanos</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.Timestamp.seconds">
+<code class="descname">seconds</code><a class="headerlink" href="#google.cloud.iot_v1.types.Timestamp.seconds" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.Timestamp.seconds</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.iot_v1.types.UnbindDeviceFromGatewayRequest">
@@ -1284,6 +1968,24 @@ ID or the user-defined device identifier.</p>
 <dd><p>The device to disassociate from the specified gateway. The
 value of <code class="docutils literal notranslate"><span class="pre">device_id</span></code> can be either the device numeric ID or
 the user-defined device identifier.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">device_id</code></dt>
+<dd><p>Field google.cloud.iot.v1.UnbindDeviceFromGatewayRequest.device_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">gateway_id</code></dt>
+<dd><p>Field google.cloud.iot.v1.UnbindDeviceFromGatewayRequest.gateway_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">parent</code></dt>
+<dd><p>Field google.cloud.iot.v1.UnbindDeviceFromGatewayRequest.parent</p>
 </dd></dl>
 
 </dd></dl>
@@ -1318,6 +2020,18 @@ Mutable top-level fields: <code class="docutils literal notranslate"><span class
 <code class="docutils literal notranslate"><span class="pre">state_notification_config</span></code>.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">device_registry</code></dt>
+<dd><p>Field google.cloud.iot.v1.UpdateDeviceRegistryRequest.device_registry</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">update_mask</code></dt>
+<dd><p>Field google.cloud.iot.v1.UpdateDeviceRegistryRequest.update_mask</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -1342,6 +2056,18 @@ name path. For example, <code class="docutils literal notranslate"><span class="
 field mask must not be empty, and it must not contain fields
 that are immutable or only set by the server. Mutable top-
 level fields: <code class="docutils literal notranslate"><span class="pre">credentials</span></code>, <code class="docutils literal notranslate"><span class="pre">blocked</span></code>, and <code class="docutils literal notranslate"><span class="pre">metadata</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">device</code></dt>
+<dd><p>Field google.cloud.iot.v1.UpdateDeviceRequest.device</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">update_mask</code></dt>
+<dd><p>Field google.cloud.iot.v1.UpdateDeviceRequest.update_mask</p>
 </dd></dl>
 
 </dd></dl>
@@ -1384,6 +2110,42 @@ level fields: <code class="docutils literal notranslate"><span class="pre">crede
 <dt id="google.cloud.iot_v1.types.X509CertificateDetails.public_key_type">
 <code class="descname">public_key_type</code><a class="headerlink" href="#google.cloud.iot_v1.types.X509CertificateDetails.public_key_type" title="Permalink to this definition">#</a></dt>
 <dd><p>The type of public key in the certificate.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">expiry_time</code></dt>
+<dd><p>Field google.cloud.iot.v1.X509CertificateDetails.expiry_time</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">issuer</code></dt>
+<dd><p>Field google.cloud.iot.v1.X509CertificateDetails.issuer</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">public_key_type</code></dt>
+<dd><p>Field google.cloud.iot.v1.X509CertificateDetails.public_key_type</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">signature_algorithm</code></dt>
+<dd><p>Field google.cloud.iot.v1.X509CertificateDetails.signature_algorithm</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">start_time</code></dt>
+<dd><p>Field google.cloud.iot.v1.X509CertificateDetails.start_time</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">subject</code></dt>
+<dd><p>Field google.cloud.iot.v1.X509CertificateDetails.subject</p>
 </dd></dl>
 
 </dd></dl>

@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Types for Stackdriver Incident Response &amp; Management API Client &#8212; google-cloud 35e0349 documentation</title>
+    <title>Types for Stackdriver Incident Response &amp; Management API Client &#8212; google-cloud 915e116 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -67,6 +67,30 @@ ct_id}/incidents/{incident_id}/annotations/{annotation_id}”
 <dd><p>Content of the annotation. Immutable.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">author</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.Annotation.author</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">content</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.Annotation.content</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">create_time</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.Annotation.create_time</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.Annotation.name</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -106,6 +130,36 @@ storage. Must not be modified by the client.</p>
 <dd><p>Type of this artifact.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">display_name</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.Artifact.display_name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">etag</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.Artifact.etag</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.Artifact.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">type</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.Artifact.type</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">url</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.Artifact.url</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -124,6 +178,18 @@ storage. Must not be modified by the client.</p>
 <dd><p>Person who was proposed as the next assignee (i.e.
 IncidentRoleAssignment.proposed_assignee) and whose proposal
 is being cancelled.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.CancelIncidentRoleHandoverRequest.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">new_assignee</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.CancelIncidentRoleHandoverRequest.new_assignee</p>
 </dd></dl>
 
 </dd></dl>
@@ -162,6 +228,12 @@ channel.</p>
 <dd><p>The email address, for example, “<a class="reference external" href="mailto:user&#37;&#52;&#48;example&#46;com">user<span>&#64;</span>example<span>&#46;</span>com</a>”.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">address</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.CommunicationChannel.Email.address</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -175,6 +247,24 @@ notification channel.</p>
 <dd><p>Stackdriver notification channel name.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.CommunicationChannel.NotificationChannel.name</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">email</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.CommunicationChannel.email</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">notification_channel</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.CommunicationChannel.notification_channel</p>
 </dd></dl>
 
 </dd></dl>
@@ -197,6 +287,18 @@ should be the current user; otherwise ForceRoleHandover should
 be called.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.ConfirmIncidentRoleHandoverRequest.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">new_assignee</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.ConfirmIncidentRoleHandoverRequest.new_assignee</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -216,6 +318,18 @@ be called.</p>
 <dd><p>Only annotation.content is an input argument.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">annotation</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.CreateAnnotationRequest.annotation</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">parent</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.CreateAnnotationRequest.parent</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -233,6 +347,18 @@ be called.</p>
 <dt id="google.cloud.irm_v1alpha2.types.CreateArtifactRequest.artifact">
 <code class="descname">artifact</code><a class="headerlink" href="#google.cloud.irm_v1alpha2.types.CreateArtifactRequest.artifact" title="Permalink to this definition">#</a></dt>
 <dd><p>The artifact to create.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">artifact</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.CreateArtifactRequest.artifact</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">parent</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.CreateArtifactRequest.parent</p>
 </dd></dl>
 
 </dd></dl>
@@ -255,6 +381,18 @@ incident belongs to. The name is of the form
 <code class="docutils literal notranslate"><span class="pre">projects/{project_id_or_number}</span></code> .</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">incident</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.CreateIncidentRequest.incident</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">parent</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.CreateIncidentRequest.parent</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -272,6 +410,18 @@ incident belongs to. The name is of the form
 <dt id="google.cloud.irm_v1alpha2.types.CreateIncidentRoleAssignmentRequest.incident_role_assignment">
 <code class="descname">incident_role_assignment</code><a class="headerlink" href="#google.cloud.irm_v1alpha2.types.CreateIncidentRoleAssignmentRequest.incident_role_assignment" title="Permalink to this definition">#</a></dt>
 <dd><p>Role assignment to create.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">incident_role_assignment</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.CreateIncidentRoleAssignmentRequest.incident_role_assignment</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">parent</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.CreateIncidentRoleAssignmentRequest.parent</p>
 </dd></dl>
 
 </dd></dl>
@@ -293,6 +443,18 @@ requested signal belongs to.</p>
 <dd><p>The signal to create.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">parent</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.CreateSignalRequest.parent</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">signal</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.CreateSignalRequest.signal</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -310,6 +472,18 @@ requested signal belongs to.</p>
 <dt id="google.cloud.irm_v1alpha2.types.CreateSubscriptionRequest.subscription">
 <code class="descname">subscription</code><a class="headerlink" href="#google.cloud.irm_v1alpha2.types.CreateSubscriptionRequest.subscription" title="Permalink to this definition">#</a></dt>
 <dd><p>The subscription to create.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">parent</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.CreateSubscriptionRequest.parent</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">subscription</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.CreateSubscriptionRequest.subscription</p>
 </dd></dl>
 
 </dd></dl>
@@ -331,6 +505,18 @@ requested signal belongs to.</p>
 <dd><p>Tag to create. Only tag.display_name is an input argument.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">parent</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.CreateTagRequest.parent</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">tag</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.CreateTagRequest.tag</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -341,6 +527,12 @@ requested signal belongs to.</p>
 <dt id="google.cloud.irm_v1alpha2.types.DeleteArtifactRequest.name">
 <code class="descname">name</code><a class="headerlink" href="#google.cloud.irm_v1alpha2.types.DeleteArtifactRequest.name" title="Permalink to this definition">#</a></dt>
 <dd><p>Resource name of the artifact.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.DeleteArtifactRequest.name</p>
 </dd></dl>
 
 </dd></dl>
@@ -355,6 +547,12 @@ requested signal belongs to.</p>
 <dd><p>Resource name of the role assignment.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.DeleteIncidentRoleAssignmentRequest.name</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -367,6 +565,12 @@ requested signal belongs to.</p>
 <dd><p>Resource name of the subscription.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.DeleteSubscriptionRequest.name</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -377,6 +581,12 @@ requested signal belongs to.</p>
 <dt id="google.cloud.irm_v1alpha2.types.DeleteTagRequest.name">
 <code class="descname">name</code><a class="headerlink" href="#google.cloud.irm_v1alpha2.types.DeleteTagRequest.name" title="Permalink to this definition">#</a></dt>
 <dd><p>Resource name of the tag.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.DeleteTagRequest.name</p>
 </dd></dl>
 
 </dd></dl>
@@ -430,6 +640,42 @@ title, for TYPE_OTHER roles) will be updated.</p>
 duplicates.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">artifacts</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.EscalateIncidentRequest.artifacts</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">incident</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.EscalateIncidentRequest.incident</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">roles</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.EscalateIncidentRequest.roles</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">subscriptions</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.EscalateIncidentRequest.subscriptions</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">tags</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.EscalateIncidentRequest.tags</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">update_mask</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.EscalateIncidentRequest.update_mask</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -466,12 +712,48 @@ duplicates.</p>
 <dd><p>New or modified artifacts.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">artifacts</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.EscalateIncidentResponse.artifacts</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">incident</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.EscalateIncidentResponse.incident</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">roles</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.EscalateIncidentResponse.roles</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">subscriptions</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.EscalateIncidentResponse.subscriptions</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">tags</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.EscalateIncidentResponse.tags</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.irm_v1alpha2.types.FieldMask">
 <em class="property">class </em><code class="descclassname">google.cloud.irm_v1alpha2.types.</code><code class="descname">FieldMask</code><a class="headerlink" href="#google.cloud.irm_v1alpha2.types.FieldMask" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.irm_v1alpha2.types.FieldMask.paths">
+<code class="descname">paths</code><a class="headerlink" href="#google.cloud.irm_v1alpha2.types.FieldMask.paths" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FieldMask.paths</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.irm_v1alpha2.types.ForceIncidentRoleHandoverRequest">
@@ -491,6 +773,18 @@ should not be the current user; otherwise ConfirmRoleHandover
 should be called.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.ForceIncidentRoleHandoverRequest.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">new_assignee</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.ForceIncidentRoleHandoverRequest.new_assignee</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -504,6 +798,12 @@ should be called.</p>
 “projects/{project_id}/incidents/{incident_id}”.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.GetIncidentRequest.name</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -515,6 +815,12 @@ should be called.</p>
 <code class="descname">name</code><a class="headerlink" href="#google.cloud.irm_v1alpha2.types.GetSignalRequest.name" title="Permalink to this definition">#</a></dt>
 <dd><p>Resource name of the Signal resource, for example,
 “projects/{project_id}/signals/{signal_id}”.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.GetSignalRequest.name</p>
 </dd></dl>
 
 </dd></dl>
@@ -618,6 +924,84 @@ are happening.</p>
 <dd><p>The type of channel/venue for incident communications.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">channel_type</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.Incident.CommunicationVenue.channel_type</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">display_name</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.Incident.CommunicationVenue.display_name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">uri</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.Incident.CommunicationVenue.uri</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">communication_venue</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.Incident.communication_venue</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">duplicate_incident</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.Incident.duplicate_incident</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">escalation_level</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.Incident.escalation_level</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">etag</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.Incident.etag</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.Incident.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">severity</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.Incident.severity</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">stage</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.Incident.stage</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">start_time</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.Incident.start_time</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">synopsis</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.Incident.synopsis</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">title</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.Incident.title</p>
 </dd></dl>
 
 </dd></dl>
@@ -646,6 +1030,24 @@ TYPE_OTHER, must be unique within an incident.</p>
 <code class="descname">description</code><a class="headerlink" href="#google.cloud.irm_v1alpha2.types.IncidentRole.description" title="Permalink to this definition">#</a></dt>
 <dd><p>Output only unless TYPE_OTHER is used. Description of the
 role.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">description</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.IncidentRole.description</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">title</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.IncidentRole.title</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">type</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.IncidentRole.type</p>
 </dd></dl>
 
 </dd></dl>
@@ -705,6 +1107,36 @@ nil Or if Carol refuses the handover, the fields are:
 <code class="docutils literal notranslate"><span class="pre">assignee</span></code>: Alice, <code class="docutils literal notranslate"><span class="pre">proposed_assignee</span></code>: nil</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">assignee</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.IncidentRoleAssignment.assignee</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">etag</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.IncidentRoleAssignment.etag</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.IncidentRoleAssignment.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">proposed_assignee</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.IncidentRoleAssignment.proposed_assignee</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">role</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.IncidentRoleAssignment.role</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -731,6 +1163,24 @@ nil Or if Carol refuses the handover, the fields are:
 <code class="docutils literal notranslate"><span class="pre">next_page_token</span></code>.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">page_size</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.ListAnnotationsRequest.page_size</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">page_token</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.ListAnnotationsRequest.page_token</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">parent</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.ListAnnotationsRequest.parent</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -747,6 +1197,18 @@ nil Or if Carol refuses the handover, the fields are:
 <dt id="google.cloud.irm_v1alpha2.types.ListAnnotationsResponse.next_page_token">
 <code class="descname">next_page_token</code><a class="headerlink" href="#google.cloud.irm_v1alpha2.types.ListAnnotationsResponse.next_page_token" title="Permalink to this definition">#</a></dt>
 <dd><p>Page token to fetch the next set of annotations.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">annotations</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.ListAnnotationsResponse.annotations</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">next_page_token</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.ListAnnotationsResponse.next_page_token</p>
 </dd></dl>
 
 </dd></dl>
@@ -775,6 +1237,24 @@ nil Or if Carol refuses the handover, the fields are:
 <code class="docutils literal notranslate"><span class="pre">next_page_token</span></code>.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">page_size</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.ListArtifactsRequest.page_size</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">page_token</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.ListArtifactsRequest.page_token</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">parent</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.ListArtifactsRequest.parent</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -791,6 +1271,18 @@ nil Or if Carol refuses the handover, the fields are:
 <dt id="google.cloud.irm_v1alpha2.types.ListArtifactsResponse.next_page_token">
 <code class="descname">next_page_token</code><a class="headerlink" href="#google.cloud.irm_v1alpha2.types.ListArtifactsResponse.next_page_token" title="Permalink to this definition">#</a></dt>
 <dd><p>Page token to fetch the next set of artifacts.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">artifacts</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.ListArtifactsResponse.artifacts</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">next_page_token</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.ListArtifactsResponse.next_page_token</p>
 </dd></dl>
 
 </dd></dl>
@@ -819,6 +1311,24 @@ nil Or if Carol refuses the handover, the fields are:
 <code class="docutils literal notranslate"><span class="pre">next_page_token</span></code>.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">page_size</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.ListIncidentRoleAssignmentsRequest.page_size</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">page_token</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.ListIncidentRoleAssignmentsRequest.page_token</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">parent</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.ListIncidentRoleAssignmentsRequest.parent</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -835,6 +1345,18 @@ nil Or if Carol refuses the handover, the fields are:
 <dt id="google.cloud.irm_v1alpha2.types.ListIncidentRoleAssignmentsResponse.next_page_token">
 <code class="descname">next_page_token</code><a class="headerlink" href="#google.cloud.irm_v1alpha2.types.ListIncidentRoleAssignmentsResponse.next_page_token" title="Permalink to this definition">#</a></dt>
 <dd><p>Page token to fetch the next set of assignments.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">incident_role_assignments</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.ListIncidentRoleAssignmentsResponse.incident_role_assignments</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">next_page_token</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.ListIncidentRoleAssignmentsResponse.next_page_token</p>
 </dd></dl>
 
 </dd></dl>
@@ -863,6 +1385,24 @@ nil Or if Carol refuses the handover, the fields are:
 <code class="docutils literal notranslate"><span class="pre">next_page_token</span></code>.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">page_size</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.ListSubscriptionsRequest.page_size</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">page_token</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.ListSubscriptionsRequest.page_token</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">parent</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.ListSubscriptionsRequest.parent</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -879,6 +1419,18 @@ nil Or if Carol refuses the handover, the fields are:
 <dt id="google.cloud.irm_v1alpha2.types.ListSubscriptionsResponse.next_page_token">
 <code class="descname">next_page_token</code><a class="headerlink" href="#google.cloud.irm_v1alpha2.types.ListSubscriptionsResponse.next_page_token" title="Permalink to this definition">#</a></dt>
 <dd><p>Page token to fetch the next set of subscriptions.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">next_page_token</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.ListSubscriptionsResponse.next_page_token</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">subscriptions</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.ListSubscriptionsResponse.subscriptions</p>
 </dd></dl>
 
 </dd></dl>
@@ -907,6 +1459,24 @@ nil Or if Carol refuses the handover, the fields are:
 <code class="docutils literal notranslate"><span class="pre">next_page_token</span></code>.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">page_size</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.ListTagsRequest.page_size</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">page_token</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.ListTagsRequest.page_token</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">parent</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.ListTagsRequest.parent</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -925,6 +1495,18 @@ nil Or if Carol refuses the handover, the fields are:
 <dd><p>Page token to fetch the next set of tags.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">next_page_token</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.ListTagsResponse.next_page_token</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">tags</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.ListTagsResponse.tags</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -941,6 +1523,18 @@ nil Or if Carol refuses the handover, the fields are:
 <dt id="google.cloud.irm_v1alpha2.types.RequestIncidentRoleHandoverRequest.new_assignee">
 <code class="descname">new_assignee</code><a class="headerlink" href="#google.cloud.irm_v1alpha2.types.RequestIncidentRoleHandoverRequest.new_assignee" title="Permalink to this definition">#</a></dt>
 <dd><p>The proposed assignee.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.RequestIncidentRoleHandoverRequest.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">new_assignee</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.RequestIncidentRoleHandoverRequest.new_assignee</p>
 </dd></dl>
 
 </dd></dl>
@@ -1025,6 +1619,36 @@ ikipedia.org/wiki/List_of_tz_database_time_zones. If no
 time zone is specified, the default is UTC.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">page_size</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.SearchIncidentsRequest.page_size</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">page_token</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.SearchIncidentsRequest.page_token</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">parent</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.SearchIncidentsRequest.parent</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">query</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.SearchIncidentsRequest.query</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">time_zone</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.SearchIncidentsRequest.time_zone</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -1041,6 +1665,18 @@ time zone is specified, the default is UTC.</p>
 <dt id="google.cloud.irm_v1alpha2.types.SearchIncidentsResponse.next_page_token">
 <code class="descname">next_page_token</code><a class="headerlink" href="#google.cloud.irm_v1alpha2.types.SearchIncidentsResponse.next_page_token" title="Permalink to this definition">#</a></dt>
 <dd><p>Page token to fetch the next set of incidents.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">incidents</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.SearchIncidentsResponse.incidents</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">next_page_token</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.SearchIncidentsResponse.next_page_token</p>
 </dd></dl>
 
 </dd></dl>
@@ -1077,6 +1713,30 @@ and page_token should be the same as the original query (may
 return an error or unexpected data otherwise).</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">page_size</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.SearchSignalsRequest.page_size</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">page_token</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.SearchSignalsRequest.page_token</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">parent</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.SearchSignalsRequest.parent</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">query</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.SearchSignalsRequest.query</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -1093,6 +1753,18 @@ return an error or unexpected data otherwise).</p>
 <dt id="google.cloud.irm_v1alpha2.types.SearchSignalsResponse.next_page_token">
 <code class="descname">next_page_token</code><a class="headerlink" href="#google.cloud.irm_v1alpha2.types.SearchSignalsResponse.next_page_token" title="Permalink to this definition">#</a></dt>
 <dd><p>Page token to fetch the next set of signals.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">next_page_token</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.SearchSignalsResponse.next_page_token</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">signals</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.SearchSignalsResponse.signals</p>
 </dd></dl>
 
 </dd></dl>
@@ -1119,6 +1791,24 @@ return an error or unexpected data otherwise).</p>
 <code class="descname">page_token</code><a class="headerlink" href="#google.cloud.irm_v1alpha2.types.SearchSimilarIncidentsRequest.page_token" title="Permalink to this definition">#</a></dt>
 <dd><p>Page token from an earlier query, as returned in
 ‘next_page_token’.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.SearchSimilarIncidentsRequest.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">page_size</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.SearchSimilarIncidentsRequest.page_size</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">page_token</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.SearchSimilarIncidentsRequest.page_token</p>
 </dd></dl>
 
 </dd></dl>
@@ -1151,6 +1841,24 @@ information.</p>
 specified in the request.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">incident</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.SearchSimilarIncidentsResponse.Result.incident</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">next_page_token</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.SearchSimilarIncidentsResponse.next_page_token</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">results</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.SearchSimilarIncidentsResponse.results</p>
 </dd></dl>
 
 </dd></dl>
@@ -1224,6 +1932,60 @@ to each incident in the future.</p>
 “projects/{project_id}/incidents/{incident_id}”.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.SendShiftHandoffRequest.Incident.name</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">cc</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.SendShiftHandoffRequest.cc</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">incidents</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.SendShiftHandoffRequest.incidents</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">notes_content</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.SendShiftHandoffRequest.notes_content</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">notes_content_type</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.SendShiftHandoffRequest.notes_content_type</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">parent</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.SendShiftHandoffRequest.parent</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">preview_only</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.SendShiftHandoffRequest.preview_only</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">recipients</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.SendShiftHandoffRequest.recipients</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">subject</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.SendShiftHandoffRequest.subject</p>
 </dd></dl>
 
 </dd></dl>
@@ -1244,6 +2006,18 @@ to each incident in the future.</p>
 <dd><p>The contents of the handoff that was sent or would have been
 sent (if the request was preview_only). This will typically
 contain a full HTML document.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">content</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.SendShiftHandoffResponse.content</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">content_type</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.SendShiftHandoffResponse.content_type</p>
 </dd></dl>
 
 </dd></dl>
@@ -1358,6 +2132,90 @@ Immutable for Signals created by Stackdriver Alerting.</p>
 <dd><p>The URI for the artifact.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">uri</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.Signal.SignalArtifact.uri</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">user_type</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.Signal.SignalArtifact.user_type</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">close_time</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.Signal.close_time</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">content</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.Signal.content</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">content_type</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.Signal.content_type</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">create_time</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.Signal.create_time</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">creator</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.Signal.creator</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">detect_time</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.Signal.detect_time</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">etag</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.Signal.etag</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">incident</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.Signal.incident</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.Signal.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">signal_artifacts</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.Signal.signal_artifacts</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">signal_state</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.Signal.signal_state</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">title</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.Signal.title</p>
 </dd></dl>
 
 </dd></dl>
@@ -1394,6 +2252,30 @@ storage. Must not be modified by the client.</p>
 <dd><p>Types of events this subscription receives notifications for.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">etag</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.Subscription.etag</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">event_types</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.Subscription.event_types</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.Subscription.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">subscription_channel</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.Subscription.subscription_channel</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -1426,6 +2308,30 @@ markdown as indicated by the content_type.</p>
 <dd><p>Author of the synopsis.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">author</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.Synopsis.author</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">content</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.Synopsis.content</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">content_type</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.Synopsis.content_type</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">update_time</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.Synopsis.update_time</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -1446,12 +2352,36 @@ ncidents/{incident_id}/tags/{tag_id}”</p>
 Immutable.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">display_name</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.Tag.display_name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.Tag.name</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.irm_v1alpha2.types.Timestamp">
 <em class="property">class </em><code class="descclassname">google.cloud.irm_v1alpha2.types.</code><code class="descname">Timestamp</code><a class="headerlink" href="#google.cloud.irm_v1alpha2.types.Timestamp" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.irm_v1alpha2.types.Timestamp.nanos">
+<code class="descname">nanos</code><a class="headerlink" href="#google.cloud.irm_v1alpha2.types.Timestamp.nanos" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.Timestamp.nanos</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.irm_v1alpha2.types.Timestamp.seconds">
+<code class="descname">seconds</code><a class="headerlink" href="#google.cloud.irm_v1alpha2.types.Timestamp.seconds" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.Timestamp.seconds</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.irm_v1alpha2.types.UpdateArtifactRequest">
@@ -1467,6 +2397,18 @@ Immutable.</p>
 <dt id="google.cloud.irm_v1alpha2.types.UpdateArtifactRequest.update_mask">
 <code class="descname">update_mask</code><a class="headerlink" href="#google.cloud.irm_v1alpha2.types.UpdateArtifactRequest.update_mask" title="Permalink to this definition">#</a></dt>
 <dd><p>List of fields that should be updated.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">artifact</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.UpdateArtifactRequest.artifact</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">update_mask</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.UpdateArtifactRequest.update_mask</p>
 </dd></dl>
 
 </dd></dl>
@@ -1487,6 +2429,18 @@ Immutable.</p>
 <dd><p>List of fields that should be updated.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">incident</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.UpdateIncidentRequest.incident</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">update_mask</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.UpdateIncidentRequest.update_mask</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -1505,6 +2459,18 @@ Immutable.</p>
 <dd><p>List of fields that should be updated.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">signal</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.UpdateSignalRequest.signal</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">update_mask</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.UpdateSignalRequest.update_mask</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -1521,6 +2487,18 @@ Immutable.</p>
 <dt id="google.cloud.irm_v1alpha2.types.UpdateSubscriptionRequest.update_mask">
 <code class="descname">update_mask</code><a class="headerlink" href="#google.cloud.irm_v1alpha2.types.UpdateSubscriptionRequest.update_mask" title="Permalink to this definition">#</a></dt>
 <dd><p>List of fields that should be updated.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">subscription</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.UpdateSubscriptionRequest.subscription</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">update_mask</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.UpdateSubscriptionRequest.update_mask</p>
 </dd></dl>
 
 </dd></dl>
@@ -1552,6 +2530,18 @@ Google account. This field will be set if the user is
 explicitly identified (verbatim) by email address in an API
 request (potentially sometime in the past). It will not be
 populated based on the credentials of a caller of the API.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">email</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.User.email</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">user_id</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.User.user_id</p>
 </dd></dl>
 
 </dd></dl>

@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Types for BigQuery Storage API Client &#8212; google-cloud 35e0349 documentation</title>
+    <title>Types for BigQuery Storage API Client &#8212; google-cloud 915e116 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -53,6 +53,18 @@
 <dd><p>The count of rows in the returning block.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">row_count</code></dt>
+<dd><p>Field google.cloud.bigquery.storage.v1beta1.AvroRows.row_count</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">serialized_binary_rows</code></dt>
+<dd><p>Field google.cloud.bigquery.storage.v1beta1.AvroRows.serialized_binary_rows</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -64,6 +76,12 @@
 <code class="descname">schema</code><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.types.AvroSchema.schema" title="Permalink to this definition">#</a></dt>
 <dd><p>Json serialized schema, as described at
 <a class="reference external" href="https://avro.apache.org/docs/1.8.1/spec.html">https://avro.apache.org/docs/1.8.1/spec.html</a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">schema</code></dt>
+<dd><p>Field google.cloud.bigquery.storage.v1beta1.AvroSchema.schema</p>
 </dd></dl>
 
 </dd></dl>
@@ -88,6 +106,18 @@ Number of added streams may be less than this, see
 CreateReadSessionRequest for more information.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">requested_streams</code></dt>
+<dd><p>Field google.cloud.bigquery.storage.v1beta1.BatchCreateReadSessionStreamsRequest.requested_streams</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">session</code></dt>
+<dd><p>Field google.cloud.bigquery.storage.v1beta1.BatchCreateReadSessionStreamsRequest.session</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -99,6 +129,12 @@ identifiers for the newly created streams.</p>
 <dt id="google.cloud.bigquery_storage_v1beta1.types.BatchCreateReadSessionStreamsResponse.streams">
 <code class="descname">streams</code><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.types.BatchCreateReadSessionStreamsResponse.streams" title="Permalink to this definition">#</a></dt>
 <dd><p>Newly added streams.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">streams</code></dt>
+<dd><p>Field google.cloud.bigquery.storage.v1beta1.BatchCreateReadSessionStreamsResponse.streams</p>
 </dd></dl>
 
 </dd></dl>
@@ -117,7 +153,7 @@ requested parallelism, projection filters and constraints.</p>
 <dl class="attribute">
 <dt id="google.cloud.bigquery_storage_v1beta1.types.CreateReadSessionRequest.parent">
 <code class="descname">parent</code><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.types.CreateReadSessionRequest.parent" title="Permalink to this definition">#</a></dt>
-<dd><p>Required. String of the form “projects/your-project-id”
+<dd><p>Required. String of the form <code class="docutils literal notranslate"><span class="pre">projects/{project_id}</span></code>
 indicating the project this ReadSession is associated with.
 This is the project that will be billed for usage.</p>
 </dd></dl>
@@ -154,6 +190,42 @@ selection, filters).</p>
 <dd><p>Data output format. Currently default to Avro.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">format</code></dt>
+<dd><p>Field google.cloud.bigquery.storage.v1beta1.CreateReadSessionRequest.format</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">parent</code></dt>
+<dd><p>Field google.cloud.bigquery.storage.v1beta1.CreateReadSessionRequest.parent</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">read_options</code></dt>
+<dd><p>Field google.cloud.bigquery.storage.v1beta1.CreateReadSessionRequest.read_options</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">requested_streams</code></dt>
+<dd><p>Field google.cloud.bigquery.storage.v1beta1.CreateReadSessionRequest.requested_streams</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">table_modifiers</code></dt>
+<dd><p>Field google.cloud.bigquery.storage.v1beta1.CreateReadSessionRequest.table_modifiers</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">table_reference</code></dt>
+<dd><p>Field google.cloud.bigquery.storage.v1beta1.CreateReadSessionRequest.table_reference</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -171,6 +243,12 @@ selection, filters).</p>
 <dd><p>Stream to finalize.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">stream</code></dt>
+<dd><p>Field google.cloud.bigquery.storage.v1beta1.FinalizeStreamRequest.stream</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -185,6 +263,12 @@ information.</p>
 reading from. The offset requested must be less than the last
 row read from ReadRows. Requesting a larger offset is
 undefined.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">read_position</code></dt>
+<dd><p>Field google.cloud.bigquery.storage.v1beta1.ReadRowsRequest.read_position</p>
 </dd></dl>
 
 </dd></dl>
@@ -220,6 +304,24 @@ creation.</p>
 describes the current throttling status.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">avro_rows</code></dt>
+<dd><p>Field google.cloud.bigquery.storage.v1beta1.ReadRowsResponse.avro_rows</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">status</code></dt>
+<dd><p>Field google.cloud.bigquery.storage.v1beta1.ReadRowsResponse.status</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">throttle_status</code></dt>
+<dd><p>Field google.cloud.bigquery.storage.v1beta1.ReadRowsResponse.throttle_status</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -229,8 +331,8 @@ describes the current throttling status.</p>
 <dl class="attribute">
 <dt id="google.cloud.bigquery_storage_v1beta1.types.ReadSession.name">
 <code class="descname">name</code><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.types.ReadSession.name" title="Permalink to this definition">#</a></dt>
-<dd><p>Unique identifier for the session. In the form
-<code class="docutils literal notranslate"><span class="pre">projects/{project_id}/sessions/{session_id}</span></code></p>
+<dd><p>Unique identifier for the session, in the form <code class="docutils literal notranslate"><span class="pre">projects/{pro</span>
+<span class="pre">ject_id}/locations/{location}/sessions/{session_id}</span></code>.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -273,6 +375,42 @@ will only contain the selected fields.</p>
 specified table.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">avro_schema</code></dt>
+<dd><p>Field google.cloud.bigquery.storage.v1beta1.ReadSession.avro_schema</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">expire_time</code></dt>
+<dd><p>Field google.cloud.bigquery.storage.v1beta1.ReadSession.expire_time</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.cloud.bigquery.storage.v1beta1.ReadSession.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">streams</code></dt>
+<dd><p>Field google.cloud.bigquery.storage.v1beta1.ReadSession.streams</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">table_modifiers</code></dt>
+<dd><p>Field google.cloud.bigquery.storage.v1beta1.ReadSession.table_modifiers</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">table_reference</code></dt>
+<dd><p>Field google.cloud.bigquery.storage.v1beta1.ReadSession.table_reference</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -283,6 +421,12 @@ specified table.</p>
 <dt id="google.cloud.bigquery_storage_v1beta1.types.SplitReadStreamRequest.original_stream">
 <code class="descname">original_stream</code><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.types.SplitReadStreamRequest.original_stream" title="Permalink to this definition">#</a></dt>
 <dd><p>Stream to split.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">original_stream</code></dt>
+<dd><p>Field google.cloud.bigquery.storage.v1beta1.SplitReadStreamRequest.original_stream</p>
 </dd></dl>
 
 </dd></dl>
@@ -305,6 +449,18 @@ specified table.</p>
 |original_stream|.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">primary_stream</code></dt>
+<dd><p>Field google.cloud.bigquery.storage.v1beta1.SplitReadStreamResponse.primary_stream</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">remainder_stream</code></dt>
+<dd><p>Field google.cloud.bigquery.storage.v1beta1.SplitReadStreamResponse.remainder_stream</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -314,14 +470,26 @@ specified table.</p>
 <dl class="attribute">
 <dt id="google.cloud.bigquery_storage_v1beta1.types.Stream.name">
 <code class="descname">name</code><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.types.Stream.name" title="Permalink to this definition">#</a></dt>
-<dd><p>Name of the stream. In the form
-<code class="docutils literal notranslate"><span class="pre">/projects/{project_id}/stream/{stream_id}</span></code></p>
+<dd><p>Name of the stream, in the form <code class="docutils literal notranslate"><span class="pre">projects/{project_id}/locati</span>
+<span class="pre">ons/{location}/streams/{stream_id}</span></code>.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.bigquery_storage_v1beta1.types.Stream.row_count">
 <code class="descname">row_count</code><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.types.Stream.row_count" title="Permalink to this definition">#</a></dt>
 <dd><p>Rows in the stream.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.cloud.bigquery.storage.v1beta1.Stream.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">row_count</code></dt>
+<dd><p>Field google.cloud.bigquery.storage.v1beta1.Stream.row_count</p>
 </dd></dl>
 
 </dd></dl>
@@ -342,6 +510,18 @@ specified table.</p>
 <dd><p>Position in the stream.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">offset</code></dt>
+<dd><p>Field google.cloud.bigquery.storage.v1beta1.StreamPosition.offset</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">stream</code></dt>
+<dd><p>Field google.cloud.bigquery.storage.v1beta1.StreamPosition.stream</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -356,6 +536,12 @@ over time as different readers in the stream progress at rates
 which are relatively fast or slow.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">estimated_row_count</code></dt>
+<dd><p>Field google.cloud.bigquery.storage.v1beta1.StreamStatus.estimated_row_count</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -367,6 +553,12 @@ which are relatively fast or slow.</p>
 <code class="descname">snapshot_time</code><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.types.TableModifiers.snapshot_time" title="Permalink to this definition">#</a></dt>
 <dd><p>The snapshot time of the table. If not set, interpreted as
 now.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">snapshot_time</code></dt>
+<dd><p>Field google.cloud.bigquery.storage.v1beta1.TableModifiers.snapshot_time</p>
 </dd></dl>
 
 </dd></dl>
@@ -389,10 +581,25 @@ of fields in selected_fields.</p>
 <dt id="google.cloud.bigquery_storage_v1beta1.types.TableReadOptions.row_restriction">
 <code class="descname">row_restriction</code><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.types.TableReadOptions.row_restriction" title="Permalink to this definition">#</a></dt>
 <dd><p>Optional. SQL text filtering statement, similar to a WHERE
-clause in a query. Currently, we support combinations of
-predicates that are a comparison between a column and a
-constant value in SQL statement. Aggregates are not supported.
-Example: “a &gt; DATE ‘2014-9-27’ AND (b &gt; 5 and C LIKE ‘date’)”</p>
+clause in a query. Currently, only a single predicate that is
+a comparison between a column and a constant value is
+supported. Aggregates are not supported.  Examples:
+“int_field &gt; 5” “date_field = CAST(‘2014-9-27’ as DATE)”
+“nullable_field is not NULL” “st_equals(geo_field,
+st_geofromtext(“POINT(2, 2)”))” “numeric_field BETWEEN 1.0
+AND 5.0”</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">row_restriction</code></dt>
+<dd><p>Field google.cloud.bigquery.storage.v1beta1.TableReadOptions.row_restriction</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">selected_fields</code></dt>
+<dd><p>Field google.cloud.bigquery.storage.v1beta1.TableReadOptions.selected_fields</p>
 </dd></dl>
 
 </dd></dl>
@@ -420,6 +627,24 @@ table.</p>
 <dd><p>The ID of the table in the above dataset.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">dataset_id</code></dt>
+<dd><p>Field google.cloud.bigquery.storage.v1beta1.TableReference.dataset_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">project_id</code></dt>
+<dd><p>Field google.cloud.bigquery.storage.v1beta1.TableReference.project_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">table_id</code></dt>
+<dd><p>Field google.cloud.bigquery.storage.v1beta1.TableReference.table_id</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -433,12 +658,30 @@ table.</p>
 throttling, 100 is completely throttled.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">throttle_percent</code></dt>
+<dd><p>Field google.cloud.bigquery.storage.v1beta1.ThrottleStatus.throttle_percent</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.bigquery_storage_v1beta1.types.Timestamp">
 <em class="property">class </em><code class="descclassname">google.cloud.bigquery_storage_v1beta1.types.</code><code class="descname">Timestamp</code><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.types.Timestamp" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.bigquery_storage_v1beta1.types.Timestamp.nanos">
+<code class="descname">nanos</code><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.types.Timestamp.nanos" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.Timestamp.nanos</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_storage_v1beta1.types.Timestamp.seconds">
+<code class="descname">seconds</code><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.types.Timestamp.seconds" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.Timestamp.seconds</p>
+</dd></dl>
+
+</dd></dl>
 
 </div>
 

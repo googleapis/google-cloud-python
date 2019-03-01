@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Types for Cloud AutoML API Client &#8212; google-cloud 35e0349 documentation</title>
+    <title>Types for Cloud AutoML API Client &#8212; google-cloud 915e116 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -80,17 +80,59 @@ dataset, the returned value could be different as model owner
 could update the display_name between any two model training.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">annotation_spec_id</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.AnnotationPayload.annotation_spec_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">classification</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.AnnotationPayload.classification</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">display_name</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.AnnotationPayload.display_name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">translation</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.AnnotationPayload.translation</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.automl_v1beta1.types.Any">
 <em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">Any</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.Any" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.Any.type_url">
+<code class="descname">type_url</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.Any.type_url" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.Any.type_url</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.Any.value">
+<code class="descname">value</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.Any.value" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.Any.value</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.automl_v1beta1.types.CancelOperationRequest">
 <em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">CancelOperationRequest</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.CancelOperationRequest" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.CancelOperationRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.CancelOperationRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.longrunning.CancelOperationRequest.name</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.automl_v1beta1.types.ClassificationAnnotation">
@@ -104,6 +146,12 @@ higher value means greater confidence that the annotation is
 positive. If a user approves an annotation as negative or
 positive, the score value remains unchanged. If a user creates
 an annotation, the score is 0 for negative or 1 for positive.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">score</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.ClassificationAnnotation.score</p>
 </dd></dl>
 
 </dd></dl>
@@ -203,6 +251,48 @@ sEntry.recall_at1] and [precision_at1][google.cloud.automl.v
 precision_at1].</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">confidence_threshold</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.ClassificationEvaluationMetrics.ConfidenceMetricsEntry.confidence_threshold</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">f1_score</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.ClassificationEvaluationMetrics.ConfidenceMetricsEntry.f1_score</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">f1_score_at1</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.ClassificationEvaluationMetrics.ConfidenceMetricsEntry.f1_score_at1</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">precision</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.ClassificationEvaluationMetrics.ConfidenceMetricsEntry.precision</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">precision_at1</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.ClassificationEvaluationMetrics.ConfidenceMetricsEntry.precision_at1</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">recall</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.ClassificationEvaluationMetrics.ConfidenceMetricsEntry.recall</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">recall_at1</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.ClassificationEvaluationMetrics.ConfidenceMetricsEntry.recall_at1</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -238,8 +328,56 @@ matrix. The number of values each row is equal to the size of
 annotatin_spec_id.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">example_count</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.ClassificationEvaluationMetrics.ConfusionMatrix.Row.example_count</p>
 </dd></dl>
 
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">annotation_spec_id</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.ClassificationEvaluationMetrics.ConfusionMatrix.annotation_spec_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">row</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.ClassificationEvaluationMetrics.ConfusionMatrix.row</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">annotation_spec_id</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.ClassificationEvaluationMetrics.annotation_spec_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">au_prc</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.ClassificationEvaluationMetrics.au_prc</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">base_au_prc</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.ClassificationEvaluationMetrics.base_au_prc</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">confidence_metrics_entry</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.ClassificationEvaluationMetrics.confidence_metrics_entry</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">confusion_matrix</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.ClassificationEvaluationMetrics.confusion_matrix</p>
 </dd></dl>
 
 </dd></dl>
@@ -259,6 +397,18 @@ annotatin_spec_id.</p>
 <dt id="google.cloud.automl_v1beta1.types.CreateDatasetRequest.dataset">
 <code class="descname">dataset</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.CreateDatasetRequest.dataset" title="Permalink to this definition">#</a></dt>
 <dd><p>The dataset to create.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">dataset</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.CreateDatasetRequest.dataset</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">parent</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.CreateDatasetRequest.parent</p>
 </dd></dl>
 
 </dd></dl>
@@ -287,12 +437,36 @@ created.</p>
 <dd><p>The model to create.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">model</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.CreateModelRequest.model</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">parent</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.CreateModelRequest.parent</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.automl_v1beta1.types.CustomHttpPattern">
 <em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">CustomHttpPattern</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.CustomHttpPattern" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.CustomHttpPattern.kind">
+<code class="descname">kind</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.CustomHttpPattern.kind" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.api.CustomHttpPattern.kind</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.CustomHttpPattern.path">
+<code class="descname">path</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.CustomHttpPattern.path" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.api.CustomHttpPattern.path</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.automl_v1beta1.types.Dataset">
@@ -352,6 +526,48 @@ ASCII digits 0-9.</p>
 <dd><p>Output only. Timestamp when this dataset was created.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">create_time</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.Dataset.create_time</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">display_name</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.Dataset.display_name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">example_count</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.Dataset.example_count</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">image_classification_dataset_metadata</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.Dataset.image_classification_dataset_metadata</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.Dataset.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">text_classification_dataset_metadata</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.Dataset.text_classification_dataset_metadata</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">translation_dataset_metadata</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.Dataset.translation_dataset_metadata</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -363,6 +579,12 @@ ASCII digits 0-9.</p>
 <dt id="google.cloud.automl_v1beta1.types.DeleteDatasetRequest.name">
 <code class="descname">name</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.DeleteDatasetRequest.name" title="Permalink to this definition">#</a></dt>
 <dd><p>The resource name of the dataset to delete.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.DeleteDatasetRequest.name</p>
 </dd></dl>
 
 </dd></dl>
@@ -378,12 +600,24 @@ ASCII digits 0-9.</p>
 <dd><p>Resource name of the model being deleted.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.DeleteModelRequest.name</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.automl_v1beta1.types.DeleteOperationRequest">
 <em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">DeleteOperationRequest</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.DeleteOperationRequest" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.DeleteOperationRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.DeleteOperationRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.longrunning.DeleteOperationRequest.name</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.automl_v1beta1.types.DeployModelRequest">
@@ -396,6 +630,12 @@ ASCII digits 0-9.</p>
 <dd><p>Resource name of the model to deploy.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.DeployModelRequest.name</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -404,12 +644,102 @@ ASCII digits 0-9.</p>
 <dd><dl class="class">
 <dt id="google.cloud.automl_v1beta1.types.DescriptorProto.ExtensionRange">
 <em class="property">class </em><code class="descname">ExtensionRange</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.DescriptorProto.ExtensionRange" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.DescriptorProto.ExtensionRange.end">
+<code class="descname">end</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.DescriptorProto.ExtensionRange.end" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.DescriptorProto.ExtensionRange.end</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.DescriptorProto.ExtensionRange.options">
+<code class="descname">options</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.DescriptorProto.ExtensionRange.options" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.DescriptorProto.ExtensionRange.options</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.DescriptorProto.ExtensionRange.start">
+<code class="descname">start</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.DescriptorProto.ExtensionRange.start" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.DescriptorProto.ExtensionRange.start</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.automl_v1beta1.types.DescriptorProto.ReservedRange">
 <em class="property">class </em><code class="descname">ReservedRange</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.DescriptorProto.ReservedRange" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.DescriptorProto.ReservedRange.end">
+<code class="descname">end</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.DescriptorProto.ReservedRange.end" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.DescriptorProto.ReservedRange.end</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.DescriptorProto.ReservedRange.start">
+<code class="descname">start</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.DescriptorProto.ReservedRange.start" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.DescriptorProto.ReservedRange.start</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.DescriptorProto.enum_type">
+<code class="descname">enum_type</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.DescriptorProto.enum_type" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.DescriptorProto.enum_type</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.DescriptorProto.extension">
+<code class="descname">extension</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.DescriptorProto.extension" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.DescriptorProto.extension</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.DescriptorProto.extension_range">
+<code class="descname">extension_range</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.DescriptorProto.extension_range" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.DescriptorProto.extension_range</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.DescriptorProto.field">
+<code class="descname">field</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.DescriptorProto.field" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.DescriptorProto.field</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.DescriptorProto.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.DescriptorProto.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.DescriptorProto.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.DescriptorProto.nested_type">
+<code class="descname">nested_type</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.DescriptorProto.nested_type" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.DescriptorProto.nested_type</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.DescriptorProto.oneof_decl">
+<code class="descname">oneof_decl</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.DescriptorProto.oneof_decl" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.DescriptorProto.oneof_decl</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.DescriptorProto.options">
+<code class="descname">options</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.DescriptorProto.options" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.DescriptorProto.options</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.DescriptorProto.reserved_name">
+<code class="descname">reserved_name</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.DescriptorProto.reserved_name" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.DescriptorProto.reserved_name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.DescriptorProto.reserved_range">
+<code class="descname">reserved_range</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.DescriptorProto.reserved_range" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.DescriptorProto.reserved_range</p>
+</dd></dl>
 
 </dd></dl>
 
@@ -424,24 +754,114 @@ ASCII digits 0-9.</p>
 <dd><dl class="class">
 <dt id="google.cloud.automl_v1beta1.types.EnumDescriptorProto.EnumReservedRange">
 <em class="property">class </em><code class="descname">EnumReservedRange</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.EnumDescriptorProto.EnumReservedRange" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.EnumDescriptorProto.EnumReservedRange.end">
+<code class="descname">end</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.EnumDescriptorProto.EnumReservedRange.end" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.EnumDescriptorProto.EnumReservedRange.end</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.EnumDescriptorProto.EnumReservedRange.start">
+<code class="descname">start</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.EnumDescriptorProto.EnumReservedRange.start" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.EnumDescriptorProto.EnumReservedRange.start</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.EnumDescriptorProto.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.EnumDescriptorProto.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.EnumDescriptorProto.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.EnumDescriptorProto.options">
+<code class="descname">options</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.EnumDescriptorProto.options" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.EnumDescriptorProto.options</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.EnumDescriptorProto.reserved_name">
+<code class="descname">reserved_name</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.EnumDescriptorProto.reserved_name" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.EnumDescriptorProto.reserved_name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.EnumDescriptorProto.reserved_range">
+<code class="descname">reserved_range</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.EnumDescriptorProto.reserved_range" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.EnumDescriptorProto.reserved_range</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.EnumDescriptorProto.value">
+<code class="descname">value</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.EnumDescriptorProto.value" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.EnumDescriptorProto.value</p>
+</dd></dl>
 
 </dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.automl_v1beta1.types.EnumOptions">
 <em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">EnumOptions</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.EnumOptions" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.EnumOptions.allow_alias">
+<code class="descname">allow_alias</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.EnumOptions.allow_alias" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.EnumOptions.allow_alias</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.EnumOptions.deprecated">
+<code class="descname">deprecated</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.EnumOptions.deprecated" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.EnumOptions.deprecated</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.EnumOptions.uninterpreted_option">
+<code class="descname">uninterpreted_option</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.EnumOptions.uninterpreted_option" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.EnumOptions.uninterpreted_option</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.automl_v1beta1.types.EnumValueDescriptorProto">
 <em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">EnumValueDescriptorProto</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.EnumValueDescriptorProto" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.EnumValueDescriptorProto.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.EnumValueDescriptorProto.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.EnumValueDescriptorProto.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.EnumValueDescriptorProto.number">
+<code class="descname">number</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.EnumValueDescriptorProto.number" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.EnumValueDescriptorProto.number</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.EnumValueDescriptorProto.options">
+<code class="descname">options</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.EnumValueDescriptorProto.options" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.EnumValueDescriptorProto.options</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.automl_v1beta1.types.EnumValueOptions">
 <em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">EnumValueOptions</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.EnumValueOptions" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.EnumValueOptions.deprecated">
+<code class="descname">deprecated</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.EnumValueOptions.deprecated" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.EnumValueOptions.deprecated</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.EnumValueOptions.uninterpreted_option">
+<code class="descname">uninterpreted_option</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.EnumValueOptions.uninterpreted_option" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.EnumValueOptions.uninterpreted_option</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.automl_v1beta1.types.ExamplePayload">
@@ -465,6 +885,18 @@ ASCII digits 0-9.</p>
 <dd><p>Example text.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">image</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.ExamplePayload.image</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">text_snippet</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.ExamplePayload.text_snippet</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -484,42 +916,372 @@ ASCII digits 0-9.</p>
 <dd><p>Required. The desired output location.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.ExportDataRequest.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">output_config</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.ExportDataRequest.output_config</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.automl_v1beta1.types.ExtensionRangeOptions">
 <em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">ExtensionRangeOptions</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.ExtensionRangeOptions" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.ExtensionRangeOptions.uninterpreted_option">
+<code class="descname">uninterpreted_option</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.ExtensionRangeOptions.uninterpreted_option" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.ExtensionRangeOptions.uninterpreted_option</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.automl_v1beta1.types.FieldDescriptorProto">
 <em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">FieldDescriptorProto</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.FieldDescriptorProto" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.FieldDescriptorProto.default_value">
+<code class="descname">default_value</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.FieldDescriptorProto.default_value" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FieldDescriptorProto.default_value</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.FieldDescriptorProto.extendee">
+<code class="descname">extendee</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.FieldDescriptorProto.extendee" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FieldDescriptorProto.extendee</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.FieldDescriptorProto.json_name">
+<code class="descname">json_name</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.FieldDescriptorProto.json_name" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FieldDescriptorProto.json_name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.FieldDescriptorProto.label">
+<code class="descname">label</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.FieldDescriptorProto.label" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FieldDescriptorProto.label</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.FieldDescriptorProto.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.FieldDescriptorProto.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FieldDescriptorProto.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.FieldDescriptorProto.number">
+<code class="descname">number</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.FieldDescriptorProto.number" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FieldDescriptorProto.number</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.FieldDescriptorProto.oneof_index">
+<code class="descname">oneof_index</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.FieldDescriptorProto.oneof_index" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FieldDescriptorProto.oneof_index</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.FieldDescriptorProto.options">
+<code class="descname">options</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.FieldDescriptorProto.options" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FieldDescriptorProto.options</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.FieldDescriptorProto.type">
+<code class="descname">type</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.FieldDescriptorProto.type" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FieldDescriptorProto.type</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.FieldDescriptorProto.type_name">
+<code class="descname">type_name</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.FieldDescriptorProto.type_name" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FieldDescriptorProto.type_name</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.automl_v1beta1.types.FieldMask">
 <em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">FieldMask</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.FieldMask" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.FieldMask.paths">
+<code class="descname">paths</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.FieldMask.paths" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FieldMask.paths</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.automl_v1beta1.types.FieldOptions">
 <em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">FieldOptions</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.FieldOptions" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.FieldOptions.ctype">
+<code class="descname">ctype</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.FieldOptions.ctype" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FieldOptions.ctype</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.FieldOptions.deprecated">
+<code class="descname">deprecated</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.FieldOptions.deprecated" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FieldOptions.deprecated</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.FieldOptions.jstype">
+<code class="descname">jstype</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.FieldOptions.jstype" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FieldOptions.jstype</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.FieldOptions.lazy">
+<code class="descname">lazy</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.FieldOptions.lazy" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FieldOptions.lazy</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.FieldOptions.packed">
+<code class="descname">packed</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.FieldOptions.packed" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FieldOptions.packed</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.FieldOptions.uninterpreted_option">
+<code class="descname">uninterpreted_option</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.FieldOptions.uninterpreted_option" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FieldOptions.uninterpreted_option</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.FieldOptions.weak">
+<code class="descname">weak</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.FieldOptions.weak" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FieldOptions.weak</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.automl_v1beta1.types.FileDescriptorProto">
 <em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">FileDescriptorProto</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.FileDescriptorProto" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.FileDescriptorProto.dependency">
+<code class="descname">dependency</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.FileDescriptorProto.dependency" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileDescriptorProto.dependency</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.FileDescriptorProto.enum_type">
+<code class="descname">enum_type</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.FileDescriptorProto.enum_type" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileDescriptorProto.enum_type</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.FileDescriptorProto.extension">
+<code class="descname">extension</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.FileDescriptorProto.extension" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileDescriptorProto.extension</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.FileDescriptorProto.message_type">
+<code class="descname">message_type</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.FileDescriptorProto.message_type" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileDescriptorProto.message_type</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.FileDescriptorProto.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.FileDescriptorProto.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileDescriptorProto.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.FileDescriptorProto.options">
+<code class="descname">options</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.FileDescriptorProto.options" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileDescriptorProto.options</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.FileDescriptorProto.package">
+<code class="descname">package</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.FileDescriptorProto.package" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileDescriptorProto.package</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.FileDescriptorProto.public_dependency">
+<code class="descname">public_dependency</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.FileDescriptorProto.public_dependency" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileDescriptorProto.public_dependency</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.FileDescriptorProto.service">
+<code class="descname">service</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.FileDescriptorProto.service" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileDescriptorProto.service</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.FileDescriptorProto.source_code_info">
+<code class="descname">source_code_info</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.FileDescriptorProto.source_code_info" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileDescriptorProto.source_code_info</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.FileDescriptorProto.syntax">
+<code class="descname">syntax</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.FileDescriptorProto.syntax" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileDescriptorProto.syntax</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.FileDescriptorProto.weak_dependency">
+<code class="descname">weak_dependency</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.FileDescriptorProto.weak_dependency" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileDescriptorProto.weak_dependency</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.automl_v1beta1.types.FileDescriptorSet">
 <em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">FileDescriptorSet</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.FileDescriptorSet" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.FileDescriptorSet.file">
+<code class="descname">file</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.FileDescriptorSet.file" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileDescriptorSet.file</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.automl_v1beta1.types.FileOptions">
 <em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">FileOptions</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.FileOptions" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.FileOptions.cc_enable_arenas">
+<code class="descname">cc_enable_arenas</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.FileOptions.cc_enable_arenas" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileOptions.cc_enable_arenas</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.FileOptions.cc_generic_services">
+<code class="descname">cc_generic_services</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.FileOptions.cc_generic_services" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileOptions.cc_generic_services</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.FileOptions.csharp_namespace">
+<code class="descname">csharp_namespace</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.FileOptions.csharp_namespace" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileOptions.csharp_namespace</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.FileOptions.deprecated">
+<code class="descname">deprecated</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.FileOptions.deprecated" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileOptions.deprecated</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.FileOptions.go_package">
+<code class="descname">go_package</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.FileOptions.go_package" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileOptions.go_package</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.FileOptions.java_generate_equals_and_hash">
+<code class="descname">java_generate_equals_and_hash</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.FileOptions.java_generate_equals_and_hash" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileOptions.java_generate_equals_and_hash</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.FileOptions.java_generic_services">
+<code class="descname">java_generic_services</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.FileOptions.java_generic_services" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileOptions.java_generic_services</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.FileOptions.java_multiple_files">
+<code class="descname">java_multiple_files</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.FileOptions.java_multiple_files" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileOptions.java_multiple_files</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.FileOptions.java_outer_classname">
+<code class="descname">java_outer_classname</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.FileOptions.java_outer_classname" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileOptions.java_outer_classname</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.FileOptions.java_package">
+<code class="descname">java_package</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.FileOptions.java_package" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileOptions.java_package</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.FileOptions.java_string_check_utf8">
+<code class="descname">java_string_check_utf8</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.FileOptions.java_string_check_utf8" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileOptions.java_string_check_utf8</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.FileOptions.objc_class_prefix">
+<code class="descname">objc_class_prefix</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.FileOptions.objc_class_prefix" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileOptions.objc_class_prefix</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.FileOptions.optimize_for">
+<code class="descname">optimize_for</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.FileOptions.optimize_for" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileOptions.optimize_for</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.FileOptions.php_class_prefix">
+<code class="descname">php_class_prefix</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.FileOptions.php_class_prefix" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileOptions.php_class_prefix</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.FileOptions.php_generic_services">
+<code class="descname">php_generic_services</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.FileOptions.php_generic_services" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileOptions.php_generic_services</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.FileOptions.php_metadata_namespace">
+<code class="descname">php_metadata_namespace</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.FileOptions.php_metadata_namespace" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileOptions.php_metadata_namespace</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.FileOptions.php_namespace">
+<code class="descname">php_namespace</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.FileOptions.php_namespace" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileOptions.php_namespace</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.FileOptions.py_generic_services">
+<code class="descname">py_generic_services</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.FileOptions.py_generic_services" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileOptions.py_generic_services</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.FileOptions.ruby_package">
+<code class="descname">ruby_package</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.FileOptions.ruby_package" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileOptions.ruby_package</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.FileOptions.swift_prefix">
+<code class="descname">swift_prefix</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.FileOptions.swift_prefix" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileOptions.swift_prefix</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.FileOptions.uninterpreted_option">
+<code class="descname">uninterpreted_option</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.FileOptions.uninterpreted_option" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileOptions.uninterpreted_option</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.automl_v1beta1.types.GcsDestination">
@@ -533,6 +1295,12 @@ ASCII digits 0-9.</p>
 gs://bucket/directory The requesting user must have write
 permission to the bucket. The directory is created if it
 doesn’t exist.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">output_uri_prefix</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.GcsDestination.output_uri_prefix</p>
 </dd></dl>
 
 </dd></dl>
@@ -549,6 +1317,12 @@ characters long. Accepted forms: * Full object path:
 gs://bucket/directory/object.csv</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">input_uris</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.GcsSource.input_uris</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -557,7 +1331,37 @@ gs://bucket/directory/object.csv</p>
 <dd><dl class="class">
 <dt id="google.cloud.automl_v1beta1.types.GeneratedCodeInfo.Annotation">
 <em class="property">class </em><code class="descname">Annotation</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.GeneratedCodeInfo.Annotation" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.GeneratedCodeInfo.Annotation.begin">
+<code class="descname">begin</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.GeneratedCodeInfo.Annotation.begin" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.GeneratedCodeInfo.Annotation.begin</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.GeneratedCodeInfo.Annotation.end">
+<code class="descname">end</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.GeneratedCodeInfo.Annotation.end" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.GeneratedCodeInfo.Annotation.end</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.GeneratedCodeInfo.Annotation.path">
+<code class="descname">path</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.GeneratedCodeInfo.Annotation.path" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.GeneratedCodeInfo.Annotation.path</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.GeneratedCodeInfo.Annotation.source_file">
+<code class="descname">source_file</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.GeneratedCodeInfo.Annotation.source_file" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.GeneratedCodeInfo.Annotation.source_file</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.GeneratedCodeInfo.annotation">
+<code class="descname">annotation</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.GeneratedCodeInfo.annotation" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.GeneratedCodeInfo.annotation</p>
+</dd></dl>
 
 </dd></dl>
 
@@ -570,6 +1374,12 @@ gs://bucket/directory/object.csv</p>
 <dt id="google.cloud.automl_v1beta1.types.GetDatasetRequest.name">
 <code class="descname">name</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.GetDatasetRequest.name" title="Permalink to this definition">#</a></dt>
 <dd><p>The resource name of the dataset to retrieve.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.GetDatasetRequest.name</p>
 </dd></dl>
 
 </dd></dl>
@@ -585,6 +1395,12 @@ gs://bucket/directory/object.csv</p>
 <dd><p>Resource name for the model evaluation.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.GetModelEvaluationRequest.name</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -598,22 +1414,106 @@ gs://bucket/directory/object.csv</p>
 <dd><p>Resource name of the model.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.GetModelRequest.name</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.automl_v1beta1.types.GetOperationRequest">
 <em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">GetOperationRequest</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.GetOperationRequest" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.GetOperationRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.GetOperationRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.longrunning.GetOperationRequest.name</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.automl_v1beta1.types.Http">
 <em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">Http</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.Http" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.Http.fully_decode_reserved_expansion">
+<code class="descname">fully_decode_reserved_expansion</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.Http.fully_decode_reserved_expansion" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.api.Http.fully_decode_reserved_expansion</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.Http.rules">
+<code class="descname">rules</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.Http.rules" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.api.Http.rules</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.automl_v1beta1.types.HttpRule">
 <em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">HttpRule</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.HttpRule" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.HttpRule.additional_bindings">
+<code class="descname">additional_bindings</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.HttpRule.additional_bindings" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.api.HttpRule.additional_bindings</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.HttpRule.body">
+<code class="descname">body</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.HttpRule.body" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.api.HttpRule.body</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.HttpRule.custom">
+<code class="descname">custom</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.HttpRule.custom" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.api.HttpRule.custom</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.HttpRule.delete">
+<code class="descname">delete</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.HttpRule.delete" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.api.HttpRule.delete</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.HttpRule.get">
+<code class="descname">get</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.HttpRule.get" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.api.HttpRule.get</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.HttpRule.patch">
+<code class="descname">patch</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.HttpRule.patch" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.api.HttpRule.patch</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.HttpRule.post">
+<code class="descname">post</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.HttpRule.post" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.api.HttpRule.post</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.HttpRule.put">
+<code class="descname">put</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.HttpRule.put" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.api.HttpRule.put</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.HttpRule.response_body">
+<code class="descname">response_body</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.HttpRule.response_body" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.api.HttpRule.response_body</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.HttpRule.selector">
+<code class="descname">selector</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.HttpRule.selector" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.api.HttpRule.selector</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.automl_v1beta1.types.Image">
@@ -649,6 +1549,24 @@ representation, whereas JSON representations use base64.</p>
 <dd><p>Output only. HTTP URI to the thumbnail image.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">image_bytes</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.Image.image_bytes</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">input_config</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.Image.input_config</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">thumbnail_uri</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.Image.thumbnail_uri</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -659,6 +1577,12 @@ representation, whereas JSON representations use base64.</p>
 <dt id="google.cloud.automl_v1beta1.types.ImageClassificationDatasetMetadata.classification_type">
 <code class="descname">classification_type</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.ImageClassificationDatasetMetadata.classification_type" title="Permalink to this definition">#</a></dt>
 <dd><p>Required. Type of the classification problem.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">classification_type</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.ImageClassificationDatasetMetadata.classification_type</p>
 </dd></dl>
 
 </dd></dl>
@@ -699,6 +1623,30 @@ used to create the <code class="docutils literal notranslate"><span class="pre">
 stopped, e.g. BUDGET_REACHED, CONVERGED.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">base_model_id</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.ImageClassificationModelMetadata.base_model_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">stop_reason</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.ImageClassificationModelMetadata.stop_reason</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">train_budget</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.ImageClassificationModelMetadata.train_budget</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">train_cost</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.ImageClassificationModelMetadata.train_cost</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -719,6 +1667,18 @@ imported annotations and examples will be added.</p>
 <dd><p>Required. The desired input location.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">input_config</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.ImportDataRequest.input_config</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.ImportDataRequest.name</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -735,6 +1695,12 @@ imported annotations and examples will be added.</p>
 <dt id="google.cloud.automl_v1beta1.types.InputConfig.gcs_source">
 <code class="descname">gcs_source</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.InputConfig.gcs_source" title="Permalink to this definition">#</a></dt>
 <dd><p>The GCS location for the input content.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">gcs_source</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.InputConfig.gcs_source</p>
 </dd></dl>
 
 </dd></dl>
@@ -775,6 +1741,30 @@ Typically obtained via [ListDatasetsResponse.next_page_token
 oml.v1beta1.AutoMl.ListDatasets] call.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">filter</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.ListDatasetsRequest.filter</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">page_size</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.ListDatasetsRequest.page_size</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">page_token</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.ListDatasetsRequest.page_token</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">parent</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.ListDatasetsRequest.parent</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -794,6 +1784,18 @@ oml.v1beta1.AutoMl.ListDatasets] call.</p>
 <dd><p>A token to retrieve next page of results. Pass to [ListDataset
 sRequest.page_token][google.cloud.automl.v1beta1.ListDatasets
 Request.page_token] to obtain that page.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">datasets</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.ListDatasetsResponse.datasets</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">next_page_token</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.ListDatasetsResponse.next_page_token</p>
 </dd></dl>
 
 </dd></dl>
@@ -839,6 +1841,30 @@ previous [AutoMl.ListModelEvaluations][google.cloud.automl.v1b
 eta1.AutoMl.ListModelEvaluations] call.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">filter</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.ListModelEvaluationsRequest.filter</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">page_size</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.ListModelEvaluationsRequest.page_size</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">page_token</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.ListModelEvaluationsRequest.page_token</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">parent</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.ListModelEvaluationsRequest.parent</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -857,6 +1883,18 @@ eta1.AutoMl.ListModelEvaluations] call.</p>
 <code class="descname">next_page_token</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.ListModelEvaluationsResponse.next_page_token" title="Permalink to this definition">#</a></dt>
 <dd><p>A token to retrieve next page of results. Pass to
 [ListModelEvaluations.page_token][] to obtain that page.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">model_evaluation</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.ListModelEvaluationsResponse.model_evaluation</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">next_page_token</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.ListModelEvaluationsResponse.next_page_token</p>
 </dd></dl>
 
 </dd></dl>
@@ -900,6 +1938,30 @@ en] of the previous [AutoMl.ListModels][google.cloud.automl.v1
 beta1.AutoMl.ListModels] call.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">filter</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.ListModelsRequest.filter</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">page_size</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.ListModelsRequest.page_size</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">page_token</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.ListModelsRequest.page_token</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">parent</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.ListModelsRequest.parent</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -920,32 +1982,164 @@ beta1.AutoMl.ListModels] call.</p>
 [ListModels.page_token][] to obtain that page.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">model</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.ListModelsResponse.model</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">next_page_token</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.ListModelsResponse.next_page_token</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.automl_v1beta1.types.ListOperationsRequest">
 <em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">ListOperationsRequest</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.ListOperationsRequest" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.ListOperationsRequest.filter">
+<code class="descname">filter</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.ListOperationsRequest.filter" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.longrunning.ListOperationsRequest.filter</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.ListOperationsRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.ListOperationsRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.longrunning.ListOperationsRequest.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.ListOperationsRequest.page_size">
+<code class="descname">page_size</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.ListOperationsRequest.page_size" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.longrunning.ListOperationsRequest.page_size</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.ListOperationsRequest.page_token">
+<code class="descname">page_token</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.ListOperationsRequest.page_token" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.longrunning.ListOperationsRequest.page_token</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.automl_v1beta1.types.ListOperationsResponse">
 <em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">ListOperationsResponse</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.ListOperationsResponse" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.ListOperationsResponse.next_page_token">
+<code class="descname">next_page_token</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.ListOperationsResponse.next_page_token" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.longrunning.ListOperationsResponse.next_page_token</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.ListOperationsResponse.operations">
+<code class="descname">operations</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.ListOperationsResponse.operations" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.longrunning.ListOperationsResponse.operations</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.automl_v1beta1.types.MessageOptions">
 <em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">MessageOptions</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.MessageOptions" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.MessageOptions.deprecated">
+<code class="descname">deprecated</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.MessageOptions.deprecated" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.MessageOptions.deprecated</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.MessageOptions.map_entry">
+<code class="descname">map_entry</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.MessageOptions.map_entry" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.MessageOptions.map_entry</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.MessageOptions.message_set_wire_format">
+<code class="descname">message_set_wire_format</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.MessageOptions.message_set_wire_format" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.MessageOptions.message_set_wire_format</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.MessageOptions.no_standard_descriptor_accessor">
+<code class="descname">no_standard_descriptor_accessor</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.MessageOptions.no_standard_descriptor_accessor" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.MessageOptions.no_standard_descriptor_accessor</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.MessageOptions.uninterpreted_option">
+<code class="descname">uninterpreted_option</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.MessageOptions.uninterpreted_option" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.MessageOptions.uninterpreted_option</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.automl_v1beta1.types.MethodDescriptorProto">
 <em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">MethodDescriptorProto</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.MethodDescriptorProto" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.MethodDescriptorProto.client_streaming">
+<code class="descname">client_streaming</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.MethodDescriptorProto.client_streaming" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.MethodDescriptorProto.client_streaming</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.MethodDescriptorProto.input_type">
+<code class="descname">input_type</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.MethodDescriptorProto.input_type" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.MethodDescriptorProto.input_type</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.MethodDescriptorProto.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.MethodDescriptorProto.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.MethodDescriptorProto.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.MethodDescriptorProto.options">
+<code class="descname">options</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.MethodDescriptorProto.options" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.MethodDescriptorProto.options</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.MethodDescriptorProto.output_type">
+<code class="descname">output_type</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.MethodDescriptorProto.output_type" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.MethodDescriptorProto.output_type</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.MethodDescriptorProto.server_streaming">
+<code class="descname">server_streaming</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.MethodDescriptorProto.server_streaming" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.MethodDescriptorProto.server_streaming</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.automl_v1beta1.types.MethodOptions">
 <em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">MethodOptions</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.MethodOptions" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.MethodOptions.deprecated">
+<code class="descname">deprecated</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.MethodOptions.deprecated" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.MethodOptions.deprecated</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.MethodOptions.idempotency_level">
+<code class="descname">idempotency_level</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.MethodOptions.idempotency_level" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.MethodOptions.idempotency_level</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.MethodOptions.uninterpreted_option">
+<code class="descname">uninterpreted_option</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.MethodOptions.uninterpreted_option" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.MethodOptions.uninterpreted_option</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.automl_v1beta1.types.Model">
@@ -1019,6 +2213,60 @@ and location.</p>
 <dd><p>Output only. Deployment state of the model.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">create_time</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.Model.create_time</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">dataset_id</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.Model.dataset_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">deployment_state</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.Model.deployment_state</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">display_name</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.Model.display_name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">image_classification_model_metadata</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.Model.image_classification_model_metadata</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.Model.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">text_classification_model_metadata</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.Model.text_classification_model_metadata</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">translation_model_metadata</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.Model.translation_model_metadata</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">update_time</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.Model.update_time</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -1074,22 +2322,106 @@ display_names, review the model evaluations in the UI.</p>
 <dd><p>Output only. The number of examples used for model evaluation.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">annotation_spec_id</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.ModelEvaluation.annotation_spec_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">classification_evaluation_metrics</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.ModelEvaluation.classification_evaluation_metrics</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">create_time</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.ModelEvaluation.create_time</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">evaluated_example_count</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.ModelEvaluation.evaluated_example_count</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.ModelEvaluation.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">translation_evaluation_metrics</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.ModelEvaluation.translation_evaluation_metrics</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.automl_v1beta1.types.OneofDescriptorProto">
 <em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">OneofDescriptorProto</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.OneofDescriptorProto" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.OneofDescriptorProto.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.OneofDescriptorProto.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.OneofDescriptorProto.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.OneofDescriptorProto.options">
+<code class="descname">options</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.OneofDescriptorProto.options" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.OneofDescriptorProto.options</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.automl_v1beta1.types.OneofOptions">
 <em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">OneofOptions</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.OneofOptions" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.OneofOptions.uninterpreted_option">
+<code class="descname">uninterpreted_option</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.OneofOptions.uninterpreted_option" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.OneofOptions.uninterpreted_option</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.automl_v1beta1.types.Operation">
 <em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">Operation</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.Operation" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.Operation.done">
+<code class="descname">done</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.Operation.done" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.longrunning.Operation.done</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.Operation.error">
+<code class="descname">error</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.Operation.error" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.longrunning.Operation.error</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.Operation.metadata">
+<code class="descname">metadata</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.Operation.metadata" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.longrunning.Operation.metadata</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.Operation.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.Operation.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.longrunning.Operation.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.Operation.response">
+<code class="descname">response</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.Operation.response" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.longrunning.Operation.response</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.automl_v1beta1.types.OperationMetadata">
@@ -1137,6 +2469,36 @@ details.</p>
 time.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">create_model_details</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.OperationMetadata.create_model_details</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">create_time</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.OperationMetadata.create_time</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">partial_failures</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.OperationMetadata.partial_failures</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">progress_percent</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.OperationMetadata.progress_percent</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">update_time</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.OperationMetadata.update_time</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -1153,6 +2515,12 @@ time.</p>
 <dt id="google.cloud.automl_v1beta1.types.OutputConfig.gcs_destination">
 <code class="descname">gcs_destination</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.OutputConfig.gcs_destination" title="Permalink to this definition">#</a></dt>
 <dd><p>The GCS location where the output must be written to.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">gcs_destination</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.OutputConfig.gcs_destination</p>
 </dd></dl>
 
 </dd></dl>
@@ -1189,7 +2557,37 @@ The default is 0.5.</p>
 <dl class="class">
 <dt id="google.cloud.automl_v1beta1.types.PredictRequest.ParamsEntry">
 <em class="property">class </em><code class="descname">ParamsEntry</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.PredictRequest.ParamsEntry" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.PredictRequest.ParamsEntry.key">
+<code class="descname">key</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.PredictRequest.ParamsEntry.key" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.cloud.automl.v1beta1.PredictRequest.ParamsEntry.key</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.PredictRequest.ParamsEntry.value">
+<code class="descname">value</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.PredictRequest.ParamsEntry.value" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.cloud.automl.v1beta1.PredictRequest.ParamsEntry.value</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.PredictRequest.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">params</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.PredictRequest.params</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">payload</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.PredictRequest.payload</p>
+</dd></dl>
 
 </dd></dl>
 
@@ -1216,19 +2614,73 @@ future.</p>
 <dl class="class">
 <dt id="google.cloud.automl_v1beta1.types.PredictResponse.MetadataEntry">
 <em class="property">class </em><code class="descname">MetadataEntry</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.PredictResponse.MetadataEntry" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.PredictResponse.MetadataEntry.key">
+<code class="descname">key</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.PredictResponse.MetadataEntry.key" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.cloud.automl.v1beta1.PredictResponse.MetadataEntry.key</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.PredictResponse.MetadataEntry.value">
+<code class="descname">value</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.PredictResponse.MetadataEntry.value" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.cloud.automl.v1beta1.PredictResponse.MetadataEntry.value</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">metadata</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.PredictResponse.metadata</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">payload</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.PredictResponse.payload</p>
+</dd></dl>
 
 </dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.automl_v1beta1.types.ServiceDescriptorProto">
 <em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">ServiceDescriptorProto</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.ServiceDescriptorProto" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.ServiceDescriptorProto.method">
+<code class="descname">method</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.ServiceDescriptorProto.method" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.ServiceDescriptorProto.method</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.ServiceDescriptorProto.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.ServiceDescriptorProto.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.ServiceDescriptorProto.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.ServiceDescriptorProto.options">
+<code class="descname">options</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.ServiceDescriptorProto.options" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.ServiceDescriptorProto.options</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.automl_v1beta1.types.ServiceOptions">
 <em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">ServiceOptions</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.ServiceOptions" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.ServiceOptions.deprecated">
+<code class="descname">deprecated</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.ServiceOptions.deprecated" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.ServiceOptions.deprecated</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.ServiceOptions.uninterpreted_option">
+<code class="descname">uninterpreted_option</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.ServiceOptions.uninterpreted_option" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.ServiceOptions.uninterpreted_option</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.automl_v1beta1.types.SourceCodeInfo">
@@ -1236,14 +2688,68 @@ future.</p>
 <dd><dl class="class">
 <dt id="google.cloud.automl_v1beta1.types.SourceCodeInfo.Location">
 <em class="property">class </em><code class="descname">Location</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.SourceCodeInfo.Location" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.SourceCodeInfo.Location.leading_comments">
+<code class="descname">leading_comments</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.SourceCodeInfo.Location.leading_comments" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.SourceCodeInfo.Location.leading_comments</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.SourceCodeInfo.Location.leading_detached_comments">
+<code class="descname">leading_detached_comments</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.SourceCodeInfo.Location.leading_detached_comments" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.SourceCodeInfo.Location.leading_detached_comments</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.SourceCodeInfo.Location.path">
+<code class="descname">path</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.SourceCodeInfo.Location.path" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.SourceCodeInfo.Location.path</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.SourceCodeInfo.Location.span">
+<code class="descname">span</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.SourceCodeInfo.Location.span" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.SourceCodeInfo.Location.span</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.SourceCodeInfo.Location.trailing_comments">
+<code class="descname">trailing_comments</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.SourceCodeInfo.Location.trailing_comments" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.SourceCodeInfo.Location.trailing_comments</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.SourceCodeInfo.location">
+<code class="descname">location</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.SourceCodeInfo.location" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.SourceCodeInfo.location</p>
+</dd></dl>
 
 </dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.automl_v1beta1.types.Status">
 <em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">Status</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.Status" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.Status.code">
+<code class="descname">code</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.Status.code" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.rpc.Status.code</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.Status.details">
+<code class="descname">details</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.Status.details" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.rpc.Status.details</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.Status.message">
+<code class="descname">message</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.Status.message" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.rpc.Status.message</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.automl_v1beta1.types.TextClassificationDatasetMetadata">
@@ -1253,6 +2759,12 @@ future.</p>
 <dt id="google.cloud.automl_v1beta1.types.TextClassificationDatasetMetadata.classification_type">
 <code class="descname">classification_type</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.TextClassificationDatasetMetadata.classification_type" title="Permalink to this definition">#</a></dt>
 <dd><p>Required. Type of the classification problem.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">classification_type</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.TextClassificationDatasetMetadata.classification_type</p>
 </dd></dl>
 
 </dd></dl>
@@ -1289,12 +2801,42 @@ is “text/html”. Up to 25000 characters long.</p>
 <dd><p>Output only. HTTP URI where you can download the content.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">content</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.TextSnippet.content</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">content_uri</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.TextSnippet.content_uri</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">mime_type</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.TextSnippet.mime_type</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.automl_v1beta1.types.Timestamp">
 <em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">Timestamp</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.Timestamp" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.Timestamp.nanos">
+<code class="descname">nanos</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.Timestamp.nanos" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.Timestamp.nanos</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.Timestamp.seconds">
+<code class="descname">seconds</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.Timestamp.seconds" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.Timestamp.seconds</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.automl_v1beta1.types.TranslationAnnotation">
@@ -1304,6 +2846,12 @@ is “text/html”. Up to 25000 characters long.</p>
 <dt id="google.cloud.automl_v1beta1.types.TranslationAnnotation.translated_content">
 <code class="descname">translated_content</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.TranslationAnnotation.translated_content" title="Permalink to this definition">#</a></dt>
 <dd><p>Output only . The translated content.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">translated_content</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.TranslationAnnotation.translated_content</p>
 </dd></dl>
 
 </dd></dl>
@@ -1324,6 +2872,18 @@ is “text/html”. Up to 25000 characters long.</p>
 <dd><p>Required. The BCP-47 language code of the target language.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">source_language_code</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.TranslationDatasetMetadata.source_language_code</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">target_language_code</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.TranslationDatasetMetadata.target_language_code</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -1340,6 +2900,18 @@ is “text/html”. Up to 25000 characters long.</p>
 <dt id="google.cloud.automl_v1beta1.types.TranslationEvaluationMetrics.base_bleu_score">
 <code class="descname">base_bleu_score</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.TranslationEvaluationMetrics.base_bleu_score" title="Permalink to this definition">#</a></dt>
 <dd><p>Output only. BLEU score for base model.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">base_bleu_score</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.TranslationEvaluationMetrics.base_bleu_score</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">bleu_score</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.TranslationEvaluationMetrics.bleu_score</p>
 </dd></dl>
 
 </dd></dl>
@@ -1371,6 +2943,24 @@ provided by Google Translate. Format: <code class="docutils literal notranslate"
 that is used for training.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">base_model</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.TranslationModelMetadata.base_model</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">source_language_code</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.TranslationModelMetadata.source_language_code</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">target_language_code</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.TranslationModelMetadata.target_language_code</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -1384,6 +2974,12 @@ that is used for training.</p>
 <dd><p>Resource name of the model to undeploy.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.UndeployModelRequest.name</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -1392,7 +2988,61 @@ that is used for training.</p>
 <dd><dl class="class">
 <dt id="google.cloud.automl_v1beta1.types.UninterpretedOption.NamePart">
 <em class="property">class </em><code class="descname">NamePart</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.UninterpretedOption.NamePart" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.UninterpretedOption.NamePart.is_extension">
+<code class="descname">is_extension</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.UninterpretedOption.NamePart.is_extension" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.UninterpretedOption.NamePart.is_extension</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.UninterpretedOption.NamePart.name_part">
+<code class="descname">name_part</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.UninterpretedOption.NamePart.name_part" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.UninterpretedOption.NamePart.name_part</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.UninterpretedOption.aggregate_value">
+<code class="descname">aggregate_value</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.UninterpretedOption.aggregate_value" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.UninterpretedOption.aggregate_value</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.UninterpretedOption.double_value">
+<code class="descname">double_value</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.UninterpretedOption.double_value" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.UninterpretedOption.double_value</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.UninterpretedOption.identifier_value">
+<code class="descname">identifier_value</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.UninterpretedOption.identifier_value" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.UninterpretedOption.identifier_value</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.UninterpretedOption.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.UninterpretedOption.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.UninterpretedOption.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.UninterpretedOption.negative_int_value">
+<code class="descname">negative_int_value</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.UninterpretedOption.negative_int_value" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.UninterpretedOption.negative_int_value</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.UninterpretedOption.positive_int_value">
+<code class="descname">positive_int_value</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.UninterpretedOption.positive_int_value" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.UninterpretedOption.positive_int_value</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.UninterpretedOption.string_value">
+<code class="descname">string_value</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.UninterpretedOption.string_value" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.UninterpretedOption.string_value</p>
+</dd></dl>
 
 </dd></dl>
 

@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Types for Cloud Key Management Service (KMS) API Client &#8212; google-cloud 35e0349 documentation</title>
+    <title>Types for Cloud Key Management Service (KMS) API Client &#8212; google-cloud 915e116 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -58,6 +58,18 @@ use for decryption.</p>
 public key using OAEP.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">ciphertext</code></dt>
+<dd><p>Field google.cloud.kms.v1.AsymmetricDecryptRequest.ciphertext</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.cloud.kms.v1.AsymmetricDecryptRequest.name</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -70,6 +82,12 @@ public key using OAEP.</p>
 <code class="descname">plaintext</code><a class="headerlink" href="#google.cloud.kms_v1.types.AsymmetricDecryptResponse.plaintext" title="Permalink to this definition">#</a></dt>
 <dd><p>The decrypted data originally encrypted with the matching
 public key.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">plaintext</code></dt>
+<dd><p>Field google.cloud.kms.v1.AsymmetricDecryptResponse.plaintext</p>
 </dd></dl>
 
 </dd></dl>
@@ -96,6 +114,18 @@ key version’s
 [algorithm][google.cloud.kms.v1.CryptoKeyVersion.algorithm].</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">digest</code></dt>
+<dd><p>Field google.cloud.kms.v1.AsymmetricSignRequest.digest</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.cloud.kms.v1.AsymmetricSignRequest.name</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -107,6 +137,12 @@ key version’s
 <dt id="google.cloud.kms_v1.types.AsymmetricSignResponse.signature">
 <code class="descname">signature</code><a class="headerlink" href="#google.cloud.kms_v1.types.AsymmetricSignResponse.signature" title="Permalink to this definition">#</a></dt>
 <dd><p>The created signature.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">signature</code></dt>
+<dd><p>Field google.cloud.kms.v1.AsymmetricSignResponse.signature</p>
 </dd></dl>
 
 </dd></dl>
@@ -138,6 +174,24 @@ regular expression <code class="docutils literal notranslate"><span class="pre">
 field values.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">crypto_key</code></dt>
+<dd><p>Field google.cloud.kms.v1.CreateCryptoKeyRequest.crypto_key</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">crypto_key_id</code></dt>
+<dd><p>Field google.cloud.kms.v1.CreateCryptoKeyRequest.crypto_key_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">parent</code></dt>
+<dd><p>Field google.cloud.kms.v1.CreateCryptoKeyRequest.parent</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -158,6 +212,18 @@ the [CryptoKeyVersions][google.cloud.kms.v1.CryptoKeyVersion].</p>
 <code class="descname">crypto_key_version</code><a class="headerlink" href="#google.cloud.kms_v1.types.CreateCryptoKeyVersionRequest.crypto_key_version" title="Permalink to this definition">#</a></dt>
 <dd><p>A [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
 with initial field values.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">crypto_key_version</code></dt>
+<dd><p>Field google.cloud.kms.v1.CreateCryptoKeyVersionRequest.crypto_key_version</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">parent</code></dt>
+<dd><p>Field google.cloud.kms.v1.CreateCryptoKeyVersionRequest.parent</p>
 </dd></dl>
 
 </dd></dl>
@@ -187,6 +253,24 @@ regular expression <code class="docutils literal notranslate"><span class="pre">
 <code class="descname">key_ring</code><a class="headerlink" href="#google.cloud.kms_v1.types.CreateKeyRingRequest.key_ring" title="Permalink to this definition">#</a></dt>
 <dd><p>A [KeyRing][google.cloud.kms.v1.KeyRing] with initial field
 values.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">key_ring</code></dt>
+<dd><p>Field google.cloud.kms.v1.CreateKeyRingRequest.key_ring</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">key_ring_id</code></dt>
+<dd><p>Field google.cloud.kms.v1.CreateKeyRingRequest.key_ring_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">parent</code></dt>
+<dd><p>Field google.cloud.kms.v1.CreateKeyRingRequest.parent</p>
 </dd></dl>
 
 </dd></dl>
@@ -302,7 +386,67 @@ auto-rotation are controlled by this template.</p>
 <dl class="class">
 <dt id="google.cloud.kms_v1.types.CryptoKey.LabelsEntry">
 <em class="property">class </em><code class="descname">LabelsEntry</code><a class="headerlink" href="#google.cloud.kms_v1.types.CryptoKey.LabelsEntry" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.kms_v1.types.CryptoKey.LabelsEntry.key">
+<code class="descname">key</code><a class="headerlink" href="#google.cloud.kms_v1.types.CryptoKey.LabelsEntry.key" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.cloud.kms.v1.CryptoKey.LabelsEntry.key</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.kms_v1.types.CryptoKey.LabelsEntry.value">
+<code class="descname">value</code><a class="headerlink" href="#google.cloud.kms_v1.types.CryptoKey.LabelsEntry.value" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.cloud.kms.v1.CryptoKey.LabelsEntry.value</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">create_time</code></dt>
+<dd><p>Field google.cloud.kms.v1.CryptoKey.create_time</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">labels</code></dt>
+<dd><p>Field google.cloud.kms.v1.CryptoKey.labels</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.cloud.kms.v1.CryptoKey.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">next_rotation_time</code></dt>
+<dd><p>Field google.cloud.kms.v1.CryptoKey.next_rotation_time</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">primary</code></dt>
+<dd><p>Field google.cloud.kms.v1.CryptoKey.primary</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">purpose</code></dt>
+<dd><p>Field google.cloud.kms.v1.CryptoKey.purpose</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">rotation_period</code></dt>
+<dd><p>Field google.cloud.kms.v1.CryptoKey.rotation_period</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">version_template</code></dt>
+<dd><p>Field google.cloud.kms.v1.CryptoKey.version_template</p>
+</dd></dl>
 
 </dd></dl>
 
@@ -400,6 +544,60 @@ YED][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionStat
 e.DESTROYED].</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">algorithm</code></dt>
+<dd><p>Field google.cloud.kms.v1.CryptoKeyVersion.algorithm</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">attestation</code></dt>
+<dd><p>Field google.cloud.kms.v1.CryptoKeyVersion.attestation</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">create_time</code></dt>
+<dd><p>Field google.cloud.kms.v1.CryptoKeyVersion.create_time</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">destroy_event_time</code></dt>
+<dd><p>Field google.cloud.kms.v1.CryptoKeyVersion.destroy_event_time</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">destroy_time</code></dt>
+<dd><p>Field google.cloud.kms.v1.CryptoKeyVersion.destroy_time</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">generate_time</code></dt>
+<dd><p>Field google.cloud.kms.v1.CryptoKeyVersion.generate_time</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.cloud.kms.v1.CryptoKeyVersion.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">protection_level</code></dt>
+<dd><p>Field google.cloud.kms.v1.CryptoKeyVersion.protection_level</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">state</code></dt>
+<dd><p>Field google.cloud.kms.v1.CryptoKeyVersion.state</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -436,6 +634,18 @@ omitted and
 ose.ENCRYPT_DECRYPT].</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">algorithm</code></dt>
+<dd><p>Field google.cloud.kms.v1.CryptoKeyVersionTemplate.algorithm</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">protection_level</code></dt>
+<dd><p>Field google.cloud.kms.v1.CryptoKeyVersionTemplate.protection_level</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -467,6 +677,24 @@ ext].</p>
 kms.v1.EncryptRequest.additional_authenticated_data].</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">additional_authenticated_data</code></dt>
+<dd><p>Field google.cloud.kms.v1.DecryptRequest.additional_authenticated_data</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">ciphertext</code></dt>
+<dd><p>Field google.cloud.kms.v1.DecryptRequest.ciphertext</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.cloud.kms.v1.DecryptRequest.name</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -479,6 +707,12 @@ kms.v1.EncryptRequest.additional_authenticated_data].</p>
 <code class="descname">plaintext</code><a class="headerlink" href="#google.cloud.kms_v1.types.DecryptResponse.plaintext" title="Permalink to this definition">#</a></dt>
 <dd><p>The decrypted data originally supplied in [EncryptRequest.plai
 ntext][google.cloud.kms.v1.EncryptRequest.plaintext].</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">plaintext</code></dt>
+<dd><p>Field google.cloud.kms.v1.DecryptResponse.plaintext</p>
 </dd></dl>
 
 </dd></dl>
@@ -494,6 +728,12 @@ ntext][google.cloud.kms.v1.EncryptRequest.plaintext].</p>
 <dd><p>The resource name of the
 [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] to
 destroy.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.cloud.kms.v1.DestroyCryptoKeyVersionRequest.name</p>
 </dd></dl>
 
 </dd></dl>
@@ -527,12 +767,42 @@ digest.</p>
 <dd><p>A message digest produced with the SHA-512 algorithm.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">sha256</code></dt>
+<dd><p>Field google.cloud.kms.v1.Digest.sha256</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">sha384</code></dt>
+<dd><p>Field google.cloud.kms.v1.Digest.sha384</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">sha512</code></dt>
+<dd><p>Field google.cloud.kms.v1.Digest.sha512</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.kms_v1.types.Duration">
 <em class="property">class </em><code class="descclassname">google.cloud.kms_v1.types.</code><code class="descname">Duration</code><a class="headerlink" href="#google.cloud.kms_v1.types.Duration" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.kms_v1.types.Duration.nanos">
+<code class="descname">nanos</code><a class="headerlink" href="#google.cloud.kms_v1.types.Duration.nanos" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.Duration.nanos</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.kms_v1.types.Duration.seconds">
+<code class="descname">seconds</code><a class="headerlink" href="#google.cloud.kms_v1.types.Duration.seconds" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.Duration.seconds</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.kms_v1.types.EncryptRequest">
@@ -583,6 +853,24 @@ additional_authenticated_data fields must be no larger than
 8KiB.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">additional_authenticated_data</code></dt>
+<dd><p>Field google.cloud.kms.v1.EncryptRequest.additional_authenticated_data</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.cloud.kms.v1.EncryptRequest.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">plaintext</code></dt>
+<dd><p>Field google.cloud.kms.v1.EncryptRequest.plaintext</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -604,12 +892,30 @@ in encryption.</p>
 <dd><p>The encrypted data.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">ciphertext</code></dt>
+<dd><p>Field google.cloud.kms.v1.EncryptResponse.ciphertext</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.cloud.kms.v1.EncryptResponse.name</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.kms_v1.types.FieldMask">
 <em class="property">class </em><code class="descclassname">google.cloud.kms_v1.types.</code><code class="descname">FieldMask</code><a class="headerlink" href="#google.cloud.kms_v1.types.FieldMask" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.kms_v1.types.FieldMask.paths">
+<code class="descname">paths</code><a class="headerlink" href="#google.cloud.kms_v1.types.FieldMask.paths" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FieldMask.paths</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.kms_v1.types.GetCryptoKeyRequest">
@@ -621,6 +927,12 @@ in encryption.</p>
 <code class="descname">name</code><a class="headerlink" href="#google.cloud.kms_v1.types.GetCryptoKeyRequest.name" title="Permalink to this definition">#</a></dt>
 <dd><p>The [name][google.cloud.kms.v1.CryptoKey.name] of the
 [CryptoKey][google.cloud.kms.v1.CryptoKey] to get.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.cloud.kms.v1.GetCryptoKeyRequest.name</p>
 </dd></dl>
 
 </dd></dl>
@@ -638,6 +950,12 @@ in encryption.</p>
 get.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.cloud.kms.v1.GetCryptoKeyVersionRequest.name</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -650,6 +968,12 @@ get.</p>
 <code class="descname">name</code><a class="headerlink" href="#google.cloud.kms_v1.types.GetKeyRingRequest.name" title="Permalink to this definition">#</a></dt>
 <dd><p>The [name][google.cloud.kms.v1.KeyRing.name] of the
 [KeyRing][google.cloud.kms.v1.KeyRing] to get.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.cloud.kms.v1.GetKeyRingRequest.name</p>
 </dd></dl>
 
 </dd></dl>
@@ -665,6 +989,12 @@ get.</p>
 <dd><p>The [name][google.cloud.kms.v1.CryptoKeyVersion.name] of the
 [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
 public key to get.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.cloud.kms.v1.GetPublicKeyRequest.name</p>
 </dd></dl>
 
 </dd></dl>
@@ -684,6 +1014,18 @@ public key to get.</p>
 <code class="descname">content</code><a class="headerlink" href="#google.cloud.kms_v1.types.KeyOperationAttestation.content" title="Permalink to this definition">#</a></dt>
 <dd><p>Output only. The attestation data provided by the HSM when the
 key operation was performed.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">content</code></dt>
+<dd><p>Field google.cloud.kms.v1.KeyOperationAttestation.content</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">format</code></dt>
+<dd><p>Field google.cloud.kms.v1.KeyOperationAttestation.format</p>
 </dd></dl>
 
 </dd></dl>
@@ -706,6 +1048,18 @@ of [CryptoKeys][google.cloud.kms.v1.CryptoKey].</p>
 <code class="descname">create_time</code><a class="headerlink" href="#google.cloud.kms_v1.types.KeyRing.create_time" title="Permalink to this definition">#</a></dt>
 <dd><p>Output only. The time at which this
 [KeyRing][google.cloud.kms.v1.KeyRing] was created.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">create_time</code></dt>
+<dd><p>Field google.cloud.kms.v1.KeyRing.create_time</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.cloud.kms.v1.KeyRing.name</p>
 </dd></dl>
 
 </dd></dl>
@@ -750,6 +1104,30 @@ yptoKeyVersionsResponse.next_page_token].</p>
 <dd><p>The fields to include in the response.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">page_size</code></dt>
+<dd><p>Field google.cloud.kms.v1.ListCryptoKeyVersionsRequest.page_size</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">page_token</code></dt>
+<dd><p>Field google.cloud.kms.v1.ListCryptoKeyVersionsRequest.page_token</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">parent</code></dt>
+<dd><p>Field google.cloud.kms.v1.ListCryptoKeyVersionsRequest.parent</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">view</code></dt>
+<dd><p>Field google.cloud.kms.v1.ListCryptoKeyVersionsRequest.view</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -779,6 +1157,24 @@ page of results.</p>
 <dd><p>The total number of
 [CryptoKeyVersions][google.cloud.kms.v1.CryptoKeyVersion] that
 matched the query.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">crypto_key_versions</code></dt>
+<dd><p>Field google.cloud.kms.v1.ListCryptoKeyVersionsResponse.crypto_key_versions</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">next_page_token</code></dt>
+<dd><p>Field google.cloud.kms.v1.ListCryptoKeyVersionsResponse.next_page_token</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">total_size</code></dt>
+<dd><p>Field google.cloud.kms.v1.ListCryptoKeyVersionsResponse.total_size</p>
 </dd></dl>
 
 </dd></dl>
@@ -822,6 +1218,30 @@ sResponse.next_page_token].</p>
 <dd><p>The fields of the primary version to include in the response.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">page_size</code></dt>
+<dd><p>Field google.cloud.kms.v1.ListCryptoKeysRequest.page_size</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">page_token</code></dt>
+<dd><p>Field google.cloud.kms.v1.ListCryptoKeysRequest.page_token</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">parent</code></dt>
+<dd><p>Field google.cloud.kms.v1.ListCryptoKeysRequest.parent</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">version_view</code></dt>
+<dd><p>Field google.cloud.kms.v1.ListCryptoKeysRequest.version_view</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -850,6 +1270,24 @@ results.</p>
 <dd><p>The total number of
 [CryptoKeys][google.cloud.kms.v1.CryptoKey] that matched the
 query.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">crypto_keys</code></dt>
+<dd><p>Field google.cloud.kms.v1.ListCryptoKeysResponse.crypto_keys</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">next_page_token</code></dt>
+<dd><p>Field google.cloud.kms.v1.ListCryptoKeysResponse.next_page_token</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">total_size</code></dt>
+<dd><p>Field google.cloud.kms.v1.ListCryptoKeysResponse.total_size</p>
 </dd></dl>
 
 </dd></dl>
@@ -887,6 +1325,24 @@ esponse.next_page_token][google.cloud.kms.v1.ListKeyRingsRes
 ponse.next_page_token].</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">page_size</code></dt>
+<dd><p>Field google.cloud.kms.v1.ListKeyRingsRequest.page_size</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">page_token</code></dt>
+<dd><p>Field google.cloud.kms.v1.ListKeyRingsRequest.page_token</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">parent</code></dt>
+<dd><p>Field google.cloud.kms.v1.ListKeyRingsRequest.parent</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -915,6 +1371,24 @@ ngsRequest.page_token] to retrieve the next page of results.</p>
 that matched the query.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">key_rings</code></dt>
+<dd><p>Field google.cloud.kms.v1.ListKeyRingsResponse.key_rings</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">next_page_token</code></dt>
+<dd><p>Field google.cloud.kms.v1.ListKeyRingsResponse.next_page_token</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">total_size</code></dt>
+<dd><p>Field google.cloud.kms.v1.ListKeyRingsResponse.total_size</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -930,6 +1404,12 @@ with [protection_level][google.cloud.kms.v1.CryptoKeyVersionT
 emplate.protection_level]
 [HSM][google.cloud.kms.v1.ProtectionLevel.HSM] can be created
 in this location.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">hsm_available</code></dt>
+<dd><p>Field google.cloud.kms.v1.LocationMetadata.hsm_available</p>
 </dd></dl>
 
 </dd></dl>
@@ -957,6 +1437,18 @@ sections for <a class="reference external" href="https://tools.ietf.org/html/rfc
 VersionAlgorithm] associated with this key.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">algorithm</code></dt>
+<dd><p>Field google.cloud.kms.v1.PublicKey.algorithm</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">pem</code></dt>
+<dd><p>Field google.cloud.kms.v1.PublicKey.pem</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -972,12 +1464,30 @@ VersionAlgorithm] associated with this key.</p>
 restore.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.cloud.kms.v1.RestoreCryptoKeyVersionRequest.name</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.kms_v1.types.Timestamp">
 <em class="property">class </em><code class="descclassname">google.cloud.kms_v1.types.</code><code class="descname">Timestamp</code><a class="headerlink" href="#google.cloud.kms_v1.types.Timestamp" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.kms_v1.types.Timestamp.nanos">
+<code class="descname">nanos</code><a class="headerlink" href="#google.cloud.kms_v1.types.Timestamp.nanos" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.Timestamp.nanos</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.kms_v1.types.Timestamp.seconds">
+<code class="descname">seconds</code><a class="headerlink" href="#google.cloud.kms_v1.types.Timestamp.seconds" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.Timestamp.seconds</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.kms_v1.types.UpdateCryptoKeyPrimaryVersionRequest">
@@ -997,6 +1507,18 @@ restore.</p>
 <dd><p>The id of the child
 [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] to
 use as primary.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">crypto_key_version_id</code></dt>
+<dd><p>Field google.cloud.kms.v1.UpdateCryptoKeyPrimaryVersionRequest.crypto_key_version_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.cloud.kms.v1.UpdateCryptoKeyPrimaryVersionRequest.name</p>
 </dd></dl>
 
 </dd></dl>
@@ -1019,6 +1541,18 @@ values.</p>
 <dd><p>Required list of fields to be updated in this request.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">crypto_key</code></dt>
+<dd><p>Field google.cloud.kms.v1.UpdateCryptoKeyRequest.crypto_key</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">update_mask</code></dt>
+<dd><p>Field google.cloud.kms.v1.UpdateCryptoKeyRequest.update_mask</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -1037,6 +1571,18 @@ updated values.</p>
 <dt id="google.cloud.kms_v1.types.UpdateCryptoKeyVersionRequest.update_mask">
 <code class="descname">update_mask</code><a class="headerlink" href="#google.cloud.kms_v1.types.UpdateCryptoKeyVersionRequest.update_mask" title="Permalink to this definition">#</a></dt>
 <dd><p>Required list of fields to be updated in this request.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">crypto_key_version</code></dt>
+<dd><p>Field google.cloud.kms.v1.UpdateCryptoKeyVersionRequest.crypto_key_version</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">update_mask</code></dt>
+<dd><p>Field google.cloud.kms.v1.UpdateCryptoKeyVersionRequest.update_mask</p>
 </dd></dl>
 
 </dd></dl>

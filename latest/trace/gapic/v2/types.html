@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Types for Stackdriver Trace API Client &#8212; google-cloud 35e0349 documentation</title>
+    <title>Types for Stackdriver Trace API Client &#8212; google-cloud 915e116 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -40,7 +40,19 @@
 <dl class="class">
 <dt id="google.cloud.trace_v2.types.Any">
 <em class="property">class </em><code class="descclassname">google.cloud.trace_v2.types.</code><code class="descname">Any</code><a class="headerlink" href="#google.cloud.trace_v2.types.Any" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.trace_v2.types.Any.type_url">
+<code class="descname">type_url</code><a class="headerlink" href="#google.cloud.trace_v2.types.Any.type_url" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.Any.type_url</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.trace_v2.types.Any.value">
+<code class="descname">value</code><a class="headerlink" href="#google.cloud.trace_v2.types.Any.value" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.Any.value</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.trace_v2.types.AttributeValue">
@@ -70,6 +82,24 @@
 <dd><p>A Boolean value represented by <code class="docutils literal notranslate"><span class="pre">true</span></code> or <code class="docutils literal notranslate"><span class="pre">false</span></code>.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">bool_value</code></dt>
+<dd><p>Field google.devtools.cloudtrace.v2.AttributeValue.bool_value</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">int_value</code></dt>
+<dd><p>Field google.devtools.cloudtrace.v2.AttributeValue.int_value</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">string_value</code></dt>
+<dd><p>Field google.devtools.cloudtrace.v2.AttributeValue.string_value</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -90,22 +120,52 @@ format is <code class="docutils literal notranslate"><span class="pre">projects/
 spans, or the results are undefined.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.devtools.cloudtrace.v2.BatchWriteSpansRequest.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">spans</code></dt>
+<dd><p>Field google.devtools.cloudtrace.v2.BatchWriteSpansRequest.spans</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.trace_v2.types.BoolValue">
 <em class="property">class </em><code class="descclassname">google.cloud.trace_v2.types.</code><code class="descname">BoolValue</code><a class="headerlink" href="#google.cloud.trace_v2.types.BoolValue" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.trace_v2.types.BoolValue.value">
+<code class="descname">value</code><a class="headerlink" href="#google.cloud.trace_v2.types.BoolValue.value" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.BoolValue.value</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.trace_v2.types.BytesValue">
 <em class="property">class </em><code class="descclassname">google.cloud.trace_v2.types.</code><code class="descname">BytesValue</code><a class="headerlink" href="#google.cloud.trace_v2.types.BytesValue" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.trace_v2.types.BytesValue.value">
+<code class="descname">value</code><a class="headerlink" href="#google.cloud.trace_v2.types.BytesValue.value" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.BytesValue.value</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.trace_v2.types.DoubleValue">
 <em class="property">class </em><code class="descclassname">google.cloud.trace_v2.types.</code><code class="descname">DoubleValue</code><a class="headerlink" href="#google.cloud.trace_v2.types.DoubleValue" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.trace_v2.types.DoubleValue.value">
+<code class="descname">value</code><a class="headerlink" href="#google.cloud.trace_v2.types.DoubleValue.value" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.DoubleValue.value</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.trace_v2.types.Empty">
@@ -115,17 +175,35 @@ spans, or the results are undefined.</p>
 <dl class="class">
 <dt id="google.cloud.trace_v2.types.FloatValue">
 <em class="property">class </em><code class="descclassname">google.cloud.trace_v2.types.</code><code class="descname">FloatValue</code><a class="headerlink" href="#google.cloud.trace_v2.types.FloatValue" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.trace_v2.types.FloatValue.value">
+<code class="descname">value</code><a class="headerlink" href="#google.cloud.trace_v2.types.FloatValue.value" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FloatValue.value</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.trace_v2.types.Int32Value">
 <em class="property">class </em><code class="descclassname">google.cloud.trace_v2.types.</code><code class="descname">Int32Value</code><a class="headerlink" href="#google.cloud.trace_v2.types.Int32Value" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.trace_v2.types.Int32Value.value">
+<code class="descname">value</code><a class="headerlink" href="#google.cloud.trace_v2.types.Int32Value.value" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.Int32Value.value</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.trace_v2.types.Int64Value">
 <em class="property">class </em><code class="descclassname">google.cloud.trace_v2.types.</code><code class="descname">Int64Value</code><a class="headerlink" href="#google.cloud.trace_v2.types.Int64Value" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.trace_v2.types.Int64Value.value">
+<code class="descname">value</code><a class="headerlink" href="#google.cloud.trace_v2.types.Int64Value.value" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.Int64Value.value</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.trace_v2.types.Module">
@@ -143,6 +221,18 @@ libraries such as libc.so, sharedlib.so (up to 256 bytes).</p>
 <code class="descname">build_id</code><a class="headerlink" href="#google.cloud.trace_v2.types.Module.build_id" title="Permalink to this definition">#</a></dt>
 <dd><p>A unique identifier for the module, usually a hash of its
 contents (up to 128 bytes).</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">build_id</code></dt>
+<dd><p>Field google.devtools.cloudtrace.v2.Module.build_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">module</code></dt>
+<dd><p>Field google.devtools.cloudtrace.v2.Module.module</p>
 </dd></dl>
 
 </dd></dl>
@@ -291,7 +381,31 @@ attributes are valid.</p>
 <dl class="class">
 <dt id="google.cloud.trace_v2.types.Span.Attributes.AttributeMapEntry">
 <em class="property">class </em><code class="descname">AttributeMapEntry</code><a class="headerlink" href="#google.cloud.trace_v2.types.Span.Attributes.AttributeMapEntry" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.trace_v2.types.Span.Attributes.AttributeMapEntry.key">
+<code class="descname">key</code><a class="headerlink" href="#google.cloud.trace_v2.types.Span.Attributes.AttributeMapEntry.key" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.devtools.cloudtrace.v2.Span.Attributes.AttributeMapEntry.key</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.trace_v2.types.Span.Attributes.AttributeMapEntry.value">
+<code class="descname">value</code><a class="headerlink" href="#google.cloud.trace_v2.types.Span.Attributes.AttributeMapEntry.value" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.devtools.cloudtrace.v2.Span.Attributes.AttributeMapEntry.value</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">attribute_map</code></dt>
+<dd><p>Field google.devtools.cloudtrace.v2.Span.Attributes.attribute_map</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">dropped_attributes_count</code></dt>
+<dd><p>Field google.devtools.cloudtrace.v2.Span.Attributes.dropped_attributes_count</p>
+</dd></dl>
 
 </dd></dl>
 
@@ -328,6 +442,30 @@ span.</p>
 attributes per link.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">attributes</code></dt>
+<dd><p>Field google.devtools.cloudtrace.v2.Span.Link.attributes</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">span_id</code></dt>
+<dd><p>Field google.devtools.cloudtrace.v2.Span.Link.span_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">trace_id</code></dt>
+<dd><p>Field google.devtools.cloudtrace.v2.Span.Link.trace_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">type</code></dt>
+<dd><p>Field google.devtools.cloudtrace.v2.Span.Link.type</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -346,6 +484,18 @@ the same or different trace.</p>
 <code class="descname">dropped_links_count</code><a class="headerlink" href="#google.cloud.trace_v2.types.Span.Links.dropped_links_count" title="Permalink to this definition">#</a></dt>
 <dd><p>The number of dropped links after the maximum size was
 enforced. If this value is 0, then no links were dropped.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">dropped_links_count</code></dt>
+<dd><p>Field google.devtools.cloudtrace.v2.Span.Links.dropped_links_count</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">link</code></dt>
+<dd><p>Field google.devtools.cloudtrace.v2.Span.Links.link</p>
 </dd></dl>
 
 </dd></dl>
@@ -397,6 +547,18 @@ length for the description is 256 bytes.</p>
 attributes per Annotation.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">attributes</code></dt>
+<dd><p>Field google.devtools.cloudtrace.v2.Span.TimeEvent.Annotation.attributes</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">description</code></dt>
+<dd><p>Field google.devtools.cloudtrace.v2.Span.TimeEvent.Annotation.description</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -431,6 +593,48 @@ be unique within a Span.</p>
 assumed to be the same size as uncompressed.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">compressed_size_bytes</code></dt>
+<dd><p>Field google.devtools.cloudtrace.v2.Span.TimeEvent.MessageEvent.compressed_size_bytes</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">id</code></dt>
+<dd><p>Field google.devtools.cloudtrace.v2.Span.TimeEvent.MessageEvent.id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">type</code></dt>
+<dd><p>Field google.devtools.cloudtrace.v2.Span.TimeEvent.MessageEvent.type</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">uncompressed_size_bytes</code></dt>
+<dd><p>Field google.devtools.cloudtrace.v2.Span.TimeEvent.MessageEvent.uncompressed_size_bytes</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">annotation</code></dt>
+<dd><p>Field google.devtools.cloudtrace.v2.Span.TimeEvent.annotation</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">message_event</code></dt>
+<dd><p>Field google.devtools.cloudtrace.v2.Span.TimeEvent.message_event</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">time</code></dt>
+<dd><p>Field google.devtools.cloudtrace.v2.Span.TimeEvent.time</p>
 </dd></dl>
 
 </dd></dl>
@@ -462,6 +666,102 @@ events. If the value is 0, then no message events were
 dropped.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">dropped_annotations_count</code></dt>
+<dd><p>Field google.devtools.cloudtrace.v2.Span.TimeEvents.dropped_annotations_count</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">dropped_message_events_count</code></dt>
+<dd><p>Field google.devtools.cloudtrace.v2.Span.TimeEvents.dropped_message_events_count</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">time_event</code></dt>
+<dd><p>Field google.devtools.cloudtrace.v2.Span.TimeEvents.time_event</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">attributes</code></dt>
+<dd><p>Field google.devtools.cloudtrace.v2.Span.attributes</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">child_span_count</code></dt>
+<dd><p>Field google.devtools.cloudtrace.v2.Span.child_span_count</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">display_name</code></dt>
+<dd><p>Field google.devtools.cloudtrace.v2.Span.display_name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">end_time</code></dt>
+<dd><p>Field google.devtools.cloudtrace.v2.Span.end_time</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">links</code></dt>
+<dd><p>Field google.devtools.cloudtrace.v2.Span.links</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.devtools.cloudtrace.v2.Span.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">parent_span_id</code></dt>
+<dd><p>Field google.devtools.cloudtrace.v2.Span.parent_span_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">same_process_as_parent_span</code></dt>
+<dd><p>Field google.devtools.cloudtrace.v2.Span.same_process_as_parent_span</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">span_id</code></dt>
+<dd><p>Field google.devtools.cloudtrace.v2.Span.span_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">stack_trace</code></dt>
+<dd><p>Field google.devtools.cloudtrace.v2.Span.stack_trace</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">start_time</code></dt>
+<dd><p>Field google.devtools.cloudtrace.v2.Span.start_time</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">status</code></dt>
+<dd><p>Field google.devtools.cloudtrace.v2.Span.status</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">time_events</code></dt>
+<dd><p>Field google.devtools.cloudtrace.v2.Span.time_events</p>
 </dd></dl>
 
 </dd></dl>
@@ -541,6 +841,48 @@ anonymous functions.</p>
 <dd><p>The version of the deployed source code (up to 128 bytes).</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">column_number</code></dt>
+<dd><p>Field google.devtools.cloudtrace.v2.StackTrace.StackFrame.column_number</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">file_name</code></dt>
+<dd><p>Field google.devtools.cloudtrace.v2.StackTrace.StackFrame.file_name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">function_name</code></dt>
+<dd><p>Field google.devtools.cloudtrace.v2.StackTrace.StackFrame.function_name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">line_number</code></dt>
+<dd><p>Field google.devtools.cloudtrace.v2.StackTrace.StackFrame.line_number</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">load_module</code></dt>
+<dd><p>Field google.devtools.cloudtrace.v2.StackTrace.StackFrame.load_module</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">original_function_name</code></dt>
+<dd><p>Field google.devtools.cloudtrace.v2.StackTrace.StackFrame.original_function_name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">source_version</code></dt>
+<dd><p>Field google.devtools.cloudtrace.v2.StackTrace.StackFrame.source_version</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -561,6 +903,30 @@ were too many stack frames. If this value is 0, then no stack
 frames were dropped.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">dropped_frames_count</code></dt>
+<dd><p>Field google.devtools.cloudtrace.v2.StackTrace.StackFrames.dropped_frames_count</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">frame</code></dt>
+<dd><p>Field google.devtools.cloudtrace.v2.StackTrace.StackFrames.frame</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">stack_frames</code></dt>
+<dd><p>Field google.devtools.cloudtrace.v2.StackTrace.stack_frames</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">stack_trace_hash_id</code></dt>
+<dd><p>Field google.devtools.cloudtrace.v2.StackTrace.stack_trace_hash_id</p>
 </dd></dl>
 
 </dd></dl>
@@ -568,17 +934,53 @@ frames were dropped.</p>
 <dl class="class">
 <dt id="google.cloud.trace_v2.types.Status">
 <em class="property">class </em><code class="descclassname">google.cloud.trace_v2.types.</code><code class="descname">Status</code><a class="headerlink" href="#google.cloud.trace_v2.types.Status" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.trace_v2.types.Status.code">
+<code class="descname">code</code><a class="headerlink" href="#google.cloud.trace_v2.types.Status.code" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.rpc.Status.code</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.trace_v2.types.Status.details">
+<code class="descname">details</code><a class="headerlink" href="#google.cloud.trace_v2.types.Status.details" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.rpc.Status.details</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.trace_v2.types.Status.message">
+<code class="descname">message</code><a class="headerlink" href="#google.cloud.trace_v2.types.Status.message" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.rpc.Status.message</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.trace_v2.types.StringValue">
 <em class="property">class </em><code class="descclassname">google.cloud.trace_v2.types.</code><code class="descname">StringValue</code><a class="headerlink" href="#google.cloud.trace_v2.types.StringValue" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.trace_v2.types.StringValue.value">
+<code class="descname">value</code><a class="headerlink" href="#google.cloud.trace_v2.types.StringValue.value" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.StringValue.value</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.trace_v2.types.Timestamp">
 <em class="property">class </em><code class="descclassname">google.cloud.trace_v2.types.</code><code class="descname">Timestamp</code><a class="headerlink" href="#google.cloud.trace_v2.types.Timestamp" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.trace_v2.types.Timestamp.nanos">
+<code class="descname">nanos</code><a class="headerlink" href="#google.cloud.trace_v2.types.Timestamp.nanos" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.Timestamp.nanos</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.trace_v2.types.Timestamp.seconds">
+<code class="descname">seconds</code><a class="headerlink" href="#google.cloud.trace_v2.types.Timestamp.seconds" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.Timestamp.seconds</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.trace_v2.types.TruncatableString">
@@ -602,17 +1004,41 @@ of the shortened string might be less than the size limit.</p>
 value is 0, then the string was not shortened.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">truncated_byte_count</code></dt>
+<dd><p>Field google.devtools.cloudtrace.v2.TruncatableString.truncated_byte_count</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">value</code></dt>
+<dd><p>Field google.devtools.cloudtrace.v2.TruncatableString.value</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.trace_v2.types.UInt32Value">
 <em class="property">class </em><code class="descclassname">google.cloud.trace_v2.types.</code><code class="descname">UInt32Value</code><a class="headerlink" href="#google.cloud.trace_v2.types.UInt32Value" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.trace_v2.types.UInt32Value.value">
+<code class="descname">value</code><a class="headerlink" href="#google.cloud.trace_v2.types.UInt32Value.value" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.UInt32Value.value</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.trace_v2.types.UInt64Value">
 <em class="property">class </em><code class="descclassname">google.cloud.trace_v2.types.</code><code class="descname">UInt64Value</code><a class="headerlink" href="#google.cloud.trace_v2.types.UInt64Value" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.trace_v2.types.UInt64Value.value">
+<code class="descname">value</code><a class="headerlink" href="#google.cloud.trace_v2.types.UInt64Value.value" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.UInt64Value.value</p>
+</dd></dl>
+
+</dd></dl>
 
 </div>
 

@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Types for Stackdriver Trace API Client &#8212; google-cloud 35e0349 documentation</title>
+    <title>Types for Stackdriver Trace API Client &#8212; google-cloud 915e116 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -56,6 +56,18 @@
 <dt id="google.cloud.trace_v1.types.GetTraceRequest.trace_id">
 <code class="descname">trace_id</code><a class="headerlink" href="#google.cloud.trace_v1.types.GetTraceRequest.trace_id" title="Permalink to this definition">#</a></dt>
 <dd><p>ID of the trace to return.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">project_id</code></dt>
+<dd><p>Field google.devtools.cloudtrace.v1.GetTraceRequest.project_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">trace_id</code></dt>
+<dd><p>Field google.devtools.cloudtrace.v1.GetTraceRequest.trace_id</p>
 </dd></dl>
 
 </dd></dl>
@@ -154,6 +166,54 @@ order can be specified by appending <code class="docutils literal notranslate"><
 permitted.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">end_time</code></dt>
+<dd><p>Field google.devtools.cloudtrace.v1.ListTracesRequest.end_time</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">filter</code></dt>
+<dd><p>Field google.devtools.cloudtrace.v1.ListTracesRequest.filter</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">order_by</code></dt>
+<dd><p>Field google.devtools.cloudtrace.v1.ListTracesRequest.order_by</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">page_size</code></dt>
+<dd><p>Field google.devtools.cloudtrace.v1.ListTracesRequest.page_size</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">page_token</code></dt>
+<dd><p>Field google.devtools.cloudtrace.v1.ListTracesRequest.page_token</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">project_id</code></dt>
+<dd><p>Field google.devtools.cloudtrace.v1.ListTracesRequest.project_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">start_time</code></dt>
+<dd><p>Field google.devtools.cloudtrace.v1.ListTracesRequest.start_time</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">view</code></dt>
+<dd><p>Field google.devtools.cloudtrace.v1.ListTracesRequest.view</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -174,6 +234,18 @@ the request and that this value should be passed to the next
 request to continue retrieving additional traces.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">next_page_token</code></dt>
+<dd><p>Field google.devtools.cloudtrace.v1.ListTracesResponse.next_page_token</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">traces</code></dt>
+<dd><p>Field google.devtools.cloudtrace.v1.ListTracesResponse.traces</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -192,12 +264,36 @@ request to continue retrieving additional traces.</p>
 <dd><p>The body of the message.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">project_id</code></dt>
+<dd><p>Field google.devtools.cloudtrace.v1.PatchTracesRequest.project_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">traces</code></dt>
+<dd><p>Field google.devtools.cloudtrace.v1.PatchTracesRequest.traces</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.trace_v1.types.Timestamp">
 <em class="property">class </em><code class="descclassname">google.cloud.trace_v1.types.</code><code class="descname">Timestamp</code><a class="headerlink" href="#google.cloud.trace_v1.types.Timestamp" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.trace_v1.types.Timestamp.nanos">
+<code class="descname">nanos</code><a class="headerlink" href="#google.cloud.trace_v1.types.Timestamp.nanos" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.Timestamp.nanos</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.trace_v1.types.Timestamp.seconds">
+<code class="descname">seconds</code><a class="headerlink" href="#google.cloud.trace_v1.types.Timestamp.seconds" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.Timestamp.seconds</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.trace_v1.types.Trace">
@@ -223,6 +319,24 @@ stored.</p>
 <dt id="google.cloud.trace_v1.types.Trace.spans">
 <code class="descname">spans</code><a class="headerlink" href="#google.cloud.trace_v1.types.Trace.spans" title="Permalink to this definition">#</a></dt>
 <dd><p>Collection of spans in the trace.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">project_id</code></dt>
+<dd><p>Field google.devtools.cloudtrace.v1.Trace.project_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">spans</code></dt>
+<dd><p>Field google.devtools.cloudtrace.v1.Trace.spans</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">trace_id</code></dt>
+<dd><p>Field google.devtools.cloudtrace.v1.Trace.trace_id</p>
 </dd></dl>
 
 </dd></dl>
@@ -307,7 +421,61 @@ your own, we recommend the following formats:  -
 <dl class="class">
 <dt id="google.cloud.trace_v1.types.TraceSpan.LabelsEntry">
 <em class="property">class </em><code class="descname">LabelsEntry</code><a class="headerlink" href="#google.cloud.trace_v1.types.TraceSpan.LabelsEntry" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.trace_v1.types.TraceSpan.LabelsEntry.key">
+<code class="descname">key</code><a class="headerlink" href="#google.cloud.trace_v1.types.TraceSpan.LabelsEntry.key" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.devtools.cloudtrace.v1.TraceSpan.LabelsEntry.key</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.trace_v1.types.TraceSpan.LabelsEntry.value">
+<code class="descname">value</code><a class="headerlink" href="#google.cloud.trace_v1.types.TraceSpan.LabelsEntry.value" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.devtools.cloudtrace.v1.TraceSpan.LabelsEntry.value</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">end_time</code></dt>
+<dd><p>Field google.devtools.cloudtrace.v1.TraceSpan.end_time</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">kind</code></dt>
+<dd><p>Field google.devtools.cloudtrace.v1.TraceSpan.kind</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">labels</code></dt>
+<dd><p>Field google.devtools.cloudtrace.v1.TraceSpan.labels</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.devtools.cloudtrace.v1.TraceSpan.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">parent_span_id</code></dt>
+<dd><p>Field google.devtools.cloudtrace.v1.TraceSpan.parent_span_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">span_id</code></dt>
+<dd><p>Field google.devtools.cloudtrace.v1.TraceSpan.span_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">start_time</code></dt>
+<dd><p>Field google.devtools.cloudtrace.v1.TraceSpan.start_time</p>
+</dd></dl>
 
 </dd></dl>
 
@@ -319,6 +487,12 @@ your own, we recommend the following formats:  -
 <dt id="google.cloud.trace_v1.types.Traces.traces">
 <code class="descname">traces</code><a class="headerlink" href="#google.cloud.trace_v1.types.Traces.traces" title="Permalink to this definition">#</a></dt>
 <dd><p>List of traces.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">traces</code></dt>
+<dd><p>Field google.devtools.cloudtrace.v1.Traces.traces</p>
 </dd></dl>
 
 </dd></dl>

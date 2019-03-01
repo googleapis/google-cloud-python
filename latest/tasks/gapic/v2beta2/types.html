@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Types for Cloud Tasks API Client &#8212; google-cloud 35e0349 documentation</title>
+    <title>Types for Cloud Tasks API Client &#8212; google-cloud 915e116 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -62,12 +62,36 @@ response. This restriction is to ensure that your worker
 currently holds the lease.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.cloud.tasks.v2beta2.AcknowledgeTaskRequest.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">schedule_time</code></dt>
+<dd><p>Field google.cloud.tasks.v2beta2.AcknowledgeTaskRequest.schedule_time</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.tasks_v2beta2.types.Any">
 <em class="property">class </em><code class="descclassname">google.cloud.tasks_v2beta2.types.</code><code class="descname">Any</code><a class="headerlink" href="#google.cloud.tasks_v2beta2.types.Any" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.tasks_v2beta2.types.Any.type_url">
+<code class="descname">type_url</code><a class="headerlink" href="#google.cloud.tasks_v2beta2.types.Any.type_url" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.Any.type_url</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.tasks_v2beta2.types.Any.value">
+<code class="descname">value</code><a class="headerlink" href="#google.cloud.tasks_v2beta2.types.Any.value" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.Any.value</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.tasks_v2beta2.types.AppEngineHttpRequest">
@@ -196,7 +220,49 @@ a task with an incompatible
 <dl class="class">
 <dt id="google.cloud.tasks_v2beta2.types.AppEngineHttpRequest.HeadersEntry">
 <em class="property">class </em><code class="descname">HeadersEntry</code><a class="headerlink" href="#google.cloud.tasks_v2beta2.types.AppEngineHttpRequest.HeadersEntry" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.tasks_v2beta2.types.AppEngineHttpRequest.HeadersEntry.key">
+<code class="descname">key</code><a class="headerlink" href="#google.cloud.tasks_v2beta2.types.AppEngineHttpRequest.HeadersEntry.key" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.cloud.tasks.v2beta2.AppEngineHttpRequest.HeadersEntry.key</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.tasks_v2beta2.types.AppEngineHttpRequest.HeadersEntry.value">
+<code class="descname">value</code><a class="headerlink" href="#google.cloud.tasks_v2beta2.types.AppEngineHttpRequest.HeadersEntry.value" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.cloud.tasks.v2beta2.AppEngineHttpRequest.HeadersEntry.value</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">app_engine_routing</code></dt>
+<dd><p>Field google.cloud.tasks.v2beta2.AppEngineHttpRequest.app_engine_routing</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">headers</code></dt>
+<dd><p>Field google.cloud.tasks.v2beta2.AppEngineHttpRequest.headers</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">http_method</code></dt>
+<dd><p>Field google.cloud.tasks.v2beta2.AppEngineHttpRequest.http_method</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">payload</code></dt>
+<dd><p>Field google.cloud.tasks.v2beta2.AppEngineHttpRequest.payload</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">relative_url</code></dt>
+<dd><p>Field google.cloud.tasks.v2beta2.AppEngineHttpRequest.relative_url</p>
+</dd></dl>
 
 </dd></dl>
 
@@ -227,6 +293,12 @@ If set, <code class="docutils literal notranslate"><span class="pre">app_engine_
 in the queue, no matter what the setting is for the [task-
 level app_engine_routing][google.cloud.tasks.v2beta2.AppEngi
 neHttpRequest.app_engine_routing].</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">app_engine_routing_override</code></dt>
+<dd><p>Field google.cloud.tasks.v2beta2.AppEngineHttpTarget.app_engine_routing_override</p>
 </dd></dl>
 
 </dd></dl>
@@ -351,6 +423,30 @@ invalid, then the task will be sent to the default version of
 the default service when the task is attempted.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">host</code></dt>
+<dd><p>Field google.cloud.tasks.v2beta2.AppEngineRouting.host</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">instance</code></dt>
+<dd><p>Field google.cloud.tasks.v2beta2.AppEngineRouting.instance</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">service</code></dt>
+<dd><p>Field google.cloud.tasks.v2beta2.AppEngineRouting.service</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">version</code></dt>
+<dd><p>Field google.cloud.tasks.v2beta2.AppEngineRouting.version</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -389,6 +485,30 @@ If the task has not been attempted or the task is currently
 running then the response status is unset.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">dispatch_time</code></dt>
+<dd><p>Field google.cloud.tasks.v2beta2.AttemptStatus.dispatch_time</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">response_status</code></dt>
+<dd><p>Field google.cloud.tasks.v2beta2.AttemptStatus.response_status</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">response_time</code></dt>
+<dd><p>Field google.cloud.tasks.v2beta2.AttemptStatus.response_time</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">schedule_time</code></dt>
+<dd><p>Field google.cloud.tasks.v2beta2.AttemptStatus.schedule_time</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -424,6 +544,18 @@ domain name that represents all    the users of that domain.
 For example, <code class="docutils literal notranslate"><span class="pre">google.com</span></code> or    <code class="docutils literal notranslate"><span class="pre">example.com</span></code>.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">members</code></dt>
+<dd><p>Field google.iam.v1.Binding.members</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">role</code></dt>
+<dd><p>Field google.iam.v1.Binding.role</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -450,6 +582,24 @@ Required</p>
 <code class="descname">member</code><a class="headerlink" href="#google.cloud.tasks_v2beta2.types.BindingDelta.member" title="Permalink to this definition">#</a></dt>
 <dd><p>A single identity requesting access for a Cloud Platform
 resource. Follows the same format of Binding.members. Required</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">action</code></dt>
+<dd><p>Field google.iam.v1.BindingDelta.action</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">member</code></dt>
+<dd><p>Field google.iam.v1.BindingDelta.member</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">role</code></dt>
+<dd><p>Field google.iam.v1.BindingDelta.role</p>
 </dd></dl>
 
 </dd></dl>
@@ -495,6 +645,24 @@ data that it contains.  Authorization for
 [Task][google.cloud.tasks.v2beta2.Task] resource.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.cloud.tasks.v2beta2.CancelLeaseRequest.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">response_view</code></dt>
+<dd><p>Field google.cloud.tasks.v2beta2.CancelLeaseRequest.response_view</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">schedule_time</code></dt>
+<dd><p>Field google.cloud.tasks.v2beta2.CancelLeaseRequest.schedule_time</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -519,6 +687,18 @@ ons.ListLocations].</p>
 <dd><p>Required.  The queue to create.  [Queue’s
 name][google.cloud.tasks.v2beta2.Queue.name] cannot be the
 same as an existing queue.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">parent</code></dt>
+<dd><p>Field google.cloud.tasks.v2beta2.CreateQueueRequest.parent</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">queue</code></dt>
+<dd><p>Field google.cloud.tasks.v2beta2.CreateQueueRequest.queue</p>
 </dd></dl>
 
 </dd></dl>
@@ -586,6 +766,24 @@ data that it contains.  Authorization for
 [Task][google.cloud.tasks.v2beta2.Task] resource.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">parent</code></dt>
+<dd><p>Field google.cloud.tasks.v2beta2.CreateTaskRequest.parent</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">response_view</code></dt>
+<dd><p>Field google.cloud.tasks.v2beta2.CreateTaskRequest.response_view</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">task</code></dt>
+<dd><p>Field google.cloud.tasks.v2beta2.CreateTaskRequest.task</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -598,6 +796,12 @@ data that it contains.  Authorization for
 <code class="descname">name</code><a class="headerlink" href="#google.cloud.tasks_v2beta2.types.DeleteQueueRequest.name" title="Permalink to this definition">#</a></dt>
 <dd><p>Required.  The queue name. For example:
 <code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.cloud.tasks.v2beta2.DeleteQueueRequest.name</p>
 </dd></dl>
 
 </dd></dl>
@@ -614,12 +818,30 @@ data that it contains.  Authorization for
 <span class="pre">ocations/LOCATION_ID/queues/QUEUE_ID/tasks/TASK_ID</span></code></p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.cloud.tasks.v2beta2.DeleteTaskRequest.name</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.tasks_v2beta2.types.Duration">
 <em class="property">class </em><code class="descclassname">google.cloud.tasks_v2beta2.types.</code><code class="descname">Duration</code><a class="headerlink" href="#google.cloud.tasks_v2beta2.types.Duration" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.tasks_v2beta2.types.Duration.nanos">
+<code class="descname">nanos</code><a class="headerlink" href="#google.cloud.tasks_v2beta2.types.Duration.nanos" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.Duration.nanos</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.tasks_v2beta2.types.Duration.seconds">
+<code class="descname">seconds</code><a class="headerlink" href="#google.cloud.tasks_v2beta2.types.Duration.seconds" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.Duration.seconds</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.tasks_v2beta2.types.Empty">
@@ -629,7 +851,13 @@ data that it contains.  Authorization for
 <dl class="class">
 <dt id="google.cloud.tasks_v2beta2.types.FieldMask">
 <em class="property">class </em><code class="descclassname">google.cloud.tasks_v2beta2.types.</code><code class="descname">FieldMask</code><a class="headerlink" href="#google.cloud.tasks_v2beta2.types.FieldMask" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.tasks_v2beta2.types.FieldMask.paths">
+<code class="descname">paths</code><a class="headerlink" href="#google.cloud.tasks_v2beta2.types.FieldMask.paths" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FieldMask.paths</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.tasks_v2beta2.types.GetIamPolicyRequest">
@@ -644,6 +872,12 @@ example, a Project resource is specified as
 <code class="docutils literal notranslate"><span class="pre">projects/{project}</span></code>.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">resource</code></dt>
+<dd><p>Field google.iam.v1.GetIamPolicyRequest.resource</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -656,6 +890,12 @@ example, a Project resource is specified as
 <code class="descname">name</code><a class="headerlink" href="#google.cloud.tasks_v2beta2.types.GetQueueRequest.name" title="Permalink to this definition">#</a></dt>
 <dd><p>Required.  The resource name of the queue. For example:
 <code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.cloud.tasks.v2beta2.GetQueueRequest.name</p>
 </dd></dl>
 
 </dd></dl>
@@ -686,6 +926,18 @@ data that it contains.  Authorization for
 [FULL][google.cloud.tasks.v2beta2.Task.View.FULL] requires
 <code class="docutils literal notranslate"><span class="pre">cloudtasks.tasks.fullView</span></code> <a class="reference external" href="https://cloud.google.com/iam/">Google IAM</a> permission on the
 [Task][google.cloud.tasks.v2beta2.Task] resource.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.cloud.tasks.v2beta2.GetTaskRequest.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">response_view</code></dt>
+<dd><p>Field google.cloud.tasks.v2beta2.GetTaskRequest.response_view</p>
 </dd></dl>
 
 </dd></dl>
@@ -766,6 +1018,36 @@ and the task’s
 displayed as empty in Cloud Tasks.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">filter</code></dt>
+<dd><p>Field google.cloud.tasks.v2beta2.LeaseTasksRequest.filter</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">lease_duration</code></dt>
+<dd><p>Field google.cloud.tasks.v2beta2.LeaseTasksRequest.lease_duration</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">max_tasks</code></dt>
+<dd><p>Field google.cloud.tasks.v2beta2.LeaseTasksRequest.max_tasks</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">parent</code></dt>
+<dd><p>Field google.cloud.tasks.v2beta2.LeaseTasksRequest.parent</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">response_view</code></dt>
+<dd><p>Field google.cloud.tasks.v2beta2.LeaseTasksRequest.response_view</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -777,6 +1059,12 @@ displayed as empty in Cloud Tasks.</p>
 <dt id="google.cloud.tasks_v2beta2.types.LeaseTasksResponse.tasks">
 <code class="descname">tasks</code><a class="headerlink" href="#google.cloud.tasks_v2beta2.types.LeaseTasksResponse.tasks" title="Permalink to this definition">#</a></dt>
 <dd><p>The leased tasks.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">tasks</code></dt>
+<dd><p>Field google.cloud.tasks.v2beta2.LeaseTasksResponse.tasks</p>
 </dd></dl>
 
 </dd></dl>
@@ -831,6 +1119,30 @@ method. It is an error to switch the value of the
 while iterating through pages.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">filter</code></dt>
+<dd><p>Field google.cloud.tasks.v2beta2.ListQueuesRequest.filter</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">page_size</code></dt>
+<dd><p>Field google.cloud.tasks.v2beta2.ListQueuesRequest.page_size</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">page_token</code></dt>
+<dd><p>Field google.cloud.tasks.v2beta2.ListQueuesRequest.page_token</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">parent</code></dt>
+<dd><p>Field google.cloud.tasks.v2beta2.ListQueuesRequest.parent</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -854,6 +1166,18 @@ with this value as the [page_token][google.cloud.tasks.v2beta
 2.ListQueuesRequest.page_token].  If the next_page_token is
 empty, there are no more results.  The page token is valid for
 only 2 hours.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">next_page_token</code></dt>
+<dd><p>Field google.cloud.tasks.v2beta2.ListQueuesResponse.next_page_token</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">queues</code></dt>
+<dd><p>Field google.cloud.tasks.v2beta2.ListQueuesResponse.queues</p>
 </dd></dl>
 
 </dd></dl>
@@ -909,6 +1233,30 @@ next_page_token] returned from the previous call to
 method.  The page token is valid for only 2 hours.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">page_size</code></dt>
+<dd><p>Field google.cloud.tasks.v2beta2.ListTasksRequest.page_size</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">page_token</code></dt>
+<dd><p>Field google.cloud.tasks.v2beta2.ListTasksRequest.page_token</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">parent</code></dt>
+<dd><p>Field google.cloud.tasks.v2beta2.ListTasksRequest.parent</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">response_view</code></dt>
+<dd><p>Field google.cloud.tasks.v2beta2.ListTasksRequest.response_view</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -933,6 +1281,18 @@ with this value as the [page_token][google.cloud.tasks.v2beta
 empty, there are no more results.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">next_page_token</code></dt>
+<dd><p>Field google.cloud.tasks.v2beta2.ListTasksResponse.next_page_token</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">tasks</code></dt>
+<dd><p>Field google.cloud.tasks.v2beta2.ListTasksResponse.tasks</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -945,6 +1305,12 @@ empty, there are no more results.</p>
 <code class="descname">name</code><a class="headerlink" href="#google.cloud.tasks_v2beta2.types.PauseQueueRequest.name" title="Permalink to this definition">#</a></dt>
 <dd><p>Required.  The queue name. For example:
 <code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/location/LOCATION_ID/queues/QUEUE_ID</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.cloud.tasks.v2beta2.PauseQueueRequest.name</p>
 </dd></dl>
 
 </dd></dl>
@@ -1010,6 +1376,24 @@ in the call to <code class="docutils literal notranslate"><span class="pre">setI
 overwritten blindly.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">bindings</code></dt>
+<dd><p>Field google.iam.v1.Policy.bindings</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">etag</code></dt>
+<dd><p>Field google.iam.v1.Policy.etag</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">version</code></dt>
+<dd><p>Field google.iam.v1.Policy.version</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -1020,6 +1404,12 @@ overwritten blindly.</p>
 <dt id="google.cloud.tasks_v2beta2.types.PolicyDelta.binding_deltas">
 <code class="descname">binding_deltas</code><a class="headerlink" href="#google.cloud.tasks_v2beta2.types.PolicyDelta.binding_deltas" title="Permalink to this definition">#</a></dt>
 <dd><p>The delta for Bindings between two policies.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">binding_deltas</code></dt>
+<dd><p>Field google.iam.v1.PolicyDelta.binding_deltas</p>
 </dd></dl>
 
 </dd></dl>
@@ -1056,6 +1446,18 @@ Tasks. If a tag isn’t UTF-8 encoded, the tag will be empty
 when the task is returned by Cloud Tasks.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">payload</code></dt>
+<dd><p>Field google.cloud.tasks.v2beta2.PullMessage.payload</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">tag</code></dt>
+<dd><p>Field google.cloud.tasks.v2beta2.PullMessage.tag</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -1074,6 +1476,12 @@ when the task is returned by Cloud Tasks.</p>
 <code class="descname">name</code><a class="headerlink" href="#google.cloud.tasks_v2beta2.types.PurgeQueueRequest.name" title="Permalink to this definition">#</a></dt>
 <dd><p>Required.  The queue name. For example:
 <code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/location/LOCATION_ID/queues/QUEUE_ID</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.cloud.tasks.v2beta2.PurgeQueueRequest.name</p>
 </dd></dl>
 
 </dd></dl>
@@ -1187,6 +1595,48 @@ time will be truncated to the nearest microsecond. Purge time
 will be unset if the queue has never been purged.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">app_engine_http_target</code></dt>
+<dd><p>Field google.cloud.tasks.v2beta2.Queue.app_engine_http_target</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.cloud.tasks.v2beta2.Queue.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">pull_target</code></dt>
+<dd><p>Field google.cloud.tasks.v2beta2.Queue.pull_target</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">purge_time</code></dt>
+<dd><p>Field google.cloud.tasks.v2beta2.Queue.purge_time</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">rate_limits</code></dt>
+<dd><p>Field google.cloud.tasks.v2beta2.Queue.rate_limits</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">retry_config</code></dt>
+<dd><p>Field google.cloud.tasks.v2beta2.Queue.retry_config</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">state</code></dt>
+<dd><p>Field google.cloud.tasks.v2beta2.Queue.state</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -1263,6 +1713,24 @@ have <code class="docutils literal notranslate"><span class="pre">max_concurrent
 same meaning as <a class="reference external" href="https://cloud.google.com/appengine/docs/standard/python/config/queueref#max_concurrent_requests">max_concurrent_requests in queue.yaml/xml</a>.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">max_burst_size</code></dt>
+<dd><p>Field google.cloud.tasks.v2beta2.RateLimits.max_burst_size</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">max_concurrent_tasks</code></dt>
+<dd><p>Field google.cloud.tasks.v2beta2.RateLimits.max_concurrent_tasks</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">max_tasks_dispatched_per_second</code></dt>
+<dd><p>Field google.cloud.tasks.v2beta2.RateLimits.max_tasks_dispatched_per_second</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -1314,6 +1782,30 @@ data that it contains.  Authorization for
 [Task][google.cloud.tasks.v2beta2.Task] resource.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">lease_duration</code></dt>
+<dd><p>Field google.cloud.tasks.v2beta2.RenewLeaseRequest.lease_duration</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.cloud.tasks.v2beta2.RenewLeaseRequest.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">response_view</code></dt>
+<dd><p>Field google.cloud.tasks.v2beta2.RenewLeaseRequest.response_view</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">schedule_time</code></dt>
+<dd><p>Field google.cloud.tasks.v2beta2.RenewLeaseRequest.schedule_time</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -1326,6 +1818,12 @@ data that it contains.  Authorization for
 <code class="descname">name</code><a class="headerlink" href="#google.cloud.tasks_v2beta2.types.ResumeQueueRequest.name" title="Permalink to this definition">#</a></dt>
 <dd><p>Required.  The queue name. For example:
 <code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/location/LOCATION_ID/queues/QUEUE_ID</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.cloud.tasks.v2beta2.ResumeQueueRequest.name</p>
 </dd></dl>
 
 </dd></dl>
@@ -1441,6 +1939,42 @@ queues][google.cloud.tasks.v2beta2.PullTarget].  This field
 has the same meaning as <a class="reference external" href="https://cloud.google.com/appengine/docs/standard/python/config/queueref#retry_parameters">max_doublings in queue.yaml/xml</a>.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">max_attempts</code></dt>
+<dd><p>Field google.cloud.tasks.v2beta2.RetryConfig.max_attempts</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">max_backoff</code></dt>
+<dd><p>Field google.cloud.tasks.v2beta2.RetryConfig.max_backoff</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">max_doublings</code></dt>
+<dd><p>Field google.cloud.tasks.v2beta2.RetryConfig.max_doublings</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">max_retry_duration</code></dt>
+<dd><p>Field google.cloud.tasks.v2beta2.RetryConfig.max_retry_duration</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">min_backoff</code></dt>
+<dd><p>Field google.cloud.tasks.v2beta2.RetryConfig.min_backoff</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">unlimited_attempts</code></dt>
+<dd><p>Field google.cloud.tasks.v2beta2.RetryConfig.unlimited_attempts</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -1471,6 +2005,18 @@ data that it contains.  Authorization for
 [Task][google.cloud.tasks.v2beta2.Task] resource.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.cloud.tasks.v2beta2.RunTaskRequest.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">response_view</code></dt>
+<dd><p>Field google.cloud.tasks.v2beta2.RunTaskRequest.response_view</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -1495,12 +2041,42 @@ of KB. An empty policy is a valid policy but certain Cloud
 Platform services (such as Projects) might reject them.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">policy</code></dt>
+<dd><p>Field google.iam.v1.SetIamPolicyRequest.policy</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">resource</code></dt>
+<dd><p>Field google.iam.v1.SetIamPolicyRequest.resource</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.tasks_v2beta2.types.Status">
 <em class="property">class </em><code class="descclassname">google.cloud.tasks_v2beta2.types.</code><code class="descname">Status</code><a class="headerlink" href="#google.cloud.tasks_v2beta2.types.Status" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.tasks_v2beta2.types.Status.code">
+<code class="descname">code</code><a class="headerlink" href="#google.cloud.tasks_v2beta2.types.Status.code" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.rpc.Status.code</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.tasks_v2beta2.types.Status.details">
+<code class="descname">details</code><a class="headerlink" href="#google.cloud.tasks_v2beta2.types.Status.details" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.rpc.Status.details</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.tasks_v2beta2.types.Status.message">
+<code class="descname">message</code><a class="headerlink" href="#google.cloud.tasks_v2beta2.types.Status.message" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.rpc.Status.message</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.tasks_v2beta2.types.Task">
@@ -1590,6 +2166,48 @@ microsecond.</p>
 [Task][google.cloud.tasks.v2beta2.Task] has been returned.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">app_engine_http_request</code></dt>
+<dd><p>Field google.cloud.tasks.v2beta2.Task.app_engine_http_request</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">create_time</code></dt>
+<dd><p>Field google.cloud.tasks.v2beta2.Task.create_time</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.cloud.tasks.v2beta2.Task.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">pull_message</code></dt>
+<dd><p>Field google.cloud.tasks.v2beta2.Task.pull_message</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">schedule_time</code></dt>
+<dd><p>Field google.cloud.tasks.v2beta2.Task.schedule_time</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">status</code></dt>
+<dd><p>Field google.cloud.tasks.v2beta2.Task.status</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">view</code></dt>
+<dd><p>Field google.cloud.tasks.v2beta2.Task.view</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -1632,6 +2250,30 @@ field is not calculated for [pull
 tasks][google.cloud.tasks.v2beta2.PullMessage].</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">attempt_dispatch_count</code></dt>
+<dd><p>Field google.cloud.tasks.v2beta2.TaskStatus.attempt_dispatch_count</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">attempt_response_count</code></dt>
+<dd><p>Field google.cloud.tasks.v2beta2.TaskStatus.attempt_response_count</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">first_attempt_status</code></dt>
+<dd><p>Field google.cloud.tasks.v2beta2.TaskStatus.first_attempt_status</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">last_attempt_status</code></dt>
+<dd><p>Field google.cloud.tasks.v2beta2.TaskStatus.last_attempt_status</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -1655,6 +2297,18 @@ Permissions with wildcards (such as ‘*’ or ‘storage.*’) are
 not allowed. For more information see <a class="reference external" href="https://cloud.google.com/iam/docs/overview#permissions">IAM Overview</a>.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">permissions</code></dt>
+<dd><p>Field google.iam.v1.TestIamPermissionsRequest.permissions</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">resource</code></dt>
+<dd><p>Field google.iam.v1.TestIamPermissionsRequest.resource</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -1668,12 +2322,30 @@ not allowed. For more information see <a class="reference external" href="https:
 caller is allowed.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">permissions</code></dt>
+<dd><p>Field google.iam.v1.TestIamPermissionsResponse.permissions</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.tasks_v2beta2.types.Timestamp">
 <em class="property">class </em><code class="descclassname">google.cloud.tasks_v2beta2.types.</code><code class="descname">Timestamp</code><a class="headerlink" href="#google.cloud.tasks_v2beta2.types.Timestamp" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.tasks_v2beta2.types.Timestamp.nanos">
+<code class="descname">nanos</code><a class="headerlink" href="#google.cloud.tasks_v2beta2.types.Timestamp.nanos" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.Timestamp.nanos</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.tasks_v2beta2.types.Timestamp.seconds">
+<code class="descname">seconds</code><a class="headerlink" href="#google.cloud.tasks_v2beta2.types.Timestamp.seconds" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.Timestamp.seconds</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.tasks_v2beta2.types.UpdateQueueRequest">
@@ -1697,6 +2369,18 @@ changed.</p>
 <code class="descname">update_mask</code><a class="headerlink" href="#google.cloud.tasks_v2beta2.types.UpdateQueueRequest.update_mask" title="Permalink to this definition">#</a></dt>
 <dd><p>A mask used to specify which fields of the queue are being
 updated.  If empty, then all fields will be updated.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">queue</code></dt>
+<dd><p>Field google.cloud.tasks.v2beta2.UpdateQueueRequest.queue</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">update_mask</code></dt>
+<dd><p>Field google.cloud.tasks.v2beta2.UpdateQueueRequest.update_mask</p>
 </dd></dl>
 
 </dd></dl>

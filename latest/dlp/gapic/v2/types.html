@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Types for Cloud Data Loss Prevention (DLP) API Client &#8212; google-cloud 35e0349 documentation</title>
+    <title>Types for Cloud Data Loss Prevention (DLP) API Client &#8212; google-cloud 915e116 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -87,6 +87,12 @@ account executing the long running DlpJob sending the
 notifications. Format is projects/{project}/topics/{topic}.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">topic</code></dt>
+<dd><p>Field google.privacy.dlp.v2.Action.PublishToPubSub.topic</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -95,6 +101,30 @@ notifications. Format is projects/{project}/topics/{topic}.</p>
 <dd><p>If set, the detailed findings will be persisted to the specified
 OutputStorageConfig. Only a single instance of this action can be
 specified. Compatible with: Inspect, Risk</p>
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.Action.SaveFindings.output_config">
+<code class="descname">output_config</code><a class="headerlink" href="#google.cloud.dlp_v2.types.Action.SaveFindings.output_config" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.privacy.dlp.v2.Action.SaveFindings.output_config</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">pub_sub</code></dt>
+<dd><p>Field google.privacy.dlp.v2.Action.pub_sub</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">publish_summary_to_cscc</code></dt>
+<dd><p>Field google.privacy.dlp.v2.Action.publish_summary_to_cscc</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">save_findings</code></dt>
+<dd><p>Field google.privacy.dlp.v2.Action.save_findings</p>
 </dd></dl>
 
 </dd></dl>
@@ -140,6 +170,42 @@ value_frequency_upper_bound: Upper bound on the value frequency of the values in
 bucket_size: Total number of values in this bucket.
 bucket_values: Sample of value frequencies in this bucket. The total number of values returned per bucket is capped at 20.
 bucket_value_count: Total number of distinct values in this bucket.</p>
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.CategoricalStatsResult.CategoricalStatsHistogramBucket.bucket_size">
+<code class="descname">bucket_size</code><a class="headerlink" href="#google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.CategoricalStatsResult.CategoricalStatsHistogramBucket.bucket_size" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.privacy.dlp.v2.AnalyzeDataSourceRiskDetails.CategoricalStatsResult.CategoricalStatsHistogramBucket.bucket_size</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.CategoricalStatsResult.CategoricalStatsHistogramBucket.bucket_value_count">
+<code class="descname">bucket_value_count</code><a class="headerlink" href="#google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.CategoricalStatsResult.CategoricalStatsHistogramBucket.bucket_value_count" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.privacy.dlp.v2.AnalyzeDataSourceRiskDetails.CategoricalStatsResult.CategoricalStatsHistogramBucket.bucket_value_count</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.CategoricalStatsResult.CategoricalStatsHistogramBucket.bucket_values">
+<code class="descname">bucket_values</code><a class="headerlink" href="#google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.CategoricalStatsResult.CategoricalStatsHistogramBucket.bucket_values" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.privacy.dlp.v2.AnalyzeDataSourceRiskDetails.CategoricalStatsResult.CategoricalStatsHistogramBucket.bucket_values</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.CategoricalStatsResult.CategoricalStatsHistogramBucket.value_frequency_lower_bound">
+<code class="descname">value_frequency_lower_bound</code><a class="headerlink" href="#google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.CategoricalStatsResult.CategoricalStatsHistogramBucket.value_frequency_lower_bound" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.privacy.dlp.v2.AnalyzeDataSourceRiskDetails.CategoricalStatsResult.CategoricalStatsHistogramBucket.value_frequency_lower_bound</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.CategoricalStatsResult.CategoricalStatsHistogramBucket.value_frequency_upper_bound">
+<code class="descname">value_frequency_upper_bound</code><a class="headerlink" href="#google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.CategoricalStatsResult.CategoricalStatsHistogramBucket.value_frequency_upper_bound" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.privacy.dlp.v2.AnalyzeDataSourceRiskDetails.CategoricalStatsResult.CategoricalStatsHistogramBucket.value_frequency_upper_bound</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">value_frequency_histogram_buckets</code></dt>
+<dd><p>Field google.privacy.dlp.v2.AnalyzeDataSourceRiskDetails.CategoricalStatsResult.value_frequency_histogram_buckets</p>
 </dd></dl>
 
 </dd></dl>
@@ -203,6 +269,36 @@ total number of classes returned per bucket is capped at 20.</p>
 bucket.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">bucket_size</code></dt>
+<dd><p>Field google.privacy.dlp.v2.AnalyzeDataSourceRiskDetails.DeltaPresenceEstimationResult.DeltaPresenceEstimationHistogramBucket.bucket_size</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">bucket_value_count</code></dt>
+<dd><p>Field google.privacy.dlp.v2.AnalyzeDataSourceRiskDetails.DeltaPresenceEstimationResult.DeltaPresenceEstimationHistogramBucket.bucket_value_count</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">bucket_values</code></dt>
+<dd><p>Field google.privacy.dlp.v2.AnalyzeDataSourceRiskDetails.DeltaPresenceEstimationResult.DeltaPresenceEstimationHistogramBucket.bucket_values</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">max_probability</code></dt>
+<dd><p>Field google.privacy.dlp.v2.AnalyzeDataSourceRiskDetails.DeltaPresenceEstimationResult.DeltaPresenceEstimationHistogramBucket.max_probability</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">min_probability</code></dt>
+<dd><p>Field google.privacy.dlp.v2.AnalyzeDataSourceRiskDetails.DeltaPresenceEstimationResult.DeltaPresenceEstimationHistogramBucket.min_probability</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -229,6 +325,24 @@ identifier values, and an estimated 100 people in the entire
 population with these values, then δ is 0.15.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">estimated_probability</code></dt>
+<dd><p>Field google.privacy.dlp.v2.AnalyzeDataSourceRiskDetails.DeltaPresenceEstimationResult.DeltaPresenceEstimationQuasiIdValues.estimated_probability</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">quasi_ids_values</code></dt>
+<dd><p>Field google.privacy.dlp.v2.AnalyzeDataSourceRiskDetails.DeltaPresenceEstimationResult.DeltaPresenceEstimationQuasiIdValues.quasi_ids_values</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">delta_presence_estimation_histogram</code></dt>
+<dd><p>Field google.privacy.dlp.v2.AnalyzeDataSourceRiskDetails.DeltaPresenceEstimationResult.delta_presence_estimation_histogram</p>
 </dd></dl>
 
 </dd></dl>
@@ -267,6 +381,18 @@ population with these values, then δ is 0.15.</p>
 <code class="descname">Size of the equivalence class, for example number of rows with           the above set of values.</code></dt>
 <dd></dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">equivalence_class_size</code></dt>
+<dd><p>Field google.privacy.dlp.v2.AnalyzeDataSourceRiskDetails.KAnonymityResult.KAnonymityEquivalenceClass.equivalence_class_size</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">quasi_ids_values</code></dt>
+<dd><p>Field google.privacy.dlp.v2.AnalyzeDataSourceRiskDetails.KAnonymityResult.KAnonymityEquivalenceClass.quasi_ids_values</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -278,6 +404,42 @@ equivalence_class_size_upper_bound:               Upper bound on the size of the
 bucket_size:               Total number of equivalence classes in this bucket.
 bucket_values:               Sample of equivalence classes in this bucket. The total number               of classes returned per bucket is capped at 20.
 bucket_value_count:               Total number of distinct equivalence classes in this bucket.</p>
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.KAnonymityResult.KAnonymityHistogramBucket.bucket_size">
+<code class="descname">bucket_size</code><a class="headerlink" href="#google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.KAnonymityResult.KAnonymityHistogramBucket.bucket_size" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.privacy.dlp.v2.AnalyzeDataSourceRiskDetails.KAnonymityResult.KAnonymityHistogramBucket.bucket_size</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.KAnonymityResult.KAnonymityHistogramBucket.bucket_value_count">
+<code class="descname">bucket_value_count</code><a class="headerlink" href="#google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.KAnonymityResult.KAnonymityHistogramBucket.bucket_value_count" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.privacy.dlp.v2.AnalyzeDataSourceRiskDetails.KAnonymityResult.KAnonymityHistogramBucket.bucket_value_count</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.KAnonymityResult.KAnonymityHistogramBucket.bucket_values">
+<code class="descname">bucket_values</code><a class="headerlink" href="#google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.KAnonymityResult.KAnonymityHistogramBucket.bucket_values" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.privacy.dlp.v2.AnalyzeDataSourceRiskDetails.KAnonymityResult.KAnonymityHistogramBucket.bucket_values</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.KAnonymityResult.KAnonymityHistogramBucket.equivalence_class_size_lower_bound">
+<code class="descname">equivalence_class_size_lower_bound</code><a class="headerlink" href="#google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.KAnonymityResult.KAnonymityHistogramBucket.equivalence_class_size_lower_bound" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.privacy.dlp.v2.AnalyzeDataSourceRiskDetails.KAnonymityResult.KAnonymityHistogramBucket.equivalence_class_size_lower_bound</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.KAnonymityResult.KAnonymityHistogramBucket.equivalence_class_size_upper_bound">
+<code class="descname">equivalence_class_size_upper_bound</code><a class="headerlink" href="#google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.KAnonymityResult.KAnonymityHistogramBucket.equivalence_class_size_upper_bound" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.privacy.dlp.v2.AnalyzeDataSourceRiskDetails.KAnonymityResult.KAnonymityHistogramBucket.equivalence_class_size_upper_bound</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">equivalence_class_histogram_buckets</code></dt>
+<dd><p>Field google.privacy.dlp.v2.AnalyzeDataSourceRiskDetails.KAnonymityResult.equivalence_class_histogram_buckets</p>
 </dd></dl>
 
 </dd></dl>
@@ -341,6 +503,36 @@ total number of classes returned per bucket is capped at 20.</p>
 bucket.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">bucket_size</code></dt>
+<dd><p>Field google.privacy.dlp.v2.AnalyzeDataSourceRiskDetails.KMapEstimationResult.KMapEstimationHistogramBucket.bucket_size</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">bucket_value_count</code></dt>
+<dd><p>Field google.privacy.dlp.v2.AnalyzeDataSourceRiskDetails.KMapEstimationResult.KMapEstimationHistogramBucket.bucket_value_count</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">bucket_values</code></dt>
+<dd><p>Field google.privacy.dlp.v2.AnalyzeDataSourceRiskDetails.KMapEstimationResult.KMapEstimationHistogramBucket.bucket_values</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">max_anonymity</code></dt>
+<dd><p>Field google.privacy.dlp.v2.AnalyzeDataSourceRiskDetails.KMapEstimationResult.KMapEstimationHistogramBucket.max_anonymity</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">min_anonymity</code></dt>
+<dd><p>Field google.privacy.dlp.v2.AnalyzeDataSourceRiskDetails.KMapEstimationResult.KMapEstimationHistogramBucket.min_anonymity</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -359,6 +551,24 @@ bucket.</p>
 <dd><p>The estimated anonymity for these quasi-identifier values.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">estimated_anonymity</code></dt>
+<dd><p>Field google.privacy.dlp.v2.AnalyzeDataSourceRiskDetails.KMapEstimationResult.KMapEstimationQuasiIdValues.estimated_anonymity</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">quasi_ids_values</code></dt>
+<dd><p>Field google.privacy.dlp.v2.AnalyzeDataSourceRiskDetails.KMapEstimationResult.KMapEstimationQuasiIdValues.quasi_ids_values</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">k_map_estimation_histogram</code></dt>
+<dd><p>Field google.privacy.dlp.v2.AnalyzeDataSourceRiskDetails.KMapEstimationResult.k_map_estimation_histogram</p>
 </dd></dl>
 
 </dd></dl>
@@ -403,6 +613,30 @@ class. The order is always the same as the original request.</p>
 <dd><p>Estimated frequencies of top sensitive values.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">equivalence_class_size</code></dt>
+<dd><p>Field google.privacy.dlp.v2.AnalyzeDataSourceRiskDetails.LDiversityResult.LDiversityEquivalenceClass.equivalence_class_size</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">num_distinct_sensitive_values</code></dt>
+<dd><p>Field google.privacy.dlp.v2.AnalyzeDataSourceRiskDetails.LDiversityResult.LDiversityEquivalenceClass.num_distinct_sensitive_values</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">quasi_ids_values</code></dt>
+<dd><p>Field google.privacy.dlp.v2.AnalyzeDataSourceRiskDetails.LDiversityResult.LDiversityEquivalenceClass.quasi_ids_values</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">top_sensitive_values</code></dt>
+<dd><p>Field google.privacy.dlp.v2.AnalyzeDataSourceRiskDetails.LDiversityResult.LDiversityEquivalenceClass.top_sensitive_values</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -414,6 +648,42 @@ sensitive_value_frequency_upper_bound:               Upper bound on the sensitiv
 bucket_size:               Total number of equivalence classes in this bucket.
 bucket_values:               Sample of equivalence classes in this bucket. The total number               of classes returned per bucket is capped at 20.
 bucket_value_count:               Total number of distinct equivalence classes in this bucket.</p>
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.LDiversityResult.LDiversityHistogramBucket.bucket_size">
+<code class="descname">bucket_size</code><a class="headerlink" href="#google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.LDiversityResult.LDiversityHistogramBucket.bucket_size" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.privacy.dlp.v2.AnalyzeDataSourceRiskDetails.LDiversityResult.LDiversityHistogramBucket.bucket_size</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.LDiversityResult.LDiversityHistogramBucket.bucket_value_count">
+<code class="descname">bucket_value_count</code><a class="headerlink" href="#google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.LDiversityResult.LDiversityHistogramBucket.bucket_value_count" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.privacy.dlp.v2.AnalyzeDataSourceRiskDetails.LDiversityResult.LDiversityHistogramBucket.bucket_value_count</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.LDiversityResult.LDiversityHistogramBucket.bucket_values">
+<code class="descname">bucket_values</code><a class="headerlink" href="#google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.LDiversityResult.LDiversityHistogramBucket.bucket_values" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.privacy.dlp.v2.AnalyzeDataSourceRiskDetails.LDiversityResult.LDiversityHistogramBucket.bucket_values</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.LDiversityResult.LDiversityHistogramBucket.sensitive_value_frequency_lower_bound">
+<code class="descname">sensitive_value_frequency_lower_bound</code><a class="headerlink" href="#google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.LDiversityResult.LDiversityHistogramBucket.sensitive_value_frequency_lower_bound" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.privacy.dlp.v2.AnalyzeDataSourceRiskDetails.LDiversityResult.LDiversityHistogramBucket.sensitive_value_frequency_lower_bound</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.LDiversityResult.LDiversityHistogramBucket.sensitive_value_frequency_upper_bound">
+<code class="descname">sensitive_value_frequency_upper_bound</code><a class="headerlink" href="#google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.LDiversityResult.LDiversityHistogramBucket.sensitive_value_frequency_upper_bound" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.privacy.dlp.v2.AnalyzeDataSourceRiskDetails.LDiversityResult.LDiversityHistogramBucket.sensitive_value_frequency_upper_bound</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">sensitive_value_frequency_histogram_buckets</code></dt>
+<dd><p>Field google.privacy.dlp.v2.AnalyzeDataSourceRiskDetails.LDiversityResult.sensitive_value_frequency_histogram_buckets</p>
 </dd></dl>
 
 </dd></dl>
@@ -441,6 +711,72 @@ bucket_value_count:               Total number of distinct equivalence classes i
 100 equal sized buckets.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">max_value</code></dt>
+<dd><p>Field google.privacy.dlp.v2.AnalyzeDataSourceRiskDetails.NumericalStatsResult.max_value</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">min_value</code></dt>
+<dd><p>Field google.privacy.dlp.v2.AnalyzeDataSourceRiskDetails.NumericalStatsResult.min_value</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">quantile_values</code></dt>
+<dd><p>Field google.privacy.dlp.v2.AnalyzeDataSourceRiskDetails.NumericalStatsResult.quantile_values</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.categorical_stats_result">
+<code class="descname">categorical_stats_result</code><a class="headerlink" href="#google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.categorical_stats_result" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.privacy.dlp.v2.AnalyzeDataSourceRiskDetails.categorical_stats_result</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.delta_presence_estimation_result">
+<code class="descname">delta_presence_estimation_result</code><a class="headerlink" href="#google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.delta_presence_estimation_result" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.privacy.dlp.v2.AnalyzeDataSourceRiskDetails.delta_presence_estimation_result</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.k_anonymity_result">
+<code class="descname">k_anonymity_result</code><a class="headerlink" href="#google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.k_anonymity_result" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.privacy.dlp.v2.AnalyzeDataSourceRiskDetails.k_anonymity_result</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.k_map_estimation_result">
+<code class="descname">k_map_estimation_result</code><a class="headerlink" href="#google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.k_map_estimation_result" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.privacy.dlp.v2.AnalyzeDataSourceRiskDetails.k_map_estimation_result</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.l_diversity_result">
+<code class="descname">l_diversity_result</code><a class="headerlink" href="#google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.l_diversity_result" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.privacy.dlp.v2.AnalyzeDataSourceRiskDetails.l_diversity_result</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.numerical_stats_result">
+<code class="descname">numerical_stats_result</code><a class="headerlink" href="#google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.numerical_stats_result" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.privacy.dlp.v2.AnalyzeDataSourceRiskDetails.numerical_stats_result</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">requested_privacy_metric</code></dt>
+<dd><p>Field google.privacy.dlp.v2.AnalyzeDataSourceRiskDetails.requested_privacy_metric</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">requested_source_table</code></dt>
+<dd><p>Field google.privacy.dlp.v2.AnalyzeDataSourceRiskDetails.requested_source_table</p>
 </dd></dl>
 
 </dd></dl>
@@ -448,7 +784,19 @@ bucket_value_count:               Total number of distinct equivalence classes i
 <dl class="class">
 <dt id="google.cloud.dlp_v2.types.Any">
 <em class="property">class </em><code class="descclassname">google.cloud.dlp_v2.types.</code><code class="descname">Any</code><a class="headerlink" href="#google.cloud.dlp_v2.types.Any" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.Any.type_url">
+<code class="descname">type_url</code><a class="headerlink" href="#google.cloud.dlp_v2.types.Any.type_url" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.Any.type_url</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.Any.value">
+<code class="descname">value</code><a class="headerlink" href="#google.cloud.dlp_v2.types.Any.value" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.Any.value</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.dlp_v2.types.BigQueryField">
@@ -464,6 +812,18 @@ bucket_value_count:               Total number of distinct equivalence classes i
 <dt id="google.cloud.dlp_v2.types.BigQueryField.field">
 <code class="descname">field</code><a class="headerlink" href="#google.cloud.dlp_v2.types.BigQueryField.field" title="Permalink to this definition">#</a></dt>
 <dd><p>Designated field in the BigQuery table.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">field</code></dt>
+<dd><p>Field google.privacy.dlp.v2.BigQueryField.field</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">table</code></dt>
+<dd><p>Field google.privacy.dlp.v2.BigQueryField.table</p>
 </dd></dl>
 
 </dd></dl>
@@ -483,6 +843,18 @@ bucket_value_count:               Total number of distinct equivalence classes i
 <code class="descname">row_number</code><a class="headerlink" href="#google.cloud.dlp_v2.types.BigQueryKey.row_number" title="Permalink to this definition">#</a></dt>
 <dd><p>Absolute number of the row from the beginning of the table at
 the time of scanning.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">row_number</code></dt>
+<dd><p>Field google.privacy.dlp.v2.BigQueryKey.row_number</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">table_reference</code></dt>
+<dd><p>Field google.privacy.dlp.v2.BigQueryKey.table_reference</p>
 </dd></dl>
 
 </dd></dl>
@@ -533,6 +905,42 @@ to skip inspection of entire columns which you know have no
 findings.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">excluded_fields</code></dt>
+<dd><p>Field google.privacy.dlp.v2.BigQueryOptions.excluded_fields</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">identifying_fields</code></dt>
+<dd><p>Field google.privacy.dlp.v2.BigQueryOptions.identifying_fields</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">rows_limit</code></dt>
+<dd><p>Field google.privacy.dlp.v2.BigQueryOptions.rows_limit</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">rows_limit_percent</code></dt>
+<dd><p>Field google.privacy.dlp.v2.BigQueryOptions.rows_limit_percent</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.BigQueryOptions.sample_method">
+<code class="descname">sample_method</code><a class="headerlink" href="#google.cloud.dlp_v2.types.BigQueryOptions.sample_method" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.privacy.dlp.v2.BigQueryOptions.sample_method</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">table_reference</code></dt>
+<dd><p>Field google.privacy.dlp.v2.BigQueryOptions.table_reference</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -563,6 +971,24 @@ call.</p>
 <dd><p>Name of the table.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">dataset_id</code></dt>
+<dd><p>Field google.privacy.dlp.v2.BigQueryTable.dataset_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">project_id</code></dt>
+<dd><p>Field google.privacy.dlp.v2.BigQueryTable.project_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">table_id</code></dt>
+<dd><p>Field google.privacy.dlp.v2.BigQueryTable.table_id</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -591,6 +1017,30 @@ call.</p>
 <dt id="google.cloud.dlp_v2.types.BoundingBox.height">
 <code class="descname">height</code><a class="headerlink" href="#google.cloud.dlp_v2.types.BoundingBox.height" title="Permalink to this definition">#</a></dt>
 <dd><p>Height of the bounding box in pixels.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">height</code></dt>
+<dd><p>Field google.privacy.dlp.v2.BoundingBox.height</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">left</code></dt>
+<dd><p>Field google.privacy.dlp.v2.BoundingBox.left</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">top</code></dt>
+<dd><p>Field google.privacy.dlp.v2.BoundingBox.top</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">width</code></dt>
+<dd><p>Field google.privacy.dlp.v2.BoundingBox.width</p>
 </dd></dl>
 
 </dd></dl>
@@ -636,6 +1086,30 @@ as max if used.</p>
 behavior will be to hyphenate the min-max range.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">max</code></dt>
+<dd><p>Field google.privacy.dlp.v2.BucketingConfig.Bucket.max</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">min</code></dt>
+<dd><p>Field google.privacy.dlp.v2.BucketingConfig.Bucket.min</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">replacement_value</code></dt>
+<dd><p>Field google.privacy.dlp.v2.BucketingConfig.Bucket.replacement_value</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">buckets</code></dt>
+<dd><p>Field google.privacy.dlp.v2.BucketingConfig.buckets</p>
 </dd></dl>
 
 </dd></dl>
@@ -657,6 +1131,18 @@ TEXT_UTF8.</p>
 <dd><p>Content data to inspect or redact.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">data</code></dt>
+<dd><p>Field google.privacy.dlp.v2.ByteContentItem.data</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">type</code></dt>
+<dd><p>Field google.privacy.dlp.v2.ByteContentItem.type</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -667,6 +1153,12 @@ TEXT_UTF8.</p>
 <dt id="google.cloud.dlp_v2.types.CancelDlpJobRequest.name">
 <code class="descname">name</code><a class="headerlink" href="#google.cloud.dlp_v2.types.CancelDlpJobRequest.name" title="Permalink to this definition">#</a></dt>
 <dd><p>The name of the DlpJob resource to be cancelled.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.privacy.dlp.v2.CancelDlpJobRequest.name</p>
 </dd></dl>
 
 </dd></dl>
@@ -718,6 +1210,30 @@ ask us to skip <code class="docutils literal notranslate"><span class="pre">-</s
 **<em>-</em>55-5555.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">characters_to_ignore</code></dt>
+<dd><p>Field google.privacy.dlp.v2.CharacterMaskConfig.characters_to_ignore</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">masking_character</code></dt>
+<dd><p>Field google.privacy.dlp.v2.CharacterMaskConfig.masking_character</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">number_to_mask</code></dt>
+<dd><p>Field google.privacy.dlp.v2.CharacterMaskConfig.number_to_mask</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">reverse_order</code></dt>
+<dd><p>Field google.privacy.dlp.v2.CharacterMaskConfig.reverse_order</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -725,6 +1241,18 @@ ask us to skip <code class="docutils literal notranslate"><span class="pre">-</s
 <em class="property">class </em><code class="descclassname">google.cloud.dlp_v2.types.</code><code class="descname">CharsToIgnore</code><a class="headerlink" href="#google.cloud.dlp_v2.types.CharsToIgnore" title="Permalink to this definition">#</a></dt>
 <dd><p>Characters to skip when doing deidentification of a value. These will be
 left alone and skipped.</p>
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.CharsToIgnore.characters_to_skip">
+<code class="descname">characters_to_skip</code><a class="headerlink" href="#google.cloud.dlp_v2.types.CharsToIgnore.characters_to_skip" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.privacy.dlp.v2.CharsToIgnore.characters_to_skip</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.CharsToIgnore.common_characters_to_ignore">
+<code class="descname">common_characters_to_ignore</code><a class="headerlink" href="#google.cloud.dlp_v2.types.CharsToIgnore.common_characters_to_ignore" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.privacy.dlp.v2.CharsToIgnore.common_characters_to_ignore</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -736,6 +1264,12 @@ left alone and skipped.</p>
 <code class="descname">url</code><a class="headerlink" href="#google.cloud.dlp_v2.types.CloudStorageFileSet.url" title="Permalink to this definition">#</a></dt>
 <dd><p>The url, in the format <code class="docutils literal notranslate"><span class="pre">gs://&lt;bucket&gt;/&lt;path&gt;</span></code>. Trailing
 wildcard in the path is allowed.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">url</code></dt>
+<dd><p>Field google.privacy.dlp.v2.CloudStorageFileSet.url</p>
 </dd></dl>
 
 </dd></dl>
@@ -808,6 +1342,54 @@ set.</p>
 <code class="docutils literal notranslate"><span class="pre">url</span></code> or <code class="docutils literal notranslate"><span class="pre">regex_file_set</span></code> must be set.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">regex_file_set</code></dt>
+<dd><p>Field google.privacy.dlp.v2.CloudStorageOptions.FileSet.regex_file_set</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">url</code></dt>
+<dd><p>Field google.privacy.dlp.v2.CloudStorageOptions.FileSet.url</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">bytes_limit_per_file</code></dt>
+<dd><p>Field google.privacy.dlp.v2.CloudStorageOptions.bytes_limit_per_file</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">bytes_limit_per_file_percent</code></dt>
+<dd><p>Field google.privacy.dlp.v2.CloudStorageOptions.bytes_limit_per_file_percent</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">file_set</code></dt>
+<dd><p>Field google.privacy.dlp.v2.CloudStorageOptions.file_set</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">file_types</code></dt>
+<dd><p>Field google.privacy.dlp.v2.CloudStorageOptions.file_types</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">files_limit_percent</code></dt>
+<dd><p>Field google.privacy.dlp.v2.CloudStorageOptions.files_limit_percent</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.CloudStorageOptions.sample_method">
+<code class="descname">sample_method</code><a class="headerlink" href="#google.cloud.dlp_v2.types.CloudStorageOptions.sample_method" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.privacy.dlp.v2.CloudStorageOptions.sample_method</p>
 </dd></dl>
 
 </dd></dl>
@@ -821,6 +1403,12 @@ set.</p>
 <code class="descname">path</code><a class="headerlink" href="#google.cloud.dlp_v2.types.CloudStoragePath.path" title="Permalink to this definition">#</a></dt>
 <dd><p>A url representing a file or path (no wildcards) in Cloud
 Storage. Example: gs://[BUCKET_NAME]/dictionary.txt</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">path</code></dt>
+<dd><p>Field google.privacy.dlp.v2.CloudStoragePath.path</p>
 </dd></dl>
 
 </dd></dl>
@@ -886,6 +1474,24 @@ expressions use RE2 <a class="reference external" href="https://github.com/googl
 found under the google/re2 repository on GitHub.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">bucket_name</code></dt>
+<dd><p>Field google.privacy.dlp.v2.CloudStorageRegexFileSet.bucket_name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">exclude_regex</code></dt>
+<dd><p>Field google.privacy.dlp.v2.CloudStorageRegexFileSet.exclude_regex</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">include_regex</code></dt>
+<dd><p>Field google.privacy.dlp.v2.CloudStorageRegexFileSet.include_regex</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -911,6 +1517,24 @@ found under the google/re2 repository on GitHub.</p>
 <code class="descname">blue</code><a class="headerlink" href="#google.cloud.dlp_v2.types.Color.blue" title="Permalink to this definition">#</a></dt>
 <dd><p>The amount of blue in the color as a value in the interval [0,
 1].</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">blue</code></dt>
+<dd><p>Field google.privacy.dlp.v2.Color.blue</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">green</code></dt>
+<dd><p>Field google.privacy.dlp.v2.Color.green</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">red</code></dt>
+<dd><p>Field google.privacy.dlp.v2.Color.red</p>
 </dd></dl>
 
 </dd></dl>
@@ -945,6 +1569,24 @@ text#inspecting_a_table to learn more.</p>
 <code class="descname">byte_item</code><a class="headerlink" href="#google.cloud.dlp_v2.types.ContentItem.byte_item" title="Permalink to this definition">#</a></dt>
 <dd><p>Content data to inspect or redact. Replaces <code class="docutils literal notranslate"><span class="pre">type</span></code> and
 <code class="docutils literal notranslate"><span class="pre">data</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">byte_item</code></dt>
+<dd><p>Field google.privacy.dlp.v2.ContentItem.byte_item</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">table</code></dt>
+<dd><p>Field google.privacy.dlp.v2.ContentItem.table</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">value</code></dt>
+<dd><p>Field google.privacy.dlp.v2.ContentItem.value</p>
 </dd></dl>
 
 </dd></dl>
@@ -1007,6 +1649,42 @@ property. For Datastore - not populated.</p>
 Google Cloud Storage).</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">container_name</code></dt>
+<dd><p>Field google.privacy.dlp.v2.ContentLocation.container_name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">container_timestamp</code></dt>
+<dd><p>Field google.privacy.dlp.v2.ContentLocation.container_timestamp</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">container_version</code></dt>
+<dd><p>Field google.privacy.dlp.v2.ContentLocation.container_version</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">document_location</code></dt>
+<dd><p>Field google.privacy.dlp.v2.ContentLocation.document_location</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">image_location</code></dt>
+<dd><p>Field google.privacy.dlp.v2.ContentLocation.image_location</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">record_location</code></dt>
+<dd><p>Field google.privacy.dlp.v2.ContentLocation.record_location</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -1033,6 +1711,24 @@ or organizations/my-org-id.</p>
 numbers, and hyphens; that is, it must match the regular
 expression: <code class="docutils literal notranslate"><span class="pre">[a-zA-Z\d-]+</span></code>. The maximum length is 100
 characters. Can be empty to allow the system to generate one.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">deidentify_template</code></dt>
+<dd><p>Field google.privacy.dlp.v2.CreateDeidentifyTemplateRequest.deidentify_template</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">parent</code></dt>
+<dd><p>Field google.privacy.dlp.v2.CreateDeidentifyTemplateRequest.parent</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">template_id</code></dt>
+<dd><p>Field google.privacy.dlp.v2.CreateDeidentifyTemplateRequest.template_id</p>
 </dd></dl>
 
 </dd></dl>
@@ -1064,6 +1760,30 @@ expression: <code class="docutils literal notranslate"><span class="pre">[a-zA-Z
 characters. Can be empty to allow the system to generate one.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.CreateDlpJobRequest.inspect_job">
+<code class="descname">inspect_job</code><a class="headerlink" href="#google.cloud.dlp_v2.types.CreateDlpJobRequest.inspect_job" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.privacy.dlp.v2.CreateDlpJobRequest.inspect_job</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">job_id</code></dt>
+<dd><p>Field google.privacy.dlp.v2.CreateDlpJobRequest.job_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">parent</code></dt>
+<dd><p>Field google.privacy.dlp.v2.CreateDlpJobRequest.parent</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.CreateDlpJobRequest.risk_job">
+<code class="descname">risk_job</code><a class="headerlink" href="#google.cloud.dlp_v2.types.CreateDlpJobRequest.risk_job" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.privacy.dlp.v2.CreateDlpJobRequest.risk_job</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -1092,6 +1812,24 @@ expression: <code class="docutils literal notranslate"><span class="pre">[a-zA-Z
 characters. Can be empty to allow the system to generate one.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">inspect_template</code></dt>
+<dd><p>Field google.privacy.dlp.v2.CreateInspectTemplateRequest.inspect_template</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">parent</code></dt>
+<dd><p>Field google.privacy.dlp.v2.CreateInspectTemplateRequest.parent</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">template_id</code></dt>
+<dd><p>Field google.privacy.dlp.v2.CreateInspectTemplateRequest.template_id</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -1117,6 +1855,24 @@ characters. Can be empty to allow the system to generate one.</p>
 numbers, and hyphens; that is, it must match the regular
 expression: <code class="docutils literal notranslate"><span class="pre">[a-zA-Z\d-]+</span></code>. The maximum length is 100
 characters. Can be empty to allow the system to generate one.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">job_trigger</code></dt>
+<dd><p>Field google.privacy.dlp.v2.CreateJobTriggerRequest.job_trigger</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">parent</code></dt>
+<dd><p>Field google.privacy.dlp.v2.CreateJobTriggerRequest.parent</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">trigger_id</code></dt>
+<dd><p>Field google.privacy.dlp.v2.CreateJobTriggerRequest.trigger_id</p>
 </dd></dl>
 
 </dd></dl>
@@ -1148,6 +1904,24 @@ regular expression: <code class="docutils literal notranslate"><span class="pre"
 one.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">config</code></dt>
+<dd><p>Field google.privacy.dlp.v2.CreateStoredInfoTypeRequest.config</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">parent</code></dt>
+<dd><p>Field google.privacy.dlp.v2.CreateStoredInfoTypeRequest.parent</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">stored_info_type_id</code></dt>
+<dd><p>Field google.privacy.dlp.v2.CreateStoredInfoTypeRequest.stored_info_type_id</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -1164,6 +1938,12 @@ values can be hashed.</p>
 <dd><p>The key used by the hash function.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">crypto_key</code></dt>
+<dd><p>Field google.privacy.dlp.v2.CryptoHashConfig.crypto_key</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -1173,6 +1953,24 @@ values can be hashed.</p>
 (KEK) stored by KMS). When using KMS to wrap/unwrap DEKs, be sure to set
 an appropriate IAM policy on the KMS CryptoKey (KEK) to ensure an
 attacker cannot unwrap the data crypto key.</p>
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.CryptoKey.kms_wrapped">
+<code class="descname">kms_wrapped</code><a class="headerlink" href="#google.cloud.dlp_v2.types.CryptoKey.kms_wrapped" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.privacy.dlp.v2.CryptoKey.kms_wrapped</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.CryptoKey.transient">
+<code class="descname">transient</code><a class="headerlink" href="#google.cloud.dlp_v2.types.CryptoKey.transient" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.privacy.dlp.v2.CryptoKey.transient</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.CryptoKey.unwrapped">
+<code class="descname">unwrapped</code><a class="headerlink" href="#google.cloud.dlp_v2.types.CryptoKey.unwrapped" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.privacy.dlp.v2.CryptoKey.unwrapped</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -1256,6 +2054,42 @@ more unicode characters that are highly improbable to exist in
 your data. For example, assuming your data is entered from a
 regular ASCII keyboard, the symbol with the hex code point
 29DD might be used like so: ⧝MY_TOKEN_TYPE</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.CryptoReplaceFfxFpeConfig.common_alphabet">
+<code class="descname">common_alphabet</code><a class="headerlink" href="#google.cloud.dlp_v2.types.CryptoReplaceFfxFpeConfig.common_alphabet" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.privacy.dlp.v2.CryptoReplaceFfxFpeConfig.common_alphabet</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">context</code></dt>
+<dd><p>Field google.privacy.dlp.v2.CryptoReplaceFfxFpeConfig.context</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">crypto_key</code></dt>
+<dd><p>Field google.privacy.dlp.v2.CryptoReplaceFfxFpeConfig.crypto_key</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">custom_alphabet</code></dt>
+<dd><p>Field google.privacy.dlp.v2.CryptoReplaceFfxFpeConfig.custom_alphabet</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">radix</code></dt>
+<dd><p>Field google.privacy.dlp.v2.CryptoReplaceFfxFpeConfig.radix</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">surrogate_info_type</code></dt>
+<dd><p>Field google.privacy.dlp.v2.CryptoReplaceFfxFpeConfig.surrogate_info_type</p>
 </dd></dl>
 
 </dd></dl>
@@ -1373,6 +2207,24 @@ question.</p>
 <dd><p>Likelihood adjustment to apply to all matching findings.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">hotword_regex</code></dt>
+<dd><p>Field google.privacy.dlp.v2.CustomInfoType.DetectionRule.HotwordRule.hotword_regex</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">likelihood_adjustment</code></dt>
+<dd><p>Field google.privacy.dlp.v2.CustomInfoType.DetectionRule.HotwordRule.likelihood_adjustment</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">proximity</code></dt>
+<dd><p>Field google.privacy.dlp.v2.CustomInfoType.DetectionRule.HotwordRule.proximity</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -1400,6 +2252,18 @@ likelihood is <code class="docutils literal notranslate"><span class="pre">VERY_
 likelihood of <code class="docutils literal notranslate"><span class="pre">LIKELY</span></code>.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">fixed_likelihood</code></dt>
+<dd><p>Field google.privacy.dlp.v2.CustomInfoType.DetectionRule.LikelihoodAdjustment.fixed_likelihood</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">relative_likelihood</code></dt>
+<dd><p>Field google.privacy.dlp.v2.CustomInfoType.DetectionRule.LikelihoodAdjustment.relative_likelihood</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -1419,6 +2283,24 @@ rule.</p>
 <dd><p>Number of characters after the finding to consider.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">window_after</code></dt>
+<dd><p>Field google.privacy.dlp.v2.CustomInfoType.DetectionRule.Proximity.window_after</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">window_before</code></dt>
+<dd><p>Field google.privacy.dlp.v2.CustomInfoType.DetectionRule.Proximity.window_before</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">hotword_rule</code></dt>
+<dd><p>Field google.privacy.dlp.v2.CustomInfoType.DetectionRule.hotword_rule</p>
 </dd></dl>
 
 </dd></dl>
@@ -1472,6 +2354,24 @@ contain at least one phrase and every phrase must contain at
 least 2 characters that are letters or digits. [required]</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">words</code></dt>
+<dd><p>Field google.privacy.dlp.v2.CustomInfoType.Dictionary.WordList.words</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">cloud_storage_path</code></dt>
+<dd><p>Field google.privacy.dlp.v2.CustomInfoType.Dictionary.cloud_storage_path</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">word_list</code></dt>
+<dd><p>Field google.privacy.dlp.v2.CustomInfoType.Dictionary.word_list</p>
 </dd></dl>
 
 </dd></dl>
@@ -1486,6 +2386,12 @@ least 2 characters that are letters or digits. [required]</p>
 <dd><p>Pattern defining the regular expression. Its syntax
 (<a class="reference external" href="https://github.com/google/re2/wiki/Syntax">https://github.com/google/re2/wiki/Syntax</a>) can be found under
 the google/re2 repository on GitHub.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">pattern</code></dt>
+<dd><p>Field google.privacy.dlp.v2.CustomInfoType.Regex.pattern</p>
 </dd></dl>
 
 </dd></dl>
@@ -1503,6 +2409,54 @@ conjunction with a field on the transformation such as
 <code class="docutils literal notranslate"><span class="pre">detection_rules</span></code>.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">detection_rules</code></dt>
+<dd><p>Field google.privacy.dlp.v2.CustomInfoType.detection_rules</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">dictionary</code></dt>
+<dd><p>Field google.privacy.dlp.v2.CustomInfoType.dictionary</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">exclusion_type</code></dt>
+<dd><p>Field google.privacy.dlp.v2.CustomInfoType.exclusion_type</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">info_type</code></dt>
+<dd><p>Field google.privacy.dlp.v2.CustomInfoType.info_type</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">likelihood</code></dt>
+<dd><p>Field google.privacy.dlp.v2.CustomInfoType.likelihood</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">regex</code></dt>
+<dd><p>Field google.privacy.dlp.v2.CustomInfoType.regex</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">stored_type</code></dt>
+<dd><p>Field google.privacy.dlp.v2.CustomInfoType.stored_type</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">surrogate_type</code></dt>
+<dd><p>Field google.privacy.dlp.v2.CustomInfoType.surrogate_type</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -1513,6 +2467,12 @@ conjunction with a field on the transformation such as
 <dt id="google.cloud.dlp_v2.types.DatastoreKey.entity_key">
 <code class="descname">entity_key</code><a class="headerlink" href="#google.cloud.dlp_v2.types.DatastoreKey.entity_key" title="Permalink to this definition">#</a></dt>
 <dd><p>Datastore entity key.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">entity_key</code></dt>
+<dd><p>Field google.privacy.dlp.v2.DatastoreKey.entity_key</p>
 </dd></dl>
 
 </dd></dl>
@@ -1535,12 +2495,42 @@ may be empty.</p>
 <dd><p>The kind to process.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">kind</code></dt>
+<dd><p>Field google.privacy.dlp.v2.DatastoreOptions.kind</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">partition_id</code></dt>
+<dd><p>Field google.privacy.dlp.v2.DatastoreOptions.partition_id</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.dlp_v2.types.Date">
 <em class="property">class </em><code class="descclassname">google.cloud.dlp_v2.types.</code><code class="descname">Date</code><a class="headerlink" href="#google.cloud.dlp_v2.types.Date" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.Date.day">
+<code class="descname">day</code><a class="headerlink" href="#google.cloud.dlp_v2.types.Date.day" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.type.Date.day</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.Date.month">
+<code class="descname">month</code><a class="headerlink" href="#google.cloud.dlp_v2.types.Date.month" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.type.Date.month</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.Date.year">
+<code class="descname">year</code><a class="headerlink" href="#google.cloud.dlp_v2.types.Date.year" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.type.Date.year</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.dlp_v2.types.DateShiftConfig">
@@ -1589,6 +2579,30 @@ context. This results in the same shift for the same context
 and crypto_key.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">context</code></dt>
+<dd><p>Field google.privacy.dlp.v2.DateShiftConfig.context</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">crypto_key</code></dt>
+<dd><p>Field google.privacy.dlp.v2.DateShiftConfig.crypto_key</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">lower_bound_days</code></dt>
+<dd><p>Field google.privacy.dlp.v2.DateShiftConfig.lower_bound_days</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">upper_bound_days</code></dt>
+<dd><p>Field google.privacy.dlp.v2.DateShiftConfig.upper_bound_days</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -1607,6 +2621,36 @@ optional, but when set must be valid date or time values.</p>
 <em class="property">class </em><code class="descname">TimeZone</code><a class="headerlink" href="#google.cloud.dlp_v2.types.DateTime.TimeZone" title="Permalink to this definition">#</a></dt>
 <dd><p>Attributes:
 offset_minutes:             Set only if the offset can be determined. Positive for time             ahead of UTC. E.g. For “UTC-9”, this value is -540.</p>
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.DateTime.TimeZone.offset_minutes">
+<code class="descname">offset_minutes</code><a class="headerlink" href="#google.cloud.dlp_v2.types.DateTime.TimeZone.offset_minutes" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.privacy.dlp.v2.DateTime.TimeZone.offset_minutes</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">date</code></dt>
+<dd><p>Field google.privacy.dlp.v2.DateTime.date</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.DateTime.day_of_week">
+<code class="descname">day_of_week</code><a class="headerlink" href="#google.cloud.dlp_v2.types.DateTime.day_of_week" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.privacy.dlp.v2.DateTime.day_of_week</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.DateTime.time">
+<code class="descname">time</code><a class="headerlink" href="#google.cloud.dlp_v2.types.DateTime.time" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.privacy.dlp.v2.DateTime.time</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.DateTime.time_zone">
+<code class="descname">time_zone</code><a class="headerlink" href="#google.cloud.dlp_v2.types.DateTime.time_zone" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.privacy.dlp.v2.DateTime.time_zone</p>
 </dd></dl>
 
 </dd></dl>
@@ -1628,6 +2672,18 @@ text transformation everywhere.</p>
 <dd><p>Treat the dataset as structured. Transformations can be
 applied to specific locations within structured datasets, such
 as transforming a column within a table.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">info_type_transformations</code></dt>
+<dd><p>Field google.privacy.dlp.v2.DeidentifyConfig.info_type_transformations</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">record_transformations</code></dt>
+<dd><p>Field google.privacy.dlp.v2.DeidentifyConfig.record_transformations</p>
 </dd></dl>
 
 </dd></dl>
@@ -1686,6 +2742,42 @@ are appended. Singular sub-messages and groups are recursively
 merged.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">deidentify_config</code></dt>
+<dd><p>Field google.privacy.dlp.v2.DeidentifyContentRequest.deidentify_config</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">deidentify_template_name</code></dt>
+<dd><p>Field google.privacy.dlp.v2.DeidentifyContentRequest.deidentify_template_name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">inspect_config</code></dt>
+<dd><p>Field google.privacy.dlp.v2.DeidentifyContentRequest.inspect_config</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">inspect_template_name</code></dt>
+<dd><p>Field google.privacy.dlp.v2.DeidentifyContentRequest.inspect_template_name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">item</code></dt>
+<dd><p>Field google.privacy.dlp.v2.DeidentifyContentRequest.item</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">parent</code></dt>
+<dd><p>Field google.privacy.dlp.v2.DeidentifyContentRequest.parent</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -1702,6 +2794,18 @@ merged.</p>
 <dt id="google.cloud.dlp_v2.types.DeidentifyContentResponse.overview">
 <code class="descname">overview</code><a class="headerlink" href="#google.cloud.dlp_v2.types.DeidentifyContentResponse.overview" title="Permalink to this definition">#</a></dt>
 <dd><p>An overview of the changes that were made on the <code class="docutils literal notranslate"><span class="pre">item</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">item</code></dt>
+<dd><p>Field google.privacy.dlp.v2.DeidentifyContentResponse.item</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">overview</code></dt>
+<dd><p>Field google.privacy.dlp.v2.DeidentifyContentResponse.overview</p>
 </dd></dl>
 
 </dd></dl>
@@ -1753,6 +2857,42 @@ field.</p>
 <dd><p>///////////// // The core content of the template // ///////////////</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">create_time</code></dt>
+<dd><p>Field google.privacy.dlp.v2.DeidentifyTemplate.create_time</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">deidentify_config</code></dt>
+<dd><p>Field google.privacy.dlp.v2.DeidentifyTemplate.deidentify_config</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">description</code></dt>
+<dd><p>Field google.privacy.dlp.v2.DeidentifyTemplate.description</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">display_name</code></dt>
+<dd><p>Field google.privacy.dlp.v2.DeidentifyTemplate.display_name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.privacy.dlp.v2.DeidentifyTemplate.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">update_time</code></dt>
+<dd><p>Field google.privacy.dlp.v2.DeidentifyTemplate.update_time</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -1768,6 +2908,12 @@ be deleted, for example
 projects/project-id/deidentifyTemplates/432452342.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.privacy.dlp.v2.DeleteDeidentifyTemplateRequest.name</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -1778,6 +2924,12 @@ projects/project-id/deidentifyTemplates/432452342.</p>
 <dt id="google.cloud.dlp_v2.types.DeleteDlpJobRequest.name">
 <code class="descname">name</code><a class="headerlink" href="#google.cloud.dlp_v2.types.DeleteDlpJobRequest.name" title="Permalink to this definition">#</a></dt>
 <dd><p>The name of the DlpJob resource to be deleted.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.privacy.dlp.v2.DeleteDlpJobRequest.name</p>
 </dd></dl>
 
 </dd></dl>
@@ -1795,6 +2947,12 @@ deleted, for example
 projects/project-id/inspectTemplates/432452342.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.privacy.dlp.v2.DeleteInspectTemplateRequest.name</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -1806,6 +2964,12 @@ projects/project-id/inspectTemplates/432452342.</p>
 <code class="descname">name</code><a class="headerlink" href="#google.cloud.dlp_v2.types.DeleteJobTriggerRequest.name" title="Permalink to this definition">#</a></dt>
 <dd><p>Resource name of the project and the triggeredJob, for example
 <code class="docutils literal notranslate"><span class="pre">projects/dlp-test-project/jobTriggers/53234423</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.privacy.dlp.v2.DeleteJobTriggerRequest.name</p>
 </dd></dl>
 
 </dd></dl>
@@ -1821,6 +2985,12 @@ projects/project-id/inspectTemplates/432452342.</p>
 deleted, for example
 <code class="docutils literal notranslate"><span class="pre">organizations/433245324/storedInfoTypes/432452342</span></code> or
 projects/project-id/storedInfoTypes/432452342.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.privacy.dlp.v2.DeleteStoredInfoTypeRequest.name</p>
 </dd></dl>
 
 </dd></dl>
@@ -1890,6 +3060,66 @@ that instantiated the job.</p>
 <dd><p>A stream of errors encountered running the job.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">create_time</code></dt>
+<dd><p>Field google.privacy.dlp.v2.DlpJob.create_time</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">end_time</code></dt>
+<dd><p>Field google.privacy.dlp.v2.DlpJob.end_time</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">errors</code></dt>
+<dd><p>Field google.privacy.dlp.v2.DlpJob.errors</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">inspect_details</code></dt>
+<dd><p>Field google.privacy.dlp.v2.DlpJob.inspect_details</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">job_trigger_name</code></dt>
+<dd><p>Field google.privacy.dlp.v2.DlpJob.job_trigger_name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.privacy.dlp.v2.DlpJob.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">risk_details</code></dt>
+<dd><p>Field google.privacy.dlp.v2.DlpJob.risk_details</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">start_time</code></dt>
+<dd><p>Field google.privacy.dlp.v2.DlpJob.start_time</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">state</code></dt>
+<dd><p>Field google.privacy.dlp.v2.DlpJob.state</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">type</code></dt>
+<dd><p>Field google.privacy.dlp.v2.DlpJob.type</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -1903,12 +3133,30 @@ that instantiated the job.</p>
 finding is located.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">file_offset</code></dt>
+<dd><p>Field google.privacy.dlp.v2.DocumentLocation.file_offset</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.dlp_v2.types.Duration">
 <em class="property">class </em><code class="descclassname">google.cloud.dlp_v2.types.</code><code class="descname">Duration</code><a class="headerlink" href="#google.cloud.dlp_v2.types.Duration" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.Duration.nanos">
+<code class="descname">nanos</code><a class="headerlink" href="#google.cloud.dlp_v2.types.Duration.nanos" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.Duration.nanos</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.Duration.seconds">
+<code class="descname">seconds</code><a class="headerlink" href="#google.cloud.dlp_v2.types.Duration.seconds" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.Duration.seconds</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.dlp_v2.types.Empty">
@@ -1930,6 +3178,12 @@ take into account that multiple rows correspond to the same entity.</p>
 identifier.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">field</code></dt>
+<dd><p>Field google.privacy.dlp.v2.EntityId.field</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -1942,6 +3196,18 @@ field.</p>
 <dt id="google.cloud.dlp_v2.types.Error.timestamps">
 <code class="descname">timestamps</code><a class="headerlink" href="#google.cloud.dlp_v2.types.Error.timestamps" title="Permalink to this definition">#</a></dt>
 <dd><p>The times the error occurred.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.Error.details">
+<code class="descname">details</code><a class="headerlink" href="#google.cloud.dlp_v2.types.Error.details" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.privacy.dlp.v2.Error.details</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">timestamps</code></dt>
+<dd><p>Field google.privacy.dlp.v2.Error.timestamps</p>
 </dd></dl>
 
 </dd></dl>
@@ -1962,6 +3228,12 @@ phone number findings are dropped if they overlap with
 EMAIL_ADDRESS finding. That leads to
 “<a class="reference external" href="mailto:555-222-2222&#37;&#52;&#48;example&#46;org">555-222-2222<span>&#64;</span>example<span>&#46;</span>org</a>” to generate only a single finding,
 namely email address.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">info_types</code></dt>
+<dd><p>Field google.privacy.dlp.v2.ExcludeInfoTypes.info_types</p>
 </dd></dl>
 
 </dd></dl>
@@ -1996,6 +3268,30 @@ in <code class="docutils literal notranslate"><span class="pre">InspectionRuleSe
 details.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">dictionary</code></dt>
+<dd><p>Field google.privacy.dlp.v2.ExclusionRule.dictionary</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">exclude_info_types</code></dt>
+<dd><p>Field google.privacy.dlp.v2.ExclusionRule.exclude_info_types</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">matching_type</code></dt>
+<dd><p>Field google.privacy.dlp.v2.ExclusionRule.matching_type</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">regex</code></dt>
+<dd><p>Field google.privacy.dlp.v2.ExclusionRule.regex</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -2008,12 +3304,24 @@ details.</p>
 <dd><p>Name describing the field.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.privacy.dlp.v2.FieldId.name</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.dlp_v2.types.FieldMask">
 <em class="property">class </em><code class="descclassname">google.cloud.dlp_v2.types.</code><code class="descname">FieldMask</code><a class="headerlink" href="#google.cloud.dlp_v2.types.FieldMask" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.FieldMask.paths">
+<code class="descname">paths</code><a class="headerlink" href="#google.cloud.dlp_v2.types.FieldMask.paths" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FieldMask.paths</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.dlp_v2.types.FieldTransformation">
@@ -2054,6 +3362,30 @@ Redact a field if the date of birth field is greater than 85.</p>
 <code class="descname">info_type_transformations</code><a class="headerlink" href="#google.cloud.dlp_v2.types.FieldTransformation.info_type_transformations" title="Permalink to this definition">#</a></dt>
 <dd><p>Treat the contents of the field as free text, and selectively
 transform content that matches an <code class="docutils literal notranslate"><span class="pre">InfoType</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">condition</code></dt>
+<dd><p>Field google.privacy.dlp.v2.FieldTransformation.condition</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">fields</code></dt>
+<dd><p>Field google.privacy.dlp.v2.FieldTransformation.fields</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">info_type_transformations</code></dt>
+<dd><p>Field google.privacy.dlp.v2.FieldTransformation.info_type_transformations</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">primitive_transformation</code></dt>
+<dd><p>Field google.privacy.dlp.v2.FieldTransformation.primitive_transformation</p>
 </dd></dl>
 
 </dd></dl>
@@ -2107,6 +3439,42 @@ requested. Currently supported infoTypes: DATE,
 DATE_OF_BIRTH and TIME.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">create_time</code></dt>
+<dd><p>Field google.privacy.dlp.v2.Finding.create_time</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">info_type</code></dt>
+<dd><p>Field google.privacy.dlp.v2.Finding.info_type</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">likelihood</code></dt>
+<dd><p>Field google.privacy.dlp.v2.Finding.likelihood</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">location</code></dt>
+<dd><p>Field google.privacy.dlp.v2.Finding.location</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">quote</code></dt>
+<dd><p>Field google.privacy.dlp.v2.Finding.quote</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">quote_info</code></dt>
+<dd><p>Field google.privacy.dlp.v2.Finding.quote_info</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -2152,6 +3520,24 @@ used: -10, 10-20, 20-30, 30-40, 40-50, 50-60, 60-70, 70-80,
 80-89, 89+. Precision up to 2 decimals works. [Required].</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">bucket_size</code></dt>
+<dd><p>Field google.privacy.dlp.v2.FixedSizeBucketingConfig.bucket_size</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">lower_bound</code></dt>
+<dd><p>Field google.privacy.dlp.v2.FixedSizeBucketingConfig.lower_bound</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">upper_bound</code></dt>
+<dd><p>Field google.privacy.dlp.v2.FixedSizeBucketingConfig.upper_bound</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -2167,6 +3553,12 @@ be read, for example
 projects/project-id/deidentifyTemplates/432452342.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.privacy.dlp.v2.GetDeidentifyTemplateRequest.name</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -2177,6 +3569,12 @@ projects/project-id/deidentifyTemplates/432452342.</p>
 <dt id="google.cloud.dlp_v2.types.GetDlpJobRequest.name">
 <code class="descname">name</code><a class="headerlink" href="#google.cloud.dlp_v2.types.GetDlpJobRequest.name" title="Permalink to this definition">#</a></dt>
 <dd><p>The name of the DlpJob resource.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.privacy.dlp.v2.GetDlpJobRequest.name</p>
 </dd></dl>
 
 </dd></dl>
@@ -2194,6 +3592,12 @@ read, for example
 projects/project-id/inspectTemplates/432452342.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.privacy.dlp.v2.GetInspectTemplateRequest.name</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -2205,6 +3609,12 @@ projects/project-id/inspectTemplates/432452342.</p>
 <code class="descname">name</code><a class="headerlink" href="#google.cloud.dlp_v2.types.GetJobTriggerRequest.name" title="Permalink to this definition">#</a></dt>
 <dd><p>Resource name of the project and the triggeredJob, for example
 <code class="docutils literal notranslate"><span class="pre">projects/dlp-test-project/jobTriggers/53234423</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.privacy.dlp.v2.GetJobTriggerRequest.name</p>
 </dd></dl>
 
 </dd></dl>
@@ -2222,6 +3632,12 @@ read, for example
 projects/project-id/storedInfoTypes/432452342.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.privacy.dlp.v2.GetStoredInfoTypeRequest.name</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -2233,6 +3649,12 @@ projects/project-id/storedInfoTypes/432452342.</p>
 <code class="descname">bounding_boxes</code><a class="headerlink" href="#google.cloud.dlp_v2.types.ImageLocation.bounding_boxes" title="Permalink to this definition">#</a></dt>
 <dd><p>Bounding boxes locating the pixels within the image containing
 the finding.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">bounding_boxes</code></dt>
+<dd><p>Field google.privacy.dlp.v2.ImageLocation.bounding_boxes</p>
 </dd></dl>
 
 </dd></dl>
@@ -2249,6 +3671,12 @@ when creating a CustomInfoType, or one of the names listed at
 <a class="reference external" href="https://cloud.google.com/dlp/docs/infotypes-reference">https://cloud.google.com/dlp/docs/infotypes-reference</a> when
 specifying a built-in type. InfoType names should conform to
 the pattern [a-zA-Z0-9_]{1,64}.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.privacy.dlp.v2.InfoType.name</p>
 </dd></dl>
 
 </dd></dl>
@@ -2275,6 +3703,24 @@ the pattern [a-zA-Z0-9_]{1,64}.</p>
 <dd><p>Which parts of the API supports this InfoType.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">display_name</code></dt>
+<dd><p>Field google.privacy.dlp.v2.InfoTypeDescription.display_name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.privacy.dlp.v2.InfoTypeDescription.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">supported_by</code></dt>
+<dd><p>Field google.privacy.dlp.v2.InfoTypeDescription.supported_by</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -2291,6 +3737,18 @@ the pattern [a-zA-Z0-9_]{1,64}.</p>
 <dt id="google.cloud.dlp_v2.types.InfoTypeStats.count">
 <code class="descname">count</code><a class="headerlink" href="#google.cloud.dlp_v2.types.InfoTypeStats.count" title="Permalink to this definition">#</a></dt>
 <dd><p>Number of findings for this infoType.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">count</code></dt>
+<dd><p>Field google.privacy.dlp.v2.InfoTypeStats.count</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">info_type</code></dt>
+<dd><p>Field google.privacy.dlp.v2.InfoTypeStats.info_type</p>
 </dd></dl>
 
 </dd></dl>
@@ -2329,6 +3787,24 @@ correspond to infoTypes that were requested in
 <dd><p>Primitive transformation to apply to the infoType. [required]</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">info_types</code></dt>
+<dd><p>Field google.privacy.dlp.v2.InfoTypeTransformations.InfoTypeTransformation.info_types</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">primitive_transformation</code></dt>
+<dd><p>Field google.privacy.dlp.v2.InfoTypeTransformations.InfoTypeTransformation.primitive_transformation</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">transformations</code></dt>
+<dd><p>Field google.privacy.dlp.v2.InfoTypeTransformations.transformations</p>
 </dd></dl>
 
 </dd></dl>
@@ -2428,8 +3904,86 @@ InfoTypeLimit.</p>
 <dd><p>Max findings limit for the given infoType.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">info_type</code></dt>
+<dd><p>Field google.privacy.dlp.v2.InspectConfig.FindingLimits.InfoTypeLimit.info_type</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">max_findings</code></dt>
+<dd><p>Field google.privacy.dlp.v2.InspectConfig.FindingLimits.InfoTypeLimit.max_findings</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.InspectConfig.FindingLimits.max_findings_per_info_type">
+<code class="descname">max_findings_per_info_type</code><a class="headerlink" href="#google.cloud.dlp_v2.types.InspectConfig.FindingLimits.max_findings_per_info_type" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.privacy.dlp.v2.InspectConfig.FindingLimits.max_findings_per_info_type</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.InspectConfig.FindingLimits.max_findings_per_item">
+<code class="descname">max_findings_per_item</code><a class="headerlink" href="#google.cloud.dlp_v2.types.InspectConfig.FindingLimits.max_findings_per_item" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.privacy.dlp.v2.InspectConfig.FindingLimits.max_findings_per_item</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.InspectConfig.FindingLimits.max_findings_per_request">
+<code class="descname">max_findings_per_request</code><a class="headerlink" href="#google.cloud.dlp_v2.types.InspectConfig.FindingLimits.max_findings_per_request" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.privacy.dlp.v2.InspectConfig.FindingLimits.max_findings_per_request</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">content_options</code></dt>
+<dd><p>Field google.privacy.dlp.v2.InspectConfig.content_options</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">custom_info_types</code></dt>
+<dd><p>Field google.privacy.dlp.v2.InspectConfig.custom_info_types</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">exclude_info_types</code></dt>
+<dd><p>Field google.privacy.dlp.v2.InspectConfig.exclude_info_types</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">include_quote</code></dt>
+<dd><p>Field google.privacy.dlp.v2.InspectConfig.include_quote</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">info_types</code></dt>
+<dd><p>Field google.privacy.dlp.v2.InspectConfig.info_types</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.InspectConfig.limits">
+<code class="descname">limits</code><a class="headerlink" href="#google.cloud.dlp_v2.types.InspectConfig.limits" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.privacy.dlp.v2.InspectConfig.limits</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">min_likelihood</code></dt>
+<dd><p>Field google.privacy.dlp.v2.InspectConfig.min_likelihood</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">rule_set</code></dt>
+<dd><p>Field google.privacy.dlp.v2.InspectConfig.rule_set</p>
 </dd></dl>
 
 </dd></dl>
@@ -2469,6 +4023,30 @@ are appended. Singular sub-messages and groups are recursively
 merged.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">inspect_config</code></dt>
+<dd><p>Field google.privacy.dlp.v2.InspectContentRequest.inspect_config</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">inspect_template_name</code></dt>
+<dd><p>Field google.privacy.dlp.v2.InspectContentRequest.inspect_template_name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">item</code></dt>
+<dd><p>Field google.privacy.dlp.v2.InspectContentRequest.item</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">parent</code></dt>
+<dd><p>Field google.privacy.dlp.v2.InspectContentRequest.parent</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -2479,6 +4057,12 @@ merged.</p>
 <dt id="google.cloud.dlp_v2.types.InspectContentResponse.result">
 <code class="descname">result</code><a class="headerlink" href="#google.cloud.dlp_v2.types.InspectContentResponse.result" title="Permalink to this definition">#</a></dt>
 <dd><p>The findings.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">result</code></dt>
+<dd><p>Field google.privacy.dlp.v2.InspectContentResponse.result</p>
 </dd></dl>
 
 </dd></dl>
@@ -2504,6 +4088,18 @@ merged.</p>
 <em class="property">class </em><code class="descname">RequestedOptions</code><a class="headerlink" href="#google.cloud.dlp_v2.types.InspectDataSourceDetails.RequestedOptions" title="Permalink to this definition">#</a></dt>
 <dd><p>Attributes:
 snapshot_inspect_template:             If run with an InspectTemplate, a snapshot of its state at the             time of this run.</p>
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.InspectDataSourceDetails.RequestedOptions.job_config">
+<code class="descname">job_config</code><a class="headerlink" href="#google.cloud.dlp_v2.types.InspectDataSourceDetails.RequestedOptions.job_config" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.privacy.dlp.v2.InspectDataSourceDetails.RequestedOptions.job_config</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.InspectDataSourceDetails.RequestedOptions.snapshot_inspect_template">
+<code class="descname">snapshot_inspect_template</code><a class="headerlink" href="#google.cloud.dlp_v2.types.InspectDataSourceDetails.RequestedOptions.snapshot_inspect_template" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.privacy.dlp.v2.InspectDataSourceDetails.RequestedOptions.snapshot_inspect_template</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -2513,6 +4109,36 @@ snapshot_inspect_template:             If run with an InspectTemplate, a snapsho
 processed_bytes:             Total size in bytes that were processed.
 total_estimated_bytes:             Estimate of the number of bytes to process.
 info_type_stats:             Statistics of how many instances of each info type were found             during inspect job.</p>
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.InspectDataSourceDetails.Result.info_type_stats">
+<code class="descname">info_type_stats</code><a class="headerlink" href="#google.cloud.dlp_v2.types.InspectDataSourceDetails.Result.info_type_stats" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.privacy.dlp.v2.InspectDataSourceDetails.Result.info_type_stats</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.InspectDataSourceDetails.Result.processed_bytes">
+<code class="descname">processed_bytes</code><a class="headerlink" href="#google.cloud.dlp_v2.types.InspectDataSourceDetails.Result.processed_bytes" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.privacy.dlp.v2.InspectDataSourceDetails.Result.processed_bytes</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.InspectDataSourceDetails.Result.total_estimated_bytes">
+<code class="descname">total_estimated_bytes</code><a class="headerlink" href="#google.cloud.dlp_v2.types.InspectDataSourceDetails.Result.total_estimated_bytes" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.privacy.dlp.v2.InspectDataSourceDetails.Result.total_estimated_bytes</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">requested_options</code></dt>
+<dd><p>Field google.privacy.dlp.v2.InspectDataSourceDetails.requested_options</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">result</code></dt>
+<dd><p>Field google.privacy.dlp.v2.InspectDataSourceDetails.result</p>
 </dd></dl>
 
 </dd></dl>
@@ -2524,6 +4150,30 @@ info_type_stats:             Statistics of how many instances of each info type 
 storage_config:           The data to scan.
 inspect_config:           How and what to scan for.
 inspect_template_name:           If provided, will be used as the default for all values in           InspectConfig. <code class="docutils literal notranslate"><span class="pre">inspect_config</span></code> will be merged into the           values persisted as part of the template.       actions:           Actions to execute at the completion of the job. Are executed           in the order provided.</p>
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.InspectJobConfig.actions">
+<code class="descname">actions</code><a class="headerlink" href="#google.cloud.dlp_v2.types.InspectJobConfig.actions" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.privacy.dlp.v2.InspectJobConfig.actions</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.InspectJobConfig.inspect_config">
+<code class="descname">inspect_config</code><a class="headerlink" href="#google.cloud.dlp_v2.types.InspectJobConfig.inspect_config" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.privacy.dlp.v2.InspectJobConfig.inspect_config</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.InspectJobConfig.inspect_template_name">
+<code class="descname">inspect_template_name</code><a class="headerlink" href="#google.cloud.dlp_v2.types.InspectJobConfig.inspect_template_name" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.privacy.dlp.v2.InspectJobConfig.inspect_template_name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.InspectJobConfig.storage_config">
+<code class="descname">storage_config</code><a class="headerlink" href="#google.cloud.dlp_v2.types.InspectJobConfig.storage_config" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.privacy.dlp.v2.InspectJobConfig.storage_config</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -2545,6 +4195,18 @@ all findings. The findings list might be truncated because the
 input items were too large, or because the server reached the
 maximum amount of resources allowed for a single API call. For
 best results, divide the input into smaller batches.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">findings</code></dt>
+<dd><p>Field google.privacy.dlp.v2.InspectResult.findings</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">findings_truncated</code></dt>
+<dd><p>Field google.privacy.dlp.v2.InspectResult.findings_truncated</p>
 </dd></dl>
 
 </dd></dl>
@@ -2598,6 +4260,42 @@ field.</p>
 scanning process.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">create_time</code></dt>
+<dd><p>Field google.privacy.dlp.v2.InspectTemplate.create_time</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">description</code></dt>
+<dd><p>Field google.privacy.dlp.v2.InspectTemplate.description</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">display_name</code></dt>
+<dd><p>Field google.privacy.dlp.v2.InspectTemplate.display_name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">inspect_config</code></dt>
+<dd><p>Field google.privacy.dlp.v2.InspectTemplate.inspect_config</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.privacy.dlp.v2.InspectTemplate.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">update_time</code></dt>
+<dd><p>Field google.privacy.dlp.v2.InspectTemplate.update_time</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -2615,6 +4313,18 @@ scanning process.</p>
 <dt id="google.cloud.dlp_v2.types.InspectionRule.exclusion_rule">
 <code class="descname">exclusion_rule</code><a class="headerlink" href="#google.cloud.dlp_v2.types.InspectionRule.exclusion_rule" title="Permalink to this definition">#</a></dt>
 <dd><p>Exclusion rule.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">exclusion_rule</code></dt>
+<dd><p>Field google.privacy.dlp.v2.InspectionRule.exclusion_rule</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">hotword_rule</code></dt>
+<dd><p>Field google.privacy.dlp.v2.InspectionRule.hotword_rule</p>
 </dd></dl>
 
 </dd></dl>
@@ -2636,6 +4346,18 @@ within the set.</p>
 <code class="descname">rules</code><a class="headerlink" href="#google.cloud.dlp_v2.types.InspectionRuleSet.rules" title="Permalink to this definition">#</a></dt>
 <dd><p>Set of rules to be applied to infoTypes. The rules are applied
 in order.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">info_types</code></dt>
+<dd><p>Field google.privacy.dlp.v2.InspectionRuleSet.info_types</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">rules</code></dt>
+<dd><p>Field google.privacy.dlp.v2.InspectionRuleSet.rules</p>
 </dd></dl>
 
 </dd></dl>
@@ -2724,7 +4446,73 @@ only field.</p>
 <dl class="class">
 <dt id="google.cloud.dlp_v2.types.JobTrigger.Trigger">
 <em class="property">class </em><code class="descname">Trigger</code><a class="headerlink" href="#google.cloud.dlp_v2.types.JobTrigger.Trigger" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.JobTrigger.Trigger.schedule">
+<code class="descname">schedule</code><a class="headerlink" href="#google.cloud.dlp_v2.types.JobTrigger.Trigger.schedule" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.privacy.dlp.v2.JobTrigger.Trigger.schedule</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">create_time</code></dt>
+<dd><p>Field google.privacy.dlp.v2.JobTrigger.create_time</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">description</code></dt>
+<dd><p>Field google.privacy.dlp.v2.JobTrigger.description</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">display_name</code></dt>
+<dd><p>Field google.privacy.dlp.v2.JobTrigger.display_name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">errors</code></dt>
+<dd><p>Field google.privacy.dlp.v2.JobTrigger.errors</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.JobTrigger.inspect_job">
+<code class="descname">inspect_job</code><a class="headerlink" href="#google.cloud.dlp_v2.types.JobTrigger.inspect_job" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.privacy.dlp.v2.JobTrigger.inspect_job</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">last_run_time</code></dt>
+<dd><p>Field google.privacy.dlp.v2.JobTrigger.last_run_time</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.privacy.dlp.v2.JobTrigger.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">status</code></dt>
+<dd><p>Field google.privacy.dlp.v2.JobTrigger.status</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">triggers</code></dt>
+<dd><p>Field google.privacy.dlp.v2.JobTrigger.triggers</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">update_time</code></dt>
+<dd><p>Field google.privacy.dlp.v2.JobTrigger.update_time</p>
+</dd></dl>
 
 </dd></dl>
 
@@ -2793,6 +4581,36 @@ reserved/read-only. A name must not be more than 1500 bytes
 when UTF-8 encoded. Cannot be <code class="docutils literal notranslate"><span class="pre">&quot;&quot;</span></code>.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">id</code></dt>
+<dd><p>Field google.privacy.dlp.v2.Key.PathElement.id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">kind</code></dt>
+<dd><p>Field google.privacy.dlp.v2.Key.PathElement.kind</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.privacy.dlp.v2.Key.PathElement.name</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">partition_id</code></dt>
+<dd><p>Field google.privacy.dlp.v2.Key.partition_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">path</code></dt>
+<dd><p>Field google.privacy.dlp.v2.Key.path</p>
 </dd></dl>
 
 </dd></dl>
@@ -2805,6 +4623,12 @@ when UTF-8 encoded. Cannot be <code class="docutils literal notranslate"><span c
 <dt id="google.cloud.dlp_v2.types.KindExpression.name">
 <code class="descname">name</code><a class="headerlink" href="#google.cloud.dlp_v2.types.KindExpression.name" title="Permalink to this definition">#</a></dt>
 <dd><p>The name of the kind.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.privacy.dlp.v2.KindExpression.name</p>
 </dd></dl>
 
 </dd></dl>
@@ -2826,6 +4650,18 @@ a crypto transformation using a kms-wrapped crypto key: dlp.kms.encrypt</p>
 <code class="descname">crypto_key_name</code><a class="headerlink" href="#google.cloud.dlp_v2.types.KmsWrappedCryptoKey.crypto_key_name" title="Permalink to this definition">#</a></dt>
 <dd><p>The resource name of the KMS CryptoKey to use for unwrapping.
 [required]</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">crypto_key_name</code></dt>
+<dd><p>Field google.privacy.dlp.v2.KmsWrappedCryptoKey.crypto_key_name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">wrapped_key</code></dt>
+<dd><p>Field google.privacy.dlp.v2.KmsWrappedCryptoKey.wrapped_key</p>
 </dd></dl>
 
 </dd></dl>
@@ -2860,6 +4696,24 @@ phrases.</p>
 <code class="descname">big_query_field</code><a class="headerlink" href="#google.cloud.dlp_v2.types.LargeCustomDictionaryConfig.big_query_field" title="Permalink to this definition">#</a></dt>
 <dd><p>Field in a BigQuery table where each cell represents a
 dictionary phrase.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">big_query_field</code></dt>
+<dd><p>Field google.privacy.dlp.v2.LargeCustomDictionaryConfig.big_query_field</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">cloud_storage_file_set</code></dt>
+<dd><p>Field google.privacy.dlp.v2.LargeCustomDictionaryConfig.cloud_storage_file_set</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">output_path</code></dt>
+<dd><p>Field google.privacy.dlp.v2.LargeCustomDictionaryConfig.output_path</p>
 </dd></dl>
 
 </dd></dl>
@@ -2903,6 +4757,30 @@ updated. -  <code class="docutils literal notranslate"><span class="pre">name</s
 <code class="docutils literal notranslate"><span class="pre">display_name</span></code>: corresponds to template’s display name.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">order_by</code></dt>
+<dd><p>Field google.privacy.dlp.v2.ListDeidentifyTemplatesRequest.order_by</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">page_size</code></dt>
+<dd><p>Field google.privacy.dlp.v2.ListDeidentifyTemplatesRequest.page_size</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">page_token</code></dt>
+<dd><p>Field google.privacy.dlp.v2.ListDeidentifyTemplatesRequest.page_token</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">parent</code></dt>
+<dd><p>Field google.privacy.dlp.v2.ListDeidentifyTemplatesRequest.parent</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -2921,6 +4799,18 @@ ListDeidentifyTemplatesRequest.</p>
 <code class="descname">next_page_token</code><a class="headerlink" href="#google.cloud.dlp_v2.types.ListDeidentifyTemplatesResponse.next_page_token" title="Permalink to this definition">#</a></dt>
 <dd><p>If the next page is available then the next page token to be
 used in following ListDeidentifyTemplates request.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">deidentify_templates</code></dt>
+<dd><p>Field google.privacy.dlp.v2.ListDeidentifyTemplatesResponse.deidentify_templates</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">next_page_token</code></dt>
+<dd><p>Field google.privacy.dlp.v2.ListDeidentifyTemplatesResponse.next_page_token</p>
 </dd></dl>
 
 </dd></dl>
@@ -2988,6 +4878,42 @@ corresponds to time the job ended. -  <code class="docutils literal notranslate"
 job’s name. -  <code class="docutils literal notranslate"><span class="pre">state</span></code>: corresponds to <code class="docutils literal notranslate"><span class="pre">state</span></code></p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">filter</code></dt>
+<dd><p>Field google.privacy.dlp.v2.ListDlpJobsRequest.filter</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">order_by</code></dt>
+<dd><p>Field google.privacy.dlp.v2.ListDlpJobsRequest.order_by</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">page_size</code></dt>
+<dd><p>Field google.privacy.dlp.v2.ListDlpJobsRequest.page_size</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">page_token</code></dt>
+<dd><p>Field google.privacy.dlp.v2.ListDlpJobsRequest.page_token</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">parent</code></dt>
+<dd><p>Field google.privacy.dlp.v2.ListDlpJobsRequest.parent</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">type</code></dt>
+<dd><p>Field google.privacy.dlp.v2.ListDlpJobsRequest.type</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -3005,6 +4931,18 @@ request.</p>
 <dt id="google.cloud.dlp_v2.types.ListDlpJobsResponse.next_page_token">
 <code class="descname">next_page_token</code><a class="headerlink" href="#google.cloud.dlp_v2.types.ListDlpJobsResponse.next_page_token" title="Permalink to this definition">#</a></dt>
 <dd><p>The standard List next-page token.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">jobs</code></dt>
+<dd><p>Field google.privacy.dlp.v2.ListDlpJobsResponse.jobs</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">next_page_token</code></dt>
+<dd><p>Field google.privacy.dlp.v2.ListDlpJobsResponse.next_page_token</p>
 </dd></dl>
 
 </dd></dl>
@@ -3028,6 +4966,18 @@ en-US strings will be returned.</p>
 parts of the API. Defaults to supported_by=INSPECT.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">filter</code></dt>
+<dd><p>Field google.privacy.dlp.v2.ListInfoTypesRequest.filter</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">language_code</code></dt>
+<dd><p>Field google.privacy.dlp.v2.ListInfoTypesRequest.language_code</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -3038,6 +4988,12 @@ parts of the API. Defaults to supported_by=INSPECT.</p>
 <dt id="google.cloud.dlp_v2.types.ListInfoTypesResponse.info_types">
 <code class="descname">info_types</code><a class="headerlink" href="#google.cloud.dlp_v2.types.ListInfoTypesResponse.info_types" title="Permalink to this definition">#</a></dt>
 <dd><p>Set of sensitive infoTypes.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">info_types</code></dt>
+<dd><p>Field google.privacy.dlp.v2.ListInfoTypesResponse.info_types</p>
 </dd></dl>
 
 </dd></dl>
@@ -3081,6 +5037,30 @@ updated. -  <code class="docutils literal notranslate"><span class="pre">name</s
 <code class="docutils literal notranslate"><span class="pre">display_name</span></code>: corresponds to template’s display name.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">order_by</code></dt>
+<dd><p>Field google.privacy.dlp.v2.ListInspectTemplatesRequest.order_by</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">page_size</code></dt>
+<dd><p>Field google.privacy.dlp.v2.ListInspectTemplatesRequest.page_size</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">page_token</code></dt>
+<dd><p>Field google.privacy.dlp.v2.ListInspectTemplatesRequest.page_token</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">parent</code></dt>
+<dd><p>Field google.privacy.dlp.v2.ListInspectTemplatesRequest.parent</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -3099,6 +5079,18 @@ ListInspectTemplatesRequest.</p>
 <code class="descname">next_page_token</code><a class="headerlink" href="#google.cloud.dlp_v2.types.ListInspectTemplatesResponse.next_page_token" title="Permalink to this definition">#</a></dt>
 <dd><p>If the next page is available then the next page token to be
 used in following ListInspectTemplates request.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">inspect_templates</code></dt>
+<dd><p>Field google.privacy.dlp.v2.ListInspectTemplatesResponse.inspect_templates</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">next_page_token</code></dt>
+<dd><p>Field google.privacy.dlp.v2.ListInspectTemplatesResponse.next_page_token</p>
 </dd></dl>
 
 </dd></dl>
@@ -3144,6 +5136,30 @@ JobTrigger’s display name. -  <code class="docutils literal notranslate"><span
 JobTrigger’s status.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">order_by</code></dt>
+<dd><p>Field google.privacy.dlp.v2.ListJobTriggersRequest.order_by</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">page_size</code></dt>
+<dd><p>Field google.privacy.dlp.v2.ListJobTriggersRequest.page_size</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">page_token</code></dt>
+<dd><p>Field google.privacy.dlp.v2.ListJobTriggersRequest.page_token</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">parent</code></dt>
+<dd><p>Field google.privacy.dlp.v2.ListJobTriggersRequest.parent</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -3162,6 +5178,18 @@ ListJobTriggersRequest.</p>
 <code class="descname">next_page_token</code><a class="headerlink" href="#google.cloud.dlp_v2.types.ListJobTriggersResponse.next_page_token" title="Permalink to this definition">#</a></dt>
 <dd><p>If the next page is available then the next page token to be
 used in following ListJobTriggers request.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">job_triggers</code></dt>
+<dd><p>Field google.privacy.dlp.v2.ListJobTriggersResponse.job_triggers</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">next_page_token</code></dt>
+<dd><p>Field google.privacy.dlp.v2.ListJobTriggersResponse.next_page_token</p>
 </dd></dl>
 
 </dd></dl>
@@ -3205,6 +5233,30 @@ resource. -  <code class="docutils literal notranslate"><span class="pre">name</
 <code class="docutils literal notranslate"><span class="pre">display_name</span></code>: corresponds to info type’s display name.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">order_by</code></dt>
+<dd><p>Field google.privacy.dlp.v2.ListStoredInfoTypesRequest.order_by</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">page_size</code></dt>
+<dd><p>Field google.privacy.dlp.v2.ListStoredInfoTypesRequest.page_size</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">page_token</code></dt>
+<dd><p>Field google.privacy.dlp.v2.ListStoredInfoTypesRequest.page_token</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">parent</code></dt>
+<dd><p>Field google.privacy.dlp.v2.ListStoredInfoTypesRequest.parent</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -3223,6 +5275,18 @@ ListStoredInfoTypesRequest.</p>
 <code class="descname">next_page_token</code><a class="headerlink" href="#google.cloud.dlp_v2.types.ListStoredInfoTypesResponse.next_page_token" title="Permalink to this definition">#</a></dt>
 <dd><p>If the next page is available then the next page token to be
 used in following ListStoredInfoTypes request.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">next_page_token</code></dt>
+<dd><p>Field google.privacy.dlp.v2.ListStoredInfoTypesResponse.next_page_token</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">stored_info_types</code></dt>
+<dd><p>Field google.privacy.dlp.v2.ListStoredInfoTypesResponse.stored_info_types</p>
 </dd></dl>
 
 </dd></dl>
@@ -3254,6 +5318,24 @@ the content is text.</p>
 <code class="descname">content_locations</code><a class="headerlink" href="#google.cloud.dlp_v2.types.Location.content_locations" title="Permalink to this definition">#</a></dt>
 <dd><p>List of nested objects pointing to the precise location of the
 finding within the file or record.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">byte_range</code></dt>
+<dd><p>Field google.privacy.dlp.v2.Location.byte_range</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">codepoint_range</code></dt>
+<dd><p>Field google.privacy.dlp.v2.Location.codepoint_range</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">content_locations</code></dt>
+<dd><p>Field google.privacy.dlp.v2.Location.content_locations</p>
 </dd></dl>
 
 </dd></dl>
@@ -3294,6 +5376,18 @@ all available columns will be used for a new table or an
 to an existing table that has a schema.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">output_schema</code></dt>
+<dd><p>Field google.privacy.dlp.v2.OutputStorageConfig.output_schema</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">table</code></dt>
+<dd><p>Field google.privacy.dlp.v2.OutputStorageConfig.table</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -3316,12 +5410,84 @@ namespace ID may be empty.</p>
 belong.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">namespace_id</code></dt>
+<dd><p>Field google.privacy.dlp.v2.PartitionId.namespace_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">project_id</code></dt>
+<dd><p>Field google.privacy.dlp.v2.PartitionId.project_id</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.dlp_v2.types.PrimitiveTransformation">
 <em class="property">class </em><code class="descclassname">google.cloud.dlp_v2.types.</code><code class="descname">PrimitiveTransformation</code><a class="headerlink" href="#google.cloud.dlp_v2.types.PrimitiveTransformation" title="Permalink to this definition">#</a></dt>
 <dd><p>A rule for transforming a value.</p>
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.PrimitiveTransformation.bucketing_config">
+<code class="descname">bucketing_config</code><a class="headerlink" href="#google.cloud.dlp_v2.types.PrimitiveTransformation.bucketing_config" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.privacy.dlp.v2.PrimitiveTransformation.bucketing_config</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.PrimitiveTransformation.character_mask_config">
+<code class="descname">character_mask_config</code><a class="headerlink" href="#google.cloud.dlp_v2.types.PrimitiveTransformation.character_mask_config" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.privacy.dlp.v2.PrimitiveTransformation.character_mask_config</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.PrimitiveTransformation.crypto_hash_config">
+<code class="descname">crypto_hash_config</code><a class="headerlink" href="#google.cloud.dlp_v2.types.PrimitiveTransformation.crypto_hash_config" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.privacy.dlp.v2.PrimitiveTransformation.crypto_hash_config</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.PrimitiveTransformation.crypto_replace_ffx_fpe_config">
+<code class="descname">crypto_replace_ffx_fpe_config</code><a class="headerlink" href="#google.cloud.dlp_v2.types.PrimitiveTransformation.crypto_replace_ffx_fpe_config" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.privacy.dlp.v2.PrimitiveTransformation.crypto_replace_ffx_fpe_config</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.PrimitiveTransformation.date_shift_config">
+<code class="descname">date_shift_config</code><a class="headerlink" href="#google.cloud.dlp_v2.types.PrimitiveTransformation.date_shift_config" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.privacy.dlp.v2.PrimitiveTransformation.date_shift_config</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.PrimitiveTransformation.fixed_size_bucketing_config">
+<code class="descname">fixed_size_bucketing_config</code><a class="headerlink" href="#google.cloud.dlp_v2.types.PrimitiveTransformation.fixed_size_bucketing_config" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.privacy.dlp.v2.PrimitiveTransformation.fixed_size_bucketing_config</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.PrimitiveTransformation.redact_config">
+<code class="descname">redact_config</code><a class="headerlink" href="#google.cloud.dlp_v2.types.PrimitiveTransformation.redact_config" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.privacy.dlp.v2.PrimitiveTransformation.redact_config</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.PrimitiveTransformation.replace_config">
+<code class="descname">replace_config</code><a class="headerlink" href="#google.cloud.dlp_v2.types.PrimitiveTransformation.replace_config" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.privacy.dlp.v2.PrimitiveTransformation.replace_config</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.PrimitiveTransformation.replace_with_info_type_config">
+<code class="descname">replace_with_info_type_config</code><a class="headerlink" href="#google.cloud.dlp_v2.types.PrimitiveTransformation.replace_with_info_type_config" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.privacy.dlp.v2.PrimitiveTransformation.replace_with_info_type_config</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.PrimitiveTransformation.time_part_config">
+<code class="descname">time_part_config</code><a class="headerlink" href="#google.cloud.dlp_v2.types.PrimitiveTransformation.time_part_config" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.privacy.dlp.v2.PrimitiveTransformation.time_part_config</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -3340,6 +5506,12 @@ distinct values and value count distribution.</p>
 supported except for arrays and structs. However, it may be
 more informative to use NumericalStats when the field type is
 supported, depending on the data.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">field</code></dt>
+<dd><p>Field google.privacy.dlp.v2.PrivacyMetric.CategoricalStatsConfig.field</p>
 </dd></dl>
 
 </dd></dl>
@@ -3375,6 +5547,24 @@ custom_tag used to tag a quasi-identifiers field must appear
 in exactly one field of one auxiliary table.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">auxiliary_tables</code></dt>
+<dd><p>Field google.privacy.dlp.v2.PrivacyMetric.DeltaPresenceEstimationConfig.auxiliary_tables</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">quasi_ids</code></dt>
+<dd><p>Field google.privacy.dlp.v2.PrivacyMetric.DeltaPresenceEstimationConfig.quasi_ids</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">region_code</code></dt>
+<dd><p>Field google.privacy.dlp.v2.PrivacyMetric.DeltaPresenceEstimationConfig.region_code</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -3404,6 +5594,18 @@ ignored, but their frequency is taken into account.  Important
 note: a maximum of 1000 rows can be associated to a single
 entity ID. If more rows are associated with the same entity
 ID, some might be ignored.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">entity_id</code></dt>
+<dd><p>Field google.privacy.dlp.v2.PrivacyMetric.KAnonymityConfig.entity_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">quasi_ids</code></dt>
+<dd><p>Field google.privacy.dlp.v2.PrivacyMetric.KAnonymityConfig.quasi_ids</p>
 </dd></dl>
 
 </dd></dl>
@@ -3476,6 +5678,36 @@ be zero. [required]</p>
 <em class="property">class </em><code class="descname">QuasiIdField</code><a class="headerlink" href="#google.cloud.dlp_v2.types.PrivacyMetric.KMapEstimationConfig.AuxiliaryTable.QuasiIdField" title="Permalink to this definition">#</a></dt>
 <dd><p>A quasi-identifier column has a custom_tag, used to know which column
 in the data corresponds to which column in the statistical model.</p>
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.PrivacyMetric.KMapEstimationConfig.AuxiliaryTable.QuasiIdField.custom_tag">
+<code class="descname">custom_tag</code><a class="headerlink" href="#google.cloud.dlp_v2.types.PrivacyMetric.KMapEstimationConfig.AuxiliaryTable.QuasiIdField.custom_tag" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.privacy.dlp.v2.PrivacyMetric.KMapEstimationConfig.AuxiliaryTable.QuasiIdField.custom_tag</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.PrivacyMetric.KMapEstimationConfig.AuxiliaryTable.QuasiIdField.field">
+<code class="descname">field</code><a class="headerlink" href="#google.cloud.dlp_v2.types.PrivacyMetric.KMapEstimationConfig.AuxiliaryTable.QuasiIdField.field" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.privacy.dlp.v2.PrivacyMetric.KMapEstimationConfig.AuxiliaryTable.QuasiIdField.field</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">quasi_ids</code></dt>
+<dd><p>Field google.privacy.dlp.v2.PrivacyMetric.KMapEstimationConfig.AuxiliaryTable.quasi_ids</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">relative_frequency</code></dt>
+<dd><p>Field google.privacy.dlp.v2.PrivacyMetric.KMapEstimationConfig.AuxiliaryTable.relative_frequency</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">table</code></dt>
+<dd><p>Field google.privacy.dlp.v2.PrivacyMetric.KMapEstimationConfig.AuxiliaryTable.table</p>
 </dd></dl>
 
 </dd></dl>
@@ -3488,6 +5720,48 @@ field:               Identifies the column. [required]
 tag:               Semantic tag that identifies what a column contains, to               determine which statistical model to use to estimate the               reidentifiability of each value. [required]           info_type:               A column can be tagged with a InfoType to use the relevant               public dataset as a statistical model of population, if               available. We currently support US ZIP codes, region codes,               ages and genders. To programmatically obtain the list of               supported InfoTypes, use ListInfoTypes with the               supported_by=RISK_ANALYSIS filter.
 custom_tag:               A column can be tagged with a custom tag. In this case, the               user must indicate an auxiliary table that contains               statistical information on the possible values of this column               (below).
 inferred:               If no semantic tag is indicated, we infer the statistical               model from the distribution of values in the input data</p>
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.PrivacyMetric.KMapEstimationConfig.TaggedField.custom_tag">
+<code class="descname">custom_tag</code><a class="headerlink" href="#google.cloud.dlp_v2.types.PrivacyMetric.KMapEstimationConfig.TaggedField.custom_tag" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.privacy.dlp.v2.PrivacyMetric.KMapEstimationConfig.TaggedField.custom_tag</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.PrivacyMetric.KMapEstimationConfig.TaggedField.field">
+<code class="descname">field</code><a class="headerlink" href="#google.cloud.dlp_v2.types.PrivacyMetric.KMapEstimationConfig.TaggedField.field" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.privacy.dlp.v2.PrivacyMetric.KMapEstimationConfig.TaggedField.field</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.PrivacyMetric.KMapEstimationConfig.TaggedField.inferred">
+<code class="descname">inferred</code><a class="headerlink" href="#google.cloud.dlp_v2.types.PrivacyMetric.KMapEstimationConfig.TaggedField.inferred" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.privacy.dlp.v2.PrivacyMetric.KMapEstimationConfig.TaggedField.inferred</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.PrivacyMetric.KMapEstimationConfig.TaggedField.info_type">
+<code class="descname">info_type</code><a class="headerlink" href="#google.cloud.dlp_v2.types.PrivacyMetric.KMapEstimationConfig.TaggedField.info_type" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.privacy.dlp.v2.PrivacyMetric.KMapEstimationConfig.TaggedField.info_type</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">auxiliary_tables</code></dt>
+<dd><p>Field google.privacy.dlp.v2.PrivacyMetric.KMapEstimationConfig.auxiliary_tables</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">quasi_ids</code></dt>
+<dd><p>Field google.privacy.dlp.v2.PrivacyMetric.KMapEstimationConfig.quasi_ids</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">region_code</code></dt>
+<dd><p>Field google.privacy.dlp.v2.PrivacyMetric.KMapEstimationConfig.region_code</p>
 </dd></dl>
 
 </dd></dl>
@@ -3511,6 +5785,18 @@ key.</p>
 <dd><p>Sensitive field for computing the l-value.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">quasi_ids</code></dt>
+<dd><p>Field google.privacy.dlp.v2.PrivacyMetric.LDiversityConfig.quasi_ids</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">sensitive_attribute</code></dt>
+<dd><p>Field google.privacy.dlp.v2.PrivacyMetric.LDiversityConfig.sensitive_attribute</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -3525,6 +5811,48 @@ and quantiles.</p>
 integer, float, date, datetime, timestamp, time.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">field</code></dt>
+<dd><p>Field google.privacy.dlp.v2.PrivacyMetric.NumericalStatsConfig.field</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.PrivacyMetric.categorical_stats_config">
+<code class="descname">categorical_stats_config</code><a class="headerlink" href="#google.cloud.dlp_v2.types.PrivacyMetric.categorical_stats_config" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.privacy.dlp.v2.PrivacyMetric.categorical_stats_config</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.PrivacyMetric.delta_presence_estimation_config">
+<code class="descname">delta_presence_estimation_config</code><a class="headerlink" href="#google.cloud.dlp_v2.types.PrivacyMetric.delta_presence_estimation_config" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.privacy.dlp.v2.PrivacyMetric.delta_presence_estimation_config</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.PrivacyMetric.k_anonymity_config">
+<code class="descname">k_anonymity_config</code><a class="headerlink" href="#google.cloud.dlp_v2.types.PrivacyMetric.k_anonymity_config" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.privacy.dlp.v2.PrivacyMetric.k_anonymity_config</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.PrivacyMetric.k_map_estimation_config">
+<code class="descname">k_map_estimation_config</code><a class="headerlink" href="#google.cloud.dlp_v2.types.PrivacyMetric.k_map_estimation_config" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.privacy.dlp.v2.PrivacyMetric.k_map_estimation_config</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.PrivacyMetric.l_diversity_config">
+<code class="descname">l_diversity_config</code><a class="headerlink" href="#google.cloud.dlp_v2.types.PrivacyMetric.l_diversity_config" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.privacy.dlp.v2.PrivacyMetric.l_diversity_config</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.PrivacyMetric.numerical_stats_config">
+<code class="descname">numerical_stats_config</code><a class="headerlink" href="#google.cloud.dlp_v2.types.PrivacyMetric.numerical_stats_config" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.privacy.dlp.v2.PrivacyMetric.numerical_stats_config</p>
 </dd></dl>
 
 </dd></dl>
@@ -3574,6 +5902,30 @@ statistical information on the possible values of this column
 model from the distribution of values in the input data</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">custom_tag</code></dt>
+<dd><p>Field google.privacy.dlp.v2.QuasiId.custom_tag</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">field</code></dt>
+<dd><p>Field google.privacy.dlp.v2.QuasiId.field</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">inferred</code></dt>
+<dd><p>Field google.privacy.dlp.v2.QuasiId.inferred</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">info_type</code></dt>
+<dd><p>Field google.privacy.dlp.v2.QuasiId.info_type</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -3592,6 +5944,12 @@ model from the distribution of values in the input data</p>
 <dd><p>The date time indicated by the quote.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">date_time</code></dt>
+<dd><p>Field google.privacy.dlp.v2.QuoteInfo.date_time</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -3608,6 +5966,18 @@ model from the distribution of values in the input data</p>
 <dt id="google.cloud.dlp_v2.types.Range.end">
 <code class="descname">end</code><a class="headerlink" href="#google.cloud.dlp_v2.types.Range.end" title="Permalink to this definition">#</a></dt>
 <dd><p>Index of the last character of the range (exclusive).</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">end</code></dt>
+<dd><p>Field google.privacy.dlp.v2.Range.end</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">start</code></dt>
+<dd><p>Field google.privacy.dlp.v2.Range.start</p>
 </dd></dl>
 
 </dd></dl>
@@ -3662,12 +6032,36 @@ tests.]</p>
 <dl class="class">
 <dt id="google.cloud.dlp_v2.types.RecordCondition.Condition">
 <em class="property">class </em><code class="descname">Condition</code><a class="headerlink" href="#google.cloud.dlp_v2.types.RecordCondition.Condition" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.RecordCondition.Condition.field">
+<code class="descname">field</code><a class="headerlink" href="#google.cloud.dlp_v2.types.RecordCondition.Condition.field" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.privacy.dlp.v2.RecordCondition.Condition.field</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.RecordCondition.Condition.operator">
+<code class="descname">operator</code><a class="headerlink" href="#google.cloud.dlp_v2.types.RecordCondition.Condition.operator" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.privacy.dlp.v2.RecordCondition.Condition.operator</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.RecordCondition.Condition.value">
+<code class="descname">value</code><a class="headerlink" href="#google.cloud.dlp_v2.types.RecordCondition.Condition.value" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.privacy.dlp.v2.RecordCondition.Condition.value</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.dlp_v2.types.RecordCondition.Conditions">
 <em class="property">class </em><code class="descname">Conditions</code><a class="headerlink" href="#google.cloud.dlp_v2.types.RecordCondition.Conditions" title="Permalink to this definition">#</a></dt>
 <dd><p>A collection of conditions.</p>
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.RecordCondition.Conditions.conditions">
+<code class="descname">conditions</code><a class="headerlink" href="#google.cloud.dlp_v2.types.RecordCondition.Conditions.conditions" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.privacy.dlp.v2.RecordCondition.Conditions.conditions</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -3681,6 +6075,24 @@ tests.]</p>
 currently only supported value is <code class="docutils literal notranslate"><span class="pre">AND</span></code>.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.RecordCondition.Expressions.conditions">
+<code class="descname">conditions</code><a class="headerlink" href="#google.cloud.dlp_v2.types.RecordCondition.Expressions.conditions" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.privacy.dlp.v2.RecordCondition.Expressions.conditions</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">logical_operator</code></dt>
+<dd><p>Field google.privacy.dlp.v2.RecordCondition.Expressions.logical_operator</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">expressions</code></dt>
+<dd><p>Field google.privacy.dlp.v2.RecordCondition.expressions</p>
 </dd></dl>
 
 </dd></dl>
@@ -3689,6 +6101,18 @@ currently only supported value is <code class="docutils literal notranslate"><sp
 <dt id="google.cloud.dlp_v2.types.RecordKey">
 <em class="property">class </em><code class="descclassname">google.cloud.dlp_v2.types.</code><code class="descname">RecordKey</code><a class="headerlink" href="#google.cloud.dlp_v2.types.RecordKey" title="Permalink to this definition">#</a></dt>
 <dd><p>Message for a unique key indicating a record that contains a finding.</p>
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.RecordKey.big_query_key">
+<code class="descname">big_query_key</code><a class="headerlink" href="#google.cloud.dlp_v2.types.RecordKey.big_query_key" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.privacy.dlp.v2.RecordKey.big_query_key</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.RecordKey.datastore_key">
+<code class="descname">datastore_key</code><a class="headerlink" href="#google.cloud.dlp_v2.types.RecordKey.datastore_key" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.privacy.dlp.v2.RecordKey.datastore_key</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -3713,6 +6137,24 @@ currently only supported value is <code class="docutils literal notranslate"><sp
 <dd><p>Location within a <code class="docutils literal notranslate"><span class="pre">ContentItem.Table</span></code>.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">field_id</code></dt>
+<dd><p>Field google.privacy.dlp.v2.RecordLocation.field_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">record_key</code></dt>
+<dd><p>Field google.privacy.dlp.v2.RecordLocation.record_key</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">table_location</code></dt>
+<dd><p>Field google.privacy.dlp.v2.RecordLocation.table_location</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -3726,6 +6168,12 @@ to true.</p>
 <dd><p>A condition that when it evaluates to true will result in the
 record being evaluated to be suppressed from the transformed
 content.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">condition</code></dt>
+<dd><p>Field google.privacy.dlp.v2.RecordSuppression.condition</p>
 </dd></dl>
 
 </dd></dl>
@@ -3748,6 +6196,18 @@ transformations.</p>
 <dd><p>Configuration defining which records get suppressed entirely.
 Records that match any suppression rule are omitted from the
 output [optional].</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">field_transformations</code></dt>
+<dd><p>Field google.privacy.dlp.v2.RecordTransformations.field_transformations</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">record_suppressions</code></dt>
+<dd><p>Field google.privacy.dlp.v2.RecordTransformations.record_suppressions</p>
 </dd></dl>
 
 </dd></dl>
@@ -3832,6 +6292,54 @@ provided.</p>
 specified, the default is black.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">info_type</code></dt>
+<dd><p>Field google.privacy.dlp.v2.RedactImageRequest.ImageRedactionConfig.info_type</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">redact_all_text</code></dt>
+<dd><p>Field google.privacy.dlp.v2.RedactImageRequest.ImageRedactionConfig.redact_all_text</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">redaction_color</code></dt>
+<dd><p>Field google.privacy.dlp.v2.RedactImageRequest.ImageRedactionConfig.redaction_color</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">byte_item</code></dt>
+<dd><p>Field google.privacy.dlp.v2.RedactImageRequest.byte_item</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">image_redaction_configs</code></dt>
+<dd><p>Field google.privacy.dlp.v2.RedactImageRequest.image_redaction_configs</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">include_findings</code></dt>
+<dd><p>Field google.privacy.dlp.v2.RedactImageRequest.include_findings</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">inspect_config</code></dt>
+<dd><p>Field google.privacy.dlp.v2.RedactImageRequest.inspect_config</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">parent</code></dt>
+<dd><p>Field google.privacy.dlp.v2.RedactImageRequest.parent</p>
 </dd></dl>
 
 </dd></dl>
@@ -3860,6 +6368,24 @@ all text, if any, that was found in the image.</p>
 <code class="descname">inspect_result</code><a class="headerlink" href="#google.cloud.dlp_v2.types.RedactImageResponse.inspect_result" title="Permalink to this definition">#</a></dt>
 <dd><p>The findings. Populated when include_findings in the request
 is true.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">extracted_text</code></dt>
+<dd><p>Field google.privacy.dlp.v2.RedactImageResponse.extracted_text</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">inspect_result</code></dt>
+<dd><p>Field google.privacy.dlp.v2.RedactImageResponse.inspect_result</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">redacted_image</code></dt>
+<dd><p>Field google.privacy.dlp.v2.RedactImageResponse.redacted_image</p>
 </dd></dl>
 
 </dd></dl>
@@ -3922,6 +6448,42 @@ template. Repeated fields are appended. Singular sub-messages
 and groups are recursively merged.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">inspect_config</code></dt>
+<dd><p>Field google.privacy.dlp.v2.ReidentifyContentRequest.inspect_config</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">inspect_template_name</code></dt>
+<dd><p>Field google.privacy.dlp.v2.ReidentifyContentRequest.inspect_template_name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">item</code></dt>
+<dd><p>Field google.privacy.dlp.v2.ReidentifyContentRequest.item</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">parent</code></dt>
+<dd><p>Field google.privacy.dlp.v2.ReidentifyContentRequest.parent</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">reidentify_config</code></dt>
+<dd><p>Field google.privacy.dlp.v2.ReidentifyContentRequest.reidentify_config</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">reidentify_template_name</code></dt>
+<dd><p>Field google.privacy.dlp.v2.ReidentifyContentRequest.reidentify_template_name</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -3940,6 +6502,18 @@ and groups are recursively merged.</p>
 <dd><p>An overview of the changes that were made to the <code class="docutils literal notranslate"><span class="pre">item</span></code>.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">item</code></dt>
+<dd><p>Field google.privacy.dlp.v2.ReidentifyContentResponse.item</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">overview</code></dt>
+<dd><p>Field google.privacy.dlp.v2.ReidentifyContentResponse.overview</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -3950,6 +6524,12 @@ and groups are recursively merged.</p>
 <dt id="google.cloud.dlp_v2.types.ReplaceValueConfig.new_value">
 <code class="descname">new_value</code><a class="headerlink" href="#google.cloud.dlp_v2.types.ReplaceValueConfig.new_value" title="Permalink to this definition">#</a></dt>
 <dd><p>Value to replace it with.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">new_value</code></dt>
+<dd><p>Field google.privacy.dlp.v2.ReplaceValueConfig.new_value</p>
 </dd></dl>
 
 </dd></dl>
@@ -3984,6 +6564,24 @@ and groups are recursively merged.</p>
 in the order provided.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">actions</code></dt>
+<dd><p>Field google.privacy.dlp.v2.RiskAnalysisJobConfig.actions</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">privacy_metric</code></dt>
+<dd><p>Field google.privacy.dlp.v2.RiskAnalysisJobConfig.privacy_metric</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">source_table</code></dt>
+<dd><p>Field google.privacy.dlp.v2.RiskAnalysisJobConfig.source_table</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -3999,6 +6597,12 @@ time will be skipped if the previous execution has not ended
 when its scheduled time occurs.  This value must be set to a
 time duration greater than or equal to 1 day and can be no
 longer than 60 days.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">recurrence_period_duration</code></dt>
+<dd><p>Field google.privacy.dlp.v2.Schedule.recurrence_period_duration</p>
 </dd></dl>
 
 </dd></dl>
@@ -4038,6 +6642,36 @@ be zero. [required]</p>
 <em class="property">class </em><code class="descname">QuasiIdentifierField</code><a class="headerlink" href="#google.cloud.dlp_v2.types.StatisticalTable.QuasiIdentifierField" title="Permalink to this definition">#</a></dt>
 <dd><p>A quasi-identifier column has a custom_tag, used to know which column
 in the data corresponds to which column in the statistical model.</p>
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.StatisticalTable.QuasiIdentifierField.custom_tag">
+<code class="descname">custom_tag</code><a class="headerlink" href="#google.cloud.dlp_v2.types.StatisticalTable.QuasiIdentifierField.custom_tag" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.privacy.dlp.v2.StatisticalTable.QuasiIdentifierField.custom_tag</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.StatisticalTable.QuasiIdentifierField.field">
+<code class="descname">field</code><a class="headerlink" href="#google.cloud.dlp_v2.types.StatisticalTable.QuasiIdentifierField.field" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.privacy.dlp.v2.StatisticalTable.QuasiIdentifierField.field</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">quasi_ids</code></dt>
+<dd><p>Field google.privacy.dlp.v2.StatisticalTable.quasi_ids</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">relative_frequency</code></dt>
+<dd><p>Field google.privacy.dlp.v2.StatisticalTable.relative_frequency</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">table</code></dt>
+<dd><p>Field google.privacy.dlp.v2.StatisticalTable.table</p>
 </dd></dl>
 
 </dd></dl>
@@ -4045,7 +6679,25 @@ in the data corresponds to which column in the statistical model.</p>
 <dl class="class">
 <dt id="google.cloud.dlp_v2.types.Status">
 <em class="property">class </em><code class="descclassname">google.cloud.dlp_v2.types.</code><code class="descname">Status</code><a class="headerlink" href="#google.cloud.dlp_v2.types.Status" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.Status.code">
+<code class="descname">code</code><a class="headerlink" href="#google.cloud.dlp_v2.types.Status.code" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.rpc.Status.code</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.Status.details">
+<code class="descname">details</code><a class="headerlink" href="#google.cloud.dlp_v2.types.Status.details" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.rpc.Status.details</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.Status.message">
+<code class="descname">message</code><a class="headerlink" href="#google.cloud.dlp_v2.types.Status.message" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.rpc.Status.message</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.dlp_v2.types.StorageConfig">
@@ -4111,6 +6763,54 @@ executed. This will be based on the time of the execution of
 the last run of the JobTrigger.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">enable_auto_population_of_timespan_config</code></dt>
+<dd><p>Field google.privacy.dlp.v2.StorageConfig.TimespanConfig.enable_auto_population_of_timespan_config</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">end_time</code></dt>
+<dd><p>Field google.privacy.dlp.v2.StorageConfig.TimespanConfig.end_time</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">start_time</code></dt>
+<dd><p>Field google.privacy.dlp.v2.StorageConfig.TimespanConfig.start_time</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">timestamp_field</code></dt>
+<dd><p>Field google.privacy.dlp.v2.StorageConfig.TimespanConfig.timestamp_field</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">big_query_options</code></dt>
+<dd><p>Field google.privacy.dlp.v2.StorageConfig.big_query_options</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">cloud_storage_options</code></dt>
+<dd><p>Field google.privacy.dlp.v2.StorageConfig.cloud_storage_options</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">datastore_options</code></dt>
+<dd><p>Field google.privacy.dlp.v2.StorageConfig.datastore_options</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.StorageConfig.timespan_config">
+<code class="descname">timespan_config</code><a class="headerlink" href="#google.cloud.dlp_v2.types.StorageConfig.timespan_config" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.privacy.dlp.v2.StorageConfig.timespan_config</p>
 </dd></dl>
 
 </dd></dl>
@@ -4139,6 +6839,24 @@ current version and any pending updates.</p>
 are pending.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">current_version</code></dt>
+<dd><p>Field google.privacy.dlp.v2.StoredInfoType.current_version</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.privacy.dlp.v2.StoredInfoType.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">pending_versions</code></dt>
+<dd><p>Field google.privacy.dlp.v2.StoredInfoType.pending_versions</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -4162,6 +6880,24 @@ are pending.</p>
 <code class="descname">large_custom_dictionary</code><a class="headerlink" href="#google.cloud.dlp_v2.types.StoredInfoTypeConfig.large_custom_dictionary" title="Permalink to this definition">#</a></dt>
 <dd><p>StoredInfoType where findings are defined by a dictionary of
 phrases.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">description</code></dt>
+<dd><p>Field google.privacy.dlp.v2.StoredInfoTypeConfig.description</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">display_name</code></dt>
+<dd><p>Field google.privacy.dlp.v2.StoredInfoTypeConfig.display_name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">large_custom_dictionary</code></dt>
+<dd><p>Field google.privacy.dlp.v2.StoredInfoTypeConfig.large_custom_dictionary</p>
 </dd></dl>
 
 </dd></dl>
@@ -4209,6 +6945,30 @@ it, reusing the same <code class="docutils literal notranslate"><span class="pre
 the error.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">config</code></dt>
+<dd><p>Field google.privacy.dlp.v2.StoredInfoTypeVersion.config</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">create_time</code></dt>
+<dd><p>Field google.privacy.dlp.v2.StoredInfoTypeVersion.create_time</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">errors</code></dt>
+<dd><p>Field google.privacy.dlp.v2.StoredInfoTypeVersion.errors</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">state</code></dt>
+<dd><p>Field google.privacy.dlp.v2.StoredInfoTypeVersion.state</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -4231,6 +6991,18 @@ the error.</p>
 only field, populated by the system.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">create_time</code></dt>
+<dd><p>Field google.privacy.dlp.v2.StoredType.create_time</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.privacy.dlp.v2.StoredType.name</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -4243,7 +7015,25 @@ to learn more.</p>
 <dl class="class">
 <dt id="google.cloud.dlp_v2.types.Table.Row">
 <em class="property">class </em><code class="descname">Row</code><a class="headerlink" href="#google.cloud.dlp_v2.types.Table.Row" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.Table.Row.values">
+<code class="descname">values</code><a class="headerlink" href="#google.cloud.dlp_v2.types.Table.Row.values" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.privacy.dlp.v2.Table.Row.values</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.Table.headers">
+<code class="descname">headers</code><a class="headerlink" href="#google.cloud.dlp_v2.types.Table.headers" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.privacy.dlp.v2.Table.headers</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.Table.rows">
+<code class="descname">rows</code><a class="headerlink" href="#google.cloud.dlp_v2.types.Table.rows" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.privacy.dlp.v2.Table.rows</p>
+</dd></dl>
 
 </dd></dl>
 
@@ -4257,24 +7047,72 @@ to learn more.</p>
 <dd><p>The zero-based index of the row where the finding is located.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">row_index</code></dt>
+<dd><p>Field google.privacy.dlp.v2.TableLocation.row_index</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.dlp_v2.types.TimeOfDay">
 <em class="property">class </em><code class="descclassname">google.cloud.dlp_v2.types.</code><code class="descname">TimeOfDay</code><a class="headerlink" href="#google.cloud.dlp_v2.types.TimeOfDay" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.TimeOfDay.hours">
+<code class="descname">hours</code><a class="headerlink" href="#google.cloud.dlp_v2.types.TimeOfDay.hours" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.type.TimeOfDay.hours</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.TimeOfDay.minutes">
+<code class="descname">minutes</code><a class="headerlink" href="#google.cloud.dlp_v2.types.TimeOfDay.minutes" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.type.TimeOfDay.minutes</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.TimeOfDay.nanos">
+<code class="descname">nanos</code><a class="headerlink" href="#google.cloud.dlp_v2.types.TimeOfDay.nanos" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.type.TimeOfDay.nanos</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.TimeOfDay.seconds">
+<code class="descname">seconds</code><a class="headerlink" href="#google.cloud.dlp_v2.types.TimeOfDay.seconds" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.type.TimeOfDay.seconds</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.dlp_v2.types.TimePartConfig">
 <em class="property">class </em><code class="descclassname">google.cloud.dlp_v2.types.</code><code class="descname">TimePartConfig</code><a class="headerlink" href="#google.cloud.dlp_v2.types.TimePartConfig" title="Permalink to this definition">#</a></dt>
 <dd><p>For use with <code class="docutils literal notranslate"><span class="pre">Date</span></code>, <code class="docutils literal notranslate"><span class="pre">Timestamp</span></code>, and <code class="docutils literal notranslate"><span class="pre">TimeOfDay</span></code>, extract or
 preserve a portion of the value.</p>
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.TimePartConfig.part_to_extract">
+<code class="descname">part_to_extract</code><a class="headerlink" href="#google.cloud.dlp_v2.types.TimePartConfig.part_to_extract" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.privacy.dlp.v2.TimePartConfig.part_to_extract</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.dlp_v2.types.Timestamp">
 <em class="property">class </em><code class="descclassname">google.cloud.dlp_v2.types.</code><code class="descname">Timestamp</code><a class="headerlink" href="#google.cloud.dlp_v2.types.Timestamp" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.Timestamp.nanos">
+<code class="descname">nanos</code><a class="headerlink" href="#google.cloud.dlp_v2.types.Timestamp.nanos" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.Timestamp.nanos</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.Timestamp.seconds">
+<code class="descname">seconds</code><a class="headerlink" href="#google.cloud.dlp_v2.types.Timestamp.seconds" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.Timestamp.seconds</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.dlp_v2.types.TransformationOverview">
@@ -4290,6 +7128,18 @@ preserve a portion of the value.</p>
 <dt id="google.cloud.dlp_v2.types.TransformationOverview.transformation_summaries">
 <code class="descname">transformation_summaries</code><a class="headerlink" href="#google.cloud.dlp_v2.types.TransformationOverview.transformation_summaries" title="Permalink to this definition">#</a></dt>
 <dd><p>Transformations applied to the dataset.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">transformation_summaries</code></dt>
+<dd><p>Field google.privacy.dlp.v2.TransformationOverview.transformation_summaries</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">transformed_bytes</code></dt>
+<dd><p>Field google.privacy.dlp.v2.TransformationOverview.transformed_bytes</p>
 </dd></dl>
 
 </dd></dl>
@@ -4350,6 +7200,66 @@ will contain all of them; otherwise, only one is supplied.</p>
 didn’t work as expected.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.TransformationSummary.SummaryResult.code">
+<code class="descname">code</code><a class="headerlink" href="#google.cloud.dlp_v2.types.TransformationSummary.SummaryResult.code" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.privacy.dlp.v2.TransformationSummary.SummaryResult.code</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.TransformationSummary.SummaryResult.count">
+<code class="descname">count</code><a class="headerlink" href="#google.cloud.dlp_v2.types.TransformationSummary.SummaryResult.count" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.privacy.dlp.v2.TransformationSummary.SummaryResult.count</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">details</code></dt>
+<dd><p>Field google.privacy.dlp.v2.TransformationSummary.SummaryResult.details</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">field</code></dt>
+<dd><p>Field google.privacy.dlp.v2.TransformationSummary.field</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">field_transformations</code></dt>
+<dd><p>Field google.privacy.dlp.v2.TransformationSummary.field_transformations</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">info_type</code></dt>
+<dd><p>Field google.privacy.dlp.v2.TransformationSummary.info_type</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">record_suppress</code></dt>
+<dd><p>Field google.privacy.dlp.v2.TransformationSummary.record_suppress</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.TransformationSummary.results">
+<code class="descname">results</code><a class="headerlink" href="#google.cloud.dlp_v2.types.TransformationSummary.results" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.privacy.dlp.v2.TransformationSummary.results</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">transformation</code></dt>
+<dd><p>Field google.privacy.dlp.v2.TransformationSummary.transformation</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">transformed_bytes</code></dt>
+<dd><p>Field google.privacy.dlp.v2.TransformationSummary.transformed_bytes</p>
 </dd></dl>
 
 </dd></dl>
@@ -4371,6 +7281,12 @@ crypto key is generated, this name is not used in any way
 generated).</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.privacy.dlp.v2.TransientCryptoKey.name</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -4382,6 +7298,12 @@ the key. Choose another type of key if possible.</p>
 <dt id="google.cloud.dlp_v2.types.UnwrappedCryptoKey.key">
 <code class="descname">key</code><a class="headerlink" href="#google.cloud.dlp_v2.types.UnwrappedCryptoKey.key" title="Permalink to this definition">#</a></dt>
 <dd><p>The AES 128/192/256 bit key. [required]</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">key</code></dt>
+<dd><p>Field google.privacy.dlp.v2.UnwrappedCryptoKey.key</p>
 </dd></dl>
 
 </dd></dl>
@@ -4411,6 +7333,24 @@ projects/project-id/deidentifyTemplates/432452342.</p>
 <dd><p>Mask to control which fields get updated.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">deidentify_template</code></dt>
+<dd><p>Field google.privacy.dlp.v2.UpdateDeidentifyTemplateRequest.deidentify_template</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.privacy.dlp.v2.UpdateDeidentifyTemplateRequest.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">update_mask</code></dt>
+<dd><p>Field google.privacy.dlp.v2.UpdateDeidentifyTemplateRequest.update_mask</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -4438,6 +7378,24 @@ projects/project-id/inspectTemplates/432452342.</p>
 <dd><p>Mask to control which fields get updated.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">inspect_template</code></dt>
+<dd><p>Field google.privacy.dlp.v2.UpdateInspectTemplateRequest.inspect_template</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.privacy.dlp.v2.UpdateInspectTemplateRequest.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">update_mask</code></dt>
+<dd><p>Field google.privacy.dlp.v2.UpdateInspectTemplateRequest.update_mask</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -4461,6 +7419,24 @@ projects/project-id/inspectTemplates/432452342.</p>
 <dt id="google.cloud.dlp_v2.types.UpdateJobTriggerRequest.update_mask">
 <code class="descname">update_mask</code><a class="headerlink" href="#google.cloud.dlp_v2.types.UpdateJobTriggerRequest.update_mask" title="Permalink to this definition">#</a></dt>
 <dd><p>Mask to control which fields get updated.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">job_trigger</code></dt>
+<dd><p>Field google.privacy.dlp.v2.UpdateJobTriggerRequest.job_trigger</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.privacy.dlp.v2.UpdateJobTriggerRequest.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">update_mask</code></dt>
+<dd><p>Field google.privacy.dlp.v2.UpdateJobTriggerRequest.update_mask</p>
 </dd></dl>
 
 </dd></dl>
@@ -4492,6 +7468,24 @@ existing configuration.</p>
 <dd><p>Mask to control which fields get updated.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">config</code></dt>
+<dd><p>Field google.privacy.dlp.v2.UpdateStoredInfoTypeRequest.config</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.privacy.dlp.v2.UpdateStoredInfoTypeRequest.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">update_mask</code></dt>
+<dd><p>Field google.privacy.dlp.v2.UpdateStoredInfoTypeRequest.update_mask</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -4503,6 +7497,54 @@ to comprise a ‘Value’ is based on its representation as a UTF-8 encoded
 string. For example, if ‘integer_value’ is set to 123456789, the number
 of bytes would be counted as 9, even though an int64 only holds up to 8
 bytes of data.</p>
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.Value.boolean_value">
+<code class="descname">boolean_value</code><a class="headerlink" href="#google.cloud.dlp_v2.types.Value.boolean_value" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.privacy.dlp.v2.Value.boolean_value</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.Value.date_value">
+<code class="descname">date_value</code><a class="headerlink" href="#google.cloud.dlp_v2.types.Value.date_value" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.privacy.dlp.v2.Value.date_value</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.Value.day_of_week_value">
+<code class="descname">day_of_week_value</code><a class="headerlink" href="#google.cloud.dlp_v2.types.Value.day_of_week_value" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.privacy.dlp.v2.Value.day_of_week_value</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.Value.float_value">
+<code class="descname">float_value</code><a class="headerlink" href="#google.cloud.dlp_v2.types.Value.float_value" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.privacy.dlp.v2.Value.float_value</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.Value.integer_value">
+<code class="descname">integer_value</code><a class="headerlink" href="#google.cloud.dlp_v2.types.Value.integer_value" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.privacy.dlp.v2.Value.integer_value</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.Value.string_value">
+<code class="descname">string_value</code><a class="headerlink" href="#google.cloud.dlp_v2.types.Value.string_value" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.privacy.dlp.v2.Value.string_value</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.Value.time_value">
+<code class="descname">time_value</code><a class="headerlink" href="#google.cloud.dlp_v2.types.Value.time_value" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.privacy.dlp.v2.Value.time_value</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.Value.timestamp_value">
+<code class="descname">timestamp_value</code><a class="headerlink" href="#google.cloud.dlp_v2.types.Value.timestamp_value" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.privacy.dlp.v2.Value.timestamp_value</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -4519,6 +7561,18 @@ bytes of data.</p>
 <dt id="google.cloud.dlp_v2.types.ValueFrequency.count">
 <code class="descname">count</code><a class="headerlink" href="#google.cloud.dlp_v2.types.ValueFrequency.count" title="Permalink to this definition">#</a></dt>
 <dd><p>How many times the value is contained in the field.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">count</code></dt>
+<dd><p>Field google.privacy.dlp.v2.ValueFrequency.count</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">value</code></dt>
+<dd><p>Field google.privacy.dlp.v2.ValueFrequency.value</p>
 </dd></dl>
 
 </dd></dl>

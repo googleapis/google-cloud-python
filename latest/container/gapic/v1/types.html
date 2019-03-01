@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Types for Google Container Engine API Client &#8212; google-cloud 35e0349 documentation</title>
+    <title>Types for Google Container Engine API Client &#8212; google-cloud 915e116 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -54,6 +54,18 @@
 accelerators <a class="reference external" href="/compute/docs/gpus/#Introduction">here</a></p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">accelerator_count</code></dt>
+<dd><p>Field google.container.v1.AcceleratorConfig.accelerator_count</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">accelerator_type</code></dt>
+<dd><p>Field google.container.v1.AcceleratorConfig.accelerator_type</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -92,6 +104,30 @@ addon is enabled or not on the Master, it does not track
 whether network policy is enabled for the nodes.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">horizontal_pod_autoscaling</code></dt>
+<dd><p>Field google.container.v1.AddonsConfig.horizontal_pod_autoscaling</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">http_load_balancing</code></dt>
+<dd><p>Field google.container.v1.AddonsConfig.http_load_balancing</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">kubernetes_dashboard</code></dt>
+<dd><p>Field google.container.v1.AddonsConfig.kubernetes_dashboard</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">network_policy_config</code></dt>
+<dd><p>Field google.container.v1.AddonsConfig.network_policy_config</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -113,6 +149,18 @@ format.</p>
 <code class="descname">description</code><a class="headerlink" href="#google.cloud.container_v1.types.AutoUpgradeOptions.description" title="Permalink to this definition">#</a></dt>
 <dd><p>[Output only] This field is set when upgrades are about to
 commence with the description of the upgrade.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">auto_upgrade_start_time</code></dt>
+<dd><p>Field google.container.v1.AutoUpgradeOptions.auto_upgrade_start_time</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">description</code></dt>
+<dd><p>Field google.container.v1.AutoUpgradeOptions.description</p>
 </dd></dl>
 
 </dd></dl>
@@ -152,6 +200,30 @@ cancel. Specified in the format
 ‘projects/<em>/locations/</em>/operations/*’.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.container.v1.CancelOperationRequest.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">operation_id</code></dt>
+<dd><p>Field google.container.v1.CancelOperationRequest.operation_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">project_id</code></dt>
+<dd><p>Field google.container.v1.CancelOperationRequest.project_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">zone</code></dt>
+<dd><p>Field google.container.v1.CancelOperationRequest.zone</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -162,6 +234,12 @@ cancel. Specified in the format
 <dt id="google.cloud.container_v1.types.ClientCertificateConfig.issue_client_certificate">
 <code class="descname">issue_client_certificate</code><a class="headerlink" href="#google.cloud.container_v1.types.ClientCertificateConfig.issue_client_certificate" title="Permalink to this definition">#</a></dt>
 <dd><p>Issue a client certificate.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">issue_client_certificate</code></dt>
+<dd><p>Field google.container.v1.ClientCertificateConfig.issue_client_certificate</p>
 </dd></dl>
 
 </dd></dl>
@@ -476,7 +554,247 @@ text format.</p>
 <dl class="class">
 <dt id="google.cloud.container_v1.types.Cluster.ResourceLabelsEntry">
 <em class="property">class </em><code class="descname">ResourceLabelsEntry</code><a class="headerlink" href="#google.cloud.container_v1.types.Cluster.ResourceLabelsEntry" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.container_v1.types.Cluster.ResourceLabelsEntry.key">
+<code class="descname">key</code><a class="headerlink" href="#google.cloud.container_v1.types.Cluster.ResourceLabelsEntry.key" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.container.v1.Cluster.ResourceLabelsEntry.key</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.Cluster.ResourceLabelsEntry.value">
+<code class="descname">value</code><a class="headerlink" href="#google.cloud.container_v1.types.Cluster.ResourceLabelsEntry.value" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.container.v1.Cluster.ResourceLabelsEntry.value</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">addons_config</code></dt>
+<dd><p>Field google.container.v1.Cluster.addons_config</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">cluster_ipv4_cidr</code></dt>
+<dd><p>Field google.container.v1.Cluster.cluster_ipv4_cidr</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">create_time</code></dt>
+<dd><p>Field google.container.v1.Cluster.create_time</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">current_master_version</code></dt>
+<dd><p>Field google.container.v1.Cluster.current_master_version</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">current_node_count</code></dt>
+<dd><p>Field google.container.v1.Cluster.current_node_count</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">current_node_version</code></dt>
+<dd><p>Field google.container.v1.Cluster.current_node_version</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">description</code></dt>
+<dd><p>Field google.container.v1.Cluster.description</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">enable_kubernetes_alpha</code></dt>
+<dd><p>Field google.container.v1.Cluster.enable_kubernetes_alpha</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">endpoint</code></dt>
+<dd><p>Field google.container.v1.Cluster.endpoint</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">expire_time</code></dt>
+<dd><p>Field google.container.v1.Cluster.expire_time</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">initial_cluster_version</code></dt>
+<dd><p>Field google.container.v1.Cluster.initial_cluster_version</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">initial_node_count</code></dt>
+<dd><p>Field google.container.v1.Cluster.initial_node_count</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">instance_group_urls</code></dt>
+<dd><p>Field google.container.v1.Cluster.instance_group_urls</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">ip_allocation_policy</code></dt>
+<dd><p>Field google.container.v1.Cluster.ip_allocation_policy</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">label_fingerprint</code></dt>
+<dd><p>Field google.container.v1.Cluster.label_fingerprint</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">legacy_abac</code></dt>
+<dd><p>Field google.container.v1.Cluster.legacy_abac</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">location</code></dt>
+<dd><p>Field google.container.v1.Cluster.location</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">locations</code></dt>
+<dd><p>Field google.container.v1.Cluster.locations</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">logging_service</code></dt>
+<dd><p>Field google.container.v1.Cluster.logging_service</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">maintenance_policy</code></dt>
+<dd><p>Field google.container.v1.Cluster.maintenance_policy</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">master_auth</code></dt>
+<dd><p>Field google.container.v1.Cluster.master_auth</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">master_authorized_networks_config</code></dt>
+<dd><p>Field google.container.v1.Cluster.master_authorized_networks_config</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">monitoring_service</code></dt>
+<dd><p>Field google.container.v1.Cluster.monitoring_service</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.container.v1.Cluster.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">network</code></dt>
+<dd><p>Field google.container.v1.Cluster.network</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">network_config</code></dt>
+<dd><p>Field google.container.v1.Cluster.network_config</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">network_policy</code></dt>
+<dd><p>Field google.container.v1.Cluster.network_policy</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">node_config</code></dt>
+<dd><p>Field google.container.v1.Cluster.node_config</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">node_ipv4_cidr_size</code></dt>
+<dd><p>Field google.container.v1.Cluster.node_ipv4_cidr_size</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">node_pools</code></dt>
+<dd><p>Field google.container.v1.Cluster.node_pools</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">private_cluster_config</code></dt>
+<dd><p>Field google.container.v1.Cluster.private_cluster_config</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">resource_labels</code></dt>
+<dd><p>Field google.container.v1.Cluster.resource_labels</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">self_link</code></dt>
+<dd><p>Field google.container.v1.Cluster.self_link</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">services_ipv4_cidr</code></dt>
+<dd><p>Field google.container.v1.Cluster.services_ipv4_cidr</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">status</code></dt>
+<dd><p>Field google.container.v1.Cluster.status</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">status_message</code></dt>
+<dd><p>Field google.container.v1.Cluster.status_message</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">subnetwork</code></dt>
+<dd><p>Field google.container.v1.Cluster.subnetwork</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">zone</code></dt>
+<dd><p>Field google.container.v1.Cluster.zone</p>
+</dd></dl>
 
 </dd></dl>
 
@@ -573,6 +891,60 @@ version -  “1.X.Y-gke.N”: picks an explicit Kubernetes version
 -  “-“: picks the default Kubernetes version</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">desired_addons_config</code></dt>
+<dd><p>Field google.container.v1.ClusterUpdate.desired_addons_config</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">desired_image_type</code></dt>
+<dd><p>Field google.container.v1.ClusterUpdate.desired_image_type</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">desired_locations</code></dt>
+<dd><p>Field google.container.v1.ClusterUpdate.desired_locations</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">desired_master_authorized_networks_config</code></dt>
+<dd><p>Field google.container.v1.ClusterUpdate.desired_master_authorized_networks_config</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">desired_master_version</code></dt>
+<dd><p>Field google.container.v1.ClusterUpdate.desired_master_version</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">desired_monitoring_service</code></dt>
+<dd><p>Field google.container.v1.ClusterUpdate.desired_monitoring_service</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">desired_node_pool_autoscaling</code></dt>
+<dd><p>Field google.container.v1.ClusterUpdate.desired_node_pool_autoscaling</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">desired_node_pool_id</code></dt>
+<dd><p>Field google.container.v1.ClusterUpdate.desired_node_pool_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">desired_node_version</code></dt>
+<dd><p>Field google.container.v1.ClusterUpdate.desired_node_version</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -611,6 +983,30 @@ complete IP rotation. Specified in the format
 ‘projects/<em>/locations/</em>/clusters/*’.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">cluster_id</code></dt>
+<dd><p>Field google.container.v1.CompleteIPRotationRequest.cluster_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.container.v1.CompleteIPRotationRequest.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">project_id</code></dt>
+<dd><p>Field google.container.v1.CompleteIPRotationRequest.project_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">zone</code></dt>
+<dd><p>Field google.container.v1.CompleteIPRotationRequest.zone</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -644,6 +1040,30 @@ parent field.</p>
 <code class="descname">parent</code><a class="headerlink" href="#google.cloud.container_v1.types.CreateClusterRequest.parent" title="Permalink to this definition">#</a></dt>
 <dd><p>The parent (project and location) where the cluster will be
 created. Specified in the format ‘projects/<em>/locations/</em>’.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">cluster</code></dt>
+<dd><p>Field google.container.v1.CreateClusterRequest.cluster</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">parent</code></dt>
+<dd><p>Field google.container.v1.CreateClusterRequest.parent</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">project_id</code></dt>
+<dd><p>Field google.container.v1.CreateClusterRequest.project_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">zone</code></dt>
+<dd><p>Field google.container.v1.CreateClusterRequest.zone</p>
 </dd></dl>
 
 </dd></dl>
@@ -689,12 +1109,54 @@ will be created. Specified in the format
 ‘projects/<em>/locations/</em>/clusters/*’.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">cluster_id</code></dt>
+<dd><p>Field google.container.v1.CreateNodePoolRequest.cluster_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">node_pool</code></dt>
+<dd><p>Field google.container.v1.CreateNodePoolRequest.node_pool</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">parent</code></dt>
+<dd><p>Field google.container.v1.CreateNodePoolRequest.parent</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">project_id</code></dt>
+<dd><p>Field google.container.v1.CreateNodePoolRequest.project_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">zone</code></dt>
+<dd><p>Field google.container.v1.CreateNodePoolRequest.zone</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.container_v1.types.CustomHttpPattern">
 <em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">CustomHttpPattern</code><a class="headerlink" href="#google.cloud.container_v1.types.CustomHttpPattern" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.container_v1.types.CustomHttpPattern.kind">
+<code class="descname">kind</code><a class="headerlink" href="#google.cloud.container_v1.types.CustomHttpPattern.kind" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.api.CustomHttpPattern.kind</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.CustomHttpPattern.path">
+<code class="descname">path</code><a class="headerlink" href="#google.cloud.container_v1.types.CustomHttpPattern.path" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.api.CustomHttpPattern.path</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.container_v1.types.DailyMaintenanceWindow">
@@ -715,6 +1177,18 @@ where HH : [00-23] and MM : [00-59] GMT.</p>
 chosen to be smallest possible in the given scenario. Duration
 will be in <a class="reference external" href="https://www.ietf.org/rfc/rfc3339.txt">RFC3339</a>
 format “PTnHnMnS”.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">duration</code></dt>
+<dd><p>Field google.container.v1.DailyMaintenanceWindow.duration</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">start_time</code></dt>
+<dd><p>Field google.container.v1.DailyMaintenanceWindow.start_time</p>
 </dd></dl>
 
 </dd></dl>
@@ -752,6 +1226,30 @@ been deprecated and replaced by the name field.</p>
 <dd><p>The name (project, location, cluster) of the cluster to
 delete. Specified in the format
 ‘projects/<em>/locations/</em>/clusters/*’.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">cluster_id</code></dt>
+<dd><p>Field google.container.v1.DeleteClusterRequest.cluster_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.container.v1.DeleteClusterRequest.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">project_id</code></dt>
+<dd><p>Field google.container.v1.DeleteClusterRequest.project_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">zone</code></dt>
+<dd><p>Field google.container.v1.DeleteClusterRequest.zone</p>
 </dd></dl>
 
 </dd></dl>
@@ -798,6 +1296,36 @@ node pool to delete. Specified in the format
 ‘projects/<em>/locations/</em>/clusters/<em>/nodePools/</em>’.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">cluster_id</code></dt>
+<dd><p>Field google.container.v1.DeleteNodePoolRequest.cluster_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.container.v1.DeleteNodePoolRequest.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">node_pool_id</code></dt>
+<dd><p>Field google.container.v1.DeleteNodePoolRequest.node_pool_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">project_id</code></dt>
+<dd><p>Field google.container.v1.DeleteNodePoolRequest.project_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">zone</code></dt>
+<dd><p>Field google.container.v1.DeleteNodePoolRequest.zone</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -806,12 +1334,102 @@ node pool to delete. Specified in the format
 <dd><dl class="class">
 <dt id="google.cloud.container_v1.types.DescriptorProto.ExtensionRange">
 <em class="property">class </em><code class="descname">ExtensionRange</code><a class="headerlink" href="#google.cloud.container_v1.types.DescriptorProto.ExtensionRange" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.container_v1.types.DescriptorProto.ExtensionRange.end">
+<code class="descname">end</code><a class="headerlink" href="#google.cloud.container_v1.types.DescriptorProto.ExtensionRange.end" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.DescriptorProto.ExtensionRange.end</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.DescriptorProto.ExtensionRange.options">
+<code class="descname">options</code><a class="headerlink" href="#google.cloud.container_v1.types.DescriptorProto.ExtensionRange.options" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.DescriptorProto.ExtensionRange.options</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.DescriptorProto.ExtensionRange.start">
+<code class="descname">start</code><a class="headerlink" href="#google.cloud.container_v1.types.DescriptorProto.ExtensionRange.start" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.DescriptorProto.ExtensionRange.start</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.container_v1.types.DescriptorProto.ReservedRange">
 <em class="property">class </em><code class="descname">ReservedRange</code><a class="headerlink" href="#google.cloud.container_v1.types.DescriptorProto.ReservedRange" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.container_v1.types.DescriptorProto.ReservedRange.end">
+<code class="descname">end</code><a class="headerlink" href="#google.cloud.container_v1.types.DescriptorProto.ReservedRange.end" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.DescriptorProto.ReservedRange.end</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.DescriptorProto.ReservedRange.start">
+<code class="descname">start</code><a class="headerlink" href="#google.cloud.container_v1.types.DescriptorProto.ReservedRange.start" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.DescriptorProto.ReservedRange.start</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.DescriptorProto.enum_type">
+<code class="descname">enum_type</code><a class="headerlink" href="#google.cloud.container_v1.types.DescriptorProto.enum_type" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.DescriptorProto.enum_type</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.DescriptorProto.extension">
+<code class="descname">extension</code><a class="headerlink" href="#google.cloud.container_v1.types.DescriptorProto.extension" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.DescriptorProto.extension</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.DescriptorProto.extension_range">
+<code class="descname">extension_range</code><a class="headerlink" href="#google.cloud.container_v1.types.DescriptorProto.extension_range" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.DescriptorProto.extension_range</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.DescriptorProto.field">
+<code class="descname">field</code><a class="headerlink" href="#google.cloud.container_v1.types.DescriptorProto.field" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.DescriptorProto.field</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.DescriptorProto.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.container_v1.types.DescriptorProto.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.DescriptorProto.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.DescriptorProto.nested_type">
+<code class="descname">nested_type</code><a class="headerlink" href="#google.cloud.container_v1.types.DescriptorProto.nested_type" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.DescriptorProto.nested_type</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.DescriptorProto.oneof_decl">
+<code class="descname">oneof_decl</code><a class="headerlink" href="#google.cloud.container_v1.types.DescriptorProto.oneof_decl" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.DescriptorProto.oneof_decl</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.DescriptorProto.options">
+<code class="descname">options</code><a class="headerlink" href="#google.cloud.container_v1.types.DescriptorProto.options" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.DescriptorProto.options</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.DescriptorProto.reserved_name">
+<code class="descname">reserved_name</code><a class="headerlink" href="#google.cloud.container_v1.types.DescriptorProto.reserved_name" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.DescriptorProto.reserved_name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.DescriptorProto.reserved_range">
+<code class="descname">reserved_range</code><a class="headerlink" href="#google.cloud.container_v1.types.DescriptorProto.reserved_range" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.DescriptorProto.reserved_range</p>
+</dd></dl>
 
 </dd></dl>
 
@@ -826,54 +1444,456 @@ node pool to delete. Specified in the format
 <dd><dl class="class">
 <dt id="google.cloud.container_v1.types.EnumDescriptorProto.EnumReservedRange">
 <em class="property">class </em><code class="descname">EnumReservedRange</code><a class="headerlink" href="#google.cloud.container_v1.types.EnumDescriptorProto.EnumReservedRange" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.container_v1.types.EnumDescriptorProto.EnumReservedRange.end">
+<code class="descname">end</code><a class="headerlink" href="#google.cloud.container_v1.types.EnumDescriptorProto.EnumReservedRange.end" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.EnumDescriptorProto.EnumReservedRange.end</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.EnumDescriptorProto.EnumReservedRange.start">
+<code class="descname">start</code><a class="headerlink" href="#google.cloud.container_v1.types.EnumDescriptorProto.EnumReservedRange.start" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.EnumDescriptorProto.EnumReservedRange.start</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.EnumDescriptorProto.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.container_v1.types.EnumDescriptorProto.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.EnumDescriptorProto.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.EnumDescriptorProto.options">
+<code class="descname">options</code><a class="headerlink" href="#google.cloud.container_v1.types.EnumDescriptorProto.options" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.EnumDescriptorProto.options</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.EnumDescriptorProto.reserved_name">
+<code class="descname">reserved_name</code><a class="headerlink" href="#google.cloud.container_v1.types.EnumDescriptorProto.reserved_name" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.EnumDescriptorProto.reserved_name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.EnumDescriptorProto.reserved_range">
+<code class="descname">reserved_range</code><a class="headerlink" href="#google.cloud.container_v1.types.EnumDescriptorProto.reserved_range" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.EnumDescriptorProto.reserved_range</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.EnumDescriptorProto.value">
+<code class="descname">value</code><a class="headerlink" href="#google.cloud.container_v1.types.EnumDescriptorProto.value" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.EnumDescriptorProto.value</p>
+</dd></dl>
 
 </dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.container_v1.types.EnumOptions">
 <em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">EnumOptions</code><a class="headerlink" href="#google.cloud.container_v1.types.EnumOptions" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.container_v1.types.EnumOptions.allow_alias">
+<code class="descname">allow_alias</code><a class="headerlink" href="#google.cloud.container_v1.types.EnumOptions.allow_alias" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.EnumOptions.allow_alias</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.EnumOptions.deprecated">
+<code class="descname">deprecated</code><a class="headerlink" href="#google.cloud.container_v1.types.EnumOptions.deprecated" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.EnumOptions.deprecated</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.EnumOptions.uninterpreted_option">
+<code class="descname">uninterpreted_option</code><a class="headerlink" href="#google.cloud.container_v1.types.EnumOptions.uninterpreted_option" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.EnumOptions.uninterpreted_option</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.container_v1.types.EnumValueDescriptorProto">
 <em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">EnumValueDescriptorProto</code><a class="headerlink" href="#google.cloud.container_v1.types.EnumValueDescriptorProto" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.container_v1.types.EnumValueDescriptorProto.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.container_v1.types.EnumValueDescriptorProto.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.EnumValueDescriptorProto.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.EnumValueDescriptorProto.number">
+<code class="descname">number</code><a class="headerlink" href="#google.cloud.container_v1.types.EnumValueDescriptorProto.number" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.EnumValueDescriptorProto.number</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.EnumValueDescriptorProto.options">
+<code class="descname">options</code><a class="headerlink" href="#google.cloud.container_v1.types.EnumValueDescriptorProto.options" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.EnumValueDescriptorProto.options</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.container_v1.types.EnumValueOptions">
 <em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">EnumValueOptions</code><a class="headerlink" href="#google.cloud.container_v1.types.EnumValueOptions" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.container_v1.types.EnumValueOptions.deprecated">
+<code class="descname">deprecated</code><a class="headerlink" href="#google.cloud.container_v1.types.EnumValueOptions.deprecated" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.EnumValueOptions.deprecated</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.EnumValueOptions.uninterpreted_option">
+<code class="descname">uninterpreted_option</code><a class="headerlink" href="#google.cloud.container_v1.types.EnumValueOptions.uninterpreted_option" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.EnumValueOptions.uninterpreted_option</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.container_v1.types.ExtensionRangeOptions">
 <em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">ExtensionRangeOptions</code><a class="headerlink" href="#google.cloud.container_v1.types.ExtensionRangeOptions" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.container_v1.types.ExtensionRangeOptions.uninterpreted_option">
+<code class="descname">uninterpreted_option</code><a class="headerlink" href="#google.cloud.container_v1.types.ExtensionRangeOptions.uninterpreted_option" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.ExtensionRangeOptions.uninterpreted_option</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.container_v1.types.FieldDescriptorProto">
 <em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">FieldDescriptorProto</code><a class="headerlink" href="#google.cloud.container_v1.types.FieldDescriptorProto" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.container_v1.types.FieldDescriptorProto.default_value">
+<code class="descname">default_value</code><a class="headerlink" href="#google.cloud.container_v1.types.FieldDescriptorProto.default_value" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FieldDescriptorProto.default_value</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.FieldDescriptorProto.extendee">
+<code class="descname">extendee</code><a class="headerlink" href="#google.cloud.container_v1.types.FieldDescriptorProto.extendee" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FieldDescriptorProto.extendee</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.FieldDescriptorProto.json_name">
+<code class="descname">json_name</code><a class="headerlink" href="#google.cloud.container_v1.types.FieldDescriptorProto.json_name" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FieldDescriptorProto.json_name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.FieldDescriptorProto.label">
+<code class="descname">label</code><a class="headerlink" href="#google.cloud.container_v1.types.FieldDescriptorProto.label" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FieldDescriptorProto.label</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.FieldDescriptorProto.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.container_v1.types.FieldDescriptorProto.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FieldDescriptorProto.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.FieldDescriptorProto.number">
+<code class="descname">number</code><a class="headerlink" href="#google.cloud.container_v1.types.FieldDescriptorProto.number" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FieldDescriptorProto.number</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.FieldDescriptorProto.oneof_index">
+<code class="descname">oneof_index</code><a class="headerlink" href="#google.cloud.container_v1.types.FieldDescriptorProto.oneof_index" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FieldDescriptorProto.oneof_index</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.FieldDescriptorProto.options">
+<code class="descname">options</code><a class="headerlink" href="#google.cloud.container_v1.types.FieldDescriptorProto.options" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FieldDescriptorProto.options</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.FieldDescriptorProto.type">
+<code class="descname">type</code><a class="headerlink" href="#google.cloud.container_v1.types.FieldDescriptorProto.type" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FieldDescriptorProto.type</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.FieldDescriptorProto.type_name">
+<code class="descname">type_name</code><a class="headerlink" href="#google.cloud.container_v1.types.FieldDescriptorProto.type_name" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FieldDescriptorProto.type_name</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.container_v1.types.FieldOptions">
 <em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">FieldOptions</code><a class="headerlink" href="#google.cloud.container_v1.types.FieldOptions" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.container_v1.types.FieldOptions.ctype">
+<code class="descname">ctype</code><a class="headerlink" href="#google.cloud.container_v1.types.FieldOptions.ctype" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FieldOptions.ctype</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.FieldOptions.deprecated">
+<code class="descname">deprecated</code><a class="headerlink" href="#google.cloud.container_v1.types.FieldOptions.deprecated" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FieldOptions.deprecated</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.FieldOptions.jstype">
+<code class="descname">jstype</code><a class="headerlink" href="#google.cloud.container_v1.types.FieldOptions.jstype" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FieldOptions.jstype</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.FieldOptions.lazy">
+<code class="descname">lazy</code><a class="headerlink" href="#google.cloud.container_v1.types.FieldOptions.lazy" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FieldOptions.lazy</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.FieldOptions.packed">
+<code class="descname">packed</code><a class="headerlink" href="#google.cloud.container_v1.types.FieldOptions.packed" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FieldOptions.packed</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.FieldOptions.uninterpreted_option">
+<code class="descname">uninterpreted_option</code><a class="headerlink" href="#google.cloud.container_v1.types.FieldOptions.uninterpreted_option" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FieldOptions.uninterpreted_option</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.FieldOptions.weak">
+<code class="descname">weak</code><a class="headerlink" href="#google.cloud.container_v1.types.FieldOptions.weak" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FieldOptions.weak</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.container_v1.types.FileDescriptorProto">
 <em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">FileDescriptorProto</code><a class="headerlink" href="#google.cloud.container_v1.types.FileDescriptorProto" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.container_v1.types.FileDescriptorProto.dependency">
+<code class="descname">dependency</code><a class="headerlink" href="#google.cloud.container_v1.types.FileDescriptorProto.dependency" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileDescriptorProto.dependency</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.FileDescriptorProto.enum_type">
+<code class="descname">enum_type</code><a class="headerlink" href="#google.cloud.container_v1.types.FileDescriptorProto.enum_type" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileDescriptorProto.enum_type</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.FileDescriptorProto.extension">
+<code class="descname">extension</code><a class="headerlink" href="#google.cloud.container_v1.types.FileDescriptorProto.extension" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileDescriptorProto.extension</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.FileDescriptorProto.message_type">
+<code class="descname">message_type</code><a class="headerlink" href="#google.cloud.container_v1.types.FileDescriptorProto.message_type" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileDescriptorProto.message_type</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.FileDescriptorProto.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.container_v1.types.FileDescriptorProto.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileDescriptorProto.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.FileDescriptorProto.options">
+<code class="descname">options</code><a class="headerlink" href="#google.cloud.container_v1.types.FileDescriptorProto.options" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileDescriptorProto.options</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.FileDescriptorProto.package">
+<code class="descname">package</code><a class="headerlink" href="#google.cloud.container_v1.types.FileDescriptorProto.package" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileDescriptorProto.package</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.FileDescriptorProto.public_dependency">
+<code class="descname">public_dependency</code><a class="headerlink" href="#google.cloud.container_v1.types.FileDescriptorProto.public_dependency" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileDescriptorProto.public_dependency</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.FileDescriptorProto.service">
+<code class="descname">service</code><a class="headerlink" href="#google.cloud.container_v1.types.FileDescriptorProto.service" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileDescriptorProto.service</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.FileDescriptorProto.source_code_info">
+<code class="descname">source_code_info</code><a class="headerlink" href="#google.cloud.container_v1.types.FileDescriptorProto.source_code_info" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileDescriptorProto.source_code_info</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.FileDescriptorProto.syntax">
+<code class="descname">syntax</code><a class="headerlink" href="#google.cloud.container_v1.types.FileDescriptorProto.syntax" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileDescriptorProto.syntax</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.FileDescriptorProto.weak_dependency">
+<code class="descname">weak_dependency</code><a class="headerlink" href="#google.cloud.container_v1.types.FileDescriptorProto.weak_dependency" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileDescriptorProto.weak_dependency</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.container_v1.types.FileDescriptorSet">
 <em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">FileDescriptorSet</code><a class="headerlink" href="#google.cloud.container_v1.types.FileDescriptorSet" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.container_v1.types.FileDescriptorSet.file">
+<code class="descname">file</code><a class="headerlink" href="#google.cloud.container_v1.types.FileDescriptorSet.file" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileDescriptorSet.file</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.container_v1.types.FileOptions">
 <em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">FileOptions</code><a class="headerlink" href="#google.cloud.container_v1.types.FileOptions" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.container_v1.types.FileOptions.cc_enable_arenas">
+<code class="descname">cc_enable_arenas</code><a class="headerlink" href="#google.cloud.container_v1.types.FileOptions.cc_enable_arenas" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileOptions.cc_enable_arenas</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.FileOptions.cc_generic_services">
+<code class="descname">cc_generic_services</code><a class="headerlink" href="#google.cloud.container_v1.types.FileOptions.cc_generic_services" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileOptions.cc_generic_services</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.FileOptions.csharp_namespace">
+<code class="descname">csharp_namespace</code><a class="headerlink" href="#google.cloud.container_v1.types.FileOptions.csharp_namespace" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileOptions.csharp_namespace</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.FileOptions.deprecated">
+<code class="descname">deprecated</code><a class="headerlink" href="#google.cloud.container_v1.types.FileOptions.deprecated" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileOptions.deprecated</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.FileOptions.go_package">
+<code class="descname">go_package</code><a class="headerlink" href="#google.cloud.container_v1.types.FileOptions.go_package" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileOptions.go_package</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.FileOptions.java_generate_equals_and_hash">
+<code class="descname">java_generate_equals_and_hash</code><a class="headerlink" href="#google.cloud.container_v1.types.FileOptions.java_generate_equals_and_hash" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileOptions.java_generate_equals_and_hash</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.FileOptions.java_generic_services">
+<code class="descname">java_generic_services</code><a class="headerlink" href="#google.cloud.container_v1.types.FileOptions.java_generic_services" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileOptions.java_generic_services</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.FileOptions.java_multiple_files">
+<code class="descname">java_multiple_files</code><a class="headerlink" href="#google.cloud.container_v1.types.FileOptions.java_multiple_files" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileOptions.java_multiple_files</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.FileOptions.java_outer_classname">
+<code class="descname">java_outer_classname</code><a class="headerlink" href="#google.cloud.container_v1.types.FileOptions.java_outer_classname" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileOptions.java_outer_classname</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.FileOptions.java_package">
+<code class="descname">java_package</code><a class="headerlink" href="#google.cloud.container_v1.types.FileOptions.java_package" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileOptions.java_package</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.FileOptions.java_string_check_utf8">
+<code class="descname">java_string_check_utf8</code><a class="headerlink" href="#google.cloud.container_v1.types.FileOptions.java_string_check_utf8" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileOptions.java_string_check_utf8</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.FileOptions.objc_class_prefix">
+<code class="descname">objc_class_prefix</code><a class="headerlink" href="#google.cloud.container_v1.types.FileOptions.objc_class_prefix" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileOptions.objc_class_prefix</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.FileOptions.optimize_for">
+<code class="descname">optimize_for</code><a class="headerlink" href="#google.cloud.container_v1.types.FileOptions.optimize_for" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileOptions.optimize_for</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.FileOptions.php_class_prefix">
+<code class="descname">php_class_prefix</code><a class="headerlink" href="#google.cloud.container_v1.types.FileOptions.php_class_prefix" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileOptions.php_class_prefix</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.FileOptions.php_generic_services">
+<code class="descname">php_generic_services</code><a class="headerlink" href="#google.cloud.container_v1.types.FileOptions.php_generic_services" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileOptions.php_generic_services</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.FileOptions.php_metadata_namespace">
+<code class="descname">php_metadata_namespace</code><a class="headerlink" href="#google.cloud.container_v1.types.FileOptions.php_metadata_namespace" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileOptions.php_metadata_namespace</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.FileOptions.php_namespace">
+<code class="descname">php_namespace</code><a class="headerlink" href="#google.cloud.container_v1.types.FileOptions.php_namespace" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileOptions.php_namespace</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.FileOptions.py_generic_services">
+<code class="descname">py_generic_services</code><a class="headerlink" href="#google.cloud.container_v1.types.FileOptions.py_generic_services" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileOptions.py_generic_services</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.FileOptions.ruby_package">
+<code class="descname">ruby_package</code><a class="headerlink" href="#google.cloud.container_v1.types.FileOptions.ruby_package" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileOptions.ruby_package</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.FileOptions.swift_prefix">
+<code class="descname">swift_prefix</code><a class="headerlink" href="#google.cloud.container_v1.types.FileOptions.swift_prefix" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileOptions.swift_prefix</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.FileOptions.uninterpreted_option">
+<code class="descname">uninterpreted_option</code><a class="headerlink" href="#google.cloud.container_v1.types.FileOptions.uninterpreted_option" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileOptions.uninterpreted_option</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.container_v1.types.GeneratedCodeInfo">
@@ -881,7 +1901,37 @@ node pool to delete. Specified in the format
 <dd><dl class="class">
 <dt id="google.cloud.container_v1.types.GeneratedCodeInfo.Annotation">
 <em class="property">class </em><code class="descname">Annotation</code><a class="headerlink" href="#google.cloud.container_v1.types.GeneratedCodeInfo.Annotation" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.container_v1.types.GeneratedCodeInfo.Annotation.begin">
+<code class="descname">begin</code><a class="headerlink" href="#google.cloud.container_v1.types.GeneratedCodeInfo.Annotation.begin" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.GeneratedCodeInfo.Annotation.begin</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.GeneratedCodeInfo.Annotation.end">
+<code class="descname">end</code><a class="headerlink" href="#google.cloud.container_v1.types.GeneratedCodeInfo.Annotation.end" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.GeneratedCodeInfo.Annotation.end</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.GeneratedCodeInfo.Annotation.path">
+<code class="descname">path</code><a class="headerlink" href="#google.cloud.container_v1.types.GeneratedCodeInfo.Annotation.path" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.GeneratedCodeInfo.Annotation.path</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.GeneratedCodeInfo.Annotation.source_file">
+<code class="descname">source_file</code><a class="headerlink" href="#google.cloud.container_v1.types.GeneratedCodeInfo.Annotation.source_file" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.GeneratedCodeInfo.Annotation.source_file</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.GeneratedCodeInfo.annotation">
+<code class="descname">annotation</code><a class="headerlink" href="#google.cloud.container_v1.types.GeneratedCodeInfo.annotation" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.GeneratedCodeInfo.annotation</p>
+</dd></dl>
 
 </dd></dl>
 
@@ -918,6 +1968,30 @@ has been deprecated and replaced by the name field.</p>
 <dd><p>The name (project, location, cluster) of the cluster to
 retrieve. Specified in the format
 ‘projects/<em>/locations/</em>/clusters/*’.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">cluster_id</code></dt>
+<dd><p>Field google.container.v1.GetClusterRequest.cluster_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.container.v1.GetClusterRequest.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">project_id</code></dt>
+<dd><p>Field google.container.v1.GetClusterRequest.project_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">zone</code></dt>
+<dd><p>Field google.container.v1.GetClusterRequest.zone</p>
 </dd></dl>
 
 </dd></dl>
@@ -964,6 +2038,36 @@ node pool to get. Specified in the format
 ‘projects/<em>/locations/</em>/clusters/<em>/nodePools/</em>’.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">cluster_id</code></dt>
+<dd><p>Field google.container.v1.GetNodePoolRequest.cluster_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.container.v1.GetNodePoolRequest.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">node_pool_id</code></dt>
+<dd><p>Field google.container.v1.GetNodePoolRequest.node_pool_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">project_id</code></dt>
+<dd><p>Field google.container.v1.GetNodePoolRequest.project_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">zone</code></dt>
+<dd><p>Field google.container.v1.GetNodePoolRequest.zone</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -1001,6 +2105,30 @@ get. Specified in the format
 ‘projects/<em>/locations/</em>/operations/*’.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.container.v1.GetOperationRequest.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">operation_id</code></dt>
+<dd><p>Field google.container.v1.GetOperationRequest.operation_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">project_id</code></dt>
+<dd><p>Field google.container.v1.GetOperationRequest.project_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">zone</code></dt>
+<dd><p>Field google.container.v1.GetOperationRequest.zone</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -1029,6 +2157,24 @@ This field has been deprecated and replaced by the name field.</p>
 Specified in the format ‘projects/<em>/locations/</em>’.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.container.v1.GetServerConfigRequest.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">project_id</code></dt>
+<dd><p>Field google.container.v1.GetServerConfigRequest.project_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">zone</code></dt>
+<dd><p>Field google.container.v1.GetServerConfigRequest.zone</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -1046,12 +2192,30 @@ running in the cluster, which is also used by the Cloud
 Monitoring service.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">disabled</code></dt>
+<dd><p>Field google.container.v1.HorizontalPodAutoscaling.disabled</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.container_v1.types.Http">
 <em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">Http</code><a class="headerlink" href="#google.cloud.container_v1.types.Http" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.container_v1.types.Http.fully_decode_reserved_expansion">
+<code class="descname">fully_decode_reserved_expansion</code><a class="headerlink" href="#google.cloud.container_v1.types.Http.fully_decode_reserved_expansion" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.api.Http.fully_decode_reserved_expansion</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.Http.rules">
+<code class="descname">rules</code><a class="headerlink" href="#google.cloud.container_v1.types.Http.rules" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.api.Http.rules</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.container_v1.types.HttpLoadBalancing">
@@ -1067,12 +2231,78 @@ cluster. When enabled, it runs a small pod in the cluster that
 manages the load balancers.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">disabled</code></dt>
+<dd><p>Field google.container.v1.HttpLoadBalancing.disabled</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.container_v1.types.HttpRule">
 <em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">HttpRule</code><a class="headerlink" href="#google.cloud.container_v1.types.HttpRule" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.container_v1.types.HttpRule.additional_bindings">
+<code class="descname">additional_bindings</code><a class="headerlink" href="#google.cloud.container_v1.types.HttpRule.additional_bindings" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.api.HttpRule.additional_bindings</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.HttpRule.body">
+<code class="descname">body</code><a class="headerlink" href="#google.cloud.container_v1.types.HttpRule.body" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.api.HttpRule.body</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.HttpRule.custom">
+<code class="descname">custom</code><a class="headerlink" href="#google.cloud.container_v1.types.HttpRule.custom" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.api.HttpRule.custom</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.HttpRule.delete">
+<code class="descname">delete</code><a class="headerlink" href="#google.cloud.container_v1.types.HttpRule.delete" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.api.HttpRule.delete</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.HttpRule.get">
+<code class="descname">get</code><a class="headerlink" href="#google.cloud.container_v1.types.HttpRule.get" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.api.HttpRule.get</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.HttpRule.patch">
+<code class="descname">patch</code><a class="headerlink" href="#google.cloud.container_v1.types.HttpRule.patch" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.api.HttpRule.patch</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.HttpRule.post">
+<code class="descname">post</code><a class="headerlink" href="#google.cloud.container_v1.types.HttpRule.post" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.api.HttpRule.post</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.HttpRule.put">
+<code class="descname">put</code><a class="headerlink" href="#google.cloud.container_v1.types.HttpRule.put" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.api.HttpRule.put</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.HttpRule.response_body">
+<code class="descname">response_body</code><a class="headerlink" href="#google.cloud.container_v1.types.HttpRule.response_body" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.api.HttpRule.response_body</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.HttpRule.selector">
+<code class="descname">selector</code><a class="headerlink" href="#google.cloud.container_v1.types.HttpRule.selector" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.api.HttpRule.selector</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.container_v1.types.IPAllocationPolicy">
@@ -1180,6 +2410,72 @@ RFC-1918 private networks (e.g. <code class="docutils literal notranslate"><span
 range to use.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">cluster_ipv4_cidr</code></dt>
+<dd><p>Field google.container.v1.IPAllocationPolicy.cluster_ipv4_cidr</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">cluster_ipv4_cidr_block</code></dt>
+<dd><p>Field google.container.v1.IPAllocationPolicy.cluster_ipv4_cidr_block</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">cluster_secondary_range_name</code></dt>
+<dd><p>Field google.container.v1.IPAllocationPolicy.cluster_secondary_range_name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">create_subnetwork</code></dt>
+<dd><p>Field google.container.v1.IPAllocationPolicy.create_subnetwork</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">node_ipv4_cidr</code></dt>
+<dd><p>Field google.container.v1.IPAllocationPolicy.node_ipv4_cidr</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">node_ipv4_cidr_block</code></dt>
+<dd><p>Field google.container.v1.IPAllocationPolicy.node_ipv4_cidr_block</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">services_ipv4_cidr</code></dt>
+<dd><p>Field google.container.v1.IPAllocationPolicy.services_ipv4_cidr</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">services_ipv4_cidr_block</code></dt>
+<dd><p>Field google.container.v1.IPAllocationPolicy.services_ipv4_cidr_block</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">services_secondary_range_name</code></dt>
+<dd><p>Field google.container.v1.IPAllocationPolicy.services_secondary_range_name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">subnetwork_name</code></dt>
+<dd><p>Field google.container.v1.IPAllocationPolicy.subnetwork_name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">use_ip_aliases</code></dt>
+<dd><p>Field google.container.v1.IPAllocationPolicy.use_ip_aliases</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -1190,6 +2486,12 @@ range to use.</p>
 <dt id="google.cloud.container_v1.types.KubernetesDashboard.disabled">
 <code class="descname">disabled</code><a class="headerlink" href="#google.cloud.container_v1.types.KubernetesDashboard.disabled" title="Permalink to this definition">#</a></dt>
 <dd><p>Whether the Kubernetes Dashboard is enabled for this cluster.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">disabled</code></dt>
+<dd><p>Field google.container.v1.KubernetesDashboard.disabled</p>
 </dd></dl>
 
 </dd></dl>
@@ -1207,6 +2509,12 @@ enabled, identities in the system, including service accounts,
 nodes, and controllers, will have statically granted
 permissions beyond those provided by the RBAC configuration or
 IAM.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">enabled</code></dt>
+<dd><p>Field google.container.v1.LegacyAbac.enabled</p>
 </dd></dl>
 
 </dd></dl>
@@ -1239,6 +2547,24 @@ listed. Specified in the format ‘projects/<em>/locations/</em>’.
 Location “-” matches all zones and all regions.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">parent</code></dt>
+<dd><p>Field google.container.v1.ListClustersRequest.parent</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">project_id</code></dt>
+<dd><p>Field google.container.v1.ListClustersRequest.project_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">zone</code></dt>
+<dd><p>Field google.container.v1.ListClustersRequest.zone</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -1257,6 +2583,18 @@ across all ones.</p>
 <code class="descname">missing_zones</code><a class="headerlink" href="#google.cloud.container_v1.types.ListClustersResponse.missing_zones" title="Permalink to this definition">#</a></dt>
 <dd><p>If any zones are listed here, the list of clusters returned
 may be missing those zones.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">clusters</code></dt>
+<dd><p>Field google.container.v1.ListClustersResponse.clusters</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">missing_zones</code></dt>
+<dd><p>Field google.container.v1.ListClustersResponse.missing_zones</p>
 </dd></dl>
 
 </dd></dl>
@@ -1296,6 +2634,30 @@ pools will be listed. Specified in the format
 ‘projects/<em>/locations/</em>/clusters/*’.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">cluster_id</code></dt>
+<dd><p>Field google.container.v1.ListNodePoolsRequest.cluster_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">parent</code></dt>
+<dd><p>Field google.container.v1.ListNodePoolsRequest.parent</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">project_id</code></dt>
+<dd><p>Field google.container.v1.ListNodePoolsRequest.project_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">zone</code></dt>
+<dd><p>Field google.container.v1.ListNodePoolsRequest.zone</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -1306,6 +2668,12 @@ pools will be listed. Specified in the format
 <dt id="google.cloud.container_v1.types.ListNodePoolsResponse.node_pools">
 <code class="descname">node_pools</code><a class="headerlink" href="#google.cloud.container_v1.types.ListNodePoolsResponse.node_pools" title="Permalink to this definition">#</a></dt>
 <dd><p>A list of node pools for a cluster.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">node_pools</code></dt>
+<dd><p>Field google.container.v1.ListNodePoolsResponse.node_pools</p>
 </dd></dl>
 
 </dd></dl>
@@ -1338,6 +2706,24 @@ listed. Specified in the format ‘projects/<em>/locations/</em>’.
 Location “-” matches all zones and all regions.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">parent</code></dt>
+<dd><p>Field google.container.v1.ListOperationsRequest.parent</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">project_id</code></dt>
+<dd><p>Field google.container.v1.ListOperationsRequest.project_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">zone</code></dt>
+<dd><p>Field google.container.v1.ListOperationsRequest.zone</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -1357,6 +2743,18 @@ Location “-” matches all zones and all regions.</p>
 may be missing the operations from those zones.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">missing_zones</code></dt>
+<dd><p>Field google.container.v1.ListOperationsResponse.missing_zones</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">operations</code></dt>
+<dd><p>Field google.container.v1.ListOperationsResponse.operations</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -1371,6 +2769,12 @@ cluster.</p>
 performed.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">window</code></dt>
+<dd><p>Field google.container.v1.MaintenancePolicy.window</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -1383,6 +2787,12 @@ cluster.</p>
 <code class="descname">daily_maintenance_window</code><a class="headerlink" href="#google.cloud.container_v1.types.MaintenanceWindow.daily_maintenance_window" title="Permalink to this definition">#</a></dt>
 <dd><p>DailyMaintenanceWindow specifies a daily maintenance operation
 window.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">daily_maintenance_window</code></dt>
+<dd><p>Field google.container.v1.MaintenanceWindow.daily_maintenance_window</p>
 </dd></dl>
 
 </dd></dl>
@@ -1439,6 +2849,42 @@ clients to authenticate to the cluster endpoint.</p>
 authenticate to the cluster endpoint.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">client_certificate</code></dt>
+<dd><p>Field google.container.v1.MasterAuth.client_certificate</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">client_certificate_config</code></dt>
+<dd><p>Field google.container.v1.MasterAuth.client_certificate_config</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">client_key</code></dt>
+<dd><p>Field google.container.v1.MasterAuth.client_key</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">cluster_ca_certificate</code></dt>
+<dd><p>Field google.container.v1.MasterAuth.cluster_ca_certificate</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">password</code></dt>
+<dd><p>Field google.container.v1.MasterAuth.password</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">username</code></dt>
+<dd><p>Field google.container.v1.MasterAuth.username</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -1478,6 +2924,30 @@ blocks.</p>
 <dd><p>cidr_block must be specified in CIDR notation.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">cidr_block</code></dt>
+<dd><p>Field google.container.v1.MasterAuthorizedNetworksConfig.CidrBlock.cidr_block</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">display_name</code></dt>
+<dd><p>Field google.container.v1.MasterAuthorizedNetworksConfig.CidrBlock.display_name</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">cidr_blocks</code></dt>
+<dd><p>Field google.container.v1.MasterAuthorizedNetworksConfig.cidr_blocks</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">enabled</code></dt>
+<dd><p>Field google.container.v1.MasterAuthorizedNetworksConfig.enabled</p>
 </dd></dl>
 
 </dd></dl>
@@ -1485,17 +2955,101 @@ blocks.</p>
 <dl class="class">
 <dt id="google.cloud.container_v1.types.MessageOptions">
 <em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">MessageOptions</code><a class="headerlink" href="#google.cloud.container_v1.types.MessageOptions" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.container_v1.types.MessageOptions.deprecated">
+<code class="descname">deprecated</code><a class="headerlink" href="#google.cloud.container_v1.types.MessageOptions.deprecated" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.MessageOptions.deprecated</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.MessageOptions.map_entry">
+<code class="descname">map_entry</code><a class="headerlink" href="#google.cloud.container_v1.types.MessageOptions.map_entry" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.MessageOptions.map_entry</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.MessageOptions.message_set_wire_format">
+<code class="descname">message_set_wire_format</code><a class="headerlink" href="#google.cloud.container_v1.types.MessageOptions.message_set_wire_format" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.MessageOptions.message_set_wire_format</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.MessageOptions.no_standard_descriptor_accessor">
+<code class="descname">no_standard_descriptor_accessor</code><a class="headerlink" href="#google.cloud.container_v1.types.MessageOptions.no_standard_descriptor_accessor" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.MessageOptions.no_standard_descriptor_accessor</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.MessageOptions.uninterpreted_option">
+<code class="descname">uninterpreted_option</code><a class="headerlink" href="#google.cloud.container_v1.types.MessageOptions.uninterpreted_option" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.MessageOptions.uninterpreted_option</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.container_v1.types.MethodDescriptorProto">
 <em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">MethodDescriptorProto</code><a class="headerlink" href="#google.cloud.container_v1.types.MethodDescriptorProto" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.container_v1.types.MethodDescriptorProto.client_streaming">
+<code class="descname">client_streaming</code><a class="headerlink" href="#google.cloud.container_v1.types.MethodDescriptorProto.client_streaming" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.MethodDescriptorProto.client_streaming</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.MethodDescriptorProto.input_type">
+<code class="descname">input_type</code><a class="headerlink" href="#google.cloud.container_v1.types.MethodDescriptorProto.input_type" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.MethodDescriptorProto.input_type</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.MethodDescriptorProto.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.container_v1.types.MethodDescriptorProto.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.MethodDescriptorProto.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.MethodDescriptorProto.options">
+<code class="descname">options</code><a class="headerlink" href="#google.cloud.container_v1.types.MethodDescriptorProto.options" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.MethodDescriptorProto.options</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.MethodDescriptorProto.output_type">
+<code class="descname">output_type</code><a class="headerlink" href="#google.cloud.container_v1.types.MethodDescriptorProto.output_type" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.MethodDescriptorProto.output_type</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.MethodDescriptorProto.server_streaming">
+<code class="descname">server_streaming</code><a class="headerlink" href="#google.cloud.container_v1.types.MethodDescriptorProto.server_streaming" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.MethodDescriptorProto.server_streaming</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.container_v1.types.MethodOptions">
 <em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">MethodOptions</code><a class="headerlink" href="#google.cloud.container_v1.types.MethodOptions" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.container_v1.types.MethodOptions.deprecated">
+<code class="descname">deprecated</code><a class="headerlink" href="#google.cloud.container_v1.types.MethodOptions.deprecated" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.MethodOptions.deprecated</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.MethodOptions.idempotency_level">
+<code class="descname">idempotency_level</code><a class="headerlink" href="#google.cloud.container_v1.types.MethodOptions.idempotency_level" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.MethodOptions.idempotency_level</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.MethodOptions.uninterpreted_option">
+<code class="descname">uninterpreted_option</code><a class="headerlink" href="#google.cloud.container_v1.types.MethodOptions.uninterpreted_option" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.MethodOptions.uninterpreted_option</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.container_v1.types.NetworkConfig">
@@ -1520,6 +3074,18 @@ connected. Example: projects/my-project/regions/us-
 central1/subnetworks/my-subnet</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">network</code></dt>
+<dd><p>Field google.container.v1.NetworkConfig.network</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">subnetwork</code></dt>
+<dd><p>Field google.container.v1.NetworkConfig.subnetwork</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -1539,6 +3105,18 @@ central1/subnetworks/my-subnet</p>
 <dd><p>Whether network policy is enabled on the cluster.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">enabled</code></dt>
+<dd><p>Field google.container.v1.NetworkPolicy.enabled</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">provider</code></dt>
+<dd><p>Field google.container.v1.NetworkPolicy.provider</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -1551,6 +3129,12 @@ is enabled for the nodes.</p>
 <dt id="google.cloud.container_v1.types.NetworkPolicyConfig.disabled">
 <code class="descname">disabled</code><a class="headerlink" href="#google.cloud.container_v1.types.NetworkPolicyConfig.disabled" title="Permalink to this definition">#</a></dt>
 <dd><p>Whether NetworkPolicy is enabled for this cluster.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">disabled</code></dt>
+<dd><p>Field google.container.v1.NetworkPolicyConfig.disabled</p>
 </dd></dl>
 
 </dd></dl>
@@ -1697,12 +3281,114 @@ specify min CPU platform</a></p>
 <dl class="class">
 <dt id="google.cloud.container_v1.types.NodeConfig.LabelsEntry">
 <em class="property">class </em><code class="descname">LabelsEntry</code><a class="headerlink" href="#google.cloud.container_v1.types.NodeConfig.LabelsEntry" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.container_v1.types.NodeConfig.LabelsEntry.key">
+<code class="descname">key</code><a class="headerlink" href="#google.cloud.container_v1.types.NodeConfig.LabelsEntry.key" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.container.v1.NodeConfig.LabelsEntry.key</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.NodeConfig.LabelsEntry.value">
+<code class="descname">value</code><a class="headerlink" href="#google.cloud.container_v1.types.NodeConfig.LabelsEntry.value" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.container.v1.NodeConfig.LabelsEntry.value</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.container_v1.types.NodeConfig.MetadataEntry">
 <em class="property">class </em><code class="descname">MetadataEntry</code><a class="headerlink" href="#google.cloud.container_v1.types.NodeConfig.MetadataEntry" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.container_v1.types.NodeConfig.MetadataEntry.key">
+<code class="descname">key</code><a class="headerlink" href="#google.cloud.container_v1.types.NodeConfig.MetadataEntry.key" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.container.v1.NodeConfig.MetadataEntry.key</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.NodeConfig.MetadataEntry.value">
+<code class="descname">value</code><a class="headerlink" href="#google.cloud.container_v1.types.NodeConfig.MetadataEntry.value" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.container.v1.NodeConfig.MetadataEntry.value</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">accelerators</code></dt>
+<dd><p>Field google.container.v1.NodeConfig.accelerators</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">disk_size_gb</code></dt>
+<dd><p>Field google.container.v1.NodeConfig.disk_size_gb</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">disk_type</code></dt>
+<dd><p>Field google.container.v1.NodeConfig.disk_type</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">image_type</code></dt>
+<dd><p>Field google.container.v1.NodeConfig.image_type</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">labels</code></dt>
+<dd><p>Field google.container.v1.NodeConfig.labels</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">local_ssd_count</code></dt>
+<dd><p>Field google.container.v1.NodeConfig.local_ssd_count</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">machine_type</code></dt>
+<dd><p>Field google.container.v1.NodeConfig.machine_type</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">metadata</code></dt>
+<dd><p>Field google.container.v1.NodeConfig.metadata</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">min_cpu_platform</code></dt>
+<dd><p>Field google.container.v1.NodeConfig.min_cpu_platform</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">oauth_scopes</code></dt>
+<dd><p>Field google.container.v1.NodeConfig.oauth_scopes</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">preemptible</code></dt>
+<dd><p>Field google.container.v1.NodeConfig.preemptible</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">service_account</code></dt>
+<dd><p>Field google.container.v1.NodeConfig.service_account</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">tags</code></dt>
+<dd><p>Field google.container.v1.NodeConfig.tags</p>
+</dd></dl>
 
 </dd></dl>
 
@@ -1733,6 +3419,24 @@ times, an automatic repair action will be triggered.</p>
 <dt id="google.cloud.container_v1.types.NodeManagement.upgrade_options">
 <code class="descname">upgrade_options</code><a class="headerlink" href="#google.cloud.container_v1.types.NodeManagement.upgrade_options" title="Permalink to this definition">#</a></dt>
 <dd><p>Specifies the Auto Upgrade knobs for the node pool.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">auto_repair</code></dt>
+<dd><p>Field google.container.v1.NodeManagement.auto_repair</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">auto_upgrade</code></dt>
+<dd><p>Field google.container.v1.NodeManagement.auto_upgrade</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">upgrade_options</code></dt>
+<dd><p>Field google.container.v1.NodeManagement.upgrade_options</p>
 </dd></dl>
 
 </dd></dl>
@@ -1812,6 +3516,66 @@ enabled only if a valid configuration is present.</p>
 <dd><p>NodeManagement configuration for this NodePool.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">autoscaling</code></dt>
+<dd><p>Field google.container.v1.NodePool.autoscaling</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">config</code></dt>
+<dd><p>Field google.container.v1.NodePool.config</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">initial_node_count</code></dt>
+<dd><p>Field google.container.v1.NodePool.initial_node_count</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">instance_group_urls</code></dt>
+<dd><p>Field google.container.v1.NodePool.instance_group_urls</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">management</code></dt>
+<dd><p>Field google.container.v1.NodePool.management</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.container.v1.NodePool.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">self_link</code></dt>
+<dd><p>Field google.container.v1.NodePool.self_link</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">status</code></dt>
+<dd><p>Field google.container.v1.NodePool.status</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">status_message</code></dt>
+<dd><p>Field google.container.v1.NodePool.status_message</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">version</code></dt>
+<dd><p>Field google.container.v1.NodePool.version</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -1840,17 +3604,53 @@ min_node_count. There has to enough quota to scale up the
 cluster.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">enabled</code></dt>
+<dd><p>Field google.container.v1.NodePoolAutoscaling.enabled</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">max_node_count</code></dt>
+<dd><p>Field google.container.v1.NodePoolAutoscaling.max_node_count</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">min_node_count</code></dt>
+<dd><p>Field google.container.v1.NodePoolAutoscaling.min_node_count</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.container_v1.types.OneofDescriptorProto">
 <em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">OneofDescriptorProto</code><a class="headerlink" href="#google.cloud.container_v1.types.OneofDescriptorProto" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.container_v1.types.OneofDescriptorProto.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.container_v1.types.OneofDescriptorProto.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.OneofDescriptorProto.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.OneofDescriptorProto.options">
+<code class="descname">options</code><a class="headerlink" href="#google.cloud.container_v1.types.OneofDescriptorProto.options" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.OneofDescriptorProto.options</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.container_v1.types.OneofOptions">
 <em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">OneofOptions</code><a class="headerlink" href="#google.cloud.container_v1.types.OneofOptions" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.container_v1.types.OneofOptions.uninterpreted_option">
+<code class="descname">uninterpreted_option</code><a class="headerlink" href="#google.cloud.container_v1.types.OneofOptions.uninterpreted_option" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.OneofOptions.uninterpreted_option</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.container_v1.types.Operation">
@@ -1925,6 +3725,72 @@ taking place. This field is deprecated, use location instead.</p>
 <dd><p>[Output only] The time the operation completed, in <a class="reference external" href="https://www.ietf.org/rfc/rfc3339.txt">RFC3339</a> text format.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">detail</code></dt>
+<dd><p>Field google.container.v1.Operation.detail</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">end_time</code></dt>
+<dd><p>Field google.container.v1.Operation.end_time</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">location</code></dt>
+<dd><p>Field google.container.v1.Operation.location</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.container.v1.Operation.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">operation_type</code></dt>
+<dd><p>Field google.container.v1.Operation.operation_type</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">self_link</code></dt>
+<dd><p>Field google.container.v1.Operation.self_link</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">start_time</code></dt>
+<dd><p>Field google.container.v1.Operation.start_time</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">status</code></dt>
+<dd><p>Field google.container.v1.Operation.status</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">status_message</code></dt>
+<dd><p>Field google.container.v1.Operation.status_message</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">target_link</code></dt>
+<dd><p>Field google.container.v1.Operation.target_link</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">zone</code></dt>
+<dd><p>Field google.container.v1.Operation.zone</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -1968,6 +3834,36 @@ endpoint.</p>
 <code class="descname">public_endpoint</code><a class="headerlink" href="#google.cloud.container_v1.types.PrivateClusterConfig.public_endpoint" title="Permalink to this definition">#</a></dt>
 <dd><p>Output only. The external IP address of this cluster’s master
 endpoint.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">enable_private_endpoint</code></dt>
+<dd><p>Field google.container.v1.PrivateClusterConfig.enable_private_endpoint</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">enable_private_nodes</code></dt>
+<dd><p>Field google.container.v1.PrivateClusterConfig.enable_private_nodes</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">master_ipv4_cidr_block</code></dt>
+<dd><p>Field google.container.v1.PrivateClusterConfig.master_ipv4_cidr_block</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">private_endpoint</code></dt>
+<dd><p>Field google.container.v1.PrivateClusterConfig.private_endpoint</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">public_endpoint</code></dt>
+<dd><p>Field google.container.v1.PrivateClusterConfig.public_endpoint</p>
 </dd></dl>
 
 </dd></dl>
@@ -2016,6 +3912,36 @@ node poll to rollback upgrade. Specified in the format
 ‘projects/<em>/locations/</em>/clusters/<em>/nodePools/</em>’.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">cluster_id</code></dt>
+<dd><p>Field google.container.v1.RollbackNodePoolUpgradeRequest.cluster_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.container.v1.RollbackNodePoolUpgradeRequest.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">node_pool_id</code></dt>
+<dd><p>Field google.container.v1.RollbackNodePoolUpgradeRequest.node_pool_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">project_id</code></dt>
+<dd><p>Field google.container.v1.RollbackNodePoolUpgradeRequest.project_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">zone</code></dt>
+<dd><p>Field google.container.v1.RollbackNodePoolUpgradeRequest.zone</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -2052,17 +3978,77 @@ node poll to rollback upgrade. Specified in the format
 <dd><p>List of valid master versions.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">default_cluster_version</code></dt>
+<dd><p>Field google.container.v1.ServerConfig.default_cluster_version</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">default_image_type</code></dt>
+<dd><p>Field google.container.v1.ServerConfig.default_image_type</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">valid_image_types</code></dt>
+<dd><p>Field google.container.v1.ServerConfig.valid_image_types</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">valid_master_versions</code></dt>
+<dd><p>Field google.container.v1.ServerConfig.valid_master_versions</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">valid_node_versions</code></dt>
+<dd><p>Field google.container.v1.ServerConfig.valid_node_versions</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.container_v1.types.ServiceDescriptorProto">
 <em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">ServiceDescriptorProto</code><a class="headerlink" href="#google.cloud.container_v1.types.ServiceDescriptorProto" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.container_v1.types.ServiceDescriptorProto.method">
+<code class="descname">method</code><a class="headerlink" href="#google.cloud.container_v1.types.ServiceDescriptorProto.method" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.ServiceDescriptorProto.method</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.ServiceDescriptorProto.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.container_v1.types.ServiceDescriptorProto.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.ServiceDescriptorProto.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.ServiceDescriptorProto.options">
+<code class="descname">options</code><a class="headerlink" href="#google.cloud.container_v1.types.ServiceDescriptorProto.options" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.ServiceDescriptorProto.options</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.container_v1.types.ServiceOptions">
 <em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">ServiceOptions</code><a class="headerlink" href="#google.cloud.container_v1.types.ServiceOptions" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.container_v1.types.ServiceOptions.deprecated">
+<code class="descname">deprecated</code><a class="headerlink" href="#google.cloud.container_v1.types.ServiceOptions.deprecated" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.ServiceOptions.deprecated</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.ServiceOptions.uninterpreted_option">
+<code class="descname">uninterpreted_option</code><a class="headerlink" href="#google.cloud.container_v1.types.ServiceOptions.uninterpreted_option" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.ServiceOptions.uninterpreted_option</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.container_v1.types.SetAddonsConfigRequest">
@@ -2104,6 +4090,36 @@ run in the cluster.</p>
 <dd><p>The name (project, location, cluster) of the cluster to set
 addons. Specified in the format
 ‘projects/<em>/locations/</em>/clusters/*’.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">addons_config</code></dt>
+<dd><p>Field google.container.v1.SetAddonsConfigRequest.addons_config</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">cluster_id</code></dt>
+<dd><p>Field google.container.v1.SetAddonsConfigRequest.cluster_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.container.v1.SetAddonsConfigRequest.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">project_id</code></dt>
+<dd><p>Field google.container.v1.SetAddonsConfigRequest.project_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">zone</code></dt>
+<dd><p>Field google.container.v1.SetAddonsConfigRequest.zone</p>
 </dd></dl>
 
 </dd></dl>
@@ -2166,7 +4182,55 @@ labels. Specified in the format
 <dl class="class">
 <dt id="google.cloud.container_v1.types.SetLabelsRequest.ResourceLabelsEntry">
 <em class="property">class </em><code class="descname">ResourceLabelsEntry</code><a class="headerlink" href="#google.cloud.container_v1.types.SetLabelsRequest.ResourceLabelsEntry" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.container_v1.types.SetLabelsRequest.ResourceLabelsEntry.key">
+<code class="descname">key</code><a class="headerlink" href="#google.cloud.container_v1.types.SetLabelsRequest.ResourceLabelsEntry.key" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.container.v1.SetLabelsRequest.ResourceLabelsEntry.key</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.SetLabelsRequest.ResourceLabelsEntry.value">
+<code class="descname">value</code><a class="headerlink" href="#google.cloud.container_v1.types.SetLabelsRequest.ResourceLabelsEntry.value" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.container.v1.SetLabelsRequest.ResourceLabelsEntry.value</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">cluster_id</code></dt>
+<dd><p>Field google.container.v1.SetLabelsRequest.cluster_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">label_fingerprint</code></dt>
+<dd><p>Field google.container.v1.SetLabelsRequest.label_fingerprint</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.container.v1.SetLabelsRequest.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">project_id</code></dt>
+<dd><p>Field google.container.v1.SetLabelsRequest.project_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">resource_labels</code></dt>
+<dd><p>Field google.container.v1.SetLabelsRequest.resource_labels</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">zone</code></dt>
+<dd><p>Field google.container.v1.SetLabelsRequest.zone</p>
+</dd></dl>
 
 </dd></dl>
 
@@ -2210,6 +4274,36 @@ been deprecated and replaced by the name field.</p>
 <dd><p>The name (project, location, cluster id) of the cluster to set
 legacy abac. Specified in the format
 ‘projects/<em>/locations/</em>/clusters/*’.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">cluster_id</code></dt>
+<dd><p>Field google.container.v1.SetLegacyAbacRequest.cluster_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">enabled</code></dt>
+<dd><p>Field google.container.v1.SetLegacyAbacRequest.enabled</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.container.v1.SetLegacyAbacRequest.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">project_id</code></dt>
+<dd><p>Field google.container.v1.SetLegacyAbacRequest.project_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">zone</code></dt>
+<dd><p>Field google.container.v1.SetLegacyAbacRequest.zone</p>
 </dd></dl>
 
 </dd></dl>
@@ -2260,6 +4354,36 @@ locations. Specified in the format
 ‘projects/<em>/locations/</em>/clusters/*’.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">cluster_id</code></dt>
+<dd><p>Field google.container.v1.SetLocationsRequest.cluster_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">locations</code></dt>
+<dd><p>Field google.container.v1.SetLocationsRequest.locations</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.container.v1.SetLocationsRequest.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">project_id</code></dt>
+<dd><p>Field google.container.v1.SetLocationsRequest.project_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">zone</code></dt>
+<dd><p>Field google.container.v1.SetLocationsRequest.zone</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -2306,6 +4430,36 @@ logging. Specified in the format
 ‘projects/<em>/locations/</em>/clusters/*’.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">cluster_id</code></dt>
+<dd><p>Field google.container.v1.SetLoggingServiceRequest.cluster_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">logging_service</code></dt>
+<dd><p>Field google.container.v1.SetLoggingServiceRequest.logging_service</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.container.v1.SetLoggingServiceRequest.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">project_id</code></dt>
+<dd><p>Field google.container.v1.SetLoggingServiceRequest.project_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">zone</code></dt>
+<dd><p>Field google.container.v1.SetLoggingServiceRequest.zone</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -2344,6 +4498,36 @@ field clears the existing maintenance policy.</p>
 <dd><p>The name (project, location, cluster id) of the cluster to set
 maintenance policy. Specified in the format
 ‘projects/<em>/locations/</em>/clusters/*’.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">cluster_id</code></dt>
+<dd><p>Field google.container.v1.SetMaintenancePolicyRequest.cluster_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">maintenance_policy</code></dt>
+<dd><p>Field google.container.v1.SetMaintenancePolicyRequest.maintenance_policy</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.container.v1.SetMaintenancePolicyRequest.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">project_id</code></dt>
+<dd><p>Field google.container.v1.SetMaintenancePolicyRequest.project_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">zone</code></dt>
+<dd><p>Field google.container.v1.SetMaintenancePolicyRequest.zone</p>
 </dd></dl>
 
 </dd></dl>
@@ -2395,6 +4579,42 @@ auth. Specified in the format
 ‘projects/<em>/locations/</em>/clusters/*’.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">action</code></dt>
+<dd><p>Field google.container.v1.SetMasterAuthRequest.action</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">cluster_id</code></dt>
+<dd><p>Field google.container.v1.SetMasterAuthRequest.cluster_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.container.v1.SetMasterAuthRequest.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">project_id</code></dt>
+<dd><p>Field google.container.v1.SetMasterAuthRequest.project_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">update</code></dt>
+<dd><p>Field google.container.v1.SetMasterAuthRequest.update</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">zone</code></dt>
+<dd><p>Field google.container.v1.SetMasterAuthRequest.zone</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -2442,6 +4662,36 @@ monitoring. Specified in the format
 ‘projects/<em>/locations/</em>/clusters/*’.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">cluster_id</code></dt>
+<dd><p>Field google.container.v1.SetMonitoringServiceRequest.cluster_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">monitoring_service</code></dt>
+<dd><p>Field google.container.v1.SetMonitoringServiceRequest.monitoring_service</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.container.v1.SetMonitoringServiceRequest.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">project_id</code></dt>
+<dd><p>Field google.container.v1.SetMonitoringServiceRequest.project_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">zone</code></dt>
+<dd><p>Field google.container.v1.SetMonitoringServiceRequest.zone</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -2483,6 +4733,36 @@ deprecated and replaced by the name field.</p>
 <dd><p>The name (project, location, cluster id) of the cluster to set
 networking policy. Specified in the format
 ‘projects/<em>/locations/</em>/clusters/*’.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">cluster_id</code></dt>
+<dd><p>Field google.container.v1.SetNetworkPolicyRequest.cluster_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.container.v1.SetNetworkPolicyRequest.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">network_policy</code></dt>
+<dd><p>Field google.container.v1.SetNetworkPolicyRequest.network_policy</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">project_id</code></dt>
+<dd><p>Field google.container.v1.SetNetworkPolicyRequest.project_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">zone</code></dt>
+<dd><p>Field google.container.v1.SetNetworkPolicyRequest.zone</p>
 </dd></dl>
 
 </dd></dl>
@@ -2536,6 +4816,42 @@ pool to set autoscaler settings. Specified in the format
 ‘projects/<em>/locations/</em>/clusters/<em>/nodePools/</em>’.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">autoscaling</code></dt>
+<dd><p>Field google.container.v1.SetNodePoolAutoscalingRequest.autoscaling</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">cluster_id</code></dt>
+<dd><p>Field google.container.v1.SetNodePoolAutoscalingRequest.cluster_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.container.v1.SetNodePoolAutoscalingRequest.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">node_pool_id</code></dt>
+<dd><p>Field google.container.v1.SetNodePoolAutoscalingRequest.node_pool_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">project_id</code></dt>
+<dd><p>Field google.container.v1.SetNodePoolAutoscalingRequest.project_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">zone</code></dt>
+<dd><p>Field google.container.v1.SetNodePoolAutoscalingRequest.zone</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -2585,6 +4901,42 @@ has been deprecated and replaced by the name field.</p>
 <dd><p>The name (project, location, cluster, node pool id) of the
 node pool to set management properties. Specified in the
 format ‘projects/<em>/locations/</em>/clusters/<em>/nodePools/</em>’.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">cluster_id</code></dt>
+<dd><p>Field google.container.v1.SetNodePoolManagementRequest.cluster_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">management</code></dt>
+<dd><p>Field google.container.v1.SetNodePoolManagementRequest.management</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.container.v1.SetNodePoolManagementRequest.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">node_pool_id</code></dt>
+<dd><p>Field google.container.v1.SetNodePoolManagementRequest.node_pool_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">project_id</code></dt>
+<dd><p>Field google.container.v1.SetNodePoolManagementRequest.project_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">zone</code></dt>
+<dd><p>Field google.container.v1.SetNodePoolManagementRequest.zone</p>
 </dd></dl>
 
 </dd></dl>
@@ -2637,6 +4989,42 @@ node pool to set size. Specified in the format
 ‘projects/<em>/locations/</em>/clusters/<em>/nodePools/</em>’.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">cluster_id</code></dt>
+<dd><p>Field google.container.v1.SetNodePoolSizeRequest.cluster_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.container.v1.SetNodePoolSizeRequest.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">node_count</code></dt>
+<dd><p>Field google.container.v1.SetNodePoolSizeRequest.node_count</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">node_pool_id</code></dt>
+<dd><p>Field google.container.v1.SetNodePoolSizeRequest.node_pool_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">project_id</code></dt>
+<dd><p>Field google.container.v1.SetNodePoolSizeRequest.project_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">zone</code></dt>
+<dd><p>Field google.container.v1.SetNodePoolSizeRequest.zone</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -2645,7 +5033,43 @@ node pool to set size. Specified in the format
 <dd><dl class="class">
 <dt id="google.cloud.container_v1.types.SourceCodeInfo.Location">
 <em class="property">class </em><code class="descname">Location</code><a class="headerlink" href="#google.cloud.container_v1.types.SourceCodeInfo.Location" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.container_v1.types.SourceCodeInfo.Location.leading_comments">
+<code class="descname">leading_comments</code><a class="headerlink" href="#google.cloud.container_v1.types.SourceCodeInfo.Location.leading_comments" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.SourceCodeInfo.Location.leading_comments</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.SourceCodeInfo.Location.leading_detached_comments">
+<code class="descname">leading_detached_comments</code><a class="headerlink" href="#google.cloud.container_v1.types.SourceCodeInfo.Location.leading_detached_comments" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.SourceCodeInfo.Location.leading_detached_comments</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.SourceCodeInfo.Location.path">
+<code class="descname">path</code><a class="headerlink" href="#google.cloud.container_v1.types.SourceCodeInfo.Location.path" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.SourceCodeInfo.Location.path</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.SourceCodeInfo.Location.span">
+<code class="descname">span</code><a class="headerlink" href="#google.cloud.container_v1.types.SourceCodeInfo.Location.span" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.SourceCodeInfo.Location.span</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.SourceCodeInfo.Location.trailing_comments">
+<code class="descname">trailing_comments</code><a class="headerlink" href="#google.cloud.container_v1.types.SourceCodeInfo.Location.trailing_comments" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.SourceCodeInfo.Location.trailing_comments</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.SourceCodeInfo.location">
+<code class="descname">location</code><a class="headerlink" href="#google.cloud.container_v1.types.SourceCodeInfo.location" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.SourceCodeInfo.location</p>
+</dd></dl>
 
 </dd></dl>
 
@@ -2691,6 +5115,36 @@ start IP rotation. Specified in the format
 <dd><p>Whether to rotate credentials during IP rotation.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">cluster_id</code></dt>
+<dd><p>Field google.container.v1.StartIPRotationRequest.cluster_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.container.v1.StartIPRotationRequest.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">project_id</code></dt>
+<dd><p>Field google.container.v1.StartIPRotationRequest.project_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">rotate_credentials</code></dt>
+<dd><p>Field google.container.v1.StartIPRotationRequest.rotate_credentials</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">zone</code></dt>
+<dd><p>Field google.container.v1.StartIPRotationRequest.zone</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -2699,7 +5153,61 @@ start IP rotation. Specified in the format
 <dd><dl class="class">
 <dt id="google.cloud.container_v1.types.UninterpretedOption.NamePart">
 <em class="property">class </em><code class="descname">NamePart</code><a class="headerlink" href="#google.cloud.container_v1.types.UninterpretedOption.NamePart" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.container_v1.types.UninterpretedOption.NamePart.is_extension">
+<code class="descname">is_extension</code><a class="headerlink" href="#google.cloud.container_v1.types.UninterpretedOption.NamePart.is_extension" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.UninterpretedOption.NamePart.is_extension</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.UninterpretedOption.NamePart.name_part">
+<code class="descname">name_part</code><a class="headerlink" href="#google.cloud.container_v1.types.UninterpretedOption.NamePart.name_part" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.UninterpretedOption.NamePart.name_part</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.UninterpretedOption.aggregate_value">
+<code class="descname">aggregate_value</code><a class="headerlink" href="#google.cloud.container_v1.types.UninterpretedOption.aggregate_value" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.UninterpretedOption.aggregate_value</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.UninterpretedOption.double_value">
+<code class="descname">double_value</code><a class="headerlink" href="#google.cloud.container_v1.types.UninterpretedOption.double_value" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.UninterpretedOption.double_value</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.UninterpretedOption.identifier_value">
+<code class="descname">identifier_value</code><a class="headerlink" href="#google.cloud.container_v1.types.UninterpretedOption.identifier_value" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.UninterpretedOption.identifier_value</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.UninterpretedOption.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.container_v1.types.UninterpretedOption.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.UninterpretedOption.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.UninterpretedOption.negative_int_value">
+<code class="descname">negative_int_value</code><a class="headerlink" href="#google.cloud.container_v1.types.UninterpretedOption.negative_int_value" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.UninterpretedOption.negative_int_value</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.UninterpretedOption.positive_int_value">
+<code class="descname">positive_int_value</code><a class="headerlink" href="#google.cloud.container_v1.types.UninterpretedOption.positive_int_value" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.UninterpretedOption.positive_int_value</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.UninterpretedOption.string_value">
+<code class="descname">string_value</code><a class="headerlink" href="#google.cloud.container_v1.types.UninterpretedOption.string_value" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.UninterpretedOption.string_value</p>
+</dd></dl>
 
 </dd></dl>
 
@@ -2742,6 +5250,36 @@ been deprecated and replaced by the name field.</p>
 <dd><p>The name (project, location, cluster) of the cluster to
 update. Specified in the format
 ‘projects/<em>/locations/</em>/clusters/*’.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">cluster_id</code></dt>
+<dd><p>Field google.container.v1.UpdateClusterRequest.cluster_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.container.v1.UpdateClusterRequest.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">project_id</code></dt>
+<dd><p>Field google.container.v1.UpdateClusterRequest.project_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">update</code></dt>
+<dd><p>Field google.container.v1.UpdateClusterRequest.update</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">zone</code></dt>
+<dd><p>Field google.container.v1.UpdateClusterRequest.zone</p>
 </dd></dl>
 
 </dd></dl>
@@ -2792,6 +5330,36 @@ version -  “1.X.Y-gke.N”: picks an explicit Kubernetes version
 <dd><p>The name (project, location, cluster) of the cluster to
 update. Specified in the format
 ‘projects/<em>/locations/</em>/clusters/*’.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">cluster_id</code></dt>
+<dd><p>Field google.container.v1.UpdateMasterRequest.cluster_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">master_version</code></dt>
+<dd><p>Field google.container.v1.UpdateMasterRequest.master_version</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.container.v1.UpdateMasterRequest.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">project_id</code></dt>
+<dd><p>Field google.container.v1.UpdateMasterRequest.project_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">zone</code></dt>
+<dd><p>Field google.container.v1.UpdateMasterRequest.zone</p>
 </dd></dl>
 
 </dd></dl>
@@ -2856,6 +5424,48 @@ picks the Kubernetes master version</p>
 <dd><p>The name (project, location, cluster, node pool) of the node
 pool to update. Specified in the format
 ‘projects/<em>/locations/</em>/clusters/<em>/nodePools/</em>’.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">cluster_id</code></dt>
+<dd><p>Field google.container.v1.UpdateNodePoolRequest.cluster_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">image_type</code></dt>
+<dd><p>Field google.container.v1.UpdateNodePoolRequest.image_type</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.container.v1.UpdateNodePoolRequest.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">node_pool_id</code></dt>
+<dd><p>Field google.container.v1.UpdateNodePoolRequest.node_pool_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">node_version</code></dt>
+<dd><p>Field google.container.v1.UpdateNodePoolRequest.node_version</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">project_id</code></dt>
+<dd><p>Field google.container.v1.UpdateNodePoolRequest.project_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">zone</code></dt>
+<dd><p>Field google.container.v1.UpdateNodePoolRequest.zone</p>
 </dd></dl>
 
 </dd></dl>

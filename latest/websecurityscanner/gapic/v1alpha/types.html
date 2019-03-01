@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Types for Web Security Scanner API Client &#8212; google-cloud 35e0349 documentation</title>
+    <title>Types for Web Security Scanner API Client &#8212; google-cloud 915e116 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -64,6 +64,24 @@ visit the URL, in uppercase.</p>
 the URL.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">body</code></dt>
+<dd><p>Field google.cloud.websecurityscanner.v1alpha.CrawledUrl.body</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">http_method</code></dt>
+<dd><p>Field google.cloud.websecurityscanner.v1alpha.CrawledUrl.http_method</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">url</code></dt>
+<dd><p>Field google.cloud.websecurityscanner.v1alpha.CrawledUrl.url</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -84,12 +102,36 @@ which should be a project resource name in the format
 <dd><p>Required. The ScanConfig to be created.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">parent</code></dt>
+<dd><p>Field google.cloud.websecurityscanner.v1alpha.CreateScanConfigRequest.parent</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">scan_config</code></dt>
+<dd><p>Field google.cloud.websecurityscanner.v1alpha.CreateScanConfigRequest.scan_config</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.websecurityscanner_v1alpha.types.CustomHttpPattern">
 <em class="property">class </em><code class="descclassname">google.cloud.websecurityscanner_v1alpha.types.</code><code class="descname">CustomHttpPattern</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.CustomHttpPattern" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.CustomHttpPattern.kind">
+<code class="descname">kind</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.CustomHttpPattern.kind" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.api.CustomHttpPattern.kind</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.CustomHttpPattern.path">
+<code class="descname">path</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.CustomHttpPattern.path" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.api.CustomHttpPattern.path</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.websecurityscanner_v1alpha.types.DeleteScanConfigRequest">
@@ -103,6 +145,12 @@ The name follows the format of
 ‘projects/{projectId}/scanConfigs/{scanConfigId}’.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.cloud.websecurityscanner.v1alpha.DeleteScanConfigRequest.name</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -111,12 +159,102 @@ The name follows the format of
 <dd><dl class="class">
 <dt id="google.cloud.websecurityscanner_v1alpha.types.DescriptorProto.ExtensionRange">
 <em class="property">class </em><code class="descname">ExtensionRange</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.DescriptorProto.ExtensionRange" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.DescriptorProto.ExtensionRange.end">
+<code class="descname">end</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.DescriptorProto.ExtensionRange.end" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.DescriptorProto.ExtensionRange.end</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.DescriptorProto.ExtensionRange.options">
+<code class="descname">options</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.DescriptorProto.ExtensionRange.options" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.DescriptorProto.ExtensionRange.options</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.DescriptorProto.ExtensionRange.start">
+<code class="descname">start</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.DescriptorProto.ExtensionRange.start" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.DescriptorProto.ExtensionRange.start</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.websecurityscanner_v1alpha.types.DescriptorProto.ReservedRange">
 <em class="property">class </em><code class="descname">ReservedRange</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.DescriptorProto.ReservedRange" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.DescriptorProto.ReservedRange.end">
+<code class="descname">end</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.DescriptorProto.ReservedRange.end" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.DescriptorProto.ReservedRange.end</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.DescriptorProto.ReservedRange.start">
+<code class="descname">start</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.DescriptorProto.ReservedRange.start" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.DescriptorProto.ReservedRange.start</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.DescriptorProto.enum_type">
+<code class="descname">enum_type</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.DescriptorProto.enum_type" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.DescriptorProto.enum_type</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.DescriptorProto.extension">
+<code class="descname">extension</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.DescriptorProto.extension" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.DescriptorProto.extension</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.DescriptorProto.extension_range">
+<code class="descname">extension_range</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.DescriptorProto.extension_range" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.DescriptorProto.extension_range</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.DescriptorProto.field">
+<code class="descname">field</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.DescriptorProto.field" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.DescriptorProto.field</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.DescriptorProto.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.DescriptorProto.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.DescriptorProto.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.DescriptorProto.nested_type">
+<code class="descname">nested_type</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.DescriptorProto.nested_type" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.DescriptorProto.nested_type</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.DescriptorProto.oneof_decl">
+<code class="descname">oneof_decl</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.DescriptorProto.oneof_decl" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.DescriptorProto.oneof_decl</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.DescriptorProto.options">
+<code class="descname">options</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.DescriptorProto.options" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.DescriptorProto.options</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.DescriptorProto.reserved_name">
+<code class="descname">reserved_name</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.DescriptorProto.reserved_name" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.DescriptorProto.reserved_name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.DescriptorProto.reserved_range">
+<code class="descname">reserved_range</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.DescriptorProto.reserved_range" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.DescriptorProto.reserved_range</p>
+</dd></dl>
 
 </dd></dl>
 
@@ -131,59 +269,467 @@ The name follows the format of
 <dd><dl class="class">
 <dt id="google.cloud.websecurityscanner_v1alpha.types.EnumDescriptorProto.EnumReservedRange">
 <em class="property">class </em><code class="descname">EnumReservedRange</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.EnumDescriptorProto.EnumReservedRange" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.EnumDescriptorProto.EnumReservedRange.end">
+<code class="descname">end</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.EnumDescriptorProto.EnumReservedRange.end" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.EnumDescriptorProto.EnumReservedRange.end</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.EnumDescriptorProto.EnumReservedRange.start">
+<code class="descname">start</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.EnumDescriptorProto.EnumReservedRange.start" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.EnumDescriptorProto.EnumReservedRange.start</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.EnumDescriptorProto.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.EnumDescriptorProto.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.EnumDescriptorProto.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.EnumDescriptorProto.options">
+<code class="descname">options</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.EnumDescriptorProto.options" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.EnumDescriptorProto.options</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.EnumDescriptorProto.reserved_name">
+<code class="descname">reserved_name</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.EnumDescriptorProto.reserved_name" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.EnumDescriptorProto.reserved_name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.EnumDescriptorProto.reserved_range">
+<code class="descname">reserved_range</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.EnumDescriptorProto.reserved_range" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.EnumDescriptorProto.reserved_range</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.EnumDescriptorProto.value">
+<code class="descname">value</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.EnumDescriptorProto.value" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.EnumDescriptorProto.value</p>
+</dd></dl>
 
 </dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.websecurityscanner_v1alpha.types.EnumOptions">
 <em class="property">class </em><code class="descclassname">google.cloud.websecurityscanner_v1alpha.types.</code><code class="descname">EnumOptions</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.EnumOptions" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.EnumOptions.allow_alias">
+<code class="descname">allow_alias</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.EnumOptions.allow_alias" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.EnumOptions.allow_alias</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.EnumOptions.deprecated">
+<code class="descname">deprecated</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.EnumOptions.deprecated" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.EnumOptions.deprecated</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.EnumOptions.uninterpreted_option">
+<code class="descname">uninterpreted_option</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.EnumOptions.uninterpreted_option" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.EnumOptions.uninterpreted_option</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.websecurityscanner_v1alpha.types.EnumValueDescriptorProto">
 <em class="property">class </em><code class="descclassname">google.cloud.websecurityscanner_v1alpha.types.</code><code class="descname">EnumValueDescriptorProto</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.EnumValueDescriptorProto" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.EnumValueDescriptorProto.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.EnumValueDescriptorProto.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.EnumValueDescriptorProto.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.EnumValueDescriptorProto.number">
+<code class="descname">number</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.EnumValueDescriptorProto.number" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.EnumValueDescriptorProto.number</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.EnumValueDescriptorProto.options">
+<code class="descname">options</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.EnumValueDescriptorProto.options" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.EnumValueDescriptorProto.options</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.websecurityscanner_v1alpha.types.EnumValueOptions">
 <em class="property">class </em><code class="descclassname">google.cloud.websecurityscanner_v1alpha.types.</code><code class="descname">EnumValueOptions</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.EnumValueOptions" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.EnumValueOptions.deprecated">
+<code class="descname">deprecated</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.EnumValueOptions.deprecated" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.EnumValueOptions.deprecated</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.EnumValueOptions.uninterpreted_option">
+<code class="descname">uninterpreted_option</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.EnumValueOptions.uninterpreted_option" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.EnumValueOptions.uninterpreted_option</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.websecurityscanner_v1alpha.types.ExtensionRangeOptions">
 <em class="property">class </em><code class="descclassname">google.cloud.websecurityscanner_v1alpha.types.</code><code class="descname">ExtensionRangeOptions</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.ExtensionRangeOptions" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.ExtensionRangeOptions.uninterpreted_option">
+<code class="descname">uninterpreted_option</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.ExtensionRangeOptions.uninterpreted_option" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.ExtensionRangeOptions.uninterpreted_option</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.websecurityscanner_v1alpha.types.FieldDescriptorProto">
 <em class="property">class </em><code class="descclassname">google.cloud.websecurityscanner_v1alpha.types.</code><code class="descname">FieldDescriptorProto</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.FieldDescriptorProto" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.FieldDescriptorProto.default_value">
+<code class="descname">default_value</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.FieldDescriptorProto.default_value" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FieldDescriptorProto.default_value</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.FieldDescriptorProto.extendee">
+<code class="descname">extendee</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.FieldDescriptorProto.extendee" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FieldDescriptorProto.extendee</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.FieldDescriptorProto.json_name">
+<code class="descname">json_name</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.FieldDescriptorProto.json_name" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FieldDescriptorProto.json_name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.FieldDescriptorProto.label">
+<code class="descname">label</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.FieldDescriptorProto.label" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FieldDescriptorProto.label</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.FieldDescriptorProto.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.FieldDescriptorProto.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FieldDescriptorProto.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.FieldDescriptorProto.number">
+<code class="descname">number</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.FieldDescriptorProto.number" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FieldDescriptorProto.number</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.FieldDescriptorProto.oneof_index">
+<code class="descname">oneof_index</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.FieldDescriptorProto.oneof_index" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FieldDescriptorProto.oneof_index</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.FieldDescriptorProto.options">
+<code class="descname">options</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.FieldDescriptorProto.options" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FieldDescriptorProto.options</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.FieldDescriptorProto.type">
+<code class="descname">type</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.FieldDescriptorProto.type" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FieldDescriptorProto.type</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.FieldDescriptorProto.type_name">
+<code class="descname">type_name</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.FieldDescriptorProto.type_name" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FieldDescriptorProto.type_name</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.websecurityscanner_v1alpha.types.FieldMask">
 <em class="property">class </em><code class="descclassname">google.cloud.websecurityscanner_v1alpha.types.</code><code class="descname">FieldMask</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.FieldMask" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.FieldMask.paths">
+<code class="descname">paths</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.FieldMask.paths" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FieldMask.paths</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.websecurityscanner_v1alpha.types.FieldOptions">
 <em class="property">class </em><code class="descclassname">google.cloud.websecurityscanner_v1alpha.types.</code><code class="descname">FieldOptions</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.FieldOptions" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.FieldOptions.ctype">
+<code class="descname">ctype</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.FieldOptions.ctype" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FieldOptions.ctype</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.FieldOptions.deprecated">
+<code class="descname">deprecated</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.FieldOptions.deprecated" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FieldOptions.deprecated</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.FieldOptions.jstype">
+<code class="descname">jstype</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.FieldOptions.jstype" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FieldOptions.jstype</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.FieldOptions.lazy">
+<code class="descname">lazy</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.FieldOptions.lazy" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FieldOptions.lazy</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.FieldOptions.packed">
+<code class="descname">packed</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.FieldOptions.packed" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FieldOptions.packed</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.FieldOptions.uninterpreted_option">
+<code class="descname">uninterpreted_option</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.FieldOptions.uninterpreted_option" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FieldOptions.uninterpreted_option</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.FieldOptions.weak">
+<code class="descname">weak</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.FieldOptions.weak" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FieldOptions.weak</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.websecurityscanner_v1alpha.types.FileDescriptorProto">
 <em class="property">class </em><code class="descclassname">google.cloud.websecurityscanner_v1alpha.types.</code><code class="descname">FileDescriptorProto</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.FileDescriptorProto" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.FileDescriptorProto.dependency">
+<code class="descname">dependency</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.FileDescriptorProto.dependency" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileDescriptorProto.dependency</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.FileDescriptorProto.enum_type">
+<code class="descname">enum_type</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.FileDescriptorProto.enum_type" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileDescriptorProto.enum_type</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.FileDescriptorProto.extension">
+<code class="descname">extension</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.FileDescriptorProto.extension" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileDescriptorProto.extension</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.FileDescriptorProto.message_type">
+<code class="descname">message_type</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.FileDescriptorProto.message_type" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileDescriptorProto.message_type</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.FileDescriptorProto.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.FileDescriptorProto.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileDescriptorProto.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.FileDescriptorProto.options">
+<code class="descname">options</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.FileDescriptorProto.options" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileDescriptorProto.options</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.FileDescriptorProto.package">
+<code class="descname">package</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.FileDescriptorProto.package" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileDescriptorProto.package</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.FileDescriptorProto.public_dependency">
+<code class="descname">public_dependency</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.FileDescriptorProto.public_dependency" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileDescriptorProto.public_dependency</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.FileDescriptorProto.service">
+<code class="descname">service</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.FileDescriptorProto.service" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileDescriptorProto.service</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.FileDescriptorProto.source_code_info">
+<code class="descname">source_code_info</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.FileDescriptorProto.source_code_info" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileDescriptorProto.source_code_info</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.FileDescriptorProto.syntax">
+<code class="descname">syntax</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.FileDescriptorProto.syntax" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileDescriptorProto.syntax</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.FileDescriptorProto.weak_dependency">
+<code class="descname">weak_dependency</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.FileDescriptorProto.weak_dependency" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileDescriptorProto.weak_dependency</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.websecurityscanner_v1alpha.types.FileDescriptorSet">
 <em class="property">class </em><code class="descclassname">google.cloud.websecurityscanner_v1alpha.types.</code><code class="descname">FileDescriptorSet</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.FileDescriptorSet" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.FileDescriptorSet.file">
+<code class="descname">file</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.FileDescriptorSet.file" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileDescriptorSet.file</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.websecurityscanner_v1alpha.types.FileOptions">
 <em class="property">class </em><code class="descclassname">google.cloud.websecurityscanner_v1alpha.types.</code><code class="descname">FileOptions</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.FileOptions" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.FileOptions.cc_enable_arenas">
+<code class="descname">cc_enable_arenas</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.FileOptions.cc_enable_arenas" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileOptions.cc_enable_arenas</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.FileOptions.cc_generic_services">
+<code class="descname">cc_generic_services</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.FileOptions.cc_generic_services" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileOptions.cc_generic_services</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.FileOptions.csharp_namespace">
+<code class="descname">csharp_namespace</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.FileOptions.csharp_namespace" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileOptions.csharp_namespace</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.FileOptions.deprecated">
+<code class="descname">deprecated</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.FileOptions.deprecated" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileOptions.deprecated</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.FileOptions.go_package">
+<code class="descname">go_package</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.FileOptions.go_package" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileOptions.go_package</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.FileOptions.java_generate_equals_and_hash">
+<code class="descname">java_generate_equals_and_hash</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.FileOptions.java_generate_equals_and_hash" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileOptions.java_generate_equals_and_hash</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.FileOptions.java_generic_services">
+<code class="descname">java_generic_services</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.FileOptions.java_generic_services" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileOptions.java_generic_services</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.FileOptions.java_multiple_files">
+<code class="descname">java_multiple_files</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.FileOptions.java_multiple_files" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileOptions.java_multiple_files</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.FileOptions.java_outer_classname">
+<code class="descname">java_outer_classname</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.FileOptions.java_outer_classname" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileOptions.java_outer_classname</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.FileOptions.java_package">
+<code class="descname">java_package</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.FileOptions.java_package" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileOptions.java_package</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.FileOptions.java_string_check_utf8">
+<code class="descname">java_string_check_utf8</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.FileOptions.java_string_check_utf8" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileOptions.java_string_check_utf8</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.FileOptions.objc_class_prefix">
+<code class="descname">objc_class_prefix</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.FileOptions.objc_class_prefix" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileOptions.objc_class_prefix</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.FileOptions.optimize_for">
+<code class="descname">optimize_for</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.FileOptions.optimize_for" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileOptions.optimize_for</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.FileOptions.php_class_prefix">
+<code class="descname">php_class_prefix</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.FileOptions.php_class_prefix" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileOptions.php_class_prefix</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.FileOptions.php_generic_services">
+<code class="descname">php_generic_services</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.FileOptions.php_generic_services" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileOptions.php_generic_services</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.FileOptions.php_metadata_namespace">
+<code class="descname">php_metadata_namespace</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.FileOptions.php_metadata_namespace" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileOptions.php_metadata_namespace</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.FileOptions.php_namespace">
+<code class="descname">php_namespace</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.FileOptions.php_namespace" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileOptions.php_namespace</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.FileOptions.py_generic_services">
+<code class="descname">py_generic_services</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.FileOptions.py_generic_services" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileOptions.py_generic_services</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.FileOptions.ruby_package">
+<code class="descname">ruby_package</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.FileOptions.ruby_package" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileOptions.ruby_package</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.FileOptions.swift_prefix">
+<code class="descname">swift_prefix</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.FileOptions.swift_prefix" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileOptions.swift_prefix</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.FileOptions.uninterpreted_option">
+<code class="descname">uninterpreted_option</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.FileOptions.uninterpreted_option" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FileOptions.uninterpreted_option</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.websecurityscanner_v1alpha.types.Finding">
@@ -289,6 +835,90 @@ parameters which were found to be vulnerable.</p>
 XSS, if any.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">body</code></dt>
+<dd><p>Field google.cloud.websecurityscanner.v1alpha.Finding.body</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">description</code></dt>
+<dd><p>Field google.cloud.websecurityscanner.v1alpha.Finding.description</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">final_url</code></dt>
+<dd><p>Field google.cloud.websecurityscanner.v1alpha.Finding.final_url</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">finding_type</code></dt>
+<dd><p>Field google.cloud.websecurityscanner.v1alpha.Finding.finding_type</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">frame_url</code></dt>
+<dd><p>Field google.cloud.websecurityscanner.v1alpha.Finding.frame_url</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">fuzzed_url</code></dt>
+<dd><p>Field google.cloud.websecurityscanner.v1alpha.Finding.fuzzed_url</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">http_method</code></dt>
+<dd><p>Field google.cloud.websecurityscanner.v1alpha.Finding.http_method</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.cloud.websecurityscanner.v1alpha.Finding.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">outdated_library</code></dt>
+<dd><p>Field google.cloud.websecurityscanner.v1alpha.Finding.outdated_library</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">reproduction_url</code></dt>
+<dd><p>Field google.cloud.websecurityscanner.v1alpha.Finding.reproduction_url</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">tracking_id</code></dt>
+<dd><p>Field google.cloud.websecurityscanner.v1alpha.Finding.tracking_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">violating_resource</code></dt>
+<dd><p>Field google.cloud.websecurityscanner.v1alpha.Finding.violating_resource</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">vulnerable_parameters</code></dt>
+<dd><p>Field google.cloud.websecurityscanner.v1alpha.Finding.vulnerable_parameters</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">xss</code></dt>
+<dd><p>Field google.cloud.websecurityscanner.v1alpha.Finding.xss</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -309,6 +939,18 @@ FindingType of Findings under a given ScanRun.</p>
 type.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">finding_count</code></dt>
+<dd><p>Field google.cloud.websecurityscanner.v1alpha.FindingTypeStats.finding_count</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">finding_type</code></dt>
+<dd><p>Field google.cloud.websecurityscanner.v1alpha.FindingTypeStats.finding_type</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -317,7 +959,37 @@ type.</p>
 <dd><dl class="class">
 <dt id="google.cloud.websecurityscanner_v1alpha.types.GeneratedCodeInfo.Annotation">
 <em class="property">class </em><code class="descname">Annotation</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.GeneratedCodeInfo.Annotation" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.GeneratedCodeInfo.Annotation.begin">
+<code class="descname">begin</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.GeneratedCodeInfo.Annotation.begin" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.GeneratedCodeInfo.Annotation.begin</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.GeneratedCodeInfo.Annotation.end">
+<code class="descname">end</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.GeneratedCodeInfo.Annotation.end" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.GeneratedCodeInfo.Annotation.end</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.GeneratedCodeInfo.Annotation.path">
+<code class="descname">path</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.GeneratedCodeInfo.Annotation.path" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.GeneratedCodeInfo.Annotation.path</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.GeneratedCodeInfo.Annotation.source_file">
+<code class="descname">source_file</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.GeneratedCodeInfo.Annotation.source_file" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.GeneratedCodeInfo.Annotation.source_file</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.GeneratedCodeInfo.annotation">
+<code class="descname">annotation</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.GeneratedCodeInfo.annotation" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.GeneratedCodeInfo.annotation</p>
+</dd></dl>
 
 </dd></dl>
 
@@ -331,6 +1003,12 @@ type.</p>
 <dd><p>Required. The resource name of the Finding to be returned. The
 name follows the format of ‘projects/{projectId}/scanConfigs/{
 scanConfigId}/scanRuns/{scanRunId}/findings/{findingId}’.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.cloud.websecurityscanner.v1alpha.GetFindingRequest.name</p>
 </dd></dl>
 
 </dd></dl>
@@ -347,6 +1025,12 @@ The name follows the format of
 ‘projects/{projectId}/scanConfigs/{scanConfigId}’.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.cloud.websecurityscanner.v1alpha.GetScanConfigRequest.name</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -361,17 +1045,95 @@ name follows the format of ‘projects/{projectId}/scanConfigs/{
 scanConfigId}/scanRuns/{scanRunId}’.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.cloud.websecurityscanner.v1alpha.GetScanRunRequest.name</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.websecurityscanner_v1alpha.types.Http">
 <em class="property">class </em><code class="descclassname">google.cloud.websecurityscanner_v1alpha.types.</code><code class="descname">Http</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.Http" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.Http.fully_decode_reserved_expansion">
+<code class="descname">fully_decode_reserved_expansion</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.Http.fully_decode_reserved_expansion" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.api.Http.fully_decode_reserved_expansion</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.Http.rules">
+<code class="descname">rules</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.Http.rules" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.api.Http.rules</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.websecurityscanner_v1alpha.types.HttpRule">
 <em class="property">class </em><code class="descclassname">google.cloud.websecurityscanner_v1alpha.types.</code><code class="descname">HttpRule</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.HttpRule" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.HttpRule.additional_bindings">
+<code class="descname">additional_bindings</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.HttpRule.additional_bindings" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.api.HttpRule.additional_bindings</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.HttpRule.body">
+<code class="descname">body</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.HttpRule.body" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.api.HttpRule.body</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.HttpRule.custom">
+<code class="descname">custom</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.HttpRule.custom" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.api.HttpRule.custom</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.HttpRule.delete">
+<code class="descname">delete</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.HttpRule.delete" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.api.HttpRule.delete</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.HttpRule.get">
+<code class="descname">get</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.HttpRule.get" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.api.HttpRule.get</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.HttpRule.patch">
+<code class="descname">patch</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.HttpRule.patch" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.api.HttpRule.patch</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.HttpRule.post">
+<code class="descname">post</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.HttpRule.post" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.api.HttpRule.post</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.HttpRule.put">
+<code class="descname">put</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.HttpRule.put" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.api.HttpRule.put</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.HttpRule.response_body">
+<code class="descname">response_body</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.HttpRule.response_body" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.api.HttpRule.response_body</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.HttpRule.selector">
+<code class="descname">selector</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.HttpRule.selector" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.api.HttpRule.selector</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.websecurityscanner_v1alpha.types.ListCrawledUrlsRequest">
@@ -402,6 +1164,24 @@ server. If not specified or not positive, the implementation
 will select a reasonable value.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">page_size</code></dt>
+<dd><p>Field google.cloud.websecurityscanner.v1alpha.ListCrawledUrlsRequest.page_size</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">page_token</code></dt>
+<dd><p>Field google.cloud.websecurityscanner.v1alpha.ListCrawledUrlsRequest.page_token</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">parent</code></dt>
+<dd><p>Field google.cloud.websecurityscanner.v1alpha.ListCrawledUrlsRequest.parent</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -421,6 +1201,18 @@ will select a reasonable value.</p>
 are no more results in the list.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">crawled_urls</code></dt>
+<dd><p>Field google.cloud.websecurityscanner.v1alpha.ListCrawledUrlsResponse.crawled_urls</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">next_page_token</code></dt>
+<dd><p>Field google.cloud.websecurityscanner.v1alpha.ListCrawledUrlsResponse.next_page_token</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -435,6 +1227,12 @@ resource name in the format ‘projects/{projectId}/scanConfigs/
 {scanConfigId}/scanRuns/{scanRunId}’.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">parent</code></dt>
+<dd><p>Field google.cloud.websecurityscanner.v1alpha.ListFindingTypeStatsRequest.parent</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -445,6 +1243,12 @@ resource name in the format ‘projects/{projectId}/scanConfigs/
 <dt id="google.cloud.websecurityscanner_v1alpha.types.ListFindingTypeStatsResponse.finding_type_stats">
 <code class="descname">finding_type_stats</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.ListFindingTypeStatsResponse.finding_type_stats" title="Permalink to this definition">#</a></dt>
 <dd><p>The list of FindingTypeStats returned.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">finding_type_stats</code></dt>
+<dd><p>Field google.cloud.websecurityscanner.v1alpha.ListFindingTypeStatsResponse.finding_type_stats</p>
 </dd></dl>
 
 </dd></dl>
@@ -485,6 +1289,30 @@ server. If not specified or not positive, the implementation
 will select a reasonable value.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">filter</code></dt>
+<dd><p>Field google.cloud.websecurityscanner.v1alpha.ListFindingsRequest.filter</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">page_size</code></dt>
+<dd><p>Field google.cloud.websecurityscanner.v1alpha.ListFindingsRequest.page_size</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">page_token</code></dt>
+<dd><p>Field google.cloud.websecurityscanner.v1alpha.ListFindingsRequest.page_token</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">parent</code></dt>
+<dd><p>Field google.cloud.websecurityscanner.v1alpha.ListFindingsRequest.parent</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -502,6 +1330,18 @@ will select a reasonable value.</p>
 <code class="descname">next_page_token</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.ListFindingsResponse.next_page_token" title="Permalink to this definition">#</a></dt>
 <dd><p>Token to retrieve the next page of results, or empty if there
 are no more results in the list.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">findings</code></dt>
+<dd><p>Field google.cloud.websecurityscanner.v1alpha.ListFindingsResponse.findings</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">next_page_token</code></dt>
+<dd><p>Field google.cloud.websecurityscanner.v1alpha.ListFindingsResponse.next_page_token</p>
 </dd></dl>
 
 </dd></dl>
@@ -534,6 +1374,24 @@ server. If not specified or not positive, the implementation
 will select a reasonable value.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">page_size</code></dt>
+<dd><p>Field google.cloud.websecurityscanner.v1alpha.ListScanConfigsRequest.page_size</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">page_token</code></dt>
+<dd><p>Field google.cloud.websecurityscanner.v1alpha.ListScanConfigsRequest.page_token</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">parent</code></dt>
+<dd><p>Field google.cloud.websecurityscanner.v1alpha.ListScanConfigsRequest.parent</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -551,6 +1409,18 @@ will select a reasonable value.</p>
 <code class="descname">next_page_token</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.ListScanConfigsResponse.next_page_token" title="Permalink to this definition">#</a></dt>
 <dd><p>Token to retrieve the next page of results, or empty if there
 are no more results in the list.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">next_page_token</code></dt>
+<dd><p>Field google.cloud.websecurityscanner.v1alpha.ListScanConfigsResponse.next_page_token</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">scan_configs</code></dt>
+<dd><p>Field google.cloud.websecurityscanner.v1alpha.ListScanConfigsResponse.scan_configs</p>
 </dd></dl>
 
 </dd></dl>
@@ -584,6 +1454,24 @@ server. If not specified or not positive, the implementation
 will select a reasonable value.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">page_size</code></dt>
+<dd><p>Field google.cloud.websecurityscanner.v1alpha.ListScanRunsRequest.page_size</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">page_token</code></dt>
+<dd><p>Field google.cloud.websecurityscanner.v1alpha.ListScanRunsRequest.page_token</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">parent</code></dt>
+<dd><p>Field google.cloud.websecurityscanner.v1alpha.ListScanRunsRequest.parent</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -603,32 +1491,146 @@ will select a reasonable value.</p>
 are no more results in the list.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">next_page_token</code></dt>
+<dd><p>Field google.cloud.websecurityscanner.v1alpha.ListScanRunsResponse.next_page_token</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">scan_runs</code></dt>
+<dd><p>Field google.cloud.websecurityscanner.v1alpha.ListScanRunsResponse.scan_runs</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.websecurityscanner_v1alpha.types.MessageOptions">
 <em class="property">class </em><code class="descclassname">google.cloud.websecurityscanner_v1alpha.types.</code><code class="descname">MessageOptions</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.MessageOptions" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.MessageOptions.deprecated">
+<code class="descname">deprecated</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.MessageOptions.deprecated" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.MessageOptions.deprecated</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.MessageOptions.map_entry">
+<code class="descname">map_entry</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.MessageOptions.map_entry" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.MessageOptions.map_entry</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.MessageOptions.message_set_wire_format">
+<code class="descname">message_set_wire_format</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.MessageOptions.message_set_wire_format" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.MessageOptions.message_set_wire_format</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.MessageOptions.no_standard_descriptor_accessor">
+<code class="descname">no_standard_descriptor_accessor</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.MessageOptions.no_standard_descriptor_accessor" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.MessageOptions.no_standard_descriptor_accessor</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.MessageOptions.uninterpreted_option">
+<code class="descname">uninterpreted_option</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.MessageOptions.uninterpreted_option" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.MessageOptions.uninterpreted_option</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.websecurityscanner_v1alpha.types.MethodDescriptorProto">
 <em class="property">class </em><code class="descclassname">google.cloud.websecurityscanner_v1alpha.types.</code><code class="descname">MethodDescriptorProto</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.MethodDescriptorProto" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.MethodDescriptorProto.client_streaming">
+<code class="descname">client_streaming</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.MethodDescriptorProto.client_streaming" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.MethodDescriptorProto.client_streaming</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.MethodDescriptorProto.input_type">
+<code class="descname">input_type</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.MethodDescriptorProto.input_type" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.MethodDescriptorProto.input_type</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.MethodDescriptorProto.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.MethodDescriptorProto.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.MethodDescriptorProto.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.MethodDescriptorProto.options">
+<code class="descname">options</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.MethodDescriptorProto.options" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.MethodDescriptorProto.options</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.MethodDescriptorProto.output_type">
+<code class="descname">output_type</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.MethodDescriptorProto.output_type" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.MethodDescriptorProto.output_type</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.MethodDescriptorProto.server_streaming">
+<code class="descname">server_streaming</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.MethodDescriptorProto.server_streaming" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.MethodDescriptorProto.server_streaming</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.websecurityscanner_v1alpha.types.MethodOptions">
 <em class="property">class </em><code class="descclassname">google.cloud.websecurityscanner_v1alpha.types.</code><code class="descname">MethodOptions</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.MethodOptions" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.MethodOptions.deprecated">
+<code class="descname">deprecated</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.MethodOptions.deprecated" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.MethodOptions.deprecated</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.MethodOptions.idempotency_level">
+<code class="descname">idempotency_level</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.MethodOptions.idempotency_level" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.MethodOptions.idempotency_level</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.MethodOptions.uninterpreted_option">
+<code class="descname">uninterpreted_option</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.MethodOptions.uninterpreted_option" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.MethodOptions.uninterpreted_option</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.websecurityscanner_v1alpha.types.OneofDescriptorProto">
 <em class="property">class </em><code class="descclassname">google.cloud.websecurityscanner_v1alpha.types.</code><code class="descname">OneofDescriptorProto</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.OneofDescriptorProto" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.OneofDescriptorProto.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.OneofDescriptorProto.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.OneofDescriptorProto.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.OneofDescriptorProto.options">
+<code class="descname">options</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.OneofDescriptorProto.options" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.OneofDescriptorProto.options</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.websecurityscanner_v1alpha.types.OneofOptions">
 <em class="property">class </em><code class="descclassname">google.cloud.websecurityscanner_v1alpha.types.</code><code class="descname">OneofOptions</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.OneofOptions" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.OneofOptions.uninterpreted_option">
+<code class="descname">uninterpreted_option</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.OneofOptions.uninterpreted_option" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.OneofOptions.uninterpreted_option</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.websecurityscanner_v1alpha.types.OutdatedLibrary">
@@ -651,6 +1653,24 @@ are no more results in the list.</p>
 <code class="descname">learn_more_urls</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.OutdatedLibrary.learn_more_urls" title="Permalink to this definition">#</a></dt>
 <dd><p>URLs to learn more information about the vulnerabilities in
 the library.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">learn_more_urls</code></dt>
+<dd><p>Field google.cloud.websecurityscanner.v1alpha.OutdatedLibrary.learn_more_urls</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">library_name</code></dt>
+<dd><p>Field google.cloud.websecurityscanner.v1alpha.OutdatedLibrary.library_name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">version</code></dt>
+<dd><p>Field google.cloud.websecurityscanner.v1alpha.OutdatedLibrary.version</p>
 </dd></dl>
 
 </dd></dl>
@@ -768,6 +1788,24 @@ response.</p>
 <dd><p>Required. The login form URL of the website.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">login_url</code></dt>
+<dd><p>Field google.cloud.websecurityscanner.v1alpha.ScanConfig.Authentication.CustomAccount.login_url</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">password</code></dt>
+<dd><p>Field google.cloud.websecurityscanner.v1alpha.ScanConfig.Authentication.CustomAccount.password</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">username</code></dt>
+<dd><p>Field google.cloud.websecurityscanner.v1alpha.ScanConfig.Authentication.CustomAccount.username</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -788,6 +1826,30 @@ credential is stored encrypted and not returned in any
 response.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">password</code></dt>
+<dd><p>Field google.cloud.websecurityscanner.v1alpha.ScanConfig.Authentication.GoogleAccount.password</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">username</code></dt>
+<dd><p>Field google.cloud.websecurityscanner.v1alpha.ScanConfig.Authentication.GoogleAccount.username</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">custom_account</code></dt>
+<dd><p>Field google.cloud.websecurityscanner.v1alpha.ScanConfig.Authentication.custom_account</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">google_account</code></dt>
+<dd><p>Field google.cloud.websecurityscanner.v1alpha.ScanConfig.Authentication.google_account</p>
 </dd></dl>
 
 </dd></dl>
@@ -811,6 +1873,72 @@ means the scan will be scheduled to start immediately.</p>
 <dd><p>Required. The duration of time between executions in days.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">interval_duration_days</code></dt>
+<dd><p>Field google.cloud.websecurityscanner.v1alpha.ScanConfig.Schedule.interval_duration_days</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">schedule_time</code></dt>
+<dd><p>Field google.cloud.websecurityscanner.v1alpha.ScanConfig.Schedule.schedule_time</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">authentication</code></dt>
+<dd><p>Field google.cloud.websecurityscanner.v1alpha.ScanConfig.authentication</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">blacklist_patterns</code></dt>
+<dd><p>Field google.cloud.websecurityscanner.v1alpha.ScanConfig.blacklist_patterns</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">display_name</code></dt>
+<dd><p>Field google.cloud.websecurityscanner.v1alpha.ScanConfig.display_name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">max_qps</code></dt>
+<dd><p>Field google.cloud.websecurityscanner.v1alpha.ScanConfig.max_qps</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.cloud.websecurityscanner.v1alpha.ScanConfig.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">schedule</code></dt>
+<dd><p>Field google.cloud.websecurityscanner.v1alpha.ScanConfig.schedule</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">starting_urls</code></dt>
+<dd><p>Field google.cloud.websecurityscanner.v1alpha.ScanConfig.starting_urls</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">target_platforms</code></dt>
+<dd><p>Field google.cloud.websecurityscanner.v1alpha.ScanConfig.target_platforms</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">user_agent</code></dt>
+<dd><p>Field google.cloud.websecurityscanner.v1alpha.ScanConfig.user_agent</p>
 </dd></dl>
 
 </dd></dl>
@@ -890,17 +2018,101 @@ is running, the value ranges from 0 to 100. If the scan is
 finished, the value is 100.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">end_time</code></dt>
+<dd><p>Field google.cloud.websecurityscanner.v1alpha.ScanRun.end_time</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">execution_state</code></dt>
+<dd><p>Field google.cloud.websecurityscanner.v1alpha.ScanRun.execution_state</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">has_vulnerabilities</code></dt>
+<dd><p>Field google.cloud.websecurityscanner.v1alpha.ScanRun.has_vulnerabilities</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.cloud.websecurityscanner.v1alpha.ScanRun.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">progress_percent</code></dt>
+<dd><p>Field google.cloud.websecurityscanner.v1alpha.ScanRun.progress_percent</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">result_state</code></dt>
+<dd><p>Field google.cloud.websecurityscanner.v1alpha.ScanRun.result_state</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">start_time</code></dt>
+<dd><p>Field google.cloud.websecurityscanner.v1alpha.ScanRun.start_time</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">urls_crawled_count</code></dt>
+<dd><p>Field google.cloud.websecurityscanner.v1alpha.ScanRun.urls_crawled_count</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">urls_tested_count</code></dt>
+<dd><p>Field google.cloud.websecurityscanner.v1alpha.ScanRun.urls_tested_count</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.websecurityscanner_v1alpha.types.ServiceDescriptorProto">
 <em class="property">class </em><code class="descclassname">google.cloud.websecurityscanner_v1alpha.types.</code><code class="descname">ServiceDescriptorProto</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.ServiceDescriptorProto" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.ServiceDescriptorProto.method">
+<code class="descname">method</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.ServiceDescriptorProto.method" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.ServiceDescriptorProto.method</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.ServiceDescriptorProto.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.ServiceDescriptorProto.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.ServiceDescriptorProto.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.ServiceDescriptorProto.options">
+<code class="descname">options</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.ServiceDescriptorProto.options" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.ServiceDescriptorProto.options</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.websecurityscanner_v1alpha.types.ServiceOptions">
 <em class="property">class </em><code class="descclassname">google.cloud.websecurityscanner_v1alpha.types.</code><code class="descname">ServiceOptions</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.ServiceOptions" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.ServiceOptions.deprecated">
+<code class="descname">deprecated</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.ServiceOptions.deprecated" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.ServiceOptions.deprecated</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.ServiceOptions.uninterpreted_option">
+<code class="descname">uninterpreted_option</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.ServiceOptions.uninterpreted_option" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.ServiceOptions.uninterpreted_option</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.websecurityscanner_v1alpha.types.SourceCodeInfo">
@@ -908,7 +2120,43 @@ finished, the value is 100.</p>
 <dd><dl class="class">
 <dt id="google.cloud.websecurityscanner_v1alpha.types.SourceCodeInfo.Location">
 <em class="property">class </em><code class="descname">Location</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.SourceCodeInfo.Location" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.SourceCodeInfo.Location.leading_comments">
+<code class="descname">leading_comments</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.SourceCodeInfo.Location.leading_comments" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.SourceCodeInfo.Location.leading_comments</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.SourceCodeInfo.Location.leading_detached_comments">
+<code class="descname">leading_detached_comments</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.SourceCodeInfo.Location.leading_detached_comments" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.SourceCodeInfo.Location.leading_detached_comments</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.SourceCodeInfo.Location.path">
+<code class="descname">path</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.SourceCodeInfo.Location.path" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.SourceCodeInfo.Location.path</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.SourceCodeInfo.Location.span">
+<code class="descname">span</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.SourceCodeInfo.Location.span" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.SourceCodeInfo.Location.span</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.SourceCodeInfo.Location.trailing_comments">
+<code class="descname">trailing_comments</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.SourceCodeInfo.Location.trailing_comments" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.SourceCodeInfo.Location.trailing_comments</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.SourceCodeInfo.location">
+<code class="descname">location</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.SourceCodeInfo.location" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.SourceCodeInfo.location</p>
+</dd></dl>
 
 </dd></dl>
 
@@ -922,6 +2170,12 @@ finished, the value is 100.</p>
 <dd><p>Required. The resource name of the ScanConfig to be used. The
 name follows the format of
 ‘projects/{projectId}/scanConfigs/{scanConfigId}’.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.cloud.websecurityscanner.v1alpha.StartScanRunRequest.name</p>
 </dd></dl>
 
 </dd></dl>
@@ -938,12 +2192,30 @@ name follows the format of ‘projects/{projectId}/scanConfigs/{
 scanConfigId}/scanRuns/{scanRunId}’.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.cloud.websecurityscanner.v1alpha.StopScanRunRequest.name</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.websecurityscanner_v1alpha.types.Timestamp">
 <em class="property">class </em><code class="descclassname">google.cloud.websecurityscanner_v1alpha.types.</code><code class="descname">Timestamp</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.Timestamp" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.Timestamp.nanos">
+<code class="descname">nanos</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.Timestamp.nanos" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.Timestamp.nanos</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.Timestamp.seconds">
+<code class="descname">seconds</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.Timestamp.seconds" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.Timestamp.seconds</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.websecurityscanner_v1alpha.types.UninterpretedOption">
@@ -951,7 +2223,61 @@ scanConfigId}/scanRuns/{scanRunId}’.</p>
 <dd><dl class="class">
 <dt id="google.cloud.websecurityscanner_v1alpha.types.UninterpretedOption.NamePart">
 <em class="property">class </em><code class="descname">NamePart</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.UninterpretedOption.NamePart" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.UninterpretedOption.NamePart.is_extension">
+<code class="descname">is_extension</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.UninterpretedOption.NamePart.is_extension" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.UninterpretedOption.NamePart.is_extension</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.UninterpretedOption.NamePart.name_part">
+<code class="descname">name_part</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.UninterpretedOption.NamePart.name_part" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.UninterpretedOption.NamePart.name_part</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.UninterpretedOption.aggregate_value">
+<code class="descname">aggregate_value</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.UninterpretedOption.aggregate_value" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.UninterpretedOption.aggregate_value</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.UninterpretedOption.double_value">
+<code class="descname">double_value</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.UninterpretedOption.double_value" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.UninterpretedOption.double_value</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.UninterpretedOption.identifier_value">
+<code class="descname">identifier_value</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.UninterpretedOption.identifier_value" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.UninterpretedOption.identifier_value</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.UninterpretedOption.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.UninterpretedOption.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.UninterpretedOption.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.UninterpretedOption.negative_int_value">
+<code class="descname">negative_int_value</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.UninterpretedOption.negative_int_value" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.UninterpretedOption.negative_int_value</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.UninterpretedOption.positive_int_value">
+<code class="descname">positive_int_value</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.UninterpretedOption.positive_int_value" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.UninterpretedOption.positive_int_value</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.websecurityscanner_v1alpha.types.UninterpretedOption.string_value">
+<code class="descname">string_value</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.UninterpretedOption.string_value" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.UninterpretedOption.string_value</p>
+</dd></dl>
 
 </dd></dl>
 
@@ -976,6 +2302,18 @@ fields not covered by the mask will be ignored.</p>
 buffers/docs/reference/google.protobuf#fieldmask</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">scan_config</code></dt>
+<dd><p>Field google.cloud.websecurityscanner.v1alpha.UpdateScanConfigRequest.scan_config</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">update_mask</code></dt>
+<dd><p>Field google.cloud.websecurityscanner.v1alpha.UpdateScanConfigRequest.update_mask</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -995,6 +2333,18 @@ JavaScript sources, image, audio files, etc.</p>
 <dd><p>URL of this violating resource.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">content_type</code></dt>
+<dd><p>Field google.cloud.websecurityscanner.v1alpha.ViolatingResource.content_type</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">resource_url</code></dt>
+<dd><p>Field google.cloud.websecurityscanner.v1alpha.ViolatingResource.resource_url</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -1005,6 +2355,12 @@ JavaScript sources, image, audio files, etc.</p>
 <dt id="google.cloud.websecurityscanner_v1alpha.types.VulnerableParameters.parameter_names">
 <code class="descname">parameter_names</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.VulnerableParameters.parameter_names" title="Permalink to this definition">#</a></dt>
 <dd><p>The vulnerable parameter names.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">parameter_names</code></dt>
+<dd><p>Field google.cloud.websecurityscanner.v1alpha.VulnerableParameters.parameter_names</p>
 </dd></dl>
 
 </dd></dl>
@@ -1023,6 +2379,18 @@ JavaScript sources, image, audio files, etc.</p>
 <dt id="google.cloud.websecurityscanner_v1alpha.types.Xss.error_message">
 <code class="descname">error_message</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1alpha.types.Xss.error_message" title="Permalink to this definition">#</a></dt>
 <dd><p>An error message generated by a javascript breakage.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">error_message</code></dt>
+<dd><p>Field google.cloud.websecurityscanner.v1alpha.Xss.error_message</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">stack_traces</code></dt>
+<dd><p>Field google.cloud.websecurityscanner.v1alpha.Xss.stack_traces</p>
 </dd></dl>
 
 </dd></dl>

@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Types for Google Cloud Dataproc API Client &#8212; google-cloud 35e0349 documentation</title>
+    <title>Types for Google Cloud Dataproc API Client &#8212; google-cloud 915e116 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -66,12 +66,36 @@ short name of the accelerator type resource, for example,
 this instance.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">accelerator_count</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.AcceleratorConfig.accelerator_count</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">accelerator_type_uri</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.AcceleratorConfig.accelerator_type_uri</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.dataproc_v1.types.Any">
 <em class="property">class </em><code class="descclassname">google.cloud.dataproc_v1.types.</code><code class="descname">Any</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.Any" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.Any.type_url">
+<code class="descname">type_url</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.Any.type_url" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.Any.type_url</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.Any.value">
+<code class="descname">value</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.Any.value" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.Any.value</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.dataproc_v1.types.CancelJobRequest">
@@ -97,12 +121,36 @@ request.</p>
 <dd><p>Required. The job ID.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">job_id</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.CancelJobRequest.job_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">project_id</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.CancelJobRequest.project_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">region</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.CancelJobRequest.region</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.dataproc_v1.types.CancelOperationRequest">
 <em class="property">class </em><code class="descclassname">google.cloud.dataproc_v1.types.</code><code class="descname">CancelOperationRequest</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.CancelOperationRequest" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.CancelOperationRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.CancelOperationRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.longrunning.CancelOperationRequest.name</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.dataproc_v1.types.Cluster">
@@ -173,7 +221,67 @@ purposes only. It may be changed before final release.</p>
 <dl class="class">
 <dt id="google.cloud.dataproc_v1.types.Cluster.LabelsEntry">
 <em class="property">class </em><code class="descname">LabelsEntry</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.Cluster.LabelsEntry" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.Cluster.LabelsEntry.key">
+<code class="descname">key</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.Cluster.LabelsEntry.key" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.cloud.dataproc.v1.Cluster.LabelsEntry.key</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.Cluster.LabelsEntry.value">
+<code class="descname">value</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.Cluster.LabelsEntry.value" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.cloud.dataproc.v1.Cluster.LabelsEntry.value</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">cluster_name</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.Cluster.cluster_name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">cluster_uuid</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.Cluster.cluster_uuid</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">config</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.Cluster.config</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">labels</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.Cluster.labels</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">metrics</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.Cluster.metrics</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">project_id</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.Cluster.project_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">status</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.Cluster.status</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">status_history</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.Cluster.status_history</p>
+</dd></dl>
 
 </dd></dl>
 
@@ -247,6 +355,54 @@ ance/attributes/dataproc-role)     if [[ “${ROLE}” == ‘Master’
 <dd><p>Optional. Encryption settings for the cluster.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">config_bucket</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.ClusterConfig.config_bucket</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">encryption_config</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.ClusterConfig.encryption_config</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">gce_cluster_config</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.ClusterConfig.gce_cluster_config</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">initialization_actions</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.ClusterConfig.initialization_actions</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">master_config</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.ClusterConfig.master_config</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">secondary_worker_config</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.ClusterConfig.secondary_worker_config</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">software_config</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.ClusterConfig.software_config</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">worker_config</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.ClusterConfig.worker_config</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -270,12 +426,48 @@ may be changed before final release.</p>
 <dl class="class">
 <dt id="google.cloud.dataproc_v1.types.ClusterMetrics.HdfsMetricsEntry">
 <em class="property">class </em><code class="descname">HdfsMetricsEntry</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.ClusterMetrics.HdfsMetricsEntry" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.ClusterMetrics.HdfsMetricsEntry.key">
+<code class="descname">key</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.ClusterMetrics.HdfsMetricsEntry.key" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.cloud.dataproc.v1.ClusterMetrics.HdfsMetricsEntry.key</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.ClusterMetrics.HdfsMetricsEntry.value">
+<code class="descname">value</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.ClusterMetrics.HdfsMetricsEntry.value" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.cloud.dataproc.v1.ClusterMetrics.HdfsMetricsEntry.value</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.dataproc_v1.types.ClusterMetrics.YarnMetricsEntry">
 <em class="property">class </em><code class="descname">YarnMetricsEntry</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.ClusterMetrics.YarnMetricsEntry" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.ClusterMetrics.YarnMetricsEntry.key">
+<code class="descname">key</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.ClusterMetrics.YarnMetricsEntry.key" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.cloud.dataproc.v1.ClusterMetrics.YarnMetricsEntry.key</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.ClusterMetrics.YarnMetricsEntry.value">
+<code class="descname">value</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.ClusterMetrics.YarnMetricsEntry.value" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.cloud.dataproc.v1.ClusterMetrics.YarnMetricsEntry.value</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">hdfs_metrics</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.ClusterMetrics.hdfs_metrics</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">yarn_metrics</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.ClusterMetrics.yarn_metrics</p>
+</dd></dl>
 
 </dd></dl>
 
@@ -299,6 +491,24 @@ may be changed before final release.</p>
 <dt id="google.cloud.dataproc_v1.types.ClusterOperation.done">
 <code class="descname">done</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.ClusterOperation.done" title="Permalink to this definition">#</a></dt>
 <dd><p>Output only. Indicates the operation is done.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">done</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.ClusterOperation.done</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">error</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.ClusterOperation.error</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">operation_id</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.ClusterOperation.operation_id</p>
 </dd></dl>
 
 </dd></dl>
@@ -358,7 +568,67 @@ may be changed before final release.</p>
 <dl class="class">
 <dt id="google.cloud.dataproc_v1.types.ClusterOperationMetadata.LabelsEntry">
 <em class="property">class </em><code class="descname">LabelsEntry</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.ClusterOperationMetadata.LabelsEntry" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.ClusterOperationMetadata.LabelsEntry.key">
+<code class="descname">key</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.ClusterOperationMetadata.LabelsEntry.key" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.cloud.dataproc.v1.ClusterOperationMetadata.LabelsEntry.key</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.ClusterOperationMetadata.LabelsEntry.value">
+<code class="descname">value</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.ClusterOperationMetadata.LabelsEntry.value" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.cloud.dataproc.v1.ClusterOperationMetadata.LabelsEntry.value</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">cluster_name</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.ClusterOperationMetadata.cluster_name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">cluster_uuid</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.ClusterOperationMetadata.cluster_uuid</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">description</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.ClusterOperationMetadata.description</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">labels</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.ClusterOperationMetadata.labels</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">operation_type</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.ClusterOperationMetadata.operation_type</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">status</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.ClusterOperationMetadata.status</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">status_history</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.ClusterOperationMetadata.status_history</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">warnings</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.ClusterOperationMetadata.warnings</p>
+</dd></dl>
 
 </dd></dl>
 
@@ -392,6 +662,30 @@ details.</p>
 <dd><p>Output only. The time this state was entered.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">details</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.ClusterOperationStatus.details</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">inner_state</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.ClusterOperationStatus.inner_state</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">state</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.ClusterOperationStatus.state</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">state_start_time</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.ClusterOperationStatus.state_start_time</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -417,7 +711,31 @@ match.</p>
 <dl class="class">
 <dt id="google.cloud.dataproc_v1.types.ClusterSelector.ClusterLabelsEntry">
 <em class="property">class </em><code class="descname">ClusterLabelsEntry</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.ClusterSelector.ClusterLabelsEntry" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.ClusterSelector.ClusterLabelsEntry.key">
+<code class="descname">key</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.ClusterSelector.ClusterLabelsEntry.key" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.cloud.dataproc.v1.ClusterSelector.ClusterLabelsEntry.key</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.ClusterSelector.ClusterLabelsEntry.value">
+<code class="descname">value</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.ClusterSelector.ClusterLabelsEntry.value" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.cloud.dataproc.v1.ClusterSelector.ClusterLabelsEntry.value</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">cluster_labels</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.ClusterSelector.cluster_labels</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">zone</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.ClusterSelector.zone</p>
+</dd></dl>
 
 </dd></dl>
 
@@ -448,6 +766,30 @@ match.</p>
 <code class="descname">substate</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.ClusterStatus.substate" title="Permalink to this definition">#</a></dt>
 <dd><p>Output only. Additional state information that includes status
 reported by the agent.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">detail</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.ClusterStatus.detail</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">state</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.ClusterStatus.state</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">state_start_time</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.ClusterStatus.state_start_time</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">substate</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.ClusterStatus.substate</p>
 </dd></dl>
 
 </dd></dl>
@@ -491,6 +833,30 @@ underscores (_), and hyphens (-). The maximum length is 40
 characters.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">cluster</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.CreateClusterRequest.cluster</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">project_id</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.CreateClusterRequest.project_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">region</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.CreateClusterRequest.region</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">request_id</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.CreateClusterRequest.request_id</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -509,6 +875,18 @@ form <code class="docutils literal notranslate"><span class="pre">projects/{proj
 <dt id="google.cloud.dataproc_v1.types.CreateWorkflowTemplateRequest.template">
 <code class="descname">template</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.CreateWorkflowTemplateRequest.template" title="Permalink to this definition">#</a></dt>
 <dd><p>Required. The Dataproc workflow template to create.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">parent</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.CreateWorkflowTemplateRequest.parent</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">template</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.CreateWorkflowTemplateRequest.template</p>
 </dd></dl>
 
 </dd></dl>
@@ -560,6 +938,36 @@ underscores (_), and hyphens (-). The maximum length is 40
 characters.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">cluster_name</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.DeleteClusterRequest.cluster_name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">cluster_uuid</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.DeleteClusterRequest.cluster_uuid</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">project_id</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.DeleteClusterRequest.project_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">region</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.DeleteClusterRequest.region</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">request_id</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.DeleteClusterRequest.request_id</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -586,12 +994,36 @@ request.</p>
 <dd><p>Required. The job ID.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">job_id</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.DeleteJobRequest.job_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">project_id</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.DeleteJobRequest.project_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">region</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.DeleteJobRequest.region</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.dataproc_v1.types.DeleteOperationRequest">
 <em class="property">class </em><code class="descclassname">google.cloud.dataproc_v1.types.</code><code class="descname">DeleteOperationRequest</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.DeleteOperationRequest" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.DeleteOperationRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.DeleteOperationRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.longrunning.DeleteOperationRequest.name</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.dataproc_v1.types.DeleteWorkflowTemplateRequest">
@@ -614,6 +1046,18 @@ form <code class="docutils literal notranslate"><span class="pre">projects/{proj
 <dd><p>Optional. The version of workflow template to delete. If
 specified, will only delete the template if the current server
 version matches specified version.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.DeleteWorkflowTemplateRequest.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">version</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.DeleteWorkflowTemplateRequest.version</p>
 </dd></dl>
 
 </dd></dl>
@@ -642,6 +1086,24 @@ request.</p>
 <dd><p>Required. The cluster name.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">cluster_name</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.DiagnoseClusterRequest.cluster_name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">project_id</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.DiagnoseClusterRequest.project_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">region</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.DiagnoseClusterRequest.region</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -654,6 +1116,12 @@ request.</p>
 <dd><p>Output only. The Cloud Storage URI of the diagnostic output.
 The output report is a plain text file with a summary of
 collected diagnostics.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">output_uri</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.DiagnoseClusterResults.output_uri</p>
 </dd></dl>
 
 </dd></dl>
@@ -687,12 +1155,42 @@ the boot disk contains only basic config and installed
 binaries.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">boot_disk_size_gb</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.DiskConfig.boot_disk_size_gb</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">boot_disk_type</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.DiskConfig.boot_disk_type</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">num_local_ssds</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.DiskConfig.num_local_ssds</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.dataproc_v1.types.Duration">
 <em class="property">class </em><code class="descclassname">google.cloud.dataproc_v1.types.</code><code class="descname">Duration</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.Duration" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.Duration.nanos">
+<code class="descname">nanos</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.Duration.nanos" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.Duration.nanos</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.Duration.seconds">
+<code class="descname">seconds</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.Duration.seconds" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.Duration.seconds</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.dataproc_v1.types.Empty">
@@ -710,12 +1208,24 @@ binaries.</p>
 for all instances in the cluster.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">gce_pd_kms_key_name</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.EncryptionConfig.gce_pd_kms_key_name</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.dataproc_v1.types.FieldMask">
 <em class="property">class </em><code class="descclassname">google.cloud.dataproc_v1.types.</code><code class="descname">FieldMask</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.FieldMask" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.FieldMask.paths">
+<code class="descname">paths</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.FieldMask.paths" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FieldMask.paths</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.dataproc_v1.types.GceClusterConfig">
@@ -820,7 +1330,67 @@ instances</a>).</p>
 <dl class="class">
 <dt id="google.cloud.dataproc_v1.types.GceClusterConfig.MetadataEntry">
 <em class="property">class </em><code class="descname">MetadataEntry</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.GceClusterConfig.MetadataEntry" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.GceClusterConfig.MetadataEntry.key">
+<code class="descname">key</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.GceClusterConfig.MetadataEntry.key" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.cloud.dataproc.v1.GceClusterConfig.MetadataEntry.key</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.GceClusterConfig.MetadataEntry.value">
+<code class="descname">value</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.GceClusterConfig.MetadataEntry.value" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.cloud.dataproc.v1.GceClusterConfig.MetadataEntry.value</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">internal_ip_only</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.GceClusterConfig.internal_ip_only</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">metadata</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.GceClusterConfig.metadata</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">network_uri</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.GceClusterConfig.network_uri</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">service_account</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.GceClusterConfig.service_account</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">service_account_scopes</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.GceClusterConfig.service_account_scopes</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">subnetwork_uri</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.GceClusterConfig.subnetwork_uri</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">tags</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.GceClusterConfig.tags</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">zone_uri</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.GceClusterConfig.zone_uri</p>
+</dd></dl>
 
 </dd></dl>
 
@@ -846,6 +1416,24 @@ request.</p>
 <dt id="google.cloud.dataproc_v1.types.GetClusterRequest.cluster_name">
 <code class="descname">cluster_name</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.GetClusterRequest.cluster_name" title="Permalink to this definition">#</a></dt>
 <dd><p>Required. The cluster name.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">cluster_name</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.GetClusterRequest.cluster_name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">project_id</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.GetClusterRequest.project_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">region</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.GetClusterRequest.region</p>
 </dd></dl>
 
 </dd></dl>
@@ -874,12 +1462,36 @@ request.</p>
 <dd><p>Required. The job ID.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">job_id</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.GetJobRequest.job_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">project_id</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.GetJobRequest.project_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">region</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.GetJobRequest.region</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.dataproc_v1.types.GetOperationRequest">
 <em class="property">class </em><code class="descclassname">google.cloud.dataproc_v1.types.</code><code class="descname">GetOperationRequest</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.GetOperationRequest" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.GetOperationRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.GetOperationRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.longrunning.GetOperationRequest.name</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.dataproc_v1.types.GetWorkflowTemplateRequest">
@@ -901,6 +1513,18 @@ form <code class="docutils literal notranslate"><span class="pre">projects/{proj
 <dd><p>Optional. The version of workflow template to retrieve. Only
 previously instatiated versions can be retrieved.  If
 unspecified, retrieves the current version.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.GetWorkflowTemplateRequest.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">version</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.GetWorkflowTemplateRequest.version</p>
 </dd></dl>
 
 </dd></dl>
@@ -991,7 +1615,67 @@ code.</p>
 <dl class="class">
 <dt id="google.cloud.dataproc_v1.types.HadoopJob.PropertiesEntry">
 <em class="property">class </em><code class="descname">PropertiesEntry</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.HadoopJob.PropertiesEntry" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.HadoopJob.PropertiesEntry.key">
+<code class="descname">key</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.HadoopJob.PropertiesEntry.key" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.cloud.dataproc.v1.HadoopJob.PropertiesEntry.key</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.HadoopJob.PropertiesEntry.value">
+<code class="descname">value</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.HadoopJob.PropertiesEntry.value" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.cloud.dataproc.v1.HadoopJob.PropertiesEntry.value</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">archive_uris</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.HadoopJob.archive_uris</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">args</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.HadoopJob.args</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">file_uris</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.HadoopJob.file_uris</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">jar_file_uris</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.HadoopJob.jar_file_uris</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">logging_config</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.HadoopJob.logging_config</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">main_class</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.HadoopJob.main_class</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">main_jar_file_uri</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.HadoopJob.main_jar_file_uri</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">properties</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.HadoopJob.properties</p>
+</dd></dl>
 
 </dd></dl>
 
@@ -1055,12 +1739,72 @@ Hive SerDes and UDFs.</p>
 <dl class="class">
 <dt id="google.cloud.dataproc_v1.types.HiveJob.PropertiesEntry">
 <em class="property">class </em><code class="descname">PropertiesEntry</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.HiveJob.PropertiesEntry" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.HiveJob.PropertiesEntry.key">
+<code class="descname">key</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.HiveJob.PropertiesEntry.key" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.cloud.dataproc.v1.HiveJob.PropertiesEntry.key</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.HiveJob.PropertiesEntry.value">
+<code class="descname">value</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.HiveJob.PropertiesEntry.value" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.cloud.dataproc.v1.HiveJob.PropertiesEntry.value</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.dataproc_v1.types.HiveJob.ScriptVariablesEntry">
 <em class="property">class </em><code class="descname">ScriptVariablesEntry</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.HiveJob.ScriptVariablesEntry" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.HiveJob.ScriptVariablesEntry.key">
+<code class="descname">key</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.HiveJob.ScriptVariablesEntry.key" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.cloud.dataproc.v1.HiveJob.ScriptVariablesEntry.key</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.HiveJob.ScriptVariablesEntry.value">
+<code class="descname">value</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.HiveJob.ScriptVariablesEntry.value" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.cloud.dataproc.v1.HiveJob.ScriptVariablesEntry.value</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">continue_on_failure</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.HiveJob.continue_on_failure</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">jar_file_uris</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.HiveJob.jar_file_uris</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">properties</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.HiveJob.properties</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">query_file_uri</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.HiveJob.query_file_uri</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">query_list</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.HiveJob.query_list</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">script_variables</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.HiveJob.script_variables</p>
+</dd></dl>
 
 </dd></dl>
 
@@ -1136,6 +1880,54 @@ these instances.  <strong>Beta Feature</strong>: This feature is still
 under development. It may be changed before final release.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">accelerators</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.InstanceGroupConfig.accelerators</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">disk_config</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.InstanceGroupConfig.disk_config</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">image_uri</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.InstanceGroupConfig.image_uri</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">instance_names</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.InstanceGroupConfig.instance_names</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">is_preemptible</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.InstanceGroupConfig.is_preemptible</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">machine_type_uri</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.InstanceGroupConfig.machine_type_uri</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">managed_group_config</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.InstanceGroupConfig.managed_group_config</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">num_instances</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.InstanceGroupConfig.num_instances</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -1167,6 +1959,24 @@ recommended to always set this value to a <a class="reference external" href="ht
 must contain only letters (a-z, A-Z), numbers (0-9),
 underscores (_), and hyphens (-). The maximum length is 40
 characters.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">parent</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.InstantiateInlineWorkflowTemplateRequest.parent</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">request_id</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.InstantiateInlineWorkflowTemplateRequest.request_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">template</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.InstantiateInlineWorkflowTemplateRequest.template</p>
 </dd></dl>
 
 </dd></dl>
@@ -1218,7 +2028,43 @@ characters.</p>
 <dl class="class">
 <dt id="google.cloud.dataproc_v1.types.InstantiateWorkflowTemplateRequest.ParametersEntry">
 <em class="property">class </em><code class="descname">ParametersEntry</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.InstantiateWorkflowTemplateRequest.ParametersEntry" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.InstantiateWorkflowTemplateRequest.ParametersEntry.key">
+<code class="descname">key</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.InstantiateWorkflowTemplateRequest.ParametersEntry.key" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.cloud.dataproc.v1.InstantiateWorkflowTemplateRequest.ParametersEntry.key</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.InstantiateWorkflowTemplateRequest.ParametersEntry.value">
+<code class="descname">value</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.InstantiateWorkflowTemplateRequest.ParametersEntry.value" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.cloud.dataproc.v1.InstantiateWorkflowTemplateRequest.ParametersEntry.value</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.InstantiateWorkflowTemplateRequest.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">parameters</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.InstantiateWorkflowTemplateRequest.parameters</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">request_id</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.InstantiateWorkflowTemplateRequest.request_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">version</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.InstantiateWorkflowTemplateRequest.version</p>
+</dd></dl>
 
 </dd></dl>
 
@@ -1351,7 +2197,115 @@ reference.job_id that may be reused over time.</p>
 <dl class="class">
 <dt id="google.cloud.dataproc_v1.types.Job.LabelsEntry">
 <em class="property">class </em><code class="descname">LabelsEntry</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.Job.LabelsEntry" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.Job.LabelsEntry.key">
+<code class="descname">key</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.Job.LabelsEntry.key" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.cloud.dataproc.v1.Job.LabelsEntry.key</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.Job.LabelsEntry.value">
+<code class="descname">value</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.Job.LabelsEntry.value" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.cloud.dataproc.v1.Job.LabelsEntry.value</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">driver_control_files_uri</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.Job.driver_control_files_uri</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">driver_output_resource_uri</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.Job.driver_output_resource_uri</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">hadoop_job</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.Job.hadoop_job</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">hive_job</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.Job.hive_job</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">job_uuid</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.Job.job_uuid</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">labels</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.Job.labels</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">pig_job</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.Job.pig_job</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">placement</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.Job.placement</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">pyspark_job</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.Job.pyspark_job</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">reference</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.Job.reference</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">scheduling</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.Job.scheduling</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">spark_job</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.Job.spark_job</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">spark_sql_job</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.Job.spark_sql_job</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">status</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.Job.status</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">status_history</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.Job.status_history</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">yarn_applications</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.Job.yarn_applications</p>
+</dd></dl>
 
 </dd></dl>
 
@@ -1371,6 +2325,18 @@ submitted.</p>
 <code class="descname">cluster_uuid</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.JobPlacement.cluster_uuid" title="Permalink to this definition">#</a></dt>
 <dd><p>Output only. A cluster UUID generated by the Cloud Dataproc
 service when the job is submitted.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">cluster_name</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.JobPlacement.cluster_name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">cluster_uuid</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.JobPlacement.cluster_uuid</p>
 </dd></dl>
 
 </dd></dl>
@@ -1397,6 +2363,18 @@ creating duplicate jobs. The ID must contain only letters
 The maximum length is 100 characters.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">job_id</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.JobReference.job_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">project_id</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.JobReference.project_id</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -1411,6 +2389,12 @@ restarted as a result of driver terminating with non-zero code
 before job is reported failed.  A job may be reported as
 thrashing if driver exits with non-zero code 4 times within 10
 minute window.  Maximum value is 10.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">max_failures_per_hour</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.JobScheduling.max_failures_per_hour</p>
 </dd></dl>
 
 </dd></dl>
@@ -1443,6 +2427,30 @@ description if the state is ERROR.</p>
 <code class="descname">substate</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.JobStatus.substate" title="Permalink to this definition">#</a></dt>
 <dd><p>Output only. Additional state information, which includes
 status reported by the agent.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">details</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.JobStatus.details</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">state</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.JobStatus.state</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">state_start_time</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.JobStatus.state_start_time</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">substate</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.JobStatus.substate</p>
 </dd></dl>
 
 </dd></dl>
@@ -1498,6 +2506,36 @@ labels.starred = *</p>
 <dd><p>Optional. The standard List page token.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">filter</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.ListClustersRequest.filter</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">page_size</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.ListClustersRequest.page_size</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">page_token</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.ListClustersRequest.page_token</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">project_id</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.ListClustersRequest.project_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">region</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.ListClustersRequest.region</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -1517,6 +2555,18 @@ labels.starred = *</p>
 are more results to fetch. To fetch additional results,
 provide this value as the <code class="docutils literal notranslate"><span class="pre">page_token</span></code> in a subsequent
 <code class="docutils literal notranslate"><span class="pre">ListClustersRequest</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">clusters</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.ListClustersResponse.clusters</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">next_page_token</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.ListClustersResponse.next_page_token</p>
 </dd></dl>
 
 </dd></dl>
@@ -1582,6 +2632,48 @@ status.state = ACTIVE AND labels.env = staging AND
 labels.starred = *</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">cluster_name</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.ListJobsRequest.cluster_name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">filter</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.ListJobsRequest.filter</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">job_state_matcher</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.ListJobsRequest.job_state_matcher</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">page_size</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.ListJobsRequest.page_size</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">page_token</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.ListJobsRequest.page_token</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">project_id</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.ListJobsRequest.project_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">region</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.ListJobsRequest.region</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -1603,17 +2695,65 @@ this value as the <code class="docutils literal notranslate"><span class="pre">p
 ListJobsRequest.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">jobs</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.ListJobsResponse.jobs</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">next_page_token</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.ListJobsResponse.next_page_token</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.dataproc_v1.types.ListOperationsRequest">
 <em class="property">class </em><code class="descclassname">google.cloud.dataproc_v1.types.</code><code class="descname">ListOperationsRequest</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.ListOperationsRequest" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.ListOperationsRequest.filter">
+<code class="descname">filter</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.ListOperationsRequest.filter" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.longrunning.ListOperationsRequest.filter</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.ListOperationsRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.ListOperationsRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.longrunning.ListOperationsRequest.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.ListOperationsRequest.page_size">
+<code class="descname">page_size</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.ListOperationsRequest.page_size" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.longrunning.ListOperationsRequest.page_size</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.ListOperationsRequest.page_token">
+<code class="descname">page_token</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.ListOperationsRequest.page_token" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.longrunning.ListOperationsRequest.page_token</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.dataproc_v1.types.ListOperationsResponse">
 <em class="property">class </em><code class="descclassname">google.cloud.dataproc_v1.types.</code><code class="descname">ListOperationsResponse</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.ListOperationsResponse" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.ListOperationsResponse.next_page_token">
+<code class="descname">next_page_token</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.ListOperationsResponse.next_page_token" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.longrunning.ListOperationsResponse.next_page_token</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.ListOperationsResponse.operations">
+<code class="descname">operations</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.ListOperationsResponse.operations" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.longrunning.ListOperationsResponse.operations</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.dataproc_v1.types.ListWorkflowTemplatesRequest">
@@ -1641,6 +2781,24 @@ response.</p>
 request the next page of results.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">page_size</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.ListWorkflowTemplatesRequest.page_size</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">page_token</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.ListWorkflowTemplatesRequest.page_token</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">parent</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.ListWorkflowTemplatesRequest.parent</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -1662,6 +2820,18 @@ provide this value as the page_token in a subsequent
 ListWorkflowTemplatesRequest.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">next_page_token</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.ListWorkflowTemplatesResponse.next_page_token</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">templates</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.ListWorkflowTemplatesResponse.templates</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -1679,7 +2849,25 @@ ListWorkflowTemplatesRequest.</p>
 <dl class="class">
 <dt id="google.cloud.dataproc_v1.types.LoggingConfig.DriverLogLevelsEntry">
 <em class="property">class </em><code class="descname">DriverLogLevelsEntry</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.LoggingConfig.DriverLogLevelsEntry" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.LoggingConfig.DriverLogLevelsEntry.key">
+<code class="descname">key</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.LoggingConfig.DriverLogLevelsEntry.key" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.cloud.dataproc.v1.LoggingConfig.DriverLogLevelsEntry.key</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.LoggingConfig.DriverLogLevelsEntry.value">
+<code class="descname">value</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.LoggingConfig.DriverLogLevelsEntry.value" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.cloud.dataproc.v1.LoggingConfig.DriverLogLevelsEntry.value</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">driver_log_levels</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.LoggingConfig.driver_log_levels</p>
+</dd></dl>
 
 </dd></dl>
 
@@ -1715,7 +2903,37 @@ labels can be associated with a given cluster.</p>
 <dl class="class">
 <dt id="google.cloud.dataproc_v1.types.ManagedCluster.LabelsEntry">
 <em class="property">class </em><code class="descname">LabelsEntry</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.ManagedCluster.LabelsEntry" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.ManagedCluster.LabelsEntry.key">
+<code class="descname">key</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.ManagedCluster.LabelsEntry.key" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.cloud.dataproc.v1.ManagedCluster.LabelsEntry.key</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.ManagedCluster.LabelsEntry.value">
+<code class="descname">value</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.ManagedCluster.LabelsEntry.value" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.cloud.dataproc.v1.ManagedCluster.LabelsEntry.value</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">cluster_name</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.ManagedCluster.cluster_name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">config</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.ManagedCluster.config</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">labels</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.ManagedCluster.labels</p>
+</dd></dl>
 
 </dd></dl>
 
@@ -1735,6 +2953,18 @@ Managed Instance Group.</p>
 <code class="descname">instance_group_manager_name</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.ManagedGroupConfig.instance_group_manager_name" title="Permalink to this definition">#</a></dt>
 <dd><p>Output only. The name of the Instance Group Manager for this
 group.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">instance_group_manager_name</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.ManagedGroupConfig.instance_group_manager_name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">instance_template_name</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.ManagedGroupConfig.instance_template_name</p>
 </dd></dl>
 
 </dd></dl>
@@ -1760,12 +2990,54 @@ error and the exceeded timeout period) if the executable is
 not completed at end of the timeout period.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">executable_file</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.NodeInitializationAction.executable_file</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">execution_timeout</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.NodeInitializationAction.execution_timeout</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.dataproc_v1.types.Operation">
 <em class="property">class </em><code class="descclassname">google.cloud.dataproc_v1.types.</code><code class="descname">Operation</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.Operation" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.Operation.done">
+<code class="descname">done</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.Operation.done" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.longrunning.Operation.done</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.Operation.error">
+<code class="descname">error</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.Operation.error" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.longrunning.Operation.error</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.Operation.metadata">
+<code class="descname">metadata</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.Operation.metadata" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.longrunning.Operation.metadata</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.Operation.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.Operation.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.longrunning.Operation.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.Operation.response">
+<code class="descname">response</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.Operation.response" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.longrunning.Operation.response</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.dataproc_v1.types.OrderedJob">
@@ -1852,7 +3124,79 @@ workflow.</p>
 <dl class="class">
 <dt id="google.cloud.dataproc_v1.types.OrderedJob.LabelsEntry">
 <em class="property">class </em><code class="descname">LabelsEntry</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.OrderedJob.LabelsEntry" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.OrderedJob.LabelsEntry.key">
+<code class="descname">key</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.OrderedJob.LabelsEntry.key" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.cloud.dataproc.v1.OrderedJob.LabelsEntry.key</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.OrderedJob.LabelsEntry.value">
+<code class="descname">value</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.OrderedJob.LabelsEntry.value" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.cloud.dataproc.v1.OrderedJob.LabelsEntry.value</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">hadoop_job</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.OrderedJob.hadoop_job</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">hive_job</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.OrderedJob.hive_job</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">labels</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.OrderedJob.labels</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">pig_job</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.OrderedJob.pig_job</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">prerequisite_step_ids</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.OrderedJob.prerequisite_step_ids</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">pyspark_job</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.OrderedJob.pyspark_job</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">scheduling</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.OrderedJob.scheduling</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">spark_job</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.OrderedJob.spark_job</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">spark_sql_job</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.OrderedJob.spark_sql_job</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">step_id</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.OrderedJob.step_id</p>
+</dd></dl>
 
 </dd></dl>
 
@@ -1876,6 +3220,18 @@ workflow.</p>
 <dt id="google.cloud.dataproc_v1.types.ParameterValidation.values">
 <code class="descname">values</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.ParameterValidation.values" title="Permalink to this definition">#</a></dt>
 <dd><p>Validation based on a list of allowed values.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">regex</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.ParameterValidation.regex</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">values</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.ParameterValidation.values</p>
 </dd></dl>
 
 </dd></dl>
@@ -1946,12 +3302,78 @@ Pig UDFs.</p>
 <dl class="class">
 <dt id="google.cloud.dataproc_v1.types.PigJob.PropertiesEntry">
 <em class="property">class </em><code class="descname">PropertiesEntry</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.PigJob.PropertiesEntry" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.PigJob.PropertiesEntry.key">
+<code class="descname">key</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.PigJob.PropertiesEntry.key" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.cloud.dataproc.v1.PigJob.PropertiesEntry.key</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.PigJob.PropertiesEntry.value">
+<code class="descname">value</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.PigJob.PropertiesEntry.value" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.cloud.dataproc.v1.PigJob.PropertiesEntry.value</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.dataproc_v1.types.PigJob.ScriptVariablesEntry">
 <em class="property">class </em><code class="descname">ScriptVariablesEntry</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.PigJob.ScriptVariablesEntry" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.PigJob.ScriptVariablesEntry.key">
+<code class="descname">key</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.PigJob.ScriptVariablesEntry.key" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.cloud.dataproc.v1.PigJob.ScriptVariablesEntry.key</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.PigJob.ScriptVariablesEntry.value">
+<code class="descname">value</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.PigJob.ScriptVariablesEntry.value" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.cloud.dataproc.v1.PigJob.ScriptVariablesEntry.value</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">continue_on_failure</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.PigJob.continue_on_failure</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">jar_file_uris</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.PigJob.jar_file_uris</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">logging_config</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.PigJob.logging_config</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">properties</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.PigJob.properties</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">query_file_uri</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.PigJob.query_file_uri</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">query_list</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.PigJob.query_list</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">script_variables</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.PigJob.script_variables</p>
+</dd></dl>
 
 </dd></dl>
 
@@ -2025,7 +3447,67 @@ classes in user code.</p>
 <dl class="class">
 <dt id="google.cloud.dataproc_v1.types.PySparkJob.PropertiesEntry">
 <em class="property">class </em><code class="descname">PropertiesEntry</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.PySparkJob.PropertiesEntry" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.PySparkJob.PropertiesEntry.key">
+<code class="descname">key</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.PySparkJob.PropertiesEntry.key" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.cloud.dataproc.v1.PySparkJob.PropertiesEntry.key</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.PySparkJob.PropertiesEntry.value">
+<code class="descname">value</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.PySparkJob.PropertiesEntry.value" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.cloud.dataproc.v1.PySparkJob.PropertiesEntry.value</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">archive_uris</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.PySparkJob.archive_uris</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">args</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.PySparkJob.args</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">file_uris</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.PySparkJob.file_uris</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">jar_file_uris</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.PySparkJob.jar_file_uris</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">logging_config</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.PySparkJob.logging_config</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">main_python_file_uri</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.PySparkJob.main_python_file_uri</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">properties</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.PySparkJob.properties</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">python_file_uris</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.PySparkJob.python_file_uris</p>
+</dd></dl>
 
 </dd></dl>
 
@@ -2045,6 +3527,12 @@ to specify a HiveJob:  ::      “hiveJob”: {       “queryList”:
 “query3;query4”,         ]       }     }</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">queries</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.QueryList.queries</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -2057,6 +3545,12 @@ to specify a HiveJob:  ::      “hiveJob”: {       “queryList”:
 <dd><p>Required. RE2 regular expressions used to validate the
 parameter’s value. The value must match the regex in its
 entirety (substring matches are not sufficient).</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">regexes</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.RegexValidation.regexes</p>
 </dd></dl>
 
 </dd></dl>
@@ -2093,7 +3587,31 @@ properties</a>.</p>
 <dl class="class">
 <dt id="google.cloud.dataproc_v1.types.SoftwareConfig.PropertiesEntry">
 <em class="property">class </em><code class="descname">PropertiesEntry</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.SoftwareConfig.PropertiesEntry" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.SoftwareConfig.PropertiesEntry.key">
+<code class="descname">key</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.SoftwareConfig.PropertiesEntry.key" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.cloud.dataproc.v1.SoftwareConfig.PropertiesEntry.key</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.SoftwareConfig.PropertiesEntry.value">
+<code class="descname">value</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.SoftwareConfig.PropertiesEntry.value" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.cloud.dataproc.v1.SoftwareConfig.PropertiesEntry.value</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">image_version</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.SoftwareConfig.image_version</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">properties</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.SoftwareConfig.properties</p>
+</dd></dl>
 
 </dd></dl>
 
@@ -2178,7 +3696,67 @@ classes in user code.</p>
 <dl class="class">
 <dt id="google.cloud.dataproc_v1.types.SparkJob.PropertiesEntry">
 <em class="property">class </em><code class="descname">PropertiesEntry</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.SparkJob.PropertiesEntry" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.SparkJob.PropertiesEntry.key">
+<code class="descname">key</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.SparkJob.PropertiesEntry.key" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.cloud.dataproc.v1.SparkJob.PropertiesEntry.key</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.SparkJob.PropertiesEntry.value">
+<code class="descname">value</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.SparkJob.PropertiesEntry.value" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.cloud.dataproc.v1.SparkJob.PropertiesEntry.value</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">archive_uris</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.SparkJob.archive_uris</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">args</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.SparkJob.args</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">file_uris</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.SparkJob.file_uris</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">jar_file_uris</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.SparkJob.jar_file_uris</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">logging_config</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.SparkJob.logging_config</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">main_class</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.SparkJob.main_class</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">main_jar_file_uri</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.SparkJob.main_jar_file_uri</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">properties</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.SparkJob.properties</p>
+</dd></dl>
 
 </dd></dl>
 
@@ -2237,19 +3815,97 @@ CLASSPATH.</p>
 <dl class="class">
 <dt id="google.cloud.dataproc_v1.types.SparkSqlJob.PropertiesEntry">
 <em class="property">class </em><code class="descname">PropertiesEntry</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.SparkSqlJob.PropertiesEntry" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.SparkSqlJob.PropertiesEntry.key">
+<code class="descname">key</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.SparkSqlJob.PropertiesEntry.key" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.cloud.dataproc.v1.SparkSqlJob.PropertiesEntry.key</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.SparkSqlJob.PropertiesEntry.value">
+<code class="descname">value</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.SparkSqlJob.PropertiesEntry.value" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.cloud.dataproc.v1.SparkSqlJob.PropertiesEntry.value</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.dataproc_v1.types.SparkSqlJob.ScriptVariablesEntry">
 <em class="property">class </em><code class="descname">ScriptVariablesEntry</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.SparkSqlJob.ScriptVariablesEntry" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.SparkSqlJob.ScriptVariablesEntry.key">
+<code class="descname">key</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.SparkSqlJob.ScriptVariablesEntry.key" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.cloud.dataproc.v1.SparkSqlJob.ScriptVariablesEntry.key</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.SparkSqlJob.ScriptVariablesEntry.value">
+<code class="descname">value</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.SparkSqlJob.ScriptVariablesEntry.value" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.cloud.dataproc.v1.SparkSqlJob.ScriptVariablesEntry.value</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">jar_file_uris</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.SparkSqlJob.jar_file_uris</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">logging_config</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.SparkSqlJob.logging_config</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">properties</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.SparkSqlJob.properties</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">query_file_uri</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.SparkSqlJob.query_file_uri</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">query_list</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.SparkSqlJob.query_list</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">script_variables</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.SparkSqlJob.script_variables</p>
+</dd></dl>
 
 </dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.dataproc_v1.types.Status">
 <em class="property">class </em><code class="descclassname">google.cloud.dataproc_v1.types.</code><code class="descname">Status</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.Status" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.Status.code">
+<code class="descname">code</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.Status.code" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.rpc.Status.code</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.Status.details">
+<code class="descname">details</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.Status.details" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.rpc.Status.details</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.Status.message">
+<code class="descname">message</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.Status.message" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.rpc.Status.message</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.dataproc_v1.types.SubmitJobRequest">
@@ -2288,6 +3944,30 @@ recommended to always set this value to a <a class="reference external" href="ht
 must contain only letters (a-z, A-Z), numbers (0-9),
 underscores (_), and hyphens (-). The maximum length is 40
 characters.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">job</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.SubmitJobRequest.job</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">project_id</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.SubmitJobRequest.project_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">region</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.SubmitJobRequest.region</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">request_id</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.SubmitJobRequest.request_id</p>
 </dd></dl>
 
 </dd></dl>
@@ -2362,12 +4042,48 @@ paths are invalid:  -  placement.clusterSelector.clusterLabels
 value.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">description</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.TemplateParameter.description</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">fields</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.TemplateParameter.fields</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.TemplateParameter.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">validation</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.TemplateParameter.validation</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.dataproc_v1.types.Timestamp">
 <em class="property">class </em><code class="descclassname">google.cloud.dataproc_v1.types.</code><code class="descname">Timestamp</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.Timestamp" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.Timestamp.nanos">
+<code class="descname">nanos</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.Timestamp.nanos" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.Timestamp.nanos</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.Timestamp.seconds">
+<code class="descname">seconds</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.Timestamp.seconds" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.Timestamp.seconds</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.dataproc_v1.types.UpdateClusterRequest">
@@ -2461,6 +4177,48 @@ underscores (_), and hyphens (-). The maximum length is 40
 characters.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">cluster</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.UpdateClusterRequest.cluster</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">cluster_name</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.UpdateClusterRequest.cluster_name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">graceful_decommission_timeout</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.UpdateClusterRequest.graceful_decommission_timeout</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">project_id</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.UpdateClusterRequest.project_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">region</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.UpdateClusterRequest.region</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">request_id</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.UpdateClusterRequest.request_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">update_mask</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.UpdateClusterRequest.update_mask</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -2503,6 +4261,36 @@ update_mask parameter would be specified as labels, and the
 Currently, labels is the only field that can be updated.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">job</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.UpdateJobRequest.job</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">job_id</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.UpdateJobRequest.job_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">project_id</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.UpdateJobRequest.project_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">region</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.UpdateJobRequest.region</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">update_mask</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.UpdateJobRequest.update_mask</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -2514,6 +4302,12 @@ Currently, labels is the only field that can be updated.</p>
 <code class="descname">template</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.UpdateWorkflowTemplateRequest.template" title="Permalink to this definition">#</a></dt>
 <dd><p>Required. The updated workflow template.  The
 <code class="docutils literal notranslate"><span class="pre">template.version</span></code> field must match the current version.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">template</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.UpdateWorkflowTemplateRequest.template</p>
 </dd></dl>
 
 </dd></dl>
@@ -2528,6 +4322,12 @@ Currently, labels is the only field that can be updated.</p>
 <dd><p>Required. List of allowed values for the parameter.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">values</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.ValueValidation.values</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -2538,6 +4338,12 @@ Currently, labels is the only field that can be updated.</p>
 <dt id="google.cloud.dataproc_v1.types.WorkflowGraph.nodes">
 <code class="descname">nodes</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.WorkflowGraph.nodes" title="Permalink to this definition">#</a></dt>
 <dd><p>Output only. The workflow nodes.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">nodes</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.WorkflowGraph.nodes</p>
 </dd></dl>
 
 </dd></dl>
@@ -2617,7 +4423,85 @@ parameters.</p>
 <dl class="class">
 <dt id="google.cloud.dataproc_v1.types.WorkflowMetadata.ParametersEntry">
 <em class="property">class </em><code class="descname">ParametersEntry</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.WorkflowMetadata.ParametersEntry" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.WorkflowMetadata.ParametersEntry.key">
+<code class="descname">key</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.WorkflowMetadata.ParametersEntry.key" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.cloud.dataproc.v1.WorkflowMetadata.ParametersEntry.key</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.WorkflowMetadata.ParametersEntry.value">
+<code class="descname">value</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.WorkflowMetadata.ParametersEntry.value" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.cloud.dataproc.v1.WorkflowMetadata.ParametersEntry.value</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">cluster_name</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.WorkflowMetadata.cluster_name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">cluster_uuid</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.WorkflowMetadata.cluster_uuid</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">create_cluster</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.WorkflowMetadata.create_cluster</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">delete_cluster</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.WorkflowMetadata.delete_cluster</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">end_time</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.WorkflowMetadata.end_time</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">graph</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.WorkflowMetadata.graph</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">parameters</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.WorkflowMetadata.parameters</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">start_time</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.WorkflowMetadata.start_time</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">state</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.WorkflowMetadata.state</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">template</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.WorkflowMetadata.template</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">version</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.WorkflowMetadata.version</p>
+</dd></dl>
 
 </dd></dl>
 
@@ -2654,6 +4538,36 @@ RUNNING state.</p>
 <dt id="google.cloud.dataproc_v1.types.WorkflowNode.error">
 <code class="descname">error</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.WorkflowNode.error" title="Permalink to this definition">#</a></dt>
 <dd><p>Output only. The error detail.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">error</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.WorkflowNode.error</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">job_id</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.WorkflowNode.job_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">prerequisite_step_ids</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.WorkflowNode.prerequisite_step_ids</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">state</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.WorkflowNode.state</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">step_id</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.WorkflowNode.step_id</p>
 </dd></dl>
 
 </dd></dl>
@@ -2742,7 +4656,73 @@ the template is instantiated.</p>
 <dl class="class">
 <dt id="google.cloud.dataproc_v1.types.WorkflowTemplate.LabelsEntry">
 <em class="property">class </em><code class="descname">LabelsEntry</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.WorkflowTemplate.LabelsEntry" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.WorkflowTemplate.LabelsEntry.key">
+<code class="descname">key</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.WorkflowTemplate.LabelsEntry.key" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.cloud.dataproc.v1.WorkflowTemplate.LabelsEntry.key</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1.types.WorkflowTemplate.LabelsEntry.value">
+<code class="descname">value</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.WorkflowTemplate.LabelsEntry.value" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.cloud.dataproc.v1.WorkflowTemplate.LabelsEntry.value</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">create_time</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.WorkflowTemplate.create_time</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">id</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.WorkflowTemplate.id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">jobs</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.WorkflowTemplate.jobs</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">labels</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.WorkflowTemplate.labels</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.WorkflowTemplate.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">parameters</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.WorkflowTemplate.parameters</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">placement</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.WorkflowTemplate.placement</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">update_time</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.WorkflowTemplate.update_time</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">version</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.WorkflowTemplate.version</p>
+</dd></dl>
 
 </dd></dl>
 
@@ -2770,6 +4750,18 @@ managed cluster or an existing cluster chosen by labels.</p>
 <dd><p>Optional. A selector that chooses target cluster for jobs
 based on metadata.  The selector is evaluated at the time each
 job is submitted.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">cluster_selector</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.WorkflowTemplatePlacement.cluster_selector</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">managed_cluster</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.WorkflowTemplatePlacement.managed_cluster</p>
 </dd></dl>
 
 </dd></dl>
@@ -2807,6 +4799,30 @@ may be changed before final release.</p>
 HistoryServer, or TimelineServer that provides application-
 specific information. The URL uses the internal hostname, and
 requires a proxy server for resolution and, possibly, access.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.YarnApplication.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">progress</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.YarnApplication.progress</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">state</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.YarnApplication.state</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">tracking_url</code></dt>
+<dd><p>Field google.cloud.dataproc.v1.YarnApplication.tracking_url</p>
 </dd></dl>
 
 </dd></dl>
