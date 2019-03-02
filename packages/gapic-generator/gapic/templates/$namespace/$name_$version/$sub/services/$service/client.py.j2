@@ -108,7 +108,7 @@ class {{ service.name }}:
             self._transport.{{ method.name|snake_case }},
             default_retry=None,  # FIXME
             default_timeout=None,  # FIXME
-            client_info=self.client_info,
+            client_info=_client_info,
         )
         {%- if method.field_headers %}
 
@@ -171,15 +171,15 @@ class {{ service.name }}:
         # in the dictionary).
         return next(iter(_transport_registry.values()))
 
-    @property
-    def client_info(self) -> gapic_v1.client_info.ClientInfo:
-        """Return information about this client (for metrics).
 
-        Returns:
-            client_info.ClientInfo: An object with metadata about this
-                client library.
-        """
-        return gapic_v1.client_info.ClientInfo()
+try:
+    _client_info = gapic_v1.client_info.ClientInfo(
+        gapic_version=pkg_resources.get_distribution(
+            '{{ api.naming.warehouse_package_name }}',
+        ).version,
+    )
+except pkg_resources.DistributionNotFound:
+    _client_info = gapic_v1.client_info.ClientInfo()
 
 
 __all__ = (
