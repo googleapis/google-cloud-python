@@ -437,6 +437,16 @@ class Method:
         )
 
     @utils.cached_property
+    def idempotent(self) -> bool:
+        """Return True if we know this method is idempotent, False otherwise.
+
+        Note: We are intentionally conservative here. It is far less bad
+        to falsely believe an idempotent method is non-idempotent than
+        the converse.
+        """
+        return bool(self.options.Extensions[annotations_pb2.http].get)
+
+    @utils.cached_property
     def ref_types(self) -> Sequence[Union[MessageType, EnumType]]:
         """Return types referenced by this method."""
         # Begin with the input (request) and output (response) messages.

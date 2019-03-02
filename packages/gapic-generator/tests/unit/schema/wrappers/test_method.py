@@ -51,10 +51,27 @@ def test_method_field_headers_none():
     assert isinstance(method.field_headers, collections.Sequence)
 
 
-def test_service_field_headers_present():
+def test_method_field_headers_present():
     http_rule = http_pb2.HttpRule(get='/v1/{parent=projects/*}/topics')
-    service = make_method('DoSomething', http_rule=http_rule)
-    assert service.field_headers == ('parent',)
+    method = make_method('DoSomething', http_rule=http_rule)
+    assert method.field_headers == ('parent',)
+
+
+def test_method_idempotent_yes():
+    http_rule = http_pb2.HttpRule(get='/v1/{parent=projects/*}/topics')
+    method = make_method('DoSomething', http_rule=http_rule)
+    assert method.idempotent is True
+
+
+def test_method_idempotent_no():
+    http_rule = http_pb2.HttpRule(post='/v1/{parent=projects/*}/topics')
+    method = make_method('DoSomething', http_rule=http_rule)
+    assert method.idempotent is False
+
+
+def test_method_idempotent_no_http_rule():
+    method = make_method('DoSomething')
+    assert method.idempotent is False
 
 
 def test_method_unary_unary():
