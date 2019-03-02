@@ -11,9 +11,6 @@ jobs:
           name: Update to latest `nox`
           command: python3.7 -m pip install --upgrade nox
       - run:
-          name: Unit tests in Python 3.5
-          command: python3.7 -m nox -s unit-3.5
-      - run:
           name: Unit tests in Python 3.6
           command: python3.7 -m nox -s unit-3.6
       - run:
