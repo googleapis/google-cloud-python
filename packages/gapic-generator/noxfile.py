@@ -56,7 +56,7 @@ def showcase(session):
 
     # Install a client library for Showcase.
     with tempfile.TemporaryDirectory() as tmp_dir:
-        showcase_version = '0.0.12'
+        showcase_version = '0.0.13'
 
         # Download the Showcase descriptor.
         session.run(
