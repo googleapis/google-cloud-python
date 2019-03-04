@@ -593,7 +593,7 @@ class Property(ModelAttribute):
         choices=None,
         validator=None,
         verbose_name=None,
-        write_empty_list=None
+        write_empty_list=None,
     ):
         # NOTE: These explicitly avoid setting the values so that the
         #       instances will fall back to the class on lookup.
@@ -1946,7 +1946,7 @@ class BlobProperty(Property):
         choices=None,
         validator=None,
         verbose_name=None,
-        write_empty_list=None
+        write_empty_list=None,
     ):
         super(BlobProperty, self).__init__(
             name=name,
@@ -2372,7 +2372,7 @@ class JsonProperty(BlobProperty):
         choices=None,
         validator=None,
         verbose_name=None,
-        write_empty_list=None
+        write_empty_list=None,
     ):
         super(JsonProperty, self).__init__(
             name=name,
@@ -2717,7 +2717,7 @@ class UserProperty(Property):
         choices=None,
         validator=None,
         verbose_name=None,
-        write_empty_list=None
+        write_empty_list=None,
     ):
         super(UserProperty, self).__init__(
             name=name,
@@ -2849,7 +2849,7 @@ class KeyProperty(Property):
         choices=None,
         validator=None,
         verbose_name=None,
-        write_empty_list=None
+        write_empty_list=None,
     ):
         name, kind = self._handle_positional(args, name, kind)
         super(KeyProperty, self).__init__(
@@ -3120,7 +3120,7 @@ class DateTimeProperty(Property):
         choices=None,
         validator=None,
         verbose_name=None,
-        write_empty_list=None
+        write_empty_list=None,
     ):
         super(DateTimeProperty, self).__init__(
             name=name,
@@ -3841,6 +3841,34 @@ class Model(metaclass=MetaModel):
                 representing the projection for the model instance.
         """
         self._projection = tuple(projection)
+
+    @classmethod
+    def _check_properties(cls, property_names, require_indexed=True):
+        """Internal helper to check the given properties exist and meet specified
+        requirements.
+
+        Called from query.py.
+
+        Args:
+            property_names (list): List or tuple of property names -- each being
+            a string, possibly containing dots (to address subproperties of
+            structured properties).
+
+        Raises:
+            InvalidPropertyError: if one of the properties is invalid.
+            AssertionError: if the argument is not a list or tuple of strings.
+        """
+        assert isinstance(property_names, (list, tuple)), repr(property_names)
+        for name in property_names:
+            if "." in name:
+                name, rest = name.split(".", 1)
+            else:
+                rest = None
+            prop = cls._properties.get(name)
+            if prop is None:
+                raise InvalidPropertyError("Unknown property {}".format(name))
+            else:
+                prop._check_property(rest, require_indexed=require_indexed)
 
     @classmethod
     def _fix_up_properties(cls):

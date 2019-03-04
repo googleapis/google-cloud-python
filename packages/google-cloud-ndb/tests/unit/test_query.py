@@ -39,6 +39,13 @@ class TestQueryOptions:
             query.QueryOptions()
 
 
+class TestQueryOrder:
+    @staticmethod
+    def test_constructor():
+        with pytest.raises(NotImplementedError):
+            query.QueryOrder()
+
+
 class TestRepeatedStructuredPropertyPredicate:
     @staticmethod
     def test_constructor():
@@ -123,8 +130,27 @@ class TestParameter:
 class TestParameterizedFunction:
     @staticmethod
     def test_constructor():
-        with pytest.raises(NotImplementedError):
-            query.ParameterizedFunction()
+        q = query.ParameterizedFunction("user", query.Parameter(1))
+        assert q.func == "user"
+        assert q.values == query.Parameter(1)
+
+    @staticmethod
+    def test___repr__():
+        q = query.ParameterizedFunction("user", query.Parameter(1))
+        assert q.__repr__() == "ParameterizedFunction('user', Parameter(1))"
+
+    @staticmethod
+    def test___eq__parameter():
+        q = query.ParameterizedFunction("user", query.Parameter(1))
+        assert (
+            q.__eq__(query.ParameterizedFunction("user", query.Parameter(1)))
+            is True
+        )
+
+    @staticmethod
+    def test___eq__no_parameter():
+        q = query.ParameterizedFunction("user", query.Parameter(1))
+        assert q.__eq__(42) is NotImplemented
 
 
 class TestNode:
@@ -881,8 +907,118 @@ def test_OR():
 class TestQuery:
     @staticmethod
     def test_constructor():
-        with pytest.raises(NotImplementedError):
-            query.Query()
+        q = query.Query(kind="Foo")
+        assert q.kind == "Foo"
+        assert q.ancestor is None
+        assert q.filters is None
+        assert q.orders is None
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_constructor_with_ancestor_parameterized_function():
+        q = query.Query(
+            ancestor=query.ParameterizedFunction("key", query.Parameter(1))
+        )
+        assert q.ancestor == query.ParameterizedFunction(
+            "key", query.Parameter(1)
+        )
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_constructor_with_ancestor_and_app():
+        key = key_module.Key("a", "b", app="app")
+        q = query.Query(ancestor=key, app="app")
+        assert q.app == "app"
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_constructor_with_ancestor_and_namespace():
+        key = key_module.Key("a", "b", namespace="space")
+        q = query.Query(ancestor=key, namespace="space")
+        assert q.namespace == "space"
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_constructor_with_ancestor_parameterized_thing():
+        q = query.Query(ancestor=query.ParameterizedThing())
+        assert isinstance(q.ancestor, query.ParameterizedThing)
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_constructor_with_projection():
+        q = query.Query(kind="Foo", projection=["X"])
+        assert q.projection == ("X",)
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    @unittest.mock.patch("google.cloud.ndb.model.Model._check_properties")
+    def test_constructor_with_projection_as_property(_check_props):
+        q = query.Query(kind="Foo", projection=[model.Property(name="X")])
+        assert q.projection == ("X",)
+        _check_props.assert_not_called()
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    @unittest.mock.patch("google.cloud.ndb.model.Model._check_properties")
+    def test_constructor_with_projection_as_property_modelclass(_check_props):
+        class Foo(model.Model):
+            x = model.IntegerProperty()
+
+        q = query.Query(kind="Foo", projection=[model.Property(name="x")])
+        assert q.projection == ("x",)
+        _check_props.assert_called_once_with(["x"])
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_constructor_with_group_by():
+        q = query.Query(kind="Foo", group_by=["X"])
+        assert q.group_by == ("X",)
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_constructor_with_filters():
+        q = query.Query(filters=query.FilterNode("f", None, None))
+        assert isinstance(q.filters, query.Node)
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_constructor_with_orders():
+        q = query.Query(orders=[])
+        assert q.orders == []
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_query_errors():
+        with pytest.raises(TypeError):
+            query.Query(
+                ancestor=query.ParameterizedFunction(
+                    "user", query.Parameter(1)
+                )
+            )
+        with pytest.raises(TypeError):
+            query.Query(ancestor=42)
+        with pytest.raises(ValueError):
+            query.Query(ancestor=model.Key("Kind", None))
+        with pytest.raises(TypeError):
+            query.Query(ancestor=model.Key("Kind", 1), app="another")
+        with pytest.raises(TypeError):
+            query.Query(ancestor=model.Key("X", 1), namespace="another")
+        with pytest.raises(TypeError):
+            query.Query(filters=42)
+        with pytest.raises(TypeError):
+            query.Query(orders=42)
+        # with pytest.raises(TypeError):
+        #     query.Query(default_options=42)
+        with pytest.raises(TypeError):
+            query.Query(projection="")
+        with pytest.raises(TypeError):
+            query.Query(projection=42)
+        with pytest.raises(TypeError):
+            query.Query(projection=[42])
+        with pytest.raises(TypeError):
+            query.Query(group_by="")
+        with pytest.raises(TypeError):
+            query.Query(group_by=42)
 
 
 def test_gql():

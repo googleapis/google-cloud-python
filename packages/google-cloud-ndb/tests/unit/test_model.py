@@ -2915,6 +2915,33 @@ class TestModel:
         with pytest.raises(model.KindError):
             model.Model._lookup_model("NoKind")
 
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test__check_properties():
+        class XModel(model.Model):
+            x = model.IntegerProperty()
+
+        properties = ["x"]
+        assert XModel._check_properties(properties) is None
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test__check_properties_with_sub():
+        class XModel(model.Model):
+            x = model.IntegerProperty()
+
+        properties = ["x.x"]
+        # Will raise error until model.StructuredProperty is implemented
+        with pytest.raises(model.InvalidPropertyError):
+            XModel._check_properties(properties)
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test__check_properties_not_found():
+        properties = ["x"]
+        with pytest.raises(model.InvalidPropertyError):
+            model.Model._check_properties(properties)
+
 
 class Test_entity_from_protobuf:
     @staticmethod
