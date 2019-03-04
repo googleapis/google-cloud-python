@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.automl_v1beta1.gapic.prediction_service_client &#8212; google-cloud 14f4d90 documentation</title>
+    <title>google.cloud.automl_v1beta1.gapic.prediction_service_client &#8212; google-cloud 3a1bed3 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -68,8 +68,17 @@
     <span class="n">prediction_service_grpc_transport</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="kn">from</span> <span class="nn">google.cloud.automl_v1beta1.proto</span> <span class="k">import</span> <span class="n">data_items_pb2</span>
+<span class="kn">from</span> <span class="nn">google.cloud.automl_v1beta1.proto</span> <span class="k">import</span> <span class="n">dataset_pb2</span>
+<span class="kn">from</span> <span class="nn">google.cloud.automl_v1beta1.proto</span> <span class="k">import</span> <span class="n">io_pb2</span>
+<span class="kn">from</span> <span class="nn">google.cloud.automl_v1beta1.proto</span> <span class="k">import</span> <span class="n">model_evaluation_pb2</span>
+<span class="kn">from</span> <span class="nn">google.cloud.automl_v1beta1.proto</span> <span class="k">import</span> <span class="n">model_pb2</span>
+<span class="kn">from</span> <span class="nn">google.cloud.automl_v1beta1.proto</span> <span class="k">import</span> <span class="n">operations_pb2</span> <span class="k">as</span> <span class="n">proto_operations_pb2</span>
 <span class="kn">from</span> <span class="nn">google.cloud.automl_v1beta1.proto</span> <span class="k">import</span> <span class="n">prediction_service_pb2</span>
 <span class="kn">from</span> <span class="nn">google.cloud.automl_v1beta1.proto</span> <span class="k">import</span> <span class="n">prediction_service_pb2_grpc</span>
+<span class="kn">from</span> <span class="nn">google.cloud.automl_v1beta1.proto</span> <span class="k">import</span> <span class="n">service_pb2</span>
+<span class="kn">from</span> <span class="nn">google.cloud.automl_v1beta1.proto</span> <span class="k">import</span> <span class="n">service_pb2_grpc</span>
+<span class="kn">from</span> <span class="nn">google.longrunning</span> <span class="k">import</span> <span class="n">operations_pb2</span> <span class="k">as</span> <span class="n">longrunning_operations_pb2</span>
+<span class="kn">from</span> <span class="nn">google.protobuf</span> <span class="k">import</span> <span class="n">empty_pb2</span>
 
 <span class="n">_GAPIC_LIBRARY_VERSION</span> <span class="o">=</span> <span class="n">pkg_resources</span><span class="o">.</span><span class="n">get_distribution</span><span class="p">(</span><span class="s2">&quot;google-cloud-automl&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">version</span>
 
