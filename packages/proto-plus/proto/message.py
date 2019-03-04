@@ -46,8 +46,6 @@ class MessageMeta(type):
         # Pull a reference to the module where this class is being
         # declared.
         module = sys.modules.get(attrs.get('__module__'))
-
-        # Pop metadata off the attrs.
         proto_module = getattr(module, '__protobuf__', object())
 
         # A package and full name should be present.
