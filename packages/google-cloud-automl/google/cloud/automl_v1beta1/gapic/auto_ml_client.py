@@ -33,14 +33,11 @@ import grpc
 from google.cloud.automl_v1beta1.gapic import auto_ml_client_config
 from google.cloud.automl_v1beta1.gapic import enums
 from google.cloud.automl_v1beta1.gapic.transports import auto_ml_grpc_transport
-from google.cloud.automl_v1beta1.proto import data_items_pb2
 from google.cloud.automl_v1beta1.proto import dataset_pb2
 from google.cloud.automl_v1beta1.proto import io_pb2
 from google.cloud.automl_v1beta1.proto import model_evaluation_pb2
 from google.cloud.automl_v1beta1.proto import model_pb2
 from google.cloud.automl_v1beta1.proto import operations_pb2 as proto_operations_pb2
-from google.cloud.automl_v1beta1.proto import prediction_service_pb2
-from google.cloud.automl_v1beta1.proto import prediction_service_pb2_grpc
 from google.cloud.automl_v1beta1.proto import service_pb2
 from google.cloud.automl_v1beta1.proto import service_pb2_grpc
 from google.longrunning import operations_pb2 as longrunning_operations_pb2
