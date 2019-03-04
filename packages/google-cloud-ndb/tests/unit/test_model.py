@@ -1741,13 +1741,13 @@ class TestTextProperty:
     @staticmethod
     def test__to_base_type():
         prop = model.TextProperty(name="text")
-        assert prop._to_base_type(b"abc") is None
+        assert prop._to_base_type("abc") is None
 
     @staticmethod
     def test__to_base_type_converted():
         prop = model.TextProperty(name="text")
         value = "\N{snowman}"
-        assert prop._to_base_type(value) == b"\xe2\x98\x83"
+        assert prop._to_base_type(b"\xe2\x98\x83") == value
 
     @staticmethod
     def test__from_base_type():
@@ -3001,9 +3001,9 @@ class Test_entity_to_protobuf:
         assert entity_pb.properties["b"].null_value == 0
         assert pickle.loads(entity_pb.properties["c"].blob_value) == gherkin
         d_values = entity_pb.properties["d"].array_value.values
-        assert d_values[0].blob_value == b"foo"
-        assert d_values[1].blob_value == b"bar"
-        assert d_values[2].blob_value == b"baz"
+        assert d_values[0].string_value == "foo"
+        assert d_values[1].string_value == "bar"
+        assert d_values[2].string_value == "baz"
         e_values = entity_pb.properties["e"].array_value.values
         assert pickle.loads(e_values[0].blob_value) == gherkin
         assert pickle.loads(e_values[1].blob_value) == dill
@@ -3018,7 +3018,7 @@ class Test_entity_to_protobuf:
         entity = ThisKind(key="not the key", _key=key)
 
         entity_pb = model._entity_to_protobuf(entity)
-        assert entity_pb.properties["key"].blob_value == b"not the key"
+        assert entity_pb.properties["key"].string_value == "not the key"
         assert entity_pb.key.path[0].kind == "ThisKind"
         assert entity_pb.key.path[0].id == 123
 
@@ -3053,9 +3053,9 @@ class Test_entity_to_protobuf:
         assert entity_pb.properties["b"].null_value == 0
         assert pickle.loads(entity_pb.properties["c"].blob_value) == gherkin
         d_values = entity_pb.properties["d"].array_value.values
-        assert d_values[0].blob_value == b"foo"
-        assert d_values[1].blob_value == b"bar"
-        assert d_values[2].blob_value == b"baz"
+        assert d_values[0].string_value == "foo"
+        assert d_values[1].string_value == "bar"
+        assert d_values[2].string_value == "baz"
         e_values = entity_pb.properties["e"].array_value.values
         assert pickle.loads(e_values[0].blob_value) == gherkin
         assert pickle.loads(e_values[1].blob_value) == dill

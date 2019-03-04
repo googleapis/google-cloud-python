@@ -96,7 +96,7 @@ class TestPolyModel:
 
         assert Animal._default_filters() == ()
         assert Cat._default_filters() == (
-            query.FilterNode("class", "=", b"Cat"),
+            query.FilterNode("class", "=", "Cat"),
         )
 
     @staticmethod

@@ -125,6 +125,11 @@ The primary differences come from:
   This method shouldn't generally be called by user code, anyway.
 - `Future.state` is omitted as it is redundant. Call `Future.done()` or
   `Future.running()` to get the state of a future.
+- `StringProperty` properties were previously stored as blobs
+  (entity_pb2.Value.blob_value) in Datastore. They are now properly stored as 
+  strings (entity_pb2.Value.string_value). At read time, a `StringProperty`
+  will accept either a string or blob value, so compatibility is maintained
+  with legacy databases.
 
 ## Privatization
 
