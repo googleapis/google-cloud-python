@@ -504,6 +504,17 @@ class TestTable(unittest.TestCase, _SchemaBase):
 
         self.assertEqual(table.schema, [full_name, age])
 
+    def test_ctor_string(self):
+        table = self._make_one("some-project.some_dset.some_tbl")
+        self.assertEqual(table.project, "some-project")
+        self.assertEqual(table.dataset_id, "some_dset")
+        self.assertEqual(table.table_id, "some_tbl")
+
+    def test_ctor_string_wo_project_id(self):
+        with pytest.raises(ValueError):
+            # Project ID is missing.
+            self._make_one("some_dset.some_tbl")
+
     def test_num_bytes_getter(self):
         dataset = DatasetReference(self.PROJECT, self.DS_ID)
         table_ref = dataset.table(self.TABLE_NAME)

@@ -348,8 +348,13 @@ class Table(object):
     https://cloud.google.com/bigquery/docs/reference/rest/v2/tables
 
     Args:
-        table_ref (google.cloud.bigquery.table.TableReference):
-            A pointer to a table
+        table_ref (Union[ \
+            :class:`~google.cloud.bigquery.table.TableReference`, \
+            str, \
+        ]):
+            A pointer to a table. If ``table_ref`` is a string, it must
+            included a project ID, dataset ID, and table ID, each separated
+            by ``.``.
         schema (List[google.cloud.bigquery.schema.SchemaField]):
             The table's schema
     """
@@ -367,6 +372,8 @@ class Table(object):
     }
 
     def __init__(self, table_ref, schema=None):
+        if isinstance(table_ref, six.string_types):
+            table_ref = TableReference.from_string(table_ref)
         self._properties = {"tableReference": table_ref.to_api_repr(), "labels": {}}
         # Let the @property do validation.
         if schema is not None:
