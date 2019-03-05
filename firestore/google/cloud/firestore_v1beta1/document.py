@@ -501,9 +501,9 @@ class DocumentReference(object):
                 when a change occurs
 
         Example:
-            from google.cloud import firestore
+            from google.cloud import firestore_v1beta1
 
-            db = firestore.Client()
+            db = firestore_v1beta1.Client()
             collection_ref = db.collection(u'users')
 
             def on_snapshot(document_snapshot):
