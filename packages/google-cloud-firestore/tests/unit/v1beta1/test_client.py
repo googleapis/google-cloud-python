@@ -25,9 +25,9 @@ class TestClient(unittest.TestCase):
 
     @staticmethod
     def _get_target_class():
-        from google.cloud import firestore
+        from google.cloud.firestore_v1beta1.client import Client
 
-        return firestore.Client
+        return Client
 
     def _make_one(self, *args, **kwargs):
         klass = self._get_target_class()
