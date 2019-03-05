@@ -56,6 +56,11 @@ class SpannerStub(object):
             request_serializer=google_dot_cloud_dot_spanner__v1_dot_proto_dot_spanner__pb2.ExecuteSqlRequest.SerializeToString,
             response_deserializer=google_dot_cloud_dot_spanner__v1_dot_proto_dot_result__set__pb2.PartialResultSet.FromString,
         )
+        self.ExecuteBatchDml = channel.unary_unary(
+            "/google.spanner.v1.Spanner/ExecuteBatchDml",
+            request_serializer=google_dot_cloud_dot_spanner__v1_dot_proto_dot_spanner__pb2.ExecuteBatchDmlRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_spanner__v1_dot_proto_dot_spanner__pb2.ExecuteBatchDmlResponse.FromString,
+        )
         self.Read = channel.unary_unary(
             "/google.spanner.v1.Spanner/Read",
             request_serializer=google_dot_cloud_dot_spanner__v1_dot_proto_dot_spanner__pb2.ReadRequest.SerializeToString,
@@ -142,7 +147,9 @@ class SpannerServicer(object):
         raise NotImplementedError("Method not implemented!")
 
     def DeleteSession(self, request, context):
-        """Ends a session, releasing server resources associated with it.
+        """Ends a session, releasing server resources associated with it. This will
+    asynchronously trigger cancellation of any operations that are running with
+    this session.
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
@@ -173,6 +180,31 @@ class SpannerServicer(object):
     [ExecuteSql][google.spanner.v1.Spanner.ExecuteSql], there is no limit on
     the size of the returned result set. However, no individual row in the
     result set can exceed 100 MiB, and no column value can exceed 10 MiB.
+    """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
+    def ExecuteBatchDml(self, request, context):
+        """Executes a batch of SQL DML statements. This method allows many statements
+    to be run with lower latency than submitting them sequentially with
+    [ExecuteSql][google.spanner.v1.Spanner.ExecuteSql].
+
+    Statements are executed in order, sequentially.
+    [ExecuteBatchDmlResponse][Spanner.ExecuteBatchDmlResponse] will contain a
+    [ResultSet][google.spanner.v1.ResultSet] for each DML statement that has successfully executed. If a
+    statement fails, its error status will be returned as part of the
+    [ExecuteBatchDmlResponse][Spanner.ExecuteBatchDmlResponse]. Execution will
+    stop at the first failed statement; the remaining statements will not run.
+
+    ExecuteBatchDml is expected to return an OK status with a response even if
+    there was an error while processing one of the DML statements. Clients must
+    inspect response.status to determine if there were any errors while
+    processing the request.
+
+    See more details in
+    [ExecuteBatchDmlRequest][Spanner.ExecuteBatchDmlRequest] and
+    [ExecuteBatchDmlResponse][Spanner.ExecuteBatchDmlResponse].
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
@@ -319,6 +351,11 @@ def add_SpannerServicer_to_server(servicer, server):
             servicer.ExecuteStreamingSql,
             request_deserializer=google_dot_cloud_dot_spanner__v1_dot_proto_dot_spanner__pb2.ExecuteSqlRequest.FromString,
             response_serializer=google_dot_cloud_dot_spanner__v1_dot_proto_dot_result__set__pb2.PartialResultSet.SerializeToString,
+        ),
+        "ExecuteBatchDml": grpc.unary_unary_rpc_method_handler(
+            servicer.ExecuteBatchDml,
+            request_deserializer=google_dot_cloud_dot_spanner__v1_dot_proto_dot_spanner__pb2.ExecuteBatchDmlRequest.FromString,
+            response_serializer=google_dot_cloud_dot_spanner__v1_dot_proto_dot_spanner__pb2.ExecuteBatchDmlResponse.SerializeToString,
         ),
         "Read": grpc.unary_unary_rpc_method_handler(
             servicer.Read,
