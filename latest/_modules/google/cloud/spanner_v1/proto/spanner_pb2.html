@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.spanner_v1.proto.spanner_pb2 &#8212; google-cloud ca93198 documentation</title>
+    <title>google.cloud.spanner_v1.proto.spanner_pb2 &#8212; google-cloud 494d51e documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -54,6 +54,7 @@
 <span class="kn">from</span> <span class="nn">google.protobuf</span> <span class="k">import</span> <span class="n">empty_pb2</span> <span class="k">as</span> <span class="n">google_dot_protobuf_dot_empty__pb2</span>
 <span class="kn">from</span> <span class="nn">google.protobuf</span> <span class="k">import</span> <span class="n">struct_pb2</span> <span class="k">as</span> <span class="n">google_dot_protobuf_dot_struct__pb2</span>
 <span class="kn">from</span> <span class="nn">google.protobuf</span> <span class="k">import</span> <span class="n">timestamp_pb2</span> <span class="k">as</span> <span class="n">google_dot_protobuf_dot_timestamp__pb2</span>
+<span class="kn">from</span> <span class="nn">google.rpc</span> <span class="k">import</span> <span class="n">status_pb2</span> <span class="k">as</span> <span class="n">google_dot_rpc_dot_status__pb2</span>
 <span class="kn">from</span> <span class="nn">google.cloud.spanner_v1.proto</span> <span class="k">import</span> <span class="p">(</span>
     <span class="n">keys_pb2</span> <span class="k">as</span> <span class="n">google_dot_cloud_dot_spanner__v1_dot_proto_dot_keys__pb2</span><span class="p">,</span>
 <span class="p">)</span>
@@ -79,13 +80,14 @@
         <span class="s2">&quot;</span><span class="se">\n\025</span><span class="s2">com.google.spanner.v1B</span><span class="se">\014</span><span class="s2">SpannerProtoP</span><span class="se">\001</span><span class="s2">Z8google.golang.org/genproto/googleapis/spanner/v1;spanner</span><span class="se">\252\002\027</span><span class="s2">Google.Cloud.Spanner.V1</span><span class="se">\312\002\027</span><span class="s2">Google</span><span class="se">\\</span><span class="s2">Cloud</span><span class="se">\\</span><span class="s2">Spanner</span><span class="se">\\</span><span class="s2">V1&quot;</span>
     <span class="p">),</span>
     <span class="n">serialized_pb</span><span class="o">=</span><span class="n">_b</span><span class="p">(</span>
-        <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">+google/cloud/spanner_v1/proto/spanner.proto</span><span class="se">\x12\x11</span><span class="s1">google.spanner.v1</span><span class="se">\x1a\x1c</span><span class="s1">google/api/annotations.proto</span><span class="se">\x1a\x1b</span><span class="s1">google/protobuf/empty.proto</span><span class="se">\x1a\x1c</span><span class="s1">google/protobuf/struct.proto</span><span class="se">\x1a\x1f</span><span class="s1">google/protobuf/timestamp.proto</span><span class="se">\x1a</span><span class="s1">(google/cloud/spanner_v1/proto/keys.proto</span><span class="se">\x1a</span><span class="s1">,google/cloud/spanner_v1/proto/mutation.proto</span><span class="se">\x1a</span><span class="s1">.google/cloud/spanner_v1/proto/result_set.proto</span><span class="se">\x1a</span><span class="s1">/google/cloud/spanner_v1/proto/transaction.proto</span><span class="se">\x1a</span><span class="s1">(google/cloud/spanner_v1/proto/type.proto&quot;U</span><span class="se">\n\x14\x43</span><span class="s1">reateSessionRequest</span><span class="se">\x12\x10\n\x08\x64\x61</span><span class="s1">tabase</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12</span><span class="s1">+</span><span class="se">\n\x07</span><span class="s1">session</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x1a</span><span class="s1">.google.spanner.v1.Session&quot;</span><span class="se">\xee\x01\n\x07</span><span class="s1">Session</span><span class="se">\x12\x0c\n\x04</span><span class="s1">name</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x36\n\x06</span><span class="s1">labels</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">&amp;.google.spanner.v1.Session.LabelsEntry</span><span class="se">\x12</span><span class="s1">/</span><span class="se">\n\x0b\x63</span><span class="s1">reate_time</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x1a</span><span class="s1">.google.protobuf.Timestamp</span><span class="se">\x12</span><span class="s1">=</span><span class="se">\n\x19\x61</span><span class="s1">pproximate_last_use_time</span><span class="se">\x18\x04</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x1a</span><span class="s1">.google.protobuf.Timestamp</span><span class="se">\x1a</span><span class="s1">-</span><span class="se">\n\x0b</span><span class="s1">LabelsEntry</span><span class="se">\x12\x0b\n\x03</span><span class="s1">key</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\r\n\x05</span><span class="s1">value</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t</span><span class="s1">:</span><span class="se">\x02\x38\x01</span><span class="s1">&quot;!</span><span class="se">\n\x11</span><span class="s1">GetSessionRequest</span><span class="se">\x12\x0c\n\x04</span><span class="s1">name</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t</span><span class="s1">&quot;^</span><span class="se">\n\x13</span><span class="s1">ListSessionsRequest</span><span class="se">\x12\x10\n\x08\x64\x61</span><span class="s1">tabase</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x11\n\t</span><span class="s1">page_size</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x05\x12\x12\n\n</span><span class="s1">page_token</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x0e\n\x06\x66</span><span class="s1">ilter</span><span class="se">\x18\x04</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t</span><span class="s1">&quot;]</span><span class="se">\n\x14</span><span class="s1">ListSessionsResponse</span><span class="se">\x12</span><span class="s1">,</span><span class="se">\n\x08</span><span class="s1">sessions</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32\x1a</span><span class="s1">.google.spanner.v1.Session</span><span class="se">\x12\x17\n\x0f</span><span class="s1">next_page_token</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t</span><span class="s1">&quot;$</span><span class="se">\n\x14\x44\x65</span><span class="s1">leteSessionRequest</span><span class="se">\x12\x0c\n\x04</span><span class="s1">name</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t</span><span class="s1">&quot;</span><span class="se">\xe0\x03\n\x11\x45</span><span class="s1">xecuteSqlRequest</span><span class="se">\x12\x0f\n\x07</span><span class="s1">session</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12</span><span class="s1">;</span><span class="se">\n\x0b</span><span class="s1">transaction</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">&amp;.google.spanner.v1.TransactionSelector</span><span class="se">\x12\x0b\n\x03</span><span class="s1">sql</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\&#39;\n\x06</span><span class="s1">params</span><span class="se">\x18\x04</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x17</span><span class="s1">.google.protobuf.Struct</span><span class="se">\x12</span><span class="s1">I</span><span class="se">\n\x0b</span><span class="s1">param_types</span><span class="se">\x18\x05</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32\x34</span><span class="s1">.google.spanner.v1.ExecuteSqlRequest.ParamTypesEntry</span><span class="se">\x12\x14\n\x0c</span><span class="s1">resume_token</span><span class="se">\x18\x06</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0c\x12\x42\n\n</span><span class="s1">query_mode</span><span class="se">\x18\x07</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0e\x32</span><span class="s1">..google.spanner.v1.ExecuteSqlRequest.QueryMode</span><span class="se">\x12\x17\n\x0f</span><span class="s1">partition_token</span><span class="se">\x18\x08</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0c\x12\r\n\x05</span><span class="s1">seqno</span><span class="se">\x18\t</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x03\x1a</span><span class="s1">J</span><span class="se">\n\x0f</span><span class="s1">ParamTypesEntry</span><span class="se">\x12\x0b\n\x03</span><span class="s1">key</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12</span><span class="s1">&amp;</span><span class="se">\n\x05</span><span class="s1">value</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x17</span><span class="s1">.google.spanner.v1.Type:</span><span class="se">\x02\x38\x01</span><span class="s1">&quot;.</span><span class="se">\n\t</span><span class="s1">QueryMode</span><span class="se">\x12\n\n\x06</span><span class="s1">NORMAL</span><span class="se">\x10\x00\x12\x08\n\x04</span><span class="s1">PLAN</span><span class="se">\x10\x01\x12\x0b\n\x07</span><span class="s1">PROFILE</span><span class="se">\x10\x02</span><span class="s1">&quot;H</span><span class="se">\n\x10</span><span class="s1">PartitionOptions</span><span class="se">\x12\x1c\n\x14</span><span class="s1">partition_size_bytes</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x03\x12\x16\n\x0e</span><span class="s1">max_partitions</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x03</span><span class="s1">&quot;</span><span class="se">\xf6\x02\n\x15</span><span class="s1">PartitionQueryRequest</span><span class="se">\x12\x0f\n\x07</span><span class="s1">session</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12</span><span class="s1">;</span><span class="se">\n\x0b</span><span class="s1">transaction</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">&amp;.google.spanner.v1.TransactionSelector</span><span class="se">\x12\x0b\n\x03</span><span class="s1">sql</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\&#39;\n\x06</span><span class="s1">params</span><span class="se">\x18\x04</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x17</span><span class="s1">.google.protobuf.Struct</span><span class="se">\x12</span><span class="s1">M</span><span class="se">\n\x0b</span><span class="s1">param_types</span><span class="se">\x18\x05</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32\x38</span><span class="s1">.google.spanner.v1.PartitionQueryRequest.ParamTypesEntry</span><span class="se">\x12</span><span class="s1">&gt;</span><span class="se">\n\x11</span><span class="s1">partition_options</span><span class="se">\x18\x06</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">#.google.spanner.v1.PartitionOptions</span><span class="se">\x1a</span><span class="s1">J</span><span class="se">\n\x0f</span><span class="s1">ParamTypesEntry</span><span class="se">\x12\x0b\n\x03</span><span class="s1">key</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12</span><span class="s1">&amp;</span><span class="se">\n\x05</span><span class="s1">value</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x17</span><span class="s1">.google.spanner.v1.Type:</span><span class="se">\x02\x38\x01</span><span class="s1">&quot;</span><span class="se">\xff\x01\n\x14</span><span class="s1">PartitionReadRequest</span><span class="se">\x12\x0f\n\x07</span><span class="s1">session</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12</span><span class="s1">;</span><span class="se">\n\x0b</span><span class="s1">transaction</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">&amp;.google.spanner.v1.TransactionSelector</span><span class="se">\x12\r\n\x05</span><span class="s1">table</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\r\n\x05</span><span class="s1">index</span><span class="se">\x18\x04</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x0f\n\x07\x63</span><span class="s1">olumns</span><span class="se">\x18\x05</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\t\x12</span><span class="s1">*</span><span class="se">\n\x07</span><span class="s1">key_set</span><span class="se">\x18\x06</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x19</span><span class="s1">.google.spanner.v1.KeySet</span><span class="se">\x12</span><span class="s1">&gt;</span><span class="se">\n\x11</span><span class="s1">partition_options</span><span class="se">\x18\t</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">#.google.spanner.v1.PartitionOptions&quot;$</span><span class="se">\n\t</span><span class="s1">Partition</span><span class="se">\x12\x17\n\x0f</span><span class="s1">partition_token</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0c</span><span class="s1">&quot;z</span><span class="se">\n\x11</span><span class="s1">PartitionResponse</span><span class="se">\x12\x30\n\n</span><span class="s1">partitions</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32\x1c</span><span class="s1">.google.spanner.v1.Partition</span><span class="se">\x12\x33\n\x0b</span><span class="s1">transaction</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x1e</span><span class="s1">.google.spanner.v1.Transaction&quot;</span><span class="se">\xf4\x01\n\x0b</span><span class="s1">ReadRequest</span><span class="se">\x12\x0f\n\x07</span><span class="s1">session</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12</span><span class="s1">;</span><span class="se">\n\x0b</span><span class="s1">transaction</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">&amp;.google.spanner.v1.TransactionSelector</span><span class="se">\x12\r\n\x05</span><span class="s1">table</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\r\n\x05</span><span class="s1">index</span><span class="se">\x18\x04</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x0f\n\x07\x63</span><span class="s1">olumns</span><span class="se">\x18\x05</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\t\x12</span><span class="s1">*</span><span class="se">\n\x07</span><span class="s1">key_set</span><span class="se">\x18\x06</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x19</span><span class="s1">.google.spanner.v1.KeySet</span><span class="se">\x12\r\n\x05</span><span class="s1">limit</span><span class="se">\x18\x08</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x03\x12\x14\n\x0c</span><span class="s1">resume_token</span><span class="se">\x18\t</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0c\x12\x17\n\x0f</span><span class="s1">partition_token</span><span class="se">\x18\n</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0c</span><span class="s1">&quot;b</span><span class="se">\n\x17\x42\x65</span><span class="s1">ginTransactionRequest</span><span class="se">\x12\x0f\n\x07</span><span class="s1">session</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x36\n\x07</span><span class="s1">options</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">%.google.spanner.v1.TransactionOptions&quot;</span><span class="se">\xc2\x01\n\r</span><span class="s1">CommitRequest</span><span class="se">\x12\x0f\n\x07</span><span class="s1">session</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x18\n\x0e</span><span class="s1">transaction_id</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0c</span><span class="s1">H</span><span class="se">\x00\x12</span><span class="s1">G</span><span class="se">\n\x16</span><span class="s1">single_use_transaction</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">%.google.spanner.v1.TransactionOptionsH</span><span class="se">\x00\x12</span><span class="s1">.</span><span class="se">\n\t</span><span class="s1">mutations</span><span class="se">\x18\x04</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32\x1b</span><span class="s1">.google.spanner.v1.MutationB</span><span class="se">\r\n\x0b</span><span class="s1">transaction&quot;F</span><span class="se">\n\x0e\x43</span><span class="s1">ommitResponse</span><span class="se">\x12\x34\n\x10\x63</span><span class="s1">ommit_timestamp</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x1a</span><span class="s1">.google.protobuf.Timestamp&quot;:</span><span class="se">\n\x0f</span><span class="s1">RollbackRequest</span><span class="se">\x12\x0f\n\x07</span><span class="s1">session</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x16\n\x0e</span><span class="s1">transaction_id</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0c\x32\x83\x11\n\x07</span><span class="s1">Spanner</span><span class="se">\x12\x9b\x01\n\r</span><span class="s1">CreateSession</span><span class="se">\x12\&#39;</span><span class="s1">.google.spanner.v1.CreateSessionRequest</span><span class="se">\x1a\x1a</span><span class="s1">.google.spanner.v1.Session&quot;E</span><span class="se">\x82\xd3\xe4\x93\x02</span><span class="s1">?&quot;:/v1/{database=projects/*/instances/*/databases/*}/sessions:</span><span class="se">\x01</span><span class="s1">*</span><span class="se">\x12\x90\x01\n\n</span><span class="s1">GetSession</span><span class="se">\x12</span><span class="s1">$.google.spanner.v1.GetSessionRequest</span><span class="se">\x1a\x1a</span><span class="s1">.google.spanner.v1.Session&quot;@</span><span class="se">\x82\xd3\xe4\x93\x02</span><span class="s1">:</span><span class="se">\x12\x38</span><span class="s1">/v1/{name=projects/*/instances/*/databases/*/sessions/*}</span><span class="se">\x12\xa3\x01\n\x0c</span><span class="s1">ListSessions</span><span class="se">\x12</span><span class="s1">&amp;.google.spanner.v1.ListSessionsRequest</span><span class="se">\x1a\&#39;</span><span class="s1">.google.spanner.v1.ListSessionsResponse&quot;B</span><span class="se">\x82\xd3\xe4\x93\x02</span><span class="s1">&lt;</span><span class="se">\x12</span><span class="s1">:/v1/{database=projects/*/instances/*/databases/*}/sessions</span><span class="se">\x12\x92\x01\n\r</span><span class="s1">DeleteSession</span><span class="se">\x12\&#39;</span><span class="s1">.google.spanner.v1.DeleteSessionRequest</span><span class="se">\x1a\x16</span><span class="s1">.google.protobuf.Empty&quot;@</span><span class="se">\x82\xd3\xe4\x93\x02</span><span class="s1">:*8/v1/{name=projects/*/instances/*/databases/*/sessions/*}</span><span class="se">\x12\xa3\x01\n\n</span><span class="s1">ExecuteSql</span><span class="se">\x12</span><span class="s1">$.google.spanner.v1.ExecuteSqlRequest</span><span class="se">\x1a\x1c</span><span class="s1">.google.spanner.v1.ResultSet&quot;Q</span><span class="se">\x82\xd3\xe4\x93\x02</span><span class="s1">K&quot;F/v1/{session=projects/*/instances/*/databases/*/sessions/*}:executeSql:</span><span class="se">\x01</span><span class="s1">*</span><span class="se">\x12\xbe\x01\n\x13\x45</span><span class="s1">xecuteStreamingSql</span><span class="se">\x12</span><span class="s1">$.google.spanner.v1.ExecuteSqlRequest</span><span class="se">\x1a</span><span class="s1">#.google.spanner.v1.PartialResultSet&quot;Z</span><span class="se">\x82\xd3\xe4\x93\x02</span><span class="s1">T&quot;O/v1/{session=projects/*/instances/*/databases/*/sessions/*}:executeStreamingSql:</span><span class="se">\x01</span><span class="s1">*0</span><span class="se">\x01\x12\x91\x01\n\x04</span><span class="s1">Read</span><span class="se">\x12\x1e</span><span class="s1">.google.spanner.v1.ReadRequest</span><span class="se">\x1a\x1c</span><span class="s1">.google.spanner.v1.ResultSet&quot;K</span><span class="se">\x82\xd3\xe4\x93\x02\x45</span><span class="s1">&quot;@/v1/{session=projects/*/instances/*/databases/*/sessions/*}:read:</span><span class="se">\x01</span><span class="s1">*</span><span class="se">\x12\xac\x01\n\r</span><span class="s1">StreamingRead</span><span class="se">\x12\x1e</span><span class="s1">.google.spanner.v1.ReadRequest</span><span class="se">\x1a</span><span class="s1">#.google.spanner.v1.PartialResultSet&quot;T</span><span class="se">\x82\xd3\xe4\x93\x02</span><span class="s1">N&quot;I/v1/{session=projects/*/instances/*/databases/*/sessions/*}:streamingRead:</span><span class="se">\x01</span><span class="s1">*0</span><span class="se">\x01\x12\xb7\x01\n\x10\x42\x65</span><span class="s1">ginTransaction</span><span class="se">\x12</span><span class="s1">*.google.spanner.v1.BeginTransactionRequest</span><span class="se">\x1a\x1e</span><span class="s1">.google.spanner.v1.Transaction&quot;W</span><span class="se">\x82\xd3\xe4\x93\x02</span><span class="s1">Q&quot;L/v1/{session=projects/*/instances/*/databases/*/sessions/*}:beginTransaction:</span><span class="se">\x01</span><span class="s1">*</span><span class="se">\x12\x9c\x01\n\x06\x43</span><span class="s1">ommit</span><span class="se">\x12</span><span class="s1"> .google.spanner.v1.CommitRequest</span><span class="se">\x1a</span><span class="s1">!.google.spanner.v1.CommitResponse&quot;M</span><span class="se">\x82\xd3\xe4\x93\x02</span><span class="s1">G&quot;B/v1/{session=projects/*/instances/*/databases/*/sessions/*}:commit:</span><span class="se">\x01</span><span class="s1">*</span><span class="se">\x12\x97\x01\n\x08</span><span class="s1">Rollback</span><span class="se">\x12</span><span class="s1">&quot;.google.spanner.v1.RollbackRequest</span><span class="se">\x1a\x16</span><span class="s1">.google.protobuf.Empty&quot;O</span><span class="se">\x82\xd3\xe4\x93\x02</span><span class="s1">I&quot;D/v1/{session=projects/*/instances/*/databases/*/sessions/*}:rollback:</span><span class="se">\x01</span><span class="s1">*</span><span class="se">\x12\xb7\x01\n\x0e</span><span class="s1">PartitionQuery</span><span class="se">\x12</span><span class="s1">(.google.spanner.v1.PartitionQueryRequest</span><span class="se">\x1a</span><span class="s1">$.google.spanner.v1.PartitionResponse&quot;U</span><span class="se">\x82\xd3\xe4\x93\x02</span><span class="s1">O&quot;J/v1/{session=projects/*/instances/*/databases/*/sessions/*}:partitionQuery:</span><span class="se">\x01</span><span class="s1">*</span><span class="se">\x12\xb4\x01\n\r</span><span class="s1">PartitionRead</span><span class="se">\x12\&#39;</span><span class="s1">.google.spanner.v1.PartitionReadRequest</span><span class="se">\x1a</span><span class="s1">$.google.spanner.v1.PartitionResponse&quot;T</span><span class="se">\x82\xd3\xe4\x93\x02</span><span class="s1">N&quot;I/v1/{session=projects/*/instances/*/databases/*/sessions/*}:partitionRead:</span><span class="se">\x01</span><span class="s1">*B</span><span class="se">\x95\x01\n\x15\x63</span><span class="s1">om.google.spanner.v1B</span><span class="se">\x0c</span><span class="s1">SpannerProtoP</span><span class="se">\x01</span><span class="s1">Z8google.golang.org/genproto/googleapis/spanner/v1;spanner</span><span class="se">\xaa\x02\x17</span><span class="s1">Google.Cloud.Spanner.V1</span><span class="se">\xca\x02\x17</span><span class="s1">Google</span><span class="se">\\</span><span class="s1">Cloud</span><span class="se">\\</span><span class="s1">Spanner</span><span class="se">\\</span><span class="s1">V1b</span><span class="se">\x06</span><span class="s1">proto3&#39;</span>
+        <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">+google/cloud/spanner_v1/proto/spanner.proto</span><span class="se">\x12\x11</span><span class="s1">google.spanner.v1</span><span class="se">\x1a\x1c</span><span class="s1">google/api/annotations.proto</span><span class="se">\x1a\x1b</span><span class="s1">google/protobuf/empty.proto</span><span class="se">\x1a\x1c</span><span class="s1">google/protobuf/struct.proto</span><span class="se">\x1a\x1f</span><span class="s1">google/protobuf/timestamp.proto</span><span class="se">\x1a\x17</span><span class="s1">google/rpc/status.proto</span><span class="se">\x1a</span><span class="s1">(google/cloud/spanner_v1/proto/keys.proto</span><span class="se">\x1a</span><span class="s1">,google/cloud/spanner_v1/proto/mutation.proto</span><span class="se">\x1a</span><span class="s1">.google/cloud/spanner_v1/proto/result_set.proto</span><span class="se">\x1a</span><span class="s1">/google/cloud/spanner_v1/proto/transaction.proto</span><span class="se">\x1a</span><span class="s1">(google/cloud/spanner_v1/proto/type.proto&quot;U</span><span class="se">\n\x14\x43</span><span class="s1">reateSessionRequest</span><span class="se">\x12\x10\n\x08\x64\x61</span><span class="s1">tabase</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12</span><span class="s1">+</span><span class="se">\n\x07</span><span class="s1">session</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x1a</span><span class="s1">.google.spanner.v1.Session&quot;</span><span class="se">\xee\x01\n\x07</span><span class="s1">Session</span><span class="se">\x12\x0c\n\x04</span><span class="s1">name</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x36\n\x06</span><span class="s1">labels</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">&amp;.google.spanner.v1.Session.LabelsEntry</span><span class="se">\x12</span><span class="s1">/</span><span class="se">\n\x0b\x63</span><span class="s1">reate_time</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x1a</span><span class="s1">.google.protobuf.Timestamp</span><span class="se">\x12</span><span class="s1">=</span><span class="se">\n\x19\x61</span><span class="s1">pproximate_last_use_time</span><span class="se">\x18\x04</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x1a</span><span class="s1">.google.protobuf.Timestamp</span><span class="se">\x1a</span><span class="s1">-</span><span class="se">\n\x0b</span><span class="s1">LabelsEntry</span><span class="se">\x12\x0b\n\x03</span><span class="s1">key</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\r\n\x05</span><span class="s1">value</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t</span><span class="s1">:</span><span class="se">\x02\x38\x01</span><span class="s1">&quot;!</span><span class="se">\n\x11</span><span class="s1">GetSessionRequest</span><span class="se">\x12\x0c\n\x04</span><span class="s1">name</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t</span><span class="s1">&quot;^</span><span class="se">\n\x13</span><span class="s1">ListSessionsRequest</span><span class="se">\x12\x10\n\x08\x64\x61</span><span class="s1">tabase</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x11\n\t</span><span class="s1">page_size</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x05\x12\x12\n\n</span><span class="s1">page_token</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x0e\n\x06\x66</span><span class="s1">ilter</span><span class="se">\x18\x04</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t</span><span class="s1">&quot;]</span><span class="se">\n\x14</span><span class="s1">ListSessionsResponse</span><span class="se">\x12</span><span class="s1">,</span><span class="se">\n\x08</span><span class="s1">sessions</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32\x1a</span><span class="s1">.google.spanner.v1.Session</span><span class="se">\x12\x17\n\x0f</span><span class="s1">next_page_token</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t</span><span class="s1">&quot;$</span><span class="se">\n\x14\x44\x65</span><span class="s1">leteSessionRequest</span><span class="se">\x12\x0c\n\x04</span><span class="s1">name</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t</span><span class="s1">&quot;</span><span class="se">\xe0\x03\n\x11\x45</span><span class="s1">xecuteSqlRequest</span><span class="se">\x12\x0f\n\x07</span><span class="s1">session</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12</span><span class="s1">;</span><span class="se">\n\x0b</span><span class="s1">transaction</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">&amp;.google.spanner.v1.TransactionSelector</span><span class="se">\x12\x0b\n\x03</span><span class="s1">sql</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\&#39;\n\x06</span><span class="s1">params</span><span class="se">\x18\x04</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x17</span><span class="s1">.google.protobuf.Struct</span><span class="se">\x12</span><span class="s1">I</span><span class="se">\n\x0b</span><span class="s1">param_types</span><span class="se">\x18\x05</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32\x34</span><span class="s1">.google.spanner.v1.ExecuteSqlRequest.ParamTypesEntry</span><span class="se">\x12\x14\n\x0c</span><span class="s1">resume_token</span><span class="se">\x18\x06</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0c\x12\x42\n\n</span><span class="s1">query_mode</span><span class="se">\x18\x07</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0e\x32</span><span class="s1">..google.spanner.v1.ExecuteSqlRequest.QueryMode</span><span class="se">\x12\x17\n\x0f</span><span class="s1">partition_token</span><span class="se">\x18\x08</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0c\x12\r\n\x05</span><span class="s1">seqno</span><span class="se">\x18\t</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x03\x1a</span><span class="s1">J</span><span class="se">\n\x0f</span><span class="s1">ParamTypesEntry</span><span class="se">\x12\x0b\n\x03</span><span class="s1">key</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12</span><span class="s1">&amp;</span><span class="se">\n\x05</span><span class="s1">value</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x17</span><span class="s1">.google.spanner.v1.Type:</span><span class="se">\x02\x38\x01</span><span class="s1">&quot;.</span><span class="se">\n\t</span><span class="s1">QueryMode</span><span class="se">\x12\n\n\x06</span><span class="s1">NORMAL</span><span class="se">\x10\x00\x12\x08\n\x04</span><span class="s1">PLAN</span><span class="se">\x10\x01\x12\x0b\n\x07</span><span class="s1">PROFILE</span><span class="se">\x10\x02</span><span class="s1">&quot;</span><span class="se">\xa8\x03\n\x16\x45</span><span class="s1">xecuteBatchDmlRequest</span><span class="se">\x12\x0f\n\x07</span><span class="s1">session</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12</span><span class="s1">;</span><span class="se">\n\x0b</span><span class="s1">transaction</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">&amp;.google.spanner.v1.TransactionSelector</span><span class="se">\x12</span><span class="s1">G</span><span class="se">\n\n</span><span class="s1">statements</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32\x33</span><span class="s1">.google.spanner.v1.ExecuteBatchDmlRequest.Statement</span><span class="se">\x12\r\n\x05</span><span class="s1">seqno</span><span class="se">\x18\x04</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x03\x1a\xe7\x01\n\t</span><span class="s1">Statement</span><span class="se">\x12\x0b\n\x03</span><span class="s1">sql</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\&#39;\n\x06</span><span class="s1">params</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x17</span><span class="s1">.google.protobuf.Struct</span><span class="se">\x12</span><span class="s1">X</span><span class="se">\n\x0b</span><span class="s1">param_types</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32\x43</span><span class="s1">.google.spanner.v1.ExecuteBatchDmlRequest.Statement.ParamTypesEntry</span><span class="se">\x1a</span><span class="s1">J</span><span class="se">\n\x0f</span><span class="s1">ParamTypesEntry</span><span class="se">\x12\x0b\n\x03</span><span class="s1">key</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12</span><span class="s1">&amp;</span><span class="se">\n\x05</span><span class="s1">value</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x17</span><span class="s1">.google.spanner.v1.Type:</span><span class="se">\x02\x38\x01</span><span class="s1">&quot;p</span><span class="se">\n\x17\x45</span><span class="s1">xecuteBatchDmlResponse</span><span class="se">\x12\x31\n\x0b</span><span class="s1">result_sets</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32\x1c</span><span class="s1">.google.spanner.v1.ResultSet</span><span class="se">\x12</span><span class="s1">&quot;</span><span class="se">\n\x06</span><span class="s1">status</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x12</span><span class="s1">.google.rpc.Status&quot;H</span><span class="se">\n\x10</span><span class="s1">PartitionOptions</span><span class="se">\x12\x1c\n\x14</span><span class="s1">partition_size_bytes</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x03\x12\x16\n\x0e</span><span class="s1">max_partitions</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x03</span><span class="s1">&quot;</span><span class="se">\xf6\x02\n\x15</span><span class="s1">PartitionQueryRequest</span><span class="se">\x12\x0f\n\x07</span><span class="s1">session</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12</span><span class="s1">;</span><span class="se">\n\x0b</span><span class="s1">transaction</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">&amp;.google.spanner.v1.TransactionSelector</span><span class="se">\x12\x0b\n\x03</span><span class="s1">sql</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\&#39;\n\x06</span><span class="s1">params</span><span class="se">\x18\x04</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x17</span><span class="s1">.google.protobuf.Struct</span><span class="se">\x12</span><span class="s1">M</span><span class="se">\n\x0b</span><span class="s1">param_types</span><span class="se">\x18\x05</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32\x38</span><span class="s1">.google.spanner.v1.PartitionQueryRequest.ParamTypesEntry</span><span class="se">\x12</span><span class="s1">&gt;</span><span class="se">\n\x11</span><span class="s1">partition_options</span><span class="se">\x18\x06</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">#.google.spanner.v1.PartitionOptions</span><span class="se">\x1a</span><span class="s1">J</span><span class="se">\n\x0f</span><span class="s1">ParamTypesEntry</span><span class="se">\x12\x0b\n\x03</span><span class="s1">key</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12</span><span class="s1">&amp;</span><span class="se">\n\x05</span><span class="s1">value</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x17</span><span class="s1">.google.spanner.v1.Type:</span><span class="se">\x02\x38\x01</span><span class="s1">&quot;</span><span class="se">\xff\x01\n\x14</span><span class="s1">PartitionReadRequest</span><span class="se">\x12\x0f\n\x07</span><span class="s1">session</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12</span><span class="s1">;</span><span class="se">\n\x0b</span><span class="s1">transaction</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">&amp;.google.spanner.v1.TransactionSelector</span><span class="se">\x12\r\n\x05</span><span class="s1">table</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\r\n\x05</span><span class="s1">index</span><span class="se">\x18\x04</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x0f\n\x07\x63</span><span class="s1">olumns</span><span class="se">\x18\x05</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\t\x12</span><span class="s1">*</span><span class="se">\n\x07</span><span class="s1">key_set</span><span class="se">\x18\x06</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x19</span><span class="s1">.google.spanner.v1.KeySet</span><span class="se">\x12</span><span class="s1">&gt;</span><span class="se">\n\x11</span><span class="s1">partition_options</span><span class="se">\x18\t</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">#.google.spanner.v1.PartitionOptions&quot;$</span><span class="se">\n\t</span><span class="s1">Partition</span><span class="se">\x12\x17\n\x0f</span><span class="s1">partition_token</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0c</span><span class="s1">&quot;z</span><span class="se">\n\x11</span><span class="s1">PartitionResponse</span><span class="se">\x12\x30\n\n</span><span class="s1">partitions</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32\x1c</span><span class="s1">.google.spanner.v1.Partition</span><span class="se">\x12\x33\n\x0b</span><span class="s1">transaction</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x1e</span><span class="s1">.google.spanner.v1.Transaction&quot;</span><span class="se">\xf4\x01\n\x0b</span><span class="s1">ReadRequest</span><span class="se">\x12\x0f\n\x07</span><span class="s1">session</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12</span><span class="s1">;</span><span class="se">\n\x0b</span><span class="s1">transaction</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">&amp;.google.spanner.v1.TransactionSelector</span><span class="se">\x12\r\n\x05</span><span class="s1">table</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\r\n\x05</span><span class="s1">index</span><span class="se">\x18\x04</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x0f\n\x07\x63</span><span class="s1">olumns</span><span class="se">\x18\x05</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\t\x12</span><span class="s1">*</span><span class="se">\n\x07</span><span class="s1">key_set</span><span class="se">\x18\x06</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x19</span><span class="s1">.google.spanner.v1.KeySet</span><span class="se">\x12\r\n\x05</span><span class="s1">limit</span><span class="se">\x18\x08</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x03\x12\x14\n\x0c</span><span class="s1">resume_token</span><span class="se">\x18\t</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0c\x12\x17\n\x0f</span><span class="s1">partition_token</span><span class="se">\x18\n</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0c</span><span class="s1">&quot;b</span><span class="se">\n\x17\x42\x65</span><span class="s1">ginTransactionRequest</span><span class="se">\x12\x0f\n\x07</span><span class="s1">session</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x36\n\x07</span><span class="s1">options</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">%.google.spanner.v1.TransactionOptions&quot;</span><span class="se">\xc2\x01\n\r</span><span class="s1">CommitRequest</span><span class="se">\x12\x0f\n\x07</span><span class="s1">session</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x18\n\x0e</span><span class="s1">transaction_id</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0c</span><span class="s1">H</span><span class="se">\x00\x12</span><span class="s1">G</span><span class="se">\n\x16</span><span class="s1">single_use_transaction</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">%.google.spanner.v1.TransactionOptionsH</span><span class="se">\x00\x12</span><span class="s1">.</span><span class="se">\n\t</span><span class="s1">mutations</span><span class="se">\x18\x04</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32\x1b</span><span class="s1">.google.spanner.v1.MutationB</span><span class="se">\r\n\x0b</span><span class="s1">transaction&quot;F</span><span class="se">\n\x0e\x43</span><span class="s1">ommitResponse</span><span class="se">\x12\x34\n\x10\x63</span><span class="s1">ommit_timestamp</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x1a</span><span class="s1">.google.protobuf.Timestamp&quot;:</span><span class="se">\n\x0f</span><span class="s1">RollbackRequest</span><span class="se">\x12\x0f\n\x07</span><span class="s1">session</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x16\n\x0e</span><span class="s1">transaction_id</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0c\x32\xc6\x12\n\x07</span><span class="s1">Spanner</span><span class="se">\x12\x9b\x01\n\r</span><span class="s1">CreateSession</span><span class="se">\x12\&#39;</span><span class="s1">.google.spanner.v1.CreateSessionRequest</span><span class="se">\x1a\x1a</span><span class="s1">.google.spanner.v1.Session&quot;E</span><span class="se">\x82\xd3\xe4\x93\x02</span><span class="s1">?&quot;:/v1/{database=projects/*/instances/*/databases/*}/sessions:</span><span class="se">\x01</span><span class="s1">*</span><span class="se">\x12\x90\x01\n\n</span><span class="s1">GetSession</span><span class="se">\x12</span><span class="s1">$.google.spanner.v1.GetSessionRequest</span><span class="se">\x1a\x1a</span><span class="s1">.google.spanner.v1.Session&quot;@</span><span class="se">\x82\xd3\xe4\x93\x02</span><span class="s1">:</span><span class="se">\x12\x38</span><span class="s1">/v1/{name=projects/*/instances/*/databases/*/sessions/*}</span><span class="se">\x12\xa3\x01\n\x0c</span><span class="s1">ListSessions</span><span class="se">\x12</span><span class="s1">&amp;.google.spanner.v1.ListSessionsRequest</span><span class="se">\x1a\&#39;</span><span class="s1">.google.spanner.v1.ListSessionsResponse&quot;B</span><span class="se">\x82\xd3\xe4\x93\x02</span><span class="s1">&lt;</span><span class="se">\x12</span><span class="s1">:/v1/{database=projects/*/instances/*/databases/*}/sessions</span><span class="se">\x12\x92\x01\n\r</span><span class="s1">DeleteSession</span><span class="se">\x12\&#39;</span><span class="s1">.google.spanner.v1.DeleteSessionRequest</span><span class="se">\x1a\x16</span><span class="s1">.google.protobuf.Empty&quot;@</span><span class="se">\x82\xd3\xe4\x93\x02</span><span class="s1">:*8/v1/{name=projects/*/instances/*/databases/*/sessions/*}</span><span class="se">\x12\xa3\x01\n\n</span><span class="s1">ExecuteSql</span><span class="se">\x12</span><span class="s1">$.google.spanner.v1.ExecuteSqlRequest</span><span class="se">\x1a\x1c</span><span class="s1">.google.spanner.v1.ResultSet&quot;Q</span><span class="se">\x82\xd3\xe4\x93\x02</span><span class="s1">K&quot;F/v1/{session=projects/*/instances/*/databases/*/sessions/*}:executeSql:</span><span class="se">\x01</span><span class="s1">*</span><span class="se">\x12\xbe\x01\n\x13\x45</span><span class="s1">xecuteStreamingSql</span><span class="se">\x12</span><span class="s1">$.google.spanner.v1.ExecuteSqlRequest</span><span class="se">\x1a</span><span class="s1">#.google.spanner.v1.PartialResultSet&quot;Z</span><span class="se">\x82\xd3\xe4\x93\x02</span><span class="s1">T&quot;O/v1/{session=projects/*/instances/*/databases/*/sessions/*}:executeStreamingSql:</span><span class="se">\x01</span><span class="s1">*0</span><span class="se">\x01\x12\xc0\x01\n\x0f\x45</span><span class="s1">xecuteBatchDml</span><span class="se">\x12</span><span class="s1">).google.spanner.v1.ExecuteBatchDmlRequest</span><span class="se">\x1a</span><span class="s1">*.google.spanner.v1.ExecuteBatchDmlResponse&quot;V</span><span class="se">\x82\xd3\xe4\x93\x02</span><span class="s1">P&quot;K/v1/{session=projects/*/instances/*/databases/*/sessions/*}:executeBatchDml:</span><span class="se">\x01</span><span class="s1">*</span><span class="se">\x12\x91\x01\n\x04</span><span class="s1">Read</span><span class="se">\x12\x1e</span><span class="s1">.google.spanner.v1.ReadRequest</span><span class="se">\x1a\x1c</span><span class="s1">.google.spanner.v1.ResultSet&quot;K</span><span class="se">\x82\xd3\xe4\x93\x02\x45</span><span class="s1">&quot;@/v1/{session=projects/*/instances/*/databases/*/sessions/*}:read:</span><span class="se">\x01</span><span class="s1">*</span><span class="se">\x12\xac\x01\n\r</span><span class="s1">StreamingRead</span><span class="se">\x12\x1e</span><span class="s1">.google.spanner.v1.ReadRequest</span><span class="se">\x1a</span><span class="s1">#.google.spanner.v1.PartialResultSet&quot;T</span><span class="se">\x82\xd3\xe4\x93\x02</span><span class="s1">N&quot;I/v1/{session=projects/*/instances/*/databases/*/sessions/*}:streamingRead:</span><span class="se">\x01</span><span class="s1">*0</span><span class="se">\x01\x12\xb7\x01\n\x10\x42\x65</span><span class="s1">ginTransaction</span><span class="se">\x12</span><span class="s1">*.google.spanner.v1.BeginTransactionRequest</span><span class="se">\x1a\x1e</span><span class="s1">.google.spanner.v1.Transaction&quot;W</span><span class="se">\x82\xd3\xe4\x93\x02</span><span class="s1">Q&quot;L/v1/{session=projects/*/instances/*/databases/*/sessions/*}:beginTransaction:</span><span class="se">\x01</span><span class="s1">*</span><span class="se">\x12\x9c\x01\n\x06\x43</span><span class="s1">ommit</span><span class="se">\x12</span><span class="s1"> .google.spanner.v1.CommitRequest</span><span class="se">\x1a</span><span class="s1">!.google.spanner.v1.CommitResponse&quot;M</span><span class="se">\x82\xd3\xe4\x93\x02</span><span class="s1">G&quot;B/v1/{session=projects/*/instances/*/databases/*/sessions/*}:commit:</span><span class="se">\x01</span><span class="s1">*</span><span class="se">\x12\x97\x01\n\x08</span><span class="s1">Rollback</span><span class="se">\x12</span><span class="s1">&quot;.google.spanner.v1.RollbackRequest</span><span class="se">\x1a\x16</span><span class="s1">.google.protobuf.Empty&quot;O</span><span class="se">\x82\xd3\xe4\x93\x02</span><span class="s1">I&quot;D/v1/{session=projects/*/instances/*/databases/*/sessions/*}:rollback:</span><span class="se">\x01</span><span class="s1">*</span><span class="se">\x12\xb7\x01\n\x0e</span><span class="s1">PartitionQuery</span><span class="se">\x12</span><span class="s1">(.google.spanner.v1.PartitionQueryRequest</span><span class="se">\x1a</span><span class="s1">$.google.spanner.v1.PartitionResponse&quot;U</span><span class="se">\x82\xd3\xe4\x93\x02</span><span class="s1">O&quot;J/v1/{session=projects/*/instances/*/databases/*/sessions/*}:partitionQuery:</span><span class="se">\x01</span><span class="s1">*</span><span class="se">\x12\xb4\x01\n\r</span><span class="s1">PartitionRead</span><span class="se">\x12\&#39;</span><span class="s1">.google.spanner.v1.PartitionReadRequest</span><span class="se">\x1a</span><span class="s1">$.google.spanner.v1.PartitionResponse&quot;T</span><span class="se">\x82\xd3\xe4\x93\x02</span><span class="s1">N&quot;I/v1/{session=projects/*/instances/*/databases/*/sessions/*}:partitionRead:</span><span class="se">\x01</span><span class="s1">*B</span><span class="se">\x95\x01\n\x15\x63</span><span class="s1">om.google.spanner.v1B</span><span class="se">\x0c</span><span class="s1">SpannerProtoP</span><span class="se">\x01</span><span class="s1">Z8google.golang.org/genproto/googleapis/spanner/v1;spanner</span><span class="se">\xaa\x02\x17</span><span class="s1">Google.Cloud.Spanner.V1</span><span class="se">\xca\x02\x17</span><span class="s1">Google</span><span class="se">\\</span><span class="s1">Cloud</span><span class="se">\\</span><span class="s1">Spanner</span><span class="se">\\</span><span class="s1">V1b</span><span class="se">\x06</span><span class="s1">proto3&#39;</span>
     <span class="p">),</span>
     <span class="n">dependencies</span><span class="o">=</span><span class="p">[</span>
         <span class="n">google_dot_api_dot_annotations__pb2</span><span class="o">.</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
         <span class="n">google_dot_protobuf_dot_empty__pb2</span><span class="o">.</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
         <span class="n">google_dot_protobuf_dot_struct__pb2</span><span class="o">.</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
         <span class="n">google_dot_protobuf_dot_timestamp__pb2</span><span class="o">.</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+        <span class="n">google_dot_rpc_dot_status__pb2</span><span class="o">.</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
         <span class="n">google_dot_cloud_dot_spanner__v1_dot_proto_dot_keys__pb2</span><span class="o">.</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
         <span class="n">google_dot_cloud_dot_spanner__v1_dot_proto_dot_mutation__pb2</span><span class="o">.</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
         <span class="n">google_dot_cloud_dot_spanner__v1_dot_proto_dot_result__set__pb2</span><span class="o">.</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
@@ -113,8 +115,8 @@
     <span class="p">],</span>
     <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">1442</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">1488</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">1467</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">1513</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="n">_sym_db</span><span class="o">.</span><span class="n">RegisterEnumDescriptor</span><span class="p">(</span><span class="n">_EXECUTESQLREQUEST_QUERYMODE</span><span class="p">)</span>
 
@@ -171,8 +173,8 @@
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">415</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">440</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">525</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -228,8 +230,8 @@
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">696</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">741</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">721</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">766</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="n">_SESSION</span> <span class="o">=</span> <span class="n">_descriptor</span><span class="o">.</span><span class="n">Descriptor</span><span class="p">(</span>
@@ -320,8 +322,8 @@
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">503</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">741</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">528</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">766</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -359,8 +361,8 @@
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">743</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">776</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">768</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">801</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -452,8 +454,8 @@
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">778</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">872</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">803</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">897</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -509,8 +511,8 @@
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">874</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">967</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">899</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">992</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -548,8 +550,8 @@
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">969</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">1005</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">994</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">1030</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -605,8 +607,8 @@
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">1366</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">1440</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">1391</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">1465</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="n">_EXECUTESQLREQUEST</span> <span class="o">=</span> <span class="n">_descriptor</span><span class="o">.</span><span class="n">Descriptor</span><span class="p">(</span>
@@ -787,8 +789,288 @@
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">1008</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">1488</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">1033</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">1513</span><span class="p">,</span>
+<span class="p">)</span>
+
+
+<span class="n">_EXECUTEBATCHDMLREQUEST_STATEMENT_PARAMTYPESENTRY</span> <span class="o">=</span> <span class="n">_descriptor</span><span class="o">.</span><span class="n">Descriptor</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;ParamTypesEntry&quot;</span><span class="p">,</span>
+    <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.spanner.v1.ExecuteBatchDmlRequest.Statement.ParamTypesEntry&quot;</span><span class="p">,</span>
+    <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+    <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">fields</span><span class="o">=</span><span class="p">[</span>
+        <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;key&quot;</span><span class="p">,</span>
+            <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.spanner.v1.ExecuteBatchDmlRequest.Statement.ParamTypesEntry.key&quot;</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">number</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span>
+            <span class="n">cpp_type</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">default_value</span><span class="o">=</span><span class="n">_b</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">),</span>
+            <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;value&quot;</span><span class="p">,</span>
+            <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.spanner.v1.ExecuteBatchDmlRequest.Statement.ParamTypesEntry.value&quot;</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">number</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span>
+            <span class="n">cpp_type</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">default_value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+        <span class="p">),</span>
+    <span class="p">],</span>
+    <span class="n">extensions</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">nested_types</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">enum_types</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">serialized_options</span><span class="o">=</span><span class="n">_b</span><span class="p">(</span><span class="s2">&quot;8</span><span class="se">\001</span><span class="s2">&quot;</span><span class="p">),</span>
+    <span class="n">is_extendable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
+    <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">1391</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">1465</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">_EXECUTEBATCHDMLREQUEST_STATEMENT</span> <span class="o">=</span> <span class="n">_descriptor</span><span class="o">.</span><span class="n">Descriptor</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Statement&quot;</span><span class="p">,</span>
+    <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.spanner.v1.ExecuteBatchDmlRequest.Statement&quot;</span><span class="p">,</span>
+    <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+    <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">fields</span><span class="o">=</span><span class="p">[</span>
+        <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;sql&quot;</span><span class="p">,</span>
+            <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.spanner.v1.ExecuteBatchDmlRequest.Statement.sql&quot;</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">number</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span>
+            <span class="n">cpp_type</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">default_value</span><span class="o">=</span><span class="n">_b</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">),</span>
+            <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;params&quot;</span><span class="p">,</span>
+            <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.spanner.v1.ExecuteBatchDmlRequest.Statement.params&quot;</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">number</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span>
+            <span class="n">cpp_type</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">default_value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;param_types&quot;</span><span class="p">,</span>
+            <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.spanner.v1.ExecuteBatchDmlRequest.Statement.param_types&quot;</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="n">number</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span>
+            <span class="n">cpp_type</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+            <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">default_value</span><span class="o">=</span><span class="p">[],</span>
+            <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+        <span class="p">),</span>
+    <span class="p">],</span>
+    <span class="n">extensions</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">nested_types</span><span class="o">=</span><span class="p">[</span><span class="n">_EXECUTEBATCHDMLREQUEST_STATEMENT_PARAMTYPESENTRY</span><span class="p">],</span>
+    <span class="n">enum_types</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">is_extendable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
+    <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">1709</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">1940</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">_EXECUTEBATCHDMLREQUEST</span> <span class="o">=</span> <span class="n">_descriptor</span><span class="o">.</span><span class="n">Descriptor</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;ExecuteBatchDmlRequest&quot;</span><span class="p">,</span>
+    <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.spanner.v1.ExecuteBatchDmlRequest&quot;</span><span class="p">,</span>
+    <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+    <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">fields</span><span class="o">=</span><span class="p">[</span>
+        <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;session&quot;</span><span class="p">,</span>
+            <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.spanner.v1.ExecuteBatchDmlRequest.session&quot;</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">number</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span>
+            <span class="n">cpp_type</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">default_value</span><span class="o">=</span><span class="n">_b</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">),</span>
+            <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;transaction&quot;</span><span class="p">,</span>
+            <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.spanner.v1.ExecuteBatchDmlRequest.transaction&quot;</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">number</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span>
+            <span class="n">cpp_type</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">default_value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;statements&quot;</span><span class="p">,</span>
+            <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.spanner.v1.ExecuteBatchDmlRequest.statements&quot;</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="n">number</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span>
+            <span class="n">cpp_type</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+            <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">default_value</span><span class="o">=</span><span class="p">[],</span>
+            <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;seqno&quot;</span><span class="p">,</span>
+            <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.spanner.v1.ExecuteBatchDmlRequest.seqno&quot;</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+            <span class="n">number</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+            <span class="n">cpp_type</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">default_value</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+        <span class="p">),</span>
+    <span class="p">],</span>
+    <span class="n">extensions</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">nested_types</span><span class="o">=</span><span class="p">[</span><span class="n">_EXECUTEBATCHDMLREQUEST_STATEMENT</span><span class="p">],</span>
+    <span class="n">enum_types</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">is_extendable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
+    <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">1516</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">1940</span><span class="p">,</span>
+<span class="p">)</span>
+
+
+<span class="n">_EXECUTEBATCHDMLRESPONSE</span> <span class="o">=</span> <span class="n">_descriptor</span><span class="o">.</span><span class="n">Descriptor</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;ExecuteBatchDmlResponse&quot;</span><span class="p">,</span>
+    <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.spanner.v1.ExecuteBatchDmlResponse&quot;</span><span class="p">,</span>
+    <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+    <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">fields</span><span class="o">=</span><span class="p">[</span>
+        <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;result_sets&quot;</span><span class="p">,</span>
+            <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.spanner.v1.ExecuteBatchDmlResponse.result_sets&quot;</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">number</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span>
+            <span class="n">cpp_type</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+            <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">default_value</span><span class="o">=</span><span class="p">[],</span>
+            <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;status&quot;</span><span class="p">,</span>
+            <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.spanner.v1.ExecuteBatchDmlResponse.status&quot;</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">number</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span>
+            <span class="n">cpp_type</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">default_value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+        <span class="p">),</span>
+    <span class="p">],</span>
+    <span class="n">extensions</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">nested_types</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">enum_types</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">is_extendable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
+    <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">1942</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">2054</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -844,8 +1126,8 @@
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">1490</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">1562</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">2056</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">2128</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -901,8 +1183,8 @@
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">1366</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">1440</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">1391</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">1465</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="n">_PARTITIONQUERYREQUEST</span> <span class="o">=</span> <span class="n">_descriptor</span><span class="o">.</span><span class="n">Descriptor</span><span class="p">(</span>
@@ -1029,8 +1311,8 @@
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">1565</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">1939</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">2131</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">2505</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -1176,8 +1458,8 @@
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">1942</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">2197</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">2508</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">2763</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -1215,8 +1497,8 @@
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">2199</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">2235</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">2765</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">2801</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -1272,8 +1554,8 @@
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">2237</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">2359</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">2803</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">2925</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -1455,8 +1737,8 @@
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">2362</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">2606</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">2928</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">3172</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -1512,8 +1794,8 @@
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">2608</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">2706</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">3174</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">3272</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -1613,8 +1895,8 @@
             <span class="n">fields</span><span class="o">=</span><span class="p">[],</span>
         <span class="p">)</span>
     <span class="p">],</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">2709</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">2903</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">3275</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">3469</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -1652,8 +1934,8 @@
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">2905</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">2975</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">3471</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">3541</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -1709,8 +1991,8 @@
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">2977</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">3035</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">3543</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">3601</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="n">_CREATESESSIONREQUEST</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span><span class="s2">&quot;session&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">message_type</span> <span class="o">=</span> <span class="n">_SESSION</span>
@@ -1740,6 +2022,35 @@
 <span class="p">]</span><span class="o">.</span><span class="n">message_type</span> <span class="o">=</span> <span class="n">_EXECUTESQLREQUEST_PARAMTYPESENTRY</span>
 <span class="n">_EXECUTESQLREQUEST</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span><span class="s2">&quot;query_mode&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">enum_type</span> <span class="o">=</span> <span class="n">_EXECUTESQLREQUEST_QUERYMODE</span>
 <span class="n">_EXECUTESQLREQUEST_QUERYMODE</span><span class="o">.</span><span class="n">containing_type</span> <span class="o">=</span> <span class="n">_EXECUTESQLREQUEST</span>
+<span class="n">_EXECUTEBATCHDMLREQUEST_STATEMENT_PARAMTYPESENTRY</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span>
+    <span class="s2">&quot;value&quot;</span>
+<span class="p">]</span><span class="o">.</span><span class="n">message_type</span> <span class="o">=</span> <span class="n">google_dot_cloud_dot_spanner__v1_dot_proto_dot_type__pb2</span><span class="o">.</span><span class="n">_TYPE</span>
+<span class="n">_EXECUTEBATCHDMLREQUEST_STATEMENT_PARAMTYPESENTRY</span><span class="o">.</span><span class="n">containing_type</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">_EXECUTEBATCHDMLREQUEST_STATEMENT</span>
+<span class="p">)</span>
+<span class="n">_EXECUTEBATCHDMLREQUEST_STATEMENT</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span>
+    <span class="s2">&quot;params&quot;</span>
+<span class="p">]</span><span class="o">.</span><span class="n">message_type</span> <span class="o">=</span> <span class="n">google_dot_protobuf_dot_struct__pb2</span><span class="o">.</span><span class="n">_STRUCT</span>
+<span class="n">_EXECUTEBATCHDMLREQUEST_STATEMENT</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span>
+    <span class="s2">&quot;param_types&quot;</span>
+<span class="p">]</span><span class="o">.</span><span class="n">message_type</span> <span class="o">=</span> <span class="n">_EXECUTEBATCHDMLREQUEST_STATEMENT_PARAMTYPESENTRY</span>
+<span class="n">_EXECUTEBATCHDMLREQUEST_STATEMENT</span><span class="o">.</span><span class="n">containing_type</span> <span class="o">=</span> <span class="n">_EXECUTEBATCHDMLREQUEST</span>
+<span class="n">_EXECUTEBATCHDMLREQUEST</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span>
+    <span class="s2">&quot;transaction&quot;</span>
+<span class="p">]</span><span class="o">.</span><span class="n">message_type</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">google_dot_cloud_dot_spanner__v1_dot_proto_dot_transaction__pb2</span><span class="o">.</span><span class="n">_TRANSACTIONSELECTOR</span>
+<span class="p">)</span>
+<span class="n">_EXECUTEBATCHDMLREQUEST</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span>
+    <span class="s2">&quot;statements&quot;</span>
+<span class="p">]</span><span class="o">.</span><span class="n">message_type</span> <span class="o">=</span> <span class="n">_EXECUTEBATCHDMLREQUEST_STATEMENT</span>
+<span class="n">_EXECUTEBATCHDMLRESPONSE</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span>
+    <span class="s2">&quot;result_sets&quot;</span>
+<span class="p">]</span><span class="o">.</span><span class="n">message_type</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">google_dot_cloud_dot_spanner__v1_dot_proto_dot_result__set__pb2</span><span class="o">.</span><span class="n">_RESULTSET</span>
+<span class="p">)</span>
+<span class="n">_EXECUTEBATCHDMLRESPONSE</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span>
+    <span class="s2">&quot;status&quot;</span>
+<span class="p">]</span><span class="o">.</span><span class="n">message_type</span> <span class="o">=</span> <span class="n">google_dot_rpc_dot_status__pb2</span><span class="o">.</span><span class="n">_STATUS</span>
 <span class="n">_PARTITIONQUERYREQUEST_PARAMTYPESENTRY</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span>
     <span class="s2">&quot;value&quot;</span>
 <span class="p">]</span><span class="o">.</span><span class="n">message_type</span> <span class="o">=</span> <span class="n">google_dot_cloud_dot_spanner__v1_dot_proto_dot_type__pb2</span><span class="o">.</span><span class="n">_TYPE</span>
@@ -1818,6 +2129,8 @@
 <span class="n">DESCRIPTOR</span><span class="o">.</span><span class="n">message_types_by_name</span><span class="p">[</span><span class="s2">&quot;ListSessionsResponse&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_LISTSESSIONSRESPONSE</span>
 <span class="n">DESCRIPTOR</span><span class="o">.</span><span class="n">message_types_by_name</span><span class="p">[</span><span class="s2">&quot;DeleteSessionRequest&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_DELETESESSIONREQUEST</span>
 <span class="n">DESCRIPTOR</span><span class="o">.</span><span class="n">message_types_by_name</span><span class="p">[</span><span class="s2">&quot;ExecuteSqlRequest&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_EXECUTESQLREQUEST</span>
+<span class="n">DESCRIPTOR</span><span class="o">.</span><span class="n">message_types_by_name</span><span class="p">[</span><span class="s2">&quot;ExecuteBatchDmlRequest&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_EXECUTEBATCHDMLREQUEST</span>
+<span class="n">DESCRIPTOR</span><span class="o">.</span><span class="n">message_types_by_name</span><span class="p">[</span><span class="s2">&quot;ExecuteBatchDmlResponse&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_EXECUTEBATCHDMLRESPONSE</span>
 <span class="n">DESCRIPTOR</span><span class="o">.</span><span class="n">message_types_by_name</span><span class="p">[</span><span class="s2">&quot;PartitionOptions&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_PARTITIONOPTIONS</span>
 <span class="n">DESCRIPTOR</span><span class="o">.</span><span class="n">message_types_by_name</span><span class="p">[</span><span class="s2">&quot;PartitionQueryRequest&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_PARTITIONQUERYREQUEST</span>
 <span class="n">DESCRIPTOR</span><span class="o">.</span><span class="n">message_types_by_name</span><span class="p">[</span><span class="s2">&quot;PartitionReadRequest&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_PARTITIONREADREQUEST</span>
@@ -2085,6 +2398,142 @@
 <span class="p">)</span>
 <span class="n">_sym_db</span><span class="o">.</span><span class="n">RegisterMessage</span><span class="p">(</span><span class="n">ExecuteSqlRequest</span><span class="p">)</span>
 <span class="n">_sym_db</span><span class="o">.</span><span class="n">RegisterMessage</span><span class="p">(</span><span class="n">ExecuteSqlRequest</span><span class="o">.</span><span class="n">ParamTypesEntry</span><span class="p">)</span>
+
+<span class="n">ExecuteBatchDmlRequest</span> <span class="o">=</span> <span class="n">_reflection</span><span class="o">.</span><span class="n">GeneratedProtocolMessageType</span><span class="p">(</span>
+    <span class="s2">&quot;ExecuteBatchDmlRequest&quot;</span><span class="p">,</span>
+    <span class="p">(</span><span class="n">_message</span><span class="o">.</span><span class="n">Message</span><span class="p">,),</span>
+    <span class="nb">dict</span><span class="p">(</span>
+        <span class="n">Statement</span><span class="o">=</span><span class="n">_reflection</span><span class="o">.</span><span class="n">GeneratedProtocolMessageType</span><span class="p">(</span>
+            <span class="s2">&quot;Statement&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="n">_message</span><span class="o">.</span><span class="n">Message</span><span class="p">,),</span>
+            <span class="nb">dict</span><span class="p">(</span>
+                <span class="n">ParamTypesEntry</span><span class="o">=</span><span class="n">_reflection</span><span class="o">.</span><span class="n">GeneratedProtocolMessageType</span><span class="p">(</span>
+                    <span class="s2">&quot;ParamTypesEntry&quot;</span><span class="p">,</span>
+                    <span class="p">(</span><span class="n">_message</span><span class="o">.</span><span class="n">Message</span><span class="p">,),</span>
+                    <span class="nb">dict</span><span class="p">(</span>
+                        <span class="n">DESCRIPTOR</span><span class="o">=</span><span class="n">_EXECUTEBATCHDMLREQUEST_STATEMENT_PARAMTYPESENTRY</span><span class="p">,</span>
+                        <span class="vm">__module__</span><span class="o">=</span><span class="s2">&quot;google.cloud.spanner_v1.proto.spanner_pb2&quot;</span>
+                        <span class="c1"># @@protoc_insertion_point(class_scope:google.spanner.v1.ExecuteBatchDmlRequest.Statement.ParamTypesEntry)</span>
+                    <span class="p">),</span>
+                <span class="p">),</span>
+                <span class="n">DESCRIPTOR</span><span class="o">=</span><span class="n">_EXECUTEBATCHDMLREQUEST_STATEMENT</span><span class="p">,</span>
+                <span class="vm">__module__</span><span class="o">=</span><span class="s2">&quot;google.cloud.spanner_v1.proto.spanner_pb2&quot;</span><span class="p">,</span>
+                <span class="vm">__doc__</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;A single DML statement.</span>
+<span class="s2">    </span>
+<span class="s2">    </span>
+<span class="s2">    Attributes:</span>
+<span class="s2">        sql:</span>
+<span class="s2">            Required. The DML string.</span>
+<span class="s2">        params:</span>
+<span class="s2">            The DML string can contain parameter placeholders. A parameter</span>
+<span class="s2">            placeholder consists of ``&#39;@&#39;`` followed by the parameter</span>
+<span class="s2">            name. Parameter names consist of any combination of letters,</span>
+<span class="s2">            numbers, and underscores.  Parameters can appear anywhere that</span>
+<span class="s2">            a literal value is expected. The same parameter name can be</span>
+<span class="s2">            used more than once, for example: ``&quot;WHERE id &gt; @msg_id AND id</span>
+<span class="s2">            &lt; @msg_id + 100&quot;``  It is an error to execute an SQL statement</span>
+<span class="s2">            with unbound parameters.  Parameter values are specified using</span>
+<span class="s2">            ``params``, which is a JSON object whose keys are parameter</span>
+<span class="s2">            names, and whose values are the corresponding parameter</span>
+<span class="s2">            values.</span>
+<span class="s2">        param_types:</span>
+<span class="s2">            It is not always possible for Cloud Spanner to infer the right</span>
+<span class="s2">            SQL type from a JSON value. For example, values of type</span>
+<span class="s2">            ``BYTES`` and values of type ``STRING`` both appear in [params</span>
+<span class="s2">            ][google.spanner.v1.ExecuteBatchDmlRequest.Statement.params]</span>
+<span class="s2">            as JSON strings.  In these cases, ``param_types`` can be used</span>
+<span class="s2">            to specify the exact SQL type for some or all of the SQL</span>
+<span class="s2">            statement parameters. See the definition of</span>
+<span class="s2">            [Type][google.spanner.v1.Type] for more information about SQL</span>
+<span class="s2">            types.</span>
+<span class="s2">    &quot;&quot;&quot;</span><span class="p">,</span>
+                <span class="c1"># @@protoc_insertion_point(class_scope:google.spanner.v1.ExecuteBatchDmlRequest.Statement)</span>
+            <span class="p">),</span>
+        <span class="p">),</span>
+        <span class="n">DESCRIPTOR</span><span class="o">=</span><span class="n">_EXECUTEBATCHDMLREQUEST</span><span class="p">,</span>
+        <span class="vm">__module__</span><span class="o">=</span><span class="s2">&quot;google.cloud.spanner_v1.proto.spanner_pb2&quot;</span><span class="p">,</span>
+        <span class="vm">__doc__</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;The request for</span>
+<span class="s2">  [ExecuteBatchDml][google.spanner.v1.Spanner.ExecuteBatchDml]</span>
+<span class="s2">  </span>
+<span class="s2">  </span>
+<span class="s2">  Attributes:</span>
+<span class="s2">      session:</span>
+<span class="s2">          Required. The session in which the DML statements should be</span>
+<span class="s2">          performed.</span>
+<span class="s2">      transaction:</span>
+<span class="s2">          The transaction to use. A ReadWrite transaction is required.</span>
+<span class="s2">          Single-use transactions are not supported (to avoid replay).</span>
+<span class="s2">          The caller must either supply an existing transaction ID or</span>
+<span class="s2">          begin a new transaction.</span>
+<span class="s2">      statements:</span>
+<span class="s2">          The list of statements to execute in this batch. Statements</span>
+<span class="s2">          are executed serially, such that the effects of statement i</span>
+<span class="s2">          are visible to statement i+1. Each statement must be a DML</span>
+<span class="s2">          statement. Execution will stop at the first failed statement;</span>
+<span class="s2">          the remaining statements will not run.  REQUIRES:</span>
+<span class="s2">          statements\_size() &gt; 0.</span>
+<span class="s2">      seqno:</span>
+<span class="s2">          A per-transaction sequence number used to identify this</span>
+<span class="s2">          request. This is used in the same space as the seqno in</span>
+<span class="s2">          [ExecuteSqlRequest][Spanner.ExecuteSqlRequest]. See more</span>
+<span class="s2">          details in [ExecuteSqlRequest][Spanner.ExecuteSqlRequest].</span>
+<span class="s2">  &quot;&quot;&quot;</span><span class="p">,</span>
+        <span class="c1"># @@protoc_insertion_point(class_scope:google.spanner.v1.ExecuteBatchDmlRequest)</span>
+    <span class="p">),</span>
+<span class="p">)</span>
+<span class="n">_sym_db</span><span class="o">.</span><span class="n">RegisterMessage</span><span class="p">(</span><span class="n">ExecuteBatchDmlRequest</span><span class="p">)</span>
+<span class="n">_sym_db</span><span class="o">.</span><span class="n">RegisterMessage</span><span class="p">(</span><span class="n">ExecuteBatchDmlRequest</span><span class="o">.</span><span class="n">Statement</span><span class="p">)</span>
+<span class="n">_sym_db</span><span class="o">.</span><span class="n">RegisterMessage</span><span class="p">(</span><span class="n">ExecuteBatchDmlRequest</span><span class="o">.</span><span class="n">Statement</span><span class="o">.</span><span class="n">ParamTypesEntry</span><span class="p">)</span>
+
+<span class="n">ExecuteBatchDmlResponse</span> <span class="o">=</span> <span class="n">_reflection</span><span class="o">.</span><span class="n">GeneratedProtocolMessageType</span><span class="p">(</span>
+    <span class="s2">&quot;ExecuteBatchDmlResponse&quot;</span><span class="p">,</span>
+    <span class="p">(</span><span class="n">_message</span><span class="o">.</span><span class="n">Message</span><span class="p">,),</span>
+    <span class="nb">dict</span><span class="p">(</span>
+        <span class="n">DESCRIPTOR</span><span class="o">=</span><span class="n">_EXECUTEBATCHDMLRESPONSE</span><span class="p">,</span>
+        <span class="vm">__module__</span><span class="o">=</span><span class="s2">&quot;google.cloud.spanner_v1.proto.spanner_pb2&quot;</span><span class="p">,</span>
+        <span class="vm">__doc__</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;The response for</span>
+<span class="s2">  [ExecuteBatchDml][google.spanner.v1.Spanner.ExecuteBatchDml]. Contains a</span>
+<span class="s2">  list of [ResultSet][google.spanner.v1.ResultSet], one for each DML</span>
+<span class="s2">  statement that has successfully executed. If a statement fails, the</span>
+<span class="s2">  error is returned as part of the response payload. Clients can determine</span>
+<span class="s2">  whether all DML statements have run successfully, or if a statement</span>
+<span class="s2">  failed, using one of the following approaches:</span>
+<span class="s2">  </span>
+<span class="s2">  1. Check if &#39;status&#39; field is OkStatus.</span>
+<span class="s2">  2. Check if result\_sets\_size() equals the number of statements in</span>
+<span class="s2">     [ExecuteBatchDmlRequest][Spanner.ExecuteBatchDmlRequest].</span>
+<span class="s2">  </span>
+<span class="s2">  Example 1: A request with 5 DML statements, all executed successfully.</span>
+<span class="s2">  Result: A response with 5 ResultSets, one for each statement in the same</span>
+<span class="s2">  order, and an OK status.</span>
+<span class="s2">  </span>
+<span class="s2">  Example 2: A request with 5 DML statements. The 3rd statement has a</span>
+<span class="s2">  syntax error. Result: A response with 2 ResultSets, for the first 2</span>
+<span class="s2">  statements that run successfully, and a syntax error (INVALID\_ARGUMENT)</span>
+<span class="s2">  status. From result\_set\_size() client can determine that the 3rd</span>
+<span class="s2">  statement has failed.</span>
+<span class="s2">  </span>
+<span class="s2">  </span>
+<span class="s2">  Attributes:</span>
+<span class="s2">      result_sets:</span>
+<span class="s2">          ResultSets, one for each statement in the request that ran</span>
+<span class="s2">          successfully, in the same order as the statements in the</span>
+<span class="s2">          request. Each [ResultSet][google.spanner.v1.ResultSet] will</span>
+<span class="s2">          not contain any rows. The</span>
+<span class="s2">          [ResultSetStats][google.spanner.v1.ResultSetStats] in each</span>
+<span class="s2">          [ResultSet][google.spanner.v1.ResultSet] will contain the</span>
+<span class="s2">          number of rows modified by the statement.  Only the first</span>
+<span class="s2">          ResultSet in the response contains a valid</span>
+<span class="s2">          [ResultSetMetadata][google.spanner.v1.ResultSetMetadata].</span>
+<span class="s2">      status:</span>
+<span class="s2">          If all DML statements are executed successfully, status will</span>
+<span class="s2">          be OK. Otherwise, the error status of the first failed</span>
+<span class="s2">          statement.</span>
+<span class="s2">  &quot;&quot;&quot;</span><span class="p">,</span>
+        <span class="c1"># @@protoc_insertion_point(class_scope:google.spanner.v1.ExecuteBatchDmlResponse)</span>
+    <span class="p">),</span>
+<span class="p">)</span>
+<span class="n">_sym_db</span><span class="o">.</span><span class="n">RegisterMessage</span><span class="p">(</span><span class="n">ExecuteBatchDmlResponse</span><span class="p">)</span>
 
 <span class="n">PartitionOptions</span> <span class="o">=</span> <span class="n">_reflection</span><span class="o">.</span><span class="n">GeneratedProtocolMessageType</span><span class="p">(</span>
     <span class="s2">&quot;PartitionOptions&quot;</span><span class="p">,</span>
@@ -2455,6 +2904,7 @@
 <span class="n">DESCRIPTOR</span><span class="o">.</span><span class="n">_options</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="n">_SESSION_LABELSENTRY</span><span class="o">.</span><span class="n">_options</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="n">_EXECUTESQLREQUEST_PARAMTYPESENTRY</span><span class="o">.</span><span class="n">_options</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="n">_EXECUTEBATCHDMLREQUEST_STATEMENT_PARAMTYPESENTRY</span><span class="o">.</span><span class="n">_options</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="n">_PARTITIONQUERYREQUEST_PARAMTYPESENTRY</span><span class="o">.</span><span class="n">_options</span> <span class="o">=</span> <span class="kc">None</span>
 
 <span class="n">_SPANNER</span> <span class="o">=</span> <span class="n">_descriptor</span><span class="o">.</span><span class="n">ServiceDescriptor</span><span class="p">(</span>
@@ -2463,8 +2913,8 @@
     <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
     <span class="n">index</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
     <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">3038</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">5217</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">3604</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">5978</span><span class="p">,</span>
     <span class="n">methods</span><span class="o">=</span><span class="p">[</span>
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">MethodDescriptor</span><span class="p">(</span>
             <span class="n">name</span><span class="o">=</span><span class="s2">&quot;CreateSession&quot;</span><span class="p">,</span>
@@ -2533,9 +2983,20 @@
             <span class="p">),</span>
         <span class="p">),</span>
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">MethodDescriptor</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;ExecuteBatchDml&quot;</span><span class="p">,</span>
+            <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.spanner.v1.Spanner.ExecuteBatchDml&quot;</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
+            <span class="n">containing_service</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">input_type</span><span class="o">=</span><span class="n">_EXECUTEBATCHDMLREQUEST</span><span class="p">,</span>
+            <span class="n">output_type</span><span class="o">=</span><span class="n">_EXECUTEBATCHDMLRESPONSE</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="n">_b</span><span class="p">(</span>
+                <span class="s1">&#39;</span><span class="se">\202\323\344\223\002</span><span class="s1">P&quot;K/v1/{session=projects/*/instances/*/databases/*/sessions/*}:executeBatchDml:</span><span class="se">\001</span><span class="s1">*&#39;</span>
+            <span class="p">),</span>
+        <span class="p">),</span>
+        <span class="n">_descriptor</span><span class="o">.</span><span class="n">MethodDescriptor</span><span class="p">(</span>
             <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Read&quot;</span><span class="p">,</span>
             <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.spanner.v1.Spanner.Read&quot;</span><span class="p">,</span>
-            <span class="n">index</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span>
             <span class="n">containing_service</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">input_type</span><span class="o">=</span><span class="n">_READREQUEST</span><span class="p">,</span>
             <span class="n">output_type</span><span class="o">=</span><span class="n">google_dot_cloud_dot_spanner__v1_dot_proto_dot_result__set__pb2</span><span class="o">.</span><span class="n">_RESULTSET</span><span class="p">,</span>
@@ -2546,7 +3007,7 @@
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">MethodDescriptor</span><span class="p">(</span>
             <span class="n">name</span><span class="o">=</span><span class="s2">&quot;StreamingRead&quot;</span><span class="p">,</span>
             <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.spanner.v1.Spanner.StreamingRead&quot;</span><span class="p">,</span>
-            <span class="n">index</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span>
             <span class="n">containing_service</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">input_type</span><span class="o">=</span><span class="n">_READREQUEST</span><span class="p">,</span>
             <span class="n">output_type</span><span class="o">=</span><span class="n">google_dot_cloud_dot_spanner__v1_dot_proto_dot_result__set__pb2</span><span class="o">.</span><span class="n">_PARTIALRESULTSET</span><span class="p">,</span>
@@ -2557,7 +3018,7 @@
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">MethodDescriptor</span><span class="p">(</span>
             <span class="n">name</span><span class="o">=</span><span class="s2">&quot;BeginTransaction&quot;</span><span class="p">,</span>
             <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.spanner.v1.Spanner.BeginTransaction&quot;</span><span class="p">,</span>
-            <span class="n">index</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span>
             <span class="n">containing_service</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">input_type</span><span class="o">=</span><span class="n">_BEGINTRANSACTIONREQUEST</span><span class="p">,</span>
             <span class="n">output_type</span><span class="o">=</span><span class="n">google_dot_cloud_dot_spanner__v1_dot_proto_dot_transaction__pb2</span><span class="o">.</span><span class="n">_TRANSACTION</span><span class="p">,</span>
@@ -2568,7 +3029,7 @@
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">MethodDescriptor</span><span class="p">(</span>
             <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Commit&quot;</span><span class="p">,</span>
             <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.spanner.v1.Spanner.Commit&quot;</span><span class="p">,</span>
-            <span class="n">index</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
             <span class="n">containing_service</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">input_type</span><span class="o">=</span><span class="n">_COMMITREQUEST</span><span class="p">,</span>
             <span class="n">output_type</span><span class="o">=</span><span class="n">_COMMITRESPONSE</span><span class="p">,</span>
@@ -2579,7 +3040,7 @@
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">MethodDescriptor</span><span class="p">(</span>
             <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Rollback&quot;</span><span class="p">,</span>
             <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.spanner.v1.Spanner.Rollback&quot;</span><span class="p">,</span>
-            <span class="n">index</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span>
             <span class="n">containing_service</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">input_type</span><span class="o">=</span><span class="n">_ROLLBACKREQUEST</span><span class="p">,</span>
             <span class="n">output_type</span><span class="o">=</span><span class="n">google_dot_protobuf_dot_empty__pb2</span><span class="o">.</span><span class="n">_EMPTY</span><span class="p">,</span>
@@ -2590,7 +3051,7 @@
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">MethodDescriptor</span><span class="p">(</span>
             <span class="n">name</span><span class="o">=</span><span class="s2">&quot;PartitionQuery&quot;</span><span class="p">,</span>
             <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.spanner.v1.Spanner.PartitionQuery&quot;</span><span class="p">,</span>
-            <span class="n">index</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span>
             <span class="n">containing_service</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">input_type</span><span class="o">=</span><span class="n">_PARTITIONQUERYREQUEST</span><span class="p">,</span>
             <span class="n">output_type</span><span class="o">=</span><span class="n">_PARTITIONRESPONSE</span><span class="p">,</span>
@@ -2601,7 +3062,7 @@
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">MethodDescriptor</span><span class="p">(</span>
             <span class="n">name</span><span class="o">=</span><span class="s2">&quot;PartitionRead&quot;</span><span class="p">,</span>
             <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.spanner.v1.Spanner.PartitionRead&quot;</span><span class="p">,</span>
-            <span class="n">index</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">13</span><span class="p">,</span>
             <span class="n">containing_service</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">input_type</span><span class="o">=</span><span class="n">_PARTITIONREADREQUEST</span><span class="p">,</span>
             <span class="n">output_type</span><span class="o">=</span><span class="n">_PARTITIONRESPONSE</span><span class="p">,</span>

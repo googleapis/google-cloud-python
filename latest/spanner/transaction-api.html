@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Transaction API &#8212; google-cloud ca93198 documentation</title>
+    <title>Transaction API &#8212; google-cloud 494d51e documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -53,6 +53,32 @@
 </tr>
 </tbody>
 </table>
+<dl class="method">
+<dt id="google.cloud.spanner_v1.transaction.Transaction.batch_update">
+<code class="descname">batch_update</code><span class="sig-paren">(</span><em>statements</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner_v1/transaction.html#Transaction.batch_update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_v1.transaction.Transaction.batch_update" title="Permalink to this definition">#</a></dt>
+<dd><p>Perform a batch of DML statements via an <code class="docutils literal notranslate"><span class="pre">ExecuteBatchDml</span></code> request.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>statements</strong> (<em>Sequence</em><em>[</em><em>Union</em><em>[ </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>Dict</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference internal" href="../asset/gapic/v1beta1/types.html#google.cloud.asset_v1beta1.types.Any" title="google.cloud.asset_v1beta1.types.Any"><em>Any</em></a><em>]</em><em>, </em><em>Dict</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="gapic/v1/types.html#google.cloud.spanner_v1.types.Type" title="google.cloud.spanner_v1.types.Type"><em>types.Type</em></a><em>]</em><em>]</em><em>]</em><em>]</em><em>]</em>) – List of DML statements, with optional params / param types.
+If passed, ‘params’ is a dict mapping names to the values
+for parameter replacement.  Keys must match the names used in the
+corresponding DML statement.  If ‘params’ is passed, ‘param_types’
+must also be passed, as a dict mapping names to the type of
+value passed in ‘params’.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">Tuple(status, Sequence[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)">int</a>])</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Status code, plus counts of rows affected by each completed DML
+statement.  Note that if the staus code is not <code class="docutils literal notranslate"><span class="pre">OK</span></code>, the
+statement triggering the error will not have an entry in the
+list, nor will any statements following that one.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 <dl class="method">
 <dt id="google.cloud.spanner_v1.transaction.Transaction.begin">
 <code class="descname">begin</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner_v1/transaction.html#Transaction.begin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_v1.transaction.Transaction.begin" title="Permalink to this definition">#</a></dt>

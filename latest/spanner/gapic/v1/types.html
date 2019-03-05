@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Spanner Client Types &#8212; google-cloud ca93198 documentation</title>
+    <title>Spanner Client Types &#8212; google-cloud 494d51e documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -463,6 +463,209 @@ committed.</p>
 <dt id="google.cloud.spanner_v1.types.EnumValueOptions.uninterpreted_option">
 <code class="descname">uninterpreted_option</code><a class="headerlink" href="#google.cloud.spanner_v1.types.EnumValueOptions.uninterpreted_option" title="Permalink to this definition">#</a></dt>
 <dd><p>Field google.protobuf.EnumValueOptions.uninterpreted_option</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.spanner_v1.types.ExecuteBatchDmlRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.spanner_v1.types.</code><code class="descname">ExecuteBatchDmlRequest</code><a class="headerlink" href="#google.cloud.spanner_v1.types.ExecuteBatchDmlRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>The request for
+[ExecuteBatchDml][google.spanner.v1.Spanner.ExecuteBatchDml]</p>
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.ExecuteBatchDmlRequest.session">
+<code class="descname">session</code><a class="headerlink" href="#google.cloud.spanner_v1.types.ExecuteBatchDmlRequest.session" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The session in which the DML statements should be
+performed.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.ExecuteBatchDmlRequest.transaction">
+<code class="descname">transaction</code><a class="headerlink" href="#google.cloud.spanner_v1.types.ExecuteBatchDmlRequest.transaction" title="Permalink to this definition">#</a></dt>
+<dd><p>The transaction to use. A ReadWrite transaction is required.
+Single-use transactions are not supported (to avoid replay).
+The caller must either supply an existing transaction ID or
+begin a new transaction.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.ExecuteBatchDmlRequest.statements">
+<code class="descname">statements</code><a class="headerlink" href="#google.cloud.spanner_v1.types.ExecuteBatchDmlRequest.statements" title="Permalink to this definition">#</a></dt>
+<dd><p>The list of statements to execute in this batch. Statements
+are executed serially, such that the effects of statement i
+are visible to statement i+1. Each statement must be a DML
+statement. Execution will stop at the first failed statement;
+the remaining statements will not run.  REQUIRES:
+statements_size() &gt; 0.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.ExecuteBatchDmlRequest.seqno">
+<code class="descname">seqno</code><a class="headerlink" href="#google.cloud.spanner_v1.types.ExecuteBatchDmlRequest.seqno" title="Permalink to this definition">#</a></dt>
+<dd><p>A per-transaction sequence number used to identify this
+request. This is used in the same space as the seqno in
+[ExecuteSqlRequest][Spanner.ExecuteSqlRequest]. See more
+details in [ExecuteSqlRequest][Spanner.ExecuteSqlRequest].</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.spanner_v1.types.ExecuteBatchDmlRequest.Statement">
+<em class="property">class </em><code class="descname">Statement</code><a class="headerlink" href="#google.cloud.spanner_v1.types.ExecuteBatchDmlRequest.Statement" title="Permalink to this definition">#</a></dt>
+<dd><p>A single DML statement.</p>
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.ExecuteBatchDmlRequest.Statement.sql">
+<code class="descname">sql</code><a class="headerlink" href="#google.cloud.spanner_v1.types.ExecuteBatchDmlRequest.Statement.sql" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The DML string.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.ExecuteBatchDmlRequest.Statement.params">
+<code class="descname">params</code><a class="headerlink" href="#google.cloud.spanner_v1.types.ExecuteBatchDmlRequest.Statement.params" title="Permalink to this definition">#</a></dt>
+<dd><p>The DML string can contain parameter placeholders. A parameter
+placeholder consists of <code class="docutils literal notranslate"><span class="pre">'&#64;'</span></code> followed by the parameter
+name. Parameter names consist of any combination of letters,
+numbers, and underscores.  Parameters can appear anywhere that
+a literal value is expected. The same parameter name can be
+used more than once, for example: <code class="docutils literal notranslate"><span class="pre">&quot;WHERE</span> <span class="pre">id</span> <span class="pre">&gt;</span> <span class="pre">&#64;msg_id</span> <span class="pre">AND</span> <span class="pre">id</span>
+<span class="pre">&lt;</span> <span class="pre">&#64;msg_id</span> <span class="pre">+</span> <span class="pre">100&quot;</span></code>  It is an error to execute an SQL statement
+with unbound parameters.  Parameter values are specified using
+<code class="docutils literal notranslate"><span class="pre">params</span></code>, which is a JSON object whose keys are parameter
+names, and whose values are the corresponding parameter
+values.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.ExecuteBatchDmlRequest.Statement.param_types">
+<code class="descname">param_types</code><a class="headerlink" href="#google.cloud.spanner_v1.types.ExecuteBatchDmlRequest.Statement.param_types" title="Permalink to this definition">#</a></dt>
+<dd><p>It is not always possible for Cloud Spanner to infer the right
+SQL type from a JSON value. For example, values of type
+<code class="docutils literal notranslate"><span class="pre">BYTES</span></code> and values of type <code class="docutils literal notranslate"><span class="pre">STRING</span></code> both appear in [params
+][google.spanner.v1.ExecuteBatchDmlRequest.Statement.params]
+as JSON strings.  In these cases, <code class="docutils literal notranslate"><span class="pre">param_types</span></code> can be used
+to specify the exact SQL type for some or all of the SQL
+statement parameters. See the definition of
+[Type][google.spanner.v1.Type] for more information about SQL
+types.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.spanner_v1.types.ExecuteBatchDmlRequest.Statement.ParamTypesEntry">
+<em class="property">class </em><code class="descname">ParamTypesEntry</code><a class="headerlink" href="#google.cloud.spanner_v1.types.ExecuteBatchDmlRequest.Statement.ParamTypesEntry" title="Permalink to this definition">#</a></dt>
+<dd><dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.ExecuteBatchDmlRequest.Statement.ParamTypesEntry.key">
+<code class="descname">key</code><a class="headerlink" href="#google.cloud.spanner_v1.types.ExecuteBatchDmlRequest.Statement.ParamTypesEntry.key" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.spanner.v1.ExecuteBatchDmlRequest.Statement.ParamTypesEntry.key</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.ExecuteBatchDmlRequest.Statement.ParamTypesEntry.value">
+<code class="descname">value</code><a class="headerlink" href="#google.cloud.spanner_v1.types.ExecuteBatchDmlRequest.Statement.ParamTypesEntry.value" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.spanner.v1.ExecuteBatchDmlRequest.Statement.ParamTypesEntry.value</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">param_types</code></dt>
+<dd><p>Field google.spanner.v1.ExecuteBatchDmlRequest.Statement.param_types</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">params</code></dt>
+<dd><p>Field google.spanner.v1.ExecuteBatchDmlRequest.Statement.params</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">sql</code></dt>
+<dd><p>Field google.spanner.v1.ExecuteBatchDmlRequest.Statement.sql</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">seqno</code></dt>
+<dd><p>Field google.spanner.v1.ExecuteBatchDmlRequest.seqno</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">session</code></dt>
+<dd><p>Field google.spanner.v1.ExecuteBatchDmlRequest.session</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">statements</code></dt>
+<dd><p>Field google.spanner.v1.ExecuteBatchDmlRequest.statements</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">transaction</code></dt>
+<dd><p>Field google.spanner.v1.ExecuteBatchDmlRequest.transaction</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.spanner_v1.types.ExecuteBatchDmlResponse">
+<em class="property">class </em><code class="descclassname">google.cloud.spanner_v1.types.</code><code class="descname">ExecuteBatchDmlResponse</code><a class="headerlink" href="#google.cloud.spanner_v1.types.ExecuteBatchDmlResponse" title="Permalink to this definition">#</a></dt>
+<dd><p>The response for
+[ExecuteBatchDml][google.spanner.v1.Spanner.ExecuteBatchDml]. Contains a
+list of [ResultSet][google.spanner.v1.ResultSet], one for each DML
+statement that has successfully executed. If a statement fails, the
+error is returned as part of the response payload. Clients can determine
+whether all DML statements have run successfully, or if a statement
+failed, using one of the following approaches:</p>
+<ol class="arabic simple">
+<li>Check if ‘status’ field is OkStatus.</li>
+<li>Check if result_sets_size() equals the number of statements in
+[ExecuteBatchDmlRequest][Spanner.ExecuteBatchDmlRequest].</li>
+</ol>
+<p>Example 1: A request with 5 DML statements, all executed successfully.
+Result: A response with 5 ResultSets, one for each statement in the same
+order, and an OK status.</p>
+<p>Example 2: A request with 5 DML statements. The 3rd statement has a
+syntax error. Result: A response with 2 ResultSets, for the first 2
+statements that run successfully, and a syntax error (INVALID_ARGUMENT)
+status. From result_set_size() client can determine that the 3rd
+statement has failed.</p>
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.ExecuteBatchDmlResponse.result_sets">
+<code class="descname">result_sets</code><a class="headerlink" href="#google.cloud.spanner_v1.types.ExecuteBatchDmlResponse.result_sets" title="Permalink to this definition">#</a></dt>
+<dd><p>ResultSets, one for each statement in the request that ran
+successfully, in the same order as the statements in the
+request. Each [ResultSet][google.spanner.v1.ResultSet] will
+not contain any rows. The
+[ResultSetStats][google.spanner.v1.ResultSetStats] in each
+[ResultSet][google.spanner.v1.ResultSet] will contain the
+number of rows modified by the statement.  Only the first
+ResultSet in the response contains a valid
+[ResultSetMetadata][google.spanner.v1.ResultSetMetadata].</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.ExecuteBatchDmlResponse.status">
+<code class="descname">status</code><a class="headerlink" href="#google.cloud.spanner_v1.types.ExecuteBatchDmlResponse.status" title="Permalink to this definition">#</a></dt>
+<dd><p>If all DML statements are executed successfully, status will
+be OK. Otherwise, the error status of the first failed
+statement.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">result_sets</code></dt>
+<dd><p>Field google.spanner.v1.ExecuteBatchDmlResponse.result_sets</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">status</code></dt>
+<dd><p>Field google.spanner.v1.ExecuteBatchDmlResponse.status</p>
 </dd></dl>
 
 </dd></dl>
