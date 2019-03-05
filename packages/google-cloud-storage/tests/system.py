@@ -83,7 +83,7 @@ def setUpModule():
 
 def tearDownModule():
     errors = (exceptions.Conflict, exceptions.TooManyRequests)
-    retry = RetryErrors(errors, max_tries=6)
+    retry = RetryErrors(errors, max_tries=9)
     retry(Config.TEST_BUCKET.delete)(force=True)
 
 
@@ -1148,6 +1148,7 @@ class TestKMSIntegration(TestStorageFiles):
     @classmethod
     def setUpClass(cls):
         super(TestKMSIntegration, cls).setUpClass()
+        _empty_bucket(cls.bucket)
 
     def setUp(self):
         super(TestKMSIntegration, self).setUp()
