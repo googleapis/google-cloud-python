@@ -466,20 +466,20 @@ class TestTransaction(unittest.TestCase):
                 key: _make_value_pb(value) for (key, value) in insert_params.items()
             }
         )
-        expected_statement_tuples = [
-            (insert_dml, expected_insert_params, insert_param_types),
-            (update_dml, None, None),
-            (delete_dml, None, None),
-        ]
         expected_statements = [
-            {"sql": sql, "params": params, "param_types": param_types}
-            for sql, params, param_types in expected_statement_tuples
+            {
+                "sql": insert_dml,
+                "params": expected_insert_params,
+                "param_types": insert_param_types,
+            },
+            {"sql": update_dml},
+            {"sql": delete_dml},
         ]
 
         api.execute_batch_dml.assert_called_once_with(
-            self.SESSION_NAME,
-            expected_statements,
+            session=self.SESSION_NAME,
             transaction=expected_transaction,
+            statements=expected_statements,
             seqno=count,
             metadata=[("google-cloud-resource-prefix", database.name)],
         )

@@ -244,9 +244,9 @@ class Transaction(_SnapshotBase, _BatchBase):
         api = database.spanner_api
 
         response = api.execute_batch_dml(
-            self._session.name,
-            parsed,
+            session=self._session.name,
             transaction=transaction,
+            statements=parsed,
             seqno=self._execute_sql_count,
             metadata=metadata,
         )
