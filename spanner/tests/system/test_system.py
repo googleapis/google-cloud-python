@@ -791,8 +791,7 @@ class TestSessionAPI(unittest.TestCase, _TestData):
 
         insert_statement = list(self._generate_insert_statements())[0]
         update_statement = (
-            "UPDATE contacts SET email = @email "
-            "WHERE contact_id = @contact_id;",
+            "UPDATE contacts SET email = @email " "WHERE contact_id = @contact_id;",
             {"contact_id": 1, "email": "phreddy@example.com"},
             {"contact_id": Type(code=INT64), "email": Type(code=STRING)},
         )
@@ -806,11 +805,9 @@ class TestSessionAPI(unittest.TestCase, _TestData):
             rows = list(transaction.read(self.TABLE, self.COLUMNS, self.ALL))
             self.assertEqual(rows, [])
 
-            status, row_counts = transaction.batch_update([
-                insert_statement,
-                update_statement,
-                delete_statement,
-            ])
+            status, row_counts = transaction.batch_update(
+                [insert_statement, update_statement, delete_statement]
+            )
             self.assertEqual(status.code, 0)  # XXX: where are values defined?
             self.assertEqual(len(row_counts), 3)
             for row_count in row_counts:
@@ -833,12 +830,13 @@ class TestSessionAPI(unittest.TestCase, _TestData):
             batch.delete(self.TABLE, self.ALL)
 
         insert_statements = list(self._generate_insert_statements())
-        update_statements = [(
-            "UPDATE contacts SET email = @email "
-            "WHERE contact_id = @contact_id;",
-            {"contact_id": 1, "email": "phreddy@example.com"},
-            {"contact_id": Type(code=INT64), "email": Type(code=STRING)},
-        )]
+        update_statements = [
+            (
+                "UPDATE contacts SET email = @email " "WHERE contact_id = @contact_id;",
+                {"contact_id": 1, "email": "phreddy@example.com"},
+                {"contact_id": Type(code=INT64), "email": Type(code=STRING)},
+            )
+        ]
 
         delete_statement = "DELETE contacts WHERE TRUE;"
 
@@ -847,7 +845,8 @@ class TestSessionAPI(unittest.TestCase, _TestData):
             self.assertEqual(rows, [])
 
             status, row_counts = transaction.batch_update(
-                insert_statements + update_statements)
+                insert_statements + update_statements
+            )
             self.assertEqual(status.code, 0)  # XXX: where are values defined?
             self.assertEqual(len(row_counts), len(insert_statements) + 1)
             for row_count in row_counts:
@@ -875,8 +874,7 @@ class TestSessionAPI(unittest.TestCase, _TestData):
 
         insert_statement = list(self._generate_insert_statements())[0]
         update_statement = (
-            "UPDTAE contacts SET email = @email "
-            "WHERE contact_id = @contact_id;",
+            "UPDTAE contacts SET email = @email " "WHERE contact_id = @contact_id;",
             {"contact_id": 1, "email": "phreddy@example.com"},
             {"contact_id": Type(code=INT64), "email": Type(code=STRING)},
         )
@@ -890,11 +888,9 @@ class TestSessionAPI(unittest.TestCase, _TestData):
             rows = list(transaction.read(self.TABLE, self.COLUMNS, self.ALL))
             self.assertEqual(rows, [])
 
-            status, row_counts = transaction.batch_update([
-                insert_statement,
-                update_statement,
-                delete_statement,
-            ])
+            status, row_counts = transaction.batch_update(
+                [insert_statement, update_statement, delete_statement]
+            )
 
         self.assertEqual(status.code, 3)  # XXX: where are values defined?
         self.assertEqual(len(row_counts), 1)
