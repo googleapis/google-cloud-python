@@ -37,10 +37,10 @@ def _load_testproto(filename):
     return test_proto
 
 
-ALL_TESTPROTOS = [
-    _load_testproto(filename)
-    for filename in sorted(glob.glob("tests/unit/testdata/*.textproto"))
-]
+_here = os.path.dirname(__file__)
+_glob_expr = "{}/testdata/*.textproto".format(_here)
+_globs = glob.glob(_glob_expr)
+ALL_TESTPROTOS = [_load_testproto(filename) for filename in sorted(_globs)]
 
 _CREATE_TESTPROTOS = [
     test_proto
