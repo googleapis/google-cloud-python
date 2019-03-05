@@ -30,6 +30,7 @@
   Spanner <spanner/index>
   Speech <speech/index>
   Storage <storage/index>
+  Talent <talent/index>
   Tasks <tasks/index>
   Text-to-Speech <texttospeech/index>
   Translate <translate/index>
