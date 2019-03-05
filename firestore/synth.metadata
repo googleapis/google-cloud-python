@@ -34,6 +34,16 @@
         "generator": "gapic",
         "config": "google/firestore/artman_firestore.yaml"
       }
+    },
+    {
+      "client": {
+        "source": "googleapis",
+        "apiName": "firestore",
+        "apiVersion": "v1",
+        "language": "python",
+        "generator": "gapic",
+        "config": "google/firestore/artman_firestore_v1.yaml"
+      }
     }
   ]
 }
