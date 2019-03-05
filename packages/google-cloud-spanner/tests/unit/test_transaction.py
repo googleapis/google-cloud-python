@@ -300,6 +300,34 @@ class TestTransaction(unittest.TestCase):
     def test_commit_w_mutations(self):
         self._commit_helper(mutate=True)
 
+    def test__make_params_pb_w_params_wo_param_types(self):
+        session = _Session()
+        transaction = self._make_one(session)
+
+        with self.assertRaises(ValueError):
+            transaction._make_params_pb(PARAMS, None)
+
+    def test__make_params_pb_wo_params_w_param_types(self):
+        session = _Session()
+        transaction = self._make_one(session)
+
+        with self.assertRaises(ValueError):
+            transaction._make_params_pb(None, PARAM_TYPES)
+
+    def test__make_params_pb_w_params_w_param_types(self):
+        from google.protobuf.struct_pb2 import Struct
+        from google.cloud.spanner_v1._helpers import _make_value_pb
+
+        session = _Session()
+        transaction = self._make_one(session)
+
+        params_pb = transaction._make_params_pb(PARAMS, PARAM_TYPES)
+
+        expected_params = Struct(
+            fields={key: _make_value_pb(value) for (key, value) in PARAMS.items()}
+        )
+        self.assertEqual(params_pb, expected_params)
+
     def test_execute_update_other_error(self):
         database = _Database()
         database.spanner_api = self._make_spanner_api()
@@ -370,6 +398,99 @@ class TestTransaction(unittest.TestCase):
 
     def test_execute_update_w_count(self):
         self._execute_update_helper(count=1)
+
+    def test_batch_update_other_error(self):
+        database = _Database()
+        database.spanner_api = self._make_spanner_api()
+        database.spanner_api.execute_batch_dml.side_effect = RuntimeError()
+        session = _Session(database)
+        transaction = self._make_one(session)
+        transaction._transaction_id = self.TRANSACTION_ID
+
+        with self.assertRaises(RuntimeError):
+            transaction.batch_update(statements=[DML_QUERY])
+
+    def _batch_update_helper(self, error_after=None, count=0):
+        from google.rpc.status_pb2 import Status
+        from google.protobuf.struct_pb2 import Struct
+        from google.cloud.spanner_v1.proto.result_set_pb2 import ResultSet
+        from google.cloud.spanner_v1.proto.result_set_pb2 import ResultSetStats
+        from google.cloud.spanner_v1.proto.spanner_pb2 import ExecuteBatchDmlResponse
+        from google.cloud.spanner_v1.proto.transaction_pb2 import TransactionSelector
+        from google.cloud.spanner_v1._helpers import _make_value_pb
+
+        insert_dml = "INSERT INTO table(pkey, desc) VALUES (%pkey, %desc)"
+        insert_params = {"pkey": 12345, "desc": "DESCRIPTION"}
+        insert_param_types = {"pkey": "INT64", "desc": "STRING"}
+        update_dml = 'UPDATE table SET desc = desc + "-amended"'
+        delete_dml = "DELETE FROM table WHERE desc IS NULL"
+
+        dml_statements = [
+            (insert_dml, insert_params, insert_param_types),
+            update_dml,
+            delete_dml,
+        ]
+
+        stats_pbs = [
+            ResultSetStats(row_count_exact=1),
+            ResultSetStats(row_count_exact=2),
+            ResultSetStats(row_count_exact=3),
+        ]
+        if error_after is not None:
+            stats_pbs = stats_pbs[:error_after]
+            expected_status = Status(code=400)
+        else:
+            expected_status = Status(code=200)
+        expected_row_counts = [stats.row_count_exact for stats in stats_pbs]
+
+        response = ExecuteBatchDmlResponse(
+            status=expected_status,
+            result_sets=[ResultSet(stats=stats_pb) for stats_pb in stats_pbs],
+        )
+        database = _Database()
+        api = database.spanner_api = self._make_spanner_api()
+        api.execute_batch_dml.return_value = response
+        session = _Session(database)
+        transaction = self._make_one(session)
+        transaction._transaction_id = self.TRANSACTION_ID
+        transaction._execute_sql_count = count
+
+        status, row_counts = transaction.batch_update(dml_statements)
+
+        self.assertEqual(status, expected_status)
+        self.assertEqual(row_counts, expected_row_counts)
+
+        expected_transaction = TransactionSelector(id=self.TRANSACTION_ID)
+        expected_insert_params = Struct(
+            fields={
+                key: _make_value_pb(value) for (key, value) in insert_params.items()
+            }
+        )
+        expected_statements = [
+            {
+                "sql": insert_dml,
+                "params": expected_insert_params,
+                "param_types": insert_param_types,
+            },
+            {"sql": update_dml},
+            {"sql": delete_dml},
+        ]
+
+        api.execute_batch_dml.assert_called_once_with(
+            session=self.SESSION_NAME,
+            transaction=expected_transaction,
+            statements=expected_statements,
+            seqno=count,
+            metadata=[("google-cloud-resource-prefix", database.name)],
+        )
+
+        self.assertEqual(transaction._execute_sql_count, count + 1)
+
+    def test_batch_update_wo_errors(self):
+        self._batch_update_helper()
+
+    def test_batch_update_w_errors(self):
+        self._batch_update_helper(error_after=2, count=1)
 
     def test_context_mgr_success(self):
         import datetime

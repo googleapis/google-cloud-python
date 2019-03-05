@@ -66,6 +66,11 @@ config = {
                     "retry_codes_name": "non_idempotent",
                     "retry_params_name": "streaming",
                 },
+                "ExecuteBatchDml": {
+                    "timeout_millis": 30000,
+                    "retry_codes_name": "idempotent",
+                    "retry_params_name": "default",
+                },
                 "Read": {
                     "timeout_millis": 30000,
                     "retry_codes_name": "idempotent",
