@@ -43,8 +43,8 @@ def _bad_copy(bad_request):
     return err_msg.startswith("No file found in request. (POST") and "copyTo" in err_msg
 
 
-retry_429 = RetryErrors(exceptions.TooManyRequests)
-retry_429_503 = RetryErrors([exceptions.TooManyRequests, exceptions.ServiceUnavailable])
+retry_429 = RetryErrors(exceptions.TooManyRequests, max_tries=6)
+retry_429_503 = RetryErrors([exceptions.TooManyRequests, exceptions.ServiceUnavailable], max_tries=6)
 retry_bad_copy = RetryErrors(exceptions.BadRequest, error_predicate=_bad_copy)
 
 
