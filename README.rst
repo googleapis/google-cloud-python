@@ -173,7 +173,7 @@ Example Applications
 
 .. _getting-started-python: https://github.com/googleapis/getting-started-python
 .. _tutorial: https://cloud.google.com/python
-.. _google-cloud-python-expenses-demo: https://github.com/googleapis/google-cloud-python-expenses-demo
+.. _google-cloud-python-expenses-demo: https://github.com/GoogleCloudPlatform/google-cloud-python-expenses-demo
 
 
 Authentication
