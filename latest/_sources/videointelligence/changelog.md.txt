@@ -4,6 +4,16 @@
 
 [1]: https://pypi.org/project/google-cloud-videointelligence/#history
 
+## 1.8.0
+
+03-06-2019 12:20 PST
+
+### New Features
+- Add videointelligence v1p3beta1 (Streaming API Support). ([#7490](https://github.com/googleapis/google-cloud-python/pull/7490))
+
+### Internal / Testing Changes
+- Copy lintified proto files (via synth). ([#7472](https://github.com/googleapis/google-cloud-python/pull/7472))
+
 ## 1.7.0
 
 02-25-2019 12:25 PST
