@@ -20,7 +20,7 @@ from synthtool import gcp
 
 gapic = gcp.GAPICGenerator()
 common = gcp.CommonTemplates()
-versions = ["v1beta1", "v1beta2", "v1p1beta1", "v1p2beta1", "v1"]
+versions = ["v1beta1", "v1beta2", "v1p1beta1", "v1p2beta1", "v1p3beta1", "v1"]
 
 
 # ----------------------------------------------------------------------------
@@ -50,7 +50,7 @@ for version in versions:
     )
 
 s.replace(
-    "**/*/video_intelligence_service_client.py",
+    "**/*/*video_intelligence_service_client.py",
     "'google-cloud-video-intelligence', \).version",
     "'google-cloud-videointelligence', ).version",
 )
