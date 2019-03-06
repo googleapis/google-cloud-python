@@ -50,7 +50,7 @@ for version in versions:
     )
 
 s.replace(
-    "**/*/video_intelligence_service_client.py",
+    "**/*/*video_intelligence_service_client.py",
     "'google-cloud-video-intelligence', \).version",
     "'google-cloud-videointelligence', ).version",
 )

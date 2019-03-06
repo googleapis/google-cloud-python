@@ -38,7 +38,7 @@ from google.cloud.videointelligence_v1p3beta1.proto import video_intelligence_pb
 from google.longrunning import operations_pb2
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
-    "google-cloud-video-intelligence"
+    "google-cloud-videointelligence"
 ).version
 
 
