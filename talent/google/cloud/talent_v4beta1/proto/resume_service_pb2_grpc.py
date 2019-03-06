@@ -28,8 +28,9 @@ class ResumeServiceServicer(object):
   """
 
     def ParseResume(self, request, context):
-        """Parses a resume into a [Profile][google.cloud.talent.v4beta1.Profile]. The API attempts to fill out the
-    following profile fields if present within the resume:
+        """Parses a resume into a [Profile][google.cloud.talent.v4beta1.Profile]. The
+    API attempts to fill out the following profile fields if present within the
+    resume:
 
     * personNames
     * addresses
