@@ -15,14 +15,14 @@ _sym_db = _symbol_database.Default()
 
 
 from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
-from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
-from google.protobuf import field_mask_pb2 as google_dot_protobuf_dot_field__mask__pb2
 from google.cloud.talent_v4beta1.proto import (
     common_pb2 as google_dot_cloud_dot_talent__v4beta1_dot_proto_dot_common__pb2,
 )
 from google.cloud.talent_v4beta1.proto import (
     tenant_pb2 as google_dot_cloud_dot_talent__v4beta1_dot_proto_dot_tenant__pb2,
 )
+from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
+from google.protobuf import field_mask_pb2 as google_dot_protobuf_dot_field__mask__pb2
 
 
 DESCRIPTOR = _descriptor.FileDescriptor(
@@ -33,14 +33,14 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n\037com.google.cloud.talent.v4beta1B\022TenantServiceProtoP\001ZAgoogle.golang.org/genproto/googleapis/cloud/talent/v4beta1;talent\242\002\003CTS"
     ),
     serialized_pb=_b(
-        '\n6google/cloud/talent_v4beta1/proto/tenant_service.proto\x12\x1bgoogle.cloud.talent.v4beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto\x1a.google/cloud/talent_v4beta1/proto/common.proto\x1a.google/cloud/talent_v4beta1/proto/tenant.proto"Z\n\x13\x43reateTenantRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x33\n\x06tenant\x18\x02 \x01(\x0b\x32#.google.cloud.talent.v4beta1.Tenant" \n\x10GetTenantRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"{\n\x13UpdateTenantRequest\x12\x33\n\x06tenant\x18\x01 \x01(\x0b\x32#.google.cloud.talent.v4beta1.Tenant\x12/\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMask"#\n\x13\x44\x65leteTenantRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"K\n\x12ListTenantsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x12\n\npage_token\x18\x02 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05"\xa5\x01\n\x13ListTenantsResponse\x12\x34\n\x07tenants\x18\x01 \x03(\x0b\x32#.google.cloud.talent.v4beta1.Tenant\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\x12?\n\x08metadata\x18\x03 \x01(\x0b\x32-.google.cloud.talent.v4beta1.ResponseMetadata2\x82\x06\n\rTenantService\x12\x96\x01\n\x0c\x43reateTenant\x12\x30.google.cloud.talent.v4beta1.CreateTenantRequest\x1a#.google.cloud.talent.v4beta1.Tenant"/\x82\xd3\xe4\x93\x02)"$/v4beta1/{parent=projects/*}/tenants:\x01*\x12\x8d\x01\n\tGetTenant\x12-.google.cloud.talent.v4beta1.GetTenantRequest\x1a#.google.cloud.talent.v4beta1.Tenant",\x82\xd3\xe4\x93\x02&\x12$/v4beta1/{name=projects/*/tenants/*}\x12\x9d\x01\n\x0cUpdateTenant\x12\x30.google.cloud.talent.v4beta1.UpdateTenantRequest\x1a#.google.cloud.talent.v4beta1.Tenant"6\x82\xd3\xe4\x93\x02\x30\x32+/v4beta1/{tenant.name=projects/*/tenants/*}:\x01*\x12\x86\x01\n\x0c\x44\x65leteTenant\x12\x30.google.cloud.talent.v4beta1.DeleteTenantRequest\x1a\x16.google.protobuf.Empty",\x82\xd3\xe4\x93\x02&*$/v4beta1/{name=projects/*/tenants/*}\x12\x9e\x01\n\x0bListTenants\x12/.google.cloud.talent.v4beta1.ListTenantsRequest\x1a\x30.google.cloud.talent.v4beta1.ListTenantsResponse",\x82\xd3\xe4\x93\x02&\x12$/v4beta1/{parent=projects/*}/tenantsB\x80\x01\n\x1f\x63om.google.cloud.talent.v4beta1B\x12TenantServiceProtoP\x01ZAgoogle.golang.org/genproto/googleapis/cloud/talent/v4beta1;talent\xa2\x02\x03\x43TSb\x06proto3'
+        '\n6google/cloud/talent_v4beta1/proto/tenant_service.proto\x12\x1bgoogle.cloud.talent.v4beta1\x1a\x1cgoogle/api/annotations.proto\x1a.google/cloud/talent_v4beta1/proto/common.proto\x1a.google/cloud/talent_v4beta1/proto/tenant.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto"Z\n\x13\x43reateTenantRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x33\n\x06tenant\x18\x02 \x01(\x0b\x32#.google.cloud.talent.v4beta1.Tenant" \n\x10GetTenantRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"{\n\x13UpdateTenantRequest\x12\x33\n\x06tenant\x18\x01 \x01(\x0b\x32#.google.cloud.talent.v4beta1.Tenant\x12/\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMask"#\n\x13\x44\x65leteTenantRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"K\n\x12ListTenantsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x12\n\npage_token\x18\x02 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05"\xa5\x01\n\x13ListTenantsResponse\x12\x34\n\x07tenants\x18\x01 \x03(\x0b\x32#.google.cloud.talent.v4beta1.Tenant\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\x12?\n\x08metadata\x18\x03 \x01(\x0b\x32-.google.cloud.talent.v4beta1.ResponseMetadata2\x82\x06\n\rTenantService\x12\x96\x01\n\x0c\x43reateTenant\x12\x30.google.cloud.talent.v4beta1.CreateTenantRequest\x1a#.google.cloud.talent.v4beta1.Tenant"/\x82\xd3\xe4\x93\x02)"$/v4beta1/{parent=projects/*}/tenants:\x01*\x12\x8d\x01\n\tGetTenant\x12-.google.cloud.talent.v4beta1.GetTenantRequest\x1a#.google.cloud.talent.v4beta1.Tenant",\x82\xd3\xe4\x93\x02&\x12$/v4beta1/{name=projects/*/tenants/*}\x12\x9d\x01\n\x0cUpdateTenant\x12\x30.google.cloud.talent.v4beta1.UpdateTenantRequest\x1a#.google.cloud.talent.v4beta1.Tenant"6\x82\xd3\xe4\x93\x02\x30\x32+/v4beta1/{tenant.name=projects/*/tenants/*}:\x01*\x12\x86\x01\n\x0c\x44\x65leteTenant\x12\x30.google.cloud.talent.v4beta1.DeleteTenantRequest\x1a\x16.google.protobuf.Empty",\x82\xd3\xe4\x93\x02&*$/v4beta1/{name=projects/*/tenants/*}\x12\x9e\x01\n\x0bListTenants\x12/.google.cloud.talent.v4beta1.ListTenantsRequest\x1a\x30.google.cloud.talent.v4beta1.ListTenantsResponse",\x82\xd3\xe4\x93\x02&\x12$/v4beta1/{parent=projects/*}/tenantsB\x80\x01\n\x1f\x63om.google.cloud.talent.v4beta1B\x12TenantServiceProtoP\x01ZAgoogle.golang.org/genproto/googleapis/cloud/talent/v4beta1;talent\xa2\x02\x03\x43TSb\x06proto3'
     ),
     dependencies=[
         google_dot_api_dot_annotations__pb2.DESCRIPTOR,
-        google_dot_protobuf_dot_empty__pb2.DESCRIPTOR,
-        google_dot_protobuf_dot_field__mask__pb2.DESCRIPTOR,
         google_dot_cloud_dot_talent__v4beta1_dot_proto_dot_common__pb2.DESCRIPTOR,
         google_dot_cloud_dot_talent__v4beta1_dot_proto_dot_tenant__pb2.DESCRIPTOR,
+        google_dot_protobuf_dot_empty__pb2.DESCRIPTOR,
+        google_dot_protobuf_dot_field__mask__pb2.DESCRIPTOR,
     ],
 )
 
