@@ -4,6 +4,29 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
+## 1.10.0
+
+03-06-2019 15:20 PST
+
+### Implementation Changes
+
+- Harden 'ArrayQueryParameter.from_api_repr' against missing 'parameterValue'. ([#7311](https://github.com/googleapis/google-cloud-python/pull/7311))
+- Allow nested records w/ null values. ([#7297](https://github.com/googleapis/google-cloud-python/pull/7297))
+
+### New Features
+
+- Add options to ignore errors when creating/deleting datasets/tables. ([#7491](https://github.com/googleapis/google-cloud-python/pull/7491))
+- Accept a string in Table and Dataset constructors. ([#7483](https://github.com/googleapis/google-cloud-python/pull/7483))
+
+### Documentation
+
+- Update docstring of RowIterator's to_dataframe ([#7306](https://github.com/googleapis/google-cloud-python/pull/7306))
+- Updated client library documentation URLs. ([#7307](https://github.com/googleapis/google-cloud-python/pull/7307))
+
+### Internal / Testing Changes
+
+- Fix lint. ([#7383](https://github.com/googleapis/google-cloud-python/pull/7383))
+
 ## 1.9.0
 
 02-04-2019 13:28 PST
