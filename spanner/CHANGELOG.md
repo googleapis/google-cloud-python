@@ -4,6 +4,30 @@
 
 [1]: https://pypi.org/project/google-cloud-spanner/#history
 
+## 1.8.0
+
+03-05-2019 12:57 PST
+
+
+### Implementation Changes
+- Protoc-generated serialization update. ([#7095](https://github.com/googleapis/google-cloud-python/pull/7095))
+- Fix typo in exported param type name. ([#7295](https://github.com/googleapis/google-cloud-python/pull/7295))
+
+### New Features
+- Add Batch DML support. ([#7485](https://github.com/googleapis/google-cloud-python/pull/7485))
+
+### Documentation
+- Copy lintified proto files, update docstrings (via synth). ([#7453](https://github.com/googleapis/google-cloud-python/pull/7453))
+- Fix Batch object creation instructions. ([#7341](https://github.com/googleapis/google-cloud-python/pull/7341))
+- Updated client library documentation URLs. ([#7307](https://github.com/googleapis/google-cloud-python/pull/7307))
+- Fix README to install spanner instead of datastore. ([#7301](https://github.com/googleapis/google-cloud-python/pull/7301))
+
+### Internal / Testing Changes
+- Add clarifying comment to blacken nox target. ([#7403](https://github.com/googleapis/google-cloud-python/pull/7403))
+- Ensure that GRPC config file is included in MANIFEST.in after templating. ([#7046](https://github.com/googleapis/google-cloud-python/pull/7046))
+- Add protos as an artifact to library. ([#7205](https://github.com/googleapis/google-cloud-python/pull/7205))
+- Update copyright headers.
+
 ## 1.7.1
 
 12-14-2018 15:18 PST
