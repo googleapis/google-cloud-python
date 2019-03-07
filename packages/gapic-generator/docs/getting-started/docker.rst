@@ -86,14 +86,21 @@ The output directory must also be writable.
     hard-coded; they can not be altered where they appear in the command
     below.
 
-Perform that step with ``docker run``:
+Docker requires the output directory to pre-exist; create a directory where
+you want the generated code to go:
+
+.. code-block:: sh
+
+    $ mkdir dest/
+
+Perform the actual code generation step with ``docker run``:
 
 .. code-block:: shell
 
     # This is assumed to be run from the `googleapis` project root.
     $ docker run \
-      --mount type=bind,source=google/cloud/vision/v1/,destination=/in/google/cloud/vision/v1/,readonly \
-      --mount type=bind,source=dest/,destination=/out/ \
+      --mount type=bind,source=$(pwd)/google/cloud/vision/v1/,destination=/in/google/cloud/vision/v1/,readonly \
+      --mount type=bind,source=$(pwd)/dest/,destination=/out/ \
       --rm \
       --user $UID \
       gcr.io/gapic-images/gapic-generator-python

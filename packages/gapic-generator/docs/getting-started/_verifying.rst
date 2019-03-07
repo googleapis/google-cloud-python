@@ -15,7 +15,7 @@ Next, install the library:
 
 .. code-block:: shell
 
-  $ cd /dest/
+  $ cd dest/
   $ pip install --editable .
 
 Now it is time to play with it!
