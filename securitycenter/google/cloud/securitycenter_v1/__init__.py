@@ -16,8 +16,14 @@
 
 from __future__ import absolute_import
 
-from google.cloud.securitycenter_v1 import SecurityCenterClient
-from google.cloud.securitycenter_v1 import enums
 from google.cloud.securitycenter_v1 import types
+from google.cloud.securitycenter_v1.gapic import enums
+from google.cloud.securitycenter_v1.gapic import security_center_client
+
+
+class SecurityCenterClient(security_center_client.SecurityCenterClient):
+    __doc__ = security_center_client.SecurityCenterClient.__doc__
+    enums = enums
+
 
 __all__ = ("enums", "types", "SecurityCenterClient")
