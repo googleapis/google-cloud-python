@@ -118,6 +118,8 @@ __all__ = [
     "synctasklet",
     "tasklet",
     "toplevel",
+    "wait_all",
+    "wait_any",
 ]
 """All top-level exported names."""
 
@@ -178,8 +180,6 @@ from google.cloud.ndb.model import StringProperty
 from google.cloud.ndb.model import StructuredProperty
 from google.cloud.ndb.model import TextProperty
 from google.cloud.ndb.model import TimeProperty
-from google.cloud.ndb.model import transaction
-from google.cloud.ndb.model import transaction_async
 from google.cloud.ndb.model import transactional
 from google.cloud.ndb.model import transactional_async
 from google.cloud.ndb.model import transactional_tasklet
@@ -218,3 +218,7 @@ from google.cloud.ndb.tasklets import sleep
 from google.cloud.ndb.tasklets import synctasklet
 from google.cloud.ndb.tasklets import tasklet
 from google.cloud.ndb.tasklets import toplevel
+from google.cloud.ndb.tasklets import wait_all
+from google.cloud.ndb.tasklets import wait_any
+from google.cloud.ndb._transaction import transaction
+from google.cloud.ndb._transaction import transaction_async

@@ -26,6 +26,7 @@ from google.cloud.datastore_v1.proto import entity_pb2
 
 from google.cloud.ndb import context as context_module
 from google.cloud.ndb import _eventloop
+from google.cloud.ndb import _remote
 from google.cloud.ndb import tasklets
 
 EVENTUAL = datastore_pb2.ReadOptions.EVENTUAL
@@ -64,41 +65,6 @@ def make_stub(client):
         channel = grpc.insecure_channel(client.host)
 
     return datastore_pb2_grpc.DatastoreStub(channel)
-
-
-class RemoteCall:
-    """Represents a remote call.
-
-    This is primarily a wrapper for futures returned by gRPC. This holds some
-    information about the call to make debugging easier. Can be used for
-    anything that returns a future for something running outside of our own
-    event loop.
-
-    Arguments:
-        future (Union[grpc.Future, tasklets.Future]): The future handed back
-            from initiating the call.
-        info (str): Helpful human readable string about the call. This string
-            will be handed back verbatim by calls to :meth:`__repr__`.
-    """
-
-    def __init__(self, future, info):
-        self.future = future
-        self.info = info
-
-    def __repr__(self):
-        return self.info
-
-    def exception(self):
-        """Calls :meth:`grpc.Future.exception` on attr:`future`."""
-        return self.future.exception()
-
-    def result(self):
-        """Calls :meth:`grpc.Future.result` on attr:`future`."""
-        return self.future.result()
-
-    def add_done_callback(self, callback):
-        """Calls :meth:`grpc.Future.add_done_callback` on attr:`future`."""
-        return self.future.add_done_callback(callback)
 
 
 def lookup(key, **options):
@@ -214,8 +180,8 @@ class _LookupBatch:
         loaded into a new batch so they can be tried again.
 
         Args:
-            rpc (RemoteCall): If not an exception, the result will be an
-                instance of
+            rpc (_remote.RemoteCall): If not an exception, the result will be
+                an instance of
                 :class:`google.cloud.datastore_v1.datastore_pb.LookupResponse`
         """
         # If RPC has resulted in an exception, propagate that exception to all
@@ -264,7 +230,7 @@ def _datastore_lookup(keys, read_options):
             the request.
 
     Returns:
-        RemoteCall: Future object for eventual result of lookup.
+        _remote.RemoteCall: Future object for eventual result of lookup.
     """
     client = context_module.get_context().client
     request = datastore_pb2.LookupRequest(
@@ -274,7 +240,9 @@ def _datastore_lookup(keys, read_options):
     )
 
     api = stub()
-    return RemoteCall(api.Lookup.future(request), "Lookup({})".format(request))
+    return _remote.RemoteCall(
+        api.Lookup.future(request), "Lookup({})".format(request)
+    )
 
 
 def _get_read_options(options):
@@ -341,14 +309,17 @@ def put(entity_pb, **options):
         tasklets.Future: Result will be completed datastore key
             (entity_pb2.Key) for the entity.
     """
-    _check_unsupported_options(options)
+    transaction = _get_transaction(options)
+    if transaction:
+        batch = _get_commit_batch(transaction, options)
+    else:
+        batch = _get_batch(_NonTransactionCommitBatch, options)
 
-    batch = _get_batch(_CommitBatch, options)
     return batch.put(entity_pb)
 
 
-class _CommitBatch:
-    """Batch for tracking a set of mutations for a commit.
+class _NonTransactionCommitBatch:
+    """Batch for tracking a set of mutations for a non-transactional commit.
 
     Attributes:
         options (Dict[str, Any]): See Args.
@@ -356,7 +327,7 @@ class _CommitBatch:
             buffers accumumlated for this batch.
         futures (List[tasklets.Future]): Sequence of futures for return results
             of the commit. The i-th element of ``futures`` corresponds to the
-            i-th element of ``mutations``.`
+            i-th element of ``mutations``.
 
     Args:
         options (Dict[str, Any]): The options for the request. Calls with
@@ -364,6 +335,7 @@ class _CommitBatch:
     """
 
     def __init__(self, options):
+        _check_unsupported_options(options)
         self.options = options
         self.mutations = []
         self.futures = []
@@ -386,44 +358,268 @@ class _CommitBatch:
 
     def idle_callback(self):
         """Send the commit for this batch to Datastore."""
-        rpc = _datastore_commit(self.mutations, _get_transaction(self.options))
-        _eventloop.queue_rpc(rpc, self.commit_callback)
+        futures = self.futures
 
-    def commit_callback(self, rpc):
-        """Process the results of a commit request.
+        def commit_callback(rpc):
+            _process_commit(rpc, futures)
 
-        For each mutation, set the result to the key handed back from
-            Datastore. If a key wasn't allocated for the mutation, this will be
-            :data:`None`.
+        rpc = _datastore_commit(self.mutations, None)
+        _eventloop.queue_rpc(rpc, commit_callback)
+
+
+def commit(transaction):
+    """Commit a transaction.
+
+    Args:
+        transaction (bytes): The transaction id to commit.
+
+    Returns:
+        tasklets.Future: Result will be none, will finish when the transaction
+            is committed.
+    """
+    batch = _get_commit_batch(transaction, {})
+    return batch.commit()
+
+
+def _get_commit_batch(transaction, options):
+    """Get the commit batch for the current context and transaction.
+
+    Args:
+        transaction (bytes): The transaction id. Different transactions will
+            have different batchs.
+        options (Dict[str, Any]): Options for the batch. Only "transaction" is
+            supported at this time.
+
+    Returns:
+        _TransactionalCommitBatch: The batch.
+    """
+    # Support for different options will be tricky if we're in a transaction,
+    # since we can only do one commit, so any options that affect that gRPC
+    # call would all need to be identical. For now, only "transaction" is
+    # suppoorted if there is a transaction.
+    options = options.copy()
+    options.pop("transaction", None)
+    for key in options:
+        raise NotImplementedError("Passed bad option: {!r}".format(key))
+
+    # Since we're in a transaction, we need to hang on to the batch until
+    # commit time, so we need to store it separately from other batches.
+    context = context_module.get_context()
+    batch = context.commit_batches.get(transaction)
+    if batch is None:
+        batch = _TransactionalCommitBatch({"transaction": transaction})
+        context.commit_batches[transaction] = batch
+
+    return batch
+
+
+class _TransactionalCommitBatch:
+    """Batch for tracking a set of mutations to be committed for a transaction.
+
+    Attributes:
+        options (Dict[str, Any]): See Args.
+        mutations (List[datastore_pb2.Mutation]): Sequence of mutation protocol
+            buffers accumumlated for this batch.
+        futures (List[tasklets.Future]): Sequence of futures for return results
+            of the commit. The i-th element of ``futures`` corresponds to the
+            i-th element of ``mutations``.
+        transaction (bytes): The transaction id of the transaction for this
+            commit, if in a transaction.
+        allocating_ids (List[tasklets.Future]): Futures for any calls to
+            AllocateIds that are fired off before commit.
+        incomplete_mutations (List[datastore_pb2.Mutation]): List of mutations
+            with keys which will need ids allocated. Incomplete keys will be
+            allocated by an idle callback. Any keys still incomplete at commit
+            time will be allocated by the call to Commit. Only used when in a
+            transaction.
+        incomplete_futures (List[tasklets.Future]): List of futures
+            corresponding to keys in ``incomplete_mutations``. Futures will
+            receive results of id allocation.
+
+    Args:
+        options (Dict[str, Any]): The options for the request. Calls with
+            different options will be placed in different batches.
+    """
+
+    def __init__(self, options):
+        self.options = options
+        self.mutations = []
+        self.futures = []
+        self.transaction = _get_transaction(options)
+        self.allocating_ids = []
+        self.incomplete_mutations = []
+        self.incomplete_futures = []
+
+    def put(self, entity_pb):
+        """Add an entity to batch to be stored.
 
         Args:
-            rpc (RemoteCall): If not an exception, the result will be an
-                instance of
-                :class:`google.cloud.datastore_v1.datastore_pb2.CommitResponse`
+            entity_pb (datastore_v1.types.Entity): The entity to be stored.
+
+        Returns:
+            tasklets.Future: Result will be completed datastore key
+                (entity_pb2.Key) for the entity.
         """
-        # If RPC has resulted in an exception, propagate that exception to all
-        # waiting futures.
+        future = tasklets.Future("put({})".format(entity_pb))
+        self.futures.append(future)
+        mutation = datastore_pb2.Mutation(upsert=entity_pb)
+        self.mutations.append(mutation)
+
+        # If we have an incomplete key, add the incomplete key to a batch for a
+        # call to AllocateIds
+        if not _complete(entity_pb.key):
+            # If this is the first key in the batch, we also need to
+            # schedule our idle handler to get called
+            if not self.incomplete_mutations:
+                _eventloop.add_idle(self.idle_callback)
+
+            self.incomplete_mutations.append(mutation)
+            self.incomplete_futures.append(future)
+
+        # Complete keys get passed back None
+        else:
+            future.set_result(None)
+
+        return future
+
+    def idle_callback(self):
+        """Call AllocateIds on any incomplete keys in the batch."""
+        if not self.incomplete_mutations:
+            # This will happen if `commit` is called first.
+            return
+
+        # Signal to a future commit that there is an id allocation in
+        # progress and it should wait.
+        allocating_ids = tasklets.Future("AllocateIds")
+        self.allocating_ids.append(allocating_ids)
+
+        mutations = self.incomplete_mutations
+        futures = self.incomplete_futures
+
+        def callback(rpc):
+            self.allocate_ids_callback(rpc, mutations, futures)
+
+            # Signal that we're done allocating these ids
+            allocating_ids.set_result(None)
+
+        keys = [mutation.upsert.key for mutation in mutations]
+        rpc = _datastore_allocate_ids(keys)
+        _eventloop.queue_rpc(rpc, callback)
+
+        self.incomplete_mutations = []
+        self.incomplete_futures = []
+
+    def allocate_ids_callback(self, rpc, mutations, futures):
+        """Process the results of a call to AllocateIds."""
+        # If RPC has resulted in an exception, propagate that exception to
+        # all waiting futures.
         exception = rpc.exception()
         if exception is not None:
-            for future in self.futures:
+            for future in futures:
                 future.set_exception(exception)
             return
 
-        # "The i-th mutation result corresponds to the i-th mutation in the
-        # request."
-        #
-        # https://github.com/googleapis/googleapis/blob/master/google/datastore/v1/datastore.proto#L241
+        # Update mutations with complete keys
         response = rpc.result()
-        results_futures = zip(response.mutation_results, self.futures)
-        for mutation_result, future in results_futures:
-            # Datastore only sends a key if one is allocated for the
-            # mutation. Confusingly, though, if a key isn't allocated, instead
-            # of getting None, we get a key with an empty path.
-            if mutation_result.key.path:
-                key = mutation_result.key
-            else:
-                key = None
+        for mutation, key, future in zip(mutations, response.keys, futures):
+            mutation.upsert.key.CopyFrom(key)
             future.set_result(key)
+
+    @tasklets.tasklet
+    def commit(self):
+        """Commit transaction."""
+        if not self.mutations:
+            return
+
+        # Wait for any calls to AllocateIds that have been fired off so we
+        # don't allocate ids again in the commit.
+        for future in self.allocating_ids:
+            if not future.done():
+                yield future
+
+        # Head off making any more AllocateId calls. Any remaining incomplete
+        # keys will get ids as part of the Commit call.
+        self.incomplete_mutations = []
+        self.incomplete_futures = []
+
+        future = tasklets.Future("Commit")
+        futures = self.futures
+
+        def commit_callback(rpc):
+            _process_commit(rpc, futures)
+
+            exception = rpc.exception()
+            if exception:
+                future.set_exception(exception)
+            else:
+                future.set_result(None)
+
+        _eventloop.queue_rpc(
+            _datastore_commit(self.mutations, transaction=self.transaction),
+            commit_callback,
+        )
+
+        yield future
+
+
+def _process_commit(rpc, futures):
+    """Process the results of a commit request.
+
+    For each mutation, set the result to the key handed back from
+        Datastore. If a key wasn't allocated for the mutation, this will be
+        :data:`None`.
+
+    Args:
+        rpc (_remote.RemoteCall): If not an exception, the result will be an
+            instance of
+            :class:`google.cloud.datastore_v1.datastore_pb2.CommitResponse`
+        futures (List[tasklets.Future]): List of futures waiting on results.
+    """
+    # If RPC has resulted in an exception, propagate that exception to all
+    # waiting futures.
+    exception = rpc.exception()
+    if exception is not None:
+        for future in futures:
+            if not future.done():
+                future.set_exception(exception)
+        return
+
+    # "The i-th mutation result corresponds to the i-th mutation in the
+    # request."
+    #
+    # https://github.com/googleapis/googleapis/blob/master/google/datastore/v1/datastore.proto#L241
+    response = rpc.result()
+    results_futures = zip(response.mutation_results, futures)
+    for mutation_result, future in results_futures:
+        if future.done():
+            continue
+
+        # Datastore only sends a key if one is allocated for the
+        # mutation. Confusingly, though, if a key isn't allocated, instead
+        # of getting None, we get a key with an empty path.
+        if mutation_result.key.path:
+            key = mutation_result.key
+        else:
+            key = None
+        future.set_result(key)
+
+
+def _complete(key_pb):
+    """Determines whether a key protocol buffer is complete.
+    A new key may be left incomplete so that the id can be allocated by the
+    database. A key is considered incomplete if the last element of the path
+    has neither a ``name`` or an ``id``.
+    Args:
+        key_pb (entity_pb2.Key): The key to check.
+    Returns:
+        boolean: :data:`True` if key is incomplete, otherwise :data:`False`.
+    """
+    if key_pb.path:
+        element = key_pb.path[-1]
+        if element.id or element.name:
+            return True
+
+    return False
 
 
 def _datastore_commit(mutations, transaction):
@@ -437,7 +633,7 @@ def _datastore_commit(mutations, transaction):
             being used.
 
     Returns:
-        RemoteCall: A future for
+        _remote.RemoteCall: A future for
             :class:`google.cloud.datastore_v1.datastore_pb2.CommitResponse`
     """
     if transaction is None:
@@ -454,7 +650,109 @@ def _datastore_commit(mutations, transaction):
     )
 
     api = stub()
-    return RemoteCall(api.Commit.future(request), "Commit({})".format(request))
+    return _remote.RemoteCall(
+        api.Commit.future(request), "Commit({})".format(request)
+    )
+
+
+def _datastore_allocate_ids(keys):
+    """Calls ``AllocateIds`` on Datastore.
+
+    Args:
+        keys (List[google.cloud.datastore_v1.entity_pb2.Key]): List of
+            incomplete keys to allocate.
+
+    Returns:
+        _remote.RemoteCall: A future for
+            :class:`google.cloud.datastore_v1.datastore_pb2.AllocateIdsResponse`
+    """
+    client = context_module.get_context().client
+    request = datastore_pb2.AllocateIdsRequest(
+        project_id=client.project, keys=keys
+    )
+
+    api = stub()
+    return _remote.RemoteCall(
+        api.AllocateIds.future(request), "AllocateIds({})".format(request)
+    )
+
+
+@tasklets.tasklet
+def begin_transaction(read_only):
+    """Start a new transction.
+    Args:
+        read_only (bool): Whether to start a read-only or read-write
+            transaction.
+    Returns:
+        tasklets.Future: Result will be Transaction Id (bytes) of new
+            transaction.
+    """
+    response = yield _datastore_begin_transaction(read_only)
+    return response.transaction
+
+
+def _datastore_begin_transaction(read_only):
+    """Calls ``BeginTransaction`` on Datastore.
+    Args:
+        read_only (bool): Whether to start a read-only or read-write
+            transaction.
+    Returns:
+        _remote.RemoteCall: A future for
+            :class:`google.cloud.datastore_v1.datastore_pb2.BeginTransactionResponse`
+    """
+    client = context_module.get_context().client
+    if read_only:
+        options = datastore_pb2.TransactionOptions(
+            read_only=datastore_pb2.TransactionOptions.ReadOnly()
+        )
+    else:
+        options = datastore_pb2.TransactionOptions(
+            read_write=datastore_pb2.TransactionOptions.ReadWrite()
+        )
+
+    request = datastore_pb2.BeginTransactionRequest(
+        project_id=client.project, transaction_options=options
+    )
+
+    api = stub()
+    return _remote.RemoteCall(
+        api.BeginTransaction.future(request),
+        "BeginTransaction({})".format(request),
+    )
+
+
+@tasklets.tasklet
+def rollback(transaction):
+    """Rollback a transaction.
+
+    Args:
+        transaction (bytes): Transaction id.
+
+    Returns:
+        tasklets.Future: Future completes when rollback is finished.
+    """
+    yield _datastore_rollback(transaction)
+
+
+def _datastore_rollback(transaction):
+    """Calls Rollback in Datastore.
+
+    Args:
+        transaction (bytes): Transaction id.
+
+    Returns:
+        _remote.RemoteCall: Future for
+            :class:`google.cloud.datastore_v1.datastore_pb2.RollbackResponse`
+    """
+    client = context_module.get_context().client
+    request = datastore_pb2.RollbackRequest(
+        project_id=client.project, transaction=transaction
+    )
+
+    api = stub()
+    return _remote.RemoteCall(
+        api.Rollback.future(request), "Rollback({})".format(request)
+    )
 
 
 _OPTIONS_SUPPORTED = {"transaction", "read_consistency", "read_policy"}

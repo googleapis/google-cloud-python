@@ -14,11 +14,11 @@
 
 from unittest import mock
 
-import grpc
 import pytest
 
 from google.cloud.ndb import context as context_module
 from google.cloud.ndb import _eventloop
+from google.cloud.ndb import _remote
 from google.cloud.ndb import tasklets
 
 import tests.unit.utils
@@ -329,7 +329,7 @@ class Test_TaskletFuture:
             value = yield dependency
             return value + 3
 
-        dependency = mock.Mock(spec=grpc.Future)
+        dependency = mock.Mock(spec=_remote.RemoteCall)
         dependency.exception.return_value = None
         dependency.result.return_value = 8
         generator = generator_function(dependency)

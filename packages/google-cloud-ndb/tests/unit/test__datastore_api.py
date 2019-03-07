@@ -18,6 +18,7 @@ import pytest
 
 from google.cloud import _http
 from google.cloud.datastore_v1.proto import datastore_pb2
+from google.cloud.datastore_v1.proto import entity_pb2
 from google.cloud.ndb import context as context_module
 from google.cloud.ndb import _datastore_api as _api
 from google.cloud.ndb import tasklets
@@ -59,43 +60,6 @@ class TestStub:
         assert stub is datastore_pb2_grpc.DatastoreStub.return_value
         datastore_pb2_grpc.DatastoreStub.assert_called_once_with(channel)
         grpc.insecure_channel.assert_called_once_with("thehost")
-
-
-class TestRemoteCall:
-    @staticmethod
-    def test_constructor():
-        call = _api.RemoteCall("future", "info")
-        assert call.future == "future"
-        assert call.info == "info"
-
-    @staticmethod
-    def test_repr():
-        call = _api.RemoteCall(None, "a remote call")
-        assert repr(call) == "a remote call"
-
-    @staticmethod
-    def test_exception():
-        error = Exception("Spurious error")
-        future = tasklets.Future()
-        future.set_exception(error)
-        call = _api.RemoteCall(future, "testing")
-        assert call.exception() is error
-
-    @staticmethod
-    def test_result():
-        future = tasklets.Future()
-        future.set_result("positive")
-        call = _api.RemoteCall(future, "testing")
-        assert call.result() == "positive"
-
-    @staticmethod
-    def test_add_done_callback():
-        future = tasklets.Future()
-        call = _api.RemoteCall(future, "testing")
-        callback = mock.Mock(spec=())
-        call.add_done_callback(callback)
-        future.set_result(None)
-        callback.assert_called_once_with(future)
 
 
 def _mock_key(key_str):
@@ -443,42 +407,91 @@ class Test_get_read_options:
             )
 
 
-@pytest.mark.usefixtures("in_context")
-@mock.patch("google.cloud.ndb._datastore_api.datastore_pb2")
-def test_put(datastore_pb2, context):
-    class Mutation:
-        def __init__(self, upsert=None):
-            self.upsert = upsert
-
-        def __eq__(self, other):
-            return self.upsert is other.upsert
-
-    eventloop = mock.Mock(spec=("add_idle", "run"))
-    with context.new(eventloop=eventloop).use() as context:
-        datastore_pb2.Mutation = Mutation
-
-        entity1, entity2, entity3 = object(), object(), object()
-        future1 = _api.put(entity1)
-        future2 = _api.put(entity2)
-        future3 = _api.put(entity3)
-
-        batch = context.batches[_api._CommitBatch][()]
-        assert batch.mutations == [
-            Mutation(upsert=entity1),
-            Mutation(upsert=entity2),
-            Mutation(upsert=entity3),
-        ]
-        assert batch.futures == [future1, future2, future3]
-
-
-class Test_CommitBatch:
+class Test_put:
     @staticmethod
+    @mock.patch("google.cloud.ndb._datastore_api.datastore_pb2")
+    def test_no_transaction(datastore_pb2, in_context):
+        class Mutation:
+            def __init__(self, upsert=None):
+                self.upsert = upsert
+
+            def __eq__(self, other):
+                return self.upsert is other.upsert
+
+        eventloop = mock.Mock(spec=("add_idle", "run"))
+        with in_context.new(eventloop=eventloop).use() as context:
+            datastore_pb2.Mutation = Mutation
+
+            entity1, entity2, entity3 = object(), object(), object()
+            future1 = _api.put(entity1)
+            future2 = _api.put(entity2)
+            future3 = _api.put(entity3)
+
+            batch = context.batches[_api._NonTransactionCommitBatch][()]
+            assert batch.mutations == [
+                Mutation(upsert=entity1),
+                Mutation(upsert=entity2),
+                Mutation(upsert=entity3),
+            ]
+            assert batch.futures == [future1, future2, future3]
+
+    @staticmethod
+    @mock.patch("google.cloud.ndb._datastore_api.datastore_pb2")
+    def test_w_transaction(datastore_pb2, in_context):
+        class Mutation:
+            def __init__(self, upsert=None):
+                self.upsert = upsert
+
+            def __eq__(self, other):
+                return self.upsert is other.upsert
+
+        class PathElement:
+            id = None
+
+            def __init__(self, name):
+                self.name = name
+
+        def MockEntity(*path):
+            path = [PathElement(name) for name in path]
+            return mock.Mock(key=mock.Mock(path=path))
+
+        eventloop = mock.Mock(spec=("add_idle", "run"))
+        with in_context.new(eventloop=eventloop).use() as context:
+            datastore_pb2.Mutation = Mutation
+
+            entity1 = MockEntity("a", "1")
+            future1 = _api.put(entity1, transaction=b"123")
+
+            entity2 = MockEntity("a", None)
+            future2 = _api.put(entity2, transaction=b"123")
+
+            entity3 = MockEntity()
+            future3 = _api.put(entity3, transaction=b"123")
+
+            batch = context.commit_batches[b"123"]
+            assert batch.mutations == [
+                Mutation(upsert=entity1),
+                Mutation(upsert=entity2),
+                Mutation(upsert=entity3),
+            ]
+            assert batch.futures == [future1, future2, future3]
+            assert batch.transaction == b"123"
+            assert batch.incomplete_mutations == [
+                Mutation(upsert=entity2),
+                Mutation(upsert=entity3),
+            ]
+            assert batch.incomplete_futures == [future2, future3]
+
+
+class Test_NonTransactionCommitBatch:
+    @staticmethod
+    @mock.patch("google.cloud.ndb._datastore_api._process_commit")
     @mock.patch("google.cloud.ndb._datastore_api._datastore_commit")
-    def test_idle_callback_no_transaction(_datastore_commit, context):
+    def test_idle_callback(_datastore_commit, _process_commit, context):
         eventloop = mock.Mock(spec=("queue_rpc", "run"))
         with context.new(eventloop=eventloop).use() as context:
             mutation1, mutation2 = object(), object()
-            batch = _api._CommitBatch({})
+            batch = _api._NonTransactionCommitBatch({})
             batch.mutations = [mutation1, mutation2]
             batch.idle_callback()
 
@@ -486,48 +499,257 @@ class Test_CommitBatch:
             _datastore_commit.assert_called_once_with(
                 [mutation1, mutation2], None
             )
-            context.eventloop.queue_rpc.assert_called_once_with(
-                rpc, batch.commit_callback
-            )
+            arg0, callback = context.eventloop.queue_rpc.call_args[0]
+            assert arg0 is rpc
+            callback(rpc)
+            _process_commit.assert_called_once_with(rpc, batch.futures)
+
+
+@mock.patch("google.cloud.ndb._datastore_api._get_commit_batch")
+def test_commit(get_commit_batch):
+    _api.commit(b"123")
+    get_commit_batch.assert_called_once_with(b"123", {})
+    get_commit_batch.return_value.commit.assert_called_once_with()
+
+
+class Test_get_commit_batch:
+    @staticmethod
+    def test_create_batch(in_context):
+        batch = _api._get_commit_batch(b"123", {})
+        assert isinstance(batch, _api._TransactionalCommitBatch)
+        assert in_context.commit_batches[b"123"] is batch
+        assert batch.transaction == b"123"
+        assert _api._get_commit_batch(b"123", {}) is batch
+        assert _api._get_commit_batch(b"234", {}) is not batch
 
     @staticmethod
-    @mock.patch("google.cloud.ndb._datastore_api._datastore_commit")
-    def test_idle_callback_w_transaction(_datastore_commit, context):
+    def test_bad_options():
+        with pytest.raises(NotImplementedError):
+            _api._get_commit_batch(b"123", {"foo": "bar"})
+
+
+class Test__TransactionalCommitBatch:
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_idle_callback_nothing_to_do():
+        batch = _api._TransactionalCommitBatch({})
+        batch.idle_callback()
+        assert not batch.allocating_ids
+
+    @staticmethod
+    @mock.patch("google.cloud.ndb._datastore_api._datastore_allocate_ids")
+    def test_idle_callback_success(datastore_allocate_ids, in_context):
+        def Mutation():
+            path = [entity_pb2.Key.PathElement(kind="SomeKind")]
+            return datastore_pb2.Mutation(
+                upsert=entity_pb2.Entity(key=entity_pb2.Key(path=path))
+            )
+
+        mutation1, mutation2 = Mutation(), Mutation()
+        batch = _api._TransactionalCommitBatch({})
+        batch.incomplete_mutations = [mutation1, mutation2]
+        future1, future2 = tasklets.Future(), tasklets.Future()
+        batch.incomplete_futures = [future1, future2]
+
         eventloop = mock.Mock(spec=("queue_rpc", "run"))
-        with context.new(eventloop=eventloop).use() as context:
-            mutation1, mutation2 = object(), object()
-            batch = _api._CommitBatch({"transaction": b"tx123"})
-            batch.mutations = [mutation1, mutation2]
+        with in_context.new(eventloop=eventloop).use() as context:
             batch.idle_callback()
 
-            rpc = _datastore_commit.return_value
-            _datastore_commit.assert_called_once_with(
-                [mutation1, mutation2], b"tx123"
+            rpc = datastore_allocate_ids.return_value
+            arg0, callback = context.eventloop.queue_rpc.call_args[0]
+            assert arg0 is rpc
+
+            rpc.result.return_value = mock.Mock(
+                keys=[
+                    entity_pb2.Key(
+                        path=[
+                            entity_pb2.Key.PathElement(kind="SomeKind", id=1)
+                        ]
+                    ),
+                    entity_pb2.Key(
+                        path=[
+                            entity_pb2.Key.PathElement(kind="SomeKind", id=2)
+                        ]
+                    ),
+                ]
             )
-            context.eventloop.queue_rpc.assert_called_once_with(
-                rpc, batch.commit_callback
-            )
+            rpc.exception.return_value = None
+
+            allocating_ids = batch.allocating_ids[0]
+            callback(rpc)
+            assert future1.result().path[0].id == 1
+            assert mutation1.upsert.key.path[0].id == 1
+            assert future2.result().path[0].id == 2
+            assert mutation2.upsert.key.path[0].id == 2
+            assert allocating_ids.result() is None
 
     @staticmethod
-    def test_commit_callback_exception():
-        future1, future2 = tasklets.Future(), tasklets.Future()
-        batch = _api._CommitBatch({})
-        batch.futures = [future1, future2]
+    @mock.patch("google.cloud.ndb._datastore_api._datastore_allocate_ids")
+    def test_idle_callback_failure(datastore_allocate_ids, in_context):
+        def Mutation():
+            path = [entity_pb2.Key.PathElement(kind="SomeKind")]
+            return datastore_pb2.Mutation(
+                upsert=entity_pb2.Entity(key=entity_pb2.Key(path=path))
+            )
 
+        mutation1, mutation2 = Mutation(), Mutation()
+        batch = _api._TransactionalCommitBatch({})
+        batch.incomplete_mutations = [mutation1, mutation2]
+        future1, future2 = tasklets.Future(), tasklets.Future()
+        batch.incomplete_futures = [future1, future2]
+
+        eventloop = mock.Mock(spec=("queue_rpc", "run"))
+        with in_context.new(eventloop=eventloop).use():
+            batch.idle_callback()
+
+            rpc = datastore_allocate_ids.return_value
+            arg0, callback = eventloop.queue_rpc.call_args[0]
+            assert arg0 is rpc
+
+            error = Exception("Spurious error")
+            rpc.exception.return_value = error
+
+            allocating_ids = batch.allocating_ids[0]
+            callback(rpc)
+            assert future1.exception() is error
+            assert future2.exception() is error
+            assert allocating_ids.result() is None
+
+    @staticmethod
+    def test_commit_nothing_to_do(in_context):
+        batch = _api._TransactionalCommitBatch({})
+
+        eventloop = mock.Mock(spec=("queue_rpc", "run"))
+        with in_context.new(eventloop=eventloop).use():
+            future = batch.commit()
+            eventloop.queue_rpc.assert_not_called()
+
+        assert future.result() is None
+
+    @staticmethod
+    @mock.patch("google.cloud.ndb._datastore_api._process_commit")
+    @mock.patch("google.cloud.ndb._datastore_api._datastore_commit")
+    def test_commit(datastore_commit, process_commit, in_context):
+        batch = _api._TransactionalCommitBatch({})
+        batch.futures = object()
+        batch.mutations = object()
+        batch.transaction = b"abc"
+
+        eventloop = mock.Mock(spec=("queue_rpc", "run"))
+        with in_context.new(eventloop=eventloop).use():
+            future = batch.commit()
+
+            datastore_commit.assert_called_once_with(
+                batch.mutations, transaction=b"abc"
+            )
+            rpc = datastore_commit.return_value
+
+            arg0, callback = eventloop.queue_rpc.call_args[0]
+            assert arg0 is rpc
+
+            rpc.exception.return_value = None
+            callback(rpc)
+
+            process_commit.assert_called_once_with(rpc, batch.futures)
+
+        assert future.result() is None
+
+    @staticmethod
+    @mock.patch("google.cloud.ndb._datastore_api._process_commit")
+    @mock.patch("google.cloud.ndb._datastore_api._datastore_commit")
+    def test_commit_error(datastore_commit, process_commit, in_context):
+        batch = _api._TransactionalCommitBatch({})
+        batch.futures = object()
+        batch.mutations = object()
+        batch.transaction = b"abc"
+
+        eventloop = mock.Mock(spec=("queue_rpc", "run"))
+        with in_context.new(eventloop=eventloop).use():
+            future = batch.commit()
+
+            datastore_commit.assert_called_once_with(
+                batch.mutations, transaction=b"abc"
+            )
+            rpc = datastore_commit.return_value
+
+            arg0, callback = eventloop.queue_rpc.call_args[0]
+            assert arg0 is rpc
+
+            error = Exception("Spurious error")
+            rpc.exception.return_value = error
+            callback(rpc)
+
+            process_commit.assert_called_once_with(rpc, batch.futures)
+
+        assert future.exception() is error
+
+    @staticmethod
+    @mock.patch("google.cloud.ndb._datastore_api._process_commit")
+    @mock.patch("google.cloud.ndb._datastore_api._datastore_commit")
+    def test_commit_allocating_ids(
+        datastore_commit, process_commit, in_context
+    ):
+        batch = _api._TransactionalCommitBatch({})
+        batch.futures = object()
+        batch.mutations = object()
+        batch.transaction = b"abc"
+
+        allocated_ids = tasklets.Future("Already allocated ids")
+        allocated_ids.set_result(None)
+        batch.allocating_ids.append(allocated_ids)
+
+        allocating_ids = tasklets.Future("AllocateIds")
+        batch.allocating_ids.append(allocating_ids)
+
+        eventloop = mock.Mock(spec=("queue_rpc", "run"))
+        with in_context.new(eventloop=eventloop).use():
+            future = batch.commit()
+
+            datastore_commit.assert_not_called()
+            allocating_ids.set_result(None)
+
+            datastore_commit.assert_called_once_with(
+                batch.mutations, transaction=b"abc"
+            )
+            rpc = datastore_commit.return_value
+
+            arg0, callback = eventloop.queue_rpc.call_args[0]
+            assert arg0 is rpc
+
+            rpc.exception.return_value = None
+            callback(rpc)
+
+            process_commit.assert_called_once_with(rpc, batch.futures)
+
+        assert future.result() is None
+
+
+class Test_process_commit:
+    @staticmethod
+    def test_exception():
         error = Exception("Spurious error.")
         rpc = tasklets.Future()
         rpc.set_exception(error)
 
-        batch.commit_callback(rpc)
+        future1, future2 = tasklets.Future(), tasklets.Future()
+        _api._process_commit(rpc, [future1, future2])
         assert future1.exception() is error
         assert future2.exception() is error
 
     @staticmethod
-    def test_commit_callback():
-        future1, future2 = tasklets.Future(), tasklets.Future()
-        batch = _api._CommitBatch({})
-        batch.futures = [future1, future2]
+    def test_exception_some_already_done():
+        error = Exception("Spurious error.")
+        rpc = tasklets.Future()
+        rpc.set_exception(error)
 
+        future1, future2 = tasklets.Future(), tasklets.Future()
+        future2.set_result("hi mom")
+        _api._process_commit(rpc, [future1, future2])
+        assert future1.exception() is error
+        assert future2.result() == "hi mom"
+
+    @staticmethod
+    def test_success():
         key1 = mock.Mock(path=["one", "two"], spec=("path",))
         mutation1 = mock.Mock(key=key1, spec=("key",))
         key2 = mock.Mock(path=[], spec=("path",))
@@ -539,7 +761,27 @@ class Test_CommitBatch:
         rpc = tasklets.Future()
         rpc.set_result(response)
 
-        batch.commit_callback(rpc)
+        future1, future2 = tasklets.Future(), tasklets.Future()
+        _api._process_commit(rpc, [future1, future2])
+        assert future1.result() is key1
+        assert future2.result() is None
+
+    @staticmethod
+    def test_success_some_already_done():
+        key1 = mock.Mock(path=["one", "two"], spec=("path",))
+        mutation1 = mock.Mock(key=key1, spec=("key",))
+        key2 = mock.Mock(path=[], spec=("path",))
+        mutation2 = mock.Mock(key=key2, spec=("key",))
+        response = mock.Mock(
+            mutation_results=(mutation1, mutation2), spec=("mutation_results",)
+        )
+
+        rpc = tasklets.Future()
+        rpc.set_result(response)
+
+        future1, future2 = tasklets.Future(), tasklets.Future()
+        future2.set_result(None)
+        _api._process_commit(rpc, [future1, future2])
         assert future1.result() is key1
         assert future2.result() is None
 
@@ -584,3 +826,106 @@ class Test_datastore_commit:
 
         request = datastore_pb2.CommitRequest.return_value
         assert api.Commit.future.called_once_with(request)
+
+
+@pytest.mark.usefixtures("in_context")
+@mock.patch("google.cloud.ndb._datastore_api.datastore_pb2")
+@mock.patch("google.cloud.ndb._datastore_api.stub")
+def test__datastore_allocate_ids(stub, datastore_pb2):
+    keys = object()
+    api = stub.return_value
+    future = api.AllocateIds.future.return_value
+    assert _api._datastore_allocate_ids(keys).future == future
+
+    datastore_pb2.AllocateIdsRequest.assert_called_once_with(
+        project_id="testing", keys=keys
+    )
+
+    request = datastore_pb2.AllocateIdsRequest.return_value
+    assert api.AllocateIds.future.called_once_with(request)
+
+
+@pytest.mark.usefixtures("in_context")
+@mock.patch("google.cloud.ndb._datastore_api._datastore_begin_transaction")
+def test_begin_transaction(_datastore_begin_transaction):
+    rpc = tasklets.Future("BeginTransaction()")
+    _datastore_begin_transaction.return_value = rpc
+
+    future = _api.begin_transaction("read only")
+    _datastore_begin_transaction.assert_called_once_with("read only")
+    rpc.set_result(mock.Mock(transaction=b"tx123", spec=("transaction")))
+
+    assert future.result() == b"tx123"
+
+
+class Test_datastore_begin_transaction:
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    @mock.patch("google.cloud.ndb._datastore_api.datastore_pb2")
+    @mock.patch("google.cloud.ndb._datastore_api.stub")
+    def test_read_only(stub, datastore_pb2):
+        api = stub.return_value
+        future = api.BeginTransaction.future.return_value
+        assert _api._datastore_begin_transaction(True).future == future
+
+        datastore_pb2.TransactionOptions.assert_called_once_with(
+            read_only=datastore_pb2.TransactionOptions.ReadOnly()
+        )
+
+        transaction_options = datastore_pb2.TransactionOptions.return_value
+        datastore_pb2.BeginTransactionRequest.assert_called_once_with(
+            project_id="testing", transaction_options=transaction_options
+        )
+
+        request = datastore_pb2.BeginTransactionRequest.return_value
+        assert api.BeginTransaction.future.called_once_with(request)
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    @mock.patch("google.cloud.ndb._datastore_api.datastore_pb2")
+    @mock.patch("google.cloud.ndb._datastore_api.stub")
+    def test_read_write(stub, datastore_pb2):
+        api = stub.return_value
+        future = api.BeginTransaction.future.return_value
+        assert _api._datastore_begin_transaction(False).future == future
+
+        datastore_pb2.TransactionOptions.assert_called_once_with(
+            read_write=datastore_pb2.TransactionOptions.ReadWrite()
+        )
+
+        transaction_options = datastore_pb2.TransactionOptions.return_value
+        datastore_pb2.BeginTransactionRequest.assert_called_once_with(
+            project_id="testing", transaction_options=transaction_options
+        )
+
+        request = datastore_pb2.BeginTransactionRequest.return_value
+        assert api.BeginTransaction.future.called_once_with(request)
+
+
+@pytest.mark.usefixtures("in_context")
+@mock.patch("google.cloud.ndb._datastore_api._datastore_rollback")
+def test_rollback(_datastore_rollback):
+    rpc = tasklets.Future("Rollback()")
+    _datastore_rollback.return_value = rpc
+    future = _api.rollback(b"tx123")
+
+    _datastore_rollback.assert_called_once_with(b"tx123")
+    rpc.set_result(None)
+
+    assert future.result() is None
+
+
+@pytest.mark.usefixtures("in_context")
+@mock.patch("google.cloud.ndb._datastore_api.datastore_pb2")
+@mock.patch("google.cloud.ndb._datastore_api.stub")
+def test__datastore_rollback(stub, datastore_pb2):
+    api = stub.return_value
+    future = api.Rollback.future.return_value
+    assert _api._datastore_rollback(b"tx123").future == future
+
+    datastore_pb2.RollbackRequest.assert_called_once_with(
+        project_id="testing", transaction=b"tx123"
+    )
+
+    request = datastore_pb2.RollbackRequest.return_value
+    assert api.Rollback.future.called_once_with(request)

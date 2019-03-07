@@ -33,7 +33,15 @@ __all__ = [
 
 
 _ContextTuple = collections.namedtuple(
-    "_ContextTuple", ["client", "eventloop", "stub", "batches", "transaction"]
+    "_ContextTuple",
+    [
+        "client",
+        "eventloop",
+        "stub",
+        "batches",
+        "commit_batches",
+        "transaction",
+    ],
 )
 
 
@@ -87,7 +95,13 @@ class _Context(_ContextTuple):
     """
 
     def __new__(
-        cls, client, eventloop=None, stub=None, batches=None, transaction=None
+        cls,
+        client,
+        eventloop=None,
+        stub=None,
+        batches=None,
+        commit_batches=None,
+        transaction=None,
     ):
         if eventloop is None:
             eventloop = _eventloop.EventLoop()
@@ -98,12 +112,16 @@ class _Context(_ContextTuple):
         if batches is None:
             batches = {}
 
+        if commit_batches is None:
+            commit_batches = {}
+
         return super(_Context, cls).__new__(
             cls,
             client=client,
             eventloop=eventloop,
             stub=stub,
             batches=batches,
+            commit_batches=commit_batches,
             transaction=transaction,
         )
 

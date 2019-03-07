@@ -20,10 +20,9 @@ threads.
 import functools
 import types
 
-import grpc
-
 from google.cloud.ndb import context as context_module
 from google.cloud.ndb import _eventloop
+from google.cloud.ndb import _remote
 
 __all__ = [
     "add_flow_exception",
@@ -230,12 +229,12 @@ class _TaskletFuture(Future):
 
     A future of this type wraps a generator derived from calling a tasklet. A
     tasklet's generator is expected to yield future objects, either an instance
-    of :class:`Future` or :class:`grpc.Future`. The result of each
+    of :class:`Future` or :class:`_remote.RemoteCall`. The result of each
     yielded future is then sent back into the generator until the generator has
     completed and either returned a value or raised an exception.
 
     Args:
-        typing.Generator[Union[tasklets.Future, grpc.Future], Any, Any]: The
+        typing.Generator[Union[tasklets.Future, _remote.RemoteCall], Any, Any]: The
             generator.
     """
 
@@ -292,7 +291,7 @@ class _TaskletFuture(Future):
         if isinstance(yielded, Future):
             yielded.add_done_callback(done_callback)
 
-        elif isinstance(yielded, grpc.Future):
+        elif isinstance(yielded, _remote.RemoteCall):
             _eventloop.queue_rpc(yielded, done_callback)
 
         elif isinstance(yielded, (list, tuple)):
