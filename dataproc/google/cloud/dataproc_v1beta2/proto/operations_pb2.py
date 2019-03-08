@@ -8,7 +8,6 @@ from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
-from google.protobuf import descriptor_pb2
 
 # @@protoc_insertion_point(imports)
 
@@ -23,6 +22,9 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     name="google/cloud/dataproc_v1beta2/proto/operations.proto",
     package="google.cloud.dataproc.v1beta2",
     syntax="proto3",
+    serialized_options=_b(
+        "\n!com.google.cloud.dataproc.v1beta2B\017OperationsProtoP\001ZEgoogle.golang.org/genproto/googleapis/cloud/dataproc/v1beta2;dataproc"
+    ),
     serialized_pb=_b(
         '\n4google/cloud/dataproc_v1beta2/proto/operations.proto\x12\x1dgoogle.cloud.dataproc.v1beta2\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/protobuf/timestamp.proto"\xfa\x01\n\x16\x43lusterOperationStatus\x12J\n\x05state\x18\x01 \x01(\x0e\x32;.google.cloud.dataproc.v1beta2.ClusterOperationStatus.State\x12\x13\n\x0binner_state\x18\x02 \x01(\t\x12\x0f\n\x07\x64\x65tails\x18\x03 \x01(\t\x12\x34\n\x10state_start_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp"8\n\x05State\x12\x0b\n\x07UNKNOWN\x10\x00\x12\x0b\n\x07PENDING\x10\x01\x12\x0b\n\x07RUNNING\x10\x02\x12\x08\n\x04\x44ONE\x10\x03"\x9f\x03\n\x18\x43lusterOperationMetadata\x12\x14\n\x0c\x63luster_name\x18\x07 \x01(\t\x12\x14\n\x0c\x63luster_uuid\x18\x08 \x01(\t\x12\x45\n\x06status\x18\t \x01(\x0b\x32\x35.google.cloud.dataproc.v1beta2.ClusterOperationStatus\x12M\n\x0estatus_history\x18\n \x03(\x0b\x32\x35.google.cloud.dataproc.v1beta2.ClusterOperationStatus\x12\x16\n\x0eoperation_type\x18\x0b \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x0c \x01(\t\x12S\n\x06labels\x18\r \x03(\x0b\x32\x43.google.cloud.dataproc.v1beta2.ClusterOperationMetadata.LabelsEntry\x12\x10\n\x08warnings\x18\x0e \x03(\t\x1a-\n\x0bLabelsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x42}\n!com.google.cloud.dataproc.v1beta2B\x0fOperationsProtoP\x01ZEgoogle.golang.org/genproto/googleapis/cloud/dataproc/v1beta2;dataprocb\x06proto3'
     ),
@@ -40,20 +42,20 @@ _CLUSTEROPERATIONSTATUS_STATE = _descriptor.EnumDescriptor(
     file=DESCRIPTOR,
     values=[
         _descriptor.EnumValueDescriptor(
-            name="UNKNOWN", index=0, number=0, options=None, type=None
+            name="UNKNOWN", index=0, number=0, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="PENDING", index=1, number=1, options=None, type=None
+            name="PENDING", index=1, number=1, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="RUNNING", index=2, number=2, options=None, type=None
+            name="RUNNING", index=2, number=2, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="DONE", index=3, number=3, options=None, type=None
+            name="DONE", index=3, number=3, serialized_options=None, type=None
         ),
     ],
     containing_type=None,
-    options=None,
+    serialized_options=None,
     serialized_start=345,
     serialized_end=401,
 )
@@ -82,7 +84,7 @@ _CLUSTEROPERATIONSTATUS = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -100,7 +102,7 @@ _CLUSTEROPERATIONSTATUS = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -118,7 +120,7 @@ _CLUSTEROPERATIONSTATUS = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -136,14 +138,14 @@ _CLUSTEROPERATIONSTATUS = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[_CLUSTEROPERATIONSTATUS_STATE],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -175,7 +177,7 @@ _CLUSTEROPERATIONMETADATA_LABELSENTRY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -193,14 +195,14 @@ _CLUSTEROPERATIONMETADATA_LABELSENTRY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=_descriptor._ParseOptions(descriptor_pb2.MessageOptions(), _b("8\001")),
+    serialized_options=_b("8\001"),
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -231,7 +233,7 @@ _CLUSTEROPERATIONMETADATA = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -249,7 +251,7 @@ _CLUSTEROPERATIONMETADATA = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -267,7 +269,7 @@ _CLUSTEROPERATIONMETADATA = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -285,7 +287,7 @@ _CLUSTEROPERATIONMETADATA = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -303,7 +305,7 @@ _CLUSTEROPERATIONMETADATA = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -321,7 +323,7 @@ _CLUSTEROPERATIONMETADATA = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -339,7 +341,7 @@ _CLUSTEROPERATIONMETADATA = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -357,14 +359,14 @@ _CLUSTEROPERATIONMETADATA = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[_CLUSTEROPERATIONMETADATA_LABELSENTRY],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -463,15 +465,6 @@ _sym_db.RegisterMessage(ClusterOperationMetadata)
 _sym_db.RegisterMessage(ClusterOperationMetadata.LabelsEntry)
 
 
-DESCRIPTOR.has_options = True
-DESCRIPTOR._options = _descriptor._ParseOptions(
-    descriptor_pb2.FileOptions(),
-    _b(
-        "\n!com.google.cloud.dataproc.v1beta2B\017OperationsProtoP\001ZEgoogle.golang.org/genproto/googleapis/cloud/dataproc/v1beta2;dataproc"
-    ),
-)
-_CLUSTEROPERATIONMETADATA_LABELSENTRY.has_options = True
-_CLUSTEROPERATIONMETADATA_LABELSENTRY._options = _descriptor._ParseOptions(
-    descriptor_pb2.MessageOptions(), _b("8\001")
-)
+DESCRIPTOR._options = None
+_CLUSTEROPERATIONMETADATA_LABELSENTRY._options = None
 # @@protoc_insertion_point(module_scope)

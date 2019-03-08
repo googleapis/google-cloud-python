@@ -29,6 +29,7 @@ for version in ["v1", "v2"]:
         version,
         config_path=f"/google/devtools/cloudtrace" f"/artman_cloudtrace_{version}.yaml",
         artman_output_name=f"trace-{version}",
+        include_protos=True,
     )
 
     s.move(library / f"google/cloud/trace_{version}")

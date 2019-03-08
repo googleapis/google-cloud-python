@@ -306,8 +306,13 @@ class Dataset(object):
     https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets
 
     Args:
-        dataset_ref (google.cloud.bigquery.dataset.DatasetReference):
-            a pointer to a dataset
+        dataset_ref (Union[ \
+            :class:`~google.cloud.bigquery.dataset.DatasetReference`, \
+            str, \
+        ]):
+            A pointer to a dataset. If ``dataset_ref`` is a string, it must
+            include both the project ID and the dataset ID, separated by
+            ``.``.
     """
 
     _PROPERTY_TO_API_FIELD = {
@@ -318,6 +323,8 @@ class Dataset(object):
     }
 
     def __init__(self, dataset_ref):
+        if isinstance(dataset_ref, six.string_types):
+            dataset_ref = DatasetReference.from_string(dataset_ref)
         self._properties = {"datasetReference": dataset_ref.to_api_repr(), "labels": {}}
 
     @property

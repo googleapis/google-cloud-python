@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2018 Google LLC
+# Copyright 2019 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -174,6 +174,8 @@ class HttpMethod(enum.IntEnum):
       HEAD (int): HTTP HEAD
       PUT (int): HTTP PUT
       DELETE (int): HTTP DELETE
+      PATCH (int): HTTP PATCH
+      OPTIONS (int): HTTP OPTIONS
     """
 
     HTTP_METHOD_UNSPECIFIED = 0
@@ -182,6 +184,8 @@ class HttpMethod(enum.IntEnum):
     HEAD = 3
     PUT = 4
     DELETE = 5
+    PATCH = 6
+    OPTIONS = 7
 
 
 class Queue(object):
@@ -238,7 +242,7 @@ class Task(object):
           BASIC (int): The basic view omits fields which can be large or can contain sensitive
           data.
 
-          This view does not include the ``body in AppEngineHttpRequest``. Bodies
+          This view does not include the ``body in  AppEngineHttpRequest``. Bodies
           are desirable to return only when needed, because they can be large and
           because of the sensitivity of the data that you choose to store in it.
           FULL (int): All information is returned.

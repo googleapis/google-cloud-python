@@ -8,7 +8,6 @@ from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
-from google.protobuf import descriptor_pb2
 
 # @@protoc_insertion_point(imports)
 
@@ -27,6 +26,9 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     name="google/cloud/monitoring_v3/proto/uptime_service.proto",
     package="google.monitoring.v3",
     syntax="proto3",
+    serialized_options=_b(
+        "\n\030com.google.monitoring.v3B\022UptimeServiceProtoP\001Z>google.golang.org/genproto/googleapis/monitoring/v3;monitoring\252\002\032Google.Cloud.Monitoring.V3\312\002\032Google\\Cloud\\Monitoring\\V3"
+    ),
     serialized_pb=_b(
         '\n5google/cloud/monitoring_v3/proto/uptime_service.proto\x12\x14google.monitoring.v3\x1a\x1cgoogle/api/annotations.proto\x1a-google/cloud/monitoring_v3/proto/uptime.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto"V\n\x1dListUptimeCheckConfigsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05\x12\x12\n\npage_token\x18\x04 \x01(\t"\x94\x01\n\x1eListUptimeCheckConfigsResponse\x12\x45\n\x14uptime_check_configs\x18\x01 \x03(\x0b\x32\'.google.monitoring.v3.UptimeCheckConfig\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\x12\x12\n\ntotal_size\x18\x03 \x01(\x05"+\n\x1bGetUptimeCheckConfigRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"v\n\x1e\x43reateUptimeCheckConfigRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x44\n\x13uptime_check_config\x18\x02 \x01(\x0b\x32\'.google.monitoring.v3.UptimeCheckConfig"\x97\x01\n\x1eUpdateUptimeCheckConfigRequest\x12/\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMask\x12\x44\n\x13uptime_check_config\x18\x03 \x01(\x0b\x32\'.google.monitoring.v3.UptimeCheckConfig".\n\x1e\x44\x65leteUptimeCheckConfigRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"B\n\x19ListUptimeCheckIpsRequest\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t"t\n\x1aListUptimeCheckIpsResponse\x12=\n\x10uptime_check_ips\x18\x01 \x03(\x0b\x32#.google.monitoring.v3.UptimeCheckIp\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t2\xc7\x08\n\x12UptimeCheckService\x12\xb7\x01\n\x16ListUptimeCheckConfigs\x12\x33.google.monitoring.v3.ListUptimeCheckConfigsRequest\x1a\x34.google.monitoring.v3.ListUptimeCheckConfigsResponse"2\x82\xd3\xe4\x93\x02,\x12*/v3/{parent=projects/*}/uptimeCheckConfigs\x12\xa6\x01\n\x14GetUptimeCheckConfig\x12\x31.google.monitoring.v3.GetUptimeCheckConfigRequest\x1a\'.google.monitoring.v3.UptimeCheckConfig"2\x82\xd3\xe4\x93\x02,\x12*/v3/{name=projects/*/uptimeCheckConfigs/*}\x12\xc1\x01\n\x17\x43reateUptimeCheckConfig\x12\x34.google.monitoring.v3.CreateUptimeCheckConfigRequest\x1a\'.google.monitoring.v3.UptimeCheckConfig"G\x82\xd3\xe4\x93\x02\x41"*/v3/{parent=projects/*}/uptimeCheckConfigs:\x13uptime_check_config\x12\xd5\x01\n\x17UpdateUptimeCheckConfig\x12\x34.google.monitoring.v3.UpdateUptimeCheckConfigRequest\x1a\'.google.monitoring.v3.UptimeCheckConfig"[\x82\xd3\xe4\x93\x02U2>/v3/{uptime_check_config.name=projects/*/uptimeCheckConfigs/*}:\x13uptime_check_config\x12\x9b\x01\n\x17\x44\x65leteUptimeCheckConfig\x12\x34.google.monitoring.v3.DeleteUptimeCheckConfigRequest\x1a\x16.google.protobuf.Empty"2\x82\xd3\xe4\x93\x02,**/v3/{name=projects/*/uptimeCheckConfigs/*}\x12\x93\x01\n\x12ListUptimeCheckIps\x12/.google.monitoring.v3.ListUptimeCheckIpsRequest\x1a\x30.google.monitoring.v3.ListUptimeCheckIpsResponse"\x1a\x82\xd3\xe4\x93\x02\x14\x12\x12/v3/uptimeCheckIpsB\xaa\x01\n\x18\x63om.google.monitoring.v3B\x12UptimeServiceProtoP\x01Z>google.golang.org/genproto/googleapis/monitoring/v3;monitoring\xaa\x02\x1aGoogle.Cloud.Monitoring.V3\xca\x02\x1aGoogle\\Cloud\\Monitoring\\V3b\x06proto3'
     ),
@@ -61,7 +63,7 @@ _LISTUPTIMECHECKCONFIGSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -79,7 +81,7 @@ _LISTUPTIMECHECKCONFIGSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -97,14 +99,14 @@ _LISTUPTIMECHECKCONFIGSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -136,7 +138,7 @@ _LISTUPTIMECHECKCONFIGSRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -154,7 +156,7 @@ _LISTUPTIMECHECKCONFIGSRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -172,14 +174,14 @@ _LISTUPTIMECHECKCONFIGSRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -211,14 +213,14 @@ _GETUPTIMECHECKCONFIGREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -250,7 +252,7 @@ _CREATEUPTIMECHECKCONFIGREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -268,14 +270,14 @@ _CREATEUPTIMECHECKCONFIGREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -307,7 +309,7 @@ _UPDATEUPTIMECHECKCONFIGREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -325,14 +327,14 @@ _UPDATEUPTIMECHECKCONFIGREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -364,14 +366,14 @@ _DELETEUPTIMECHECKCONFIGREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -403,7 +405,7 @@ _LISTUPTIMECHECKIPSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -421,14 +423,14 @@ _LISTUPTIMECHECKIPSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -460,7 +462,7 @@ _LISTUPTIMECHECKIPSRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -478,14 +480,14 @@ _LISTUPTIMECHECKIPSRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -748,20 +750,14 @@ ListUptimeCheckIpsResponse = _reflection.GeneratedProtocolMessageType(
 _sym_db.RegisterMessage(ListUptimeCheckIpsResponse)
 
 
-DESCRIPTOR.has_options = True
-DESCRIPTOR._options = _descriptor._ParseOptions(
-    descriptor_pb2.FileOptions(),
-    _b(
-        "\n\030com.google.monitoring.v3B\022UptimeServiceProtoP\001Z>google.golang.org/genproto/googleapis/monitoring/v3;monitoring\252\002\032Google.Cloud.Monitoring.V3\312\002\032Google\\Cloud\\Monitoring\\V3"
-    ),
-)
+DESCRIPTOR._options = None
 
 _UPTIMECHECKSERVICE = _descriptor.ServiceDescriptor(
     name="UptimeCheckService",
     full_name="google.monitoring.v3.UptimeCheckService",
     file=DESCRIPTOR,
     index=0,
-    options=None,
+    serialized_options=None,
     serialized_start=1012,
     serialized_end=2107,
     methods=[
@@ -772,11 +768,8 @@ _UPTIMECHECKSERVICE = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_LISTUPTIMECHECKCONFIGSREQUEST,
             output_type=_LISTUPTIMECHECKCONFIGSRESPONSE,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\002,\022*/v3/{parent=projects/*}/uptimeCheckConfigs"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\002,\022*/v3/{parent=projects/*}/uptimeCheckConfigs"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -786,11 +779,8 @@ _UPTIMECHECKSERVICE = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_GETUPTIMECHECKCONFIGREQUEST,
             output_type=google_dot_cloud_dot_monitoring__v3_dot_proto_dot_uptime__pb2._UPTIMECHECKCONFIG,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\002,\022*/v3/{name=projects/*/uptimeCheckConfigs/*}"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\002,\022*/v3/{name=projects/*/uptimeCheckConfigs/*}"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -800,11 +790,8 @@ _UPTIMECHECKSERVICE = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_CREATEUPTIMECHECKCONFIGREQUEST,
             output_type=google_dot_cloud_dot_monitoring__v3_dot_proto_dot_uptime__pb2._UPTIMECHECKCONFIG,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\002A"*/v3/{parent=projects/*}/uptimeCheckConfigs:\023uptime_check_config'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\002A"*/v3/{parent=projects/*}/uptimeCheckConfigs:\023uptime_check_config'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -814,11 +801,8 @@ _UPTIMECHECKSERVICE = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_UPDATEUPTIMECHECKCONFIGREQUEST,
             output_type=google_dot_cloud_dot_monitoring__v3_dot_proto_dot_uptime__pb2._UPTIMECHECKCONFIG,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\002U2>/v3/{uptime_check_config.name=projects/*/uptimeCheckConfigs/*}:\023uptime_check_config"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\002U2>/v3/{uptime_check_config.name=projects/*/uptimeCheckConfigs/*}:\023uptime_check_config"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -828,9 +812,8 @@ _UPTIMECHECKSERVICE = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_DELETEUPTIMECHECKCONFIGREQUEST,
             output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b("\202\323\344\223\002,**/v3/{name=projects/*/uptimeCheckConfigs/*}"),
+            serialized_options=_b(
+                "\202\323\344\223\002,**/v3/{name=projects/*/uptimeCheckConfigs/*}"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -840,10 +823,7 @@ _UPTIMECHECKSERVICE = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_LISTUPTIMECHECKIPSREQUEST,
             output_type=_LISTUPTIMECHECKIPSRESPONSE,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b("\202\323\344\223\002\024\022\022/v3/uptimeCheckIps"),
-            ),
+            serialized_options=_b("\202\323\344\223\002\024\022\022/v3/uptimeCheckIps"),
         ),
     ],
 )
