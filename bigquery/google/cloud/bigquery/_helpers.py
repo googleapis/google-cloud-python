@@ -398,7 +398,10 @@ def _record_field_to_json(fields, row_value):
 
     for subindex, subfield in enumerate(fields):
         subname = subfield.name
-        subvalue = row_value[subname] if isdict else row_value[subindex]
+        if isdict:
+            subvalue = row_value.get(subname)
+        else:
+            subvalue = row_value[subindex]
         record[subname] = _field_to_json(subfield, subvalue)
     return record
 

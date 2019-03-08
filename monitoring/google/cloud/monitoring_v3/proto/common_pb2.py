@@ -10,7 +10,6 @@ from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
-from google.protobuf import descriptor_pb2
 
 # @@protoc_insertion_point(imports)
 
@@ -27,6 +26,9 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     name="google/cloud/monitoring_v3/proto/common.proto",
     package="google.monitoring.v3",
     syntax="proto3",
+    serialized_options=_b(
+        "\n\030com.google.monitoring.v3B\013CommonProtoP\001Z>google.golang.org/genproto/googleapis/monitoring/v3;monitoring\252\002\032Google.Cloud.Monitoring.V3\312\002\032Google\\Cloud\\Monitoring\\V3"
+    ),
     serialized_pb=_b(
         '\n-google/cloud/monitoring_v3/proto/common.proto\x12\x14google.monitoring.v3\x1a\x1cgoogle/api/annotations.proto\x1a\x1dgoogle/api/distribution.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1fgoogle/protobuf/timestamp.proto"\xaa\x01\n\nTypedValue\x12\x14\n\nbool_value\x18\x01 \x01(\x08H\x00\x12\x15\n\x0bint64_value\x18\x02 \x01(\x03H\x00\x12\x16\n\x0c\x64ouble_value\x18\x03 \x01(\x01H\x00\x12\x16\n\x0cstring_value\x18\x04 \x01(\tH\x00\x12\x36\n\x12\x64istribution_value\x18\x05 \x01(\x0b\x32\x18.google.api.DistributionH\x00\x42\x07\n\x05value"l\n\x0cTimeInterval\x12,\n\x08\x65nd_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12.\n\nstart_time\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.Timestamp"\xad\x07\n\x0b\x41ggregation\x12\x33\n\x10\x61lignment_period\x18\x01 \x01(\x0b\x32\x19.google.protobuf.Duration\x12\x45\n\x12per_series_aligner\x18\x02 \x01(\x0e\x32).google.monitoring.v3.Aggregation.Aligner\x12G\n\x14\x63ross_series_reducer\x18\x04 \x01(\x0e\x32).google.monitoring.v3.Aggregation.Reducer\x12\x17\n\x0fgroup_by_fields\x18\x05 \x03(\t"\x8b\x03\n\x07\x41ligner\x12\x0e\n\nALIGN_NONE\x10\x00\x12\x0f\n\x0b\x41LIGN_DELTA\x10\x01\x12\x0e\n\nALIGN_RATE\x10\x02\x12\x15\n\x11\x41LIGN_INTERPOLATE\x10\x03\x12\x14\n\x10\x41LIGN_NEXT_OLDER\x10\x04\x12\r\n\tALIGN_MIN\x10\n\x12\r\n\tALIGN_MAX\x10\x0b\x12\x0e\n\nALIGN_MEAN\x10\x0c\x12\x0f\n\x0b\x41LIGN_COUNT\x10\r\x12\r\n\tALIGN_SUM\x10\x0e\x12\x10\n\x0c\x41LIGN_STDDEV\x10\x0f\x12\x14\n\x10\x41LIGN_COUNT_TRUE\x10\x10\x12\x15\n\x11\x41LIGN_COUNT_FALSE\x10\x18\x12\x17\n\x13\x41LIGN_FRACTION_TRUE\x10\x11\x12\x17\n\x13\x41LIGN_PERCENTILE_99\x10\x12\x12\x17\n\x13\x41LIGN_PERCENTILE_95\x10\x13\x12\x17\n\x13\x41LIGN_PERCENTILE_50\x10\x14\x12\x17\n\x13\x41LIGN_PERCENTILE_05\x10\x15\x12\x18\n\x14\x41LIGN_PERCENT_CHANGE\x10\x17"\xb1\x02\n\x07Reducer\x12\x0f\n\x0bREDUCE_NONE\x10\x00\x12\x0f\n\x0bREDUCE_MEAN\x10\x01\x12\x0e\n\nREDUCE_MIN\x10\x02\x12\x0e\n\nREDUCE_MAX\x10\x03\x12\x0e\n\nREDUCE_SUM\x10\x04\x12\x11\n\rREDUCE_STDDEV\x10\x05\x12\x10\n\x0cREDUCE_COUNT\x10\x06\x12\x15\n\x11REDUCE_COUNT_TRUE\x10\x07\x12\x16\n\x12REDUCE_COUNT_FALSE\x10\x0f\x12\x18\n\x14REDUCE_FRACTION_TRUE\x10\x08\x12\x18\n\x14REDUCE_PERCENTILE_99\x10\t\x12\x18\n\x14REDUCE_PERCENTILE_95\x10\n\x12\x18\n\x14REDUCE_PERCENTILE_50\x10\x0b\x12\x18\n\x14REDUCE_PERCENTILE_05\x10\x0c*\x9e\x01\n\x0e\x43omparisonType\x12\x1a\n\x16\x43OMPARISON_UNSPECIFIED\x10\x00\x12\x11\n\rCOMPARISON_GT\x10\x01\x12\x11\n\rCOMPARISON_GE\x10\x02\x12\x11\n\rCOMPARISON_LT\x10\x03\x12\x11\n\rCOMPARISON_LE\x10\x04\x12\x11\n\rCOMPARISON_EQ\x10\x05\x12\x11\n\rCOMPARISON_NE\x10\x06*a\n\x0bServiceTier\x12\x1c\n\x18SERVICE_TIER_UNSPECIFIED\x10\x00\x12\x16\n\x12SERVICE_TIER_BASIC\x10\x01\x12\x18\n\x14SERVICE_TIER_PREMIUM\x10\x02\x1a\x02\x18\x01\x42\xa3\x01\n\x18\x63om.google.monitoring.v3B\x0b\x43ommonProtoP\x01Z>google.golang.org/genproto/googleapis/monitoring/v3;monitoring\xaa\x02\x1aGoogle.Cloud.Monitoring.V3\xca\x02\x1aGoogle\\Cloud\\Monitoring\\V3b\x06proto3'
     ),
@@ -45,29 +47,33 @@ _COMPARISONTYPE = _descriptor.EnumDescriptor(
     file=DESCRIPTOR,
     values=[
         _descriptor.EnumValueDescriptor(
-            name="COMPARISON_UNSPECIFIED", index=0, number=0, options=None, type=None
+            name="COMPARISON_UNSPECIFIED",
+            index=0,
+            number=0,
+            serialized_options=None,
+            type=None,
         ),
         _descriptor.EnumValueDescriptor(
-            name="COMPARISON_GT", index=1, number=1, options=None, type=None
+            name="COMPARISON_GT", index=1, number=1, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="COMPARISON_GE", index=2, number=2, options=None, type=None
+            name="COMPARISON_GE", index=2, number=2, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="COMPARISON_LT", index=3, number=3, options=None, type=None
+            name="COMPARISON_LT", index=3, number=3, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="COMPARISON_LE", index=4, number=4, options=None, type=None
+            name="COMPARISON_LE", index=4, number=4, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="COMPARISON_EQ", index=5, number=5, options=None, type=None
+            name="COMPARISON_EQ", index=5, number=5, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="COMPARISON_NE", index=6, number=6, options=None, type=None
+            name="COMPARISON_NE", index=6, number=6, serialized_options=None, type=None
         ),
     ],
     containing_type=None,
-    options=None,
+    serialized_options=None,
     serialized_start=1425,
     serialized_end=1583,
 )
@@ -81,17 +87,29 @@ _SERVICETIER = _descriptor.EnumDescriptor(
     file=DESCRIPTOR,
     values=[
         _descriptor.EnumValueDescriptor(
-            name="SERVICE_TIER_UNSPECIFIED", index=0, number=0, options=None, type=None
+            name="SERVICE_TIER_UNSPECIFIED",
+            index=0,
+            number=0,
+            serialized_options=None,
+            type=None,
         ),
         _descriptor.EnumValueDescriptor(
-            name="SERVICE_TIER_BASIC", index=1, number=1, options=None, type=None
+            name="SERVICE_TIER_BASIC",
+            index=1,
+            number=1,
+            serialized_options=None,
+            type=None,
         ),
         _descriptor.EnumValueDescriptor(
-            name="SERVICE_TIER_PREMIUM", index=2, number=2, options=None, type=None
+            name="SERVICE_TIER_PREMIUM",
+            index=2,
+            number=2,
+            serialized_options=None,
+            type=None,
         ),
     ],
     containing_type=None,
-    options=_descriptor._ParseOptions(descriptor_pb2.EnumOptions(), _b("\030\001")),
+    serialized_options=_b("\030\001"),
     serialized_start=1585,
     serialized_end=1682,
 )
@@ -117,65 +135,105 @@ _AGGREGATION_ALIGNER = _descriptor.EnumDescriptor(
     file=DESCRIPTOR,
     values=[
         _descriptor.EnumValueDescriptor(
-            name="ALIGN_NONE", index=0, number=0, options=None, type=None
+            name="ALIGN_NONE", index=0, number=0, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="ALIGN_DELTA", index=1, number=1, options=None, type=None
+            name="ALIGN_DELTA", index=1, number=1, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="ALIGN_RATE", index=2, number=2, options=None, type=None
+            name="ALIGN_RATE", index=2, number=2, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="ALIGN_INTERPOLATE", index=3, number=3, options=None, type=None
+            name="ALIGN_INTERPOLATE",
+            index=3,
+            number=3,
+            serialized_options=None,
+            type=None,
         ),
         _descriptor.EnumValueDescriptor(
-            name="ALIGN_NEXT_OLDER", index=4, number=4, options=None, type=None
+            name="ALIGN_NEXT_OLDER",
+            index=4,
+            number=4,
+            serialized_options=None,
+            type=None,
         ),
         _descriptor.EnumValueDescriptor(
-            name="ALIGN_MIN", index=5, number=10, options=None, type=None
+            name="ALIGN_MIN", index=5, number=10, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="ALIGN_MAX", index=6, number=11, options=None, type=None
+            name="ALIGN_MAX", index=6, number=11, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="ALIGN_MEAN", index=7, number=12, options=None, type=None
+            name="ALIGN_MEAN", index=7, number=12, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="ALIGN_COUNT", index=8, number=13, options=None, type=None
+            name="ALIGN_COUNT", index=8, number=13, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="ALIGN_SUM", index=9, number=14, options=None, type=None
+            name="ALIGN_SUM", index=9, number=14, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="ALIGN_STDDEV", index=10, number=15, options=None, type=None
+            name="ALIGN_STDDEV", index=10, number=15, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="ALIGN_COUNT_TRUE", index=11, number=16, options=None, type=None
+            name="ALIGN_COUNT_TRUE",
+            index=11,
+            number=16,
+            serialized_options=None,
+            type=None,
         ),
         _descriptor.EnumValueDescriptor(
-            name="ALIGN_COUNT_FALSE", index=12, number=24, options=None, type=None
+            name="ALIGN_COUNT_FALSE",
+            index=12,
+            number=24,
+            serialized_options=None,
+            type=None,
         ),
         _descriptor.EnumValueDescriptor(
-            name="ALIGN_FRACTION_TRUE", index=13, number=17, options=None, type=None
+            name="ALIGN_FRACTION_TRUE",
+            index=13,
+            number=17,
+            serialized_options=None,
+            type=None,
         ),
         _descriptor.EnumValueDescriptor(
-            name="ALIGN_PERCENTILE_99", index=14, number=18, options=None, type=None
+            name="ALIGN_PERCENTILE_99",
+            index=14,
+            number=18,
+            serialized_options=None,
+            type=None,
         ),
         _descriptor.EnumValueDescriptor(
-            name="ALIGN_PERCENTILE_95", index=15, number=19, options=None, type=None
+            name="ALIGN_PERCENTILE_95",
+            index=15,
+            number=19,
+            serialized_options=None,
+            type=None,
         ),
         _descriptor.EnumValueDescriptor(
-            name="ALIGN_PERCENTILE_50", index=16, number=20, options=None, type=None
+            name="ALIGN_PERCENTILE_50",
+            index=16,
+            number=20,
+            serialized_options=None,
+            type=None,
         ),
         _descriptor.EnumValueDescriptor(
-            name="ALIGN_PERCENTILE_05", index=17, number=21, options=None, type=None
+            name="ALIGN_PERCENTILE_05",
+            index=17,
+            number=21,
+            serialized_options=None,
+            type=None,
         ),
         _descriptor.EnumValueDescriptor(
-            name="ALIGN_PERCENT_CHANGE", index=18, number=23, options=None, type=None
+            name="ALIGN_PERCENT_CHANGE",
+            index=18,
+            number=23,
+            serialized_options=None,
+            type=None,
         ),
     ],
     containing_type=None,
-    options=None,
+    serialized_options=None,
     serialized_start=719,
     serialized_end=1114,
 )
@@ -188,50 +246,78 @@ _AGGREGATION_REDUCER = _descriptor.EnumDescriptor(
     file=DESCRIPTOR,
     values=[
         _descriptor.EnumValueDescriptor(
-            name="REDUCE_NONE", index=0, number=0, options=None, type=None
+            name="REDUCE_NONE", index=0, number=0, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="REDUCE_MEAN", index=1, number=1, options=None, type=None
+            name="REDUCE_MEAN", index=1, number=1, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="REDUCE_MIN", index=2, number=2, options=None, type=None
+            name="REDUCE_MIN", index=2, number=2, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="REDUCE_MAX", index=3, number=3, options=None, type=None
+            name="REDUCE_MAX", index=3, number=3, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="REDUCE_SUM", index=4, number=4, options=None, type=None
+            name="REDUCE_SUM", index=4, number=4, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="REDUCE_STDDEV", index=5, number=5, options=None, type=None
+            name="REDUCE_STDDEV", index=5, number=5, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="REDUCE_COUNT", index=6, number=6, options=None, type=None
+            name="REDUCE_COUNT", index=6, number=6, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="REDUCE_COUNT_TRUE", index=7, number=7, options=None, type=None
+            name="REDUCE_COUNT_TRUE",
+            index=7,
+            number=7,
+            serialized_options=None,
+            type=None,
         ),
         _descriptor.EnumValueDescriptor(
-            name="REDUCE_COUNT_FALSE", index=8, number=15, options=None, type=None
+            name="REDUCE_COUNT_FALSE",
+            index=8,
+            number=15,
+            serialized_options=None,
+            type=None,
         ),
         _descriptor.EnumValueDescriptor(
-            name="REDUCE_FRACTION_TRUE", index=9, number=8, options=None, type=None
+            name="REDUCE_FRACTION_TRUE",
+            index=9,
+            number=8,
+            serialized_options=None,
+            type=None,
         ),
         _descriptor.EnumValueDescriptor(
-            name="REDUCE_PERCENTILE_99", index=10, number=9, options=None, type=None
+            name="REDUCE_PERCENTILE_99",
+            index=10,
+            number=9,
+            serialized_options=None,
+            type=None,
         ),
         _descriptor.EnumValueDescriptor(
-            name="REDUCE_PERCENTILE_95", index=11, number=10, options=None, type=None
+            name="REDUCE_PERCENTILE_95",
+            index=11,
+            number=10,
+            serialized_options=None,
+            type=None,
         ),
         _descriptor.EnumValueDescriptor(
-            name="REDUCE_PERCENTILE_50", index=12, number=11, options=None, type=None
+            name="REDUCE_PERCENTILE_50",
+            index=12,
+            number=11,
+            serialized_options=None,
+            type=None,
         ),
         _descriptor.EnumValueDescriptor(
-            name="REDUCE_PERCENTILE_05", index=13, number=12, options=None, type=None
+            name="REDUCE_PERCENTILE_05",
+            index=13,
+            number=12,
+            serialized_options=None,
+            type=None,
         ),
     ],
     containing_type=None,
-    options=None,
+    serialized_options=None,
     serialized_start=1117,
     serialized_end=1422,
 )
@@ -260,7 +346,7 @@ _TYPEDVALUE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -278,7 +364,7 @@ _TYPEDVALUE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -296,7 +382,7 @@ _TYPEDVALUE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -314,7 +400,7 @@ _TYPEDVALUE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -332,14 +418,14 @@ _TYPEDVALUE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -379,7 +465,7 @@ _TIMEINTERVAL = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -397,14 +483,14 @@ _TIMEINTERVAL = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -436,7 +522,7 @@ _AGGREGATION = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -454,7 +540,7 @@ _AGGREGATION = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -472,7 +558,7 @@ _AGGREGATION = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -490,14 +576,14 @@ _AGGREGATION = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[_AGGREGATION_ALIGNER, _AGGREGATION_REDUCER],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -682,15 +768,6 @@ Aggregation = _reflection.GeneratedProtocolMessageType(
 _sym_db.RegisterMessage(Aggregation)
 
 
-DESCRIPTOR.has_options = True
-DESCRIPTOR._options = _descriptor._ParseOptions(
-    descriptor_pb2.FileOptions(),
-    _b(
-        "\n\030com.google.monitoring.v3B\013CommonProtoP\001Z>google.golang.org/genproto/googleapis/monitoring/v3;monitoring\252\002\032Google.Cloud.Monitoring.V3\312\002\032Google\\Cloud\\Monitoring\\V3"
-    ),
-)
-_SERVICETIER.has_options = True
-_SERVICETIER._options = _descriptor._ParseOptions(
-    descriptor_pb2.EnumOptions(), _b("\030\001")
-)
+DESCRIPTOR._options = None
+_SERVICETIER._options = None
 # @@protoc_insertion_point(module_scope)

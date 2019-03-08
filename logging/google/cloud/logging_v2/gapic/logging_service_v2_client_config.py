@@ -33,7 +33,7 @@ config = {
                 },
                 "WriteLogEntries": {
                     "timeout_millis": 60000,
-                    "retry_codes_name": "non_idempotent",
+                    "retry_codes_name": "idempotent",
                     "retry_params_name": "default",
                     "bundling": {
                         "element_count_threshold": 1000,

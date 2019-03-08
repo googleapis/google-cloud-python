@@ -27,6 +27,7 @@ library = gapic.py_library(
     "v2",
     config_path="/google/logging/artman_logging.yaml",
     artman_output_name="logging-v2",
+    include_protos=True,
 )
 
 s.move(library / "google/cloud/logging_v2/proto")

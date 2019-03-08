@@ -8,7 +8,6 @@ from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
-from google.protobuf import descriptor_pb2
 
 # @@protoc_insertion_point(imports)
 
@@ -19,6 +18,9 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     name="google/cloud/bigquery/storage_v1beta1/proto/read_options.proto",
     package="google.cloud.bigquery.storage.v1beta1",
     syntax="proto3",
+    serialized_options=_b(
+        "\n)com.google.cloud.bigquery.storage.v1beta1ZLgoogle.golang.org/genproto/googleapis/cloud/bigquery/storage/v1beta1;storage"
+    ),
     serialized_pb=_b(
         '\n>google/cloud/bigquery/storage_v1beta1/proto/read_options.proto\x12%google.cloud.bigquery.storage.v1beta1"D\n\x10TableReadOptions\x12\x17\n\x0fselected_fields\x18\x01 \x03(\t\x12\x17\n\x0frow_restriction\x18\x02 \x01(\tBy\n)com.google.cloud.bigquery.storage.v1beta1ZLgoogle.golang.org/genproto/googleapis/cloud/bigquery/storage/v1beta1;storageb\x06proto3'
     ),
@@ -47,7 +49,7 @@ _TABLEREADOPTIONS = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -65,14 +67,14 @@ _TABLEREADOPTIONS = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -102,10 +104,13 @@ TableReadOptions = _reflection.GeneratedProtocolMessageType(
           of fields in selected\_fields.
       row_restriction:
           Optional. SQL text filtering statement, similar to a WHERE
-          clause in a query. Currently, we support combinations of
-          predicates that are a comparison between a column and a
-          constant value in SQL statement. Aggregates are not supported.
-          Example: "a > DATE '2014-9-27' AND (b > 5 and C LIKE 'date')"
+          clause in a query. Currently, only a single predicate that is
+          a comparison between a column and a constant value is
+          supported. Aggregates are not supported.  Examples:
+          "int\_field > 5" "date\_field = CAST('2014-9-27' as DATE)"
+          "nullable\_field is not NULL" "st\_equals(geo\_field,
+          st\_geofromtext("POINT(2, 2)"))" "numeric\_field BETWEEN 1.0
+          AND 5.0"
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.bigquery.storage.v1beta1.TableReadOptions)
     ),
@@ -113,11 +118,5 @@ TableReadOptions = _reflection.GeneratedProtocolMessageType(
 _sym_db.RegisterMessage(TableReadOptions)
 
 
-DESCRIPTOR.has_options = True
-DESCRIPTOR._options = _descriptor._ParseOptions(
-    descriptor_pb2.FileOptions(),
-    _b(
-        "\n)com.google.cloud.bigquery.storage.v1beta1ZLgoogle.golang.org/genproto/googleapis/cloud/bigquery/storage/v1beta1;storage"
-    ),
-)
+DESCRIPTOR._options = None
 # @@protoc_insertion_point(module_scope)

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2018 Google LLC
+# Copyright 2019 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -434,15 +434,15 @@ class CloudTasksClient(object):
             >>>
             >>> # Initialize `queue`:
             >>> queue = {
-            >>>     # The fully qualified path to the queue
-            >>>     'name': client.queue_path('[PROJECT]', '[LOCATION]', '[NAME]'),
-            >>>     'app_engine_http_queue': {
-            >>>         'app_engine_routing_override': {
-            >>>             # The App Engine service that will receive the tasks.
-            >>>             'service': 'default',
-            >>>             },
-            >>>         },
-            >>>     }
+            ...     # The fully qualified path to the queue
+            ...     'name': client.queue_path('[PROJECT]', '[LOCATION]', '[NAME]'),
+            ...     'app_engine_http_queue': {
+            ...         'app_engine_routing_override': {
+            ...             # The App Engine service that will receive the tasks.
+            ...             'service': 'default',
+            ...         },
+            ...     },
+            ... }
             >>>
             >>> response = client.create_queue(parent, queue)
 
@@ -539,8 +539,17 @@ class CloudTasksClient(object):
             >>>
             >>> client = tasks_v2beta3.CloudTasksClient()
             >>>
-            >>> # TODO: Initialize `queue`:
-            >>> queue = {}
+            >>> # Initialize `queue`:
+            >>> queue = {
+            ...     # The fully qualified path to the queue
+            ...     'name': client.queue_path('[PROJECT]', '[LOCATION]', '[NAME]'),
+            ...     'app_engine_http_queue': {
+            ...         'app_engine_routing_override': {
+            ...             # The App Engine service that will receive the tasks.
+            ...             'service': 'default',
+            ...         },
+            ...     },
+            ... }
             >>>
             >>> response = client.update_queue(queue)
 

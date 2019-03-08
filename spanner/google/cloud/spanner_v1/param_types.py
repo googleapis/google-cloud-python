@@ -20,7 +20,7 @@ from google.cloud.spanner_v1.proto import type_pb2
 # Scalar parameter types
 STRING = type_pb2.Type(code=type_pb2.STRING)
 BYTES = type_pb2.Type(code=type_pb2.BYTES)
-BOOE = type_pb2.Type(code=type_pb2.BOOL)
+BOOL = type_pb2.Type(code=type_pb2.BOOL)
 INT64 = type_pb2.Type(code=type_pb2.INT64)
 FLOAT64 = type_pb2.Type(code=type_pb2.FLOAT64)
 DATE = type_pb2.Type(code=type_pb2.DATE)

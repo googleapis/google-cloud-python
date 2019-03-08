@@ -8,7 +8,6 @@ from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
-from google.protobuf import descriptor_pb2
 
 # @@protoc_insertion_point(imports)
 
@@ -27,6 +26,9 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     name="google/cloud/monitoring_v3/proto/alert_service.proto",
     package="google.monitoring.v3",
     syntax="proto3",
+    serialized_options=_b(
+        "\n\030com.google.monitoring.v3B\021AlertServiceProtoP\001Z>google.golang.org/genproto/googleapis/monitoring/v3;monitoring\252\002\032Google.Cloud.Monitoring.V3\312\002\032Google\\Cloud\\Monitoring\\V3"
+    ),
     serialized_pb=_b(
         '\n4google/cloud/monitoring_v3/proto/alert_service.proto\x12\x14google.monitoring.v3\x1a\x1cgoogle/api/annotations.proto\x1a,google/cloud/monitoring_v3/proto/alert.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto"a\n\x18\x43reateAlertPolicyRequest\x12\x0c\n\x04name\x18\x03 \x01(\t\x12\x37\n\x0c\x61lert_policy\x18\x02 \x01(\x0b\x32!.google.monitoring.v3.AlertPolicy"%\n\x15GetAlertPolicyRequest\x12\x0c\n\x04name\x18\x03 \x01(\t"q\n\x18ListAlertPoliciesRequest\x12\x0c\n\x04name\x18\x04 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x05 \x01(\t\x12\x10\n\x08order_by\x18\x06 \x01(\t\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t"o\n\x19ListAlertPoliciesResponse\x12\x39\n\x0e\x61lert_policies\x18\x03 \x03(\x0b\x32!.google.monitoring.v3.AlertPolicy\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"\x84\x01\n\x18UpdateAlertPolicyRequest\x12/\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMask\x12\x37\n\x0c\x61lert_policy\x18\x03 \x01(\x0b\x32!.google.monitoring.v3.AlertPolicy"(\n\x18\x44\x65leteAlertPolicyRequest\x12\x0c\n\x04name\x18\x03 \x01(\t2\xae\x06\n\x12\x41lertPolicyService\x12\xa1\x01\n\x11ListAlertPolicies\x12..google.monitoring.v3.ListAlertPoliciesRequest\x1a/.google.monitoring.v3.ListAlertPoliciesResponse"+\x82\xd3\xe4\x93\x02%\x12#/v3/{name=projects/*}/alertPolicies\x12\x8f\x01\n\x0eGetAlertPolicy\x12+.google.monitoring.v3.GetAlertPolicyRequest\x1a!.google.monitoring.v3.AlertPolicy"-\x82\xd3\xe4\x93\x02\'\x12%/v3/{name=projects/*/alertPolicies/*}\x12\xa1\x01\n\x11\x43reateAlertPolicy\x12..google.monitoring.v3.CreateAlertPolicyRequest\x1a!.google.monitoring.v3.AlertPolicy"9\x82\xd3\xe4\x93\x02\x33"#/v3/{name=projects/*}/alertPolicies:\x0c\x61lert_policy\x12\x8a\x01\n\x11\x44\x65leteAlertPolicy\x12..google.monitoring.v3.DeleteAlertPolicyRequest\x1a\x16.google.protobuf.Empty"-\x82\xd3\xe4\x93\x02\'*%/v3/{name=projects/*/alertPolicies/*}\x12\xb0\x01\n\x11UpdateAlertPolicy\x12..google.monitoring.v3.UpdateAlertPolicyRequest\x1a!.google.monitoring.v3.AlertPolicy"H\x82\xd3\xe4\x93\x02\x42\x32\x32/v3/{alert_policy.name=projects/*/alertPolicies/*}:\x0c\x61lert_policyB\xa9\x01\n\x18\x63om.google.monitoring.v3B\x11\x41lertServiceProtoP\x01Z>google.golang.org/genproto/googleapis/monitoring/v3;monitoring\xaa\x02\x1aGoogle.Cloud.Monitoring.V3\xca\x02\x1aGoogle\\Cloud\\Monitoring\\V3b\x06proto3'
     ),
@@ -61,7 +63,7 @@ _CREATEALERTPOLICYREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -79,14 +81,14 @@ _CREATEALERTPOLICYREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -118,14 +120,14 @@ _GETALERTPOLICYREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -157,7 +159,7 @@ _LISTALERTPOLICIESREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -175,7 +177,7 @@ _LISTALERTPOLICIESREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -193,7 +195,7 @@ _LISTALERTPOLICIESREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -211,7 +213,7 @@ _LISTALERTPOLICIESREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -229,14 +231,14 @@ _LISTALERTPOLICIESREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -268,7 +270,7 @@ _LISTALERTPOLICIESRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -286,14 +288,14 @@ _LISTALERTPOLICIESRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -325,7 +327,7 @@ _UPDATEALERTPOLICYREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -343,14 +345,14 @@ _UPDATEALERTPOLICYREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -382,14 +384,14 @@ _DELETEALERTPOLICYREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -602,20 +604,14 @@ DeleteAlertPolicyRequest = _reflection.GeneratedProtocolMessageType(
 _sym_db.RegisterMessage(DeleteAlertPolicyRequest)
 
 
-DESCRIPTOR.has_options = True
-DESCRIPTOR._options = _descriptor._ParseOptions(
-    descriptor_pb2.FileOptions(),
-    _b(
-        "\n\030com.google.monitoring.v3B\021AlertServiceProtoP\001Z>google.golang.org/genproto/googleapis/monitoring/v3;monitoring\252\002\032Google.Cloud.Monitoring.V3\312\002\032Google\\Cloud\\Monitoring\\V3"
-    ),
-)
+DESCRIPTOR._options = None
 
 _ALERTPOLICYSERVICE = _descriptor.ServiceDescriptor(
     name="AlertPolicyService",
     full_name="google.monitoring.v3.AlertPolicyService",
     file=DESCRIPTOR,
     index=0,
-    options=None,
+    serialized_options=None,
     serialized_start=761,
     serialized_end=1575,
     methods=[
@@ -626,9 +622,8 @@ _ALERTPOLICYSERVICE = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_LISTALERTPOLICIESREQUEST,
             output_type=_LISTALERTPOLICIESRESPONSE,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b("\202\323\344\223\002%\022#/v3/{name=projects/*}/alertPolicies"),
+            serialized_options=_b(
+                "\202\323\344\223\002%\022#/v3/{name=projects/*}/alertPolicies"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -638,9 +633,8 @@ _ALERTPOLICYSERVICE = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_GETALERTPOLICYREQUEST,
             output_type=google_dot_cloud_dot_monitoring__v3_dot_proto_dot_alert__pb2._ALERTPOLICY,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b("\202\323\344\223\002'\022%/v3/{name=projects/*/alertPolicies/*}"),
+            serialized_options=_b(
+                "\202\323\344\223\002'\022%/v3/{name=projects/*/alertPolicies/*}"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -650,11 +644,8 @@ _ALERTPOLICYSERVICE = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_CREATEALERTPOLICYREQUEST,
             output_type=google_dot_cloud_dot_monitoring__v3_dot_proto_dot_alert__pb2._ALERTPOLICY,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\0023"#/v3/{name=projects/*}/alertPolicies:\014alert_policy'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\0023"#/v3/{name=projects/*}/alertPolicies:\014alert_policy'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -664,9 +655,8 @@ _ALERTPOLICYSERVICE = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_DELETEALERTPOLICYREQUEST,
             output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b("\202\323\344\223\002'*%/v3/{name=projects/*/alertPolicies/*}"),
+            serialized_options=_b(
+                "\202\323\344\223\002'*%/v3/{name=projects/*/alertPolicies/*}"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -676,11 +666,8 @@ _ALERTPOLICYSERVICE = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_UPDATEALERTPOLICYREQUEST,
             output_type=google_dot_cloud_dot_monitoring__v3_dot_proto_dot_alert__pb2._ALERTPOLICY,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\002B22/v3/{alert_policy.name=projects/*/alertPolicies/*}:\014alert_policy"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\002B22/v3/{alert_policy.name=projects/*/alertPolicies/*}:\014alert_policy"
             ),
         ),
     ],

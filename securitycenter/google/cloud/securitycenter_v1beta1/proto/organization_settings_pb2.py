@@ -9,7 +9,6 @@ from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
-from google.protobuf import descriptor_pb2
 
 # @@protoc_insertion_point(imports)
 
@@ -23,6 +22,9 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     name="google/cloud/securitycenter_v1beta1/proto/organization_settings.proto",
     package="google.cloud.securitycenter.v1beta1",
     syntax="proto3",
+    serialized_options=_b(
+        "\n'com.google.cloud.securitycenter.v1beta1P\001ZQgoogle.golang.org/genproto/googleapis/cloud/securitycenter/v1beta1;securitycenter"
+    ),
     serialized_pb=_b(
         '\nEgoogle/cloud/securitycenter_v1beta1/proto/organization_settings.proto\x12#google.cloud.securitycenter.v1beta1\x1a\x1cgoogle/api/annotations.proto"\xa8\x03\n\x14OrganizationSettings\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x1e\n\x16\x65nable_asset_discovery\x18\x02 \x01(\x08\x12n\n\x16\x61sset_discovery_config\x18\x03 \x01(\x0b\x32N.google.cloud.securitycenter.v1beta1.OrganizationSettings.AssetDiscoveryConfig\x1a\xf1\x01\n\x14\x41ssetDiscoveryConfig\x12\x13\n\x0bproject_ids\x18\x01 \x03(\t\x12t\n\x0einclusion_mode\x18\x02 \x01(\x0e\x32\\.google.cloud.securitycenter.v1beta1.OrganizationSettings.AssetDiscoveryConfig.InclusionMode"N\n\rInclusionMode\x12\x1e\n\x1aINCLUSION_MODE_UNSPECIFIED\x10\x00\x12\x10\n\x0cINCLUDE_ONLY\x10\x01\x12\x0b\n\x07\x45XCLUDE\x10\x02\x42~\n\'com.google.cloud.securitycenter.v1beta1P\x01ZQgoogle.golang.org/genproto/googleapis/cloud/securitycenter/v1beta1;securitycenterb\x06proto3'
     ),
@@ -40,18 +42,18 @@ _ORGANIZATIONSETTINGS_ASSETDISCOVERYCONFIG_INCLUSIONMODE = _descriptor.EnumDescr
             name="INCLUSION_MODE_UNSPECIFIED",
             index=0,
             number=0,
-            options=None,
+            serialized_options=None,
             type=None,
         ),
         _descriptor.EnumValueDescriptor(
-            name="INCLUDE_ONLY", index=1, number=1, options=None, type=None
+            name="INCLUDE_ONLY", index=1, number=1, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="EXCLUDE", index=2, number=2, options=None, type=None
+            name="EXCLUDE", index=2, number=2, serialized_options=None, type=None
         ),
     ],
     containing_type=None,
-    options=None,
+    serialized_options=None,
     serialized_start=487,
     serialized_end=565,
 )
@@ -80,7 +82,7 @@ _ORGANIZATIONSETTINGS_ASSETDISCOVERYCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -98,14 +100,14 @@ _ORGANIZATIONSETTINGS_ASSETDISCOVERYCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[_ORGANIZATIONSETTINGS_ASSETDISCOVERYCONFIG_INCLUSIONMODE],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -136,7 +138,7 @@ _ORGANIZATIONSETTINGS = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -154,7 +156,7 @@ _ORGANIZATIONSETTINGS = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -172,14 +174,14 @@ _ORGANIZATIONSETTINGS = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[_ORGANIZATIONSETTINGS_ASSETDISCOVERYCONFIG],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -249,11 +251,5 @@ _sym_db.RegisterMessage(OrganizationSettings)
 _sym_db.RegisterMessage(OrganizationSettings.AssetDiscoveryConfig)
 
 
-DESCRIPTOR.has_options = True
-DESCRIPTOR._options = _descriptor._ParseOptions(
-    descriptor_pb2.FileOptions(),
-    _b(
-        "\n'com.google.cloud.securitycenter.v1beta1P\001ZQgoogle.golang.org/genproto/googleapis/cloud/securitycenter/v1beta1;securitycenter"
-    ),
-)
+DESCRIPTOR._options = None
 # @@protoc_insertion_point(module_scope)

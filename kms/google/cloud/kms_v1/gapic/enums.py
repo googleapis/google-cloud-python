@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2018 Google LLC
+# Copyright 2019 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -172,7 +172,10 @@ class KeyOperationAttestation(object):
           ATTESTATION_FORMAT_UNSPECIFIED (int)
           CAVIUM_V1_COMPRESSED (int): Cavium HSM attestation compressed with gzip. Note that this format is
           defined by Cavium and subject to change at any time.
+          CAVIUM_V2_COMPRESSED (int): Cavium HSM attestation V2 compressed with gzip. This is a new format
+          Introduced in Cavium's version 3.2-08
         """
 
         ATTESTATION_FORMAT_UNSPECIFIED = 0
         CAVIUM_V1_COMPRESSED = 3
+        CAVIUM_V2_COMPRESSED = 4

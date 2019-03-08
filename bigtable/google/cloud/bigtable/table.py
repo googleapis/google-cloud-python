@@ -17,6 +17,7 @@
 
 from grpc import StatusCode
 
+from google.api_core import timeout
 from google.api_core.exceptions import RetryError
 from google.api_core.exceptions import NotFound
 from google.api_core.retry import if_exception_type
@@ -100,10 +101,11 @@ class Table(object):
     :param app_profile_id: (Optional) The unique name of the AppProfile.
     """
 
-    def __init__(self, table_id, instance, app_profile_id=None):
+    def __init__(self, table_id, instance, mutation_timeout=None, app_profile_id=None):
         self.table_id = table_id
         self._instance = instance
         self._app_profile_id = app_profile_id
+        self.mutation_timeout = mutation_timeout
 
     @property
     def name(self):
@@ -403,7 +405,7 @@ class Table(object):
                       considered inclusive. The default is False (exclusive).
 
         :type row_set: :class:`row_set.RowSet`
-        :param filter_: (Optional) The row set containing multiple row keys and
+        :param row_set: (Optional) The row set containing multiple row keys and
                         row_ranges.
 
         :type retry: :class:`~google.api_core.retry.Retry`
@@ -459,7 +461,7 @@ class Table(object):
                         each row.
 
         :type row_set: :class:`row_set.RowSet`
-        :param filter_: (Optional) The row set containing multiple row keys and
+        :param row_set: (Optional) The row set containing multiple row keys and
                         row_ranges.
 
         :rtype: :class:`.PartialRowData`
@@ -503,7 +505,11 @@ class Table(object):
                   sent. These will be in the same order as the `rows`.
         """
         retryable_mutate_rows = _RetryableMutateRowsWorker(
-            self._instance._client, self.name, rows, app_profile_id=self._app_profile_id
+            self._instance._client,
+            self.name,
+            rows,
+            app_profile_id=self._app_profile_id,
+            timeout=self.mutation_timeout,
         )
         return retryable_mutate_rows(retry=retry)
 
@@ -658,12 +664,13 @@ class _RetryableMutateRowsWorker(object):
     )
     # pylint: enable=unsubscriptable-object
 
-    def __init__(self, client, table_name, rows, app_profile_id=None):
+    def __init__(self, client, table_name, rows, app_profile_id=None, timeout=None):
         self.client = client
         self.table_name = table_name
         self.rows = rows
         self.app_profile_id = app_profile_id
         self.responses_statuses = [None] * len(self.rows)
+        self.timeout = timeout
 
     def __call__(self, retry=DEFAULT_RETRY):
         """Attempt to mutate all rows and retry rows with transient errors.
@@ -729,7 +736,10 @@ class _RetryableMutateRowsWorker(object):
         inner_api_calls = data_client._inner_api_calls
         if "mutate_rows" not in inner_api_calls:
             default_retry = (data_client._method_configs["MutateRows"].retry,)
-            default_timeout = data_client._method_configs["MutateRows"].timeout
+            if self.timeout is None:
+                default_timeout = data_client._method_configs["MutateRows"].timeout
+            else:
+                default_timeout = timeout.ExponentialTimeout(deadline=self.timeout)
             data_client._inner_api_calls["mutate_rows"] = wrap_method(
                 data_client.transport.mutate_rows,
                 default_retry=default_retry,
@@ -884,7 +894,7 @@ def _create_row_request(
     :param app_profile_id: (Optional) The unique name of the AppProfile.
 
     :type row_set: :class:`row_set.RowSet`
-    :param filter_: (Optional) The row set containing multiple row keys and
+    :param row_set: (Optional) The row set containing multiple row keys and
                     row_ranges.
 
     :rtype: :class:`data_messages_v2_pb2.ReadRowsRequest`
