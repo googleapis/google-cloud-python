@@ -308,9 +308,9 @@ class ColumnFamily(object):
             :end-before: [END bigtable_delete_column_family]
 
         """
-        modification = (
-            table_admin_v2_pb2.ModifyColumnFamiliesRequest.Modification(
-                id=self.column_family_id, drop=True))
+        modification = table_admin_v2_pb2.ModifyColumnFamiliesRequest.Modification(
+            id=self.column_family_id, drop=True
+        )
 
         client = self._table._instance._client
         # data it contains are the GC rule and the column family ID already

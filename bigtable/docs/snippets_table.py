@@ -39,12 +39,12 @@ from google.cloud.bigtable import enums
 from google.cloud.bigtable import column_family
 
 
-INSTANCE_ID = "snippet-" + unique_resource_id('-')
-CLUSTER_ID = "clus-1-" + unique_resource_id('-')
-TABLE_ID = "tabl-1" + unique_resource_id('-')
-COLUMN_FAMILY_ID = "col_fam_id-" + unique_resource_id('-')
-LOCATION_ID = 'us-central1-f'
-ALT_LOCATION_ID = 'us-central1-a'
+INSTANCE_ID = "snippet-" + unique_resource_id("-")
+CLUSTER_ID = "clus-1-" + unique_resource_id("-")
+TABLE_ID = "tabl-1" + unique_resource_id("-")
+COLUMN_FAMILY_ID = "col_fam_id-" + unique_resource_id("-")
+LOCATION_ID = "us-central1-f"
+ALT_LOCATION_ID = "us-central1-a"
 PRODUCTION = enums.Instance.Type.PRODUCTION
 SERVER_NODES = 3
 STORAGE_TYPE = enums.StorageType.SSD
@@ -416,10 +416,13 @@ def test_bigtable_column_family_name():
     column_family_name = column_family_obj.name
     # [END bigtable_column_family_name]
     import re
-    _cf_name_re = re.compile(r'^projects/(?P<project>[^/]+)/'
-                             r'instances/(?P<instance>[^/]+)/tables/'
-                             r'(?P<table>[^/]+)/columnFamilies/'
-                             r'(?P<cf_id>[_a-zA-Z0-9][-_.a-zA-Z0-9]*)$')
+
+    _cf_name_re = re.compile(
+        r"^projects/(?P<project>[^/]+)/"
+        r"instances/(?P<instance>[^/]+)/tables/"
+        r"(?P<table>[^/]+)/columnFamilies/"
+        r"(?P<cf_id>[_a-zA-Z0-9][-_.a-zA-Z0-9]*)$"
+    )
     assert _cf_name_re.match(column_family_name)
 
 
@@ -434,8 +437,7 @@ def test_bigtable_create_update_delete_column_family():
 
     column_family_id = "column_family_id1"
     gc_rule = column_family.MaxVersionsGCRule(2)
-    column_family_obj = table.column_family(column_family_id,
-                                            gc_rule=gc_rule)
+    column_family_obj = table.column_family(column_family_id, gc_rule=gc_rule)
     column_family_obj.create()
 
     # [END bigtable_create_column_family]
@@ -454,8 +456,7 @@ def test_bigtable_create_update_delete_column_family():
     column_family_id = "column_family_id1"
     # Define the GC rule to retain data with max age of 5 days
     max_age_rule = column_family.MaxAgeGCRule(datetime.timedelta(days=5))
-    column_family_obj = table.column_family(column_family_id,
-                                            gc_rule=max_age_rule)
+    column_family_obj = table.column_family(column_family_id, gc_rule=max_age_rule)
     column_family_obj.update()
     # [END bigtable_update_column_family]
 
@@ -490,7 +491,7 @@ def test_bigtable_create_MaxVersionsGCRule():
     # Define the GC policy to retain only the most recent 2 versions
     max_versions_rule = column_family.MaxVersionsGCRule(2)
 
-    column_family_obj = table.column_family('cf1', max_versions_rule)
+    column_family_obj = table.column_family("cf1", max_versions_rule)
     column_family_obj.create()
 
     # [END bigtable_create_MaxVersionsGCRule]
@@ -511,7 +512,7 @@ def test_bigtable_create_MaxAgeGCRule():
     # Define the GC rule to retain data with max age of 5 days
     max_age_rule = column_family.MaxAgeGCRule(datetime.timedelta(days=5))
 
-    column_family_obj = table.column_family('cf1', max_age_rule)
+    column_family_obj = table.column_family("cf1", max_age_rule)
     column_family_obj.create()
 
     # [END bigtable_create_MaxAgeGCRule]
@@ -535,7 +536,7 @@ def test_bigtable_create_GCRuleUnion():
 
     union_rule = column_family.GCRuleUnion([max_versions_rule, max_age_rule])
 
-    column_family_obj = table.column_family('cf1', union_rule)
+    column_family_obj = table.column_family("cf1", union_rule)
     column_family_obj.create()
 
     # [END bigtable_create_GCRuleUnion]
@@ -559,11 +560,11 @@ def test_bigtable_create_GCRuleIntersection():
     max_versions_rule = column_family.MaxVersionsGCRule(2)
     max_age_rule = column_family.MaxAgeGCRule(datetime.timedelta(days=5))
 
-    intersection_rule = column_family.GCRuleIntersection([
-        max_versions_rule,
-        max_age_rule])
+    intersection_rule = column_family.GCRuleIntersection(
+        [max_versions_rule, max_age_rule]
+    )
 
-    column_family_obj = table.column_family('cf1', intersection_rule)
+    column_family_obj = table.column_family("cf1", intersection_rule)
     column_family_obj.create()
 
     # [END bigtable_create_GCRuleIntersection]
@@ -576,5 +577,5 @@ def test_bigtable_create_GCRuleIntersection():
     column_family_obj.delete()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     pytest.main()
