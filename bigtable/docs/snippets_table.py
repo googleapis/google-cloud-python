@@ -508,6 +508,7 @@ def test_bigtable_create_MaxVersionsGCRule():
     assert "max_num_versions: 2" in rule
     column_family_obj.delete()
 
+
 def test_bigtable_add_row_add_row_range_add_row_range_from_keys():
     row_keys = [
         b"row_key_1",
@@ -528,7 +529,7 @@ def test_bigtable_add_row_add_row_range_add_row_range_from_keys():
         rows.append(row)
     Config.TABLE.mutate_rows(rows)
 
-     # [START bigtable_add_row_key]
+    # [START bigtable_add_row_key]
     from google.cloud.bigtable import Client
     from google.cloud.bigtable.row_set import RowSet
 
@@ -540,30 +541,30 @@ def test_bigtable_add_row_add_row_range_add_row_range_from_keys():
     row_set.add_row_key(b"row_key_5")
     # [END bigtable_add_row_key]
 
-     read_rows = table.read_rows(row_set=row_set)
+    read_rows = table.read_rows(row_set=row_set)
     expected_row_keys = [b"row_key_5"]
     found_row_keys = [row.row_key for row in read_rows]
     assert found_row_keys == expected_row_keys
 
-     # [START bigtable_add_row_range]
+    # [START bigtable_add_row_range]
     from google.cloud.bigtable import Client
     from google.cloud.bigtable.row_set import RowSet
     from google.cloud.bigtable.row_set import RowRange
 
-     client = Client(admin=True)
+    client = Client(admin=True)
     instance = client.instance(INSTANCE_ID)
     table = instance.table(TABLE_ID)
 
-     row_set = RowSet()
+    row_set = RowSet()
     row_set.add_row_range(RowRange(start_key=b"row_key_3", end_key=b"row_key_7"))
     # [END bigtable_add_row_range]
 
-     read_rows = table.read_rows(row_set=row_set)
+    read_rows = table.read_rows(row_set=row_set)
     expected_row_keys = [b"row_key_3", b"row_key_4", b"row_key_5", b"row_key_6"]
     found_row_keys = [row.row_key for row in read_rows]
     assert found_row_keys == expected_row_keys
 
-     # [START bigtable_row_range_from_keys]
+    # [START bigtable_row_range_from_keys]
     from google.cloud.bigtable import Client
     from google.cloud.bigtable.row_set import RowSet
 
@@ -571,16 +572,17 @@ def test_bigtable_add_row_add_row_range_add_row_range_from_keys():
     instance = client.instance(INSTANCE_ID)
     table = instance.table(TABLE_ID)
 
-     row_set = RowSet()
+    row_set = RowSet()
     row_set.add_row_range_from_keys(start_key=b"row_key_3", end_key=b"row_key_7")
     # [END bigtable_row_range_from_keys]
 
-     read_rows = table.read_rows(row_set=row_set)
+    read_rows = table.read_rows(row_set=row_set)
     expected_row_keys = [b"row_key_3", b"row_key_4", b"row_key_5", b"row_key_6"]
     found_row_keys = [row.row_key for row in read_rows]
     assert found_row_keys == expected_row_keys
 
-     table.truncate(timeout=200)
+    table.truncate(timeout=200)
+
 
 def test_bigtable_create_MaxAgeGCRule():
     # [START bigtable_create_MaxAgeGCRule]

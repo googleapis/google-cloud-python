@@ -435,7 +435,6 @@ def test_bigtable_project_path():
     project_path = client.project_path
     # [END bigtable_project_path]
 
-
     _project_path = r"^projects/(?P<project_id>[_a-zA-Z0-9][-_.a-zA-Z0-9]*)$"
     _project_path_re = re.compile(_project_path)
     assert _project_path_re.match(project_path)
