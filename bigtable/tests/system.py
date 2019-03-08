@@ -41,8 +41,10 @@ from test_utils.system import unique_resource_id
 
 LOCATION_ID = "us-central1-c"
 INSTANCE_ID = "g-c-p" + unique_resource_id("-")
+INSTANCE_ID_DATA = "g-c-p-d" + unique_resource_id("-")
 TABLE_ID = "google-cloud-python-test-table"
 CLUSTER_ID = INSTANCE_ID + "-cluster"
+CLUSTER_ID_DATA = INSTANCE_ID_DATA + "-cluster"
 SERVE_NODES = 3
 COLUMN_FAMILY_ID1 = u"col-fam-id1"
 COLUMN_FAMILY_ID2 = u"col-fam-id2"
@@ -74,7 +76,9 @@ class Config(object):
 
     CLIENT = None
     INSTANCE = None
+    INSTANCE_DATA = None
     CLUSTER = None
+    CLUSTER_DATA = None
     IN_EMULATOR = False
 
 
@@ -90,6 +94,7 @@ retry_429 = RetryErrors(TooManyRequests, max_tries=9)
 
 def setUpModule():
     from google.cloud.exceptions import GrpcRendezvous
+    from google.cloud.bigtable.enums import Instance
 
     Config.IN_EMULATOR = os.getenv(BIGTABLE_EMULATOR) is not None
 
@@ -103,6 +108,12 @@ def setUpModule():
     Config.CLUSTER = Config.INSTANCE.cluster(
         CLUSTER_ID, location_id=LOCATION_ID, serve_nodes=SERVE_NODES
     )
+    Config.INSTANCE_DATA = Config.CLIENT.instance(
+        INSTANCE_ID_DATA, instance_type=Instance.Type.DEVELOPMENT, labels=LABELS
+    )
+    Config.CLUSTER_DATA = Config.INSTANCE_DATA.cluster(
+        CLUSTER_ID_DATA, location_id=LOCATION_ID
+    )
 
     if not Config.IN_EMULATOR:
         retry = RetryErrors(GrpcRendezvous, error_predicate=_retry_on_unavailable)
@@ -113,14 +124,17 @@ def setUpModule():
 
         EXISTING_INSTANCES[:] = instances
 
-        # After listing, create the test instance.
+        # After listing, create the test instances.
         created_op = Config.INSTANCE.create(clusters=[Config.CLUSTER])
+        created_op.result(timeout=10)
+        created_op = Config.INSTANCE_DATA.create(clusters=[Config.CLUSTER_DATA])
         created_op.result(timeout=10)
 
 
 def tearDownModule():
     if not Config.IN_EMULATOR:
         retry_429(Config.INSTANCE.delete)()
+        retry_429(Config.INSTANCE_DATA.delete)()
 
 
 class TestInstanceAdminAPI(unittest.TestCase):
@@ -617,7 +631,7 @@ class TestInstanceAdminAPI(unittest.TestCase):
 class TestTableAdminAPI(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls._table = Config.INSTANCE.table(TABLE_ID)
+        cls._table = Config.INSTANCE_DATA.table(TABLE_ID)
         cls._table.create()
 
     @classmethod
@@ -632,16 +646,16 @@ class TestTableAdminAPI(unittest.TestCase):
             table.delete()
 
     def test_list_tables(self):
-        # Since `Config.INSTANCE` is newly created in `setUpModule`, the table
-        # created in `setUpClass` here will be the only one.
-        tables = Config.INSTANCE.list_tables()
+        # Since `Config.INSTANCE_DATA` is newly created in `setUpModule`, the
+        # table created in `setUpClass` here will be the only one.
+        tables = Config.INSTANCE_DATA.list_tables()
         self.assertEqual(tables, [self._table])
 
     def test_exists(self):
         retry_until_true = RetryResult(lambda result: result)
         retry_until_false = RetryResult(lambda result: not result)
         temp_table_id = "test-table_existence"
-        temp_table = Config.INSTANCE.table(temp_table_id)
+        temp_table = Config.INSTANCE_DATA.table(temp_table_id)
         self.assertFalse(temp_table.exists())
         temp_table.create()
         self.assertTrue(retry_until_true(temp_table.exists)())
@@ -650,7 +664,7 @@ class TestTableAdminAPI(unittest.TestCase):
 
     def test_create_table(self):
         temp_table_id = "test-create-table"
-        temp_table = Config.INSTANCE.table(temp_table_id)
+        temp_table = Config.INSTANCE_DATA.table(temp_table_id)
         temp_table.create()
         self.tables_to_delete.append(temp_table)
 
@@ -660,13 +674,13 @@ class TestTableAdminAPI(unittest.TestCase):
 
         # Then query for the tables in the instance and sort them by
         # name as well.
-        tables = Config.INSTANCE.list_tables()
+        tables = Config.INSTANCE_DATA.list_tables()
         sorted_tables = sorted(tables, key=name_attr)
         self.assertEqual(sorted_tables, expected_tables)
 
     def test_create_table_with_families(self):
         temp_table_id = "test-create-table-with-failies"
-        temp_table = Config.INSTANCE.table(temp_table_id)
+        temp_table = Config.INSTANCE_DATA.table(temp_table_id)
         gc_rule = MaxVersionsGCRule(1)
         temp_table.create(column_families={COLUMN_FAMILY_ID1: gc_rule})
         self.tables_to_delete.append(temp_table)
@@ -682,7 +696,7 @@ class TestTableAdminAPI(unittest.TestCase):
     def test_create_table_with_split_keys(self):
         temp_table_id = "foo-bar-baz-split-table"
         initial_split_keys = [b"split_key_1", b"split_key_10", b"split_key_20"]
-        temp_table = Config.INSTANCE.table(temp_table_id)
+        temp_table = Config.INSTANCE_DATA.table(temp_table_id)
         temp_table.create(initial_split_keys=initial_split_keys)
         self.tables_to_delete.append(temp_table)
 
@@ -697,7 +711,7 @@ class TestTableAdminAPI(unittest.TestCase):
 
     def test_create_column_family(self):
         temp_table_id = "test-create-column-family"
-        temp_table = Config.INSTANCE.table(temp_table_id)
+        temp_table = Config.INSTANCE_DATA.table(temp_table_id)
         temp_table.create()
         self.tables_to_delete.append(temp_table)
 
@@ -718,7 +732,7 @@ class TestTableAdminAPI(unittest.TestCase):
 
     def test_update_column_family(self):
         temp_table_id = "test-update-column-family"
-        temp_table = Config.INSTANCE.table(temp_table_id)
+        temp_table = Config.INSTANCE_DATA.table(temp_table_id)
         temp_table.create()
         self.tables_to_delete.append(temp_table)
 
@@ -740,7 +754,7 @@ class TestTableAdminAPI(unittest.TestCase):
 
     def test_delete_column_family(self):
         temp_table_id = "test-delete-column-family"
-        temp_table = Config.INSTANCE.table(temp_table_id)
+        temp_table = Config.INSTANCE_DATA.table(temp_table_id)
         temp_table.create()
         self.tables_to_delete.append(temp_table)
 
@@ -760,7 +774,7 @@ class TestTableAdminAPI(unittest.TestCase):
 class TestDataAPI(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls._table = table = Config.INSTANCE.table("test-data-api")
+        cls._table = table = Config.INSTANCE_DATA.table("test-data-api")
         table.create()
         table.column_family(COLUMN_FAMILY_ID1).create()
         table.column_family(COLUMN_FAMILY_ID2).create()
@@ -1071,6 +1085,6 @@ class TestDataAPI(unittest.TestCase):
 
     def test_access_with_non_admin_client(self):
         client = Client(admin=False)
-        instance = client.instance(INSTANCE_ID)
+        instance = client.instance(INSTANCE_ID_DATA)
         table = instance.table(self._table.table_id)
         self.assertIsNone(table.read_row("nonesuch"))
