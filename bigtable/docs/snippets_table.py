@@ -414,7 +414,7 @@ def test_bigtable_table_row():
 def test_bigtable_row_data_cells_cell_value_cell_values():
 
     value = b"value_in_col1"
-    row = Config.TABLE.row("row_key_1")
+    row = Config.TABLE.row(b"row_key_1")
     row.set_cell(
         COLUMN_FAMILY_ID, COL_NAME1, value, timestamp=datetime.datetime.utcnow()
     )
