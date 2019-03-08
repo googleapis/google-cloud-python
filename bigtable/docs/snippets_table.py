@@ -39,27 +39,29 @@ from google.cloud.bigtable import enums
 from google.cloud.bigtable import column_family
 
 
-INSTANCE_ID = "snippet-" + unique_resource_id('-')
-CLUSTER_ID = "clus-1-" + unique_resource_id('-')
-TABLE_ID = "tabl-1-" + unique_resource_id('-')
-LOCATION_ID = 'us-central1-f'
-ALT_LOCATION_ID = 'us-central1-a'
+INSTANCE_ID = "snippet-" + unique_resource_id("-")
+CLUSTER_ID = "clus-1-" + unique_resource_id("-")
+TABLE_ID = "tabl-1-" + unique_resource_id("-")
+LOCATION_ID = "us-central1-f"
+ALT_LOCATION_ID = "us-central1-a"
 PRODUCTION = enums.Instance.Type.PRODUCTION
 SERVER_NODES = 3
 STORAGE_TYPE = enums.StorageType.SSD
-LABEL_KEY = u'python-snippet'
-LABEL_STAMP = datetime.datetime.utcnow() \
-                               .replace(microsecond=0, tzinfo=UTC,) \
-                               .strftime("%Y-%m-%dt%H-%M-%S")
+LABEL_KEY = u"python-snippet"
+LABEL_STAMP = (
+    datetime.datetime.utcnow()
+    .replace(microsecond=0, tzinfo=UTC)
+    .strftime("%Y-%m-%dt%H-%M-%S")
+)
 LABELS = {LABEL_KEY: str(LABEL_STAMP)}
 COLUMN_FAMILY_ID = "col_fam_id1"
-COL_NAME1 = b'col-name1'
-CELL_VAL1 = b'cell-val'
-ROW_KEY1 = b'row_key_id1'
+COL_NAME1 = b"col-name1"
+CELL_VAL1 = b"cell-val"
+ROW_KEY1 = b"row_key_id1"
 COLUMN_FAMILY_ID2 = "col_fam_id2"
-COL_NAME2 = b'col-name2'
-CELL_VAL2 = b'cell-val2'
-ROW_KEY2 = b'row_key_id2'
+COL_NAME2 = b"col-name2"
+CELL_VAL2 = b"cell-val2"
+ROW_KEY2 = b"row_key_id2"
 
 
 class Config(object):
@@ -68,6 +70,7 @@ class Config(object):
     This is a mutable stand-in to allow test set-up to modify
     global state.
     """
+
     CLIENT = None
     INSTANCE = None
     TABLE = None
@@ -75,25 +78,25 @@ class Config(object):
 
 def setup_module():
     client = Config.CLIENT = Client(admin=True)
-    Config.INSTANCE = client.instance(INSTANCE_ID,
-                                      instance_type=PRODUCTION,
-                                      labels=LABELS)
-    cluster = Config.INSTANCE.cluster(CLUSTER_ID,
-                                      location_id=LOCATION_ID,
-                                      serve_nodes=SERVER_NODES,
-                                      default_storage_type=STORAGE_TYPE)
+    Config.INSTANCE = client.instance(
+        INSTANCE_ID, instance_type=PRODUCTION, labels=LABELS
+    )
+    cluster = Config.INSTANCE.cluster(
+        CLUSTER_ID,
+        location_id=LOCATION_ID,
+        serve_nodes=SERVER_NODES,
+        default_storage_type=STORAGE_TYPE,
+    )
     operation = Config.INSTANCE.create(clusters=[cluster])
     # We want to make sure the operation completes.
     operation.result(timeout=100)
     Config.TABLE = Config.INSTANCE.table(TABLE_ID)
     Config.TABLE.create()
     gc_rule = column_family.MaxVersionsGCRule(2)
-    column_family1 = Config.TABLE.column_family(COLUMN_FAMILY_ID,
-                                                gc_rule=gc_rule)
+    column_family1 = Config.TABLE.column_family(COLUMN_FAMILY_ID, gc_rule=gc_rule)
     column_family1.create()
     gc_rule2 = column_family.MaxVersionsGCRule(4)
-    column_family2 = Config.TABLE.column_family(COLUMN_FAMILY_ID2,
-                                                gc_rule=gc_rule2)
+    column_family2 = Config.TABLE.column_family(COLUMN_FAMILY_ID2, gc_rule=gc_rule2)
     column_family2.create()
 
 
@@ -117,7 +120,7 @@ def test_bigtable_create_table():
     table2 = instance.table("table_id2")
     # Define the GC policy to retain only the most recent 2 versions.
     max_versions_rule = column_family.MaxVersionsGCRule(2)
-    table2.create(column_families={'cf1': max_versions_rule})
+    table2.create(column_families={"cf1": max_versions_rule})
 
     # [END bigtable_create_table]
     assert table1.exists()
@@ -135,14 +138,13 @@ def test_bigtable_sample_row_keys():
 
     table = instance.table("table_id1_samplerow")
     # [END bigtable_sample_row_keys]
-    initial_split_keys = [b'split_key_1', b'split_key_10',
-                          b'split_key_20']
+    initial_split_keys = [b"split_key_1", b"split_key_10", b"split_key_20"]
     table.create(initial_split_keys=initial_split_keys)
     # [START bigtable_sample_row_keys]
     data = table.sample_row_keys()
     actual_keys, offset = zip(*[(rk.row_key, rk.offset_bytes) for rk in data])
     # [END bigtable_sample_row_keys]
-    initial_split_keys.append(b'')
+    initial_split_keys.append(b"")
     assert list(actual_keys) == initial_split_keys
     table.delete()
 
@@ -154,23 +156,29 @@ def test_bigtable_write_read_drop_truncate():
     client = Client(admin=True)
     instance = client.instance(INSTANCE_ID)
     table = instance.table(TABLE_ID)
-    row_keys = [b'row_key_1', b'row_key_2', b'row_key_3', b'row_key_4',
-                b'row_key_20', b'row_key_22', b'row_key_200']
-    col_name = b'col-name1'
+    row_keys = [
+        b"row_key_1",
+        b"row_key_2",
+        b"row_key_3",
+        b"row_key_4",
+        b"row_key_20",
+        b"row_key_22",
+        b"row_key_200",
+    ]
+    col_name = b"col-name1"
     rows = []
     for i, row_key in enumerate(row_keys):
-        value = 'value_{}'.format(i).encode()
+        value = "value_{}".format(i).encode()
         row = table.row(row_key)
-        row.set_cell(COLUMN_FAMILY_ID,
-                     col_name,
-                     value,
-                     timestamp=datetime.datetime.utcnow())
+        row.set_cell(
+            COLUMN_FAMILY_ID, col_name, value, timestamp=datetime.datetime.utcnow()
+        )
         rows.append(row)
     response = table.mutate_rows(rows)
     # validate that all rows written successfully
     for i, status in enumerate(response):
         if status.code is not 0:
-            print('Row number {} failed to write'.format(i))
+            print("Row number {} failed to write".format(i))
     # [END bigtable_mutate_rows]
     assert len(response) == len(rows)
     # [START bigtable_read_row]
@@ -179,10 +187,10 @@ def test_bigtable_write_read_drop_truncate():
     client = Client(admin=True)
     instance = client.instance(INSTANCE_ID)
     table = instance.table(TABLE_ID)
-    row_key = 'row_key_1'
+    row_key = "row_key_1"
     row = table.read_row(row_key)
     # [END bigtable_read_row]
-    assert row.row_key.decode('utf-8') == row_key
+    assert row.row_key.decode("utf-8") == row_key
     # [START bigtable_read_rows]
     from google.cloud.bigtable import Client
 
@@ -201,13 +209,12 @@ def test_bigtable_write_read_drop_truncate():
     client = Client(admin=True)
     instance = client.instance(INSTANCE_ID)
     table = instance.table(TABLE_ID)
-    row_key_prefix = b'row_key_2'
+    row_key_prefix = b"row_key_2"
     table.drop_by_prefix(row_key_prefix, timeout=200)
     # [END bigtable_drop_by_prefix]
-    dropped_row_keys = [b'row_key_2', b'row_key_20',
-                        b'row_key_22', b'row_key_200']
+    dropped_row_keys = [b"row_key_2", b"row_key_20", b"row_key_22", b"row_key_200"]
     for row in table.read_rows():
-        assert row.row_key.decode('utf-8') not in dropped_row_keys
+        assert row.row_key.decode("utf-8") not in dropped_row_keys
 
     # [START bigtable_truncate_table]
     from google.cloud.bigtable import Client
@@ -235,26 +242,31 @@ def test_bigtable_mutations_batcher():
 
     # Below code will be used while creating batcher.py snippets.
     # So not removing this code as of now.
-    row_keys = [b'row_key_1', b'row_key_2', b'row_key_3', b'row_key_4',
-                b'row_key_20', b'row_key_22', b'row_key_200']
-    column_name = 'column_name'.encode()
+    row_keys = [
+        b"row_key_1",
+        b"row_key_2",
+        b"row_key_3",
+        b"row_key_4",
+        b"row_key_20",
+        b"row_key_22",
+        b"row_key_200",
+    ]
+    column_name = "column_name".encode()
     # Add a single row
     row_key = row_keys[0]
     row = table.row(row_key)
-    row.set_cell(COLUMN_FAMILY_ID,
-                 column_name,
-                 'value-0',
-                 timestamp=datetime.datetime.utcnow())
+    row.set_cell(
+        COLUMN_FAMILY_ID, column_name, "value-0", timestamp=datetime.datetime.utcnow()
+    )
     batcher.mutate(row)
     # Add a collections of rows
     rows = []
     for i in range(1, len(row_keys)):
         row = table.row(row_keys[i])
-        value = 'value_{}'.format(i).encode()
-        row.set_cell(COLUMN_FAMILY_ID,
-                     column_name,
-                     value,
-                     timestamp=datetime.datetime.utcnow())
+        value = "value_{}".format(i).encode()
+        row.set_cell(
+            COLUMN_FAMILY_ID, column_name, value, timestamp=datetime.datetime.utcnow()
+        )
         rows.append(row)
     batcher.mutate_rows(rows)
     # batcher will flush current batch if it
@@ -296,6 +308,7 @@ def test_bigtable_list_tables():
 
 def test_bigtable_table_name():
     import re
+
     # [START bigtable_table_name]
     from google.cloud.bigtable import Client
 
@@ -305,9 +318,11 @@ def test_bigtable_table_name():
     table = instance.table(TABLE_ID)
     table_name = table.name
     # [END bigtable_table_name]
-    _table_name_re = re.compile(r'^projects/(?P<project>[^/]+)/'
-                                r'instances/(?P<instance>[^/]+)/tables/'
-                                r'(?P<table_id>[_a-zA-Z0-9][-_.a-zA-Z0-9]*)$')
+    _table_name_re = re.compile(
+        r"^projects/(?P<project>[^/]+)/"
+        r"instances/(?P<instance>[^/]+)/tables/"
+        r"(?P<table_id>[_a-zA-Z0-9][-_.a-zA-Z0-9]*)$"
+    )
     assert _table_name_re.match(table_name)
 
 
@@ -377,7 +392,7 @@ def test_bigtable_table_row():
     instance = client.instance(INSTANCE_ID)
     table = instance.table(TABLE_ID)
 
-    row_keys = [b'row_key_1', b'row_key_2']
+    row_keys = [b"row_key_1", b"row_key_2"]
     row1_obj = table.row(row_keys[0])
     row2_obj = table.row(row_keys[1])
     # [END bigtable_table_row]
@@ -407,12 +422,11 @@ def test_bigtable_batcher_mutate_flush_mutate_rows():
     batcher = table.mutations_batcher(max_row_bytes=1024)
 
     # Add a single row
-    row_key = b'row_key_1'
+    row_key = b"row_key_1"
     row = table.row(row_key)
-    row.set_cell(COLUMN_FAMILY_ID,
-                 COL_NAME1,
-                 'value-0',
-                 timestamp=datetime.datetime.utcnow())
+    row.set_cell(
+        COLUMN_FAMILY_ID, COL_NAME1, "value-0", timestamp=datetime.datetime.utcnow()
+    )
 
     # In batcher, mutate will flush current batch if it
     # reaches the max_row_bytes
@@ -430,9 +444,9 @@ def test_bigtable_batcher_mutate_flush_mutate_rows():
     batcher = table.mutations_batcher(max_row_bytes=1024)
 
     # Add a single row
-    row_key = b'row_key'
+    row_key = b"row_key"
     row = table.row(row_key)
-    row.set_cell(COLUMN_FAMILY_ID, COL_NAME1, 'value-0')
+    row.set_cell(COLUMN_FAMILY_ID, COL_NAME1, "value-0")
 
     # In batcher, mutate will flush current batch if it
     # reaches the max_row_bytes
@@ -454,15 +468,15 @@ def test_bigtable_batcher_mutate_flush_mutate_rows():
     table = instance.table(TABLE_ID)
     batcher = table.mutations_batcher()
 
-    row1 = table.row(b'row_key_1')
-    row2 = table.row(b'row_key_2')
-    row3 = table.row(b'row_key_3')
-    row4 = table.row(b'row_key_4')
+    row1 = table.row(b"row_key_1")
+    row2 = table.row(b"row_key_2")
+    row3 = table.row(b"row_key_3")
+    row4 = table.row(b"row_key_4")
 
-    row1.set_cell(COLUMN_FAMILY_ID, COL_NAME1, b'cell-val1')
-    row2.set_cell(COLUMN_FAMILY_ID, COL_NAME1, b'cell-val2')
-    row3.set_cell(COLUMN_FAMILY_ID, COL_NAME1, b'cell-val3')
-    row4.set_cell(COLUMN_FAMILY_ID, COL_NAME1, b'cell-val4')
+    row1.set_cell(COLUMN_FAMILY_ID, COL_NAME1, b"cell-val1")
+    row2.set_cell(COLUMN_FAMILY_ID, COL_NAME1, b"cell-val2")
+    row3.set_cell(COLUMN_FAMILY_ID, COL_NAME1, b"cell-val3")
+    row4.set_cell(COLUMN_FAMILY_ID, COL_NAME1, b"cell-val4")
 
     batcher.mutate_rows([row1, row2, row3, row4])
 
@@ -479,5 +493,5 @@ def test_bigtable_batcher_mutate_flush_mutate_rows():
     table.truncate(timeout=200)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     pytest.main()
