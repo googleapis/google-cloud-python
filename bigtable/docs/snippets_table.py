@@ -39,11 +39,11 @@ from google.cloud.bigtable import enums
 from google.cloud.bigtable import column_family
 
 
-INSTANCE_ID = "snippet-" + unique_resource_id('-')
-CLUSTER_ID = "clus-1-" + unique_resource_id('-')
-TABLE_ID = "tabl-1-" + unique_resource_id('-')
-LOCATION_ID = 'us-central1-f'
-ALT_LOCATION_ID = 'us-central1-a'
+INSTANCE_ID = "snippet-" + unique_resource_id("-")
+CLUSTER_ID = "clus-1-" + unique_resource_id("-")
+TABLE_ID = "tabl-1-" + unique_resource_id("-")
+LOCATION_ID = "us-central1-f"
+ALT_LOCATION_ID = "us-central1-a"
 PRODUCTION = enums.Instance.Type.PRODUCTION
 SERVER_NODES = 3
 STORAGE_TYPE = enums.StorageType.SSD
@@ -55,13 +55,13 @@ LABEL_STAMP = (
 )
 LABELS = {LABEL_KEY: str(LABEL_STAMP)}
 COLUMN_FAMILY_ID = "col_fam_id1"
-COL_NAME1 = b'col-name1'
-CELL_VAL1 = b'cell-val'
-ROW_KEY1 = b'row_key_id1'
+COL_NAME1 = b"col-name1"
+CELL_VAL1 = b"cell-val"
+ROW_KEY1 = b"row_key_id1"
 COLUMN_FAMILY_ID2 = "col_fam_id2"
-COL_NAME2 = b'col-name2'
-CELL_VAL2 = b'cell-val2'
-ROW_KEY2 = b'row_key_id2'
+COL_NAME2 = b"col-name2"
+CELL_VAL2 = b"cell-val2"
+ROW_KEY2 = b"row_key_id2"
 
 
 class Config(object):
@@ -96,8 +96,7 @@ def setup_module():
     column_family1 = Config.TABLE.column_family(COLUMN_FAMILY_ID, gc_rule=gc_rule)
     column_family1.create()
     gc_rule2 = column_family.MaxVersionsGCRule(4)
-    column_family2 = Config.TABLE.column_family(COLUMN_FAMILY_ID2,
-                                                gc_rule=gc_rule2)
+    column_family2 = Config.TABLE.column_family(COLUMN_FAMILY_ID2, gc_rule=gc_rule2)
     column_family2.create()
 
 
@@ -414,9 +413,16 @@ def test_bigtable_table_row():
 
 def test_bigtable_add_row_add_row_range_add_row_range_from_keys():
     row_keys = [
-        b'row_key_1', b'row_key_2', b'row_key_3', b'row_key_4',
-        b'row_key_5', b'row_key_6', b'row_key_7', b'row_key_8',
-        b'row_key_9']
+        b"row_key_1",
+        b"row_key_2",
+        b"row_key_3",
+        b"row_key_4",
+        b"row_key_5",
+        b"row_key_6",
+        b"row_key_7",
+        b"row_key_8",
+        b"row_key_9",
+    ]
 
     rows = []
     for row_key in row_keys:
@@ -434,11 +440,11 @@ def test_bigtable_add_row_add_row_range_add_row_range_from_keys():
     table = instance.table(TABLE_ID)
 
     row_set = RowSet()
-    row_set.add_row_key(b'row_key_5')
+    row_set.add_row_key(b"row_key_5")
     # [END bigtable_add_row_key]
 
     read_rows = table.read_rows(row_set=row_set)
-    expected_row_keys = [b'row_key_5']
+    expected_row_keys = [b"row_key_5"]
     found_row_keys = [row.row_key for row in read_rows]
     assert found_row_keys == expected_row_keys
 
@@ -452,13 +458,11 @@ def test_bigtable_add_row_add_row_range_add_row_range_from_keys():
     table = instance.table(TABLE_ID)
 
     row_set = RowSet()
-    row_set.add_row_range(RowRange(start_key=b'row_key_3',
-                                   end_key=b'row_key_7'))
+    row_set.add_row_range(RowRange(start_key=b"row_key_3", end_key=b"row_key_7"))
     # [END bigtable_add_row_range]
 
     read_rows = table.read_rows(row_set=row_set)
-    expected_row_keys = [b'row_key_3', b'row_key_4',
-                         b'row_key_5', b'row_key_6']
+    expected_row_keys = [b"row_key_3", b"row_key_4", b"row_key_5", b"row_key_6"]
     found_row_keys = [row.row_key for row in read_rows]
     assert found_row_keys == expected_row_keys
 
@@ -471,18 +475,16 @@ def test_bigtable_add_row_add_row_range_add_row_range_from_keys():
     table = instance.table(TABLE_ID)
 
     row_set = RowSet()
-    row_set.add_row_range_from_keys(start_key=b'row_key_3',
-                                    end_key=b'row_key_7')
+    row_set.add_row_range_from_keys(start_key=b"row_key_3", end_key=b"row_key_7")
     # [END bigtable_row_range_from_keys]
 
     read_rows = table.read_rows(row_set=row_set)
-    expected_row_keys = [b'row_key_3', b'row_key_4',
-                         b'row_key_5', b'row_key_6']
+    expected_row_keys = [b"row_key_3", b"row_key_4", b"row_key_5", b"row_key_6"]
     found_row_keys = [row.row_key for row in read_rows]
     assert found_row_keys == expected_row_keys
 
     table.truncate(timeout=200)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     pytest.main()
