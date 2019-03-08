@@ -8,7 +8,6 @@ from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
-from google.protobuf import descriptor_pb2
 
 # @@protoc_insertion_point(imports)
 
@@ -27,6 +26,9 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     name="google/cloud/oslogin_v1/proto/oslogin.proto",
     package="google.cloud.oslogin.v1",
     syntax="proto3",
+    serialized_options=_b(
+        "\n\033com.google.cloud.oslogin.v1B\014OsLoginProtoP\001Z>google.golang.org/genproto/googleapis/cloud/oslogin/v1;oslogin\252\002\027Google.Cloud.OsLogin.V1\312\002\027Google\\Cloud\\OsLogin\\V1"
+    ),
     serialized_pb=_b(
         '\n+google/cloud/oslogin_v1/proto/oslogin.proto\x12\x17google.cloud.oslogin.v1\x1a\x1cgoogle/api/annotations.proto\x1a(google/cloud/oslogin/common/common.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto"\xa6\x02\n\x0cLoginProfile\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x41\n\x0eposix_accounts\x18\x02 \x03(\x0b\x32).google.cloud.oslogin.common.PosixAccount\x12Q\n\x0fssh_public_keys\x18\x03 \x03(\x0b\x32\x38.google.cloud.oslogin.v1.LoginProfile.SshPublicKeysEntry\x12\x11\n\tsuspended\x18\x04 \x01(\x08\x1a_\n\x12SshPublicKeysEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x38\n\x05value\x18\x02 \x01(\x0b\x32).google.cloud.oslogin.common.SshPublicKey:\x02\x38\x01")\n\x19\x44\x65letePosixAccountRequest\x12\x0c\n\x04name\x18\x01 \x01(\t")\n\x19\x44\x65leteSshPublicKeyRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"&\n\x16GetLoginProfileRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"&\n\x16GetSshPublicKeyRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"\x82\x01\n\x19ImportSshPublicKeyRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x41\n\x0essh_public_key\x18\x02 \x01(\x0b\x32).google.cloud.oslogin.common.SshPublicKey\x12\x12\n\nproject_id\x18\x03 \x01(\t"Z\n\x1aImportSshPublicKeyResponse\x12<\n\rlogin_profile\x18\x01 \x01(\x0b\x32%.google.cloud.oslogin.v1.LoginProfile"\x9d\x01\n\x19UpdateSshPublicKeyRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x41\n\x0essh_public_key\x18\x02 \x01(\x0b\x32).google.cloud.oslogin.common.SshPublicKey\x12/\n\x0bupdate_mask\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.FieldMask2\xcd\x07\n\x0eOsLoginService\x12\x87\x01\n\x12\x44\x65letePosixAccount\x12\x32.google.cloud.oslogin.v1.DeletePosixAccountRequest\x1a\x16.google.protobuf.Empty"%\x82\xd3\xe4\x93\x02\x1f*\x1d/v1/{name=users/*/projects/*}\x12\x8c\x01\n\x12\x44\x65leteSshPublicKey\x12\x32.google.cloud.oslogin.v1.DeleteSshPublicKeyRequest\x1a\x16.google.protobuf.Empty"*\x82\xd3\xe4\x93\x02$*"/v1/{name=users/*/sshPublicKeys/*}\x12\x92\x01\n\x0fGetLoginProfile\x12/.google.cloud.oslogin.v1.GetLoginProfileRequest\x1a%.google.cloud.oslogin.v1.LoginProfile"\'\x82\xd3\xe4\x93\x02!\x12\x1f/v1/{name=users/*}/loginProfile\x12\x99\x01\n\x0fGetSshPublicKey\x12/.google.cloud.oslogin.v1.GetSshPublicKeyRequest\x1a).google.cloud.oslogin.common.SshPublicKey"*\x82\xd3\xe4\x93\x02$\x12"/v1/{name=users/*/sshPublicKeys/*}\x12\xbe\x01\n\x12ImportSshPublicKey\x12\x32.google.cloud.oslogin.v1.ImportSshPublicKeyRequest\x1a\x33.google.cloud.oslogin.v1.ImportSshPublicKeyResponse"?\x82\xd3\xe4\x93\x02\x39"\'/v1/{parent=users/*}:importSshPublicKey:\x0essh_public_key\x12\xaf\x01\n\x12UpdateSshPublicKey\x12\x32.google.cloud.oslogin.v1.UpdateSshPublicKeyRequest\x1a).google.cloud.oslogin.common.SshPublicKey":\x82\xd3\xe4\x93\x02\x34\x32"/v1/{name=users/*/sshPublicKeys/*}:\x0essh_public_keyB\xa1\x01\n\x1b\x63om.google.cloud.oslogin.v1B\x0cOsLoginProtoP\x01Z>google.golang.org/genproto/googleapis/cloud/oslogin/v1;oslogin\xaa\x02\x17Google.Cloud.OsLogin.V1\xca\x02\x17Google\\Cloud\\OsLogin\\V1b\x06proto3'
     ),
@@ -61,7 +63,7 @@ _LOGINPROFILE_SSHPUBLICKEYSENTRY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -79,14 +81,14 @@ _LOGINPROFILE_SSHPUBLICKEYSENTRY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=_descriptor._ParseOptions(descriptor_pb2.MessageOptions(), _b("8\001")),
+    serialized_options=_b("8\001"),
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -117,7 +119,7 @@ _LOGINPROFILE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -135,7 +137,7 @@ _LOGINPROFILE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -153,7 +155,7 @@ _LOGINPROFILE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -171,14 +173,14 @@ _LOGINPROFILE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[_LOGINPROFILE_SSHPUBLICKEYSENTRY],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -210,14 +212,14 @@ _DELETEPOSIXACCOUNTREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -249,14 +251,14 @@ _DELETESSHPUBLICKEYREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -288,14 +290,14 @@ _GETLOGINPROFILEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -327,14 +329,14 @@ _GETSSHPUBLICKEYREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -366,7 +368,7 @@ _IMPORTSSHPUBLICKEYREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -384,7 +386,7 @@ _IMPORTSSHPUBLICKEYREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -402,14 +404,14 @@ _IMPORTSSHPUBLICKEYREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -441,14 +443,14 @@ _IMPORTSSHPUBLICKEYRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -480,7 +482,7 @@ _UPDATESSHPUBLICKEYREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -498,7 +500,7 @@ _UPDATESSHPUBLICKEYREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -516,14 +518,14 @@ _UPDATESSHPUBLICKEYREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -758,24 +760,15 @@ UpdateSshPublicKeyRequest = _reflection.GeneratedProtocolMessageType(
 _sym_db.RegisterMessage(UpdateSshPublicKeyRequest)
 
 
-DESCRIPTOR.has_options = True
-DESCRIPTOR._options = _descriptor._ParseOptions(
-    descriptor_pb2.FileOptions(),
-    _b(
-        "\n\033com.google.cloud.oslogin.v1B\014OsLoginProtoP\001Z>google.golang.org/genproto/googleapis/cloud/oslogin/v1;oslogin\252\002\027Google.Cloud.OsLogin.V1\312\002\027Google\\Cloud\\OsLogin\\V1"
-    ),
-)
-_LOGINPROFILE_SSHPUBLICKEYSENTRY.has_options = True
-_LOGINPROFILE_SSHPUBLICKEYSENTRY._options = _descriptor._ParseOptions(
-    descriptor_pb2.MessageOptions(), _b("8\001")
-)
+DESCRIPTOR._options = None
+_LOGINPROFILE_SSHPUBLICKEYSENTRY._options = None
 
 _OSLOGINSERVICE = _descriptor.ServiceDescriptor(
     name="OsLoginService",
     full_name="google.cloud.oslogin.v1.OsLoginService",
     file=DESCRIPTOR,
     index=0,
-    options=None,
+    serialized_options=None,
     serialized_start=1056,
     serialized_end=2029,
     methods=[
@@ -786,9 +779,8 @@ _OSLOGINSERVICE = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_DELETEPOSIXACCOUNTREQUEST,
             output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b("\202\323\344\223\002\037*\035/v1/{name=users/*/projects/*}"),
+            serialized_options=_b(
+                "\202\323\344\223\002\037*\035/v1/{name=users/*/projects/*}"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -798,9 +790,8 @@ _OSLOGINSERVICE = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_DELETESSHPUBLICKEYREQUEST,
             output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b('\202\323\344\223\002$*"/v1/{name=users/*/sshPublicKeys/*}'),
+            serialized_options=_b(
+                '\202\323\344\223\002$*"/v1/{name=users/*/sshPublicKeys/*}'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -810,9 +801,8 @@ _OSLOGINSERVICE = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_GETLOGINPROFILEREQUEST,
             output_type=_LOGINPROFILE,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b("\202\323\344\223\002!\022\037/v1/{name=users/*}/loginProfile"),
+            serialized_options=_b(
+                "\202\323\344\223\002!\022\037/v1/{name=users/*}/loginProfile"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -822,9 +812,8 @@ _OSLOGINSERVICE = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_GETSSHPUBLICKEYREQUEST,
             output_type=google_dot_cloud_dot_oslogin_dot_common_dot_common__pb2._SSHPUBLICKEY,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b('\202\323\344\223\002$\022"/v1/{name=users/*/sshPublicKeys/*}'),
+            serialized_options=_b(
+                '\202\323\344\223\002$\022"/v1/{name=users/*/sshPublicKeys/*}'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -834,11 +823,8 @@ _OSLOGINSERVICE = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_IMPORTSSHPUBLICKEYREQUEST,
             output_type=_IMPORTSSHPUBLICKEYRESPONSE,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\0029\"'/v1/{parent=users/*}:importSshPublicKey:\016ssh_public_key"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\0029\"'/v1/{parent=users/*}:importSshPublicKey:\016ssh_public_key"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -848,11 +834,8 @@ _OSLOGINSERVICE = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_UPDATESSHPUBLICKEYREQUEST,
             output_type=google_dot_cloud_dot_oslogin_dot_common_dot_common__pb2._SSHPUBLICKEY,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\00242"/v1/{name=users/*/sshPublicKeys/*}:\016ssh_public_key'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\00242"/v1/{name=users/*/sshPublicKeys/*}:\016ssh_public_key'
             ),
         ),
     ],

@@ -8,7 +8,6 @@ from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
-from google.protobuf import descriptor_pb2
 
 # @@protoc_insertion_point(imports)
 
@@ -27,6 +26,9 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     name="google/cloud/datastore_v1/proto/query.proto",
     package="google.datastore.v1",
     syntax="proto3",
+    serialized_options=_b(
+        "\n\027com.google.datastore.v1B\nQueryProtoP\001Z<google.golang.org/genproto/googleapis/datastore/v1;datastore\252\002\031Google.Cloud.Datastore.V1\312\002\031Google\\Cloud\\Datastore\\V1"
+    ),
     serialized_pb=_b(
         '\n+google/cloud/datastore_v1/proto/query.proto\x12\x13google.datastore.v1\x1a\x1cgoogle/api/annotations.proto\x1a,google/cloud/datastore_v1/proto/entity.proto\x1a\x1egoogle/protobuf/wrappers.proto\x1a\x18google/type/latlng.proto"\xaf\x01\n\x0c\x45ntityResult\x12+\n\x06\x65ntity\x18\x01 \x01(\x0b\x32\x1b.google.datastore.v1.Entity\x12\x0f\n\x07version\x18\x04 \x01(\x03\x12\x0e\n\x06\x63ursor\x18\x03 \x01(\x0c"Q\n\nResultType\x12\x1b\n\x17RESULT_TYPE_UNSPECIFIED\x10\x00\x12\x08\n\x04\x46ULL\x10\x01\x12\x0e\n\nPROJECTION\x10\x02\x12\x0c\n\x08KEY_ONLY\x10\x03"\xf2\x02\n\x05Query\x12\x33\n\nprojection\x18\x02 \x03(\x0b\x32\x1f.google.datastore.v1.Projection\x12\x31\n\x04kind\x18\x03 \x03(\x0b\x32#.google.datastore.v1.KindExpression\x12+\n\x06\x66ilter\x18\x04 \x01(\x0b\x32\x1b.google.datastore.v1.Filter\x12\x31\n\x05order\x18\x05 \x03(\x0b\x32".google.datastore.v1.PropertyOrder\x12;\n\x0b\x64istinct_on\x18\x06 \x03(\x0b\x32&.google.datastore.v1.PropertyReference\x12\x14\n\x0cstart_cursor\x18\x07 \x01(\x0c\x12\x12\n\nend_cursor\x18\x08 \x01(\x0c\x12\x0e\n\x06offset\x18\n \x01(\x05\x12*\n\x05limit\x18\x0c \x01(\x0b\x32\x1b.google.protobuf.Int32Value"\x1e\n\x0eKindExpression\x12\x0c\n\x04name\x18\x01 \x01(\t"!\n\x11PropertyReference\x12\x0c\n\x04name\x18\x02 \x01(\t"F\n\nProjection\x12\x38\n\x08property\x18\x01 \x01(\x0b\x32&.google.datastore.v1.PropertyReference"\xd1\x01\n\rPropertyOrder\x12\x38\n\x08property\x18\x01 \x01(\x0b\x32&.google.datastore.v1.PropertyReference\x12?\n\tdirection\x18\x02 \x01(\x0e\x32,.google.datastore.v1.PropertyOrder.Direction"E\n\tDirection\x12\x19\n\x15\x44IRECTION_UNSPECIFIED\x10\x00\x12\r\n\tASCENDING\x10\x01\x12\x0e\n\nDESCENDING\x10\x02"\x99\x01\n\x06\x46ilter\x12@\n\x10\x63omposite_filter\x18\x01 \x01(\x0b\x32$.google.datastore.v1.CompositeFilterH\x00\x12>\n\x0fproperty_filter\x18\x02 \x01(\x0b\x32#.google.datastore.v1.PropertyFilterH\x00\x42\r\n\x0b\x66ilter_type"\xa9\x01\n\x0f\x43ompositeFilter\x12\x39\n\x02op\x18\x01 \x01(\x0e\x32-.google.datastore.v1.CompositeFilter.Operator\x12,\n\x07\x66ilters\x18\x02 \x03(\x0b\x32\x1b.google.datastore.v1.Filter"-\n\x08Operator\x12\x18\n\x14OPERATOR_UNSPECIFIED\x10\x00\x12\x07\n\x03\x41ND\x10\x01"\xc7\x02\n\x0ePropertyFilter\x12\x38\n\x08property\x18\x01 \x01(\x0b\x32&.google.datastore.v1.PropertyReference\x12\x38\n\x02op\x18\x02 \x01(\x0e\x32,.google.datastore.v1.PropertyFilter.Operator\x12)\n\x05value\x18\x03 \x01(\x0b\x32\x1a.google.datastore.v1.Value"\x95\x01\n\x08Operator\x12\x18\n\x14OPERATOR_UNSPECIFIED\x10\x00\x12\r\n\tLESS_THAN\x10\x01\x12\x16\n\x12LESS_THAN_OR_EQUAL\x10\x02\x12\x10\n\x0cGREATER_THAN\x10\x03\x12\x19\n\x15GREATER_THAN_OR_EQUAL\x10\x04\x12\t\n\x05\x45QUAL\x10\x05\x12\x10\n\x0cHAS_ANCESTOR\x10\x0b"\xa5\x02\n\x08GqlQuery\x12\x14\n\x0cquery_string\x18\x01 \x01(\t\x12\x16\n\x0e\x61llow_literals\x18\x02 \x01(\x08\x12H\n\x0enamed_bindings\x18\x05 \x03(\x0b\x32\x30.google.datastore.v1.GqlQuery.NamedBindingsEntry\x12\x43\n\x13positional_bindings\x18\x04 \x03(\x0b\x32&.google.datastore.v1.GqlQueryParameter\x1a\\\n\x12NamedBindingsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x35\n\x05value\x18\x02 \x01(\x0b\x32&.google.datastore.v1.GqlQueryParameter:\x02\x38\x01"d\n\x11GqlQueryParameter\x12+\n\x05value\x18\x02 \x01(\x0b\x32\x1a.google.datastore.v1.ValueH\x00\x12\x10\n\x06\x63ursor\x18\x03 \x01(\x0cH\x00\x42\x10\n\x0eparameter_type"\xde\x03\n\x10QueryResultBatch\x12\x17\n\x0fskipped_results\x18\x06 \x01(\x05\x12\x16\n\x0eskipped_cursor\x18\x03 \x01(\x0c\x12H\n\x12\x65ntity_result_type\x18\x01 \x01(\x0e\x32,.google.datastore.v1.EntityResult.ResultType\x12\x39\n\x0e\x65ntity_results\x18\x02 \x03(\x0b\x32!.google.datastore.v1.EntityResult\x12\x12\n\nend_cursor\x18\x04 \x01(\x0c\x12K\n\x0cmore_results\x18\x05 \x01(\x0e\x32\x35.google.datastore.v1.QueryResultBatch.MoreResultsType\x12\x18\n\x10snapshot_version\x18\x07 \x01(\x03"\x98\x01\n\x0fMoreResultsType\x12!\n\x1dMORE_RESULTS_TYPE_UNSPECIFIED\x10\x00\x12\x10\n\x0cNOT_FINISHED\x10\x01\x12\x1c\n\x18MORE_RESULTS_AFTER_LIMIT\x10\x02\x12\x1d\n\x19MORE_RESULTS_AFTER_CURSOR\x10\x04\x12\x13\n\x0fNO_MORE_RESULTS\x10\x03\x42\x9d\x01\n\x17\x63om.google.datastore.v1B\nQueryProtoP\x01Z<google.golang.org/genproto/googleapis/datastore/v1;datastore\xaa\x02\x19Google.Cloud.Datastore.V1\xca\x02\x19Google\\Cloud\\Datastore\\V1b\x06proto3'
     ),
@@ -46,20 +48,24 @@ _ENTITYRESULT_RESULTTYPE = _descriptor.EnumDescriptor(
     file=DESCRIPTOR,
     values=[
         _descriptor.EnumValueDescriptor(
-            name="RESULT_TYPE_UNSPECIFIED", index=0, number=0, options=None, type=None
+            name="RESULT_TYPE_UNSPECIFIED",
+            index=0,
+            number=0,
+            serialized_options=None,
+            type=None,
         ),
         _descriptor.EnumValueDescriptor(
-            name="FULL", index=1, number=1, options=None, type=None
+            name="FULL", index=1, number=1, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="PROJECTION", index=2, number=2, options=None, type=None
+            name="PROJECTION", index=2, number=2, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="KEY_ONLY", index=3, number=3, options=None, type=None
+            name="KEY_ONLY", index=3, number=3, serialized_options=None, type=None
         ),
     ],
     containing_type=None,
-    options=None,
+    serialized_options=None,
     serialized_start=297,
     serialized_end=378,
 )
@@ -72,17 +78,21 @@ _PROPERTYORDER_DIRECTION = _descriptor.EnumDescriptor(
     file=DESCRIPTOR,
     values=[
         _descriptor.EnumValueDescriptor(
-            name="DIRECTION_UNSPECIFIED", index=0, number=0, options=None, type=None
+            name="DIRECTION_UNSPECIFIED",
+            index=0,
+            number=0,
+            serialized_options=None,
+            type=None,
         ),
         _descriptor.EnumValueDescriptor(
-            name="ASCENDING", index=1, number=1, options=None, type=None
+            name="ASCENDING", index=1, number=1, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="DESCENDING", index=2, number=2, options=None, type=None
+            name="DESCENDING", index=2, number=2, serialized_options=None, type=None
         ),
     ],
     containing_type=None,
-    options=None,
+    serialized_options=None,
     serialized_start=1033,
     serialized_end=1102,
 )
@@ -95,14 +105,18 @@ _COMPOSITEFILTER_OPERATOR = _descriptor.EnumDescriptor(
     file=DESCRIPTOR,
     values=[
         _descriptor.EnumValueDescriptor(
-            name="OPERATOR_UNSPECIFIED", index=0, number=0, options=None, type=None
+            name="OPERATOR_UNSPECIFIED",
+            index=0,
+            number=0,
+            serialized_options=None,
+            type=None,
         ),
         _descriptor.EnumValueDescriptor(
-            name="AND", index=1, number=1, options=None, type=None
+            name="AND", index=1, number=1, serialized_options=None, type=None
         ),
     ],
     containing_type=None,
-    options=None,
+    serialized_options=None,
     serialized_start=1385,
     serialized_end=1430,
 )
@@ -115,29 +129,41 @@ _PROPERTYFILTER_OPERATOR = _descriptor.EnumDescriptor(
     file=DESCRIPTOR,
     values=[
         _descriptor.EnumValueDescriptor(
-            name="OPERATOR_UNSPECIFIED", index=0, number=0, options=None, type=None
+            name="OPERATOR_UNSPECIFIED",
+            index=0,
+            number=0,
+            serialized_options=None,
+            type=None,
         ),
         _descriptor.EnumValueDescriptor(
-            name="LESS_THAN", index=1, number=1, options=None, type=None
+            name="LESS_THAN", index=1, number=1, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="LESS_THAN_OR_EQUAL", index=2, number=2, options=None, type=None
+            name="LESS_THAN_OR_EQUAL",
+            index=2,
+            number=2,
+            serialized_options=None,
+            type=None,
         ),
         _descriptor.EnumValueDescriptor(
-            name="GREATER_THAN", index=3, number=3, options=None, type=None
+            name="GREATER_THAN", index=3, number=3, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="GREATER_THAN_OR_EQUAL", index=4, number=4, options=None, type=None
+            name="GREATER_THAN_OR_EQUAL",
+            index=4,
+            number=4,
+            serialized_options=None,
+            type=None,
         ),
         _descriptor.EnumValueDescriptor(
-            name="EQUAL", index=5, number=5, options=None, type=None
+            name="EQUAL", index=5, number=5, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="HAS_ANCESTOR", index=6, number=11, options=None, type=None
+            name="HAS_ANCESTOR", index=6, number=11, serialized_options=None, type=None
         ),
     ],
     containing_type=None,
-    options=None,
+    serialized_options=None,
     serialized_start=1611,
     serialized_end=1760,
 )
@@ -153,24 +179,36 @@ _QUERYRESULTBATCH_MORERESULTSTYPE = _descriptor.EnumDescriptor(
             name="MORE_RESULTS_TYPE_UNSPECIFIED",
             index=0,
             number=0,
-            options=None,
+            serialized_options=None,
             type=None,
         ),
         _descriptor.EnumValueDescriptor(
-            name="NOT_FINISHED", index=1, number=1, options=None, type=None
+            name="NOT_FINISHED", index=1, number=1, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="MORE_RESULTS_AFTER_LIMIT", index=2, number=2, options=None, type=None
+            name="MORE_RESULTS_AFTER_LIMIT",
+            index=2,
+            number=2,
+            serialized_options=None,
+            type=None,
         ),
         _descriptor.EnumValueDescriptor(
-            name="MORE_RESULTS_AFTER_CURSOR", index=3, number=4, options=None, type=None
+            name="MORE_RESULTS_AFTER_CURSOR",
+            index=3,
+            number=4,
+            serialized_options=None,
+            type=None,
         ),
         _descriptor.EnumValueDescriptor(
-            name="NO_MORE_RESULTS", index=4, number=3, options=None, type=None
+            name="NO_MORE_RESULTS",
+            index=4,
+            number=3,
+            serialized_options=None,
+            type=None,
         ),
     ],
     containing_type=None,
-    options=None,
+    serialized_options=None,
     serialized_start=2487,
     serialized_end=2639,
 )
@@ -199,7 +237,7 @@ _ENTITYRESULT = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -217,7 +255,7 @@ _ENTITYRESULT = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -235,14 +273,14 @@ _ENTITYRESULT = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[_ENTITYRESULT_RESULTTYPE],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -274,7 +312,7 @@ _QUERY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -292,7 +330,7 @@ _QUERY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -310,7 +348,7 @@ _QUERY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -328,7 +366,7 @@ _QUERY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -346,7 +384,7 @@ _QUERY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -364,7 +402,7 @@ _QUERY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -382,7 +420,7 @@ _QUERY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -400,7 +438,7 @@ _QUERY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -418,14 +456,14 @@ _QUERY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -457,14 +495,14 @@ _KINDEXPRESSION = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -496,14 +534,14 @@ _PROPERTYREFERENCE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -535,14 +573,14 @@ _PROJECTION = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -574,7 +612,7 @@ _PROPERTYORDER = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -592,14 +630,14 @@ _PROPERTYORDER = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[_PROPERTYORDER_DIRECTION],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -631,7 +669,7 @@ _FILTER = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -649,14 +687,14 @@ _FILTER = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -696,7 +734,7 @@ _COMPOSITEFILTER = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -714,14 +752,14 @@ _COMPOSITEFILTER = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[_COMPOSITEFILTER_OPERATOR],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -753,7 +791,7 @@ _PROPERTYFILTER = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -771,7 +809,7 @@ _PROPERTYFILTER = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -789,14 +827,14 @@ _PROPERTYFILTER = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[_PROPERTYFILTER_OPERATOR],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -828,7 +866,7 @@ _GQLQUERY_NAMEDBINDINGSENTRY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -846,14 +884,14 @@ _GQLQUERY_NAMEDBINDINGSENTRY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=_descriptor._ParseOptions(descriptor_pb2.MessageOptions(), _b("8\001")),
+    serialized_options=_b("8\001"),
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -884,7 +922,7 @@ _GQLQUERY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -902,7 +940,7 @@ _GQLQUERY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -920,7 +958,7 @@ _GQLQUERY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -938,14 +976,14 @@ _GQLQUERY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[_GQLQUERY_NAMEDBINDINGSENTRY],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -977,7 +1015,7 @@ _GQLQUERYPARAMETER = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -995,14 +1033,14 @@ _GQLQUERYPARAMETER = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1042,7 +1080,7 @@ _QUERYRESULTBATCH = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1060,7 +1098,7 @@ _QUERYRESULTBATCH = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1078,7 +1116,7 @@ _QUERYRESULTBATCH = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1096,7 +1134,7 @@ _QUERYRESULTBATCH = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1114,7 +1152,7 @@ _QUERYRESULTBATCH = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1132,7 +1170,7 @@ _QUERYRESULTBATCH = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1150,14 +1188,14 @@ _QUERYRESULTBATCH = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[_QUERYRESULTBATCH_MORERESULTSTYPE],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1578,15 +1616,6 @@ QueryResultBatch = _reflection.GeneratedProtocolMessageType(
 _sym_db.RegisterMessage(QueryResultBatch)
 
 
-DESCRIPTOR.has_options = True
-DESCRIPTOR._options = _descriptor._ParseOptions(
-    descriptor_pb2.FileOptions(),
-    _b(
-        "\n\027com.google.datastore.v1B\nQueryProtoP\001Z<google.golang.org/genproto/googleapis/datastore/v1;datastore\252\002\031Google.Cloud.Datastore.V1\312\002\031Google\\Cloud\\Datastore\\V1"
-    ),
-)
-_GQLQUERY_NAMEDBINDINGSENTRY.has_options = True
-_GQLQUERY_NAMEDBINDINGSENTRY._options = _descriptor._ParseOptions(
-    descriptor_pb2.MessageOptions(), _b("8\001")
-)
+DESCRIPTOR._options = None
+_GQLQUERY_NAMEDBINDINGSENTRY._options = None
 # @@protoc_insertion_point(module_scope)

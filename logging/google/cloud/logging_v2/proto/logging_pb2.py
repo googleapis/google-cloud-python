@@ -9,7 +9,6 @@ from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
-from google.protobuf import descriptor_pb2
 
 # @@protoc_insertion_point(imports)
 
@@ -33,6 +32,9 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     name="google/cloud/logging_v2/proto/logging.proto",
     package="google.logging.v2",
     syntax="proto3",
+    serialized_options=_b(
+        "\n\025com.google.logging.v2B\014LoggingProtoP\001Z8google.golang.org/genproto/googleapis/logging/v2;logging\370\001\001\252\002\027Google.Cloud.Logging.V2\312\002\027Google\\Cloud\\Logging\\V2"
+    ),
     serialized_pb=_b(
         '\n+google/cloud/logging_v2/proto/logging.proto\x12\x11google.logging.v2\x1a\x1cgoogle/api/annotations.proto\x1a#google/api/monitored_resource.proto\x1a-google/cloud/logging_v2/proto/log_entry.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x17google/rpc/status.proto"$\n\x10\x44\x65leteLogRequest\x12\x10\n\x08log_name\x18\x01 \x01(\t"\xa9\x02\n\x16WriteLogEntriesRequest\x12\x10\n\x08log_name\x18\x01 \x01(\t\x12/\n\x08resource\x18\x02 \x01(\x0b\x32\x1d.google.api.MonitoredResource\x12\x45\n\x06labels\x18\x03 \x03(\x0b\x32\x35.google.logging.v2.WriteLogEntriesRequest.LabelsEntry\x12,\n\x07\x65ntries\x18\x04 \x03(\x0b\x32\x1b.google.logging.v2.LogEntry\x12\x17\n\x0fpartial_success\x18\x05 \x01(\x08\x12\x0f\n\x07\x64ry_run\x18\x06 \x01(\x08\x1a-\n\x0bLabelsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01"\x19\n\x17WriteLogEntriesResponse"\xc8\x01\n\x1cWriteLogEntriesPartialErrors\x12]\n\x10log_entry_errors\x18\x01 \x03(\x0b\x32\x43.google.logging.v2.WriteLogEntriesPartialErrors.LogEntryErrorsEntry\x1aI\n\x13LogEntryErrorsEntry\x12\x0b\n\x03key\x18\x01 \x01(\x05\x12!\n\x05value\x18\x02 \x01(\x0b\x32\x12.google.rpc.Status:\x02\x38\x01"\x91\x01\n\x15ListLogEntriesRequest\x12\x17\n\x0bproject_ids\x18\x01 \x03(\tB\x02\x18\x01\x12\x16\n\x0eresource_names\x18\x08 \x03(\t\x12\x0e\n\x06\x66ilter\x18\x02 \x01(\t\x12\x10\n\x08order_by\x18\x03 \x01(\t\x12\x11\n\tpage_size\x18\x04 \x01(\x05\x12\x12\n\npage_token\x18\x05 \x01(\t"_\n\x16ListLogEntriesResponse\x12,\n\x07\x65ntries\x18\x01 \x03(\x0b\x32\x1b.google.logging.v2.LogEntry\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"P\n\'ListMonitoredResourceDescriptorsRequest\x12\x11\n\tpage_size\x18\x01 \x01(\x05\x12\x12\n\npage_token\x18\x02 \x01(\t"\x8a\x01\n(ListMonitoredResourceDescriptorsResponse\x12\x45\n\x14resource_descriptors\x18\x01 \x03(\x0b\x32\'.google.api.MonitoredResourceDescriptor\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"H\n\x0fListLogsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t">\n\x10ListLogsResponse\x12\x11\n\tlog_names\x18\x03 \x03(\t\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t2\xd8\x07\n\x10LoggingServiceV2\x12\xeb\x01\n\tDeleteLog\x12#.google.logging.v2.DeleteLogRequest\x1a\x16.google.protobuf.Empty"\xa0\x01\x82\xd3\xe4\x93\x02\x99\x01* /v2/{log_name=projects/*/logs/*}Z\'*%/v2/{log_name=organizations/*/logs/*}Z!*\x1f/v2/{log_name=folders/*/logs/*}Z)*\'/v2/{log_name=billingAccounts/*/logs/*}\x12\x86\x01\n\x0fWriteLogEntries\x12).google.logging.v2.WriteLogEntriesRequest\x1a*.google.logging.v2.WriteLogEntriesResponse"\x1c\x82\xd3\xe4\x93\x02\x16"\x11/v2/entries:write:\x01*\x12\x82\x01\n\x0eListLogEntries\x12(.google.logging.v2.ListLogEntriesRequest\x1a).google.logging.v2.ListLogEntriesResponse"\x1b\x82\xd3\xe4\x93\x02\x15"\x10/v2/entries:list:\x01*\x12\xc5\x01\n ListMonitoredResourceDescriptors\x12:.google.logging.v2.ListMonitoredResourceDescriptorsRequest\x1a;.google.logging.v2.ListMonitoredResourceDescriptorsResponse"(\x82\xd3\xe4\x93\x02"\x12 /v2/monitoredResourceDescriptors\x12\xff\x01\n\x08ListLogs\x12".google.logging.v2.ListLogsRequest\x1a#.google.logging.v2.ListLogsResponse"\xa9\x01\x82\xd3\xe4\x93\x02\xa2\x01\x12\x15/v2/{parent=*/*}/logsZ\x1e\x12\x1c/v2/{parent=projects/*}/logsZ#\x12!/v2/{parent=organizations/*}/logsZ\x1d\x12\x1b/v2/{parent=folders/*}/logsZ%\x12#/v2/{parent=billingAccounts/*}/logsB\x98\x01\n\x15\x63om.google.logging.v2B\x0cLoggingProtoP\x01Z8google.golang.org/genproto/googleapis/logging/v2;logging\xf8\x01\x01\xaa\x02\x17Google.Cloud.Logging.V2\xca\x02\x17Google\\Cloud\\Logging\\V2b\x06proto3'
     ),
@@ -70,14 +72,14 @@ _DELETELOGREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -109,7 +111,7 @@ _WRITELOGENTRIESREQUEST_LABELSENTRY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -127,14 +129,14 @@ _WRITELOGENTRIESREQUEST_LABELSENTRY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=_descriptor._ParseOptions(descriptor_pb2.MessageOptions(), _b("8\001")),
+    serialized_options=_b("8\001"),
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -165,7 +167,7 @@ _WRITELOGENTRIESREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -183,7 +185,7 @@ _WRITELOGENTRIESREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -201,7 +203,7 @@ _WRITELOGENTRIESREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -219,7 +221,7 @@ _WRITELOGENTRIESREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -237,7 +239,7 @@ _WRITELOGENTRIESREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -255,14 +257,14 @@ _WRITELOGENTRIESREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[_WRITELOGENTRIESREQUEST_LABELSENTRY],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -282,7 +284,7 @@ _WRITELOGENTRIESRESPONSE = _descriptor.Descriptor(
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -314,7 +316,7 @@ _WRITELOGENTRIESPARTIALERRORS_LOGENTRYERRORSENTRY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -332,14 +334,14 @@ _WRITELOGENTRIESPARTIALERRORS_LOGENTRYERRORSENTRY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=_descriptor._ParseOptions(descriptor_pb2.MessageOptions(), _b("8\001")),
+    serialized_options=_b("8\001"),
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -370,14 +372,14 @@ _WRITELOGENTRIESPARTIALERRORS = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[_WRITELOGENTRIESPARTIALERRORS_LOGENTRYERRORSENTRY],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -409,9 +411,7 @@ _LISTLOGENTRIESREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.FieldOptions(), _b("\030\001")
-            ),
+            serialized_options=_b("\030\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -429,7 +429,7 @@ _LISTLOGENTRIESREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -447,7 +447,7 @@ _LISTLOGENTRIESREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -465,7 +465,7 @@ _LISTLOGENTRIESREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -483,7 +483,7 @@ _LISTLOGENTRIESREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -501,14 +501,14 @@ _LISTLOGENTRIESREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -540,7 +540,7 @@ _LISTLOGENTRIESRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -558,14 +558,14 @@ _LISTLOGENTRIESRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -597,7 +597,7 @@ _LISTMONITOREDRESOURCEDESCRIPTORSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -615,14 +615,14 @@ _LISTMONITOREDRESOURCEDESCRIPTORSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -654,7 +654,7 @@ _LISTMONITOREDRESOURCEDESCRIPTORSRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -672,14 +672,14 @@ _LISTMONITOREDRESOURCEDESCRIPTORSRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -711,7 +711,7 @@ _LISTLOGSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -729,7 +729,7 @@ _LISTLOGSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -747,14 +747,14 @@ _LISTLOGSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -786,7 +786,7 @@ _LISTLOGSRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -804,14 +804,14 @@ _LISTLOGSRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1228,32 +1228,17 @@ ListLogsResponse = _reflection.GeneratedProtocolMessageType(
 _sym_db.RegisterMessage(ListLogsResponse)
 
 
-DESCRIPTOR.has_options = True
-DESCRIPTOR._options = _descriptor._ParseOptions(
-    descriptor_pb2.FileOptions(),
-    _b(
-        "\n\025com.google.logging.v2B\014LoggingProtoP\001Z8google.golang.org/genproto/googleapis/logging/v2;logging\370\001\001\252\002\027Google.Cloud.Logging.V2\312\002\027Google\\Cloud\\Logging\\V2"
-    ),
-)
-_WRITELOGENTRIESREQUEST_LABELSENTRY.has_options = True
-_WRITELOGENTRIESREQUEST_LABELSENTRY._options = _descriptor._ParseOptions(
-    descriptor_pb2.MessageOptions(), _b("8\001")
-)
-_WRITELOGENTRIESPARTIALERRORS_LOGENTRYERRORSENTRY.has_options = True
-_WRITELOGENTRIESPARTIALERRORS_LOGENTRYERRORSENTRY._options = _descriptor._ParseOptions(
-    descriptor_pb2.MessageOptions(), _b("8\001")
-)
-_LISTLOGENTRIESREQUEST.fields_by_name["project_ids"].has_options = True
-_LISTLOGENTRIESREQUEST.fields_by_name[
-    "project_ids"
-]._options = _descriptor._ParseOptions(descriptor_pb2.FieldOptions(), _b("\030\001"))
+DESCRIPTOR._options = None
+_WRITELOGENTRIESREQUEST_LABELSENTRY._options = None
+_WRITELOGENTRIESPARTIALERRORS_LOGENTRYERRORSENTRY._options = None
+_LISTLOGENTRIESREQUEST.fields_by_name["project_ids"]._options = None
 
 _LOGGINGSERVICEV2 = _descriptor.ServiceDescriptor(
     name="LoggingServiceV2",
     full_name="google.logging.v2.LoggingServiceV2",
     file=DESCRIPTOR,
     index=0,
-    options=None,
+    serialized_options=None,
     serialized_start=1474,
     serialized_end=2458,
     methods=[
@@ -1264,11 +1249,8 @@ _LOGGINGSERVICEV2 = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_DELETELOGREQUEST,
             output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\002\231\001* /v2/{log_name=projects/*/logs/*}Z'*%/v2/{log_name=organizations/*/logs/*}Z!*\037/v2/{log_name=folders/*/logs/*}Z)*'/v2/{log_name=billingAccounts/*/logs/*}"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\002\231\001* /v2/{log_name=projects/*/logs/*}Z'*%/v2/{log_name=organizations/*/logs/*}Z!*\037/v2/{log_name=folders/*/logs/*}Z)*'/v2/{log_name=billingAccounts/*/logs/*}"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -1278,9 +1260,8 @@ _LOGGINGSERVICEV2 = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_WRITELOGENTRIESREQUEST,
             output_type=_WRITELOGENTRIESRESPONSE,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b('\202\323\344\223\002\026"\021/v2/entries:write:\001*'),
+            serialized_options=_b(
+                '\202\323\344\223\002\026"\021/v2/entries:write:\001*'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -1290,9 +1271,8 @@ _LOGGINGSERVICEV2 = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_LISTLOGENTRIESREQUEST,
             output_type=_LISTLOGENTRIESRESPONSE,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b('\202\323\344\223\002\025"\020/v2/entries:list:\001*'),
+            serialized_options=_b(
+                '\202\323\344\223\002\025"\020/v2/entries:list:\001*'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -1302,9 +1282,8 @@ _LOGGINGSERVICEV2 = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_LISTMONITOREDRESOURCEDESCRIPTORSREQUEST,
             output_type=_LISTMONITOREDRESOURCEDESCRIPTORSRESPONSE,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b('\202\323\344\223\002"\022 /v2/monitoredResourceDescriptors'),
+            serialized_options=_b(
+                '\202\323\344\223\002"\022 /v2/monitoredResourceDescriptors'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -1314,11 +1293,8 @@ _LOGGINGSERVICEV2 = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_LISTLOGSREQUEST,
             output_type=_LISTLOGSRESPONSE,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\002\242\001\022\025/v2/{parent=*/*}/logsZ\036\022\034/v2/{parent=projects/*}/logsZ#\022!/v2/{parent=organizations/*}/logsZ\035\022\033/v2/{parent=folders/*}/logsZ%\022#/v2/{parent=billingAccounts/*}/logs"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\002\242\001\022\025/v2/{parent=*/*}/logsZ\036\022\034/v2/{parent=projects/*}/logsZ#\022!/v2/{parent=organizations/*}/logsZ\035\022\033/v2/{parent=folders/*}/logsZ%\022#/v2/{parent=billingAccounts/*}/logs"
             ),
         ),
     ],

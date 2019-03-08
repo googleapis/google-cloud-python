@@ -8,7 +8,6 @@ from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
-from google.protobuf import descriptor_pb2
 
 # @@protoc_insertion_point(imports)
 
@@ -28,6 +27,9 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     name="google/cloud/automl_v1beta1/proto/prediction_service.proto",
     package="google.cloud.automl.v1beta1",
     syntax="proto3",
+    serialized_options=_b(
+        "\n\037com.google.cloud.automl.v1beta1B\026PredictionServiceProtoP\001ZAgoogle.golang.org/genproto/googleapis/cloud/automl/v1beta1;automl\312\002\033Google\\Cloud\\AutoMl\\V1beta1"
+    ),
     serialized_pb=_b(
         '\n:google/cloud/automl_v1beta1/proto/prediction_service.proto\x12\x1bgoogle.cloud.automl.v1beta1\x1a\x1cgoogle/api/annotations.proto\x1a:google/cloud/automl_v1beta1/proto/annotation_payload.proto\x1a\x32google/cloud/automl_v1beta1/proto/data_items.proto"\xd4\x01\n\x0ePredictRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12<\n\x07payload\x18\x02 \x01(\x0b\x32+.google.cloud.automl.v1beta1.ExamplePayload\x12G\n\x06params\x18\x03 \x03(\x0b\x32\x37.google.cloud.automl.v1beta1.PredictRequest.ParamsEntry\x1a-\n\x0bParamsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01"\xd1\x01\n\x0fPredictResponse\x12?\n\x07payload\x18\x01 \x03(\x0b\x32..google.cloud.automl.v1beta1.AnnotationPayload\x12L\n\x08metadata\x18\x02 \x03(\x0b\x32:.google.cloud.automl.v1beta1.PredictResponse.MetadataEntry\x1a/\n\rMetadataEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x32\xbe\x01\n\x11PredictionService\x12\xa8\x01\n\x07Predict\x12+.google.cloud.automl.v1beta1.PredictRequest\x1a,.google.cloud.automl.v1beta1.PredictResponse"B\x82\xd3\xe4\x93\x02<"7/v1beta1/{name=projects/*/locations/*/models/*}:predict:\x01*B\x9c\x01\n\x1f\x63om.google.cloud.automl.v1beta1B\x16PredictionServiceProtoP\x01ZAgoogle.golang.org/genproto/googleapis/cloud/automl/v1beta1;automl\xca\x02\x1bGoogle\\Cloud\\AutoMl\\V1beta1b\x06proto3'
     ),
@@ -61,7 +63,7 @@ _PREDICTREQUEST_PARAMSENTRY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -79,14 +81,14 @@ _PREDICTREQUEST_PARAMSENTRY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=_descriptor._ParseOptions(descriptor_pb2.MessageOptions(), _b("8\001")),
+    serialized_options=_b("8\001"),
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -117,7 +119,7 @@ _PREDICTREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -135,7 +137,7 @@ _PREDICTREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -153,14 +155,14 @@ _PREDICTREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[_PREDICTREQUEST_PARAMSENTRY],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -192,7 +194,7 @@ _PREDICTRESPONSE_METADATAENTRY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -210,14 +212,14 @@ _PREDICTRESPONSE_METADATAENTRY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=_descriptor._ParseOptions(descriptor_pb2.MessageOptions(), _b("8\001")),
+    serialized_options=_b("8\001"),
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -248,7 +250,7 @@ _PREDICTRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -266,14 +268,14 @@ _PREDICTRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[_PREDICTRESPONSE_METADATAENTRY],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -377,28 +379,16 @@ _sym_db.RegisterMessage(PredictResponse)
 _sym_db.RegisterMessage(PredictResponse.MetadataEntry)
 
 
-DESCRIPTOR.has_options = True
-DESCRIPTOR._options = _descriptor._ParseOptions(
-    descriptor_pb2.FileOptions(),
-    _b(
-        "\n\037com.google.cloud.automl.v1beta1B\026PredictionServiceProtoP\001ZAgoogle.golang.org/genproto/googleapis/cloud/automl/v1beta1;automl\312\002\033Google\\Cloud\\AutoMl\\V1beta1"
-    ),
-)
-_PREDICTREQUEST_PARAMSENTRY.has_options = True
-_PREDICTREQUEST_PARAMSENTRY._options = _descriptor._ParseOptions(
-    descriptor_pb2.MessageOptions(), _b("8\001")
-)
-_PREDICTRESPONSE_METADATAENTRY.has_options = True
-_PREDICTRESPONSE_METADATAENTRY._options = _descriptor._ParseOptions(
-    descriptor_pb2.MessageOptions(), _b("8\001")
-)
+DESCRIPTOR._options = None
+_PREDICTREQUEST_PARAMSENTRY._options = None
+_PREDICTRESPONSE_METADATAENTRY._options = None
 
 _PREDICTIONSERVICE = _descriptor.ServiceDescriptor(
     name="PredictionService",
     full_name="google.cloud.automl.v1beta1.PredictionService",
     file=DESCRIPTOR,
     index=0,
-    options=None,
+    serialized_options=None,
     serialized_start=661,
     serialized_end=851,
     methods=[
@@ -409,11 +399,8 @@ _PREDICTIONSERVICE = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_PREDICTREQUEST,
             output_type=_PREDICTRESPONSE,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\002<"7/v1beta1/{name=projects/*/locations/*/models/*}:predict:\001*'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\002<"7/v1beta1/{name=projects/*/locations/*/models/*}:predict:\001*'
             ),
         )
     ],

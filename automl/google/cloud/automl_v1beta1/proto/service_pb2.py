@@ -8,7 +8,6 @@ from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
-from google.protobuf import descriptor_pb2
 
 # @@protoc_insertion_point(imports)
 
@@ -44,6 +43,9 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     name="google/cloud/automl_v1beta1/proto/service.proto",
     package="google.cloud.automl.v1beta1",
     syntax="proto3",
+    serialized_options=_b(
+        "\n\037com.google.cloud.automl.v1beta1B\013AutoMlProtoP\001ZAgoogle.golang.org/genproto/googleapis/cloud/automl/v1beta1;automl\312\002\033Google\\Cloud\\AutoMl\\V1beta1"
+    ),
     serialized_pb=_b(
         '\n/google/cloud/automl_v1beta1/proto/service.proto\x12\x1bgoogle.cloud.automl.v1beta1\x1a\x1cgoogle/api/annotations.proto\x1a:google/cloud/automl_v1beta1/proto/annotation_payload.proto\x1a/google/cloud/automl_v1beta1/proto/dataset.proto\x1a*google/cloud/automl_v1beta1/proto/io.proto\x1a-google/cloud/automl_v1beta1/proto/model.proto\x1a\x38google/cloud/automl_v1beta1/proto/model_evaluation.proto\x1a\x32google/cloud/automl_v1beta1/proto/operations.proto\x1a#google/longrunning/operations.proto\x1a google/protobuf/field_mask.proto"]\n\x14\x43reateDatasetRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x35\n\x07\x64\x61taset\x18\x02 \x01(\x0b\x32$.google.cloud.automl.v1beta1.Dataset"!\n\x11GetDatasetRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"\\\n\x13ListDatasetsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x03 \x01(\t\x12\x11\n\tpage_size\x18\x04 \x01(\x05\x12\x12\n\npage_token\x18\x06 \x01(\t"g\n\x14ListDatasetsResponse\x12\x36\n\x08\x64\x61tasets\x18\x01 \x03(\x0b\x32$.google.cloud.automl.v1beta1.Dataset\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"$\n\x14\x44\x65leteDatasetRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"a\n\x11ImportDataRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12>\n\x0cinput_config\x18\x03 \x01(\x0b\x32(.google.cloud.automl.v1beta1.InputConfig"c\n\x11\x45xportDataRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12@\n\routput_config\x18\x03 \x01(\x0b\x32).google.cloud.automl.v1beta1.OutputConfig"W\n\x12\x43reateModelRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x31\n\x05model\x18\x04 \x01(\x0b\x32".google.cloud.automl.v1beta1.Model"\x1f\n\x0fGetModelRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"Z\n\x11ListModelsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x03 \x01(\t\x12\x11\n\tpage_size\x18\x04 \x01(\x05\x12\x12\n\npage_token\x18\x06 \x01(\t"`\n\x12ListModelsResponse\x12\x31\n\x05model\x18\x01 \x03(\x0b\x32".google.cloud.automl.v1beta1.Model\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t""\n\x12\x44\x65leteModelRequest\x12\x0c\n\x04name\x18\x01 \x01(\t""\n\x12\x44\x65ployModelRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"$\n\x14UndeployModelRequest\x12\x0c\n\x04name\x18\x01 \x01(\t")\n\x19GetModelEvaluationRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"d\n\x1bListModelEvaluationsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x03 \x01(\t\x12\x11\n\tpage_size\x18\x04 \x01(\x05\x12\x12\n\npage_token\x18\x06 \x01(\t"\x7f\n\x1cListModelEvaluationsResponse\x12\x46\n\x10model_evaluation\x18\x01 \x03(\x0b\x32,.google.cloud.automl.v1beta1.ModelEvaluation\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t2\xde\x12\n\x06\x41utoMl\x12\xac\x01\n\rCreateDataset\x12\x31.google.cloud.automl.v1beta1.CreateDatasetRequest\x1a$.google.cloud.automl.v1beta1.Dataset"B\x82\xd3\xe4\x93\x02<"1/v1beta1/{parent=projects/*/locations/*}/datasets:\x07\x64\x61taset\x12\x9d\x01\n\nGetDataset\x12..google.cloud.automl.v1beta1.GetDatasetRequest\x1a$.google.cloud.automl.v1beta1.Dataset"9\x82\xd3\xe4\x93\x02\x33\x12\x31/v1beta1/{name=projects/*/locations/*/datasets/*}\x12\xae\x01\n\x0cListDatasets\x12\x30.google.cloud.automl.v1beta1.ListDatasetsRequest\x1a\x31.google.cloud.automl.v1beta1.ListDatasetsResponse"9\x82\xd3\xe4\x93\x02\x33\x12\x31/v1beta1/{parent=projects/*/locations/*}/datasets\x12\x9c\x01\n\rDeleteDataset\x12\x31.google.cloud.automl.v1beta1.DeleteDatasetRequest\x1a\x1d.google.longrunning.Operation"9\x82\xd3\xe4\x93\x02\x33*1/v1beta1/{name=projects/*/locations/*/datasets/*}\x12\xa4\x01\n\nImportData\x12..google.cloud.automl.v1beta1.ImportDataRequest\x1a\x1d.google.longrunning.Operation"G\x82\xd3\xe4\x93\x02\x41"</v1beta1/{name=projects/*/locations/*/datasets/*}:importData:\x01*\x12\xa4\x01\n\nExportData\x12..google.cloud.automl.v1beta1.ExportDataRequest\x1a\x1d.google.longrunning.Operation"G\x82\xd3\xe4\x93\x02\x41"</v1beta1/{name=projects/*/locations/*/datasets/*}:exportData:\x01*\x12\x9d\x01\n\x0b\x43reateModel\x12/.google.cloud.automl.v1beta1.CreateModelRequest\x1a\x1d.google.longrunning.Operation">\x82\xd3\xe4\x93\x02\x38"//v1beta1/{parent=projects/*/locations/*}/models:\x05model\x12\x95\x01\n\x08GetModel\x12,.google.cloud.automl.v1beta1.GetModelRequest\x1a".google.cloud.automl.v1beta1.Model"7\x82\xd3\xe4\x93\x02\x31\x12//v1beta1/{name=projects/*/locations/*/models/*}\x12\xa6\x01\n\nListModels\x12..google.cloud.automl.v1beta1.ListModelsRequest\x1a/.google.cloud.automl.v1beta1.ListModelsResponse"7\x82\xd3\xe4\x93\x02\x31\x12//v1beta1/{parent=projects/*/locations/*}/models\x12\x96\x01\n\x0b\x44\x65leteModel\x12/.google.cloud.automl.v1beta1.DeleteModelRequest\x1a\x1d.google.longrunning.Operation"7\x82\xd3\xe4\x93\x02\x31*//v1beta1/{name=projects/*/locations/*/models/*}\x12\xa0\x01\n\x0b\x44\x65ployModel\x12/.google.cloud.automl.v1beta1.DeployModelRequest\x1a\x1d.google.longrunning.Operation"A\x82\xd3\xe4\x93\x02;"6/v1beta1/{name=projects/*/locations/*/models/*}:deploy:\x01*\x12\xa6\x01\n\rUndeployModel\x12\x31.google.cloud.automl.v1beta1.UndeployModelRequest\x1a\x1d.google.longrunning.Operation"C\x82\xd3\xe4\x93\x02="8/v1beta1/{name=projects/*/locations/*/models/*}:undeploy:\x01*\x12\xc6\x01\n\x12GetModelEvaluation\x12\x36.google.cloud.automl.v1beta1.GetModelEvaluationRequest\x1a,.google.cloud.automl.v1beta1.ModelEvaluation"J\x82\xd3\xe4\x93\x02\x44\x12\x42/v1beta1/{name=projects/*/locations/*/models/*/modelEvaluations/*}\x12\xd7\x01\n\x14ListModelEvaluations\x12\x38.google.cloud.automl.v1beta1.ListModelEvaluationsRequest\x1a\x39.google.cloud.automl.v1beta1.ListModelEvaluationsResponse"J\x82\xd3\xe4\x93\x02\x44\x12\x42/v1beta1/{parent=projects/*/locations/*/models/*}/modelEvaluationsB\x91\x01\n\x1f\x63om.google.cloud.automl.v1beta1B\x0b\x41utoMlProtoP\x01ZAgoogle.golang.org/genproto/googleapis/cloud/automl/v1beta1;automl\xca\x02\x1bGoogle\\Cloud\\AutoMl\\V1beta1b\x06proto3'
     ),
@@ -83,7 +85,7 @@ _CREATEDATASETREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -101,14 +103,14 @@ _CREATEDATASETREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -140,14 +142,14 @@ _GETDATASETREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -179,7 +181,7 @@ _LISTDATASETSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -197,7 +199,7 @@ _LISTDATASETSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -215,7 +217,7 @@ _LISTDATASETSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -233,14 +235,14 @@ _LISTDATASETSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -272,7 +274,7 @@ _LISTDATASETSRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -290,14 +292,14 @@ _LISTDATASETSRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -329,14 +331,14 @@ _DELETEDATASETREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -368,7 +370,7 @@ _IMPORTDATAREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -386,14 +388,14 @@ _IMPORTDATAREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -425,7 +427,7 @@ _EXPORTDATAREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -443,14 +445,14 @@ _EXPORTDATAREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -482,7 +484,7 @@ _CREATEMODELREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -500,14 +502,14 @@ _CREATEMODELREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -539,14 +541,14 @@ _GETMODELREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -578,7 +580,7 @@ _LISTMODELSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -596,7 +598,7 @@ _LISTMODELSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -614,7 +616,7 @@ _LISTMODELSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -632,14 +634,14 @@ _LISTMODELSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -671,7 +673,7 @@ _LISTMODELSRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -689,14 +691,14 @@ _LISTMODELSRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -728,14 +730,14 @@ _DELETEMODELREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -767,14 +769,14 @@ _DEPLOYMODELREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -806,14 +808,14 @@ _UNDEPLOYMODELREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -845,14 +847,14 @@ _GETMODELEVALUATIONREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -884,7 +886,7 @@ _LISTMODELEVALUATIONSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -902,7 +904,7 @@ _LISTMODELEVALUATIONSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -920,7 +922,7 @@ _LISTMODELEVALUATIONSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -938,14 +940,14 @@ _LISTMODELEVALUATIONSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -977,7 +979,7 @@ _LISTMODELEVALUATIONSRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -995,14 +997,14 @@ _LISTMODELEVALUATIONSRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1457,20 +1459,14 @@ ListModelEvaluationsResponse = _reflection.GeneratedProtocolMessageType(
 _sym_db.RegisterMessage(ListModelEvaluationsResponse)
 
 
-DESCRIPTOR.has_options = True
-DESCRIPTOR._options = _descriptor._ParseOptions(
-    descriptor_pb2.FileOptions(),
-    _b(
-        "\n\037com.google.cloud.automl.v1beta1B\013AutoMlProtoP\001ZAgoogle.golang.org/genproto/googleapis/cloud/automl/v1beta1;automl\312\002\033Google\\Cloud\\AutoMl\\V1beta1"
-    ),
-)
+DESCRIPTOR._options = None
 
 _AUTOML = _descriptor.ServiceDescriptor(
     name="AutoMl",
     full_name="google.cloud.automl.v1beta1.AutoMl",
     file=DESCRIPTOR,
     index=0,
-    options=None,
+    serialized_options=None,
     serialized_start=1755,
     serialized_end=4153,
     methods=[
@@ -1481,11 +1477,8 @@ _AUTOML = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_CREATEDATASETREQUEST,
             output_type=google_dot_cloud_dot_automl__v1beta1_dot_proto_dot_dataset__pb2._DATASET,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\002<"1/v1beta1/{parent=projects/*/locations/*}/datasets:\007dataset'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\002<"1/v1beta1/{parent=projects/*/locations/*}/datasets:\007dataset'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -1495,11 +1488,8 @@ _AUTOML = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_GETDATASETREQUEST,
             output_type=google_dot_cloud_dot_automl__v1beta1_dot_proto_dot_dataset__pb2._DATASET,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\0023\0221/v1beta1/{name=projects/*/locations/*/datasets/*}"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\0023\0221/v1beta1/{name=projects/*/locations/*/datasets/*}"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -1509,11 +1499,8 @@ _AUTOML = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_LISTDATASETSREQUEST,
             output_type=_LISTDATASETSRESPONSE,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\0023\0221/v1beta1/{parent=projects/*/locations/*}/datasets"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\0023\0221/v1beta1/{parent=projects/*/locations/*}/datasets"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -1523,11 +1510,8 @@ _AUTOML = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_DELETEDATASETREQUEST,
             output_type=google_dot_longrunning_dot_operations__pb2._OPERATION,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\0023*1/v1beta1/{name=projects/*/locations/*/datasets/*}"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\0023*1/v1beta1/{name=projects/*/locations/*/datasets/*}"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -1537,11 +1521,8 @@ _AUTOML = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_IMPORTDATAREQUEST,
             output_type=google_dot_longrunning_dot_operations__pb2._OPERATION,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\002A"</v1beta1/{name=projects/*/locations/*/datasets/*}:importData:\001*'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\002A"</v1beta1/{name=projects/*/locations/*/datasets/*}:importData:\001*'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -1551,11 +1532,8 @@ _AUTOML = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_EXPORTDATAREQUEST,
             output_type=google_dot_longrunning_dot_operations__pb2._OPERATION,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\002A"</v1beta1/{name=projects/*/locations/*/datasets/*}:exportData:\001*'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\002A"</v1beta1/{name=projects/*/locations/*/datasets/*}:exportData:\001*'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -1565,11 +1543,8 @@ _AUTOML = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_CREATEMODELREQUEST,
             output_type=google_dot_longrunning_dot_operations__pb2._OPERATION,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\0028"//v1beta1/{parent=projects/*/locations/*}/models:\005model'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\0028"//v1beta1/{parent=projects/*/locations/*}/models:\005model'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -1579,11 +1554,8 @@ _AUTOML = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_GETMODELREQUEST,
             output_type=google_dot_cloud_dot_automl__v1beta1_dot_proto_dot_model__pb2._MODEL,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\0021\022//v1beta1/{name=projects/*/locations/*/models/*}"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\0021\022//v1beta1/{name=projects/*/locations/*/models/*}"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -1593,11 +1565,8 @@ _AUTOML = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_LISTMODELSREQUEST,
             output_type=_LISTMODELSRESPONSE,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\0021\022//v1beta1/{parent=projects/*/locations/*}/models"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\0021\022//v1beta1/{parent=projects/*/locations/*}/models"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -1607,11 +1576,8 @@ _AUTOML = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_DELETEMODELREQUEST,
             output_type=google_dot_longrunning_dot_operations__pb2._OPERATION,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\0021*//v1beta1/{name=projects/*/locations/*/models/*}"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\0021*//v1beta1/{name=projects/*/locations/*/models/*}"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -1621,11 +1587,8 @@ _AUTOML = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_DEPLOYMODELREQUEST,
             output_type=google_dot_longrunning_dot_operations__pb2._OPERATION,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\002;"6/v1beta1/{name=projects/*/locations/*/models/*}:deploy:\001*'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\002;"6/v1beta1/{name=projects/*/locations/*/models/*}:deploy:\001*'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -1635,11 +1598,8 @@ _AUTOML = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_UNDEPLOYMODELREQUEST,
             output_type=google_dot_longrunning_dot_operations__pb2._OPERATION,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\002="8/v1beta1/{name=projects/*/locations/*/models/*}:undeploy:\001*'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\002="8/v1beta1/{name=projects/*/locations/*/models/*}:undeploy:\001*'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -1649,11 +1609,8 @@ _AUTOML = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_GETMODELEVALUATIONREQUEST,
             output_type=google_dot_cloud_dot_automl__v1beta1_dot_proto_dot_model__evaluation__pb2._MODELEVALUATION,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\002D\022B/v1beta1/{name=projects/*/locations/*/models/*/modelEvaluations/*}"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\002D\022B/v1beta1/{name=projects/*/locations/*/models/*/modelEvaluations/*}"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -1663,11 +1620,8 @@ _AUTOML = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_LISTMODELEVALUATIONSREQUEST,
             output_type=_LISTMODELEVALUATIONSRESPONSE,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\002D\022B/v1beta1/{parent=projects/*/locations/*/models/*}/modelEvaluations"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\002D\022B/v1beta1/{parent=projects/*/locations/*/models/*}/modelEvaluations"
             ),
         ),
     ],

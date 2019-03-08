@@ -11,7 +11,7 @@ common helpers used by all Google API clients. For more information, see the
    :target: https://pypi.org/project/google-api_core/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-api_core.svg
    :target: https://pypi.org/project/google-api_core/
-.. _documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/core/
+.. _documentation: https://googleapis.github.io/google-cloud-python/latest/core/
 
 
 Supported Python Versions

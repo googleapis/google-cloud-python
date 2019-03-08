@@ -33,4 +33,6 @@
     <p>
 
 .. autoclass:: {{ objname }}
+   :show-inheritance:
+   :inherited-members:
    :members:

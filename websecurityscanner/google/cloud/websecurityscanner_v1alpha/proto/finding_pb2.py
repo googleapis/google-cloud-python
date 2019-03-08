@@ -8,7 +8,6 @@ from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
-from google.protobuf import descriptor_pb2
 
 # @@protoc_insertion_point(imports)
 
@@ -25,6 +24,9 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     name="google/cloud/websecurityscanner_v1alpha/proto/finding.proto",
     package="google.cloud.websecurityscanner.v1alpha",
     syntax="proto3",
+    serialized_options=_b(
+        "\n+com.google.cloud.websecurityscanner.v1alphaB\014FindingProtoP\001ZYgoogle.golang.org/genproto/googleapis/cloud/websecurityscanner/v1alpha;websecurityscanner"
+    ),
     serialized_pb=_b(
         '\n;google/cloud/websecurityscanner_v1alpha/proto/finding.proto\x12\'google.cloud.websecurityscanner.v1alpha\x1a\x1cgoogle/api/annotations.proto\x1a\x41google/cloud/websecurityscanner_v1alpha/proto/finding_addon.proto"\xf5\x05\n\x07\x46inding\x12\x0c\n\x04name\x18\x01 \x01(\t\x12R\n\x0c\x66inding_type\x18\x02 \x01(\x0e\x32<.google.cloud.websecurityscanner.v1alpha.Finding.FindingType\x12\x13\n\x0bhttp_method\x18\x03 \x01(\t\x12\x12\n\nfuzzed_url\x18\x04 \x01(\t\x12\x0c\n\x04\x62ody\x18\x05 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x06 \x01(\t\x12\x18\n\x10reproduction_url\x18\x07 \x01(\t\x12\x11\n\tframe_url\x18\x08 \x01(\t\x12\x11\n\tfinal_url\x18\t \x01(\t\x12\x13\n\x0btracking_id\x18\n \x01(\t\x12R\n\x10outdated_library\x18\x0b \x01(\x0b\x32\x38.google.cloud.websecurityscanner.v1alpha.OutdatedLibrary\x12V\n\x12violating_resource\x18\x0c \x01(\x0b\x32:.google.cloud.websecurityscanner.v1alpha.ViolatingResource\x12\\\n\x15vulnerable_parameters\x18\r \x01(\x0b\x32=.google.cloud.websecurityscanner.v1alpha.VulnerableParameters\x12\x39\n\x03xss\x18\x0e \x01(\x0b\x32,.google.cloud.websecurityscanner.v1alpha.Xss"\xa1\x01\n\x0b\x46indingType\x12\x1c\n\x18\x46INDING_TYPE_UNSPECIFIED\x10\x00\x12\x11\n\rMIXED_CONTENT\x10\x01\x12\x14\n\x10OUTDATED_LIBRARY\x10\x02\x12\x11\n\rROSETTA_FLASH\x10\x05\x12\x10\n\x0cXSS_CALLBACK\x10\x03\x12\r\n\tXSS_ERROR\x10\x04\x12\x17\n\x13\x43LEAR_TEXT_PASSWORD\x10\x06\x42\x98\x01\n+com.google.cloud.websecurityscanner.v1alphaB\x0c\x46indingProtoP\x01ZYgoogle.golang.org/genproto/googleapis/cloud/websecurityscanner/v1alpha;websecurityscannerb\x06proto3'
     ),
@@ -42,29 +44,41 @@ _FINDING_FINDINGTYPE = _descriptor.EnumDescriptor(
     file=DESCRIPTOR,
     values=[
         _descriptor.EnumValueDescriptor(
-            name="FINDING_TYPE_UNSPECIFIED", index=0, number=0, options=None, type=None
+            name="FINDING_TYPE_UNSPECIFIED",
+            index=0,
+            number=0,
+            serialized_options=None,
+            type=None,
         ),
         _descriptor.EnumValueDescriptor(
-            name="MIXED_CONTENT", index=1, number=1, options=None, type=None
+            name="MIXED_CONTENT", index=1, number=1, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="OUTDATED_LIBRARY", index=2, number=2, options=None, type=None
+            name="OUTDATED_LIBRARY",
+            index=2,
+            number=2,
+            serialized_options=None,
+            type=None,
         ),
         _descriptor.EnumValueDescriptor(
-            name="ROSETTA_FLASH", index=3, number=5, options=None, type=None
+            name="ROSETTA_FLASH", index=3, number=5, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="XSS_CALLBACK", index=4, number=3, options=None, type=None
+            name="XSS_CALLBACK", index=4, number=3, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="XSS_ERROR", index=5, number=4, options=None, type=None
+            name="XSS_ERROR", index=5, number=4, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="CLEAR_TEXT_PASSWORD", index=6, number=6, options=None, type=None
+            name="CLEAR_TEXT_PASSWORD",
+            index=6,
+            number=6,
+            serialized_options=None,
+            type=None,
         ),
     ],
     containing_type=None,
-    options=None,
+    serialized_options=None,
     serialized_start=798,
     serialized_end=959,
 )
@@ -93,7 +107,7 @@ _FINDING = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -111,7 +125,7 @@ _FINDING = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -129,7 +143,7 @@ _FINDING = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -147,7 +161,7 @@ _FINDING = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -165,7 +179,7 @@ _FINDING = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -183,7 +197,7 @@ _FINDING = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -201,7 +215,7 @@ _FINDING = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -219,7 +233,7 @@ _FINDING = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -237,7 +251,7 @@ _FINDING = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -255,7 +269,7 @@ _FINDING = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -273,7 +287,7 @@ _FINDING = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -291,7 +305,7 @@ _FINDING = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -309,7 +323,7 @@ _FINDING = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -327,14 +341,14 @@ _FINDING = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[_FINDING_FINDINGTYPE],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -429,11 +443,5 @@ Finding = _reflection.GeneratedProtocolMessageType(
 _sym_db.RegisterMessage(Finding)
 
 
-DESCRIPTOR.has_options = True
-DESCRIPTOR._options = _descriptor._ParseOptions(
-    descriptor_pb2.FileOptions(),
-    _b(
-        "\n+com.google.cloud.websecurityscanner.v1alphaB\014FindingProtoP\001ZYgoogle.golang.org/genproto/googleapis/cloud/websecurityscanner/v1alpha;websecurityscanner"
-    ),
-)
+DESCRIPTOR._options = None
 # @@protoc_insertion_point(module_scope)

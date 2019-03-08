@@ -27,6 +27,7 @@ library = gapic.py_library(
     "v1",
     config_path="/google/container/artman_container_v1.yaml",
     artman_output_name="container-v1",
+    include_protos=True,
 )
 
 s.move(library / "google/cloud/container_v1")

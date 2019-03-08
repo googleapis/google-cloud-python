@@ -22,6 +22,9 @@ import nox
 LOCAL_DEPS = (
     os.path.join('..', 'api_core[grpc]'),
     os.path.join('..', 'core'),
+    # TODO: Move bigquery_storage back to dev_install once dtypes feature is
+    #       released. Issue #7049
+    os.path.join('..', 'bigquery_storage[pandas,fastavro]'),
 )
 
 
@@ -40,9 +43,9 @@ def default(session):
 
     # Pyarrow does not support Python 3.7
     if session.python == '3.7':
-        dev_install = '.[bqstorage, pandas]'
+        dev_install = '.[pandas]'
     else:
-        dev_install = '.[bqstorage, pandas, pyarrow]'
+        dev_install = '.[pandas, pyarrow]'
     session.install('-e', dev_install)
 
     # IPython does not support Python 2 after version 5.x
