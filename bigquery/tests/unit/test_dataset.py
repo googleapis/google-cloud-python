@@ -15,6 +15,7 @@
 import unittest
 
 import mock
+import pytest
 
 
 class TestAccessEntry(unittest.TestCase):
@@ -363,6 +364,16 @@ class TestDataset(unittest.TestCase):
         self.assertIsNone(dataset.description)
         self.assertIsNone(dataset.friendly_name)
         self.assertIsNone(dataset.location)
+
+    def test_ctor_string(self):
+        dataset = self._make_one("some-project.some_dset")
+        self.assertEqual(dataset.project, "some-project")
+        self.assertEqual(dataset.dataset_id, "some_dset")
+
+    def test_ctor_string_wo_project_id(self):
+        with pytest.raises(ValueError):
+            # Project ID is missing.
+            self._make_one("some_dset")
 
     def test_ctor_explicit(self):
         from google.cloud.bigquery.dataset import DatasetReference, AccessEntry

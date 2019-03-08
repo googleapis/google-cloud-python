@@ -55,6 +55,7 @@ SCALAR_COLUMNS = [
     {"name": "time_col", "type": "time"},
     {"name": "ts_col", "type": "timestamp"},
 ]
+SCALAR_COLUMN_NAMES = [field["name"] for field in SCALAR_COLUMNS]
 SCALAR_BLOCKS = [
     [
         {
@@ -281,7 +282,9 @@ def test_to_dataframe_w_scalars(class_under_test):
     )
     got = reader.to_dataframe(read_session)
 
-    expected = pandas.DataFrame(list(itertools.chain.from_iterable(SCALAR_BLOCKS)))
+    expected = pandas.DataFrame(
+        list(itertools.chain.from_iterable(SCALAR_BLOCKS)), columns=SCALAR_COLUMN_NAMES
+    )
     # fastavro provides its own UTC definition, so
     # compare the timestamp columns separately.
     got_ts = got["ts_col"]
@@ -298,6 +301,39 @@ def test_to_dataframe_w_scalars(class_under_test):
         expected_ts.reset_index(drop=True),
         check_dtype=False,  # fastavro's UTC means different dtype
         check_datetimelike_compat=True,
+    )
+
+
+def test_to_dataframe_w_dtypes(class_under_test):
+    # TODOTODOTODOTODO
+    avro_schema = _bq_to_avro_schema(
+        [
+            {"name": "bigfloat", "type": "float64"},
+            {"name": "lilfloat", "type": "float64"},
+        ]
+    )
+    read_session = _generate_read_session(avro_schema)
+    blocks = [
+        [{"bigfloat": 1.25, "lilfloat": 30.5}, {"bigfloat": 2.5, "lilfloat": 21.125}],
+        [{"bigfloat": 3.75, "lilfloat": 11.0}],
+    ]
+    avro_blocks = _bq_to_avro_blocks(blocks, avro_schema)
+
+    reader = class_under_test(
+        avro_blocks, mock_client, bigquery_storage_v1beta1.types.StreamPosition(), {}
+    )
+    got = reader.to_dataframe(read_session, dtypes={"lilfloat": "float16"})
+
+    expected = pandas.DataFrame(
+        {
+            "bigfloat": [1.25, 2.5, 3.75],
+            "lilfloat": pandas.Series([30.5, 21.125, 11.0], dtype="float16"),
+        },
+        columns=["bigfloat", "lilfloat"],
+    )
+    pandas.testing.assert_frame_equal(
+        got.reset_index(drop=True),  # reset_index to ignore row labels
+        expected.reset_index(drop=True),
     )
 
 

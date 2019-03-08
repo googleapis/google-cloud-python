@@ -36,6 +36,7 @@ try:
 except (ImportError, AttributeError):  # pragma: NO COVER
     pyarrow = None
 
+import google.api_core.exceptions
 from google.cloud.bigquery.dataset import DatasetReference
 
 
@@ -804,6 +805,61 @@ class TestClient(unittest.TestCase):
             },
         )
 
+    def test_create_dataset_alreadyexists_w_exists_ok_false(self):
+        creds = _make_credentials()
+        client = self._make_one(
+            project=self.PROJECT, credentials=creds, location=self.LOCATION
+        )
+        client._connection = _make_connection(
+            google.api_core.exceptions.AlreadyExists("dataset already exists")
+        )
+
+        with pytest.raises(google.api_core.exceptions.AlreadyExists):
+            client.create_dataset(self.DS_ID)
+
+    def test_create_dataset_alreadyexists_w_exists_ok_true(self):
+        post_path = "/projects/{}/datasets".format(self.PROJECT)
+        get_path = "/projects/{}/datasets/{}".format(self.PROJECT, self.DS_ID)
+        resource = {
+            "datasetReference": {"projectId": self.PROJECT, "datasetId": self.DS_ID},
+            "etag": "etag",
+            "id": "{}:{}".format(self.PROJECT, self.DS_ID),
+            "location": self.LOCATION,
+        }
+        creds = _make_credentials()
+        client = self._make_one(
+            project=self.PROJECT, credentials=creds, location=self.LOCATION
+        )
+        conn = client._connection = _make_connection(
+            google.api_core.exceptions.AlreadyExists("dataset already exists"), resource
+        )
+
+        dataset = client.create_dataset(self.DS_ID, exists_ok=True)
+
+        self.assertEqual(dataset.dataset_id, self.DS_ID)
+        self.assertEqual(dataset.project, self.PROJECT)
+        self.assertEqual(dataset.etag, resource["etag"])
+        self.assertEqual(dataset.full_dataset_id, resource["id"])
+        self.assertEqual(dataset.location, self.LOCATION)
+
+        conn.api_request.assert_has_calls(
+            [
+                mock.call(
+                    method="POST",
+                    path=post_path,
+                    data={
+                        "datasetReference": {
+                            "projectId": self.PROJECT,
+                            "datasetId": self.DS_ID,
+                        },
+                        "labels": {},
+                        "location": self.LOCATION,
+                    },
+                ),
+                mock.call(method="GET", path=get_path),
+            ]
+        )
+
     def test_create_table_w_day_partition(self):
         from google.cloud.bigquery.table import Table
         from google.cloud.bigquery.table import TimePartitioning
@@ -1176,6 +1232,79 @@ class TestClient(unittest.TestCase):
             },
         )
         self.assertEqual(got.table_id, self.TABLE_ID)
+
+    def test_create_table_alreadyexists_w_exists_ok_false(self):
+        post_path = "/projects/{}/datasets/{}/tables".format(self.PROJECT, self.DS_ID)
+        creds = _make_credentials()
+        client = self._make_one(
+            project=self.PROJECT, credentials=creds, location=self.LOCATION
+        )
+        conn = client._connection = _make_connection(
+            google.api_core.exceptions.AlreadyExists("table already exists")
+        )
+
+        with pytest.raises(google.api_core.exceptions.AlreadyExists):
+            client.create_table("{}.{}".format(self.DS_ID, self.TABLE_ID))
+
+        conn.api_request.assert_called_once_with(
+            method="POST",
+            path=post_path,
+            data={
+                "tableReference": {
+                    "projectId": self.PROJECT,
+                    "datasetId": self.DS_ID,
+                    "tableId": self.TABLE_ID,
+                },
+                "labels": {},
+            },
+        )
+
+    def test_create_table_alreadyexists_w_exists_ok_true(self):
+        post_path = "/projects/{}/datasets/{}/tables".format(self.PROJECT, self.DS_ID)
+        get_path = "/projects/{}/datasets/{}/tables/{}".format(
+            self.PROJECT, self.DS_ID, self.TABLE_ID
+        )
+        resource = {
+            "id": "%s:%s:%s" % (self.PROJECT, self.DS_ID, self.TABLE_ID),
+            "tableReference": {
+                "projectId": self.PROJECT,
+                "datasetId": self.DS_ID,
+                "tableId": self.TABLE_ID,
+            },
+        }
+        creds = _make_credentials()
+        client = self._make_one(
+            project=self.PROJECT, credentials=creds, location=self.LOCATION
+        )
+        conn = client._connection = _make_connection(
+            google.api_core.exceptions.AlreadyExists("table already exists"), resource
+        )
+
+        got = client.create_table(
+            "{}.{}".format(self.DS_ID, self.TABLE_ID), exists_ok=True
+        )
+
+        self.assertEqual(got.project, self.PROJECT)
+        self.assertEqual(got.dataset_id, self.DS_ID)
+        self.assertEqual(got.table_id, self.TABLE_ID)
+
+        conn.api_request.assert_has_calls(
+            [
+                mock.call(
+                    method="POST",
+                    path=post_path,
+                    data={
+                        "tableReference": {
+                            "projectId": self.PROJECT,
+                            "datasetId": self.DS_ID,
+                            "tableId": self.TABLE_ID,
+                        },
+                        "labels": {},
+                    },
+                ),
+                mock.call(method="GET", path=get_path),
+            ]
+        )
 
     def test_get_table(self):
         path = "projects/%s/datasets/%s/tables/%s" % (
@@ -1804,6 +1933,33 @@ class TestClient(unittest.TestCase):
         with self.assertRaises(TypeError):
             client.delete_dataset(client.dataset(self.DS_ID).table("foo"))
 
+    def test_delete_dataset_w_not_found_ok_false(self):
+        path = "/projects/{}/datasets/{}".format(self.PROJECT, self.DS_ID)
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
+        conn = client._connection = _make_connection(
+            google.api_core.exceptions.NotFound("dataset not found")
+        )
+
+        with self.assertRaises(google.api_core.exceptions.NotFound):
+            client.delete_dataset(self.DS_ID)
+
+        conn.api_request.assert_called_with(method="DELETE", path=path, query_params={})
+
+    def test_delete_dataset_w_not_found_ok_true(self):
+        path = "/projects/{}/datasets/{}".format(self.PROJECT, self.DS_ID)
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
+        conn = client._connection = _make_connection(
+            google.api_core.exceptions.NotFound("dataset not found")
+        )
+
+        client.delete_dataset(self.DS_ID, not_found_ok=True)
+
+        conn.api_request.assert_called_with(method="DELETE", path=path, query_params={})
+
     def test_delete_table(self):
         from google.cloud.bigquery.table import Table
 
@@ -1835,6 +1991,39 @@ class TestClient(unittest.TestCase):
         client = self._make_one(project=self.PROJECT, credentials=creds)
         with self.assertRaises(TypeError):
             client.delete_table(client.dataset(self.DS_ID))
+
+    def test_delete_table_w_not_found_ok_false(self):
+        path = "/projects/{}/datasets/{}/tables/{}".format(
+            self.PROJECT, self.DS_ID, self.TABLE_ID
+        )
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
+        conn = client._connection = _make_connection(
+            google.api_core.exceptions.NotFound("table not found")
+        )
+
+        with self.assertRaises(google.api_core.exceptions.NotFound):
+            client.delete_table("{}.{}".format(self.DS_ID, self.TABLE_ID))
+
+        conn.api_request.assert_called_with(method="DELETE", path=path)
+
+    def test_delete_table_w_not_found_ok_true(self):
+        path = "/projects/{}/datasets/{}/tables/{}".format(
+            self.PROJECT, self.DS_ID, self.TABLE_ID
+        )
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
+        conn = client._connection = _make_connection(
+            google.api_core.exceptions.NotFound("table not found")
+        )
+
+        client.delete_table(
+            "{}.{}".format(self.DS_ID, self.TABLE_ID), not_found_ok=True
+        )
+
+        conn.api_request.assert_called_with(method="DELETE", path=path)
 
     def test_job_from_resource_unknown_type(self):
         from google.cloud.bigquery.job import UnknownJob

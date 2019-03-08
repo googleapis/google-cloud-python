@@ -27,7 +27,7 @@ versions = ["v1beta2", "v1"]
 # Generate dataproc GAPIC layer
 # ----------------------------------------------------------------------------
 for version in versions:
-    library = gapic.py_library("dataproc", version)
+    library = gapic.py_library("dataproc", version, include_protos=True,)
     s.move(library, excludes=["docs/index.rst", "nox.py", "README.rst", "setup.py"])
 
     s.replace(

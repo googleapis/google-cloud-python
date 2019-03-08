@@ -12,8 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import base64
+
 from google.api_core.iam import Policy as BasePolicy
 from google.cloud._helpers import _to_bytes
+from google.iam.v1 import policy_pb2
 
 """IAM roles supported by Bigtable Instance resource"""
 BIGTABLE_ADMIN_ROLE = "roles/bigtable.admin"
@@ -107,3 +110,76 @@ class Policy(BasePolicy):
         for member in self._bindings.get(BIGTABLE_VIEWER_ROLE, ()):
             result.add(member)
         return frozenset(result)
+
+    @classmethod
+    def from_pb(cls, policy_pb):
+        """Factory: create a policy from a protobuf message.
+
+        Args:
+            policy_pb (google.iam.policy_pb2.Policy): message returned by
+            ``get_iam_policy`` gRPC API.
+
+        Returns:
+            :class:`Policy`: the parsed policy
+        """
+        policy = cls(policy_pb.etag, policy_pb.version)
+
+        for binding in policy_pb.bindings:
+            policy[binding.role] = sorted(binding.members)
+
+        return policy
+
+    def to_pb(self):
+        """Render a protobuf message.
+
+        Returns:
+            google.iam.policy_pb2.Policy: a message to be passed to the
+            ``set_iam_policy`` gRPC API.
+        """
+
+        return policy_pb2.Policy(
+            etag=self.etag,
+            version=self.version or 0,
+            bindings=[
+                policy_pb2.Binding(role=role, members=sorted(self[role]))
+                for role in self
+            ],
+        )
+
+    @classmethod
+    def from_api_repr(cls, resource):
+        """Factory: create a policy from a JSON resource.
+
+        Overrides the base class version to store :attr:`etag` as bytes.
+
+        Args:
+            resource (dict): JSON policy resource returned by the
+            ``getIamPolicy`` REST API.
+
+        Returns:
+            :class:`Policy`: the parsed policy
+        """
+        etag = resource.get("etag")
+
+        if etag is not None:
+            resource = resource.copy()
+            resource["etag"] = base64.b64decode(etag.encode("ascii"))
+
+        return super(Policy, cls).from_api_repr(resource)
+
+    def to_api_repr(self):
+        """Render a JSON policy resource.
+
+        Overrides the base class version to convert :attr:`etag` from bytes
+        to JSON-compatible base64-encoded text.
+
+        Returns:
+            dict: a JSON resource to be passed to the
+            ``setIamPolicy`` REST API.
+        """
+        resource = super(Policy, self).to_api_repr()
+
+        if self.etag is not None:
+            resource["etag"] = base64.b64encode(self.etag).decode("ascii")
+
+        return resource

@@ -28,6 +28,7 @@ library = gapic.py_library(
     config_path="/google/cloud/websecurityscanner"
     "/artman_websecurityscanner_v1alpha.yaml",
     artman_output_name="websecurityscanner-v1alpha",
+    include_protos=True,
 )
 
 s.move(library / "google/cloud/websecurityscanner_v1alpha/proto")

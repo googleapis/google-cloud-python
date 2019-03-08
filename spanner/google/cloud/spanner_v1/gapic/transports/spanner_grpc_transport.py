@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2018 Google LLC
+# Copyright 2019 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -166,7 +166,9 @@ class SpannerGrpcTransport(object):
     def delete_session(self):
         """Return the gRPC stub for :meth:`SpannerClient.delete_session`.
 
-        Ends a session, releasing server resources associated with it.
+        Ends a session, releasing server resources associated with it. This will
+        asynchronously trigger cancellation of any operations that are running with
+        this session.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -213,6 +215,36 @@ class SpannerGrpcTransport(object):
                 deserialized response object.
         """
         return self._stubs["spanner_stub"].ExecuteStreamingSql
+
+    @property
+    def execute_batch_dml(self):
+        """Return the gRPC stub for :meth:`SpannerClient.execute_batch_dml`.
+
+        Executes a batch of SQL DML statements. This method allows many
+        statements to be run with lower latency than submitting them
+        sequentially with ``ExecuteSql``.
+
+        Statements are executed in order, sequentially.
+        ``ExecuteBatchDmlResponse`` will contain a ``ResultSet`` for each DML
+        statement that has successfully executed. If a statement fails, its
+        error status will be returned as part of the
+        ``ExecuteBatchDmlResponse``. Execution will stop at the first failed
+        statement; the remaining statements will not run.
+
+        ExecuteBatchDml is expected to return an OK status with a response even
+        if there was an error while processing one of the DML statements.
+        Clients must inspect response.status to determine if there were any
+        errors while processing the request.
+
+        See more details in ``ExecuteBatchDmlRequest`` and
+        ``ExecuteBatchDmlResponse``.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["spanner_stub"].ExecuteBatchDml
 
     @property
     def read(self):

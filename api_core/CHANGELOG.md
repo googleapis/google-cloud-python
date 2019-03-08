@@ -4,6 +4,21 @@
 
 [1]: https://pypi.org/project/google-api-core/#history
 
+## 1.8.0
+
+02-23-2019 15:46 PST
+
+
+### New Features
+- Add support to unwrap Anys into wrapped pb2 objects. ([#7430](https://github.com/googleapis/google-cloud-python/pull/7430))
+- Add `Operation.deserialize`. ([#7427](https://github.com/googleapis/google-cloud-python/pull/7427))
+
+### Documentation
+- Updated client library documentation URLs. ([#7307](https://github.com/googleapis/google-cloud-python/pull/7307))
+
+### Internal / Testing Changes
+- Fix new lint failure. ([#7382](https://github.com/googleapis/google-cloud-python/pull/7382))
+
 ## 1.7.0
 
 12-17-2018 13:56 PST
