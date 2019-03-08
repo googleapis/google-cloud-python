@@ -4,6 +4,31 @@
 
 [1]: https://pypi.org/project/google-cloud-speech/#history
 
+## 0.36.3
+
+01-31-2019 09:57 PST
+
+
+### New Features
+- Add 'RecognitionConfig.audio_channel_count' field via synth. ([#7240](https://github.com/googleapis/google-cloud-python/pull/7240))
+
+### Documentation
+- Modify file headers. ([#7158](https://github.com/googleapis/google-cloud-python/pull/7158))
+
+### Internal / Testing Changes
+- Add protos as an artifact to library ([#7205](https://github.com/googleapis/google-cloud-python/pull/7205))
+
+## 0.36.2
+
+01-10-2019 15:36 PST
+
+### Implementation Changes
+- Protoc-generated serialization update. ([#7106](https://github.com/googleapis/google-cloud-python/pull/7106))
+
+### Documentation
+- Regenerate speech to change quote chars in docstr.
+- Pick up stub docstring fix in GAPIC generator. ([#6982](https://github.com/googleapis/google-cloud-python/pull/6982))
+
 ## 0.36.1
 
 12-18-2018 09:46 PST

@@ -19,14 +19,15 @@ from synthtool import gcp
 
 gapic = gcp.GAPICGenerator()
 
-version = 'v1'
+version = 'v1beta1'
 
 library = gapic.py_library(
-    'bigquery-datatransfer',
+    'bigquery_storage',
     version,
     config_path='/google/cloud/bigquery/storage/'
                 'artman_bigquerystorage_v1beta1.yaml',
-    artman_output_name='bigquerystorage-v1beta1'
+    artman_output_name='bigquerystorage-v1beta1',
+    include_protos=True,
 )
 
 s.move(

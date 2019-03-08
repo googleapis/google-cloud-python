@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2018 Google LLC
+# Copyright 2019 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -237,9 +237,9 @@ class SubscriberClient(object):
         If the name is not provided in the request, the server will assign a
         random name for this subscription on the same project as the topic,
         conforming to the `resource name
-        format <https://cloud.google.com/pubsub/docs/overview#names>`__. The
-        generated name is populated in the returned Subscription object. Note
-        that for REST API requests, you must specify a name in the request.
+        format <https://cloud.google.com/pubsub/docs/admin#resource_names>`__.
+        The generated name is populated in the returned Subscription object.
+        Note that for REST API requests, you must specify a name in the request.
 
         Example:
             >>> from google.cloud import pubsub_v1
@@ -267,11 +267,11 @@ class SubscriberClient(object):
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.pubsub_v1.types.PushConfig`
-            ack_deadline_seconds (int): This value is the maximum time after a subscriber receives a message
-                before the subscriber should acknowledge the message. After message
-                delivery but before the ack deadline expires and before the message is
-                acknowledged, it is an outstanding message and will not be delivered
-                again during that time (on a best-effort basis).
+            ack_deadline_seconds (int): The approximate amount of time (on a best-effort basis) Pub/Sub waits
+                for the subscriber to acknowledge receipt before resending the message.
+                In the interval after the message is delivered and before it is
+                acknowledged, it is considered to be outstanding. During that time
+                period, the message will not be redelivered (on a best-effort basis).
 
                 For pull subscriptions, this value is used as the initial value for the
                 ack deadline. To override this value for a given message, call
@@ -290,23 +290,25 @@ class SubscriberClient(object):
             retain_acked_messages (bool): Indicates whether to retain acknowledged messages. If true, then
                 messages are not expunged from the subscription's backlog, even if they
                 are acknowledged, until they fall out of the
-                ``message_retention_duration`` window. ALPHA: This feature is part of an
-                alpha release. This API might be changed in backward-incompatible ways
-                and is not recommended for production use. It is not subject to any SLA
-                or deprecation policy.
+                ``message_retention_duration`` window. This must be true if you would
+                like to Seek to a timestamp. BETA: This feature is part of a beta
+                release. This API might be changed in backward-incompatible ways and is
+                not recommended for production use. It is not subject to any SLA or
+                deprecation policy.
             message_retention_duration (Union[dict, ~google.cloud.pubsub_v1.types.Duration]): How long to retain unacknowledged messages in the subscription's
                 backlog, from the moment a message is published. If
                 ``retain_acked_messages`` is true, then this also configures the
                 retention of acknowledged messages, and thus configures how far back in
                 time a ``Seek`` can be done. Defaults to 7 days. Cannot be more than 7
-                days or less than 10 minutes. ALPHA: This feature is part of an alpha
+                days or less than 10 minutes. BETA: This feature is part of a beta
                 release. This API might be changed in backward-incompatible ways and is
                 not recommended for production use. It is not subject to any SLA or
                 deprecation policy.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.pubsub_v1.types.Duration`
-            labels (dict[str -> str]): See <a href="/pubsub/docs/labels"> Creating and managing labels</a>.
+            labels (dict[str -> str]): See <a href="https://cloud.google.com/pubsub/docs/labels"> Creating and
+                managing labels</a>.
             expiration_policy (Union[dict, ~google.cloud.pubsub_v1.types.ExpirationPolicy]): A policy that specifies the conditions for this subscription's
                 expiration. A subscription is considered active as long as any connected
                 subscriber is successfully consuming messages from the subscription or
@@ -680,9 +682,11 @@ class SubscriberClient(object):
             ack_deadline_seconds (int): The new ack deadline with respect to the time this request was sent to
                 the Pub/Sub system. For example, if the value is 10, the new ack
                 deadline will expire 10 seconds after the ``ModifyAckDeadline`` call was
-                made. Specifying zero may immediately make the message available for
-                another pull request. The minimum deadline you can specify is 0 seconds.
-                The maximum deadline you can specify is 600 seconds (10 minutes).
+                made. Specifying zero might immediately make the message available for
+                delivery to another subscriber client. This typically results in an
+                increase in the rate of message redeliveries (that is, duplicates). The
+                minimum deadline you can specify is 0 seconds. The maximum deadline you
+                can specify is 600 seconds (10 minutes).
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -1015,8 +1019,13 @@ class SubscriberClient(object):
         metadata=None,
     ):
         """
-        Lists the existing snapshots.<br><br>
-        <b>ALPHA:</b> This feature is part of an alpha release. This API might be
+        Lists the existing snapshots. Snapshots are used in
+        <a href="https://cloud.google.com/pubsub/docs/replay-overview">Seek</a>
+        operations, which allow
+        you to manage message acknowledgments in bulk. That is, you can set the
+        acknowledgment state of messages in an existing subscription to the state
+        captured by a snapshot.<br><br>
+        <b>BETA:</b> This feature is part of a beta release. This API might be
         changed in backward-incompatible ways and is not recommended for production
         use. It is not subject to any SLA or deprecation policy.
 
@@ -1108,8 +1117,11 @@ class SubscriberClient(object):
         metadata=None,
     ):
         """
-        Creates a snapshot from the requested subscription. ALPHA: This feature
-        is part of an alpha release. This API might be changed in
+        Creates a snapshot from the requested subscription. Snapshots are used
+        in Seek operations, which allow you to manage message acknowledgments in
+        bulk. That is, you can set the acknowledgment state of messages in an
+        existing subscription to the state captured by a snapshot. BETA: This
+        feature is part of a beta release. This API might be changed in
         backward-incompatible ways and is not recommended for production use. It
         is not subject to any SLA or deprecation policy. If the snapshot already
         exists, returns ``ALREADY_EXISTS``. If the requested subscription
@@ -1119,9 +1131,9 @@ class SubscriberClient(object):
         ``Snapshot.expire_time`` field. If the name is not provided in the
         request, the server will assign a random name for this snapshot on the
         same project as the subscription, conforming to the `resource name
-        format <https://cloud.google.com/pubsub/docs/overview#names>`__. The
-        generated name is populated in the returned Snapshot object. Note that
-        for REST API requests, you must specify a name in the request.
+        format <https://cloud.google.com/pubsub/docs/admin#resource_names>`__.
+        The generated name is populated in the returned Snapshot object. Note
+        that for REST API requests, you must specify a name in the request.
 
         Example:
             >>> from google.cloud import pubsub_v1
@@ -1147,7 +1159,8 @@ class SubscriberClient(object):
                 messages published to the subscription's topic following the successful
                 completion of the CreateSnapshot request. Format is
                 ``projects/{project}/subscriptions/{sub}``.
-            labels (dict[str -> str]): See <a href="/pubsub/docs/labels"> Creating and managing labels</a>.
+            labels (dict[str -> str]): See <a href="https://cloud.google.com/pubsub/docs/labels"> Creating and
+                managing labels</a>.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -1194,8 +1207,13 @@ class SubscriberClient(object):
         metadata=None,
     ):
         """
-        Updates an existing snapshot.<br><br>
-        <b>ALPHA:</b> This feature is part of an alpha release. This API might be
+        Updates an existing snapshot. Snapshots are used in
+        <a href="https://cloud.google.com/pubsub/docs/replay-overview">Seek</a>
+        operations, which allow
+        you to manage message acknowledgments in bulk. That is, you can set the
+        acknowledgment state of messages in an existing subscription to the state
+        captured by a snapshot.<br><br>
+        <b>BETA:</b> This feature is part of a beta release. This API might be
         changed in backward-incompatible ways and is not recommended for production
         use. It is not subject to any SLA or deprecation policy.
         Note that certain properties of a snapshot are not modifiable.
@@ -1269,8 +1287,13 @@ class SubscriberClient(object):
         metadata=None,
     ):
         """
-        Removes an existing snapshot. <br><br>
-        <b>ALPHA:</b> This feature is part of an alpha release. This API might be
+        Removes an existing snapshot. Snapshots are used in
+        <a href="https://cloud.google.com/pubsub/docs/replay-overview">Seek</a>
+        operations, which allow
+        you to manage message acknowledgments in bulk. That is, you can set the
+        acknowledgment state of messages in an existing subscription to the state
+        captured by a snapshot.<br><br>
+        <b>BETA:</b> This feature is part of a beta release. This API might be
         changed in backward-incompatible ways and is not recommended for production
         use. It is not subject to any SLA or deprecation policy.
         When the snapshot is deleted, all messages retained in the snapshot
@@ -1333,8 +1356,14 @@ class SubscriberClient(object):
     ):
         """
         Seeks an existing subscription to a point in time or to a given snapshot,
-        whichever is provided in the request.<br><br>
-        <b>ALPHA:</b> This feature is part of an alpha release. This API might be
+        whichever is provided in the request. Snapshots are used in
+        <a href="https://cloud.google.com/pubsub/docs/replay-overview">Seek</a>
+        operations, which allow
+        you to manage message acknowledgments in bulk. That is, you can set the
+        acknowledgment state of messages in an existing subscription to the state
+        captured by a snapshot. Note that both the subscription and the snapshot
+        must be on the same topic.<br><br>
+        <b>BETA:</b> This feature is part of a beta release. This API might be
         changed in backward-incompatible ways and is not recommended for production
         use. It is not subject to any SLA or deprecation policy.
 

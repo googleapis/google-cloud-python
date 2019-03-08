@@ -27,6 +27,7 @@ library = gapic.py_library(
     "v1",
     config_path="/google/spanner/artman_spanner.yaml",
     artman_output_name="spanner-v1",
+    include_protos=True,
 )
 
 s.move(library / "google/cloud/spanner_v1/proto")
@@ -72,6 +73,7 @@ library = gapic.py_library(
     "v1",
     config_path="/google/spanner/admin/instance" "/artman_spanner_admin_instance.yaml",
     artman_output_name="spanner-admin-instance-v1",
+    include_protos=True,
 )
 
 s.move(library / "google/cloud/spanner_admin_instance_v1/gapic")
@@ -105,6 +107,7 @@ library = gapic.py_library(
     "v1",
     config_path="/google/spanner/admin/database" "/artman_spanner_admin_database.yaml",
     artman_output_name="spanner-admin-database-v1",
+    include_protos=True,
 )
 
 s.move(library / "google/cloud/spanner_admin_database_v1/gapic")

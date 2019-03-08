@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2018 Google LLC
+# Copyright 2019 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -240,10 +240,10 @@ class Task(object):
           BASIC (int): The basic view omits fields which can be large or can contain sensitive
           data.
 
-          This view does not include the (``payload in AppEngineHttpRequest`` and
-          ``payload in PullMessage``). These payloads are desirable to return only
-          when needed, because they can be large and because of the sensitivity of
-          the data that you choose to store in it.
+          This view does not include the (``payload in  AppEngineHttpRequest`` and
+          ``payload in  PullMessage``). These payloads are desirable to return
+          only when needed, because they can be large and because of the
+          sensitivity of the data that you choose to store in it.
           FULL (int): All information is returned.
 
           Authorization for ``FULL`` requires ``cloudtasks.tasks.fullView``

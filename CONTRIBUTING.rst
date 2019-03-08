@@ -7,7 +7,7 @@ Contributing
 #. Make sure that your commit messages clearly describe the changes.
 #. Send a pull request. (Please Read: `Faster Pull Request Reviews`_)
 
-.. _Faster Pull Request Reviews: https://github.com/kubernetes/community/blob/master/contributors/devel/faster_reviews.md
+.. _Faster Pull Request Reviews: https://github.com/kubernetes/community/blob/master/contributors/guide/pull-requests.md#best-practices-for-faster-reviews
 
 .. contents:: Here are some guidelines for hacking on ``google-cloud-python``.
 
@@ -70,7 +70,7 @@ We use `nox <https://nox.readthedocs.io/en/latest/>`__ to instrument our tests.
 - To test your changes, run unit tests with ``nox``::
 
     $ nox -f datastore/noxfile.py -s unit-2.7
-    $ nox -f datastore/noxfile.py -s unit-3.4
+    $ nox -f datastore/noxfile.py -s unit-3.6
     $ ...
 
   .. note::

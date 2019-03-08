@@ -2508,13 +2508,13 @@ class Test_Blob(unittest.TestCase):
             "objectSize": 84,
             "done": False,
             "rewriteToken": TOKEN,
-            "resource": {"storageClass": STORAGE_CLASS}
+            "resource": {"storageClass": STORAGE_CLASS},
         }
         COMPLETE_RESPONSE = {
             "totalBytesRewritten": 84,
             "objectSize": 84,
             "done": True,
-            "resource": {"storageClass": STORAGE_CLASS}
+            "resource": {"storageClass": STORAGE_CLASS},
         }
         response_1 = ({"status": http_client.OK}, INCOMPLETE_RESPONSE)
         response_2 = ({"status": http_client.OK}, COMPLETE_RESPONSE)
@@ -2534,7 +2534,7 @@ class Test_Blob(unittest.TestCase):
             "totalBytesRewritten": 42,
             "objectSize": 42,
             "done": True,
-            "resource": {"storageClass": STORAGE_CLASS}
+            "resource": {"storageClass": STORAGE_CLASS},
         }
         response = ({"status": http_client.OK}, RESPONSE)
         connection = _Connection(response)
@@ -2579,7 +2579,7 @@ class Test_Blob(unittest.TestCase):
             "totalBytesRewritten": 42,
             "objectSize": 42,
             "done": True,
-            "resource": {"storageClass": STORAGE_CLASS}
+            "resource": {"storageClass": STORAGE_CLASS},
         }
         response = ({"status": http_client.OK}, RESPONSE)
         connection = _Connection(response)

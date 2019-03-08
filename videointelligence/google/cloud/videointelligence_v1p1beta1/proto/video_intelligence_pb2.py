@@ -9,7 +9,6 @@ from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
-from google.protobuf import descriptor_pb2
 
 # @@protoc_insertion_point(imports)
 
@@ -29,6 +28,9 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     name="google/cloud/videointelligence_v1p1beta1/proto/video_intelligence.proto",
     package="google.cloud.videointelligence.v1p1beta1",
     syntax="proto3",
+    serialized_options=_b(
+        "\n,com.google.cloud.videointelligence.v1p1beta1B\035VideoIntelligenceServiceProtoP\001ZYgoogle.golang.org/genproto/googleapis/cloud/videointelligence/v1p1beta1;videointelligence\252\002(Google.Cloud.VideoIntelligence.V1P1Beta1\312\002(Google\\Cloud\\VideoIntelligence\\V1p1beta1"
+    ),
     serialized_pb=_b(
         '\nGgoogle/cloud/videointelligence_v1p1beta1/proto/video_intelligence.proto\x12(google.cloud.videointelligence.v1p1beta1\x1a\x1cgoogle/api/annotations.proto\x1a#google/longrunning/operations.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x17google/rpc/status.proto"\xfd\x01\n\x14\x41nnotateVideoRequest\x12\x11\n\tinput_uri\x18\x01 \x01(\t\x12\x15\n\rinput_content\x18\x06 \x01(\x0c\x12\x43\n\x08\x66\x65\x61tures\x18\x02 \x03(\x0e\x32\x31.google.cloud.videointelligence.v1p1beta1.Feature\x12M\n\rvideo_context\x18\x03 \x01(\x0b\x32\x36.google.cloud.videointelligence.v1p1beta1.VideoContext\x12\x12\n\noutput_uri\x18\x04 \x01(\t\x12\x13\n\x0blocation_id\x18\x05 \x01(\t"\x82\x04\n\x0cVideoContext\x12H\n\x08segments\x18\x01 \x03(\x0b\x32\x36.google.cloud.videointelligence.v1p1beta1.VideoSegment\x12^\n\x16label_detection_config\x18\x02 \x01(\x0b\x32>.google.cloud.videointelligence.v1p1beta1.LabelDetectionConfig\x12i\n\x1cshot_change_detection_config\x18\x03 \x01(\x0b\x32\x43.google.cloud.videointelligence.v1p1beta1.ShotChangeDetectionConfig\x12s\n!explicit_content_detection_config\x18\x04 \x01(\x0b\x32H.google.cloud.videointelligence.v1p1beta1.ExplicitContentDetectionConfig\x12h\n\x1bspeech_transcription_config\x18\x06 \x01(\x0b\x32\x43.google.cloud.videointelligence.v1p1beta1.SpeechTranscriptionConfig"\x9c\x01\n\x14LabelDetectionConfig\x12Z\n\x14label_detection_mode\x18\x01 \x01(\x0e\x32<.google.cloud.videointelligence.v1p1beta1.LabelDetectionMode\x12\x19\n\x11stationary_camera\x18\x02 \x01(\x08\x12\r\n\x05model\x18\x03 \x01(\t"*\n\x19ShotChangeDetectionConfig\x12\r\n\x05model\x18\x01 \x01(\t"/\n\x1e\x45xplicitContentDetectionConfig\x12\r\n\x05model\x18\x01 \x01(\t"x\n\x0cVideoSegment\x12\x34\n\x11start_time_offset\x18\x01 \x01(\x0b\x32\x19.google.protobuf.Duration\x12\x32\n\x0f\x65nd_time_offset\x18\x02 \x01(\x0b\x32\x19.google.protobuf.Duration"k\n\x0cLabelSegment\x12G\n\x07segment\x18\x01 \x01(\x0b\x32\x36.google.cloud.videointelligence.v1p1beta1.VideoSegment\x12\x12\n\nconfidence\x18\x02 \x01(\x02"P\n\nLabelFrame\x12.\n\x0btime_offset\x18\x01 \x01(\x0b\x32\x19.google.protobuf.Duration\x12\x12\n\nconfidence\x18\x02 \x01(\x02"G\n\x06\x45ntity\x12\x11\n\tentity_id\x18\x01 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x02 \x01(\t\x12\x15\n\rlanguage_code\x18\x03 \x01(\t"\xb0\x02\n\x0fLabelAnnotation\x12@\n\x06\x65ntity\x18\x01 \x01(\x0b\x32\x30.google.cloud.videointelligence.v1p1beta1.Entity\x12K\n\x11\x63\x61tegory_entities\x18\x02 \x03(\x0b\x32\x30.google.cloud.videointelligence.v1p1beta1.Entity\x12H\n\x08segments\x18\x03 \x03(\x0b\x32\x36.google.cloud.videointelligence.v1p1beta1.LabelSegment\x12\x44\n\x06\x66rames\x18\x04 \x03(\x0b\x32\x34.google.cloud.videointelligence.v1p1beta1.LabelFrame"\x9c\x01\n\x14\x45xplicitContentFrame\x12.\n\x0btime_offset\x18\x01 \x01(\x0b\x32\x19.google.protobuf.Duration\x12T\n\x16pornography_likelihood\x18\x02 \x01(\x0e\x32\x34.google.cloud.videointelligence.v1p1beta1.Likelihood"k\n\x19\x45xplicitContentAnnotation\x12N\n\x06\x66rames\x18\x01 \x03(\x0b\x32>.google.cloud.videointelligence.v1p1beta1.ExplicitContentFrame"\xf5\x04\n\x16VideoAnnotationResults\x12\x11\n\tinput_uri\x18\x01 \x01(\t\x12\\\n\x19segment_label_annotations\x18\x02 \x03(\x0b\x32\x39.google.cloud.videointelligence.v1p1beta1.LabelAnnotation\x12Y\n\x16shot_label_annotations\x18\x03 \x03(\x0b\x32\x39.google.cloud.videointelligence.v1p1beta1.LabelAnnotation\x12Z\n\x17\x66rame_label_annotations\x18\x04 \x03(\x0b\x32\x39.google.cloud.videointelligence.v1p1beta1.LabelAnnotation\x12P\n\x10shot_annotations\x18\x06 \x03(\x0b\x32\x36.google.cloud.videointelligence.v1p1beta1.VideoSegment\x12`\n\x13\x65xplicit_annotation\x18\x07 \x01(\x0b\x32\x43.google.cloud.videointelligence.v1p1beta1.ExplicitContentAnnotation\x12\\\n\x15speech_transcriptions\x18\x0b \x03(\x0b\x32=.google.cloud.videointelligence.v1p1beta1.SpeechTranscription\x12!\n\x05\x65rror\x18\t \x01(\x0b\x32\x12.google.rpc.Status"u\n\x15\x41nnotateVideoResponse\x12\\\n\x12\x61nnotation_results\x18\x01 \x03(\x0b\x32@.google.cloud.videointelligence.v1p1beta1.VideoAnnotationResults"\xa7\x01\n\x17VideoAnnotationProgress\x12\x11\n\tinput_uri\x18\x01 \x01(\t\x12\x18\n\x10progress_percent\x18\x02 \x01(\x05\x12.\n\nstart_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12/\n\x0bupdate_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp"w\n\x15\x41nnotateVideoProgress\x12^\n\x13\x61nnotation_progress\x18\x01 \x03(\x0b\x32\x41.google.cloud.videointelligence.v1p1beta1.VideoAnnotationProgress"\xf4\x01\n\x19SpeechTranscriptionConfig\x12\x15\n\rlanguage_code\x18\x01 \x01(\t\x12\x18\n\x10max_alternatives\x18\x02 \x01(\x05\x12\x18\n\x10\x66ilter_profanity\x18\x03 \x01(\x08\x12P\n\x0fspeech_contexts\x18\x04 \x03(\x0b\x32\x37.google.cloud.videointelligence.v1p1beta1.SpeechContext\x12$\n\x1c\x65nable_automatic_punctuation\x18\x05 \x01(\x08\x12\x14\n\x0c\x61udio_tracks\x18\x06 \x03(\x05" \n\rSpeechContext\x12\x0f\n\x07phrases\x18\x01 \x03(\t"s\n\x13SpeechTranscription\x12\\\n\x0c\x61lternatives\x18\x01 \x03(\x0b\x32\x46.google.cloud.videointelligence.v1p1beta1.SpeechRecognitionAlternative"\x89\x01\n\x1cSpeechRecognitionAlternative\x12\x12\n\ntranscript\x18\x01 \x01(\t\x12\x12\n\nconfidence\x18\x02 \x01(\x02\x12\x41\n\x05words\x18\x03 \x03(\x0b\x32\x32.google.cloud.videointelligence.v1p1beta1.WordInfo"t\n\x08WordInfo\x12-\n\nstart_time\x18\x01 \x01(\x0b\x32\x19.google.protobuf.Duration\x12+\n\x08\x65nd_time\x18\x02 \x01(\x0b\x32\x19.google.protobuf.Duration\x12\x0c\n\x04word\x18\x03 \x01(\t*\x8c\x01\n\x07\x46\x65\x61ture\x12\x17\n\x13\x46\x45\x41TURE_UNSPECIFIED\x10\x00\x12\x13\n\x0fLABEL_DETECTION\x10\x01\x12\x19\n\x15SHOT_CHANGE_DETECTION\x10\x02\x12\x1e\n\x1a\x45XPLICIT_CONTENT_DETECTION\x10\x03\x12\x18\n\x14SPEECH_TRANSCRIPTION\x10\x06*r\n\x12LabelDetectionMode\x12$\n LABEL_DETECTION_MODE_UNSPECIFIED\x10\x00\x12\r\n\tSHOT_MODE\x10\x01\x12\x0e\n\nFRAME_MODE\x10\x02\x12\x17\n\x13SHOT_AND_FRAME_MODE\x10\x03*t\n\nLikelihood\x12\x1a\n\x16LIKELIHOOD_UNSPECIFIED\x10\x00\x12\x11\n\rVERY_UNLIKELY\x10\x01\x12\x0c\n\x08UNLIKELY\x10\x02\x12\x0c\n\x08POSSIBLE\x10\x03\x12\n\n\x06LIKELY\x10\x04\x12\x0f\n\x0bVERY_LIKELY\x10\x05\x32\xb2\x01\n\x18VideoIntelligenceService\x12\x95\x01\n\rAnnotateVideo\x12>.google.cloud.videointelligence.v1p1beta1.AnnotateVideoRequest\x1a\x1d.google.longrunning.Operation"%\x82\xd3\xe4\x93\x02\x1f"\x1a/v1p1beta1/videos:annotate:\x01*B\x80\x02\n,com.google.cloud.videointelligence.v1p1beta1B\x1dVideoIntelligenceServiceProtoP\x01ZYgoogle.golang.org/genproto/googleapis/cloud/videointelligence/v1p1beta1;videointelligence\xaa\x02(Google.Cloud.VideoIntelligence.V1P1Beta1\xca\x02(Google\\Cloud\\VideoIntelligence\\V1p1beta1b\x06proto3'
     ),
@@ -48,27 +50,43 @@ _FEATURE = _descriptor.EnumDescriptor(
     file=DESCRIPTOR,
     values=[
         _descriptor.EnumValueDescriptor(
-            name="FEATURE_UNSPECIFIED", index=0, number=0, options=None, type=None
+            name="FEATURE_UNSPECIFIED",
+            index=0,
+            number=0,
+            serialized_options=None,
+            type=None,
         ),
         _descriptor.EnumValueDescriptor(
-            name="LABEL_DETECTION", index=1, number=1, options=None, type=None
+            name="LABEL_DETECTION",
+            index=1,
+            number=1,
+            serialized_options=None,
+            type=None,
         ),
         _descriptor.EnumValueDescriptor(
-            name="SHOT_CHANGE_DETECTION", index=2, number=2, options=None, type=None
+            name="SHOT_CHANGE_DETECTION",
+            index=2,
+            number=2,
+            serialized_options=None,
+            type=None,
         ),
         _descriptor.EnumValueDescriptor(
             name="EXPLICIT_CONTENT_DETECTION",
             index=3,
             number=3,
-            options=None,
+            serialized_options=None,
             type=None,
         ),
         _descriptor.EnumValueDescriptor(
-            name="SPEECH_TRANSCRIPTION", index=4, number=6, options=None, type=None
+            name="SPEECH_TRANSCRIPTION",
+            index=4,
+            number=6,
+            serialized_options=None,
+            type=None,
         ),
     ],
     containing_type=None,
-    options=None,
+    serialized_options=None,
     serialized_start=3959,
     serialized_end=4099,
 )
@@ -85,21 +103,25 @@ _LABELDETECTIONMODE = _descriptor.EnumDescriptor(
             name="LABEL_DETECTION_MODE_UNSPECIFIED",
             index=0,
             number=0,
-            options=None,
+            serialized_options=None,
             type=None,
         ),
         _descriptor.EnumValueDescriptor(
-            name="SHOT_MODE", index=1, number=1, options=None, type=None
+            name="SHOT_MODE", index=1, number=1, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="FRAME_MODE", index=2, number=2, options=None, type=None
+            name="FRAME_MODE", index=2, number=2, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="SHOT_AND_FRAME_MODE", index=3, number=3, options=None, type=None
+            name="SHOT_AND_FRAME_MODE",
+            index=3,
+            number=3,
+            serialized_options=None,
+            type=None,
         ),
     ],
     containing_type=None,
-    options=None,
+    serialized_options=None,
     serialized_start=4101,
     serialized_end=4215,
 )
@@ -113,26 +135,30 @@ _LIKELIHOOD = _descriptor.EnumDescriptor(
     file=DESCRIPTOR,
     values=[
         _descriptor.EnumValueDescriptor(
-            name="LIKELIHOOD_UNSPECIFIED", index=0, number=0, options=None, type=None
+            name="LIKELIHOOD_UNSPECIFIED",
+            index=0,
+            number=0,
+            serialized_options=None,
+            type=None,
         ),
         _descriptor.EnumValueDescriptor(
-            name="VERY_UNLIKELY", index=1, number=1, options=None, type=None
+            name="VERY_UNLIKELY", index=1, number=1, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="UNLIKELY", index=2, number=2, options=None, type=None
+            name="UNLIKELY", index=2, number=2, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="POSSIBLE", index=3, number=3, options=None, type=None
+            name="POSSIBLE", index=3, number=3, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="LIKELY", index=4, number=4, options=None, type=None
+            name="LIKELY", index=4, number=4, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="VERY_LIKELY", index=5, number=5, options=None, type=None
+            name="VERY_LIKELY", index=5, number=5, serialized_options=None, type=None
         ),
     ],
     containing_type=None,
-    options=None,
+    serialized_options=None,
     serialized_start=4217,
     serialized_end=4333,
 )
@@ -178,7 +204,7 @@ _ANNOTATEVIDEOREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -196,7 +222,7 @@ _ANNOTATEVIDEOREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -214,7 +240,7 @@ _ANNOTATEVIDEOREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -232,7 +258,7 @@ _ANNOTATEVIDEOREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -250,7 +276,7 @@ _ANNOTATEVIDEOREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -268,14 +294,14 @@ _ANNOTATEVIDEOREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -307,7 +333,7 @@ _VIDEOCONTEXT = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -325,7 +351,7 @@ _VIDEOCONTEXT = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -343,7 +369,7 @@ _VIDEOCONTEXT = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -361,7 +387,7 @@ _VIDEOCONTEXT = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -379,14 +405,14 @@ _VIDEOCONTEXT = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -418,7 +444,7 @@ _LABELDETECTIONCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -436,7 +462,7 @@ _LABELDETECTIONCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -454,14 +480,14 @@ _LABELDETECTIONCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -493,14 +519,14 @@ _SHOTCHANGEDETECTIONCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -532,14 +558,14 @@ _EXPLICITCONTENTDETECTIONCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -571,7 +597,7 @@ _VIDEOSEGMENT = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -589,14 +615,14 @@ _VIDEOSEGMENT = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -628,7 +654,7 @@ _LABELSEGMENT = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -646,14 +672,14 @@ _LABELSEGMENT = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -685,7 +711,7 @@ _LABELFRAME = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -703,14 +729,14 @@ _LABELFRAME = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -742,7 +768,7 @@ _ENTITY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -760,7 +786,7 @@ _ENTITY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -778,14 +804,14 @@ _ENTITY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -817,7 +843,7 @@ _LABELANNOTATION = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -835,7 +861,7 @@ _LABELANNOTATION = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -853,7 +879,7 @@ _LABELANNOTATION = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -871,14 +897,14 @@ _LABELANNOTATION = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -910,7 +936,7 @@ _EXPLICITCONTENTFRAME = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -928,14 +954,14 @@ _EXPLICITCONTENTFRAME = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -967,14 +993,14 @@ _EXPLICITCONTENTANNOTATION = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1006,7 +1032,7 @@ _VIDEOANNOTATIONRESULTS = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1024,7 +1050,7 @@ _VIDEOANNOTATIONRESULTS = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1042,7 +1068,7 @@ _VIDEOANNOTATIONRESULTS = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1060,7 +1086,7 @@ _VIDEOANNOTATIONRESULTS = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1078,7 +1104,7 @@ _VIDEOANNOTATIONRESULTS = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1096,7 +1122,7 @@ _VIDEOANNOTATIONRESULTS = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1114,7 +1140,7 @@ _VIDEOANNOTATIONRESULTS = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1132,14 +1158,14 @@ _VIDEOANNOTATIONRESULTS = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1171,14 +1197,14 @@ _ANNOTATEVIDEORESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1210,7 +1236,7 @@ _VIDEOANNOTATIONPROGRESS = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1228,7 +1254,7 @@ _VIDEOANNOTATIONPROGRESS = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1246,7 +1272,7 @@ _VIDEOANNOTATIONPROGRESS = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1264,14 +1290,14 @@ _VIDEOANNOTATIONPROGRESS = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1303,14 +1329,14 @@ _ANNOTATEVIDEOPROGRESS = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1342,7 +1368,7 @@ _SPEECHTRANSCRIPTIONCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1360,7 +1386,7 @@ _SPEECHTRANSCRIPTIONCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1378,7 +1404,7 @@ _SPEECHTRANSCRIPTIONCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1396,7 +1422,7 @@ _SPEECHTRANSCRIPTIONCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1414,7 +1440,7 @@ _SPEECHTRANSCRIPTIONCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1432,14 +1458,14 @@ _SPEECHTRANSCRIPTIONCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1471,14 +1497,14 @@ _SPEECHCONTEXT = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1510,14 +1536,14 @@ _SPEECHTRANSCRIPTION = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1549,7 +1575,7 @@ _SPEECHRECOGNITIONALTERNATIVE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1567,7 +1593,7 @@ _SPEECHRECOGNITIONALTERNATIVE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1585,14 +1611,14 @@ _SPEECHRECOGNITIONALTERNATIVE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1624,7 +1650,7 @@ _WORDINFO = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1642,7 +1668,7 @@ _WORDINFO = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1660,14 +1686,14 @@ _WORDINFO = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -2364,20 +2390,14 @@ WordInfo = _reflection.GeneratedProtocolMessageType(
 _sym_db.RegisterMessage(WordInfo)
 
 
-DESCRIPTOR.has_options = True
-DESCRIPTOR._options = _descriptor._ParseOptions(
-    descriptor_pb2.FileOptions(),
-    _b(
-        "\n,com.google.cloud.videointelligence.v1p1beta1B\035VideoIntelligenceServiceProtoP\001ZYgoogle.golang.org/genproto/googleapis/cloud/videointelligence/v1p1beta1;videointelligence\252\002(Google.Cloud.VideoIntelligence.V1P1Beta1\312\002(Google\\Cloud\\VideoIntelligence\\V1p1beta1"
-    ),
-)
+DESCRIPTOR._options = None
 
 _VIDEOINTELLIGENCESERVICE = _descriptor.ServiceDescriptor(
     name="VideoIntelligenceService",
     full_name="google.cloud.videointelligence.v1p1beta1.VideoIntelligenceService",
     file=DESCRIPTOR,
     index=0,
-    options=None,
+    serialized_options=None,
     serialized_start=4336,
     serialized_end=4514,
     methods=[
@@ -2388,9 +2408,8 @@ _VIDEOINTELLIGENCESERVICE = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_ANNOTATEVIDEOREQUEST,
             output_type=google_dot_longrunning_dot_operations__pb2._OPERATION,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b('\202\323\344\223\002\037"\032/v1p1beta1/videos:annotate:\001*'),
+            serialized_options=_b(
+                '\202\323\344\223\002\037"\032/v1p1beta1/videos:annotate:\001*'
             ),
         )
     ],

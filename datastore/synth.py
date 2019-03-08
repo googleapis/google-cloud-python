@@ -27,6 +27,7 @@ library = gapic.py_library(
     "v1",
     config_path="/google/datastore/artman_datastore.yaml",
     artman_output_name="datastore-v1",
+    include_protos=True,
 )
 
 s.move(library / "google/cloud/datastore_v1/proto")

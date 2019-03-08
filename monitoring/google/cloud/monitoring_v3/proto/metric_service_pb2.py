@@ -8,7 +8,6 @@ from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
-from google.protobuf import descriptor_pb2
 
 # @@protoc_insertion_point(imports)
 
@@ -35,6 +34,9 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     name="google/cloud/monitoring_v3/proto/metric_service.proto",
     package="google.monitoring.v3",
     syntax="proto3",
+    serialized_options=_b(
+        "\n\030com.google.monitoring.v3B\022MetricServiceProtoP\001Z>google.golang.org/genproto/googleapis/monitoring/v3;monitoring\252\002\032Google.Cloud.Monitoring.V3\312\002\032Google\\Cloud\\Monitoring\\V3"
+    ),
     serialized_pb=_b(
         '\n5google/cloud/monitoring_v3/proto/metric_service.proto\x12\x14google.monitoring.v3\x1a\x1cgoogle/api/annotations.proto\x1a\x17google/api/metric.proto\x1a#google/api/monitored_resource.proto\x1a-google/cloud/monitoring_v3/proto/common.proto\x1a-google/cloud/monitoring_v3/proto/metric.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x17google/rpc/status.proto"n\n\'ListMonitoredResourceDescriptorsRequest\x12\x0c\n\x04name\x18\x05 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x02 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05\x12\x12\n\npage_token\x18\x04 \x01(\t"\x8a\x01\n(ListMonitoredResourceDescriptorsResponse\x12\x45\n\x14resource_descriptors\x18\x01 \x03(\x0b\x32\'.google.api.MonitoredResourceDescriptor\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"5\n%GetMonitoredResourceDescriptorRequest\x12\x0c\n\x04name\x18\x03 \x01(\t"c\n\x1cListMetricDescriptorsRequest\x12\x0c\n\x04name\x18\x05 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x02 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05\x12\x12\n\npage_token\x18\x04 \x01(\t"r\n\x1dListMetricDescriptorsResponse\x12\x38\n\x12metric_descriptors\x18\x01 \x03(\x0b\x32\x1c.google.api.MetricDescriptor\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"*\n\x1aGetMetricDescriptorRequest\x12\x0c\n\x04name\x18\x03 \x01(\t"f\n\x1d\x43reateMetricDescriptorRequest\x12\x0c\n\x04name\x18\x03 \x01(\t\x12\x37\n\x11metric_descriptor\x18\x02 \x01(\x0b\x32\x1c.google.api.MetricDescriptor"-\n\x1d\x44\x65leteMetricDescriptorRequest\x12\x0c\n\x04name\x18\x03 \x01(\t"\xcf\x02\n\x15ListTimeSeriesRequest\x12\x0c\n\x04name\x18\n \x01(\t\x12\x0e\n\x06\x66ilter\x18\x02 \x01(\t\x12\x34\n\x08interval\x18\x04 \x01(\x0b\x32".google.monitoring.v3.TimeInterval\x12\x36\n\x0b\x61ggregation\x18\x05 \x01(\x0b\x32!.google.monitoring.v3.Aggregation\x12\x10\n\x08order_by\x18\x06 \x01(\t\x12H\n\x04view\x18\x07 \x01(\x0e\x32:.google.monitoring.v3.ListTimeSeriesRequest.TimeSeriesView\x12\x11\n\tpage_size\x18\x08 \x01(\x05\x12\x12\n\npage_token\x18\t \x01(\t"\'\n\x0eTimeSeriesView\x12\x08\n\x04\x46ULL\x10\x00\x12\x0b\n\x07HEADERS\x10\x01"\x96\x01\n\x16ListTimeSeriesResponse\x12\x35\n\x0btime_series\x18\x01 \x03(\x0b\x32 .google.monitoring.v3.TimeSeries\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\x12,\n\x10\x65xecution_errors\x18\x03 \x03(\x0b\x32\x12.google.rpc.Status"^\n\x17\x43reateTimeSeriesRequest\x12\x0c\n\x04name\x18\x03 \x01(\t\x12\x35\n\x0btime_series\x18\x02 \x03(\x0b\x32 .google.monitoring.v3.TimeSeries"r\n\x15\x43reateTimeSeriesError\x12\x35\n\x0btime_series\x18\x01 \x01(\x0b\x32 .google.monitoring.v3.TimeSeries\x12"\n\x06status\x18\x02 \x01(\x0b\x32\x12.google.rpc.Status2\xf5\n\n\rMetricService\x12\xdd\x01\n ListMonitoredResourceDescriptors\x12=.google.monitoring.v3.ListMonitoredResourceDescriptorsRequest\x1a>.google.monitoring.v3.ListMonitoredResourceDescriptorsResponse":\x82\xd3\xe4\x93\x02\x34\x12\x32/v3/{name=projects/*}/monitoredResourceDescriptors\x12\xc4\x01\n\x1eGetMonitoredResourceDescriptor\x12;.google.monitoring.v3.GetMonitoredResourceDescriptorRequest\x1a\'.google.api.MonitoredResourceDescriptor"<\x82\xd3\xe4\x93\x02\x36\x12\x34/v3/{name=projects/*/monitoredResourceDescriptors/*}\x12\xb1\x01\n\x15ListMetricDescriptors\x12\x32.google.monitoring.v3.ListMetricDescriptorsRequest\x1a\x33.google.monitoring.v3.ListMetricDescriptorsResponse"/\x82\xd3\xe4\x93\x02)\x12\'/v3/{name=projects/*}/metricDescriptors\x12\x99\x01\n\x13GetMetricDescriptor\x12\x30.google.monitoring.v3.GetMetricDescriptorRequest\x1a\x1c.google.api.MetricDescriptor"2\x82\xd3\xe4\x93\x02,\x12*/v3/{name=projects/*/metricDescriptors/**}\x12\xaf\x01\n\x16\x43reateMetricDescriptor\x12\x33.google.monitoring.v3.CreateMetricDescriptorRequest\x1a\x1c.google.api.MetricDescriptor"B\x82\xd3\xe4\x93\x02<"\'/v3/{name=projects/*}/metricDescriptors:\x11metric_descriptor\x12\x99\x01\n\x16\x44\x65leteMetricDescriptor\x12\x33.google.monitoring.v3.DeleteMetricDescriptorRequest\x1a\x16.google.protobuf.Empty"2\x82\xd3\xe4\x93\x02,**/v3/{name=projects/*/metricDescriptors/**}\x12\x95\x01\n\x0eListTimeSeries\x12+.google.monitoring.v3.ListTimeSeriesRequest\x1a,.google.monitoring.v3.ListTimeSeriesResponse"(\x82\xd3\xe4\x93\x02"\x12 /v3/{name=projects/*}/timeSeries\x12\x86\x01\n\x10\x43reateTimeSeries\x12-.google.monitoring.v3.CreateTimeSeriesRequest\x1a\x16.google.protobuf.Empty"+\x82\xd3\xe4\x93\x02%" /v3/{name=projects/*}/timeSeries:\x01*B\xaa\x01\n\x18\x63om.google.monitoring.v3B\x12MetricServiceProtoP\x01Z>google.golang.org/genproto/googleapis/monitoring/v3;monitoring\xaa\x02\x1aGoogle.Cloud.Monitoring.V3\xca\x02\x1aGoogle\\Cloud\\Monitoring\\V3b\x06proto3'
     ),
@@ -58,14 +60,14 @@ _LISTTIMESERIESREQUEST_TIMESERIESVIEW = _descriptor.EnumDescriptor(
     file=DESCRIPTOR,
     values=[
         _descriptor.EnumValueDescriptor(
-            name="FULL", index=0, number=0, options=None, type=None
+            name="FULL", index=0, number=0, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="HEADERS", index=1, number=1, options=None, type=None
+            name="HEADERS", index=1, number=1, serialized_options=None, type=None
         ),
     ],
     containing_type=None,
-    options=None,
+    serialized_options=None,
     serialized_start=1368,
     serialized_end=1407,
 )
@@ -94,7 +96,7 @@ _LISTMONITOREDRESOURCEDESCRIPTORSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -112,7 +114,7 @@ _LISTMONITOREDRESOURCEDESCRIPTORSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -130,7 +132,7 @@ _LISTMONITOREDRESOURCEDESCRIPTORSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -148,14 +150,14 @@ _LISTMONITOREDRESOURCEDESCRIPTORSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -187,7 +189,7 @@ _LISTMONITOREDRESOURCEDESCRIPTORSRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -205,14 +207,14 @@ _LISTMONITOREDRESOURCEDESCRIPTORSRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -244,14 +246,14 @@ _GETMONITOREDRESOURCEDESCRIPTORREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -283,7 +285,7 @@ _LISTMETRICDESCRIPTORSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -301,7 +303,7 @@ _LISTMETRICDESCRIPTORSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -319,7 +321,7 @@ _LISTMETRICDESCRIPTORSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -337,14 +339,14 @@ _LISTMETRICDESCRIPTORSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -376,7 +378,7 @@ _LISTMETRICDESCRIPTORSRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -394,14 +396,14 @@ _LISTMETRICDESCRIPTORSRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -433,14 +435,14 @@ _GETMETRICDESCRIPTORREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -472,7 +474,7 @@ _CREATEMETRICDESCRIPTORREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -490,14 +492,14 @@ _CREATEMETRICDESCRIPTORREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -529,14 +531,14 @@ _DELETEMETRICDESCRIPTORREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -568,7 +570,7 @@ _LISTTIMESERIESREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -586,7 +588,7 @@ _LISTTIMESERIESREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -604,7 +606,7 @@ _LISTTIMESERIESREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -622,7 +624,7 @@ _LISTTIMESERIESREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -640,7 +642,7 @@ _LISTTIMESERIESREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -658,7 +660,7 @@ _LISTTIMESERIESREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -676,7 +678,7 @@ _LISTTIMESERIESREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -694,14 +696,14 @@ _LISTTIMESERIESREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[_LISTTIMESERIESREQUEST_TIMESERIESVIEW],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -733,7 +735,7 @@ _LISTTIMESERIESRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -751,7 +753,7 @@ _LISTTIMESERIESRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -769,14 +771,14 @@ _LISTTIMESERIESRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -808,7 +810,7 @@ _CREATETIMESERIESREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -826,14 +828,14 @@ _CREATETIMESERIESREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -865,7 +867,7 @@ _CREATETIMESERIESERROR = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -883,14 +885,14 @@ _CREATETIMESERIESERROR = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1307,20 +1309,14 @@ CreateTimeSeriesError = _reflection.GeneratedProtocolMessageType(
 _sym_db.RegisterMessage(CreateTimeSeriesError)
 
 
-DESCRIPTOR.has_options = True
-DESCRIPTOR._options = _descriptor._ParseOptions(
-    descriptor_pb2.FileOptions(),
-    _b(
-        "\n\030com.google.monitoring.v3B\022MetricServiceProtoP\001Z>google.golang.org/genproto/googleapis/monitoring/v3;monitoring\252\002\032Google.Cloud.Monitoring.V3\312\002\032Google\\Cloud\\Monitoring\\V3"
-    ),
-)
+DESCRIPTOR._options = None
 
 _METRICSERVICE = _descriptor.ServiceDescriptor(
     name="MetricService",
     full_name="google.monitoring.v3.MetricService",
     file=DESCRIPTOR,
     index=0,
-    options=None,
+    serialized_options=None,
     serialized_start=1775,
     serialized_end=3172,
     methods=[
@@ -1331,11 +1327,8 @@ _METRICSERVICE = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_LISTMONITOREDRESOURCEDESCRIPTORSREQUEST,
             output_type=_LISTMONITOREDRESOURCEDESCRIPTORSRESPONSE,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\0024\0222/v3/{name=projects/*}/monitoredResourceDescriptors"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\0024\0222/v3/{name=projects/*}/monitoredResourceDescriptors"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -1345,11 +1338,8 @@ _METRICSERVICE = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_GETMONITOREDRESOURCEDESCRIPTORREQUEST,
             output_type=google_dot_api_dot_monitored__resource__pb2._MONITOREDRESOURCEDESCRIPTOR,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\0026\0224/v3/{name=projects/*/monitoredResourceDescriptors/*}"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\0026\0224/v3/{name=projects/*/monitoredResourceDescriptors/*}"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -1359,9 +1349,8 @@ _METRICSERVICE = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_LISTMETRICDESCRIPTORSREQUEST,
             output_type=_LISTMETRICDESCRIPTORSRESPONSE,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b("\202\323\344\223\002)\022'/v3/{name=projects/*}/metricDescriptors"),
+            serialized_options=_b(
+                "\202\323\344\223\002)\022'/v3/{name=projects/*}/metricDescriptors"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -1371,11 +1360,8 @@ _METRICSERVICE = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_GETMETRICDESCRIPTORREQUEST,
             output_type=google_dot_api_dot_metric__pb2._METRICDESCRIPTOR,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\002,\022*/v3/{name=projects/*/metricDescriptors/**}"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\002,\022*/v3/{name=projects/*/metricDescriptors/**}"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -1385,11 +1371,8 @@ _METRICSERVICE = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_CREATEMETRICDESCRIPTORREQUEST,
             output_type=google_dot_api_dot_metric__pb2._METRICDESCRIPTOR,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\002<\"'/v3/{name=projects/*}/metricDescriptors:\021metric_descriptor"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\002<\"'/v3/{name=projects/*}/metricDescriptors:\021metric_descriptor"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -1399,9 +1382,8 @@ _METRICSERVICE = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_DELETEMETRICDESCRIPTORREQUEST,
             output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b("\202\323\344\223\002,**/v3/{name=projects/*/metricDescriptors/**}"),
+            serialized_options=_b(
+                "\202\323\344\223\002,**/v3/{name=projects/*/metricDescriptors/**}"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -1411,9 +1393,8 @@ _METRICSERVICE = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_LISTTIMESERIESREQUEST,
             output_type=_LISTTIMESERIESRESPONSE,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b('\202\323\344\223\002"\022 /v3/{name=projects/*}/timeSeries'),
+            serialized_options=_b(
+                '\202\323\344\223\002"\022 /v3/{name=projects/*}/timeSeries'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -1423,9 +1404,8 @@ _METRICSERVICE = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_CREATETIMESERIESREQUEST,
             output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b('\202\323\344\223\002%" /v3/{name=projects/*}/timeSeries:\001*'),
+            serialized_options=_b(
+                '\202\323\344\223\002%" /v3/{name=projects/*}/timeSeries:\001*'
             ),
         ),
     ],

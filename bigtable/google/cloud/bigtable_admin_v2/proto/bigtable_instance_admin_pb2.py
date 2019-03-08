@@ -8,7 +8,6 @@ from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
-from google.protobuf import descriptor_pb2
 
 # @@protoc_insertion_point(imports)
 
@@ -33,6 +32,9 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     name="google/cloud/bigtable/admin_v2/proto/bigtable_instance_admin.proto",
     package="google.bigtable.admin.v2",
     syntax="proto3",
+    serialized_options=_b(
+        "\n\034com.google.bigtable.admin.v2B\032BigtableInstanceAdminProtoP\001Z=google.golang.org/genproto/googleapis/bigtable/admin/v2;admin\252\002\036Google.Cloud.Bigtable.Admin.V2\312\002\036Google\\Cloud\\Bigtable\\Admin\\V2"
+    ),
     serialized_pb=_b(
         '\nBgoogle/cloud/bigtable/admin_v2/proto/bigtable_instance_admin.proto\x12\x18google.bigtable.admin.v2\x1a\x1cgoogle/api/annotations.proto\x1a\x33google/cloud/bigtable/admin_v2/proto/instance.proto\x1a\x1egoogle/iam/v1/iam_policy.proto\x1a\x1agoogle/iam/v1/policy.proto\x1a#google/longrunning/operations.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto\x1a\x1fgoogle/protobuf/timestamp.proto"\x97\x02\n\x15\x43reateInstanceRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x13\n\x0binstance_id\x18\x02 \x01(\t\x12\x34\n\x08instance\x18\x03 \x01(\x0b\x32".google.bigtable.admin.v2.Instance\x12O\n\x08\x63lusters\x18\x04 \x03(\x0b\x32=.google.bigtable.admin.v2.CreateInstanceRequest.ClustersEntry\x1aR\n\rClustersEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x30\n\x05value\x18\x02 \x01(\x0b\x32!.google.bigtable.admin.v2.Cluster:\x02\x38\x01""\n\x12GetInstanceRequest\x12\x0c\n\x04name\x18\x01 \x01(\t":\n\x14ListInstancesRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x12\n\npage_token\x18\x02 \x01(\t"\x81\x01\n\x15ListInstancesResponse\x12\x35\n\tinstances\x18\x01 \x03(\x0b\x32".google.bigtable.admin.v2.Instance\x12\x18\n\x10\x66\x61iled_locations\x18\x02 \x03(\t\x12\x17\n\x0fnext_page_token\x18\x03 \x01(\t"\x85\x01\n\x1cPartialUpdateInstanceRequest\x12\x34\n\x08instance\x18\x01 \x01(\x0b\x32".google.bigtable.admin.v2.Instance\x12/\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMask"%\n\x15\x44\x65leteInstanceRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"n\n\x14\x43reateClusterRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x12\n\ncluster_id\x18\x02 \x01(\t\x12\x32\n\x07\x63luster\x18\x03 \x01(\x0b\x32!.google.bigtable.admin.v2.Cluster"!\n\x11GetClusterRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"9\n\x13ListClustersRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x12\n\npage_token\x18\x02 \x01(\t"~\n\x14ListClustersResponse\x12\x33\n\x08\x63lusters\x18\x01 \x03(\x0b\x32!.google.bigtable.admin.v2.Cluster\x12\x18\n\x10\x66\x61iled_locations\x18\x02 \x03(\t\x12\x17\n\x0fnext_page_token\x18\x03 \x01(\t"$\n\x14\x44\x65leteClusterRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"\xc6\x01\n\x16\x43reateInstanceMetadata\x12I\n\x10original_request\x18\x01 \x01(\x0b\x32/.google.bigtable.admin.v2.CreateInstanceRequest\x12\x30\n\x0crequest_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12/\n\x0b\x66inish_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp"\xcd\x01\n\x16UpdateInstanceMetadata\x12P\n\x10original_request\x18\x01 \x01(\x0b\x32\x36.google.bigtable.admin.v2.PartialUpdateInstanceRequest\x12\x30\n\x0crequest_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12/\n\x0b\x66inish_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp"\xc4\x01\n\x15\x43reateClusterMetadata\x12H\n\x10original_request\x18\x01 \x01(\x0b\x32..google.bigtable.admin.v2.CreateClusterRequest\x12\x30\n\x0crequest_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12/\n\x0b\x66inish_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp"\xb7\x01\n\x15UpdateClusterMetadata\x12;\n\x10original_request\x18\x01 \x01(\x0b\x32!.google.bigtable.admin.v2.Cluster\x12\x30\n\x0crequest_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12/\n\x0b\x66inish_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp"\x95\x01\n\x17\x43reateAppProfileRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x16\n\x0e\x61pp_profile_id\x18\x02 \x01(\t\x12\x39\n\x0b\x61pp_profile\x18\x03 \x01(\x0b\x32$.google.bigtable.admin.v2.AppProfile\x12\x17\n\x0fignore_warnings\x18\x04 \x01(\x08"$\n\x14GetAppProfileRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"O\n\x16ListAppProfilesRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05\x12\x12\n\npage_token\x18\x02 \x01(\t"\x88\x01\n\x17ListAppProfilesResponse\x12:\n\x0c\x61pp_profiles\x18\x01 \x03(\x0b\x32$.google.bigtable.admin.v2.AppProfile\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\x12\x18\n\x10\x66\x61iled_locations\x18\x03 \x03(\t"\x9e\x01\n\x17UpdateAppProfileRequest\x12\x39\n\x0b\x61pp_profile\x18\x01 \x01(\x0b\x32$.google.bigtable.admin.v2.AppProfile\x12/\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMask\x12\x17\n\x0fignore_warnings\x18\x03 \x01(\x08"@\n\x17\x44\x65leteAppProfileRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x17\n\x0fignore_warnings\x18\x02 \x01(\x08"\x1a\n\x18UpdateAppProfileMetadata2\xaa\x17\n\x15\x42igtableInstanceAdmin\x12\x8e\x01\n\x0e\x43reateInstance\x12/.google.bigtable.admin.v2.CreateInstanceRequest\x1a\x1d.google.longrunning.Operation",\x82\xd3\xe4\x93\x02&"!/v2/{parent=projects/*}/instances:\x01*\x12\x8a\x01\n\x0bGetInstance\x12,.google.bigtable.admin.v2.GetInstanceRequest\x1a".google.bigtable.admin.v2.Instance")\x82\xd3\xe4\x93\x02#\x12!/v2/{name=projects/*/instances/*}\x12\x9b\x01\n\rListInstances\x12..google.bigtable.admin.v2.ListInstancesRequest\x1a/.google.bigtable.admin.v2.ListInstancesResponse")\x82\xd3\xe4\x93\x02#\x12!/v2/{parent=projects/*}/instances\x12\x86\x01\n\x0eUpdateInstance\x12".google.bigtable.admin.v2.Instance\x1a".google.bigtable.admin.v2.Instance",\x82\xd3\xe4\x93\x02&\x1a!/v2/{name=projects/*/instances/*}:\x01*\x12\xac\x01\n\x15PartialUpdateInstance\x12\x36.google.bigtable.admin.v2.PartialUpdateInstanceRequest\x1a\x1d.google.longrunning.Operation"<\x82\xd3\xe4\x93\x02\x36\x32*/v2/{instance.name=projects/*/instances/*}:\x08instance\x12\x84\x01\n\x0e\x44\x65leteInstance\x12/.google.bigtable.admin.v2.DeleteInstanceRequest\x1a\x16.google.protobuf.Empty")\x82\xd3\xe4\x93\x02#*!/v2/{name=projects/*/instances/*}\x12\x9d\x01\n\rCreateCluster\x12..google.bigtable.admin.v2.CreateClusterRequest\x1a\x1d.google.longrunning.Operation"=\x82\xd3\xe4\x93\x02\x37",/v2/{parent=projects/*/instances/*}/clusters:\x07\x63luster\x12\x92\x01\n\nGetCluster\x12+.google.bigtable.admin.v2.GetClusterRequest\x1a!.google.bigtable.admin.v2.Cluster"4\x82\xd3\xe4\x93\x02.\x12,/v2/{name=projects/*/instances/*/clusters/*}\x12\xa3\x01\n\x0cListClusters\x12-.google.bigtable.admin.v2.ListClustersRequest\x1a..google.bigtable.admin.v2.ListClustersResponse"4\x82\xd3\xe4\x93\x02.\x12,/v2/{parent=projects/*/instances/*}/clusters\x12\x8a\x01\n\rUpdateCluster\x12!.google.bigtable.admin.v2.Cluster\x1a\x1d.google.longrunning.Operation"7\x82\xd3\xe4\x93\x02\x31\x1a,/v2/{name=projects/*/instances/*/clusters/*}:\x01*\x12\x8d\x01\n\rDeleteCluster\x12..google.bigtable.admin.v2.DeleteClusterRequest\x1a\x16.google.protobuf.Empty"4\x82\xd3\xe4\x93\x02.*,/v2/{name=projects/*/instances/*/clusters/*}\x12\xb1\x01\n\x10\x43reateAppProfile\x12\x31.google.bigtable.admin.v2.CreateAppProfileRequest\x1a$.google.bigtable.admin.v2.AppProfile"D\x82\xd3\xe4\x93\x02>"//v2/{parent=projects/*/instances/*}/appProfiles:\x0b\x61pp_profile\x12\x9e\x01\n\rGetAppProfile\x12..google.bigtable.admin.v2.GetAppProfileRequest\x1a$.google.bigtable.admin.v2.AppProfile"7\x82\xd3\xe4\x93\x02\x31\x12//v2/{name=projects/*/instances/*/appProfiles/*}\x12\xaf\x01\n\x0fListAppProfiles\x12\x30.google.bigtable.admin.v2.ListAppProfilesRequest\x1a\x31.google.bigtable.admin.v2.ListAppProfilesResponse"7\x82\xd3\xe4\x93\x02\x31\x12//v2/{parent=projects/*/instances/*}/appProfiles\x12\xb6\x01\n\x10UpdateAppProfile\x12\x31.google.bigtable.admin.v2.UpdateAppProfileRequest\x1a\x1d.google.longrunning.Operation"P\x82\xd3\xe4\x93\x02J2;/v2/{app_profile.name=projects/*/instances/*/appProfiles/*}:\x0b\x61pp_profile\x12\x96\x01\n\x10\x44\x65leteAppProfile\x12\x31.google.bigtable.admin.v2.DeleteAppProfileRequest\x1a\x16.google.protobuf.Empty"7\x82\xd3\xe4\x93\x02\x31*//v2/{name=projects/*/instances/*/appProfiles/*}\x12\x88\x01\n\x0cGetIamPolicy\x12".google.iam.v1.GetIamPolicyRequest\x1a\x15.google.iam.v1.Policy"=\x82\xd3\xe4\x93\x02\x37"2/v2/{resource=projects/*/instances/*}:getIamPolicy:\x01*\x12\x88\x01\n\x0cSetIamPolicy\x12".google.iam.v1.SetIamPolicyRequest\x1a\x15.google.iam.v1.Policy"=\x82\xd3\xe4\x93\x02\x37"2/v2/{resource=projects/*/instances/*}:setIamPolicy:\x01*\x12\xae\x01\n\x12TestIamPermissions\x12(.google.iam.v1.TestIamPermissionsRequest\x1a).google.iam.v1.TestIamPermissionsResponse"C\x82\xd3\xe4\x93\x02="8/v2/{resource=projects/*/instances/*}:testIamPermissions:\x01*B\xbd\x01\n\x1c\x63om.google.bigtable.admin.v2B\x1a\x42igtableInstanceAdminProtoP\x01Z=google.golang.org/genproto/googleapis/bigtable/admin/v2;admin\xaa\x02\x1eGoogle.Cloud.Bigtable.Admin.V2\xca\x02\x1eGoogle\\Cloud\\Bigtable\\Admin\\V2b\x06proto3'
     ),
@@ -71,7 +73,7 @@ _CREATEINSTANCEREQUEST_CLUSTERSENTRY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -89,14 +91,14 @@ _CREATEINSTANCEREQUEST_CLUSTERSENTRY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=_descriptor._ParseOptions(descriptor_pb2.MessageOptions(), _b("8\001")),
+    serialized_options=_b("8\001"),
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -127,7 +129,7 @@ _CREATEINSTANCEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -145,7 +147,7 @@ _CREATEINSTANCEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -163,7 +165,7 @@ _CREATEINSTANCEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -181,14 +183,14 @@ _CREATEINSTANCEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[_CREATEINSTANCEREQUEST_CLUSTERSENTRY],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -220,14 +222,14 @@ _GETINSTANCEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -259,7 +261,7 @@ _LISTINSTANCESREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -277,14 +279,14 @@ _LISTINSTANCESREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -316,7 +318,7 @@ _LISTINSTANCESRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -334,7 +336,7 @@ _LISTINSTANCESRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -352,14 +354,14 @@ _LISTINSTANCESRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -391,7 +393,7 @@ _PARTIALUPDATEINSTANCEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -409,14 +411,14 @@ _PARTIALUPDATEINSTANCEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -448,14 +450,14 @@ _DELETEINSTANCEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -487,7 +489,7 @@ _CREATECLUSTERREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -505,7 +507,7 @@ _CREATECLUSTERREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -523,14 +525,14 @@ _CREATECLUSTERREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -562,14 +564,14 @@ _GETCLUSTERREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -601,7 +603,7 @@ _LISTCLUSTERSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -619,14 +621,14 @@ _LISTCLUSTERSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -658,7 +660,7 @@ _LISTCLUSTERSRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -676,7 +678,7 @@ _LISTCLUSTERSRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -694,14 +696,14 @@ _LISTCLUSTERSRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -733,14 +735,14 @@ _DELETECLUSTERREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -772,7 +774,7 @@ _CREATEINSTANCEMETADATA = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -790,7 +792,7 @@ _CREATEINSTANCEMETADATA = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -808,14 +810,14 @@ _CREATEINSTANCEMETADATA = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -847,7 +849,7 @@ _UPDATEINSTANCEMETADATA = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -865,7 +867,7 @@ _UPDATEINSTANCEMETADATA = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -883,14 +885,14 @@ _UPDATEINSTANCEMETADATA = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -922,7 +924,7 @@ _CREATECLUSTERMETADATA = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -940,7 +942,7 @@ _CREATECLUSTERMETADATA = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -958,14 +960,14 @@ _CREATECLUSTERMETADATA = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -997,7 +999,7 @@ _UPDATECLUSTERMETADATA = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1015,7 +1017,7 @@ _UPDATECLUSTERMETADATA = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1033,14 +1035,14 @@ _UPDATECLUSTERMETADATA = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1072,7 +1074,7 @@ _CREATEAPPPROFILEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1090,7 +1092,7 @@ _CREATEAPPPROFILEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1108,7 +1110,7 @@ _CREATEAPPPROFILEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1126,14 +1128,14 @@ _CREATEAPPPROFILEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1165,14 +1167,14 @@ _GETAPPPROFILEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1204,7 +1206,7 @@ _LISTAPPPROFILESREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1222,7 +1224,7 @@ _LISTAPPPROFILESREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1240,14 +1242,14 @@ _LISTAPPPROFILESREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1279,7 +1281,7 @@ _LISTAPPPROFILESRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1297,7 +1299,7 @@ _LISTAPPPROFILESRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1315,14 +1317,14 @@ _LISTAPPPROFILESRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1354,7 +1356,7 @@ _UPDATEAPPPROFILEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1372,7 +1374,7 @@ _UPDATEAPPPROFILEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1390,14 +1392,14 @@ _UPDATEAPPPROFILEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1429,7 +1431,7 @@ _DELETEAPPPROFILEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1447,14 +1449,14 @@ _DELETEAPPPROFILEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1474,7 +1476,7 @@ _UPDATEAPPPROFILEMETADATA = _descriptor.Descriptor(
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -2130,24 +2132,15 @@ UpdateAppProfileMetadata = _reflection.GeneratedProtocolMessageType(
 _sym_db.RegisterMessage(UpdateAppProfileMetadata)
 
 
-DESCRIPTOR.has_options = True
-DESCRIPTOR._options = _descriptor._ParseOptions(
-    descriptor_pb2.FileOptions(),
-    _b(
-        "\n\034com.google.bigtable.admin.v2B\032BigtableInstanceAdminProtoP\001Z=google.golang.org/genproto/googleapis/bigtable/admin/v2;admin\252\002\036Google.Cloud.Bigtable.Admin.V2\312\002\036Google\\Cloud\\Bigtable\\Admin\\V2"
-    ),
-)
-_CREATEINSTANCEREQUEST_CLUSTERSENTRY.has_options = True
-_CREATEINSTANCEREQUEST_CLUSTERSENTRY._options = _descriptor._ParseOptions(
-    descriptor_pb2.MessageOptions(), _b("8\001")
-)
+DESCRIPTOR._options = None
+_CREATEINSTANCEREQUEST_CLUSTERSENTRY._options = None
 
 _BIGTABLEINSTANCEADMIN = _descriptor.ServiceDescriptor(
     name="BigtableInstanceAdmin",
     full_name="google.bigtable.admin.v2.BigtableInstanceAdmin",
     file=DESCRIPTOR,
     index=0,
-    options=None,
+    serialized_options=None,
     serialized_start=2889,
     serialized_end=5875,
     methods=[
@@ -2158,9 +2151,8 @@ _BIGTABLEINSTANCEADMIN = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_CREATEINSTANCEREQUEST,
             output_type=google_dot_longrunning_dot_operations__pb2._OPERATION,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b('\202\323\344\223\002&"!/v2/{parent=projects/*}/instances:\001*'),
+            serialized_options=_b(
+                '\202\323\344\223\002&"!/v2/{parent=projects/*}/instances:\001*'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2170,9 +2162,8 @@ _BIGTABLEINSTANCEADMIN = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_GETINSTANCEREQUEST,
             output_type=google_dot_cloud_dot_bigtable_dot_admin__v2_dot_proto_dot_instance__pb2._INSTANCE,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b("\202\323\344\223\002#\022!/v2/{name=projects/*/instances/*}"),
+            serialized_options=_b(
+                "\202\323\344\223\002#\022!/v2/{name=projects/*/instances/*}"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2182,9 +2173,8 @@ _BIGTABLEINSTANCEADMIN = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_LISTINSTANCESREQUEST,
             output_type=_LISTINSTANCESRESPONSE,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b("\202\323\344\223\002#\022!/v2/{parent=projects/*}/instances"),
+            serialized_options=_b(
+                "\202\323\344\223\002#\022!/v2/{parent=projects/*}/instances"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2194,9 +2184,8 @@ _BIGTABLEINSTANCEADMIN = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=google_dot_cloud_dot_bigtable_dot_admin__v2_dot_proto_dot_instance__pb2._INSTANCE,
             output_type=google_dot_cloud_dot_bigtable_dot_admin__v2_dot_proto_dot_instance__pb2._INSTANCE,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b("\202\323\344\223\002&\032!/v2/{name=projects/*/instances/*}:\001*"),
+            serialized_options=_b(
+                "\202\323\344\223\002&\032!/v2/{name=projects/*/instances/*}:\001*"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2206,11 +2195,8 @@ _BIGTABLEINSTANCEADMIN = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_PARTIALUPDATEINSTANCEREQUEST,
             output_type=google_dot_longrunning_dot_operations__pb2._OPERATION,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\00262*/v2/{instance.name=projects/*/instances/*}:\010instance"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\00262*/v2/{instance.name=projects/*/instances/*}:\010instance"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2220,9 +2206,8 @@ _BIGTABLEINSTANCEADMIN = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_DELETEINSTANCEREQUEST,
             output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b("\202\323\344\223\002#*!/v2/{name=projects/*/instances/*}"),
+            serialized_options=_b(
+                "\202\323\344\223\002#*!/v2/{name=projects/*/instances/*}"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2232,11 +2217,8 @@ _BIGTABLEINSTANCEADMIN = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_CREATECLUSTERREQUEST,
             output_type=google_dot_longrunning_dot_operations__pb2._OPERATION,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\0027",/v2/{parent=projects/*/instances/*}/clusters:\007cluster'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\0027",/v2/{parent=projects/*/instances/*}/clusters:\007cluster'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2246,11 +2228,8 @@ _BIGTABLEINSTANCEADMIN = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_GETCLUSTERREQUEST,
             output_type=google_dot_cloud_dot_bigtable_dot_admin__v2_dot_proto_dot_instance__pb2._CLUSTER,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\002.\022,/v2/{name=projects/*/instances/*/clusters/*}"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\002.\022,/v2/{name=projects/*/instances/*/clusters/*}"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2260,11 +2239,8 @@ _BIGTABLEINSTANCEADMIN = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_LISTCLUSTERSREQUEST,
             output_type=_LISTCLUSTERSRESPONSE,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\002.\022,/v2/{parent=projects/*/instances/*}/clusters"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\002.\022,/v2/{parent=projects/*/instances/*}/clusters"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2274,11 +2250,8 @@ _BIGTABLEINSTANCEADMIN = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=google_dot_cloud_dot_bigtable_dot_admin__v2_dot_proto_dot_instance__pb2._CLUSTER,
             output_type=google_dot_longrunning_dot_operations__pb2._OPERATION,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\0021\032,/v2/{name=projects/*/instances/*/clusters/*}:\001*"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\0021\032,/v2/{name=projects/*/instances/*/clusters/*}:\001*"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2288,11 +2261,8 @@ _BIGTABLEINSTANCEADMIN = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_DELETECLUSTERREQUEST,
             output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\002.*,/v2/{name=projects/*/instances/*/clusters/*}"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\002.*,/v2/{name=projects/*/instances/*/clusters/*}"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2302,11 +2272,8 @@ _BIGTABLEINSTANCEADMIN = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_CREATEAPPPROFILEREQUEST,
             output_type=google_dot_cloud_dot_bigtable_dot_admin__v2_dot_proto_dot_instance__pb2._APPPROFILE,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\002>"//v2/{parent=projects/*/instances/*}/appProfiles:\013app_profile'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\002>"//v2/{parent=projects/*/instances/*}/appProfiles:\013app_profile'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2316,11 +2283,8 @@ _BIGTABLEINSTANCEADMIN = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_GETAPPPROFILEREQUEST,
             output_type=google_dot_cloud_dot_bigtable_dot_admin__v2_dot_proto_dot_instance__pb2._APPPROFILE,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\0021\022//v2/{name=projects/*/instances/*/appProfiles/*}"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\0021\022//v2/{name=projects/*/instances/*/appProfiles/*}"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2330,11 +2294,8 @@ _BIGTABLEINSTANCEADMIN = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_LISTAPPPROFILESREQUEST,
             output_type=_LISTAPPPROFILESRESPONSE,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\0021\022//v2/{parent=projects/*/instances/*}/appProfiles"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\0021\022//v2/{parent=projects/*/instances/*}/appProfiles"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2344,11 +2305,8 @@ _BIGTABLEINSTANCEADMIN = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_UPDATEAPPPROFILEREQUEST,
             output_type=google_dot_longrunning_dot_operations__pb2._OPERATION,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\002J2;/v2/{app_profile.name=projects/*/instances/*/appProfiles/*}:\013app_profile"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\002J2;/v2/{app_profile.name=projects/*/instances/*/appProfiles/*}:\013app_profile"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2358,11 +2316,8 @@ _BIGTABLEINSTANCEADMIN = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_DELETEAPPPROFILEREQUEST,
             output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\0021*//v2/{name=projects/*/instances/*/appProfiles/*}"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\0021*//v2/{name=projects/*/instances/*/appProfiles/*}"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2372,11 +2327,8 @@ _BIGTABLEINSTANCEADMIN = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=google_dot_iam_dot_v1_dot_iam__policy__pb2._GETIAMPOLICYREQUEST,
             output_type=google_dot_iam_dot_v1_dot_policy__pb2._POLICY,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\0027"2/v2/{resource=projects/*/instances/*}:getIamPolicy:\001*'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\0027"2/v2/{resource=projects/*/instances/*}:getIamPolicy:\001*'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2386,11 +2338,8 @@ _BIGTABLEINSTANCEADMIN = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=google_dot_iam_dot_v1_dot_iam__policy__pb2._SETIAMPOLICYREQUEST,
             output_type=google_dot_iam_dot_v1_dot_policy__pb2._POLICY,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\0027"2/v2/{resource=projects/*/instances/*}:setIamPolicy:\001*'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\0027"2/v2/{resource=projects/*/instances/*}:setIamPolicy:\001*'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2400,11 +2349,8 @@ _BIGTABLEINSTANCEADMIN = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=google_dot_iam_dot_v1_dot_iam__policy__pb2._TESTIAMPERMISSIONSREQUEST,
             output_type=google_dot_iam_dot_v1_dot_iam__policy__pb2._TESTIAMPERMISSIONSRESPONSE,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\002="8/v2/{resource=projects/*/instances/*}:testIamPermissions:\001*'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\002="8/v2/{resource=projects/*/instances/*}:testIamPermissions:\001*'
             ),
         ),
     ],

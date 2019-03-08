@@ -17,8 +17,8 @@ Google Cloud Python Client
 -  `API Documentation`_
 -  `Read The Docs Documentation`_
 
-.. _Homepage: https://googlecloudplatform.github.io/google-cloud-python/
-.. _API Documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/
+.. _Homepage: https://googleapis.github.io/google-cloud-python/
+.. _API Documentation: https://googleapis.github.io/google-cloud-python/latest/
 .. _Read The Docs Documentation: https://google-cloud-python.readthedocs.io/en/latest/
 
 License

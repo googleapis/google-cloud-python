@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2018 Google LLC
+# Copyright 2019 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,25 +19,15 @@ import sys
 
 from google.api_core.protobuf_helpers import get_messages
 
-from google.api import http_pb2
 from google.cloud.trace_v2.proto import trace_pb2
 from google.cloud.trace_v2.proto import tracing_pb2
 from google.protobuf import any_pb2
-from google.protobuf import descriptor_pb2
 from google.protobuf import empty_pb2
 from google.protobuf import timestamp_pb2
 from google.protobuf import wrappers_pb2
 from google.rpc import status_pb2
 
-_shared_modules = [
-    http_pb2,
-    any_pb2,
-    descriptor_pb2,
-    empty_pb2,
-    timestamp_pb2,
-    wrappers_pb2,
-    status_pb2,
-]
+_shared_modules = [any_pb2, empty_pb2, timestamp_pb2, wrappers_pb2, status_pb2]
 
 _local_modules = [trace_pb2, tracing_pb2]
 

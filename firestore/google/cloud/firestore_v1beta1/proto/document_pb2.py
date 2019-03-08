@@ -8,7 +8,6 @@ from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
-from google.protobuf import descriptor_pb2
 
 # @@protoc_insertion_point(imports)
 
@@ -25,6 +24,9 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     name="google/cloud/firestore_v1beta1/proto/document.proto",
     package="google.firestore.v1beta1",
     syntax="proto3",
+    serialized_options=_b(
+        "\n\034com.google.firestore.v1beta1B\rDocumentProtoP\001ZAgoogle.golang.org/genproto/googleapis/firestore/v1beta1;firestore\242\002\004GCFS\252\002\036Google.Cloud.Firestore.V1Beta1\312\002\036Google\\Cloud\\Firestore\\V1beta1"
+    ),
     serialized_pb=_b(
         '\n3google/cloud/firestore_v1beta1/proto/document.proto\x12\x18google.firestore.v1beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x1cgoogle/protobuf/struct.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x18google/type/latlng.proto"\x8a\x02\n\x08\x44ocument\x12\x0c\n\x04name\x18\x01 \x01(\t\x12>\n\x06\x66ields\x18\x02 \x03(\x0b\x32..google.firestore.v1beta1.Document.FieldsEntry\x12/\n\x0b\x63reate_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12/\n\x0bupdate_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x1aN\n\x0b\x46ieldsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12.\n\x05value\x18\x02 \x01(\x0b\x32\x1f.google.firestore.v1beta1.Value:\x02\x38\x01"\xb8\x03\n\x05Value\x12\x30\n\nnull_value\x18\x0b \x01(\x0e\x32\x1a.google.protobuf.NullValueH\x00\x12\x17\n\rboolean_value\x18\x01 \x01(\x08H\x00\x12\x17\n\rinteger_value\x18\x02 \x01(\x03H\x00\x12\x16\n\x0c\x64ouble_value\x18\x03 \x01(\x01H\x00\x12\x35\n\x0ftimestamp_value\x18\n \x01(\x0b\x32\x1a.google.protobuf.TimestampH\x00\x12\x16\n\x0cstring_value\x18\x11 \x01(\tH\x00\x12\x15\n\x0b\x62ytes_value\x18\x12 \x01(\x0cH\x00\x12\x19\n\x0freference_value\x18\x05 \x01(\tH\x00\x12.\n\x0fgeo_point_value\x18\x08 \x01(\x0b\x32\x13.google.type.LatLngH\x00\x12;\n\x0b\x61rray_value\x18\t \x01(\x0b\x32$.google.firestore.v1beta1.ArrayValueH\x00\x12\x37\n\tmap_value\x18\x06 \x01(\x0b\x32".google.firestore.v1beta1.MapValueH\x00\x42\x0c\n\nvalue_type"=\n\nArrayValue\x12/\n\x06values\x18\x01 \x03(\x0b\x32\x1f.google.firestore.v1beta1.Value"\x9a\x01\n\x08MapValue\x12>\n\x06\x66ields\x18\x01 \x03(\x0b\x32..google.firestore.v1beta1.MapValue.FieldsEntry\x1aN\n\x0b\x46ieldsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12.\n\x05value\x18\x02 \x01(\x0b\x32\x1f.google.firestore.v1beta1.Value:\x02\x38\x01\x42\xbb\x01\n\x1c\x63om.google.firestore.v1beta1B\rDocumentProtoP\x01ZAgoogle.golang.org/genproto/googleapis/firestore/v1beta1;firestore\xa2\x02\x04GCFS\xaa\x02\x1eGoogle.Cloud.Firestore.V1Beta1\xca\x02\x1eGoogle\\Cloud\\Firestore\\V1beta1b\x06proto3'
     ),
@@ -59,7 +61,7 @@ _DOCUMENT_FIELDSENTRY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -77,14 +79,14 @@ _DOCUMENT_FIELDSENTRY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=_descriptor._ParseOptions(descriptor_pb2.MessageOptions(), _b("8\001")),
+    serialized_options=_b("8\001"),
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -115,7 +117,7 @@ _DOCUMENT = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -133,7 +135,7 @@ _DOCUMENT = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -151,7 +153,7 @@ _DOCUMENT = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -169,14 +171,14 @@ _DOCUMENT = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[_DOCUMENT_FIELDSENTRY],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -208,7 +210,7 @@ _VALUE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -226,7 +228,7 @@ _VALUE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -244,7 +246,7 @@ _VALUE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -262,7 +264,7 @@ _VALUE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -280,7 +282,7 @@ _VALUE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -298,7 +300,7 @@ _VALUE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -316,7 +318,7 @@ _VALUE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -334,7 +336,7 @@ _VALUE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -352,7 +354,7 @@ _VALUE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -370,7 +372,7 @@ _VALUE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -388,14 +390,14 @@ _VALUE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -435,14 +437,14 @@ _ARRAYVALUE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -474,7 +476,7 @@ _MAPVALUE_FIELDSENTRY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -492,14 +494,14 @@ _MAPVALUE_FIELDSENTRY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=_descriptor._ParseOptions(descriptor_pb2.MessageOptions(), _b("8\001")),
+    serialized_options=_b("8\001"),
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -530,14 +532,14 @@ _MAPVALUE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[_MAPVALUE_FIELDSENTRY],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -789,19 +791,7 @@ _sym_db.RegisterMessage(MapValue)
 _sym_db.RegisterMessage(MapValue.FieldsEntry)
 
 
-DESCRIPTOR.has_options = True
-DESCRIPTOR._options = _descriptor._ParseOptions(
-    descriptor_pb2.FileOptions(),
-    _b(
-        "\n\034com.google.firestore.v1beta1B\rDocumentProtoP\001ZAgoogle.golang.org/genproto/googleapis/firestore/v1beta1;firestore\242\002\004GCFS\252\002\036Google.Cloud.Firestore.V1Beta1\312\002\036Google\\Cloud\\Firestore\\V1beta1"
-    ),
-)
-_DOCUMENT_FIELDSENTRY.has_options = True
-_DOCUMENT_FIELDSENTRY._options = _descriptor._ParseOptions(
-    descriptor_pb2.MessageOptions(), _b("8\001")
-)
-_MAPVALUE_FIELDSENTRY.has_options = True
-_MAPVALUE_FIELDSENTRY._options = _descriptor._ParseOptions(
-    descriptor_pb2.MessageOptions(), _b("8\001")
-)
+DESCRIPTOR._options = None
+_DOCUMENT_FIELDSENTRY._options = None
+_MAPVALUE_FIELDSENTRY._options = None
 # @@protoc_insertion_point(module_scope)
