@@ -8,7 +8,6 @@ from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
-from google.protobuf import descriptor_pb2
 
 # @@protoc_insertion_point(imports)
 
@@ -33,6 +32,9 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     name="google/cloud/dataproc_v1beta2/proto/workflow_templates.proto",
     package="google.cloud.dataproc.v1beta2",
     syntax="proto3",
+    serialized_options=_b(
+        "\n!com.google.cloud.dataproc.v1beta2B\026WorkflowTemplatesProtoP\001ZEgoogle.golang.org/genproto/googleapis/cloud/dataproc/v1beta2;dataproc"
+    ),
     serialized_pb=_b(
         '\n<google/cloud/dataproc_v1beta2/proto/workflow_templates.proto\x12\x1dgoogle.cloud.dataproc.v1beta2\x1a\x1cgoogle/api/annotations.proto\x1a\x32google/cloud/dataproc_v1beta2/proto/clusters.proto\x1a.google/cloud/dataproc_v1beta2/proto/jobs.proto\x1a#google/longrunning/operations.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1fgoogle/protobuf/timestamp.proto"\xe7\x03\n\x10WorkflowTemplate\x12\n\n\x02id\x18\x02 \x01(\t\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0f\n\x07version\x18\x03 \x01(\x05\x12/\n\x0b\x63reate_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12/\n\x0bupdate_time\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12K\n\x06labels\x18\x06 \x03(\x0b\x32;.google.cloud.dataproc.v1beta2.WorkflowTemplate.LabelsEntry\x12K\n\tplacement\x18\x07 \x01(\x0b\x32\x38.google.cloud.dataproc.v1beta2.WorkflowTemplatePlacement\x12\x37\n\x04jobs\x18\x08 \x03(\x0b\x32).google.cloud.dataproc.v1beta2.OrderedJob\x12\x44\n\nparameters\x18\t \x03(\x0b\x32\x30.google.cloud.dataproc.v1beta2.TemplateParameter\x1a-\n\x0bLabelsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01"\xbe\x01\n\x19WorkflowTemplatePlacement\x12H\n\x0fmanaged_cluster\x18\x01 \x01(\x0b\x32-.google.cloud.dataproc.v1beta2.ManagedClusterH\x00\x12J\n\x10\x63luster_selector\x18\x02 \x01(\x0b\x32..google.cloud.dataproc.v1beta2.ClusterSelectorH\x00\x42\x0b\n\tplacement"\xde\x01\n\x0eManagedCluster\x12\x14\n\x0c\x63luster_name\x18\x02 \x01(\t\x12<\n\x06\x63onfig\x18\x03 \x01(\x0b\x32,.google.cloud.dataproc.v1beta2.ClusterConfig\x12I\n\x06labels\x18\x04 \x03(\x0b\x32\x39.google.cloud.dataproc.v1beta2.ManagedCluster.LabelsEntry\x1a-\n\x0bLabelsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01"\xb0\x01\n\x0f\x43lusterSelector\x12\x0c\n\x04zone\x18\x01 \x01(\t\x12Y\n\x0e\x63luster_labels\x18\x02 \x03(\x0b\x32\x41.google.cloud.dataproc.v1beta2.ClusterSelector.ClusterLabelsEntry\x1a\x34\n\x12\x43lusterLabelsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01"\xfb\x04\n\nOrderedJob\x12\x0f\n\x07step_id\x18\x01 \x01(\t\x12>\n\nhadoop_job\x18\x02 \x01(\x0b\x32(.google.cloud.dataproc.v1beta2.HadoopJobH\x00\x12<\n\tspark_job\x18\x03 \x01(\x0b\x32\'.google.cloud.dataproc.v1beta2.SparkJobH\x00\x12@\n\x0bpyspark_job\x18\x04 \x01(\x0b\x32).google.cloud.dataproc.v1beta2.PySparkJobH\x00\x12:\n\x08hive_job\x18\x05 \x01(\x0b\x32&.google.cloud.dataproc.v1beta2.HiveJobH\x00\x12\x38\n\x07pig_job\x18\x06 \x01(\x0b\x32%.google.cloud.dataproc.v1beta2.PigJobH\x00\x12\x43\n\rspark_sql_job\x18\x07 \x01(\x0b\x32*.google.cloud.dataproc.v1beta2.SparkSqlJobH\x00\x12\x45\n\x06labels\x18\x08 \x03(\x0b\x32\x35.google.cloud.dataproc.v1beta2.OrderedJob.LabelsEntry\x12@\n\nscheduling\x18\t \x01(\x0b\x32,.google.cloud.dataproc.v1beta2.JobScheduling\x12\x1d\n\x15prerequisite_step_ids\x18\n \x03(\t\x1a-\n\x0bLabelsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x42\n\n\x08job_type"\x8e\x01\n\x11TemplateParameter\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0e\n\x06\x66ields\x18\x02 \x03(\t\x12\x13\n\x0b\x64\x65scription\x18\x03 \x01(\t\x12\x46\n\nvalidation\x18\x04 \x01(\x0b\x32\x32.google.cloud.dataproc.v1beta2.ParameterValidation"\xab\x01\n\x13ParameterValidation\x12?\n\x05regex\x18\x01 \x01(\x0b\x32..google.cloud.dataproc.v1beta2.RegexValidationH\x00\x12@\n\x06values\x18\x02 \x01(\x0b\x32..google.cloud.dataproc.v1beta2.ValueValidationH\x00\x42\x11\n\x0fvalidation_type""\n\x0fRegexValidation\x12\x0f\n\x07regexes\x18\x01 \x03(\t"!\n\x0fValueValidation\x12\x0e\n\x06values\x18\x01 \x03(\t"\x96\x05\n\x10WorkflowMetadata\x12\x10\n\x08template\x18\x01 \x01(\t\x12\x0f\n\x07version\x18\x02 \x01(\x05\x12G\n\x0e\x63reate_cluster\x18\x03 \x01(\x0b\x32/.google.cloud.dataproc.v1beta2.ClusterOperation\x12;\n\x05graph\x18\x04 \x01(\x0b\x32,.google.cloud.dataproc.v1beta2.WorkflowGraph\x12G\n\x0e\x64\x65lete_cluster\x18\x05 \x01(\x0b\x32/.google.cloud.dataproc.v1beta2.ClusterOperation\x12\x44\n\x05state\x18\x06 \x01(\x0e\x32\x35.google.cloud.dataproc.v1beta2.WorkflowMetadata.State\x12\x14\n\x0c\x63luster_name\x18\x07 \x01(\t\x12S\n\nparameters\x18\x08 \x03(\x0b\x32?.google.cloud.dataproc.v1beta2.WorkflowMetadata.ParametersEntry\x12.\n\nstart_time\x18\t \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12,\n\x08\x65nd_time\x18\n \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x14\n\x0c\x63luster_uuid\x18\x0b \x01(\t\x1a\x31\n\x0fParametersEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01"8\n\x05State\x12\x0b\n\x07UNKNOWN\x10\x00\x12\x0b\n\x07PENDING\x10\x01\x12\x0b\n\x07RUNNING\x10\x02\x12\x08\n\x04\x44ONE\x10\x03"E\n\x10\x43lusterOperation\x12\x14\n\x0coperation_id\x18\x01 \x01(\t\x12\r\n\x05\x65rror\x18\x02 \x01(\t\x12\x0c\n\x04\x64one\x18\x03 \x01(\x08"K\n\rWorkflowGraph\x12:\n\x05nodes\x18\x01 \x03(\x0b\x32+.google.cloud.dataproc.v1beta2.WorkflowNode"\x90\x02\n\x0cWorkflowNode\x12\x0f\n\x07step_id\x18\x01 \x01(\t\x12\x1d\n\x15prerequisite_step_ids\x18\x02 \x03(\t\x12\x0e\n\x06job_id\x18\x03 \x01(\t\x12\x44\n\x05state\x18\x05 \x01(\x0e\x32\x35.google.cloud.dataproc.v1beta2.WorkflowNode.NodeState\x12\r\n\x05\x65rror\x18\x06 \x01(\t"k\n\tNodeState\x12\x1b\n\x17NODE_STATUS_UNSPECIFIED\x10\x00\x12\x0b\n\x07\x42LOCKED\x10\x01\x12\x0c\n\x08RUNNABLE\x10\x02\x12\x0b\n\x07RUNNING\x10\x03\x12\r\n\tCOMPLETED\x10\x04\x12\n\n\x06\x46\x41ILED\x10\x05"r\n\x1d\x43reateWorkflowTemplateRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x41\n\x08template\x18\x02 \x01(\x0b\x32/.google.cloud.dataproc.v1beta2.WorkflowTemplate";\n\x1aGetWorkflowTemplateRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0f\n\x07version\x18\x02 \x01(\x05"\x8a\x02\n"InstantiateWorkflowTemplateRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0f\n\x07version\x18\x02 \x01(\x05\x12\x17\n\x0binstance_id\x18\x03 \x01(\tB\x02\x18\x01\x12\x12\n\nrequest_id\x18\x05 \x01(\t\x12\x65\n\nparameters\x18\x04 \x03(\x0b\x32Q.google.cloud.dataproc.v1beta2.InstantiateWorkflowTemplateRequest.ParametersEntry\x1a\x31\n\x0fParametersEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01"\xa6\x01\n(InstantiateInlineWorkflowTemplateRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x41\n\x08template\x18\x02 \x01(\x0b\x32/.google.cloud.dataproc.v1beta2.WorkflowTemplate\x12\x13\n\x0binstance_id\x18\x03 \x01(\t\x12\x12\n\nrequest_id\x18\x04 \x01(\t"b\n\x1dUpdateWorkflowTemplateRequest\x12\x41\n\x08template\x18\x01 \x01(\x0b\x32/.google.cloud.dataproc.v1beta2.WorkflowTemplate"U\n\x1cListWorkflowTemplatesRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t"|\n\x1dListWorkflowTemplatesResponse\x12\x42\n\ttemplates\x18\x01 \x03(\x0b\x32/.google.cloud.dataproc.v1beta2.WorkflowTemplate\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t">\n\x1d\x44\x65leteWorkflowTemplateRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0f\n\x07version\x18\x02 \x01(\x05\x32\xdf\x0f\n\x17WorkflowTemplateService\x12\x9d\x02\n\x16\x43reateWorkflowTemplate\x12<.google.cloud.dataproc.v1beta2.CreateWorkflowTemplateRequest\x1a/.google.cloud.dataproc.v1beta2.WorkflowTemplate"\x93\x01\x82\xd3\xe4\x93\x02\x8c\x01"8/v1beta2/{parent=projects/*/regions/*}/workflowTemplates:\x08templateZF":/v1beta2/{parent=projects/*/locations/*}/workflowTemplates:\x08template\x12\x81\x02\n\x13GetWorkflowTemplate\x12\x39.google.cloud.dataproc.v1beta2.GetWorkflowTemplateRequest\x1a/.google.cloud.dataproc.v1beta2.WorkflowTemplate"~\x82\xd3\xe4\x93\x02x\x12\x38/v1beta2/{name=projects/*/regions/*/workflowTemplates/*}Z<\x12:/v1beta2/{name=projects/*/locations/*/workflowTemplates/*}\x12\x9f\x02\n\x1bInstantiateWorkflowTemplate\x12\x41.google.cloud.dataproc.v1beta2.InstantiateWorkflowTemplateRequest\x1a\x1d.google.longrunning.Operation"\x9d\x01\x82\xd3\xe4\x93\x02\x96\x01"D/v1beta2/{name=projects/*/regions/*/workflowTemplates/*}:instantiate:\x01*ZK"F/v1beta2/{name=projects/*/locations/*/workflowTemplates/*}:instantiate:\x01*\x12\xc5\x02\n!InstantiateInlineWorkflowTemplate\x12G.google.cloud.dataproc.v1beta2.InstantiateInlineWorkflowTemplateRequest\x1a\x1d.google.longrunning.Operation"\xb7\x01\x82\xd3\xe4\x93\x02\xb0\x01"L/v1beta2/{parent=projects/*/locations/*}/workflowTemplates:instantiateInline:\x08templateZV"J/v1beta2/{parent=projects/*/regions/*}/workflowTemplates:instantiateInline:\x08template\x12\xaf\x02\n\x16UpdateWorkflowTemplate\x12<.google.cloud.dataproc.v1beta2.UpdateWorkflowTemplateRequest\x1a/.google.cloud.dataproc.v1beta2.WorkflowTemplate"\xa5\x01\x82\xd3\xe4\x93\x02\x9e\x01\x1a\x41/v1beta2/{template.name=projects/*/regions/*/workflowTemplates/*}:\x08templateZO\x1a\x43/v1beta2/{template.name=projects/*/locations/*/workflowTemplates/*}:\x08template\x12\x92\x02\n\x15ListWorkflowTemplates\x12;.google.cloud.dataproc.v1beta2.ListWorkflowTemplatesRequest\x1a<.google.cloud.dataproc.v1beta2.ListWorkflowTemplatesResponse"~\x82\xd3\xe4\x93\x02x\x12\x38/v1beta2/{parent=projects/*/regions/*}/workflowTemplatesZ<\x12:/v1beta2/{parent=projects/*/locations/*}/workflowTemplates\x12\xee\x01\n\x16\x44\x65leteWorkflowTemplate\x12<.google.cloud.dataproc.v1beta2.DeleteWorkflowTemplateRequest\x1a\x16.google.protobuf.Empty"~\x82\xd3\xe4\x93\x02x*8/v1beta2/{name=projects/*/regions/*/workflowTemplates/*}Z<*:/v1beta2/{name=projects/*/locations/*/workflowTemplates/*}B\x84\x01\n!com.google.cloud.dataproc.v1beta2B\x16WorkflowTemplatesProtoP\x01ZEgoogle.golang.org/genproto/googleapis/cloud/dataproc/v1beta2;dataprocb\x06proto3'
     ),
@@ -54,20 +56,20 @@ _WORKFLOWMETADATA_STATE = _descriptor.EnumDescriptor(
     file=DESCRIPTOR,
     values=[
         _descriptor.EnumValueDescriptor(
-            name="UNKNOWN", index=0, number=0, options=None, type=None
+            name="UNKNOWN", index=0, number=0, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="PENDING", index=1, number=1, options=None, type=None
+            name="PENDING", index=1, number=1, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="RUNNING", index=2, number=2, options=None, type=None
+            name="RUNNING", index=2, number=2, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="DONE", index=3, number=3, options=None, type=None
+            name="DONE", index=3, number=3, serialized_options=None, type=None
         ),
     ],
     containing_type=None,
-    options=None,
+    serialized_options=None,
     serialized_start=3046,
     serialized_end=3102,
 )
@@ -80,26 +82,30 @@ _WORKFLOWNODE_NODESTATE = _descriptor.EnumDescriptor(
     file=DESCRIPTOR,
     values=[
         _descriptor.EnumValueDescriptor(
-            name="NODE_STATUS_UNSPECIFIED", index=0, number=0, options=None, type=None
+            name="NODE_STATUS_UNSPECIFIED",
+            index=0,
+            number=0,
+            serialized_options=None,
+            type=None,
         ),
         _descriptor.EnumValueDescriptor(
-            name="BLOCKED", index=1, number=1, options=None, type=None
+            name="BLOCKED", index=1, number=1, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="RUNNABLE", index=2, number=2, options=None, type=None
+            name="RUNNABLE", index=2, number=2, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="RUNNING", index=3, number=3, options=None, type=None
+            name="RUNNING", index=3, number=3, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="COMPLETED", index=4, number=4, options=None, type=None
+            name="COMPLETED", index=4, number=4, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="FAILED", index=5, number=5, options=None, type=None
+            name="FAILED", index=5, number=5, serialized_options=None, type=None
         ),
     ],
     containing_type=None,
-    options=None,
+    serialized_options=None,
     serialized_start=3418,
     serialized_end=3525,
 )
@@ -128,7 +134,7 @@ _WORKFLOWTEMPLATE_LABELSENTRY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -146,14 +152,14 @@ _WORKFLOWTEMPLATE_LABELSENTRY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=_descriptor._ParseOptions(descriptor_pb2.MessageOptions(), _b("8\001")),
+    serialized_options=_b("8\001"),
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -184,7 +190,7 @@ _WORKFLOWTEMPLATE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -202,7 +208,7 @@ _WORKFLOWTEMPLATE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -220,7 +226,7 @@ _WORKFLOWTEMPLATE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -238,7 +244,7 @@ _WORKFLOWTEMPLATE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -256,7 +262,7 @@ _WORKFLOWTEMPLATE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -274,7 +280,7 @@ _WORKFLOWTEMPLATE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -292,7 +298,7 @@ _WORKFLOWTEMPLATE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -310,7 +316,7 @@ _WORKFLOWTEMPLATE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -328,14 +334,14 @@ _WORKFLOWTEMPLATE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[_WORKFLOWTEMPLATE_LABELSENTRY],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -367,7 +373,7 @@ _WORKFLOWTEMPLATEPLACEMENT = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -385,14 +391,14 @@ _WORKFLOWTEMPLATEPLACEMENT = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -432,7 +438,7 @@ _MANAGEDCLUSTER_LABELSENTRY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -450,14 +456,14 @@ _MANAGEDCLUSTER_LABELSENTRY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=_descriptor._ParseOptions(descriptor_pb2.MessageOptions(), _b("8\001")),
+    serialized_options=_b("8\001"),
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -488,7 +494,7 @@ _MANAGEDCLUSTER = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -506,7 +512,7 @@ _MANAGEDCLUSTER = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -524,14 +530,14 @@ _MANAGEDCLUSTER = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[_MANAGEDCLUSTER_LABELSENTRY],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -563,7 +569,7 @@ _CLUSTERSELECTOR_CLUSTERLABELSENTRY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -581,14 +587,14 @@ _CLUSTERSELECTOR_CLUSTERLABELSENTRY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=_descriptor._ParseOptions(descriptor_pb2.MessageOptions(), _b("8\001")),
+    serialized_options=_b("8\001"),
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -619,7 +625,7 @@ _CLUSTERSELECTOR = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -637,14 +643,14 @@ _CLUSTERSELECTOR = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[_CLUSTERSELECTOR_CLUSTERLABELSENTRY],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -676,7 +682,7 @@ _ORDEREDJOB_LABELSENTRY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -694,14 +700,14 @@ _ORDEREDJOB_LABELSENTRY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=_descriptor._ParseOptions(descriptor_pb2.MessageOptions(), _b("8\001")),
+    serialized_options=_b("8\001"),
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -732,7 +738,7 @@ _ORDEREDJOB = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -750,7 +756,7 @@ _ORDEREDJOB = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -768,7 +774,7 @@ _ORDEREDJOB = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -786,7 +792,7 @@ _ORDEREDJOB = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -804,7 +810,7 @@ _ORDEREDJOB = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -822,7 +828,7 @@ _ORDEREDJOB = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -840,7 +846,7 @@ _ORDEREDJOB = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -858,7 +864,7 @@ _ORDEREDJOB = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -876,7 +882,7 @@ _ORDEREDJOB = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -894,14 +900,14 @@ _ORDEREDJOB = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[_ORDEREDJOB_LABELSENTRY],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -941,7 +947,7 @@ _TEMPLATEPARAMETER = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -959,7 +965,7 @@ _TEMPLATEPARAMETER = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -977,7 +983,7 @@ _TEMPLATEPARAMETER = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -995,14 +1001,14 @@ _TEMPLATEPARAMETER = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1034,7 +1040,7 @@ _PARAMETERVALIDATION = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1052,14 +1058,14 @@ _PARAMETERVALIDATION = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1099,14 +1105,14 @@ _REGEXVALIDATION = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1138,14 +1144,14 @@ _VALUEVALIDATION = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1177,7 +1183,7 @@ _WORKFLOWMETADATA_PARAMETERSENTRY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1195,14 +1201,14 @@ _WORKFLOWMETADATA_PARAMETERSENTRY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=_descriptor._ParseOptions(descriptor_pb2.MessageOptions(), _b("8\001")),
+    serialized_options=_b("8\001"),
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1233,7 +1239,7 @@ _WORKFLOWMETADATA = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1251,7 +1257,7 @@ _WORKFLOWMETADATA = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1269,7 +1275,7 @@ _WORKFLOWMETADATA = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1287,7 +1293,7 @@ _WORKFLOWMETADATA = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1305,7 +1311,7 @@ _WORKFLOWMETADATA = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1323,7 +1329,7 @@ _WORKFLOWMETADATA = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1341,7 +1347,7 @@ _WORKFLOWMETADATA = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1359,7 +1365,7 @@ _WORKFLOWMETADATA = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1377,7 +1383,7 @@ _WORKFLOWMETADATA = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1395,7 +1401,7 @@ _WORKFLOWMETADATA = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1413,14 +1419,14 @@ _WORKFLOWMETADATA = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[_WORKFLOWMETADATA_PARAMETERSENTRY],
     enum_types=[_WORKFLOWMETADATA_STATE],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1452,7 +1458,7 @@ _CLUSTEROPERATION = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1470,7 +1476,7 @@ _CLUSTEROPERATION = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1488,14 +1494,14 @@ _CLUSTEROPERATION = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1527,14 +1533,14 @@ _WORKFLOWGRAPH = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1566,7 +1572,7 @@ _WORKFLOWNODE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1584,7 +1590,7 @@ _WORKFLOWNODE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1602,7 +1608,7 @@ _WORKFLOWNODE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1620,7 +1626,7 @@ _WORKFLOWNODE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1638,14 +1644,14 @@ _WORKFLOWNODE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[_WORKFLOWNODE_NODESTATE],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1677,7 +1683,7 @@ _CREATEWORKFLOWTEMPLATEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1695,14 +1701,14 @@ _CREATEWORKFLOWTEMPLATEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1734,7 +1740,7 @@ _GETWORKFLOWTEMPLATEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1752,14 +1758,14 @@ _GETWORKFLOWTEMPLATEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1791,7 +1797,7 @@ _INSTANTIATEWORKFLOWTEMPLATEREQUEST_PARAMETERSENTRY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1809,14 +1815,14 @@ _INSTANTIATEWORKFLOWTEMPLATEREQUEST_PARAMETERSENTRY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=_descriptor._ParseOptions(descriptor_pb2.MessageOptions(), _b("8\001")),
+    serialized_options=_b("8\001"),
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1847,7 +1853,7 @@ _INSTANTIATEWORKFLOWTEMPLATEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1865,7 +1871,7 @@ _INSTANTIATEWORKFLOWTEMPLATEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1883,9 +1889,7 @@ _INSTANTIATEWORKFLOWTEMPLATEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.FieldOptions(), _b("\030\001")
-            ),
+            serialized_options=_b("\030\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1903,7 +1907,7 @@ _INSTANTIATEWORKFLOWTEMPLATEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1921,14 +1925,14 @@ _INSTANTIATEWORKFLOWTEMPLATEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[_INSTANTIATEWORKFLOWTEMPLATEREQUEST_PARAMETERSENTRY],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1960,7 +1964,7 @@ _INSTANTIATEINLINEWORKFLOWTEMPLATEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1978,7 +1982,7 @@ _INSTANTIATEINLINEWORKFLOWTEMPLATEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1996,7 +2000,7 @@ _INSTANTIATEINLINEWORKFLOWTEMPLATEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2014,14 +2018,14 @@ _INSTANTIATEINLINEWORKFLOWTEMPLATEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -2053,14 +2057,14 @@ _UPDATEWORKFLOWTEMPLATEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -2092,7 +2096,7 @@ _LISTWORKFLOWTEMPLATESREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2110,7 +2114,7 @@ _LISTWORKFLOWTEMPLATESREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2128,14 +2132,14 @@ _LISTWORKFLOWTEMPLATESREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -2167,7 +2171,7 @@ _LISTWORKFLOWTEMPLATESRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2185,14 +2189,14 @@ _LISTWORKFLOWTEMPLATESRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -2224,7 +2228,7 @@ _DELETEWORKFLOWTEMPLATEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2242,14 +2246,14 @@ _DELETEWORKFLOWTEMPLATEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -3163,48 +3167,21 @@ DeleteWorkflowTemplateRequest = _reflection.GeneratedProtocolMessageType(
 _sym_db.RegisterMessage(DeleteWorkflowTemplateRequest)
 
 
-DESCRIPTOR.has_options = True
-DESCRIPTOR._options = _descriptor._ParseOptions(
-    descriptor_pb2.FileOptions(),
-    _b(
-        "\n!com.google.cloud.dataproc.v1beta2B\026WorkflowTemplatesProtoP\001ZEgoogle.golang.org/genproto/googleapis/cloud/dataproc/v1beta2;dataproc"
-    ),
-)
-_WORKFLOWTEMPLATE_LABELSENTRY.has_options = True
-_WORKFLOWTEMPLATE_LABELSENTRY._options = _descriptor._ParseOptions(
-    descriptor_pb2.MessageOptions(), _b("8\001")
-)
-_MANAGEDCLUSTER_LABELSENTRY.has_options = True
-_MANAGEDCLUSTER_LABELSENTRY._options = _descriptor._ParseOptions(
-    descriptor_pb2.MessageOptions(), _b("8\001")
-)
-_CLUSTERSELECTOR_CLUSTERLABELSENTRY.has_options = True
-_CLUSTERSELECTOR_CLUSTERLABELSENTRY._options = _descriptor._ParseOptions(
-    descriptor_pb2.MessageOptions(), _b("8\001")
-)
-_ORDEREDJOB_LABELSENTRY.has_options = True
-_ORDEREDJOB_LABELSENTRY._options = _descriptor._ParseOptions(
-    descriptor_pb2.MessageOptions(), _b("8\001")
-)
-_WORKFLOWMETADATA_PARAMETERSENTRY.has_options = True
-_WORKFLOWMETADATA_PARAMETERSENTRY._options = _descriptor._ParseOptions(
-    descriptor_pb2.MessageOptions(), _b("8\001")
-)
-_INSTANTIATEWORKFLOWTEMPLATEREQUEST_PARAMETERSENTRY.has_options = True
-_INSTANTIATEWORKFLOWTEMPLATEREQUEST_PARAMETERSENTRY._options = _descriptor._ParseOptions(
-    descriptor_pb2.MessageOptions(), _b("8\001")
-)
-_INSTANTIATEWORKFLOWTEMPLATEREQUEST.fields_by_name["instance_id"].has_options = True
-_INSTANTIATEWORKFLOWTEMPLATEREQUEST.fields_by_name[
-    "instance_id"
-]._options = _descriptor._ParseOptions(descriptor_pb2.FieldOptions(), _b("\030\001"))
+DESCRIPTOR._options = None
+_WORKFLOWTEMPLATE_LABELSENTRY._options = None
+_MANAGEDCLUSTER_LABELSENTRY._options = None
+_CLUSTERSELECTOR_CLUSTERLABELSENTRY._options = None
+_ORDEREDJOB_LABELSENTRY._options = None
+_WORKFLOWMETADATA_PARAMETERSENTRY._options = None
+_INSTANTIATEWORKFLOWTEMPLATEREQUEST_PARAMETERSENTRY._options = None
+_INSTANTIATEWORKFLOWTEMPLATEREQUEST.fields_by_name["instance_id"]._options = None
 
 _WORKFLOWTEMPLATESERVICE = _descriptor.ServiceDescriptor(
     name="WorkflowTemplateService",
     full_name="google.cloud.dataproc.v1beta2.WorkflowTemplateService",
     file=DESCRIPTOR,
     index=0,
-    options=None,
+    serialized_options=None,
     serialized_start=4520,
     serialized_end=6535,
     methods=[
@@ -3215,11 +3192,8 @@ _WORKFLOWTEMPLATESERVICE = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_CREATEWORKFLOWTEMPLATEREQUEST,
             output_type=_WORKFLOWTEMPLATE,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\002\214\001"8/v1beta2/{parent=projects/*/regions/*}/workflowTemplates:\010templateZF":/v1beta2/{parent=projects/*/locations/*}/workflowTemplates:\010template'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\002\214\001"8/v1beta2/{parent=projects/*/regions/*}/workflowTemplates:\010templateZF":/v1beta2/{parent=projects/*/locations/*}/workflowTemplates:\010template'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -3229,11 +3203,8 @@ _WORKFLOWTEMPLATESERVICE = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_GETWORKFLOWTEMPLATEREQUEST,
             output_type=_WORKFLOWTEMPLATE,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\002x\0228/v1beta2/{name=projects/*/regions/*/workflowTemplates/*}Z<\022:/v1beta2/{name=projects/*/locations/*/workflowTemplates/*}"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\002x\0228/v1beta2/{name=projects/*/regions/*/workflowTemplates/*}Z<\022:/v1beta2/{name=projects/*/locations/*/workflowTemplates/*}"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -3243,11 +3214,8 @@ _WORKFLOWTEMPLATESERVICE = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_INSTANTIATEWORKFLOWTEMPLATEREQUEST,
             output_type=google_dot_longrunning_dot_operations__pb2._OPERATION,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\002\226\001"D/v1beta2/{name=projects/*/regions/*/workflowTemplates/*}:instantiate:\001*ZK"F/v1beta2/{name=projects/*/locations/*/workflowTemplates/*}:instantiate:\001*'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\002\226\001"D/v1beta2/{name=projects/*/regions/*/workflowTemplates/*}:instantiate:\001*ZK"F/v1beta2/{name=projects/*/locations/*/workflowTemplates/*}:instantiate:\001*'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -3257,11 +3225,8 @@ _WORKFLOWTEMPLATESERVICE = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_INSTANTIATEINLINEWORKFLOWTEMPLATEREQUEST,
             output_type=google_dot_longrunning_dot_operations__pb2._OPERATION,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\002\260\001"L/v1beta2/{parent=projects/*/locations/*}/workflowTemplates:instantiateInline:\010templateZV"J/v1beta2/{parent=projects/*/regions/*}/workflowTemplates:instantiateInline:\010template'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\002\260\001"L/v1beta2/{parent=projects/*/locations/*}/workflowTemplates:instantiateInline:\010templateZV"J/v1beta2/{parent=projects/*/regions/*}/workflowTemplates:instantiateInline:\010template'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -3271,11 +3236,8 @@ _WORKFLOWTEMPLATESERVICE = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_UPDATEWORKFLOWTEMPLATEREQUEST,
             output_type=_WORKFLOWTEMPLATE,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\002\236\001\032A/v1beta2/{template.name=projects/*/regions/*/workflowTemplates/*}:\010templateZO\032C/v1beta2/{template.name=projects/*/locations/*/workflowTemplates/*}:\010template"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\002\236\001\032A/v1beta2/{template.name=projects/*/regions/*/workflowTemplates/*}:\010templateZO\032C/v1beta2/{template.name=projects/*/locations/*/workflowTemplates/*}:\010template"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -3285,11 +3247,8 @@ _WORKFLOWTEMPLATESERVICE = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_LISTWORKFLOWTEMPLATESREQUEST,
             output_type=_LISTWORKFLOWTEMPLATESRESPONSE,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\002x\0228/v1beta2/{parent=projects/*/regions/*}/workflowTemplatesZ<\022:/v1beta2/{parent=projects/*/locations/*}/workflowTemplates"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\002x\0228/v1beta2/{parent=projects/*/regions/*}/workflowTemplatesZ<\022:/v1beta2/{parent=projects/*/locations/*}/workflowTemplates"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -3299,11 +3258,8 @@ _WORKFLOWTEMPLATESERVICE = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_DELETEWORKFLOWTEMPLATEREQUEST,
             output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\002x*8/v1beta2/{name=projects/*/regions/*/workflowTemplates/*}Z<*:/v1beta2/{name=projects/*/locations/*/workflowTemplates/*}"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\002x*8/v1beta2/{name=projects/*/regions/*/workflowTemplates/*}Z<*:/v1beta2/{name=projects/*/locations/*/workflowTemplates/*}"
             ),
         ),
     ],

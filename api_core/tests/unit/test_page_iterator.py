@@ -514,7 +514,7 @@ class TestGRPCIterator(object):
 
         method.assert_called_with(request)
         assert method.call_count == 2
-        assert request.page_token is "1"
+        assert request.page_token == "1"
 
 
 class GAXPageIterator(object):

@@ -8,7 +8,6 @@ from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
-from google.protobuf import descriptor_pb2
 
 # @@protoc_insertion_point(imports)
 
@@ -26,6 +25,9 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     name="google/devtools/clouderrorreporting_v1beta1/proto/report_errors_service.proto",
     package="google.devtools.clouderrorreporting.v1beta1",
     syntax="proto3",
+    serialized_options=_b(
+        "\n/com.google.devtools.clouderrorreporting.v1beta1B\030ReportErrorsServiceProtoP\001Z^google.golang.org/genproto/googleapis/devtools/clouderrorreporting/v1beta1;clouderrorreporting\252\002#Google.Cloud.ErrorReporting.V1Beta1\312\002#Google\\Cloud\\ErrorReporting\\V1beta1"
+    ),
     serialized_pb=_b(
         '\nMgoogle/devtools/clouderrorreporting_v1beta1/proto/report_errors_service.proto\x12+google.devtools.clouderrorreporting.v1beta1\x1a\x1cgoogle/api/annotations.proto\x1a>google/devtools/clouderrorreporting_v1beta1/proto/common.proto\x1a\x1fgoogle/protobuf/timestamp.proto"\x7f\n\x17ReportErrorEventRequest\x12\x14\n\x0cproject_name\x18\x01 \x01(\t\x12N\n\x05\x65vent\x18\x02 \x01(\x0b\x32?.google.devtools.clouderrorreporting.v1beta1.ReportedErrorEvent"\x1a\n\x18ReportErrorEventResponse"\xf7\x01\n\x12ReportedErrorEvent\x12.\n\nevent_time\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12T\n\x0fservice_context\x18\x02 \x01(\x0b\x32;.google.devtools.clouderrorreporting.v1beta1.ServiceContext\x12\x0f\n\x07message\x18\x03 \x01(\t\x12J\n\x07\x63ontext\x18\x04 \x01(\x0b\x32\x39.google.devtools.clouderrorreporting.v1beta1.ErrorContext2\xf8\x01\n\x13ReportErrorsService\x12\xe0\x01\n\x10ReportErrorEvent\x12\x44.google.devtools.clouderrorreporting.v1beta1.ReportErrorEventRequest\x1a\x45.google.devtools.clouderrorreporting.v1beta1.ReportErrorEventResponse"?\x82\xd3\xe4\x93\x02\x39"0/v1beta1/{project_name=projects/*}/events:report:\x05\x65ventB\xf9\x01\n/com.google.devtools.clouderrorreporting.v1beta1B\x18ReportErrorsServiceProtoP\x01Z^google.golang.org/genproto/googleapis/devtools/clouderrorreporting/v1beta1;clouderrorreporting\xaa\x02#Google.Cloud.ErrorReporting.V1Beta1\xca\x02#Google\\Cloud\\ErrorReporting\\V1beta1b\x06proto3'
     ),
@@ -59,7 +61,7 @@ _REPORTERROREVENTREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -77,14 +79,14 @@ _REPORTERROREVENTREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -104,7 +106,7 @@ _REPORTERROREVENTRESPONSE = _descriptor.Descriptor(
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -136,7 +138,7 @@ _REPORTEDERROREVENT = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -154,7 +156,7 @@ _REPORTEDERROREVENT = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -172,7 +174,7 @@ _REPORTEDERROREVENT = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -190,14 +192,14 @@ _REPORTEDERROREVENT = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -296,20 +298,14 @@ ReportedErrorEvent = _reflection.GeneratedProtocolMessageType(
 _sym_db.RegisterMessage(ReportedErrorEvent)
 
 
-DESCRIPTOR.has_options = True
-DESCRIPTOR._options = _descriptor._ParseOptions(
-    descriptor_pb2.FileOptions(),
-    _b(
-        "\n/com.google.devtools.clouderrorreporting.v1beta1B\030ReportErrorsServiceProtoP\001Z^google.golang.org/genproto/googleapis/devtools/clouderrorreporting/v1beta1;clouderrorreporting\252\002#Google.Cloud.ErrorReporting.V1Beta1\312\002#Google\\Cloud\\ErrorReporting\\V1beta1"
-    ),
-)
+DESCRIPTOR._options = None
 
 _REPORTERRORSSERVICE = _descriptor.ServiceDescriptor(
     name="ReportErrorsService",
     full_name="google.devtools.clouderrorreporting.v1beta1.ReportErrorsService",
     file=DESCRIPTOR,
     index=0,
-    options=None,
+    serialized_options=None,
     serialized_start=661,
     serialized_end=909,
     methods=[
@@ -320,11 +316,8 @@ _REPORTERRORSSERVICE = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_REPORTERROREVENTREQUEST,
             output_type=_REPORTERROREVENTRESPONSE,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\0029"0/v1beta1/{project_name=projects/*}/events:report:\005event'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\0029"0/v1beta1/{project_name=projects/*}/events:report:\005event'
             ),
         )
     ],

@@ -5,33 +5,21 @@
 # taken by someone else.
 *                         @crwilcox
 
-# Danny Hermes is the primary author of the original core library, as
-# well as most of the testing code. He is (currently) handling the
-# rewrite of `ndb`.
-core/*                    @dhermes
-test_utils/*              @dhermes
-ndb/*                     @dhermes
-
 # Thea Flowers is the author of the new google.api_core library.
 api_core/*                @theacodes
+core/*                    @theacodes
 docs/core/*               @theacodes
 
 # Tim Swast and Alix Hamilton share responsibility for BigQuery.
 bigquery/*                @tswast @alixhami
 
 # Danny Hermes and Tres Seaver co-authored the BigTable library.
-bigtable/*                @dhermes @tseaver
-
-# Danny Hermes is the primary maintainer of the Datastore library.
-datastore/*               @dhermes
+bigtable/*                @tseaver
 
 # Bill Prin is the primary maintainer of the Stackdriver libraries.
 error_reporting/*         @waprin
 monitoring/*              @waprin @supriyagarg @rimey
 logging/*                 @waprin @tseaver
-
-# Danny Hermes is the primary author of resource manager
-resourcemanager/*         @dhermes
 
 # Tim Swast is the primary author of Runtime Config.
 runtimeconfig/*           @tswast

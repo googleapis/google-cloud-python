@@ -7,6 +7,7 @@
   AutoML <automl/index>
   BigQuery <bigquery/index>
   BigQuery Data-Transfer <bigquery_datatransfer/index>
+  BigQuery Storage <bigquery_storage/index>
   Bigtable <bigtable/index>
   Container <container/index>
   Dataproc <dataproc/index>
@@ -29,12 +30,14 @@
   Spanner <spanner/index>
   Speech <speech/index>
   Storage <storage/index>
+  Talent <talent/index>
   Tasks <tasks/index>
   Text-to-Speech <texttospeech/index>
   Translate <translate/index>
   Vision <vision/index>
   Video Intelligence <videointelligence/index>
   Stackdriver Error Reporting <error-reporting/index>
+  Stackdriver Incident Response & Management <irm/index>
   Stackdriver Logging <logging/index>
   Stackdriver Monitoring <monitoring/index>
   Stackdriver Trace <trace/index>

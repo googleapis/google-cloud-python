@@ -9,7 +9,6 @@ from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
-from google.protobuf import descriptor_pb2
 
 # @@protoc_insertion_point(imports)
 
@@ -23,6 +22,9 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     name="google/cloud/automl_v1beta1/proto/classification.proto",
     package="google.cloud.automl.v1beta1",
     syntax="proto3",
+    serialized_options=_b(
+        "\n\037com.google.cloud.automl.v1beta1B\023ClassificationProtoZAgoogle.golang.org/genproto/googleapis/cloud/automl/v1beta1;automl\312\002\033Google\\Cloud\\AutoMl\\V1beta1"
+    ),
     serialized_pb=_b(
         '\n6google/cloud/automl_v1beta1/proto/classification.proto\x12\x1bgoogle.cloud.automl.v1beta1\x1a\x1cgoogle/api/annotations.proto")\n\x18\x43lassificationAnnotation\x12\r\n\x05score\x18\x01 \x01(\x02"\x9d\x05\n\x1f\x43lassificationEvaluationMetrics\x12\x0e\n\x06\x61u_prc\x18\x01 \x01(\x02\x12\x13\n\x0b\x62\x61se_au_prc\x18\x02 \x01(\x02\x12u\n\x18\x63onfidence_metrics_entry\x18\x03 \x03(\x0b\x32S.google.cloud.automl.v1beta1.ClassificationEvaluationMetrics.ConfidenceMetricsEntry\x12\x66\n\x10\x63onfusion_matrix\x18\x04 \x01(\x0b\x32L.google.cloud.automl.v1beta1.ClassificationEvaluationMetrics.ConfusionMatrix\x12\x1a\n\x12\x61nnotation_spec_id\x18\x05 \x03(\t\x1a\xac\x01\n\x16\x43onfidenceMetricsEntry\x12\x1c\n\x14\x63onfidence_threshold\x18\x01 \x01(\x02\x12\x0e\n\x06recall\x18\x02 \x01(\x02\x12\x11\n\tprecision\x18\x03 \x01(\x02\x12\x10\n\x08\x66\x31_score\x18\x04 \x01(\x02\x12\x12\n\nrecall_at1\x18\x05 \x01(\x02\x12\x15\n\rprecision_at1\x18\x06 \x01(\x02\x12\x14\n\x0c\x66\x31_score_at1\x18\x07 \x01(\x02\x1a\xaa\x01\n\x0f\x43onfusionMatrix\x12\x1a\n\x12\x61nnotation_spec_id\x18\x01 \x03(\t\x12]\n\x03row\x18\x02 \x03(\x0b\x32P.google.cloud.automl.v1beta1.ClassificationEvaluationMetrics.ConfusionMatrix.Row\x1a\x1c\n\x03Row\x12\x15\n\rexample_count\x18\x01 \x03(\x05*Y\n\x12\x43lassificationType\x12#\n\x1f\x43LASSIFICATION_TYPE_UNSPECIFIED\x10\x00\x12\x0e\n\nMULTICLASS\x10\x01\x12\x0e\n\nMULTILABEL\x10\x02\x42\x97\x01\n\x1f\x63om.google.cloud.automl.v1beta1B\x13\x43lassificationProtoZAgoogle.golang.org/genproto/googleapis/cloud/automl/v1beta1;automl\xca\x02\x1bGoogle\\Cloud\\AutoMl\\V1beta1b\x06proto3'
     ),
@@ -39,18 +41,18 @@ _CLASSIFICATIONTYPE = _descriptor.EnumDescriptor(
             name="CLASSIFICATION_TYPE_UNSPECIFIED",
             index=0,
             number=0,
-            options=None,
+            serialized_options=None,
             type=None,
         ),
         _descriptor.EnumValueDescriptor(
-            name="MULTICLASS", index=1, number=1, options=None, type=None
+            name="MULTICLASS", index=1, number=1, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="MULTILABEL", index=2, number=2, options=None, type=None
+            name="MULTILABEL", index=2, number=2, serialized_options=None, type=None
         ),
     ],
     containing_type=None,
-    options=None,
+    serialized_options=None,
     serialized_start=832,
     serialized_end=921,
 )
@@ -84,14 +86,14 @@ _CLASSIFICATIONANNOTATION = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -123,7 +125,7 @@ _CLASSIFICATIONEVALUATIONMETRICS_CONFIDENCEMETRICSENTRY = _descriptor.Descriptor
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -141,7 +143,7 @@ _CLASSIFICATIONEVALUATIONMETRICS_CONFIDENCEMETRICSENTRY = _descriptor.Descriptor
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -159,7 +161,7 @@ _CLASSIFICATIONEVALUATIONMETRICS_CONFIDENCEMETRICSENTRY = _descriptor.Descriptor
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -177,7 +179,7 @@ _CLASSIFICATIONEVALUATIONMETRICS_CONFIDENCEMETRICSENTRY = _descriptor.Descriptor
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -195,7 +197,7 @@ _CLASSIFICATIONEVALUATIONMETRICS_CONFIDENCEMETRICSENTRY = _descriptor.Descriptor
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -213,7 +215,7 @@ _CLASSIFICATIONEVALUATIONMETRICS_CONFIDENCEMETRICSENTRY = _descriptor.Descriptor
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -231,14 +233,14 @@ _CLASSIFICATIONEVALUATIONMETRICS_CONFIDENCEMETRICSENTRY = _descriptor.Descriptor
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -269,14 +271,14 @@ _CLASSIFICATIONEVALUATIONMETRICS_CONFUSIONMATRIX_ROW = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -307,7 +309,7 @@ _CLASSIFICATIONEVALUATIONMETRICS_CONFUSIONMATRIX = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -325,14 +327,14 @@ _CLASSIFICATIONEVALUATIONMETRICS_CONFUSIONMATRIX = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[_CLASSIFICATIONEVALUATIONMETRICS_CONFUSIONMATRIX_ROW],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -363,7 +365,7 @@ _CLASSIFICATIONEVALUATIONMETRICS = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -381,7 +383,7 @@ _CLASSIFICATIONEVALUATIONMETRICS = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -399,7 +401,7 @@ _CLASSIFICATIONEVALUATIONMETRICS = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -417,7 +419,7 @@ _CLASSIFICATIONEVALUATIONMETRICS = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -435,7 +437,7 @@ _CLASSIFICATIONEVALUATIONMETRICS = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
@@ -445,7 +447,7 @@ _CLASSIFICATIONEVALUATIONMETRICS = _descriptor.Descriptor(
         _CLASSIFICATIONEVALUATIONMETRICS_CONFUSIONMATRIX,
     ],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -615,11 +617,5 @@ _sym_db.RegisterMessage(ClassificationEvaluationMetrics.ConfusionMatrix)
 _sym_db.RegisterMessage(ClassificationEvaluationMetrics.ConfusionMatrix.Row)
 
 
-DESCRIPTOR.has_options = True
-DESCRIPTOR._options = _descriptor._ParseOptions(
-    descriptor_pb2.FileOptions(),
-    _b(
-        "\n\037com.google.cloud.automl.v1beta1B\023ClassificationProtoZAgoogle.golang.org/genproto/googleapis/cloud/automl/v1beta1;automl\312\002\033Google\\Cloud\\AutoMl\\V1beta1"
-    ),
-)
+DESCRIPTOR._options = None
 # @@protoc_insertion_point(module_scope)

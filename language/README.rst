@@ -24,7 +24,7 @@ with your document storage on Google Cloud Storage.
    :target: https://pypi.org/project/google-cloud-language/
 .. _Google Cloud Natural Language: https://cloud.google.com/natural-language/
 .. _Product Documentation:  https://cloud.google.com/language/docs
-.. _Client Library Documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/language/index.html
+.. _Client Library Documentation: https://googleapis.github.io/google-cloud-python/latest/language/index.html
 
 .. note::
 
@@ -44,7 +44,7 @@ In order to use this library, you first need to go through the following steps:
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
 .. _Enable the Google Cloud Language API.:  https://cloud.google.com/natural-language
-.. _Setup Authentication.: https://googlecloudplatform.github.io/google-cloud-python/latest/core/auth.html
+.. _Setup Authentication.: https://googleapis.github.io/google-cloud-python/latest/core/auth.html
 
 Installation
 ~~~~~~~~~~~~
@@ -99,4 +99,4 @@ Next Steps
 -  Read the `Product documentation`_ to learn
    more about the product and see How-to Guides.
 
-.. _Usage documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/language/usage.html
+.. _Usage documentation: https://googleapis.github.io/google-cloud-python/latest/language/usage.html

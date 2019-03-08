@@ -9,7 +9,6 @@ from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
-from google.protobuf import descriptor_pb2
 
 # @@protoc_insertion_point(imports)
 
@@ -28,6 +27,9 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     name="google/devtools/cloudtrace_v2/proto/tracing.proto",
     package="google.devtools.cloudtrace.v2",
     syntax="proto3",
+    serialized_options=_b(
+        "\n!com.google.devtools.cloudtrace.v2B\014TracingProtoP\001ZGgoogle.golang.org/genproto/googleapis/devtools/cloudtrace/v2;cloudtrace\252\002\025Google.Cloud.Trace.V2\312\002\025Google\\Cloud\\Trace\\V2"
+    ),
     serialized_pb=_b(
         '\n1google/devtools/cloudtrace_v2/proto/tracing.proto\x12\x1dgoogle.devtools.cloudtrace.v2\x1a\x1cgoogle/api/annotations.proto\x1a/google/devtools/cloudtrace_v2/proto/trace.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1fgoogle/protobuf/timestamp.proto"Z\n\x16\x42\x61tchWriteSpansRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x32\n\x05spans\x18\x02 \x03(\x0b\x32#.google.devtools.cloudtrace.v2.Span2\xaf\x02\n\x0cTraceService\x12\x94\x01\n\x0f\x42\x61tchWriteSpans\x12\x35.google.devtools.cloudtrace.v2.BatchWriteSpansRequest\x1a\x16.google.protobuf.Empty"2\x82\xd3\xe4\x93\x02,"\'/v2/{name=projects/*}/traces:batchWrite:\x01*\x12\x87\x01\n\nCreateSpan\x12#.google.devtools.cloudtrace.v2.Span\x1a#.google.devtools.cloudtrace.v2.Span"/\x82\xd3\xe4\x93\x02)"$/v2/{name=projects/*/traces/*}/spans:\x01*B\xac\x01\n!com.google.devtools.cloudtrace.v2B\x0cTracingProtoP\x01ZGgoogle.golang.org/genproto/googleapis/devtools/cloudtrace/v2;cloudtrace\xaa\x02\x15Google.Cloud.Trace.V2\xca\x02\x15Google\\Cloud\\Trace\\V2b\x06proto3'
     ),
@@ -62,7 +64,7 @@ _BATCHWRITESPANSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -80,14 +82,14 @@ _BATCHWRITESPANSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -125,20 +127,14 @@ BatchWriteSpansRequest = _reflection.GeneratedProtocolMessageType(
 _sym_db.RegisterMessage(BatchWriteSpansRequest)
 
 
-DESCRIPTOR.has_options = True
-DESCRIPTOR._options = _descriptor._ParseOptions(
-    descriptor_pb2.FileOptions(),
-    _b(
-        "\n!com.google.devtools.cloudtrace.v2B\014TracingProtoP\001ZGgoogle.golang.org/genproto/googleapis/devtools/cloudtrace/v2;cloudtrace\252\002\025Google.Cloud.Trace.V2\312\002\025Google\\Cloud\\Trace\\V2"
-    ),
-)
+DESCRIPTOR._options = None
 
 _TRACESERVICE = _descriptor.ServiceDescriptor(
     name="TraceService",
     full_name="google.devtools.cloudtrace.v2.TraceService",
     file=DESCRIPTOR,
     index=0,
-    options=None,
+    serialized_options=None,
     serialized_start=318,
     serialized_end=621,
     methods=[
@@ -149,11 +145,8 @@ _TRACESERVICE = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_BATCHWRITESPANSREQUEST,
             output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\002,\"'/v2/{name=projects/*}/traces:batchWrite:\001*"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\002,\"'/v2/{name=projects/*}/traces:batchWrite:\001*"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -163,9 +156,8 @@ _TRACESERVICE = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=google_dot_devtools_dot_cloudtrace__v2_dot_proto_dot_trace__pb2._SPAN,
             output_type=google_dot_devtools_dot_cloudtrace__v2_dot_proto_dot_trace__pb2._SPAN,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b('\202\323\344\223\002)"$/v2/{name=projects/*/traces/*}/spans:\001*'),
+            serialized_options=_b(
+                '\202\323\344\223\002)"$/v2/{name=projects/*/traces/*}/spans:\001*'
             ),
         ),
     ],

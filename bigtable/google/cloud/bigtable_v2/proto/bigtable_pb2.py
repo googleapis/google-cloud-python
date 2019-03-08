@@ -8,7 +8,6 @@ from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
-from google.protobuf import descriptor_pb2
 
 # @@protoc_insertion_point(imports)
 
@@ -27,6 +26,9 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     name="google/cloud/bigtable_v2/proto/bigtable.proto",
     package="google.bigtable.v2",
     syntax="proto3",
+    serialized_options=_b(
+        "\n\026com.google.bigtable.v2B\rBigtableProtoP\001Z:google.golang.org/genproto/googleapis/bigtable/v2;bigtable\252\002\030Google.Cloud.Bigtable.V2\312\002\030Google\\Cloud\\Bigtable\\V2"
+    ),
     serialized_pb=_b(
         '\n-google/cloud/bigtable_v2/proto/bigtable.proto\x12\x12google.bigtable.v2\x1a\x1cgoogle/api/annotations.proto\x1a)google/cloud/bigtable_v2/proto/data.proto\x1a\x1egoogle/protobuf/wrappers.proto\x1a\x17google/rpc/status.proto"\xaa\x01\n\x0fReadRowsRequest\x12\x12\n\ntable_name\x18\x01 \x01(\t\x12\x16\n\x0e\x61pp_profile_id\x18\x05 \x01(\t\x12(\n\x04rows\x18\x02 \x01(\x0b\x32\x1a.google.bigtable.v2.RowSet\x12-\n\x06\x66ilter\x18\x03 \x01(\x0b\x32\x1d.google.bigtable.v2.RowFilter\x12\x12\n\nrows_limit\x18\x04 \x01(\x03"\xf8\x02\n\x10ReadRowsResponse\x12>\n\x06\x63hunks\x18\x01 \x03(\x0b\x32..google.bigtable.v2.ReadRowsResponse.CellChunk\x12\x1c\n\x14last_scanned_row_key\x18\x02 \x01(\x0c\x1a\x85\x02\n\tCellChunk\x12\x0f\n\x07row_key\x18\x01 \x01(\x0c\x12\x31\n\x0b\x66\x61mily_name\x18\x02 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12.\n\tqualifier\x18\x03 \x01(\x0b\x32\x1b.google.protobuf.BytesValue\x12\x18\n\x10timestamp_micros\x18\x04 \x01(\x03\x12\x0e\n\x06labels\x18\x05 \x03(\t\x12\r\n\x05value\x18\x06 \x01(\x0c\x12\x12\n\nvalue_size\x18\x07 \x01(\x05\x12\x13\n\treset_row\x18\x08 \x01(\x08H\x00\x12\x14\n\ncommit_row\x18\t \x01(\x08H\x00\x42\x0c\n\nrow_status"B\n\x14SampleRowKeysRequest\x12\x12\n\ntable_name\x18\x01 \x01(\t\x12\x16\n\x0e\x61pp_profile_id\x18\x02 \x01(\t">\n\x15SampleRowKeysResponse\x12\x0f\n\x07row_key\x18\x01 \x01(\x0c\x12\x14\n\x0coffset_bytes\x18\x02 \x01(\x03"\x80\x01\n\x10MutateRowRequest\x12\x12\n\ntable_name\x18\x01 \x01(\t\x12\x16\n\x0e\x61pp_profile_id\x18\x04 \x01(\t\x12\x0f\n\x07row_key\x18\x02 \x01(\x0c\x12/\n\tmutations\x18\x03 \x03(\x0b\x32\x1c.google.bigtable.v2.Mutation"\x13\n\x11MutateRowResponse"\xc8\x01\n\x11MutateRowsRequest\x12\x12\n\ntable_name\x18\x01 \x01(\t\x12\x16\n\x0e\x61pp_profile_id\x18\x03 \x01(\t\x12<\n\x07\x65ntries\x18\x02 \x03(\x0b\x32+.google.bigtable.v2.MutateRowsRequest.Entry\x1aI\n\x05\x45ntry\x12\x0f\n\x07row_key\x18\x01 \x01(\x0c\x12/\n\tmutations\x18\x02 \x03(\x0b\x32\x1c.google.bigtable.v2.Mutation"\x8f\x01\n\x12MutateRowsResponse\x12=\n\x07\x65ntries\x18\x01 \x03(\x0b\x32,.google.bigtable.v2.MutateRowsResponse.Entry\x1a:\n\x05\x45ntry\x12\r\n\x05index\x18\x01 \x01(\x03\x12"\n\x06status\x18\x02 \x01(\x0b\x32\x12.google.rpc.Status"\xfd\x01\n\x18\x43heckAndMutateRowRequest\x12\x12\n\ntable_name\x18\x01 \x01(\t\x12\x16\n\x0e\x61pp_profile_id\x18\x07 \x01(\t\x12\x0f\n\x07row_key\x18\x02 \x01(\x0c\x12\x37\n\x10predicate_filter\x18\x06 \x01(\x0b\x32\x1d.google.bigtable.v2.RowFilter\x12\x34\n\x0etrue_mutations\x18\x04 \x03(\x0b\x32\x1c.google.bigtable.v2.Mutation\x12\x35\n\x0f\x66\x61lse_mutations\x18\x05 \x03(\x0b\x32\x1c.google.bigtable.v2.Mutation"6\n\x19\x43heckAndMutateRowResponse\x12\x19\n\x11predicate_matched\x18\x01 \x01(\x08"\x90\x01\n\x19ReadModifyWriteRowRequest\x12\x12\n\ntable_name\x18\x01 \x01(\t\x12\x16\n\x0e\x61pp_profile_id\x18\x04 \x01(\t\x12\x0f\n\x07row_key\x18\x02 \x01(\x0c\x12\x36\n\x05rules\x18\x03 \x03(\x0b\x32\'.google.bigtable.v2.ReadModifyWriteRule"B\n\x1aReadModifyWriteRowResponse\x12$\n\x03row\x18\x01 \x01(\x0b\x32\x17.google.bigtable.v2.Row2\xad\x08\n\x08\x42igtable\x12\x9d\x01\n\x08ReadRows\x12#.google.bigtable.v2.ReadRowsRequest\x1a$.google.bigtable.v2.ReadRowsResponse"D\x82\xd3\xe4\x93\x02>"9/v2/{table_name=projects/*/instances/*/tables/*}:readRows:\x01*0\x01\x12\xae\x01\n\rSampleRowKeys\x12(.google.bigtable.v2.SampleRowKeysRequest\x1a).google.bigtable.v2.SampleRowKeysResponse"F\x82\xd3\xe4\x93\x02@\x12>/v2/{table_name=projects/*/instances/*/tables/*}:sampleRowKeys0\x01\x12\x9f\x01\n\tMutateRow\x12$.google.bigtable.v2.MutateRowRequest\x1a%.google.bigtable.v2.MutateRowResponse"E\x82\xd3\xe4\x93\x02?":/v2/{table_name=projects/*/instances/*/tables/*}:mutateRow:\x01*\x12\xa5\x01\n\nMutateRows\x12%.google.bigtable.v2.MutateRowsRequest\x1a&.google.bigtable.v2.MutateRowsResponse"F\x82\xd3\xe4\x93\x02@";/v2/{table_name=projects/*/instances/*/tables/*}:mutateRows:\x01*0\x01\x12\xbf\x01\n\x11\x43heckAndMutateRow\x12,.google.bigtable.v2.CheckAndMutateRowRequest\x1a-.google.bigtable.v2.CheckAndMutateRowResponse"M\x82\xd3\xe4\x93\x02G"B/v2/{table_name=projects/*/instances/*/tables/*}:checkAndMutateRow:\x01*\x12\xc3\x01\n\x12ReadModifyWriteRow\x12-.google.bigtable.v2.ReadModifyWriteRowRequest\x1a..google.bigtable.v2.ReadModifyWriteRowResponse"N\x82\xd3\xe4\x93\x02H"C/v2/{table_name=projects/*/instances/*/tables/*}:readModifyWriteRow:\x01*B\x9b\x01\n\x16\x63om.google.bigtable.v2B\rBigtableProtoP\x01Z:google.golang.org/genproto/googleapis/bigtable/v2;bigtable\xaa\x02\x18Google.Cloud.Bigtable.V2\xca\x02\x18Google\\Cloud\\Bigtable\\V2b\x06proto3'
     ),
@@ -61,7 +63,7 @@ _READROWSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -79,7 +81,7 @@ _READROWSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -97,7 +99,7 @@ _READROWSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -115,7 +117,7 @@ _READROWSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -133,14 +135,14 @@ _READROWSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -172,7 +174,7 @@ _READROWSRESPONSE_CELLCHUNK = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -190,7 +192,7 @@ _READROWSRESPONSE_CELLCHUNK = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -208,7 +210,7 @@ _READROWSRESPONSE_CELLCHUNK = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -226,7 +228,7 @@ _READROWSRESPONSE_CELLCHUNK = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -244,7 +246,7 @@ _READROWSRESPONSE_CELLCHUNK = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -262,7 +264,7 @@ _READROWSRESPONSE_CELLCHUNK = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -280,7 +282,7 @@ _READROWSRESPONSE_CELLCHUNK = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -298,7 +300,7 @@ _READROWSRESPONSE_CELLCHUNK = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -316,14 +318,14 @@ _READROWSRESPONSE_CELLCHUNK = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -362,7 +364,7 @@ _READROWSRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -380,14 +382,14 @@ _READROWSRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[_READROWSRESPONSE_CELLCHUNK],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -419,7 +421,7 @@ _SAMPLEROWKEYSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -437,14 +439,14 @@ _SAMPLEROWKEYSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -476,7 +478,7 @@ _SAMPLEROWKEYSRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -494,14 +496,14 @@ _SAMPLEROWKEYSRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -533,7 +535,7 @@ _MUTATEROWREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -551,7 +553,7 @@ _MUTATEROWREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -569,7 +571,7 @@ _MUTATEROWREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -587,14 +589,14 @@ _MUTATEROWREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -614,7 +616,7 @@ _MUTATEROWRESPONSE = _descriptor.Descriptor(
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -646,7 +648,7 @@ _MUTATEROWSREQUEST_ENTRY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -664,14 +666,14 @@ _MUTATEROWSREQUEST_ENTRY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -702,7 +704,7 @@ _MUTATEROWSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -720,7 +722,7 @@ _MUTATEROWSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -738,14 +740,14 @@ _MUTATEROWSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[_MUTATEROWSREQUEST_ENTRY],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -777,7 +779,7 @@ _MUTATEROWSRESPONSE_ENTRY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -795,14 +797,14 @@ _MUTATEROWSRESPONSE_ENTRY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -833,14 +835,14 @@ _MUTATEROWSRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[_MUTATEROWSRESPONSE_ENTRY],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -872,7 +874,7 @@ _CHECKANDMUTATEROWREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -890,7 +892,7 @@ _CHECKANDMUTATEROWREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -908,7 +910,7 @@ _CHECKANDMUTATEROWREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -926,7 +928,7 @@ _CHECKANDMUTATEROWREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -944,7 +946,7 @@ _CHECKANDMUTATEROWREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -962,14 +964,14 @@ _CHECKANDMUTATEROWREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1001,14 +1003,14 @@ _CHECKANDMUTATEROWRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1040,7 +1042,7 @@ _READMODIFYWRITEROWREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1058,7 +1060,7 @@ _READMODIFYWRITEROWREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1076,7 +1078,7 @@ _READMODIFYWRITEROWREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1094,14 +1096,14 @@ _READMODIFYWRITEROWREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1133,14 +1135,14 @@ _READMODIFYWRITEROWRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1643,20 +1645,14 @@ ReadModifyWriteRowResponse = _reflection.GeneratedProtocolMessageType(
 _sym_db.RegisterMessage(ReadModifyWriteRowResponse)
 
 
-DESCRIPTOR.has_options = True
-DESCRIPTOR._options = _descriptor._ParseOptions(
-    descriptor_pb2.FileOptions(),
-    _b(
-        "\n\026com.google.bigtable.v2B\rBigtableProtoP\001Z:google.golang.org/genproto/googleapis/bigtable/v2;bigtable\252\002\030Google.Cloud.Bigtable.V2\312\002\030Google\\Cloud\\Bigtable\\V2"
-    ),
-)
+DESCRIPTOR._options = None
 
 _BIGTABLE = _descriptor.ServiceDescriptor(
     name="Bigtable",
     full_name="google.bigtable.v2.Bigtable",
     file=DESCRIPTOR,
     index=0,
-    options=None,
+    serialized_options=None,
     serialized_start=1912,
     serialized_end=2981,
     methods=[
@@ -1667,11 +1663,8 @@ _BIGTABLE = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_READROWSREQUEST,
             output_type=_READROWSRESPONSE,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\002>"9/v2/{table_name=projects/*/instances/*/tables/*}:readRows:\001*'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\002>"9/v2/{table_name=projects/*/instances/*/tables/*}:readRows:\001*'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -1681,11 +1674,8 @@ _BIGTABLE = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_SAMPLEROWKEYSREQUEST,
             output_type=_SAMPLEROWKEYSRESPONSE,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\002@\022>/v2/{table_name=projects/*/instances/*/tables/*}:sampleRowKeys"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\002@\022>/v2/{table_name=projects/*/instances/*/tables/*}:sampleRowKeys"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -1695,11 +1685,8 @@ _BIGTABLE = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_MUTATEROWREQUEST,
             output_type=_MUTATEROWRESPONSE,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\002?":/v2/{table_name=projects/*/instances/*/tables/*}:mutateRow:\001*'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\002?":/v2/{table_name=projects/*/instances/*/tables/*}:mutateRow:\001*'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -1709,11 +1696,8 @@ _BIGTABLE = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_MUTATEROWSREQUEST,
             output_type=_MUTATEROWSRESPONSE,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\002@";/v2/{table_name=projects/*/instances/*/tables/*}:mutateRows:\001*'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\002@";/v2/{table_name=projects/*/instances/*/tables/*}:mutateRows:\001*'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -1723,11 +1707,8 @@ _BIGTABLE = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_CHECKANDMUTATEROWREQUEST,
             output_type=_CHECKANDMUTATEROWRESPONSE,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\002G"B/v2/{table_name=projects/*/instances/*/tables/*}:checkAndMutateRow:\001*'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\002G"B/v2/{table_name=projects/*/instances/*/tables/*}:checkAndMutateRow:\001*'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -1737,11 +1718,8 @@ _BIGTABLE = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_READMODIFYWRITEROWREQUEST,
             output_type=_READMODIFYWRITEROWRESPONSE,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\002H"C/v2/{table_name=projects/*/instances/*/tables/*}:readModifyWriteRow:\001*'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\002H"C/v2/{table_name=projects/*/instances/*/tables/*}:readModifyWriteRow:\001*'
             ),
         ),
     ],

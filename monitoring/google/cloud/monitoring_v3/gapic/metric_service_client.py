@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2018 Google LLC
+# Copyright 2019 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -218,7 +218,8 @@ class MetricServiceClient(object):
         metadata=None,
     ):
         """
-        Lists monitored resource descriptors that match a filter. This method does not require a Stackdriver account.
+        Lists monitored resource descriptors that match a filter. This method does
+        not require a Stackdriver account.
 
         Example:
             >>> from google.cloud import monitoring_v3
@@ -324,7 +325,8 @@ class MetricServiceClient(object):
         metadata=None,
     ):
         """
-        Gets a single monitored resource descriptor. This method does not require a Stackdriver account.
+        Gets a single monitored resource descriptor. This method does not require a
+        Stackdriver account.
 
         Example:
             >>> from google.cloud import monitoring_v3
@@ -392,7 +394,8 @@ class MetricServiceClient(object):
         metadata=None,
     ):
         """
-        Lists metric descriptors that match a filter. This method does not require a Stackdriver account.
+        Lists metric descriptors that match a filter. This method does not require
+        a Stackdriver account.
 
         Example:
             >>> from google.cloud import monitoring_v3
@@ -495,7 +498,8 @@ class MetricServiceClient(object):
         metadata=None,
     ):
         """
-        Gets a single metric descriptor. This method does not require a Stackdriver account.
+        Gets a single metric descriptor. This method does not require a Stackdriver
+        account.
 
         Example:
             >>> from google.cloud import monitoring_v3
@@ -697,7 +701,8 @@ class MetricServiceClient(object):
         metadata=None,
     ):
         """
-        Lists time series that match a filter. This method does not require a Stackdriver account.
+        Lists time series that match a filter. This method does not require a
+        Stackdriver account.
 
         Example:
             >>> from google.cloud import monitoring_v3

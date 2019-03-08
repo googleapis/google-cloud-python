@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2018 Google LLC
+# Copyright 2019 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -308,6 +308,55 @@ class TestSpannerClient(object):
 
         with pytest.raises(CustomException):
             client.execute_streaming_sql(session, sql)
+
+    def test_execute_batch_dml(self):
+        # Setup Expected Response
+        expected_response = {}
+        expected_response = spanner_pb2.ExecuteBatchDmlResponse(**expected_response)
+
+        # Mock the API response
+        channel = ChannelStub(responses=[expected_response])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = spanner_v1.SpannerClient()
+
+        # Setup Request
+        session = client.session_path(
+            "[PROJECT]", "[INSTANCE]", "[DATABASE]", "[SESSION]"
+        )
+        transaction = {}
+        statements = []
+        seqno = 109325920
+
+        response = client.execute_batch_dml(session, transaction, statements, seqno)
+        assert expected_response == response
+
+        assert len(channel.requests) == 1
+        expected_request = spanner_pb2.ExecuteBatchDmlRequest(
+            session=session, transaction=transaction, statements=statements, seqno=seqno
+        )
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_execute_batch_dml_exception(self):
+        # Mock the API response
+        channel = ChannelStub(responses=[CustomException()])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = spanner_v1.SpannerClient()
+
+        # Setup request
+        session = client.session_path(
+            "[PROJECT]", "[INSTANCE]", "[DATABASE]", "[SESSION]"
+        )
+        transaction = {}
+        statements = []
+        seqno = 109325920
+
+        with pytest.raises(CustomException):
+            client.execute_batch_dml(session, transaction, statements, seqno)
 
     def test_read(self):
         # Setup Expected Response

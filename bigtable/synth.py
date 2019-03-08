@@ -28,6 +28,7 @@ library = gapic.py_library(
     "v2",
     config_path="/google/bigtable/artman_bigtable.yaml",
     artman_output_name="bigtable-v2",
+    include_protos=True,
 )
 
 s.move(library / "google/cloud/bigtable_v2")
@@ -39,6 +40,7 @@ library = gapic.py_library(
     "v2",
     config_path="/google/bigtable/admin/artman_bigtableadmin.yaml",
     artman_output_name="bigtable-admin-v2",
+    include_protos=True,
 )
 
 s.move(library / "google/cloud/bigtable_admin_v2")

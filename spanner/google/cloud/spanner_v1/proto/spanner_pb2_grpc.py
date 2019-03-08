@@ -56,6 +56,11 @@ class SpannerStub(object):
             request_serializer=google_dot_cloud_dot_spanner__v1_dot_proto_dot_spanner__pb2.ExecuteSqlRequest.SerializeToString,
             response_deserializer=google_dot_cloud_dot_spanner__v1_dot_proto_dot_result__set__pb2.PartialResultSet.FromString,
         )
+        self.ExecuteBatchDml = channel.unary_unary(
+            "/google.spanner.v1.Spanner/ExecuteBatchDml",
+            request_serializer=google_dot_cloud_dot_spanner__v1_dot_proto_dot_spanner__pb2.ExecuteBatchDmlRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_spanner__v1_dot_proto_dot_spanner__pb2.ExecuteBatchDmlResponse.FromString,
+        )
         self.Read = channel.unary_unary(
             "/google.spanner.v1.Spanner/Read",
             request_serializer=google_dot_cloud_dot_spanner__v1_dot_proto_dot_spanner__pb2.ReadRequest.SerializeToString,
@@ -142,7 +147,9 @@ class SpannerServicer(object):
         raise NotImplementedError("Method not implemented!")
 
     def DeleteSession(self, request, context):
-        """Ends a session, releasing server resources associated with it.
+        """Ends a session, releasing server resources associated with it. This will
+    asynchronously trigger cancellation of any operations that are running with
+    this session.
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
@@ -156,21 +163,48 @@ class SpannerServicer(object):
 
     Operations inside read-write transactions might return `ABORTED`. If
     this occurs, the application should restart the transaction from
-    the beginning. See [Transaction][google.spanner.v1.Transaction] for more details.
+    the beginning. See [Transaction][google.spanner.v1.Transaction] for more
+    details.
 
     Larger result sets can be fetched in streaming fashion by calling
-    [ExecuteStreamingSql][google.spanner.v1.Spanner.ExecuteStreamingSql] instead.
+    [ExecuteStreamingSql][google.spanner.v1.Spanner.ExecuteStreamingSql]
+    instead.
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
     def ExecuteStreamingSql(self, request, context):
-        """Like [ExecuteSql][google.spanner.v1.Spanner.ExecuteSql], except returns the result
-    set as a stream. Unlike [ExecuteSql][google.spanner.v1.Spanner.ExecuteSql], there
-    is no limit on the size of the returned result set. However, no
-    individual row in the result set can exceed 100 MiB, and no
-    column value can exceed 10 MiB.
+        """Like [ExecuteSql][google.spanner.v1.Spanner.ExecuteSql], except returns the
+    result set as a stream. Unlike
+    [ExecuteSql][google.spanner.v1.Spanner.ExecuteSql], there is no limit on
+    the size of the returned result set. However, no individual row in the
+    result set can exceed 100 MiB, and no column value can exceed 10 MiB.
+    """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
+    def ExecuteBatchDml(self, request, context):
+        """Executes a batch of SQL DML statements. This method allows many statements
+    to be run with lower latency than submitting them sequentially with
+    [ExecuteSql][google.spanner.v1.Spanner.ExecuteSql].
+
+    Statements are executed in order, sequentially.
+    [ExecuteBatchDmlResponse][Spanner.ExecuteBatchDmlResponse] will contain a
+    [ResultSet][google.spanner.v1.ResultSet] for each DML statement that has successfully executed. If a
+    statement fails, its error status will be returned as part of the
+    [ExecuteBatchDmlResponse][Spanner.ExecuteBatchDmlResponse]. Execution will
+    stop at the first failed statement; the remaining statements will not run.
+
+    ExecuteBatchDml is expected to return an OK status with a response even if
+    there was an error while processing one of the DML statements. Clients must
+    inspect response.status to determine if there were any errors while
+    processing the request.
+
+    See more details in
+    [ExecuteBatchDmlRequest][Spanner.ExecuteBatchDmlRequest] and
+    [ExecuteBatchDmlResponse][Spanner.ExecuteBatchDmlResponse].
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
@@ -179,14 +213,15 @@ class SpannerServicer(object):
     def Read(self, request, context):
         """Reads rows from the database using key lookups and scans, as a
     simple key/value style alternative to
-    [ExecuteSql][google.spanner.v1.Spanner.ExecuteSql].  This method cannot be used to
-    return a result set larger than 10 MiB; if the read matches more
+    [ExecuteSql][google.spanner.v1.Spanner.ExecuteSql].  This method cannot be
+    used to return a result set larger than 10 MiB; if the read matches more
     data than that, the read fails with a `FAILED_PRECONDITION`
     error.
 
     Reads inside read-write transactions might return `ABORTED`. If
     this occurs, the application should restart the transaction from
-    the beginning. See [Transaction][google.spanner.v1.Transaction] for more details.
+    the beginning. See [Transaction][google.spanner.v1.Transaction] for more
+    details.
 
     Larger result sets can be yielded in streaming fashion by calling
     [StreamingRead][google.spanner.v1.Spanner.StreamingRead] instead.
@@ -196,9 +231,9 @@ class SpannerServicer(object):
         raise NotImplementedError("Method not implemented!")
 
     def StreamingRead(self, request, context):
-        """Like [Read][google.spanner.v1.Spanner.Read], except returns the result set as a
-    stream. Unlike [Read][google.spanner.v1.Spanner.Read], there is no limit on the
-    size of the returned result set. However, no individual row in
+        """Like [Read][google.spanner.v1.Spanner.Read], except returns the result set
+    as a stream. Unlike [Read][google.spanner.v1.Spanner.Read], there is no
+    limit on the size of the returned result set. However, no individual row in
     the result set can exceed 100 MiB, and no column value can exceed
     10 MiB.
     """
@@ -208,7 +243,8 @@ class SpannerServicer(object):
 
     def BeginTransaction(self, request, context):
         """Begins a new transaction. This step can often be skipped:
-    [Read][google.spanner.v1.Spanner.Read], [ExecuteSql][google.spanner.v1.Spanner.ExecuteSql] and
+    [Read][google.spanner.v1.Spanner.Read],
+    [ExecuteSql][google.spanner.v1.Spanner.ExecuteSql] and
     [Commit][google.spanner.v1.Spanner.Commit] can begin a new transaction as a
     side-effect.
     """
@@ -233,8 +269,9 @@ class SpannerServicer(object):
     def Rollback(self, request, context):
         """Rolls back a transaction, releasing any locks it holds. It is a good
     idea to call this for any transaction that includes one or more
-    [Read][google.spanner.v1.Spanner.Read] or [ExecuteSql][google.spanner.v1.Spanner.ExecuteSql] requests and
-    ultimately decides not to commit.
+    [Read][google.spanner.v1.Spanner.Read] or
+    [ExecuteSql][google.spanner.v1.Spanner.ExecuteSql] requests and ultimately
+    decides not to commit.
 
     `Rollback` returns `OK` if it successfully aborts the transaction, the
     transaction was already aborted, or the transaction is not
@@ -247,10 +284,11 @@ class SpannerServicer(object):
     def PartitionQuery(self, request, context):
         """Creates a set of partition tokens that can be used to execute a query
     operation in parallel.  Each of the returned partition tokens can be used
-    by [ExecuteStreamingSql][google.spanner.v1.Spanner.ExecuteStreamingSql] to specify a subset
-    of the query result to read.  The same session and read-only transaction
-    must be used by the PartitionQueryRequest used to create the
-    partition tokens and the ExecuteSqlRequests that use the partition tokens.
+    by [ExecuteStreamingSql][google.spanner.v1.Spanner.ExecuteStreamingSql] to
+    specify a subset of the query result to read.  The same session and
+    read-only transaction must be used by the PartitionQueryRequest used to
+    create the partition tokens and the ExecuteSqlRequests that use the
+    partition tokens.
 
     Partition tokens become invalid when the session used to create them
     is deleted, is idle for too long, begins a new transaction, or becomes too
@@ -264,12 +302,13 @@ class SpannerServicer(object):
     def PartitionRead(self, request, context):
         """Creates a set of partition tokens that can be used to execute a read
     operation in parallel.  Each of the returned partition tokens can be used
-    by [StreamingRead][google.spanner.v1.Spanner.StreamingRead] to specify a subset of the read
-    result to read.  The same session and read-only transaction must be used by
-    the PartitionReadRequest used to create the partition tokens and the
-    ReadRequests that use the partition tokens.  There are no ordering
-    guarantees on rows returned among the returned partition tokens, or even
-    within each individual StreamingRead call issued with a partition_token.
+    by [StreamingRead][google.spanner.v1.Spanner.StreamingRead] to specify a
+    subset of the read result to read.  The same session and read-only
+    transaction must be used by the PartitionReadRequest used to create the
+    partition tokens and the ReadRequests that use the partition tokens.  There
+    are no ordering guarantees on rows returned among the returned partition
+    tokens, or even within each individual StreamingRead call issued with a
+    partition_token.
 
     Partition tokens become invalid when the session used to create them
     is deleted, is idle for too long, begins a new transaction, or becomes too
@@ -312,6 +351,11 @@ def add_SpannerServicer_to_server(servicer, server):
             servicer.ExecuteStreamingSql,
             request_deserializer=google_dot_cloud_dot_spanner__v1_dot_proto_dot_spanner__pb2.ExecuteSqlRequest.FromString,
             response_serializer=google_dot_cloud_dot_spanner__v1_dot_proto_dot_result__set__pb2.PartialResultSet.SerializeToString,
+        ),
+        "ExecuteBatchDml": grpc.unary_unary_rpc_method_handler(
+            servicer.ExecuteBatchDml,
+            request_deserializer=google_dot_cloud_dot_spanner__v1_dot_proto_dot_spanner__pb2.ExecuteBatchDmlRequest.FromString,
+            response_serializer=google_dot_cloud_dot_spanner__v1_dot_proto_dot_spanner__pb2.ExecuteBatchDmlResponse.SerializeToString,
         ),
         "Read": grpc.unary_unary_rpc_method_handler(
             servicer.Read,
