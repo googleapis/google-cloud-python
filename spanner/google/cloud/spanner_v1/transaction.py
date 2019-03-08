@@ -130,6 +130,38 @@ class Transaction(_SnapshotBase, _BatchBase):
         del self._session._transaction
         return self.committed
 
+    @staticmethod
+    def _make_params_pb(params, param_types):
+        """Helper for :meth:`execute_update`.
+
+        :type params: dict, {str -> column value}
+        :param params: values for parameter replacement.  Keys must match
+                       the names used in ``dml``.
+
+        :type param_types: dict[str -> Union[dict, .types.Type]]
+        :param param_types:
+            (Optional) maps explicit types for one or more param values;
+            required if parameters are passed.
+
+        :rtype: Union[None, :class:`Struct`]
+        :returns: a struct message for the passed params, or None
+        :raises ValueError:
+            If ``param_types`` is None but ``params`` is not None.
+        :raises ValueError:
+            If ``params`` is None but ``param_types`` is not None.
+        """
+        if params is not None:
+            if param_types is None:
+                raise ValueError("Specify 'param_types' when passing 'params'.")
+            return Struct(
+                fields={key: _make_value_pb(value) for key, value in params.items()}
+            )
+        else:
+            if param_types is not None:
+                raise ValueError("Specify 'params' when passing 'param_types'.")
+
+        return None
+
     def execute_update(self, dml, params=None, param_types=None, query_mode=None):
         """Perform an ``ExecuteSql`` API request with DML.
 
@@ -153,15 +185,7 @@ class Transaction(_SnapshotBase, _BatchBase):
         :rtype: int
         :returns: Count of rows affected by the DML statement.
         """
-        if params is not None:
-            if param_types is None:
-                raise ValueError("Specify 'param_types' when passing 'params'.")
-            params_pb = Struct(
-                fields={key: _make_value_pb(value) for key, value in params.items()}
-            )
-        else:
-            params_pb = None
-
+        params_pb = self._make_params_pb(params, param_types)
         database = self._session._database
         metadata = _metadata_with_prefix(database.name)
         transaction = self._make_txn_selector()
@@ -180,6 +204,58 @@ class Transaction(_SnapshotBase, _BatchBase):
 
         self._execute_sql_count += 1
         return response.stats.row_count_exact
+
+    def batch_update(self, statements):
+        """Perform a batch of DML statements via an ``ExecuteBatchDml`` request.
+
+        :type statements:
+            Sequence[Union[ str, Tuple[str, Dict[str, Any], Dict[str, Union[dict, .types.Type]]]]]
+
+        :param statements:
+            List of DML statements, with optional params / param types.
+            If passed, 'params' is a dict mapping names to the values
+            for parameter replacement.  Keys must match the names used in the
+            corresponding DML statement.  If 'params' is passed, 'param_types'
+            must also be passed, as a dict mapping names to the type of
+            value passed in 'params'.
+
+        :rtype:
+            Tuple(status, Sequence[int])
+        :returns:
+            Status code, plus counts of rows affected by each completed DML
+            statement.  Note that if the staus code is not ``OK``, the
+            statement triggering the error will not have an entry in the
+            list, nor will any statements following that one.
+        """
+        parsed = []
+        for statement in statements:
+            if isinstance(statement, str):
+                parsed.append({"sql": statement})
+            else:
+                dml, params, param_types = statement
+                params_pb = self._make_params_pb(params, param_types)
+                parsed.append(
+                    {"sql": dml, "params": params_pb, "param_types": param_types}
+                )
+
+        database = self._session._database
+        metadata = _metadata_with_prefix(database.name)
+        transaction = self._make_txn_selector()
+        api = database.spanner_api
+
+        response = api.execute_batch_dml(
+            session=self._session.name,
+            transaction=transaction,
+            statements=parsed,
+            seqno=self._execute_sql_count,
+            metadata=metadata,
+        )
+
+        self._execute_sql_count += 1
+        row_counts = [
+            result_set.stats.row_count_exact for result_set in response.result_sets
+        ]
+        return response.status, row_counts
 
     def __enter__(self):
         """Begin ``with`` block."""

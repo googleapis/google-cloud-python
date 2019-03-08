@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2018 Google LLC
+# Copyright 2019 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -223,7 +223,8 @@ class PublisherClient(object):
                 underscores (`_`), periods (`.`), tildes (`~`), plus (`+`) or percent
                 signs (`%`). It must be between 3 and 255 characters in length, and it
                 must not start with `"goog"`.
-            labels (dict[str -> str]): See <a href="/pubsub/docs/labels"> Creating and managing labels</a>.
+            labels (dict[str -> str]): See <a href="https://cloud.google.com/pubsub/docs/labels"> Creating and
+                managing labels</a>.
             message_storage_policy (Union[dict, ~google.cloud.pubsub_v1.types.MessageStoragePolicy]): Policy constraining how messages published to the topic may be stored. It
                 is determined when the topic is created based on the policy configured at
                 the project level. It must not be set by the caller in the request to

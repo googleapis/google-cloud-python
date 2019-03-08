@@ -17,7 +17,7 @@ variants, to support your global user base.
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-speech.svg
    :target: https://pypi.org/project/google-cloud-speech/
 .. _Cloud Speech API: https://cloud.google.com/speech
-.. _Client Library Documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/speech/index.html
+.. _Client Library Documentation: https://googleapis.github.io/google-cloud-python/latest/speech/index.html
 .. _Product Documentation:  https://cloud.google.com/speech
 
 Quick Start
@@ -33,7 +33,7 @@ In order to use this library, you first need to go through the following steps:
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
 .. _Enable the Cloud Speech API.:  https://cloud.google.com/speech
-.. _Setup Authentication.: https://googlecloudplatform.github.io/google-cloud-python/stable/core/auth.html
+.. _Setup Authentication.: https://googleapis.github.io/google-cloud-python/stable/core/auth.html
 
 Installation
 ~~~~~~~~~~~~

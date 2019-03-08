@@ -8,7 +8,6 @@ from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
-from google.protobuf import descriptor_pb2
 
 # @@protoc_insertion_point(imports)
 
@@ -29,6 +28,9 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     name="google/cloud/vision_v1/proto/product_search.proto",
     package="google.cloud.vision.v1",
     syntax="proto3",
+    serialized_options=_b(
+        "\n\032com.google.cloud.vision.v1B\022ProductSearchProtoP\001Z<google.golang.org/genproto/googleapis/cloud/vision/v1;vision\370\001\001\242\002\004GCVN"
+    ),
     serialized_pb=_b(
         '\n1google/cloud/vision_v1/proto/product_search.proto\x12\x16google.cloud.vision.v1\x1a\x1cgoogle/api/annotations.proto\x1a+google/cloud/vision_v1/proto/geometry.proto\x1a\x39google/cloud/vision_v1/proto/product_search_service.proto\x1a\x1fgoogle/protobuf/timestamp.proto"\x93\x01\n\x13ProductSearchParams\x12;\n\rbounding_poly\x18\t \x01(\x0b\x32$.google.cloud.vision.v1.BoundingPoly\x12\x13\n\x0bproduct_set\x18\x06 \x01(\t\x12\x1a\n\x12product_categories\x18\x07 \x03(\t\x12\x0e\n\x06\x66ilter\x18\x08 \x01(\t"\xd8\x03\n\x14ProductSearchResults\x12.\n\nindex_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x44\n\x07results\x18\x05 \x03(\x0b\x32\x33.google.cloud.vision.v1.ProductSearchResults.Result\x12[\n\x17product_grouped_results\x18\x06 \x03(\x0b\x32:.google.cloud.vision.v1.ProductSearchResults.GroupedResult\x1aX\n\x06Result\x12\x30\n\x07product\x18\x01 \x01(\x0b\x32\x1f.google.cloud.vision.v1.Product\x12\r\n\x05score\x18\x02 \x01(\x02\x12\r\n\x05image\x18\x03 \x01(\t\x1a\x92\x01\n\rGroupedResult\x12;\n\rbounding_poly\x18\x01 \x01(\x0b\x32$.google.cloud.vision.v1.BoundingPoly\x12\x44\n\x07results\x18\x02 \x03(\x0b\x32\x33.google.cloud.vision.v1.ProductSearchResults.ResultBz\n\x1a\x63om.google.cloud.vision.v1B\x12ProductSearchProtoP\x01Z<google.golang.org/genproto/googleapis/cloud/vision/v1;vision\xf8\x01\x01\xa2\x02\x04GCVNb\x06proto3'
     ),
@@ -63,7 +65,7 @@ _PRODUCTSEARCHPARAMS = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -81,7 +83,7 @@ _PRODUCTSEARCHPARAMS = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -99,7 +101,7 @@ _PRODUCTSEARCHPARAMS = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -117,14 +119,14 @@ _PRODUCTSEARCHPARAMS = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -156,7 +158,7 @@ _PRODUCTSEARCHRESULTS_RESULT = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -174,7 +176,7 @@ _PRODUCTSEARCHRESULTS_RESULT = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -192,14 +194,14 @@ _PRODUCTSEARCHRESULTS_RESULT = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -230,7 +232,7 @@ _PRODUCTSEARCHRESULTS_GROUPEDRESULT = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -248,14 +250,14 @@ _PRODUCTSEARCHRESULTS_GROUPEDRESULT = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -286,7 +288,7 @@ _PRODUCTSEARCHRESULTS = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -304,7 +306,7 @@ _PRODUCTSEARCHRESULTS = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -322,14 +324,14 @@ _PRODUCTSEARCHRESULTS = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[_PRODUCTSEARCHRESULTS_RESULT, _PRODUCTSEARCHRESULTS_GROUPEDRESULT],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -479,11 +481,5 @@ _sym_db.RegisterMessage(ProductSearchResults.Result)
 _sym_db.RegisterMessage(ProductSearchResults.GroupedResult)
 
 
-DESCRIPTOR.has_options = True
-DESCRIPTOR._options = _descriptor._ParseOptions(
-    descriptor_pb2.FileOptions(),
-    _b(
-        "\n\032com.google.cloud.vision.v1B\022ProductSearchProtoP\001Z<google.golang.org/genproto/googleapis/cloud/vision/v1;vision\370\001\001\242\002\004GCVN"
-    ),
-)
+DESCRIPTOR._options = None
 # @@protoc_insertion_point(module_scope)

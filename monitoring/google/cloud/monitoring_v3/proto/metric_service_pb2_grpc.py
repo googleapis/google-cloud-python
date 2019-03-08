@@ -70,28 +70,32 @@ class MetricServiceServicer(object):
   """
 
     def ListMonitoredResourceDescriptors(self, request, context):
-        """Lists monitored resource descriptors that match a filter. This method does not require a Stackdriver account.
+        """Lists monitored resource descriptors that match a filter. This method does
+    not require a Stackdriver account.
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
     def GetMonitoredResourceDescriptor(self, request, context):
-        """Gets a single monitored resource descriptor. This method does not require a Stackdriver account.
+        """Gets a single monitored resource descriptor. This method does not require a
+    Stackdriver account.
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
     def ListMetricDescriptors(self, request, context):
-        """Lists metric descriptors that match a filter. This method does not require a Stackdriver account.
+        """Lists metric descriptors that match a filter. This method does not require
+    a Stackdriver account.
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
     def GetMetricDescriptor(self, request, context):
-        """Gets a single metric descriptor. This method does not require a Stackdriver account.
+        """Gets a single metric descriptor. This method does not require a Stackdriver
+    account.
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
@@ -115,7 +119,8 @@ class MetricServiceServicer(object):
         raise NotImplementedError("Method not implemented!")
 
     def ListTimeSeries(self, request, context):
-        """Lists time series that match a filter. This method does not require a Stackdriver account.
+        """Lists time series that match a filter. This method does not require a
+    Stackdriver account.
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")

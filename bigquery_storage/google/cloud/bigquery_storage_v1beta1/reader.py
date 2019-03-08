@@ -14,6 +14,7 @@
 
 from __future__ import absolute_import
 
+import collections
 import itertools
 import json
 
@@ -155,11 +156,11 @@ class ReadRowsStream(object):
         if fastavro is None:
             raise ImportError(_FASTAVRO_REQUIRED)
 
-        avro_schema = _avro_schema(read_session)
+        avro_schema, _ = _avro_schema(read_session)
         blocks = (_avro_rows(block, avro_schema) for block in self)
         return itertools.chain.from_iterable(blocks)
 
-    def to_dataframe(self, read_session):
+    def to_dataframe(self, read_session, dtypes=None):
         """Create a :class:`pandas.DataFrame` of all rows in the stream.
 
         This method requires the pandas libary to create a data frame and the
@@ -176,6 +177,13 @@ class ReadRowsStream(object):
                 The read session associated with this read rows stream. This
                 contains the schema, which is required to parse the data
                 blocks.
+            dtypes ( \
+                Map[str, Union[str, pandas.Series.dtype]] \
+            ):
+                Optional. A dictionary of column names pandas ``dtype``s. The
+                provided ``dtype`` is used when constructing the series for
+                the column specified. Otherwise, the default pandas behavior
+                is used.
 
         Returns:
             pandas.DataFrame:
@@ -186,12 +194,27 @@ class ReadRowsStream(object):
         if pandas is None:
             raise ImportError("pandas is required to create a DataFrame")
 
-        avro_schema = _avro_schema(read_session)
+        if dtypes is None:
+            dtypes = {}
+
+        avro_schema, column_names = _avro_schema(read_session)
         frames = []
         for block in self:
-            dataframe = pandas.DataFrame(list(_avro_rows(block, avro_schema)))
+            dataframe = _to_dataframe_with_dtypes(
+                _avro_rows(block, avro_schema), column_names, dtypes
+            )
             frames.append(dataframe)
         return pandas.concat(frames)
+
+
+def _to_dataframe_with_dtypes(rows, column_names, dtypes):
+    columns = collections.defaultdict(list)
+    for row in rows:
+        for column in row:
+            columns[column].append(row[column])
+    for column in dtypes:
+        columns[column] = pandas.Series(columns[column], dtype=dtypes[column])
+    return pandas.DataFrame(columns, columns=column_names)
 
 
 def _avro_schema(read_session):
@@ -206,10 +229,13 @@ def _avro_schema(read_session):
             blocks.
 
     Returns:
-        A parsed Avro schema, using :func:`fastavro.schema.parse_schema`.
+        Tuple[fastavro.schema, Tuple[str]]:
+            A parsed Avro schema, using :func:`fastavro.schema.parse_schema`
+            and the column names for a read session.
     """
     json_schema = json.loads(read_session.avro_schema.schema)
-    return fastavro.parse_schema(json_schema)
+    column_names = tuple((field["name"] for field in json_schema["fields"]))
+    return fastavro.parse_schema(json_schema), column_names
 
 
 def _avro_rows(block, avro_schema):

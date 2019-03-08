@@ -24,13 +24,17 @@ client_library_version = "0.1.0"
 
 gapic = gcp.GAPICGenerator()
 common = gcp.CommonTemplates()
-version = "v1beta1"
+version = "v1"
 
 # ----------------------------------------------------------------------------
 # Generate kms GAPIC layer
 # ----------------------------------------------------------------------------
 library = gapic.py_library(
-    "kms", version, config_path="artman_cloudkms.yaml", artman_output_name="kms-v1"
+    "kms",
+    version,
+    config_path="artman_cloudkms.yaml",
+    artman_output_name="kms-v1",
+    include_protos=True,
 )
 
 s.move(library, excludes=["README.rst", "setup.py", "nox*.py", "docs/**/*"])

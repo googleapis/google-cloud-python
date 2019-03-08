@@ -9,7 +9,6 @@ from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
-from google.protobuf import descriptor_pb2
 
 # @@protoc_insertion_point(imports)
 
@@ -28,6 +27,9 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     name="google/cloud/logging_v2/proto/logging_metrics.proto",
     package="google.logging.v2",
     syntax="proto3",
+    serialized_options=_b(
+        "\n\025com.google.logging.v2B\023LoggingMetricsProtoP\001Z8google.golang.org/genproto/googleapis/logging/v2;logging\370\001\001\252\002\027Google.Cloud.Logging.V2\312\002\027Google\\Cloud\\Logging\\V2"
+    ),
     serialized_pb=_b(
         '\n3google/cloud/logging_v2/proto/logging_metrics.proto\x12\x11google.logging.v2\x1a\x1cgoogle/api/annotations.proto\x1a\x1dgoogle/api/distribution.proto\x1a\x17google/api/metric.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto\x1a\x1fgoogle/protobuf/timestamp.proto"\xb1\x03\n\tLogMetric\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x02 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x03 \x01(\t\x12\x37\n\x11metric_descriptor\x18\x05 \x01(\x0b\x32\x1c.google.api.MetricDescriptor\x12\x17\n\x0fvalue_extractor\x18\x06 \x01(\t\x12K\n\x10label_extractors\x18\x07 \x03(\x0b\x32\x31.google.logging.v2.LogMetric.LabelExtractorsEntry\x12>\n\x0e\x62ucket_options\x18\x08 \x01(\x0b\x32&.google.api.Distribution.BucketOptions\x12<\n\x07version\x18\x04 \x01(\x0e\x32\'.google.logging.v2.LogMetric.ApiVersionB\x02\x18\x01\x1a\x36\n\x14LabelExtractorsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01"\x1c\n\nApiVersion\x12\x06\n\x02V2\x10\x00\x12\x06\n\x02V1\x10\x01"N\n\x15ListLogMetricsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x12\n\npage_token\x18\x02 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05"`\n\x16ListLogMetricsResponse\x12-\n\x07metrics\x18\x01 \x03(\x0b\x32\x1c.google.logging.v2.LogMetric\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"*\n\x13GetLogMetricRequest\x12\x13\n\x0bmetric_name\x18\x01 \x01(\t"V\n\x16\x43reateLogMetricRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12,\n\x06metric\x18\x02 \x01(\x0b\x32\x1c.google.logging.v2.LogMetric"[\n\x16UpdateLogMetricRequest\x12\x13\n\x0bmetric_name\x18\x01 \x01(\t\x12,\n\x06metric\x18\x02 \x01(\x0b\x32\x1c.google.logging.v2.LogMetric"-\n\x16\x44\x65leteLogMetricRequest\x12\x13\n\x0bmetric_name\x18\x01 \x01(\t2\xd4\x05\n\x10MetricsServiceV2\x12\x8e\x01\n\x0eListLogMetrics\x12(.google.logging.v2.ListLogMetricsRequest\x1a).google.logging.v2.ListLogMetricsResponse"\'\x82\xd3\xe4\x93\x02!\x12\x1f/v2/{parent=projects/*}/metrics\x12\x84\x01\n\x0cGetLogMetric\x12&.google.logging.v2.GetLogMetricRequest\x1a\x1c.google.logging.v2.LogMetric".\x82\xd3\xe4\x93\x02(\x12&/v2/{metric_name=projects/*/metrics/*}\x12\x8b\x01\n\x0f\x43reateLogMetric\x12).google.logging.v2.CreateLogMetricRequest\x1a\x1c.google.logging.v2.LogMetric"/\x82\xd3\xe4\x93\x02)"\x1f/v2/{parent=projects/*}/metrics:\x06metric\x12\x92\x01\n\x0fUpdateLogMetric\x12).google.logging.v2.UpdateLogMetricRequest\x1a\x1c.google.logging.v2.LogMetric"6\x82\xd3\xe4\x93\x02\x30\x1a&/v2/{metric_name=projects/*/metrics/*}:\x06metric\x12\x84\x01\n\x0f\x44\x65leteLogMetric\x12).google.logging.v2.DeleteLogMetricRequest\x1a\x16.google.protobuf.Empty".\x82\xd3\xe4\x93\x02(*&/v2/{metric_name=projects/*/metrics/*}B\x9f\x01\n\x15\x63om.google.logging.v2B\x13LoggingMetricsProtoP\x01Z8google.golang.org/genproto/googleapis/logging/v2;logging\xf8\x01\x01\xaa\x02\x17Google.Cloud.Logging.V2\xca\x02\x17Google\\Cloud\\Logging\\V2b\x06proto3'
     ),
@@ -49,14 +51,14 @@ _LOGMETRIC_APIVERSION = _descriptor.EnumDescriptor(
     file=DESCRIPTOR,
     values=[
         _descriptor.EnumValueDescriptor(
-            name="V2", index=0, number=0, options=None, type=None
+            name="V2", index=0, number=0, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="V1", index=1, number=1, options=None, type=None
+            name="V1", index=1, number=1, serialized_options=None, type=None
         ),
     ],
     containing_type=None,
-    options=None,
+    serialized_options=None,
     serialized_start=662,
     serialized_end=690,
 )
@@ -85,7 +87,7 @@ _LOGMETRIC_LABELEXTRACTORSENTRY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -103,14 +105,14 @@ _LOGMETRIC_LABELEXTRACTORSENTRY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=_descriptor._ParseOptions(descriptor_pb2.MessageOptions(), _b("8\001")),
+    serialized_options=_b("8\001"),
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -141,7 +143,7 @@ _LOGMETRIC = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -159,7 +161,7 @@ _LOGMETRIC = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -177,7 +179,7 @@ _LOGMETRIC = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -195,7 +197,7 @@ _LOGMETRIC = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -213,7 +215,7 @@ _LOGMETRIC = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -231,7 +233,7 @@ _LOGMETRIC = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -249,7 +251,7 @@ _LOGMETRIC = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -267,16 +269,14 @@ _LOGMETRIC = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.FieldOptions(), _b("\030\001")
-            ),
+            serialized_options=_b("\030\001"),
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[_LOGMETRIC_LABELEXTRACTORSENTRY],
     enum_types=[_LOGMETRIC_APIVERSION],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -308,7 +308,7 @@ _LISTLOGMETRICSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -326,7 +326,7 @@ _LISTLOGMETRICSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -344,14 +344,14 @@ _LISTLOGMETRICSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -383,7 +383,7 @@ _LISTLOGMETRICSRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -401,14 +401,14 @@ _LISTLOGMETRICSRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -440,14 +440,14 @@ _GETLOGMETRICREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -479,7 +479,7 @@ _CREATELOGMETRICREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -497,14 +497,14 @@ _CREATELOGMETRICREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -536,7 +536,7 @@ _UPDATELOGMETRICREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -554,14 +554,14 @@ _UPDATELOGMETRICREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -593,14 +593,14 @@ _DELETELOGMETRICREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -888,28 +888,16 @@ DeleteLogMetricRequest = _reflection.GeneratedProtocolMessageType(
 _sym_db.RegisterMessage(DeleteLogMetricRequest)
 
 
-DESCRIPTOR.has_options = True
-DESCRIPTOR._options = _descriptor._ParseOptions(
-    descriptor_pb2.FileOptions(),
-    _b(
-        "\n\025com.google.logging.v2B\023LoggingMetricsProtoP\001Z8google.golang.org/genproto/googleapis/logging/v2;logging\370\001\001\252\002\027Google.Cloud.Logging.V2\312\002\027Google\\Cloud\\Logging\\V2"
-    ),
-)
-_LOGMETRIC_LABELEXTRACTORSENTRY.has_options = True
-_LOGMETRIC_LABELEXTRACTORSENTRY._options = _descriptor._ParseOptions(
-    descriptor_pb2.MessageOptions(), _b("8\001")
-)
-_LOGMETRIC.fields_by_name["version"].has_options = True
-_LOGMETRIC.fields_by_name["version"]._options = _descriptor._ParseOptions(
-    descriptor_pb2.FieldOptions(), _b("\030\001")
-)
+DESCRIPTOR._options = None
+_LOGMETRIC_LABELEXTRACTORSENTRY._options = None
+_LOGMETRIC.fields_by_name["version"]._options = None
 
 _METRICSSERVICEV2 = _descriptor.ServiceDescriptor(
     name="MetricsServiceV2",
     full_name="google.logging.v2.MetricsServiceV2",
     file=DESCRIPTOR,
     index=0,
-    options=None,
+    serialized_options=None,
     serialized_start=1143,
     serialized_end=1867,
     methods=[
@@ -920,9 +908,8 @@ _METRICSSERVICEV2 = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_LISTLOGMETRICSREQUEST,
             output_type=_LISTLOGMETRICSRESPONSE,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b("\202\323\344\223\002!\022\037/v2/{parent=projects/*}/metrics"),
+            serialized_options=_b(
+                "\202\323\344\223\002!\022\037/v2/{parent=projects/*}/metrics"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -932,9 +919,8 @@ _METRICSSERVICEV2 = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_GETLOGMETRICREQUEST,
             output_type=_LOGMETRIC,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b("\202\323\344\223\002(\022&/v2/{metric_name=projects/*/metrics/*}"),
+            serialized_options=_b(
+                "\202\323\344\223\002(\022&/v2/{metric_name=projects/*/metrics/*}"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -944,11 +930,8 @@ _METRICSSERVICEV2 = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_CREATELOGMETRICREQUEST,
             output_type=_LOGMETRIC,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\002)"\037/v2/{parent=projects/*}/metrics:\006metric'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\002)"\037/v2/{parent=projects/*}/metrics:\006metric'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -958,11 +941,8 @@ _METRICSSERVICEV2 = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_UPDATELOGMETRICREQUEST,
             output_type=_LOGMETRIC,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\0020\032&/v2/{metric_name=projects/*/metrics/*}:\006metric"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\0020\032&/v2/{metric_name=projects/*/metrics/*}:\006metric"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -972,9 +952,8 @@ _METRICSSERVICEV2 = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_DELETELOGMETRICREQUEST,
             output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b("\202\323\344\223\002(*&/v2/{metric_name=projects/*/metrics/*}"),
+            serialized_options=_b(
+                "\202\323\344\223\002(*&/v2/{metric_name=projects/*/metrics/*}"
             ),
         ),
     ],

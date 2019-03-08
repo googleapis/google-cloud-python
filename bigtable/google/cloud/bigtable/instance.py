@@ -414,7 +414,7 @@ class Instance(object):
         """
         instance_admin_client = self._client.instance_admin_client
         resp = instance_admin_client.get_iam_policy(resource=self.name)
-        return Policy.from_api_repr(self._to_dict_from_policy_pb(resp))
+        return Policy.from_pb(resp)
 
     def set_iam_policy(self, policy):
         """Sets the access control policy on an instance resource. Replaces any
@@ -438,9 +438,9 @@ class Instance(object):
         """
         instance_admin_client = self._client.instance_admin_client
         resp = instance_admin_client.set_iam_policy(
-            resource=self.name, policy=policy.to_api_repr()
+            resource=self.name, policy=policy.to_pb()
         )
-        return Policy.from_api_repr(self._to_dict_from_policy_pb(resp))
+        return Policy.from_pb(resp)
 
     def test_iam_permissions(self, permissions):
         """Returns permissions that the caller has on the specified instance
@@ -469,21 +469,6 @@ class Instance(object):
             resource=self.name, permissions=permissions
         )
         return list(resp.permissions)
-
-    def _to_dict_from_policy_pb(self, policy):
-        """Returns a dictionary representation of resource returned from
-        the getIamPolicy API to use as parameter for
-        :meth: google.api_core.iam.Policy.from_api_repr
-        """
-        pb_dict = {}
-        bindings = [
-            {"role": binding.role, "members": binding.members}
-            for binding in policy.bindings
-        ]
-        pb_dict["etag"] = policy.etag
-        pb_dict["version"] = policy.version
-        pb_dict["bindings"] = bindings
-        return pb_dict
 
     def cluster(
         self, cluster_id, location_id=None, serve_nodes=None, default_storage_type=None
@@ -553,7 +538,7 @@ class Instance(object):
         clusters = [Cluster.from_pb(cluster, self) for cluster in resp.clusters]
         return clusters, resp.failed_locations
 
-    def table(self, table_id, app_profile_id=None):
+    def table(self, table_id, mutation_timeout=None, app_profile_id=None):
         """Factory to create a table associated with this instance.
 
         For example:
@@ -571,7 +556,12 @@ class Instance(object):
         :rtype: :class:`Table <google.cloud.bigtable.table.Table>`
         :returns: The table owned by this instance.
         """
-        return Table(table_id, self, app_profile_id=app_profile_id)
+        return Table(
+            table_id,
+            self,
+            app_profile_id=app_profile_id,
+            mutation_timeout=mutation_timeout,
+        )
 
     def list_tables(self):
         """List the tables in this instance.

@@ -9,7 +9,6 @@ from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
-from google.protobuf import descriptor_pb2
 
 # @@protoc_insertion_point(imports)
 
@@ -25,8 +24,11 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     name="google/cloud/kms_v1/proto/resources.proto",
     package="google.cloud.kms.v1",
     syntax="proto3",
+    serialized_options=_b(
+        "\n\027com.google.cloud.kms.v1B\021KmsResourcesProtoP\001Z6google.golang.org/genproto/googleapis/cloud/kms/v1;kms\370\001\001\252\002\023Google.Cloud.Kms.V1\312\002\023Google\\Cloud\\Kms\\V1"
+    ),
     serialized_pb=_b(
-        '\n)google/cloud/kms_v1/proto/resources.proto\x12\x13google.cloud.kms.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1fgoogle/protobuf/timestamp.proto"H\n\x07KeyRing\x12\x0c\n\x04name\x18\x01 \x01(\t\x12/\n\x0b\x63reate_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp"\xf5\x04\n\tCryptoKey\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x36\n\x07primary\x18\x02 \x01(\x0b\x32%.google.cloud.kms.v1.CryptoKeyVersion\x12@\n\x07purpose\x18\x03 \x01(\x0e\x32/.google.cloud.kms.v1.CryptoKey.CryptoKeyPurpose\x12/\n\x0b\x63reate_time\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x36\n\x12next_rotation_time\x18\x07 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x34\n\x0frotation_period\x18\x08 \x01(\x0b\x32\x19.google.protobuf.DurationH\x00\x12G\n\x10version_template\x18\x0b \x01(\x0b\x32-.google.cloud.kms.v1.CryptoKeyVersionTemplate\x12:\n\x06labels\x18\n \x03(\x0b\x32*.google.cloud.kms.v1.CryptoKey.LabelsEntry\x1a-\n\x0bLabelsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01"x\n\x10\x43ryptoKeyPurpose\x12"\n\x1e\x43RYPTO_KEY_PURPOSE_UNSPECIFIED\x10\x00\x12\x13\n\x0f\x45NCRYPT_DECRYPT\x10\x01\x12\x13\n\x0f\x41SYMMETRIC_SIGN\x10\x05\x12\x16\n\x12\x41SYMMETRIC_DECRYPT\x10\x06\x42\x13\n\x11rotation_schedule"\xae\x01\n\x18\x43ryptoKeyVersionTemplate\x12>\n\x10protection_level\x18\x01 \x01(\x0e\x32$.google.cloud.kms.v1.ProtectionLevel\x12R\n\talgorithm\x18\x03 \x01(\x0e\x32?.google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionAlgorithm"\xcd\x01\n\x17KeyOperationAttestation\x12N\n\x06\x66ormat\x18\x04 \x01(\x0e\x32>.google.cloud.kms.v1.KeyOperationAttestation.AttestationFormat\x12\x0f\n\x07\x63ontent\x18\x05 \x01(\x0c"Q\n\x11\x41ttestationFormat\x12"\n\x1e\x41TTESTATION_FORMAT_UNSPECIFIED\x10\x00\x12\x18\n\x14\x43\x41VIUM_V1_COMPRESSED\x10\x03"\xb8\t\n\x10\x43ryptoKeyVersion\x12\x0c\n\x04name\x18\x01 \x01(\t\x12J\n\x05state\x18\x03 \x01(\x0e\x32;.google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState\x12>\n\x10protection_level\x18\x07 \x01(\x0e\x32$.google.cloud.kms.v1.ProtectionLevel\x12R\n\talgorithm\x18\n \x01(\x0e\x32?.google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionAlgorithm\x12\x41\n\x0b\x61ttestation\x18\x08 \x01(\x0b\x32,.google.cloud.kms.v1.KeyOperationAttestation\x12/\n\x0b\x63reate_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x31\n\rgenerate_time\x18\x0b \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x30\n\x0c\x64\x65stroy_time\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x36\n\x12\x64\x65stroy_event_time\x18\x06 \x01(\x0b\x32\x1a.google.protobuf.Timestamp"\xbc\x03\n\x19\x43ryptoKeyVersionAlgorithm\x12,\n(CRYPTO_KEY_VERSION_ALGORITHM_UNSPECIFIED\x10\x00\x12\x1f\n\x1bGOOGLE_SYMMETRIC_ENCRYPTION\x10\x01\x12\x1c\n\x18RSA_SIGN_PSS_2048_SHA256\x10\x02\x12\x1c\n\x18RSA_SIGN_PSS_3072_SHA256\x10\x03\x12\x1c\n\x18RSA_SIGN_PSS_4096_SHA256\x10\x04\x12\x1e\n\x1aRSA_SIGN_PKCS1_2048_SHA256\x10\x05\x12\x1e\n\x1aRSA_SIGN_PKCS1_3072_SHA256\x10\x06\x12\x1e\n\x1aRSA_SIGN_PKCS1_4096_SHA256\x10\x07\x12 \n\x1cRSA_DECRYPT_OAEP_2048_SHA256\x10\x08\x12 \n\x1cRSA_DECRYPT_OAEP_3072_SHA256\x10\t\x12 \n\x1cRSA_DECRYPT_OAEP_4096_SHA256\x10\n\x12\x17\n\x13\x45\x43_SIGN_P256_SHA256\x10\x0c\x12\x17\n\x13\x45\x43_SIGN_P384_SHA384\x10\r"\x9a\x01\n\x15\x43ryptoKeyVersionState\x12(\n$CRYPTO_KEY_VERSION_STATE_UNSPECIFIED\x10\x00\x12\x16\n\x12PENDING_GENERATION\x10\x05\x12\x0b\n\x07\x45NABLED\x10\x01\x12\x0c\n\x08\x44ISABLED\x10\x02\x12\r\n\tDESTROYED\x10\x03\x12\x15\n\x11\x44\x45STROY_SCHEDULED\x10\x04"I\n\x14\x43ryptoKeyVersionView\x12\'\n#CRYPTO_KEY_VERSION_VIEW_UNSPECIFIED\x10\x00\x12\x08\n\x04\x46ULL\x10\x01"l\n\tPublicKey\x12\x0b\n\x03pem\x18\x01 \x01(\t\x12R\n\talgorithm\x18\x02 \x01(\x0e\x32?.google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionAlgorithm*J\n\x0fProtectionLevel\x12 \n\x1cPROTECTION_LEVEL_UNSPECIFIED\x10\x00\x12\x0c\n\x08SOFTWARE\x10\x01\x12\x07\n\x03HSM\x10\x02\x42\x95\x01\n\x17\x63om.google.cloud.kms.v1B\x11KmsResourcesProtoP\x01Z6google.golang.org/genproto/googleapis/cloud/kms/v1;kms\xf8\x01\x01\xaa\x02\x13Google.Cloud.Kms.V1\xca\x02\x13Google\\Cloud\\Kms\\V1b\x06proto3'
+        '\n)google/cloud/kms_v1/proto/resources.proto\x12\x13google.cloud.kms.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1fgoogle/protobuf/timestamp.proto"H\n\x07KeyRing\x12\x0c\n\x04name\x18\x01 \x01(\t\x12/\n\x0b\x63reate_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp"\xf5\x04\n\tCryptoKey\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x36\n\x07primary\x18\x02 \x01(\x0b\x32%.google.cloud.kms.v1.CryptoKeyVersion\x12@\n\x07purpose\x18\x03 \x01(\x0e\x32/.google.cloud.kms.v1.CryptoKey.CryptoKeyPurpose\x12/\n\x0b\x63reate_time\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x36\n\x12next_rotation_time\x18\x07 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x34\n\x0frotation_period\x18\x08 \x01(\x0b\x32\x19.google.protobuf.DurationH\x00\x12G\n\x10version_template\x18\x0b \x01(\x0b\x32-.google.cloud.kms.v1.CryptoKeyVersionTemplate\x12:\n\x06labels\x18\n \x03(\x0b\x32*.google.cloud.kms.v1.CryptoKey.LabelsEntry\x1a-\n\x0bLabelsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01"x\n\x10\x43ryptoKeyPurpose\x12"\n\x1e\x43RYPTO_KEY_PURPOSE_UNSPECIFIED\x10\x00\x12\x13\n\x0f\x45NCRYPT_DECRYPT\x10\x01\x12\x13\n\x0f\x41SYMMETRIC_SIGN\x10\x05\x12\x16\n\x12\x41SYMMETRIC_DECRYPT\x10\x06\x42\x13\n\x11rotation_schedule"\xae\x01\n\x18\x43ryptoKeyVersionTemplate\x12>\n\x10protection_level\x18\x01 \x01(\x0e\x32$.google.cloud.kms.v1.ProtectionLevel\x12R\n\talgorithm\x18\x03 \x01(\x0e\x32?.google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionAlgorithm"\xe7\x01\n\x17KeyOperationAttestation\x12N\n\x06\x66ormat\x18\x04 \x01(\x0e\x32>.google.cloud.kms.v1.KeyOperationAttestation.AttestationFormat\x12\x0f\n\x07\x63ontent\x18\x05 \x01(\x0c"k\n\x11\x41ttestationFormat\x12"\n\x1e\x41TTESTATION_FORMAT_UNSPECIFIED\x10\x00\x12\x18\n\x14\x43\x41VIUM_V1_COMPRESSED\x10\x03\x12\x18\n\x14\x43\x41VIUM_V2_COMPRESSED\x10\x04"\xb8\t\n\x10\x43ryptoKeyVersion\x12\x0c\n\x04name\x18\x01 \x01(\t\x12J\n\x05state\x18\x03 \x01(\x0e\x32;.google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState\x12>\n\x10protection_level\x18\x07 \x01(\x0e\x32$.google.cloud.kms.v1.ProtectionLevel\x12R\n\talgorithm\x18\n \x01(\x0e\x32?.google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionAlgorithm\x12\x41\n\x0b\x61ttestation\x18\x08 \x01(\x0b\x32,.google.cloud.kms.v1.KeyOperationAttestation\x12/\n\x0b\x63reate_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x31\n\rgenerate_time\x18\x0b \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x30\n\x0c\x64\x65stroy_time\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x36\n\x12\x64\x65stroy_event_time\x18\x06 \x01(\x0b\x32\x1a.google.protobuf.Timestamp"\xbc\x03\n\x19\x43ryptoKeyVersionAlgorithm\x12,\n(CRYPTO_KEY_VERSION_ALGORITHM_UNSPECIFIED\x10\x00\x12\x1f\n\x1bGOOGLE_SYMMETRIC_ENCRYPTION\x10\x01\x12\x1c\n\x18RSA_SIGN_PSS_2048_SHA256\x10\x02\x12\x1c\n\x18RSA_SIGN_PSS_3072_SHA256\x10\x03\x12\x1c\n\x18RSA_SIGN_PSS_4096_SHA256\x10\x04\x12\x1e\n\x1aRSA_SIGN_PKCS1_2048_SHA256\x10\x05\x12\x1e\n\x1aRSA_SIGN_PKCS1_3072_SHA256\x10\x06\x12\x1e\n\x1aRSA_SIGN_PKCS1_4096_SHA256\x10\x07\x12 \n\x1cRSA_DECRYPT_OAEP_2048_SHA256\x10\x08\x12 \n\x1cRSA_DECRYPT_OAEP_3072_SHA256\x10\t\x12 \n\x1cRSA_DECRYPT_OAEP_4096_SHA256\x10\n\x12\x17\n\x13\x45\x43_SIGN_P256_SHA256\x10\x0c\x12\x17\n\x13\x45\x43_SIGN_P384_SHA384\x10\r"\x9a\x01\n\x15\x43ryptoKeyVersionState\x12(\n$CRYPTO_KEY_VERSION_STATE_UNSPECIFIED\x10\x00\x12\x16\n\x12PENDING_GENERATION\x10\x05\x12\x0b\n\x07\x45NABLED\x10\x01\x12\x0c\n\x08\x44ISABLED\x10\x02\x12\r\n\tDESTROYED\x10\x03\x12\x15\n\x11\x44\x45STROY_SCHEDULED\x10\x04"I\n\x14\x43ryptoKeyVersionView\x12\'\n#CRYPTO_KEY_VERSION_VIEW_UNSPECIFIED\x10\x00\x12\x08\n\x04\x46ULL\x10\x01"l\n\tPublicKey\x12\x0b\n\x03pem\x18\x01 \x01(\t\x12R\n\talgorithm\x18\x02 \x01(\x0e\x32?.google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionAlgorithm*J\n\x0fProtectionLevel\x12 \n\x1cPROTECTION_LEVEL_UNSPECIFIED\x10\x00\x12\x0c\n\x08SOFTWARE\x10\x01\x12\x07\n\x03HSM\x10\x02\x42\x95\x01\n\x17\x63om.google.cloud.kms.v1B\x11KmsResourcesProtoP\x01Z6google.golang.org/genproto/googleapis/cloud/kms/v1;kms\xf8\x01\x01\xaa\x02\x13Google.Cloud.Kms.V1\xca\x02\x13Google\\Cloud\\Kms\\V1b\x06proto3'
     ),
     dependencies=[
         google_dot_api_dot_annotations__pb2.DESCRIPTOR,
@@ -45,20 +47,20 @@ _PROTECTIONLEVEL = _descriptor.EnumDescriptor(
             name="PROTECTION_LEVEL_UNSPECIFIED",
             index=0,
             number=0,
-            options=None,
+            serialized_options=None,
             type=None,
         ),
         _descriptor.EnumValueDescriptor(
-            name="SOFTWARE", index=1, number=1, options=None, type=None
+            name="SOFTWARE", index=1, number=1, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="HSM", index=2, number=2, options=None, type=None
+            name="HSM", index=2, number=2, serialized_options=None, type=None
         ),
     ],
     containing_type=None,
-    options=None,
-    serialized_start=2573,
-    serialized_end=2647,
+    serialized_options=None,
+    serialized_start=2599,
+    serialized_end=2673,
 )
 _sym_db.RegisterEnumDescriptor(_PROTECTIONLEVEL)
 
@@ -78,21 +80,33 @@ _CRYPTOKEY_CRYPTOKEYPURPOSE = _descriptor.EnumDescriptor(
             name="CRYPTO_KEY_PURPOSE_UNSPECIFIED",
             index=0,
             number=0,
-            options=None,
+            serialized_options=None,
             type=None,
         ),
         _descriptor.EnumValueDescriptor(
-            name="ENCRYPT_DECRYPT", index=1, number=1, options=None, type=None
+            name="ENCRYPT_DECRYPT",
+            index=1,
+            number=1,
+            serialized_options=None,
+            type=None,
         ),
         _descriptor.EnumValueDescriptor(
-            name="ASYMMETRIC_SIGN", index=2, number=5, options=None, type=None
+            name="ASYMMETRIC_SIGN",
+            index=2,
+            number=5,
+            serialized_options=None,
+            type=None,
         ),
         _descriptor.EnumValueDescriptor(
-            name="ASYMMETRIC_DECRYPT", index=3, number=6, options=None, type=None
+            name="ASYMMETRIC_DECRYPT",
+            index=3,
+            number=6,
+            serialized_options=None,
+            type=None,
         ),
     ],
     containing_type=None,
-    options=None,
+    serialized_options=None,
     serialized_start=724,
     serialized_end=844,
 )
@@ -108,17 +122,28 @@ _KEYOPERATIONATTESTATION_ATTESTATIONFORMAT = _descriptor.EnumDescriptor(
             name="ATTESTATION_FORMAT_UNSPECIFIED",
             index=0,
             number=0,
-            options=None,
+            serialized_options=None,
             type=None,
         ),
         _descriptor.EnumValueDescriptor(
-            name="CAVIUM_V1_COMPRESSED", index=1, number=3, options=None, type=None
+            name="CAVIUM_V1_COMPRESSED",
+            index=1,
+            number=3,
+            serialized_options=None,
+            type=None,
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="CAVIUM_V2_COMPRESSED",
+            index=2,
+            number=4,
+            serialized_options=None,
+            type=None,
         ),
     ],
     containing_type=None,
-    options=None,
+    serialized_options=None,
     serialized_start=1169,
-    serialized_end=1250,
+    serialized_end=1276,
 )
 _sym_db.RegisterEnumDescriptor(_KEYOPERATIONATTESTATION_ATTESTATIONFORMAT)
 
@@ -132,78 +157,98 @@ _CRYPTOKEYVERSION_CRYPTOKEYVERSIONALGORITHM = _descriptor.EnumDescriptor(
             name="CRYPTO_KEY_VERSION_ALGORITHM_UNSPECIFIED",
             index=0,
             number=0,
-            options=None,
+            serialized_options=None,
             type=None,
         ),
         _descriptor.EnumValueDescriptor(
             name="GOOGLE_SYMMETRIC_ENCRYPTION",
             index=1,
             number=1,
-            options=None,
+            serialized_options=None,
             type=None,
         ),
         _descriptor.EnumValueDescriptor(
-            name="RSA_SIGN_PSS_2048_SHA256", index=2, number=2, options=None, type=None
+            name="RSA_SIGN_PSS_2048_SHA256",
+            index=2,
+            number=2,
+            serialized_options=None,
+            type=None,
         ),
         _descriptor.EnumValueDescriptor(
-            name="RSA_SIGN_PSS_3072_SHA256", index=3, number=3, options=None, type=None
+            name="RSA_SIGN_PSS_3072_SHA256",
+            index=3,
+            number=3,
+            serialized_options=None,
+            type=None,
         ),
         _descriptor.EnumValueDescriptor(
-            name="RSA_SIGN_PSS_4096_SHA256", index=4, number=4, options=None, type=None
+            name="RSA_SIGN_PSS_4096_SHA256",
+            index=4,
+            number=4,
+            serialized_options=None,
+            type=None,
         ),
         _descriptor.EnumValueDescriptor(
             name="RSA_SIGN_PKCS1_2048_SHA256",
             index=5,
             number=5,
-            options=None,
+            serialized_options=None,
             type=None,
         ),
         _descriptor.EnumValueDescriptor(
             name="RSA_SIGN_PKCS1_3072_SHA256",
             index=6,
             number=6,
-            options=None,
+            serialized_options=None,
             type=None,
         ),
         _descriptor.EnumValueDescriptor(
             name="RSA_SIGN_PKCS1_4096_SHA256",
             index=7,
             number=7,
-            options=None,
+            serialized_options=None,
             type=None,
         ),
         _descriptor.EnumValueDescriptor(
             name="RSA_DECRYPT_OAEP_2048_SHA256",
             index=8,
             number=8,
-            options=None,
+            serialized_options=None,
             type=None,
         ),
         _descriptor.EnumValueDescriptor(
             name="RSA_DECRYPT_OAEP_3072_SHA256",
             index=9,
             number=9,
-            options=None,
+            serialized_options=None,
             type=None,
         ),
         _descriptor.EnumValueDescriptor(
             name="RSA_DECRYPT_OAEP_4096_SHA256",
             index=10,
             number=10,
-            options=None,
+            serialized_options=None,
             type=None,
         ),
         _descriptor.EnumValueDescriptor(
-            name="EC_SIGN_P256_SHA256", index=11, number=12, options=None, type=None
+            name="EC_SIGN_P256_SHA256",
+            index=11,
+            number=12,
+            serialized_options=None,
+            type=None,
         ),
         _descriptor.EnumValueDescriptor(
-            name="EC_SIGN_P384_SHA384", index=12, number=13, options=None, type=None
+            name="EC_SIGN_P384_SHA384",
+            index=12,
+            number=13,
+            serialized_options=None,
+            type=None,
         ),
     ],
     containing_type=None,
-    options=None,
-    serialized_start=1785,
-    serialized_end=2229,
+    serialized_options=None,
+    serialized_start=1811,
+    serialized_end=2255,
 )
 _sym_db.RegisterEnumDescriptor(_CRYPTOKEYVERSION_CRYPTOKEYVERSIONALGORITHM)
 
@@ -217,29 +262,37 @@ _CRYPTOKEYVERSION_CRYPTOKEYVERSIONSTATE = _descriptor.EnumDescriptor(
             name="CRYPTO_KEY_VERSION_STATE_UNSPECIFIED",
             index=0,
             number=0,
-            options=None,
+            serialized_options=None,
             type=None,
         ),
         _descriptor.EnumValueDescriptor(
-            name="PENDING_GENERATION", index=1, number=5, options=None, type=None
+            name="PENDING_GENERATION",
+            index=1,
+            number=5,
+            serialized_options=None,
+            type=None,
         ),
         _descriptor.EnumValueDescriptor(
-            name="ENABLED", index=2, number=1, options=None, type=None
+            name="ENABLED", index=2, number=1, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="DISABLED", index=3, number=2, options=None, type=None
+            name="DISABLED", index=3, number=2, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="DESTROYED", index=4, number=3, options=None, type=None
+            name="DESTROYED", index=4, number=3, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="DESTROY_SCHEDULED", index=5, number=4, options=None, type=None
+            name="DESTROY_SCHEDULED",
+            index=5,
+            number=4,
+            serialized_options=None,
+            type=None,
         ),
     ],
     containing_type=None,
-    options=None,
-    serialized_start=2232,
-    serialized_end=2386,
+    serialized_options=None,
+    serialized_start=2258,
+    serialized_end=2412,
 )
 _sym_db.RegisterEnumDescriptor(_CRYPTOKEYVERSION_CRYPTOKEYVERSIONSTATE)
 
@@ -253,17 +306,17 @@ _CRYPTOKEYVERSION_CRYPTOKEYVERSIONVIEW = _descriptor.EnumDescriptor(
             name="CRYPTO_KEY_VERSION_VIEW_UNSPECIFIED",
             index=0,
             number=0,
-            options=None,
+            serialized_options=None,
             type=None,
         ),
         _descriptor.EnumValueDescriptor(
-            name="FULL", index=1, number=1, options=None, type=None
+            name="FULL", index=1, number=1, serialized_options=None, type=None
         ),
     ],
     containing_type=None,
-    options=None,
-    serialized_start=2388,
-    serialized_end=2461,
+    serialized_options=None,
+    serialized_start=2414,
+    serialized_end=2487,
 )
 _sym_db.RegisterEnumDescriptor(_CRYPTOKEYVERSION_CRYPTOKEYVERSIONVIEW)
 
@@ -290,7 +343,7 @@ _KEYRING = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -308,14 +361,14 @@ _KEYRING = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -347,7 +400,7 @@ _CRYPTOKEY_LABELSENTRY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -365,14 +418,14 @@ _CRYPTOKEY_LABELSENTRY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=_descriptor._ParseOptions(descriptor_pb2.MessageOptions(), _b("8\001")),
+    serialized_options=_b("8\001"),
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -403,7 +456,7 @@ _CRYPTOKEY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -421,7 +474,7 @@ _CRYPTOKEY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -439,7 +492,7 @@ _CRYPTOKEY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -457,7 +510,7 @@ _CRYPTOKEY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -475,7 +528,7 @@ _CRYPTOKEY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -493,7 +546,7 @@ _CRYPTOKEY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -511,7 +564,7 @@ _CRYPTOKEY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -529,14 +582,14 @@ _CRYPTOKEY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[_CRYPTOKEY_LABELSENTRY],
     enum_types=[_CRYPTOKEY_CRYPTOKEYPURPOSE],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -576,7 +629,7 @@ _CRYPTOKEYVERSIONTEMPLATE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -594,14 +647,14 @@ _CRYPTOKEYVERSIONTEMPLATE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -633,7 +686,7 @@ _KEYOPERATIONATTESTATION = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -651,20 +704,20 @@ _KEYOPERATIONATTESTATION = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[_KEYOPERATIONATTESTATION_ATTESTATIONFORMAT],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
     serialized_start=1045,
-    serialized_end=1250,
+    serialized_end=1276,
 )
 
 
@@ -690,7 +743,7 @@ _CRYPTOKEYVERSION = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -708,7 +761,7 @@ _CRYPTOKEYVERSION = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -726,7 +779,7 @@ _CRYPTOKEYVERSION = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -744,7 +797,7 @@ _CRYPTOKEYVERSION = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -762,7 +815,7 @@ _CRYPTOKEYVERSION = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -780,7 +833,7 @@ _CRYPTOKEYVERSION = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -798,7 +851,7 @@ _CRYPTOKEYVERSION = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -816,7 +869,7 @@ _CRYPTOKEYVERSION = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -834,7 +887,7 @@ _CRYPTOKEYVERSION = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
@@ -845,13 +898,13 @@ _CRYPTOKEYVERSION = _descriptor.Descriptor(
         _CRYPTOKEYVERSION_CRYPTOKEYVERSIONSTATE,
         _CRYPTOKEYVERSION_CRYPTOKEYVERSIONVIEW,
     ],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1253,
-    serialized_end=2461,
+    serialized_start=1279,
+    serialized_end=2487,
 )
 
 
@@ -877,7 +930,7 @@ _PUBLICKEY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -895,20 +948,20 @@ _PUBLICKEY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2463,
-    serialized_end=2571,
+    serialized_start=2489,
+    serialized_end=2597,
 )
 
 _KEYRING.fields_by_name[
@@ -1259,15 +1312,6 @@ PublicKey = _reflection.GeneratedProtocolMessageType(
 _sym_db.RegisterMessage(PublicKey)
 
 
-DESCRIPTOR.has_options = True
-DESCRIPTOR._options = _descriptor._ParseOptions(
-    descriptor_pb2.FileOptions(),
-    _b(
-        "\n\027com.google.cloud.kms.v1B\021KmsResourcesProtoP\001Z6google.golang.org/genproto/googleapis/cloud/kms/v1;kms\370\001\001\252\002\023Google.Cloud.Kms.V1\312\002\023Google\\Cloud\\Kms\\V1"
-    ),
-)
-_CRYPTOKEY_LABELSENTRY.has_options = True
-_CRYPTOKEY_LABELSENTRY._options = _descriptor._ParseOptions(
-    descriptor_pb2.MessageOptions(), _b("8\001")
-)
+DESCRIPTOR._options = None
+_CRYPTOKEY_LABELSENTRY._options = None
 # @@protoc_insertion_point(module_scope)

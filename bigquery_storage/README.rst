@@ -6,9 +6,9 @@ Python Client for BigQuery Storage API (`Alpha`_)
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. _Alpha: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/README.rst
+.. _Alpha: https://github.com/googleapis/google-cloud-python/blob/master/README.rst
 .. _BigQuery Storage API: https://cloud.google.com/bigquery
-.. _Client Library Documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/bigquery_storage/index.html
+.. _Client Library Documentation: https://googleapis.github.io/google-cloud-python/latest/bigquery_storage/index.html
 .. _Product Documentation:  https://cloud.google.com/bigquery
 
 Quick Start
@@ -24,7 +24,7 @@ In order to use this library, you first need to go through the following steps:
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
 .. _Enable the BigQuery Storage API.:  https://cloud.google.com/bigquerystorage
-.. _Setup Authentication.: https://googlecloudplatform.github.io/google-cloud-python/stable/core/auth.html
+.. _Setup Authentication.: https://googleapis.github.io/google-cloud-python/stable/core/auth.html
 
 Installation
 ~~~~~~~~~~~~
@@ -70,6 +70,22 @@ Windows
     <your-env>\Scripts\activate
     <your-env>\Scripts\pip.exe install google-cloud-bigquery-storage
 
+Optional Dependencies
+^^^^^^^^^^^^^^^^^^^^^
+
+Several features of ``google-cloud-bigquery-storage`` require additional
+dependencies.
+
+* Parse Avro blocks in a ``read_rows()`` stream using `fastavro
+  <https://fastavro.readthedocs.io/en/latest/>`_.
+
+  ``pip install google-cloud-bigquery-storage[fastavro]``
+
+* Write rows to a `pandas <http://pandas.pydata.org/pandas-docs/stable/>`_
+  dataframe.
+
+  ``pip install google-cloud-bigquery-storage[pandas,fastavro]``
+
 Next Steps
 ~~~~~~~~~~
 
@@ -81,4 +97,4 @@ Next Steps
    APIs that we cover.
 
 .. _BigQuery Storage API Product documentation:  https://cloud.google.com/bigquery
-.. _repository’s main README: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/README.rst
+.. _repository’s main README: https://github.com/googleapis/google-cloud-python/blob/master/README.rst

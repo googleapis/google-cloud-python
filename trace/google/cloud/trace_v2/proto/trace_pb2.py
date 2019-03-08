@@ -9,7 +9,6 @@ from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
-from google.protobuf import descriptor_pb2
 
 # @@protoc_insertion_point(imports)
 
@@ -26,6 +25,9 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     name="google/devtools/cloudtrace_v2/proto/trace.proto",
     package="google.devtools.cloudtrace.v2",
     syntax="proto3",
+    serialized_options=_b(
+        "\n!com.google.devtools.cloudtrace.v2B\nTraceProtoP\001ZGgoogle.golang.org/genproto/googleapis/devtools/cloudtrace/v2;cloudtrace\252\002\025Google.Cloud.Trace.V2\312\002\025Google\\Cloud\\Trace\\V2"
+    ),
     serialized_pb=_b(
         '\n/google/devtools/cloudtrace_v2/proto/trace.proto\x12\x1dgoogle.devtools.cloudtrace.v2\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1egoogle/protobuf/wrappers.proto\x1a\x17google/rpc/status.proto"\xc5\x0f\n\x04Span\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0f\n\x07span_id\x18\x02 \x01(\t\x12\x16\n\x0eparent_span_id\x18\x03 \x01(\t\x12\x46\n\x0c\x64isplay_name\x18\x04 \x01(\x0b\x32\x30.google.devtools.cloudtrace.v2.TruncatableString\x12.\n\nstart_time\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12,\n\x08\x65nd_time\x18\x06 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x42\n\nattributes\x18\x07 \x01(\x0b\x32..google.devtools.cloudtrace.v2.Span.Attributes\x12>\n\x0bstack_trace\x18\x08 \x01(\x0b\x32).google.devtools.cloudtrace.v2.StackTrace\x12\x43\n\x0btime_events\x18\t \x01(\x0b\x32..google.devtools.cloudtrace.v2.Span.TimeEvents\x12\x38\n\x05links\x18\n \x01(\x0b\x32).google.devtools.cloudtrace.v2.Span.Links\x12"\n\x06status\x18\x0b \x01(\x0b\x32\x12.google.rpc.Status\x12?\n\x1bsame_process_as_parent_span\x18\x0c \x01(\x0b\x32\x1a.google.protobuf.BoolValue\x12\x35\n\x10\x63hild_span_count\x18\r \x01(\x0b\x32\x1b.google.protobuf.Int32Value\x1a\xeb\x01\n\nAttributes\x12W\n\rattribute_map\x18\x01 \x03(\x0b\x32@.google.devtools.cloudtrace.v2.Span.Attributes.AttributeMapEntry\x12 \n\x18\x64ropped_attributes_count\x18\x02 \x01(\x05\x1a\x62\n\x11\x41ttributeMapEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12<\n\x05value\x18\x02 \x01(\x0b\x32-.google.devtools.cloudtrace.v2.AttributeValue:\x02\x38\x01\x1a\xdf\x04\n\tTimeEvent\x12(\n\x04time\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12N\n\nannotation\x18\x02 \x01(\x0b\x32\x38.google.devtools.cloudtrace.v2.Span.TimeEvent.AnnotationH\x00\x12S\n\rmessage_event\x18\x03 \x01(\x0b\x32:.google.devtools.cloudtrace.v2.Span.TimeEvent.MessageEventH\x00\x1a\x97\x01\n\nAnnotation\x12\x45\n\x0b\x64\x65scription\x18\x01 \x01(\x0b\x32\x30.google.devtools.cloudtrace.v2.TruncatableString\x12\x42\n\nattributes\x18\x02 \x01(\x0b\x32..google.devtools.cloudtrace.v2.Span.Attributes\x1a\xdf\x01\n\x0cMessageEvent\x12M\n\x04type\x18\x01 \x01(\x0e\x32?.google.devtools.cloudtrace.v2.Span.TimeEvent.MessageEvent.Type\x12\n\n\x02id\x18\x02 \x01(\x03\x12\x1f\n\x17uncompressed_size_bytes\x18\x03 \x01(\x03\x12\x1d\n\x15\x63ompressed_size_bytes\x18\x04 \x01(\x03"4\n\x04Type\x12\x14\n\x10TYPE_UNSPECIFIED\x10\x00\x12\x08\n\x04SENT\x10\x01\x12\x0c\n\x08RECEIVED\x10\x02\x42\x07\n\x05value\x1a\x98\x01\n\nTimeEvents\x12\x41\n\ntime_event\x18\x01 \x03(\x0b\x32-.google.devtools.cloudtrace.v2.Span.TimeEvent\x12!\n\x19\x64ropped_annotations_count\x18\x02 \x01(\x05\x12$\n\x1c\x64ropped_message_events_count\x18\x03 \x01(\x05\x1a\xf7\x01\n\x04Link\x12\x10\n\x08trace_id\x18\x01 \x01(\t\x12\x0f\n\x07span_id\x18\x02 \x01(\t\x12;\n\x04type\x18\x03 \x01(\x0e\x32-.google.devtools.cloudtrace.v2.Span.Link.Type\x12\x42\n\nattributes\x18\x04 \x01(\x0b\x32..google.devtools.cloudtrace.v2.Span.Attributes"K\n\x04Type\x12\x14\n\x10TYPE_UNSPECIFIED\x10\x00\x12\x15\n\x11\x43HILD_LINKED_SPAN\x10\x01\x12\x16\n\x12PARENT_LINKED_SPAN\x10\x02\x1a\\\n\x05Links\x12\x36\n\x04link\x18\x01 \x03(\x0b\x32(.google.devtools.cloudtrace.v2.Span.Link\x12\x1b\n\x13\x64ropped_links_count\x18\x02 \x01(\x05"\x8e\x01\n\x0e\x41ttributeValue\x12H\n\x0cstring_value\x18\x01 \x01(\x0b\x32\x30.google.devtools.cloudtrace.v2.TruncatableStringH\x00\x12\x13\n\tint_value\x18\x02 \x01(\x03H\x00\x12\x14\n\nbool_value\x18\x03 \x01(\x08H\x00\x42\x07\n\x05value"\x89\x05\n\nStackTrace\x12K\n\x0cstack_frames\x18\x01 \x01(\x0b\x32\x35.google.devtools.cloudtrace.v2.StackTrace.StackFrames\x12\x1b\n\x13stack_trace_hash_id\x18\x02 \x01(\x03\x1a\x9e\x03\n\nStackFrame\x12G\n\rfunction_name\x18\x01 \x01(\x0b\x32\x30.google.devtools.cloudtrace.v2.TruncatableString\x12P\n\x16original_function_name\x18\x02 \x01(\x0b\x32\x30.google.devtools.cloudtrace.v2.TruncatableString\x12\x43\n\tfile_name\x18\x03 \x01(\x0b\x32\x30.google.devtools.cloudtrace.v2.TruncatableString\x12\x13\n\x0bline_number\x18\x04 \x01(\x03\x12\x15\n\rcolumn_number\x18\x05 \x01(\x03\x12:\n\x0bload_module\x18\x06 \x01(\x0b\x32%.google.devtools.cloudtrace.v2.Module\x12H\n\x0esource_version\x18\x07 \x01(\x0b\x32\x30.google.devtools.cloudtrace.v2.TruncatableString\x1ap\n\x0bStackFrames\x12\x43\n\x05\x66rame\x18\x01 \x03(\x0b\x32\x34.google.devtools.cloudtrace.v2.StackTrace.StackFrame\x12\x1c\n\x14\x64ropped_frames_count\x18\x02 \x01(\x05"\x8e\x01\n\x06Module\x12@\n\x06module\x18\x01 \x01(\x0b\x32\x30.google.devtools.cloudtrace.v2.TruncatableString\x12\x42\n\x08\x62uild_id\x18\x02 \x01(\x0b\x32\x30.google.devtools.cloudtrace.v2.TruncatableString"@\n\x11TruncatableString\x12\r\n\x05value\x18\x01 \x01(\t\x12\x1c\n\x14truncated_byte_count\x18\x02 \x01(\x05\x42\xaa\x01\n!com.google.devtools.cloudtrace.v2B\nTraceProtoP\x01ZGgoogle.golang.org/genproto/googleapis/devtools/cloudtrace/v2;cloudtrace\xaa\x02\x15Google.Cloud.Trace.V2\xca\x02\x15Google\\Cloud\\Trace\\V2b\x06proto3'
     ),
@@ -45,17 +47,21 @@ _SPAN_TIMEEVENT_MESSAGEEVENT_TYPE = _descriptor.EnumDescriptor(
     file=DESCRIPTOR,
     values=[
         _descriptor.EnumValueDescriptor(
-            name="TYPE_UNSPECIFIED", index=0, number=0, options=None, type=None
+            name="TYPE_UNSPECIFIED",
+            index=0,
+            number=0,
+            serialized_options=None,
+            type=None,
         ),
         _descriptor.EnumValueDescriptor(
-            name="SENT", index=1, number=1, options=None, type=None
+            name="SENT", index=1, number=1, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="RECEIVED", index=2, number=2, options=None, type=None
+            name="RECEIVED", index=2, number=2, serialized_options=None, type=None
         ),
     ],
     containing_type=None,
-    options=None,
+    serialized_options=None,
     serialized_start=1632,
     serialized_end=1684,
 )
@@ -68,17 +74,29 @@ _SPAN_LINK_TYPE = _descriptor.EnumDescriptor(
     file=DESCRIPTOR,
     values=[
         _descriptor.EnumValueDescriptor(
-            name="TYPE_UNSPECIFIED", index=0, number=0, options=None, type=None
+            name="TYPE_UNSPECIFIED",
+            index=0,
+            number=0,
+            serialized_options=None,
+            type=None,
         ),
         _descriptor.EnumValueDescriptor(
-            name="CHILD_LINKED_SPAN", index=1, number=1, options=None, type=None
+            name="CHILD_LINKED_SPAN",
+            index=1,
+            number=1,
+            serialized_options=None,
+            type=None,
         ),
         _descriptor.EnumValueDescriptor(
-            name="PARENT_LINKED_SPAN", index=2, number=2, options=None, type=None
+            name="PARENT_LINKED_SPAN",
+            index=2,
+            number=2,
+            serialized_options=None,
+            type=None,
         ),
     ],
     containing_type=None,
-    options=None,
+    serialized_options=None,
     serialized_start=2023,
     serialized_end=2098,
 )
@@ -107,7 +125,7 @@ _SPAN_ATTRIBUTES_ATTRIBUTEMAPENTRY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -125,14 +143,14 @@ _SPAN_ATTRIBUTES_ATTRIBUTEMAPENTRY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=_descriptor._ParseOptions(descriptor_pb2.MessageOptions(), _b("8\001")),
+    serialized_options=_b("8\001"),
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -163,7 +181,7 @@ _SPAN_ATTRIBUTES = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -181,14 +199,14 @@ _SPAN_ATTRIBUTES = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[_SPAN_ATTRIBUTES_ATTRIBUTEMAPENTRY],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -219,7 +237,7 @@ _SPAN_TIMEEVENT_ANNOTATION = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -237,14 +255,14 @@ _SPAN_TIMEEVENT_ANNOTATION = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -275,7 +293,7 @@ _SPAN_TIMEEVENT_MESSAGEEVENT = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -293,7 +311,7 @@ _SPAN_TIMEEVENT_MESSAGEEVENT = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -311,7 +329,7 @@ _SPAN_TIMEEVENT_MESSAGEEVENT = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -329,14 +347,14 @@ _SPAN_TIMEEVENT_MESSAGEEVENT = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[_SPAN_TIMEEVENT_MESSAGEEVENT_TYPE],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -367,7 +385,7 @@ _SPAN_TIMEEVENT = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -385,7 +403,7 @@ _SPAN_TIMEEVENT = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -403,14 +421,14 @@ _SPAN_TIMEEVENT = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[_SPAN_TIMEEVENT_ANNOTATION, _SPAN_TIMEEVENT_MESSAGEEVENT],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -449,7 +467,7 @@ _SPAN_TIMEEVENTS = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -467,7 +485,7 @@ _SPAN_TIMEEVENTS = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -485,14 +503,14 @@ _SPAN_TIMEEVENTS = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -523,7 +541,7 @@ _SPAN_LINK = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -541,7 +559,7 @@ _SPAN_LINK = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -559,7 +577,7 @@ _SPAN_LINK = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -577,14 +595,14 @@ _SPAN_LINK = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[_SPAN_LINK_TYPE],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -615,7 +633,7 @@ _SPAN_LINKS = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -633,14 +651,14 @@ _SPAN_LINKS = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -671,7 +689,7 @@ _SPAN = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -689,7 +707,7 @@ _SPAN = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -707,7 +725,7 @@ _SPAN = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -725,7 +743,7 @@ _SPAN = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -743,7 +761,7 @@ _SPAN = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -761,7 +779,7 @@ _SPAN = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -779,7 +797,7 @@ _SPAN = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -797,7 +815,7 @@ _SPAN = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -815,7 +833,7 @@ _SPAN = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -833,7 +851,7 @@ _SPAN = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -851,7 +869,7 @@ _SPAN = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -869,7 +887,7 @@ _SPAN = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -887,7 +905,7 @@ _SPAN = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
@@ -900,7 +918,7 @@ _SPAN = _descriptor.Descriptor(
         _SPAN_LINKS,
     ],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -932,7 +950,7 @@ _ATTRIBUTEVALUE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -950,7 +968,7 @@ _ATTRIBUTEVALUE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -968,14 +986,14 @@ _ATTRIBUTEVALUE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1015,7 +1033,7 @@ _STACKTRACE_STACKFRAME = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1033,7 +1051,7 @@ _STACKTRACE_STACKFRAME = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1051,7 +1069,7 @@ _STACKTRACE_STACKFRAME = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1069,7 +1087,7 @@ _STACKTRACE_STACKFRAME = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1087,7 +1105,7 @@ _STACKTRACE_STACKFRAME = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1105,7 +1123,7 @@ _STACKTRACE_STACKFRAME = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1123,14 +1141,14 @@ _STACKTRACE_STACKFRAME = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1161,7 +1179,7 @@ _STACKTRACE_STACKFRAMES = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1179,14 +1197,14 @@ _STACKTRACE_STACKFRAMES = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1217,7 +1235,7 @@ _STACKTRACE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1235,14 +1253,14 @@ _STACKTRACE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[_STACKTRACE_STACKFRAME, _STACKTRACE_STACKFRAMES],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1274,7 +1292,7 @@ _MODULE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1292,14 +1310,14 @@ _MODULE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1331,7 +1349,7 @@ _TRUNCATABLESTRING = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1349,14 +1367,14 @@ _TRUNCATABLESTRING = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1886,15 +1904,6 @@ TruncatableString = _reflection.GeneratedProtocolMessageType(
 _sym_db.RegisterMessage(TruncatableString)
 
 
-DESCRIPTOR.has_options = True
-DESCRIPTOR._options = _descriptor._ParseOptions(
-    descriptor_pb2.FileOptions(),
-    _b(
-        "\n!com.google.devtools.cloudtrace.v2B\nTraceProtoP\001ZGgoogle.golang.org/genproto/googleapis/devtools/cloudtrace/v2;cloudtrace\252\002\025Google.Cloud.Trace.V2\312\002\025Google\\Cloud\\Trace\\V2"
-    ),
-)
-_SPAN_ATTRIBUTES_ATTRIBUTEMAPENTRY.has_options = True
-_SPAN_ATTRIBUTES_ATTRIBUTEMAPENTRY._options = _descriptor._ParseOptions(
-    descriptor_pb2.MessageOptions(), _b("8\001")
-)
+DESCRIPTOR._options = None
+_SPAN_ATTRIBUTES_ATTRIBUTEMAPENTRY._options = None
 # @@protoc_insertion_point(module_scope)

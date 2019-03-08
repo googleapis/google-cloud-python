@@ -20,7 +20,7 @@
                         json_api/v1/objects
 .. _customer-supplied: https://cloud.google.com/storage/docs/\
                        encryption#customer-supplied
-.. _google-resumable-media: https://googlecloudplatform.github.io/\
+.. _google-resumable-media: https://googleapis.github.io/\
                             google-resumable-media-python/latest/\
                             google.resumable_media.requests.html
 """
@@ -343,6 +343,10 @@ class Blob(_PropertyMixin):
         :param credentials: (Optional) The OAuth2 credentials to use to sign
                             the URL. Defaults to the credentials stored on the
                             client used.
+
+        :raises: :exc:`TypeError` when expiration is not a valid type.
+        :raises: :exc:`AttributeError` if credentials is not an instance
+                of :class:`google.auth.credentials.Signing`.
 
         :rtype: str
         :returns: A signed URL you can use to access the resource
@@ -1533,7 +1537,7 @@ class Blob(_PropertyMixin):
             raise ValueError("Invalid storage class: %s" % (new_class,))
 
         # Update current blob's storage class prior to rewrite
-        self._patch_property('storageClass', new_class)
+        self._patch_property("storageClass", new_class)
 
         # Execute consecutive rewrite operations until operation is done
         token, _, _ = self.rewrite(self)

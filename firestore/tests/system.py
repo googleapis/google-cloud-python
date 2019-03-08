@@ -401,15 +401,22 @@ def test_document_delete(client, cleanup):
 def test_collection_add(client, cleanup):
     collection1 = client.collection("collek")
     collection2 = client.collection("collek", "shun", "child")
+    collection3 = client.collection("collek", "table", "child")
     explicit_doc_id = "hula" + unique_resource_id("-")
+
+    assert set(collection1.list_documents()) == set()
+    assert set(collection2.list_documents()) == set()
+    assert set(collection3.list_documents()) == set()
 
     # Auto-ID at top-level.
     data1 = {"foo": "bar"}
     update_time1, document_ref1 = collection1.add(data1)
     cleanup(document_ref1)
+    assert set(collection1.list_documents()) == {document_ref1}
+    assert set(collection2.list_documents()) == set()
+    assert set(collection3.list_documents()) == set()
     snapshot1 = document_ref1.get()
     assert snapshot1.to_dict() == data1
-    assert snapshot1.create_time == update_time1
     assert snapshot1.update_time == update_time1
     assert RANDOM_ID_REGEX.match(document_ref1.id)
 
@@ -417,19 +424,30 @@ def test_collection_add(client, cleanup):
     data2 = {"baz": 999}
     update_time2, document_ref2 = collection1.add(data2, document_id=explicit_doc_id)
     cleanup(document_ref2)
+    assert set(collection1.list_documents()) == {document_ref1, document_ref2}
+    assert set(collection2.list_documents()) == set()
+    assert set(collection3.list_documents()) == set()
     snapshot2 = document_ref2.get()
     assert snapshot2.to_dict() == data2
     assert snapshot2.create_time == update_time2
     assert snapshot2.update_time == update_time2
     assert document_ref2.id == explicit_doc_id
 
+    nested_ref = collection1.document("shun")
+
     # Auto-ID for nested collection.
     data3 = {"quux": b"\x00\x01\x02\x03"}
     update_time3, document_ref3 = collection2.add(data3)
     cleanup(document_ref3)
+    assert set(collection1.list_documents()) == {
+        document_ref1,
+        document_ref2,
+        nested_ref,
+    }
+    assert set(collection2.list_documents()) == {document_ref3}
+    assert set(collection3.list_documents()) == set()
     snapshot3 = document_ref3.get()
     assert snapshot3.to_dict() == data3
-    assert snapshot3.create_time == update_time3
     assert snapshot3.update_time == update_time3
     assert RANDOM_ID_REGEX.match(document_ref3.id)
 
@@ -437,14 +455,35 @@ def test_collection_add(client, cleanup):
     data4 = {"kazaam": None, "bad": False}
     update_time4, document_ref4 = collection2.add(data4, document_id=explicit_doc_id)
     cleanup(document_ref4)
+    assert set(collection1.list_documents()) == {
+        document_ref1,
+        document_ref2,
+        nested_ref,
+    }
+    assert set(collection2.list_documents()) == {document_ref3, document_ref4}
+    assert set(collection3.list_documents()) == set()
     snapshot4 = document_ref4.get()
     assert snapshot4.to_dict() == data4
     assert snapshot4.create_time == update_time4
     assert snapshot4.update_time == update_time4
     assert document_ref4.id == explicit_doc_id
 
+    # Exercise "missing" document (no doc, but subcollection).
+    data5 = {"bam": 123, "folyk": False}
+    update_time5, document_ref5 = collection3.add(data5)
+    cleanup(document_ref5)
+    missing_ref = collection1.document("table")
+    assert set(collection1.list_documents()) == {
+        document_ref1,
+        document_ref2,
+        nested_ref,
+        missing_ref,
+    }
+    assert set(collection2.list_documents()) == {document_ref3, document_ref4}
+    assert set(collection3.list_documents()) == {document_ref5}
 
-def test_query_get(client, cleanup):
+
+def test_query_stream(client, cleanup):
     sub_collection = "child" + unique_resource_id("-")
     collection = client.collection("collek", "shun", sub_collection)
 
@@ -465,7 +504,7 @@ def test_query_get(client, cleanup):
 
     # 0. Limit to snapshots where ``a==1``.
     query0 = collection.where("a", "==", 1)
-    values0 = {snapshot.id: snapshot.to_dict() for snapshot in query0.get()}
+    values0 = {snapshot.id: snapshot.to_dict() for snapshot in query0.stream()}
     assert len(values0) == num_vals
     for key, value in six.iteritems(values0):
         assert stored[key] == value
@@ -473,7 +512,7 @@ def test_query_get(client, cleanup):
 
     # 1. Order by ``b``.
     query1 = collection.order_by("b", direction=query0.DESCENDING)
-    values1 = [(snapshot.id, snapshot.to_dict()) for snapshot in query1.get()]
+    values1 = [(snapshot.id, snapshot.to_dict()) for snapshot in query1.stream()]
     assert len(values1) == len(stored)
     b_vals1 = []
     for key, value in values1:
@@ -484,7 +523,7 @@ def test_query_get(client, cleanup):
 
     # 2. Limit to snapshots where ``stats.sum > 1`` (a field path).
     query2 = collection.where("stats.sum", ">", 4)
-    values2 = {snapshot.id: snapshot.to_dict() for snapshot in query2.get()}
+    values2 = {snapshot.id: snapshot.to_dict() for snapshot in query2.stream()}
     assert len(values2) == 10
     ab_pairs2 = set()
     for key, value in six.iteritems(values2):
@@ -507,7 +546,7 @@ def test_query_get(client, cleanup):
         .start_at({"a": num_vals - 2})
         .end_before({"a": num_vals - 1})
     )
-    values3 = [(snapshot.id, snapshot.to_dict()) for snapshot in query3.get()]
+    values3 = [(snapshot.id, snapshot.to_dict()) for snapshot in query3.stream()]
     assert len(values3) == num_vals
     for key, value in values3:
         assert stored[key] == value
@@ -516,13 +555,13 @@ def test_query_get(client, cleanup):
 
     # 4. Send a query with no results.
     query4 = collection.where("b", "==", num_vals + 100)
-    values4 = list(query4.get())
+    values4 = list(query4.stream())
     assert len(values4) == 0
 
     # 5. Select a subset of fields.
     query5 = collection.where("b", "<=", 1)
     query5 = query5.select(["a", "stats.product"])
-    values5 = {snapshot.id: snapshot.to_dict() for snapshot in query5.get()}
+    values5 = {snapshot.id: snapshot.to_dict() for snapshot in query5.stream()}
     assert len(values5) == num_vals * 2  # a ANY, b in (0, 1)
     for key, value in six.iteritems(values5):
         expected = {
@@ -534,7 +573,7 @@ def test_query_get(client, cleanup):
     # 6. Add multiple filters via ``where()``.
     query6 = collection.where("stats.product", ">", 5)
     query6 = query6.where("stats.product", "<", 10)
-    values6 = {snapshot.id: snapshot.to_dict() for snapshot in query6.get()}
+    values6 = {snapshot.id: snapshot.to_dict() for snapshot in query6.stream()}
 
     matching_pairs = [
         (a_val, b_val)
@@ -552,7 +591,7 @@ def test_query_get(client, cleanup):
     query7 = collection.where("b", "==", 2)
     offset = 3
     query7 = query7.offset(offset)
-    values7 = {snapshot.id: snapshot.to_dict() for snapshot in query7.get()}
+    values7 = {snapshot.id: snapshot.to_dict() for snapshot in query7.stream()}
     # NOTE: We don't check the ``a``-values, since that would require
     #       an ``order_by('a')``, which combined with the ``b == 2``
     #       filter would necessitate an index.
@@ -578,7 +617,7 @@ def test_query_unary(client, cleanup):
 
     # 0. Query for null.
     query0 = collection.where(field_name, "==", None)
-    values0 = list(query0.get())
+    values0 = list(query0.stream())
     assert len(values0) == 1
     snapshot0 = values0[0]
     assert snapshot0.reference._path == document0._path
@@ -586,7 +625,7 @@ def test_query_unary(client, cleanup):
 
     # 1. Query for a NAN.
     query1 = collection.where(field_name, "==", nan_val)
-    values1 = list(query1.get())
+    values1 = list(query1.stream())
     assert len(values1) == 1
     snapshot1 = values1[0]
     assert snapshot1.reference._path == document1._path
@@ -774,7 +813,7 @@ def test_watch_query(client, cleanup):
         on_snapshot.called_count += 1
 
         # A snapshot should return the same thing as if a query ran now.
-        query_ran = db.collection(u"users").where("first", "==", u"Ada").get()
+        query_ran = db.collection(u"users").where("first", "==", u"Ada").stream()
         assert len(docs) == len([i for i in query_ran])
 
     on_snapshot.called_count = 0
@@ -817,7 +856,7 @@ def test_watch_query_order(client, cleanup):
             if len(docs) != 5:
                 return
             # A snapshot should return the same thing as if a query ran now.
-            query_ran = query_ref.get()
+            query_ran = query_ref.stream()
             query_ran_results = [i for i in query_ran]
             assert len(docs) == len(query_ran_results)
 
