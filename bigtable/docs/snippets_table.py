@@ -39,11 +39,11 @@ from google.cloud.bigtable import enums
 from google.cloud.bigtable import column_family
 
 
-INSTANCE_ID = "snippet-" + unique_resource_id('-')
-CLUSTER_ID = "clus-1-" + unique_resource_id('-')
-TABLE_ID = "tabl-1-" + unique_resource_id('-')
-LOCATION_ID = 'us-central1-f'
-ALT_LOCATION_ID = 'us-central1-a'
+INSTANCE_ID = "snippet-" + unique_resource_id("-")
+CLUSTER_ID = "clus-1-" + unique_resource_id("-")
+TABLE_ID = "tabl-1-" + unique_resource_id("-")
+LOCATION_ID = "us-central1-f"
+ALT_LOCATION_ID = "us-central1-a"
 PRODUCTION = enums.Instance.Type.PRODUCTION
 SERVER_NODES = 3
 STORAGE_TYPE = enums.StorageType.SSD
@@ -55,13 +55,13 @@ LABEL_STAMP = (
 )
 LABELS = {LABEL_KEY: str(LABEL_STAMP)}
 COLUMN_FAMILY_ID = "col_fam_id1"
-COL_NAME1 = b'col-name1'
-CELL_VAL1 = b'cell-val'
-ROW_KEY1 = b'row_key_id1'
+COL_NAME1 = b"col-name1"
+CELL_VAL1 = b"cell-val"
+ROW_KEY1 = b"row_key_id1"
 COLUMN_FAMILY_ID2 = "col_fam_id2"
-COL_NAME2 = b'col-name2'
-CELL_VAL2 = b'cell-val2'
-ROW_KEY2 = b'row_key_id2'
+COL_NAME2 = b"col-name2"
+CELL_VAL2 = b"cell-val2"
+ROW_KEY2 = b"row_key_id2"
 
 
 class Config(object):
@@ -96,8 +96,7 @@ def setup_module():
     column_family1 = Config.TABLE.column_family(COLUMN_FAMILY_ID, gc_rule=gc_rule)
     column_family1.create()
     gc_rule2 = column_family.MaxVersionsGCRule(4)
-    column_family2 = Config.TABLE.column_family(COLUMN_FAMILY_ID2,
-                                                gc_rule=gc_rule2)
+    column_family2 = Config.TABLE.column_family(COLUMN_FAMILY_ID2, gc_rule=gc_rule2)
     column_family2.create()
 
 
@@ -415,7 +414,7 @@ def test_bigtable_table_row():
 def test_bigtable_row_append_cell_value():
     row = Config.TABLE.row(ROW_KEY1)
 
-    cell_val1 = b'1'
+    cell_val1 = b"1"
     row.set_cell(COLUMN_FAMILY_ID, COL_NAME1, cell_val1)
     row.commit()
 
@@ -427,7 +426,7 @@ def test_bigtable_row_append_cell_value():
     table = instance.table(TABLE_ID)
     row = table.row(ROW_KEY1, append=True)
 
-    cell_val2 = b'2'
+    cell_val2 = b"2"
     row.append_cell_value(COLUMN_FAMILY_ID, COL_NAME1, cell_val2)
     # [END bigtable_row_append_cell_value]
     row.commit()
@@ -465,6 +464,7 @@ def test_bigtable_row_append_cell_value():
     actual_value = row_data.cell_value(COLUMN_FAMILY_ID, COL_NAME1)
 
     import struct
+
     _PACK_I64 = struct.Struct(">q").pack
     assert actual_value == _PACK_I64(cell_val + int_val)
     table.truncate(timeout=200)
@@ -478,9 +478,9 @@ def test_bigtable_row_clear():
     instance = client.instance(INSTANCE_ID)
     table = instance.table(TABLE_ID)
 
-    row_key = b'row_key_1'
+    row_key = b"row_key_1"
     row_obj = table.row(row_key)
-    row_obj.set_cell(COLUMN_FAMILY_ID, COL_NAME1, b'cell-val')
+    row_obj.set_cell(COLUMN_FAMILY_ID, COL_NAME1, b"cell-val")
     # [END bigtable_row_clear]
 
     mutation_size = row_obj.get_mutations_size()
@@ -494,5 +494,5 @@ def test_bigtable_row_clear():
     assert mutation_size == 0
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     pytest.main()
