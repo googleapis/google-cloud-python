@@ -281,9 +281,15 @@ class BigQueryDialect(DefaultDialect):
                 default_query_job_config=default_query_job_config
             )
         elif self.credentials_info:
+            scopes = (
+                'https://www.googleapis.com/auth/bigquery',
+                'https://www.googleapis.com/auth/cloud-platform',
+                'https://www.googleapis.com/auth/drive'
+            )
             credentials = service_account.Credentials.from_service_account_info(
                 self.credentials_info
             )
+            credentials = credentials.with_scopes(scopes)
             client = bigquery.Client(
                 project=self.credentials_info.get('project_id'),
                 credentials=credentials,
