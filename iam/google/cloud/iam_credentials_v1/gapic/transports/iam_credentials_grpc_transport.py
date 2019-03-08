@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2018 Google LLC
+# Copyright 2019 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -102,7 +102,7 @@ class IamCredentialsGrpcTransport(object):
 
     @property
     def generate_access_token(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`IAMCredentialsClient.generate_access_token`.
 
         Generates an OAuth 2.0 access token for a service account.
 
@@ -115,7 +115,7 @@ class IamCredentialsGrpcTransport(object):
 
     @property
     def generate_id_token(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`IAMCredentialsClient.generate_id_token`.
 
         Generates an OpenID Connect ID token for a service account.
 
@@ -128,7 +128,7 @@ class IamCredentialsGrpcTransport(object):
 
     @property
     def sign_blob(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`IAMCredentialsClient.sign_blob`.
 
         Signs a blob using a service account's system-managed private key.
 
@@ -141,7 +141,7 @@ class IamCredentialsGrpcTransport(object):
 
     @property
     def sign_jwt(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`IAMCredentialsClient.sign_jwt`.
 
         Signs a JWT using a service account's system-managed private key.
 
@@ -151,3 +151,17 @@ class IamCredentialsGrpcTransport(object):
                 deserialized response object.
         """
         return self._stubs["iam_credentials_stub"].SignJwt
+
+    @property
+    def generate_identity_binding_access_token(self):
+        """Return the gRPC stub for :meth:`IAMCredentialsClient.generate_identity_binding_access_token`.
+
+        Exchange a JWT signed by third party identity provider to an OAuth 2.0
+        access token
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["iam_credentials_stub"].GenerateIdentityBindingAccessToken

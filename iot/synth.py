@@ -27,6 +27,7 @@ library = gapic.py_library(
     "v1",
     config_path="/google/cloud/iot/artman_cloudiot.yaml",
     artman_output_name="iot-v1",
+    include_protos=True,
 )
 
 s.move(library / "google/cloud/iot_v1")

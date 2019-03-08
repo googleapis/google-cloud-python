@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2018 Google LLC
+# Copyright 2019 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -98,7 +98,7 @@ class TraceServiceGrpcTransport(object):
 
     @property
     def batch_write_spans(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`TraceServiceClient.batch_write_spans`.
 
         Sends new spans to new or existing traces. You cannot update
         existing spans.
@@ -112,7 +112,7 @@ class TraceServiceGrpcTransport(object):
 
     @property
     def create_span(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`TraceServiceClient.create_span`.
 
         Creates a new span.
 

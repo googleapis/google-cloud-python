@@ -8,7 +8,6 @@ from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
-from google.protobuf import descriptor_pb2
 
 # @@protoc_insertion_point(imports)
 
@@ -27,6 +26,9 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     name="google/cloud/tasks_v2beta2/proto/queue.proto",
     package="google.cloud.tasks.v2beta2",
     syntax="proto3",
+    serialized_options=_b(
+        "\n\036com.google.cloud.tasks.v2beta2B\nQueueProtoP\001Z?google.golang.org/genproto/googleapis/cloud/tasks/v2beta2;tasks"
+    ),
     serialized_pb=_b(
         '\n,google/cloud/tasks_v2beta2/proto/queue.proto\x12\x1agoogle.cloud.tasks.v2beta2\x1a\x1cgoogle/api/annotations.proto\x1a-google/cloud/tasks_v2beta2/proto/target.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1fgoogle/protobuf/timestamp.proto"\xe1\x03\n\x05Queue\x12\x0c\n\x04name\x18\x01 \x01(\t\x12Q\n\x16\x61pp_engine_http_target\x18\x03 \x01(\x0b\x32/.google.cloud.tasks.v2beta2.AppEngineHttpTargetH\x00\x12=\n\x0bpull_target\x18\x04 \x01(\x0b\x32&.google.cloud.tasks.v2beta2.PullTargetH\x00\x12;\n\x0brate_limits\x18\x05 \x01(\x0b\x32&.google.cloud.tasks.v2beta2.RateLimits\x12=\n\x0cretry_config\x18\x06 \x01(\x0b\x32\'.google.cloud.tasks.v2beta2.RetryConfig\x12\x36\n\x05state\x18\x07 \x01(\x0e\x32\'.google.cloud.tasks.v2beta2.Queue.State\x12.\n\npurge_time\x18\x08 \x01(\x0b\x32\x1a.google.protobuf.Timestamp"E\n\x05State\x12\x15\n\x11STATE_UNSPECIFIED\x10\x00\x12\x0b\n\x07RUNNING\x10\x01\x12\n\n\x06PAUSED\x10\x02\x12\x0c\n\x08\x44ISABLED\x10\x03\x42\r\n\x0btarget_type"k\n\nRateLimits\x12\'\n\x1fmax_tasks_dispatched_per_second\x18\x01 \x01(\x01\x12\x16\n\x0emax_burst_size\x18\x02 \x01(\x05\x12\x1c\n\x14max_concurrent_tasks\x18\x03 \x01(\x05"\x81\x02\n\x0bRetryConfig\x12\x16\n\x0cmax_attempts\x18\x01 \x01(\x05H\x00\x12\x1c\n\x12unlimited_attempts\x18\x02 \x01(\x08H\x00\x12\x35\n\x12max_retry_duration\x18\x03 \x01(\x0b\x32\x19.google.protobuf.Duration\x12.\n\x0bmin_backoff\x18\x04 \x01(\x0b\x32\x19.google.protobuf.Duration\x12.\n\x0bmax_backoff\x18\x05 \x01(\x0b\x32\x19.google.protobuf.Duration\x12\x15\n\rmax_doublings\x18\x06 \x01(\x05\x42\x0e\n\x0cnum_attemptsBo\n\x1e\x63om.google.cloud.tasks.v2beta2B\nQueueProtoP\x01Z?google.golang.org/genproto/googleapis/cloud/tasks/v2beta2;tasksb\x06proto3'
     ),
@@ -46,20 +48,24 @@ _QUEUE_STATE = _descriptor.EnumDescriptor(
     file=DESCRIPTOR,
     values=[
         _descriptor.EnumValueDescriptor(
-            name="STATE_UNSPECIFIED", index=0, number=0, options=None, type=None
+            name="STATE_UNSPECIFIED",
+            index=0,
+            number=0,
+            serialized_options=None,
+            type=None,
         ),
         _descriptor.EnumValueDescriptor(
-            name="RUNNING", index=1, number=1, options=None, type=None
+            name="RUNNING", index=1, number=1, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="PAUSED", index=2, number=2, options=None, type=None
+            name="PAUSED", index=2, number=2, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="DISABLED", index=3, number=3, options=None, type=None
+            name="DISABLED", index=3, number=3, serialized_options=None, type=None
         ),
     ],
     containing_type=None,
-    options=None,
+    serialized_options=None,
     serialized_start=616,
     serialized_end=685,
 )
@@ -88,7 +94,7 @@ _QUEUE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -106,7 +112,7 @@ _QUEUE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -124,7 +130,7 @@ _QUEUE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -142,7 +148,7 @@ _QUEUE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -160,7 +166,7 @@ _QUEUE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -178,7 +184,7 @@ _QUEUE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -196,14 +202,14 @@ _QUEUE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[_QUEUE_STATE],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -243,7 +249,7 @@ _RATELIMITS = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -261,7 +267,7 @@ _RATELIMITS = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -279,14 +285,14 @@ _RATELIMITS = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -318,7 +324,7 @@ _RETRYCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -336,7 +342,7 @@ _RETRYCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -354,7 +360,7 @@ _RETRYCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -372,7 +378,7 @@ _RETRYCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -390,7 +396,7 @@ _RETRYCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -408,14 +414,14 @@ _RETRYCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -766,11 +772,5 @@ RetryConfig = _reflection.GeneratedProtocolMessageType(
 _sym_db.RegisterMessage(RetryConfig)
 
 
-DESCRIPTOR.has_options = True
-DESCRIPTOR._options = _descriptor._ParseOptions(
-    descriptor_pb2.FileOptions(),
-    _b(
-        "\n\036com.google.cloud.tasks.v2beta2B\nQueueProtoP\001Z?google.golang.org/genproto/googleapis/cloud/tasks/v2beta2;tasks"
-    ),
-)
+DESCRIPTOR._options = None
 # @@protoc_insertion_point(module_scope)

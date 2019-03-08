@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2018 Google LLC
+# Copyright 2019 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -108,7 +108,7 @@ class ImageAnnotatorGrpcTransport(object):
 
     @property
     def batch_annotate_images(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`ImageAnnotatorClient.batch_annotate_images`.
 
         Run image detection and annotation for a batch of images.
 
@@ -121,7 +121,7 @@ class ImageAnnotatorGrpcTransport(object):
 
     @property
     def async_batch_annotate_files(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`ImageAnnotatorClient.async_batch_annotate_files`.
 
         Run async image detection and annotation for a list of generic files
         (e.g. PDF) which may contain multiple pages and multiple images per

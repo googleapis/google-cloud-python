@@ -32,12 +32,13 @@ from google import resumable_media
 from google.resumable_media.requests import MultipartUpload
 from google.resumable_media.requests import ResumableUpload
 
+import google.api_core.exceptions
 from google.api_core import page_iterator
 import google.cloud._helpers
 from google.cloud import exceptions
 from google.cloud.client import ClientWithProject
 
-from google.cloud.bigquery._helpers import _SCALAR_VALUE_TO_JSON_ROW
+from google.cloud.bigquery._helpers import _record_field_to_json
 from google.cloud.bigquery._helpers import _str_or_none
 from google.cloud.bigquery._http import Connection
 from google.cloud.bigquery.dataset import Dataset
@@ -51,7 +52,6 @@ from google.cloud.bigquery.table import TableListItem
 from google.cloud.bigquery.table import TableReference
 from google.cloud.bigquery.table import RowIterator
 from google.cloud.bigquery.table import _TABLE_HAS_NO_SCHEMA
-from google.cloud.bigquery.table import _row_from_mapping
 
 
 _DEFAULT_CHUNKSIZE = 1048576  # 1024 * 1024 B = 1 MB
@@ -298,7 +298,7 @@ class Client(ClientWithProject):
 
         return DatasetReference(project, dataset_id)
 
-    def create_dataset(self, dataset):
+    def create_dataset(self, dataset, exists_ok=False, retry=DEFAULT_RETRY):
         """API call: create the dataset via a POST request.
 
         See
@@ -313,6 +313,11 @@ class Client(ClientWithProject):
                 A :class:`~google.cloud.bigquery.dataset.Dataset` to create.
                 If ``dataset`` is a reference, an empty dataset is created
                 with the specified ID and client's default location.
+            exists_ok (bool):
+                Defaults to ``False``. If ``True``, ignore "already exists"
+                errors when creating the dataset.
+            retry (google.api_core.retry.Retry):
+                Optional. How to retry the RPC.
 
         Returns:
             google.cloud.bigquery.dataset.Dataset:
@@ -339,11 +344,15 @@ class Client(ClientWithProject):
         if data.get("location") is None and self.location is not None:
             data["location"] = self.location
 
-        api_response = self._connection.api_request(method="POST", path=path, data=data)
+        try:
+            api_response = self._call_api(retry, method="POST", path=path, data=data)
+            return Dataset.from_api_repr(api_response)
+        except google.api_core.exceptions.Conflict:
+            if not exists_ok:
+                raise
+            return self.get_dataset(dataset.reference, retry=retry)
 
-        return Dataset.from_api_repr(api_response)
-
-    def create_table(self, table):
+    def create_table(self, table, exists_ok=False, retry=DEFAULT_RETRY):
         """API call:  create a table via a PUT request
 
         See
@@ -359,6 +368,11 @@ class Client(ClientWithProject):
                 If ``table`` is a reference, an empty table is created
                 with the specified ID. The dataset that the table belongs to
                 must already exist.
+            exists_ok (bool):
+                Defaults to ``False``. If ``True``, ignore "already exists"
+                errors when creating the table.
+            retry (google.api_core.retry.Retry):
+                Optional. How to retry the RPC.
 
         Returns:
             google.cloud.bigquery.table.Table:
@@ -370,10 +384,14 @@ class Client(ClientWithProject):
             table = Table(table)
 
         path = "/projects/%s/datasets/%s/tables" % (table.project, table.dataset_id)
-        api_response = self._connection.api_request(
-            method="POST", path=path, data=table.to_api_repr()
-        )
-        return Table.from_api_repr(api_response)
+        data = table.to_api_repr()
+        try:
+            api_response = self._call_api(retry, method="POST", path=path, data=data)
+            return Table.from_api_repr(api_response)
+        except google.api_core.exceptions.Conflict:
+            if not exists_ok:
+                raise
+            return self.get_table(table.reference, retry=retry)
 
     def _call_api(self, retry, **kwargs):
         call = functools.partial(self._connection.api_request, **kwargs)
@@ -564,7 +582,9 @@ class Client(ClientWithProject):
         result.dataset = dataset
         return result
 
-    def delete_dataset(self, dataset, delete_contents=False, retry=DEFAULT_RETRY):
+    def delete_dataset(
+        self, dataset, delete_contents=False, retry=DEFAULT_RETRY, not_found_ok=False
+    ):
         """Delete a dataset.
 
         See
@@ -580,12 +600,15 @@ class Client(ClientWithProject):
                 in, this method attempts to create a dataset reference from a
                 string using
                 :func:`google.cloud.bigquery.dataset.DatasetReference.from_string`.
-            retry (:class:`google.api_core.retry.Retry`):
-                (Optional) How to retry the RPC.
             delete_contents (boolean):
                 (Optional) If True, delete all the tables in the dataset. If
                 False and the dataset contains tables, the request will fail.
                 Default is False.
+            retry (:class:`google.api_core.retry.Retry`):
+                (Optional) How to retry the RPC.
+            not_found_ok (bool):
+                Defaults to ``False``. If ``True``, ignore "not found" errors
+                when deleting the dataset.
         """
         if isinstance(dataset, str):
             dataset = DatasetReference.from_string(
@@ -599,9 +622,15 @@ class Client(ClientWithProject):
         if delete_contents:
             params["deleteContents"] = "true"
 
-        self._call_api(retry, method="DELETE", path=dataset.path, query_params=params)
+        try:
+            self._call_api(
+                retry, method="DELETE", path=dataset.path, query_params=params
+            )
+        except google.api_core.exceptions.NotFound:
+            if not not_found_ok:
+                raise
 
-    def delete_table(self, table, retry=DEFAULT_RETRY):
+    def delete_table(self, table, retry=DEFAULT_RETRY, not_found_ok=False):
         """Delete a table
 
         See
@@ -619,13 +648,21 @@ class Client(ClientWithProject):
                 :func:`google.cloud.bigquery.table.TableReference.from_string`.
             retry (:class:`google.api_core.retry.Retry`):
                 (Optional) How to retry the RPC.
+            not_found_ok (bool):
+                Defaults to ``False``. If ``True``, ignore "not found" errors
+                when deleting the table.
         """
         if isinstance(table, str):
             table = TableReference.from_string(table, default_project=self.project)
 
         if not isinstance(table, (Table, TableReference)):
             raise TypeError("table must be a Table or a TableReference")
-        self._call_api(retry, method="DELETE", path=table.path)
+
+        try:
+            self._call_api(retry, method="DELETE", path=table.path)
+        except google.api_core.exceptions.NotFound:
+            if not not_found_ok:
+                raise
 
     def _get_query_results(
         self, job_id, retry, project=None, timeout_ms=None, location=None
@@ -1495,20 +1532,7 @@ class Client(ClientWithProject):
         else:
             raise TypeError("table should be Table or TableReference")
 
-        json_rows = []
-
-        for index, row in enumerate(rows):
-            if isinstance(row, dict):
-                row = _row_from_mapping(row, schema)
-            json_row = {}
-
-            for field, value in zip(schema, row):
-                converter = _SCALAR_VALUE_TO_JSON_ROW.get(field.field_type)
-                if converter is not None:  # STRING doesn't need converting
-                    value = converter(value)
-                json_row[field.name] = value
-
-            json_rows.append(json_row)
+        json_rows = [_record_field_to_json(schema, row) for row in rows]
 
         return self.insert_rows_json(table, json_rows, **kwargs)
 

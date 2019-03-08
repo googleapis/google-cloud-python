@@ -23,23 +23,6 @@ import nox
 LOCAL_DEPS = (os.path.join("..", "api_core"), os.path.join("..", "core"))
 
 @nox.session(python="3.7")
-def blacken(session):
-    """Run black.
-
-    Format code to uniform standard.
-    """
-    session.install("black")
-    session.run(
-        "black",
-        "google",
-        "tests",
-        "docs",
-        "--exclude",
-        ".*/proto/.*|.*/gapic/.*|.*/.*_pb2.py",
-    )
-
-
-@nox.session(python="3.7")
 def lint(session):
     """Run linters.
 
@@ -53,10 +36,27 @@ def lint(session):
         "google",
         "tests",
         "docs",
-        "--exclude",
-        ".*/proto/.*|.*/gapic/.*|.*/.*_pb2.py",
     )
     session.run("flake8", "google", "tests")
+
+
+@nox.session(python="3.6")
+def blacken(session):
+    """Run black.
+
+    Format code to uniform standard.
+    
+    This currently uses Python 3.6 due to the automated Kokoro run of synthtool.
+    That run uses an image that doesn't have 3.6 installed. Before updating this
+    check the state of the `gcp_ubuntu_config` we use for that Kokoro run.
+    """
+    session.install("black")
+    session.run(
+        "black",
+        "google",
+        "tests",
+        "docs",
+    )
 
 
 @nox.session(python="3.7")

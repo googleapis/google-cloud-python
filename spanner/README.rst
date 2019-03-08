@@ -22,7 +22,7 @@ workloads.
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-spanner.svg
    :target: https://pypi.org/project/google-cloud-spanner/
 .. _Cloud Spanner: https://cloud.google.com/spanner/
-.. _Client Library Documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/spanner/index.html
+.. _Client Library Documentation: https://googleapis.github.io/google-cloud-python/latest/spanner/index.html
 .. _Product Documentation:  https://cloud.google.com/spanner/docs
 
 Quick Start
@@ -38,7 +38,7 @@ In order to use this library, you first need to go through the following steps:
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
 .. _Enable the Google Cloud Spanner API.:  https://cloud.google.com/spanner
-.. _Setup Authentication.: https://googlecloudplatform.github.io/google-cloud-python/latest/core/auth.html
+.. _Setup Authentication.: https://googleapis.github.io/google-cloud-python/latest/core/auth.html
 
 Installation
 ~~~~~~~~~~~~
@@ -71,7 +71,7 @@ Mac/Linux
     pip install virtualenv
     virtualenv <your-env>
     source <your-env>/bin/activate
-    <your-env>/bin/pip install google-cloud-datastore
+    <your-env>/bin/pip install google-cloud-spanner
 
 
 Windows
@@ -82,7 +82,7 @@ Windows
     pip install virtualenv
     virtualenv <your-env>
     <your-env>\Scripts\activate
-    <your-env>\Scripts\pip.exe install google-cloud-datastore
+    <your-env>\Scripts\pip.exe install google-cloud-spanner
 
 
 Example Usage

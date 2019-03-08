@@ -24,10 +24,11 @@ common = gcp.CommonTemplates()
 # Generate automl GAPIC layer
 # ----------------------------------------------------------------------------
 library = gapic.py_library(
-    "iam",
+    "iam_credentials",
     "v1",
     config_path="/google/iam/credentials/artman_iamcredentials_v1.yaml",
-    artman_output_name="iamcredentials-v1"
+    artman_output_name="iamcredentials-v1",
+    include_protos=True,
 )
 
 excludes = [

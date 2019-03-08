@@ -32,6 +32,7 @@ library = gapic.py_library(
     "v1beta1",
     config_path="artman_cloudscheduler_v1beta1.yaml",
     artman_output_name="cloudscheduler-v1beta1",
+    include_protos=True,
 )
 
 excludes = ["README.rst", "nox.py", "setup.py", "docs/conf.py", "docs/index.rst"]

@@ -2225,6 +2225,32 @@ def test_client_query_legacy_sql(client):
     # [END bigquery_query_legacy]
 
 
+def test_client_query_total_rows(client, capsys):
+    """Run a query and just check for how many rows."""
+    # [START bigquery_query_total_rows]
+    # from google.cloud import bigquery
+    # client = bigquery.Client()
+
+    query = (
+        "SELECT name FROM `bigquery-public-data.usa_names.usa_1910_2013` "
+        'WHERE state = "TX" '
+        "LIMIT 100"
+    )
+    query_job = client.query(
+        query,
+        # Location must match that of the dataset(s) referenced in the query.
+        location="US",
+    )  # API request - starts the query
+
+    results = query_job.result()  # Waits for query to complete.
+    next(iter(results))  # Fetch the first page of results, which contains total_rows.
+    print("Got {} rows.".format(results.total_rows))
+    # [END bigquery_query_total_rows]
+
+    out, _ = capsys.readouterr()
+    assert "Got 100 rows." in out
+
+
 def test_manage_job(client):
     sql = """
         SELECT corpus

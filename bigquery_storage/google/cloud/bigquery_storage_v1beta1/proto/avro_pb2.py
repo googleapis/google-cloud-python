@@ -8,7 +8,6 @@ from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
-from google.protobuf import descriptor_pb2
 
 # @@protoc_insertion_point(imports)
 
@@ -19,6 +18,9 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     name="google/cloud/bigquery/storage_v1beta1/proto/avro.proto",
     package="google.cloud.bigquery.storage.v1beta1",
     syntax="proto3",
+    serialized_options=_b(
+        "\n)com.google.cloud.bigquery.storage.v1beta1B\tAvroProtoZLgoogle.golang.org/genproto/googleapis/cloud/bigquery/storage/v1beta1;storage"
+    ),
     serialized_pb=_b(
         '\n6google/cloud/bigquery/storage_v1beta1/proto/avro.proto\x12%google.cloud.bigquery.storage.v1beta1"\x1c\n\nAvroSchema\x12\x0e\n\x06schema\x18\x01 \x01(\t"=\n\x08\x41vroRows\x12\x1e\n\x16serialized_binary_rows\x18\x01 \x01(\x0c\x12\x11\n\trow_count\x18\x02 \x01(\x03\x42\x84\x01\n)com.google.cloud.bigquery.storage.v1beta1B\tAvroProtoZLgoogle.golang.org/genproto/googleapis/cloud/bigquery/storage/v1beta1;storageb\x06proto3'
     ),
@@ -47,14 +49,14 @@ _AVROSCHEMA = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -86,7 +88,7 @@ _AVROROWS = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -104,14 +106,14 @@ _AVROROWS = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -164,11 +166,5 @@ AvroRows = _reflection.GeneratedProtocolMessageType(
 _sym_db.RegisterMessage(AvroRows)
 
 
-DESCRIPTOR.has_options = True
-DESCRIPTOR._options = _descriptor._ParseOptions(
-    descriptor_pb2.FileOptions(),
-    _b(
-        "\n)com.google.cloud.bigquery.storage.v1beta1B\tAvroProtoZLgoogle.golang.org/genproto/googleapis/cloud/bigquery/storage/v1beta1;storage"
-    ),
-)
+DESCRIPTOR._options = None
 # @@protoc_insertion_point(module_scope)

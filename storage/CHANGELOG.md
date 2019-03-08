@@ -4,6 +4,17 @@
 
 [1]: https://pypi.org/project/google-cloud-storage/#history
 
+## 1.14.0
+
+02-06-2019 12:49 PST
+
+
+### New Features
+- Add 'Bucket.iam_configuration' property, enabling Bucket-Policy-Only. ([#7066](https://github.com/googleapis/google-cloud-python/pull/7066))
+
+### Documentation
+- Improve docs for 'generate_signed_url'. ([#7201](https://github.com/googleapis/google-cloud-python/pull/7201))
+
 ## 1.13.2
 
 12-17-2018 17:02 PST

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2018 Google LLC
+# Copyright 2019 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -99,7 +99,7 @@ class TraceServiceGrpcTransport(object):
 
     @property
     def patch_traces(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`TraceServiceClient.patch_traces`.
 
         Sends new traces to Stackdriver Trace or updates existing traces. If the ID
         of a trace that you send matches that of an existing trace, any fields
@@ -116,7 +116,7 @@ class TraceServiceGrpcTransport(object):
 
     @property
     def get_trace(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`TraceServiceClient.get_trace`.
 
         Gets a single trace by its ID.
 
@@ -129,7 +129,7 @@ class TraceServiceGrpcTransport(object):
 
     @property
     def list_traces(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`TraceServiceClient.list_traces`.
 
         Returns of a list of traces that match the specified filter conditions.
 

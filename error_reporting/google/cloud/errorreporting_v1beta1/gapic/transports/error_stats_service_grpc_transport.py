@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2018 Google LLC
+# Copyright 2019 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -104,7 +104,7 @@ class ErrorStatsServiceGrpcTransport(object):
 
     @property
     def list_group_stats(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`ErrorStatsServiceClient.list_group_stats`.
 
         Lists the specified groups.
 
@@ -117,7 +117,7 @@ class ErrorStatsServiceGrpcTransport(object):
 
     @property
     def list_events(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`ErrorStatsServiceClient.list_events`.
 
         Lists the specified events.
 
@@ -130,7 +130,7 @@ class ErrorStatsServiceGrpcTransport(object):
 
     @property
     def delete_events(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`ErrorStatsServiceClient.delete_events`.
 
         Deletes all error events of a given project.
 

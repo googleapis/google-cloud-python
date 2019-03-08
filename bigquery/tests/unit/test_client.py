@@ -25,6 +25,7 @@ import mock
 import six
 from six.moves import http_client
 import pytest
+import pytz
 
 try:
     import pandas
@@ -35,6 +36,7 @@ try:
 except (ImportError, AttributeError):  # pragma: NO COVER
     pyarrow = None
 
+import google.api_core.exceptions
 from google.cloud.bigquery.dataset import DatasetReference
 
 
@@ -803,6 +805,61 @@ class TestClient(unittest.TestCase):
             },
         )
 
+    def test_create_dataset_alreadyexists_w_exists_ok_false(self):
+        creds = _make_credentials()
+        client = self._make_one(
+            project=self.PROJECT, credentials=creds, location=self.LOCATION
+        )
+        client._connection = _make_connection(
+            google.api_core.exceptions.AlreadyExists("dataset already exists")
+        )
+
+        with pytest.raises(google.api_core.exceptions.AlreadyExists):
+            client.create_dataset(self.DS_ID)
+
+    def test_create_dataset_alreadyexists_w_exists_ok_true(self):
+        post_path = "/projects/{}/datasets".format(self.PROJECT)
+        get_path = "/projects/{}/datasets/{}".format(self.PROJECT, self.DS_ID)
+        resource = {
+            "datasetReference": {"projectId": self.PROJECT, "datasetId": self.DS_ID},
+            "etag": "etag",
+            "id": "{}:{}".format(self.PROJECT, self.DS_ID),
+            "location": self.LOCATION,
+        }
+        creds = _make_credentials()
+        client = self._make_one(
+            project=self.PROJECT, credentials=creds, location=self.LOCATION
+        )
+        conn = client._connection = _make_connection(
+            google.api_core.exceptions.AlreadyExists("dataset already exists"), resource
+        )
+
+        dataset = client.create_dataset(self.DS_ID, exists_ok=True)
+
+        self.assertEqual(dataset.dataset_id, self.DS_ID)
+        self.assertEqual(dataset.project, self.PROJECT)
+        self.assertEqual(dataset.etag, resource["etag"])
+        self.assertEqual(dataset.full_dataset_id, resource["id"])
+        self.assertEqual(dataset.location, self.LOCATION)
+
+        conn.api_request.assert_has_calls(
+            [
+                mock.call(
+                    method="POST",
+                    path=post_path,
+                    data={
+                        "datasetReference": {
+                            "projectId": self.PROJECT,
+                            "datasetId": self.DS_ID,
+                        },
+                        "labels": {},
+                        "location": self.LOCATION,
+                    },
+                ),
+                mock.call(method="GET", path=get_path),
+            ]
+        )
+
     def test_create_table_w_day_partition(self):
         from google.cloud.bigquery.table import Table
         from google.cloud.bigquery.table import TimePartitioning
@@ -1175,6 +1232,79 @@ class TestClient(unittest.TestCase):
             },
         )
         self.assertEqual(got.table_id, self.TABLE_ID)
+
+    def test_create_table_alreadyexists_w_exists_ok_false(self):
+        post_path = "/projects/{}/datasets/{}/tables".format(self.PROJECT, self.DS_ID)
+        creds = _make_credentials()
+        client = self._make_one(
+            project=self.PROJECT, credentials=creds, location=self.LOCATION
+        )
+        conn = client._connection = _make_connection(
+            google.api_core.exceptions.AlreadyExists("table already exists")
+        )
+
+        with pytest.raises(google.api_core.exceptions.AlreadyExists):
+            client.create_table("{}.{}".format(self.DS_ID, self.TABLE_ID))
+
+        conn.api_request.assert_called_once_with(
+            method="POST",
+            path=post_path,
+            data={
+                "tableReference": {
+                    "projectId": self.PROJECT,
+                    "datasetId": self.DS_ID,
+                    "tableId": self.TABLE_ID,
+                },
+                "labels": {},
+            },
+        )
+
+    def test_create_table_alreadyexists_w_exists_ok_true(self):
+        post_path = "/projects/{}/datasets/{}/tables".format(self.PROJECT, self.DS_ID)
+        get_path = "/projects/{}/datasets/{}/tables/{}".format(
+            self.PROJECT, self.DS_ID, self.TABLE_ID
+        )
+        resource = {
+            "id": "%s:%s:%s" % (self.PROJECT, self.DS_ID, self.TABLE_ID),
+            "tableReference": {
+                "projectId": self.PROJECT,
+                "datasetId": self.DS_ID,
+                "tableId": self.TABLE_ID,
+            },
+        }
+        creds = _make_credentials()
+        client = self._make_one(
+            project=self.PROJECT, credentials=creds, location=self.LOCATION
+        )
+        conn = client._connection = _make_connection(
+            google.api_core.exceptions.AlreadyExists("table already exists"), resource
+        )
+
+        got = client.create_table(
+            "{}.{}".format(self.DS_ID, self.TABLE_ID), exists_ok=True
+        )
+
+        self.assertEqual(got.project, self.PROJECT)
+        self.assertEqual(got.dataset_id, self.DS_ID)
+        self.assertEqual(got.table_id, self.TABLE_ID)
+
+        conn.api_request.assert_has_calls(
+            [
+                mock.call(
+                    method="POST",
+                    path=post_path,
+                    data={
+                        "tableReference": {
+                            "projectId": self.PROJECT,
+                            "datasetId": self.DS_ID,
+                            "tableId": self.TABLE_ID,
+                        },
+                        "labels": {},
+                    },
+                ),
+                mock.call(method="GET", path=get_path),
+            ]
+        )
 
     def test_get_table(self):
         path = "projects/%s/datasets/%s/tables/%s" % (
@@ -1803,6 +1933,33 @@ class TestClient(unittest.TestCase):
         with self.assertRaises(TypeError):
             client.delete_dataset(client.dataset(self.DS_ID).table("foo"))
 
+    def test_delete_dataset_w_not_found_ok_false(self):
+        path = "/projects/{}/datasets/{}".format(self.PROJECT, self.DS_ID)
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
+        conn = client._connection = _make_connection(
+            google.api_core.exceptions.NotFound("dataset not found")
+        )
+
+        with self.assertRaises(google.api_core.exceptions.NotFound):
+            client.delete_dataset(self.DS_ID)
+
+        conn.api_request.assert_called_with(method="DELETE", path=path, query_params={})
+
+    def test_delete_dataset_w_not_found_ok_true(self):
+        path = "/projects/{}/datasets/{}".format(self.PROJECT, self.DS_ID)
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
+        conn = client._connection = _make_connection(
+            google.api_core.exceptions.NotFound("dataset not found")
+        )
+
+        client.delete_dataset(self.DS_ID, not_found_ok=True)
+
+        conn.api_request.assert_called_with(method="DELETE", path=path, query_params={})
+
     def test_delete_table(self):
         from google.cloud.bigquery.table import Table
 
@@ -1834,6 +1991,39 @@ class TestClient(unittest.TestCase):
         client = self._make_one(project=self.PROJECT, credentials=creds)
         with self.assertRaises(TypeError):
             client.delete_table(client.dataset(self.DS_ID))
+
+    def test_delete_table_w_not_found_ok_false(self):
+        path = "/projects/{}/datasets/{}/tables/{}".format(
+            self.PROJECT, self.DS_ID, self.TABLE_ID
+        )
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
+        conn = client._connection = _make_connection(
+            google.api_core.exceptions.NotFound("table not found")
+        )
+
+        with self.assertRaises(google.api_core.exceptions.NotFound):
+            client.delete_table("{}.{}".format(self.DS_ID, self.TABLE_ID))
+
+        conn.api_request.assert_called_with(method="DELETE", path=path)
+
+    def test_delete_table_w_not_found_ok_true(self):
+        path = "/projects/{}/datasets/{}/tables/{}".format(
+            self.PROJECT, self.DS_ID, self.TABLE_ID
+        )
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
+        conn = client._connection = _make_connection(
+            google.api_core.exceptions.NotFound("table not found")
+        )
+
+        client.delete_table(
+            "{}.{}".format(self.DS_ID, self.TABLE_ID), not_found_ok=True
+        )
+
+        conn.api_request.assert_called_with(method="DELETE", path=path)
 
     def test_job_from_resource_unknown_type(self):
         from google.cloud.bigquery.job import UnknownJob
@@ -3482,20 +3672,76 @@ class TestClient(unittest.TestCase):
         http = object()
         client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
         conn = client._connection = _make_connection({})
-        full_name = SchemaField("color", "STRING", mode="REPEATED")
-        index = SchemaField("index", "INTEGER", "REPEATED")
-        score = SchemaField("score", "FLOAT", "REPEATED")
-        struct = SchemaField("struct", "RECORD", mode="REPEATED", fields=[index, score])
-        table = Table(self.TABLE_REF, schema=[full_name, struct])
-        ROWS = [(["red", "green"], [{"index": [1, 2], "score": [3.1415, 1.414]}])]
-
-        def _row_data(row):
-            return {"color": row[0], "struct": row[1]}
+        color = SchemaField("color", "STRING", mode="REPEATED")
+        items = SchemaField("items", "INTEGER", mode="REPEATED")
+        score = SchemaField("score", "INTEGER")
+        times = SchemaField("times", "TIMESTAMP", mode="REPEATED")
+        distances = SchemaField("distances", "FLOAT", mode="REPEATED")
+        structs = SchemaField(
+            "structs", "RECORD", mode="REPEATED", fields=[score, times, distances]
+        )
+        table = Table(self.TABLE_REF, schema=[color, items, structs])
+        ROWS = [
+            (
+                ["red", "green"],
+                [1, 2],
+                [
+                    (
+                        12,
+                        [
+                            datetime.datetime(2018, 12, 1, 12, 0, 0, tzinfo=pytz.utc),
+                            datetime.datetime(2018, 12, 1, 13, 0, 0, tzinfo=pytz.utc),
+                        ],
+                        [1.25, 2.5],
+                    ),
+                    {
+                        "score": 13,
+                        "times": [
+                            datetime.datetime(2018, 12, 2, 12, 0, 0, tzinfo=pytz.utc),
+                            datetime.datetime(2018, 12, 2, 13, 0, 0, tzinfo=pytz.utc),
+                        ],
+                        "distances": [-1.25, -2.5],
+                    },
+                ],
+            ),
+            {"color": None, "items": [], "structs": [(None, [], [3.5])]},
+        ]
 
         SENT = {
             "rows": [
-                {"json": _row_data(row), "insertId": str(i)}
-                for i, row in enumerate(ROWS)
+                {
+                    "json": {
+                        "color": ["red", "green"],
+                        "items": ["1", "2"],
+                        "structs": [
+                            {
+                                "score": "12",
+                                "times": [
+                                    1543665600.0,  # 2018-12-01 12:00 UTC
+                                    1543669200.0,  # 2018-12-01 13:00 UTC
+                                ],
+                                "distances": [1.25, 2.5],
+                            },
+                            {
+                                "score": "13",
+                                "times": [
+                                    1543752000.0,  # 2018-12-02 12:00 UTC
+                                    1543755600.0,  # 2018-12-02 13:00 UTC
+                                ],
+                                "distances": [-1.25, -2.5],
+                            },
+                        ],
+                    },
+                    "insertId": "0",
+                },
+                {
+                    "json": {
+                        "color": None,
+                        "items": [],
+                        "structs": [{"score": None, "times": [], "distances": [3.5]}],
+                    },
+                    "insertId": "1",
+                },
             ]
         }
 
@@ -3531,20 +3777,38 @@ class TestClient(unittest.TestCase):
                 "Phred Phlyntstone",
                 {"area_code": "800", "local_number": "555-1212", "rank": 1},
             ),
-            (
-                "Bharney Rhubble",
-                {"area_code": "877", "local_number": "768-5309", "rank": 2},
-            ),
+            ("Bharney Rhubble", ("877", "768-5309", 2)),
             ("Wylma Phlyntstone", None),
         ]
 
-        def _row_data(row):
-            return {"full_name": row[0], "phone": row[1]}
-
         SENT = {
             "rows": [
-                {"json": _row_data(row), "insertId": str(i)}
-                for i, row in enumerate(ROWS)
+                {
+                    "json": {
+                        "full_name": "Phred Phlyntstone",
+                        "phone": {
+                            "area_code": "800",
+                            "local_number": "555-1212",
+                            "rank": "1",
+                        },
+                    },
+                    "insertId": "0",
+                },
+                {
+                    "json": {
+                        "full_name": "Bharney Rhubble",
+                        "phone": {
+                            "area_code": "877",
+                            "local_number": "768-5309",
+                            "rank": "2",
+                        },
+                    },
+                    "insertId": "1",
+                },
+                {
+                    "json": {"full_name": "Wylma Phlyntstone", "phone": None},
+                    "insertId": "2",
+                },
             ]
         }
 

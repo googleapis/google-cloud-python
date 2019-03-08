@@ -24,6 +24,17 @@ Write a dictionary entry to the logger.
     :end-before: [END logger_log_struct]
     :dedent: 4
 
+Write a simple text entry and resource to the logger.
+
+Supported Resource values are listed at `Monitored Resource Types`_
+
+.. _Monitored Resource Types: https://cloud.google.com/logging/docs/api/v2/resource-list
+
+
+.. literalinclude:: snippets.py
+    :start-after: [START logger_log_resource_text]
+    :end-before: [END logger_log_resource_text]
+    :dedent: 4
 
 Retrieving log entries
 ----------------------

@@ -42,6 +42,7 @@ from google.cloud.bigtable import column_family
 INSTANCE_ID = "snippet-" + unique_resource_id("-")
 CLUSTER_ID = "clus-1-" + unique_resource_id("-")
 TABLE_ID = "tabl-1-" + unique_resource_id("-")
+COLUMN_FAMILY_ID = "col_fam_id-" + unique_resource_id("-")
 LOCATION_ID = "us-central1-f"
 ALT_LOCATION_ID = "us-central1-a"
 PRODUCTION = enums.Instance.Type.PRODUCTION

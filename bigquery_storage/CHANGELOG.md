@@ -4,6 +4,20 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery-storage/#history
 
+## 0.2.0
+
+01-25-2019 13:54 PST
+
+### New Features
+
+- Add option to choose dtypes by column in to_dataframe. ([#7126](https://github.com/googleapis/google-cloud-python/pull/7126))
+
+### Internal / Testing Changes
+
+- Update copyright headers
+- Protoc-generated serialization update. ([#7076](https://github.com/googleapis/google-cloud-python/pull/7076))
+- BigQuery Storage: run 'blacken' during synth ([#7047](https://github.com/googleapis/google-cloud-python/pull/7047))
+
 ## 0.1.1
 
 12-17-2018 18:03 PST
