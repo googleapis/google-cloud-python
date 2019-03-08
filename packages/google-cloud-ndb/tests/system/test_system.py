@@ -20,25 +20,59 @@ from google.cloud import datastore
 from google.cloud import ndb
 
 
+KIND = "SomeKind"
+
+
+@pytest.fixture(scope="module", autouse=True)
+def initial_clean():
+    # Make sure database is in clean state at beginning of test run
+    client = datastore.Client()
+    query = client.query(kind=KIND)
+    for entity in query.fetch():
+        client.delete(entity.key)
+
+
 @pytest.fixture
-def ds_entity():
-    keys = []
+def ds_client():
     client = datastore.Client()
 
+    # Make sure we're leaving database as clean as we found it after each test
+    query = client.query(kind=KIND)
+    results = list(query.fetch())
+    assert not results
+
+    yield client
+
+    results = list(query.fetch())
+    assert not results
+
+
+@pytest.fixture
+def ds_entity(ds_client, dispose_of):
     def make_entity(*key_args, **entity_kwargs):
-        key = client.key(*key_args)
-        assert client.get(key) is None
+        key = ds_client.key(*key_args)
+        assert ds_client.get(key) is None
         entity = datastore.Entity(key=key)
         entity.update(entity_kwargs)
-        client.put(entity)
+        ds_client.put(entity)
+        dispose_of(key)
 
-        keys.append(key)
         return entity
 
     yield make_entity
 
-    for key in keys:
-        client.delete(key)
+
+@pytest.fixture
+def dispose_of(ds_client):
+    ds_keys = []
+
+    def delete_entity(ds_key):
+        ds_keys.append(ds_key)
+
+    yield delete_entity
+
+    for ds_key in ds_keys:
+        ds_client.delete(ds_key)
 
 
 @pytest.fixture
@@ -51,14 +85,14 @@ def client_context():
 @pytest.mark.usefixtures("client_context")
 def test_retrieve_entity(ds_entity):
     entity_id = test_utils.system.unique_resource_id()
-    ds_entity("SomeKind", entity_id, foo=42, bar="none", baz=b"night")
+    ds_entity(KIND, entity_id, foo=42, bar="none", baz=b"night")
 
     class SomeKind(ndb.Model):
         foo = ndb.IntegerProperty()
         bar = ndb.StringProperty()
         baz = ndb.StringProperty()
 
-    key = ndb.Key("SomeKind", entity_id)
+    key = ndb.Key(KIND, entity_id)
     entity = key.get()
     assert isinstance(entity, SomeKind)
     assert entity.foo == 42
@@ -74,14 +108,14 @@ def test_retrieve_entity_not_found(ds_entity):
         foo = ndb.IntegerProperty()
         bar = ndb.StringProperty()
 
-    key = ndb.Key("SomeKind", entity_id)
+    key = ndb.Key(KIND, entity_id)
     assert key.get() is None
 
 
 @pytest.mark.usefixtures("client_context")
 def test_nested_tasklet(ds_entity):
     entity_id = test_utils.system.unique_resource_id()
-    ds_entity("SomeKind", entity_id, foo=42, bar="none")
+    ds_entity(KIND, entity_id, foo=42, bar="none")
 
     class SomeKind(ndb.Model):
         foo = ndb.IntegerProperty()
@@ -92,23 +126,23 @@ def test_nested_tasklet(ds_entity):
         entity = yield key.get_async()
         return entity.foo
 
-    key = ndb.Key("SomeKind", entity_id)
+    key = ndb.Key(KIND, entity_id)
     assert get_foo(key).result() == 42
 
 
 @pytest.mark.usefixtures("client_context")
 def test_retrieve_two_entities_in_parallel(ds_entity):
     entity1_id = test_utils.system.unique_resource_id()
-    ds_entity("SomeKind", entity1_id, foo=42, bar="none")
+    ds_entity(KIND, entity1_id, foo=42, bar="none")
     entity2_id = test_utils.system.unique_resource_id()
-    ds_entity("SomeKind", entity2_id, foo=65, bar="naan")
+    ds_entity(KIND, entity2_id, foo=65, bar="naan")
 
     class SomeKind(ndb.Model):
         foo = ndb.IntegerProperty()
         bar = ndb.StringProperty()
 
-    key1 = ndb.Key("SomeKind", entity1_id)
-    key2 = ndb.Key("SomeKind", entity2_id)
+    key1 = ndb.Key(KIND, entity1_id)
+    key2 = ndb.Key(KIND, entity2_id)
 
     @ndb.tasklet
     def get_two_entities():
@@ -127,7 +161,7 @@ def test_retrieve_two_entities_in_parallel(ds_entity):
 
 
 @pytest.mark.usefixtures("client_context")
-def test_insert_entity():
+def test_insert_entity(dispose_of):
     class SomeKind(ndb.Model):
         foo = ndb.IntegerProperty()
         bar = ndb.StringProperty()
@@ -144,17 +178,19 @@ def test_insert_entity():
     ds_entity = ds_client.get(key._key)
     assert ds_entity["bar"] == "none"
 
+    dispose_of(key._key)
+
 
 @pytest.mark.usefixtures("client_context")
 def test_update_entity(ds_entity):
     entity_id = test_utils.system.unique_resource_id()
-    ds_entity("SomeKind", entity_id, foo=42, bar="none")
+    ds_entity(KIND, entity_id, foo=42, bar="none")
 
     class SomeKind(ndb.Model):
         foo = ndb.IntegerProperty()
         bar = ndb.StringProperty()
 
-    key = ndb.Key("SomeKind", entity_id)
+    key = ndb.Key(KIND, entity_id)
     entity = key.get()
     entity.foo = 56
     entity.bar = "high"
@@ -166,7 +202,7 @@ def test_update_entity(ds_entity):
 
 
 @pytest.mark.usefixtures("client_context")
-def test_insert_entity_in_transaction():
+def test_insert_entity_in_transaction(dispose_of):
     class SomeKind(ndb.Model):
         foo = ndb.IntegerProperty()
         bar = ndb.StringProperty()
@@ -174,6 +210,7 @@ def test_insert_entity_in_transaction():
     def save_entity():
         entity = SomeKind(foo=42, bar="none")
         key = entity.put()
+        dispose_of(key._key)
         return key
 
     key = ndb.transaction(save_entity)
@@ -183,38 +220,16 @@ def test_insert_entity_in_transaction():
 
 
 @pytest.mark.usefixtures("client_context")
-def test_update_datastore_entity_in_transaction(ds_entity):
-    client = datastore.Client()
-
-    # Create entity
-    entity_id = test_utils.system.unique_resource_id()
-    key = client.key("SomeKind", entity_id)
-    assert client.get(key) is None
-    entity = datastore.Entity(key=key)
-    entity.update({"foo": 42, "bar": "none"})
-    client.put(entity)
-
-    with client.transaction():
-        entity = client.get(key)
-        entity.update({"foo": 56, "bar": "high"})
-        client.put(entity)
-
-    entity = client.get(key)
-    assert entity["foo"] == 56
-    assert entity["bar"] == "high"
-
-
-@pytest.mark.usefixtures("client_context")
 def test_update_entity_in_transaction(ds_entity):
     entity_id = test_utils.system.unique_resource_id()
-    ds_entity("SomeKind", entity_id, foo=42, bar="none")
+    ds_entity(KIND, entity_id, foo=42, bar="none")
 
     class SomeKind(ndb.Model):
         foo = ndb.IntegerProperty()
         bar = ndb.StringProperty()
 
     def update_entity():
-        key = ndb.Key("SomeKind", entity_id)
+        key = ndb.Key(KIND, entity_id)
         entity = key.get()
         entity.foo = 56
         entity.bar = "high"
