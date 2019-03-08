@@ -39,11 +39,11 @@ from google.cloud.bigtable import enums
 from google.cloud.bigtable import column_family
 
 
-INSTANCE_ID = "snippet-" + unique_resource_id('-')
-CLUSTER_ID = "clus-1-" + unique_resource_id('-')
-TABLE_ID = "tabl-1-" + unique_resource_id('-')
-LOCATION_ID = 'us-central1-f'
-ALT_LOCATION_ID = 'us-central1-a'
+INSTANCE_ID = "snippet-" + unique_resource_id("-")
+CLUSTER_ID = "clus-1-" + unique_resource_id("-")
+TABLE_ID = "tabl-1-" + unique_resource_id("-")
+LOCATION_ID = "us-central1-f"
+ALT_LOCATION_ID = "us-central1-a"
 PRODUCTION = enums.Instance.Type.PRODUCTION
 SERVER_NODES = 3
 STORAGE_TYPE = enums.StorageType.SSD
@@ -55,13 +55,13 @@ LABEL_STAMP = (
 )
 LABELS = {LABEL_KEY: str(LABEL_STAMP)}
 COLUMN_FAMILY_ID = "col_fam_id1"
-COL_NAME1 = b'col-name1'
-CELL_VAL1 = b'cell-val'
-ROW_KEY1 = b'row_key_id1'
+COL_NAME1 = b"col-name1"
+CELL_VAL1 = b"cell-val"
+ROW_KEY1 = b"row_key_id1"
 COLUMN_FAMILY_ID2 = "col_fam_id2"
-COL_NAME2 = b'col-name2'
-CELL_VAL2 = b'cell-val2'
-ROW_KEY2 = b'row_key_id2'
+COL_NAME2 = b"col-name2"
+CELL_VAL2 = b"cell-val2"
+ROW_KEY2 = b"row_key_id2"
 
 
 class Config(object):
@@ -96,8 +96,7 @@ def setup_module():
     column_family1 = Config.TABLE.column_family(COLUMN_FAMILY_ID, gc_rule=gc_rule)
     column_family1.create()
     gc_rule2 = column_family.MaxVersionsGCRule(4)
-    column_family2 = Config.TABLE.column_family(COLUMN_FAMILY_ID2,
-                                                gc_rule=gc_rule2)
+    column_family2 = Config.TABLE.column_family(COLUMN_FAMILY_ID2, gc_rule=gc_rule2)
     column_family2.create()
 
 
@@ -421,11 +420,10 @@ def test_bigtable_row_setcell_rowkey():
     table = instance.table(TABLE_ID)
     row = table.row(ROW_KEY1)
 
-    cell_val = b'cell-val'
-    row.set_cell(COLUMN_FAMILY_ID,
-                 COL_NAME1,
-                 cell_val,
-                 timestamp=datetime.datetime.utcnow())
+    cell_val = b"cell-val"
+    row.set_cell(
+        COLUMN_FAMILY_ID, COL_NAME1, cell_val, timestamp=datetime.datetime.utcnow()
+    )
     # [END bigtable_row_set_cell]
 
     response = table.mutate_rows([row])
@@ -468,11 +466,11 @@ def test_bigtable_row_delete():
     instance = client.instance(INSTANCE_ID)
     table = instance.table(TABLE_ID)
 
-    row_key = b'row_key_1'
+    row_key = b"row_key_1"
     row_obj = table.row(row_key)
     # [END bigtable_row_delete]
 
-    row_obj.set_cell(COLUMN_FAMILY_ID, COL_NAME1, b'cell-val')
+    row_obj.set_cell(COLUMN_FAMILY_ID, COL_NAME1, b"cell-val")
     row_obj.commit()
     actual_rows_keys = []
     for row in table.read_rows():
@@ -498,14 +496,14 @@ def test_bigtable_row_delete_cell():
     instance = client.instance(INSTANCE_ID)
     table = instance.table(TABLE_ID)
 
-    row_key1 = b'row_key_1'
+    row_key1 = b"row_key_1"
     row_obj = table.row(row_key1)
     # [END bigtable_row_delete_cell]
 
     row_obj.set_cell(COLUMN_FAMILY_ID, COL_NAME1, CELL_VAL1)
     row_obj.commit()
 
-    row_key2 = b'row_key_2'
+    row_key2 = b"row_key_2"
     row_obj = table.row(row_key2)
     row_obj.set_cell(COLUMN_FAMILY_ID2, COL_NAME2, CELL_VAL2)
     row_obj.commit()
@@ -535,7 +533,7 @@ def test_bigtable_row_delete_cells():
     instance = client.instance(INSTANCE_ID)
     table = instance.table(TABLE_ID)
 
-    row_key1 = b'row_key_1'
+    row_key1 = b"row_key_1"
     row_obj = table.row(row_key1)
     # [END bigtable_row_delete_cells]
 
@@ -568,9 +566,9 @@ def test_bigtable_row_clear():
     instance = client.instance(INSTANCE_ID)
     table = instance.table(TABLE_ID)
 
-    row_key = b'row_key_1'
+    row_key = b"row_key_1"
     row_obj = table.row(row_key)
-    row_obj.set_cell(COLUMN_FAMILY_ID, COL_NAME1, b'cell-val')
+    row_obj.set_cell(COLUMN_FAMILY_ID, COL_NAME1, b"cell-val")
     # [END bigtable_row_clear]
 
     mutation_size = row_obj.get_mutations_size()
@@ -592,12 +590,12 @@ def test_bigtable_row_clear_get_mutations_size():
     instance = client.instance(INSTANCE_ID)
     table = instance.table(TABLE_ID)
 
-    row_key_id = b'row_key_1'
+    row_key_id = b"row_key_1"
     row_obj = table.row(row_key_id)
 
     mutation_size = row_obj.get_mutations_size()
     # [END bigtable_row_get_mutations_size]
-    row_obj.set_cell(COLUMN_FAMILY_ID, COL_NAME1, b'cell-val')
+    row_obj.set_cell(COLUMN_FAMILY_ID, COL_NAME1, b"cell-val")
     mutation_size = row_obj.get_mutations_size()
     assert mutation_size > 0
 
@@ -614,8 +612,8 @@ def test_bigtable_row_setcell_commit_rowkey():
     instance = client.instance(INSTANCE_ID)
     table = instance.table(TABLE_ID)
 
-    row_key = b'row_key_1'
-    cell_val = b'cell-val'
+    row_key = b"row_key_1"
+    cell_val = b"cell-val"
     row_obj = table.row(row_key)
     row_obj.set_cell(COLUMN_FAMILY_ID, COL_NAME1, cell_val)
     # [END bigtable_row_set_cell]
@@ -628,8 +626,8 @@ def test_bigtable_row_setcell_commit_rowkey():
     instance = client.instance(INSTANCE_ID)
     table = instance.table(TABLE_ID)
 
-    row_key = b'row_key_2'
-    cell_val = b'cell-val'
+    row_key = b"row_key_2"
+    cell_val = b"cell-val"
     row_obj = table.row(row_key)
     row_obj.set_cell(COLUMN_FAMILY_ID, COL_NAME1, cell_val)
     row_obj.commit()
@@ -639,7 +637,7 @@ def test_bigtable_row_setcell_commit_rowkey():
     for row in table.read_rows():
         actual_rows_keys.append(row.row_key)
 
-    assert actual_rows_keys == [b'row_key_1', b'row_key_2']
+    assert actual_rows_keys == [b"row_key_1", b"row_key_2"]
 
     # [START bigtable_row_row_key]
     from google.cloud.bigtable import Client
@@ -648,7 +646,7 @@ def test_bigtable_row_setcell_commit_rowkey():
     instance = client.instance(INSTANCE_ID)
     table = instance.table(TABLE_ID)
 
-    row_key_id = b'row_key_2'
+    row_key_id = b"row_key_2"
     row_obj = table.row(row_key_id)
     row_key = row_obj.row_key
     # [END bigtable_row_row_key]
@@ -656,5 +654,5 @@ def test_bigtable_row_setcell_commit_rowkey():
     table.truncate(timeout=300)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     pytest.main()
