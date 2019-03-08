@@ -12,14 +12,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import functools
+
 from google.cloud.ndb import context as context_module
 from google.cloud.ndb import _datastore_api
 from google.cloud.ndb import exceptions
+from google.cloud.ndb import _retry
 from google.cloud.ndb import tasklets
 
 
 def transaction(
-    callback, retries=0, read_only=False, xg=True, propagation=None
+    callback,
+    retries=_retry._DEFAULT_RETRIES,
+    read_only=False,
+    xg=True,
+    propagation=None,
 ):
     """Run a callback in a transaction.
 
@@ -45,17 +52,17 @@ def transaction(
     return future.result()
 
 
-@tasklets.tasklet
 def transaction_async(
-    callback, retries=0, read_only=False, xg=True, propagation=None
+    callback,
+    retries=_retry._DEFAULT_RETRIES,
+    read_only=False,
+    xg=True,
+    propagation=None,
 ):
     """Run a callback in a transaction.
 
     This is the asynchronous version of :func:`transaction`.
     """
-    if retries:
-        raise NotImplementedError("Retry is not implemented yet")
-
     if propagation is not None:
         raise exceptions.NoLongerImplementedError()
 
@@ -66,6 +73,17 @@ def transaction_async(
             "Can't start a transaction during a transaction."
         )
 
+    tasklet = functools.partial(
+        _transaction_async, context, callback, read_only=read_only
+    )
+    if retries:
+        tasklet = _retry.retry_async(tasklet, retries=retries)
+
+    return tasklet()
+
+
+@tasklets.tasklet
+def _transaction_async(context, callback, read_only=False):
     # Start the transaction
     transaction_id = yield _datastore_api.begin_transaction(read_only)
 

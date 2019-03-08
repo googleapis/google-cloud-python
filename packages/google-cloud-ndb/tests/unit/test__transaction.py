@@ -12,21 +12,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import itertools
+
 from unittest import mock
 
 import pytest
 
+from google.api_core import exceptions as core_exceptions
 from google.cloud.ndb import tasklets
 from google.cloud.ndb import _transaction
 
 
 class Test_transaction:
-    @staticmethod
-    @pytest.mark.usefixtures("in_context")
-    def test_retries():
-        with pytest.raises(NotImplementedError):
-            _transaction.transaction(None, retries=2)
-
     @staticmethod
     @pytest.mark.usefixtures("in_context")
     def test_propagation():
@@ -45,7 +42,7 @@ class Test_transaction:
         transaction_async.return_value.result.return_value = 42
         assert _transaction.transaction("callback") == 42
         transaction_async.assert_called_once_with(
-            "callback", read_only=False, retries=0, xg=True, propagation=None
+            "callback", read_only=False, retries=3, xg=True, propagation=None
         )
 
 
@@ -64,6 +61,29 @@ class Test_transaction_async:
         _datastore_api.commit.return_value = commit_future
 
         future = _transaction.transaction_async(callback)
+
+        _datastore_api.begin_transaction.assert_called_once_with(False)
+        begin_future.set_result(b"tx123")
+
+        _datastore_api.commit.assert_called_once_with(b"tx123")
+        commit_future.set_result(None)
+
+        assert future.result() == "I tried, momma."
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    @mock.patch("google.cloud.ndb._transaction._datastore_api")
+    def test_success_no_retries(_datastore_api):
+        def callback():
+            return "I tried, momma."
+
+        begin_future = tasklets.Future("begin transaction")
+        _datastore_api.begin_transaction.return_value = begin_future
+
+        commit_future = tasklets.Future("commit transaction")
+        _datastore_api.commit.return_value = commit_future
+
+        future = _transaction.transaction_async(callback, retries=0)
 
         _datastore_api.begin_transaction.assert_called_once_with(False)
         begin_future.set_result(b"tx123")
@@ -124,3 +144,79 @@ class Test_transaction_async:
         rollback_future.set_result(None)
 
         assert future.exception() is error
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    @mock.patch("google.cloud.ndb.tasklets.sleep")
+    @mock.patch("google.cloud.ndb._retry.core_retry")
+    @mock.patch("google.cloud.ndb._transaction._datastore_api")
+    def test_transient_error(_datastore_api, core_retry, sleep):
+        core_retry.exponential_sleep_generator.return_value = itertools.count()
+        core_retry.if_transient_error.return_value = True
+
+        callback = mock.Mock(side_effect=[Exception("Spurious error."), "foo"])
+
+        begin_future = tasklets.Future("begin transaction")
+        begin_future.set_result(b"tx123")
+        _datastore_api.begin_transaction.return_value = begin_future
+
+        rollback_future = tasklets.Future("rollback transaction")
+        _datastore_api.rollback.return_value = rollback_future
+        rollback_future.set_result(None)
+
+        commit_future = tasklets.Future("commit transaction")
+        _datastore_api.commit.return_value = commit_future
+        commit_future.set_result(None)
+
+        sleep_future = tasklets.Future("sleep")
+        sleep_future.set_result(None)
+        sleep.return_value = sleep_future
+
+        future = _transaction.transaction_async(callback)
+        assert future.result() == "foo"
+
+        _datastore_api.begin_transaction.call_count == 2
+        _datastore_api.rollback.assert_called_once_with(b"tx123")
+        sleep.assert_called_once_with(0)
+        _datastore_api.commit.assert_called_once_with(b"tx123")
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    @mock.patch("google.cloud.ndb.tasklets.sleep")
+    @mock.patch("google.cloud.ndb._retry.core_retry")
+    @mock.patch("google.cloud.ndb._transaction._datastore_api")
+    def test_too_many_transient_errors(_datastore_api, core_retry, sleep):
+        core_retry.exponential_sleep_generator.return_value = itertools.count()
+        core_retry.if_transient_error.return_value = True
+
+        error = Exception("Spurious error.")
+
+        def callback():
+            raise error
+
+        begin_future = tasklets.Future("begin transaction")
+        begin_future.set_result(b"tx123")
+        _datastore_api.begin_transaction.return_value = begin_future
+
+        rollback_future = tasklets.Future("rollback transaction")
+        _datastore_api.rollback.return_value = rollback_future
+        rollback_future.set_result(None)
+
+        commit_future = tasklets.Future("commit transaction")
+        _datastore_api.commit.return_value = commit_future
+        commit_future.set_result(None)
+
+        sleep_future = tasklets.Future("sleep")
+        sleep_future.set_result(None)
+        sleep.return_value = sleep_future
+
+        future = _transaction.transaction_async(callback)
+        with pytest.raises(core_exceptions.RetryError) as error_context:
+            future.check_success()
+
+        assert error_context.value.cause is error
+
+        assert _datastore_api.begin_transaction.call_count == 4
+        assert _datastore_api.rollback.call_count == 4
+        assert sleep.call_count == 4
+        _datastore_api.commit.assert_not_called()
