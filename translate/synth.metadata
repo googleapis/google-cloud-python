@@ -1,5 +1,5 @@
 {
-  "updateTime": "2019-03-09T01:20:32.575Z",
+  "updateTime": "2019-03-09T01:31:05.291163Z",
   "sources": [
     {
       "generator": {
@@ -29,10 +29,10 @@
       "client": {
         "source": "googleapis-private",
         "apiName": "translate",
-        "apiVersion": "v3alpha1",
+        "apiVersion": "v3beta1",
         "language": "python",
         "generator": "gapic",
-        "config": "google/cloud/translate/artman_translate_v3alpha1.yaml"
+        "config": "google/cloud/translate/artman_translate_v3beta1.yaml"
       }
     }
   ]

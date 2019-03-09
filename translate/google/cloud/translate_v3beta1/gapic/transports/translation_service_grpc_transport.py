@@ -17,12 +17,12 @@
 import google.api_core.grpc_helpers
 import google.api_core.operations_v1
 
-from google.cloud.translation_v3alpha1.proto import translation_service_pb2_grpc
+from google.cloud.translation_v3beta1.proto import translation_service_pb2_grpc
 
 
 class TranslationServiceGrpcTransport(object):
     """gRPC transport class providing stubs for
-    google.cloud.translation.v3alpha1 TranslationService API.
+    google.cloud.translation.v3beta1 TranslationService API.
 
     The transport provides access to the raw gRPC stubs,
     which can be used to take advantage of advanced
@@ -112,7 +112,7 @@ class TranslationServiceGrpcTransport(object):
     def translate_text(self):
         """Return the gRPC stub for :meth:`TranslationServiceClient.translate_text`.
 
-        Translates input text, returning translated text.
+        Translates input text and returns translated text.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -151,10 +151,13 @@ class TranslationServiceGrpcTransport(object):
     def batch_translate_text(self):
         """Return the gRPC stub for :meth:`TranslationServiceClient.batch_translate_text`.
 
-        Translates large volume of text in asynchronous batch mode.
-        This function provides real time output as the inputs are being processed.
-        If caller cancels a request, the partial results may still be available on
-        the specified output location.
+        Translates a large volume of text in asynchronous batch mode.
+        This function provides real-time output as the inputs are being processed.
+        If caller cancels a request, the partial results (for an input file, it's
+        all or nothing) may still be available on the specified output location.
+
+        This call returns immediately and you can
+        use google.longrunning.Operation.name to poll the status of the call.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -167,8 +170,8 @@ class TranslationServiceGrpcTransport(object):
     def create_glossary(self):
         """Return the gRPC stub for :meth:`TranslationServiceClient.create_glossary`.
 
-        Creates a glossary and returns the long running operation. Returns
-        NOT\_FOUND, if the project does not exist.
+        Creates a glossary and returns the long-running operation. Returns
+        NOT\_FOUND, if the project doesn't exist.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -181,8 +184,8 @@ class TranslationServiceGrpcTransport(object):
     def list_glossaries(self):
         """Return the gRPC stub for :meth:`TranslationServiceClient.list_glossaries`.
 
-        Lists glossaries in a project. Returns NOT\_FOUND, if the project does
-        not exist.
+        Lists glossaries in a project. Returns NOT\_FOUND, if the project
+        doesn't exist.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -195,8 +198,7 @@ class TranslationServiceGrpcTransport(object):
     def get_glossary(self):
         """Return the gRPC stub for :meth:`TranslationServiceClient.get_glossary`.
 
-        Gets a glossary. Returns NOT\_FOUND, if the glossary or the project do
-        not exist.
+        Gets a glossary. Returns NOT\_FOUND, if the glossary doesn't exist.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -210,8 +212,7 @@ class TranslationServiceGrpcTransport(object):
         """Return the gRPC stub for :meth:`TranslationServiceClient.delete_glossary`.
 
         Deletes a glossary, or cancels glossary construction if the glossary
-        isn't created yet. Returns NOT\_FOUND, if the glossary or the project do
-        not exist.
+        isn't created yet. Returns NOT\_FOUND, if the glossary doesn't exist.
 
         Returns:
             Callable: A callable which accepts the appropriate
