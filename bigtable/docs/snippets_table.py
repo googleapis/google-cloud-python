@@ -666,6 +666,10 @@ def test_bigtable_create_family_gc_nested():
     from google.cloud.bigtable import Client
     from google.cloud.bigtable import column_family
 
+    client = Client(admin=True)
+    instance = client.instance(INSTANCE_ID)
+    table = instance.table(TABLE_ID)
+
     # Create a column family with nested GC policies.
     # Create a nested GC rule:
     # Drop cells that are either older than the 10 recent versions
@@ -673,14 +677,17 @@ def test_bigtable_create_family_gc_nested():
     # Drop cells that are older than a month AND older than the
     # 2 recent versions
     rule1 = column_family.MaxVersionsGCRule(10)
-    rule2 = column_family.GCRuleIntersection([
-        column_family.MaxAgeGCRule(datetime.timedelta(days=30)),
-        column_family.MaxVersionsGCRule(2)])
+    rule2 = column_family.GCRuleIntersection(
+        [
+            column_family.MaxAgeGCRule(datetime.timedelta(days=5)),
+            column_family.MaxVersionsGCRule(2),
+        ]
+    )
 
     nested_rule = column_family.GCRuleUnion([rule1, rule2])
 
-    column_family5 = table.column_family('cf5', nested_rule)
-    column_family5.create()
+    column_family_obj = table.column_family("cf5", nested_rule)
+    column_family_obj.create()
 
     # [END bigtable_create_family_gc_nested]
 
@@ -690,6 +697,7 @@ def test_bigtable_create_family_gc_nested():
     assert "max_age" in rule
     assert "seconds: 432000" in rule
     column_family_obj.delete()
+
 
 if __name__ == "__main__":
     pytest.main()
