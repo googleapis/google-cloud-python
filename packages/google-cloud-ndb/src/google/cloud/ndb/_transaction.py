@@ -21,6 +21,16 @@ from google.cloud.ndb import _retry
 from google.cloud.ndb import tasklets
 
 
+def in_transaction():
+    """Determine if there is a currently active transaction.
+
+    Returns:
+        bool: :data:`True` if there is a transaction for the current context,
+            otherwise :data:`False`.
+    """
+    return context_module.get_context().transaction is not None
+
+
 def transaction(
     callback,
     retries=_retry._DEFAULT_RETRIES,

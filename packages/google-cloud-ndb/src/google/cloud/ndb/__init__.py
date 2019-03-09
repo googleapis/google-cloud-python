@@ -151,7 +151,6 @@ from google.cloud.ndb.model import get_indexes
 from google.cloud.ndb.model import get_indexes_async
 from google.cloud.ndb.model import get_multi
 from google.cloud.ndb.model import get_multi_async
-from google.cloud.ndb.model import in_transaction
 from google.cloud.ndb.model import Index
 from google.cloud.ndb.model import IndexProperty
 from google.cloud.ndb.model import IndexState
@@ -220,5 +219,6 @@ from google.cloud.ndb.tasklets import tasklet
 from google.cloud.ndb.tasklets import toplevel
 from google.cloud.ndb.tasklets import wait_all
 from google.cloud.ndb.tasklets import wait_any
+from google.cloud.ndb._transaction import in_transaction
 from google.cloud.ndb._transaction import transaction
 from google.cloud.ndb._transaction import transaction_async

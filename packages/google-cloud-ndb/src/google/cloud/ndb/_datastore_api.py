@@ -15,6 +15,7 @@
 """Functions that interact with Datastore backend."""
 
 import itertools
+import logging
 
 import grpc
 
@@ -32,6 +33,8 @@ from google.cloud.ndb import tasklets
 EVENTUAL = datastore_pb2.ReadOptions.EVENTUAL
 EVENTUAL_CONSISTENCY = EVENTUAL  # Legacy NDB
 _NOT_FOUND = object()
+
+log = logging.getLogger(__name__)
 
 
 def stub():
@@ -240,9 +243,11 @@ def _datastore_lookup(keys, read_options):
     )
 
     api = stub()
-    return _remote.RemoteCall(
+    rpc = _remote.RemoteCall(
         api.Lookup.future(request), "Lookup({})".format(request)
     )
+    log.debug(rpc)
+    return rpc
 
 
 def _get_read_options(options):
@@ -313,12 +318,35 @@ def put(entity_pb, **options):
     if transaction:
         batch = _get_commit_batch(transaction, options)
     else:
-        batch = _get_batch(_NonTransactionCommitBatch, options)
+        batch = _get_batch(_NonTransactionalCommitBatch, options)
 
     return batch.put(entity_pb)
 
 
-class _NonTransactionCommitBatch:
+def delete(key, **options):
+    """Delete an entity from Datastore.
+
+    Deleting an entity that doesn't exist does not result in an error. The
+    result is the same regardless.
+
+    Args:
+        key (datastore.Key): The key for the entity to be deleted.
+        options (Dict[str, Any]): Options for this request.
+
+    Returns:
+        tasklets.Future: Will be finished when entity is deleted. Result will
+            always be :data:`None`.
+    """
+    transaction = _get_transaction(options)
+    if transaction:
+        batch = _get_commit_batch(transaction, options)
+    else:
+        batch = _get_batch(_NonTransactionalCommitBatch, options)
+
+    return batch.delete(key)
+
+
+class _NonTransactionalCommitBatch:
     """Batch for tracking a set of mutations for a non-transactional commit.
 
     Attributes:
@@ -352,6 +380,22 @@ class _NonTransactionCommitBatch:
         """
         future = tasklets.Future(info="put({})".format(entity_pb))
         mutation = datastore_pb2.Mutation(upsert=entity_pb)
+        self.mutations.append(mutation)
+        self.futures.append(future)
+        return future
+
+    def delete(self, key):
+        """Add a key to batch to be deleted.
+
+        Args:
+            entity_pb (datastore.Key): The entity's key to be deleted.
+
+        Returns:
+            tasklets.Future: Result will be :data:`None`, always.
+        """
+        key_pb = key.to_protobuf()
+        future = tasklets.Future(info="delete({})".format(key_pb))
+        mutation = datastore_pb2.Mutation(delete=key_pb)
         self.mutations.append(mutation)
         self.futures.append(future)
         return future
@@ -413,7 +457,7 @@ def _get_commit_batch(transaction, options):
     return batch
 
 
-class _TransactionalCommitBatch:
+class _TransactionalCommitBatch(_NonTransactionalCommitBatch):
     """Batch for tracking a set of mutations to be committed for a transaction.
 
     Attributes:
@@ -442,9 +486,7 @@ class _TransactionalCommitBatch:
     """
 
     def __init__(self, options):
-        self.options = options
-        self.mutations = []
-        self.futures = []
+        super(_TransactionalCommitBatch, self).__init__(options)
         self.transaction = _get_transaction(options)
         self.allocating_ids = []
         self.incomplete_mutations = []
@@ -650,9 +692,11 @@ def _datastore_commit(mutations, transaction):
     )
 
     api = stub()
-    return _remote.RemoteCall(
+    rpc = _remote.RemoteCall(
         api.Commit.future(request), "Commit({})".format(request)
     )
+    log.debug(rpc)
+    return rpc
 
 
 def _datastore_allocate_ids(keys):
@@ -672,9 +716,11 @@ def _datastore_allocate_ids(keys):
     )
 
     api = stub()
-    return _remote.RemoteCall(
+    rpc = _remote.RemoteCall(
         api.AllocateIds.future(request), "AllocateIds({})".format(request)
     )
+    log.debug(rpc)
+    return rpc
 
 
 @tasklets.tasklet
@@ -715,10 +761,12 @@ def _datastore_begin_transaction(read_only):
     )
 
     api = stub()
-    return _remote.RemoteCall(
+    rpc = _remote.RemoteCall(
         api.BeginTransaction.future(request),
         "BeginTransaction({})".format(request),
     )
+    log.debug(rpc)
+    return rpc
 
 
 @tasklets.tasklet
@@ -750,9 +798,11 @@ def _datastore_rollback(transaction):
     )
 
     api = stub()
-    return _remote.RemoteCall(
+    rpc = _remote.RemoteCall(
         api.Rollback.future(request), "Rollback({})".format(request)
     )
+    log.debug(rpc)
+    return rpc
 
 
 _OPTIONS_SUPPORTED = {"transaction", "read_consistency", "read_policy"}

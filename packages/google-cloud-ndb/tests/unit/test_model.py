@@ -3106,11 +3106,6 @@ def test_transaction_async():
         model.transaction_async()
 
 
-def test_in_transaction():
-    with pytest.raises(NotImplementedError):
-        model.in_transaction()
-
-
 def test_transactional():
     with pytest.raises(NotImplementedError):
         model.transactional()

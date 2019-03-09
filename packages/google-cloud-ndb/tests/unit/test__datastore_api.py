@@ -20,6 +20,7 @@ from google.cloud import _http
 from google.cloud.datastore_v1.proto import datastore_pb2
 from google.cloud.datastore_v1.proto import entity_pb2
 from google.cloud.ndb import context as context_module
+from google.cloud.ndb import key as key_module
 from google.cloud.ndb import _datastore_api as _api
 from google.cloud.ndb import tasklets
 
@@ -427,7 +428,7 @@ class Test_put:
             future2 = _api.put(entity2)
             future3 = _api.put(entity3)
 
-            batch = context.batches[_api._NonTransactionCommitBatch][()]
+            batch = context.batches[_api._NonTransactionalCommitBatch][()]
             assert batch.mutations == [
                 Mutation(upsert=entity1),
                 Mutation(upsert=entity2),
@@ -483,7 +484,69 @@ class Test_put:
             assert batch.incomplete_futures == [future2, future3]
 
 
-class Test_NonTransactionCommitBatch:
+class Test_delete:
+    @staticmethod
+    @mock.patch("google.cloud.ndb._datastore_api.datastore_pb2")
+    def test_no_transaction(datastore_pb2, in_context):
+        class Mutation:
+            def __init__(self, delete=None):
+                self.delete = delete
+
+            def __eq__(self, other):
+                return self.delete == other.delete
+
+        eventloop = mock.Mock(spec=("add_idle", "run"))
+        with in_context.new(eventloop=eventloop).use() as context:
+            datastore_pb2.Mutation = Mutation
+
+            key1 = key_module.Key("SomeKind", 1)._key
+            key2 = key_module.Key("SomeKind", 2)._key
+            key3 = key_module.Key("SomeKind", 3)._key
+            future1 = _api.delete(key1)
+            future2 = _api.delete(key2)
+            future3 = _api.delete(key3)
+
+            batch = context.batches[_api._NonTransactionalCommitBatch][()]
+            assert batch.mutations == [
+                Mutation(delete=key1.to_protobuf()),
+                Mutation(delete=key2.to_protobuf()),
+                Mutation(delete=key3.to_protobuf()),
+            ]
+            assert batch.futures == [future1, future2, future3]
+
+    @staticmethod
+    @mock.patch("google.cloud.ndb._datastore_api.datastore_pb2")
+    def test_w_transaction(datastore_pb2, in_context):
+        class Mutation:
+            def __init__(self, delete=None):
+                self.delete = delete
+
+            def __eq__(self, other):
+                return self.delete == other.delete
+
+        eventloop = mock.Mock(spec=("add_idle", "run"))
+        with in_context.new(
+            eventloop=eventloop, transaction=b"tx123"
+        ).use() as context:
+            datastore_pb2.Mutation = Mutation
+
+            key1 = key_module.Key("SomeKind", 1)._key
+            key2 = key_module.Key("SomeKind", 2)._key
+            key3 = key_module.Key("SomeKind", 3)._key
+            future1 = _api.delete(key1)
+            future2 = _api.delete(key2)
+            future3 = _api.delete(key3)
+
+            batch = context.commit_batches[b"tx123"]
+            assert batch.mutations == [
+                Mutation(delete=key1.to_protobuf()),
+                Mutation(delete=key2.to_protobuf()),
+                Mutation(delete=key3.to_protobuf()),
+            ]
+            assert batch.futures == [future1, future2, future3]
+
+
+class Test_NonTransactionalCommitBatch:
     @staticmethod
     @mock.patch("google.cloud.ndb._datastore_api._process_commit")
     @mock.patch("google.cloud.ndb._datastore_api._datastore_commit")
@@ -491,7 +554,7 @@ class Test_NonTransactionCommitBatch:
         eventloop = mock.Mock(spec=("queue_rpc", "run"))
         with context.new(eventloop=eventloop).use() as context:
             mutation1, mutation2 = object(), object()
-            batch = _api._NonTransactionCommitBatch({})
+            batch = _api._NonTransactionalCommitBatch({})
             batch.mutations = [mutation1, mutation2]
             batch.idle_callback()
 

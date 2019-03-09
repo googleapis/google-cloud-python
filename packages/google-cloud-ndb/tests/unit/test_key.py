@@ -544,16 +544,36 @@ class TestKey:
         assert future.result() is None
 
     @staticmethod
-    def test_delete():
+    @pytest.mark.usefixtures("in_context")
+    @unittest.mock.patch("google.cloud.ndb.key._datastore_api")
+    def test_delete(_datastore_api):
+        future = tasklets.Future()
+        _datastore_api.delete.return_value = future
+        future.set_result("result")
+
         key = key_module.Key("a", "b", app="c")
-        with pytest.raises(NotImplementedError):
-            key.delete()
+        assert key.delete() == "result"
+        _datastore_api.delete.assert_called_once_with(key._key)
 
     @staticmethod
-    def test_delete_async():
+    @unittest.mock.patch("google.cloud.ndb.key._datastore_api")
+    def test_delete_in_transaction(_datastore_api, in_context):
+        _datastore_api.delete.return_value = object()
+
+        with in_context.new(transaction=b"tx123").use():
+            key = key_module.Key("a", "b", app="c")
+            assert key.delete() is None
+            _datastore_api.delete.assert_called_once_with(key._key)
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    @unittest.mock.patch("google.cloud.ndb.key._datastore_api")
+    def test_delete_async(_datastore_api):
         key = key_module.Key("a", "b", app="c")
-        with pytest.raises(NotImplementedError):
-            key.delete_async()
+        future = key.delete_async()
+
+        _datastore_api.delete.assert_called_once_with(key._key)
+        assert future is _datastore_api.delete.return_value
 
     @staticmethod
     def test_from_old_key():

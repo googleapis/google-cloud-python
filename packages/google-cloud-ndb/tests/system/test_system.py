@@ -258,3 +258,59 @@ def test_parallel_transactions():
     future2 = ndb.transaction_async(task(0.06))
     ndb.wait_all((future1, future2))
     assert future1.get_result() != future2.get_result()
+
+
+@pytest.mark.usefixtures("client_context")
+def test_delete_entity(ds_entity):
+    entity_id = test_utils.system.unique_resource_id()
+    ds_entity(KIND, entity_id, foo=42)
+
+    class SomeKind(ndb.Model):
+        foo = ndb.IntegerProperty()
+
+    key = ndb.Key(KIND, entity_id)
+    assert key.get().foo == 42
+
+    assert key.delete() is None
+    assert key.get() is None
+    assert key.delete() is None
+
+
+@pytest.mark.usefixtures("client_context")
+def test_delete_entity_in_transaction(ds_entity):
+    entity_id = test_utils.system.unique_resource_id()
+    ds_entity(KIND, entity_id, foo=42)
+
+    class SomeKind(ndb.Model):
+        foo = ndb.IntegerProperty()
+
+    key = ndb.Key(KIND, entity_id)
+    assert key.get().foo == 42
+
+    def delete_entity():
+        assert key.delete() is None
+        assert key.get().foo == 42  # not deleted until commit
+
+    ndb.transaction(delete_entity)
+    assert key.get() is None
+
+
+@pytest.mark.usefixtures("client_context")
+def test_delete_entity_in_transaction_then_rollback(ds_entity):
+    entity_id = test_utils.system.unique_resource_id()
+    ds_entity(KIND, entity_id, foo=42)
+
+    class SomeKind(ndb.Model):
+        foo = ndb.IntegerProperty()
+
+    key = ndb.Key(KIND, entity_id)
+    assert key.get().foo == 42
+
+    def delete_entity():
+        assert key.delete() is None
+        raise Exception("Spurious error")
+
+    with pytest.raises(Exception):
+        ndb.transaction(delete_entity)
+
+    assert key.get().foo == 42

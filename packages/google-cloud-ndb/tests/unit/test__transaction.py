@@ -23,6 +23,18 @@ from google.cloud.ndb import tasklets
 from google.cloud.ndb import _transaction
 
 
+class Test_in_transaction:
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_false():
+        assert _transaction.in_transaction() is False
+
+    @staticmethod
+    def test_true(in_context):
+        with in_context.new(transaction=b"tx123").use():
+            assert _transaction.in_transaction() is True
+
+
 class Test_transaction:
     @staticmethod
     @pytest.mark.usefixtures("in_context")

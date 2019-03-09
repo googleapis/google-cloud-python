@@ -92,7 +92,6 @@ __all__ = [
     "Expando",
     "transaction",
     "transaction_async",
-    "in_transaction",
     "transactional",
     "transactional_async",
     "transactional_tasklet",
@@ -3989,10 +3988,6 @@ def transaction(*args, **kwargs):
 
 
 def transaction_async(*args, **kwargs):
-    raise NotImplementedError
-
-
-def in_transaction(*args, **kwargs):
     raise NotImplementedError
 
 
