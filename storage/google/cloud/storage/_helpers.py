@@ -89,6 +89,10 @@ class _PropertyMixin(object):
     def _encryption_headers(self):
         """Return any encryption headers needed to fetch the object.
 
+        .. note::
+           Defined here because :meth:`reload` calls it, but this method is
+           really only relevant for :class:`~google.cloud.storage.blob.Blob`.
+
         :rtype: dict
         :returns: a mapping of encryption-related headers.
         """
