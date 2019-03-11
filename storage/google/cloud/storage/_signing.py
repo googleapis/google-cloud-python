@@ -399,6 +399,6 @@ def generate_signed_url_v4(
     signature_bytes = credentials.sign_bytes(string_to_sign.encode("ascii"))
     signature = binascii.hexlify(signature_bytes).decode("ascii")
 
-    return "{}{}?{}&x-goog-signature={}".format(
+    return "{}{}?{}&X-Goog-Signature={}".format(
         api_access_endpoint, resource, canonical_query_string, signature
     )

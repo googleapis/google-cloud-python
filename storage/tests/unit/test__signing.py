@@ -264,7 +264,7 @@ class Test_generate_signed_url_v4(unittest.TestCase):
         self.assertEqual(params["X-Goog-Expires"], str(expiration))
 
         signed = binascii.hexlify(credentials.sign_bytes.return_value).decode("ascii")
-        self.assertEqual(params["x-goog-signature"], signed)
+        self.assertEqual(params["X-Goog-Signature"], signed)
 
         if response_type is not None:
             self.assertEqual(params["response-content-type"], response_type)
