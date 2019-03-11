@@ -20,8 +20,8 @@ import pytest
 
 from google.rpc import status_pb2
 
-from google.cloud import translation_v3beta1
-from google.cloud.translation_v3beta1.proto import translation_service_pb2
+from google.cloud import translate_v3beta1
+from google.cloud.translate_v3beta1.proto import translation_service_pb2
 from google.longrunning import operations_pb2
 
 
@@ -74,7 +74,7 @@ class TestTranslationServiceClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = translation_v3beta1.TranslationServiceClient()
+            client = translate_v3beta1.TranslationServiceClient()
 
         # Setup Request
         contents = []
@@ -96,7 +96,7 @@ class TestTranslationServiceClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = translation_v3beta1.TranslationServiceClient()
+            client = translate_v3beta1.TranslationServiceClient()
 
         # Setup request
         contents = []
@@ -117,7 +117,7 @@ class TestTranslationServiceClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = translation_v3beta1.TranslationServiceClient()
+            client = translate_v3beta1.TranslationServiceClient()
 
         response = client.detect_language()
         assert expected_response == response
@@ -133,7 +133,7 @@ class TestTranslationServiceClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = translation_v3beta1.TranslationServiceClient()
+            client = translate_v3beta1.TranslationServiceClient()
 
         with pytest.raises(CustomException):
             client.detect_language()
@@ -150,7 +150,7 @@ class TestTranslationServiceClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = translation_v3beta1.TranslationServiceClient()
+            client = translate_v3beta1.TranslationServiceClient()
 
         response = client.get_supported_languages()
         assert expected_response == response
@@ -166,7 +166,7 @@ class TestTranslationServiceClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = translation_v3beta1.TranslationServiceClient()
+            client = translate_v3beta1.TranslationServiceClient()
 
         with pytest.raises(CustomException):
             client.get_supported_languages()
@@ -194,7 +194,7 @@ class TestTranslationServiceClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = translation_v3beta1.TranslationServiceClient()
+            client = translate_v3beta1.TranslationServiceClient()
 
         # Setup Request
         source_language_code = "sourceLanguageCode1687263568"
@@ -231,7 +231,7 @@ class TestTranslationServiceClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = translation_v3beta1.TranslationServiceClient()
+            client = translate_v3beta1.TranslationServiceClient()
 
         # Setup Request
         source_language_code = "sourceLanguageCode1687263568"
@@ -261,7 +261,7 @@ class TestTranslationServiceClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = translation_v3beta1.TranslationServiceClient()
+            client = translate_v3beta1.TranslationServiceClient()
 
         # Setup Request
         parent = client.location_path("[PROJECT]", "[LOCATION]")
@@ -291,7 +291,7 @@ class TestTranslationServiceClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = translation_v3beta1.TranslationServiceClient()
+            client = translate_v3beta1.TranslationServiceClient()
 
         # Setup Request
         parent = client.location_path("[PROJECT]", "[LOCATION]")
@@ -319,7 +319,7 @@ class TestTranslationServiceClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = translation_v3beta1.TranslationServiceClient()
+            client = translate_v3beta1.TranslationServiceClient()
 
         paged_list_response = client.list_glossaries()
         resources = list(paged_list_response)
@@ -337,7 +337,7 @@ class TestTranslationServiceClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = translation_v3beta1.TranslationServiceClient()
+            client = translate_v3beta1.TranslationServiceClient()
 
         paged_list_response = client.list_glossaries()
         with pytest.raises(CustomException):
@@ -355,7 +355,7 @@ class TestTranslationServiceClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = translation_v3beta1.TranslationServiceClient()
+            client = translate_v3beta1.TranslationServiceClient()
 
         # Setup Request
         name = client.glossary_path("[PROJECT]", "[LOCATION]", "[GLOSSARY]")
@@ -374,7 +374,7 @@ class TestTranslationServiceClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = translation_v3beta1.TranslationServiceClient()
+            client = translate_v3beta1.TranslationServiceClient()
 
         # Setup request
         name = client.glossary_path("[PROJECT]", "[LOCATION]", "[GLOSSARY]")
@@ -399,7 +399,7 @@ class TestTranslationServiceClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = translation_v3beta1.TranslationServiceClient()
+            client = translate_v3beta1.TranslationServiceClient()
 
         # Setup Request
         name = client.glossary_path("[PROJECT]", "[LOCATION]", "[GLOSSARY]")
@@ -426,7 +426,7 @@ class TestTranslationServiceClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = translation_v3beta1.TranslationServiceClient()
+            client = translate_v3beta1.TranslationServiceClient()
 
         # Setup Request
         name = client.glossary_path("[PROJECT]", "[LOCATION]", "[GLOSSARY]")
