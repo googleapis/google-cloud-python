@@ -304,11 +304,15 @@ class Blob(_PropertyMixin):
     def generate_signed_url(
         self,
         expiration,
+        api_access_endpoint=_API_ACCESS_ENDPOINT,
         method="GET",
+        content_md5=None,
         content_type=None,
-        generation=None,
         response_disposition=None,
         response_type=None,
+        generation=None,
+        headers=None,
+        query_parameters=None,
         client=None,
         credentials=None,
         version="v2",
@@ -337,16 +341,19 @@ class Blob(_PropertyMixin):
         :type expiration: int, long, datetime.datetime, datetime.timedelta
         :param expiration: When the signed URL should expire.
 
+        :type api_access_endpoint: str
+        :param api_access_endpoint: Optional URI base. Defaults to empty string.
+
         :type method: str
         :param method: The HTTP verb that will be used when requesting the URL.
+
+        :type content_md5: str
+        :param content_md5: (Optional) The MD5 hash of the object referenced by
+                            ``resource``.
 
         :type content_type: str
         :param content_type: (Optional) The content type of the object
                              referenced by ``resource``.
-
-        :type generation: str
-        :param generation: (Optional) A value that indicates which generation
-                           of the resource to fetch.
 
         :type response_disposition: str
         :param response_disposition: (Optional) Content disposition of
@@ -360,6 +367,22 @@ class Blob(_PropertyMixin):
         :param response_type: (Optional) Content type of responses to requests
                               for the signed URL. Used to over-ride the content
                               type of the underlying blob/object.
+
+        :type generation: str
+        :param generation: (Optional) A value that indicates which generation
+                           of the resource to fetch.
+
+        :type headers: dict
+        :param headers:
+            (Optional) Additional HTTP headers to be included as part of the
+            signed URLs.  See:
+            https://cloud.google.com/storage/docs/xml-api/reference-headers
+
+        :type query_parameters: dict
+        :param query_parameters:
+            (Optional) Additional query paramtersto be included as part of the
+            signed URLs.  See:
+            https://cloud.google.com/storage/docs/xml-api/reference-headers#query
 
         :type client: :class:`~google.cloud.storage.client.Client` or
                       ``NoneType``
@@ -398,29 +421,24 @@ class Blob(_PropertyMixin):
             credentials = client._credentials
 
         if version == "v2":
-            return generate_signed_url_v2(
-                credentials,
-                resource=resource,
-                api_access_endpoint=_API_ACCESS_ENDPOINT,
-                expiration=expiration,
-                method=method.upper(),
-                content_type=content_type,
-                response_type=response_type,
-                response_disposition=response_disposition,
-                generation=generation,
-            )
+            helper = generate_signed_url_v2
         else:
-            return generate_signed_url_v4(
-                credentials,
-                resource=resource,
-                api_access_endpoint=_API_ACCESS_ENDPOINT,
-                expiration=expiration,
-                method=method.upper(),
-                content_type=content_type,
-                response_type=response_type,
-                response_disposition=response_disposition,
-                generation=generation,
-            )
+            helper = generate_signed_url_v4
+
+        return helper(
+            credentials,
+            resource=resource,
+            expiration=expiration,
+            api_access_endpoint=api_access_endpoint,
+            method=method.upper(),
+            content_md5=content_md5,
+            content_type=content_type,
+            response_type=response_type,
+            response_disposition=response_disposition,
+            generation=generation,
+            headers=headers,
+            query_parameters=query_parameters,
+        )
 
     def exists(self, client=None):
         """Determines whether or not this blob exists.

@@ -135,8 +135,19 @@ class Test_generate_signed_url_v2(unittest.TestCase):
         return generate_signed_url_v2(*args, **kwargs)
 
     def _generate_helper(
-        self, response_type=None, response_disposition=None, generation=None
+        self,
+        api_access_endpoint="",
+        method="GET",
+        content_md5=None,
+        content_type=None,
+        response_type=None,
+        response_disposition=None,
+        generation=None,
+        headers=None,
+        query_parameters=None,
     ):
+        from six.moves.urllib.parse import urlencode
+
         endpoint = "http://api.example.com"
         resource = "/name/path"
         credentials = _make_credentials(signer_email="service@example.com")
@@ -149,49 +160,112 @@ class Test_generate_signed_url_v2(unittest.TestCase):
             credentials,
             resource,
             expiration,
-            api_access_endpoint=endpoint,
+            api_access_endpoint=api_access_endpoint,
+            method=method,
+            content_md5=content_md5,
+            content_type=content_type,
             response_type=response_type,
             response_disposition=response_disposition,
             generation=generation,
+            headers=headers,
+            query_parameters=query_parameters,
         )
 
         # Check the mock was called.
-        string_to_sign = "\n".join(["GET", "", "", str(expiration), resource])
+        method = method.upper()
+
+        elements = []
+        if method == "RESUMABLE":
+            elements.append("POST")
+            expected_resource = "x-goog-resumable:start\n{}".format(resource)
+        else:
+            elements.append(method)
+            expected_resource = resource
+
+        if query_parameters is not None:
+            normalized_qp = {
+                key.lower(): value and value.strip() or ""
+                for key, value in query_parameters.items()
+            }
+            expected_qp = urlencode(sorted(normalized_qp.items()))
+            expected_resource = "{}?{}".format(resource, expected_qp)
+
+        elements.append(content_md5 or "")
+        elements.append(content_type or "")
+        elements.append(str(expiration))
+        elements.append(expected_resource)
+
+        string_to_sign = "\n".join(elements)
+
         credentials.sign_bytes.assert_called_once_with(string_to_sign)
 
         scheme, netloc, path, qs, frag = urllib_parse.urlsplit(url)
-        self.assertEqual(scheme, "http")
-        self.assertEqual(netloc, "api.example.com")
+        expected_scheme, expected_netloc, _, _, _ = urllib_parse.urlsplit(
+            api_access_endpoint
+        )
+        self.assertEqual(scheme, expected_scheme)
+        self.assertEqual(netloc, expected_netloc)
         self.assertEqual(path, resource)
         self.assertEqual(frag, "")
 
         # Check the URL parameters.
-        params = urllib_parse.parse_qs(qs)
-        expected_params = {
-            "GoogleAccessId": [credentials.signer_email],
-            "Expires": [str(expiration)],
-            "Signature": [signed],
-        }
+        params = dict(urllib_parse.parse_qsl(qs, keep_blank_values=True))
+
+        self.assertEqual(params["GoogleAccessId"], credentials.signer_email)
+        self.assertEqual(params["Expires"], str(expiration))
+        self.assertEqual(params["Signature"], signed)
+
         if response_type is not None:
-            expected_params["response-content-type"] = [response_type]
+            self.assertEqual(params["response-content-type"], response_type)
+
         if response_disposition is not None:
-            expected_params["response-content-disposition"] = [response_disposition]
+            self.assertEqual(
+                params["response-content-disposition"], response_disposition
+            )
+
         if generation is not None:
-            expected_params["generation"] = [generation]
-        self.assertEqual(params, expected_params)
+            self.assertEqual(params["generation"], str(generation))
+
+        if query_parameters is not None:
+            for key, value in query_parameters.items():
+                value = value.strip() if value else ""
+                self.assertEqual(params[key].lower(), value)
 
     def test_w_expiration_int(self):
         self._generate_helper()
 
-    def test_w_custom_fields(self):
+    def test_w_endpoint(self):
+        api_access_endpoint = "https://api.example.com"
+        self._generate_helper(api_access_endpoint=api_access_endpoint)
+
+    def test_w_method(self):
+        method = "POST"
+        self._generate_helper(method=method)
+
+    def test_w_method_resumable(self):
+        method = "RESUMABLE"
+        self._generate_helper(method=method)
+
+    def test_w_response_type(self):
         response_type = "text/plain"
+        self._generate_helper(response_type=response_type)
+
+    def test_w_response_disposition(self):
         response_disposition = "attachment; filename=blob.png"
+        self._generate_helper(response_disposition=response_disposition)
+
+    def test_w_generation(self):
         generation = "123"
-        self._generate_helper(
-            response_type=response_type,
-            response_disposition=response_disposition,
-            generation=generation,
-        )
+        self._generate_helper(generation=generation)
+
+    def test_w_custom_headers(self):
+        self._generate_helper(headers={"x-goog-foo": "bar"})
+
+    def test_w_custom_query_parameters_w_string_value(self):
+        self._generate_helper(query_parameters={"delimiter": "/"})
+
+    def test_w_custom_query_parameters_w_none_value(self):
+        self._generate_helper(query_parameters={"acl": None})
 
     def test_with_google_credentials(self):
         resource = "/name/path"
@@ -278,11 +352,6 @@ class Test_generate_signed_url_v4(unittest.TestCase):
         signed = binascii.hexlify(credentials.sign_bytes.return_value).decode("ascii")
         self.assertEqual(params["X-Goog-Signature"], signed)
 
-        if query_parameters is not None:
-            for key, value in query_parameters.items():
-                value = value.strip() if value else ""
-                self.assertEqual(params[key].lower(), value)
-
         if response_type is not None:
             self.assertEqual(params["response-content-type"], response_type)
 
@@ -293,6 +362,11 @@ class Test_generate_signed_url_v4(unittest.TestCase):
 
         if generation is not None:
             self.assertEqual(params["generation"], str(generation))
+
+        if query_parameters is not None:
+            for key, value in query_parameters.items():
+                value = value.strip() if value else ""
+                self.assertEqual(params[key].lower(), value)
 
     def test_w_expiration_too_long(self):
         with self.assertRaises(ValueError):

@@ -122,6 +122,8 @@ def generate_signed_url_v2(
     response_type=None,
     response_disposition=None,
     generation=None,
+    headers=None,
+    query_parameters=None,
 ):
     """Generate a V2 signed URL to provide query-string auth'n to a resource.
 
@@ -190,6 +192,18 @@ def generate_signed_url_v2(
     :param generation: (Optional) A value that indicates which generation of
                        the resource to fetch.
 
+    :type headers: dict
+    :param headers:
+        (Optional) Additional HTTP headers to be included as part of the
+        signed URLs.  See:
+        https://cloud.google.com/storage/docs/xml-api/reference-headers
+
+    :type query_parameters: dict
+    :param query_parameters:
+        (Optional) Additional query paramtersto be included as part of the
+        signed URLs.  See:
+        https://cloud.google.com/storage/docs/xml-api/reference-headers#query
+
     :raises: :exc:`TypeError` when expiration is not a valid type.
     :raises: :exc:`AttributeError` if credentials is not an instance
             of :class:`google.auth.credentials.Signing`.
@@ -206,6 +220,16 @@ def generate_signed_url_v2(
     else:
         canonicalized_resource = "{0}".format(resource)
 
+    if query_parameters is not None:
+        normalized_qp = list(sorted(
+            (key.lower(), value and value.strip() or "")
+            for key, value in query_parameters.items()
+        ))
+        encoded_qp = six.moves.urllib.parse.urlencode(normalized_qp)
+        canonicalized_resource = "{}?{}".format(canonicalized_resource, encoded_qp)
+    else:
+        normalized_qp = ()
+
     # Generate the string to sign.
     string_to_sign = "\n".join(
         [
@@ -218,20 +242,22 @@ def generate_signed_url_v2(
     )
 
     # Set the right query parameters.
-    query_params = get_signed_query_params(credentials, expiration, string_to_sign)
+    signed_query_params = get_signed_query_params(credentials, expiration, string_to_sign)
 
     if response_type is not None:
-        query_params["response-content-type"] = response_type
+        signed_query_params["response-content-type"] = response_type
     if response_disposition is not None:
-        query_params["response-content-disposition"] = response_disposition
+        signed_query_params["response-content-disposition"] = response_disposition
     if generation is not None:
-        query_params["generation"] = generation
+        signed_query_params["generation"] = generation
+
+    signed_query_params.update(normalized_qp)
 
     # Return the built URL.
     return "{endpoint}{resource}?{querystring}".format(
         endpoint=api_access_endpoint,
         resource=resource,
-        querystring=six.moves.urllib.parse.urlencode(query_params),
+        querystring=six.moves.urllib.parse.urlencode(signed_query_params),
     )
 
 
