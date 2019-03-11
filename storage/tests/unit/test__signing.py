@@ -216,13 +216,16 @@ class Test_generate_signed_url_v4(unittest.TestCase):
     def _generate_helper(
         self,
         expiration=1000,
+        api_access_endpoint="",
+        method="GET",
+        content_type=None,
+        content_md5=None,
         response_type=None,
         response_disposition=None,
         generation=None,
         headers=None,
     ):
         now = datetime.datetime(2019, 2, 26, 19, 53, 27)
-        endpoint = "http://api.example.com"
         resource = "/name/path"
         signer_email = "service@example.com"
         credentials = _make_credentials(signer_email=signer_email)
@@ -233,7 +236,10 @@ class Test_generate_signed_url_v4(unittest.TestCase):
                 credentials,
                 resource,
                 expiration,
-                api_access_endpoint=endpoint,
+                api_access_endpoint=api_access_endpoint,
+                method=method,
+                content_type=content_type,
+                content_md5=content_md5,
                 response_type=response_type,
                 response_disposition=response_disposition,
                 generation=generation,
@@ -244,8 +250,17 @@ class Test_generate_signed_url_v4(unittest.TestCase):
         credentials.sign_bytes.assert_called_once()
 
         scheme, netloc, path, qs, frag = urllib_parse.urlsplit(url)
-        self.assertEqual(scheme, "http")
-        self.assertEqual(netloc, "api.example.com")
+
+        if api_access_endpoint is not None:
+            expected_scheme, expected_netloc, _, _, _ = urllib_parse.urlsplit(
+                api_access_endpoint
+            )
+            self.assertEqual(scheme, expected_scheme)
+            self.assertEqual(netloc, expected_netloc)
+        else:
+            self.assertEqual(scheme, "")
+            self.assertEqual(netloc, "")
+
         self.assertEqual(path, resource)
         self.assertEqual(frag, "")
 
@@ -284,6 +299,18 @@ class Test_generate_signed_url_v4(unittest.TestCase):
     def test_w_defaults(self):
         self._generate_helper()
 
+    def test_w_api_access_endpoint(self):
+        self._generate_helper(api_access_endpoint="http://api.example.com")
+
+    def test_w_method(self):
+        self._generate_helper(method="PUT")
+
+    def test_w_content_type(self):
+        self._generate_helper(content_type="text/plain")
+
+    def test_w_content_md5(self):
+        self._generate_helper(content_md5="FACEDACE")
+
     def test_w_response_type(self):
         self._generate_helper(response_type="application/octets")
 
@@ -293,7 +320,7 @@ class Test_generate_signed_url_v4(unittest.TestCase):
     def test_w_generation(self):
         self._generate_helper(generation=12345)
 
-    def test_w_headers(self):
+    def test_w_custom_headers(self):
         self._generate_helper(headers={"x-goog-foo": "bar"})
 
 

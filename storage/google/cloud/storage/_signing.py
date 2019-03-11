@@ -348,6 +348,12 @@ def generate_signed_url_v4(
     if headers is None:
         headers = {}
 
+    if content_type is not None:
+        headers["Content-Type"] = content_type
+
+    if content_md5 is not None:
+        headers["Content-MD5"] = content_md5
+
     ordered_headers = sorted(headers.items())
     canonical_headers = "\n".join(
         ["{}:{}".format(key.lower(), val.strip()) for key, val in ordered_headers]
