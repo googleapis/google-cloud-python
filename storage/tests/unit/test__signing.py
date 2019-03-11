@@ -224,6 +224,7 @@ class Test_generate_signed_url_v4(unittest.TestCase):
         response_disposition=None,
         generation=None,
         headers=None,
+        query_parameters=None,
     ):
         now = datetime.datetime(2019, 2, 26, 19, 53, 27)
         resource = "/name/path"
@@ -244,6 +245,7 @@ class Test_generate_signed_url_v4(unittest.TestCase):
                 response_disposition=response_disposition,
                 generation=generation,
                 headers=headers,
+                query_parameters=query_parameters,
             )
 
         # Check the mock was called.
@@ -251,21 +253,16 @@ class Test_generate_signed_url_v4(unittest.TestCase):
 
         scheme, netloc, path, qs, frag = urllib_parse.urlsplit(url)
 
-        if api_access_endpoint is not None:
-            expected_scheme, expected_netloc, _, _, _ = urllib_parse.urlsplit(
-                api_access_endpoint
-            )
-            self.assertEqual(scheme, expected_scheme)
-            self.assertEqual(netloc, expected_netloc)
-        else:
-            self.assertEqual(scheme, "")
-            self.assertEqual(netloc, "")
-
+        expected_scheme, expected_netloc, _, _, _ = urllib_parse.urlsplit(
+            api_access_endpoint
+        )
+        self.assertEqual(scheme, expected_scheme)
+        self.assertEqual(netloc, expected_netloc)
         self.assertEqual(path, resource)
         self.assertEqual(frag, "")
 
         # Check the URL parameters.
-        params = dict(urllib_parse.parse_qsl(qs))
+        params = dict(urllib_parse.parse_qsl(qs, keep_blank_values=True))
         self.assertEqual(params["X-Goog-Algorithm"], "GOOG4-RSA-SHA256")
 
         now_date = now.date().strftime("%Y%m%d")
@@ -280,6 +277,11 @@ class Test_generate_signed_url_v4(unittest.TestCase):
 
         signed = binascii.hexlify(credentials.sign_bytes.return_value).decode("ascii")
         self.assertEqual(params["X-Goog-Signature"], signed)
+
+        if query_parameters is not None:
+            for key, value in query_parameters.items():
+                value = value.strip() if value else ""
+                self.assertEqual(params[key].lower(), value)
 
         if response_type is not None:
             self.assertEqual(params["response-content-type"], response_type)
@@ -322,6 +324,12 @@ class Test_generate_signed_url_v4(unittest.TestCase):
 
     def test_w_custom_headers(self):
         self._generate_helper(headers={"x-goog-foo": "bar"})
+
+    def test_w_custom_query_parameters_w_string_value(self):
+        self._generate_helper(query_parameters={"delimiter": "/"})
+
+    def test_w_custom_query_parameters_w_none_value(self):
+        self._generate_helper(query_parameters={"acl": None})
 
 
 def _make_credentials(signer_email=None):

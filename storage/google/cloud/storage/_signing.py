@@ -250,6 +250,7 @@ def generate_signed_url_v4(
     response_disposition=None,
     generation=None,
     headers=None,
+    query_parameters=None,
 ):
     """Generate a V4 signed URL to provide query-string auth'n to a resource.
 
@@ -319,6 +320,18 @@ def generate_signed_url_v4(
     :param generation: (Optional) A value that indicates which generation of
                        the resource to fetch.
 
+    :type headers: dict
+    :param headers:
+        (Optional) Additional HTTP headers to be included as part of the
+        signed URLs.  See:
+        https://cloud.google.com/storage/docs/xml-api/reference-headers
+
+    :type query_parameters: dict
+    :param query_parameters:
+        (Optional) Additional query paramtersto be included as part of the
+        signed URLs.  See:
+        https://cloud.google.com/storage/docs/xml-api/reference-headers#query
+
     :raises: :exc:`ValueError` when expiration is too large.
     :raises: :exc:`TypeError` when expiration is not a valid type.
     :raises: :exc:`AttributeError` if credentials is not an instance
@@ -360,25 +373,28 @@ def generate_signed_url_v4(
     )
     signed_headers = ";".join([key.lower() for key, _ in ordered_headers])
 
-    query_params = {
-        "X-Goog-Algorithm": "GOOG4-RSA-SHA256",
-        "X-Goog-Credential": credential,
-        "X-Goog-Date": request_timestamp,
-        "X-Goog-Expires": expiration,
-        "X-Goog-SignedHeaders": signed_headers,
-    }
+    if query_parameters is None:
+        query_parameters = {}
+    else:
+        query_parameters = {key: value or "" for key, value in query_parameters.items()}
+
+    query_parameters["X-Goog-Algorithm"] = "GOOG4-RSA-SHA256"
+    query_parameters["X-Goog-Credential"] = credential
+    query_parameters["X-Goog-Date"] = request_timestamp
+    query_parameters["X-Goog-Expires"] = expiration
+    query_parameters["X-Goog-SignedHeaders"] = signed_headers
 
     if response_type is not None:
-        query_params["response-content-type"] = response_type
+        query_parameters["response-content-type"] = response_type
 
     if response_disposition is not None:
-        query_params["response-content-disposition"] = response_disposition
+        query_parameters["response-content-disposition"] = response_disposition
 
     if generation is not None:
-        query_params["generation"] = generation
+        query_parameters["generation"] = generation
 
-    ordered_query_params = sorted(query_params.items())
-    canonical_query_string = six.moves.urllib.parse.urlencode(ordered_query_params)
+    ordered_query_parameters = sorted(query_parameters.items())
+    canonical_query_string = six.moves.urllib.parse.urlencode(ordered_query_parameters)
 
     canonical_elements = [
         method,
