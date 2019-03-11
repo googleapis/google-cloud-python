@@ -499,6 +499,7 @@ class BackgroundConsumer(object):
         self._wake = threading.Condition()
         self._thread = None
         self._operational_lock = threading.Lock()
+        self._ready = threading.Event()
 
     def _on_call_done(self, future):
         # Resume the thread if it's paused, this prevents blocking forever
@@ -507,6 +508,7 @@ class BackgroundConsumer(object):
 
     def _thread_main(self):
         try:
+            self._ready.set()
             self._bidi_rpc.add_done_callback(self._on_call_done)
             self._bidi_rpc.open()
 
@@ -560,6 +562,11 @@ class BackgroundConsumer(object):
             )
             thread.daemon = True
             thread.start()
+            # Other parts of the code rely on `thread.is_alive` which
+            # isn't sufficient to know if a thread is active, just that it may
+            # soon be active. This can cause races. Further protect
+            # against races by using a ready event and wait on it to be set.
+            self._ready.wait()
             self._thread = thread
             _LOGGER.debug("Started helper thread %s", thread.name)
 
@@ -574,11 +581,12 @@ class BackgroundConsumer(object):
                 self._thread.join()
 
             self._thread = None
+            self._ready.clear()
 
     @property
     def is_active(self):
         """bool: True if the background thread is active."""
-        return self._thread is not None and self._thread.is_alive()
+        return self._thread is not None and self._ready.is_set() and self._thread.is_alive()
 
     def pause(self):
         """Pauses the response stream.
