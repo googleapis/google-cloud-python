@@ -505,8 +505,9 @@ class BackgroundConsumer(object):
         # when the RPC has terminated.
         self.resume()
 
-    def _thread_main(self):
+    def _thread_main(self, ready):
         try:
+            ready.set()
             self._bidi_rpc.add_done_callback(self._on_call_done)
             self._bidi_rpc.open()
 
@@ -555,11 +556,19 @@ class BackgroundConsumer(object):
     def start(self):
         """Start the background thread and begin consuming the thread."""
         with self._operational_lock:
+            ready = threading.Event()
             thread = threading.Thread(
-                name=_BIDIRECTIONAL_CONSUMER_NAME, target=self._thread_main
+                name=_BIDIRECTIONAL_CONSUMER_NAME,
+                target=self._thread_main,
+                args=(ready,)
             )
             thread.daemon = True
             thread.start()
+            # Other parts of the code rely on `thread.is_alive` which
+            # isn't sufficient to know if a thread is active, just that it may
+            # soon be active. This can cause races. Further protect
+            # against races by using a ready event and wait on it to be set.
+            ready.wait()
             self._thread = thread
             _LOGGER.debug("Started helper thread %s", thread.name)
 
