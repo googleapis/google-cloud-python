@@ -416,17 +416,17 @@ def test_bigtable_column_family_name():
     # [START bigtable_column_family_name]
     from google.cloud.bigtable import Client
 
-     client = Client(admin=True)
+    client = Client(admin=True)
     instance = client.instance(INSTANCE_ID)
     table = instance.table(TABLE_ID)
 
-     column_families = table.list_column_families()
+    column_families = table.list_column_families()
     column_family_obj = column_families[COLUMN_FAMILY_ID]
     column_family_name = column_family_obj.name
     # [END bigtable_column_family_name]
     import re
 
-     _cf_name_re = re.compile(
+    _cf_name_re = re.compile(
         r"^projects/(?P<project>[^/]+)/"
         r"instances/(?P<instance>[^/]+)/tables/"
         r"(?P<table>[^/]+)/columnFamilies/"
