@@ -124,6 +124,12 @@ class Instance(object):
     def from_pb(cls, instance_pb, client):
         """Creates an instance instance from a protobuf.
 
+        For example:
+
+        .. literalinclude:: snippets.py
+            :start-after: [START bigtable_instance_from_pb]
+            :end-before: [END bigtable_instance_from_pb]
+
         :type instance_pb: :class:`instance_pb2.Instance`
         :param instance_pb: An instance protobuf object.
 
@@ -162,6 +168,12 @@ class Instance(object):
           This property will not change if ``instance_id`` does not,
           but the return value is not cached.
 
+        For example:
+        
+        .. literalinclude:: snippets.py
+            :start-after: [START bigtable_instance_name]
+            :end-before: [END bigtable_instance_name]
+
         The instance name is of the form
 
             ``"projects/{project}/instances/{instance_id}"``
@@ -175,7 +187,14 @@ class Instance(object):
 
     @property
     def state(self):
-        """google.cloud.bigtable.enums.Instance.State: state of Instance."""
+        """google.cloud.bigtable.enums.Instance.State: state of Instance.
+        
+        For example:
+        .. literalinclude:: snippets.py
+            :start-after: [START bigtable_instance_state]
+            :end-before: [END bigtable_instance_state]
+        
+        """
         return self._state
 
     def __eq__(self, other):
