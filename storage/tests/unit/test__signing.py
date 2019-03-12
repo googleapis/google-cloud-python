@@ -261,10 +261,10 @@ class Test_generate_signed_url_v2(unittest.TestCase):
         self._generate_helper(headers={"x-goog-foo": "bar"})
 
     def test_w_custom_query_parameters_w_string_value(self):
-        self._generate_helper(query_parameters={"delimiter": "/"})
+        self._generate_helper(query_parameters={"bar": "/"})
 
     def test_w_custom_query_parameters_w_none_value(self):
-        self._generate_helper(query_parameters={"acl": None})
+        self._generate_helper(query_parameters={"qux": None})
 
     def test_with_google_credentials(self):
         resource = "/name/path"
@@ -399,10 +399,10 @@ class Test_generate_signed_url_v4(unittest.TestCase):
         self._generate_helper(headers={"x-goog-foo": "bar"})
 
     def test_w_custom_query_parameters_w_string_value(self):
-        self._generate_helper(query_parameters={"delimiter": "/"})
+        self._generate_helper(query_parameters={"bar": "/"})
 
     def test_w_custom_query_parameters_w_none_value(self):
-        self._generate_helper(query_parameters={"acl": None})
+        self._generate_helper(query_parameters={"qux": None})
 
 
 def _make_credentials(signer_email=None):
