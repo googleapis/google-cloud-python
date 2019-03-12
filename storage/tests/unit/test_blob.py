@@ -410,7 +410,8 @@ class Test_Blob(unittest.TestCase):
         else:
             expected_creds = credentials
 
-        expected_resource = parse.quote("/name/{}".format(blob_name))
+        encoded_name = blob_name.encode("utf-8")
+        expected_resource = "/name/{}".format(parse.quote(encoded_name))
         expected_kwargs = {
             "resource": expected_resource,
             "expiration": EXPIRATION,
