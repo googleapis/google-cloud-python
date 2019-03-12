@@ -41,7 +41,8 @@ from google.cloud.bigtable import column_family
 
 INSTANCE_ID = "snippet-" + unique_resource_id("-")
 CLUSTER_ID = "clus-1-" + unique_resource_id("-")
-TABLE_ID = "tabl-1-" + unique_resource_id("-")
+TABLE_ID = "tabl-1" + unique_resource_id("-")
+COLUMN_FAMILY_ID = "col_fam_id-" + unique_resource_id("-")
 LOCATION_ID = "us-central1-f"
 ALT_LOCATION_ID = "us-central1-a"
 PRODUCTION = enums.Instance.Type.PRODUCTION
@@ -411,6 +412,158 @@ def test_bigtable_table_row():
     table.truncate(timeout=300)
 
 
+def test_bigtable_column_family_name():
+    # [START bigtable_column_family_name]
+    from google.cloud.bigtable import Client
+
+     client = Client(admin=True)
+    instance = client.instance(INSTANCE_ID)
+    table = instance.table(TABLE_ID)
+
+     column_families = table.list_column_families()
+    column_family_obj = column_families[COLUMN_FAMILY_ID]
+    column_family_name = column_family_obj.name
+    # [END bigtable_column_family_name]
+    import re
+
+     _cf_name_re = re.compile(
+        r"^projects/(?P<project>[^/]+)/"
+        r"instances/(?P<instance>[^/]+)/tables/"
+        r"(?P<table>[^/]+)/columnFamilies/"
+        r"(?P<cf_id>[_a-zA-Z0-9][-_.a-zA-Z0-9]*)$"
+    )
+    assert _cf_name_re.match(column_family_name)
+
+
+def test_bigtable_create_update_delete_column_family():
+    # [START bigtable_create_column_family]
+    from google.cloud.bigtable import Client
+    from google.cloud.bigtable import column_family
+
+    client = Client(admin=True)
+    instance = client.instance(INSTANCE_ID)
+    table = instance.table(TABLE_ID)
+
+    column_family_id = "column_family_id1"
+    gc_rule = column_family.MaxVersionsGCRule(2)
+    column_family_obj = table.column_family(column_family_id, gc_rule=gc_rule)
+    column_family_obj.create()
+
+    # [END bigtable_create_column_family]
+    column_families = table.list_column_families()
+    assert column_families[column_family_id].gc_rule == gc_rule
+
+    # [START bigtable_update_column_family]
+    from google.cloud.bigtable import Client
+    from google.cloud.bigtable import column_family
+
+    client = Client(admin=True)
+    instance = client.instance(INSTANCE_ID)
+    table = instance.table(TABLE_ID)
+
+    # Already existing column family id
+    column_family_id = "column_family_id1"
+    # Define the GC rule to retain data with max age of 5 days
+    max_age_rule = column_family.MaxAgeGCRule(datetime.timedelta(days=5))
+    column_family_obj = table.column_family(column_family_id, gc_rule=max_age_rule)
+    column_family_obj.update()
+    # [END bigtable_update_column_family]
+
+    updated_families = table.list_column_families()
+    assert updated_families[column_family_id].gc_rule == max_age_rule
+
+    # [START bigtable_delete_column_family]
+    from google.cloud.bigtable import Client
+    from google.cloud.bigtable import column_family
+
+    client = Client(admin=True)
+    instance = client.instance(INSTANCE_ID)
+    table = instance.table(TABLE_ID)
+
+    column_family_id = "column_family_id1"
+    column_family_obj = table.column_family(column_family_id)
+    column_family_obj.delete()
+    # [END bigtable_delete_column_family]
+    column_families = table.list_column_families()
+    assert column_family_id not in column_families
+
+
+def test_bigtable_column_family_name():
+    # [START bigtable_column_family_name]
+    from google.cloud.bigtable import Client
+
+    client = Client(admin=True)
+    instance = client.instance(INSTANCE_ID)
+    table = instance.table(TABLE_ID)
+
+    column_families = table.list_column_families()
+    column_family_obj = column_families[COLUMN_FAMILY_ID]
+    column_family_name = column_family_obj.name
+    # [END bigtable_column_family_name]
+    import re
+
+    _cf_name_re = re.compile(
+        r"^projects/(?P<project>[^/]+)/"
+        r"instances/(?P<instance>[^/]+)/tables/"
+        r"(?P<table>[^/]+)/columnFamilies/"
+        r"(?P<cf_id>[_a-zA-Z0-9][-_.a-zA-Z0-9]*)$"
+    )
+    assert _cf_name_re.match(column_family_name)
+
+
+def test_bigtable_create_update_delete_column_family():
+    # [START bigtable_create_column_family]
+    from google.cloud.bigtable import Client
+    from google.cloud.bigtable import column_family
+
+    client = Client(admin=True)
+    instance = client.instance(INSTANCE_ID)
+    table = instance.table(TABLE_ID)
+
+    column_family_id = "column_family_id1"
+    gc_rule = column_family.MaxVersionsGCRule(2)
+    column_family_obj = table.column_family(column_family_id, gc_rule=gc_rule)
+    column_family_obj.create()
+
+    # [END bigtable_create_column_family]
+    column_families = table.list_column_families()
+    assert column_families[column_family_id].gc_rule == gc_rule
+
+    # [START bigtable_update_column_family]
+    from google.cloud.bigtable import Client
+    from google.cloud.bigtable import column_family
+
+    client = Client(admin=True)
+    instance = client.instance(INSTANCE_ID)
+    table = instance.table(TABLE_ID)
+
+    # Already existing column family id
+    column_family_id = "column_family_id1"
+    # Define the GC rule to retain data with max age of 5 days
+    max_age_rule = column_family.MaxAgeGCRule(datetime.timedelta(days=5))
+    column_family_obj = table.column_family(column_family_id, gc_rule=max_age_rule)
+    column_family_obj.update()
+    # [END bigtable_update_column_family]
+
+    updated_families = table.list_column_families()
+    assert updated_families[column_family_id].gc_rule == max_age_rule
+
+    # [START bigtable_delete_column_family]
+    from google.cloud.bigtable import Client
+    from google.cloud.bigtable import column_family
+
+    client = Client(admin=True)
+    instance = client.instance(INSTANCE_ID)
+    table = instance.table(TABLE_ID)
+
+    column_family_id = "column_family_id1"
+    column_family_obj = table.column_family(column_family_id)
+    column_family_obj.delete()
+    # [END bigtable_delete_column_family]
+    column_families = table.list_column_families()
+    assert column_family_id not in column_families
+
+
 def test_bigtable_add_row_add_row_range_add_row_range_from_keys():
     row_keys = [
         b"row_key_1",
@@ -566,6 +719,142 @@ def test_bigtable_batcher_mutate_flush_mutate_rows():
         rows_on_table.append(row.row_key)
     assert len(rows_on_table) == 4
     table.truncate(timeout=200)
+
+
+def test_bigtable_create_family_gc_max_age():
+    # [START bigtable_create_family_gc_max_age]
+    from google.cloud.bigtable import Client
+    from google.cloud.bigtable import column_family
+
+    client = Client(admin=True)
+    instance = client.instance(INSTANCE_ID)
+    table = instance.table(TABLE_ID)
+
+    # Define the GC rule to retain data with max age of 5 days
+    max_age_rule = column_family.MaxAgeGCRule(datetime.timedelta(days=5))
+
+    column_family_obj = table.column_family("cf1", max_age_rule)
+    column_family_obj.create()
+
+    # [END bigtable_create_family_gc_max_age]
+    rule = str(column_family_obj.to_pb())
+    assert "max_age" in rule
+    assert "seconds: 432000" in rule
+    column_family_obj.delete()
+
+
+def test_bigtable_create_family_gc_max_versions():
+    # [START bigtable_create_family_gc_max_versions]
+    from google.cloud.bigtable import Client
+    from google.cloud.bigtable import column_family
+
+    client = Client(admin=True)
+    instance = client.instance(INSTANCE_ID)
+    table = instance.table(TABLE_ID)
+
+    # Define the GC policy to retain only the most recent 2 versions
+    max_versions_rule = column_family.MaxVersionsGCRule(2)
+
+    column_family_obj = table.column_family("cf2", max_versions_rule)
+    column_family_obj.create()
+
+    # [END bigtable_create_family_gc_max_versions]
+    rule = str(column_family_obj.to_pb())
+    assert "max_num_versions: 2" in rule
+    column_family_obj.delete()
+
+
+def test_bigtable_create_family_gc_union():
+    # [START bigtable_create_family_gc_union]
+    from google.cloud.bigtable import Client
+    from google.cloud.bigtable import column_family
+
+    client = Client(admin=True)
+    instance = client.instance(INSTANCE_ID)
+    table = instance.table(TABLE_ID)
+
+    max_versions_rule = column_family.MaxVersionsGCRule(2)
+    max_age_rule = column_family.MaxAgeGCRule(datetime.timedelta(days=5))
+
+    union_rule = column_family.GCRuleUnion([max_versions_rule, max_age_rule])
+
+    column_family_obj = table.column_family("cf3", union_rule)
+    column_family_obj.create()
+
+    # [END bigtable_create_family_gc_union]
+    rule = str(column_family_obj.to_pb())
+    assert "union" in rule
+    assert "max_age" in rule
+    assert "seconds: 432000" in rule
+    assert "max_num_versions: 2" in rule
+    column_family_obj.delete()
+
+
+def test_bigtable_create_family_gc_intersection():
+    # [START bigtable_create_family_gc_intersection]
+    from google.cloud.bigtable import Client
+    from google.cloud.bigtable import column_family
+
+    client = Client(admin=True)
+    instance = client.instance(INSTANCE_ID)
+    table = instance.table(TABLE_ID)
+
+    max_versions_rule = column_family.MaxVersionsGCRule(2)
+    max_age_rule = column_family.MaxAgeGCRule(datetime.timedelta(days=5))
+
+    intersection_rule = column_family.GCRuleIntersection(
+        [max_versions_rule, max_age_rule]
+    )
+
+    column_family_obj = table.column_family("cf4", intersection_rule)
+    column_family_obj.create()
+
+    # [END bigtable_create_family_gc_intersection]
+
+    rule = str(column_family_obj.to_pb())
+    assert "intersection" in rule
+    assert "max_num_versions: 2" in rule
+    assert "max_age" in rule
+    assert "seconds: 432000" in rule
+    column_family_obj.delete()
+
+
+def test_bigtable_create_family_gc_nested():
+    # [START bigtable_create_family_gc_nested]
+    from google.cloud.bigtable import Client
+    from google.cloud.bigtable import column_family
+
+    client = Client(admin=True)
+    instance = client.instance(INSTANCE_ID)
+    table = instance.table(TABLE_ID)
+
+    # Create a column family with nested GC policies.
+    # Create a nested GC rule:
+    # Drop cells that are either older than the 10 recent versions
+    # OR
+    # Drop cells that are older than a month AND older than the
+    # 2 recent versions
+    rule1 = column_family.MaxVersionsGCRule(10)
+    rule2 = column_family.GCRuleIntersection(
+        [
+            column_family.MaxAgeGCRule(datetime.timedelta(days=5)),
+            column_family.MaxVersionsGCRule(2),
+        ]
+    )
+
+    nested_rule = column_family.GCRuleUnion([rule1, rule2])
+
+    column_family_obj = table.column_family("cf5", nested_rule)
+    column_family_obj.create()
+
+    # [END bigtable_create_family_gc_nested]
+
+    rule = str(column_family_obj.to_pb())
+    assert "intersection" in rule
+    assert "max_num_versions: 2" in rule
+    assert "max_age" in rule
+    assert "seconds: 432000" in rule
+    column_family_obj.delete()
 
 
 if __name__ == "__main__":
