@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigtable.column_family &#8212; google-cloud d7372f2 documentation</title>
+    <title>google.cloud.bigtable.column_family &#8212; google-cloud 58b7c3b documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -79,6 +79,12 @@
 <div class="viewcode-block" id="MaxVersionsGCRule"><a class="viewcode-back" href="../../../../bigtable/column-family.html#google.cloud.bigtable.column_family.MaxVersionsGCRule">[docs]</a><span class="k">class</span> <span class="nc">MaxVersionsGCRule</span><span class="p">(</span><span class="n">GarbageCollectionRule</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Garbage collection limiting the number of versions of a cell.</span>
 
+<span class="sd">    For example:</span>
+
+<span class="sd">    .. literalinclude:: snippets_table.py</span>
+<span class="sd">        :start-after: [START bigtable_create_family_gc_max_versions]</span>
+<span class="sd">        :end-before: [END bigtable_create_family_gc_max_versions]</span>
+
 <span class="sd">    :type max_num_versions: int</span>
 <span class="sd">    :param max_num_versions: The maximum number of versions</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -105,6 +111,12 @@
 
 <div class="viewcode-block" id="MaxAgeGCRule"><a class="viewcode-back" href="../../../../bigtable/column-family.html#google.cloud.bigtable.column_family.MaxAgeGCRule">[docs]</a><span class="k">class</span> <span class="nc">MaxAgeGCRule</span><span class="p">(</span><span class="n">GarbageCollectionRule</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Garbage collection limiting the age of a cell.</span>
+
+<span class="sd">    For example:</span>
+
+<span class="sd">    .. literalinclude:: snippets_table.py</span>
+<span class="sd">        :start-after: [START bigtable_create_family_gc_max_age]</span>
+<span class="sd">        :end-before: [END bigtable_create_family_gc_max_age]</span>
 
 <span class="sd">    :type max_age: :class:`datetime.timedelta`</span>
 <span class="sd">    :param max_age: The maximum age allowed for a cell in the table.</span>
@@ -134,6 +146,12 @@
 <div class="viewcode-block" id="GCRuleUnion"><a class="viewcode-back" href="../../../../bigtable/column-family.html#google.cloud.bigtable.column_family.GCRuleUnion">[docs]</a><span class="k">class</span> <span class="nc">GCRuleUnion</span><span class="p">(</span><span class="n">GarbageCollectionRule</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Union of garbage collection rules.</span>
 
+<span class="sd">    For example:</span>
+
+<span class="sd">    .. literalinclude:: snippets_table.py</span>
+<span class="sd">        :start-after: [START bigtable_create_family_gc_union]</span>
+<span class="sd">        :end-before: [END bigtable_create_family_gc_union]</span>
+
 <span class="sd">    :type rules: list</span>
 <span class="sd">    :param rules: List of :class:`GarbageCollectionRule`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -161,6 +179,12 @@
 
 <div class="viewcode-block" id="GCRuleIntersection"><a class="viewcode-back" href="../../../../bigtable/column-family.html#google.cloud.bigtable.column_family.GCRuleIntersection">[docs]</a><span class="k">class</span> <span class="nc">GCRuleIntersection</span><span class="p">(</span><span class="n">GarbageCollectionRule</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Intersection of garbage collection rules.</span>
+
+<span class="sd">    For example:</span>
+
+<span class="sd">    .. literalinclude:: snippets_table.py</span>
+<span class="sd">        :start-after: [START bigtable_create_family_gc_intersection]</span>
+<span class="sd">        :end-before: [END bigtable_create_family_gc_intersection]</span>
 
 <span class="sd">    :type rules: list</span>
 <span class="sd">    :param rules: List of :class:`GarbageCollectionRule`.</span>
@@ -219,12 +243,18 @@
     <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Column family name used in requests.</span>
 
+<span class="sd">        For example:</span>
+
+<span class="sd">        .. literalinclude:: snippets_table.py</span>
+<span class="sd">            :start-after: [START bigtable_column_family_name]</span>
+<span class="sd">            :end-before: [END bigtable_column_family_name]</span>
+
 <span class="sd">        .. note::</span>
 
 <span class="sd">          This property will not change if ``column_family_id`` does not, but</span>
 <span class="sd">          the return value is not cached.</span>
 
-<span class="sd">        The table name is of the form</span>
+<span class="sd">        The Column family name is of the form</span>
 
 <span class="sd">            ``&quot;projects/../zones/../clusters/../tables/../columnFamilies/..&quot;``</span>
 
@@ -257,7 +287,15 @@
             <span class="k">return</span> <span class="n">table_v2_pb2</span><span class="o">.</span><span class="n">ColumnFamily</span><span class="p">(</span><span class="n">gc_rule</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gc_rule</span><span class="o">.</span><span class="n">to_pb</span><span class="p">())</span></div>
 
 <div class="viewcode-block" id="ColumnFamily.create"><a class="viewcode-back" href="../../../../bigtable/column-family.html#google.cloud.bigtable.column_family.ColumnFamily.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Create this column family.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Create this column family.</span>
+
+<span class="sd">        For example:</span>
+
+<span class="sd">        .. literalinclude:: snippets_table.py</span>
+<span class="sd">            :start-after: [START bigtable_create_column_family]</span>
+<span class="sd">            :end-before: [END bigtable_create_column_family]</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">column_family</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_pb</span><span class="p">()</span>
         <span class="n">modification</span> <span class="o">=</span> <span class="n">table_admin_v2_pb2</span><span class="o">.</span><span class="n">ModifyColumnFamiliesRequest</span><span class="o">.</span><span class="n">Modification</span><span class="p">(</span>
             <span class="nb">id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">column_family_id</span><span class="p">,</span> <span class="n">create</span><span class="o">=</span><span class="n">column_family</span>
@@ -272,6 +310,12 @@
 
 <div class="viewcode-block" id="ColumnFamily.update"><a class="viewcode-back" href="../../../../bigtable/column-family.html#google.cloud.bigtable.column_family.ColumnFamily.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Update this column family.</span>
+
+<span class="sd">        For example:</span>
+
+<span class="sd">        .. literalinclude:: snippets_table.py</span>
+<span class="sd">            :start-after: [START bigtable_update_column_family]</span>
+<span class="sd">            :end-before: [END bigtable_update_column_family]</span>
 
 <span class="sd">        .. note::</span>
 
@@ -291,7 +335,15 @@
         <span class="p">)</span></div>
 
 <div class="viewcode-block" id="ColumnFamily.delete"><a class="viewcode-back" href="../../../../bigtable/column-family.html#google.cloud.bigtable.column_family.ColumnFamily.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Delete this column family.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Delete this column family.</span>
+
+<span class="sd">        For example:</span>
+
+<span class="sd">        .. literalinclude:: snippets_table.py</span>
+<span class="sd">            :start-after: [START bigtable_delete_column_family]</span>
+<span class="sd">            :end-before: [END bigtable_delete_column_family]</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">modification</span> <span class="o">=</span> <span class="n">table_admin_v2_pb2</span><span class="o">.</span><span class="n">ModifyColumnFamiliesRequest</span><span class="o">.</span><span class="n">Modification</span><span class="p">(</span>
             <span class="nb">id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">column_family_id</span><span class="p">,</span> <span class="n">drop</span><span class="o">=</span><span class="kc">True</span>
         <span class="p">)</span>
