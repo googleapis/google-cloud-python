@@ -20,6 +20,11 @@ Internal changes
 - Use ``to_dataframe()`` from ``google-cloud-bigquery`` in the ``read_gbq()``
   function. (:issue:`247`)
 
+Enhancements
+~~~~~~~~~~~~
+- Allow ``table_schema`` in :func:`to_gbq` to contain only a subset of columns,
+  with the rest being populated using the DataFrame dtypes (:issue:`218`) 
+  (contributed by @johnpaton)
 
 .. _changelog-0.9.0:
 
