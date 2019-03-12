@@ -1177,5 +1177,88 @@ def test_bigtable_row_setcell_commit_rowkey():
     table.truncate(timeout=300)
 
 
+def test_bigtable_row_append_cell_value():
+    row = Config.TABLE.row(ROW_KEY1)
+
+    cell_val1 = b"1"
+    row.set_cell(COLUMN_FAMILY_ID, COL_NAME1, cell_val1)
+    row.commit()
+
+    # [START bigtable_row_append_cell_value]
+    from google.cloud.bigtable import Client
+
+    client = Client(admin=True)
+    instance = client.instance(INSTANCE_ID)
+    table = instance.table(TABLE_ID)
+    row = table.row(ROW_KEY1, append=True)
+
+    cell_val2 = b"2"
+    row.append_cell_value(COLUMN_FAMILY_ID, COL_NAME1, cell_val2)
+    # [END bigtable_row_append_cell_value]
+    row.commit()
+
+    row_data = table.read_row(ROW_KEY1)
+    actual_value = row_data.cell_value(COLUMN_FAMILY_ID, COL_NAME1)
+    assert actual_value == cell_val1 + cell_val2
+
+    # [START bigtable_row_commit]
+    from google.cloud.bigtable import Client
+
+    client = Client(admin=True)
+    instance = client.instance(INSTANCE_ID)
+    table = instance.table(TABLE_ID)
+    row = Config.TABLE.row(ROW_KEY2)
+    cell_val = 1
+    row.set_cell(COLUMN_FAMILY_ID, COL_NAME1, cell_val)
+    row.commit()
+    # [END bigtable_row_commit]
+
+    # [START bigtable_row_increment_cell_value]
+    from google.cloud.bigtable import Client
+
+    client = Client(admin=True)
+    instance = client.instance(INSTANCE_ID)
+    table = instance.table(TABLE_ID)
+    row = table.row(ROW_KEY2, append=True)
+
+    int_val = 3
+    row.increment_cell_value(COLUMN_FAMILY_ID, COL_NAME1, int_val)
+    # [END bigtable_row_increment_cell_value]
+    row.commit()
+
+    row_data = table.read_row(ROW_KEY2)
+    actual_value = row_data.cell_value(COLUMN_FAMILY_ID, COL_NAME1)
+
+    import struct
+
+    _PACK_I64 = struct.Struct(">q").pack
+    assert actual_value == _PACK_I64(cell_val + int_val)
+    table.truncate(timeout=200)
+
+
+def test_bigtable_row_clear():
+    # [START bigtable_row_clear]
+    from google.cloud.bigtable import Client
+
+    client = Client(admin=True)
+    instance = client.instance(INSTANCE_ID)
+    table = instance.table(TABLE_ID)
+
+    row_key = b"row_key_1"
+    row_obj = table.row(row_key)
+    row_obj.set_cell(COLUMN_FAMILY_ID, COL_NAME1, b"cell-val")
+    # [END bigtable_row_clear]
+
+    mutation_size = row_obj.get_mutations_size()
+    assert mutation_size > 0
+
+    # [START bigtable_row_clear]
+    row_obj.clear()
+    # [END bigtable_row_clear]
+
+    mutation_size = row_obj.get_mutations_size()
+    assert mutation_size == 0
+
+
 if __name__ == "__main__":
     pytest.main()

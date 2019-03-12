@@ -794,6 +794,12 @@ class AppendRow(Row):
             request. To actually send an API request (with the rules) to the
             Google Cloud Bigtable API, call :meth:`commit`.
 
+        For example:
+        
+        .. literalinclude:: snippets_table.py
+            :start-after: [START bigtable_row_append_cell_value]
+            :end-before: [END bigtable_row_append_cell_value]
+
         :type column_family_id: str
         :param column_family_id: The column family that contains the column.
                                  Must be of the form
@@ -827,6 +833,12 @@ class AppendRow(Row):
             read-modify rules on this row, but does not make an API
             request. To actually send an API request (with the rules) to the
             Google Cloud Bigtable API, call :meth:`commit`.
+
+        For example:
+        
+        .. literalinclude:: snippets_table.py
+            :start-after: [START bigtable_row_increment_cell_value]
+            :end-before: [END bigtable_row_increment_cell_value]
 
         :type column_family_id: str
         :param column_family_id: The column family that contains the column.
@@ -868,25 +880,11 @@ class AppendRow(Row):
 
         After committing the accumulated mutations, resets the local mutations.
 
-        .. code:: python
+        For example:
 
-            >>> append_row.commit()
-            {
-                u'col-fam-id': {
-                    b'col-name1': [
-                        (b'cell-val', datetime.datetime(...)),
-                        (b'cell-val-newer', datetime.datetime(...)),
-                    ],
-                    b'col-name2': [
-                        (b'altcol-cell-val', datetime.datetime(...)),
-                    ],
-                },
-                u'col-fam-id2': {
-                    b'col-name3-but-other-fam': [
-                        (b'foo', datetime.datetime(...)),
-                    ],
-                },
-            }
+        .. literalinclude:: snippets_table.py
+            :start-after: [START bigtable_row_commit]
+            :end-before: [END bigtable_row_commit]
 
         :rtype: dict
         :returns: The new contents of all modified cells. Returned as a
