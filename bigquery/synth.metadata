@@ -1,0 +1,24 @@
+{
+  "updateTime": "2019-03-12T17:32:21.942838Z",
+  "sources": [
+    {
+      "generator": {
+        "name": "artman",
+        "version": "0.16.16",
+        "dockerImage": "googleapis/artman@sha256:30babbfce7f05a62b1892c63c575aa2c8c502eb4bcc8f3bb90ec83e955d5d319"
+      }
+    }
+  ],
+  "destinations": [
+    {
+      "client": {
+        "source": "googleapis",
+        "apiName": "bigquery",
+        "apiVersion": "v2",
+        "language": "python",
+        "generator": "gapic",
+        "config": "google/cloud/bigquery/artman_bigquery_v2.yaml"
+      }
+    }
+  ]
+}

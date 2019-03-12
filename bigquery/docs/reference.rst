@@ -139,9 +139,19 @@ External Configuration
 
 
 Magics
-======================
+======
 
 .. toctree::
     :maxdepth: 2
 
     magics
+
+Additional Types
+================
+
+Protocol buffer classes for working with the Models API.
+
+.. toctree::
+    :maxdepth: 2
+
+    gapic/v2/types
