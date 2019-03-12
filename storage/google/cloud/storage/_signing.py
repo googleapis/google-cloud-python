@@ -221,10 +221,12 @@ def generate_signed_url_v2(
         canonicalized_resource = "{0}".format(resource)
 
     if query_parameters is not None:
-        normalized_qp = list(sorted(
-            (key.lower(), value and value.strip() or "")
-            for key, value in query_parameters.items()
-        ))
+        normalized_qp = list(
+            sorted(
+                (key.lower(), value and value.strip() or "")
+                for key, value in query_parameters.items()
+            )
+        )
         encoded_qp = six.moves.urllib.parse.urlencode(normalized_qp)
         canonicalized_resource = "{}?{}".format(canonicalized_resource, encoded_qp)
     else:
@@ -242,7 +244,9 @@ def generate_signed_url_v2(
     )
 
     # Set the right query parameters.
-    signed_query_params = get_signed_query_params(credentials, expiration, string_to_sign)
+    signed_query_params = get_signed_query_params(
+        credentials, expiration, string_to_sign
+    )
 
     if response_type is not None:
         signed_query_params["response-content-type"] = response_type
