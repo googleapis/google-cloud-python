@@ -197,6 +197,8 @@ def generate_signed_url_v2(
         (Optional) Additional HTTP headers to be included as part of the
         signed URLs.  See:
         https://cloud.google.com/storage/docs/xml-api/reference-headers
+        Requests using the signed URL *must* pass the specified header
+        (name and value) with each request for the URL.
 
     :type query_parameters: dict
     :param query_parameters:
@@ -355,6 +357,8 @@ def generate_signed_url_v4(
         (Optional) Additional HTTP headers to be included as part of the
         signed URLs.  See:
         https://cloud.google.com/storage/docs/xml-api/reference-headers
+        Requests using the signed URL *must* pass the specified header
+        (name and value) with each request for the URL.
 
     :type query_parameters: dict
     :param query_parameters:
