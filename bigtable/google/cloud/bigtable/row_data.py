@@ -173,7 +173,7 @@ class PartialRowData(object):
     @property
     def cells(self):
         """Property returning all the cells accumulated on this partial row.
-        
+
         For example:
 
         .. literalinclude:: snippets_table.py
@@ -198,14 +198,14 @@ class PartialRowData(object):
         return self._row_key
 
     def find_cells(self, column_family_id, column):
-       """Get a time series of cells stored on this instance.
-        
+        """Get a time series of cells stored on this instance.
+
         For example:
-        
+
         .. literalinclude:: snippets_table.py
             :start-after: [START bigtable_row_find_cells]
             :end-before: [END bigtable_row_find_cells]
-        
+
         Args:
             column_family_id (str): The ID of the column family. Must be of the
                 form ``[_a-zA-Z0-9][-_.a-zA-Z0-9]*``.
@@ -238,7 +238,7 @@ class PartialRowData(object):
         """Get a single cell value stored on this instance.
 
         For example:
-        
+
         .. literalinclude:: snippets_table.py
             :start-after: [START bigtable_row_cell_value]
             :end-before: [END bigtable_row_cell_value]
@@ -277,9 +277,9 @@ class PartialRowData(object):
 
     def cell_values(self, column_family_id, column, max_count=None):
         """Get a time series of cells stored on this instance.
-        
+
         For example:
-        
+
         .. literalinclude:: snippets_table.py
             :start-after: [START bigtable_row_cell_values]
             :end-before: [END bigtable_row_cell_values]

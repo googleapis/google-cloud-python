@@ -57,10 +57,11 @@ class Row(object):
         """Row key.
 
         For example:
+
         .. literalinclude:: snippets_table.py
             :start-after: [START bigtable_row_row_key]
             :end-before: [END bigtable_row_row_key]
-        
+
         :rtype: bytes
         :returns: The key for the current row.
         """
@@ -71,11 +72,11 @@ class Row(object):
         """Row table.
 
         For example:
-        
+
         .. literalinclude:: snippets_table.py
             :start-after: [START bigtable_row_table]
             :end-before: [END bigtable_row_table]
-        
+
         :rtype: table: :class:`Table <google.cloud.bigtable.table.Table>`
         :returns: table: The table that owns the row.
         """
@@ -293,9 +294,9 @@ class DirectRow(_SetDeleteRow):
 
     def get_mutations_size(self):
         """ Gets the total mutations size for current row
-        
+
         For example:
-        
+
         .. literalinclude:: snippets_table.py
             :start-after: [START bigtable_row_get_mutations_size]
             :end-before: [END bigtable_row_get_mutations_size]
@@ -376,7 +377,7 @@ class DirectRow(_SetDeleteRow):
             Bigtable API, call :meth:`commit`.
 
         For example:
-        
+
         .. literalinclude:: snippets_table.py
             :start-after: [START bigtable_row_delete_cell]
             :end-before: [END bigtable_row_delete_cell]
@@ -444,7 +445,7 @@ class DirectRow(_SetDeleteRow):
         mutations to an empty list.
 
         For example:
-        
+
         .. literalinclude:: snippets_table.py
             :start-after: [START bigtable_row_commit]
             :end-before: [END bigtable_row_commit]
@@ -457,9 +458,9 @@ class DirectRow(_SetDeleteRow):
 
     def clear(self):
         """Removes all currently accumulated mutations on the current row.
-        
+
         For example:
-        
+
         .. literalinclude:: snippets_table.py
             :start-after: [START bigtable_row_clear]
             :end-before: [END bigtable_row_clear]
@@ -551,7 +552,7 @@ class ConditionalRow(_SetDeleteRow):
         mutations.
 
         For example:
-        
+
         .. literalinclude:: snippets_table.py
             :start-after: [START bigtable_row_commit]
             :end-before: [END bigtable_row_commit]
@@ -603,7 +604,7 @@ class ConditionalRow(_SetDeleteRow):
             Bigtable API, call :meth:`commit`.
 
         For example:
-        
+
         .. literalinclude:: snippets_table.py
             :start-after: [START bigtable_row_set_cell]
             :end-before: [END bigtable_row_set_cell]
@@ -644,7 +645,7 @@ class ConditionalRow(_SetDeleteRow):
             Bigtable API, call :meth:`commit`.
 
         For example:
-        
+
         .. literalinclude:: snippets_table.py
             :start-after: [START bigtable_row_delete]
             :end-before: [END bigtable_row_delete]
@@ -666,7 +667,7 @@ class ConditionalRow(_SetDeleteRow):
             Bigtable API, call :meth:`commit`.
 
          For example:
-    
+
         .. literalinclude:: snippets_table.py
             :start-after: [START bigtable_row_delete_cell]
             :end-before: [END bigtable_row_delete_cell]
@@ -703,7 +704,7 @@ class ConditionalRow(_SetDeleteRow):
             Bigtable API, call :meth:`commit`.
 
         For example:
- 
+
         .. literalinclude:: snippets_table.py
             :start-after: [START bigtable_row_delete_cells]
           :end-before: [END bigtable_row_delete_cells]
@@ -735,9 +736,9 @@ class ConditionalRow(_SetDeleteRow):
 
     def clear(self):
         """Removes all currently accumulated mutations on the current row.
-        
+
         For example:
-        
+
         .. literalinclude:: snippets_table.py
             :start-after: [START bigtable_row_clear]
             :end-before: [END bigtable_row_clear]
@@ -774,13 +775,13 @@ class AppendRow(Row):
 
     def clear(self):
         """Removes all currently accumulated modifications on current row.
-        
+
         For example:
-        
+
         .. literalinclude:: snippets_table.py
             :start-after: [START bigtable_row_clear]
             :end-before: [END bigtable_row_clear]
-        
+
         """
         del self._rule_pb_list[:]
 
@@ -795,7 +796,7 @@ class AppendRow(Row):
             Google Cloud Bigtable API, call :meth:`commit`.
 
         For example:
-        
+
         .. literalinclude:: snippets_table.py
             :start-after: [START bigtable_row_append_cell_value]
             :end-before: [END bigtable_row_append_cell_value]
@@ -835,7 +836,7 @@ class AppendRow(Row):
             Google Cloud Bigtable API, call :meth:`commit`.
 
         For example:
-        
+
         .. literalinclude:: snippets_table.py
             :start-after: [START bigtable_row_increment_cell_value]
             :end-before: [END bigtable_row_increment_cell_value]
