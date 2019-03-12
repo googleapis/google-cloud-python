@@ -95,7 +95,7 @@ class Cluster(object):
         """Creates an cluster instance from a protobuf.
 
         For example:
-        
+
         .. literalinclude:: snippets.py
             :start-after: [START bigtable_cluster_from_pb]
             :end-before: [END bigtable_cluster_from_pb]
@@ -155,7 +155,7 @@ class Cluster(object):
           do not, but the return value is not cached.
 
         For example:
-        
+
         .. literalinclude:: snippets.py
             :start-after: [START bigtable_cluster_name]
             :end-before: [END bigtable_cluster_name]
@@ -174,13 +174,13 @@ class Cluster(object):
     @property
     def state(self):
         """google.cloud.bigtable.enums.Cluster.State: state of cluster.
-        
+
         For example:
-        
+
         .. literalinclude:: snippets.py
             :start-after: [START bigtable_cluster_state]
             :end-before: [END bigtable_cluster_state]
-        
+
         """
         return self._state
 

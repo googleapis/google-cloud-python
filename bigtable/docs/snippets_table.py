@@ -1367,5 +1367,101 @@ def test_bigtable_cluster_state():
     assert not cluster_state
 
 
+def test_bigtable_admins_policy():
+    # [START bigtable_admins_policy]
+    from google.cloud.bigtable import Client
+    from google.cloud.bigtable.policy import Policy
+    from google.cloud.bigtable.policy import BIGTABLE_ADMIN_ROLE
+
+    # [END bigtable_admins_policy]
+
+    service_account_email = Config.CLIENT._credentials.service_account_email
+
+    # [START bigtable_admins_policy]
+    client = Client(admin=True)
+    instance = client.instance(INSTANCE_ID)
+    instance.reload()
+    new_policy = Policy()
+    new_policy[BIGTABLE_ADMIN_ROLE] = [Policy.service_account(service_account_email)]
+
+    policy_latest = instance.set_iam_policy(new_policy)
+    policy = policy_latest.bigtable_admins
+    # [END bigtable_admins_policy]
+
+    assert len(policy) > 0
+
+
+def test_bigtable_readers_policy():
+    # [START bigtable_readers_policy]
+    from google.cloud.bigtable import Client
+    from google.cloud.bigtable.policy import Policy
+    from google.cloud.bigtable.policy import BIGTABLE_READER_ROLE
+
+    # [END bigtable_readers_policy]
+
+    service_account_email = Config.CLIENT._credentials.service_account_email
+
+    # [START bigtable_readers_policy]
+    client = Client(admin=True)
+    instance = client.instance(INSTANCE_ID)
+    instance.reload()
+    new_policy = Policy()
+    new_policy[BIGTABLE_READER_ROLE] = [Policy.service_account(service_account_email)]
+
+    policy_latest = instance.set_iam_policy(new_policy)
+    policy = policy_latest.bigtable_readers
+    # [END bigtable_readers_policy]
+
+    assert len(policy) > 0
+
+
+def test_bigtable_users_policy():
+    # [START bigtable_users_policy]
+    from google.cloud.bigtable import Client
+    from google.cloud.bigtable.policy import Policy
+    from google.cloud.bigtable.policy import BIGTABLE_USER_ROLE
+
+    # [END bigtable_users_policy]
+
+    service_account_email = Config.CLIENT._credentials.service_account_email
+
+    # [START bigtable_users_policy]
+    client = Client(admin=True)
+    instance = client.instance(INSTANCE_ID)
+    instance.reload()
+    new_policy = Policy()
+    new_policy[BIGTABLE_USER_ROLE] = [Policy.service_account(service_account_email)]
+
+    policy_latest = instance.set_iam_policy(new_policy)
+    policy = policy_latest.bigtable_users
+    # [END bigtable_users_policy]
+
+    assert len(policy) > 0
+
+
+def test_bigtable_viewers_policy():
+    # [START bigtable_viewers_policy]
+    from google.cloud.bigtable import Client
+    from google.cloud.bigtable.policy import Policy
+    from google.cloud.bigtable.policy import BIGTABLE_VIEWER_ROLE
+
+    # [END bigtable_viewers_policy]
+
+    service_account_email = Config.CLIENT._credentials.service_account_email
+
+    # [START bigtable_viewers_policy]
+    client = Client(admin=True)
+    instance = client.instance(INSTANCE_ID)
+    instance.reload()
+    new_policy = Policy()
+    new_policy[BIGTABLE_VIEWER_ROLE] = [Policy.service_account(service_account_email)]
+
+    policy_latest = instance.set_iam_policy(new_policy)
+    policy = policy_latest.bigtable_viewers
+    # [END bigtable_viewers_policy]
+
+    assert len(policy) > 0
+
+
 if __name__ == "__main__":
     pytest.main()

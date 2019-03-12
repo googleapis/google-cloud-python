@@ -81,7 +81,14 @@ class Policy(BasePolicy):
 
     @property
     def bigtable_admins(self):
-        """Access to bigtable.admin role memebers"""
+        """Access to bigtable.admin role memebers
+
+        For example:
+
+        .. literalinclude:: snippets.py
+            :start-after: [START bigtable_admins_policy]
+            :end-before: [END bigtable_admins_policy]
+        """
         result = set()
         for member in self._bindings.get(BIGTABLE_ADMIN_ROLE, ()):
             result.add(member)
@@ -89,7 +96,14 @@ class Policy(BasePolicy):
 
     @property
     def bigtable_readers(self):
-        """Access to bigtable.reader role memebers"""
+        """Access to bigtable.reader role memebers
+
+        For example:
+
+        .. literalinclude:: snippets.py
+            :start-after: [START bigtable_readers_policy]
+            :end-before: [END bigtable_readers_policy]
+        """
         result = set()
         for member in self._bindings.get(BIGTABLE_READER_ROLE, ()):
             result.add(member)
@@ -97,7 +111,14 @@ class Policy(BasePolicy):
 
     @property
     def bigtable_users(self):
-        """Access to bigtable.user role memebers"""
+        """Access to bigtable.user role memebers
+
+        For example:
+
+        .. literalinclude:: snippets.py
+            :start-after: [START bigtable_users_policy]
+            :end-before: [END bigtable_users_policy]
+        """
         result = set()
         for member in self._bindings.get(BIGTABLE_USER_ROLE, ()):
             result.add(member)
@@ -105,7 +126,14 @@ class Policy(BasePolicy):
 
     @property
     def bigtable_viewers(self):
-        """Access to bigtable.viewer role memebers"""
+        """Access to bigtable.viewer role memebers
+
+        For example:
+
+        .. literalinclude:: snippets.py
+            :start-after: [START bigtable_viewers_policy]
+            :end-before: [END bigtable_viewers_policy]
+        """
         result = set()
         for member in self._bindings.get(BIGTABLE_VIEWER_ROLE, ()):
             result.add(member)
