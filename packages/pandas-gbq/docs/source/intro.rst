@@ -20,7 +20,6 @@ more verbose logs, you can do something like:
 .. code-block:: ipython
 
    import logging
-   import sys
    logger = logging.getLogger('pandas_gbq')
    logger.setLevel(logging.DEBUG)
-   logger.addHandler(logging.StreamHandler(stream=sys.stdout))
+   logger.addHandler(logging.StreamHandler())
