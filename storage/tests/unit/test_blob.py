@@ -443,7 +443,6 @@ class Test_Blob(unittest.TestCase):
         self._generate_signed_url_v2_helper(blob_name=BLOB_NAME)
 
     def test_generate_signed_url_v2_w_endpoint(self):
-        credentials = object()
         self._generate_signed_url_v2_helper(
             api_access_endpoint="https://api.example.com/v1"
         )
@@ -492,7 +491,6 @@ class Test_Blob(unittest.TestCase):
         self._generate_signed_url_v4_helper(blob_name=BLOB_NAME)
 
     def test_generate_signed_url_v4_w_endpoint(self):
-        credentials = object()
         self._generate_signed_url_v4_helper(
             api_access_endpoint="https://api.example.com/v1"
         )

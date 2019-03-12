@@ -148,7 +148,6 @@ class Test_generate_signed_url_v2(unittest.TestCase):
     ):
         from six.moves.urllib.parse import urlencode
 
-        endpoint = "http://api.example.com"
         resource = "/name/path"
         credentials = _make_credentials(signer_email="service@example.com")
         credentials.sign_bytes.return_value = b"DEADBEEF"
