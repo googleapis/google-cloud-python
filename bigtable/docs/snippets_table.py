@@ -857,5 +857,82 @@ def test_bigtable_create_family_gc_nested():
     column_family_obj.delete()
 
 
+def test_bigtable_row_data_cells_cell_value_cell_values():
+
+    value = b"value_in_col1"
+    row = Config.TABLE.row(b"row_key_1")
+    row.set_cell(
+        COLUMN_FAMILY_ID, COL_NAME1, value, timestamp=datetime.datetime.utcnow()
+    )
+    row.commit()
+
+    row.set_cell(
+        COLUMN_FAMILY_ID, COL_NAME1, value, timestamp=datetime.datetime.utcnow()
+    )
+    row.commit()
+
+    # [START bigtable_row_data_cells]
+    from google.cloud.bigtable import Client
+
+    client = Client(admin=True)
+    instance = client.instance(INSTANCE_ID)
+    table = instance.table(TABLE_ID)
+    row_key = "row_key_1"
+    row_data = table.read_row(row_key)
+
+    cells = row_data.cells
+    # [END bigtable_row_data_cells]
+
+    actual_cell_value = cells[COLUMN_FAMILY_ID][COL_NAME1][0].value
+    assert actual_cell_value == value
+
+    # [START bigtable_row_cell_value]
+    from google.cloud.bigtable import Client
+
+    client = Client(admin=True)
+    instance = client.instance(INSTANCE_ID)
+    table = instance.table(TABLE_ID)
+    row_key = "row_key_1"
+    row_data = table.read_row(row_key)
+
+    cell_value = row_data.cell_value(COLUMN_FAMILY_ID, COL_NAME1)
+    # [END bigtable_row_cell_value]
+    assert cell_value == value
+
+    # [START bigtable_row_cell_values]
+    from google.cloud.bigtable import Client
+
+    client = Client(admin=True)
+    instance = client.instance(INSTANCE_ID)
+    table = instance.table(TABLE_ID)
+    row_key = "row_key_1"
+    row_data = table.read_row(row_key)
+
+    cell_values = row_data.cell_values(COLUMN_FAMILY_ID, COL_NAME1)
+    # [END bigtable_row_cell_values]
+
+    for actual_value, timestamp in cell_values:
+        assert actual_value == value
+
+    value2 = b"value_in_col2"
+    row.set_cell(COLUMN_FAMILY_ID, COL_NAME2, value2)
+    row.commit()
+
+    # [START bigtable_row_find_cells]
+    from google.cloud.bigtable import Client
+
+    client = Client(admin=True)
+    instance = client.instance(INSTANCE_ID)
+    table = instance.table(TABLE_ID)
+    row_key = "row_key_1"
+    row = table.read_row(row_key)
+
+    cells = row.find_cells(COLUMN_FAMILY_ID, COL_NAME2)
+    # [END bigtable_row_find_cells]
+
+    assert cells[0].value == value2
+    table.truncate(timeout=200)
+
+
 if __name__ == "__main__":
     pytest.main()
