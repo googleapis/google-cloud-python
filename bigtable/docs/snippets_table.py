@@ -934,5 +934,248 @@ def test_bigtable_row_data_cells_cell_value_cell_values():
     table.truncate(timeout=200)
 
 
+def test_bigtable_row_setcell_rowkey():
+    # [START bigtable_row_set_cell]
+    from google.cloud.bigtable import Client
+
+    client = Client(admin=True)
+    instance = client.instance(INSTANCE_ID)
+    table = instance.table(TABLE_ID)
+    row = table.row(ROW_KEY1)
+
+    cell_val = b"cell-val"
+    row.set_cell(
+        COLUMN_FAMILY_ID, COL_NAME1, cell_val, timestamp=datetime.datetime.utcnow()
+    )
+    # [END bigtable_row_set_cell]
+
+    response = table.mutate_rows([row])
+    # validate that all rows written successfully
+    for i, status in enumerate(response):
+        assert status.code == 0
+
+    # [START bigtable_row_row_key]
+    from google.cloud.bigtable import Client
+
+    client = Client(admin=True)
+    instance = client.instance(INSTANCE_ID)
+    table = instance.table(TABLE_ID)
+
+    row = table.row(ROW_KEY1)
+    row_key = row.row_key
+    # [END bigtable_row_row_key]
+    assert row_key == ROW_KEY1
+
+    # [START bigtable_row_table]
+    from google.cloud.bigtable import Client
+
+    client = Client(admin=True)
+    instance = client.instance(INSTANCE_ID)
+    table = instance.table(TABLE_ID)
+
+    row = table.row(ROW_KEY1)
+    table1 = row.table
+    # [END bigtable_row_table]
+
+    assert table1 == table
+    table.truncate(timeout=200)
+
+
+def test_bigtable_row_delete():
+    # [START bigtable_row_delete]
+    from google.cloud.bigtable import Client
+
+    client = Client(admin=True)
+    instance = client.instance(INSTANCE_ID)
+    table = instance.table(TABLE_ID)
+
+    row_key = b"row_key_1"
+    row_obj = table.row(row_key)
+    # [END bigtable_row_delete]
+
+    row_obj.set_cell(COLUMN_FAMILY_ID, COL_NAME1, b"cell-val")
+    row_obj.commit()
+    actual_rows_keys = []
+    for row in table.read_rows():
+        actual_rows_keys.append(row.row_key)
+    assert actual_rows_keys == [row_key]
+
+    # [START bigtable_row_delete]
+    row_obj.delete()
+    row_obj.commit()
+    # [END bigtable_row_delete]
+
+    actual_rows_keys = []
+    for row in table.read_rows():
+        actual_rows_keys.append(row.row_key)
+    assert len(actual_rows_keys) == 0
+
+
+def test_bigtable_row_delete_cell():
+    # [START bigtable_row_delete_cell]
+    from google.cloud.bigtable import Client
+
+    client = Client(admin=True)
+    instance = client.instance(INSTANCE_ID)
+    table = instance.table(TABLE_ID)
+
+    row_key1 = b"row_key_1"
+    row_obj = table.row(row_key1)
+    # [END bigtable_row_delete_cell]
+
+    row_obj.set_cell(COLUMN_FAMILY_ID, COL_NAME1, CELL_VAL1)
+    row_obj.commit()
+
+    row_key2 = b"row_key_2"
+    row_obj = table.row(row_key2)
+    row_obj.set_cell(COLUMN_FAMILY_ID2, COL_NAME2, CELL_VAL2)
+    row_obj.commit()
+
+    actual_rows_keys = []
+    for row in table.read_rows():
+        actual_rows_keys.append(row.row_key)
+    assert actual_rows_keys == [row_key1, row_key2]
+
+    # [START bigtable_row_delete_cell]
+    row_obj.delete_cell(COLUMN_FAMILY_ID2, COL_NAME2)
+    row_obj.commit()
+    # [END bigtable_row_delete_cell]
+
+    actual_rows_keys = []
+    for row in table.read_rows():
+        actual_rows_keys.append(row.row_key)
+    assert actual_rows_keys == [row_key1]
+    table.truncate(timeout=300)
+
+
+def test_bigtable_row_delete_cells():
+    # [START bigtable_row_delete_cells]
+    from google.cloud.bigtable import Client
+
+    client = Client(admin=True)
+    instance = client.instance(INSTANCE_ID)
+    table = instance.table(TABLE_ID)
+
+    row_key1 = b"row_key_1"
+    row_obj = table.row(row_key1)
+    # [END bigtable_row_delete_cells]
+
+    row_obj.set_cell(COLUMN_FAMILY_ID, COL_NAME1, CELL_VAL1)
+    row_obj.commit()
+    row_obj.set_cell(COLUMN_FAMILY_ID, COL_NAME2, CELL_VAL2)
+    row_obj.commit()
+
+    actual_rows_keys = []
+    for row in table.read_rows():
+        actual_rows_keys.append(row.row_key)
+    assert actual_rows_keys == [row_key1]
+
+    # [START bigtable_row_delete_cells]
+    row_obj.delete_cells(COLUMN_FAMILY_ID, [COL_NAME1, COL_NAME2])
+    row_obj.commit()
+    # [END bigtable_row_delete_cells]
+
+    actual_rows_keys = []
+    for row in table.read_rows():
+        actual_rows_keys.append(row.row_key)
+    assert actual_rows_keys == []
+
+
+def test_bigtable_row_clear():
+    # [START bigtable_row_clear]
+    from google.cloud.bigtable import Client
+
+    client = Client(admin=True)
+    instance = client.instance(INSTANCE_ID)
+    table = instance.table(TABLE_ID)
+
+    row_key = b"row_key_1"
+    row_obj = table.row(row_key)
+    row_obj.set_cell(COLUMN_FAMILY_ID, COL_NAME1, b"cell-val")
+    # [END bigtable_row_clear]
+
+    mutation_size = row_obj.get_mutations_size()
+    assert mutation_size > 0
+
+    # [START bigtable_row_clear]
+    row_obj.clear()
+    # [END bigtable_row_clear]
+
+    mutation_size = row_obj.get_mutations_size()
+    assert mutation_size == 0
+
+
+def test_bigtable_row_clear_get_mutations_size():
+    # [START bigtable_row_get_mutations_size]
+    from google.cloud.bigtable import Client
+
+    client = Client(admin=True)
+    instance = client.instance(INSTANCE_ID)
+    table = instance.table(TABLE_ID)
+
+    row_key_id = b"row_key_1"
+    row_obj = table.row(row_key_id)
+
+    mutation_size = row_obj.get_mutations_size()
+    # [END bigtable_row_get_mutations_size]
+    row_obj.set_cell(COLUMN_FAMILY_ID, COL_NAME1, b"cell-val")
+    mutation_size = row_obj.get_mutations_size()
+    assert mutation_size > 0
+
+    row_obj.clear()
+    mutation_size = row_obj.get_mutations_size()
+    assert mutation_size == 0
+
+
+def test_bigtable_row_setcell_commit_rowkey():
+    # [START bigtable_row_set_cell]
+    from google.cloud.bigtable import Client
+
+    client = Client(admin=True)
+    instance = client.instance(INSTANCE_ID)
+    table = instance.table(TABLE_ID)
+
+    row_key = b"row_key_1"
+    cell_val = b"cell-val"
+    row_obj = table.row(row_key)
+    row_obj.set_cell(COLUMN_FAMILY_ID, COL_NAME1, cell_val)
+    # [END bigtable_row_set_cell]
+    row_obj.commit()
+
+    # [START bigtable_row_commit]
+    from google.cloud.bigtable import Client
+
+    client = Client(admin=True)
+    instance = client.instance(INSTANCE_ID)
+    table = instance.table(TABLE_ID)
+
+    row_key = b"row_key_2"
+    cell_val = b"cell-val"
+    row_obj = table.row(row_key)
+    row_obj.set_cell(COLUMN_FAMILY_ID, COL_NAME1, cell_val)
+    row_obj.commit()
+    # [END bigtable_row_commit]
+
+    actual_rows_keys = []
+    for row in table.read_rows():
+        actual_rows_keys.append(row.row_key)
+
+    assert actual_rows_keys == [b"row_key_1", b"row_key_2"]
+
+    # [START bigtable_row_row_key]
+    from google.cloud.bigtable import Client
+
+    client = Client(admin=True)
+    instance = client.instance(INSTANCE_ID)
+    table = instance.table(TABLE_ID)
+
+    row_key_id = b"row_key_2"
+    row_obj = table.row(row_key_id)
+    row_key = row_obj.row_key
+    # [END bigtable_row_row_key]
+    assert row_key == row_key_id
+    table.truncate(timeout=300)
+
+
 if __name__ == "__main__":
     pytest.main()
