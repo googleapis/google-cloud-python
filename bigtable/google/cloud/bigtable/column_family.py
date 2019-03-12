@@ -46,8 +46,8 @@ class MaxVersionsGCRule(GarbageCollectionRule):
     For example:
 
     .. literalinclude:: snippets_table.py
-        :start-after: [START bigtable_create_MaxVersionsGCRule]
-        :end-before: [END bigtable_create_MaxVersionsGCRule]
+        :start-after: [START bigtable_create_family_gc_max_versions]
+        :end-before: [END bigtable_create_family_gc_max_versions]
 
     :type max_num_versions: int
     :param max_num_versions: The maximum number of versions
@@ -79,8 +79,8 @@ class MaxAgeGCRule(GarbageCollectionRule):
     For example:
 
     .. literalinclude:: snippets_table.py
-        :start-after: [START bigtable_create_MaxAgeGCRule]
-        :end-before: [END bigtable_create_MaxAgeGCRule]
+        :start-after: [START bigtable_create_family_gc_max_age]
+        :end-before: [END bigtable_create_family_gc_max_age]
 
     :type max_age: :class:`datetime.timedelta`
     :param max_age: The maximum age allowed for a cell in the table.
@@ -113,8 +113,8 @@ class GCRuleUnion(GarbageCollectionRule):
     For example:
 
     .. literalinclude:: snippets_table.py
-        :start-after: [START bigtable_create_GCRuleUnion]
-        :end-before: [END bigtable_create_GCRuleUnion]
+        :start-after: [START bigtable_create_family_gc_union]
+        :end-before: [END bigtable_create_family_gc_union]
 
     :type rules: list
     :param rules: List of :class:`GarbageCollectionRule`.
@@ -147,8 +147,8 @@ class GCRuleIntersection(GarbageCollectionRule):
     For example:
 
     .. literalinclude:: snippets_table.py
-        :start-after: [START bigtable_create_GCRuleIntersection]
-        :end-before: [END bigtable_create_GCRuleIntersection]
+        :start-after: [START bigtable_create_family_gc_intersection]
+        :end-before: [END bigtable_create_family_gc_intersection]
 
     :type rules: list
     :param rules: List of :class:`GarbageCollectionRule`.
