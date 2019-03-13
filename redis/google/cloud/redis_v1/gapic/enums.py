@@ -50,7 +50,6 @@ class Instance(object):
           DELETING (int): Redis instance is being deleted.
           REPAIRING (int): Redis instance is being repaired and may be unusable.
           MAINTENANCE (int): Maintenance is being performed on this Redis instance.
-          IMPORTING (int): Redis instance is importing data (availability may be affected).
           FAILING_OVER (int): Redis instance is failing over (availability may be affected).
         """
 
@@ -61,7 +60,6 @@ class Instance(object):
         DELETING = 4
         REPAIRING = 5
         MAINTENANCE = 6
-        IMPORTING = 8
         FAILING_OVER = 9
 
     class Tier(enum.IntEnum):
