@@ -190,6 +190,7 @@ class Instance(object):
         """google.cloud.bigtable.enums.Instance.State: state of Instance.
         
         For example:
+        
         .. literalinclude:: snippets.py
             :start-after: [START bigtable_instance_state]
             :end-before: [END bigtable_instance_state]

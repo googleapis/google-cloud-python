@@ -359,6 +359,7 @@ class DirectRow(_SetDeleteRow):
             Bigtable API, call :meth:`commit`.
 
         For example:
+
         .. literalinclude:: snippets_table.py
             :start-after: [START bigtable_row_delete]
             :end-before: [END bigtable_row_delete]
@@ -707,7 +708,7 @@ class ConditionalRow(_SetDeleteRow):
 
         .. literalinclude:: snippets_table.py
             :start-after: [START bigtable_row_delete_cells]
-          :end-before: [END bigtable_row_delete_cells]
+            :end-before: [END bigtable_row_delete_cells]
 
         :type column_family_id: str
         :param column_family_id: The column family that contains the column
