@@ -1,11 +1,11 @@
 {
-  "updateTime": "2019-03-11T20:20:50.145940Z",
+  "updateTime": "2019-03-13T18:12:17.948288Z",
   "sources": [
     {
       "generator": {
         "name": "artman",
-        "version": "0.16.15",
-        "dockerImage": "googleapis/artman@sha256:9caadfa59d48224cba5f3217eb9d61a155b78ccf31e628abef385bc5b7ed3bd2"
+        "version": "0.16.17",
+        "dockerImage": "googleapis/artman@sha256:7231f27272231a884e09edb5953148c85ecd8467780d33c4a35c3e507885715b"
       }
     },
     {

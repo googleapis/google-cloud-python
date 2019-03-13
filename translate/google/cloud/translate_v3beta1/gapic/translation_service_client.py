@@ -31,12 +31,12 @@ import google.api_core.path_template
 import google.api_core.protobuf_helpers
 import grpc
 
-from google.cloud.translation_v3beta1.gapic import translation_service_client_config
-from google.cloud.translation_v3beta1.gapic.transports import (
+from google.cloud.translate_v3beta1.gapic import translation_service_client_config
+from google.cloud.translate_v3beta1.gapic.transports import (
     translation_service_grpc_transport,
 )
-from google.cloud.translation_v3beta1.proto import translation_service_pb2
-from google.cloud.translation_v3beta1.proto import translation_service_pb2_grpc
+from google.cloud.translate_v3beta1.proto import translation_service_pb2
+from google.cloud.translate_v3beta1.proto import translation_service_pb2_grpc
 from google.longrunning import operations_pb2
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
@@ -209,9 +209,9 @@ class TranslationServiceClient(object):
         Translates input text and returns translated text.
 
         Example:
-            >>> from google.cloud import translation_v3beta1
+            >>> from google.cloud import translate_v3beta1
             >>>
-            >>> client = translation_v3beta1.TranslationServiceClient()
+            >>> client = translate_v3beta1.TranslationServiceClient()
             >>>
             >>> # TODO: Initialize `contents`:
             >>> contents = []
@@ -252,11 +252,11 @@ class TranslationServiceClient(object):
                 example, projects/{project-id}/locations/global/models/general/nmt
 
                 If missing, the system decides which google base model to use.
-            glossary_config (Union[dict, ~google.cloud.translation_v3beta1.types.TranslateTextGlossaryConfig]): Optional. Glossary to be applied. The glossary needs to be in the same
+            glossary_config (Union[dict, ~google.cloud.translate_v3beta1.types.TranslateTextGlossaryConfig]): Optional. Glossary to be applied. The glossary needs to be in the same
                 region as the model, otherwise an INVALID\_ARGUMENT error is returned.
 
                 If a dict is provided, it must be of the same form as the protobuf
-                message :class:`~google.cloud.translation_v3beta1.types.TranslateTextGlossaryConfig`
+                message :class:`~google.cloud.translate_v3beta1.types.TranslateTextGlossaryConfig`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -267,7 +267,7 @@ class TranslationServiceClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.cloud.translation_v3beta1.types.TranslateTextResponse` instance.
+            A :class:`~google.cloud.translate_v3beta1.types.TranslateTextResponse` instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -314,9 +314,9 @@ class TranslationServiceClient(object):
         Detects the language of text within a request.
 
         Example:
-            >>> from google.cloud import translation_v3beta1
+            >>> from google.cloud import translate_v3beta1
             >>>
-            >>> client = translation_v3beta1.TranslationServiceClient()
+            >>> client = translate_v3beta1.TranslationServiceClient()
             >>>
             >>> response = client.detect_language()
 
@@ -343,7 +343,7 @@ class TranslationServiceClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.cloud.translation_v3beta1.types.DetectLanguageResponse` instance.
+            A :class:`~google.cloud.translate_v3beta1.types.DetectLanguageResponse` instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -387,9 +387,9 @@ class TranslationServiceClient(object):
         Returns a list of supported languages for translation.
 
         Example:
-            >>> from google.cloud import translation_v3beta1
+            >>> from google.cloud import translate_v3beta1
             >>>
-            >>> client = translation_v3beta1.TranslationServiceClient()
+            >>> client = translate_v3beta1.TranslationServiceClient()
             >>>
             >>> response = client.get_supported_languages()
 
@@ -422,7 +422,7 @@ class TranslationServiceClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.cloud.translation_v3beta1.types.SupportedLanguages` instance.
+            A :class:`~google.cloud.translate_v3beta1.types.SupportedLanguages` instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -472,9 +472,9 @@ class TranslationServiceClient(object):
         use google.longrunning.Operation.name to poll the status of the call.
 
         Example:
-            >>> from google.cloud import translation_v3beta1
+            >>> from google.cloud import translate_v3beta1
             >>>
-            >>> client = translation_v3beta1.TranslationServiceClient()
+            >>> client = translate_v3beta1.TranslationServiceClient()
             >>>
             >>> # TODO: Initialize `source_language_code`:
             >>> source_language_code = ''
@@ -502,19 +502,19 @@ class TranslationServiceClient(object):
         Args:
             source_language_code (str): Required. Source language code.
             target_language_codes (list[str]): Required. Specify up to 10 language codes here.
-            input_configs (list[Union[dict, ~google.cloud.translation_v3beta1.types.InputConfig]]): Required. Input configurations.
+            input_configs (list[Union[dict, ~google.cloud.translate_v3beta1.types.InputConfig]]): Required. Input configurations.
                 The total number of files matched should be <= 1000.
                 The total content size should be <= 100M Unicode codepoints.
                 The files must use UTF-8 encoding.
 
                 If a dict is provided, it must be of the same form as the protobuf
-                message :class:`~google.cloud.translation_v3beta1.types.InputConfig`
-            output_config (Union[dict, ~google.cloud.translation_v3beta1.types.OutputConfig]): Required. Output configuration.
+                message :class:`~google.cloud.translate_v3beta1.types.InputConfig`
+            output_config (Union[dict, ~google.cloud.translate_v3beta1.types.OutputConfig]): Required. Output configuration.
                 If 2 input configs match to the same file (that is, same input path),
                 we don't generate output for duplicate inputs.
 
                 If a dict is provided, it must be of the same form as the protobuf
-                message :class:`~google.cloud.translation_v3beta1.types.OutputConfig`
+                message :class:`~google.cloud.translate_v3beta1.types.OutputConfig`
             parent (str): Optional. Only used when making regionalized call.
                 Format:
                 projects/{project-id}/locations/{location-id}.
@@ -534,11 +534,11 @@ class TranslationServiceClient(object):
 
                 If the map is empty or a specific model is
                 not requested for a language pair, then default google model is used.
-            glossaries (dict[str -> Union[dict, ~google.cloud.translation_v3beta1.types.TranslateTextGlossaryConfig]]): Optional. Glossaries to be applied for translation.
+            glossaries (dict[str -> Union[dict, ~google.cloud.translate_v3beta1.types.TranslateTextGlossaryConfig]]): Optional. Glossaries to be applied for translation.
                 It's keyed by target language code.
 
                 If a dict is provided, it must be of the same form as the protobuf
-                message :class:`~google.cloud.translation_v3beta1.types.TranslateTextGlossaryConfig`
+                message :class:`~google.cloud.translate_v3beta1.types.TranslateTextGlossaryConfig`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -549,7 +549,7 @@ class TranslationServiceClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.cloud.translation_v3beta1.types._OperationFuture` instance.
+            A :class:`~google.cloud.translate_v3beta1.types._OperationFuture` instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -601,9 +601,9 @@ class TranslationServiceClient(object):
         NOT\_FOUND, if the project doesn't exist.
 
         Example:
-            >>> from google.cloud import translation_v3beta1
+            >>> from google.cloud import translate_v3beta1
             >>>
-            >>> client = translation_v3beta1.TranslationServiceClient()
+            >>> client = translate_v3beta1.TranslationServiceClient()
             >>>
             >>> parent = client.location_path('[PROJECT]', '[LOCATION]')
             >>>
@@ -623,10 +623,10 @@ class TranslationServiceClient(object):
 
         Args:
             parent (str): Required. The project name.
-            glossary (Union[dict, ~google.cloud.translation_v3beta1.types.Glossary]): Required. The glossary to create.
+            glossary (Union[dict, ~google.cloud.translate_v3beta1.types.Glossary]): Required. The glossary to create.
 
                 If a dict is provided, it must be of the same form as the protobuf
-                message :class:`~google.cloud.translation_v3beta1.types.Glossary`
+                message :class:`~google.cloud.translate_v3beta1.types.Glossary`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -637,7 +637,7 @@ class TranslationServiceClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.cloud.translation_v3beta1.types._OperationFuture` instance.
+            A :class:`~google.cloud.translate_v3beta1.types._OperationFuture` instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -684,9 +684,9 @@ class TranslationServiceClient(object):
         doesn't exist.
 
         Example:
-            >>> from google.cloud import translation_v3beta1
+            >>> from google.cloud import translate_v3beta1
             >>>
-            >>> client = translation_v3beta1.TranslationServiceClient()
+            >>> client = translate_v3beta1.TranslationServiceClient()
             >>>
             >>> # Iterate over all results
             >>> for element in client.list_glossaries():
@@ -723,7 +723,7 @@ class TranslationServiceClient(object):
 
         Returns:
             A :class:`~google.gax.PageIterator` instance. By default, this
-            is an iterable of :class:`~google.cloud.translation_v3beta1.types.Glossary` instances.
+            is an iterable of :class:`~google.cloud.translate_v3beta1.types.Glossary` instances.
             This object can also be configured to iterate over the pages
             of the response through the `options` parameter.
 
@@ -774,9 +774,9 @@ class TranslationServiceClient(object):
         Gets a glossary. Returns NOT\_FOUND, if the glossary doesn't exist.
 
         Example:
-            >>> from google.cloud import translation_v3beta1
+            >>> from google.cloud import translate_v3beta1
             >>>
-            >>> client = translation_v3beta1.TranslationServiceClient()
+            >>> client = translate_v3beta1.TranslationServiceClient()
             >>>
             >>> name = client.glossary_path('[PROJECT]', '[LOCATION]', '[GLOSSARY]')
             >>>
@@ -794,7 +794,7 @@ class TranslationServiceClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.cloud.translation_v3beta1.types.Glossary` instance.
+            A :class:`~google.cloud.translate_v3beta1.types.Glossary` instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -831,9 +831,9 @@ class TranslationServiceClient(object):
         isn't created yet. Returns NOT\_FOUND, if the glossary doesn't exist.
 
         Example:
-            >>> from google.cloud import translation_v3beta1
+            >>> from google.cloud import translate_v3beta1
             >>>
-            >>> client = translation_v3beta1.TranslationServiceClient()
+            >>> client = translate_v3beta1.TranslationServiceClient()
             >>>
             >>> name = client.glossary_path('[PROJECT]', '[LOCATION]', '[GLOSSARY]')
             >>>
@@ -860,7 +860,7 @@ class TranslationServiceClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.cloud.translation_v3beta1.types._OperationFuture` instance.
+            A :class:`~google.cloud.translate_v3beta1.types._OperationFuture` instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request

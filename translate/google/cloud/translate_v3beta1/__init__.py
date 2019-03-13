@@ -16,8 +16,8 @@
 
 from __future__ import absolute_import
 
-from google.cloud.translation_v3beta1 import types
-from google.cloud.translation_v3beta1.gapic import translation_service_client
+from google.cloud.translate_v3beta1 import types
+from google.cloud.translate_v3beta1.gapic import translation_service_client
 
 
 class TranslationServiceClient(translation_service_client.TranslationServiceClient):

@@ -17,7 +17,7 @@
 import google.api_core.grpc_helpers
 import google.api_core.operations_v1
 
-from google.cloud.translation_v3beta1.proto import translation_service_pb2_grpc
+from google.cloud.translate_v3beta1.proto import translation_service_pb2_grpc
 
 
 class TranslationServiceGrpcTransport(object):

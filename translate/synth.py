@@ -35,7 +35,8 @@ for version in versions:
         private=True,
     )
 
-    s.move(library / f'google/cloud/translation_{version}', f'google/cloud/translate_{version}', excludes=excludes)
+    #s.move(library / f'google/cloud/translation_{version}', f'google/cloud/translate_{version}', excludes=excludes)
+    s.move(library / f'google/cloud/translate_{version}', excludes=excludes)
     s.move(library / 'tests')
 
 # ----------------------------------------------------------------------------
