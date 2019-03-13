@@ -47,4 +47,8 @@ s.replace(
     '"""Protocol buffer.\n\n  Attributes:',
 )
 
+# Remove non-ascii characters from docstrings for Python 2.7.
+# Format quoted strings as plain text.
+s.replace("google/cloud/bigquery_v2/proto/*.py", "[“”]", '``')
+
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)

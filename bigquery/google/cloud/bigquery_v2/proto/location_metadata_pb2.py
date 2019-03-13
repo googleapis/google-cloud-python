@@ -84,9 +84,9 @@ LocationMetadata = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       legacy_location_id:
-          The legacy BigQuery location ID, e.g. “EU” for the “europe”
+          The legacy BigQuery location ID, e.g. ``EU`` for the ``europe``
           location. This is for any API consumers that need the legacy
-          “US” and “EU” locations.
+          ``US`` and ``EU`` locations.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.bigquery.v2.LocationMetadata)
     ),

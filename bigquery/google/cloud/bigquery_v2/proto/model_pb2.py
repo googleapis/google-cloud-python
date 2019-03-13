@@ -2820,7 +2820,7 @@ Model = _reflection.GeneratedProtocolMessageType(
           this model.
       label_columns:
           Output only. Label columns that were used to train this model.
-          The output of the model will have a “predicted\_” prefix to
+          The output of the model will have a ``predicted\_`` prefix to
           these columns.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.bigquery.v2.Model)
