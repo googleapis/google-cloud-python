@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-api-core/#history
 
+## 1.8.1
+
+03-12-2019 12:45 PDT
+
+### Implementation Changes
+- Protect the creation of a background thread in BackgroundConsumer and wait on it starting. ([#7499](https://github.com/googleapis/google-cloud-python/pull/7499))
+
 ## 1.8.0
 
 02-23-2019 15:46 PST
