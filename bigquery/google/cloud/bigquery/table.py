@@ -821,8 +821,6 @@ class Table(object):
         Args:
             resource (Dict[str, object]):
                 Table resource representation from the API
-            dataset (google.cloud.bigquery.dataset.Dataset):
-                The dataset containing the table.
 
         Returns:
             google.cloud.bigquery.table.Table: Table parsed from ``resource``.
