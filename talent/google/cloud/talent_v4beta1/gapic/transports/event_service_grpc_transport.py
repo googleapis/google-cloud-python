@@ -107,7 +107,7 @@ class EventServiceGrpcTransport(object):
         `self service
         tools <https://console.cloud.google.com/talent-solution/overview>`__.
         `Learn
-        more <https://cloud.google.com/talent-solution/job-search/docs/management-tools>`__
+        more <https://cloud.google.com/talent-solution/docs/management-tools>`__
         about self service tools.
 
         Returns:
