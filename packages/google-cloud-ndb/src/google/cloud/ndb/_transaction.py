@@ -95,7 +95,9 @@ def transaction_async(
 @tasklets.tasklet
 def _transaction_async(context, callback, read_only=False):
     # Start the transaction
-    transaction_id = yield _datastore_api.begin_transaction(read_only)
+    transaction_id = yield _datastore_api.begin_transaction(
+        read_only, retries=0
+    )
 
     with context.new(transaction=transaction_id).use():
         try:
@@ -105,7 +107,7 @@ def _transaction_async(context, callback, read_only=False):
                 result = yield result
 
             # Commit the transaction
-            yield _datastore_api.commit(transaction_id)
+            yield _datastore_api.commit(transaction_id, retries=0)
 
         # Rollback if there is an error
         except:

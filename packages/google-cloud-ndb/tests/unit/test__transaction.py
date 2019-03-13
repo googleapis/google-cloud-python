@@ -74,10 +74,12 @@ class Test_transaction_async:
 
         future = _transaction.transaction_async(callback)
 
-        _datastore_api.begin_transaction.assert_called_once_with(False)
+        _datastore_api.begin_transaction.assert_called_once_with(
+            False, retries=0
+        )
         begin_future.set_result(b"tx123")
 
-        _datastore_api.commit.assert_called_once_with(b"tx123")
+        _datastore_api.commit.assert_called_once_with(b"tx123", retries=0)
         commit_future.set_result(None)
 
         assert future.result() == "I tried, momma."
@@ -97,10 +99,12 @@ class Test_transaction_async:
 
         future = _transaction.transaction_async(callback, retries=0)
 
-        _datastore_api.begin_transaction.assert_called_once_with(False)
+        _datastore_api.begin_transaction.assert_called_once_with(
+            False, retries=0
+        )
         begin_future.set_result(b"tx123")
 
-        _datastore_api.commit.assert_called_once_with(b"tx123")
+        _datastore_api.commit.assert_called_once_with(b"tx123", retries=0)
         commit_future.set_result(None)
 
         assert future.result() == "I tried, momma."
@@ -122,12 +126,14 @@ class Test_transaction_async:
 
         future = _transaction.transaction_async(callback)
 
-        _datastore_api.begin_transaction.assert_called_once_with(False)
+        _datastore_api.begin_transaction.assert_called_once_with(
+            False, retries=0
+        )
         begin_future.set_result(b"tx123")
 
         tasklet.set_result("I tried, momma.")
 
-        _datastore_api.commit.assert_called_once_with(b"tx123")
+        _datastore_api.commit.assert_called_once_with(b"tx123", retries=0)
         commit_future.set_result(None)
 
         assert future.result() == "I tried, momma."
@@ -149,7 +155,9 @@ class Test_transaction_async:
 
         future = _transaction.transaction_async(callback)
 
-        _datastore_api.begin_transaction.assert_called_once_with(False)
+        _datastore_api.begin_transaction.assert_called_once_with(
+            False, retries=0
+        )
         begin_future.set_result(b"tx123")
 
         _datastore_api.rollback.assert_called_once_with(b"tx123")
@@ -190,7 +198,7 @@ class Test_transaction_async:
         _datastore_api.begin_transaction.call_count == 2
         _datastore_api.rollback.assert_called_once_with(b"tx123")
         sleep.assert_called_once_with(0)
-        _datastore_api.commit.assert_called_once_with(b"tx123")
+        _datastore_api.commit.assert_called_once_with(b"tx123", retries=0)
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")

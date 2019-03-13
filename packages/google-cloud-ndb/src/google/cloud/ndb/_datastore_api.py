@@ -28,6 +28,7 @@ from google.cloud.datastore_v1.proto import entity_pb2
 from google.cloud.ndb import context as context_module
 from google.cloud.ndb import _eventloop
 from google.cloud.ndb import _remote
+from google.cloud.ndb import _retry
 from google.cloud.ndb import tasklets
 
 EVENTUAL = datastore_pb2.ReadOptions.EVENTUAL
@@ -68,6 +69,40 @@ def make_stub(client):
         channel = grpc.insecure_channel(client.host)
 
     return datastore_pb2_grpc.DatastoreStub(channel)
+
+
+def make_call(rpc_name, request, retries=None):
+    """Make a call to the Datastore API.
+
+    Args:
+        rpc_name (str): Name of the remote procedure to call on Datastore.
+        request (Any): An appropriate request object for the call, eg,
+            `entity_pb2.LookupRequest` for calling ``Lookup``.
+        retries (int): Number of times to potentially retry the call. If
+            :data:`None` is passed, will use :data:`_retry._DEFAULT_RETRIES`.
+            If :data:`0` is passed, the call is attempted only once.
+
+    Returns:
+        tasklets.Future: Future for the eventual response for the API call.
+    """
+    api = stub()
+    method = getattr(api, rpc_name)
+    if retries is None:
+        retries = _retry._DEFAULT_RETRIES
+
+    @tasklets.tasklet
+    def rpc_call():
+        rpc = _remote.RemoteCall(
+            method.future(request), "{}({})".format(rpc_name, request)
+        )
+        log.debug(rpc)
+        result = yield rpc
+        return result
+
+    if retries:
+        rpc_call = _retry.retry_async(rpc_call, retries=retries)
+
+    return rpc_call()
 
 
 def lookup(key, **options):
@@ -170,8 +205,9 @@ class _LookupBatch:
             keys.append(key_pb)
 
         read_options = _get_read_options(self.options)
-        rpc = _datastore_lookup(keys, read_options)
-        _eventloop.queue_rpc(rpc, self.lookup_callback)
+        retries = self.options.get("retries")
+        rpc = _datastore_lookup(keys, read_options, retries=retries)
+        rpc.add_done_callback(self.lookup_callback)
 
     def lookup_callback(self, rpc):
         """Process the results of a call to Datastore Lookup.
@@ -183,7 +219,7 @@ class _LookupBatch:
         loaded into a new batch so they can be tried again.
 
         Args:
-            rpc (_remote.RemoteCall): If not an exception, the result will be
+            rpc (tasklets.Future): If not an exception, the result will be
                 an instance of
                 :class:`google.cloud.datastore_v1.datastore_pb.LookupResponse`
         """
@@ -223,7 +259,7 @@ class _LookupBatch:
                 future.set_result(entity)
 
 
-def _datastore_lookup(keys, read_options):
+def _datastore_lookup(keys, read_options, retries=None):
     """Issue a Lookup call to Datastore using gRPC.
 
     Args:
@@ -231,9 +267,12 @@ def _datastore_lookup(keys, read_options):
             look up.
         read_options (Union[datastore_pb2.ReadOptions, NoneType]): Options for
             the request.
+        retries (int): Number of times to potentially retry the call. If
+            :data:`None` is passed, will use :data:`_retry._DEFAULT_RETRIES`.
+            If :data:`0` is passed, the call is attempted only once.
 
     Returns:
-        _remote.RemoteCall: Future object for eventual result of lookup.
+        tasklets.Future: Future object for eventual result of lookup.
     """
     client = context_module.get_context().client
     request = datastore_pb2.LookupRequest(
@@ -242,12 +281,7 @@ def _datastore_lookup(keys, read_options):
         read_options=read_options,
     )
 
-    api = stub()
-    rpc = _remote.RemoteCall(
-        api.Lookup.future(request), "Lookup({})".format(request)
-    )
-    log.debug(rpc)
-    return rpc
+    return make_call("Lookup", request, retries=retries)
 
 
 def _get_read_options(options):
@@ -407,22 +441,26 @@ class _NonTransactionalCommitBatch:
         def commit_callback(rpc):
             _process_commit(rpc, futures)
 
-        rpc = _datastore_commit(self.mutations, None)
-        _eventloop.queue_rpc(rpc, commit_callback)
+        retries = self.options.get("retries")
+        rpc = _datastore_commit(self.mutations, None, retries=retries)
+        rpc.add_done_callback(commit_callback)
 
 
-def commit(transaction):
+def commit(transaction, retries=None):
     """Commit a transaction.
 
     Args:
         transaction (bytes): The transaction id to commit.
+        retries (int): Number of times to potentially retry the call. If
+            :data:`None` is passed, will use :data:`_retry._DEFAULT_RETRIES`.
+            If :data:`0` is passed, the call is attempted only once.
 
     Returns:
         tasklets.Future: Result will be none, will finish when the transaction
             is committed.
     """
     batch = _get_commit_batch(transaction, {})
-    return batch.commit()
+    return batch.commit(retries=retries)
 
 
 def _get_commit_batch(transaction, options):
@@ -544,9 +582,10 @@ class _TransactionalCommitBatch(_NonTransactionalCommitBatch):
             # Signal that we're done allocating these ids
             allocating_ids.set_result(None)
 
+        retries = self.options.get("retries")
         keys = [mutation.upsert.key for mutation in mutations]
-        rpc = _datastore_allocate_ids(keys)
-        _eventloop.queue_rpc(rpc, callback)
+        rpc = _datastore_allocate_ids(keys, retries=retries)
+        rpc.add_done_callback(callback)
 
         self.incomplete_mutations = []
         self.incomplete_futures = []
@@ -568,8 +607,14 @@ class _TransactionalCommitBatch(_NonTransactionalCommitBatch):
             future.set_result(key)
 
     @tasklets.tasklet
-    def commit(self):
-        """Commit transaction."""
+    def commit(self, retries=None):
+        """Commit transaction.
+
+        Args:
+            retries (int): Number of times to potentially retry the call. If
+                :data:`None` is passed, will use :data:`_retry._DEFAULT_RETRIES`.
+                If :data:`0` is passed, the call is attempted only once.
+        """
         if not self.mutations:
             return
 
@@ -596,10 +641,10 @@ class _TransactionalCommitBatch(_NonTransactionalCommitBatch):
             else:
                 future.set_result(None)
 
-        _eventloop.queue_rpc(
-            _datastore_commit(self.mutations, transaction=self.transaction),
-            commit_callback,
+        rpc = _datastore_commit(
+            self.mutations, transaction=self.transaction, retries=retries
         )
+        rpc.add_done_callback(commit_callback)
 
         yield future
 
@@ -612,7 +657,7 @@ def _process_commit(rpc, futures):
         :data:`None`.
 
     Args:
-        rpc (_remote.RemoteCall): If not an exception, the result will be an
+        rpc (tasklets.Tasklet): If not an exception, the result will be an
             instance of
             :class:`google.cloud.datastore_v1.datastore_pb2.CommitResponse`
         futures (List[tasklets.Future]): List of futures waiting on results.
@@ -664,7 +709,7 @@ def _complete(key_pb):
     return False
 
 
-def _datastore_commit(mutations, transaction):
+def _datastore_commit(mutations, transaction, retries=None):
     """Call Commit on Datastore.
 
     Args:
@@ -673,9 +718,12 @@ def _datastore_commit(mutations, transaction):
         transaction (Union[bytes, NoneType]): The identifier for the
             transaction for this commit, or :data:`None` if no transaction is
             being used.
+        retries (int): Number of times to potentially retry the call. If
+            :data:`None` is passed, will use :data:`_retry._DEFAULT_RETRIES`.
+            If :data:`0` is passed, the call is attempted only once.
 
     Returns:
-        _remote.RemoteCall: A future for
+        tasklets.Tasklet: A future for
             :class:`google.cloud.datastore_v1.datastore_pb2.CommitResponse`
     """
     if transaction is None:
@@ -691,23 +739,21 @@ def _datastore_commit(mutations, transaction):
         transaction=transaction,
     )
 
-    api = stub()
-    rpc = _remote.RemoteCall(
-        api.Commit.future(request), "Commit({})".format(request)
-    )
-    log.debug(rpc)
-    return rpc
+    return make_call("Commit", request, retries=retries)
 
 
-def _datastore_allocate_ids(keys):
+def _datastore_allocate_ids(keys, retries=None):
     """Calls ``AllocateIds`` on Datastore.
 
     Args:
         keys (List[google.cloud.datastore_v1.entity_pb2.Key]): List of
             incomplete keys to allocate.
+        retries (int): Number of times to potentially retry the call. If
+            :data:`None` is passed, will use :data:`_retry._DEFAULT_RETRIES`.
+            If :data:`0` is passed, the call is attempted only once.
 
     Returns:
-        _remote.RemoteCall: A future for
+        tasklets.Tasklet: A future for
             :class:`google.cloud.datastore_v1.datastore_pb2.AllocateIdsResponse`
     """
     client = context_module.get_context().client
@@ -715,35 +761,40 @@ def _datastore_allocate_ids(keys):
         project_id=client.project, keys=keys
     )
 
-    api = stub()
-    rpc = _remote.RemoteCall(
-        api.AllocateIds.future(request), "AllocateIds({})".format(request)
-    )
-    log.debug(rpc)
-    return rpc
+    return make_call("AllocateIds", request, retries=retries)
 
 
 @tasklets.tasklet
-def begin_transaction(read_only):
+def begin_transaction(read_only, retries=None):
     """Start a new transction.
+
     Args:
         read_only (bool): Whether to start a read-only or read-write
             transaction.
+        retries (int): Number of times to potentially retry the call. If
+            :data:`None` is passed, will use :data:`_retry._DEFAULT_RETRIES`.
+            If :data:`0` is passed, the call is attempted only once.
+
     Returns:
         tasklets.Future: Result will be Transaction Id (bytes) of new
             transaction.
     """
-    response = yield _datastore_begin_transaction(read_only)
+    response = yield _datastore_begin_transaction(read_only, retries=retries)
     return response.transaction
 
 
-def _datastore_begin_transaction(read_only):
+def _datastore_begin_transaction(read_only, retries=None):
     """Calls ``BeginTransaction`` on Datastore.
+
     Args:
         read_only (bool): Whether to start a read-only or read-write
             transaction.
+        retries (int): Number of times to potentially retry the call. If
+            :data:`None` is passed, will use :data:`_retry._DEFAULT_RETRIES`.
+            If :data:`0` is passed, the call is attempted only once.
+
     Returns:
-        _remote.RemoteCall: A future for
+        tasklets.Tasklet: A future for
             :class:`google.cloud.datastore_v1.datastore_pb2.BeginTransactionResponse`
     """
     client = context_module.get_context().client
@@ -760,36 +811,36 @@ def _datastore_begin_transaction(read_only):
         project_id=client.project, transaction_options=options
     )
 
-    api = stub()
-    rpc = _remote.RemoteCall(
-        api.BeginTransaction.future(request),
-        "BeginTransaction({})".format(request),
-    )
-    log.debug(rpc)
-    return rpc
+    return make_call("BeginTransaction", request, retries=retries)
 
 
 @tasklets.tasklet
-def rollback(transaction):
+def rollback(transaction, retries=None):
     """Rollback a transaction.
 
     Args:
         transaction (bytes): Transaction id.
+        retries (int): Number of times to potentially retry the call. If
+            :data:`None` is passed, will use :data:`_retry._DEFAULT_RETRIES`.
+            If :data:`0` is passed, the call is attempted only once.
 
     Returns:
         tasklets.Future: Future completes when rollback is finished.
     """
-    yield _datastore_rollback(transaction)
+    yield _datastore_rollback(transaction, retries=retries)
 
 
-def _datastore_rollback(transaction):
+def _datastore_rollback(transaction, retries=None):
     """Calls Rollback in Datastore.
 
     Args:
         transaction (bytes): Transaction id.
+        retries (int): Number of times to potentially retry the call. If
+            :data:`None` is passed, will use :data:`_retry._DEFAULT_RETRIES`.
+            If :data:`0` is passed, the call is attempted only once.
 
     Returns:
-        _remote.RemoteCall: Future for
+        tasklets.Tasklet: Future for
             :class:`google.cloud.datastore_v1.datastore_pb2.RollbackResponse`
     """
     client = context_module.get_context().client
@@ -797,15 +848,15 @@ def _datastore_rollback(transaction):
         project_id=client.project, transaction=transaction
     )
 
-    api = stub()
-    rpc = _remote.RemoteCall(
-        api.Rollback.future(request), "Rollback({})".format(request)
-    )
-    log.debug(rpc)
-    return rpc
+    return make_call("Rollback", request, retries=retries)
 
 
-_OPTIONS_SUPPORTED = {"transaction", "read_consistency", "read_policy"}
+_OPTIONS_SUPPORTED = {
+    "transaction",
+    "read_consistency",
+    "read_policy",
+    "retries",
+}
 
 _OPTIONS_NOT_IMPLEMENTED = {
     "deadline",

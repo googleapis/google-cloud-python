@@ -63,6 +63,61 @@ class TestStub:
         grpc.insecure_channel.assert_called_once_with("thehost")
 
 
+class Test_make_call:
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    @mock.patch("google.cloud.ndb._datastore_api._retry")
+    @mock.patch("google.cloud.ndb._datastore_api.stub")
+    def test_defaults(stub, _retry):
+        api = stub.return_value
+        future = tasklets.Future()
+        api.foo.future.return_value = future
+        _retry.retry_async.return_value = mock.Mock(return_value=future)
+        future.set_result("bar")
+
+        request = object()
+        assert _api.make_call("foo", request).result() == "bar"
+        _retry.retry_async.assert_called_once()
+        tasklet = _retry.retry_async.call_args[0][0]
+        assert tasklet().result() == "bar"
+        retries = _retry.retry_async.call_args[1]["retries"]
+        assert retries is _retry._DEFAULT_RETRIES
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    @mock.patch("google.cloud.ndb._datastore_api._retry")
+    @mock.patch("google.cloud.ndb._datastore_api.stub")
+    def test_explicit_retries(stub, _retry):
+        api = stub.return_value
+        future = tasklets.Future()
+        api.foo.future.return_value = future
+        _retry.retry_async.return_value = mock.Mock(return_value=future)
+        future.set_result("bar")
+
+        request = object()
+        assert _api.make_call("foo", request, retries=4).result() == "bar"
+        _retry.retry_async.assert_called_once()
+        tasklet = _retry.retry_async.call_args[0][0]
+        assert tasklet().result() == "bar"
+        retries = _retry.retry_async.call_args[1]["retries"]
+        assert retries == 4
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    @mock.patch("google.cloud.ndb._datastore_api._retry")
+    @mock.patch("google.cloud.ndb._datastore_api.stub")
+    def test_no_retries(stub, _retry):
+        api = stub.return_value
+        future = tasklets.Future()
+        api.foo.future.return_value = future
+        _retry.retry_async.return_value = mock.Mock(return_value=future)
+        future.set_result("bar")
+
+        request = object()
+        assert _api.make_call("foo", request, retries=0).result() == "bar"
+        _retry.retry_async.assert_not_called()
+
+
 def _mock_key(key_str):
     key = mock.Mock(spec=("to_protobuf",))
     key.to_protobuf.return_value = protobuf = mock.Mock(
@@ -141,10 +196,14 @@ class Test_LookupBatch:
             def ParseFromString(self, key):
                 self.key = key
 
+        rpc = tasklets.Future("_datastore_lookup")
+        _datastore_lookup.return_value = rpc
+
         entity_pb2.Key = MockKey
         eventloop = mock.Mock(spec=("queue_rpc", "run"))
         with context.new(eventloop=eventloop).use() as context:
             batch = _api._LookupBatch({})
+            batch.lookup_callback = mock.Mock()
             batch.todo.update({"foo": ["one", "two"], "bar": ["three"]})
             batch.idle_callback()
 
@@ -156,10 +215,8 @@ class Test_LookupBatch:
             called_with_options = called_with[1]
             assert called_with_options == datastore_pb2.ReadOptions()
 
-            rpc = _datastore_lookup.return_value
-            context.eventloop.queue_rpc.assert_called_once_with(
-                rpc, batch.lookup_callback
-            )
+            rpc.set_result(None)
+            batch.lookup_callback.assert_called_once_with(rpc)
 
     @staticmethod
     def test_lookup_callback_exception():
@@ -312,8 +369,12 @@ def test__datastore_lookup(datastore_pb2, context):
     stub = mock.Mock(spec=("Lookup",))
     with context.new(client=client, stub=stub).use() as context:
         context.stub.Lookup = Lookup = mock.Mock(spec=("future",))
-        future = Lookup.future.return_value
-        assert _api._datastore_lookup(["foo", "bar"], None).future is future
+        future = tasklets.Future()
+        future.set_result("response")
+        Lookup.future.return_value = future
+        assert (
+            _api._datastore_lookup(["foo", "bar"], None).result() == "response"
+        )
 
         datastore_pb2.LookupRequest.assert_called_once_with(
             project_id="theproject", keys=["foo", "bar"], read_options=None
@@ -552,19 +613,20 @@ class Test_NonTransactionalCommitBatch:
     @mock.patch("google.cloud.ndb._datastore_api._datastore_commit")
     def test_idle_callback(_datastore_commit, _process_commit, context):
         eventloop = mock.Mock(spec=("queue_rpc", "run"))
+
+        rpc = tasklets.Future("_datastore_commit")
+        _datastore_commit.return_value = rpc
+
         with context.new(eventloop=eventloop).use() as context:
             mutation1, mutation2 = object(), object()
             batch = _api._NonTransactionalCommitBatch({})
             batch.mutations = [mutation1, mutation2]
             batch.idle_callback()
 
-            rpc = _datastore_commit.return_value
             _datastore_commit.assert_called_once_with(
-                [mutation1, mutation2], None
+                [mutation1, mutation2], None, retries=None
             )
-            arg0, callback = context.eventloop.queue_rpc.call_args[0]
-            assert arg0 is rpc
-            callback(rpc)
+            rpc.set_result(None)
             _process_commit.assert_called_once_with(rpc, batch.futures)
 
 
@@ -572,7 +634,7 @@ class Test_NonTransactionalCommitBatch:
 def test_commit(get_commit_batch):
     _api.commit(b"123")
     get_commit_batch.assert_called_once_with(b"123", {})
-    get_commit_batch.return_value.commit.assert_called_once_with()
+    get_commit_batch.return_value.commit.assert_called_once_with(retries=None)
 
 
 class Test_get_commit_batch:
@@ -614,32 +676,35 @@ class Test__TransactionalCommitBatch:
         future1, future2 = tasklets.Future(), tasklets.Future()
         batch.incomplete_futures = [future1, future2]
 
+        rpc = tasklets.Future("_datastore_allocate_ids")
+        datastore_allocate_ids.return_value = rpc
+
         eventloop = mock.Mock(spec=("queue_rpc", "run"))
-        with in_context.new(eventloop=eventloop).use() as context:
+        with in_context.new(eventloop=eventloop).use():
             batch.idle_callback()
 
-            rpc = datastore_allocate_ids.return_value
-            arg0, callback = context.eventloop.queue_rpc.call_args[0]
-            assert arg0 is rpc
-
-            rpc.result.return_value = mock.Mock(
-                keys=[
-                    entity_pb2.Key(
-                        path=[
-                            entity_pb2.Key.PathElement(kind="SomeKind", id=1)
-                        ]
-                    ),
-                    entity_pb2.Key(
-                        path=[
-                            entity_pb2.Key.PathElement(kind="SomeKind", id=2)
-                        ]
-                    ),
-                ]
+            rpc.set_result(
+                mock.Mock(
+                    keys=[
+                        entity_pb2.Key(
+                            path=[
+                                entity_pb2.Key.PathElement(
+                                    kind="SomeKind", id=1
+                                )
+                            ]
+                        ),
+                        entity_pb2.Key(
+                            path=[
+                                entity_pb2.Key.PathElement(
+                                    kind="SomeKind", id=2
+                                )
+                            ]
+                        ),
+                    ]
+                )
             )
-            rpc.exception.return_value = None
 
             allocating_ids = batch.allocating_ids[0]
-            callback(rpc)
             assert future1.result().path[0].id == 1
             assert mutation1.upsert.key.path[0].id == 1
             assert future2.result().path[0].id == 2
@@ -661,19 +726,17 @@ class Test__TransactionalCommitBatch:
         future1, future2 = tasklets.Future(), tasklets.Future()
         batch.incomplete_futures = [future1, future2]
 
+        rpc = tasklets.Future("_datastore_allocate_ids")
+        datastore_allocate_ids.return_value = rpc
+
         eventloop = mock.Mock(spec=("queue_rpc", "run"))
         with in_context.new(eventloop=eventloop).use():
             batch.idle_callback()
 
-            rpc = datastore_allocate_ids.return_value
-            arg0, callback = eventloop.queue_rpc.call_args[0]
-            assert arg0 is rpc
-
             error = Exception("Spurious error")
-            rpc.exception.return_value = error
+            rpc.set_exception(error)
 
             allocating_ids = batch.allocating_ids[0]
-            callback(rpc)
             assert future1.exception() is error
             assert future2.exception() is error
             assert allocating_ids.result() is None
@@ -698,21 +761,17 @@ class Test__TransactionalCommitBatch:
         batch.mutations = object()
         batch.transaction = b"abc"
 
+        rpc = tasklets.Future("_datastore_commit")
+        datastore_commit.return_value = rpc
+
         eventloop = mock.Mock(spec=("queue_rpc", "run"))
         with in_context.new(eventloop=eventloop).use():
             future = batch.commit()
 
             datastore_commit.assert_called_once_with(
-                batch.mutations, transaction=b"abc"
+                batch.mutations, transaction=b"abc", retries=None
             )
-            rpc = datastore_commit.return_value
-
-            arg0, callback = eventloop.queue_rpc.call_args[0]
-            assert arg0 is rpc
-
-            rpc.exception.return_value = None
-            callback(rpc)
-
+            rpc.set_result(None)
             process_commit.assert_called_once_with(rpc, batch.futures)
 
         assert future.result() is None
@@ -726,21 +785,19 @@ class Test__TransactionalCommitBatch:
         batch.mutations = object()
         batch.transaction = b"abc"
 
+        rpc = tasklets.Future("_datastore_commit")
+        datastore_commit.return_value = rpc
+
         eventloop = mock.Mock(spec=("queue_rpc", "run"))
         with in_context.new(eventloop=eventloop).use():
             future = batch.commit()
 
             datastore_commit.assert_called_once_with(
-                batch.mutations, transaction=b"abc"
+                batch.mutations, transaction=b"abc", retries=None
             )
-            rpc = datastore_commit.return_value
-
-            arg0, callback = eventloop.queue_rpc.call_args[0]
-            assert arg0 is rpc
 
             error = Exception("Spurious error")
-            rpc.exception.return_value = error
-            callback(rpc)
+            rpc.set_exception(error)
 
             process_commit.assert_called_once_with(rpc, batch.futures)
 
@@ -764,24 +821,22 @@ class Test__TransactionalCommitBatch:
         allocating_ids = tasklets.Future("AllocateIds")
         batch.allocating_ids.append(allocating_ids)
 
+        rpc = tasklets.Future("_datastore_commit")
+        datastore_commit.return_value = rpc
+
         eventloop = mock.Mock(spec=("queue_rpc", "run"))
         with in_context.new(eventloop=eventloop).use():
             future = batch.commit()
 
             datastore_commit.assert_not_called()
+            process_commit.assert_not_called()
+
             allocating_ids.set_result(None)
-
             datastore_commit.assert_called_once_with(
-                batch.mutations, transaction=b"abc"
+                batch.mutations, transaction=b"abc", retries=None
             )
-            rpc = datastore_commit.return_value
 
-            arg0, callback = eventloop.queue_rpc.call_args[0]
-            assert arg0 is rpc
-
-            rpc.exception.return_value = None
-            callback(rpc)
-
+            rpc.set_result(None)
             process_commit.assert_called_once_with(rpc, batch.futures)
 
         assert future.result() is None
@@ -857,8 +912,10 @@ class Test_datastore_commit:
     def test_wo_transaction(stub, datastore_pb2):
         mutations = object()
         api = stub.return_value
-        future = api.Commit.future.return_value
-        assert _api._datastore_commit(mutations, None).future == future
+        future = tasklets.Future()
+        future.set_result("response")
+        api.Commit.future.return_value = future
+        assert _api._datastore_commit(mutations, None).result() == "response"
 
         datastore_pb2.CommitRequest.assert_called_once_with(
             project_id="testing",
@@ -877,8 +934,12 @@ class Test_datastore_commit:
     def test_w_transaction(stub, datastore_pb2):
         mutations = object()
         api = stub.return_value
-        future = api.Commit.future.return_value
-        assert _api._datastore_commit(mutations, b"tx123").future == future
+        future = tasklets.Future()
+        future.set_result("response")
+        api.Commit.future.return_value = future
+        assert (
+            _api._datastore_commit(mutations, b"tx123").result() == "response"
+        )
 
         datastore_pb2.CommitRequest.assert_called_once_with(
             project_id="testing",
@@ -897,8 +958,10 @@ class Test_datastore_commit:
 def test__datastore_allocate_ids(stub, datastore_pb2):
     keys = object()
     api = stub.return_value
-    future = api.AllocateIds.future.return_value
-    assert _api._datastore_allocate_ids(keys).future == future
+    future = tasklets.Future()
+    future.set_result("response")
+    api.AllocateIds.future.return_value = future
+    assert _api._datastore_allocate_ids(keys).result() == "response"
 
     datastore_pb2.AllocateIdsRequest.assert_called_once_with(
         project_id="testing", keys=keys
@@ -915,7 +978,9 @@ def test_begin_transaction(_datastore_begin_transaction):
     _datastore_begin_transaction.return_value = rpc
 
     future = _api.begin_transaction("read only")
-    _datastore_begin_transaction.assert_called_once_with("read only")
+    _datastore_begin_transaction.assert_called_once_with(
+        "read only", retries=None
+    )
     rpc.set_result(mock.Mock(transaction=b"tx123", spec=("transaction")))
 
     assert future.result() == b"tx123"
@@ -928,8 +993,10 @@ class Test_datastore_begin_transaction:
     @mock.patch("google.cloud.ndb._datastore_api.stub")
     def test_read_only(stub, datastore_pb2):
         api = stub.return_value
-        future = api.BeginTransaction.future.return_value
-        assert _api._datastore_begin_transaction(True).future == future
+        future = tasklets.Future()
+        future.set_result("response")
+        api.BeginTransaction.future.return_value = future
+        assert _api._datastore_begin_transaction(True).result() == "response"
 
         datastore_pb2.TransactionOptions.assert_called_once_with(
             read_only=datastore_pb2.TransactionOptions.ReadOnly()
@@ -949,8 +1016,10 @@ class Test_datastore_begin_transaction:
     @mock.patch("google.cloud.ndb._datastore_api.stub")
     def test_read_write(stub, datastore_pb2):
         api = stub.return_value
-        future = api.BeginTransaction.future.return_value
-        assert _api._datastore_begin_transaction(False).future == future
+        future = tasklets.Future()
+        future.set_result("response")
+        api.BeginTransaction.future.return_value = future
+        assert _api._datastore_begin_transaction(False).result() == "response"
 
         datastore_pb2.TransactionOptions.assert_called_once_with(
             read_write=datastore_pb2.TransactionOptions.ReadWrite()
@@ -972,7 +1041,7 @@ def test_rollback(_datastore_rollback):
     _datastore_rollback.return_value = rpc
     future = _api.rollback(b"tx123")
 
-    _datastore_rollback.assert_called_once_with(b"tx123")
+    _datastore_rollback.assert_called_once_with(b"tx123", retries=None)
     rpc.set_result(None)
 
     assert future.result() is None
@@ -983,8 +1052,10 @@ def test_rollback(_datastore_rollback):
 @mock.patch("google.cloud.ndb._datastore_api.stub")
 def test__datastore_rollback(stub, datastore_pb2):
     api = stub.return_value
-    future = api.Rollback.future.return_value
-    assert _api._datastore_rollback(b"tx123").future == future
+    future = tasklets.Future()
+    future.set_result("response")
+    api.Rollback.future.return_value = future
+    assert _api._datastore_rollback(b"tx123").result() == "response"
 
     datastore_pb2.RollbackRequest.assert_called_once_with(
         project_id="testing", transaction=b"tx123"

@@ -134,7 +134,7 @@ class EventLoop:
             idler. Not currently used.
         queue (list): a sorted list of (absolute time in sec, callback, args,
             kwds), sorted by time. These callbacks run only after the said
-            time. Not currently used.
+            time. Used by :func:`tasklets.sleep`.
         rpcs (dict): a map from RPC to callback. Callback is called when the
             RPC finishes.
         rpc_results (queue.Queue): A syncrhonized queue used to coordinate with
@@ -228,9 +228,9 @@ class EventLoop:
         """Add a gRPC call to the queue.
 
         Args:
-            rpc (:class:`_datastore_api.RemoteCall`): The future for the gRPC
+            rpc (:class:`_remote.RemoteCall`): The future for the gRPC
                 call.
-            callback (Callable[[:class:`_datastore_api.RemoteCall`], None]):
+            callback (Callable[[:class:`_remote.RemoteCall`], None]):
                 Callback function to execute when gRPC call has finished.
 
         gRPC handles its asynchronous calls in a separate processing thread, so
