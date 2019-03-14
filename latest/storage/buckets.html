@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Buckets &#8212; google-cloud 583b4ac documentation</title>
+    <title>Buckets &#8212; google-cloud 806c6df documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -117,7 +117,7 @@ requests made via this instance.</li>
 
 <dl class="method">
 <dt id="google.cloud.storage.bucket.Bucket.blob">
-<code class="descname">blob</code><span class="sig-paren">(</span><em>blob_name</em>, <em>chunk_size=None</em>, <em>encryption_key=None</em>, <em>kms_key_name=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/storage/bucket.html#Bucket.blob"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.storage.bucket.Bucket.blob" title="Permalink to this definition">#</a></dt>
+<code class="descname">blob</code><span class="sig-paren">(</span><em>blob_name</em>, <em>chunk_size=None</em>, <em>encryption_key=None</em>, <em>kms_key_name=None</em>, <em>generation=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/storage/bucket.html#Bucket.blob"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.storage.bucket.Bucket.blob" title="Permalink to this definition">#</a></dt>
 <dd><p>Factory constructor for blob object.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -135,6 +135,8 @@ a blob object owned by this bucket.</p>
 the API specification.</li>
 <li><strong>encryption_key</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.7)"><em>bytes</em></a>) – Optional 32 byte encryption key for customer-supplied encryption.</li>
 <li><strong>kms_key_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Optional resource name of KMS key used to encrypt blob’s content.</li>
+<li><strong>generation</strong> (<em>long</em>) – Optional. If present, selects a specific revision of
+this object.</li>
 </ul>
 </td>
 </tr>
@@ -399,7 +401,7 @@ contains more than 256 objects / blobs.</p>
 
 <dl class="method">
 <dt id="google.cloud.storage.bucket.Bucket.delete_blob">
-<code class="descname">delete_blob</code><span class="sig-paren">(</span><em>blob_name</em>, <em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/storage/bucket.html#Bucket.delete_blob"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.storage.bucket.Bucket.delete_blob" title="Permalink to this definition">#</a></dt>
+<code class="descname">delete_blob</code><span class="sig-paren">(</span><em>blob_name</em>, <em>client=None</em>, <em>generation=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/storage/bucket.html#Bucket.delete_blob"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.storage.bucket.Bucket.delete_blob" title="Permalink to this definition">#</a></dt>
 <dd><p>Deletes a blob from the current bucket.</p>
 <p>If the blob isn’t found (backend 404), raises a
 <code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.exceptions.NotFound</span></code>.</p>
@@ -428,6 +430,8 @@ contains more than 256 objects / blobs.</p>
 <li><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.storage.client.Client" title="google.cloud.storage.client.Client"><code class="xref py py-class docutils literal notranslate"><span class="pre">Client</span></code></a> or
 <code class="docutils literal notranslate"><span class="pre">NoneType</span></code>) – Optional. The client to use.  If not passed, falls back
 to the <code class="docutils literal notranslate"><span class="pre">client</span></code> stored on the current bucket.</li>
+<li><strong>generation</strong> (<em>long</em>) – Optional. If present, permanently deletes a specific
+revision of this object.</li>
 </ul>
 </td>
 </tr>
@@ -613,7 +617,7 @@ to attach the signature.</p>
 
 <dl class="method">
 <dt id="google.cloud.storage.bucket.Bucket.get_blob">
-<code class="descname">get_blob</code><span class="sig-paren">(</span><em>blob_name</em>, <em>client=None</em>, <em>encryption_key=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/storage/bucket.html#Bucket.get_blob"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.storage.bucket.Bucket.get_blob" title="Permalink to this definition">#</a></dt>
+<code class="descname">get_blob</code><span class="sig-paren">(</span><em>blob_name</em>, <em>client=None</em>, <em>encryption_key=None</em>, <em>generation=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/storage/bucket.html#Bucket.get_blob"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.storage.bucket.Bucket.get_blob" title="Permalink to this definition">#</a></dt>
 <dd><p>Get a blob object by name.</p>
 <p>This will return None if the blob doesn’t exist:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">client</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
@@ -637,6 +641,8 @@ to the <code class="docutils literal notranslate"><span class="pre">client</span
 <li><strong>encryption_key</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.7)"><em>bytes</em></a>) – Optional 32 byte encryption key for customer-supplied encryption.
 See
 <a class="reference external" href="https://cloud.google.com/storage/docs/encryption#customer-supplied">https://cloud.google.com/storage/docs/encryption#customer-supplied</a>.</li>
+<li><strong>generation</strong> (<em>long</em>) – Optional. If present, selects a specific revision of
+this object.</li>
 <li><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – Keyword arguments to pass to the
 <a class="reference internal" href="blobs.html#google.cloud.storage.blob.Blob" title="google.cloud.storage.blob.Blob"><code class="xref py py-class docutils literal notranslate"><span class="pre">Blob</span></code></a> constructor.</li>
 </ul>

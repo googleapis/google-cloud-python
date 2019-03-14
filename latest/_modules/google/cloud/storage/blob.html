@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.storage.blob &#8212; google-cloud 583b4ac documentation</title>
+    <title>google.cloud.storage.blob &#8212; google-cloud 806c6df documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -195,7 +195,13 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">bucket</span><span class="p">,</span> <span class="n">chunk_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">encryption_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">kms_key_name</span><span class="o">=</span><span class="kc">None</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">name</span><span class="p">,</span>
+        <span class="n">bucket</span><span class="p">,</span>
+        <span class="n">chunk_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">encryption_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">kms_key_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">generation</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="n">name</span> <span class="o">=</span> <span class="n">_bytes_to_unicode</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">Blob</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
@@ -212,6 +218,9 @@
 
         <span class="k">if</span> <span class="n">kms_key_name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s2">&quot;kmsKeyName&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">kms_key_name</span>
+
+        <span class="k">if</span> <span class="n">generation</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s2">&quot;generation&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">generation</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">chunk_size</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -300,6 +309,16 @@
 <span class="sd">        :returns: a list of tuples to be passed as headers.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">_get_encryption_headers</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_encryption_key</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">_query_params</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Default query parameters.&quot;&quot;&quot;</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">generation</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">params</span><span class="p">[</span><span class="s2">&quot;generation&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generation</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_project</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">params</span><span class="p">[</span><span class="s2">&quot;userProject&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_project</span>
+        <span class="k">return</span> <span class="n">params</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">public_url</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -433,10 +452,8 @@
         <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
         <span class="c1"># We only need the status code (200 or not) so we seek to</span>
         <span class="c1"># minimize the returned payload.</span>
-        <span class="n">query_params</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;fields&quot;</span><span class="p">:</span> <span class="s2">&quot;name&quot;</span><span class="p">}</span>
-
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_project</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">query_params</span><span class="p">[</span><span class="s2">&quot;userProject&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_project</span>
+        <span class="n">query_params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_query_params</span>
+        <span class="n">query_params</span><span class="p">[</span><span class="s2">&quot;fields&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;name&quot;</span>
 
         <span class="k">try</span><span class="p">:</span>
             <span class="c1"># We intentionally pass `_target_object=None` since fields=name</span>
@@ -471,7 +488,9 @@
 <span class="sd">                 (propagated from</span>
 <span class="sd">                 :meth:`google.cloud.storage.bucket.Bucket.delete_blob`).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">bucket</span><span class="o">.</span><span class="n">delete_blob</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">bucket</span><span class="o">.</span><span class="n">delete_blob</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">,</span> <span class="n">generation</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">generation</span>
+        <span class="p">)</span></div>
 
     <span class="k">def</span> <span class="nf">_get_transport</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return the client&#39;s transport.</span>
@@ -1528,13 +1547,15 @@
         <span class="n">headers</span> <span class="o">=</span> <span class="n">_get_encryption_headers</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_encryption_key</span><span class="p">)</span>
         <span class="n">headers</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">_get_encryption_headers</span><span class="p">(</span><span class="n">source</span><span class="o">.</span><span class="n">_encryption_key</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
 
-        <span class="n">query_params</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">query_params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_query_params</span>
+        <span class="k">if</span> <span class="s2">&quot;generation&quot;</span> <span class="ow">in</span> <span class="n">query_params</span><span class="p">:</span>
+            <span class="k">del</span> <span class="n">query_params</span><span class="p">[</span><span class="s2">&quot;generation&quot;</span><span class="p">]</span>
 
         <span class="k">if</span> <span class="n">token</span><span class="p">:</span>
             <span class="n">query_params</span><span class="p">[</span><span class="s2">&quot;rewriteToken&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">token</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_project</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">query_params</span><span class="p">[</span><span class="s2">&quot;userProject&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_project</span>
+        <span class="k">if</span> <span class="n">source</span><span class="o">.</span><span class="n">generation</span><span class="p">:</span>
+            <span class="n">query_params</span><span class="p">[</span><span class="s2">&quot;sourceGeneration&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">source</span><span class="o">.</span><span class="n">generation</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">kms_key_name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">query_params</span><span class="p">[</span><span class="s2">&quot;destinationKmsKeyName&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">kms_key_name</span>
