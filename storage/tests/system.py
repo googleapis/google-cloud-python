@@ -44,7 +44,9 @@ def _bad_copy(bad_request):
 
 
 retry_429 = RetryErrors(exceptions.TooManyRequests, max_tries=6)
-retry_429_503 = RetryErrors([exceptions.TooManyRequests, exceptions.ServiceUnavailable], max_tries=6)
+retry_429_503 = RetryErrors(
+    [exceptions.TooManyRequests, exceptions.ServiceUnavailable], max_tries=6
+)
 retry_bad_copy = RetryErrors(exceptions.BadRequest, error_predicate=_bad_copy)
 
 
