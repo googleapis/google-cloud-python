@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigtable.instance &#8212; google-cloud 806c6df documentation</title>
+    <title>google.cloud.bigtable.instance &#8212; google-cloud f242cc1 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -160,6 +160,12 @@
     <span class="k">def</span> <span class="nf">from_pb</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">instance_pb</span><span class="p">,</span> <span class="n">client</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Creates an instance instance from a protobuf.</span>
 
+<span class="sd">        For example:</span>
+
+<span class="sd">        .. literalinclude:: snippets.py</span>
+<span class="sd">            :start-after: [START bigtable_instance_from_pb]</span>
+<span class="sd">            :end-before: [END bigtable_instance_from_pb]</span>
+
 <span class="sd">        :type instance_pb: :class:`instance_pb2.Instance`</span>
 <span class="sd">        :param instance_pb: An instance protobuf object.</span>
 
@@ -198,6 +204,12 @@
 <span class="sd">          This property will not change if ``instance_id`` does not,</span>
 <span class="sd">          but the return value is not cached.</span>
 
+<span class="sd">        For example:</span>
+
+<span class="sd">        .. literalinclude:: snippets.py</span>
+<span class="sd">            :start-after: [START bigtable_instance_name]</span>
+<span class="sd">            :end-before: [END bigtable_instance_name]</span>
+
 <span class="sd">        The instance name is of the form</span>
 
 <span class="sd">            ``&quot;projects/{project}/instances/{instance_id}&quot;``</span>
@@ -211,7 +223,15 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">state</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;google.cloud.bigtable.enums.Instance.State: state of Instance.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;google.cloud.bigtable.enums.Instance.State: state of Instance.</span>
+
+<span class="sd">        For example:</span>
+
+<span class="sd">        .. literalinclude:: snippets.py</span>
+<span class="sd">            :start-after: [START bigtable_instance_state]</span>
+<span class="sd">            :end-before: [END bigtable_instance_state]</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state</span>
 
     <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
