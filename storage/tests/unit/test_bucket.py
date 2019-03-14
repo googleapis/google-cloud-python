@@ -669,9 +669,13 @@ class Test_Bucket(unittest.TestCase):
         self.assertIs(blob.bucket, bucket)
         self.assertEqual(blob.name, BLOB_NAME)
         kw, = connection._requested
+        expected_qp = {
+            "userProject": USER_PROJECT,
+            "projection": "noAcl",
+        }
         self.assertEqual(kw["method"], "GET")
         self.assertEqual(kw["path"], "/b/%s/o/%s" % (NAME, BLOB_NAME))
-        self.assertEqual(kw["query_params"], {"userProject": USER_PROJECT})
+        self.assertEqual(kw["query_params"], expected_qp)
 
     def test_get_blob_hit_with_kwargs(self):
         from google.cloud.storage.blob import _get_encryption_headers
