@@ -470,7 +470,6 @@ def test_bigtable_instance_admin_client():
     assert "BigtableInstanceAdmin" in str(instance_admin_client)
 
 
-
 def test_bigtable_admins_policy():
     # [START bigtable_admins_policy]
     from google.cloud.bigtable import Client
