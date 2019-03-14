@@ -33,7 +33,7 @@ class EncodingType(enum.IntEnum):
       based on the UTF-8 encoding of the input. C++ and Go are examples of
       languages that use this encoding natively.
       UTF16 (int): Encoding-dependent information (such as ``begin_offset``) is calculated
-      based on the UTF-16 encoding of the input. Java and Javascript are
+      based on the UTF-16 encoding of the input. Java and JavaScript are
       examples of languages that use this encoding natively.
       UTF32 (int): Encoding-dependent information (such as ``begin_offset``) is calculated
       based on the UTF-32 encoding of the input. Python is an example of a
@@ -252,6 +252,11 @@ class Entity(object):
           WORK_OF_ART (int): Work of art
           CONSUMER_GOOD (int): Consumer goods
           OTHER (int): Other types
+          PHONE_NUMBER (int): Phone number
+          ADDRESS (int): Address
+          DATE (int): Date
+          NUMBER (int): Number
+          PRICE (int): Price
         """
 
         UNKNOWN = 0
@@ -262,6 +267,11 @@ class Entity(object):
         WORK_OF_ART = 5
         CONSUMER_GOOD = 6
         OTHER = 7
+        PHONE_NUMBER = 9
+        ADDRESS = 10
+        DATE = 11
+        NUMBER = 12
+        PRICE = 13
 
 
 class EntityMention(object):
