@@ -169,7 +169,7 @@ class Instance(object):
           but the return value is not cached.
 
         For example:
-        
+
         .. literalinclude:: snippets.py
             :start-after: [START bigtable_instance_name]
             :end-before: [END bigtable_instance_name]
@@ -188,13 +188,13 @@ class Instance(object):
     @property
     def state(self):
         """google.cloud.bigtable.enums.Instance.State: state of Instance.
-        
+
         For example:
-        
+
         .. literalinclude:: snippets.py
             :start-after: [START bigtable_instance_state]
             :end-before: [END bigtable_instance_state]
-        
+
         """
         return self._state
 
