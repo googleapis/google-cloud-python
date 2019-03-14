@@ -257,6 +257,14 @@ class Blob(_PropertyMixin):
         """
         return self.bucket.user_project
 
+    def _encryption_headers(self):
+        """Return any encryption headers needed to fetch the object.
+
+        :rtype: List(Tuple(str, str))
+        :returns: a list of tuples to be passed as headers.
+        """
+        return _get_encryption_headers(self._encryption_key)
+
     @property
     def public_url(self):
         """The public URL for this blob.
