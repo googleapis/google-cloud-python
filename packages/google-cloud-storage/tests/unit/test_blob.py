@@ -280,6 +280,27 @@ class Test_Blob(unittest.TestCase):
         blob = self._make_one(blob_name, bucket=bucket)
         self.assertEqual(blob.user_project, user_project)
 
+    def test__encryption_headers_wo_encryption_key(self):
+        BLOB_NAME = "blob-name"
+        bucket = _Bucket()
+        blob = self._make_one(BLOB_NAME, bucket=bucket)
+        expected = {}
+        self.assertEqual(blob._encryption_headers(), expected)
+
+    def test__encryption_headers_w_encryption_key(self):
+        key = b"aa426195405adee2c8081bb9e7e74b19"
+        header_key_value = "YWE0MjYxOTU0MDVhZGVlMmM4MDgxYmI5ZTdlNzRiMTk="
+        header_key_hash_value = "V3Kwe46nKc3xLv96+iJ707YfZfFvlObta8TQcx2gpm0="
+        BLOB_NAME = "blob-name"
+        bucket = _Bucket()
+        blob = self._make_one(BLOB_NAME, bucket=bucket, encryption_key=key)
+        expected = {
+            "X-Goog-Encryption-Algorithm": "AES256",
+            "X-Goog-Encryption-Key": header_key_value,
+            "X-Goog-Encryption-Key-Sha256": header_key_hash_value,
+        }
+        self.assertEqual(blob._encryption_headers(), expected)
+
     def test_public_url(self):
         BLOB_NAME = "blob-name"
         bucket = _Bucket()

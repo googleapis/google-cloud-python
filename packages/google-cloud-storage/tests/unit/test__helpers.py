@@ -55,6 +55,10 @@ class Test_PropertyMixin(unittest.TestCase):
         with self.assertRaises(NotImplementedError):
             mixin.user_project
 
+    def test__encryption_headers(self):
+        mixin = self._make_one()
+        self.assertEqual(mixin._encryption_headers(), {})
+
     def test_reload(self):
         connection = _Connection({"foo": "Foo"})
         client = _Client(connection)
@@ -72,6 +76,7 @@ class Test_PropertyMixin(unittest.TestCase):
                 "method": "GET",
                 "path": "/path",
                 "query_params": {"projection": "noAcl"},
+                "headers": {},
                 "_target_object": derived,
             },
         )
@@ -95,6 +100,7 @@ class Test_PropertyMixin(unittest.TestCase):
                 "method": "GET",
                 "path": "/path",
                 "query_params": {"projection": "noAcl", "userProject": user_project},
+                "headers": {},
                 "_target_object": derived,
             },
         )

@@ -36,7 +36,6 @@ from google.cloud.storage._helpers import _validate_name
 from google.cloud.storage.acl import BucketACL
 from google.cloud.storage.acl import DefaultObjectACL
 from google.cloud.storage.blob import Blob
-from google.cloud.storage.blob import _get_encryption_headers
 from google.cloud.storage.notification import BucketNotification
 from google.cloud.storage.notification import NONE_PAYLOAD_FORMAT
 
@@ -671,31 +670,18 @@ class Bucket(_PropertyMixin):
         :rtype: :class:`google.cloud.storage.blob.Blob` or None
         :returns: The blob object if it exists, otherwise None.
         """
-        client = self._require_client(client)
-        query_params = {}
-
-        if self.user_project is not None:
-            query_params["userProject"] = self.user_project
         blob = Blob(
             bucket=self, name=blob_name, encryption_key=encryption_key, **kwargs
         )
         try:
-            headers = _get_encryption_headers(encryption_key)
-            response = client._connection.api_request(
-                method="GET",
-                path=blob.path,
-                query_params=query_params,
-                headers=headers,
-                _target_object=blob,
-            )
-            # NOTE: We assume response.get('name') matches `blob_name`.
-            blob._set_properties(response)
             # NOTE: This will not fail immediately in a batch. However, when
             #       Batch.finish() is called, the resulting `NotFound` will be
             #       raised.
-            return blob
+            blob.reload(client=client)
         except NotFound:
             return None
+        else:
+            return blob
 
     def list_blobs(
         self,
