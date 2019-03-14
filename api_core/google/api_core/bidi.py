@@ -165,11 +165,14 @@ class BidiRpc(object):
                 Callable[None, protobuf.Message]]): The initial request to
             yield. This is useful if an initial request is needed to start the
             stream.
+        rpc_metadata Sequence[Tuple(str, str)]: RPC metadata to include in
+            the request.
     """
 
-    def __init__(self, start_rpc, initial_request=None):
+    def __init__(self, start_rpc, initial_request=None, rpc_metadata=None):
         self._start_rpc = start_rpc
         self._initial_request = initial_request
+        self._rpc_metadata = rpc_metadata
         self._request_queue = queue.Queue()
         self._request_generator = None
         self._is_active = False
@@ -200,7 +203,7 @@ class BidiRpc(object):
         request_generator = _RequestQueueGenerator(
             self._request_queue, initial_request=self._initial_request
         )
-        call = self._start_rpc(iter(request_generator))
+        call = self._start_rpc(iter(request_generator), metadata=self._rpc_metadata)
 
         request_generator.call = call
 
@@ -310,10 +313,13 @@ class ResumableBidiRpc(BidiRpc):
         should_recover (Callable[[Exception], bool]): A function that returns
             True if the stream should be recovered. This will be called
             whenever an error is encountered on the stream.
+           def _rpc_metadata(self):
+        rpc_metadata Sequence[Tuple(str, str)]: RPC metadata to include in
+            the request.
     """
 
-    def __init__(self, start_rpc, should_recover, initial_request=None):
-        super(ResumableBidiRpc, self).__init__(start_rpc, initial_request)
+    def __init__(self, start_rpc, should_recover, initial_request=None, rpc_metadata=None):
+        super(ResumableBidiRpc, self).__init__(start_rpc, initial_request, rpc_metadata)
         self._should_recover = should_recover
         self._operational_lock = threading.RLock()
         self._finalized = False
