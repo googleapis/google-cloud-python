@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.storage.bucket &#8212; google-cloud aea0a99 documentation</title>
+    <title>google.cloud.storage.bucket &#8212; google-cloud 4fdbcc5 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -72,7 +72,6 @@
 <span class="kn">from</span> <span class="nn">google.cloud.storage.acl</span> <span class="k">import</span> <span class="n">BucketACL</span>
 <span class="kn">from</span> <span class="nn">google.cloud.storage.acl</span> <span class="k">import</span> <span class="n">DefaultObjectACL</span>
 <span class="kn">from</span> <span class="nn">google.cloud.storage.blob</span> <span class="k">import</span> <span class="n">Blob</span>
-<span class="kn">from</span> <span class="nn">google.cloud.storage.blob</span> <span class="k">import</span> <span class="n">_get_encryption_headers</span>
 <span class="kn">from</span> <span class="nn">google.cloud.storage.notification</span> <span class="k">import</span> <span class="n">BucketNotification</span>
 <span class="kn">from</span> <span class="nn">google.cloud.storage.notification</span> <span class="k">import</span> <span class="n">NONE_PAYLOAD_FORMAT</span>
 
@@ -707,31 +706,18 @@
 <span class="sd">        :rtype: :class:`google.cloud.storage.blob.Blob` or None</span>
 <span class="sd">        :returns: The blob object if it exists, otherwise None.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
-        <span class="n">query_params</span> <span class="o">=</span> <span class="p">{}</span>
-
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_project</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">query_params</span><span class="p">[</span><span class="s2">&quot;userProject&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_project</span>
         <span class="n">blob</span> <span class="o">=</span> <span class="n">Blob</span><span class="p">(</span>
             <span class="n">bucket</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">blob_name</span><span class="p">,</span> <span class="n">encryption_key</span><span class="o">=</span><span class="n">encryption_key</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
         <span class="p">)</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">headers</span> <span class="o">=</span> <span class="n">_get_encryption_headers</span><span class="p">(</span><span class="n">encryption_key</span><span class="p">)</span>
-            <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
-                <span class="n">method</span><span class="o">=</span><span class="s2">&quot;GET&quot;</span><span class="p">,</span>
-                <span class="n">path</span><span class="o">=</span><span class="n">blob</span><span class="o">.</span><span class="n">path</span><span class="p">,</span>
-                <span class="n">query_params</span><span class="o">=</span><span class="n">query_params</span><span class="p">,</span>
-                <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span>
-                <span class="n">_target_object</span><span class="o">=</span><span class="n">blob</span><span class="p">,</span>
-            <span class="p">)</span>
-            <span class="c1"># NOTE: We assume response.get(&#39;name&#39;) matches `blob_name`.</span>
-            <span class="n">blob</span><span class="o">.</span><span class="n">_set_properties</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
             <span class="c1"># NOTE: This will not fail immediately in a batch. However, when</span>
             <span class="c1">#       Batch.finish() is called, the resulting `NotFound` will be</span>
             <span class="c1">#       raised.</span>
-            <span class="k">return</span> <span class="n">blob</span>
+            <span class="n">blob</span><span class="o">.</span><span class="n">reload</span><span class="p">(</span><span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">)</span>
         <span class="k">except</span> <span class="n">NotFound</span><span class="p">:</span>
-            <span class="k">return</span> <span class="kc">None</span></div>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">blob</span></div>
 
 <div class="viewcode-block" id="Bucket.list_blobs"><a class="viewcode-back" href="../../../../storage/buckets.html#google.cloud.storage.bucket.Bucket.list_blobs">[docs]</a>    <span class="k">def</span> <span class="nf">list_blobs</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
