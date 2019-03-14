@@ -15,6 +15,7 @@
 
 import base64
 import binascii
+import collections
 import datetime
 import hashlib
 
@@ -111,6 +112,99 @@ def get_expiration_seconds(expiration):
     return expiration
 
 
+def get_canonical_headers(headers):
+    """Canonicalize headers for signing.
+
+    See:
+    https://cloud.google.com/storage/docs/access-control/signed-urls#about-canonical-extension-headers
+
+    :type headers: Union[dict|List(Tuple(str,str))]
+    :param headers:
+        (Optional) Additional HTTP headers to be included as part of the
+        signed URLs.  See:
+        https://cloud.google.com/storage/docs/xml-api/reference-headers
+        Requests using the signed URL *must* pass the specified header
+        (name and value) with each request for the URL.
+
+    :rtype: str
+    :returns: List of headers, normalized / sortted per the URL refernced above.
+    """
+    if headers is None:
+        headers = []
+    elif isinstance(headers, dict):
+        headers = list(headers.items())
+
+    if not headers:
+        return []
+
+    normalized = collections.defaultdict(list)
+    for key, value in headers:
+        key = key.lower().strip()
+        value = value.strip()
+        normalized[key].append(value)
+
+    ordered_headers = sorted(
+        (key, ",".join(value)) for key, value in normalized.items()
+    )
+
+    return ["{}:{}".format(key, value) for key, value in ordered_headers]
+
+
+_Canonical = collections.namedtuple(
+    "_Canonical", ["method", "resource", "query_parameters", "headers"]
+)
+
+
+def canonicalize(method, resource, query_parameters, headers):
+    """Canonicalize method, resource
+
+    :type method: str
+    :param method: The HTTP verb that will be used when requesting the URL.
+                   Defaults to ``'GET'``. If method is ``'RESUMABLE'`` then the
+                   signature will additionally contain the `x-goog-resumable`
+                   header, and the method changed to POST. See the signed URL
+                   docs regarding this flow:
+                   https://cloud.google.com/storage/docs/access-control/signed-urls
+
+    :type resource: str
+    :param resource: A pointer to a specific resource
+                     (typically, ``/bucket-name/path/to/blob.txt``).
+
+    :type query_parameters: dict
+    :param query_parameters:
+        (Optional) Additional query paramtersto be included as part of the
+        signed URLs.  See:
+        https://cloud.google.com/storage/docs/xml-api/reference-headers#query
+
+    :type headers: Union[dict|List(Tuple(str,str))]
+    :param headers:
+        (Optional) Additional HTTP headers to be included as part of the
+        signed URLs.  See:
+        https://cloud.google.com/storage/docs/xml-api/reference-headers
+        Requests using the signed URL *must* pass the specified header
+        (name and value) with each request for the URL.
+
+    :rtype: :class:_Canonical
+    :returns: Canonical method, resource, query_parameters, and headers.
+    """
+    headers = get_canonical_headers(headers)
+
+    if method == "RESUMABLE":
+        method = "POST"
+        headers.append("x-goog-resumable:start")
+
+    if query_parameters is None:
+        return _Canonical(method, resource, [], headers)
+
+    normalized_qp = sorted(
+        (key.lower(), value and value.strip() or "")
+        for key, value in query_parameters.items()
+    )
+    encoded_qp = six.moves.urllib.parse.urlencode(normalized_qp)
+    canonical_resource = "{}?{}".format(resource, encoded_qp)
+    return _Canonical(method, canonical_resource, normalized_qp, headers)
+
+
 def generate_signed_url_v2(
     credentials,
     resource,
@@ -192,7 +286,7 @@ def generate_signed_url_v2(
     :param generation: (Optional) A value that indicates which generation of
                        the resource to fetch.
 
-    :type headers: dict
+    :type headers: Union[dict|List(Tuple(str,str))]
     :param headers:
         (Optional) Additional HTTP headers to be included as part of the
         signed URLs.  See:
@@ -216,34 +310,15 @@ def generate_signed_url_v2(
     """
     expiration = get_expiration_seconds(expiration)
 
-    if method == "RESUMABLE":
-        method = "POST"
-        canonicalized_resource = "x-goog-resumable:start\n{0}".format(resource)
-    else:
-        canonicalized_resource = "{0}".format(resource)
-
-    if query_parameters is not None:
-        normalized_qp = list(
-            sorted(
-                (key.lower(), value and value.strip() or "")
-                for key, value in query_parameters.items()
-            )
-        )
-        encoded_qp = six.moves.urllib.parse.urlencode(normalized_qp)
-        canonicalized_resource = "{}?{}".format(canonicalized_resource, encoded_qp)
-    else:
-        normalized_qp = ()
+    method, canonical_resource, normalized_qp, canonical_headers = canonicalize(
+        method, resource, query_parameters, headers
+    )
 
     # Generate the string to sign.
-    string_to_sign = "\n".join(
-        [
-            method,
-            content_md5 or "",
-            content_type or "",
-            str(expiration),
-            canonicalized_resource,
-        ]
-    )
+    elements_to_sign = [method, content_md5 or "", content_type or "", str(expiration)]
+    elements_to_sign.extend(canonical_headers)
+    elements_to_sign.append(canonical_resource)
+    string_to_sign = "\n".join(elements_to_sign)
 
     # Set the right query parameters.
     signed_query_params = get_signed_query_params(

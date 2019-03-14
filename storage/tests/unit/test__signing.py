@@ -127,6 +127,75 @@ class Test_get_signed_query_params(unittest.TestCase):
         credentials.sign_bytes.assert_called_once_with(string_to_sign)
 
 
+class Test_get_canonical_headers(unittest.TestCase):
+    @staticmethod
+    def _call_fut(*args, **kwargs):
+        from google.cloud.storage._signing import get_canonical_headers
+
+        return get_canonical_headers(*args, **kwargs)
+
+    def test_w_none(self):
+        headers = None
+        expected = []
+        self.assertEqual(self._call_fut(headers), expected)
+
+    def test_w_dict(self):
+        headers = {"foo": "Foo 1.2.3", "Bar": " baz,bam,qux   "}
+        expected = ["bar:baz,bam,qux", "foo:Foo 1.2.3"]
+        self.assertEqual(self._call_fut(headers), expected)
+
+    def test_w_list_and_multiples(self):
+        headers = [
+            ("foo", "Foo 1.2.3"),
+            ("Bar", " baz"),
+            ("Bar", "bam"),
+            ("Bar", "qux   "),
+        ]
+        expected = ["bar:baz,bam,qux", "foo:Foo 1.2.3"]
+        self.assertEqual(self._call_fut(headers), expected)
+
+    # TODO:  handle folded line values?
+
+
+class Test_canonicalize(unittest.TestCase):
+    @staticmethod
+    def _call_fut(*args, **kwargs):
+        from google.cloud.storage._signing import canonicalize
+
+        return canonicalize(*args, **kwargs)
+
+    def test_wo_headers_or_query_parameters(self):
+        method = "GET"
+        resource = "/bucket/blob"
+        canonical = self._call_fut(method, resource, None, None)
+        self.assertEqual(canonical.method, method)
+        self.assertEqual(canonical.resource, resource)
+        self.assertEqual(canonical.query_parameters, [])
+        self.assertEqual(canonical.headers, [])
+
+    def test_w_headers_and_resumable(self):
+        method = "RESUMABLE"
+        resource = "/bucket/blob"
+        headers = [("x-goog-extension", "foobar")]
+        canonical = self._call_fut(method, resource, None, headers)
+        self.assertEqual(canonical.method, "POST")
+        self.assertEqual(canonical.resource, resource)
+        self.assertEqual(canonical.query_parameters, [])
+        self.assertEqual(
+            canonical.headers, ["x-goog-extension:foobar", "x-goog-resumable:start"]
+        )
+
+    def test_w_query_paramters(self):
+        method = "GET"
+        resource = "/bucket/blob"
+        query_parameters = {"foo": "bar", "baz": "qux"}
+        canonical = self._call_fut(method, resource, query_parameters, None)
+        self.assertEqual(canonical.method, method)
+        self.assertEqual(canonical.resource, "{}?baz=qux&foo=bar".format(resource))
+        self.assertEqual(canonical.query_parameters, [("baz", "qux"), ("foo", "bar")])
+        self.assertEqual(canonical.headers, [])
+
+
 class Test_generate_signed_url_v2(unittest.TestCase):
     @staticmethod
     def _call_fut(*args, **kwargs):
@@ -173,13 +242,18 @@ class Test_generate_signed_url_v2(unittest.TestCase):
         # Check the mock was called.
         method = method.upper()
 
+        if headers is None:
+            headers = []
+        elif isinstance(headers, dict):
+            headers = sorted(headers.items())
+
         elements = []
+        expected_resource = resource
         if method == "RESUMABLE":
             elements.append("POST")
-            expected_resource = "x-goog-resumable:start\n{}".format(resource)
+            headers.append(("x-goog-resumable", "start"))
         else:
             elements.append(method)
-            expected_resource = resource
 
         if query_parameters is not None:
             normalized_qp = {
@@ -192,6 +266,7 @@ class Test_generate_signed_url_v2(unittest.TestCase):
         elements.append(content_md5 or "")
         elements.append(content_type or "")
         elements.append(str(expiration))
+        elements.extend(["{}:{}".format(*header) for header in headers])
         elements.append(expected_resource)
 
         string_to_sign = "\n".join(elements)
@@ -257,8 +332,11 @@ class Test_generate_signed_url_v2(unittest.TestCase):
         generation = "123"
         self._generate_helper(generation=generation)
 
-    def test_w_custom_headers(self):
+    def test_w_custom_headers_dict(self):
         self._generate_helper(headers={"x-goog-foo": "bar"})
+
+    def test_w_custom_headers_list(self):
+        self._generate_helper(headers=[("x-goog-foo", "bar")])
 
     def test_w_custom_query_parameters_w_string_value(self):
         self._generate_helper(query_parameters={"bar": "/"})
@@ -270,13 +348,8 @@ class Test_generate_signed_url_v2(unittest.TestCase):
         resource = "/name/path"
         credentials = _make_credentials()
         expiration = int(time.time() + 5)
-        self.assertRaises(
-            AttributeError,
-            self._call_fut,
-            credentials,
-            resource=resource,
-            expiration=expiration,
-        )
+        with self.assertRaises(AttributeError):
+            self._call_fut(credentials, resource=resource, expiration=expiration)
 
 
 class Test_generate_signed_url_v4(unittest.TestCase):
