@@ -524,14 +524,14 @@ class Test_Blob(unittest.TestCase):
         self._generate_signed_url_v4_helper(credentials=credentials)
 
     @mock.patch(
-        "google.cloud.storage._signing.get_signed_query_params",
+        "google.cloud.storage._signing.get_signed_query_params_v2",
         return_value={
             "GoogleAccessId": "service-account-name",
             "Expires": 12345,
             "Signature": "signed-data",
         },
     )
-    def test_generate_resumable_signed_url(self, mock_get_signed_query_params):
+    def test_generate_resumable_signed_url(self, mock_get_signed_query_params_v2):
         """
         Verify correct behavior of resumable upload URL generation
         """
@@ -544,7 +544,7 @@ class Test_Blob(unittest.TestCase):
             _make_credentials(), "a-bucket", expiry, method="RESUMABLE"
         )
 
-        self.assertTrue(mock_get_signed_query_params.called)
+        self.assertTrue(mock_get_signed_query_params_v2.called)
         self.assertGreater(len(signed_url), 0)
         self.assertIn("a-bucket", signed_url)
         self.assertIn("GoogleAccessId", signed_url)

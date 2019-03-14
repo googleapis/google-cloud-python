@@ -52,7 +52,7 @@ def ensure_signed_credentials(credentials):
         )
 
 
-def get_signed_query_params(credentials, expiration, string_to_sign):
+def get_signed_query_params_v2(credentials, expiration, string_to_sign):
     """Gets query parameters for creating a signed URL.
 
     :type credentials: :class:`google.auth.credentials.Signing`
@@ -321,7 +321,7 @@ def generate_signed_url_v2(
     string_to_sign = "\n".join(elements_to_sign)
 
     # Set the right query parameters.
-    signed_query_params = get_signed_query_params(
+    signed_query_params = get_signed_query_params_v2(
         credentials, expiration, string_to_sign
     )
 

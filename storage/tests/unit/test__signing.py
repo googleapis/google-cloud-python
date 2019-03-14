@@ -102,12 +102,12 @@ class Test_get_expiration_seconds(unittest.TestCase):
         utcnow.assert_called_once_with()
 
 
-class Test_get_signed_query_params(unittest.TestCase):
+class Test_get_signed_query_params_v2(unittest.TestCase):
     @staticmethod
     def _call_fut(credentials, expiration, string_to_sign):
-        from google.cloud.storage._signing import get_signed_query_params
+        from google.cloud.storage._signing import get_signed_query_params_v2
 
-        return get_signed_query_params(credentials, expiration, string_to_sign)
+        return get_signed_query_params_v2(credentials, expiration, string_to_sign)
 
     def test_it(self):
         sig_bytes = b"DEADBEEF"
