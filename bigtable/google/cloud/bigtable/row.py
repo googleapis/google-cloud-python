@@ -56,6 +56,12 @@ class Row(object):
     def row_key(self):
         """Row key.
 
+        For example:
+
+        .. literalinclude:: snippets_table.py
+            :start-after: [START bigtable_row_row_key]
+            :end-before: [END bigtable_row_row_key]
+
         :rtype: bytes
         :returns: The key for the current row.
         """
@@ -64,6 +70,12 @@ class Row(object):
     @property
     def table(self):
         """Row table.
+
+        For example:
+
+        .. literalinclude:: snippets_table.py
+            :start-after: [START bigtable_row_table]
+            :end-before: [END bigtable_row_table]
 
         :rtype: table: :class:`Table <google.cloud.bigtable.table.Table>`
         :returns: table: The table that owns the row.
@@ -281,7 +293,15 @@ class DirectRow(_SetDeleteRow):
         return self._pb_mutations
 
     def get_mutations_size(self):
-        """ Gets the total mutations size for current row """
+        """ Gets the total mutations size for current row
+
+        For example:
+
+        .. literalinclude:: snippets_table.py
+            :start-after: [START bigtable_row_get_mutations_size]
+            :end-before: [END bigtable_row_get_mutations_size]
+
+        """
 
         mutation_size = 0
         for mutation in self._get_mutations():
@@ -302,6 +322,12 @@ class DirectRow(_SetDeleteRow):
             row, but does not make an API request. To actually
             send an API request (with the mutations) to the Google Cloud
             Bigtable API, call :meth:`commit`.
+
+        For example:
+
+        .. literalinclude:: snippets_table.py
+            :start-after: [START bigtable_row_set_cell]
+            :end-before: [END bigtable_row_set_cell]
 
         :type column_family_id: str
         :param column_family_id: The column family that contains the column.
@@ -331,6 +357,13 @@ class DirectRow(_SetDeleteRow):
             row, but does not make an API request. To actually
             send an API request (with the mutations) to the Google Cloud
             Bigtable API, call :meth:`commit`.
+
+        For example:
+
+        .. literalinclude:: snippets_table.py
+            :start-after: [START bigtable_row_delete]
+            :end-before: [END bigtable_row_delete]
+
         """
         self._delete(state=None)
 
@@ -343,6 +376,12 @@ class DirectRow(_SetDeleteRow):
             row, but does not make an API request. To actually
             send an API request (with the mutations) to the Google Cloud
             Bigtable API, call :meth:`commit`.
+
+        For example:
+
+        .. literalinclude:: snippets_table.py
+            :start-after: [START bigtable_row_delete_cell]
+            :end-before: [END bigtable_row_delete_cell]
 
         :type column_family_id: str
         :param column_family_id: The column family that contains the column
@@ -370,6 +409,12 @@ class DirectRow(_SetDeleteRow):
             row, but does not make an API request. To actually
             send an API request (with the mutations) to the Google Cloud
             Bigtable API, call :meth:`commit`.
+
+        For example:
+
+        .. literalinclude:: snippets_table.py
+            :start-after: [START bigtable_row_delete_cells]
+            :end-before: [END bigtable_row_delete_cells]
 
         :type column_family_id: str
         :param column_family_id: The column family that contains the column
@@ -400,6 +445,12 @@ class DirectRow(_SetDeleteRow):
         After committing the accumulated mutations, resets the local
         mutations to an empty list.
 
+        For example:
+
+        .. literalinclude:: snippets_table.py
+            :start-after: [START bigtable_row_commit]
+            :end-before: [END bigtable_row_commit]
+
         :raises: :exc:`~.table.TooManyMutationsError` if the number of
                  mutations is greater than 100,000.
         """
@@ -407,7 +458,15 @@ class DirectRow(_SetDeleteRow):
         self.clear()
 
     def clear(self):
-        """Removes all currently accumulated mutations on the current row."""
+        """Removes all currently accumulated mutations on the current row.
+
+        For example:
+
+        .. literalinclude:: snippets_table.py
+            :start-after: [START bigtable_row_clear]
+            :end-before: [END bigtable_row_clear]
+
+        """
         del self._pb_mutations[:]
 
 
@@ -493,6 +552,12 @@ class ConditionalRow(_SetDeleteRow):
         After committing the accumulated mutations, resets the local
         mutations.
 
+        For example:
+
+        .. literalinclude:: snippets_table.py
+            :start-after: [START bigtable_row_commit]
+            :end-before: [END bigtable_row_commit]
+
         :rtype: bool
         :returns: Flag indicating if the filter was matched (which also
                   indicates which set of mutations were applied by the server).
@@ -539,6 +604,12 @@ class ConditionalRow(_SetDeleteRow):
             send an API request (with the mutations) to the Google Cloud
             Bigtable API, call :meth:`commit`.
 
+        For example:
+
+        .. literalinclude:: snippets_table.py
+            :start-after: [START bigtable_row_set_cell]
+            :end-before: [END bigtable_row_set_cell]
+
         :type column_family_id: str
         :param column_family_id: The column family that contains the column.
                                  Must be of the form
@@ -574,6 +645,12 @@ class ConditionalRow(_SetDeleteRow):
             send an API request (with the mutations) to the Google Cloud
             Bigtable API, call :meth:`commit`.
 
+        For example:
+
+        .. literalinclude:: snippets_table.py
+            :start-after: [START bigtable_row_delete]
+            :end-before: [END bigtable_row_delete]
+
         :type state: bool
         :param state: (Optional) The state that the mutation should be
                       applied in. Defaults to :data:`True`.
@@ -589,6 +666,12 @@ class ConditionalRow(_SetDeleteRow):
             row, but does not make an API request. To actually
             send an API request (with the mutations) to the Google Cloud
             Bigtable API, call :meth:`commit`.
+
+         For example:
+
+        .. literalinclude:: snippets_table.py
+            :start-after: [START bigtable_row_delete_cell]
+            :end-before: [END bigtable_row_delete_cell]
 
         :type column_family_id: str
         :param column_family_id: The column family that contains the column
@@ -621,6 +704,12 @@ class ConditionalRow(_SetDeleteRow):
             send an API request (with the mutations) to the Google Cloud
             Bigtable API, call :meth:`commit`.
 
+        For example:
+
+        .. literalinclude:: snippets_table.py
+            :start-after: [START bigtable_row_delete_cells]
+            :end-before: [END bigtable_row_delete_cells]
+
         :type column_family_id: str
         :param column_family_id: The column family that contains the column
                                  or columns with cells being deleted. Must be
@@ -647,7 +736,15 @@ class ConditionalRow(_SetDeleteRow):
     # pylint: enable=arguments-differ
 
     def clear(self):
-        """Removes all currently accumulated mutations on the current row."""
+        """Removes all currently accumulated mutations on the current row.
+
+        For example:
+
+        .. literalinclude:: snippets_table.py
+            :start-after: [START bigtable_row_clear]
+            :end-before: [END bigtable_row_clear]
+
+        """
         del self._true_pb_mutations[:]
         del self._false_pb_mutations[:]
 
@@ -678,7 +775,15 @@ class AppendRow(Row):
         self._rule_pb_list = []
 
     def clear(self):
-        """Removes all currently accumulated modifications on current row."""
+        """Removes all currently accumulated modifications on current row.
+
+        For example:
+
+        .. literalinclude:: snippets_table.py
+            :start-after: [START bigtable_row_clear]
+            :end-before: [END bigtable_row_clear]
+
+        """
         del self._rule_pb_list[:]
 
     def append_cell_value(self, column_family_id, column, value):
@@ -690,6 +795,12 @@ class AppendRow(Row):
             read-modify rules on this row, but does not make an API
             request. To actually send an API request (with the rules) to the
             Google Cloud Bigtable API, call :meth:`commit`.
+
+        For example:
+
+        .. literalinclude:: snippets_table.py
+            :start-after: [START bigtable_row_append_cell_value]
+            :end-before: [END bigtable_row_append_cell_value]
 
         :type column_family_id: str
         :param column_family_id: The column family that contains the column.
@@ -724,6 +835,12 @@ class AppendRow(Row):
             read-modify rules on this row, but does not make an API
             request. To actually send an API request (with the rules) to the
             Google Cloud Bigtable API, call :meth:`commit`.
+
+        For example:
+
+        .. literalinclude:: snippets_table.py
+            :start-after: [START bigtable_row_increment_cell_value]
+            :end-before: [END bigtable_row_increment_cell_value]
 
         :type column_family_id: str
         :param column_family_id: The column family that contains the column.
@@ -765,25 +882,11 @@ class AppendRow(Row):
 
         After committing the accumulated mutations, resets the local mutations.
 
-        .. code:: python
+        For example:
 
-            >>> append_row.commit()
-            {
-                u'col-fam-id': {
-                    b'col-name1': [
-                        (b'cell-val', datetime.datetime(...)),
-                        (b'cell-val-newer', datetime.datetime(...)),
-                    ],
-                    b'col-name2': [
-                        (b'altcol-cell-val', datetime.datetime(...)),
-                    ],
-                },
-                u'col-fam-id2': {
-                    b'col-name3-but-other-fam': [
-                        (b'foo', datetime.datetime(...)),
-                    ],
-                },
-            }
+        .. literalinclude:: snippets_table.py
+            :start-after: [START bigtable_row_commit]
+            :end-before: [END bigtable_row_commit]
 
         :rtype: dict
         :returns: The new contents of all modified cells. Returned as a
