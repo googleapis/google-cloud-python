@@ -1063,6 +1063,11 @@ def to_gbq(
     else:
         table.create(table_id, table_schema)
 
+    if dataframe.empty:
+        # Create the table (if needed), but don't try to run a load job with an
+        # empty file. See: https://github.com/pydata/pandas-gbq/issues/237
+        return
+
     connector.load_data(
         dataframe,
         dataset_id,

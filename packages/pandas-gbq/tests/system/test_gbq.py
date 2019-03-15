@@ -892,6 +892,8 @@ class TestReadGBQIntegration(object):
 class TestToGBQIntegration(object):
     @pytest.fixture(autouse=True, scope="function")
     def setup(self, project, credentials, random_dataset_id):
+        from google.cloud import bigquery
+
         # - PER-TEST FIXTURES -
         # put here any instruction you want to be run *BEFORE* *EVERY* test is
         # executed.
@@ -900,6 +902,9 @@ class TestToGBQIntegration(object):
         )
         self.destination_table = "{}.{}".format(random_dataset_id, TABLE_ID)
         self.credentials = credentials
+        self.bqclient = bigquery.Client(
+            project=project, credentials=credentials
+        )
 
     def test_upload_data(self, project_id):
         test_id = "1"
@@ -926,7 +931,6 @@ class TestToGBQIntegration(object):
 
     def test_upload_empty_data(self, project_id):
         test_id = "data_with_0_rows"
-        test_size = 0
         df = DataFrame()
 
         gbq.to_gbq(
@@ -936,15 +940,31 @@ class TestToGBQIntegration(object):
             credentials=self.credentials,
         )
 
-        result = gbq.read_gbq(
-            "SELECT COUNT(*) AS num_rows FROM {0}".format(
-                self.destination_table + test_id
-            ),
-            project_id=project_id,
-            credentials=self.credentials,
-            dialect="legacy",
+        table = self.bqclient.get_table(self.destination_table + test_id)
+        assert table.num_rows == 0
+        assert len(table.schema) == 0
+
+    def test_upload_empty_data_with_schema(self, project_id):
+        test_id = "data_with_0_rows"
+        df = DataFrame(
+            {
+                "a": pandas.Series(dtype="int64"),
+                "b": pandas.Series(dtype="object"),
+            }
         )
-        assert result["num_rows"][0] == test_size
+
+        gbq.to_gbq(
+            df,
+            self.destination_table + test_id,
+            project_id,
+            credentials=self.credentials,
+        )
+
+        table = self.bqclient.get_table(self.destination_table + test_id)
+        assert table.num_rows == 0
+        schema = table.schema
+        assert schema[0].field_type == "INTEGER"
+        assert schema[1].field_type == "STRING"
 
     def test_upload_data_if_table_exists_fail(self, project_id):
         test_id = "2"
