@@ -566,7 +566,6 @@ class SecurityCenterClient(object):
         filter_=None,
         compare_duration=None,
         read_time=None,
-        having=None,
         page_size=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
@@ -682,9 +681,6 @@ class SecurityCenterClient(object):
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.securitycenter_v1.types.Timestamp`
-            having (str): Filter that specifies what fields to further filter on *after* the query
-                filter has been executed. Currently only 'state\_change' is supported
-                and requires compare\_duration to be specified.
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
                 resource, this parameter does not affect the return value. If page
@@ -729,7 +725,6 @@ class SecurityCenterClient(object):
             filter=filter_,
             compare_duration=compare_duration,
             read_time=read_time,
-            having=having,
             page_size=page_size,
         )
         iterator = google.api_core.page_iterator.GRPCIterator(
@@ -754,7 +749,6 @@ class SecurityCenterClient(object):
         filter_=None,
         read_time=None,
         compare_duration=None,
-        having=None,
         page_size=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
@@ -869,10 +863,6 @@ class SecurityCenterClient(object):
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.securitycenter_v1.types.Duration`
-            having (str): Filter that specifies what fields to further filter on *after* the query
-                filter has been executed. Currently only 'finding.state' and
-                'state\_change' are supported and requires compare\_duration to be
-                specified.
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
                 resource, this parameter does not affect the return value. If page
@@ -917,7 +907,6 @@ class SecurityCenterClient(object):
             filter=filter_,
             read_time=read_time,
             compare_duration=compare_duration,
-            having=having,
             page_size=page_size,
         )
         iterator = google.api_core.page_iterator.GRPCIterator(
@@ -942,7 +931,6 @@ class SecurityCenterClient(object):
         order_by=None,
         read_time=None,
         compare_duration=None,
-        having=None,
         field_mask=None,
         page_size=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
@@ -1047,9 +1035,6 @@ class SecurityCenterClient(object):
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.securitycenter_v1.types.Duration`
-            having (str): Filter that specifies what fields to further filter on *after* the query
-                filter has been executed. Currently only 'state\_change' is supported
-                and requires compare\_duration to be specified.
             field_mask (Union[dict, ~google.cloud.securitycenter_v1.types.FieldMask]): Optional.
 
                 A field mask to specify the ListAssetsResult fields to be listed in the
@@ -1102,7 +1087,6 @@ class SecurityCenterClient(object):
             order_by=order_by,
             read_time=read_time,
             compare_duration=compare_duration,
-            having=having,
             field_mask=field_mask,
             page_size=page_size,
         )
@@ -1128,7 +1112,6 @@ class SecurityCenterClient(object):
         order_by=None,
         read_time=None,
         compare_duration=None,
-        having=None,
         field_mask=None,
         page_size=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
@@ -1234,10 +1217,6 @@ class SecurityCenterClient(object):
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.securitycenter_v1.types.Duration`
-            having (str): Filter that specifies what fields to further filter on *after* the query
-                filter has been executed. Currently only 'finding.state' and
-                'state\_change' are supported and requires compare\_duration to be
-                specified.
             field_mask (Union[dict, ~google.cloud.securitycenter_v1.types.FieldMask]): Optional.
 
                 A field mask to specify the Finding fields to be listed in the response.
@@ -1289,7 +1268,6 @@ class SecurityCenterClient(object):
             order_by=order_by,
             read_time=read_time,
             compare_duration=compare_duration,
-            having=having,
             field_mask=field_mask,
             page_size=page_size,
         )
