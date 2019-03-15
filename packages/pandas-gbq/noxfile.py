@@ -5,6 +5,7 @@ See: https://nox.readthedocs.io/en/latest/
 
 import os
 import os.path
+import shutil
 
 import nox
 
@@ -49,6 +50,28 @@ def cover(session, python=latest_python):
     session.install("coverage", "pytest-cov")
     session.run("coverage", "report", "--show-missing", "--fail-under=40")
     session.run("coverage", "erase")
+
+
+@nox.session(python=latest_python)
+def docs(session):
+    """Build the docs."""
+
+    session.install("-r", os.path.join("docs", "requirements-docs.txt"))
+    session.install("-e", ".")
+
+    shutil.rmtree(os.path.join("docs", "source", "_build"), ignore_errors=True)
+    session.run(
+        "sphinx-build",
+        "-W",  # warnings as errors
+        "-T",  # show full traceback on exception
+        "-N",  # no colors
+        "-b",
+        "html",
+        "-d",
+        os.path.join("docs", "source", "_build", "doctrees", ""),
+        os.path.join("docs", "source", ""),
+        os.path.join("docs", "source", "_build", "html", ""),
+    )
 
 
 @nox.session(python=supported_pythons)

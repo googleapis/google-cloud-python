@@ -3,8 +3,8 @@
 Writing DataFrames
 ==================
 
-Assume we want to write a DataFrame ``df`` into a BigQuery table using
-:func:`~pandas_gbq.to_gbq`.
+Assume we want to write a :class:`~pandas.DataFrame` named ``df`` into a
+BigQuery table using :func:`~pandas_gbq.to_gbq`.
 
 .. ipython:: python
 
@@ -21,40 +21,62 @@ Assume we want to write a DataFrame ``df`` into a BigQuery table using
 
 .. code-block:: python
 
-   to_gbq(df, 'my_dataset.my_table', projectid)
+   import pandas_gbq
+   pandas_gbq.to_gbq(df, 'my_dataset.my_table', project_id=projectid)
 
-.. note::
+The destination table and destination dataset will automatically be created
+if they do not already exist.
 
-   The destination table and destination dataset will automatically be created if they do not already exist.
 
-The ``if_exists`` argument can be used to dictate whether to ``'fail'``, ``'replace'``
-or ``'append'`` if the destination table already exists. The default value is ``'fail'``.
+Writing to an Existing Table
+----------------------------
+
+Use the ``if_exists`` argument to dictate whether to ``'fail'``,
+``'replace'`` or ``'append'`` if the destination table already exists. The
+default value is ``'fail'``.
 
 For example, assume that ``if_exists`` is set to ``'fail'``. The following snippet will raise
 a ``TableCreationError`` if the destination table already exists.
 
 .. code-block:: python
 
-   to_gbq(df, 'my_dataset.my_table', projectid, if_exists='fail')
+   import pandas_gbq
+   pandas_gbq.to_gbq(
+       df, 'my_dataset.my_table', project_id=projectid, if_exists='fail',
+   )
 
-.. note::
+If the ``if_exists`` argument is set to ``'append'``, the destination
+dataframe will be written to the table using the defined table schema and
+column types. The dataframe must contain fields (matching name and type)
+currently in the destination table.
 
-   If the ``if_exists`` argument is set to ``'append'``, the destination
-   dataframe will be written to the table using the defined table schema and
-   column types. The dataframe must contain fields (matching name and type)
-   currently in the destination table.
 
-.. note::
+.. _writing-schema:
 
-   If an error occurs while streaming data to BigQuery, see
-   `Troubleshooting BigQuery Errors <https://cloud.google.com/bigquery/troubleshooting-errors>`__.
+Inferring the Table Schema
+--------------------------
 
-.. note::
+The :func:`~pandas_gbq.to_gbq` method infers the BigQuery table schema based
+on the dtypes of the uploaded :class:`~pandas.DataFrame`.
 
-   While BigQuery uses SQL-like syntax, it has some important differences
-   from traditional databases both in functionality, API limitations (size
-   and quantity of queries or uploads), and how Google charges for use of the
-   service. You should refer to `Google BigQuery documentation
-   <https://cloud.google.com/bigquery/docs>`__ often as the service is always
-   evolving. BiqQuery is best for analyzing large sets of data quickly, but
-   it is not a direct replacement for a transactional database.
+========================= ==================
+dtype                     BigQuery Data Type
+========================= ==================
+i (integer)               INTEGER
+b (boolean)               BOOLEAN
+f (float)                 FLOAT
+O (object)                STRING
+S (zero-terminated bytes) STRING
+U (Unicode string)        STRING
+M (datetime)              TIMESTAMP
+========================= ==================
+
+If the data type inference does not suit your needs, supply a BigQuery schema
+as the ``table_schema`` parameter of :func:`~pandas_gbq.to_gbq`.
+
+
+Troubleshooting Errors
+----------------------
+
+If an error occurs while writing data to BigQuery, see
+`Troubleshooting BigQuery Errors <https://cloud.google.com/bigquery/troubleshooting-errors>`__.

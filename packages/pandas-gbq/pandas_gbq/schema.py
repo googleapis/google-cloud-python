@@ -11,6 +11,8 @@ def generate_bq_schema(dataframe, default_type="STRING"):
         does not exist in the schema.
     """
 
+    # If you update this mapping, also update the table at
+    # `docs/source/writing.rst`.
     type_mapping = {
         "i": "INTEGER",
         "b": "BOOLEAN",

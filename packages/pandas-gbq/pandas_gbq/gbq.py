@@ -937,14 +937,18 @@ def to_gbq(
         List of BigQuery table fields to which according DataFrame
         columns conform to, e.g. ``[{'name': 'col1', 'type':
         'STRING'},...]``.
-        If schema is not provided, it will be
-        generated according to dtypes of DataFrame columns.
-        If schema is provided, it may contain all or a subset of DataFrame
-        columns. If a subset is provided, the rest will be inferred from
-        the DataFrame dtypes.
-        pandas_gbq.gbq._generate_bq_schema() may be used to create an
-        initial schema, though it doesn't preserve column order.
-        See BigQuery API documentation on available names of a field.
+
+        - If ``table_schema`` is provided, it may contain all or a subset of
+          DataFrame columns. If a subset is provided, the rest will be
+          inferred from the DataFrame dtypes.
+        - If ``table_schema`` is **not** provided, it will be
+          generated according to dtypes of DataFrame columns. See
+          `Inferring the Table Schema
+          <https://pandas-gbq.readthedocs.io/en/latest/writing.html#writing-schema>`__.
+          for a description of the schema inference.
+
+        See `BigQuery API documentation on valid column names
+        <https://cloud.google.com/bigquery/docs/schemas#column_names`>__.
 
         .. versionadded:: 0.3.1
     location : str, optional
@@ -985,6 +989,7 @@ def to_gbq(
     """
 
     _test_google_api_imports()
+    from pandas_gbq import schema
 
     if verbose is not None and SHOW_VERBOSE_DEPRECATION:
         warnings.warn(
@@ -1029,7 +1034,7 @@ def to_gbq(
     if not table_schema:
         table_schema = default_schema
     else:
-        table_schema = _update_bq_schema(
+        table_schema = schema.update_schema(
             default_schema, dict(fields=table_schema)
         )
 
@@ -1091,15 +1096,16 @@ def generate_bq_schema(df, default_type="STRING"):
 
 
 def _generate_bq_schema(df, default_type="STRING"):
+    """DEPRECATED: Given a dataframe, generate a Google BigQuery schema.
+
+    This is a private method, but was used in external code to work around
+    issues in the default schema generation. Now that individual columns can
+    be overridden: https://github.com/pydata/pandas-gbq/issues/218, this
+    method can be removed after there is time to migrate away from this
+    method. """
     from pandas_gbq import schema
 
     return schema.generate_bq_schema(df, default_type=default_type)
-
-
-def _update_bq_schema(schema_old, schema_new):
-    from pandas_gbq import schema
-
-    return schema.update_schema(schema_old, schema_new)
 
 
 class _Table(GbqConnector):

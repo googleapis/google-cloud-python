@@ -8,16 +8,24 @@ Welcome to pandas-gbq's documentation!
 
 The :mod:`pandas_gbq` module provides a wrapper for Google's BigQuery
 analytics web service to simplify retrieving results from BigQuery tables
-using SQL-like queries. Result sets are parsed into a pandas
-DataFrame with a shape and data types derived from the source table.
-Additionally, DataFrames can be inserted into new BigQuery tables or appended
-to existing tables.
+using SQL-like queries. Result sets are parsed into a :class:`pandas.DataFrame`
+with a shape and data types derived from the source table. Additionally,
+DataFrames can be inserted into new BigQuery tables or appended to existing
+tables.
 
 .. warning::
 
-   To use this module, you will need a valid BigQuery account. Refer to the
-   `BigQuery Documentation <https://cloud.google.com/bigquery/what-is-bigquery>`__
-   for details on the service itself.
+   To use this module, you will need a valid BigQuery account. Use the
+   `BigQuery sandbox <https://cloud.google.com/bigquery/docs/sandbox>`__ to
+   try the service for free.
+
+While BigQuery uses standard SQL syntax, it has some important differences
+from traditional databases both in functionality, API limitations (size and
+quantity of queries or uploads), and how Google charges for use of the
+service. BiqQuery is best for analyzing large sets of data quickly. It is not
+a direct replacement for a transactional database. Refer to the `BigQuery
+Documentation <https://cloud.google.com/bigquery/what-is-bigquery>`__ for
+details on the service itself.
 
 Contents:
 
@@ -29,7 +37,6 @@ Contents:
    howto/authentication.rst
    reading.rst
    writing.rst
-   tables.rst
    api.rst
    contributing.rst
    changelog.rst
