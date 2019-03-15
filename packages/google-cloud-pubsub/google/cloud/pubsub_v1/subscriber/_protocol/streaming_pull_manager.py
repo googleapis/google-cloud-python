@@ -41,6 +41,7 @@ _RETRYABLE_STREAM_ERRORS = (
     exceptions.InternalServerError,
     exceptions.Unknown,
     exceptions.GatewayTimeout,
+    exceptions.Aborted,
 )
 
 

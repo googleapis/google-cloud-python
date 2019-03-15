@@ -1,4 +1,4 @@
-// Copyright 2018 Google LLC.
+// Copyright 2019 Google LLC.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -31,7 +31,6 @@ option java_outer_classname = "PubsubProto";
 option java_package = "com.google.pubsub.v1";
 option php_namespace = "Google\\Cloud\\PubSub\\V1";
 option ruby_package = "Google::Cloud::PubSub::V1";
-
 
 // The service that an application uses to manipulate topics, and to send
 // messages to a topic.
@@ -79,7 +78,8 @@ service Publisher {
   }
 
   // Lists the names of the subscriptions on this topic.
-  rpc ListTopicSubscriptions(ListTopicSubscriptionsRequest) returns (ListTopicSubscriptionsResponse) {
+  rpc ListTopicSubscriptions(ListTopicSubscriptionsRequest)
+      returns (ListTopicSubscriptionsResponse) {
     option (google.api.http) = {
       get: "/v1/{topic=projects/*/topics/*}/subscriptions"
     };
@@ -94,7 +94,8 @@ service Publisher {
   // <b>BETA:</b> This feature is part of a beta release. This API might be
   // changed in backward-incompatible ways and is not recommended for production
   // use. It is not subject to any SLA or deprecation policy.
-  rpc ListTopicSnapshots(ListTopicSnapshotsRequest) returns (ListTopicSnapshotsResponse) {
+  rpc ListTopicSnapshots(ListTopicSnapshotsRequest)
+      returns (ListTopicSnapshotsResponse) {
     option (google.api.http) = {
       get: "/v1/{topic=projects/*/topics/*}/snapshots"
     };
@@ -125,9 +126,10 @@ service Subscriber {
   // If the name is not provided in the request, the server will assign a random
   // name for this subscription on the same project as the topic, conforming
   // to the
-  // [resource name format](https://cloud.google.com/pubsub/docs/admin#resource_names).
-  // The generated name is populated in the returned Subscription object.
-  // Note that for REST API requests, you must specify a name in the request.
+  // [resource name
+  // format](https://cloud.google.com/pubsub/docs/admin#resource_names). The
+  // generated name is populated in the returned Subscription object. Note that
+  // for REST API requests, you must specify a name in the request.
   rpc CreateSubscription(Subscription) returns (Subscription) {
     option (google.api.http) = {
       put: "/v1/{name=projects/*/subscriptions/*}"
@@ -152,7 +154,8 @@ service Subscriber {
   }
 
   // Lists matching subscriptions.
-  rpc ListSubscriptions(ListSubscriptionsRequest) returns (ListSubscriptionsResponse) {
+  rpc ListSubscriptions(ListSubscriptionsRequest)
+      returns (ListSubscriptionsResponse) {
     option (google.api.http) = {
       get: "/v1/{project=projects/*}/subscriptions"
     };
@@ -163,7 +166,8 @@ service Subscriber {
   // `NOT_FOUND`. After a subscription is deleted, a new one may be created with
   // the same name, but the new one has no association with the old
   // subscription or its topic unless the same topic is specified.
-  rpc DeleteSubscription(DeleteSubscriptionRequest) returns (google.protobuf.Empty) {
+  rpc DeleteSubscription(DeleteSubscriptionRequest)
+      returns (google.protobuf.Empty) {
     option (google.api.http) = {
       delete: "/v1/{subscription=projects/*/subscriptions/*}"
     };
@@ -174,7 +178,8 @@ service Subscriber {
   // subscriber, or to make the message available for redelivery if the
   // processing was interrupted. Note that this does not modify the
   // subscription-level `ackDeadlineSeconds` used for subsequent messages.
-  rpc ModifyAckDeadline(ModifyAckDeadlineRequest) returns (google.protobuf.Empty) {
+  rpc ModifyAckDeadline(ModifyAckDeadlineRequest)
+      returns (google.protobuf.Empty) {
     option (google.api.http) = {
       post: "/v1/{subscription=projects/*/subscriptions/*}:modifyAckDeadline"
       body: "*"
@@ -212,8 +217,8 @@ service Subscriber {
   // reassign server-side resources, in which case, the client should
   // re-establish the stream. Flow control can be achieved by configuring the
   // underlying RPC channel.
-  rpc StreamingPull(stream StreamingPullRequest) returns (stream StreamingPullResponse) {
-  }
+  rpc StreamingPull(stream StreamingPullRequest)
+      returns (stream StreamingPullResponse) {}
 
   // Modifies the `PushConfig` for a specified subscription.
   //
@@ -221,7 +226,8 @@ service Subscriber {
   // an empty `PushConfig`) or vice versa, or change the endpoint URL and other
   // attributes of a push subscription. Messages will accumulate for delivery
   // continuously through the call regardless of changes to the `PushConfig`.
-  rpc ModifyPushConfig(ModifyPushConfigRequest) returns (google.protobuf.Empty) {
+  rpc ModifyPushConfig(ModifyPushConfigRequest)
+      returns (google.protobuf.Empty) {
     option (google.api.http) = {
       post: "/v1/{subscription=projects/*/subscriptions/*}:modifyPushConfig"
       body: "*"
@@ -275,9 +281,10 @@ service Subscriber {
   // the request, the server will assign a random
   // name for this snapshot on the same project as the subscription, conforming
   // to the
-  // [resource name format](https://cloud.google.com/pubsub/docs/admin#resource_names).
-  // The generated name is populated in the returned Snapshot object. Note that
-  // for REST API requests, you must specify a name in the request.
+  // [resource name
+  // format](https://cloud.google.com/pubsub/docs/admin#resource_names). The
+  // generated name is populated in the returned Snapshot object. Note that for
+  // REST API requests, you must specify a name in the request.
   rpc CreateSnapshot(CreateSnapshotRequest) returns (Snapshot) {
     option (google.api.http) = {
       put: "/v1/{name=projects/*/snapshots/*}"
@@ -576,7 +583,8 @@ message Subscription {
   // messages are not expunged from the subscription's backlog, even if they are
   // acknowledged, until they fall out of the `message_retention_duration`
   // window. This must be true if you would like to
-  // <a href="https://cloud.google.com/pubsub/docs/replay-overview#seek_to_a_time">
+  // <a
+  // href="https://cloud.google.com/pubsub/docs/replay-overview#seek_to_a_time">
   // Seek to a timestamp</a>.
   // <br><br>
   // <b>BETA:</b> This feature is part of a beta release. This API might be
@@ -651,6 +659,42 @@ message PushConfig {
   // * `v1beta1`: uses the push format defined in the v1beta1 Pub/Sub API.
   // * `v1` or `v1beta2`: uses the push format defined in the v1 Pub/Sub API.
   map<string, string> attributes = 2;
+
+  // An authentication method used by push endpoints to verify the source of
+  // push requests. This can be used with push endpoints that are private by
+  // default to allow requests only from the Cloud Pub/Sub system, for example.
+  // This field is optional and should be set only by users interested in
+  // authenticated push.
+  // <b>EXPERIMENTAL:</b> This field a part of a closed alpha that may not be
+  // accessible to all users. It may be changed in backward-incompatible ways
+  // and is not subject to any SLA or deprecation policy.  It is not recommended
+  // for production use.
+  oneof authentication_method {
+    // If specified, Pub/Sub will generate and attach an OIDC JWT token as an
+    // `Authorization` header in the HTTP request for every pushed message.
+    OidcToken oidc_token = 3;
+  }
+
+  // Contains information needed for generating an
+  // [OpenID Connect
+  // token](https://developers.google.com/identity/protocols/OpenIDConnect).
+  message OidcToken {
+    // [Service account
+    // email](https://cloud.google.com/iam/docs/service-accounts)
+    // to be used for generating the OIDC token. The caller (for
+    // CreateSubscription, UpdateSubscription, and ModifyPushConfig calls) must
+    // have the iam.serviceAccounts.actAs permission for the service account.
+    // See https://cloud.google.com/iam/docs/understanding-roles#service-accounts-roles.
+    string service_account_email = 1;
+
+    // Audience to be used when generating OIDC token. The audience claim
+    // identifies the recipients that the JWT is intended for. The audience
+    // value is a single case-sensitive string. Having multiple values (array)
+    // for the audience field is not supported. More info about the OIDC JWT
+    // token audience here: https://tools.ietf.org/html/rfc7519#section-4.1.3
+    // Note: if not specified, the Push endpoint URL will be used.
+    string audience = 2;
+  }
 }
 
 // A message and its corresponding acknowledgment ID.
@@ -836,9 +880,9 @@ message StreamingPullResponse {
 }
 
 // Request for the `CreateSnapshot` method.<br><br>
-// <b>BETA:</b> This feature is part of a beta release. This API might be changed in
-// backward-incompatible ways and is not recommended for production use.
-// It is not subject to any SLA or deprecation policy.
+// <b>BETA:</b> This feature is part of a beta release. This API might be
+// changed in backward-incompatible ways and is not recommended for production
+// use. It is not subject to any SLA or deprecation policy.
 message CreateSnapshotRequest {
   // Optional user-provided name for this snapshot.
   // If the name is not provided in the request, the server will assign a random
@@ -992,6 +1036,4 @@ message SeekRequest {
 }
 
 // Response for the `Seek` method (this response is empty).
-message SeekResponse {
-
-}
+message SeekResponse {}
