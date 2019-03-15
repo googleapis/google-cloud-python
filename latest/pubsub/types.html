@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Pub/Sub Client Types &#8212; google-cloud 414f026 documentation</title>
+    <title>Pub/Sub Client Types &#8212; google-cloud 1f08ba5 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -2209,6 +2209,28 @@ uses the push format defined in the v1beta1 Pub/Sub API. -
 Pub/Sub    API.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="google.cloud.pubsub_v1.types.PushConfig.authentication_method">
+<code class="descname">authentication_method</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.PushConfig.authentication_method" title="Permalink to this definition">#</a></dt>
+<dd><p>An authentication method used by push endpoints to verify the
+source of push requests. This can be used with push endpoints
+that are private by default to allow requests only from the
+Cloud Pub/Sub system, for example. This field is optional and
+should be set only by users interested in authenticated push.
+EXPERIMENTAL: This field a part of a closed alpha that may not
+be accessible to all users. It may be changed in backward-
+incompatible ways and is not subject to any SLA or deprecation
+policy. It is not recommended for production use.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.pubsub_v1.types.PushConfig.oidc_token">
+<code class="descname">oidc_token</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.PushConfig.oidc_token" title="Permalink to this definition">#</a></dt>
+<dd><p>If specified, Pub/Sub will generate and attach an OIDC JWT
+token as an <code class="docutils literal notranslate"><span class="pre">Authorization</span></code> header in the HTTP request for
+every pushed message.</p>
+</dd></dl>
+
 <dl class="class">
 <dt id="google.cloud.pubsub_v1.types.PushConfig.AttributesEntry">
 <em class="property">class </em><code class="descname">AttributesEntry</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.PushConfig.AttributesEntry" title="Permalink to this definition">#</a></dt>
@@ -2226,10 +2248,59 @@ Pub/Sub    API.</p>
 
 </dd></dl>
 
+<dl class="class">
+<dt id="google.cloud.pubsub_v1.types.PushConfig.OidcToken">
+<em class="property">class </em><code class="descname">OidcToken</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.PushConfig.OidcToken" title="Permalink to this definition">#</a></dt>
+<dd><p>Contains information needed for generating an <a class="reference external" href="https://developers.google.com/identity/protocols/OpenIDConnect">OpenID Connect
+token</a>.</p>
+<dl class="attribute">
+<dt id="google.cloud.pubsub_v1.types.PushConfig.OidcToken.service_account_email">
+<code class="descname">service_account_email</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.PushConfig.OidcToken.service_account_email" title="Permalink to this definition">#</a></dt>
+<dd><p><a class="reference external" href="https://cloud.google.com/iam/docs/service-accounts">Service account email</a> to be
+used for generating the OIDC token. The caller (for
+CreateSubscription, UpdateSubscription, and ModifyPushConfig
+calls) must have the iam.serviceAccounts.actAs permission for
+the service account. See
+<a class="reference external" href="https://cloud.google.com/iam/docs/understanding-roles#service">https://cloud.google.com/iam/docs/understanding-roles#service</a>-
+accounts-roles.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.pubsub_v1.types.PushConfig.OidcToken.audience">
+<code class="descname">audience</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.PushConfig.OidcToken.audience" title="Permalink to this definition">#</a></dt>
+<dd><p>Audience to be used when generating OIDC token. The audience
+claim identifies the recipients that the JWT is intended for.
+The audience value is a single case-sensitive string. Having
+multiple values (array) for the audience field is not
+supported. More info about the OIDC JWT token audience here:
+<a class="reference external" href="https://tools.ietf.org/html/rfc7519#section-4.1.3">https://tools.ietf.org/html/rfc7519#section-4.1.3</a> Note: if not
+specified, the Push endpoint URL will be used.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">audience</code></dt>
+<dd><p>Field google.pubsub.v1.PushConfig.OidcToken.audience</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">service_account_email</code></dt>
+<dd><p>Field google.pubsub.v1.PushConfig.OidcToken.service_account_email</p>
+</dd></dl>
+
+</dd></dl>
+
 <dl class="attribute">
 <dt>
 <code class="descname">attributes</code></dt>
 <dd><p>Field google.pubsub.v1.PushConfig.attributes</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">oidc_token</code></dt>
+<dd><p>Field google.pubsub.v1.PushConfig.oidc_token</p>
 </dd></dl>
 
 <dl class="attribute">
