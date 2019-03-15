@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Types for Cloud Security Command Center API Client &#8212; google-cloud f242cc1 documentation</title>
+    <title>Types for Cloud Security Command Center API Client &#8212; google-cloud 414f026 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -823,15 +823,6 @@ field will default to the API’s version of NOW.</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="google.cloud.securitycenter_v1.types.GroupAssetsRequest.having">
-<code class="descname">having</code><a class="headerlink" href="#google.cloud.securitycenter_v1.types.GroupAssetsRequest.having" title="Permalink to this definition">#</a></dt>
-<dd><p>Filter that specifies what fields to further filter on <em>after</em>
-the query filter has been executed. Currently only
-‘state_change’ is supported and requires compare_duration to
-be specified.</p>
-</dd></dl>
-
-<dl class="attribute">
 <dt id="google.cloud.securitycenter_v1.types.GroupAssetsRequest.page_token">
 <code class="descname">page_token</code><a class="headerlink" href="#google.cloud.securitycenter_v1.types.GroupAssetsRequest.page_token" title="Permalink to this definition">#</a></dt>
 <dd><p>The value returned by the last <code class="docutils literal notranslate"><span class="pre">GroupAssetsResponse</span></code>;
@@ -863,12 +854,6 @@ Default is 10, minimum is 1, maximum is 1000.</p>
 <dt>
 <code class="descname">group_by</code></dt>
 <dd><p>Field google.cloud.securitycenter.v1.GroupAssetsRequest.group_by</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt>
-<code class="descname">having</code></dt>
-<dd><p>Field google.cloud.securitycenter.v1.GroupAssetsRequest.having</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1037,15 +1022,6 @@ field in <code class="docutils literal notranslate"><span class="pre">group_by</
 </dd></dl>
 
 <dl class="attribute">
-<dt id="google.cloud.securitycenter_v1.types.GroupFindingsRequest.having">
-<code class="descname">having</code><a class="headerlink" href="#google.cloud.securitycenter_v1.types.GroupFindingsRequest.having" title="Permalink to this definition">#</a></dt>
-<dd><p>Filter that specifies what fields to further filter on <em>after</em>
-the query filter has been executed. Currently only
-‘finding.state’ and ‘state_change’ are supported and requires
-compare_duration to be specified.</p>
-</dd></dl>
-
-<dl class="attribute">
 <dt id="google.cloud.securitycenter_v1.types.GroupFindingsRequest.page_token">
 <code class="descname">page_token</code><a class="headerlink" href="#google.cloud.securitycenter_v1.types.GroupFindingsRequest.page_token" title="Permalink to this definition">#</a></dt>
 <dd><p>The value returned by the last <code class="docutils literal notranslate"><span class="pre">GroupFindingsResponse</span></code>;
@@ -1077,12 +1053,6 @@ Default is 10, minimum is 1, maximum is 1000.</p>
 <dt>
 <code class="descname">group_by</code></dt>
 <dd><p>Field google.cloud.securitycenter.v1.GroupFindingsRequest.group_by</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt>
-<code class="descname">having</code></dt>
-<dd><p>Field google.cloud.securitycenter.v1.GroupFindingsRequest.having</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1299,15 +1269,6 @@ state_change set for all assets present at read_time.</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="google.cloud.securitycenter_v1.types.ListAssetsRequest.having">
-<code class="descname">having</code><a class="headerlink" href="#google.cloud.securitycenter_v1.types.ListAssetsRequest.having" title="Permalink to this definition">#</a></dt>
-<dd><p>Filter that specifies what fields to further filter on <em>after</em>
-the query filter has been executed. Currently only
-‘state_change’ is supported and requires compare_duration to
-be specified.</p>
-</dd></dl>
-
-<dl class="attribute">
 <dt id="google.cloud.securitycenter_v1.types.ListAssetsRequest.field_mask">
 <code class="descname">field_mask</code><a class="headerlink" href="#google.cloud.securitycenter_v1.types.ListAssetsRequest.field_mask" title="Permalink to this definition">#</a></dt>
 <dd><p>Optional.  A field mask to specify the ListAssetsResult fields
@@ -1347,12 +1308,6 @@ Default is 10, minimum is 1, maximum is 1000.</p>
 <dt>
 <code class="descname">filter</code></dt>
 <dd><p>Field google.cloud.securitycenter.v1.ListAssetsRequest.filter</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt>
-<code class="descname">having</code></dt>
-<dd><p>Field google.cloud.securitycenter.v1.ListAssetsRequest.having</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1556,15 +1511,6 @@ state_change set for all findings present at read_time.</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="google.cloud.securitycenter_v1.types.ListFindingsRequest.having">
-<code class="descname">having</code><a class="headerlink" href="#google.cloud.securitycenter_v1.types.ListFindingsRequest.having" title="Permalink to this definition">#</a></dt>
-<dd><p>Filter that specifies what fields to further filter on <em>after</em>
-the query filter has been executed. Currently only
-‘finding.state’ and ‘state_change’ are supported and requires
-compare_duration to be specified.</p>
-</dd></dl>
-
-<dl class="attribute">
 <dt id="google.cloud.securitycenter_v1.types.ListFindingsRequest.field_mask">
 <code class="descname">field_mask</code><a class="headerlink" href="#google.cloud.securitycenter_v1.types.ListFindingsRequest.field_mask" title="Permalink to this definition">#</a></dt>
 <dd><p>Optional.  A field mask to specify the Finding fields to be
@@ -1604,12 +1550,6 @@ Default is 10, minimum is 1, maximum is 1000.</p>
 <dt>
 <code class="descname">filter</code></dt>
 <dd><p>Field google.cloud.securitycenter.v1.ListFindingsRequest.filter</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt>
-<code class="descname">having</code></dt>
-<dd><p>Field google.cloud.securitycenter.v1.ListFindingsRequest.having</p>
 </dd></dl>
 
 <dl class="attribute">
