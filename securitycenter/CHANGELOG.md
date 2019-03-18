@@ -10,6 +10,7 @@
 
 
 ### Implementation Changes
+- Remove 'having' filter arguments from query methods (via synth). [#7511](https://github.com/googleapis/google-cloud-python/pull/7511))
 - Remove unused message exports. ([#7274](https://github.com/googleapis/google-cloud-python/pull/7274))
 - Trivial gapic-generator change. ([#7233](https://github.com/googleapis/google-cloud-python/pull/7233))
 - Protoc-generated serialization update, docstring tweak. ([#7094](https://github.com/googleapis/google-cloud-python/pull/7094))
