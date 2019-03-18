@@ -15,7 +15,7 @@
 - Protoc-generated serialization update, docstring tweak. ([#7094](https://github.com/googleapis/google-cloud-python/pull/7094))
 
 ### New Features
-- Security Center: Generate v1 ([#7495](https://github.com/googleapis/google-cloud-python/pull/7495))
+- Add support for `v1` API. ([#7495](https://github.com/googleapis/google-cloud-python/pull/7495))
 
 ### Documentation
 - googlecloudplatform --> googleapis in READMEs ([#7411](https://github.com/googleapis/google-cloud-python/pull/7411))
