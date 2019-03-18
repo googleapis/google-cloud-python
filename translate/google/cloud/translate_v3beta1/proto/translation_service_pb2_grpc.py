@@ -10,7 +10,9 @@ from google.longrunning import (
 
 
 class TranslationServiceStub(object):
-    """Provides natural language translation operations.
+    """Proto file for the Cloud Translation API (v3beta1).
+
+  Provides natural language translation operations.
   """
 
     def __init__(self, channel):
@@ -62,7 +64,9 @@ class TranslationServiceStub(object):
 
 
 class TranslationServiceServicer(object):
-    """Provides natural language translation operations.
+    """Proto file for the Cloud Translation API (v3beta1).
+
+  Provides natural language translation operations.
   """
 
     def TranslateText(self, request, context):
