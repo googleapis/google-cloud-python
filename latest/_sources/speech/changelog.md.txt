@@ -4,6 +4,25 @@
 
 [1]: https://pypi.org/project/google-cloud-speech/#history
 
+## 1.0.0
+
+03-18-2019 08:05 PDT
+
+
+### Implementation Changes
+- Remove unused message exports. ([#7275](https://github.com/googleapis/google-cloud-python/pull/7275))
+
+### New Features
+- Promote google-cloud-speech to GA ([#7525](https://github.com/googleapis/google-cloud-python/pull/7525))
+
+### Documentation
+- Updated client library documentation URLs. ([#7307](https://github.com/googleapis/google-cloud-python/pull/7307))
+
+### Internal / Testing Changes
+- Speech: copy lintified proto files (via synth).
+- Add clarifying comment to blacken nox target. ([#7404](https://github.com/googleapis/google-cloud-python/pull/7404))
+- Copy proto files alongside protoc versions. Remove unneeded utf-8 header.
+
 ## 0.36.3
 
 01-31-2019 09:57 PST
