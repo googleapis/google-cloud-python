@@ -817,6 +817,8 @@ class TestSessionAPI(unittest.TestCase, _TestData):
 
         rows = list(session.read(self.TABLE, self.COLUMNS, self.ALL))
         self._check_rows_data(rows, [])
+        # [END spanner_test_dml_with_mutation]
+        # [END spanner_test_dml_update]
 
     def test_transaction_batch_update_and_execute_dml(self):
         retry = RetryInstanceState(_has_all_ddl)
