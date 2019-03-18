@@ -4,6 +4,34 @@
 
 [1]: https://pypi.org/project/google-cloud-securitycenter/#history
 
+## 0.2.0
+
+03-12-2019 17:09 PDT
+
+
+### Implementation Changes
+- Remove 'having' filter arguments from query methods (via synth). [#7511](https://github.com/googleapis/google-cloud-python/pull/7511))
+- Remove unused message exports. ([#7274](https://github.com/googleapis/google-cloud-python/pull/7274))
+- Trivial gapic-generator change. ([#7233](https://github.com/googleapis/google-cloud-python/pull/7233))
+- Protoc-generated serialization update, docstring tweak. ([#7094](https://github.com/googleapis/google-cloud-python/pull/7094))
+
+### New Features
+- Add support for `v1` API. ([#7495](https://github.com/googleapis/google-cloud-python/pull/7495))
+
+### Documentation
+- googlecloudplatform --> googleapis in READMEs ([#7411](https://github.com/googleapis/google-cloud-python/pull/7411))
+- Updated client library documentation URLs. ([#7307](https://github.com/googleapis/google-cloud-python/pull/7307))
+- Update copyright headers
+- Docstring update from .proto file. ([#7056](https://github.com/googleapis/google-cloud-python/pull/7056))
+- Fix 404 for 'Client Library Documentation' link. ([#7041](https://github.com/googleapis/google-cloud-python/pull/7041))
+- Pick up stub docstring fix in GAPIC generator. ([#6981](https://github.com/googleapis/google-cloud-python/pull/6981))
+
+### Internal / Testing Changes
+- Proto file housekeeping FBO C# (via synth). ([#7502](https://github.com/googleapis/google-cloud-python/pull/7502))
+- Copy lintified proto files (via synth). ([#7470](https://github.com/googleapis/google-cloud-python/pull/7470))
+- Add clarifying comment to blacken nox target. ([#7402](https://github.com/googleapis/google-cloud-python/pull/7402))
+- Add protos as an artifact to library ([#7205](https://github.com/googleapis/google-cloud-python/pull/7205))
+
 ## 0.1.1
 
 12-18-2018 09:45 PST
