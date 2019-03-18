@@ -488,82 +488,6 @@ def test_bigtable_create_update_delete_column_family():
     assert column_family_id not in column_families
 
 
-def test_bigtable_column_family_name():
-    # [START bigtable_column_family_name]
-    from google.cloud.bigtable import Client
-
-    client = Client(admin=True)
-    instance = client.instance(INSTANCE_ID)
-    table = instance.table(TABLE_ID)
-
-    column_families = table.list_column_families()
-    column_family_obj = column_families[COLUMN_FAMILY_ID]
-    column_family_name = column_family_obj.name
-    # [END bigtable_column_family_name]
-    import re
-
-    _cf_name_re = re.compile(
-        r"^projects/(?P<project>[^/]+)/"
-        r"instances/(?P<instance>[^/]+)/tables/"
-        r"(?P<table>[^/]+)/columnFamilies/"
-        r"(?P<cf_id>[_a-zA-Z0-9][-_.a-zA-Z0-9]*)$"
-    )
-    assert _cf_name_re.match(column_family_name)
-
-
-def test_bigtable_create_update_delete_column_family():
-    # [START bigtable_create_column_family]
-    from google.cloud.bigtable import Client
-    from google.cloud.bigtable import column_family
-
-    client = Client(admin=True)
-    instance = client.instance(INSTANCE_ID)
-    table = instance.table(TABLE_ID)
-
-    column_family_id = "column_family_id1"
-    gc_rule = column_family.MaxVersionsGCRule(2)
-    column_family_obj = table.column_family(column_family_id, gc_rule=gc_rule)
-    column_family_obj.create()
-
-    # [END bigtable_create_column_family]
-    column_families = table.list_column_families()
-    assert column_families[column_family_id].gc_rule == gc_rule
-
-    # [START bigtable_update_column_family]
-    from google.cloud.bigtable import Client
-    from google.cloud.bigtable import column_family
-
-    client = Client(admin=True)
-    instance = client.instance(INSTANCE_ID)
-    table = instance.table(TABLE_ID)
-
-    # Already existing column family id
-    column_family_id = "column_family_id1"
-    # Define the GC rule to retain data with max age of 5 days
-    max_age_rule = column_family.MaxAgeGCRule(datetime.timedelta(days=5))
-    column_family_obj = table.column_family(column_family_id, gc_rule=max_age_rule)
-    column_family_obj.update()
-    # [END bigtable_update_column_family]
-
-    updated_families = table.list_column_families()
-    assert updated_families[column_family_id].gc_rule == max_age_rule
-
-    # [START bigtable_delete_column_family]
-    from google.cloud.bigtable import Client
-    from google.cloud.bigtable import column_family
-
-    client = Client(admin=True)
-    instance = client.instance(INSTANCE_ID)
-    table = instance.table(TABLE_ID)
-
-    column_family_id = "column_family_id1"
-    column_family_obj = table.column_family(column_family_id)
-    column_family_obj.delete()
-    # [END bigtable_delete_column_family]
-    column_families = table.list_column_families()
-    assert column_family_id not in column_families
-
-
 def test_bigtable_add_row_add_row_range_add_row_range_from_keys():
     row_keys = [
         b"row_key_1",
@@ -1234,30 +1158,6 @@ def test_bigtable_row_append_cell_value():
     _PACK_I64 = struct.Struct(">q").pack
     assert actual_value == _PACK_I64(cell_val + int_val)
     table.truncate(timeout=200)
-
-
-def test_bigtable_row_clear():
-    # [START bigtable_row_clear]
-    from google.cloud.bigtable import Client
-
-    client = Client(admin=True)
-    instance = client.instance(INSTANCE_ID)
-    table = instance.table(TABLE_ID)
-
-    row_key = b"row_key_1"
-    row_obj = table.row(row_key)
-    row_obj.set_cell(COLUMN_FAMILY_ID, COL_NAME1, b"cell-val")
-    # [END bigtable_row_clear]
-
-    mutation_size = row_obj.get_mutations_size()
-    assert mutation_size > 0
-
-    # [START bigtable_row_clear]
-    row_obj.clear()
-    # [END bigtable_row_clear]
-
-    mutation_size = row_obj.get_mutations_size()
-    assert mutation_size == 0
 
 
 if __name__ == "__main__":
