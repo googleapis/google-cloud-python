@@ -42,6 +42,8 @@ from google.cloud.bigtable_admin_v2.proto import (
     bigtable_table_admin_pb2 as table_admin_messages_v2_pb2,
 )
 
+import warnings
+
 
 # Maximum number of mutations in bulk (MutateRowsRequest message):
 # (https://cloud.google.com/bigtable/docs/reference/data/rpc/
@@ -467,6 +469,11 @@ class Table(object):
         :rtype: :class:`.PartialRowData`
         :returns: A :class:`.PartialRowData` for each row returned
         """
+        warnings.warn(
+            "`yield_rows()` is depricated; use `red_rows()` instead",
+            DeprecationWarning,
+            stacklevel=2,
+        )
         return self.read_rows(**kwargs)
 
     def mutate_rows(self, rows, retry=DEFAULT_RETRY):
