@@ -1,3 +1,9 @@
+v0.3.0
+------
+* Use utc when parsing expiration timestamp (#26)
+* Allow saving credentials in current directory (#25)
+
+
 v0.2.0
 ------
 
