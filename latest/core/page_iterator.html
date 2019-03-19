@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Page Iterators &#8212; google-cloud a9a3f6a documentation</title>
+    <title>Page Iterators &#8212; google-cloud f6f3278 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -120,7 +120,7 @@ take a single message for the request.</li>
 <li><strong>request</strong> (<em>protobuf.Message</em>) – The request message.</li>
 <li><strong>items_field</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The field in the response message that has the
 items for the page.</li>
-<li><strong>item_to_value</strong> (<em>Callable</em><em>[</em><a class="reference internal" href="#google.api_core.page_iterator.GRPCIterator" title="google.api_core.page_iterator.GRPCIterator"><em>GRPCIterator</em></a><em>, </em><a class="reference internal" href="../asset/gapic/v1beta1/types.html#google.cloud.asset_v1beta1.types.Any" title="google.cloud.asset_v1beta1.types.Any"><em>Any</em></a><em>]</em>) – Callable to convert an
+<li><strong>item_to_value</strong> (<em>Callable</em><em>[</em><a class="reference internal" href="#google.api_core.page_iterator.GRPCIterator" title="google.api_core.page_iterator.GRPCIterator"><em>GRPCIterator</em></a><em>, </em><a class="reference internal" href="../asset/gapic/v1/types.html#google.cloud.asset_v1.types.Any" title="google.cloud.asset_v1.types.Any"><em>Any</em></a><em>]</em>) – Callable to convert an
 item from the type in the JSON response into a native object. Will
 be called with the iterator and a single item.</li>
 <li><strong>request_token_field</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The field in the request message used to
@@ -177,7 +177,7 @@ iterable page of the actual objects you want.</p>
 Generally, this will be
 <code class="xref py py-meth docutils literal notranslate"><span class="pre">google.cloud._http.JSONConnection.api_request()</span></code>.</li>
 <li><strong>path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The method path to query for the list of items.</li>
-<li><strong>item_to_value</strong> (<em>Callable</em><em>[</em><a class="reference internal" href="#google.api_core.page_iterator.Iterator" title="google.api_core.page_iterator.Iterator"><em>google.api_core.page_iterator.Iterator</em></a><em>, </em><a class="reference internal" href="../asset/gapic/v1beta1/types.html#google.cloud.asset_v1beta1.types.Any" title="google.cloud.asset_v1beta1.types.Any"><em>Any</em></a><em>]</em>) – Callable to convert an item from the type in the JSON response into
+<li><strong>item_to_value</strong> (<em>Callable</em><em>[</em><a class="reference internal" href="#google.api_core.page_iterator.Iterator" title="google.api_core.page_iterator.Iterator"><em>google.api_core.page_iterator.Iterator</em></a><em>, </em><a class="reference internal" href="../asset/gapic/v1/types.html#google.cloud.asset_v1.types.Any" title="google.cloud.asset_v1.types.Any"><em>Any</em></a><em>]</em>) – Callable to convert an item from the type in the JSON response into
 a native object. Will be called with the iterator and a single
 item.</li>
 <li><strong>items_key</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The key in the API response where the list of items
@@ -235,7 +235,7 @@ tokens.</li>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.client.Client" title="google.cloud.client.Client"><em>google.cloud.client.Client</em></a>) – The API client.</li>
-<li><strong>item_to_value</strong> (<em>Callable</em><em>[</em><a class="reference internal" href="#google.api_core.page_iterator.Iterator" title="google.api_core.page_iterator.Iterator"><em>google.api_core.page_iterator.Iterator</em></a><em>, </em><a class="reference internal" href="../asset/gapic/v1beta1/types.html#google.cloud.asset_v1beta1.types.Any" title="google.cloud.asset_v1beta1.types.Any"><em>Any</em></a><em>]</em>) – Callable to convert an item from the type in the raw API response
+<li><strong>item_to_value</strong> (<em>Callable</em><em>[</em><a class="reference internal" href="#google.api_core.page_iterator.Iterator" title="google.api_core.page_iterator.Iterator"><em>google.api_core.page_iterator.Iterator</em></a><em>, </em><a class="reference internal" href="../asset/gapic/v1/types.html#google.cloud.asset_v1.types.Any" title="google.cloud.asset_v1.types.Any"><em>Any</em></a><em>]</em>) – Callable to convert an item from the type in the raw API response
 into the native object. Will be called with the iterator and a
 single item.</li>
 <li><strong>page_token</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – A token identifying a page in a result set to start
@@ -254,7 +254,7 @@ fetching results from.</li>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">Optional[<a class="reference internal" href="../asset/gapic/v1beta1/types.html#google.cloud.asset_v1beta1.types.Any" title="google.cloud.asset_v1beta1.types.Any">Any</a>]</td>
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">Optional[<a class="reference internal" href="../asset/gapic/v1/types.html#google.cloud.asset_v1.types.Any" title="google.cloud.asset_v1.types.Any">Any</a>]</td>
 </tr>
 </tbody>
 </table>
@@ -271,7 +271,7 @@ single item.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">Callable[<a class="reference internal" href="#google.api_core.page_iterator.Iterator" title="google.api_core.page_iterator.Iterator">Iterator</a>, <a class="reference internal" href="../asset/gapic/v1beta1/types.html#google.cloud.asset_v1beta1.types.Any" title="google.cloud.asset_v1beta1.types.Any">Any</a>]</td>
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">Callable[<a class="reference internal" href="#google.api_core.page_iterator.Iterator" title="google.api_core.page_iterator.Iterator">Iterator</a>, <a class="reference internal" href="../asset/gapic/v1/types.html#google.cloud.asset_v1.types.Any" title="google.cloud.asset_v1.types.Any">Any</a>]</td>
 </tr>
 </tbody>
 </table>
@@ -371,9 +371,9 @@ specific starting point.</p>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>parent</strong> (<a class="reference internal" href="#google.api_core.page_iterator.Iterator" title="google.api_core.page_iterator.Iterator"><em>google.api_core.page_iterator.Iterator</em></a>) – The iterator that owns
 the current page.</li>
-<li><strong>items</strong> (<em>Sequence</em><em>[</em><a class="reference internal" href="../asset/gapic/v1beta1/types.html#google.cloud.asset_v1beta1.types.Any" title="google.cloud.asset_v1beta1.types.Any"><em>Any</em></a><em>]</em>) – An iterable (that also defines __len__) of items
+<li><strong>items</strong> (<em>Sequence</em><em>[</em><a class="reference internal" href="../asset/gapic/v1/types.html#google.cloud.asset_v1.types.Any" title="google.cloud.asset_v1.types.Any"><em>Any</em></a><em>]</em>) – An iterable (that also defines __len__) of items
 from a raw API response.</li>
-<li><strong>item_to_value</strong> (<em>Callable</em><em>[</em><a class="reference internal" href="#google.api_core.page_iterator.Iterator" title="google.api_core.page_iterator.Iterator"><em>google.api_core.page_iterator.Iterator</em></a><em>, </em><a class="reference internal" href="../asset/gapic/v1beta1/types.html#google.cloud.asset_v1beta1.types.Any" title="google.cloud.asset_v1beta1.types.Any"><em>Any</em></a><em>]</em>) – Callable to convert an item from the type in the raw API response
+<li><strong>item_to_value</strong> (<em>Callable</em><em>[</em><a class="reference internal" href="#google.api_core.page_iterator.Iterator" title="google.api_core.page_iterator.Iterator"><em>google.api_core.page_iterator.Iterator</em></a><em>, </em><a class="reference internal" href="../asset/gapic/v1/types.html#google.cloud.asset_v1.types.Any" title="google.cloud.asset_v1.types.Any"><em>Any</em></a><em>]</em>) – Callable to convert an item from the type in the raw API response
 into the native object. Will be called with the iterator and a
 single item.</li>
 </ul>
