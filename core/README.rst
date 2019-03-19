@@ -32,7 +32,7 @@ to `Python Development Environment Setup Guide`_ for Google Cloud Platform.
 
 Supported Python Versions
 -------------------------
-Python >= 3.4
+Python >= 3.5
 
 Deprecated Python Versions
 --------------------------

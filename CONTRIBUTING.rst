@@ -21,7 +21,7 @@ In order to add a feature to ``google-cloud-python``:
   documentation (in ``docs/``).
 
 - The feature must work fully on the following CPython versions:  2.7,
-  3.4, 3.5, and 3.6 on both UNIX and Windows.
+  3.5, 3.6, and 3.7 on both UNIX and Windows.
 
 - The feature must not add unnecessary dependencies (where
   "unnecessary" is of course subjective, but new dependencies should
@@ -286,13 +286,13 @@ Supported Python Versions
 
 We support:
 
--  `Python 3.4`_
 -  `Python 3.5`_
 -  `Python 3.6`_
+-  `Python 3.7`_
 
-.. _Python 3.4: https://docs.python.org/3.4/
 .. _Python 3.5: https://docs.python.org/3.5/
 .. _Python 3.6: https://docs.python.org/3.6/
+.. _Python 3.7: https://docs.python.org/3.7/
 
 
 Supported versions can be found in our ``noxfile.py`` `config`_.
@@ -312,7 +312,7 @@ longer supported by the core development team.
 Python 2.7 support is deprecated. All code changes should maintain Python 2.7 compatibility until January 1, 2020.
 
 We also explicitly decided to support Python 3 beginning with version
-3.4. Reasons for this include:
+3.5. Reasons for this include:
 
 -  Encouraging use of newest versions of Python 3
 -  Taking the lead of `prominent`_ open-source `projects`_
