@@ -15,8 +15,18 @@ def initial_clean():
         client.delete(entity.key)
 
 
+@pytest.fixture(scope="session")
+def deleted_keys():
+    return set()
+
+
 @pytest.fixture
-def ds_client():
+def to_delete():
+    return []
+
+
+@pytest.fixture
+def ds_client(to_delete, deleted_keys):
     client = datastore.Client()
 
     # Make sure we're leaving database as clean as we found it after each test
@@ -26,7 +36,13 @@ def ds_client():
 
     yield client
 
-    results = list(query.fetch())
+    if to_delete:
+        client.delete_multi(to_delete)
+        deleted_keys.update(to_delete)
+
+    results = [
+        entity for entity in query.fetch() if entity.key not in deleted_keys
+    ]
     assert not results
 
 
@@ -46,16 +62,11 @@ def ds_entity(ds_client, dispose_of):
 
 
 @pytest.fixture
-def dispose_of(ds_client):
-    ds_keys = []
-
+def dispose_of(ds_client, to_delete):
     def delete_entity(ds_key):
-        ds_keys.append(ds_key)
+        to_delete.append(ds_key)
 
-    yield delete_entity
-
-    for ds_key in ds_keys:
-        ds_client.delete(ds_key)
+    return delete_entity
 
 
 @pytest.fixture

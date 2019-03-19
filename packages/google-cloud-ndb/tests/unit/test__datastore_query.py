@@ -19,6 +19,7 @@ import pytest
 from google.cloud.datastore_v1.proto import query_pb2
 
 from google.cloud.ndb import _datastore_query
+from google.cloud.ndb import key as key_module
 from google.cloud.ndb import query as query_module
 from google.cloud.ndb import tasklets
 
@@ -38,8 +39,8 @@ class Test_fetch:
     )
     @mock.patch("google.cloud.ndb._datastore_query._run_query")
     @mock.patch("google.cloud.ndb._datastore_query._query_to_protobuf")
-    def test_success(_query_to_protobuf, _run_query):
-        query = object()
+    def test_project_from_query(_query_to_protobuf, _run_query):
+        query = mock.Mock(app="myapp", spec=("app",))
         query_pb = _query_to_protobuf.return_value
 
         _run_query_future = tasklets.Future()
@@ -50,7 +51,27 @@ class Test_fetch:
         assert tasklet.result() == ["ab", "cd", "ef"]
 
         assert _query_to_protobuf.called_once_with(query)
-        assert _run_query.called_once_with(query_pb)
+        _run_query.assert_called_once_with("myapp", query_pb)
+
+    @staticmethod
+    @mock.patch(
+        "google.cloud.ndb._datastore_query._process_result", str.__add__
+    )
+    @mock.patch("google.cloud.ndb._datastore_query._run_query")
+    @mock.patch("google.cloud.ndb._datastore_query._query_to_protobuf")
+    def test_project_from_context(_query_to_protobuf, _run_query, in_context):
+        query = mock.Mock(app=None, spec=("app",))
+        query_pb = _query_to_protobuf.return_value
+
+        _run_query_future = tasklets.Future()
+        _run_query.return_value = _run_query_future
+
+        tasklet = _datastore_query.fetch(query)
+        _run_query_future.set_result([("a", "b"), ("c", "d"), ("e", "f")])
+        assert tasklet.result() == ["ab", "cd", "ef"]
+
+        assert _query_to_protobuf.called_once_with(query)
+        _run_query.assert_called_once_with("testing", query_pb)
 
 
 class Test__process_result:
@@ -74,6 +95,7 @@ class Test__process_result:
         model._entity_from_protobuf.assert_called_once_with("foo")
 
 
+@pytest.mark.usefixtures("in_context")
 class Test__query_to_protobuf:
     @staticmethod
     def test_no_args():
@@ -86,6 +108,23 @@ class Test__query_to_protobuf:
         assert _datastore_query._query_to_protobuf(query) == query_pb2.Query(
             kind=[query_pb2.KindExpression(name="Foo")]
         )
+
+    @staticmethod
+    def test_ancestor():
+        key = key_module.Key("Foo", 123)
+        query = query_module.Query(ancestor=key)
+        expected_pb = query_pb2.Query(
+            filter=query_pb2.Filter(
+                property_filter=query_pb2.PropertyFilter(
+                    property=query_pb2.PropertyReference(name="__key__"),
+                    op=query_pb2.PropertyFilter.HAS_ANCESTOR,
+                )
+            )
+        )
+        expected_pb.filter.property_filter.value.key_value.CopyFrom(
+            key._key.to_protobuf()
+        )
+        assert _datastore_query._query_to_protobuf(query) == expected_pb
 
 
 @pytest.mark.usefixtures("in_context")
@@ -107,7 +146,7 @@ class Test__run_query:
             spec=("more_results", "entity_result_type", "entity_results"),
         )
 
-        tasklet = _datastore_query._run_query(query_pb)
+        tasklet = _datastore_query._run_query("testing", query_pb)
         make_call_future.set_result(mock.Mock(batch=batch, spec=("batch",)))
 
         assert tasklet.result() == [
@@ -153,7 +192,7 @@ class Test__run_query:
             spec=("more_results", "entity_result_type", "entity_results"),
         )
 
-        tasklet = _datastore_query._run_query(query_pb)
+        tasklet = _datastore_query._run_query("testing", query_pb)
         make_call_future1.set_result(mock.Mock(batch=batch1, spec=("batch",)))
         make_call_future2.set_result(mock.Mock(batch=batch2, spec=("batch",)))
 

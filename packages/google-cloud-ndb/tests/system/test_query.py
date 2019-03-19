@@ -69,3 +69,22 @@ def test_fetch_lots_of_a_kind(dispose_of):
 
     results = sorted(results, key=operator.attrgetter("foo"))
     assert [entity.foo for entity in results][:5] == [0, 1, 2, 3, 4]
+
+
+@pytest.mark.usefixtures("client_context")
+def test_ancestor_query(ds_entity):
+    root_id = test_utils.system.unique_resource_id()
+    ds_entity(KIND, root_id, foo=-1)
+    for i in range(5):
+        entity_id = test_utils.system.unique_resource_id()
+        ds_entity(KIND, root_id, KIND, entity_id, foo=i)
+
+    class SomeKind(ndb.Model):
+        foo = ndb.IntegerProperty()
+
+    query = ndb.Query(ancestor=ndb.Key(KIND, root_id))
+    results = query.fetch()
+    assert len(results) == 6
+
+    results = sorted(results, key=operator.attrgetter("foo"))
+    assert [entity.foo for entity in results] == [-1, 0, 1, 2, 3, 4]
