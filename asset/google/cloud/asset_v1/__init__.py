@@ -16,8 +16,14 @@
 
 from __future__ import absolute_import
 
-from google.cloud.asset_v1 import AssetServiceClient
-from google.cloud.asset_v1 import enums
 from google.cloud.asset_v1 import types
+from google.cloud.asset_v1.gapic import asset_service_client
+from google.cloud.asset_v1.gapic import enums
+
+
+class AssetServiceClient(asset_service_client.AssetServiceClient):
+    __doc__ = asset_service_client.AssetServiceClient.__doc__
+    enums = enums
+
 
 __all__ = ("enums", "types", "AssetServiceClient")
