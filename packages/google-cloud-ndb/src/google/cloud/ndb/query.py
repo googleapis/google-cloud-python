@@ -14,6 +14,7 @@
 
 """High-level wrapper for datastore queries."""
 
+from google.cloud.ndb import _datastore_query
 from google.cloud.ndb import exceptions
 from google.cloud.ndb import model
 
@@ -1040,6 +1041,43 @@ class Query:
         modelclass = model.Model._kind_map.get(self.kind)
         if modelclass is not None:
             modelclass._check_properties(fixed, **kwargs)
+
+    def fetch(self, limit=None, **options):
+        """Run a query, fetching results.
+
+        Args:
+            limit (int): Maximum number of results to fetch. data:`None`
+                or data:`0` indicates no limit.
+            options (Dict[str, Any]): TBD.
+
+        Returns:
+            List([model.Model]): The query results.
+        """
+        return self.fetch_async(limit, **options).result()
+
+    def fetch_async(self, limit=None, **options):
+        """Run a query, asynchronously fetching the results.
+
+        Args:
+            limit (int): Maximum number of results to fetch. data:`None`
+                or data:`0` indicates no limit.
+            options (Dict[str, Any]): TBD.
+
+        Returns:
+            tasklets.Future: Eventual result will be a List[model.Model] of the
+                results.
+        """
+        if limit:
+            raise NotImplementedError(
+                "'limit' is not implemented yet for queries"
+            )
+
+        if options:
+            raise NotImplementedError(
+                "'options' are not implemented yet for queries"
+            )
+
+        return _datastore_query.fetch(self)
 
 
 def gql(*args, **kwargs):
