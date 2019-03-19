@@ -81,11 +81,15 @@ def test_from_api_repr(target_class):
         "trainingRuns": [
             {
                 "trainingOptions": {"initialLearnRate": 1.0},
-                "startTime": str(google.cloud._helpers._millis(creation_time)),
+                "startTime": str(
+                    google.cloud._helpers._datetime_to_rfc3339(creation_time)
+                ),
             },
             {
                 "trainingOptions": {"initialLearnRate": 0.5},
-                "startTime": str(google.cloud._helpers._millis(modified_time)),
+                "startTime": str(
+                    google.cloud._helpers._datetime_to_rfc3339(modified_time)
+                ),
             },
         ],
         "featureColumns": [],
@@ -103,12 +107,18 @@ def test_from_api_repr(target_class):
     assert got.model_type == enums.Model.ModelType.LOGISTIC_REGRESSION
     assert got.labels == {"greeting": u"こんにちは"}
     assert got.training_runs[0].training_options.initial_learn_rate == 1.0
-    assert got.training_runs[0].start_time == google.cloud._helpers._millis(
-        creation_time
+    assert (
+        got.training_runs[0]
+        .start_time.ToDatetime()
+        .replace(tzinfo=google.cloud._helpers.UTC)
+        == creation_time
     )
     assert got.training_runs[1].training_options.initial_learn_rate == 0.5
-    assert got.training_runs[1].start_time == google.cloud._helpers._millis(
-        modified_time
+    assert (
+        got.training_runs[1]
+        .start_time.ToDatetime()
+        .replace(tzinfo=google.cloud._helpers.UTC)
+        == modified_time
     )
 
 

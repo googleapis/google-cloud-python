@@ -20,7 +20,7 @@ package google.cloud.bigquery.v2;
 import "google/cloud/bigquery/v2/model_reference.proto";
 import "google/cloud/bigquery/v2/standard_sql.proto";
 import "google/protobuf/empty.proto";
-import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
 import "google/protobuf/wrappers.proto";
 import "google/api/annotations.proto";
 
@@ -176,6 +176,15 @@ message Model {
     repeated ConfusionMatrix confusion_matrix_list = 2;
   }
 
+  // Evaluation metrics for clustering models.
+  message ClusteringMetrics {
+    // Davies-Bouldin index.
+    google.protobuf.DoubleValue davies_bouldin_index = 1;
+
+    // Mean of squared distances between each sample to its cluster centroid.
+    google.protobuf.DoubleValue mean_squared_distance = 2;
+  }
+
   // Evaluation metrics of a model. These are either computed on all
   // training data or just the eval data based on whether eval data was used
   // during training.
@@ -189,6 +198,9 @@ message Model {
 
       // Populated for multi-class classification models.
       MultiClassClassificationMetrics multi_class_classification_metrics = 3;
+
+      // [Beta] Populated for clustering models.
+      ClusteringMetrics clustering_metrics = 4;
     }
   }
 
@@ -254,10 +266,29 @@ message Model {
       // Weights associated with each label class, for rebalancing the
       // training data.
       map<string, double> label_class_weights = 17;
+
+      // [Beta] Distance type for clustering models.
+      DistanceType distance_type = 20;
+
+      // [Beta] Number of clusters for clustering models.
+      int64 num_clusters = 21;
     }
 
     // Information about a single iteration of the training run.
     message IterationResult {
+      // Information about a single cluster for clustering model.
+      message ClusterInfo {
+        // Centroid id.
+        int64 centroid_id = 1;
+
+        // Cluster radius, the average distance from centroid
+        // to each point assigned to the cluster.
+        google.protobuf.DoubleValue cluster_radius = 2;
+
+        // Cluster size, the total number of points assigned to the cluster.
+        google.protobuf.Int64Value cluster_size = 3;
+      }
+
       // Index of the iteration, 0 based.
       google.protobuf.Int32Value index = 1;
 
@@ -272,14 +303,17 @@ message Model {
 
       // Learn rate used for this iteration.
       double learn_rate = 7;
+
+      // [Beta] Information about top clusters for clustering models.
+      repeated ClusterInfo cluster_infos = 8;
     }
 
     // Options that were used for this training run, includes
     // user specified and default options that were used.
     TrainingOptions training_options = 1;
 
-    // The start time of this training run, in milliseconds since epoch.
-    int64 start_time = 2;
+    // The start time of this training run.
+    google.protobuf.Timestamp start_time = 8;
 
     // Output of each iteration run, results.size() <= max_iterations.
     repeated IterationResult results = 6;
@@ -298,6 +332,9 @@ message Model {
 
     // Logistic regression model.
     LOGISTIC_REGRESSION = 2;
+
+    // [Beta] K-means clustering model.
+    KMEANS = 3;
   }
 
   // Loss metric to evaluate model training performance.
@@ -309,6 +346,17 @@ message Model {
 
     // Mean log loss, used for logistic regression.
     MEAN_LOG_LOSS = 2;
+  }
+
+  // Distance metric used to compute the distance between two points.
+  enum DistanceType {
+    DISTANCE_TYPE_UNSPECIFIED = 0;
+
+    // Eculidean distance.
+    EUCLIDEAN = 1;
+
+    // Cosine distance.
+    COSINE = 2;
   }
 
   // Indicates the method to split input data into multiple tables.
@@ -413,13 +461,13 @@ message GetModelRequest {
 }
 
 message PatchModelRequest {
-  // Project ID of the model to patch
+  // Project ID of the model to patch.
   string project_id = 1;
 
-  // Dataset ID of the model to patch
+  // Dataset ID of the model to patch.
   string dataset_id = 2;
 
-  // Model ID of the model to patch
+  // Model ID of the model to patch.
   string model_id = 3;
 
   // Patched model.
@@ -429,13 +477,13 @@ message PatchModelRequest {
 }
 
 message DeleteModelRequest {
-  // Project ID of the requested model.
+  // Project ID of the model to delete.
   string project_id = 1;
 
-  // Dataset ID of the requested model.
+  // Dataset ID of the model to delete.
   string dataset_id = 2;
 
-  // Model ID of the requested model.
+  // Model ID of the model to delete.
   string model_id = 3;
 }
 

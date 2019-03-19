@@ -40,6 +40,20 @@ class Model(object):
         NO_SPLIT = 4
         AUTO_SPLIT = 5
 
+    class DistanceType(enum.IntEnum):
+        """
+        Distance metric used to compute the distance between two points.
+
+        Attributes:
+          DISTANCE_TYPE_UNSPECIFIED (int)
+          EUCLIDEAN (int): Eculidean distance.
+          COSINE (int): Cosine distance.
+        """
+
+        DISTANCE_TYPE_UNSPECIFIED = 0
+        EUCLIDEAN = 1
+        COSINE = 2
+
     class LearnRateStrategy(enum.IntEnum):
         """
         Indicates the learning rate optimization strategy to use.
@@ -76,11 +90,13 @@ class Model(object):
           MODEL_TYPE_UNSPECIFIED (int)
           LINEAR_REGRESSION (int): Linear regression model.
           LOGISTIC_REGRESSION (int): Logistic regression model.
+          KMEANS (int): [Beta] K-means clustering model.
         """
 
         MODEL_TYPE_UNSPECIFIED = 0
         LINEAR_REGRESSION = 1
         LOGISTIC_REGRESSION = 2
+        KMEANS = 3
 
 
 class StandardSqlDataType(object):
