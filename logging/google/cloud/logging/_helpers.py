@@ -21,7 +21,7 @@ from google.cloud.logging.entries import ProtobufEntry
 from google.cloud.logging.entries import StructEntry
 from google.cloud.logging.entries import TextEntry
 
-METADATA_URL = "http://metadata/computeMetadata/v1/"
+METADATA_URL = "http://metadata.google.internal./computeMetadata/v1/"
 METADATA_HEADERS = {"Metadata-Flavor": "Google"}
 
 
