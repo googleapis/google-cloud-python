@@ -23,10 +23,10 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     package="google.cloud.securitycenter.v1",
     syntax="proto3",
     serialized_options=_b(
-        '\n"com.google.cloud.securitycenter.v1P\001ZLgoogle.golang.org/genproto/googleapis/cloud/securitycenter/v1;securitycenter\252\002\036Google.Cloud.SecurityCenter.V1'
+        '\n"com.google.cloud.securitycenter.v1P\001ZLgoogle.golang.org/genproto/googleapis/cloud/securitycenter/v1;securitycenter\252\002\036Google.Cloud.SecurityCenter.V1\312\002\036Google\\Cloud\\SecurityCenter\\V1'
     ),
     serialized_pb=_b(
-        '\n9google/cloud/securitycenter_v1/proto/security_marks.proto\x12\x1egoogle.cloud.securitycenter.v1\x1a\x1cgoogle/api/annotations.proto"\x94\x01\n\rSecurityMarks\x12\x0c\n\x04name\x18\x01 \x01(\t\x12G\n\x05marks\x18\x02 \x03(\x0b\x32\x38.google.cloud.securitycenter.v1.SecurityMarks.MarksEntry\x1a,\n\nMarksEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x42\x95\x01\n"com.google.cloud.securitycenter.v1P\x01ZLgoogle.golang.org/genproto/googleapis/cloud/securitycenter/v1;securitycenter\xaa\x02\x1eGoogle.Cloud.SecurityCenter.V1b\x06proto3'
+        '\n9google/cloud/securitycenter_v1/proto/security_marks.proto\x12\x1egoogle.cloud.securitycenter.v1\x1a\x1cgoogle/api/annotations.proto"\x94\x01\n\rSecurityMarks\x12\x0c\n\x04name\x18\x01 \x01(\t\x12G\n\x05marks\x18\x02 \x03(\x0b\x32\x38.google.cloud.securitycenter.v1.SecurityMarks.MarksEntry\x1a,\n\nMarksEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x42\xb6\x01\n"com.google.cloud.securitycenter.v1P\x01ZLgoogle.golang.org/genproto/googleapis/cloud/securitycenter/v1;securitycenter\xaa\x02\x1eGoogle.Cloud.SecurityCenter.V1\xca\x02\x1eGoogle\\Cloud\\SecurityCenter\\V1b\x06proto3'
     ),
     dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR],
 )
