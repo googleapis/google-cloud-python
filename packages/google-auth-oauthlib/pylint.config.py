@@ -26,6 +26,7 @@ library_additions = {
             'redefined-variable-type',
             'similarities',
             'no-else-return',
+            'useless-object-inheritance',
         ],
     },
 }
