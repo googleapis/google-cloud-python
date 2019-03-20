@@ -286,7 +286,7 @@ class Instance(object):
                 _INSTANCE_CREATE_WARNING.format(
                     "location_id", "serve_nodes", "default_storage_type"
                 ),
-                PendingDeprecationWarning,
+                DeprecationWarning,
                 stacklevel=2,
             )
 
