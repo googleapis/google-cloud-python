@@ -4,6 +4,28 @@
 
 [1]: https://pypi.org/project/google-cloud-asset/#history
 
+## 0.2.0
+
+03-19-2019 12:17 PDT
+
+
+### Implementation Changes
+- Rename 'GcsDestination.uri' -> 'object_uri', docstring changes . ([#7202](https://github.com/googleapis/google-cloud-python/pull/7202))
+- Protoc-generated serialization update.. ([#7073](https://github.com/googleapis/google-cloud-python/pull/7073))
+
+### New Features
+- Generate v1. ([#7513](https://github.com/googleapis/google-cloud-python/pull/7513))
+
+### Documentation
+- Fix broken links to Cloud Asset API ([#7524](https://github.com/googleapis/google-cloud-python/pull/7524))
+- Updated client library documentation URLs. ([#7307](https://github.com/googleapis/google-cloud-python/pull/7307))
+- Update copyright headers
+- Pick up stub docstring fix in GAPIC generator.[#6963](https://github.com/googleapis/google-cloud-python/pull/6963))
+
+### Internal / Testing Changes
+- Add protos as an artifact to library ([#7205](https://github.com/googleapis/google-cloud-python/pull/7205))
+- Add support for including protos in synth ([#7114](https://github.com/googleapis/google-cloud-python/pull/7114))
+
 ## 0.1.2
 
 12-17-2018 16:15 PST
