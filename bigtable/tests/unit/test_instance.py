@@ -309,8 +309,10 @@ class TestInstance(unittest.TestCase):
         client._instance_admin_client = instance_api
         serve_nodes = 3
 
-        with warnings.catch_warnings(record=True) as warned:    
-            result = instance.create(location_id=self.LOCATION_ID, serve_nodes=serve_nodes)
+        with warnings.catch_warnings(record=True) as warned:
+            result = instance.create(
+                location_id=self.LOCATION_ID, serve_nodes=serve_nodes
+            )
 
         cluster_pb = instance_pb2.Cluster(
             location=instance_api.location_path(self.PROJECT, self.LOCATION_ID),

@@ -801,8 +801,13 @@ class TestTable(unittest.TestCase):
 
         rows = []
         with warnings.catch_warnings(record=True) as warned:
-            for row in table.yield_rows(start_key=self.ROW_KEY_1, end_key=self.ROW_KEY_2):
+            for row in table.yield_rows(
+                start_key=self.ROW_KEY_1, end_key=self.ROW_KEY_2
+            ):
                 rows.append(row)
+
+        self.assertEqual(len(warned), 1)
+        self.assertIs(warned[0].category, DeprecationWarning)
 
         result = rows[1]
         self.assertEqual(result.row_key, self.ROW_KEY_2)
@@ -873,7 +878,7 @@ class TestTable(unittest.TestCase):
         with warnings.catch_warnings(record=True) as warned:
             for row in table.yield_rows(row_set=row_set):
                 rows.append(row)
-        
+
         self.assertEqual(len(warned), 1)
         self.assertIs(warned[0].category, DeprecationWarning)
 
