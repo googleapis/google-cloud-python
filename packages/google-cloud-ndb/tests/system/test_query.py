@@ -113,3 +113,27 @@ def test_projection(ds_entity):
     assert results[1].foo == 21
     with pytest.raises(ndb.UnprojectedPropertyError):
         results[1].bar
+
+
+@pytest.mark.usefixtures("client_context")
+def test_distinct_on(ds_entity):
+    for i in range(6):
+        entity_id = test_utils.system.unique_resource_id()
+        ds_entity(KIND, entity_id, foo=i % 2, bar="none")
+
+    class SomeKind(ndb.Model):
+        foo = ndb.IntegerProperty()
+        bar = ndb.StringProperty()
+
+    # query = ndb.Query(kind=KIND, distinct_on=("foo",))  # TODO
+    query = ndb.Query(kind=KIND, group_by=("foo",))
+    results = query.fetch()
+    assert len(results) == 2
+
+    results = sorted(results, key=operator.attrgetter("foo"))
+
+    assert results[0].foo == 0
+    assert results[0].bar == "none"
+
+    assert results[1].foo == 1
+    assert results[1].bar == "none"

@@ -166,6 +166,17 @@ class Test__query_to_protobuf:
         )
         assert _datastore_query._query_to_protobuf(query) == expected_pb
 
+    @staticmethod
+    def test_distinct_on():
+        query = query_module.Query(group_by=("a", "b"))
+        expected_pb = query_pb2.Query(
+            distinct_on=[
+                query_pb2.PropertyReference(name="a"),
+                query_pb2.PropertyReference(name="b"),
+            ]
+        )
+        assert _datastore_query._query_to_protobuf(query) == expected_pb
+
 
 @pytest.mark.usefixtures("in_context")
 class Test__run_query:

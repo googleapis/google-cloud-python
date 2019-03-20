@@ -40,13 +40,7 @@ def fetch(query):
     Returns:
         tasklets.Future: Result is List[model.Model]: The query results.
     """
-    for name in (
-        "filters",
-        "orders",
-        "namespace",
-        "default_options",
-        "group_by",
-    ):
+    for name in ("filters", "orders", "namespace", "default_options"):
         if getattr(query, name, None):
             raise NotImplementedError(
                 "{} is not yet implemented for queries.".format(name)
@@ -113,6 +107,11 @@ def _query_to_protobuf(query):
                 property=query_pb2.PropertyReference(name=name)
             )
             for name in query.projection
+        ]
+
+    if query.group_by:
+        query_args["distinct_on"] = [
+            query_pb2.PropertyReference(name=name) for name in query.group_by
         ]
 
     filters = []
