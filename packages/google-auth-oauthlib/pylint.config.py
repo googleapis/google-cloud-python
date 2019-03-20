@@ -27,6 +27,7 @@ library_additions = {
             'similarities',
             'no-else-return',
             'useless-object-inheritance',
+            "wrong-import-order",  # checked with flake8
         ],
     },
 }
