@@ -24,8 +24,10 @@ from google.cloud.ndb import tasklets
 
 MoreResultsType = query_pb2.QueryResultBatch.MoreResultsType
 MORE_RESULTS_TYPE_NOT_FINISHED = MoreResultsType.Value("NOT_FINISHED")
+
 ResultType = query_pb2.EntityResult.ResultType
 RESULT_TYPE_FULL = ResultType.Value("FULL")
+RESULT_TYPE_PROJECTION = ResultType.Value("PROJECTION")
 
 
 @tasklets.tasklet
@@ -43,7 +45,6 @@ def fetch(query):
         "orders",
         "namespace",
         "default_options",
-        "projection",
         "group_by",
     ):
         if getattr(query, name, None):
@@ -59,11 +60,12 @@ def fetch(query):
     query_pb = _query_to_protobuf(query)
     results = yield _run_query(project_id, query_pb)
     return [
-        _process_result(result_type, result) for result_type, result in results
+        _process_result(result_type, result, query.projection)
+        for result_type, result in results
     ]
 
 
-def _process_result(result_type, result):
+def _process_result(result_type, result, projection):
     """Process a single entity result.
 
     Args:
@@ -71,15 +73,23 @@ def _process_result(result_type, result):
             (full entity, projection, or key only).
         result (query_pb2.EntityResult): The protocol buffer representation of
             the query result.
+        projection (Union[list, tuple]): Sequence of property names to be
+            projected in the query results.
 
     Returns:
         Union[model.Model, key.Key]: The processed result.
     """
+    entity = model._entity_from_protobuf(result.entity)
+
     if result_type == RESULT_TYPE_FULL:
-        return model._entity_from_protobuf(result.entity)
+        return entity
+
+    elif result_type == RESULT_TYPE_PROJECTION:
+        entity._set_projection(projection)
+        return entity
 
     raise NotImplementedError(
-        "Processing for projection and key only entity results is not yet "
+        "Processing for key only entity results is not yet "
         "implemented for queries."
     )
 
@@ -96,6 +106,14 @@ def _query_to_protobuf(query):
     query_args = {}
     if query.kind:
         query_args["kind"] = [query_pb2.KindExpression(name=query.kind)]
+
+    if query.projection:
+        query_args["projection"] = [
+            query_pb2.Projection(
+                property=query_pb2.PropertyReference(name=name)
+            )
+            for name in query.projection
+        ]
 
     filters = []
     if query.ancestor:

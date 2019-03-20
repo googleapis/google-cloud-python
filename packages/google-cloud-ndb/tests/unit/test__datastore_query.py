@@ -35,12 +35,15 @@ class Test_fetch:
 
     @staticmethod
     @mock.patch(
-        "google.cloud.ndb._datastore_query._process_result", str.__add__
+        "google.cloud.ndb._datastore_query._process_result",
+        lambda *args: "".join(filter(None, args)),
     )
     @mock.patch("google.cloud.ndb._datastore_query._run_query")
     @mock.patch("google.cloud.ndb._datastore_query._query_to_protobuf")
     def test_project_from_query(_query_to_protobuf, _run_query):
-        query = mock.Mock(app="myapp", spec=("app",))
+        query = mock.Mock(
+            app="myapp", projection=None, spec=("app", "projection")
+        )
         query_pb = _query_to_protobuf.return_value
 
         _run_query_future = tasklets.Future()
@@ -55,12 +58,15 @@ class Test_fetch:
 
     @staticmethod
     @mock.patch(
-        "google.cloud.ndb._datastore_query._process_result", str.__add__
+        "google.cloud.ndb._datastore_query._process_result",
+        lambda *args: "".join(filter(None, args)),
     )
     @mock.patch("google.cloud.ndb._datastore_query._run_query")
     @mock.patch("google.cloud.ndb._datastore_query._query_to_protobuf")
     def test_project_from_context(_query_to_protobuf, _run_query, in_context):
-        query = mock.Mock(app=None, spec=("app",))
+        query = mock.Mock(
+            app=None, projection=None, spec=("app", "projection")
+        )
         query_pb = _query_to_protobuf.return_value
 
         _run_query_future = tasklets.Future()
@@ -76,9 +82,12 @@ class Test_fetch:
 
 class Test__process_result:
     @staticmethod
-    def test_unsupported_result_type():
+    @mock.patch("google.cloud.ndb._datastore_query.model")
+    def test_unsupported_result_type(model):
+        model._entity_from_protobuf.return_value = "bar"
+        result = mock.Mock(entity="foo", spec=("entity",))
         with pytest.raises(NotImplementedError):
-            _datastore_query._process_result("foo", "bar")
+            _datastore_query._process_result("foo", result, None)
 
     @staticmethod
     @mock.patch("google.cloud.ndb._datastore_query.model")
@@ -87,12 +96,28 @@ class Test__process_result:
         result = mock.Mock(entity="foo", spec=("entity",))
         assert (
             _datastore_query._process_result(
-                _datastore_query.RESULT_TYPE_FULL, result
+                _datastore_query.RESULT_TYPE_FULL, result, None
             )
             == "bar"
         )
 
         model._entity_from_protobuf.assert_called_once_with("foo")
+
+    @staticmethod
+    @mock.patch("google.cloud.ndb._datastore_query.model")
+    def test_projection(model):
+        entity = mock.Mock(spec=("_set_projection",))
+        model._entity_from_protobuf.return_value = entity
+        result = mock.Mock(entity="foo", spec=("entity",))
+        assert (
+            _datastore_query._process_result(
+                _datastore_query.RESULT_TYPE_PROJECTION, result, ("a", "b")
+            )
+            is entity
+        )
+
+        model._entity_from_protobuf.assert_called_once_with("foo")
+        entity._set_projection.assert_called_once_with(("a", "b"))
 
 
 @pytest.mark.usefixtures("in_context")
@@ -123,6 +148,21 @@ class Test__query_to_protobuf:
         )
         expected_pb.filter.property_filter.value.key_value.CopyFrom(
             key._key.to_protobuf()
+        )
+        assert _datastore_query._query_to_protobuf(query) == expected_pb
+
+    @staticmethod
+    def test_projection():
+        query = query_module.Query(projection=("a", "b"))
+        expected_pb = query_pb2.Query(
+            projection=[
+                query_pb2.Projection(
+                    property=query_pb2.PropertyReference(name="a")
+                ),
+                query_pb2.Projection(
+                    property=query_pb2.PropertyReference(name="b")
+                ),
+            ]
         )
         assert _datastore_query._query_to_protobuf(query) == expected_pb
 

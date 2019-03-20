@@ -31,7 +31,9 @@ def ds_client(to_delete, deleted_keys):
 
     # Make sure we're leaving database as clean as we found it after each test
     query = client.query(kind=KIND)
-    results = list(query.fetch())
+    results = [
+        entity for entity in query.fetch() if entity.key not in deleted_keys
+    ]
     assert not results
 
     yield client
