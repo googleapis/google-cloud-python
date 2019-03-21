@@ -50,11 +50,9 @@ def to_timestamp_pb2(dt):
     from google.api_core.datetime_helpers import to_microseconds
     from google.protobuf.timestamp_pb2 import Timestamp
 
-    micros = to_microseconds(dt)
-    MICRO_PER_SEC = 1000000
-    return Timestamp(
-        seconds=micros // MICRO_PER_SEC, nanos=(micros % MICRO_PER_SEC) * 1000
-    )
+    timestamp = Timestamp()
+    timestamp.FromDatetime(dt)
+    return timestamp
 
 
 def to_duration_pb2(delta):
@@ -66,9 +64,9 @@ def to_duration_pb2(delta):
     from google.api_core.datetime_helpers import to_microseconds
     from google.protobuf.duration_pb2 import Duration
 
-    secs = int(delta.total_seconds())
-    nanos = delta.microseconds * 1000
-    return Duration(seconds=secs, nanos=nanos)
+    duration = Duration()
+    duration.FromTimedelta(delta)
+    return duration
 
 
 def test_list_all_assets():
