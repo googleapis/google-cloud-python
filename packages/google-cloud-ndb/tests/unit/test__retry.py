@@ -16,6 +16,7 @@ import itertools
 
 from unittest import mock
 
+import grpc
 import pytest
 
 from google.api_core import exceptions as core_exceptions
@@ -125,3 +126,51 @@ class Test_retry:
         assert error_context.value.cause is error
         assert sleep.call_count == 5
         assert sleep.call_args[0][0] == 4
+
+
+class Test_is_transient_error:
+    @staticmethod
+    @mock.patch("google.cloud.ndb._retry.core_retry")
+    def test_core_says_yes(core_retry):
+        error = object()
+        core_retry.if_transient_error.return_value = True
+        assert _retry.is_transient_error(error) is True
+        core_retry.if_transient_error.assert_called_once_with(error)
+
+    @staticmethod
+    @mock.patch("google.cloud.ndb._retry.core_retry")
+    def test_core_says_no_we_say_no(core_retry):
+        error = object()
+        core_retry.if_transient_error.return_value = False
+        assert _retry.is_transient_error(error) is False
+        core_retry.if_transient_error.assert_called_once_with(error)
+
+    @staticmethod
+    @mock.patch("google.cloud.ndb._retry.core_retry")
+    def test_unavailable(core_retry):
+        error = mock.Mock(
+            code=mock.Mock(return_value=grpc.StatusCode.UNAVAILABLE)
+        )
+        core_retry.if_transient_error.return_value = False
+        assert _retry.is_transient_error(error) is True
+        core_retry.if_transient_error.assert_called_once_with(error)
+
+    @staticmethod
+    @mock.patch("google.cloud.ndb._retry.core_retry")
+    def test_internal(core_retry):
+        error = mock.Mock(
+            code=mock.Mock(return_value=grpc.StatusCode.INTERNAL)
+        )
+        core_retry.if_transient_error.return_value = False
+        assert _retry.is_transient_error(error) is True
+        core_retry.if_transient_error.assert_called_once_with(error)
+
+    @staticmethod
+    @mock.patch("google.cloud.ndb._retry.core_retry")
+    def test_unauthenticated(core_retry):
+        error = mock.Mock(
+            code=mock.Mock(return_value=grpc.StatusCode.UNAUTHENTICATED)
+        )
+        core_retry.if_transient_error.return_value = False
+        assert _retry.is_transient_error(error) is False
+        core_retry.if_transient_error.assert_called_once_with(error)

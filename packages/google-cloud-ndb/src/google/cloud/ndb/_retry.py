@@ -15,6 +15,7 @@
 """Retry functions."""
 
 import functools
+import grpc
 import itertools
 
 from google.api_core import retry as core_retry
@@ -65,7 +66,7 @@ def retry_async(callback, retries=_DEFAULT_RETRIES):
             except Exception as e:
                 # `e` is removed from locals at end of block
                 error = e  # See: https://goo.gl/5J8BMK
-                if not core_retry.if_transient_error(error):
+                if not is_transient_error(error):
                     raise
 
             yield tasklets.sleep(sleep_time)
@@ -78,3 +79,23 @@ def retry_async(callback, retries=_DEFAULT_RETRIES):
         )
 
     return retry_wrapper
+
+
+TRANSIENT_CODES = (grpc.StatusCode.UNAVAILABLE, grpc.StatusCode.INTERNAL)
+
+
+def is_transient_error(error):
+    """Determine whether an error is transient.
+
+    Returns:
+        bool: True if error is transient, else False.
+    """
+    if core_retry.if_transient_error(error):
+        return True
+
+    method = getattr(error, "code", None)
+    if method is not None:
+        code = method()
+        return code in TRANSIENT_CODES
+
+    return False
