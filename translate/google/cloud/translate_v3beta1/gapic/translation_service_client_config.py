@@ -1,6 +1,6 @@
 config = {
     "interfaces": {
-        "google.cloud.translation.v3beta1.TranslationService": {
+        "google.cloud.translate.v3beta1.TranslationService": {
             "retry_codes": {
                 "idempotent": ["DEADLINE_EXCEEDED", "UNAVAILABLE"],
                 "non_idempotent": [],

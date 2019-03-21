@@ -15,7 +15,7 @@
 
 syntax = "proto3";
 
-package google.cloud.translation.v3beta1;
+package google.cloud.translate.v3beta1;
 
 import "google/api/annotations.proto";
 import "google/longrunning/operations.proto";
