@@ -34,6 +34,7 @@ def test_from_api_repr(target_class):
     assert got.project == "my-project"
     assert got.dataset_id == "my_dataset"
     assert got.model_id == "my_model"
+    assert got.path == "/projects/my-project/datasets/my_dataset/models/my_model"
 
 
 def test_to_api_repr(target_class):
@@ -51,6 +52,9 @@ def test_from_string(target_class):
     assert got.project == "string-project"
     assert got.dataset_id == "string_dataset"
     assert got.model_id == "string_model"
+    assert got.path == (
+        "/projects/string-project/datasets/string_dataset/models/string_model"
+    )
 
 
 def test_from_string_legacy_string(target_class):

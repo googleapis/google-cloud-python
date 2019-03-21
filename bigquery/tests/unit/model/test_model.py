@@ -91,12 +91,22 @@ def test_from_api_repr(target_class):
                     google.cloud._helpers._datetime_to_rfc3339(modified_time)
                 ),
             },
+            {
+                "trainingOptions": {"initialLearnRate": 0.25},
+                # Allow milliseconds since epoch format.
+                # TODO: Remove this hack once CL 238585470 hits prod.
+                "startTime": str(google.cloud._helpers._millis(expiration_time)),
+            },
         ],
         "featureColumns": [],
     }
     got = target_class.from_api_repr(resource)
 
+    assert got.project == "my-project"
+    assert got.dataset_id == "my_dataset"
+    assert got.model_id == "my_model"
     assert got.reference == ModelReference.from_string("my-project.my_dataset.my_model")
+    assert got.path == "/projects/my-project/datasets/my_dataset/models/my_model"
     assert got.location == "US"
     assert got.etag == "abcdefg"
     assert got.created == creation_time
@@ -119,6 +129,13 @@ def test_from_api_repr(target_class):
         .start_time.ToDatetime()
         .replace(tzinfo=google.cloud._helpers.UTC)
         == modified_time
+    )
+    assert got.training_runs[2].training_options.initial_learn_rate == 0.25
+    assert (
+        got.training_runs[2]
+        .start_time.ToDatetime()
+        .replace(tzinfo=google.cloud._helpers.UTC)
+        == expiration_time
     )
 
 

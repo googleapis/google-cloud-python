@@ -16,12 +16,13 @@
 
 """Define resources for the BigQuery ML Models API."""
 
-import datetime
+import copy
 
 from google.protobuf import json_format
 import six
 
 import google.cloud._helpers
+from google.api_core import datetime_helpers
 from google.cloud.bigquery import _helpers
 from google.cloud.bigquery_v2 import types
 
@@ -82,6 +83,26 @@ class Model(object):
         ref = ModelReference()
         ref._proto = self._proto.model_reference
         return ref
+
+    @property
+    def project(self):
+        """str: Project bound to the model"""
+        return self.reference.project
+
+    @property
+    def dataset_id(self):
+        """str: ID of dataset containing the model."""
+        return self.reference.dataset_id
+
+    @property
+    def model_id(self):
+        """str: The model ID."""
+        return self.reference.model_id
+
+    @property
+    def path(self):
+        """str: URL path for the model's APIs."""
+        return self.reference.path
 
     @property
     def location(self):
@@ -192,7 +213,7 @@ class Model(object):
     @expires.setter
     def expires(self, value):
         if value is not None:
-            value = google.cloud._helpers._millis_from_datetime(value)
+            value = str(google.cloud._helpers._millis_from_datetime(value))
         self._properties["expirationTime"] = value
 
     @property
@@ -247,6 +268,17 @@ class Model(object):
             google.cloud.bigquery.model.Model: Model parsed from ``resource``.
         """
         this = cls(None)
+
+        # Convert from millis-from-epoch to timestamp well-known type.
+        # TODO: Remove this hack once CL 238585470 hits prod.
+        resource = copy.deepcopy(resource)
+        for training_run in resource.get("trainingRuns", ()):
+            start_time = training_run.get("startTime")
+            if not start_time or "-" in start_time:  # Already right format?
+                continue
+            start_time = datetime_helpers.from_microseconds(1e3 * float(start_time))
+            training_run["startTime"] = datetime_helpers.to_rfc3339(start_time)
+
         this._proto = json_format.ParseDict(resource, types.Model())
         for key in six.itervalues(cls._PROPERTY_TO_API_FIELD):
             # Leave missing keys unset. This allows us to use setdefault in the
@@ -287,6 +319,15 @@ class ModelReference(object):
     def model_id(self):
         """str: The model ID."""
         return self._proto.model_id
+
+    @property
+    def path(self):
+        """str: URL path for the model's APIs."""
+        return "/projects/%s/datasets/%s/models/%s" % (
+            self._proto.project_id,
+            self._proto.dataset_id,
+            self._proto.model_id,
+        )
 
     @classmethod
     def from_api_repr(cls, resource):

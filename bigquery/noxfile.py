@@ -129,6 +129,8 @@ def snippets(session):
     # Run py.test against the snippets tests.
     session.run(
         'py.test', os.path.join('docs', 'snippets.py'), *session.posargs)
+    session.run(
+        'py.test', os.path.join('samples'), *session.posargs)
 
 
 @nox.session(python='3.6')
@@ -178,6 +180,7 @@ def blacken(session):
     session.run(
         "black",
         "google",
+        "samples",
         "tests",
         "docs",
     )
