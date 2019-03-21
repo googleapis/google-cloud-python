@@ -13,3 +13,4 @@
 # limitations under the License.
 
 KIND = "SomeKind"
+OTHER_NAMESPACE = "other-namespace"

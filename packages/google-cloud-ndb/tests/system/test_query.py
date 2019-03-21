@@ -24,7 +24,7 @@ import test_utils.system
 
 from google.cloud import ndb
 
-from . import KIND
+from . import KIND, OTHER_NAMESPACE
 
 
 @pytest.mark.usefixtures("client_context")
@@ -77,6 +77,9 @@ def test_ancestor_query(ds_entity):
     for i in range(5):
         entity_id = test_utils.system.unique_resource_id()
         ds_entity(KIND, root_id, KIND, entity_id, foo=i)
+
+    another_id = test_utils.system.unique_resource_id()
+    ds_entity(KIND, another_id, foo=42)
 
     class SomeKind(ndb.Model):
         foo = ndb.IntegerProperty()
@@ -137,3 +140,26 @@ def test_distinct_on(ds_entity):
 
     assert results[1].foo == 1
     assert results[1].bar == "none"
+
+
+@pytest.mark.usefixtures("client_context")
+def test_namespace(dispose_of):
+    class SomeKind(ndb.Model):
+        foo = ndb.IntegerProperty()
+        bar = ndb.StringProperty()
+
+    entity1 = SomeKind(foo=1, bar="a", namespace=OTHER_NAMESPACE)
+    entity1.put()
+    dispose_of(entity1.key._key)
+
+    entity2 = SomeKind(foo=2, bar="b")
+    entity2.put()
+    dispose_of(entity2.key._key)
+
+    query = ndb.Query(kind=KIND, namespace=OTHER_NAMESPACE)
+    results = query.fetch()
+    assert len(results) == 1
+
+    assert results[0].foo == 1
+    assert results[0].bar == "a"
+    assert results[0].key.namespace() == OTHER_NAMESPACE

@@ -14,13 +14,18 @@
 
 """Translate NDB queries to Datastore calls."""
 
+import logging
+
 from google.cloud.datastore_v1.proto import datastore_pb2
+from google.cloud.datastore_v1.proto import entity_pb2
 from google.cloud.datastore_v1.proto import query_pb2
 
 from google.cloud.ndb import context as context_module
 from google.cloud.ndb import _datastore_api
 from google.cloud.ndb import model
 from google.cloud.ndb import tasklets
+
+log = logging.getLogger(__name__)
 
 MoreResultsType = query_pb2.QueryResultBatch.MoreResultsType
 MORE_RESULTS_TYPE_NOT_FINISHED = MoreResultsType.Value("NOT_FINISHED")
@@ -40,19 +45,24 @@ def fetch(query):
     Returns:
         tasklets.Future: Result is List[model.Model]: The query results.
     """
-    for name in ("filters", "orders", "namespace", "default_options"):
+    for name in ("filters", "orders", "default_options"):
         if getattr(query, name, None):
             raise NotImplementedError(
                 "{} is not yet implemented for queries.".format(name)
             )
 
+    client = context_module.get_context().client
+
     project_id = query.app
     if not project_id:
-        client = context_module.get_context().client
         project_id = client.project
 
+    namespace = query.namespace
+    if not namespace:
+        namespace = client.namespace
+
     query_pb = _query_to_protobuf(query)
-    results = yield _run_query(project_id, query_pb)
+    results = yield _run_query(project_id, namespace, query_pb)
     return [
         _process_result(result_type, result, query.projection)
         for result_type, result in results
@@ -131,13 +141,14 @@ def _query_to_protobuf(query):
 
 
 @tasklets.tasklet
-def _run_query(project_id, query_pb):
+def _run_query(project_id, namespace, query_pb):
     """Run a query in Datastore.
 
     Will potentially repeat the query to get all results.
 
     Args:
         project_id (str): The project/app id of the Datastore instance.
+        namespace (str): The namespace to which to restrict results.
         query_pb (query_pb2.Query): The query protocol buffer representation.
 
     Returns:
@@ -145,13 +156,18 @@ def _run_query(project_id, query_pb):
             query_pb2.EntityResult]]: The raw query results.
     """
     results = []
+    partition_id = entity_pb2.PartitionId(
+        project_id=project_id, namespace_id=namespace
+    )
 
     while True:
         # See what results we get from the backend
         request = datastore_pb2.RunQueryRequest(
-            project_id=project_id, query=query_pb
+            project_id=project_id, partition_id=partition_id, query=query_pb
         )
         response = yield _datastore_api.make_call("RunQuery", request)
+        log.debug(response)
+
         batch = response.batch
         results.extend(
             (

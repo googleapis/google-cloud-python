@@ -16,6 +16,7 @@ from unittest import mock
 
 import pytest
 
+from google.cloud.datastore_v1.proto import entity_pb2
 from google.cloud.datastore_v1.proto import query_pb2
 
 from google.cloud.ndb import _datastore_query
@@ -42,7 +43,10 @@ class Test_fetch:
     @mock.patch("google.cloud.ndb._datastore_query._query_to_protobuf")
     def test_project_from_query(_query_to_protobuf, _run_query):
         query = mock.Mock(
-            app="myapp", projection=None, spec=("app", "projection")
+            app="myapp",
+            namespace="zeta",
+            projection=None,
+            spec=("app", "namespace", "projection"),
         )
         query_pb = _query_to_protobuf.return_value
 
@@ -54,7 +58,7 @@ class Test_fetch:
         assert tasklet.result() == ["ab", "cd", "ef"]
 
         assert _query_to_protobuf.called_once_with(query)
-        _run_query.assert_called_once_with("myapp", query_pb)
+        _run_query.assert_called_once_with("myapp", "zeta", query_pb)
 
     @staticmethod
     @mock.patch(
@@ -65,7 +69,10 @@ class Test_fetch:
     @mock.patch("google.cloud.ndb._datastore_query._query_to_protobuf")
     def test_project_from_context(_query_to_protobuf, _run_query, in_context):
         query = mock.Mock(
-            app=None, projection=None, spec=("app", "projection")
+            app=None,
+            namespace=None,
+            projection=None,
+            spec=("app", "namespace", "projection"),
         )
         query_pb = _query_to_protobuf.return_value
 
@@ -77,7 +84,7 @@ class Test_fetch:
         assert tasklet.result() == ["ab", "cd", "ef"]
 
         assert _query_to_protobuf.called_once_with(query)
-        _run_query.assert_called_once_with("testing", query_pb)
+        _run_query.assert_called_once_with("testing", None, query_pb)
 
 
 class Test__process_result:
@@ -197,7 +204,7 @@ class Test__run_query:
             spec=("more_results", "entity_result_type", "entity_results"),
         )
 
-        tasklet = _datastore_query._run_query("testing", query_pb)
+        tasklet = _datastore_query._run_query("testing", None, query_pb)
         make_call_future.set_result(mock.Mock(batch=batch, spec=("batch",)))
 
         assert tasklet.result() == [
@@ -206,8 +213,11 @@ class Test__run_query:
             ("this type", "baz"),
         ]
 
+        partition_id = entity_pb2.PartitionId(
+            project_id="testing", namespace_id=None
+        )
         datastore_pb2.RunQueryRequest.assert_called_once_with(
-            project_id="testing", query=query_pb
+            project_id="testing", partition_id=partition_id, query=query_pb
         )
         _datastore_api.make_call.assert_called_once_with("RunQuery", request)
 
@@ -243,7 +253,7 @@ class Test__run_query:
             spec=("more_results", "entity_result_type", "entity_results"),
         )
 
-        tasklet = _datastore_query._run_query("testing", query_pb)
+        tasklet = _datastore_query._run_query("testing", None, query_pb)
         make_call_future1.set_result(mock.Mock(batch=batch1, spec=("batch",)))
         make_call_future2.set_result(mock.Mock(batch=batch2, spec=("batch",)))
 

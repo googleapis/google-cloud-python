@@ -916,7 +916,7 @@ class Query:
             is ``(property_name, operator, value)``.
         orders (Union[QueryOrder, list]): The field names used to
             order query results. Renamed `order` in google.cloud.datastore.
-        app (str): The namespace to restrict results. If not passed, uses the
+        app (str): The app to restrict results. If not passed, uses the
             client's value. Renamed `project` in google.cloud.datastore.
         namespace (str): The namespace to which to restrict results.
             If not passed, uses the client's value.

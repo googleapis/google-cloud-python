@@ -676,6 +676,8 @@ def _process_commit(rpc, futures):
     #
     # https://github.com/googleapis/googleapis/blob/master/google/datastore/v1/datastore.proto#L241
     response = rpc.result()
+    log.debug(response)
+
     results_futures = zip(response.mutation_results, futures)
     for mutation_result, future in results_futures:
         if future.done():

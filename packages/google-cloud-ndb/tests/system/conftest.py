@@ -1,17 +1,26 @@
+import itertools
+
 import pytest
 
 from google.cloud import datastore
 from google.cloud import ndb
 
-from . import KIND
+from . import KIND, OTHER_NAMESPACE
+
+
+def all_entities(client):
+    return itertools.chain(
+        client.query(kind=KIND).fetch(),
+        client.query(namespace="folgers").fetch(),
+        client.query(namespace=OTHER_NAMESPACE).fetch(),
+    )
 
 
 @pytest.fixture(scope="module", autouse=True)
 def initial_clean():
     # Make sure database is in clean state at beginning of test run
     client = datastore.Client()
-    query = client.query(kind=KIND)
-    for entity in query.fetch():
+    for entity in all_entities(client):
         client.delete(entity.key)
 
 
@@ -30,9 +39,10 @@ def ds_client(to_delete, deleted_keys):
     client = datastore.Client()
 
     # Make sure we're leaving database as clean as we found it after each test
-    query = client.query(kind=KIND)
     results = [
-        entity for entity in query.fetch() if entity.key not in deleted_keys
+        entity
+        for entity in all_entities(client)
+        if entity.key not in deleted_keys
     ]
     assert not results
 
@@ -43,7 +53,9 @@ def ds_client(to_delete, deleted_keys):
         deleted_keys.update(to_delete)
 
     results = [
-        entity for entity in query.fetch() if entity.key not in deleted_keys
+        entity
+        for entity in all_entities(client)
+        if entity.key not in deleted_keys
     ]
     assert not results
 
