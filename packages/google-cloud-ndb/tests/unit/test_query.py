@@ -36,8 +36,32 @@ def test_Cursor():
 class TestQueryOptions:
     @staticmethod
     def test_constructor():
-        with pytest.raises(NotImplementedError):
-            query_module.QueryOptions()
+        options = query_module.QueryOptions(kind="test", project="app")
+        assert options.kind == "test"
+        assert options.project == "app"
+
+    @staticmethod
+    def test_constructor_with_config():
+        config = query_module.QueryOptions(
+            kind="other", namespace="config_test"
+        )
+        options = query_module.QueryOptions(
+            config=config, kind="test", project="app"
+        )
+        assert options.kind == "test"
+        assert options.project == "app"
+        assert options.namespace == "config_test"
+
+    @staticmethod
+    def test_constructor_with_bad_config():
+        with pytest.raises(TypeError):
+            query_module.QueryOptions(config="bad")
+
+    @staticmethod
+    def test___repr__():
+        representation = "QueryOptions(kind='test', project='app')"
+        options = query_module.QueryOptions(kind="test", project="app")
+        assert options.__repr__() == representation
 
 
 class TestQueryOrder:
@@ -928,7 +952,7 @@ class TestQuery:
         assert query.kind == "Foo"
         assert query.ancestor is None
         assert query.filters is None
-        assert query.orders is None
+        assert query.order_by is None
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")
@@ -1007,9 +1031,41 @@ class TestQuery:
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")
+    def test_constructor_with_order_by():
+        query = query_module.Query(order_by=[])
+        assert query.order_by == []
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
     def test_constructor_with_orders():
         query = query_module.Query(orders=[])
-        assert query.orders == []
+        assert query.order_by == []
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_constructor_with_orders_and_irder_by():
+        with pytest.raises(TypeError):
+            query_module.Query(orders=[], order_by=[])
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_constructor_with_default_options():
+        options = query_module.QueryOptions()
+        query = query_module.Query(default_options=options)
+        assert query.default_options == options
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_constructor_with_bad_default_options():
+        with pytest.raises(TypeError):
+            query_module.Query(default_options="bad")
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_constructor_with_default_options_and_projection():
+        options = query_module.QueryOptions(projection=["X"])
+        with pytest.raises(TypeError):
+            query_module.Query(projection=["Y"], default_options=options)
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")
@@ -1031,9 +1087,7 @@ class TestQuery:
         with pytest.raises(TypeError):
             query_module.Query(filters=42)
         with pytest.raises(TypeError):
-            query_module.Query(orders=42)
-        # with pytest.raises(TypeError):
-        #     query_module.Query(default_options=42)
+            query_module.Query(order_by=42)
         with pytest.raises(TypeError):
             query_module.Query(projection="")
         with pytest.raises(TypeError):
@@ -1044,6 +1098,197 @@ class TestQuery:
             query_module.Query(group_by="")
         with pytest.raises(TypeError):
             query_module.Query(group_by=42)
+        with pytest.raises(TypeError):
+            query_module.Query(group_by=[])
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test___repr__():
+        options = query_module.QueryOptions(kind="Bar")
+        query = query_module.Query(
+            kind="Foo",
+            ancestor=key_module.Key("a", "b", app="app", namespace="space"),
+            namespace="space",
+            app="app",
+            group_by=["X"],
+            projection=[model.Property(name="x")],
+            filters=query_module.FilterNode("f", None, None),
+            default_options=options,
+            order_by=[],
+        )
+        rep = (
+            "Query(app='app', namespace='space', kind='Foo', ancestor="
+            "Key('a', 'b', app='app', namespace='space'), filters="
+            "FilterNode('f', None, None), order_by=[], projection=['x'], "
+            "group_by=['X'], default_options=QueryOptions(kind='Bar'))"
+        )
+        assert query.__repr__() == rep
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test___repr__no_params():
+        query = query_module.Query()
+        rep = "Query()"
+        assert query.__repr__() == rep
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_bind():
+        options = query_module.QueryOptions(kind="Bar")
+        query = query_module.Query(
+            kind="Foo",
+            ancestor=key_module.Key("a", "b", app="app", namespace="space"),
+            namespace="space",
+            app="app",
+            group_by=["X"],
+            projection=[model.Property(name="x")],
+            filters=query_module.FilterNode("f", None, None),
+            default_options=options,
+            order_by=[],
+        )
+        query2 = query.bind()
+        assert query2.kind == "Foo"
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_bind_with_parameter_ancestor():
+        options = query_module.QueryOptions(kind="Bar")
+        query = query_module.Query(
+            kind="Foo",
+            ancestor=query_module.Parameter("xyz"),
+            namespace="space",
+            app="app",
+            group_by=["X"],
+            projection=[model.Property(name="x")],
+            filters=query_module.FilterNode("f", None, None),
+            default_options=options,
+            order_by=[],
+        )
+        key = key_module.Key("a", "b", app="app", namespace="space")
+        query2 = query.bind(xyz=key)
+        assert query2.kind == "Foo"
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_bind_with_bound_and_unbound():
+        options = query_module.QueryOptions(kind="Bar")
+        query = query_module.Query(
+            kind="Foo",
+            ancestor=query_module.Parameter("xyz"),
+            namespace="space",
+            app="app",
+            group_by=["X"],
+            projection=[model.Property(name="x")],
+            filters=query_module.FilterNode("f", None, None),
+            default_options=options,
+            order_by=[],
+        )
+        with pytest.raises(exceptions.BadArgumentError):
+            query.bind(42, "xyz", xyz="1")
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_bind_error():
+        query = query_module.Query()
+        with pytest.raises(exceptions.BadArgumentError):
+            query.bind(42)
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_is_distinct_true(context):
+        query = query_module.Query(
+            group_by=["X"], projection=[model.Property(name="X")]
+        )
+        assert query.is_distinct is True
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_is_distinct_false(context):
+        query = query_module.Query(
+            group_by=["X"], projection=[model.Property(name="y")]
+        )
+        assert query.is_distinct is False
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_filter(context):
+        query = query_module.Query(
+            kind="Foo", filters=query_module.FilterNode("x", "=", 1)
+        )
+        filters = [
+            query_module.FilterNode("y", ">", 0),
+            query_module.FilterNode("y", "<", 1000),
+        ]
+        query = query.filter(*filters)
+        filters.insert(0, query_module.FilterNode("x", "=", 1))
+        assert query.filters == query_module.ConjunctionNode(*filters)
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_filter_one_arg(context):
+        query = query_module.Query(kind="Foo")
+        filters = (query_module.FilterNode("y", ">", 0),)
+        query = query.filter(*filters)
+        assert query.filters == filters[0]
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_filter_no_args(context):
+        query = query_module.Query(
+            kind="Foo", filters=query_module.FilterNode("x", "=", 1)
+        )
+        filters = []
+        query = query.filter(*filters)
+        assert query.filters == query_module.FilterNode("x", "=", 1)
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_filter_bad_args(context):
+        query = query_module.Query(
+            kind="Foo", filters=query_module.FilterNode("x", "=", 1)
+        )
+        filters = ["f"]
+        with pytest.raises(TypeError):
+            query.filter(*filters)
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_analyze(context):
+        query = query_module.Query(
+            kind="Foo",
+            filters=query_module.FilterNode("x", "=", 1),
+            ancestor=query_module.Parameter("xyz"),
+        )
+        analysis = query.analyze()
+        assert analysis == ["xyz"]
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_analyze_no_args(context):
+        query = query_module.Query(kind="Foo")
+        analysis = query.analyze()
+        assert analysis == []
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_order(context):
+        query = query_module.Query(kind="Foo", order_by=["a", "b"])
+        query = query.order("c", "d")
+        assert query.order_by == ["a", "b", "c", "d"]
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_order_no_initial_order(context):
+        query = query_module.Query(kind="Foo")
+        query = query.order("c", "d")
+        assert query.order_by == ["c", "d"]
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_order_no_args(context):
+        query = query_module.Query(kind="Foo", order_by=["a", "b"])
+        query = query.order()
+        assert query.order_by == ["a", "b"]
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")

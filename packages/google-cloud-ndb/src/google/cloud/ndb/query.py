@@ -52,10 +52,44 @@ _OPS = frozenset([_EQ_OP, _NE_OP, _LT_OP, "<=", _GT_OP, ">=", _IN_OP])
 
 
 class QueryOptions:
-    __slots__ = ()
+    __slots__ = (
+        "client",
+        "kind",
+        "project",
+        "namespace",
+        "ancestor",
+        "filters",
+        "projection",
+        "order",
+        "distinct_on",
+        "limit",
+        "offset",
+        "start_cursor",
+        "end_cursor",
+        "eventual",
+    )
 
-    def __init__(self, *args, **kwargs):
-        raise NotImplementedError
+    def __init__(self, config=None, **kwargs):
+        if config is not None:
+            if isinstance(config, QueryOptions):
+                for key in config.__slots__:
+                    default = getattr(config, key, None)
+                    if default is not None:
+                        setattr(self, key, default)
+            else:
+                raise TypeError("Config must be a QueryOptions instance.")
+        for key, value in kwargs.items():
+            setattr(self, key, value)
+
+    def __repr__(self):
+        options = ", ".join(
+            [
+                "{}={}".format(key, repr(getattr(self, key, None)))
+                for key in self.__slots__
+                if getattr(self, key, None) is not None
+            ]
+        )
+        return "QueryOptions({})".format(options)
 
 
 class QueryOrder:
@@ -914,7 +948,7 @@ class Query:
         filters (Union[Node, tuple]): Node representing a filter expression
             tree. Property filters applied by this query. The sequence
             is ``(property_name, operator, value)``.
-        orders (Union[QueryOrder, list]): The field names used to
+        order_by (Union[tuple, list]): The field names used to
             order query results. Renamed `order` in google.cloud.datastore.
         app (str): The app to restrict results. If not passed, uses the
             client's value. Renamed `project` in google.cloud.datastore.
@@ -934,6 +968,7 @@ class Query:
         kind=None,
         ancestor=None,
         filters=None,
+        order_by=None,
         orders=None,
         app=None,
         namespace=None,
@@ -973,28 +1008,36 @@ class Query:
                     "filters must be a query Node or None; "
                     "received {}".format(filters)
                 )
-        if orders is not None:
-            if not isinstance(orders, (list,)):  # datastore_query.Order
+        if order_by is not None and orders is not None:
+            raise TypeError(
+                "Cannot use both orders and order_by, they are synonyms"
+                "(orders is deprecated now)"
+            )
+        if order_by is None:
+            order_by = orders
+        if order_by is not None:
+            if not isinstance(order_by, (list, tuple)):
                 raise TypeError(
-                    "orders must be an Order instance or None; "
-                    "received {}".format(orders)
+                    "order must be a list, a tuple or None; "
+                    "received {}".format(order_by)
                 )
-        # if default_options is not None:  # Optional QueryOptions object.
-        #     if not isinstance(default_options, datastore_rpc.BaseConfiguration):
-        #         raise TypeError("default_options must be a Configuration or None; "
-        #                         "received {}".format(default_options))
-        #     if projection is not None:
-        #         if default_options.projection is not None:
-        #             raise TypeError("cannot use projection keyword argument and "
-        #                             "default_options.projection at the same time")
-        #         if default_options.keys_only is not None:
-        #             raise TypeError("cannot use projection keyword argument and "
-        #                             "default_options.keys_only at the same time")
+        if default_options is not None:
+            if not isinstance(default_options, QueryOptions):
+                raise TypeError(
+                    "default_options must be QueryOptions or None; "
+                    "received {}".format(default_options)
+                )
+            if projection is not None:
+                if getattr(default_options, "projection", None) is not None:
+                    raise TypeError(
+                        "cannot use projection keyword argument and "
+                        "default_options.projection at the same time"
+                    )
 
         self.kind = kind
         self.ancestor = ancestor
         self.filters = filters
-        self.orders = orders
+        self.order_by = order_by
         self.app = app
         self.namespace = namespace
         self.default_options = default_options
@@ -1022,6 +1065,191 @@ class Query:
                 )
             self._check_properties(self._to_property_names(group_by))
             self.group_by = tuple(group_by)
+
+    def __repr__(self):
+        args = []
+        if self.app is not None:
+            args.append("app=%r" % self.app)
+        if self.namespace is not None:
+            args.append("namespace=%r" % self.namespace)
+        if self.kind is not None:
+            args.append("kind=%r" % self.kind)
+        if self.ancestor is not None:
+            args.append("ancestor=%r" % self.ancestor)
+        if self.filters is not None:
+            args.append("filters=%r" % self.filters)
+        if self.order_by is not None:
+            args.append("order_by=%r" % self.order_by)
+        if self.projection:
+            args.append(
+                "projection=%r" % (self._to_property_names(self.projection))
+            )
+        if self.group_by:
+            args.append(
+                "group_by=%r" % (self._to_property_names(self.group_by))
+            )
+        if self.default_options is not None:
+            args.append("default_options=%r" % self.default_options)
+        return "%s(%s)" % (self.__class__.__name__, ", ".join(args))
+
+    @property
+    def is_distinct(self):
+        """True if results are guaranteed to contain a unique set of property
+        values.
+
+        This happens when every property in the group_by is also in the projection.
+        """
+        return bool(
+            self.group_by
+            and set(self._to_property_names(self.group_by))
+            <= set(self._to_property_names(self.projection))
+        )
+
+    def filter(self, *filters):
+        """Return a new Query with additional filter(s) applied.
+
+        Args:
+            filters (list[Node]): One or more instances of Node.
+
+        Returns:
+            Query: A new query with the new filters applied.
+
+        Raises:
+            TypeError: If one of the filters is not a Node.
+        """
+        if not filters:
+            return self
+        new_filters = []
+        if self.filters:
+            new_filters.append(self.filters)
+        for filter in filters:
+            if not isinstance(filter, Node):
+                raise TypeError(
+                    "Cannot filter a non-Node argument; received %r" % filter
+                )
+            new_filters.append(filter)
+        if len(new_filters) == 1:
+            new_filters = new_filters[0]
+        else:
+            new_filters = ConjunctionNode(*new_filters)
+        return self.__class__(
+            kind=self.kind,
+            ancestor=self.ancestor,
+            filters=new_filters,
+            order_by=self.order_by,
+            app=self.app,
+            namespace=self.namespace,
+            default_options=self.default_options,
+            projection=self.projection,
+            group_by=self.group_by,
+        )
+
+    def order(self, *names):
+        """Return a new Query with additional sort order(s) applied.
+
+        Args:
+            names (list[str]): One or more field names to sort by.
+
+        Returns:
+            Query: A new query with the new order applied.
+        """
+        if not names:
+            return self
+        order_by = self.order_by
+        if order_by is None:
+            order_by = list(names)
+        else:
+            order_by = list(order_by)
+            order_by.extend(names)
+        return self.__class__(
+            kind=self.kind,
+            ancestor=self.ancestor,
+            filters=self.filters,
+            order_by=order_by,
+            app=self.app,
+            namespace=self.namespace,
+            default_options=self.default_options,
+            projection=self.projection,
+            group_by=self.group_by,
+        )
+
+    def analyze(self):
+        """Return a list giving the parameters required by a query.
+
+        When a query is created using gql, any bound parameters
+        are created as ParameterNode instances. This method returns
+        the names of any such parameters.
+
+        Returns:
+            list[str]: required parameter names.
+        """
+
+        class MockBindings(dict):
+            def __contains__(self, key):
+                self[key] = None
+                return True
+
+        bindings = MockBindings()
+        used = {}
+        ancestor = self.ancestor
+        if isinstance(ancestor, ParameterizedThing):
+            ancestor = ancestor.resolve(bindings, used)
+        filters = self.filters
+        if filters is not None:
+            filters = filters.resolve(bindings, used)
+        return sorted(used)  # Returns only the keys.
+
+    def bind(self, *positional, **keyword):
+        """Bind parameter values.  Returns a new Query object.
+
+        When a query is created using gql, any bound parameters
+        are created as ParameterNode instances. This method
+        receives values for both positional (:1, :2, etc.) or
+        keyword (:xyz, :abc, etc.) bound parameters, then sets the
+        values accordingly. This mechanism allows easy reuse of a
+        parameterized query, by passing the values to bind here.
+
+        Args:
+            positional (list[Any]): One or more positional values to bind.
+            keyword (dict[Any]): One or more keyword values to bind.
+
+        Returns:
+            Query: A new query with the new bound parameter values.
+
+        Raises:
+            google.cloud.ndb.exceptions.BadArgumentError: If one of
+                the positional parameters is not used in the query.
+        """
+        bindings = dict(keyword)
+        for i, arg in enumerate(positional):
+            bindings[i + 1] = arg
+        used = {}
+        ancestor = self.ancestor
+        if isinstance(ancestor, ParameterizedThing):
+            ancestor = ancestor.resolve(bindings, used)
+        filters = self.filters
+        if filters is not None:
+            filters = filters.resolve(bindings, used)
+        unused = []
+        for arg in positional:
+            if arg not in used:
+                unused.append(i)
+        if unused:
+            raise exceptions.BadArgumentError(
+                "Positional arguments %s were given but not used."
+                % ", ".join(str(i) for i in unused)
+            )
+        return self.__class__(
+            kind=self.kind,
+            ancestor=ancestor,
+            filters=filters,
+            order_by=self.order_by,
+            app=self.app,
+            namespace=self.namespace,
+            default_options=self.default_options,
+            projection=self.projection,
+            group_by=self.group_by,
+        )
 
     def _to_property_names(self, properties):
         fixed = []
