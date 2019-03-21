@@ -39,6 +39,13 @@ for version in versions:
     s.move(library / f'google/cloud/translate_{version}', excludes=excludes)
     s.move(library / 'tests')
 
+# translation -> translate
+s.replace(
+    "google/**/translation_service_pb2_grpc.py",
+    "google.cloud.translation_v3beta1.proto",
+    "google.cloud.translate_v3beta1.proto",
+)
+
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------

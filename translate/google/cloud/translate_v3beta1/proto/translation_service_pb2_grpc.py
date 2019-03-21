@@ -2,7 +2,7 @@
 import grpc
 
 from google.cloud.translate_v3beta1.proto import (
-    translation_service_pb2 as google_dot_cloud_dot_translate__v3beta1_dot_proto_dot_translation__service__pb2,
+    translation_service_pb2 as google_dot_cloud_dot_translation__v3beta1_dot_proto_dot_translation__service__pb2,
 )
 from google.longrunning import (
     operations_pb2 as google_dot_longrunning_dot_operations__pb2,
@@ -22,43 +22,43 @@ class TranslationServiceStub(object):
       channel: A grpc.Channel.
     """
         self.TranslateText = channel.unary_unary(
-            "/google.cloud.translate.v3beta1.TranslationService/TranslateText",
-            request_serializer=google_dot_cloud_dot_translate__v3beta1_dot_proto_dot_translation__service__pb2.TranslateTextRequest.SerializeToString,
-            response_deserializer=google_dot_cloud_dot_translate__v3beta1_dot_proto_dot_translation__service__pb2.TranslateTextResponse.FromString,
+            "/google.cloud.translation.v3beta1.TranslationService/TranslateText",
+            request_serializer=google_dot_cloud_dot_translation__v3beta1_dot_proto_dot_translation__service__pb2.TranslateTextRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_translation__v3beta1_dot_proto_dot_translation__service__pb2.TranslateTextResponse.FromString,
         )
         self.DetectLanguage = channel.unary_unary(
-            "/google.cloud.translate.v3beta1.TranslationService/DetectLanguage",
-            request_serializer=google_dot_cloud_dot_translate__v3beta1_dot_proto_dot_translation__service__pb2.DetectLanguageRequest.SerializeToString,
-            response_deserializer=google_dot_cloud_dot_translate__v3beta1_dot_proto_dot_translation__service__pb2.DetectLanguageResponse.FromString,
+            "/google.cloud.translation.v3beta1.TranslationService/DetectLanguage",
+            request_serializer=google_dot_cloud_dot_translation__v3beta1_dot_proto_dot_translation__service__pb2.DetectLanguageRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_translation__v3beta1_dot_proto_dot_translation__service__pb2.DetectLanguageResponse.FromString,
         )
         self.GetSupportedLanguages = channel.unary_unary(
-            "/google.cloud.translate.v3beta1.TranslationService/GetSupportedLanguages",
-            request_serializer=google_dot_cloud_dot_translate__v3beta1_dot_proto_dot_translation__service__pb2.GetSupportedLanguagesRequest.SerializeToString,
-            response_deserializer=google_dot_cloud_dot_translate__v3beta1_dot_proto_dot_translation__service__pb2.SupportedLanguages.FromString,
+            "/google.cloud.translation.v3beta1.TranslationService/GetSupportedLanguages",
+            request_serializer=google_dot_cloud_dot_translation__v3beta1_dot_proto_dot_translation__service__pb2.GetSupportedLanguagesRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_translation__v3beta1_dot_proto_dot_translation__service__pb2.SupportedLanguages.FromString,
         )
         self.BatchTranslateText = channel.unary_unary(
-            "/google.cloud.translate.v3beta1.TranslationService/BatchTranslateText",
-            request_serializer=google_dot_cloud_dot_translate__v3beta1_dot_proto_dot_translation__service__pb2.BatchTranslateTextRequest.SerializeToString,
+            "/google.cloud.translation.v3beta1.TranslationService/BatchTranslateText",
+            request_serializer=google_dot_cloud_dot_translation__v3beta1_dot_proto_dot_translation__service__pb2.BatchTranslateTextRequest.SerializeToString,
             response_deserializer=google_dot_longrunning_dot_operations__pb2.Operation.FromString,
         )
         self.CreateGlossary = channel.unary_unary(
-            "/google.cloud.translate.v3beta1.TranslationService/CreateGlossary",
-            request_serializer=google_dot_cloud_dot_translate__v3beta1_dot_proto_dot_translation__service__pb2.CreateGlossaryRequest.SerializeToString,
+            "/google.cloud.translation.v3beta1.TranslationService/CreateGlossary",
+            request_serializer=google_dot_cloud_dot_translation__v3beta1_dot_proto_dot_translation__service__pb2.CreateGlossaryRequest.SerializeToString,
             response_deserializer=google_dot_longrunning_dot_operations__pb2.Operation.FromString,
         )
         self.ListGlossaries = channel.unary_unary(
-            "/google.cloud.translate.v3beta1.TranslationService/ListGlossaries",
-            request_serializer=google_dot_cloud_dot_translate__v3beta1_dot_proto_dot_translation__service__pb2.ListGlossariesRequest.SerializeToString,
-            response_deserializer=google_dot_cloud_dot_translate__v3beta1_dot_proto_dot_translation__service__pb2.ListGlossariesResponse.FromString,
+            "/google.cloud.translation.v3beta1.TranslationService/ListGlossaries",
+            request_serializer=google_dot_cloud_dot_translation__v3beta1_dot_proto_dot_translation__service__pb2.ListGlossariesRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_translation__v3beta1_dot_proto_dot_translation__service__pb2.ListGlossariesResponse.FromString,
         )
         self.GetGlossary = channel.unary_unary(
-            "/google.cloud.translate.v3beta1.TranslationService/GetGlossary",
-            request_serializer=google_dot_cloud_dot_translate__v3beta1_dot_proto_dot_translation__service__pb2.GetGlossaryRequest.SerializeToString,
-            response_deserializer=google_dot_cloud_dot_translate__v3beta1_dot_proto_dot_translation__service__pb2.Glossary.FromString,
+            "/google.cloud.translation.v3beta1.TranslationService/GetGlossary",
+            request_serializer=google_dot_cloud_dot_translation__v3beta1_dot_proto_dot_translation__service__pb2.GetGlossaryRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_translation__v3beta1_dot_proto_dot_translation__service__pb2.Glossary.FromString,
         )
         self.DeleteGlossary = channel.unary_unary(
-            "/google.cloud.translate.v3beta1.TranslationService/DeleteGlossary",
-            request_serializer=google_dot_cloud_dot_translate__v3beta1_dot_proto_dot_translation__service__pb2.DeleteGlossaryRequest.SerializeToString,
+            "/google.cloud.translation.v3beta1.TranslationService/DeleteGlossary",
+            request_serializer=google_dot_cloud_dot_translation__v3beta1_dot_proto_dot_translation__service__pb2.DeleteGlossaryRequest.SerializeToString,
             response_deserializer=google_dot_longrunning_dot_operations__pb2.Operation.FromString,
         )
 
@@ -141,46 +141,46 @@ def add_TranslationServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
         "TranslateText": grpc.unary_unary_rpc_method_handler(
             servicer.TranslateText,
-            request_deserializer=google_dot_cloud_dot_translate__v3beta1_dot_proto_dot_translation__service__pb2.TranslateTextRequest.FromString,
-            response_serializer=google_dot_cloud_dot_translate__v3beta1_dot_proto_dot_translation__service__pb2.TranslateTextResponse.SerializeToString,
+            request_deserializer=google_dot_cloud_dot_translation__v3beta1_dot_proto_dot_translation__service__pb2.TranslateTextRequest.FromString,
+            response_serializer=google_dot_cloud_dot_translation__v3beta1_dot_proto_dot_translation__service__pb2.TranslateTextResponse.SerializeToString,
         ),
         "DetectLanguage": grpc.unary_unary_rpc_method_handler(
             servicer.DetectLanguage,
-            request_deserializer=google_dot_cloud_dot_translate__v3beta1_dot_proto_dot_translation__service__pb2.DetectLanguageRequest.FromString,
-            response_serializer=google_dot_cloud_dot_translate__v3beta1_dot_proto_dot_translation__service__pb2.DetectLanguageResponse.SerializeToString,
+            request_deserializer=google_dot_cloud_dot_translation__v3beta1_dot_proto_dot_translation__service__pb2.DetectLanguageRequest.FromString,
+            response_serializer=google_dot_cloud_dot_translation__v3beta1_dot_proto_dot_translation__service__pb2.DetectLanguageResponse.SerializeToString,
         ),
         "GetSupportedLanguages": grpc.unary_unary_rpc_method_handler(
             servicer.GetSupportedLanguages,
-            request_deserializer=google_dot_cloud_dot_translate__v3beta1_dot_proto_dot_translation__service__pb2.GetSupportedLanguagesRequest.FromString,
-            response_serializer=google_dot_cloud_dot_translate__v3beta1_dot_proto_dot_translation__service__pb2.SupportedLanguages.SerializeToString,
+            request_deserializer=google_dot_cloud_dot_translation__v3beta1_dot_proto_dot_translation__service__pb2.GetSupportedLanguagesRequest.FromString,
+            response_serializer=google_dot_cloud_dot_translation__v3beta1_dot_proto_dot_translation__service__pb2.SupportedLanguages.SerializeToString,
         ),
         "BatchTranslateText": grpc.unary_unary_rpc_method_handler(
             servicer.BatchTranslateText,
-            request_deserializer=google_dot_cloud_dot_translate__v3beta1_dot_proto_dot_translation__service__pb2.BatchTranslateTextRequest.FromString,
+            request_deserializer=google_dot_cloud_dot_translation__v3beta1_dot_proto_dot_translation__service__pb2.BatchTranslateTextRequest.FromString,
             response_serializer=google_dot_longrunning_dot_operations__pb2.Operation.SerializeToString,
         ),
         "CreateGlossary": grpc.unary_unary_rpc_method_handler(
             servicer.CreateGlossary,
-            request_deserializer=google_dot_cloud_dot_translate__v3beta1_dot_proto_dot_translation__service__pb2.CreateGlossaryRequest.FromString,
+            request_deserializer=google_dot_cloud_dot_translation__v3beta1_dot_proto_dot_translation__service__pb2.CreateGlossaryRequest.FromString,
             response_serializer=google_dot_longrunning_dot_operations__pb2.Operation.SerializeToString,
         ),
         "ListGlossaries": grpc.unary_unary_rpc_method_handler(
             servicer.ListGlossaries,
-            request_deserializer=google_dot_cloud_dot_translate__v3beta1_dot_proto_dot_translation__service__pb2.ListGlossariesRequest.FromString,
-            response_serializer=google_dot_cloud_dot_translate__v3beta1_dot_proto_dot_translation__service__pb2.ListGlossariesResponse.SerializeToString,
+            request_deserializer=google_dot_cloud_dot_translation__v3beta1_dot_proto_dot_translation__service__pb2.ListGlossariesRequest.FromString,
+            response_serializer=google_dot_cloud_dot_translation__v3beta1_dot_proto_dot_translation__service__pb2.ListGlossariesResponse.SerializeToString,
         ),
         "GetGlossary": grpc.unary_unary_rpc_method_handler(
             servicer.GetGlossary,
-            request_deserializer=google_dot_cloud_dot_translate__v3beta1_dot_proto_dot_translation__service__pb2.GetGlossaryRequest.FromString,
-            response_serializer=google_dot_cloud_dot_translate__v3beta1_dot_proto_dot_translation__service__pb2.Glossary.SerializeToString,
+            request_deserializer=google_dot_cloud_dot_translation__v3beta1_dot_proto_dot_translation__service__pb2.GetGlossaryRequest.FromString,
+            response_serializer=google_dot_cloud_dot_translation__v3beta1_dot_proto_dot_translation__service__pb2.Glossary.SerializeToString,
         ),
         "DeleteGlossary": grpc.unary_unary_rpc_method_handler(
             servicer.DeleteGlossary,
-            request_deserializer=google_dot_cloud_dot_translate__v3beta1_dot_proto_dot_translation__service__pb2.DeleteGlossaryRequest.FromString,
+            request_deserializer=google_dot_cloud_dot_translation__v3beta1_dot_proto_dot_translation__service__pb2.DeleteGlossaryRequest.FromString,
             response_serializer=google_dot_longrunning_dot_operations__pb2.Operation.SerializeToString,
         ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
-        "google.cloud.translate.v3beta1.TranslationService", rpc_method_handlers
+        "google.cloud.translation.v3beta1.TranslationService", rpc_method_handlers
     )
     server.add_generic_rpc_handlers((generic_handler,))

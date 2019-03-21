@@ -22,7 +22,7 @@ from google.cloud.translate_v3beta1.proto import translation_service_pb2_grpc
 
 class TranslationServiceGrpcTransport(object):
     """gRPC transport class providing stubs for
-    google.cloud.translate.v3beta1 TranslationService API.
+    google.cloud.translation.v3beta1 TranslationService API.
 
     The transport provides access to the raw gRPC stubs,
     which can be used to take advantage of advanced

@@ -13,7 +13,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-"""Accesses the google.cloud.translate.v3beta1 TranslationService API."""
+"""Accesses the google.cloud.translation.v3beta1 TranslationService API."""
 
 import functools
 import pkg_resources
@@ -52,7 +52,7 @@ class TranslationServiceClient(object):
 
     # The name of the interface for this client. This is the key used to
     # find the method configuration in the client_config dictionary.
-    _INTERFACE_NAME = "google.cloud.translate.v3beta1.TranslationService"
+    _INTERFACE_NAME = "google.cloud.translation.v3beta1.TranslationService"
 
     @classmethod
     def from_service_account_file(cls, filename, *args, **kwargs):
