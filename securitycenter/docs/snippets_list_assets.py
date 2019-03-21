@@ -136,8 +136,7 @@ def test_list_point_in_time_changes():
 
     # [START demo_list_assets_changes]
     client = securitycenter.SecurityCenterClient()
-
-    # Lists assets as of yesterday.
+    # List assets and their state change over a month
     read_time = datetime(2019, 3, 18)
     one_month_before = read_time - datetime(2019, 2, 18)
     # list_assets returns an iterator.  We convert it to a list
