@@ -13,7 +13,7 @@
 - Remove classifier for Python 3.4 for end-of-life. ([#7535](https://github.com/googleapis/google-cloud-python/pull/7535))
 
 ### Internal / Testing Changes
-- When re-opening a ResumableBidiRPC set _request_queue_generator to None. ([#7548](https://github.com/googleapis/google-cloud-python/pull/7548))
+- When re-opening a `ResumableBidiRPC` set `_request_queue_generator` to `None`. ([#7548](https://github.com/googleapis/google-cloud-python/pull/7548))
 
 ## 1.8.1
 
