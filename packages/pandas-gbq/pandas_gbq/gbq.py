@@ -318,6 +318,11 @@ class GbqConnector(object):
         self.credentials = credentials
         default_project = None
 
+        # Service account credentials have a project associated with them.
+        # Prefer that project if none was supplied.
+        if self.project_id is None and hasattr(self.credentials, "project_id"):
+            self.project_id = credentials.project_id
+
         # Load credentials from cache.
         if not self.credentials:
             self.credentials = context.credentials
@@ -421,6 +426,7 @@ class GbqConnector(object):
                 query,
                 job_config=bigquery.QueryJobConfig.from_api_repr(job_config),
                 location=self.location,
+                project=self.project_id,
             )
             logger.debug("Query running...")
         except (RefreshError, ValueError):

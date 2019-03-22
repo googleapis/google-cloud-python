@@ -25,6 +25,8 @@ Enhancements
 - Allow ``table_schema`` in :func:`to_gbq` to contain only a subset of columns,
   with the rest being populated using the DataFrame dtypes (:issue:`218`) 
   (contributed by @johnpaton)
+- Read ``project_id`` in :func:`to_gbq` from provided ``credentials`` if
+  available (contributed by @daureg)
 
 .. _changelog-0.9.0:
 
