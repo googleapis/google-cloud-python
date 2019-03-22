@@ -12,7 +12,7 @@ API. By default, you will get ``v2beta3``, the latest version.
     gapic/v2/types
 
 
-The previous beta release, spelled ``v2beta3`` and ``v2beta2``, are provided to continue to
+The previous beta releases, spelled ``v2beta3`` and ``v2beta2``, are provided to continue to
 support code previously written against them. In order to use them, you
 will want to import from e.g.  ``google.cloud.tasks_v2beta3`` in lieu of
 ``google.cloud.tasks`` (or the equivalent ``google.cloud.tasks_v2``).
