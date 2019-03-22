@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Types for Stackdriver Monitoring API Client &#8212; google-cloud cb1382e documentation</title>
+    <title>Types for Stackdriver Monitoring API Client &#8212; google-cloud 0c59689 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -1351,6 +1351,29 @@ deleted in a delete operation.</p>
 </dd></dl>
 
 <dl class="class">
+<dt id="google.cloud.monitoring_v3.types.Distribution.Exemplar">
+<em class="property">class </em><code class="descname">Exemplar</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.Distribution.Exemplar" title="Permalink to this definition">#</a></dt>
+<dd><dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.Distribution.Exemplar.attachments">
+<code class="descname">attachments</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.Distribution.Exemplar.attachments" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.api.Distribution.Exemplar.attachments</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.Distribution.Exemplar.timestamp">
+<code class="descname">timestamp</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.Distribution.Exemplar.timestamp" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.api.Distribution.Exemplar.timestamp</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.Distribution.Exemplar.value">
+<code class="descname">value</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.Distribution.Exemplar.value" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.api.Distribution.Exemplar.value</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="google.cloud.monitoring_v3.types.Distribution.Range">
 <em class="property">class </em><code class="descname">Range</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.Distribution.Range" title="Permalink to this definition">#</a></dt>
 <dd><dl class="attribute">
@@ -1383,6 +1406,12 @@ deleted in a delete operation.</p>
 <dt id="google.cloud.monitoring_v3.types.Distribution.count">
 <code class="descname">count</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.Distribution.count" title="Permalink to this definition">#</a></dt>
 <dd><p>Field google.api.Distribution.count</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.Distribution.exemplars">
+<code class="descname">exemplars</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.Distribution.exemplars" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.api.Distribution.exemplars</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -3788,7 +3817,30 @@ page_token field). NOTE: this field is not yet implemented</p>
 <dl class="class">
 <dt id="google.cloud.monitoring_v3.types.MetricDescriptor">
 <em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.types.</code><code class="descname">MetricDescriptor</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.MetricDescriptor" title="Permalink to this definition">#</a></dt>
+<dd><dl class="class">
+<dt id="google.cloud.monitoring_v3.types.MetricDescriptor.MetricDescriptorMetadata">
+<em class="property">class </em><code class="descname">MetricDescriptorMetadata</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.MetricDescriptor.MetricDescriptorMetadata" title="Permalink to this definition">#</a></dt>
 <dd><dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.MetricDescriptor.MetricDescriptorMetadata.ingest_delay">
+<code class="descname">ingest_delay</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.MetricDescriptor.MetricDescriptorMetadata.ingest_delay" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.api.MetricDescriptor.MetricDescriptorMetadata.ingest_delay</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.MetricDescriptor.MetricDescriptorMetadata.launch_stage">
+<code class="descname">launch_stage</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.MetricDescriptor.MetricDescriptorMetadata.launch_stage" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.api.MetricDescriptor.MetricDescriptorMetadata.launch_stage</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.MetricDescriptor.MetricDescriptorMetadata.sample_period">
+<code class="descname">sample_period</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.MetricDescriptor.MetricDescriptorMetadata.sample_period" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.api.MetricDescriptor.MetricDescriptorMetadata.sample_period</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
 <dt id="google.cloud.monitoring_v3.types.MetricDescriptor.description">
 <code class="descname">description</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.MetricDescriptor.description" title="Permalink to this definition">#</a></dt>
 <dd><p>Field google.api.MetricDescriptor.description</p>
@@ -3804,6 +3856,12 @@ page_token field). NOTE: this field is not yet implemented</p>
 <dt id="google.cloud.monitoring_v3.types.MetricDescriptor.labels">
 <code class="descname">labels</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.MetricDescriptor.labels" title="Permalink to this definition">#</a></dt>
 <dd><p>Field google.api.MetricDescriptor.labels</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.MetricDescriptor.metadata">
+<code class="descname">metadata</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.MetricDescriptor.metadata" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.api.MetricDescriptor.metadata</p>
 </dd></dl>
 
 <dl class="attribute">
