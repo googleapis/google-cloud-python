@@ -9,7 +9,7 @@ delete job postings, as well as search jobs based on keywords and filters.
 
 .. _Alpha: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/README.rst
 .. _Cloud Talent Solution API: https://cloud.google.com/jobs
-.. _Client Library Documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/jobs/usage.html
+.. _Client Library Documentation: https://googleapis.github.io/google-cloud-python/latest/talent/index.html
 .. _Product Documentation:  https://cloud.google.com/jobs
 
 Quick Start
