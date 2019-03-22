@@ -1,4 +1,4 @@
-.. include:: /../bigquery/README.rst
+.. include:: README.rst
 
 More Examples
 ~~~~~~~~~~~~~
@@ -27,4 +27,3 @@ For a list of all ``google-cloud-bigquery`` releases:
   :maxdepth: 2
 
   changelog
-
