@@ -141,7 +141,7 @@ External Configuration
 Magics
 ======================
 
-.. autosummary::
-    :toctree: generated
+.. toctree::
+    :maxdepth: 2
 
     magics
