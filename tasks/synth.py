@@ -27,7 +27,7 @@ excludes = ["README.rst", "setup.py", "nox*.py", "docs/conf.py", "docs/index.rst
 # ----------------------------------------------------------------------------
 # Generate tasks GAPIC layer
 # ----------------------------------------------------------------------------
-for version in ["v2beta2", "v2beta3"]:
+for version in ["v2beta2", "v2beta3", "v2"]:
     library = gapic.py_library(
         "tasks",
         version,
