@@ -17,56 +17,8 @@ import os
 from datetime import datetime, timedelta
 
 
-# [START organization_id]
 # The numeric identifier for the organization.
 ORGANIZATION_ID = os.environ["GCLOUD_ORGANIZATION"]
-# [END organization_id]
-
-# [START asset_resource_project_filter]
-PROJECT_ASSET_FILTER = (
-    "security_center_properties.resource_type="
-    + '"google.cloud.resourcemanager.Project"'
-)
-# [END asset_resource_project_filter]
-
-
-def org_name(org_id):
-    """Returns the relative resource name (i.e. organizatoin/[org_id) for
-    the given ord_id.
-
-    Args:
-        org_id (str) - The organizations unique numerical ID.
-    """
-    return "organizations/{org_id}".format(org_id=org_id)
-
-
-def to_timestamp_pb2(dt):
-    """Converts the given timezone aware datetime to a protocol buffer
-    Timestamp.
-
-    Args:
-        dt (:class:`datetime.datetime`): The datetime to convert.
-    """
-    from google.api_core.datetime_helpers import to_microseconds
-    from google.protobuf.timestamp_pb2 import Timestamp
-
-    timestamp = Timestamp()
-    timestamp.FromDatetime(dt)
-    return timestamp
-
-
-def to_duration_pb2(delta):
-    """Converts the given timedelta protocol buffer Duration.
-
-    Args:
-        delta (:class:`datetime.timedelta`): The duration to convert.
-    """
-    from google.api_core.datetime_helpers import to_microseconds
-    from google.protobuf.duration_pb2 import Duration
-
-    duration = Duration()
-    duration.FromTimedelta(delta)
-    return duration
 
 
 def test_list_all_assets():
@@ -75,11 +27,13 @@ def test_list_all_assets():
 
     # [START demo_list_all_assets]
     client = securitycenter.SecurityCenterClient()
+    # ORGANIZATION_ID is the numeric ID of the organization (e.g. 123213123121)
+    org_name = "organizations/{org_id}".format(org_id=ORGANIZATION_ID)
     # list_assets returns an iterator.  We convert it to a list
     # here for demonstration purposes only.  Processing each element
     # from the iterator is recommended.
+    assets = list(client.list_assets(org_name))
     # [END demo_list_all_assets]
-    assets = list(client.list_assets(org_name(ORGANIZATION_ID)))
     assert len(assets) > 0
     # [START demo_list_all_assets]
     print(assets)
@@ -93,12 +47,17 @@ def test_list_assets_with_filters():
     # [START demo_list_assets_with_filter]
     client = securitycenter.SecurityCenterClient()
 
+    # ORGANIZATION_ID is the numeric ID of the organization (e.g. 123213123121)
+    org_name = "organizations/{org_id}".format(org_id=ORGANIZATION_ID)
+
+    project_filter = (
+        "security_center_properties.resource_type="
+        + '"google.cloud.resourcemanager.Project"'
+    )
     # list_assets returns an iterator.  We convert it to a list
     # here for demonstration purposes only.  Processing each element
     # from the iterator is recommended.
-    assets = list(
-        client.list_assets(org_name(ORGANIZATION_ID), filter_=PROJECT_ASSET_FILTER)
-    )
+    assets = list(client.list_assets(org_name, filter_=project_filter))
     # [END demo_list_assets_with_filter]
     assert len(assets) > 0
     # [START demo_list_assets_with_filter]
@@ -108,20 +67,31 @@ def test_list_assets_with_filters():
 
 def test_list_assets_with_filters_and_read_time():
     """Demonstrate listing assets with a filter."""
+    from datetime import datetime, timedelta
     from google.cloud import securitycenter_v1beta1 as securitycenter
+    from google.protobuf.timestamp_pb2 import Timestamp
 
     # [START demo_list_assets_with_filter_and_time]
     client = securitycenter.SecurityCenterClient()
 
+    # ORGANIZATION_ID is the numeric ID of the organization (e.g. 123213123121)
+    org_name = "organizations/{org_id}".format(org_id=ORGANIZATION_ID)
+
+    project_filter = (
+        "security_center_properties.resource_type="
+        + '"google.cloud.resourcemanager.Project"'
+    )
+
     # Lists assets as of yesterday.
-    read_time = to_timestamp_pb2(datetime.utcnow() - timedelta(days=1))
+    read_time = datetime.utcnow() - timedelta(days=1)
+    timestamp_proto = Timestamp()
+    timestamp_proto.FromDatetime(read_time)
+
     # list_assets returns an iterator.  We convert it to a list
     # here for demonstration purposes only.  Processing each element
     # from the iterator is recommended.
     assets = list(
-        client.list_assets(
-            org_name(ORGANIZATION_ID), filter_=PROJECT_ASSET_FILTER, read_time=read_time
-        )
+        client.list_assets(org_name, filter_=project_filter, read_time=timestamp_proto)
     )
     # [END demo_list_assets_with_filter_and_time]
     assert len(assets) > 0
@@ -133,21 +103,31 @@ def test_list_assets_with_filters_and_read_time():
 def test_list_point_in_time_changes():
     """Demonstrate listing assets along with their state changes."""
     from google.cloud import securitycenter_v1beta1 as securitycenter
+    from google.protobuf.duration_pb2 import Duration
+    from datetime import timedelta
 
     # [START demo_list_assets_changes]
     client = securitycenter.SecurityCenterClient()
-    # List assets and their state change over a month
-    read_time = datetime(2019, 3, 18)
-    one_month_before = read_time - datetime(2019, 2, 18)
+
+    # ORGANIZATION_ID is the numeric ID of the organization (e.g. 123213123121)
+    org_name = "organizations/{org_id}".format(org_id=ORGANIZATION_ID)
+
+    project_filter = (
+        "security_center_properties.resource_type="
+        + '"google.cloud.resourcemanager.Project"'
+    )
+
+    # List assets and their state change the last 30 days
+    compare_delta = timedelta(days=30)
+    # Convert the timedelta to a Duration
+    duration_proto = Duration()
+    duration_proto.FromTimedelta(compare_delta)
     # list_assets returns an iterator.  We convert it to a list
     # here for demonstration purposes only.  Processing each element
     # from the iterator is recommended.
     assets = list(
         client.list_assets(
-            org_name(ORGANIZATION_ID),
-            filter_=PROJECT_ASSET_FILTER,
-            read_time=to_timestamp_pb2(read_time),
-            compare_duration=to_duration_pb2(one_month_before),
+            org_name, filter_=project_filter, compare_duration=duration_proto
         )
     )
     # [END demo_list_assets_changes]
