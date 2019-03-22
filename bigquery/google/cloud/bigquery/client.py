@@ -1124,8 +1124,9 @@ class Client(ClientWithProject):
 
         Raises:
             ImportError:
-                If a usable parquet engine cannot be found. requires
-                :mod:`pyarrow` or :mod:`fastparquet` to be installed.
+                If a usable parquet engine cannot be found. This method
+                requires :mod:`pyarrow` or :mod:`fastparquet` to be
+                installed.
         """
         job_id = _make_job_id(job_id, job_id_prefix)
 
