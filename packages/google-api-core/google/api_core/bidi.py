@@ -350,7 +350,7 @@ class ResumableBidiRpc(BidiRpc):
             self.call = None
             # Request generator should exit cleanly since the RPC its bound to
             # has exited.
-            self.request_generator = None
+            self._request_generator = None
 
             # Note: we do not currently do any sort of backoff here. The
             # assumption is that re-establishing the stream under normal
