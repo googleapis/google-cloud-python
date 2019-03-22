@@ -128,8 +128,7 @@ def test_distinct_on(ds_entity):
         foo = ndb.IntegerProperty()
         bar = ndb.StringProperty()
 
-    # query = ndb.Query(kind=KIND, distinct_on=("foo",))  # TODO
-    query = ndb.Query(kind=KIND, group_by=("foo",))
+    query = ndb.Query(kind=KIND, distinct_on=("foo",))
     results = query.fetch()
     assert len(results) == 2
 

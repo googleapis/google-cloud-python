@@ -1017,9 +1017,21 @@ class TestQuery:
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")
+    def test_constructor_with_distinct_on():
+        query = query_module.Query(kind="Foo", distinct_on=["X"])
+        assert query.distinct_on == ("X",)
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
     def test_constructor_with_group_by():
         query = query_module.Query(kind="Foo", group_by=["X"])
-        assert query.group_by == ("X",)
+        assert query.distinct_on == ("X",)
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_constructor_with_distinct_on_and_group_by():
+        with pytest.raises(TypeError):
+            query_module.Query(distinct_on=[], group_by=[])
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")
@@ -1043,7 +1055,7 @@ class TestQuery:
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")
-    def test_constructor_with_orders_and_irder_by():
+    def test_constructor_with_orders_and_order_by():
         with pytest.raises(TypeError):
             query_module.Query(orders=[], order_by=[])
 
@@ -1120,7 +1132,7 @@ class TestQuery:
             "Query(app='app', namespace='space', kind='Foo', ancestor="
             "Key('a', 'b', app='app', namespace='space'), filters="
             "FilterNode('f', None, None), order_by=[], projection=['x'], "
-            "group_by=['X'], default_options=QueryOptions(kind='Bar'))"
+            "distinct_on=['X'], default_options=QueryOptions(kind='Bar'))"
         )
         assert query.__repr__() == rep
 

@@ -948,8 +948,9 @@ class Query:
         filters (Union[Node, tuple]): Node representing a filter expression
             tree. Property filters applied by this query. The sequence
             is ``(property_name, operator, value)``.
-        order_by (Union[tuple, list]): The field names used to
+        order_by (Union[list, tuple]): The field names used to
             order query results. Renamed `order` in google.cloud.datastore.
+        orders (Union[list, tuple]): Deprecated. Synonym for order_by.
         app (str): The app to restrict results. If not passed, uses the
             client's value. Renamed `project` in google.cloud.datastore.
         namespace (str): The namespace to which to restrict results.
@@ -957,8 +958,9 @@ class Query:
         default_options (QueryOptions): QueryOptions object.
         projection (Union[list, tuple]): The fields returned as part of the
             query results.
-        group_by (Union[list, tuple]): The field names used to group query
+        distinct_on (Union[list, tuple]): The field names used to group query
             results. Renamed distinct_on in google.cloud.datastore.
+        group_by (Union[list, tuple]): Deprecated. Synonym for distinct_on.
 
     Raises: TypeError if any of the arguments are invalid.
     """
@@ -974,6 +976,7 @@ class Query:
         namespace=None,
         default_options=None,
         projection=None,
+        distinct_on=None,
         group_by=None,
     ):
         if ancestor is not None:
@@ -1054,17 +1057,24 @@ class Query:
             self._check_properties(self._to_property_names(projection))
             self.projection = tuple(projection)
 
-        self.group_by = None
-        if group_by is not None:
-            if not group_by:
-                raise TypeError("group_by argument cannot be empty")
-            if not isinstance(group_by, (tuple, list)):
+        if distinct_on is not None and group_by is not None:
+            raise TypeError(
+                "Cannot use both group_by and distinct_on, they are synonyms"
+                "(group_by is deprecated now)"
+            )
+        if distinct_on is None:
+            distinct_on = group_by
+        self.distinct_on = None
+        if distinct_on is not None:
+            if not distinct_on:
+                raise TypeError("distinct_on argument cannot be empty")
+            if not isinstance(distinct_on, (tuple, list)):
                 raise TypeError(
-                    "group_by must be a tuple, list or None; "
-                    "received {}".format(group_by)
+                    "distinct_on must be a tuple, list or None; "
+                    "received {}".format(distinct_on)
                 )
-            self._check_properties(self._to_property_names(group_by))
-            self.group_by = tuple(group_by)
+            self._check_properties(self._to_property_names(distinct_on))
+            self.distinct_on = tuple(distinct_on)
 
     def __repr__(self):
         args = []
@@ -1084,9 +1094,9 @@ class Query:
             args.append(
                 "projection=%r" % (self._to_property_names(self.projection))
             )
-        if self.group_by:
+        if self.distinct_on:
             args.append(
-                "group_by=%r" % (self._to_property_names(self.group_by))
+                "distinct_on=%r" % (self._to_property_names(self.distinct_on))
             )
         if self.default_options is not None:
             args.append("default_options=%r" % self.default_options)
@@ -1097,11 +1107,11 @@ class Query:
         """True if results are guaranteed to contain a unique set of property
         values.
 
-        This happens when every property in the group_by is also in the projection.
+        This happens when every property in distinct_on is also in projection.
         """
         return bool(
-            self.group_by
-            and set(self._to_property_names(self.group_by))
+            self.distinct_on
+            and set(self._to_property_names(self.distinct_on))
             <= set(self._to_property_names(self.projection))
         )
 
@@ -1141,7 +1151,7 @@ class Query:
             namespace=self.namespace,
             default_options=self.default_options,
             projection=self.projection,
-            group_by=self.group_by,
+            distinct_on=self.distinct_on,
         )
 
     def order(self, *names):
@@ -1170,7 +1180,7 @@ class Query:
             namespace=self.namespace,
             default_options=self.default_options,
             projection=self.projection,
-            group_by=self.group_by,
+            distinct_on=self.distinct_on,
         )
 
     def analyze(self):
@@ -1248,7 +1258,7 @@ class Query:
             namespace=self.namespace,
             default_options=self.default_options,
             projection=self.projection,
-            group_by=self.group_by,
+            distinct_on=self.distinct_on,
         )
 
     def _to_property_names(self, properties):

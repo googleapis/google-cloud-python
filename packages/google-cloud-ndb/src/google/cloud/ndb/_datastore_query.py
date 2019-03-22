@@ -119,9 +119,10 @@ def _query_to_protobuf(query):
             for name in query.projection
         ]
 
-    if query.group_by:
+    if query.distinct_on:
         query_args["distinct_on"] = [
-            query_pb2.PropertyReference(name=name) for name in query.group_by
+            query_pb2.PropertyReference(name=name)
+            for name in query.distinct_on
         ]
 
     filters = []
