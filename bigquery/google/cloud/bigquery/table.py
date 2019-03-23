@@ -1334,8 +1334,21 @@ class RowIterator(HTTPIterator):
         """Use (slower, but free) tabledata.list to construct a DataFrame."""
         column_names = [field.name for field in self.schema]
         frames = []
+
+        # report progress if tqdm installed
+        try:
+            from tqdm import tqdm
+            pbar = tqdm(desc="Downloading", total=self.total_rows, unit="rows")
+        except ImportError:
+            pbar = None
+
         for page in iter(self.pages):
             frames.append(self._to_dataframe_dtypes(page, column_names, dtypes))
+
+            if pbar is not None:
+                # update progress bar with number of rows in last frame
+                pbar.update(len(frames[-1]))
+
         return pandas.concat(frames)
 
     def _to_dataframe_bqstorage(self, bqstorage_client, dtypes):
