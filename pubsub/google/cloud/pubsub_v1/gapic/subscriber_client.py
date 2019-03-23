@@ -224,6 +224,7 @@ class SubscriberClient(object):
         retain_acked_messages=None,
         message_retention_duration=None,
         labels=None,
+        enable_message_ordering=None,
         expiration_policy=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
@@ -309,6 +310,13 @@ class SubscriberClient(object):
                 message :class:`~google.cloud.pubsub_v1.types.Duration`
             labels (dict[str -> str]): See <a href="https://cloud.google.com/pubsub/docs/labels"> Creating and
                 managing labels</a>.
+            enable_message_ordering (bool): If true, messages published with the same ``ordering_key`` in
+                ``PubsubMessage`` will be delivered to the subscribers in the order in
+                which they are received by the Pub/Sub system. Otherwise, they may be
+                delivered in any order. EXPERIMENTAL: This feature is part of a closed
+                alpha release. This API might be changed in backward-incompatible ways
+                and is not recommended for production use. It is not subject to any SLA
+                or deprecation policy.
             expiration_policy (Union[dict, ~google.cloud.pubsub_v1.types.ExpirationPolicy]): A policy that specifies the conditions for this subscription's
                 expiration. A subscription is considered active as long as any connected
                 subscriber is successfully consuming messages from the subscription or
@@ -359,6 +367,7 @@ class SubscriberClient(object):
             retain_acked_messages=retain_acked_messages,
             message_retention_duration=message_retention_duration,
             labels=labels,
+            enable_message_ordering=enable_message_ordering,
             expiration_policy=expiration_policy,
         )
         return self._inner_api_calls["create_subscription"](
