@@ -1339,7 +1339,7 @@ class RowIterator(HTTPIterator):
         try:
             from tqdm import tqdm
             pbar = tqdm(desc="Downloading", total=self.total_rows, unit="rows")
-        except ImportError:
+        except (ImportError, KeyError, TypeError):
             pbar = None
 
         for page in iter(self.pages):
