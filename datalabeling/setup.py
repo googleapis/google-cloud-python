@@ -20,7 +20,7 @@ import os
 import setuptools
 
 name = 'google-cloud-datalabeling'
-description = 'Data Labeling API API client library'
+description = 'Data Labeling API client library'
 version = '0.1.0'
 release_status = '3 - Alpha'
 dependencies = [
@@ -60,9 +60,9 @@ setuptools.setup(
         'Programming Language :: Python :: 2',
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
         'Operating System :: OS Independent',
         'Topic :: Internet',
     ],
