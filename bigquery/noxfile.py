@@ -124,7 +124,7 @@ def snippets(session):
         session.install('-e', local_dep)
     session.install('-e', os.path.join('..', 'storage'))
     session.install('-e', os.path.join('..', 'test_utils'))
-    session.install('-e', '.[pandas, pyarrow]')
+    session.install('-e', '.[pandas, pyarrow, fastparquet]')
 
     # Run py.test against the snippets tests.
     session.run(
