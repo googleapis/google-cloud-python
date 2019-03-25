@@ -900,12 +900,11 @@ class Property(ModelAttribute):
         .. code-block:: python
 
             Employee.query().order(-Employee.rank)
-
-        Raises:
-            NotImplementedError: Always, the original implementation relied on
-                a low-level datastore query module.
         """
-        raise NotImplementedError("Missing datastore_query.PropertyOrder")
+        # Import late to avoid circular imports.
+        from google.cloud.ndb import query
+
+        return query.PropertyOrder(name=self._name, reverse=True)
 
     def __pos__(self):
         """Return an ascending sort order on this property.
@@ -917,12 +916,11 @@ class Property(ModelAttribute):
 
             Employee.query().order(+Employee.rank)
             Employee.query().order(Employee.rank)
-
-        Raises:
-            NotImplementedError: Always, the original implementation relied on
-                a low-level datastore query module.
         """
-        raise NotImplementedError("Missing datastore_query.PropertyOrder")
+        # Import late to avoid circular imports.
+        from google.cloud.ndb import query
+
+        return query.PropertyOrder(name=self._name, reverse=False)
 
     def _do_validate(self, value):
         """Call all validations on the value.

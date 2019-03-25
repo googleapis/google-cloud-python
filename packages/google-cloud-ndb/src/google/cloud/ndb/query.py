@@ -23,6 +23,7 @@ __all__ = [
     "Cursor",
     "QueryOptions",
     "QueryOrder",
+    "PropertyOrder",
     "RepeatedStructuredPropertyPredicate",
     "ParameterizedThing",
     "Parameter",
@@ -60,8 +61,10 @@ class QueryOptions:
         "ancestor",
         "filters",
         "projection",
-        "order",
+        "order_by",
+        "orders",
         "distinct_on",
+        "group_by",
         "limit",
         "offset",
         "start_cursor",
@@ -97,6 +100,32 @@ class QueryOrder:
 
     def __init__(self, *args, **kwargs):
         raise NotImplementedError
+
+
+class PropertyOrder(object):
+    """The sort order for a property name, to be used when ordering the
+       results of a query.
+
+       Args:
+           name (str): The name of the model property to use for ordering.
+           reverse (bool): Whether to reverse the sort order (descending)
+               or not (ascending). Default is False.
+    """
+
+    __slots__ = ["name", "reverse"]
+
+    def __init__(self, name, reverse=False):
+        self.name = name
+        self.reverse = reverse
+
+    def __repr__(self):
+        return "PropertyOrder(name='{}', reverse={})".format(
+            self.name, self.reverse
+        )
+
+    def __neg__(self):
+        reverse = not self.reverse
+        return self.__class__(name=self.name, reverse=reverse)
 
 
 class RepeatedStructuredPropertyPredicate:
@@ -948,9 +977,11 @@ class Query:
         filters (Union[Node, tuple]): Node representing a filter expression
             tree. Property filters applied by this query. The sequence
             is ``(property_name, operator, value)``.
-        order_by (Union[list, tuple]): The field names used to
-            order query results. Renamed `order` in google.cloud.datastore.
-        orders (Union[list, tuple]): Deprecated. Synonym for order_by.
+        order_by (list[Union[str, google.cloud.ndb.model.Property]]): The model
+            properties used to order query results. Renamed `order` in
+            google.cloud.datastore.
+        orders (list[Union[str, google.cloud.ndb.model.Property]]): Deprecated.
+            Synonym for order_by.
         app (str): The app to restrict results. If not passed, uses the
             client's value. Renamed `project` in google.cloud.datastore.
         namespace (str): The namespace to which to restrict results.
@@ -1024,6 +1055,7 @@ class Query:
                     "order must be a list, a tuple or None; "
                     "received {}".format(order_by)
                 )
+            order_by = self._to_property_orders(order_by)
         if default_options is not None:
             if not isinstance(default_options, QueryOptions):
                 raise TypeError(
@@ -1154,23 +1186,24 @@ class Query:
             distinct_on=self.distinct_on,
         )
 
-    def order(self, *names):
+    def order(self, *props):
         """Return a new Query with additional sort order(s) applied.
 
         Args:
-            names (list[str]): One or more field names to sort by.
+            props (list[Union[str, google.cloud.ndb.model.Property]]): One or
+                more model properties to sort by.
 
         Returns:
             Query: A new query with the new order applied.
         """
-        if not names:
+        if not props:
             return self
+        property_orders = self._to_property_orders(props)
         order_by = self.order_by
         if order_by is None:
-            order_by = list(names)
+            order_by = property_orders
         else:
-            order_by = list(order_by)
-            order_by.extend(names)
+            order_by.extend(property_orders)
         return self.__class__(
             kind=self.kind,
             ancestor=self.ancestor,
@@ -1274,6 +1307,27 @@ class Query:
                     "should be string or Property".format(prop)
                 )
         return fixed
+
+    def _to_property_orders(self, order_by):
+        orders = []
+        for order in order_by:
+            if isinstance(order, PropertyOrder):
+                # if a negated property, will already be a PropertyOrder
+                orders.append(order)
+            elif isinstance(order, model.Property):
+                # use the sign to turn it into a PropertyOrder
+                orders.append(+order)
+            elif isinstance(order, str):
+                name = order
+                reverse = False
+                if order.startswith("-"):
+                    name = order[1:]
+                    reverse = True
+                property_order = PropertyOrder(name, reverse=reverse)
+                orders.append(property_order)
+            else:
+                raise TypeError("Order values must be properties or strings")
+        return orders
 
     def _check_properties(self, fixed, **kwargs):
         modelclass = model.Model._kind_map.get(self.kind)
