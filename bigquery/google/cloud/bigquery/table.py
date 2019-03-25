@@ -1346,6 +1346,7 @@ class RowIterator(HTTPIterator):
             frames.append(self._to_dataframe_dtypes(page, column_names, dtypes))
 
             if pbar is not None:
+                pbar.total = pbar.total or self.total_rows
                 # update progress bar with number of rows in last frame
                 pbar.update(len(frames[-1]))
 
