@@ -24,6 +24,7 @@ except ImportError:  # Python 2.7
 import functools
 import gzip
 import os
+import tempfile
 import uuid
 
 import six
@@ -1124,10 +1125,10 @@ class Client(ClientWithProject):
         Raises:
             ImportError:
                 If a usable parquet engine cannot be found. This method
-                requires :mod:`pyarrow` to be installed.
+                requires :mod:`pyarrow` or :mod:`fastparquet` to be
+                installed.
         """
-        buffer = six.BytesIO()
-        dataframe.to_parquet(buffer)
+        job_id = _make_job_id(job_id, job_id_prefix)
 
         if job_config is None:
             job_config = job.LoadJobConfig()
@@ -1136,17 +1137,27 @@ class Client(ClientWithProject):
         if location is None:
             location = self.location
 
-        return self.load_table_from_file(
-            buffer,
-            destination,
-            num_retries=num_retries,
-            rewind=True,
-            job_id=job_id,
-            job_id_prefix=job_id_prefix,
-            location=location,
-            project=project,
-            job_config=job_config,
-        )
+        tmpfd, tmppath = tempfile.mkstemp(suffix="_job_{}.parquet".format(job_id[:8]))
+        os.close(tmpfd)
+
+        try:
+            dataframe.to_parquet(tmppath)
+
+            with open(tmppath, "rb") as parquet_file:
+                return self.load_table_from_file(
+                    parquet_file,
+                    destination,
+                    num_retries=num_retries,
+                    rewind=True,
+                    job_id=job_id,
+                    job_id_prefix=job_id_prefix,
+                    location=location,
+                    project=project,
+                    job_config=job_config,
+                )
+
+        finally:
+            os.remove(tmppath)
 
     def _do_resumable_upload(self, stream, metadata, num_retries):
         """Perform a resumable upload.
