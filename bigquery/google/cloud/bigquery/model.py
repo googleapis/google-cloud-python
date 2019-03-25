@@ -359,7 +359,8 @@ class ModelReference(object):
                 include a project ID.
 
         Returns:
-            ModelReference: Model reference parsed from ``model_id``.
+            google.cloud.bigquery.model.ModelReference:
+                Model reference parsed from ``model_id``.
 
         Raises:
             ValueError:

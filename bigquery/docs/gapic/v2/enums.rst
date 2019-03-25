@@ -1,5 +1,8 @@
 Enums for BigQuery API Client
 =============================
 
-.. automodule:: google.cloud.bigquery_v2.gapic.enums
+.. autoclass:: google.cloud.bigquery_v2.gapic.enums.Model
+    :members:
+
+.. autoclass:: google.cloud.bigquery_v2.gapic.enums.StandardSqlDataType
     :members:
