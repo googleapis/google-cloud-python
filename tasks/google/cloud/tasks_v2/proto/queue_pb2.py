@@ -674,8 +674,7 @@ RetryConfig = _reflection.GeneratedProtocolMessageType(
           If unspecified when the queue is created, Cloud Tasks will
           pick the default.  This field has the same meaning as
           `max\_doublings in queue.yaml/xml <https://cloud.google.com/ap
-          pengine/docs/standard/python/config/queueref#retry_parameters>
-          `__.
+          pengine/docs/standard/python/config/queueref#retry_parameters>`__.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.tasks.v2.RetryConfig)
     ),

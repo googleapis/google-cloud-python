@@ -8,6 +8,7 @@ API. By default, you will get ``v2beta3``, the latest version.
 
 .. toctree::
     :maxdepth: 2
+    
     gapic/v2/api
     gapic/v2/types
 
