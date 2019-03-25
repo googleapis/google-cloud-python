@@ -4658,7 +4658,7 @@ class TestClientUpload(object):
             self.TABLE_REF,
             num_retries=_DEFAULT_NUM_RETRIES,
             rewind=True,
-            job_id=None,
+            job_id=mock.ANY,
             job_id_prefix=None,
             location=None,
             project=None,
@@ -4666,9 +4666,7 @@ class TestClientUpload(object):
         )
 
         sent_file = load_table_from_file.mock_calls[0][1][1]
-        sent_bytes = sent_file.getvalue()
-        assert isinstance(sent_bytes, bytes)
-        assert len(sent_bytes) > 0
+        assert sent_file.closed
 
         sent_config = load_table_from_file.mock_calls[0][2]["job_config"]
         assert sent_config.source_format == job.SourceFormat.PARQUET
@@ -4695,7 +4693,7 @@ class TestClientUpload(object):
             self.TABLE_REF,
             num_retries=_DEFAULT_NUM_RETRIES,
             rewind=True,
-            job_id=None,
+            job_id=mock.ANY,
             job_id_prefix=None,
             location=self.LOCATION,
             project=None,
@@ -4703,9 +4701,7 @@ class TestClientUpload(object):
         )
 
         sent_file = load_table_from_file.mock_calls[0][1][1]
-        sent_bytes = sent_file.getvalue()
-        assert isinstance(sent_bytes, bytes)
-        assert len(sent_bytes) > 0
+        assert sent_file.closed
 
         sent_config = load_table_from_file.mock_calls[0][2]["job_config"]
         assert sent_config.source_format == job.SourceFormat.PARQUET
@@ -4735,7 +4731,7 @@ class TestClientUpload(object):
             self.TABLE_REF,
             num_retries=_DEFAULT_NUM_RETRIES,
             rewind=True,
-            job_id=None,
+            job_id=mock.ANY,
             job_id_prefix=None,
             location=self.LOCATION,
             project=None,
