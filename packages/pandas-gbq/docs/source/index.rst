@@ -40,6 +40,7 @@ Contents:
    api.rst
    contributing.rst
    changelog.rst
+   privacy.rst
 
 
 Indices and tables

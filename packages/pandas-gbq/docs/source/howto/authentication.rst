@@ -76,6 +76,7 @@ See the `Getting started with authentication on Google Cloud Platform
 <https://cloud.google.com/docs/authentication/getting-started>`_ guide for
 more information on service accounts.
 
+.. _authentication-user:
 
 Authenticating with a User Account
 ----------------------------------
