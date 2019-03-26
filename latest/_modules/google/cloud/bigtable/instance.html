@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigtable.instance &#8212; google-cloud 5752cca documentation</title>
+    <title>google.cloud.bigtable.instance &#8212; google-cloud ce71f8c documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -65,11 +65,17 @@
 
 <span class="kn">from</span> <span class="nn">google.cloud.bigtable.policy</span> <span class="k">import</span> <span class="n">Policy</span>
 
+<span class="kn">import</span> <span class="nn">warnings</span>
 
-<span class="n">_EXISTING_INSTANCE_LOCATION_ID</span> <span class="o">=</span> <span class="s2">&quot;see-existing-cluster&quot;</span>
 <span class="n">_INSTANCE_NAME_RE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
     <span class="sa">r</span><span class="s2">&quot;^projects/(?P&lt;project&gt;[^/]+)/&quot;</span> <span class="sa">r</span><span class="s2">&quot;instances/(?P&lt;instance_id&gt;[a-z][-a-z0-9]*)$&quot;</span>
 <span class="p">)</span>
+
+<span class="n">_INSTANCE_CREATE_WARNING</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">Use of `instance.create(</span><span class="si">{0}</span><span class="s2">, </span><span class="si">{1}</span><span class="s2">, </span><span class="si">{2}</span><span class="s2">)` will be depricated.</span>
+<span class="s2">Please replace with</span>
+<span class="s2">`cluster = instance.cluster(</span><span class="si">{0}</span><span class="s2">, </span><span class="si">{1}</span><span class="s2">, </span><span class="si">{2}</span><span class="s2">)`</span>
+<span class="s2">`instance.create(clusters=[cluster])`.&quot;&quot;&quot;</span>
 
 
 <div class="viewcode-block" id="Instance"><a class="viewcode-back" href="../../../../bigtable/instance.html#google.cloud.bigtable.instance.Instance">[docs]</a><span class="k">class</span> <span class="nc">Instance</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -312,6 +318,14 @@
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="n">clusters</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+                <span class="n">_INSTANCE_CREATE_WARNING</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="s2">&quot;location_id&quot;</span><span class="p">,</span> <span class="s2">&quot;serve_nodes&quot;</span><span class="p">,</span> <span class="s2">&quot;default_storage_type&quot;</span>
+                <span class="p">),</span>
+                <span class="ne">DeprecationWarning</span><span class="p">,</span>
+                <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="p">)</span>
+
             <span class="n">cluster_id</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">-cluster&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">instance_id</span><span class="p">)</span>
 
             <span class="n">clusters</span> <span class="o">=</span> <span class="p">[</span>
