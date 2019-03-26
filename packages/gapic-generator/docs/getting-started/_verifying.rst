@@ -42,8 +42,8 @@ Here is a test script:
               'type': vision.Feature.Type.LABEL_DETECTION,
           }],
           'image': {'source': {
-              'image_uri': 'https://s3.amazonaws.com/cdn0.michiganbulb.com'
-                           '/images/350/66623.jpg',
+              'image_uri': 'https://images.pexels.com/photos/67636'
+                           '/rose-blue-flower-rose-blooms-67636.jpeg',
           }},
       }],
   })
