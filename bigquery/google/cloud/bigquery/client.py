@@ -430,7 +430,7 @@ class Client(ClientWithProject):
         return Dataset.from_api_repr(api_response)
 
     def get_model(self, model_ref, retry=DEFAULT_RETRY):
-        """Fetch the model referenced by ``model_ref``.
+        """[Beta] Fetch the model referenced by ``model_ref``.
 
          Args:
             model_ref (Union[ \
@@ -520,7 +520,7 @@ class Client(ClientWithProject):
         return Dataset.from_api_repr(api_response)
 
     def update_model(self, model, fields, retry=DEFAULT_RETRY):
-        """Change some fields of a model.
+        """[Beta] Change some fields of a model.
 
         Use ``fields`` to specify which fields to update. At least one field
         must be provided. If a field is listed in ``fields`` and is ``None``
@@ -592,7 +592,7 @@ class Client(ClientWithProject):
     def list_models(
         self, dataset, max_results=None, page_token=None, retry=DEFAULT_RETRY
     ):
-        """List models in the dataset.
+        """[Beta] List models in the dataset.
 
         See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/models/list
@@ -754,7 +754,7 @@ class Client(ClientWithProject):
                 raise
 
     def delete_model(self, model, retry=DEFAULT_RETRY, not_found_ok=False):
-        """Delete a model
+        """[Beta] Delete a model
 
         See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/models/delete
