@@ -34,12 +34,11 @@ def test_list_all_assets():
     # list_assets returns an iterator.  We convert it to a list
     # here for demonstration purposes only.  Processing each element
     # from the iterator is recommended.
-    assets = list(client.list_assets(org_name))
+    asset_iterator = client.list_assets(org_name)
+    for i, asset_result in enumerate(asset_iterator):
+        print(i, asset_result)
     # [END demo_list_all_assets]
-    assert len(assets) > 0
-    # [START demo_list_all_assets]
-    print(assets)
-    # [END demo_list_all_assets]
+    assert i > 0
 
 
 def test_list_assets_with_filters():
@@ -56,15 +55,12 @@ def test_list_assets_with_filters():
         "security_center_properties.resource_type="
         + '"google.cloud.resourcemanager.Project"'
     )
-    # list_assets returns an iterator.  We convert it to a list
-    # here for demonstration purposes only.  Processing each element
-    # from the iterator is recommended.
-    assets = list(client.list_assets(org_name, filter_=project_filter))
+    # Call the API and print results.
+    asset_iterator = client.list_assets(org_name, filter_=project_filter)
+    for i, asset_result in enumerate(asset_iterator):
+        print(i, asset_result)
     # [END demo_list_assets_with_filter]
-    assert len(assets) > 0
-    # [START demo_list_assets_with_filter]
-    print(assets)
-    # [END demo_list_assets_with_filter]
+    assert i > 0
 
 
 def test_list_assets_with_filters_and_read_time():
@@ -89,17 +85,14 @@ def test_list_assets_with_filters_and_read_time():
     timestamp_proto = Timestamp()
     timestamp_proto.FromDatetime(read_time)
 
-    # list_assets returns an iterator.  We convert it to a list
-    # here for demonstration purposes only.  Processing each element
-    # from the iterator is recommended.
-    assets = list(
-        client.list_assets(org_name, filter_=project_filter, read_time=timestamp_proto)
+    # Call the API and print results.
+    asset_iterator = client.list_assets(
+        org_name, filter_=project_filter, read_time=timestamp_proto
     )
+    for i, asset_result in enumerate(asset_iterator):
+        print(i, asset_result)
     # [END demo_list_assets_with_filter_and_time]
-    assert len(assets) > 0
-    # [START demo_list_assets_with_filter_and_time]
-    print(assets)
-    # [END demo_list_assets_with_filter_and_time]
+    assert i > 0
 
 
 def test_list_point_in_time_changes():
@@ -113,7 +106,6 @@ def test_list_point_in_time_changes():
 
     # ORGANIZATION_ID is the numeric ID of the organization (e.g. 123213123121)
     org_name = "organizations/{org_id}".format(org_id=ORGANIZATION_ID)
-
     project_filter = (
         "security_center_properties.resource_type="
         + '"google.cloud.resourcemanager.Project"'
@@ -124,16 +116,12 @@ def test_list_point_in_time_changes():
     # Convert the timedelta to a Duration
     duration_proto = Duration()
     duration_proto.FromTimedelta(compare_delta)
-    # list_assets returns an iterator.  We convert it to a list
-    # here for demonstration purposes only.  Processing each element
-    # from the iterator is recommended.
-    assets = list(
-        client.list_assets(
-            org_name, filter_=project_filter, compare_duration=duration_proto
-        )
+    # Call the API and print results.
+    asset_iterator = client.list_assets(
+        org_name, filter_=project_filter, compare_duration=duration_proto
     )
+    for i, asset in enumerate(asset_iterator):
+        print(i, asset)
+
     # [END demo_list_assets_changes]
-    assert len(assets) > 0
-    # [START demo_list_assets_changes]
-    print(assets)
-    # [END demo_list_assets_changes]
+    assert i > 0
