@@ -48,6 +48,7 @@ from google.cloud.bigquery.dataset import DatasetReference
 from google.cloud.bigquery import job
 from google.cloud.bigquery.query import _QueryResults
 from google.cloud.bigquery.retry import DEFAULT_RETRY
+from google.cloud.bigquery.table import _str_or_ref_to_table_ref
 from google.cloud.bigquery.table import Table
 from google.cloud.bigquery.table import TableListItem
 from google.cloud.bigquery.table import TableReference
@@ -379,8 +380,8 @@ class Client(ClientWithProject):
             google.cloud.bigquery.table.Table:
                 A new ``Table`` returned from the service.
         """
-        if isinstance(table, str):
-            table = TableReference.from_string(table, default_project=self.project)
+        table = _str_or_ref_to_table_ref(table, default_project=self.project)
+
         if isinstance(table, TableReference):
             table = Table(table)
 
@@ -446,11 +447,7 @@ class Client(ClientWithProject):
             google.cloud.bigquery.table.Table:
                 A ``Table`` instance.
         """
-        if isinstance(table_ref, str):
-            table_ref = TableReference.from_string(
-                table_ref, default_project=self.project
-            )
-
+        table_ref = _str_or_ref_to_table_ref(table_ref, default_project=self.project)
         api_response = self._call_api(retry, method="GET", path=table_ref.path)
         return Table.from_api_repr(api_response)
 
@@ -653,8 +650,7 @@ class Client(ClientWithProject):
                 Defaults to ``False``. If ``True``, ignore "not found" errors
                 when deleting the table.
         """
-        if isinstance(table, str):
-            table = TableReference.from_string(table, default_project=self.project)
+        table = _str_or_ref_to_table_ref(table, default_project=self.project)
 
         if not isinstance(table, (Table, TableReference)):
             raise TypeError("table must be a Table or a TableReference")
@@ -966,11 +962,9 @@ class Client(ClientWithProject):
         if isinstance(source_uris, six.string_types):
             source_uris = [source_uris]
 
-        if isinstance(destination, str):
-            destination = TableReference.from_string(
-                destination, default_project=self.project
-            )
-
+        destination = _str_or_ref_to_table_ref(
+            destination, default_project=self.project
+        )
         load_job = job.LoadJob(job_ref, source_uris, destination, self, job_config)
         load_job._begin(retry=retry)
 
@@ -1045,11 +1039,9 @@ class Client(ClientWithProject):
         if location is None:
             location = self.location
 
-        if isinstance(destination, str):
-            destination = TableReference.from_string(
-                destination, default_project=self.project
-            )
-
+        destination = _str_or_ref_to_table_ref(
+            destination, default_project=self.project
+        )
         job_ref = job._JobReference(job_id, project=project, location=location)
         load_job = job.LoadJob(job_ref, None, destination, self, job_config)
         job_resource = load_job.to_api_repr()
@@ -1288,6 +1280,7 @@ class Client(ClientWithProject):
             sources (Union[ \
                 :class:`~google.cloud.bigquery.table.TableReference`, \
                 str, \
+                Sequence[str], \
                 Sequence[ \
                     :class:`~google.cloud.bigquery.table.TableReference`], \
             ]):
@@ -1327,18 +1320,18 @@ class Client(ClientWithProject):
             location = self.location
 
         job_ref = job._JobReference(job_id, project=project, location=location)
-
-        if isinstance(sources, str):
-            sources = TableReference.from_string(sources, default_project=self.project)
-
-        if isinstance(destination, str):
-            destination = TableReference.from_string(
-                destination, default_project=self.project
-            )
+        sources = _str_or_ref_to_table_ref(sources, default_project=self.project)
+        destination = _str_or_ref_to_table_ref(
+            destination, default_project=self.project
+        )
 
         if not isinstance(sources, collections_abc.Sequence):
             sources = [sources]
 
+        sources = [
+            _str_or_ref_to_table_ref(source, default_project=self.project)
+            for source in sources
+        ]
         copy_job = job.CopyJob(
             job_ref, sources, destination, client=self, job_config=job_config
         )
@@ -1405,9 +1398,7 @@ class Client(ClientWithProject):
             location = self.location
 
         job_ref = job._JobReference(job_id, project=project, location=location)
-
-        if isinstance(source, str):
-            source = TableReference.from_string(source, default_project=self.project)
+        source = _str_or_ref_to_table_ref(source, default_project=self.project)
 
         if isinstance(destination_uris, six.string_types):
             destination_uris = [destination_uris]
@@ -1529,8 +1520,7 @@ class Client(ClientWithProject):
         Raises:
             ValueError: if table's schema is not set
         """
-        if isinstance(table, str):
-            table = TableReference.from_string(table, default_project=self.project)
+        table = _str_or_ref_to_table_ref(table, default_project=self.project)
 
         if selected_fields is not None:
             schema = selected_fields
@@ -1596,9 +1586,7 @@ class Client(ClientWithProject):
                 identifies the row, and the "errors" key contains a list of
                 the mappings describing one or more problems with the row.
         """
-        if isinstance(table, str):
-            table = TableReference.from_string(table, default_project=self.project)
-
+        table = _str_or_ref_to_table_ref(table, default_project=self.project)
         rows_info = []
         data = {"rows": rows_info}
 
@@ -1647,9 +1635,7 @@ class Client(ClientWithProject):
             List[str]:
                 A list of the partition ids present in the partitioned table
         """
-        if isinstance(table, str):
-            table = TableReference.from_string(table, default_project=self.project)
-
+        table = _str_or_ref_to_table_ref(table, default_project=self.project)
         meta_table = self.get_table(
             TableReference(
                 self.dataset(table.dataset_id, project=table.project),
@@ -1724,8 +1710,7 @@ class Client(ClientWithProject):
                 (this is distinct from the total number of rows in the
                 current page: ``iterator.page.num_items``).
         """
-        if isinstance(table, str):
-            table = TableReference.from_string(table, default_project=self.project)
+        table = _str_or_ref_to_table_ref(table, default_project=self.project)
 
         if selected_fields is not None:
             schema = selected_fields

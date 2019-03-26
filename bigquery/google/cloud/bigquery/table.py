@@ -1661,3 +1661,12 @@ def _rows_page_start(iterator, page, response):
 
 
 # pylint: enable=unused-argument
+
+
+def _str_or_ref_to_table_ref(value, default_project=None):
+    """Helper to convert a string to TableReference or keep a
+    TableReference unchanged.
+    """
+    if isinstance(value, six.string_types):
+        value = TableReference.from_string(value, default_project=default_project)
+    return value
