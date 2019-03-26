@@ -14,6 +14,7 @@ from google.protobuf import symbol_database as _symbol_database
 _sym_db = _symbol_database.Default()
 
 
+from google.api import resource_pb2 as google_dot_api_dot_resource__pb2
 from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__pb2
 
 
@@ -25,9 +26,12 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n)com.google.cloud.bigquery.storage.v1beta1B\023TableReferenceProtoZLgoogle.golang.org/genproto/googleapis/cloud/bigquery/storage/v1beta1;storage"
     ),
     serialized_pb=_b(
-        '\nAgoogle/cloud/bigquery/storage_v1beta1/proto/table_reference.proto\x12%google.cloud.bigquery.storage.v1beta1\x1a\x1fgoogle/protobuf/timestamp.proto"J\n\x0eTableReference\x12\x12\n\nproject_id\x18\x01 \x01(\t\x12\x12\n\ndataset_id\x18\x02 \x01(\t\x12\x10\n\x08table_id\x18\x03 \x01(\t"C\n\x0eTableModifiers\x12\x31\n\rsnapshot_time\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.TimestampB\x8e\x01\n)com.google.cloud.bigquery.storage.v1beta1B\x13TableReferenceProtoZLgoogle.golang.org/genproto/googleapis/cloud/bigquery/storage/v1beta1;storageb\x06proto3'
+        '\nAgoogle/cloud/bigquery/storage_v1beta1/proto/table_reference.proto\x12%google.cloud.bigquery.storage.v1beta1\x1a\x19google/api/resource.proto\x1a\x1fgoogle/protobuf/timestamp.proto"J\n\x0eTableReference\x12\x12\n\nproject_id\x18\x01 \x01(\t\x12\x12\n\ndataset_id\x18\x02 \x01(\t\x12\x10\n\x08table_id\x18\x03 \x01(\t"C\n\x0eTableModifiers\x12\x31\n\rsnapshot_time\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.TimestampB\x8e\x01\n)com.google.cloud.bigquery.storage.v1beta1B\x13TableReferenceProtoZLgoogle.golang.org/genproto/googleapis/cloud/bigquery/storage/v1beta1;storageb\x06proto3'
     ),
-    dependencies=[google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR],
+    dependencies=[
+        google_dot_api_dot_resource__pb2.DESCRIPTOR,
+        google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,
+    ],
 )
 
 
@@ -101,8 +105,8 @@ _TABLEREFERENCE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=141,
-    serialized_end=215,
+    serialized_start=168,
+    serialized_end=242,
 )
 
 
@@ -140,8 +144,8 @@ _TABLEMODIFIERS = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=217,
-    serialized_end=284,
+    serialized_start=244,
+    serialized_end=311,
 )
 
 _TABLEMODIFIERS.fields_by_name[
