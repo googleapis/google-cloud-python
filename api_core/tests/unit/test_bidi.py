@@ -125,9 +125,10 @@ def make_rpc():
     call = mock.create_autospec(_CallAndFuture, instance=True)
     rpc = mock.create_autospec(grpc.StreamStreamMultiCallable, instance=True)
 
-    def rpc_side_effect(request):
+    def rpc_side_effect(request, metadata=None):
         call.is_active.return_value = True
         call.request = request
+        call.metadata = metadata
         return call
 
     rpc.side_effect = rpc_side_effect
