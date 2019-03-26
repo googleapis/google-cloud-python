@@ -12,13 +12,16 @@ Google account and user data
 Accessing user data
 ~~~~~~~~~~~~~~~~~~~
 
-The :mod:`pandas_gbq` module accesses your Google user account, with
-the list of `scopes
-<https://developers.google.com/identity/protocols/googlescopes>`_ that you
-specify. Depending on your specified list of scopes, the credentials returned
-by this library may provide access to other user data, such as your email
-address, Google Cloud Platform resources, Google Drive files, or Google
-Sheets.
+The :mod:`pandas_gbq` module accesses Google Cloud Platform resources from
+your local machine. Your machine communicates directly with the Google APIs.
+
+The :func:`~pandas_gbq.read_gbq` function can read and
+write BigQuery data (and other data such as Google Sheets or Cloud Storage,
+via the federated query feature) through the BigQuery query interface via
+queries you supply.
+
+The :func:`~pandas_gbq.to_gbq` method can write data you supply to a
+BigQuery table.
 
 Storing user data
 ~~~~~~~~~~~~~~~~~
