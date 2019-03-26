@@ -31,9 +31,8 @@ def test_list_all_assets():
     client = securitycenter.SecurityCenterClient()
     # ORGANIZATION_ID is the numeric ID of the organization (e.g. 123213123121)
     org_name = "organizations/{org_id}".format(org_id=ORGANIZATION_ID)
-    # list_assets returns an iterator.  We convert it to a list
-    # here for demonstration purposes only.  Processing each element
-    # from the iterator is recommended.
+
+    # Call the API and print results.
     asset_iterator = client.list_assets(org_name)
     for i, asset_result in enumerate(asset_iterator):
         print(i, asset_result)
