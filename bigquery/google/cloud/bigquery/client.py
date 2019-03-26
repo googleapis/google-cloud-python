@@ -48,7 +48,8 @@ from google.cloud.bigquery.dataset import DatasetReference
 from google.cloud.bigquery import job
 from google.cloud.bigquery.query import _QueryResults
 from google.cloud.bigquery.retry import DEFAULT_RETRY
-from google.cloud.bigquery.table import _str_or_ref_to_table_ref
+from google.cloud.bigquery.table import _table_arg_to_table
+from google.cloud.bigquery.table import _table_arg_to_table_ref
 from google.cloud.bigquery.table import Table
 from google.cloud.bigquery.table import TableListItem
 from google.cloud.bigquery.table import TableReference
@@ -68,6 +69,9 @@ _RESUMABLE_URL_TEMPLATE = _BASE_UPLOAD_TEMPLATE + u"resumable"
 _GENERIC_CONTENT_TYPE = u"*/*"
 _READ_LESS_THAN_SIZE = (
     "Size {:d} was specified but the file-like object only had " "{:d} bytes remaining."
+)
+_NEED_TABLE_ARGUMENT = (
+    "The table argument should be a table ID string, Table, or TableReference"
 )
 
 
@@ -380,10 +384,7 @@ class Client(ClientWithProject):
             google.cloud.bigquery.table.Table:
                 A new ``Table`` returned from the service.
         """
-        table = _str_or_ref_to_table_ref(table, default_project=self.project)
-
-        if isinstance(table, TableReference):
-            table = Table(table)
+        table = _table_arg_to_table(table, default_project=self.project)
 
         path = "/projects/%s/datasets/%s/tables" % (table.project, table.dataset_id)
         data = table.to_api_repr()
@@ -433,6 +434,7 @@ class Client(ClientWithProject):
 
         Args:
             table_ref (Union[ \
+                :class:`~google.cloud.bigquery.table.Table`, \
                 :class:`~google.cloud.bigquery.table.TableReference`, \
                 str, \
             ]):
@@ -447,7 +449,7 @@ class Client(ClientWithProject):
             google.cloud.bigquery.table.Table:
                 A ``Table`` instance.
         """
-        table_ref = _str_or_ref_to_table_ref(table_ref, default_project=self.project)
+        table_ref = _table_arg_to_table_ref(table_ref, default_project=self.project)
         api_response = self._call_api(retry, method="GET", path=table_ref.path)
         return Table.from_api_repr(api_response)
 
@@ -650,10 +652,9 @@ class Client(ClientWithProject):
                 Defaults to ``False``. If ``True``, ignore "not found" errors
                 when deleting the table.
         """
-        table = _str_or_ref_to_table_ref(table, default_project=self.project)
-
-        if not isinstance(table, (Table, TableReference)):
-            raise TypeError("table must be a Table or a TableReference")
+        table = _table_arg_to_table_ref(table, default_project=self.project)
+        if not isinstance(table, TableReference):
+            raise TypeError("Unable to get TableReference for table '{}'".format(table))
 
         try:
             self._call_api(retry, method="DELETE", path=table.path)
@@ -921,6 +922,7 @@ class Client(ClientWithProject):
                 URIs of data files to be loaded; in format
                 ``gs://<bucket_name>/<object_name_or_glob>``.
             destination (Union[ \
+                :class:`~google.cloud.bigquery.table.Table`, \
                 :class:`~google.cloud.bigquery.table.TableReference`, \
                 str, \
             ]):
@@ -962,7 +964,7 @@ class Client(ClientWithProject):
         if isinstance(source_uris, six.string_types):
             source_uris = [source_uris]
 
-        destination = _str_or_ref_to_table_ref(
+        destination = _table_arg_to_table_ref(
             destination, default_project=self.project
         )
         load_job = job.LoadJob(job_ref, source_uris, destination, self, job_config)
@@ -991,6 +993,7 @@ class Client(ClientWithProject):
         Arguments:
             file_obj (file): A file handle opened in binary mode for reading.
             destination (Union[ \
+                :class:`~google.cloud.bigquery.table.Table`, \
                 :class:`~google.cloud.bigquery.table.TableReference`, \
                 str, \
             ]):
@@ -1039,7 +1042,7 @@ class Client(ClientWithProject):
         if location is None:
             location = self.location
 
-        destination = _str_or_ref_to_table_ref(
+        destination = _table_arg_to_table_ref(
             destination, default_project=self.project
         )
         job_ref = job._JobReference(job_id, project=project, location=location)
@@ -1278,14 +1281,20 @@ class Client(ClientWithProject):
 
         Arguments:
             sources (Union[ \
+                :class:`~google.cloud.bigquery.table.Table`, \
                 :class:`~google.cloud.bigquery.table.TableReference`, \
                 str, \
-                Sequence[str], \
                 Sequence[ \
-                    :class:`~google.cloud.bigquery.table.TableReference`], \
+                    Union[ \
+                        :class:`~google.cloud.bigquery.table.Table`, \
+                        :class:`~google.cloud.bigquery.table.TableReference`, \
+                        str, \
+                    ] \
+                ], \
             ]):
                 Table or tables to be copied.
             destination (Union[
+                :class:`~google.cloud.bigquery.table.Table`, \
                 :class:`~google.cloud.bigquery.table.TableReference`, \
                 str, \
             ]):
@@ -1320,18 +1329,26 @@ class Client(ClientWithProject):
             location = self.location
 
         job_ref = job._JobReference(job_id, project=project, location=location)
-        sources = _str_or_ref_to_table_ref(sources, default_project=self.project)
-        destination = _str_or_ref_to_table_ref(
-            destination, default_project=self.project
-        )
+
+        # sources can be one of many different input types. (string, Table,
+        # TableReference, or a sequence of any of those.) Convert them all to a
+        # list of TableReferences.
+        #
+        # _table_arg_to_table_ref leaves lists unmodified.
+        sources = _table_arg_to_table_ref(sources, default_project=self.project)
 
         if not isinstance(sources, collections_abc.Sequence):
             sources = [sources]
 
         sources = [
-            _str_or_ref_to_table_ref(source, default_project=self.project)
+            _table_arg_to_table_ref(source, default_project=self.project)
             for source in sources
         ]
+
+        destination = _table_arg_to_table_ref(
+            destination, default_project=self.project
+        )
+
         copy_job = job.CopyJob(
             job_ref, sources, destination, client=self, job_config=job_config
         )
@@ -1357,6 +1374,7 @@ class Client(ClientWithProject):
 
         Arguments:
             source (Union[ \
+                :class:`google.cloud.bigquery.table.Table`, \
                 :class:`google.cloud.bigquery.table.TableReference`, \
                 src, \
             ]):
@@ -1398,7 +1416,7 @@ class Client(ClientWithProject):
             location = self.location
 
         job_ref = job._JobReference(job_id, project=project, location=location)
-        source = _str_or_ref_to_table_ref(source, default_project=self.project)
+        source = _table_arg_to_table_ref(source, default_project=self.project)
 
         if isinstance(destination_uris, six.string_types):
             destination_uris = [destination_uris]
@@ -1520,18 +1538,22 @@ class Client(ClientWithProject):
         Raises:
             ValueError: if table's schema is not set
         """
-        table = _str_or_ref_to_table_ref(table, default_project=self.project)
+        table = _table_arg_to_table(table, default_project=self.project)
 
+        if not isinstance(table, Table):
+            raise TypeError(_NEED_TABLE_ARGUMENT)
+
+        schema = table.schema
+
+        # selected_fields can override the table schema.
         if selected_fields is not None:
             schema = selected_fields
-        elif isinstance(table, TableReference):
-            raise ValueError("need selected_fields with TableReference")
-        elif isinstance(table, Table):
-            if len(table.schema) == 0:
-                raise ValueError(_TABLE_HAS_NO_SCHEMA)
-            schema = table.schema
-        else:
-            raise TypeError("table should be Table or TableReference")
+
+        if len(schema) == 0:
+            raise ValueError((
+                "Could not determine schema for table '{}'. Call client.get_table() "
+                "or pass in a list of schema fields to the selected_fields argument."
+            ).format(table))
 
         json_rows = [_record_field_to_json(schema, row) for row in rows]
 
@@ -1586,7 +1608,10 @@ class Client(ClientWithProject):
                 identifies the row, and the "errors" key contains a list of
                 the mappings describing one or more problems with the row.
         """
-        table = _str_or_ref_to_table_ref(table, default_project=self.project)
+        # Convert table to just a reference because unlike insert_rows,
+        # insert_rows_json doesn't need the table schema. It's not doing any
+        # type conversions.
+        table = _table_arg_to_table_ref(table, default_project=self.project)
         rows_info = []
         data = {"rows": rows_info}
 
@@ -1635,7 +1660,7 @@ class Client(ClientWithProject):
             List[str]:
                 A list of the partition ids present in the partitioned table
         """
-        table = _str_or_ref_to_table_ref(table, default_project=self.project)
+        table = _table_arg_to_table_ref(table, default_project=self.project)
         meta_table = self.get_table(
             TableReference(
                 self.dataset(table.dataset_id, project=table.project),
@@ -1710,18 +1735,23 @@ class Client(ClientWithProject):
                 (this is distinct from the total number of rows in the
                 current page: ``iterator.page.num_items``).
         """
-        table = _str_or_ref_to_table_ref(table, default_project=self.project)
+        table = _table_arg_to_table(table, default_project=self.project)
 
+        if not isinstance(table, Table):
+            raise TypeError(_NEED_TABLE_ARGUMENT)
+
+        schema = table.schema
+
+        # selected_fields can override the table schema.
         if selected_fields is not None:
             schema = selected_fields
-        elif isinstance(table, TableReference):
-            raise ValueError("need selected_fields with TableReference")
-        elif isinstance(table, Table):
-            if len(table.schema) == 0 and table.created is None:
-                raise ValueError(_TABLE_HAS_NO_SCHEMA)
-            schema = table.schema
-        else:
-            raise TypeError("table should be Table or TableReference")
+
+        # Allow listing rows of an empty table by not raising if the table exists.
+        elif len(schema) == 0 and table.created is None:
+            raise ValueError((
+                "Could not determine schema for table '{}'. Call client.get_table() "
+                "or pass in a list of schema fields to the selected_fields argument."
+            ).format(table))
 
         params = {}
         if selected_fields is not None:

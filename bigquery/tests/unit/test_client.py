@@ -3443,7 +3443,7 @@ class TestClient(unittest.TestCase):
         with self.assertRaises(ValueError) as exc:
             client.insert_rows(table, ROWS)
 
-        self.assertEqual(exc.exception.args, (_TABLE_HAS_NO_SCHEMA,))
+        self.assertIn("Could not determine schema for table", exc.exception.args[0])
 
     def test_insert_rows_w_schema(self):
         import datetime

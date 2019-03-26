@@ -3188,6 +3188,15 @@ class TestQueryJobConfig(unittest.TestCase, _Base):
         expected = dataset.DatasetReference.from_string(default_dataset)
         self.assertEqual(config.default_dataset, expected)
 
+    def test_default_dataset_w_dataset(self):
+        from google.cloud.bigquery import dataset
+
+        default_dataset = "default-proj.default_dset"
+        expected = dataset.DatasetReference.from_string(default_dataset)
+        config = self._make_one()
+        config.default_dataset = dataset.Dataset(expected)
+        self.assertEqual(config.default_dataset, expected)
+
     def test_destinaton_w_string(self):
         from google.cloud.bigquery import table
 
