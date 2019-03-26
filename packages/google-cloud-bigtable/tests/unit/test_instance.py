@@ -292,6 +292,7 @@ class TestInstance(unittest.TestCase):
     def test_create(self):
         from google.cloud.bigtable import enums
         from google.cloud.bigtable_admin_v2.types import instance_pb2
+        import warnings
 
         credentials = _make_credentials()
         client = self._make_client(
@@ -308,7 +309,10 @@ class TestInstance(unittest.TestCase):
         client._instance_admin_client = instance_api
         serve_nodes = 3
 
-        result = instance.create(location_id=self.LOCATION_ID, serve_nodes=serve_nodes)
+        with warnings.catch_warnings(record=True) as warned:
+            result = instance.create(
+                location_id=self.LOCATION_ID, serve_nodes=serve_nodes
+            )
 
         cluster_pb = instance_pb2.Cluster(
             location=instance_api.location_path(self.PROJECT, self.LOCATION_ID),
@@ -327,6 +331,9 @@ class TestInstance(unittest.TestCase):
             instance=instance_pb,
             clusters={cluster_id: cluster_pb},
         )
+
+        self.assertEqual(len(warned), 1)
+        self.assertIs(warned[0].category, DeprecationWarning)
 
         self.assertIs(result, response)
 

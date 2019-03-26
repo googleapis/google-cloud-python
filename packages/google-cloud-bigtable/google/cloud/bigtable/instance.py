@@ -29,11 +29,17 @@ from google.api_core.exceptions import NotFound
 
 from google.cloud.bigtable.policy import Policy
 
+import warnings
 
-_EXISTING_INSTANCE_LOCATION_ID = "see-existing-cluster"
 _INSTANCE_NAME_RE = re.compile(
     r"^projects/(?P<project>[^/]+)/" r"instances/(?P<instance_id>[a-z][-a-z0-9]*)$"
 )
+
+_INSTANCE_CREATE_WARNING = """
+Use of `instance.create({0}, {1}, {2})` will be depricated.
+Please replace with
+`cluster = instance.cluster({0}, {1}, {2})`
+`instance.create(clusters=[cluster])`."""
 
 
 class Instance(object):
@@ -276,6 +282,14 @@ class Instance(object):
         """
 
         if clusters is None:
+            warnings.warn(
+                _INSTANCE_CREATE_WARNING.format(
+                    "location_id", "serve_nodes", "default_storage_type"
+                ),
+                DeprecationWarning,
+                stacklevel=2,
+            )
+
             cluster_id = "{}-cluster".format(self.instance_id)
 
             clusters = [
