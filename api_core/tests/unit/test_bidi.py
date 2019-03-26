@@ -173,6 +173,15 @@ class TestBidiRpc(object):
 
         callback.assert_called_once_with(mock.sentinel.future)
 
+    def test_metadata(self):
+        rpc, call = make_rpc()
+        bidi_rpc = bidi.BidiRpc(rpc, metadata=mock.sentinel.A)
+        assert bidi_rpc._rpc_metadata == mock.sentinel.A
+
+        bidi_rpc.open()
+        assert bidi_rpc.call == call
+        assert bidi_rpc.call.metadata == mock.sentinel.A
+
     def test_open(self):
         rpc, call = make_rpc()
         bidi_rpc = bidi.BidiRpc(rpc)
