@@ -31,6 +31,9 @@ import grpc
 from google.cloud.talent_v4beta1.gapic import enums
 from google.cloud.talent_v4beta1.gapic import profile_service_client_config
 from google.cloud.talent_v4beta1.gapic.transports import profile_service_grpc_transport
+from google.cloud.talent_v4beta1.proto import application_pb2
+from google.cloud.talent_v4beta1.proto import application_service_pb2
+from google.cloud.talent_v4beta1.proto import application_service_pb2_grpc
 from google.cloud.talent_v4beta1.proto import common_pb2
 from google.cloud.talent_v4beta1.proto import company_pb2
 from google.cloud.talent_v4beta1.proto import company_service_pb2
@@ -207,7 +210,7 @@ class ProfileServiceClient(object):
         self,
         parent,
         page_size=None,
-        field_mask=None,
+        read_mask=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
         metadata=None,
@@ -248,7 +251,7 @@ class ProfileServiceClient(object):
                 resource, this parameter does not affect the return value. If page
                 streaming is performed per-page, this determines the maximum number
                 of resources in a page.
-            field_mask (Union[dict, ~google.cloud.talent_v4beta1.types.FieldMask]): Optional.
+            read_mask (Union[dict, ~google.cloud.talent_v4beta1.types.FieldMask]): Optional.
 
                 A field mask to specify the profile fields to be listed in response. All
                 fields are listed if it is unset.
@@ -293,7 +296,7 @@ class ProfileServiceClient(object):
             )
 
         request = profile_service_pb2.ListProfilesRequest(
-            parent=parent, page_size=page_size, field_mask=field_mask
+            parent=parent, page_size=page_size, read_mask=read_mask
         )
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
@@ -501,7 +504,6 @@ class ProfileServiceClient(object):
                 -  publications
                 -  patents
                 -  certifications
-                -  jobApplications
                 -  recruitingNotes
                 -  customAttributes
 
@@ -553,6 +555,8 @@ class ProfileServiceClient(object):
     ):
         """
         Deletes the specified profile.
+        Prerequisite: The profile has no associated applications or assignments
+        associated.
 
         Example:
             >>> from google.cloud import talent_v4beta1
@@ -771,15 +775,15 @@ class ProfileServiceClient(object):
                 -  institution: The school name. For example, "MIT", "University of
                    California, Berkeley"
                 -  degree: Highest education degree in ISCED code. Each value in degree
-                   covers specific level of education, without any expansion to upper
+                   covers a specific level of education, without any expansion to upper
                    nor lower levels of education degree.
                 -  experience\_in\_months: experience in months. 0 means 0 month to 1
                    month (exclusive).
                 -  application\_date: The application date specifies application start
                    dates. See [ApplicationDateFilter\` for more details.
-                -  application\_outcome\_reason: The application outcome reason
-                   specifies the outcome reasons of job application. See
-                   ``ApplicationOutcomeReasonFilter`` for more details.
+                -  application\_outcome\_notes: The application outcome reason specifies
+                   the reasons behind the outcome of the job application. See
+                   ``ApplicationOutcomeNotesFilter`` for more details.
                 -  application\_last\_stage: The application last stage specifies the
                    last stage of job application. See ``ApplicationLastStageFilter`` for
                    more details.

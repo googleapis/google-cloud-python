@@ -88,6 +88,8 @@ class ProfileServiceServicer(object):
 
     def DeleteProfile(self, request, context):
         """Deletes the specified profile.
+    Prerequisite: The profile has no associated applications or assignments
+    associated.
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")

@@ -13,7 +13,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-"""Accesses the google.cloud.talent.v4beta1 CompanyService API."""
+"""Accesses the google.cloud.talent.v4beta1 ApplicationService API."""
 
 import functools
 import pkg_resources
@@ -28,30 +28,32 @@ import google.api_core.page_iterator
 import google.api_core.path_template
 import grpc
 
-from google.cloud.talent_v4beta1.gapic import company_service_client_config
+from google.cloud.talent_v4beta1.gapic import application_service_client_config
 from google.cloud.talent_v4beta1.gapic import enums
-from google.cloud.talent_v4beta1.gapic.transports import company_service_grpc_transport
+from google.cloud.talent_v4beta1.gapic.transports import (
+    application_service_grpc_transport,
+)
 from google.cloud.talent_v4beta1.proto import application_pb2
 from google.cloud.talent_v4beta1.proto import application_service_pb2
 from google.cloud.talent_v4beta1.proto import application_service_pb2_grpc
-from google.cloud.talent_v4beta1.proto import company_pb2
-from google.cloud.talent_v4beta1.proto import company_service_pb2
-from google.cloud.talent_v4beta1.proto import company_service_pb2_grpc
 from google.protobuf import empty_pb2
 from google.protobuf import field_mask_pb2
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution("google-cloud-talent").version
 
 
-class CompanyServiceClient(object):
-    """A service that handles company management, including CRUD and enumeration."""
+class ApplicationServiceClient(object):
+    """
+    A service that handles application management, including CRUD and
+    enumeration.
+    """
 
     SERVICE_ADDRESS = "jobs.googleapis.com:443"
     """The default address of the service."""
 
     # The name of the interface for this client. This is the key used to
     # find the method configuration in the client_config dictionary.
-    _INTERFACE_NAME = "google.cloud.talent.v4beta1.CompanyService"
+    _INTERFACE_NAME = "google.cloud.talent.v4beta1.ApplicationService"
 
     @classmethod
     def from_service_account_file(cls, filename, *args, **kwargs):
@@ -65,7 +67,7 @@ class CompanyServiceClient(object):
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            CompanyServiceClient: The constructed client.
+            ApplicationServiceClient: The constructed client.
         """
         credentials = service_account.Credentials.from_service_account_file(filename)
         kwargs["credentials"] = credentials
@@ -74,17 +76,24 @@ class CompanyServiceClient(object):
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def tenant_path(cls, project, tenant):
-        """Return a fully-qualified tenant string."""
+    def profile_path(cls, project, tenant, profile):
+        """Return a fully-qualified profile string."""
         return google.api_core.path_template.expand(
-            "projects/{project}/tenants/{tenant}", project=project, tenant=tenant
+            "projects/{project}/tenants/{tenant}/profiles/{profile}",
+            project=project,
+            tenant=tenant,
+            profile=profile,
         )
 
     @classmethod
-    def company_old_path(cls, project, company):
-        """Return a fully-qualified company_old string."""
+    def application_path(cls, project, tenant, profile, application):
+        """Return a fully-qualified application string."""
         return google.api_core.path_template.expand(
-            "projects/{project}/companies/{company}", project=project, company=company
+            "projects/{project}/tenants/{tenant}/profiles/{profile}/applications/{application}",
+            project=project,
+            tenant=tenant,
+            profile=profile,
+            application=application,
         )
 
     def __init__(
@@ -98,8 +107,8 @@ class CompanyServiceClient(object):
         """Constructor.
 
         Args:
-            transport (Union[~.CompanyServiceGrpcTransport,
-                    Callable[[~.Credentials, type], ~.CompanyServiceGrpcTransport]): A transport
+            transport (Union[~.ApplicationServiceGrpcTransport,
+                    Callable[[~.Credentials, type], ~.ApplicationServiceGrpcTransport]): A transport
                 instance, responsible for actually making the API calls.
                 The default transport uses the gRPC protocol.
                 This argument may also be a callable which returns a
@@ -133,7 +142,7 @@ class CompanyServiceClient(object):
                 stacklevel=2,
             )
         else:
-            client_config = company_service_client_config.config
+            client_config = application_service_client_config.config
 
         if channel:
             warnings.warn(
@@ -149,7 +158,7 @@ class CompanyServiceClient(object):
             if callable(transport):
                 self.transport = transport(
                     credentials=credentials,
-                    default_class=company_service_grpc_transport.CompanyServiceGrpcTransport,
+                    default_class=application_service_grpc_transport.ApplicationServiceGrpcTransport,
                 )
             else:
                 if credentials:
@@ -159,7 +168,7 @@ class CompanyServiceClient(object):
                     )
                 self.transport = transport
         else:
-            self.transport = company_service_grpc_transport.CompanyServiceGrpcTransport(
+            self.transport = application_service_grpc_transport.ApplicationServiceGrpcTransport(
                 address=self.SERVICE_ADDRESS, channel=channel, credentials=credentials
             )
 
@@ -186,45 +195,44 @@ class CompanyServiceClient(object):
         self._inner_api_calls = {}
 
     # Service calls
-    def create_company(
+    def create_application(
         self,
         parent,
-        company,
+        application,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
         metadata=None,
     ):
         """
-        Creates a new company entity.
+        Creates a new application entity.
 
         Example:
             >>> from google.cloud import talent_v4beta1
             >>>
-            >>> client = talent_v4beta1.CompanyServiceClient()
+            >>> client = talent_v4beta1.ApplicationServiceClient()
             >>>
-            >>> parent = client.tenant_path('[PROJECT]', '[TENANT]')
+            >>> parent = client.profile_path('[PROJECT]', '[TENANT]', '[PROFILE]')
             >>>
-            >>> # TODO: Initialize `company`:
-            >>> company = {}
+            >>> # TODO: Initialize `application`:
+            >>> application = {}
             >>>
-            >>> response = client.create_company(parent, company)
+            >>> response = client.create_application(parent, application)
 
         Args:
             parent (str): Required.
 
-                Resource name of the tenant under which the company is created.
+                Resource name of the profile under which the application is created.
 
-                The format is "projects/{project\_id}/tenants/{tenant\_id}", for
-                example, "projects/api-test-project/tenant/foo".
+                The format is
+                "projects/{project\_id}/tenants/{tenant\_id}/profiles/{profile\_id}",
+                for example,
+                "projects/test-project/tenants/test-tenant/profiles/test-profile".
+            application (Union[dict, ~google.cloud.talent_v4beta1.types.Application]): Required.
 
-                Tenant id is optional and a default tenant is created if unspecified,
-                for example, "projects/api-test-project".
-            company (Union[dict, ~google.cloud.talent_v4beta1.types.Company]): Required.
-
-                The company to be created.
+                The application to be created.
 
                 If a dict is provided, it must be of the same form as the protobuf
-                message :class:`~google.cloud.talent_v4beta1.types.Company`
+                message :class:`~google.cloud.talent_v4beta1.types.Application`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -235,7 +243,7 @@ class CompanyServiceClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.cloud.talent_v4beta1.types.Company` instance.
+            A :class:`~google.cloud.talent_v4beta1.types.Application` instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -245,24 +253,24 @@ class CompanyServiceClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if "create_company" not in self._inner_api_calls:
+        if "create_application" not in self._inner_api_calls:
             self._inner_api_calls[
-                "create_company"
+                "create_application"
             ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.create_company,
-                default_retry=self._method_configs["CreateCompany"].retry,
-                default_timeout=self._method_configs["CreateCompany"].timeout,
+                self.transport.create_application,
+                default_retry=self._method_configs["CreateApplication"].retry,
+                default_timeout=self._method_configs["CreateApplication"].timeout,
                 client_info=self._client_info,
             )
 
-        request = company_service_pb2.CreateCompanyRequest(
-            parent=parent, company=company
+        request = application_service_pb2.CreateApplicationRequest(
+            parent=parent, application=application
         )
-        return self._inner_api_calls["create_company"](
+        return self._inner_api_calls["create_application"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
 
-    def get_company(
+    def get_application(
         self,
         name,
         retry=google.api_core.gapic_v1.method.DEFAULT,
@@ -270,28 +278,26 @@ class CompanyServiceClient(object):
         metadata=None,
     ):
         """
-        Retrieves specified company.
+        Retrieves specified application.
 
         Example:
             >>> from google.cloud import talent_v4beta1
             >>>
-            >>> client = talent_v4beta1.CompanyServiceClient()
+            >>> client = talent_v4beta1.ApplicationServiceClient()
             >>>
-            >>> name = client.company_old_path('[PROJECT]', '[COMPANY]')
+            >>> name = client.application_path('[PROJECT]', '[TENANT]', '[PROFILE]', '[APPLICATION]')
             >>>
-            >>> response = client.get_company(name)
+            >>> response = client.get_application(name)
 
         Args:
             name (str): Required.
 
-                The resource name of the company to be retrieved.
+                The resource name of the application to be retrieved.
 
                 The format is
-                "projects/{project\_id}/tenants/{tenant\_id}/companies/{company\_id}",
-                for example, "projects/api-test-project/tenants/foo/companies/bar".
-
-                Tenant id is optional and the default tenant is used if unspecified, for
-                example, "projects/api-test-project/companies/bar".
+                "projects/{project\_id}/tenants/{tenant\_id}/profiles/{profile\_id}/applications/{application\_id}",
+                for example,
+                "projects/test-project/tenants/test-tenant/profiles/test-profile/applications/test-application".
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -302,7 +308,7 @@ class CompanyServiceClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.cloud.talent_v4beta1.types.Company` instance.
+            A :class:`~google.cloud.talent_v4beta1.types.Application` instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -312,56 +318,56 @@ class CompanyServiceClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if "get_company" not in self._inner_api_calls:
+        if "get_application" not in self._inner_api_calls:
             self._inner_api_calls[
-                "get_company"
+                "get_application"
             ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.get_company,
-                default_retry=self._method_configs["GetCompany"].retry,
-                default_timeout=self._method_configs["GetCompany"].timeout,
+                self.transport.get_application,
+                default_retry=self._method_configs["GetApplication"].retry,
+                default_timeout=self._method_configs["GetApplication"].timeout,
                 client_info=self._client_info,
             )
 
-        request = company_service_pb2.GetCompanyRequest(name=name)
-        return self._inner_api_calls["get_company"](
+        request = application_service_pb2.GetApplicationRequest(name=name)
+        return self._inner_api_calls["get_application"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
 
-    def update_company(
+    def update_application(
         self,
-        company,
+        application,
         update_mask=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
         metadata=None,
     ):
         """
-        Updates specified company.
+        Updates specified application.
 
         Example:
             >>> from google.cloud import talent_v4beta1
             >>>
-            >>> client = talent_v4beta1.CompanyServiceClient()
+            >>> client = talent_v4beta1.ApplicationServiceClient()
             >>>
-            >>> # TODO: Initialize `company`:
-            >>> company = {}
+            >>> # TODO: Initialize `application`:
+            >>> application = {}
             >>>
-            >>> response = client.update_company(company)
+            >>> response = client.update_application(application)
 
         Args:
-            company (Union[dict, ~google.cloud.talent_v4beta1.types.Company]): Required.
+            application (Union[dict, ~google.cloud.talent_v4beta1.types.Application]): Required.
 
-                The company resource to replace the current resource in the system.
+                The application resource to replace the current resource in the system.
 
                 If a dict is provided, it must be of the same form as the protobuf
-                message :class:`~google.cloud.talent_v4beta1.types.Company`
+                message :class:`~google.cloud.talent_v4beta1.types.Application`
             update_mask (Union[dict, ~google.cloud.talent_v4beta1.types.FieldMask]): Optional but strongly recommended for the best service experience.
 
-                If ``update_mask`` is provided, only the specified fields in ``company``
-                are updated. Otherwise all the fields are updated.
+                If ``update_mask`` is provided, only the specified fields in
+                ``application`` are updated. Otherwise all the fields are updated.
 
-                A field mask to specify the company fields to be updated. Only top level
-                fields of ``Company`` are supported.
+                A field mask to specify the application fields to be updated. Only top
+                level fields of ``Application`` are supported.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.talent_v4beta1.types.FieldMask`
@@ -375,7 +381,7 @@ class CompanyServiceClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.cloud.talent_v4beta1.types.Company` instance.
+            A :class:`~google.cloud.talent_v4beta1.types.Application` instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -385,24 +391,24 @@ class CompanyServiceClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if "update_company" not in self._inner_api_calls:
+        if "update_application" not in self._inner_api_calls:
             self._inner_api_calls[
-                "update_company"
+                "update_application"
             ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.update_company,
-                default_retry=self._method_configs["UpdateCompany"].retry,
-                default_timeout=self._method_configs["UpdateCompany"].timeout,
+                self.transport.update_application,
+                default_retry=self._method_configs["UpdateApplication"].retry,
+                default_timeout=self._method_configs["UpdateApplication"].timeout,
                 client_info=self._client_info,
             )
 
-        request = company_service_pb2.UpdateCompanyRequest(
-            company=company, update_mask=update_mask
+        request = application_service_pb2.UpdateApplicationRequest(
+            application=application, update_mask=update_mask
         )
-        return self._inner_api_calls["update_company"](
+        return self._inner_api_calls["update_application"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
 
-    def delete_company(
+    def delete_application(
         self,
         name,
         retry=google.api_core.gapic_v1.method.DEFAULT,
@@ -410,29 +416,26 @@ class CompanyServiceClient(object):
         metadata=None,
     ):
         """
-        Deletes specified company.
-        Prerequisite: The company has no jobs associated with it.
+        Deletes specified application.
 
         Example:
             >>> from google.cloud import talent_v4beta1
             >>>
-            >>> client = talent_v4beta1.CompanyServiceClient()
+            >>> client = talent_v4beta1.ApplicationServiceClient()
             >>>
-            >>> name = client.company_old_path('[PROJECT]', '[COMPANY]')
+            >>> name = client.application_path('[PROJECT]', '[TENANT]', '[PROFILE]', '[APPLICATION]')
             >>>
-            >>> client.delete_company(name)
+            >>> client.delete_application(name)
 
         Args:
             name (str): Required.
 
-                The resource name of the company to be deleted.
+                The resource name of the application to be deleted.
 
                 The format is
-                "projects/{project\_id}/tenants/{tenant\_id}/companies/{company\_id}",
-                for example, "projects/api-test-project/tenants/foo/companies/bar".
-
-                Tenant id is optional and the default tenant is used if unspecified, for
-                example, "projects/api-test-project/companies/bar".
+                "projects/{project\_id}/tenants/{tenant\_id}/profiles/{profile\_id}/applications/{application\_id}",
+                for example,
+                "projects/test-project/tenants/test-tenant/profiles/test-profile/applications/test-application".
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -450,42 +453,41 @@ class CompanyServiceClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if "delete_company" not in self._inner_api_calls:
+        if "delete_application" not in self._inner_api_calls:
             self._inner_api_calls[
-                "delete_company"
+                "delete_application"
             ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.delete_company,
-                default_retry=self._method_configs["DeleteCompany"].retry,
-                default_timeout=self._method_configs["DeleteCompany"].timeout,
+                self.transport.delete_application,
+                default_retry=self._method_configs["DeleteApplication"].retry,
+                default_timeout=self._method_configs["DeleteApplication"].timeout,
                 client_info=self._client_info,
             )
 
-        request = company_service_pb2.DeleteCompanyRequest(name=name)
-        self._inner_api_calls["delete_company"](
+        request = application_service_pb2.DeleteApplicationRequest(name=name)
+        self._inner_api_calls["delete_application"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
 
-    def list_companies(
+    def list_applications(
         self,
         parent,
         page_size=None,
-        require_open_jobs=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
         metadata=None,
     ):
         """
-        Lists all companies associated with the project.
+        Lists all applications associated with the profile.
 
         Example:
             >>> from google.cloud import talent_v4beta1
             >>>
-            >>> client = talent_v4beta1.CompanyServiceClient()
+            >>> client = talent_v4beta1.ApplicationServiceClient()
             >>>
-            >>> parent = client.tenant_path('[PROJECT]', '[TENANT]')
+            >>> parent = client.profile_path('[PROJECT]', '[TENANT]', '[PROFILE]')
             >>>
             >>> # Iterate over all results
-            >>> for element in client.list_companies(parent):
+            >>> for element in client.list_applications(parent):
             ...     # process element
             ...     pass
             >>>
@@ -493,7 +495,7 @@ class CompanyServiceClient(object):
             >>> # Alternatively:
             >>>
             >>> # Iterate over results one page at a time
-            >>> for page in client.list_companies(parent).pages:
+            >>> for page in client.list_applications(parent).pages:
             ...     for element in page:
             ...         # process element
             ...         pass
@@ -501,26 +503,17 @@ class CompanyServiceClient(object):
         Args:
             parent (str): Required.
 
-                Resource name of the tenant under which the company is created.
+                Resource name of the profile under which the application is created.
 
-                The format is "projects/{project\_id}/tenants/{tenant\_id}", for
-                example, "projects/api-test-project/tenant/foo".
-
-                Tenant id is optional and the default tenant is used if unspecified, for
-                example, "projects/api-test-project".
+                The format is
+                "projects/{project\_id}/tenants/{tenant\_id}/profiles/{profile\_id}",
+                for example,
+                "projects/test-project/tenants/test-tenant/profiles/test-profile".
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
                 resource, this parameter does not affect the return value. If page
                 streaming is performed per-page, this determines the maximum number
                 of resources in a page.
-            require_open_jobs (bool): Optional.
-
-                Set to true if the companies requested must have open jobs.
-
-                Defaults to false.
-
-                If true, at most ``page_size`` of companies are fetched, among which
-                only those with open jobs are returned.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -532,7 +525,7 @@ class CompanyServiceClient(object):
 
         Returns:
             A :class:`~google.gax.PageIterator` instance. By default, this
-            is an iterable of :class:`~google.cloud.talent_v4beta1.types.Company` instances.
+            is an iterable of :class:`~google.cloud.talent_v4beta1.types.Application` instances.
             This object can also be configured to iterate over the pages
             of the response through the `options` parameter.
 
@@ -544,29 +537,29 @@ class CompanyServiceClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if "list_companies" not in self._inner_api_calls:
+        if "list_applications" not in self._inner_api_calls:
             self._inner_api_calls[
-                "list_companies"
+                "list_applications"
             ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.list_companies,
-                default_retry=self._method_configs["ListCompanies"].retry,
-                default_timeout=self._method_configs["ListCompanies"].timeout,
+                self.transport.list_applications,
+                default_retry=self._method_configs["ListApplications"].retry,
+                default_timeout=self._method_configs["ListApplications"].timeout,
                 client_info=self._client_info,
             )
 
-        request = company_service_pb2.ListCompaniesRequest(
-            parent=parent, page_size=page_size, require_open_jobs=require_open_jobs
+        request = application_service_pb2.ListApplicationsRequest(
+            parent=parent, page_size=page_size
         )
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(
-                self._inner_api_calls["list_companies"],
+                self._inner_api_calls["list_applications"],
                 retry=retry,
                 timeout=timeout,
                 metadata=metadata,
             ),
             request=request,
-            items_field="companies",
+            items_field="applications",
             request_token_field="page_token",
             response_token_field="next_page_token",
         )

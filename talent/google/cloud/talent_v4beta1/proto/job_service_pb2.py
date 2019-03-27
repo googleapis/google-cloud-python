@@ -47,7 +47,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n\037com.google.cloud.talent.v4beta1B\017JobServiceProtoP\001ZAgoogle.golang.org/genproto/googleapis/cloud/talent/v4beta1;talent\242\002\003CTS"
     ),
     serialized_pb=_b(
-        '\n3google/cloud/talent_v4beta1/proto/job_service.proto\x12\x1bgoogle.cloud.talent.v4beta1\x1a\x1cgoogle/api/annotations.proto\x1a-google/cloud/talent_v4beta1/proto/batch.proto\x1a.google/cloud/talent_v4beta1/proto/common.proto\x1a/google/cloud/talent_v4beta1/proto/filters.proto\x1a\x31google/cloud/talent_v4beta1/proto/histogram.proto\x1a+google/cloud/talent_v4beta1/proto/job.proto\x1a#google/longrunning/operations.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto"Q\n\x10\x43reateJobRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12-\n\x03job\x18\x02 \x01(\x0b\x32 .google.cloud.talent.v4beta1.Job"\x1d\n\rGetJobRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"r\n\x10UpdateJobRequest\x12-\n\x03job\x18\x01 \x01(\x0b\x32 .google.cloud.talent.v4beta1.Job\x12/\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMask" \n\x10\x44\x65leteJobRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"8\n\x16\x42\x61tchDeleteJobsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x02 \x01(\t"\x90\x01\n\x0fListJobsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x02 \x01(\t\x12\x12\n\npage_token\x18\x03 \x01(\t\x12\x11\n\tpage_size\x18\x04 \x01(\x05\x12\x36\n\x08job_view\x18\x05 \x01(\x0e\x32$.google.cloud.talent.v4beta1.JobView"\x9c\x01\n\x10ListJobsResponse\x12.\n\x04jobs\x18\x01 \x03(\x0b\x32 .google.cloud.talent.v4beta1.Job\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\x12?\n\x08metadata\x18\x03 \x01(\x0b\x32-.google.cloud.talent.v4beta1.ResponseMetadata"\xa0\t\n\x11SearchJobsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12N\n\x0bsearch_mode\x18\x02 \x01(\x0e\x32\x39.google.cloud.talent.v4beta1.SearchJobsRequest.SearchMode\x12\x46\n\x10request_metadata\x18\x03 \x01(\x0b\x32,.google.cloud.talent.v4beta1.RequestMetadata\x12\x38\n\tjob_query\x18\x04 \x01(\x0b\x32%.google.cloud.talent.v4beta1.JobQuery\x12\x19\n\x11\x65nable_broadening\x18\x05 \x01(\x08\x12#\n\x1brequire_precise_result_size\x18\x06 \x01(\x08\x12\x46\n\x11histogram_queries\x18\x07 \x03(\x0b\x32+.google.cloud.talent.v4beta1.HistogramQuery\x12\x36\n\x08job_view\x18\x08 \x01(\x0e\x32$.google.cloud.talent.v4beta1.JobView\x12\x0e\n\x06offset\x18\t \x01(\x05\x12\x11\n\tpage_size\x18\n \x01(\x05\x12\x12\n\npage_token\x18\x0b \x01(\t\x12\x10\n\x08order_by\x18\x0c \x01(\t\x12\x62\n\x15\x64iversification_level\x18\r \x01(\x0e\x32\x43.google.cloud.talent.v4beta1.SearchJobsRequest.DiversificationLevel\x12]\n\x13\x63ustom_ranking_info\x18\x0e \x01(\x0b\x32@.google.cloud.talent.v4beta1.SearchJobsRequest.CustomRankingInfo\x12\x1d\n\x15\x64isable_keyword_match\x18\x10 \x01(\x08\x1a\x90\x02\n\x11\x43ustomRankingInfo\x12j\n\x10importance_level\x18\x01 \x01(\x0e\x32P.google.cloud.talent.v4beta1.SearchJobsRequest.CustomRankingInfo.ImportanceLevel\x12\x1a\n\x12ranking_expression\x18\x02 \x01(\t"s\n\x0fImportanceLevel\x12 \n\x1cIMPORTANCE_LEVEL_UNSPECIFIED\x10\x00\x12\x08\n\x04NONE\x10\x01\x12\x07\n\x03LOW\x10\x02\x12\x08\n\x04MILD\x10\x03\x12\n\n\x06MEDIUM\x10\x04\x12\x08\n\x04HIGH\x10\x05\x12\x0b\n\x07\x45XTREME\x10\x06"R\n\nSearchMode\x12\x1b\n\x17SEARCH_MODE_UNSPECIFIED\x10\x00\x12\x0e\n\nJOB_SEARCH\x10\x01\x12\x17\n\x13\x46\x45\x41TURED_JOB_SEARCH\x10\x02"W\n\x14\x44iversificationLevel\x12%\n!DIVERSIFICATION_LEVEL_UNSPECIFIED\x10\x00\x12\x0c\n\x08\x44ISABLED\x10\x01\x12\n\n\x06SIMPLE\x10\x02"\xd7\x06\n\x12SearchJobsResponse\x12R\n\rmatching_jobs\x18\x01 \x03(\x0b\x32;.google.cloud.talent.v4beta1.SearchJobsResponse.MatchingJob\x12R\n\x17histogram_query_results\x18\x02 \x03(\x0b\x32\x31.google.cloud.talent.v4beta1.HistogramQueryResult\x12\x17\n\x0fnext_page_token\x18\x03 \x01(\t\x12?\n\x10location_filters\x18\x04 \x03(\x0b\x32%.google.cloud.talent.v4beta1.Location\x12\x1c\n\x14\x65stimated_total_size\x18\x05 \x01(\x05\x12\x12\n\ntotal_size\x18\x06 \x01(\x05\x12?\n\x08metadata\x18\x07 \x01(\x0b\x32-.google.cloud.talent.v4beta1.ResponseMetadata\x12"\n\x1a\x62roadened_query_jobs_count\x18\x08 \x01(\x05\x12I\n\x10spell_correction\x18\t \x01(\x0b\x32/.google.cloud.talent.v4beta1.SpellingCorrection\x1a\xdc\x01\n\x0bMatchingJob\x12-\n\x03job\x18\x01 \x01(\x0b\x32 .google.cloud.talent.v4beta1.Job\x12\x13\n\x0bjob_summary\x18\x02 \x01(\t\x12\x19\n\x11job_title_snippet\x18\x03 \x01(\t\x12\x1b\n\x13search_text_snippet\x18\x04 \x01(\t\x12Q\n\x0c\x63ommute_info\x18\x05 \x01(\x0b\x32;.google.cloud.talent.v4beta1.SearchJobsResponse.CommuteInfo\x1a~\n\x0b\x43ommuteInfo\x12;\n\x0cjob_location\x18\x01 \x01(\x0b\x32%.google.cloud.talent.v4beta1.Location\x12\x32\n\x0ftravel_duration\x18\x02 \x01(\x0b\x32\x19.google.protobuf.Duration*v\n\x07JobView\x12\x18\n\x14JOB_VIEW_UNSPECIFIED\x10\x00\x12\x14\n\x10JOB_VIEW_ID_ONLY\x10\x01\x12\x14\n\x10JOB_VIEW_MINIMAL\x10\x02\x12\x12\n\x0eJOB_VIEW_SMALL\x10\x03\x12\x11\n\rJOB_VIEW_FULL\x10\x04\x32\xb7\t\n\nJobService\x12\x8a\x01\n\tCreateJob\x12-.google.cloud.talent.v4beta1.CreateJobRequest\x1a .google.cloud.talent.v4beta1.Job",\x82\xd3\xe4\x93\x02&"!/v4beta1/{parent=projects/*}/jobs:\x01*\x12\x81\x01\n\x06GetJob\x12*.google.cloud.talent.v4beta1.GetJobRequest\x1a .google.cloud.talent.v4beta1.Job")\x82\xd3\xe4\x93\x02#\x12!/v4beta1/{name=projects/*/jobs/*}\x12\x8e\x01\n\tUpdateJob\x12-.google.cloud.talent.v4beta1.UpdateJobRequest\x1a .google.cloud.talent.v4beta1.Job"0\x82\xd3\xe4\x93\x02*2%/v4beta1/{job.name=projects/*/jobs/*}:\x01*\x12}\n\tDeleteJob\x12-.google.cloud.talent.v4beta1.DeleteJobRequest\x1a\x16.google.protobuf.Empty")\x82\xd3\xe4\x93\x02#*!/v4beta1/{name=projects/*/jobs/*}\x12\x92\x01\n\x08ListJobs\x12,.google.cloud.talent.v4beta1.ListJobsRequest\x1a-.google.cloud.talent.v4beta1.ListJobsResponse")\x82\xd3\xe4\x93\x02#\x12!/v4beta1/{parent=projects/*}/jobs\x12\x98\x01\n\x0f\x42\x61tchDeleteJobs\x12\x33.google.cloud.talent.v4beta1.BatchDeleteJobsRequest\x1a\x16.google.protobuf.Empty"8\x82\xd3\xe4\x93\x02\x32"-/v4beta1/{parent=projects/*}/jobs:batchDelete:\x01*\x12\xa2\x01\n\nSearchJobs\x12..google.cloud.talent.v4beta1.SearchJobsRequest\x1a/.google.cloud.talent.v4beta1.SearchJobsResponse"3\x82\xd3\xe4\x93\x02-"(/v4beta1/{parent=projects/*}/jobs:search:\x01*\x12\xb2\x01\n\x12SearchJobsForAlert\x12..google.cloud.talent.v4beta1.SearchJobsRequest\x1a/.google.cloud.talent.v4beta1.SearchJobsResponse";\x82\xd3\xe4\x93\x02\x35"0/v4beta1/{parent=projects/*}/jobs:searchForAlert:\x01*B}\n\x1f\x63om.google.cloud.talent.v4beta1B\x0fJobServiceProtoP\x01ZAgoogle.golang.org/genproto/googleapis/cloud/talent/v4beta1;talent\xa2\x02\x03\x43TSb\x06proto3'
+        '\n3google/cloud/talent_v4beta1/proto/job_service.proto\x12\x1bgoogle.cloud.talent.v4beta1\x1a\x1cgoogle/api/annotations.proto\x1a-google/cloud/talent_v4beta1/proto/batch.proto\x1a.google/cloud/talent_v4beta1/proto/common.proto\x1a/google/cloud/talent_v4beta1/proto/filters.proto\x1a\x31google/cloud/talent_v4beta1/proto/histogram.proto\x1a+google/cloud/talent_v4beta1/proto/job.proto\x1a#google/longrunning/operations.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto"Q\n\x10\x43reateJobRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12-\n\x03job\x18\x02 \x01(\x0b\x32 .google.cloud.talent.v4beta1.Job"\x1d\n\rGetJobRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"r\n\x10UpdateJobRequest\x12-\n\x03job\x18\x01 \x01(\x0b\x32 .google.cloud.talent.v4beta1.Job\x12/\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMask" \n\x10\x44\x65leteJobRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"8\n\x16\x42\x61tchDeleteJobsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x02 \x01(\t"\x90\x01\n\x0fListJobsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x02 \x01(\t\x12\x12\n\npage_token\x18\x03 \x01(\t\x12\x11\n\tpage_size\x18\x04 \x01(\x05\x12\x36\n\x08job_view\x18\x05 \x01(\x0e\x32$.google.cloud.talent.v4beta1.JobView"\x9c\x01\n\x10ListJobsResponse\x12.\n\x04jobs\x18\x01 \x03(\x0b\x32 .google.cloud.talent.v4beta1.Job\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\x12?\n\x08metadata\x18\x03 \x01(\x0b\x32-.google.cloud.talent.v4beta1.ResponseMetadata"\xa0\t\n\x11SearchJobsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12N\n\x0bsearch_mode\x18\x02 \x01(\x0e\x32\x39.google.cloud.talent.v4beta1.SearchJobsRequest.SearchMode\x12\x46\n\x10request_metadata\x18\x03 \x01(\x0b\x32,.google.cloud.talent.v4beta1.RequestMetadata\x12\x38\n\tjob_query\x18\x04 \x01(\x0b\x32%.google.cloud.talent.v4beta1.JobQuery\x12\x19\n\x11\x65nable_broadening\x18\x05 \x01(\x08\x12#\n\x1brequire_precise_result_size\x18\x06 \x01(\x08\x12\x46\n\x11histogram_queries\x18\x07 \x03(\x0b\x32+.google.cloud.talent.v4beta1.HistogramQuery\x12\x36\n\x08job_view\x18\x08 \x01(\x0e\x32$.google.cloud.talent.v4beta1.JobView\x12\x0e\n\x06offset\x18\t \x01(\x05\x12\x11\n\tpage_size\x18\n \x01(\x05\x12\x12\n\npage_token\x18\x0b \x01(\t\x12\x10\n\x08order_by\x18\x0c \x01(\t\x12\x62\n\x15\x64iversification_level\x18\r \x01(\x0e\x32\x43.google.cloud.talent.v4beta1.SearchJobsRequest.DiversificationLevel\x12]\n\x13\x63ustom_ranking_info\x18\x0e \x01(\x0b\x32@.google.cloud.talent.v4beta1.SearchJobsRequest.CustomRankingInfo\x12\x1d\n\x15\x64isable_keyword_match\x18\x10 \x01(\x08\x1a\x90\x02\n\x11\x43ustomRankingInfo\x12j\n\x10importance_level\x18\x01 \x01(\x0e\x32P.google.cloud.talent.v4beta1.SearchJobsRequest.CustomRankingInfo.ImportanceLevel\x12\x1a\n\x12ranking_expression\x18\x02 \x01(\t"s\n\x0fImportanceLevel\x12 \n\x1cIMPORTANCE_LEVEL_UNSPECIFIED\x10\x00\x12\x08\n\x04NONE\x10\x01\x12\x07\n\x03LOW\x10\x02\x12\x08\n\x04MILD\x10\x03\x12\n\n\x06MEDIUM\x10\x04\x12\x08\n\x04HIGH\x10\x05\x12\x0b\n\x07\x45XTREME\x10\x06"R\n\nSearchMode\x12\x1b\n\x17SEARCH_MODE_UNSPECIFIED\x10\x00\x12\x0e\n\nJOB_SEARCH\x10\x01\x12\x17\n\x13\x46\x45\x41TURED_JOB_SEARCH\x10\x02"W\n\x14\x44iversificationLevel\x12%\n!DIVERSIFICATION_LEVEL_UNSPECIFIED\x10\x00\x12\x0c\n\x08\x44ISABLED\x10\x01\x12\n\n\x06SIMPLE\x10\x02"\xd7\x06\n\x12SearchJobsResponse\x12R\n\rmatching_jobs\x18\x01 \x03(\x0b\x32;.google.cloud.talent.v4beta1.SearchJobsResponse.MatchingJob\x12R\n\x17histogram_query_results\x18\x02 \x03(\x0b\x32\x31.google.cloud.talent.v4beta1.HistogramQueryResult\x12\x17\n\x0fnext_page_token\x18\x03 \x01(\t\x12?\n\x10location_filters\x18\x04 \x03(\x0b\x32%.google.cloud.talent.v4beta1.Location\x12\x1c\n\x14\x65stimated_total_size\x18\x05 \x01(\x05\x12\x12\n\ntotal_size\x18\x06 \x01(\x05\x12?\n\x08metadata\x18\x07 \x01(\x0b\x32-.google.cloud.talent.v4beta1.ResponseMetadata\x12"\n\x1a\x62roadened_query_jobs_count\x18\x08 \x01(\x05\x12I\n\x10spell_correction\x18\t \x01(\x0b\x32/.google.cloud.talent.v4beta1.SpellingCorrection\x1a\xdc\x01\n\x0bMatchingJob\x12-\n\x03job\x18\x01 \x01(\x0b\x32 .google.cloud.talent.v4beta1.Job\x12\x13\n\x0bjob_summary\x18\x02 \x01(\t\x12\x19\n\x11job_title_snippet\x18\x03 \x01(\t\x12\x1b\n\x13search_text_snippet\x18\x04 \x01(\t\x12Q\n\x0c\x63ommute_info\x18\x05 \x01(\x0b\x32;.google.cloud.talent.v4beta1.SearchJobsResponse.CommuteInfo\x1a~\n\x0b\x43ommuteInfo\x12;\n\x0cjob_location\x18\x01 \x01(\x0b\x32%.google.cloud.talent.v4beta1.Location\x12\x32\n\x0ftravel_duration\x18\x02 \x01(\x0b\x32\x19.google.protobuf.Duration*v\n\x07JobView\x12\x18\n\x14JOB_VIEW_UNSPECIFIED\x10\x00\x12\x14\n\x10JOB_VIEW_ID_ONLY\x10\x01\x12\x14\n\x10JOB_VIEW_MINIMAL\x10\x02\x12\x12\n\x0eJOB_VIEW_SMALL\x10\x03\x12\x11\n\rJOB_VIEW_FULL\x10\x04\x32\xe2\x0c\n\nJobService\x12\xbc\x01\n\tCreateJob\x12-.google.cloud.talent.v4beta1.CreateJobRequest\x1a .google.cloud.talent.v4beta1.Job"^\x82\xd3\xe4\x93\x02X"+/v4beta1/{parent=projects/*/tenants/*}/jobs:\x01*Z&"!/v4beta1/{parent=projects/*}/jobs:\x01*\x12\xb0\x01\n\x06GetJob\x12*.google.cloud.talent.v4beta1.GetJobRequest\x1a .google.cloud.talent.v4beta1.Job"X\x82\xd3\xe4\x93\x02R\x12+/v4beta1/{name=projects/*/tenants/*/jobs/*}Z#\x12!/v4beta1/{name=projects/*/jobs/*}\x12\xc4\x01\n\tUpdateJob\x12-.google.cloud.talent.v4beta1.UpdateJobRequest\x1a .google.cloud.talent.v4beta1.Job"f\x82\xd3\xe4\x93\x02`2//v4beta1/{job.name=projects/*/tenants/*/jobs/*}:\x01*Z*2%/v4beta1/{job.name=projects/*/jobs/*}:\x01*\x12\xac\x01\n\tDeleteJob\x12-.google.cloud.talent.v4beta1.DeleteJobRequest\x1a\x16.google.protobuf.Empty"X\x82\xd3\xe4\x93\x02R*+/v4beta1/{name=projects/*/tenants/*/jobs/*}Z#*!/v4beta1/{name=projects/*/jobs/*}\x12\xc1\x01\n\x08ListJobs\x12,.google.cloud.talent.v4beta1.ListJobsRequest\x1a-.google.cloud.talent.v4beta1.ListJobsResponse"X\x82\xd3\xe4\x93\x02R\x12+/v4beta1/{parent=projects/*/tenants/*}/jobsZ#\x12!/v4beta1/{parent=projects/*}/jobs\x12\xd3\x01\n\x0f\x42\x61tchDeleteJobs\x12\x33.google.cloud.talent.v4beta1.BatchDeleteJobsRequest\x1a\x16.google.protobuf.Empty"s\x82\xd3\xe4\x93\x02m"7/v4beta1/{parent=projects/*/tenants/*}/jobs:batchDelete:\x01*Z/"-/v4beta1/{parent=projects/*}/jobs:batchDelete\x12\xdb\x01\n\nSearchJobs\x12..google.cloud.talent.v4beta1.SearchJobsRequest\x1a/.google.cloud.talent.v4beta1.SearchJobsResponse"l\x82\xd3\xe4\x93\x02\x66"2/v4beta1/{parent=projects/*/tenants/*}/jobs:search:\x01*Z-"(/v4beta1/{parent=projects/*}/jobs:search:\x01*\x12\xf3\x01\n\x12SearchJobsForAlert\x12..google.cloud.talent.v4beta1.SearchJobsRequest\x1a/.google.cloud.talent.v4beta1.SearchJobsResponse"|\x82\xd3\xe4\x93\x02v":/v4beta1/{parent=projects/*/tenants/*}/jobs:searchForAlert:\x01*Z5"0/v4beta1/{parent=projects/*}/jobs:searchForAlert:\x01*B}\n\x1f\x63om.google.cloud.talent.v4beta1B\x0fJobServiceProtoP\x01ZAgoogle.golang.org/genproto/googleapis/cloud/talent/v4beta1;talent\xa2\x02\x03\x43TSb\x06proto3'
     ),
     dependencies=[
         google_dot_api_dot_annotations__pb2.DESCRIPTOR,
@@ -1456,9 +1456,12 @@ CreateJobRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       parent:
-          Required.  The resource name of the project under which the
-          job is created.  The format is "projects/{project\_id}", for
-          example, "projects/api-test-project".
+          Required.  The resource name of the tenant under which the job
+          is created.  The format is
+          "projects/{project\_id}/tenants/{tenant\_id}", for example,
+          "projects/api-test-project/tenant/foo".  Tenant id is optional
+          and a default tenant is created if unspecified, for example,
+          "projects/api-test-project".
       job:
           Required.  The Job to be created.
   """,
@@ -1481,8 +1484,12 @@ GetJobRequest = _reflection.GeneratedProtocolMessageType(
   Attributes:
       name:
           Required.  The resource name of the job to retrieve.  The
-          format is "projects/{project\_id}/jobs/{job\_id}", for
-          example, "projects/api-test-project/jobs/1234".
+          format is
+          "projects/{project\_id}/tenants/{tenant\_id}/jobs/{job\_id}",
+          for example, "projects/api-test-
+          project/tenants/foo/jobs/1234".  Tenant id is optional and the
+          default tenant is used if unspecified, for example,
+          "projects/api-test-project/jobs/1234".
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.talent.v4beta1.GetJobRequest)
     ),
@@ -1532,8 +1539,12 @@ DeleteJobRequest = _reflection.GeneratedProtocolMessageType(
   Attributes:
       name:
           Required.  The resource name of the job to be deleted.  The
-          format is "projects/{project\_id}/jobs/{job\_id}", for
-          example, "projects/api-test-project/jobs/1234".
+          format is
+          "projects/{project\_id}/tenants/{tenant\_id}/jobs/{job\_id}",
+          for example, "projects/api-test-
+          project/tenants/foo/jobs/1234".  Tenant id is optional and the
+          default tenant is used if unspecified, for example,
+          "projects/api-test-project/jobs/1234".
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.talent.v4beta1.DeleteJobRequest)
     ),
@@ -1553,9 +1564,12 @@ BatchDeleteJobsRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       parent:
-          Required.  The resource name of the project under which the
-          job is created.  The format is "projects/{project\_id}", for
-          example, "projects/api-test-project".
+          Required.  The resource name of the tenant under which the job
+          is created.  The format is
+          "projects/{project\_id}/tenants/{tenant\_id}", for example,
+          "projects/api-test-project/tenant/foo".  Tenant id is optional
+          and the default tenant is used if unspecified, for example,
+          "projects/api-test-project".
       filter:
           Required.  The filter string specifies the jobs to be deleted.
           Supported operator: =, AND  The fields eligible for filtering
@@ -1581,9 +1595,12 @@ ListJobsRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       parent:
-          Required.  The resource name of the project under which the
-          job is created.  The format is "projects/{project\_id}", for
-          example, "projects/api-test-project".
+          Required.  The resource name of the tenant under which the job
+          is created.  The format is
+          "projects/{project\_id}/tenants/{tenant\_id}", for example,
+          "projects/api-test-project/tenant/foo".  Tenant id is optional
+          and the default tenant is used if unspecified, for example,
+          "projects/api-test-project".
       filter:
           Required.  The filter string specifies the jobs to be
           enumerated.  Supported operator: =, AND  The fields eligible
@@ -1591,10 +1608,11 @@ ListJobsRequest = _reflection.GeneratedProtocolMessageType(
           ``requisitionId`` (Optional) -  ``status`` (Optional)
           Available values: OPEN, EXPIRED, ALL. Defaults    to OPEN if
           no value is specified.  Sample Query:  -  companyName =
-          "projects/api-test-project/companies/123" -  companyName =
-          "projects/api-test-project/companies/123" AND    requisitionId
-          = "req-1" -  companyName = "projects/api-test-
-          project/companies/123" AND status =    "EXPIRED"
+          "projects/api-test-project/tenants/foo/companies/bar" -
+          companyName = "projects/api-test-
+          project/tenants/foo/companies/bar"    AND requisitionId =
+          "req-1" -  companyName = "projects/api-test-
+          project/tenants/foo/companies/bar"    AND status = "EXPIRED"
       page_token:
           Optional.  The starting point of a query result.
       page_size:
@@ -1692,9 +1710,11 @@ SearchJobsRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       parent:
-          Required.  The resource name of the project to search within.
-          The format is "projects/{project\_id}", for example,
-          "projects/api-test-project".
+          Required.  The resource name of the tenant to search within.
+          The format is "projects/{project\_id}/tenants/{tenant\_id}",
+          for example, "projects/api-test-project/tenant/foo".  Tenant
+          id is optional and the default tenant is used if unspecified,
+          for example, "projects/api-test-project".
       search_mode:
           Optional.  Mode of a search.  Defaults to [SearchMode.JOB\_SEA
           RCH][google.cloud.talent.v4beta1.SearchJobsRequest.SearchMode.
@@ -2055,7 +2075,7 @@ _JOBSERVICE = _descriptor.ServiceDescriptor(
     index=0,
     serialized_options=None,
     serialized_start=3280,
-    serialized_end=4487,
+    serialized_end=4914,
     methods=[
         _descriptor.MethodDescriptor(
             name="CreateJob",
@@ -2065,7 +2085,7 @@ _JOBSERVICE = _descriptor.ServiceDescriptor(
             input_type=_CREATEJOBREQUEST,
             output_type=google_dot_cloud_dot_talent__v4beta1_dot_proto_dot_job__pb2._JOB,
             serialized_options=_b(
-                '\202\323\344\223\002&"!/v4beta1/{parent=projects/*}/jobs:\001*'
+                '\202\323\344\223\002X"+/v4beta1/{parent=projects/*/tenants/*}/jobs:\001*Z&"!/v4beta1/{parent=projects/*}/jobs:\001*'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2076,7 +2096,7 @@ _JOBSERVICE = _descriptor.ServiceDescriptor(
             input_type=_GETJOBREQUEST,
             output_type=google_dot_cloud_dot_talent__v4beta1_dot_proto_dot_job__pb2._JOB,
             serialized_options=_b(
-                "\202\323\344\223\002#\022!/v4beta1/{name=projects/*/jobs/*}"
+                "\202\323\344\223\002R\022+/v4beta1/{name=projects/*/tenants/*/jobs/*}Z#\022!/v4beta1/{name=projects/*/jobs/*}"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2087,7 +2107,7 @@ _JOBSERVICE = _descriptor.ServiceDescriptor(
             input_type=_UPDATEJOBREQUEST,
             output_type=google_dot_cloud_dot_talent__v4beta1_dot_proto_dot_job__pb2._JOB,
             serialized_options=_b(
-                "\202\323\344\223\002*2%/v4beta1/{job.name=projects/*/jobs/*}:\001*"
+                "\202\323\344\223\002`2//v4beta1/{job.name=projects/*/tenants/*/jobs/*}:\001*Z*2%/v4beta1/{job.name=projects/*/jobs/*}:\001*"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2098,7 +2118,7 @@ _JOBSERVICE = _descriptor.ServiceDescriptor(
             input_type=_DELETEJOBREQUEST,
             output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
             serialized_options=_b(
-                "\202\323\344\223\002#*!/v4beta1/{name=projects/*/jobs/*}"
+                "\202\323\344\223\002R*+/v4beta1/{name=projects/*/tenants/*/jobs/*}Z#*!/v4beta1/{name=projects/*/jobs/*}"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2109,7 +2129,7 @@ _JOBSERVICE = _descriptor.ServiceDescriptor(
             input_type=_LISTJOBSREQUEST,
             output_type=_LISTJOBSRESPONSE,
             serialized_options=_b(
-                "\202\323\344\223\002#\022!/v4beta1/{parent=projects/*}/jobs"
+                "\202\323\344\223\002R\022+/v4beta1/{parent=projects/*/tenants/*}/jobsZ#\022!/v4beta1/{parent=projects/*}/jobs"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2120,7 +2140,7 @@ _JOBSERVICE = _descriptor.ServiceDescriptor(
             input_type=_BATCHDELETEJOBSREQUEST,
             output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
             serialized_options=_b(
-                '\202\323\344\223\0022"-/v4beta1/{parent=projects/*}/jobs:batchDelete:\001*'
+                '\202\323\344\223\002m"7/v4beta1/{parent=projects/*/tenants/*}/jobs:batchDelete:\001*Z/"-/v4beta1/{parent=projects/*}/jobs:batchDelete'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2131,7 +2151,7 @@ _JOBSERVICE = _descriptor.ServiceDescriptor(
             input_type=_SEARCHJOBSREQUEST,
             output_type=_SEARCHJOBSRESPONSE,
             serialized_options=_b(
-                '\202\323\344\223\002-"(/v4beta1/{parent=projects/*}/jobs:search:\001*'
+                '\202\323\344\223\002f"2/v4beta1/{parent=projects/*/tenants/*}/jobs:search:\001*Z-"(/v4beta1/{parent=projects/*}/jobs:search:\001*'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2142,7 +2162,7 @@ _JOBSERVICE = _descriptor.ServiceDescriptor(
             input_type=_SEARCHJOBSREQUEST,
             output_type=_SEARCHJOBSRESPONSE,
             serialized_options=_b(
-                '\202\323\344\223\0025"0/v4beta1/{parent=projects/*}/jobs:searchForAlert:\001*'
+                '\202\323\344\223\002v":/v4beta1/{parent=projects/*/tenants/*}/jobs:searchForAlert:\001*Z5"0/v4beta1/{parent=projects/*}/jobs:searchForAlert:\001*'
             ),
         ),
     ],

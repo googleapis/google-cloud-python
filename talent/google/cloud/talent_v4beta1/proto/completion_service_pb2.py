@@ -28,7 +28,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n\037com.google.cloud.talent.v4beta1B\026CompletionServiceProtoP\001ZAgoogle.golang.org/genproto/googleapis/cloud/talent/v4beta1;talent\242\002\003CTS"
     ),
     serialized_pb=_b(
-        '\n:google/cloud/talent_v4beta1/proto/completion_service.proto\x12\x1bgoogle.cloud.talent.v4beta1\x1a\x1cgoogle/api/annotations.proto\x1a.google/cloud/talent_v4beta1/proto/common.proto"\xc5\x03\n\x14\x43ompleteQueryRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\r\n\x05query\x18\x02 \x01(\t\x12\x16\n\x0elanguage_codes\x18\x03 \x03(\t\x12\x11\n\tpage_size\x18\x04 \x01(\x05\x12\x14\n\x0c\x63ompany_name\x18\x05 \x01(\t\x12P\n\x05scope\x18\x06 \x01(\x0e\x32\x41.google.cloud.talent.v4beta1.CompleteQueryRequest.CompletionScope\x12N\n\x04type\x18\x07 \x01(\x0e\x32@.google.cloud.talent.v4beta1.CompleteQueryRequest.CompletionType"K\n\x0f\x43ompletionScope\x12 \n\x1c\x43OMPLETION_SCOPE_UNSPECIFIED\x10\x00\x12\n\n\x06TENANT\x10\x01\x12\n\n\x06PUBLIC\x10\x02"`\n\x0e\x43ompletionType\x12\x1f\n\x1b\x43OMPLETION_TYPE_UNSPECIFIED\x10\x00\x12\r\n\tJOB_TITLE\x10\x01\x12\x10\n\x0c\x43OMPANY_NAME\x10\x02\x12\x0c\n\x08\x43OMBINED\x10\x03"\xc5\x02\n\x15\x43ompleteQueryResponse\x12_\n\x12\x63ompletion_results\x18\x01 \x03(\x0b\x32\x43.google.cloud.talent.v4beta1.CompleteQueryResponse.CompletionResult\x12?\n\x08metadata\x18\x02 \x01(\x0b\x32-.google.cloud.talent.v4beta1.ResponseMetadata\x1a\x89\x01\n\x10\x43ompletionResult\x12\x12\n\nsuggestion\x18\x01 \x01(\t\x12N\n\x04type\x18\x02 \x01(\x0e\x32@.google.cloud.talent.v4beta1.CompleteQueryRequest.CompletionType\x12\x11\n\timage_uri\x18\x03 \x01(\t2\xb2\x01\n\nCompletion\x12\xa3\x01\n\rCompleteQuery\x12\x31.google.cloud.talent.v4beta1.CompleteQueryRequest\x1a\x32.google.cloud.talent.v4beta1.CompleteQueryResponse"+\x82\xd3\xe4\x93\x02%\x12#/v4beta1/{name=projects/*}:completeB\x84\x01\n\x1f\x63om.google.cloud.talent.v4beta1B\x16\x43ompletionServiceProtoP\x01ZAgoogle.golang.org/genproto/googleapis/cloud/talent/v4beta1;talent\xa2\x02\x03\x43TSb\x06proto3'
+        '\n:google/cloud/talent_v4beta1/proto/completion_service.proto\x12\x1bgoogle.cloud.talent.v4beta1\x1a\x1cgoogle/api/annotations.proto\x1a.google/cloud/talent_v4beta1/proto/common.proto"\xc2\x03\n\x14\x43ompleteQueryRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\r\n\x05query\x18\x02 \x01(\t\x12\x16\n\x0elanguage_codes\x18\x03 \x03(\t\x12\x11\n\tpage_size\x18\x04 \x01(\x05\x12\x0f\n\x07\x63ompany\x18\x05 \x01(\t\x12P\n\x05scope\x18\x06 \x01(\x0e\x32\x41.google.cloud.talent.v4beta1.CompleteQueryRequest.CompletionScope\x12N\n\x04type\x18\x07 \x01(\x0e\x32@.google.cloud.talent.v4beta1.CompleteQueryRequest.CompletionType"K\n\x0f\x43ompletionScope\x12 \n\x1c\x43OMPLETION_SCOPE_UNSPECIFIED\x10\x00\x12\n\n\x06TENANT\x10\x01\x12\n\n\x06PUBLIC\x10\x02"`\n\x0e\x43ompletionType\x12\x1f\n\x1b\x43OMPLETION_TYPE_UNSPECIFIED\x10\x00\x12\r\n\tJOB_TITLE\x10\x01\x12\x10\n\x0c\x43OMPANY_NAME\x10\x02\x12\x0c\n\x08\x43OMBINED\x10\x03"\xc5\x02\n\x15\x43ompleteQueryResponse\x12_\n\x12\x63ompletion_results\x18\x01 \x03(\x0b\x32\x43.google.cloud.talent.v4beta1.CompleteQueryResponse.CompletionResult\x12?\n\x08metadata\x18\x02 \x01(\x0b\x32-.google.cloud.talent.v4beta1.ResponseMetadata\x1a\x89\x01\n\x10\x43ompletionResult\x12\x12\n\nsuggestion\x18\x01 \x01(\t\x12N\n\x04type\x18\x02 \x01(\x0e\x32@.google.cloud.talent.v4beta1.CompleteQueryRequest.CompletionType\x12\x11\n\timage_uri\x18\x03 \x01(\t2\xe7\x01\n\nCompletion\x12\xd8\x01\n\rCompleteQuery\x12\x31.google.cloud.talent.v4beta1.CompleteQueryRequest\x1a\x32.google.cloud.talent.v4beta1.CompleteQueryResponse"`\x82\xd3\xe4\x93\x02Z\x12//v4beta1/{parent=projects/*/tenants/*}:completeZ\'\x12%/v4beta1/{parent=projects/*}:completeB\x84\x01\n\x1f\x63om.google.cloud.talent.v4beta1B\x16\x43ompletionServiceProtoP\x01ZAgoogle.golang.org/genproto/googleapis/cloud/talent/v4beta1;talent\xa2\x02\x03\x43TSb\x06proto3'
     ),
     dependencies=[
         google_dot_api_dot_annotations__pb2.DESCRIPTOR,
@@ -59,8 +59,8 @@ _COMPLETEQUERYREQUEST_COMPLETIONSCOPE = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=450,
-    serialized_end=525,
+    serialized_start=447,
+    serialized_end=522,
 )
 _sym_db.RegisterEnumDescriptor(_COMPLETEQUERYREQUEST_COMPLETIONSCOPE)
 
@@ -89,8 +89,8 @@ _COMPLETEQUERYREQUEST_COMPLETIONTYPE = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=527,
-    serialized_end=623,
+    serialized_start=524,
+    serialized_end=620,
 )
 _sym_db.RegisterEnumDescriptor(_COMPLETEQUERYREQUEST_COMPLETIONTYPE)
 
@@ -103,8 +103,8 @@ _COMPLETEQUERYREQUEST = _descriptor.Descriptor(
     containing_type=None,
     fields=[
         _descriptor.FieldDescriptor(
-            name="name",
-            full_name="google.cloud.talent.v4beta1.CompleteQueryRequest.name",
+            name="parent",
+            full_name="google.cloud.talent.v4beta1.CompleteQueryRequest.parent",
             index=0,
             number=1,
             type=9,
@@ -175,8 +175,8 @@ _COMPLETEQUERYREQUEST = _descriptor.Descriptor(
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
-            name="company_name",
-            full_name="google.cloud.talent.v4beta1.CompleteQueryRequest.company_name",
+            name="company",
+            full_name="google.cloud.talent.v4beta1.CompleteQueryRequest.company",
             index=4,
             number=5,
             type=9,
@@ -241,7 +241,7 @@ _COMPLETEQUERYREQUEST = _descriptor.Descriptor(
     extension_ranges=[],
     oneofs=[],
     serialized_start=170,
-    serialized_end=623,
+    serialized_end=620,
 )
 
 
@@ -315,8 +315,8 @@ _COMPLETEQUERYRESPONSE_COMPLETIONRESULT = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=814,
-    serialized_end=951,
+    serialized_start=811,
+    serialized_end=948,
 )
 
 _COMPLETEQUERYRESPONSE = _descriptor.Descriptor(
@@ -371,8 +371,8 @@ _COMPLETEQUERYRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=626,
-    serialized_end=951,
+    serialized_start=623,
+    serialized_end=948,
 )
 
 _COMPLETEQUERYREQUEST.fields_by_name[
@@ -411,10 +411,13 @@ CompleteQueryRequest = _reflection.GeneratedProtocolMessageType(
   
   
   Attributes:
-      name:
-          Required.  Resource name of project the completion is
-          performed within.  The format is "projects/{project\_id}", for
-          example, "projects/api-test-project".
+      parent:
+          Required.  Resource name of tenant the completion is performed
+          within.  The format is
+          "projects/{project\_id}/tenants/{tenant\_id}", for example,
+          "projects/api-test-project/tenant/foo".  Tenant id is optional
+          and the default tenant is used if unspecified, for example,
+          "projects/api-test-project".
       query:
           Required.  The query used to generate suggestions.  The
           maximum number of allowed characters is 255.
@@ -441,11 +444,13 @@ CompleteQueryRequest = _reflection.GeneratedProtocolMessageType(
       page_size:
           Required.  Completion result count.  The maximum allowed page
           size is 10.
-      company_name:
+      company:
           Optional.  If provided, restricts completion to specified
-          company.  The format is
-          "projects/{project\_id}/companies/{company\_id}", for example,
-          "projects/api-test-project/companies/foo".
+          company.  The format is "projects/{project\_id}/tenants/{tenan
+          t\_id}/companies/{company\_id}", for example, "projects/api-
+          test-project/tenants/foo/companies/bar".  Tenant id is
+          optional and the default tenant is used if unspecified, for
+          example, "projects/api-test-project/companies/bar".
       scope:
           Optional.  The scope of the completion. The defaults is [Compl
           etionScope.PUBLIC][google.cloud.talent.v4beta1.CompleteQueryRe
@@ -516,8 +521,8 @@ _COMPLETION = _descriptor.ServiceDescriptor(
     file=DESCRIPTOR,
     index=0,
     serialized_options=None,
-    serialized_start=954,
-    serialized_end=1132,
+    serialized_start=951,
+    serialized_end=1182,
     methods=[
         _descriptor.MethodDescriptor(
             name="CompleteQuery",
@@ -527,7 +532,7 @@ _COMPLETION = _descriptor.ServiceDescriptor(
             input_type=_COMPLETEQUERYREQUEST,
             output_type=_COMPLETEQUERYRESPONSE,
             serialized_options=_b(
-                "\202\323\344\223\002%\022#/v4beta1/{name=projects/*}:complete"
+                "\202\323\344\223\002Z\022//v4beta1/{parent=projects/*/tenants/*}:completeZ'\022%/v4beta1/{parent=projects/*}:complete"
             ),
         )
     ],

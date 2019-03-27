@@ -28,7 +28,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n\037com.google.cloud.talent.v4beta1B\021EventServiceProtoP\001ZAgoogle.golang.org/genproto/googleapis/cloud/talent/v4beta1;talent\242\002\003CTS"
     ),
     serialized_pb=_b(
-        '\n5google/cloud/talent_v4beta1/proto/event_service.proto\x12\x1bgoogle.cloud.talent.v4beta1\x1a\x1cgoogle/api/annotations.proto\x1a-google/cloud/talent_v4beta1/proto/event.proto"j\n\x18\x43reateClientEventRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12>\n\x0c\x63lient_event\x18\x02 \x01(\x0b\x32(.google.cloud.talent.v4beta1.ClientEvent2\xbb\x01\n\x0c\x45ventService\x12\xaa\x01\n\x11\x43reateClientEvent\x12\x35.google.cloud.talent.v4beta1.CreateClientEventRequest\x1a(.google.cloud.talent.v4beta1.ClientEvent"4\x82\xd3\xe4\x93\x02.")/v4beta1/{parent=projects/*}/clientEvents:\x01*B\x7f\n\x1f\x63om.google.cloud.talent.v4beta1B\x11\x45ventServiceProtoP\x01ZAgoogle.golang.org/genproto/googleapis/cloud/talent/v4beta1;talent\xa2\x02\x03\x43TSb\x06proto3'
+        '\n5google/cloud/talent_v4beta1/proto/event_service.proto\x12\x1bgoogle.cloud.talent.v4beta1\x1a\x1cgoogle/api/annotations.proto\x1a-google/cloud/talent_v4beta1/proto/event.proto"j\n\x18\x43reateClientEventRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12>\n\x0c\x63lient_event\x18\x02 \x01(\x0b\x32(.google.cloud.talent.v4beta1.ClientEvent2\xf5\x01\n\x0c\x45ventService\x12\xe4\x01\n\x11\x43reateClientEvent\x12\x35.google.cloud.talent.v4beta1.CreateClientEventRequest\x1a(.google.cloud.talent.v4beta1.ClientEvent"n\x82\xd3\xe4\x93\x02h"3/v4beta1/{parent=projects/*/tenants/*}/clientEvents:\x01*Z.")/v4beta1/{parent=projects/*}/clientEvents:\x01*B\x7f\n\x1f\x63om.google.cloud.talent.v4beta1B\x11\x45ventServiceProtoP\x01ZAgoogle.golang.org/genproto/googleapis/cloud/talent/v4beta1;talent\xa2\x02\x03\x43TSb\x06proto3'
     ),
     dependencies=[
         google_dot_api_dot_annotations__pb2.DESCRIPTOR,
@@ -112,7 +112,12 @@ CreateClientEventRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       parent:
-          Parent project name.
+          Required.  Resource name of the tenant under which the event
+          is created.  The format is
+          "projects/{project\_id}/tenants/{tenant\_id}", for example,
+          "projects/api-test-project/tenant/foo".  Tenant id is optional
+          and a default tenant is created if unspecified, for example,
+          "projects/api-test-project".
       client_event:
           Required.  Events issued when end user interacts with
           customer's application that uses Cloud Talent Solution.
@@ -132,7 +137,7 @@ _EVENTSERVICE = _descriptor.ServiceDescriptor(
     index=0,
     serialized_options=None,
     serialized_start=272,
-    serialized_end=459,
+    serialized_end=517,
     methods=[
         _descriptor.MethodDescriptor(
             name="CreateClientEvent",
@@ -142,7 +147,7 @@ _EVENTSERVICE = _descriptor.ServiceDescriptor(
             input_type=_CREATECLIENTEVENTREQUEST,
             output_type=google_dot_cloud_dot_talent__v4beta1_dot_proto_dot_event__pb2._CLIENTEVENT,
             serialized_options=_b(
-                '\202\323\344\223\002.")/v4beta1/{parent=projects/*}/clientEvents:\001*'
+                '\202\323\344\223\002h"3/v4beta1/{parent=projects/*/tenants/*}/clientEvents:\001*Z.")/v4beta1/{parent=projects/*}/clientEvents:\001*'
             ),
         )
     ],

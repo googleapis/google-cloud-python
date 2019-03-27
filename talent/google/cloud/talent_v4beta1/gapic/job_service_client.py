@@ -31,6 +31,9 @@ import grpc
 from google.cloud.talent_v4beta1.gapic import enums
 from google.cloud.talent_v4beta1.gapic import job_service_client_config
 from google.cloud.talent_v4beta1.gapic.transports import job_service_grpc_transport
+from google.cloud.talent_v4beta1.proto import application_pb2
+from google.cloud.talent_v4beta1.proto import application_service_pb2
+from google.cloud.talent_v4beta1.proto import application_service_pb2_grpc
 from google.cloud.talent_v4beta1.proto import common_pb2
 from google.cloud.talent_v4beta1.proto import company_pb2
 from google.cloud.talent_v4beta1.proto import company_service_pb2
@@ -82,15 +85,15 @@ class JobServiceClient(object):
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def project_path(cls, project):
-        """Return a fully-qualified project string."""
+    def tenant_path(cls, project, tenant):
+        """Return a fully-qualified tenant string."""
         return google.api_core.path_template.expand(
-            "projects/{project}", project=project
+            "projects/{project}/tenants/{tenant}", project=project, tenant=tenant
         )
 
     @classmethod
-    def job_path(cls, project, jobs):
-        """Return a fully-qualified job string."""
+    def job_old_path(cls, project, jobs):
+        """Return a fully-qualified job_old string."""
         return google.api_core.path_template.expand(
             "projects/{project}/jobs/{jobs}", project=project, jobs=jobs
         )
@@ -213,7 +216,7 @@ class JobServiceClient(object):
             >>>
             >>> client = talent_v4beta1.JobServiceClient()
             >>>
-            >>> parent = client.project_path('[PROJECT]')
+            >>> parent = client.tenant_path('[PROJECT]', '[TENANT]')
             >>>
             >>> # TODO: Initialize `job`:
             >>> job = {}
@@ -223,10 +226,13 @@ class JobServiceClient(object):
         Args:
             parent (str): Required.
 
-                The resource name of the project under which the job is created.
+                The resource name of the tenant under which the job is created.
 
-                The format is "projects/{project\_id}", for example,
-                "projects/api-test-project".
+                The format is "projects/{project\_id}/tenants/{tenant\_id}", for
+                example, "projects/api-test-project/tenant/foo".
+
+                Tenant id is optional and a default tenant is created if unspecified,
+                for example, "projects/api-test-project".
             job (Union[dict, ~google.cloud.talent_v4beta1.types.Job]): Required.
 
                 The Job to be created.
@@ -284,7 +290,7 @@ class JobServiceClient(object):
             >>>
             >>> client = talent_v4beta1.JobServiceClient()
             >>>
-            >>> name = client.job_path('[PROJECT]', '[JOBS]')
+            >>> name = client.job_old_path('[PROJECT]', '[JOBS]')
             >>>
             >>> response = client.get_job(name)
 
@@ -293,8 +299,12 @@ class JobServiceClient(object):
 
                 The resource name of the job to retrieve.
 
-                The format is "projects/{project\_id}/jobs/{job\_id}", for example,
-                "projects/api-test-project/jobs/1234".
+                The format is
+                "projects/{project\_id}/tenants/{tenant\_id}/jobs/{job\_id}", for
+                example, "projects/api-test-project/tenants/foo/jobs/1234".
+
+                Tenant id is optional and the default tenant is used if unspecified, for
+                example, "projects/api-test-project/jobs/1234".
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -425,7 +435,7 @@ class JobServiceClient(object):
             >>>
             >>> client = talent_v4beta1.JobServiceClient()
             >>>
-            >>> name = client.job_path('[PROJECT]', '[JOBS]')
+            >>> name = client.job_old_path('[PROJECT]', '[JOBS]')
             >>>
             >>> client.delete_job(name)
 
@@ -434,8 +444,12 @@ class JobServiceClient(object):
 
                 The resource name of the job to be deleted.
 
-                The format is "projects/{project\_id}/jobs/{job\_id}", for example,
-                "projects/api-test-project/jobs/1234".
+                The format is
+                "projects/{project\_id}/tenants/{tenant\_id}/jobs/{job\_id}", for
+                example, "projects/api-test-project/tenants/foo/jobs/1234".
+
+                Tenant id is optional and the default tenant is used if unspecified, for
+                example, "projects/api-test-project/jobs/1234".
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -486,7 +500,7 @@ class JobServiceClient(object):
             >>>
             >>> client = talent_v4beta1.JobServiceClient()
             >>>
-            >>> parent = client.project_path('[PROJECT]')
+            >>> parent = client.tenant_path('[PROJECT]', '[TENANT]')
             >>>
             >>> # TODO: Initialize `filter_`:
             >>> filter_ = ''
@@ -508,10 +522,13 @@ class JobServiceClient(object):
         Args:
             parent (str): Required.
 
-                The resource name of the project under which the job is created.
+                The resource name of the tenant under which the job is created.
 
-                The format is "projects/{project\_id}", for example,
-                "projects/api-test-project".
+                The format is "projects/{project\_id}/tenants/{tenant\_id}", for
+                example, "projects/api-test-project/tenant/foo".
+
+                Tenant id is optional and the default tenant is used if unspecified, for
+                example, "projects/api-test-project".
             filter_ (str): Required.
 
                 The filter string specifies the jobs to be enumerated.
@@ -527,11 +544,11 @@ class JobServiceClient(object):
 
                 Sample Query:
 
-                -  companyName = "projects/api-test-project/companies/123"
-                -  companyName = "projects/api-test-project/companies/123" AND
-                   requisitionId = "req-1"
-                -  companyName = "projects/api-test-project/companies/123" AND status =
-                   "EXPIRED"
+                -  companyName = "projects/api-test-project/tenants/foo/companies/bar"
+                -  companyName = "projects/api-test-project/tenants/foo/companies/bar"
+                   AND requisitionId = "req-1"
+                -  companyName = "projects/api-test-project/tenants/foo/companies/bar"
+                   AND status = "EXPIRED"
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
                 resource, this parameter does not affect the return value. If page
@@ -608,7 +625,7 @@ class JobServiceClient(object):
             >>>
             >>> client = talent_v4beta1.JobServiceClient()
             >>>
-            >>> parent = client.project_path('[PROJECT]')
+            >>> parent = client.tenant_path('[PROJECT]', '[TENANT]')
             >>>
             >>> # TODO: Initialize `filter_`:
             >>> filter_ = ''
@@ -618,10 +635,13 @@ class JobServiceClient(object):
         Args:
             parent (str): Required.
 
-                The resource name of the project under which the job is created.
+                The resource name of the tenant under which the job is created.
 
-                The format is "projects/{project\_id}", for example,
-                "projects/api-test-project".
+                The format is "projects/{project\_id}/tenants/{tenant\_id}", for
+                example, "projects/api-test-project/tenant/foo".
+
+                Tenant id is optional and the default tenant is used if unspecified, for
+                example, "projects/api-test-project".
             filter_ (str): Required.
 
                 The filter string specifies the jobs to be deleted.
@@ -698,7 +718,7 @@ class JobServiceClient(object):
             >>>
             >>> client = talent_v4beta1.JobServiceClient()
             >>>
-            >>> parent = client.project_path('[PROJECT]')
+            >>> parent = client.tenant_path('[PROJECT]', '[TENANT]')
             >>>
             >>> # TODO: Initialize `request_metadata`:
             >>> request_metadata = {}
@@ -720,10 +740,13 @@ class JobServiceClient(object):
         Args:
             parent (str): Required.
 
-                The resource name of the project to search within.
+                The resource name of the tenant to search within.
 
-                The format is "projects/{project\_id}", for example,
-                "projects/api-test-project".
+                The format is "projects/{project\_id}/tenants/{tenant\_id}", for
+                example, "projects/api-test-project/tenant/foo".
+
+                Tenant id is optional and the default tenant is used if unspecified, for
+                example, "projects/api-test-project".
             request_metadata (Union[dict, ~google.cloud.talent_v4beta1.types.RequestMetadata]): Required.
 
                 The meta information collected about the job searcher, used to improve
@@ -1059,7 +1082,7 @@ class JobServiceClient(object):
             >>>
             >>> client = talent_v4beta1.JobServiceClient()
             >>>
-            >>> parent = client.project_path('[PROJECT]')
+            >>> parent = client.tenant_path('[PROJECT]', '[TENANT]')
             >>>
             >>> # TODO: Initialize `request_metadata`:
             >>> request_metadata = {}
@@ -1081,10 +1104,13 @@ class JobServiceClient(object):
         Args:
             parent (str): Required.
 
-                The resource name of the project to search within.
+                The resource name of the tenant to search within.
 
-                The format is "projects/{project\_id}", for example,
-                "projects/api-test-project".
+                The format is "projects/{project\_id}/tenants/{tenant\_id}", for
+                example, "projects/api-test-project/tenant/foo".
+
+                Tenant id is optional and the default tenant is used if unspecified, for
+                example, "projects/api-test-project".
             request_metadata (Union[dict, ~google.cloud.talent_v4beta1.types.RequestMetadata]): Required.
 
                 The meta information collected about the job searcher, used to improve
