@@ -16,6 +16,7 @@ _sym_db = _symbol_database.Default()
 
 
 from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
+from google.api import resource_pb2 as google_dot_api_dot_resource__pb2
 from google.cloud.bigquery_storage_v1beta1.proto import (
     avro_pb2 as google_dot_cloud_dot_bigquery_dot_storage__v1beta1_dot_proto_dot_avro__pb2,
 )
@@ -41,6 +42,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     ),
     dependencies=[
         google_dot_api_dot_annotations__pb2.DESCRIPTOR,
+        google_dot_api_dot_resource__pb2.DESCRIPTOR,
         google_dot_cloud_dot_bigquery_dot_storage__v1beta1_dot_proto_dot_avro__pb2.DESCRIPTOR,
         google_dot_cloud_dot_bigquery_dot_storage__v1beta1_dot_proto_dot_read__options__pb2.DESCRIPTOR,
         google_dot_cloud_dot_bigquery_dot_storage__v1beta1_dot_proto_dot_table__reference__pb2.DESCRIPTOR,
