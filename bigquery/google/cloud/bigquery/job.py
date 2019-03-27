@@ -2003,7 +2003,7 @@ class QueryJobConfig(_JobConfig):
         to use for unqualified table names in the query or :data:`None` if not
         set.
 
-        The ``dataset`` setter accepts:
+        The ``default_dataset`` setter accepts:
 
         - a :class:`~google.cloud.bigquery.dataset.Dataset`, or
         - a :class:`~google.cloud.bigquery.dataset.DatasetReference`, or
