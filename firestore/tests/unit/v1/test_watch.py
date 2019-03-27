@@ -713,6 +713,7 @@ class DummyQuery(object):  # pragma: NO COVER
 class DummyFirestore(object):
     _firestore_api = DummyFirestoreClient()
     _database_string = "abc://bar/"
+    _rpc_metadata = None
 
     def document(self, *document_path):  # pragma: NO COVER
         if len(document_path) == 1:
@@ -781,12 +782,13 @@ class DummyThreading(object):
 
 
 class DummyRpc(object):
-    def __init__(self, listen, initial_request, should_recover):
+    def __init__(self, listen, initial_request, should_recover, metadata=None):
         self.listen = listen
         self.initial_request = initial_request
         self.should_recover = should_recover
         self.closed = False
         self.callbacks = []
+        self._metadata = metadata
 
     def add_done_callback(self, callback):
         self.callbacks.append(callback)
