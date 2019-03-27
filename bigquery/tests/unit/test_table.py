@@ -1464,7 +1464,7 @@ class TestRowIterator(unittest.TestCase):
         row_iterator = RowIterator(_mock_client(), api_request, path, schema)
         df = row_iterator.to_dataframe()
 
-        self.assertFalse(len(df) == 0)  # all should be well
+        self.assertEqual(len(df), 4)  # all should be well
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
     @unittest.skipIf(tqdm is None, "Requires `tqdm`")
@@ -1488,7 +1488,7 @@ class TestRowIterator(unittest.TestCase):
         row_iterator = RowIterator(_mock_client(), api_request, path, schema)
         df = row_iterator.to_dataframe()
 
-        self.assertFalse(len(df) == 0)  # all should be well
+        self.assertEqual(len(df), 4)  # all should be well
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
     def test_to_dataframe_w_empty_results(self):
