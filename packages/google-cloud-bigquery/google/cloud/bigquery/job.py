@@ -17,11 +17,14 @@
 import copy
 import threading
 
+import six
 from six.moves import http_client
 
 import google.api_core.future.polling
 from google.cloud import exceptions
 from google.cloud.exceptions import NotFound
+from google.cloud.bigquery.dataset import Dataset
+from google.cloud.bigquery.dataset import DatasetListItem
 from google.cloud.bigquery.dataset import DatasetReference
 from google.cloud.bigquery.external_config import ExternalConfig
 from google.cloud.bigquery.query import _query_param_from_api_repr
@@ -33,6 +36,7 @@ from google.cloud.bigquery.retry import DEFAULT_RETRY
 from google.cloud.bigquery.schema import SchemaField
 from google.cloud.bigquery.table import _EmptyRowIterator
 from google.cloud.bigquery.table import EncryptionConfiguration
+from google.cloud.bigquery.table import _table_arg_to_table_ref
 from google.cloud.bigquery.table import TableReference
 from google.cloud.bigquery.table import Table
 from google.cloud.bigquery.table import TimePartitioning
@@ -1999,6 +2003,14 @@ class QueryJobConfig(_JobConfig):
         to use for unqualified table names in the query or :data:`None` if not
         set.
 
+        The ``default_dataset`` setter accepts:
+
+        - a :class:`~google.cloud.bigquery.dataset.Dataset`, or
+        - a :class:`~google.cloud.bigquery.dataset.DatasetReference`, or
+        - a :class:`str` of the fully-qualified dataset ID in standard SQL
+          format. The value must included a project ID and dataset ID
+          separated by ``.``. For example: ``your-project.your_dataset``.
+
         See
         https://g.co/cloud/bigquery/docs/reference/v2/jobs#configuration.query.defaultDataset
         """
@@ -2009,15 +2021,32 @@ class QueryJobConfig(_JobConfig):
 
     @default_dataset.setter
     def default_dataset(self, value):
-        resource = None
-        if value is not None:
-            resource = value.to_api_repr()
+        if value is None:
+            self._set_sub_prop("defaultDataset", None)
+            return
+
+        if isinstance(value, six.string_types):
+            value = DatasetReference.from_string(value)
+
+        if isinstance(value, (Dataset, DatasetListItem)):
+            value = value.reference
+
+        resource = value.to_api_repr()
         self._set_sub_prop("defaultDataset", resource)
 
     @property
     def destination(self):
         """google.cloud.bigquery.table.TableReference: table where results are
         written or :data:`None` if not set.
+
+        The ``destination`` setter accepts:
+
+        - a :class:`~google.cloud.bigquery.table.Table`, or
+        - a :class:`~google.cloud.bigquery.table.TableReference`, or
+        - a :class:`str` of the fully-qualified table ID in standard SQL
+          format. The value must included a project ID, dataset ID, and table
+          ID, each separated by ``.``. For example:
+          ``your-project.your_dataset.your_table``.
 
         See
         https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.destinationTable
@@ -2029,9 +2058,12 @@ class QueryJobConfig(_JobConfig):
 
     @destination.setter
     def destination(self, value):
-        resource = None
-        if value is not None:
-            resource = value.to_api_repr()
+        if value is None:
+            self._set_sub_prop("destinationTable", None)
+            return
+
+        value = _table_arg_to_table_ref(value)
+        resource = value.to_api_repr()
         self._set_sub_prop("destinationTable", resource)
 
     @property
