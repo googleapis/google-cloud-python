@@ -524,10 +524,12 @@ class TestFilterNode:
             filter_node._to_filter()
 
     @staticmethod
-    def test__to_filter():
+    @unittest.mock.patch("google.cloud.ndb.query._datastore_query")
+    def test__to_filter(_datastore_query):
+        as_filter = _datastore_query.make_filter.return_value
         filter_node = query_module.FilterNode("speed", ">=", 88)
-        with pytest.raises(NotImplementedError):
-            filter_node._to_filter()
+        assert filter_node._to_filter() is as_filter
+        _datastore_query.make_filter.assert_called_once_with("speed", ">=", 88)
 
 
 class TestPostFilterNode:
@@ -789,13 +791,17 @@ class TestConjunctionNode:
         node1._to_filter.assert_called_once_with(post=False)
 
     @staticmethod
-    def test__to_filter_multiple():
+    @unittest.mock.patch("google.cloud.ndb.query._datastore_query")
+    def test__to_filter_multiple(_datastore_query):
         node1 = query_module.PostFilterNode("predicate1")
         node2 = query_module.PostFilterNode("predicate2")
         and_node = query_module.ConjunctionNode(node1, node2)
 
-        with pytest.raises(NotImplementedError):
-            and_node._to_filter(post=True)
+        as_filter = _datastore_query.make_composite_and_filter.return_value
+        assert and_node._to_filter(post=True) is as_filter
+        _datastore_query.make_composite_and_filter.assert_called_once_with(
+            ["predicate1", "predicate2"]
+        )
 
     @staticmethod
     def test__post_filters_empty():
@@ -963,6 +969,26 @@ class TestDisjunctionNode:
         assert bindings == {}
         assert used == {}
         node1.resolve.assert_called_once_with(bindings, used)
+
+    @staticmethod
+    def test__to_filter():
+        node1 = unittest.mock.Mock(spec=query_module.FilterNode)
+        node2 = unittest.mock.Mock(spec=query_module.FilterNode)
+        or_node = query_module.DisjunctionNode(node1, node2)
+
+        assert or_node._to_filter() == [
+            node1._to_filter.return_value,
+            node2._to_filter.return_value,
+        ]
+
+    @staticmethod
+    def test__to_filter_post():
+        node1 = unittest.mock.Mock(spec=query_module.FilterNode)
+        node2 = unittest.mock.Mock(spec=query_module.FilterNode)
+        or_node = query_module.DisjunctionNode(node1, node2)
+
+        with pytest.raises(NotImplementedError):
+            or_node._to_filter(post=True)
 
 
 def test_AND():

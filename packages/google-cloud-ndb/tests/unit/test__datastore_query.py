@@ -25,6 +25,38 @@ from google.cloud.ndb import query as query_module
 from google.cloud.ndb import tasklets
 
 
+def test_make_filter():
+    expected = query_pb2.PropertyFilter(
+        property=query_pb2.PropertyReference(name="harry"),
+        op=query_pb2.PropertyFilter.EQUAL,
+        value=entity_pb2.Value(string_value="Harold"),
+    )
+    assert _datastore_query.make_filter("harry", "=", "Harold") == expected
+
+
+def test_make_composite_and_filter():
+    filters = [
+        query_pb2.PropertyFilter(
+            property=query_pb2.PropertyReference(name="harry"),
+            op=query_pb2.PropertyFilter.EQUAL,
+            value=entity_pb2.Value(string_value="Harold"),
+        ),
+        query_pb2.PropertyFilter(
+            property=query_pb2.PropertyReference(name="josie"),
+            op=query_pb2.PropertyFilter.EQUAL,
+            value=entity_pb2.Value(string_value="Josephine"),
+        ),
+    ]
+    expected = query_pb2.CompositeFilter(
+        op=query_pb2.CompositeFilter.AND,
+        filters=[
+            query_pb2.Filter(property_filter=sub_filter)
+            for sub_filter in filters
+        ],
+    )
+    assert _datastore_query.make_composite_and_filter(filters) == expected
+
+
 @pytest.mark.usefixtures("in_context")
 class Test_fetch:
     @staticmethod
@@ -44,9 +76,10 @@ class Test_fetch:
     def test_project_from_query(_query_to_protobuf, _run_query):
         query = mock.Mock(
             app="myapp",
+            filters=None,
             namespace="zeta",
             projection=None,
-            spec=("app", "namespace", "projection"),
+            spec=("app", "filters", "namespace", "projection"),
         )
         query_pb = _query_to_protobuf.return_value
 
@@ -57,7 +90,7 @@ class Test_fetch:
         _run_query_future.set_result([("a", "b"), ("c", "d"), ("e", "f")])
         assert tasklet.result() == ["ab", "cd", "ef"]
 
-        assert _query_to_protobuf.called_once_with(query)
+        _query_to_protobuf.assert_called_once_with(query, None)
         _run_query.assert_called_once_with("myapp", "zeta", query_pb)
 
     @staticmethod
@@ -70,9 +103,10 @@ class Test_fetch:
     def test_project_from_context(_query_to_protobuf, _run_query, in_context):
         query = mock.Mock(
             app=None,
+            filters=None,
             namespace=None,
             projection=None,
-            spec=("app", "namespace", "projection"),
+            spec=("app", "filters", "namespace", "projection"),
         )
         query_pb = _query_to_protobuf.return_value
 
@@ -83,8 +117,109 @@ class Test_fetch:
         _run_query_future.set_result([("a", "b"), ("c", "d"), ("e", "f")])
         assert tasklet.result() == ["ab", "cd", "ef"]
 
-        assert _query_to_protobuf.called_once_with(query)
+        _query_to_protobuf.assert_called_once_with(query, None)
         _run_query.assert_called_once_with("testing", None, query_pb)
+
+    @staticmethod
+    @mock.patch(
+        "google.cloud.ndb._datastore_query._process_result",
+        lambda *args: "".join(filter(None, args)),
+    )
+    @mock.patch("google.cloud.ndb._datastore_query._run_query")
+    @mock.patch("google.cloud.ndb._datastore_query._query_to_protobuf")
+    def test_filter(_query_to_protobuf, _run_query, in_context):
+        filters = mock.Mock(
+            _to_filter=mock.Mock(return_value="thefilter"), spec="_to_filter"
+        )
+        query = mock.Mock(
+            app=None,
+            filters=filters,
+            namespace=None,
+            projection=None,
+            spec=("app", "filters", "namespace", "projection"),
+        )
+        query_pb = _query_to_protobuf.return_value
+
+        _run_query_future = tasklets.Future()
+        _run_query.return_value = _run_query_future
+
+        tasklet = _datastore_query.fetch(query)
+        _run_query_future.set_result([("a", "b"), ("c", "d"), ("e", "f")])
+        assert tasklet.result() == ["ab", "cd", "ef"]
+
+        _query_to_protobuf.assert_called_once_with(query, "thefilter")
+        _run_query.assert_called_once_with("testing", None, query_pb)
+
+    @staticmethod
+    @mock.patch(
+        "google.cloud.ndb._datastore_query._process_result",
+        lambda *args: "".join(filter(None, args)),
+    )
+    @mock.patch("google.cloud.ndb._datastore_query._merge_results")
+    @mock.patch("google.cloud.ndb._datastore_query._run_query")
+    @mock.patch("google.cloud.ndb._datastore_query._query_to_protobuf")
+    def test_filters(
+        _query_to_protobuf, _run_query, _merge_results, in_context
+    ):
+        filters = mock.Mock(
+            _to_filter=mock.Mock(return_value=["filter1", "filter2"]),
+            spec="_to_filter",
+        )
+        query = mock.Mock(
+            app=None,
+            filters=filters,
+            namespace=None,
+            projection=None,
+            spec=("app", "filters", "namespace", "projection"),
+        )
+
+        _run_query_future1 = tasklets.Future()
+        _run_query_future2 = tasklets.Future()
+        _run_query.side_effect = [_run_query_future1, _run_query_future2]
+
+        _merge_results.return_value = [("a", "b"), ("c", "d"), ("e", "f")]
+
+        tasklet = _datastore_query.fetch(query)
+        _run_query_future1.set_result("some results")
+        _run_query_future2.set_result("some more results")
+        assert tasklet.result() == ["ab", "cd", "ef"]
+
+        assert _query_to_protobuf.call_count == 2
+        assert _run_query.call_count == 2
+        _merge_results.assert_called_once_with(
+            ("some results", "some more results")
+        )
+
+
+class Test__merge_results:
+    @staticmethod
+    def test_unordered():
+        def result(name):
+            return query_pb2.EntityResult(
+                entity=entity_pb2.Entity(
+                    key=entity_pb2.Key(
+                        path=[
+                            entity_pb2.Key.PathElement(
+                                kind="thiskind", name=name
+                            )
+                        ]
+                    )
+                )
+            )
+
+        merged = _datastore_query._merge_results(
+            [
+                ((1, result("a")), (2, result("b")), (3, result("c"))),
+                ((4, result("b")), (5, result("d"))),
+            ]
+        )
+        expected = [
+            (1, result("a")),
+            (2, result("b")),
+            (3, result("c")),
+            (5, result("d")),
+        ]
+        assert list(merged) == expected
 
 
 class Test__process_result:
@@ -159,6 +294,75 @@ class Test__query_to_protobuf:
         assert _datastore_query._query_to_protobuf(query) == expected_pb
 
     @staticmethod
+    def test_ancestor_with_property_filter():
+        key = key_module.Key("Foo", 123)
+        query = query_module.Query(ancestor=key)
+        filter_pb = query_pb2.PropertyFilter(
+            property=query_pb2.PropertyReference(name="foo"),
+            op=query_pb2.PropertyFilter.EQUAL,
+            value=entity_pb2.Value(string_value="bar"),
+        )
+        ancestor_pb = query_pb2.PropertyFilter(
+            property=query_pb2.PropertyReference(name="__key__"),
+            op=query_pb2.PropertyFilter.HAS_ANCESTOR,
+        )
+        ancestor_pb.value.key_value.CopyFrom(key._key.to_protobuf())
+        expected_pb = query_pb2.Query(
+            filter=query_pb2.Filter(
+                composite_filter=query_pb2.CompositeFilter(
+                    op=query_pb2.CompositeFilter.AND,
+                    filters=[
+                        query_pb2.Filter(property_filter=filter_pb),
+                        query_pb2.Filter(property_filter=ancestor_pb),
+                    ],
+                )
+            )
+        )
+        query_pb = _datastore_query._query_to_protobuf(query, filter_pb)
+        assert query_pb == expected_pb
+
+    @staticmethod
+    def test_ancestor_with_composite_filter():
+        key = key_module.Key("Foo", 123)
+        query = query_module.Query(ancestor=key)
+        filter_pb1 = query_pb2.PropertyFilter(
+            property=query_pb2.PropertyReference(name="foo"),
+            op=query_pb2.PropertyFilter.EQUAL,
+            value=entity_pb2.Value(string_value="bar"),
+        )
+        filter_pb2 = query_pb2.PropertyFilter(
+            property=query_pb2.PropertyReference(name="food"),
+            op=query_pb2.PropertyFilter.EQUAL,
+            value=entity_pb2.Value(string_value="barn"),
+        )
+        filter_pb = query_pb2.CompositeFilter(
+            op=query_pb2.CompositeFilter.AND,
+            filters=[
+                query_pb2.Filter(property_filter=filter_pb1),
+                query_pb2.Filter(property_filter=filter_pb2),
+            ],
+        )
+        ancestor_pb = query_pb2.PropertyFilter(
+            property=query_pb2.PropertyReference(name="__key__"),
+            op=query_pb2.PropertyFilter.HAS_ANCESTOR,
+        )
+        ancestor_pb.value.key_value.CopyFrom(key._key.to_protobuf())
+        expected_pb = query_pb2.Query(
+            filter=query_pb2.Filter(
+                composite_filter=query_pb2.CompositeFilter(
+                    op=query_pb2.CompositeFilter.AND,
+                    filters=[
+                        query_pb2.Filter(property_filter=filter_pb1),
+                        query_pb2.Filter(property_filter=filter_pb2),
+                        query_pb2.Filter(property_filter=ancestor_pb),
+                    ],
+                )
+            )
+        )
+        query_pb = _datastore_query._query_to_protobuf(query, filter_pb)
+        assert query_pb == expected_pb
+
+    @staticmethod
     def test_projection():
         query = query_module.Query(projection=("a", "b"))
         expected_pb = query_pb2.Query(
@@ -183,6 +387,21 @@ class Test__query_to_protobuf:
             ]
         )
         assert _datastore_query._query_to_protobuf(query) == expected_pb
+
+    @staticmethod
+    def test_filter_pb():
+        filter_pb = query_pb2.PropertyFilter(
+            property=query_pb2.PropertyReference(name="foo"),
+            op=query_pb2.PropertyFilter.EQUAL,
+            value=entity_pb2.Value(string_value="bar"),
+        )
+        query = query_module.Query(kind="Foo")
+        query_pb = _datastore_query._query_to_protobuf(query, filter_pb)
+        expected_pb = query_pb2.Query(
+            kind=[query_pb2.KindExpression(name="Foo")],
+            filter=query_pb2.Filter(property_filter=filter_pb),
+        )
+        assert query_pb == expected_pb
 
 
 @pytest.mark.usefixtures("in_context")

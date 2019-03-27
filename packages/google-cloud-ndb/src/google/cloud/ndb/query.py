@@ -279,7 +279,7 @@ class Node:
         raise TypeError("Nodes cannot be ordered")
 
     def _to_filter(self, post=False):
-        """Helper to convert to low-level filter, or :data:`None`.
+        """Helper to convert to low-level filter.
 
         Raises:
             NotImplementedError: Always. This method is virtual.
@@ -409,7 +409,7 @@ class ParameterNode(Node):
         )
 
     def _to_filter(self, post=False):
-        """Helper to convert to low-level filter, or :data:`None`.
+        """Helper to convert to low-level filter.
 
         Args:
             post (bool): Indicates if this is a post-filter node.
@@ -540,22 +540,21 @@ class FilterNode(Node):
         )
 
     def _to_filter(self, post=False):
-        """Helper to convert to low-level filter, or :data:`None`.
+        """Helper to convert to low-level filter.
 
         Args:
             post (bool): Indicates if this is a post-filter node.
 
         Returns:
-            None: If this is a post-filter.
+            Optional[query_pb2.PropertyFilter]: Returns :data:`None`, if
+                this is a post-filter, otherwise returns the protocol buffer
+                representation of the filter.
 
         Raises:
             NotImplementedError: If the ``opsymbol`` is ``!=`` or ``in``, since
                 they should correspond to a composite filter. This should
                 never occur since the constructor will create ``OR`` nodes for
                 ``!=`` and ``in``
-            NotImplementedError: If not a post-filter and the ``opsymbol``
-                is a simple comparison. (For now) this is because the original
-                implementation relied on a low-level datastore query module.
         """
         if post:
             return None
@@ -566,7 +565,9 @@ class FilterNode(Node):
                 "to a single filter ({!r})".format(self._opsymbol)
             )
 
-        raise NotImplementedError("Missing datastore_query.make_filter")
+        return _datastore_query.make_filter(
+            self._name, self._opsymbol, self._value
+        )
 
 
 class PostFilterNode(Node):
@@ -612,7 +613,7 @@ class PostFilterNode(Node):
         return self is other or self.predicate == other.predicate
 
     def _to_filter(self, post=False):
-        """Helper to convert to low-level filter, or :data:`None`.
+        """Helper to convert to low-level filter.
 
         Args:
             post (bool): Indicates if this is a post-filter node.
@@ -801,19 +802,14 @@ class ConjunctionNode(Node):
         return self._nodes == other._nodes
 
     def _to_filter(self, post=False):
-        """Helper to convert to low-level filter, or :data:`None`.
+        """Helper to convert to low-level filter.
 
         Args:
             post (bool): Indicates if this is a post-filter node.
 
         Returns:
             Optional[Node]: The single or composite filter corresponding to
-            the pre- or post-filter nodes stored.
-
-        Raises:
-            NotImplementedError: If a composite filter must be returned. This
-                is because the original implementation relied on a low-level
-                datastore query module.
+                the pre- or post-filter nodes stored. May return :data:`None`.
         """
         filters = []
         for node in self._nodes:
@@ -827,7 +823,7 @@ class ConjunctionNode(Node):
         if len(filters) == 1:
             return filters[0]
 
-        raise NotImplementedError("Missing datastore_query.CompositeFilter")
+        return _datastore_query.make_composite_and_filter(filters)
 
     def _post_filters(self):
         """Helper to extract post-filter nodes, if any.
@@ -961,6 +957,23 @@ class DisjunctionNode(Node):
             return self
 
         return DisjunctionNode(*resolved_nodes)
+
+    def _to_filter(self, post=False):
+        """Helper to convert to low-level filters.
+
+        Args:
+            post (bool): Indicates if this is a post-filter node.
+
+        Returns:
+            Optional[List[Node]]: List of filter protocol buffers that should
+                be combined using OR. The code in `_datastore_query` will
+                recognize that a list has been returned and run multiple
+                queries.
+        """
+        if post:
+            raise NotImplementedError("No idea what I should do here, yet.")
+
+        return [node._to_filter(post=post) for node in self._nodes]
 
 
 # AND and OR are preferred aliases for these.
