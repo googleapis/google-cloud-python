@@ -30,6 +30,11 @@ try:
 except ImportError:  # pragma: NO COVER
     pandas = None
 
+try:
+    import tqdm
+except ImportError:  # pragma: NO COVER
+    tqdm = None
+
 from google.api_core.page_iterator import HTTPIterator
 
 import google.cloud._helpers
@@ -1336,11 +1341,15 @@ class RowIterator(HTTPIterator):
         frames = []
 
         # report progress if tqdm installed
-        try:
-            from tqdm import tqdm
-            pbar = tqdm(desc="Downloading", total=self.total_rows, unit="rows")
-        except (ImportError, KeyError, TypeError):
-            pbar = None
+        pbar = None
+        if tqdm is not None:
+            try:
+                pbar = tqdm.tqdm(
+                    desc="Downloading", total=self.total_rows, unit="rows"
+                )
+            except (KeyError, TypeError):
+                # tqdm error
+                pass
 
         for page in iter(self.pages):
             frames.append(self._to_dataframe_dtypes(page, column_names, dtypes))
