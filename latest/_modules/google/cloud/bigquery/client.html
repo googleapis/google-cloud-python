@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery.client &#8212; google-cloud 7f1cfee documentation</title>
+    <title>google.cloud.bigquery.client &#8212; google-cloud 39c1efc documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -84,11 +84,12 @@
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery</span> <span class="k">import</span> <span class="n">job</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery.query</span> <span class="k">import</span> <span class="n">_QueryResults</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery.retry</span> <span class="k">import</span> <span class="n">DEFAULT_RETRY</span>
+<span class="kn">from</span> <span class="nn">google.cloud.bigquery.table</span> <span class="k">import</span> <span class="n">_table_arg_to_table</span>
+<span class="kn">from</span> <span class="nn">google.cloud.bigquery.table</span> <span class="k">import</span> <span class="n">_table_arg_to_table_ref</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery.table</span> <span class="k">import</span> <span class="n">Table</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery.table</span> <span class="k">import</span> <span class="n">TableListItem</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery.table</span> <span class="k">import</span> <span class="n">TableReference</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery.table</span> <span class="k">import</span> <span class="n">RowIterator</span>
-<span class="kn">from</span> <span class="nn">google.cloud.bigquery.table</span> <span class="k">import</span> <span class="n">_TABLE_HAS_NO_SCHEMA</span>
 
 
 <span class="n">_DEFAULT_CHUNKSIZE</span> <span class="o">=</span> <span class="mi">1048576</span>  <span class="c1"># 1024 * 1024 B = 1 MB</span>
@@ -103,6 +104,9 @@
 <span class="n">_GENERIC_CONTENT_TYPE</span> <span class="o">=</span> <span class="sa">u</span><span class="s2">&quot;*/*&quot;</span>
 <span class="n">_READ_LESS_THAN_SIZE</span> <span class="o">=</span> <span class="p">(</span>
     <span class="s2">&quot;Size </span><span class="si">{:d}</span><span class="s2"> was specified but the file-like object only had &quot;</span> <span class="s2">&quot;</span><span class="si">{:d}</span><span class="s2"> bytes remaining.&quot;</span>
+<span class="p">)</span>
+<span class="n">_NEED_TABLE_ARGUMENT</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s2">&quot;The table argument should be a table ID string, Table, or TableReference&quot;</span>
 <span class="p">)</span>
 
 
@@ -415,10 +419,7 @@
 <span class="sd">            google.cloud.bigquery.table.Table:</span>
 <span class="sd">                A new ``Table`` returned from the service.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-            <span class="n">table</span> <span class="o">=</span> <span class="n">TableReference</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">default_project</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">)</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">TableReference</span><span class="p">):</span>
-            <span class="n">table</span> <span class="o">=</span> <span class="n">Table</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>
+        <span class="n">table</span> <span class="o">=</span> <span class="n">_table_arg_to_table</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">default_project</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">)</span>
 
         <span class="n">path</span> <span class="o">=</span> <span class="s2">&quot;/projects/</span><span class="si">%s</span><span class="s2">/datasets/</span><span class="si">%s</span><span class="s2">/tables&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">project</span><span class="p">,</span> <span class="n">table</span><span class="o">.</span><span class="n">dataset_id</span><span class="p">)</span>
         <span class="n">data</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">to_api_repr</span><span class="p">()</span>
@@ -463,11 +464,12 @@
         <span class="n">api_response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_call_api</span><span class="p">(</span><span class="n">retry</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;GET&quot;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">dataset_ref</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">Dataset</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">api_response</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Client.get_table"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.client.Client.html#google.cloud.bigquery.client.Client.get_table">[docs]</a>    <span class="k">def</span> <span class="nf">get_table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table_ref</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">DEFAULT_RETRY</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Fetch the table referenced by ``table_ref``.</span>
+<div class="viewcode-block" id="Client.get_table"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.client.Client.html#google.cloud.bigquery.client.Client.get_table">[docs]</a>    <span class="k">def</span> <span class="nf">get_table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">DEFAULT_RETRY</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Fetch the table referenced by ``table``.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            table_ref (Union[ \</span>
+<span class="sd">            table (Union[ \</span>
+<span class="sd">                :class:`~google.cloud.bigquery.table.Table`, \</span>
 <span class="sd">                :class:`~google.cloud.bigquery.table.TableReference`, \</span>
 <span class="sd">                str, \</span>
 <span class="sd">            ]):</span>
@@ -482,11 +484,7 @@
 <span class="sd">            google.cloud.bigquery.table.Table:</span>
 <span class="sd">                A ``Table`` instance.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">table_ref</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-            <span class="n">table_ref</span> <span class="o">=</span> <span class="n">TableReference</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span>
-                <span class="n">table_ref</span><span class="p">,</span> <span class="n">default_project</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span>
-            <span class="p">)</span>
-
+        <span class="n">table_ref</span> <span class="o">=</span> <span class="n">_table_arg_to_table_ref</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">default_project</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">)</span>
         <span class="n">api_response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_call_api</span><span class="p">(</span><span class="n">retry</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;GET&quot;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">table_ref</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">Table</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">api_response</span><span class="p">)</span></div>
 
@@ -689,11 +687,9 @@
 <span class="sd">                Defaults to ``False``. If ``True``, ignore &quot;not found&quot; errors</span>
 <span class="sd">                when deleting the table.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-            <span class="n">table</span> <span class="o">=</span> <span class="n">TableReference</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">default_project</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="p">(</span><span class="n">Table</span><span class="p">,</span> <span class="n">TableReference</span><span class="p">)):</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;table must be a Table or a TableReference&quot;</span><span class="p">)</span>
+        <span class="n">table</span> <span class="o">=</span> <span class="n">_table_arg_to_table_ref</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">default_project</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">TableReference</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Unable to get TableReference for table &#39;</span><span class="si">{}</span><span class="s2">&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">table</span><span class="p">))</span>
 
         <span class="k">try</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_call_api</span><span class="p">(</span><span class="n">retry</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;DELETE&quot;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">table</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
@@ -961,6 +957,7 @@
 <span class="sd">                URIs of data files to be loaded; in format</span>
 <span class="sd">                ``gs://&lt;bucket_name&gt;/&lt;object_name_or_glob&gt;``.</span>
 <span class="sd">            destination (Union[ \</span>
+<span class="sd">                :class:`~google.cloud.bigquery.table.Table`, \</span>
 <span class="sd">                :class:`~google.cloud.bigquery.table.TableReference`, \</span>
 <span class="sd">                str, \</span>
 <span class="sd">            ]):</span>
@@ -1002,11 +999,7 @@
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">source_uris</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">string_types</span><span class="p">):</span>
             <span class="n">source_uris</span> <span class="o">=</span> <span class="p">[</span><span class="n">source_uris</span><span class="p">]</span>
 
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">destination</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-            <span class="n">destination</span> <span class="o">=</span> <span class="n">TableReference</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span>
-                <span class="n">destination</span><span class="p">,</span> <span class="n">default_project</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span>
-            <span class="p">)</span>
-
+        <span class="n">destination</span> <span class="o">=</span> <span class="n">_table_arg_to_table_ref</span><span class="p">(</span><span class="n">destination</span><span class="p">,</span> <span class="n">default_project</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">)</span>
         <span class="n">load_job</span> <span class="o">=</span> <span class="n">job</span><span class="o">.</span><span class="n">LoadJob</span><span class="p">(</span><span class="n">job_ref</span><span class="p">,</span> <span class="n">source_uris</span><span class="p">,</span> <span class="n">destination</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">job_config</span><span class="p">)</span>
         <span class="n">load_job</span><span class="o">.</span><span class="n">_begin</span><span class="p">(</span><span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">)</span>
 
@@ -1033,6 +1026,7 @@
 <span class="sd">        Arguments:</span>
 <span class="sd">            file_obj (file): A file handle opened in binary mode for reading.</span>
 <span class="sd">            destination (Union[ \</span>
+<span class="sd">                :class:`~google.cloud.bigquery.table.Table`, \</span>
 <span class="sd">                :class:`~google.cloud.bigquery.table.TableReference`, \</span>
 <span class="sd">                str, \</span>
 <span class="sd">            ]):</span>
@@ -1081,11 +1075,7 @@
         <span class="k">if</span> <span class="n">location</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">location</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">location</span>
 
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">destination</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-            <span class="n">destination</span> <span class="o">=</span> <span class="n">TableReference</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span>
-                <span class="n">destination</span><span class="p">,</span> <span class="n">default_project</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span>
-            <span class="p">)</span>
-
+        <span class="n">destination</span> <span class="o">=</span> <span class="n">_table_arg_to_table_ref</span><span class="p">(</span><span class="n">destination</span><span class="p">,</span> <span class="n">default_project</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">)</span>
         <span class="n">job_ref</span> <span class="o">=</span> <span class="n">job</span><span class="o">.</span><span class="n">_JobReference</span><span class="p">(</span><span class="n">job_id</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span> <span class="n">location</span><span class="o">=</span><span class="n">location</span><span class="p">)</span>
         <span class="n">load_job</span> <span class="o">=</span> <span class="n">job</span><span class="o">.</span><span class="n">LoadJob</span><span class="p">(</span><span class="n">job_ref</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">destination</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">job_config</span><span class="p">)</span>
         <span class="n">job_resource</span> <span class="o">=</span> <span class="n">load_job</span><span class="o">.</span><span class="n">to_api_repr</span><span class="p">()</span>
@@ -1322,13 +1312,20 @@
 
 <span class="sd">        Arguments:</span>
 <span class="sd">            sources (Union[ \</span>
+<span class="sd">                :class:`~google.cloud.bigquery.table.Table`, \</span>
 <span class="sd">                :class:`~google.cloud.bigquery.table.TableReference`, \</span>
 <span class="sd">                str, \</span>
 <span class="sd">                Sequence[ \</span>
-<span class="sd">                    :class:`~google.cloud.bigquery.table.TableReference`], \</span>
+<span class="sd">                    Union[ \</span>
+<span class="sd">                        :class:`~google.cloud.bigquery.table.Table`, \</span>
+<span class="sd">                        :class:`~google.cloud.bigquery.table.TableReference`, \</span>
+<span class="sd">                        str, \</span>
+<span class="sd">                    ] \</span>
+<span class="sd">                ], \</span>
 <span class="sd">            ]):</span>
 <span class="sd">                Table or tables to be copied.</span>
 <span class="sd">            destination (Union[</span>
+<span class="sd">                :class:`~google.cloud.bigquery.table.Table`, \</span>
 <span class="sd">                :class:`~google.cloud.bigquery.table.TableReference`, \</span>
 <span class="sd">                str, \</span>
 <span class="sd">            ]):</span>
@@ -1364,16 +1361,22 @@
 
         <span class="n">job_ref</span> <span class="o">=</span> <span class="n">job</span><span class="o">.</span><span class="n">_JobReference</span><span class="p">(</span><span class="n">job_id</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span> <span class="n">location</span><span class="o">=</span><span class="n">location</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">sources</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-            <span class="n">sources</span> <span class="o">=</span> <span class="n">TableReference</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span><span class="n">sources</span><span class="p">,</span> <span class="n">default_project</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">destination</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-            <span class="n">destination</span> <span class="o">=</span> <span class="n">TableReference</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span>
-                <span class="n">destination</span><span class="p">,</span> <span class="n">default_project</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span>
-            <span class="p">)</span>
+        <span class="c1"># sources can be one of many different input types. (string, Table,</span>
+        <span class="c1"># TableReference, or a sequence of any of those.) Convert them all to a</span>
+        <span class="c1"># list of TableReferences.</span>
+        <span class="c1">#</span>
+        <span class="c1"># _table_arg_to_table_ref leaves lists unmodified.</span>
+        <span class="n">sources</span> <span class="o">=</span> <span class="n">_table_arg_to_table_ref</span><span class="p">(</span><span class="n">sources</span><span class="p">,</span> <span class="n">default_project</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">sources</span><span class="p">,</span> <span class="n">collections_abc</span><span class="o">.</span><span class="n">Sequence</span><span class="p">):</span>
             <span class="n">sources</span> <span class="o">=</span> <span class="p">[</span><span class="n">sources</span><span class="p">]</span>
+
+        <span class="n">sources</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">_table_arg_to_table_ref</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">default_project</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">source</span> <span class="ow">in</span> <span class="n">sources</span>
+        <span class="p">]</span>
+
+        <span class="n">destination</span> <span class="o">=</span> <span class="n">_table_arg_to_table_ref</span><span class="p">(</span><span class="n">destination</span><span class="p">,</span> <span class="n">default_project</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">)</span>
 
         <span class="n">copy_job</span> <span class="o">=</span> <span class="n">job</span><span class="o">.</span><span class="n">CopyJob</span><span class="p">(</span>
             <span class="n">job_ref</span><span class="p">,</span> <span class="n">sources</span><span class="p">,</span> <span class="n">destination</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">job_config</span><span class="o">=</span><span class="n">job_config</span>
@@ -1400,6 +1403,7 @@
 
 <span class="sd">        Arguments:</span>
 <span class="sd">            source (Union[ \</span>
+<span class="sd">                :class:`google.cloud.bigquery.table.Table`, \</span>
 <span class="sd">                :class:`google.cloud.bigquery.table.TableReference`, \</span>
 <span class="sd">                src, \</span>
 <span class="sd">            ]):</span>
@@ -1441,9 +1445,7 @@
             <span class="n">location</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">location</span>
 
         <span class="n">job_ref</span> <span class="o">=</span> <span class="n">job</span><span class="o">.</span><span class="n">_JobReference</span><span class="p">(</span><span class="n">job_id</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span> <span class="n">location</span><span class="o">=</span><span class="n">location</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-            <span class="n">source</span> <span class="o">=</span> <span class="n">TableReference</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">default_project</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">)</span>
+        <span class="n">source</span> <span class="o">=</span> <span class="n">_table_arg_to_table_ref</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">default_project</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">destination_uris</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">string_types</span><span class="p">):</span>
             <span class="n">destination_uris</span> <span class="o">=</span> <span class="p">[</span><span class="n">destination_uris</span><span class="p">]</span>
@@ -1565,19 +1567,24 @@
 <span class="sd">        Raises:</span>
 <span class="sd">            ValueError: if table&#39;s schema is not set</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-            <span class="n">table</span> <span class="o">=</span> <span class="n">TableReference</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">default_project</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">)</span>
+        <span class="n">table</span> <span class="o">=</span> <span class="n">_table_arg_to_table</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">default_project</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">)</span>
 
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">Table</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">_NEED_TABLE_ARGUMENT</span><span class="p">)</span>
+
+        <span class="n">schema</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">schema</span>
+
+        <span class="c1"># selected_fields can override the table schema.</span>
         <span class="k">if</span> <span class="n">selected_fields</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">schema</span> <span class="o">=</span> <span class="n">selected_fields</span>
-        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">TableReference</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;need selected_fields with TableReference&quot;</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">Table</span><span class="p">):</span>
-            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">schema</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">_TABLE_HAS_NO_SCHEMA</span><span class="p">)</span>
-            <span class="n">schema</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">schema</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;table should be Table or TableReference&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">schema</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="p">(</span>
+                    <span class="s2">&quot;Could not determine schema for table &#39;</span><span class="si">{}</span><span class="s2">&#39;. Call client.get_table() &quot;</span>
+                    <span class="s2">&quot;or pass in a list of schema fields to the selected_fields argument.&quot;</span>
+                <span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>
+            <span class="p">)</span>
 
         <span class="n">json_rows</span> <span class="o">=</span> <span class="p">[</span><span class="n">_record_field_to_json</span><span class="p">(</span><span class="n">schema</span><span class="p">,</span> <span class="n">row</span><span class="p">)</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">rows</span><span class="p">]</span>
 
@@ -1632,9 +1639,10 @@
 <span class="sd">                identifies the row, and the &quot;errors&quot; key contains a list of</span>
 <span class="sd">                the mappings describing one or more problems with the row.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-            <span class="n">table</span> <span class="o">=</span> <span class="n">TableReference</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">default_project</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">)</span>
-
+        <span class="c1"># Convert table to just a reference because unlike insert_rows,</span>
+        <span class="c1"># insert_rows_json doesn&#39;t need the table schema. It&#39;s not doing any</span>
+        <span class="c1"># type conversions.</span>
+        <span class="n">table</span> <span class="o">=</span> <span class="n">_table_arg_to_table_ref</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">default_project</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">)</span>
         <span class="n">rows_info</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;rows&quot;</span><span class="p">:</span> <span class="n">rows_info</span><span class="p">}</span>
 
@@ -1683,9 +1691,7 @@
 <span class="sd">            List[str]:</span>
 <span class="sd">                A list of the partition ids present in the partitioned table</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-            <span class="n">table</span> <span class="o">=</span> <span class="n">TableReference</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">default_project</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">)</span>
-
+        <span class="n">table</span> <span class="o">=</span> <span class="n">_table_arg_to_table_ref</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">default_project</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">)</span>
         <span class="n">meta_table</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_table</span><span class="p">(</span>
             <span class="n">TableReference</span><span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">dataset_id</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="n">table</span><span class="o">.</span><span class="n">project</span><span class="p">),</span>
@@ -1760,19 +1766,25 @@
 <span class="sd">                (this is distinct from the total number of rows in the</span>
 <span class="sd">                current page: ``iterator.page.num_items``).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-            <span class="n">table</span> <span class="o">=</span> <span class="n">TableReference</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">default_project</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">)</span>
+        <span class="n">table</span> <span class="o">=</span> <span class="n">_table_arg_to_table</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">default_project</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">)</span>
 
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">Table</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">_NEED_TABLE_ARGUMENT</span><span class="p">)</span>
+
+        <span class="n">schema</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">schema</span>
+
+        <span class="c1"># selected_fields can override the table schema.</span>
         <span class="k">if</span> <span class="n">selected_fields</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">schema</span> <span class="o">=</span> <span class="n">selected_fields</span>
-        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">TableReference</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;need selected_fields with TableReference&quot;</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">Table</span><span class="p">):</span>
-            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">schema</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">table</span><span class="o">.</span><span class="n">created</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">_TABLE_HAS_NO_SCHEMA</span><span class="p">)</span>
-            <span class="n">schema</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">schema</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;table should be Table or TableReference&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Allow listing rows of an empty table by not raising if the table exists.</span>
+        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">schema</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">table</span><span class="o">.</span><span class="n">created</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="p">(</span>
+                    <span class="s2">&quot;Could not determine schema for table &#39;</span><span class="si">{}</span><span class="s2">&#39;. Call client.get_table() &quot;</span>
+                    <span class="s2">&quot;or pass in a list of schema fields to the selected_fields argument.&quot;</span>
+                <span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>
+            <span class="p">)</span>
 
         <span class="n">params</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">if</span> <span class="n">selected_fields</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>

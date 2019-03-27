@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery.client.Client &#8212; google-cloud 7f1cfee documentation</title>
+    <title>google.cloud.bigquery.client.Client &#8212; google-cloud 39c1efc documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -80,8 +80,8 @@
 <tr class="row-even"><td><a class="reference internal" href="#google.cloud.bigquery.client.Client.get_service_account_email" title="google.cloud.bigquery.client.Client.get_service_account_email"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_service_account_email</span></code></a>([project])</td>
 <td>Get the email address of the project’s BigQuery service account</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#google.cloud.bigquery.client.Client.get_table" title="google.cloud.bigquery.client.Client.get_table"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_table</span></code></a>(table_ref[,&nbsp;retry])</td>
-<td>Fetch the table referenced by <code class="docutils literal notranslate"><span class="pre">table_ref</span></code>.</td>
+<tr class="row-odd"><td><a class="reference internal" href="#google.cloud.bigquery.client.Client.get_table" title="google.cloud.bigquery.client.Client.get_table"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_table</span></code></a>(table[,&nbsp;retry])</td>
+<td>Fetch the table referenced by <code class="docutils literal notranslate"><span class="pre">table</span></code>.</td>
 </tr>
 <tr class="row-even"><td><a class="reference internal" href="#google.cloud.bigquery.client.Client.insert_rows" title="google.cloud.bigquery.client.Client.insert_rows"><code class="xref py py-obj docutils literal notranslate"><span class="pre">insert_rows</span></code></a>(table,&nbsp;rows[,&nbsp;selected_fields])</td>
 <td>Insert rows into a table via the streaming API.</td>
@@ -231,8 +231,8 @@ the client’s project).</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>sources</strong> (Union[                 <a class="reference internal" href="google.cloud.bigquery.table.TableReference.html#google.cloud.bigquery.table.TableReference" title="google.cloud.bigquery.table.TableReference"><code class="xref py py-class docutils literal notranslate"><span class="pre">TableReference</span></code></a>,                 str,                 Sequence[                     <a class="reference internal" href="google.cloud.bigquery.table.TableReference.html#google.cloud.bigquery.table.TableReference" title="google.cloud.bigquery.table.TableReference"><code class="xref py py-class docutils literal notranslate"><span class="pre">TableReference</span></code></a>],             ]) – Table or tables to be copied.</li>
-<li><strong>(</strong><strong>Union</strong><strong>[</strong> (<em>destination</em>) – <a class="reference internal" href="google.cloud.bigquery.table.TableReference.html#google.cloud.bigquery.table.TableReference" title="google.cloud.bigquery.table.TableReference"><code class="xref py py-class docutils literal notranslate"><span class="pre">TableReference</span></code></a>,                 str,             ]):
+<li><strong>sources</strong> (Union[                 <a class="reference internal" href="google.cloud.bigquery.table.Table.html#google.cloud.bigquery.table.Table" title="google.cloud.bigquery.table.Table"><code class="xref py py-class docutils literal notranslate"><span class="pre">Table</span></code></a>,                 <a class="reference internal" href="google.cloud.bigquery.table.TableReference.html#google.cloud.bigquery.table.TableReference" title="google.cloud.bigquery.table.TableReference"><code class="xref py py-class docutils literal notranslate"><span class="pre">TableReference</span></code></a>,                 str,                 Sequence[                     Union[                         <a class="reference internal" href="google.cloud.bigquery.table.Table.html#google.cloud.bigquery.table.Table" title="google.cloud.bigquery.table.Table"><code class="xref py py-class docutils literal notranslate"><span class="pre">Table</span></code></a>,                         <a class="reference internal" href="google.cloud.bigquery.table.TableReference.html#google.cloud.bigquery.table.TableReference" title="google.cloud.bigquery.table.TableReference"><code class="xref py py-class docutils literal notranslate"><span class="pre">TableReference</span></code></a>,                         str,                     ]                 ],             ]) – Table or tables to be copied.</li>
+<li><strong>(</strong><strong>Union</strong><strong>[</strong> (<em>destination</em>) – <a class="reference internal" href="google.cloud.bigquery.table.Table.html#google.cloud.bigquery.table.Table" title="google.cloud.bigquery.table.Table"><code class="xref py py-class docutils literal notranslate"><span class="pre">Table</span></code></a>,                 <a class="reference internal" href="google.cloud.bigquery.table.TableReference.html#google.cloud.bigquery.table.TableReference" title="google.cloud.bigquery.table.TableReference"><code class="xref py py-class docutils literal notranslate"><span class="pre">TableReference</span></code></a>,                 str,             ]):
 Table into which data is to be copied.</li>
 </ul>
 </td>
@@ -578,14 +578,14 @@ Defaults to the client’s project.</td>
 
 <dl class="method">
 <dt id="google.cloud.bigquery.client.Client.get_table">
-<code class="descname">get_table</code><span class="sig-paren">(</span><em>table_ref</em>, <em>retry=&lt;google.api_core.retry.Retry object&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/google/cloud/bigquery/client.html#Client.get_table"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.client.Client.get_table" title="Permalink to this definition">#</a></dt>
-<dd><p>Fetch the table referenced by <code class="docutils literal notranslate"><span class="pre">table_ref</span></code>.</p>
+<code class="descname">get_table</code><span class="sig-paren">(</span><em>table</em>, <em>retry=&lt;google.api_core.retry.Retry object&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/google/cloud/bigquery/client.html#Client.get_table"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.client.Client.get_table" title="Permalink to this definition">#</a></dt>
+<dd><p>Fetch the table referenced by <code class="docutils literal notranslate"><span class="pre">table</span></code>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>table_ref</strong> (Union[                 <a class="reference internal" href="google.cloud.bigquery.table.TableReference.html#google.cloud.bigquery.table.TableReference" title="google.cloud.bigquery.table.TableReference"><code class="xref py py-class docutils literal notranslate"><span class="pre">TableReference</span></code></a>,                 str,             ]) – A reference to the table to fetch from the BigQuery API.
+<li><strong>table</strong> (Union[                 <a class="reference internal" href="google.cloud.bigquery.table.Table.html#google.cloud.bigquery.table.Table" title="google.cloud.bigquery.table.Table"><code class="xref py py-class docutils literal notranslate"><span class="pre">Table</span></code></a>,                 <a class="reference internal" href="google.cloud.bigquery.table.TableReference.html#google.cloud.bigquery.table.TableReference" title="google.cloud.bigquery.table.TableReference"><code class="xref py py-class docutils literal notranslate"><span class="pre">TableReference</span></code></a>,                 str,             ]) – A reference to the table to fetch from the BigQuery API.
 If a string is passed in, this method attempts to create a
 table reference from a string using
 <a class="reference internal" href="google.cloud.bigquery.table.TableReference.html#google.cloud.bigquery.table.TableReference.from_string" title="google.cloud.bigquery.table.TableReference.from_string"><code class="xref py py-func docutils literal notranslate"><span class="pre">google.cloud.bigquery.table.TableReference.from_string()</span></code></a>.</li>
@@ -1017,7 +1017,7 @@ returns a <a class="reference internal" href="google.cloud.bigquery.job.LoadJob.
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>file_obj</strong> (<em>file</em>) – A file handle opened in binary mode for reading.</li>
-<li><strong>destination</strong> (Union[                 <a class="reference internal" href="google.cloud.bigquery.table.TableReference.html#google.cloud.bigquery.table.TableReference" title="google.cloud.bigquery.table.TableReference"><code class="xref py py-class docutils literal notranslate"><span class="pre">TableReference</span></code></a>,                 str,             ]) – Table into which data is to be loaded. If a string is passed
+<li><strong>destination</strong> (Union[                 <a class="reference internal" href="google.cloud.bigquery.table.Table.html#google.cloud.bigquery.table.Table" title="google.cloud.bigquery.table.Table"><code class="xref py py-class docutils literal notranslate"><span class="pre">Table</span></code></a>,                 <a class="reference internal" href="google.cloud.bigquery.table.TableReference.html#google.cloud.bigquery.table.TableReference" title="google.cloud.bigquery.table.TableReference"><code class="xref py py-class docutils literal notranslate"><span class="pre">TableReference</span></code></a>,                 str,             ]) – Table into which data is to be loaded. If a string is passed
 in, this method attempts to create a table reference from a
 string using
 <a class="reference internal" href="google.cloud.bigquery.table.TableReference.html#google.cloud.bigquery.table.TableReference.from_string" title="google.cloud.bigquery.table.TableReference.from_string"><code class="xref py py-func docutils literal notranslate"><span class="pre">google.cloud.bigquery.table.TableReference.from_string()</span></code></a>.</li>
@@ -1072,7 +1072,7 @@ mode.</p>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>source_uris</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>Sequence</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em>) – URIs of data files to be loaded; in format
 <code class="docutils literal notranslate"><span class="pre">gs://&lt;bucket_name&gt;/&lt;object_name_or_glob&gt;</span></code>.</li>
-<li><strong>destination</strong> (Union[                 <a class="reference internal" href="google.cloud.bigquery.table.TableReference.html#google.cloud.bigquery.table.TableReference" title="google.cloud.bigquery.table.TableReference"><code class="xref py py-class docutils literal notranslate"><span class="pre">TableReference</span></code></a>,                 str,             ]) – Table into which data is to be loaded. If a string is passed
+<li><strong>destination</strong> (Union[                 <a class="reference internal" href="google.cloud.bigquery.table.Table.html#google.cloud.bigquery.table.Table" title="google.cloud.bigquery.table.Table"><code class="xref py py-class docutils literal notranslate"><span class="pre">Table</span></code></a>,                 <a class="reference internal" href="google.cloud.bigquery.table.TableReference.html#google.cloud.bigquery.table.TableReference" title="google.cloud.bigquery.table.TableReference"><code class="xref py py-class docutils literal notranslate"><span class="pre">TableReference</span></code></a>,                 str,             ]) – Table into which data is to be loaded. If a string is passed
 in, this method attempts to create a table reference from a
 string using
 <a class="reference internal" href="google.cloud.bigquery.table.TableReference.html#google.cloud.bigquery.table.TableReference.from_string" title="google.cloud.bigquery.table.TableReference.from_string"><code class="xref py py-func docutils literal notranslate"><span class="pre">google.cloud.bigquery.table.TableReference.from_string()</span></code></a>.</li>
