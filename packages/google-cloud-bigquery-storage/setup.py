@@ -25,6 +25,7 @@ version = '0.2.0'
 release_status = 'Development Status :: 3 - Alpha'
 dependencies = [
     'google-api-core[grpc] >= 1.6.0, < 2.0.0dev',
+    'googleapis-common-protos >= 1.5.9, < 2.0.0dev',
     'enum34; python_version < "3.4"',
 ]
 extras = {
