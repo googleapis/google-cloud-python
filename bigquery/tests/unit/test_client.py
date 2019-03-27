@@ -3427,7 +3427,7 @@ class TestClient(unittest.TestCase):
         )
 
     def test_insert_rows_wo_schema(self):
-        from google.cloud.bigquery.table import Table, _TABLE_HAS_NO_SCHEMA
+        from google.cloud.bigquery.table import Table
 
         creds = _make_credentials()
         http = object()

@@ -54,7 +54,6 @@ from google.cloud.bigquery.table import Table
 from google.cloud.bigquery.table import TableListItem
 from google.cloud.bigquery.table import TableReference
 from google.cloud.bigquery.table import RowIterator
-from google.cloud.bigquery.table import _TABLE_HAS_NO_SCHEMA
 
 
 _DEFAULT_CHUNKSIZE = 1048576  # 1024 * 1024 B = 1 MB
@@ -429,11 +428,11 @@ class Client(ClientWithProject):
         api_response = self._call_api(retry, method="GET", path=dataset_ref.path)
         return Dataset.from_api_repr(api_response)
 
-    def get_table(self, table_ref, retry=DEFAULT_RETRY):
-        """Fetch the table referenced by ``table_ref``.
+    def get_table(self, table, retry=DEFAULT_RETRY):
+        """Fetch the table referenced by ``table``.
 
         Args:
-            table_ref (Union[ \
+            table (Union[ \
                 :class:`~google.cloud.bigquery.table.Table`, \
                 :class:`~google.cloud.bigquery.table.TableReference`, \
                 str, \
@@ -449,7 +448,7 @@ class Client(ClientWithProject):
             google.cloud.bigquery.table.Table:
                 A ``Table`` instance.
         """
-        table_ref = _table_arg_to_table_ref(table_ref, default_project=self.project)
+        table_ref = _table_arg_to_table_ref(table, default_project=self.project)
         api_response = self._call_api(retry, method="GET", path=table_ref.path)
         return Table.from_api_repr(api_response)
 
@@ -964,9 +963,7 @@ class Client(ClientWithProject):
         if isinstance(source_uris, six.string_types):
             source_uris = [source_uris]
 
-        destination = _table_arg_to_table_ref(
-            destination, default_project=self.project
-        )
+        destination = _table_arg_to_table_ref(destination, default_project=self.project)
         load_job = job.LoadJob(job_ref, source_uris, destination, self, job_config)
         load_job._begin(retry=retry)
 
@@ -1042,9 +1039,7 @@ class Client(ClientWithProject):
         if location is None:
             location = self.location
 
-        destination = _table_arg_to_table_ref(
-            destination, default_project=self.project
-        )
+        destination = _table_arg_to_table_ref(destination, default_project=self.project)
         job_ref = job._JobReference(job_id, project=project, location=location)
         load_job = job.LoadJob(job_ref, None, destination, self, job_config)
         job_resource = load_job.to_api_repr()
@@ -1345,9 +1340,7 @@ class Client(ClientWithProject):
             for source in sources
         ]
 
-        destination = _table_arg_to_table_ref(
-            destination, default_project=self.project
-        )
+        destination = _table_arg_to_table_ref(destination, default_project=self.project)
 
         copy_job = job.CopyJob(
             job_ref, sources, destination, client=self, job_config=job_config
@@ -1550,10 +1543,12 @@ class Client(ClientWithProject):
             schema = selected_fields
 
         if len(schema) == 0:
-            raise ValueError((
-                "Could not determine schema for table '{}'. Call client.get_table() "
-                "or pass in a list of schema fields to the selected_fields argument."
-            ).format(table))
+            raise ValueError(
+                (
+                    "Could not determine schema for table '{}'. Call client.get_table() "
+                    "or pass in a list of schema fields to the selected_fields argument."
+                ).format(table)
+            )
 
         json_rows = [_record_field_to_json(schema, row) for row in rows]
 
@@ -1748,10 +1743,12 @@ class Client(ClientWithProject):
 
         # Allow listing rows of an empty table by not raising if the table exists.
         elif len(schema) == 0 and table.created is None:
-            raise ValueError((
-                "Could not determine schema for table '{}'. Call client.get_table() "
-                "or pass in a list of schema fields to the selected_fields argument."
-            ).format(table))
+            raise ValueError(
+                (
+                    "Could not determine schema for table '{}'. Call client.get_table() "
+                    "or pass in a list of schema fields to the selected_fields argument."
+                ).format(table)
+            )
 
         params = {}
         if selected_fields is not None:

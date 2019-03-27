@@ -1686,4 +1686,3 @@ def _table_arg_to_table(value, default_project=None):
         value = Table(value)
 
     return value
-
