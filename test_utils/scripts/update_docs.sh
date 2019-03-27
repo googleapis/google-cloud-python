@@ -24,7 +24,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 # Function to build the docs.
 function build_docs {
     rm -rf docs/_build/
-    rm -rf docs/bigquery/generated
+    rm -f docs/bigquery/generated/*.rst
     # -W -> warnings as errors
     # -T -> show full traceback on exception
     # -N -> no color
