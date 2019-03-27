@@ -1341,23 +1341,28 @@ class RowIterator(HTTPIterator):
         frames = []
 
         # report progress if tqdm installed
-        pbar = None
+        progress_bar = None
         if tqdm is not None:
             try:
-                pbar = tqdm.tqdm(
+                progress_bar = tqdm.tqdm(
                     desc="Downloading", total=self.total_rows, unit="rows"
                 )
             except (KeyError, TypeError):
-                # tqdm error
+                # Protect ourselves from any tqdm errors. In case of
+                # unexpected tqdm behavior, just fall back to showing
+                # no progress bar.
                 pass
 
         for page in iter(self.pages):
-            frames.append(self._to_dataframe_dtypes(page, column_names, dtypes))
+            current_frame = self._to_dataframe_dtypes(page, column_names, dtypes)
+            frames.append(current_frame)
 
-            if pbar is not None:
-                pbar.total = pbar.total or self.total_rows
-                # update progress bar with number of rows in last frame
-                pbar.update(len(frames[-1]))
+            if progress_bar is not None:
+                # In some cases, the number of total rows is not populated
+                # until the first page of rows is fetched. Update the
+                # progress bar's total to keep an accurate count.
+                progress_bar.total = progress_bar.total or self.total_rows
+                progress_bar.update(len(current_frame))
 
         return pandas.concat(frames)
 
