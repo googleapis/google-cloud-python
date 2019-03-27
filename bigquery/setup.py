@@ -40,6 +40,7 @@ extras = {
     'pyarrow: platform_system != "Windows" or python_version >= "3.4"':
         'pyarrow>=0.4.1',
     'tqdm': 'tqdm >= 4.31.1',
+    'fastparquet': ['fastparquet', 'python-snappy'],
 }
 
 

@@ -4,6 +4,17 @@
 
 [1]: https://pypi.org/project/google-cloud-tasks/#history
 
+## 0.6.0
+
+03-26-2019 13:35 PDT
+
+
+### Implementation Changes
+- Remove classifier for Python 3.4 for end-of-life. ([#7535](https://github.com/googleapis/google-cloud-python/pull/7535))
+
+### New Features
+- Generate v2. ([#7547](https://github.com/googleapis/google-cloud-python/pull/7547))
+
 ## 0.5.0
 
 03-06-2019 15:03 PST

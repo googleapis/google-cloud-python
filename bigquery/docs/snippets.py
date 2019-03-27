@@ -31,6 +31,10 @@ import pytest
 import six
 
 try:
+    import fastparquet
+except (ImportError, AttributeError):
+    fastparquet = None
+try:
     import pandas
 except (ImportError, AttributeError):
     pandas = None
@@ -3108,8 +3112,15 @@ def test_list_rows_as_dataframe(client):
 
 
 @pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
-@pytest.mark.skipif(pyarrow is None, reason="Requires `pyarrow`")
-def test_load_table_from_dataframe(client, to_delete):
+@pytest.mark.parametrize("parquet_engine", ["pyarrow", "fastparquet"])
+def test_load_table_from_dataframe(client, to_delete, parquet_engine):
+    if parquet_engine == "pyarrow" and pyarrow is None:
+        pytest.skip("Requires `pyarrow`")
+    if parquet_engine == "fastparquet" and fastparquet is None:
+        pytest.skip("Requires `fastparquet`")
+
+    pandas.set_option("io.parquet.engine", parquet_engine)
+
     dataset_id = "load_table_from_dataframe_{}".format(_millis())
     dataset = bigquery.Dataset(client.dataset(dataset_id))
     client.create_dataset(dataset)
