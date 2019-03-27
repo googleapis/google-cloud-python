@@ -42,20 +42,6 @@ s.move(
     ],
 )
 
-# START: Remove unnecessary dependency on google.api.resource protos.
-s.replace(
-    ["google/cloud/bigquery_storage_v1beta1/proto/storage_pb2.py"],
-    "from google.api import resource_pb2 as google_dot_api_dot_resource__pb2\n",
-    "",
-)
-
-s.replace(
-    ["google/cloud/bigquery_storage_v1beta1/proto/storage_pb2.py"],
-    "google_dot_api_dot_resource__pb2.DESCRIPTOR,",
-    "",
-)
-# END: Remove unnecessary dependency on google.api.resource protos.
-
 s.replace(
     [
         "google/cloud/bigquery_storage_v1beta1/proto/storage_pb2.py",
