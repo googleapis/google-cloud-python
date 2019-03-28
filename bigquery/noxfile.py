@@ -44,9 +44,9 @@ def default(session):
 
     # Pyarrow does not support Python 3.7
     if session.python == '3.7':
-        dev_install = '.[pandas]'
+        dev_install = '.[pandas, tqdm]'
     else:
-        dev_install = '.[pandas, pyarrow]'
+        dev_install = '.[pandas, pyarrow, tqdm]'
     session.install('-e', dev_install)
 
     # IPython does not support Python 2 after version 5.x

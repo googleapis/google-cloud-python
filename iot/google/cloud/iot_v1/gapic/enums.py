@@ -148,8 +148,8 @@ class PublicKeyFormat(enum.IntEnum):
       ``-----END CERTIFICATE-----``.
       ES256_PEM (int): Public key for the ECDSA algorithm using P-256 and SHA-256, encoded in
       base64, and wrapped by ``-----BEGIN PUBLIC KEY-----`` and
-      ``-----END  PUBLIC KEY-----``. This can be used to verify JWT tokens
-      with the ``ES256`` algorithm
+      ``-----END PUBLIC KEY-----``. This can be used to verify JWT tokens with
+      the ``ES256`` algorithm
       (`RFC7518 <https://www.ietf.org/rfc/rfc7518.txt>`__). This curve is
       defined in `OpenSSL <https://www.openssl.org/>`__ as the ``prime256v1``
       curve.

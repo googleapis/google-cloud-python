@@ -317,13 +317,13 @@ autosummary_generate = True
 
 # Configuration for intersphinx:
 intersphinx_mapping = {
+    'fastavro': ('https://fastavro.readthedocs.io/en/stable/', None),
     'google-auth': ('https://google-auth.readthedocs.io/en/stable', None),
     'google-gax': ('https://gax-python.readthedocs.io/en/latest/', None),
     'grpc': ('https://grpc.io/grpc/python/', None),
-    'requests': ('http://docs.python-requests.org/en/master/', None),
-    'fastavro': ('https://fastavro.readthedocs.io/en/stable/', None),
     'pandas': ('https://pandas.pydata.org/pandas-docs/stable/', None),
     'python': ('https://docs.python.org/3', None),
+    'requests': ('http://docs.python-requests.org/en/master/', None),
 }
 
 # Static HTML pages, e.g. to support redirects

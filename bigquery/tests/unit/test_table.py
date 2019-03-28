@@ -15,6 +15,7 @@
 import itertools
 import json
 import unittest
+import warnings
 
 import mock
 import pytest
@@ -28,6 +29,11 @@ try:
     import pandas
 except (ImportError, AttributeError):  # pragma: NO COVER
     pandas = None
+
+try:
+    from tqdm import tqdm
+except (ImportError, AttributeError):  # pragma: NO COVER
+    tqdm = None
 
 from google.cloud.bigquery.dataset import DatasetReference
 
@@ -901,7 +907,6 @@ class TestTable(unittest.TestCase, _SchemaBase):
         self.assertIsNone(table.time_partitioning)
 
     def test_partitioning_type_setter(self):
-        import warnings
         from google.cloud.bigquery.table import TimePartitioningType
 
         dataset = DatasetReference(self.PROJECT, self.DS_ID)
@@ -920,7 +925,6 @@ class TestTable(unittest.TestCase, _SchemaBase):
             self.assertIs(warning.category, PendingDeprecationWarning)
 
     def test_partitioning_type_setter_w_time_partitioning_set(self):
-        import warnings
         from google.cloud.bigquery.table import TimePartitioning
 
         dataset = DatasetReference(self.PROJECT, self.DS_ID)
@@ -938,7 +942,6 @@ class TestTable(unittest.TestCase, _SchemaBase):
             self.assertIs(warning.category, PendingDeprecationWarning)
 
     def test_partitioning_expiration_setter_w_time_partitioning_set(self):
-        import warnings
         from google.cloud.bigquery.table import TimePartitioning
 
         dataset = DatasetReference(self.PROJECT, self.DS_ID)
@@ -956,8 +959,6 @@ class TestTable(unittest.TestCase, _SchemaBase):
             self.assertIs(warning.category, PendingDeprecationWarning)
 
     def test_partition_expiration_setter(self):
-        import warnings
-
         dataset = DatasetReference(self.PROJECT, self.DS_ID)
         table_ref = dataset.table(self.TABLE_NAME)
         table = self._make_one(table_ref)
@@ -1112,8 +1113,6 @@ class TestTableListItem(unittest.TestCase):
         return self._get_target_class()(*args, **kw)
 
     def test_ctor(self):
-        import warnings
-
         project = "test-project"
         dataset_id = "test_dataset"
         table_id = "coffee_table"
@@ -1191,8 +1190,6 @@ class TestTableListItem(unittest.TestCase):
         self.assertTrue(table.view_use_legacy_sql)
 
     def test_ctor_missing_properties(self):
-        import warnings
-
         resource = {
             "tableReference": {
                 "projectId": "testproject",
@@ -1412,6 +1409,129 @@ class TestRowIterator(unittest.TestCase):
         self.assertEqual(list(df), ["name", "age"])  # verify the column names
         self.assertEqual(df.name.dtype.name, "object")
         self.assertEqual(df.age.dtype.name, "int64")
+
+    @unittest.skipIf(pandas is None, "Requires `pandas`")
+    @unittest.skipIf(tqdm is None, "Requires `tqdm`")
+    @mock.patch("tqdm.tqdm_gui")
+    @mock.patch("tqdm.tqdm_notebook")
+    @mock.patch("tqdm.tqdm")
+    def test_to_dataframe_progress_bar(
+        self, tqdm_mock, tqdm_notebook_mock, tqdm_gui_mock
+    ):
+        from google.cloud.bigquery.table import RowIterator
+        from google.cloud.bigquery.table import SchemaField
+
+        schema = [
+            SchemaField("name", "STRING", mode="REQUIRED"),
+            SchemaField("age", "INTEGER", mode="REQUIRED"),
+        ]
+        rows = [
+            {"f": [{"v": "Phred Phlyntstone"}, {"v": "32"}]},
+            {"f": [{"v": "Bharney Rhubble"}, {"v": "33"}]},
+            {"f": [{"v": "Wylma Phlyntstone"}, {"v": "29"}]},
+            {"f": [{"v": "Bhettye Rhubble"}, {"v": "27"}]},
+        ]
+        path = "/foo"
+        api_request = mock.Mock(return_value={"rows": rows})
+
+        progress_bars = (
+            ("tqdm", tqdm_mock),
+            ("tqdm_notebook", tqdm_notebook_mock),
+            ("tqdm_gui", tqdm_gui_mock),
+        )
+
+        for progress_bar_type, progress_bar_mock in progress_bars:
+            row_iterator = RowIterator(_mock_client(), api_request, path, schema)
+            df = row_iterator.to_dataframe(progress_bar_type=progress_bar_type)
+
+            progress_bar_mock.assert_called()
+            progress_bar_mock().update.assert_called()
+            self.assertEqual(len(df), 4)
+
+    @unittest.skipIf(pandas is None, "Requires `pandas`")
+    @mock.patch("google.cloud.bigquery.table.tqdm", new=None)
+    def test_to_dataframe_no_tqdm_no_progress_bar(self):
+        from google.cloud.bigquery.table import RowIterator
+        from google.cloud.bigquery.table import SchemaField
+
+        schema = [
+            SchemaField("name", "STRING", mode="REQUIRED"),
+            SchemaField("age", "INTEGER", mode="REQUIRED"),
+        ]
+        rows = [
+            {"f": [{"v": "Phred Phlyntstone"}, {"v": "32"}]},
+            {"f": [{"v": "Bharney Rhubble"}, {"v": "33"}]},
+            {"f": [{"v": "Wylma Phlyntstone"}, {"v": "29"}]},
+            {"f": [{"v": "Bhettye Rhubble"}, {"v": "27"}]},
+        ]
+        path = "/foo"
+        api_request = mock.Mock(return_value={"rows": rows})
+        row_iterator = RowIterator(_mock_client(), api_request, path, schema)
+
+        with warnings.catch_warnings(record=True) as warned:
+            df = row_iterator.to_dataframe()
+
+        self.assertEqual(len(warned), 0)
+        self.assertEqual(len(df), 4)
+
+    @unittest.skipIf(pandas is None, "Requires `pandas`")
+    @mock.patch("google.cloud.bigquery.table.tqdm", new=None)
+    def test_to_dataframe_no_tqdm(self):
+        from google.cloud.bigquery.table import RowIterator
+        from google.cloud.bigquery.table import SchemaField
+
+        schema = [
+            SchemaField("name", "STRING", mode="REQUIRED"),
+            SchemaField("age", "INTEGER", mode="REQUIRED"),
+        ]
+        rows = [
+            {"f": [{"v": "Phred Phlyntstone"}, {"v": "32"}]},
+            {"f": [{"v": "Bharney Rhubble"}, {"v": "33"}]},
+            {"f": [{"v": "Wylma Phlyntstone"}, {"v": "29"}]},
+            {"f": [{"v": "Bhettye Rhubble"}, {"v": "27"}]},
+        ]
+        path = "/foo"
+        api_request = mock.Mock(return_value={"rows": rows})
+        row_iterator = RowIterator(_mock_client(), api_request, path, schema)
+
+        with warnings.catch_warnings(record=True) as warned:
+            df = row_iterator.to_dataframe(progress_bar_type="tqdm")
+
+        self.assertEqual(len(warned), 1)
+        for warning in warned:
+            self.assertIs(warning.category, UserWarning)
+
+        # Even though the progress bar won't show, downloading the dataframe
+        # should still work.
+        self.assertEqual(len(df), 4)
+
+    @unittest.skipIf(pandas is None, "Requires `pandas`")
+    @unittest.skipIf(tqdm is None, "Requires `tqdm`")
+    @mock.patch("tqdm.tqdm_gui", new=None)  # will raise TypeError on call
+    @mock.patch("tqdm.tqdm_notebook", new=None)  # will raise TypeError on call
+    @mock.patch("tqdm.tqdm", new=None)  # will raise TypeError on call
+    def test_to_dataframe_tqdm_error(self):
+        from google.cloud.bigquery.table import RowIterator
+        from google.cloud.bigquery.table import SchemaField
+
+        schema = [
+            SchemaField("name", "STRING", mode="REQUIRED"),
+            SchemaField("age", "INTEGER", mode="REQUIRED"),
+        ]
+        rows = [
+            {"f": [{"v": "Phred Phlyntstone"}, {"v": "32"}]},
+            {"f": [{"v": "Bharney Rhubble"}, {"v": "33"}]},
+            {"f": [{"v": "Wylma Phlyntstone"}, {"v": "29"}]},
+            {"f": [{"v": "Bhettye Rhubble"}, {"v": "27"}]},
+        ]
+        path = "/foo"
+
+        for progress_bar_type in ("tqdm", "tqdm_notebook", "tqdm_gui"):
+            api_request = mock.Mock(return_value={"rows": rows})
+            row_iterator = RowIterator(_mock_client(), api_request, path, schema)
+            df = row_iterator.to_dataframe(progress_bar_type=progress_bar_type)
+
+            self.assertEqual(len(df), 4)  # all should be well
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
     def test_to_dataframe_w_empty_results(self):
