@@ -1411,16 +1411,19 @@ class RowIterator(HTTPIterator):
                 warnings.warn(_NO_TQDM_ERROR, UserWarning, stacklevel=3)
             return None
 
+        description = "Downloading"
+        unit = "rows"
+
         try:
             if progress_bar_type == "tqdm":
-                return tqdm.tqdm(desc="Downloading", total=self.total_rows, unit="rows")
+                return tqdm.tqdm(desc=description, total=self.total_rows, unit=unit)
             elif progress_bar_type == "tqdm_notebook":
                 return tqdm.tqdm_notebook(
-                    desc="Downloading", total=self.total_rows, unit="rows"
+                    desc=description, total=self.total_rows, unit=unit
                 )
             elif progress_bar_type == "tqdm_gui":
                 return tqdm.tqdm_gui(
-                    desc="Downloading", total=self.total_rows, unit="rows"
+                    desc=description, total=self.total_rows, unit=unit
                 )
         except (KeyError, TypeError):
             # Protect ourselves from any tqdm errors. In case of
