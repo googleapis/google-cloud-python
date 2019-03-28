@@ -324,7 +324,6 @@ intersphinx_mapping = {
     'pandas': ('https://pandas.pydata.org/pandas-docs/stable/', None),
     'python': ('https://docs.python.org/3', None),
     'requests': ('http://docs.python-requests.org/en/master/', None),
-    'tqdm': ('https://tqdm.github.io/', None),
 }
 
 # Static HTML pages, e.g. to support redirects

@@ -2810,20 +2810,9 @@ class QueryJob(_AsyncJob):
                 display a progress bar while the data downloads. Install the
                 ``tqdm`` package to use this feature.
 
-                Possible values of ``progress_bar_type`` include:
-
-                ``None``
-                  No progress bar.
-                ``'tqdm'``
-                  Use the :func:`tqdm.tqdm` function to print a progress bar
-                  to :object:`sys.stderr`.
-                ``'tqdm_notebook'``
-                  Use the :func:`tqdm.tqdm_notebook` function to display a
-                  progress bar as a Jupyter notebook widget.
-                ``'tqdm_gui'``
-                  [Experimental] Use the :func:`tqdm.tqdm_gui` function to
-                  display a progress bar as a graphical dialog box. Requires
-                  matplotlib.
+                See
+                :func:`~google.cloud.bigquery.table.RowIterator.to_dataframe`
+                for details.
 
                 ..versionadded:: 1.11.0
 

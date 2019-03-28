@@ -329,7 +329,6 @@ intersphinx_mapping = {
     "gax": ("https://gax-python.readthedocs.org/en/latest/", None),
     "pandas": ("https://pandas.pydata.org/pandas-docs/stable/", None),
     "python": ("http://python.readthedocs.org/en/latest/", None),
-    'tqdm': ('https://tqdm.github.io/', None),
 }
 
 # Napoleon settings

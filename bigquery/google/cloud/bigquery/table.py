@@ -49,6 +49,10 @@ _NO_PANDAS_ERROR = (
     "The pandas library is not installed, please install "
     "pandas to use the to_dataframe() function."
 )
+_NO_TQDM_ERROR = (
+    "A progress bar was requested, but there was an error loading the tqdm "
+    "library. Please install tqdm to use the progress bar functionality."
+)
 _TABLE_HAS_NO_SCHEMA = 'Table has no schema:  call "client.get_table()"'
 _MARKER = object()
 
@@ -1403,13 +1407,13 @@ class RowIterator(HTTPIterator):
     def _get_progress_bar(self, progress_bar_type):
         """Construct a tqdm progress bar object, if tqdm is installed."""
         if tqdm is None:
+            if progress_bar_type is not None:
+                warnings.warn(_NO_TQDM_ERROR, UserWarning, stacklevel=3)
             return None
 
         try:
             if progress_bar_type == "tqdm":
-                return tqdm.tqdm(
-                    desc="Downloading", total=self.total_rows, unit="rows"
-                )
+                return tqdm.tqdm(desc="Downloading", total=self.total_rows, unit="rows")
             elif progress_bar_type == "tqdm_notebook":
                 return tqdm.tqdm_notebook(
                     desc="Downloading", total=self.total_rows, unit="rows"
@@ -1422,14 +1426,11 @@ class RowIterator(HTTPIterator):
             # Protect ourselves from any tqdm errors. In case of
             # unexpected tqdm behavior, just fall back to showing
             # no progress bar.
-            pass
+            warnings.warn(_NO_TQDM_ERROR, UserWarning, stacklevel=3)
         return None
 
-    def to_dataframe(
-            self, bqstorage_client=None, dtypes=None, progress_bar_type=None
-        ):
+    def to_dataframe(self, bqstorage_client=None, dtypes=None, progress_bar_type=None):
         """Create a pandas DataFrame by loading all pages of a query.
-
 
         Args:
             bqstorage_client ( \
@@ -1466,7 +1467,7 @@ class RowIterator(HTTPIterator):
                   No progress bar.
                 ``'tqdm'``
                   Use the :func:`tqdm.tqdm` function to print a progress bar
-                  to :object:`sys.stderr`.
+                  to :data:`sys.stderr`.
                 ``'tqdm_notebook'``
                   Use the :func:`tqdm.tqdm_notebook` function to display a
                   progress bar as a Jupyter notebook widget.
