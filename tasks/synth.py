@@ -27,7 +27,7 @@ excludes = ["README.rst", "setup.py", "nox*.py", "docs/conf.py", "docs/index.rst
 # ----------------------------------------------------------------------------
 # Generate tasks GAPIC layer
 # ----------------------------------------------------------------------------
-for version in ["v2beta2", "v2beta3"]:
+for version in ["v2beta2", "v2beta3", "v2"]:
     library = gapic.py_library(
         "tasks",
         version,
@@ -49,8 +49,16 @@ for version in ["v2beta2", "v2beta3"]:
 # Wrapped link fails due to space in link (v2beta2)
 s.replace(
     "google/cloud/tasks_v2beta2/proto/queue_pb2.py",
-    "(uests in queue.yaml/xml) <\n\s+",
+    "(in queue.yaml/xml) <\n\s+",
     "\g<1>\n          <",
+)
+
+# Wrapped link fails due to newline (v2)
+s.replace(
+    "google/cloud/tasks_v2/proto/queue_pb2.py",
+    """#retry_parameters>
+          `__\.""",
+    "#retry_parameters>`__.",
 )
 
 # Restore updated example from PR #7025.

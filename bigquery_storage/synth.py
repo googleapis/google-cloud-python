@@ -19,97 +19,103 @@ from synthtool import gcp
 
 gapic = gcp.GAPICGenerator()
 
-version = 'v1beta1'
+version = "v1beta1"
 
 library = gapic.py_library(
-    'bigquery_storage',
+    "bigquery_storage",
     version,
-    config_path='/google/cloud/bigquery/storage/'
-                'artman_bigquerystorage_v1beta1.yaml',
-    artman_output_name='bigquerystorage-v1beta1',
+    config_path="/google/cloud/bigquery/storage/" "artman_bigquerystorage_v1beta1.yaml",
+    artman_output_name="bigquerystorage-v1beta1",
     include_protos=True,
 )
 
 s.move(
     library,
     excludes=[
-        'docs/conf.py',
-        'docs/index.rst',
-        'google/cloud/bigquery_storage_v1beta1/__init__.py',
-        'README.rst',
-        'nox*.py',
-        'setup.py',
-        'setup.cfg',
+        "docs/conf.py",
+        "docs/index.rst",
+        "google/cloud/bigquery_storage_v1beta1/__init__.py",
+        "README.rst",
+        "nox*.py",
+        "setup.py",
+        "setup.cfg",
     ],
 )
 
 s.replace(
-    ['google/cloud/bigquery_storage_v1beta1/proto/storage_pb2.py',
-     'google/cloud/bigquery_storage_v1beta1/proto/storage_pb2_grpc.py'],
-    'from google.cloud.bigquery.storage_v1beta1.proto',
-    'from google.cloud.bigquery_storage_v1beta1.proto',
+    [
+        "google/cloud/bigquery_storage_v1beta1/proto/storage_pb2.py",
+        "google/cloud/bigquery_storage_v1beta1/proto/storage_pb2_grpc.py",
+    ],
+    "from google.cloud.bigquery.storage_v1beta1.proto",
+    "from google.cloud.bigquery_storage_v1beta1.proto",
 )
 
 s.replace(
-    'google/cloud/bigquery_storage_v1beta1/gapic/'
-    'big_query_storage_client.py',
-    'google-cloud-bigquerystorage',
-    'google-cloud-bigquery-storage')
-
-s.replace(
-    'google/cloud/bigquery_storage_v1beta1/gapic/'
-    'big_query_storage_client.py',
-    'import google.api_core.gapic_v1.method\n',
-    '\g<0>import google.api_core.path_template\n'
+    "google/cloud/bigquery_storage_v1beta1/gapic/" "big_query_storage_client.py",
+    "google-cloud-bigquerystorage",
+    "google-cloud-bigquery-storage",
 )
 
 s.replace(
-    ['tests/unit/gapic/v1beta1/test_big_query_storage_client_v1beta1.py'],
-    'from google.cloud import bigquery_storage_v1beta1',
-    'from google.cloud.bigquery_storage_v1beta1.gapic import big_query_storage_client  # noqa',
+    "google/cloud/bigquery_storage_v1beta1/gapic/" "big_query_storage_client.py",
+    "import google.api_core.gapic_v1.method\n",
+    "\g<0>import google.api_core.path_template\n",
 )
 
 s.replace(
-    ['tests/unit/gapic/v1beta1/test_big_query_storage_client_v1beta1.py'],
-    'bigquery_storage_v1beta1.BigQueryStorageClient',
-    'big_query_storage_client.BigQueryStorageClient',
+    ["tests/unit/gapic/v1beta1/test_big_query_storage_client_v1beta1.py"],
+    "from google.cloud import bigquery_storage_v1beta1",
+    "from google.cloud.bigquery_storage_v1beta1.gapic import big_query_storage_client  # noqa",
+)
+
+s.replace(
+    ["tests/unit/gapic/v1beta1/test_big_query_storage_client_v1beta1.py"],
+    "bigquery_storage_v1beta1.BigQueryStorageClient",
+    "big_query_storage_client.BigQueryStorageClient",
 )
 
 # START: Ignore lint and coverage
 s.replace(
-    ['google/cloud/bigquery_storage_v1beta1/gapic/big_query_storage_client.py'],
-    'if transport:',
-    'if transport:  # pragma: no cover',
+    ["google/cloud/bigquery_storage_v1beta1/gapic/big_query_storage_client.py"],
+    "if transport:",
+    "if transport:  # pragma: no cover",
 )
 
 s.replace(
-    ['google/cloud/bigquery_storage_v1beta1/gapic/big_query_storage_client.py'],
-    r'to_grpc_metadata\(\n',
-    'to_grpc_metadata(  # pragma: no cover\n',
+    ["google/cloud/bigquery_storage_v1beta1/gapic/big_query_storage_client.py"],
+    r"to_grpc_metadata\(\n",
+    "to_grpc_metadata(  # pragma: no cover\n",
 )
 
 s.replace(
-    ['google/cloud/bigquery_storage_v1beta1/gapic/big_query_storage_client.py'],
-    r'metadata.append\(routing_metadata\)',
-    'metadata.append(routing_metadata)  # pragma: no cover',
+    ["google/cloud/bigquery_storage_v1beta1/gapic/big_query_storage_client.py"],
+    r"metadata.append\(routing_metadata\)",
+    "metadata.append(routing_metadata)  # pragma: no cover",
 )
 
 s.replace(
-    ['google/cloud/bigquery_storage_v1beta1/gapic/transports/big_query_storage_grpc_transport.py'],
-    'if channel is not None and credentials is not None:',
-    'if channel is not None and credentials is not None:  # pragma: no cover',
+    [
+        "google/cloud/bigquery_storage_v1beta1/gapic/transports/big_query_storage_grpc_transport.py"
+    ],
+    "if channel is not None and credentials is not None:",
+    "if channel is not None and credentials is not None:  # pragma: no cover",
 )
 
 s.replace(
-    ['google/cloud/bigquery_storage_v1beta1/gapic/transports/big_query_storage_grpc_transport.py'],
-    'if channel is None:',
-    'if channel is None:  # pragma: no cover',
+    [
+        "google/cloud/bigquery_storage_v1beta1/gapic/transports/big_query_storage_grpc_transport.py"
+    ],
+    "if channel is None:",
+    "if channel is None:  # pragma: no cover",
 )
 
 s.replace(
-    ['google/cloud/bigquery_storage_v1beta1/gapic/transports/big_query_storage_grpc_transport.py'],
-    r'google.api_core.grpc_helpers.create_channel\(',
-    'google.api_core.grpc_helpers.create_channel(  # pragma: no cover',
+    [
+        "google/cloud/bigquery_storage_v1beta1/gapic/transports/big_query_storage_grpc_transport.py"
+    ],
+    r"google.api_core.grpc_helpers.create_channel\(",
+    "google.api_core.grpc_helpers.create_channel(  # pragma: no cover",
 )
 # END: Ignore lint and coverage
 

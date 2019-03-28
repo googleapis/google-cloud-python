@@ -3163,6 +3163,49 @@ class TestQueryJobConfig(unittest.TestCase, _Base):
         self.assertFalse(config.use_query_cache)
         self.assertTrue(config.use_legacy_sql)
 
+    def test_ctor_w_string_default_dataset(self):
+        from google.cloud.bigquery import dataset
+
+        default_dataset = "default-proj.default_dset"
+        config = self._get_target_class()(default_dataset=default_dataset)
+        expected = dataset.DatasetReference.from_string(default_dataset)
+        self.assertEqual(config.default_dataset, expected)
+
+    def test_ctor_w_string_destinaton(self):
+        from google.cloud.bigquery import table
+
+        destination = "dest-proj.dest_dset.dest_tbl"
+        config = self._get_target_class()(destination=destination)
+        expected = table.TableReference.from_string(destination)
+        self.assertEqual(config.destination, expected)
+
+    def test_default_dataset_w_string(self):
+        from google.cloud.bigquery import dataset
+
+        default_dataset = "default-proj.default_dset"
+        config = self._make_one()
+        config.default_dataset = default_dataset
+        expected = dataset.DatasetReference.from_string(default_dataset)
+        self.assertEqual(config.default_dataset, expected)
+
+    def test_default_dataset_w_dataset(self):
+        from google.cloud.bigquery import dataset
+
+        default_dataset = "default-proj.default_dset"
+        expected = dataset.DatasetReference.from_string(default_dataset)
+        config = self._make_one()
+        config.default_dataset = dataset.Dataset(expected)
+        self.assertEqual(config.default_dataset, expected)
+
+    def test_destinaton_w_string(self):
+        from google.cloud.bigquery import table
+
+        destination = "dest-proj.dest_dset.dest_tbl"
+        config = self._make_one()
+        config.destination = destination
+        expected = table.TableReference.from_string(destination)
+        self.assertEqual(config.destination, expected)
+
     def test_time_partitioning(self):
         from google.cloud.bigquery import table
 

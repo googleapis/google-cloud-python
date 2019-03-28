@@ -88,7 +88,7 @@ def lint_setup_py(session):
 def pytype(session):
     """Run type-checking."""
     session.install(
-        ".", "grpcio >= 1.8.2", "grpcio-gcp >= 0.2.2", "pytype >= 2018.9.26"
+        ".", "grpcio >= 1.8.2", "grpcio-gcp >= 0.2.2", "pytype >= 2019.3.21"
     )
     session.run("pytype")
 

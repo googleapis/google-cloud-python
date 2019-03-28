@@ -3064,6 +3064,33 @@ class TestClient(unittest.TestCase):
             method="POST", path="/projects/other-project/jobs", data=resource
         )
 
+    def test_copy_table_w_source_strings(self):
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
+        client._connection = _make_connection({})
+        sources = [
+            "dataset_wo_proj.some_table",
+            "other_project.other_dataset.other_table",
+            client.dataset("dataset_from_ref").table("table_from_ref"),
+        ]
+        destination = "some_project.some_dataset.destination_table"
+
+        job = client.copy_table(sources, destination)
+
+        expected_sources = [
+            client.dataset("dataset_wo_proj").table("some_table"),
+            client.dataset("other_dataset", project="other_project").table(
+                "other_table"
+            ),
+            client.dataset("dataset_from_ref").table("table_from_ref"),
+        ]
+        self.assertEqual(list(job.sources), expected_sources)
+        expected_destination = client.dataset(
+            "some_dataset", project="some_project"
+        ).table("destination_table")
+        self.assertEqual(job.destination, expected_destination)
+
     def test_extract_table(self):
         from google.cloud.bigquery.job import ExtractJob
 
@@ -3644,7 +3671,7 @@ class TestClient(unittest.TestCase):
         )
 
     def test_insert_rows_wo_schema(self):
-        from google.cloud.bigquery.table import Table, _TABLE_HAS_NO_SCHEMA
+        from google.cloud.bigquery.table import Table
 
         creds = _make_credentials()
         http = object()
@@ -3660,7 +3687,7 @@ class TestClient(unittest.TestCase):
         with self.assertRaises(ValueError) as exc:
             client.insert_rows(table, ROWS)
 
-        self.assertEqual(exc.exception.args, (_TABLE_HAS_NO_SCHEMA,))
+        self.assertIn("Could not determine schema for table", exc.exception.args[0])
 
     def test_insert_rows_w_schema(self):
         import datetime
