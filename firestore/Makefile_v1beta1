@@ -5,10 +5,10 @@
 PROTOC = protoc
 
 # Dependent repos.
-PROTOBUF_REPO = $(HOME)/git-repos/protobuf
-GOOGLEAPIS_REPO = $(HOME)/git-repos/googleapis
-
-TESTS_REPO = $(HOME)/git-repos/gcp/google-cloud-common
+REPO_DIR = $(HOME)/git-repos
+PROTOBUF_REPO = $(REPO_DIR)/protobuf
+GOOGLEAPIS_REPO = $(REPO_DIR)/googleapis
+TESTS_REPO = $(REPO_DIR)/gcp/google-cloud-common
 
 TMPDIR = /tmp/python-fs-proto
 TMPDIR_FS = $(TMPDIR)/google/cloud/firestore_v1beta1/proto
@@ -21,16 +21,17 @@ gen-protos: sync-protos tweak-protos
 		-I $(TMPDIR) \
 		-I $(PROTOBUF_REPO)/src \
 		-I $(GOOGLEAPIS_REPO) \
-		$(TMPDIR)/*.proto
+		$(TMPDIR)/test_v1beta1.proto
 
 tweak-protos:
 	mkdir -p $(TMPDIR_FS)
 	cp $(GOOGLEAPIS_REPO)/google/firestore/v1beta1/*.proto $(TMPDIR_FS)
 	sed -i -e 's@google/firestore/v1beta1@google/cloud/firestore_v1beta1/proto@' $(TMPDIR_FS)/*.proto
-	cp $(TESTS_REPO)/testing/firestore/proto/*.proto $(TMPDIR)
-	sed -i -e 's@google/firestore/v1beta1@google/cloud/firestore_v1beta1/proto@' $(TMPDIR)/*.proto
+	cp $(TESTS_REPO)/testing/firestore/proto/test_v1beta1.proto $(TMPDIR)
+	sed -i -e 's@package tests@package tests.v1beta1@' $(TMPDIR)/test_v1beta1.proto
+	sed -i -e 's@google/firestore/v1beta1@google/cloud/firestore_v1beta1/proto@' $(TMPDIR)/test_v1beta1.proto
 
 sync-protos:
 	cd $(PROTOBUF_REPO); git pull
 	cd $(GOOGLEAPIS_REPO); git pull
-	cd $(TESTS_REPO); git pull
+	#cd $(TESTS_REPO); git pull

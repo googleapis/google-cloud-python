@@ -18,33 +18,38 @@ from synthtool import gcp
 
 gapic = gcp.GAPICGenerator()
 common = gcp.CommonTemplates()
+versions = [
+    ("v1beta1", "artman_firestore.yaml"),
+    ("v1", "artman_firestore_v1.yaml"),
+]
 
 # ----------------------------------------------------------------------------
 # Generate firestore GAPIC layer
 # ----------------------------------------------------------------------------
-library = gapic.py_library(
-    "firestore",
-    "v1beta1",
-    config_path="/google/firestore/artman_firestore.yaml",
-    artman_output_name="firestore-v1beta1",
-    include_protos=True,
-)
+for version, artman_config in versions:
+    library = gapic.py_library(
+        "firestore",
+        version,
+        config_path=f"/google/firestore/{artman_config}",
+        artman_output_name=f"firestore-{version}",
+        include_protos=True,
+    )
 
-s.move(library / "google/cloud/firestore_v1beta1/proto")
-s.move(library / "google/cloud/firestore_v1beta1/gapic")
-s.move(library / "tests/unit/gapic/v1beta1")
+    s.move(library / f"google/cloud/firestore_{version}/proto")
+    s.move(library / f"google/cloud/firestore_{version}/gapic")
+    s.move(library / f"tests/unit/gapic/{version}")
 
-s.replace(
-    "tests/unit/gapic/v1beta1/test_firestore_client_v1beta1.py",
-    "from google.cloud import firestore_v1beta1",
-    "from google.cloud.firestore_v1beta1.gapic import firestore_client",
-)
+    s.replace(
+        f"tests/unit/gapic/{version}/test_firestore_client_{version}.py",
+        f"from google.cloud import firestore_{version}",
+        f"from google.cloud.firestore_{version}.gapic import firestore_client",
+    )
 
-s.replace(
-    "tests/unit/gapic/v1beta1/test_firestore_client_v1beta1.py",
-    "client = firestore_v1beta1.FirestoreClient",
-    "client = firestore_client.FirestoreClient",
-)
+    s.replace(
+        f"tests/unit/gapic/{version}/test_firestore_client_{version}.py",
+        f"client = firestore_{version}.FirestoreClient",
+        "client = firestore_client.FirestoreClient",
+    )
 
 # ----------------------------------------------------------------------------
 # Add templated files

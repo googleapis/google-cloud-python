@@ -756,9 +756,9 @@ class Query(object):
                 a change occurs.
 
         Example:
-            from google.cloud import firestore
+            from google.cloud import firestore_v1beta1
 
-            db = firestore.Client()
+            db = firestore_v1beta1.Client()
             query_ref = db.collection(u'users').where("user", "==", u'Ada')
 
             def on_snapshot(docs, changes, read_time):
