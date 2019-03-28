@@ -320,18 +320,20 @@ class DeviceManagerGrpcTransport(object):
         """Return the gRPC stub for :meth:`DeviceManagerClient.send_command_to_device`.
 
         Sends a command to the specified device. In order for a device to be
-        able to receive commands, it must: 1) be connected to Cloud IoT Core
-        using the MQTT protocol, and 2) be subscribed to the group of MQTT
-        topics specified by /devices/{device-id}/commands/#. This subscription
-        will receive commands at the top-level topic
-        /devices/{device-id}/commands as well as commands for subfolders, like
-        /devices/{device-id}/commands/subfolder. Note that subscribing to
-        specific subfolders is not supported. If the command could not be
-        delivered to the device, this method will return an error; in
-        particular, if the device is not subscribed, this method will return
-        FAILED\_PRECONDITION. Otherwise, this method will return OK. If the
-        subscription is QoS 1, at least once delivery will be guaranteed; for
-        QoS 0, no acknowledgment will be expected from the device.
+        able to receive commands, it must:
+
+        1) be connected to Cloud IoT Core using the MQTT protocol, and
+        2) be subscribed to the group of MQTT topics specified by
+           /devices/{device-id}/commands/#. This subscription will receive
+           commands at the top-level topic /devices/{device-id}/commands as well
+           as commands for subfolders, like
+           /devices/{device-id}/commands/subfolder. Note that subscribing to
+           specific subfolders is not supported. If the command could not be
+           delivered to the device, this method will return an error; in
+           particular, if the device is not subscribed, this method will return
+           FAILED\_PRECONDITION. Otherwise, this method will return OK. If the
+           subscription is QoS 1, at least once delivery will be guaranteed; for
+           QoS 0, no acknowledgment will be expected from the device.
 
         Returns:
             Callable: A callable which accepts the appropriate
