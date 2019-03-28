@@ -584,7 +584,9 @@ class BigtableClient(object):
                 ``predicate_filter`` yields at least one cell when applied to
                 ``row_key``. Entries are applied in order, meaning that earlier
                 mutations can be masked by later ones. Must contain at least one entry
-                if ``false_mutations`` is empty, and at most 100000.
+                if ``false_mutations`` is empty, and at most
+
+                100000.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.bigtable_v2.types.Mutation`
@@ -592,7 +594,9 @@ class BigtableClient(object):
                 ``predicate_filter`` does not yield any cells when applied to
                 ``row_key``. Entries are applied in order, meaning that earlier
                 mutations can be masked by later ones. Must contain at least one entry
-                if ``true_mutations`` is empty, and at most 100000.
+                if ``true_mutations`` is empty, and at most
+
+                100000.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.bigtable_v2.types.Mutation`

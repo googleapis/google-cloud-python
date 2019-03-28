@@ -280,11 +280,11 @@ class BigtableTableAdminClient(object):
                    ``["apple", "customer_1", "customer_2", "other"]``
                 -  Key assignment:
 
-                   -  Tablet 1 ``[, apple)                => {"a"}.``
-                   -  Tablet 2 ``[apple, customer_1)      => {"apple", "custom"}.``
+                   -  Tablet 1 ``[, apple) => {"a"}.``
+                   -  Tablet 2 ``[apple, customer_1) => {"apple", "custom"}.``
                    -  Tablet 3 ``[customer_1, customer_2) => {"customer_1"}.``
-                   -  Tablet 4 ``[customer_2, other)      => {"customer_2"}.``
-                   -  Tablet 5 ``[other, )                => {"other", "zz"}.``
+                   -  Tablet 4 ``[customer_2, other) => {"customer_2"}.``
+                   -  Tablet 5 ``[other, ) => {"other", "zz"}.``
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.bigtable_admin_v2.types.Split`
