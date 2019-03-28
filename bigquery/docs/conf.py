@@ -326,9 +326,9 @@ texinfo_documents = [
 
 # Example configuration for intersphinx: refer to the Python standard library.
 intersphinx_mapping = {
-    "python": ("http://python.readthedocs.org/en/latest/", None),
     "gax": ("https://gax-python.readthedocs.org/en/latest/", None),
     "pandas": ("https://pandas.pydata.org/pandas-docs/stable/", None),
+    "python": ("http://python.readthedocs.org/en/latest/", None),
 }
 
 # Napoleon settings
