@@ -240,10 +240,10 @@ class Task(object):
           BASIC (int): The basic view omits fields which can be large or can contain sensitive
           data.
 
-          This view does not include the (``payload in  AppEngineHttpRequest`` and
-          ``payload in  PullMessage``). These payloads are desirable to return
-          only when needed, because they can be large and because of the
-          sensitivity of the data that you choose to store in it.
+          This view does not include the (``payload in AppEngineHttpRequest`` and
+          ``payload in PullMessage``). These payloads are desirable to return only
+          when needed, because they can be large and because of the sensitivity of
+          the data that you choose to store in it.
           FULL (int): All information is returned.
 
           Authorization for ``FULL`` requires ``cloudtasks.tasks.fullView``
