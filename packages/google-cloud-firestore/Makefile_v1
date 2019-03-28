@@ -1,0 +1,37 @@
+# This makefile builds the protos needed for cross-language Firestore tests.
+
+# Assume protoc is on the path. The proto compiler must be one that
+# supports proto3 syntax.
+PROTOC = protoc
+
+# Dependent repos.
+REPO_DIR=$(HOME)/git-repos
+PROTOBUF_REPO = $(REPO_DIR)/protobuf
+GOOGLEAPIS_REPO = $(REPO_DIR)/googleapis
+TESTS_REPO = $(REPO_DIR)/gcp/google-cloud-common
+
+TMPDIR = /tmp/python-fs-proto
+TMPDIR_FS = $(TMPDIR)/google/cloud/firestore_v1/proto
+
+.PHONY: sync-protos gen-protos
+
+gen-protos: sync-protos tweak-protos
+	# TODO(jba): Put the generated proto somewhere more suitable.
+	$(PROTOC) --python_out=google/cloud/firestore_v1/proto \
+		-I $(TMPDIR) \
+		-I $(PROTOBUF_REPO)/src \
+		-I $(GOOGLEAPIS_REPO) \
+		$(TMPDIR)/test_v1.proto
+
+tweak-protos:
+	mkdir -p $(TMPDIR_FS)
+	cp $(GOOGLEAPIS_REPO)/google/firestore/v1/*.proto $(TMPDIR_FS)
+	sed -i -e 's@google/firestore/v1@google/cloud/firestore_v1/proto@' $(TMPDIR_FS)/*.proto
+	cp $(TESTS_REPO)/testing/firestore/proto/test_v1.proto $(TMPDIR)
+	sed -i -e 's@package tests@package tests.v1@' $(TMPDIR)/test_v1.proto
+	sed -i -e 's@google/firestore/v1@google/cloud/firestore_v1/proto@' $(TMPDIR)/test_v1.proto
+
+sync-protos:
+	cd $(PROTOBUF_REPO); git pull
+	cd $(GOOGLEAPIS_REPO); git pull
+	#cd $(TESTS_REPO); git pull

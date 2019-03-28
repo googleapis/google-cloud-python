@@ -216,7 +216,7 @@ class Watch(object):
             self._api.transport.listen,
             initial_request=initial_request,
             should_recover=should_recover,
-            rpc_metadata=self._firestore._rpc_metadata,
+            metadata=self._firestore._rpc_metadata,
         )
 
         self._rpc.add_done_callback(self._on_rpc_done)

@@ -15,25 +15,25 @@
 """Python idiomatic client for Google Cloud Firestore."""
 
 
-from google.cloud.firestore_v1beta1 import __version__
-from google.cloud.firestore_v1beta1 import Client
-from google.cloud.firestore_v1beta1 import CollectionReference
-from google.cloud.firestore_v1beta1 import DELETE_FIELD
-from google.cloud.firestore_v1beta1 import DocumentReference
-from google.cloud.firestore_v1beta1 import DocumentSnapshot
-from google.cloud.firestore_v1beta1 import enums
-from google.cloud.firestore_v1beta1 import ExistsOption
-from google.cloud.firestore_v1beta1 import GeoPoint
-from google.cloud.firestore_v1beta1 import LastUpdateOption
-from google.cloud.firestore_v1beta1 import Query
-from google.cloud.firestore_v1beta1 import ReadAfterWriteError
-from google.cloud.firestore_v1beta1 import SERVER_TIMESTAMP
-from google.cloud.firestore_v1beta1 import Transaction
-from google.cloud.firestore_v1beta1 import transactional
-from google.cloud.firestore_v1beta1 import types
-from google.cloud.firestore_v1beta1 import Watch
-from google.cloud.firestore_v1beta1 import WriteBatch
-from google.cloud.firestore_v1beta1 import WriteOption
+from google.cloud.firestore_v1 import __version__
+from google.cloud.firestore_v1 import Client
+from google.cloud.firestore_v1 import CollectionReference
+from google.cloud.firestore_v1 import DELETE_FIELD
+from google.cloud.firestore_v1 import DocumentReference
+from google.cloud.firestore_v1 import DocumentSnapshot
+from google.cloud.firestore_v1 import enums
+from google.cloud.firestore_v1 import ExistsOption
+from google.cloud.firestore_v1 import GeoPoint
+from google.cloud.firestore_v1 import LastUpdateOption
+from google.cloud.firestore_v1 import Query
+from google.cloud.firestore_v1 import ReadAfterWriteError
+from google.cloud.firestore_v1 import SERVER_TIMESTAMP
+from google.cloud.firestore_v1 import Transaction
+from google.cloud.firestore_v1 import transactional
+from google.cloud.firestore_v1 import types
+from google.cloud.firestore_v1 import Watch
+from google.cloud.firestore_v1 import WriteBatch
+from google.cloud.firestore_v1 import WriteOption
 
 
 __all__ = [
