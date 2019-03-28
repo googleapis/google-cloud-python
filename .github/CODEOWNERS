@@ -10,8 +10,10 @@ api_core/*                @theacodes
 core/*                    @theacodes
 docs/core/*               @theacodes
 
-# Tim Swast and Alix Hamilton share responsibility for BigQuery.
-bigquery/*                @tswast @alixhami
+# BigQuery suite of APIs
+bigquery/*                @googleapis/api-bigquery
+bigquery_datatransfer/*   @googleapis/api-bigquery
+bigquery_storage/*        @googleapis/api-bigquery
 
 # Danny Hermes and Tres Seaver co-authored the BigTable library.
 bigtable/*                @tseaver
