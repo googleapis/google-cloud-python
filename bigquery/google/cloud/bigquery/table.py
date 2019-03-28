@@ -1335,23 +1335,10 @@ class RowIterator(HTTPIterator):
             columns[column] = pandas.Series(columns[column], dtype=dtypes[column])
         return pandas.DataFrame(columns, columns=column_names)
 
-    def _to_dataframe_tabledata_list(self, dtypes):
+    def _to_dataframe_tabledata_list(self, dtypes, progress_bar=None):
         """Use (slower, but free) tabledata.list to construct a DataFrame."""
         column_names = [field.name for field in self.schema]
         frames = []
-
-        # report progress if tqdm installed
-        progress_bar = None
-        if tqdm is not None:
-            try:
-                progress_bar = tqdm.tqdm(
-                    desc="Downloading", total=self.total_rows, unit="rows"
-                )
-            except (KeyError, TypeError):
-                # Protect ourselves from any tqdm errors. In case of
-                # unexpected tqdm behavior, just fall back to showing
-                # no progress bar.
-                pass
 
         for page in iter(self.pages):
             current_frame = self._to_dataframe_dtypes(page, column_names, dtypes)
@@ -1413,7 +1400,34 @@ class RowIterator(HTTPIterator):
         # the end using manually-parsed schema.
         return pandas.concat(frames)[columns]
 
-    def to_dataframe(self, bqstorage_client=None, dtypes=None):
+    def _get_progress_bar(self, progress_bar_type):
+        """Construct a tqdm progress bar object, if tqdm is installed."""
+        if tqdm is None:
+            return None
+
+        try:
+            if progress_bar_type == "tqdm":
+                return tqdm.tqdm(
+                    desc="Downloading", total=self.total_rows, unit="rows"
+                )
+            elif progress_bar_type == "tqdm_notebook":
+                return tqdm.tqdm_notebook(
+                    desc="Downloading", total=self.total_rows, unit="rows"
+                )
+            elif progress_bar_type == "tqdm_gui":
+                return tqdm.tqdm_gui(
+                    desc="Downloading", total=self.total_rows, unit="rows"
+                )
+        except (KeyError, TypeError):
+            # Protect ourselves from any tqdm errors. In case of
+            # unexpected tqdm behavior, just fall back to showing
+            # no progress bar.
+            pass
+        return None
+
+    def to_dataframe(
+            self, bqstorage_client=None, dtypes=None, progress_bar_type=None
+        ):
         """Create a pandas DataFrame by loading all pages of a query.
 
 
@@ -1441,6 +1455,26 @@ class RowIterator(HTTPIterator):
                 provided ``dtype`` is used when constructing the series for
                 the column specified. Otherwise, the default pandas behavior
                 is used.
+            progress_bar_type (Optional[str]):
+                If set, use the `tqdm <https://tqdm.github.io/>`_ library to
+                display a progress bar while the data downloads. Install the
+                ``tqdm`` package to use this feature.
+
+                Possible values of ``progress_bar_type`` include:
+
+                ``None``
+                  No progress bar.
+                ``'tqdm'``
+                  Use the :func:`tqdm.tqdm` function to print a progress bar
+                  to :object:`sys.stderr`.
+                ``'tqdm_notebook'``
+                  Use the :func:`tqdm.tqdm_notebook` function to display a
+                  progress bar as a Jupyter notebook widget.
+                ``'tqdm_gui'``
+                  Use the :func:`tqdm.tqdm_gui` function to display a
+                  progress bar as a graphical dialog box.
+
+                ..versionadded:: 1.11.0
 
         Returns:
             pandas.DataFrame:
@@ -1457,10 +1491,12 @@ class RowIterator(HTTPIterator):
         if dtypes is None:
             dtypes = {}
 
+        progress_bar = self._get_progress_bar(progress_bar_type)
+
         if bqstorage_client is not None:
             return self._to_dataframe_bqstorage(bqstorage_client, dtypes)
         else:
-            return self._to_dataframe_tabledata_list(dtypes)
+            return self._to_dataframe_tabledata_list(dtypes, progress_bar=progress_bar)
 
 
 class _EmptyRowIterator(object):

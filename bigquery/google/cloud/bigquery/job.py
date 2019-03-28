@@ -2778,7 +2778,7 @@ class QueryJob(_AsyncJob):
         dest_table = Table(dest_table_ref, schema=schema)
         return self._client.list_rows(dest_table, retry=retry)
 
-    def to_dataframe(self, bqstorage_client=None, dtypes=None):
+    def to_dataframe(self, bqstorage_client=None, dtypes=None, progress_bar_type=None):
         """Return a pandas DataFrame from a QueryJob
 
         Args:
@@ -2805,6 +2805,27 @@ class QueryJob(_AsyncJob):
                 provided ``dtype`` is used when constructing the series for
                 the column specified. Otherwise, the default pandas behavior
                 is used.
+            progress_bar_type (Optional[str]):
+                If set, use the `tqdm <https://tqdm.github.io/>`_ library to
+                display a progress bar while the data downloads. Install the
+                ``tqdm`` package to use this feature.
+
+                Possible values of ``progress_bar_type`` include:
+
+                ``None``
+                  No progress bar.
+                ``'tqdm'``
+                  Use the :func:`tqdm.tqdm` function to print a progress bar
+                  to :object:`sys.stderr`.
+                ``'tqdm_notebook'``
+                  Use the :func:`tqdm.tqdm_notebook` function to display a
+                  progress bar as a Jupyter notebook widget.
+                ``'tqdm_gui'``
+                  [Experimental] Use the :func:`tqdm.tqdm_gui` function to
+                  display a progress bar as a graphical dialog box. Requires
+                  matplotlib.
+
+                ..versionadded:: 1.11.0
 
         Returns:
             A :class:`~pandas.DataFrame` populated with row data and column
