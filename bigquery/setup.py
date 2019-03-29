@@ -42,6 +42,15 @@ extras = {
     "fastparquet": ["fastparquet", "python-snappy"],
 }
 
+all_extras = []
+
+for extra in extras:
+    if isinstance(extras[extra], str):
+        all_extras.append(extras[extra])
+    else:
+        all_extras.extend(extras[extra])
+
+extras["all"] = all_extras
 
 # Setup boilerplate below this line.
 

@@ -21,11 +21,8 @@ import nox
 
 
 LOCAL_DEPS = (
-    os.path.join("..", "api_core[grpc]"),
-    os.path.join("..", "core"),
-    # TODO: Move bigquery_storage back to dev_install once dtypes feature is
-    #       released. Issue #7049
-    os.path.join("..", "bigquery_storage[pandas,fastavro]"),
+    os.path.join('..', 'api_core[grpc]'),
+    os.path.join('..', 'core'),
 )
 
 BLACK_PATHS = ("google", "tests", "docs", "noxfile.py", "setup.py")
@@ -45,11 +42,8 @@ def default(session):
         session.install("-e", local_dep)
 
     # Pyarrow does not support Python 3.7
-    if session.python == "3.7":
-        dev_install = ".[pandas, tqdm]"
-    else:
-        dev_install = ".[pandas, pyarrow, tqdm]"
-    session.install("-e", dev_install)
+    dev_install = '.[all]'
+    session.install('-e', dev_install)
 
     # IPython does not support Python 2 after version 5.x
     if session.python == "2.7":
@@ -92,10 +86,10 @@ def system(session):
     # Install all test dependencies, then install local packages in place.
     session.install("mock", "pytest")
     for local_dep in LOCAL_DEPS:
-        session.install("-e", local_dep)
-    session.install("-e", os.path.join("..", "storage"))
-    session.install("-e", os.path.join("..", "test_utils"))
-    session.install("-e", ".[pandas]")
+        session.install('-e', local_dep)
+    session.install('-e', os.path.join('..', 'storage'))
+    session.install('-e', os.path.join('..', 'test_utils'))
+    session.install('-e', '.[all]')
 
     # IPython does not support Python 2 after version 5.x
     if session.python == "2.7":
@@ -120,10 +114,10 @@ def snippets(session):
     # Install all test dependencies, then install local packages in place.
     session.install("mock", "pytest")
     for local_dep in LOCAL_DEPS:
-        session.install("-e", local_dep)
-    session.install("-e", os.path.join("..", "storage"))
-    session.install("-e", os.path.join("..", "test_utils"))
-    session.install("-e", ".[pandas, pyarrow, fastparquet]")
+        session.install('-e', local_dep)
+    session.install('-e', os.path.join('..', 'storage'))
+    session.install('-e', os.path.join('..', 'test_utils'))
+    session.install('-e', '.[all]')
 
     # Run py.test against the snippets tests.
     session.run("py.test", os.path.join("docs", "snippets.py"), *session.posargs)
@@ -164,7 +158,6 @@ def lint_setup_py(session):
     session.install("docutils", "Pygments")
     session.run("python", "setup.py", "check", "--restructuredtext", "--strict")
 
-
 @nox.session(python="3.6")
 def blacken(session):
     """Run black.
@@ -180,9 +173,9 @@ def docs(session):
 
     session.install("ipython", "recommonmark", "sphinx", "sphinx_rtd_theme")
     for local_dep in LOCAL_DEPS:
-        session.install("-e", local_dep)
-    session.install("-e", os.path.join("..", "storage"))
-    session.install("-e", ".[pandas, pyarrow]")
+        session.install('-e', local_dep)
+    session.install('-e', os.path.join('..', 'storage'))
+    session.install('-e', '.[all]')
 
     shutil.rmtree(os.path.join("docs", "_build"), ignore_errors=True)
     session.run(
