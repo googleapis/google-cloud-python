@@ -32,6 +32,7 @@ try:
 except (ImportError, AttributeError):  # pragma: NO COVER
     tqdm = None
 
+
 def _make_credentials():
     import google.auth.credentials
 
@@ -4712,15 +4713,17 @@ class TestQueryJob(unittest.TestCase, _Base):
             "jobReference": {"projectId": self.PROJECT, "jobId": self.JOB_ID},
             "totalRows": "4",
             "schema": {
-                "fields": [
-                    {"name": "name", "type": "STRING", "mode": "NULLABLE"},
-                ]
+                "fields": [{"name": "name", "type": "STRING", "mode": "NULLABLE"}]
             },
         }
         done_resource = copy.deepcopy(begun_resource)
         done_resource["status"] = {"state": "DONE"}
         connection = _make_connection(
-            begun_resource, query_resource, done_resource, query_resource, query_resource,
+            begun_resource,
+            query_resource,
+            done_resource,
+            query_resource,
+            query_resource,
         )
         client = _make_client(project=self.PROJECT, connection=connection)
         job = self._make_one(self.JOB_ID, self.QUERY, client)
