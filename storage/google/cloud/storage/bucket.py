@@ -36,7 +36,6 @@ from google.cloud.storage._helpers import _validate_name
 from google.cloud.storage.acl import BucketACL
 from google.cloud.storage.acl import DefaultObjectACL
 from google.cloud.storage.blob import Blob
-from google.cloud.storage.blob import _get_encryption_headers
 from google.cloud.storage.notification import BucketNotification
 from google.cloud.storage.notification import NONE_PAYLOAD_FORMAT
 
@@ -435,7 +434,14 @@ class Bucket(_PropertyMixin):
         """
         return self._user_project
 
-    def blob(self, blob_name, chunk_size=None, encryption_key=None, kms_key_name=None):
+    def blob(
+        self,
+        blob_name,
+        chunk_size=None,
+        encryption_key=None,
+        kms_key_name=None,
+        generation=None,
+    ):
         """Factory constructor for blob object.
 
         .. note::
@@ -458,6 +464,10 @@ class Bucket(_PropertyMixin):
         :param kms_key_name:
             Optional resource name of KMS key used to encrypt blob's content.
 
+        :type generation: long
+        :param generation: Optional. If present, selects a specific revision of
+                           this object.
+
         :rtype: :class:`google.cloud.storage.blob.Blob`
         :returns: The blob object created.
         """
@@ -467,6 +477,7 @@ class Bucket(_PropertyMixin):
             chunk_size=chunk_size,
             encryption_key=encryption_key,
             kms_key_name=kms_key_name,
+            generation=generation,
         )
 
     def notification(
@@ -639,7 +650,9 @@ class Bucket(_PropertyMixin):
 
         return self.path_helper(self.name)
 
-    def get_blob(self, blob_name, client=None, encryption_key=None, **kwargs):
+    def get_blob(
+        self, blob_name, client=None, encryption_key=None, generation=None, **kwargs
+    ):
         """Get a blob object by name.
 
         This will return None if the blob doesn't exist:
@@ -664,6 +677,10 @@ class Bucket(_PropertyMixin):
             See
             https://cloud.google.com/storage/docs/encryption#customer-supplied.
 
+        :type generation: long
+        :param generation: Optional. If present, selects a specific revision of
+                           this object.
+
         :type kwargs: dict
         :param kwargs: Keyword arguments to pass to the
                        :class:`~google.cloud.storage.blob.Blob` constructor.
@@ -671,31 +688,22 @@ class Bucket(_PropertyMixin):
         :rtype: :class:`google.cloud.storage.blob.Blob` or None
         :returns: The blob object if it exists, otherwise None.
         """
-        client = self._require_client(client)
-        query_params = {}
-
-        if self.user_project is not None:
-            query_params["userProject"] = self.user_project
         blob = Blob(
-            bucket=self, name=blob_name, encryption_key=encryption_key, **kwargs
+            bucket=self,
+            name=blob_name,
+            encryption_key=encryption_key,
+            generation=generation,
+            **kwargs
         )
         try:
-            headers = _get_encryption_headers(encryption_key)
-            response = client._connection.api_request(
-                method="GET",
-                path=blob.path,
-                query_params=query_params,
-                headers=headers,
-                _target_object=blob,
-            )
-            # NOTE: We assume response.get('name') matches `blob_name`.
-            blob._set_properties(response)
             # NOTE: This will not fail immediately in a batch. However, when
             #       Batch.finish() is called, the resulting `NotFound` will be
             #       raised.
-            return blob
+            blob.reload(client=client)
         except NotFound:
             return None
+        else:
+            return blob
 
     def list_blobs(
         self,
@@ -881,7 +889,7 @@ class Bucket(_PropertyMixin):
             _target_object=None,
         )
 
-    def delete_blob(self, blob_name, client=None):
+    def delete_blob(self, blob_name, client=None, generation=None):
         """Deletes a blob from the current bucket.
 
         If the blob isn't found (backend 404), raises a
@@ -903,6 +911,10 @@ class Bucket(_PropertyMixin):
         :param client: Optional. The client to use.  If not passed, falls back
                        to the ``client`` stored on the current bucket.
 
+        :type generation: long
+        :param generation: Optional. If present, permanently deletes a specific
+                           revision of this object.
+
         :raises: :class:`google.cloud.exceptions.NotFound` (to suppress
                  the exception, call ``delete_blobs``, passing a no-op
                  ``on_error`` callback, e.g.:
@@ -913,19 +925,15 @@ class Bucket(_PropertyMixin):
 
         """
         client = self._require_client(client)
-        query_params = {}
+        blob = Blob(blob_name, bucket=self, generation=generation)
 
-        if self.user_project is not None:
-            query_params["userProject"] = self.user_project
-
-        blob_path = Blob.path_helper(self.path, blob_name)
         # We intentionally pass `_target_object=None` since a DELETE
         # request has no response value (whether in a standard request or
         # in a batch request).
         client._connection.api_request(
             method="DELETE",
-            path=blob_path,
-            query_params=query_params,
+            path=blob.path,
+            query_params=blob._query_params,
             _target_object=None,
         )
 

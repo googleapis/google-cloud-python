@@ -125,9 +125,10 @@ def make_rpc():
     call = mock.create_autospec(_CallAndFuture, instance=True)
     rpc = mock.create_autospec(grpc.StreamStreamMultiCallable, instance=True)
 
-    def rpc_side_effect(request):
+    def rpc_side_effect(request, metadata=None):
         call.is_active.return_value = True
         call.request = request
+        call.metadata = metadata
         return call
 
     rpc.side_effect = rpc_side_effect
@@ -171,6 +172,15 @@ class TestBidiRpc(object):
         bidi_rpc._on_call_done(mock.sentinel.future)
 
         callback.assert_called_once_with(mock.sentinel.future)
+
+    def test_metadata(self):
+        rpc, call = make_rpc()
+        bidi_rpc = bidi.BidiRpc(rpc, metadata=mock.sentinel.A)
+        assert bidi_rpc._rpc_metadata == mock.sentinel.A
+
+        bidi_rpc.open()
+        assert bidi_rpc.call == call
+        assert bidi_rpc.call.metadata == mock.sentinel.A
 
     def test_open(self):
         rpc, call = make_rpc()

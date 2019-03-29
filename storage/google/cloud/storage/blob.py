@@ -159,7 +159,13 @@ class Blob(_PropertyMixin):
     """
 
     def __init__(
-        self, name, bucket, chunk_size=None, encryption_key=None, kms_key_name=None
+        self,
+        name,
+        bucket,
+        chunk_size=None,
+        encryption_key=None,
+        kms_key_name=None,
+        generation=None,
     ):
         name = _bytes_to_unicode(name)
         super(Blob, self).__init__(name=name)
@@ -176,6 +182,9 @@ class Blob(_PropertyMixin):
 
         if kms_key_name is not None:
             self._properties["kmsKeyName"] = kms_key_name
+
+        if generation is not None:
+            self._properties["generation"] = generation
 
     @property
     def chunk_size(self):
@@ -256,6 +265,24 @@ class Blob(_PropertyMixin):
         :rtype: str
         """
         return self.bucket.user_project
+
+    def _encryption_headers(self):
+        """Return any encryption headers needed to fetch the object.
+
+        :rtype: List(Tuple(str, str))
+        :returns: a list of tuples to be passed as headers.
+        """
+        return _get_encryption_headers(self._encryption_key)
+
+    @property
+    def _query_params(self):
+        """Default query parameters."""
+        params = {}
+        if self.generation is not None:
+            params["generation"] = self.generation
+        if self.user_project is not None:
+            params["userProject"] = self.user_project
+        return params
 
     @property
     def public_url(self):
@@ -389,10 +416,8 @@ class Blob(_PropertyMixin):
         client = self._require_client(client)
         # We only need the status code (200 or not) so we seek to
         # minimize the returned payload.
-        query_params = {"fields": "name"}
-
-        if self.user_project is not None:
-            query_params["userProject"] = self.user_project
+        query_params = self._query_params
+        query_params["fields"] = "name"
 
         try:
             # We intentionally pass `_target_object=None` since fields=name
@@ -427,7 +452,9 @@ class Blob(_PropertyMixin):
                  (propagated from
                  :meth:`google.cloud.storage.bucket.Bucket.delete_blob`).
         """
-        return self.bucket.delete_blob(self.name, client=client)
+        return self.bucket.delete_blob(
+            self.name, client=client, generation=self.generation
+        )
 
     def _get_transport(self, client):
         """Return the client's transport.
@@ -1484,13 +1511,15 @@ class Blob(_PropertyMixin):
         headers = _get_encryption_headers(self._encryption_key)
         headers.update(_get_encryption_headers(source._encryption_key, source=True))
 
-        query_params = {}
+        query_params = self._query_params
+        if "generation" in query_params:
+            del query_params["generation"]
 
         if token:
             query_params["rewriteToken"] = token
 
-        if self.user_project is not None:
-            query_params["userProject"] = self.user_project
+        if source.generation:
+            query_params["sourceGeneration"] = source.generation
 
         if self.kms_key_name is not None:
             query_params["destinationKmsKeyName"] = self.kms_key_name

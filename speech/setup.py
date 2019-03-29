@@ -22,12 +22,12 @@ import setuptools
 
 name = 'google-cloud-speech'
 description = 'Google Cloud Speech API client library'
-version = '0.36.3'
+version = '1.0.0'
 # Should be one of:
 # 'Development Status :: 3 - Alpha'
 # 'Development Status :: 4 - Beta'
 # 'Development Status :: 5 - Production/Stable'
-release_status = 'Development Status :: 4 - Beta'
+release_status = 'Development Status :: 5 - Production/Stable'
 dependencies = [
     'google-api-core[grpc] >= 1.6.0, < 2.0.0dev',
 ]
@@ -72,7 +72,6 @@ setuptools.setup(
         'Programming Language :: Python :: 2',
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',

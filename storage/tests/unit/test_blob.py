@@ -101,6 +101,13 @@ class Test_Blob(unittest.TestCase):
         self.assertEqual(blob._encryption_key, None)
         self.assertEqual(blob.kms_key_name, KMS_RESOURCE)
 
+    def test_ctor_with_generation(self):
+        BLOB_NAME = "blob-name"
+        GENERATION = 12345
+        bucket = _Bucket()
+        blob = self._make_one(BLOB_NAME, bucket=bucket, generation=GENERATION)
+        self.assertEqual(blob.generation, GENERATION)
+
     def _set_properties_helper(self, kms_key_name=None):
         import datetime
         from google.cloud._helpers import UTC
@@ -279,6 +286,47 @@ class Test_Blob(unittest.TestCase):
         bucket = _Bucket(user_project=user_project)
         blob = self._make_one(blob_name, bucket=bucket)
         self.assertEqual(blob.user_project, user_project)
+
+    def test__encryption_headers_wo_encryption_key(self):
+        BLOB_NAME = "blob-name"
+        bucket = _Bucket()
+        blob = self._make_one(BLOB_NAME, bucket=bucket)
+        expected = {}
+        self.assertEqual(blob._encryption_headers(), expected)
+
+    def test__encryption_headers_w_encryption_key(self):
+        key = b"aa426195405adee2c8081bb9e7e74b19"
+        header_key_value = "YWE0MjYxOTU0MDVhZGVlMmM4MDgxYmI5ZTdlNzRiMTk="
+        header_key_hash_value = "V3Kwe46nKc3xLv96+iJ707YfZfFvlObta8TQcx2gpm0="
+        BLOB_NAME = "blob-name"
+        bucket = _Bucket()
+        blob = self._make_one(BLOB_NAME, bucket=bucket, encryption_key=key)
+        expected = {
+            "X-Goog-Encryption-Algorithm": "AES256",
+            "X-Goog-Encryption-Key": header_key_value,
+            "X-Goog-Encryption-Key-Sha256": header_key_hash_value,
+        }
+        self.assertEqual(blob._encryption_headers(), expected)
+
+    def test__query_params_default(self):
+        BLOB_NAME = "blob-name"
+        bucket = _Bucket()
+        blob = self._make_one(BLOB_NAME, bucket=bucket)
+        self.assertEqual(blob._query_params, {})
+
+    def test__query_params_w_user_project(self):
+        user_project = "user-project-123"
+        BLOB_NAME = "BLOB"
+        bucket = _Bucket(user_project=user_project)
+        blob = self._make_one(BLOB_NAME, bucket=bucket)
+        self.assertEqual(blob._query_params, {"userProject": user_project})
+
+    def test__query_params_w_generation(self):
+        generation = 123456
+        BLOB_NAME = "BLOB"
+        bucket = _Bucket()
+        blob = self._make_one(BLOB_NAME, bucket=bucket, generation=generation)
+        self.assertEqual(blob._query_params, {"generation": generation})
 
     def test_public_url(self):
         BLOB_NAME = "blob-name"
@@ -566,7 +614,28 @@ class Test_Blob(unittest.TestCase):
             },
         )
 
-    def test_delete(self):
+    def test_exists_hit_w_generation(self):
+        BLOB_NAME = "blob-name"
+        GENERATION = 123456
+        found_response = ({"status": http_client.OK}, b"")
+        connection = _Connection(found_response)
+        client = _Client(connection)
+        bucket = _Bucket(client)
+        blob = self._make_one(BLOB_NAME, bucket=bucket, generation=GENERATION)
+        bucket._blobs[BLOB_NAME] = 1
+        self.assertTrue(blob.exists())
+        self.assertEqual(len(connection._requested), 1)
+        self.assertEqual(
+            connection._requested[0],
+            {
+                "method": "GET",
+                "path": "/b/name/o/{}".format(BLOB_NAME),
+                "query_params": {"fields": "name", "generation": GENERATION},
+                "_target_object": None,
+            },
+        )
+
+    def test_delete_wo_generation(self):
         BLOB_NAME = "blob-name"
         not_found_response = ({"status": http_client.NOT_FOUND}, b"")
         connection = _Connection(not_found_response)
@@ -576,7 +645,20 @@ class Test_Blob(unittest.TestCase):
         bucket._blobs[BLOB_NAME] = 1
         blob.delete()
         self.assertFalse(blob.exists())
-        self.assertEqual(bucket._deleted, [(BLOB_NAME, None)])
+        self.assertEqual(bucket._deleted, [(BLOB_NAME, None, None)])
+
+    def test_delete_w_generation(self):
+        BLOB_NAME = "blob-name"
+        GENERATION = 123456
+        not_found_response = ({"status": http_client.NOT_FOUND}, b"")
+        connection = _Connection(not_found_response)
+        client = _Client(connection)
+        bucket = _Bucket(client)
+        blob = self._make_one(BLOB_NAME, bucket=bucket, generation=GENERATION)
+        bucket._blobs[BLOB_NAME] = 1
+        blob.delete()
+        self.assertFalse(blob.exists())
+        self.assertEqual(bucket._deleted, [(BLOB_NAME, None, GENERATION)])
 
     def test__get_transport(self):
         client = mock.Mock(spec=[u"_credentials", "_http"])
@@ -2295,6 +2377,48 @@ class Test_Blob(unittest.TestCase):
         self.assertEqual(rewritten, 33)
         self.assertEqual(size, 42)
 
+    def test_rewrite_w_generations(self):
+        SOURCE_BLOB = "source"
+        SOURCE_GENERATION = 42
+        DEST_BLOB = "dest"
+        DEST_BUCKET = "other-bucket"
+        DEST_GENERATION = 43
+        TOKEN = "TOKEN"
+        RESPONSE = {
+            "totalBytesRewritten": 33,
+            "objectSize": 42,
+            "done": False,
+            "rewriteToken": TOKEN,
+        }
+        response = ({"status": http_client.OK}, RESPONSE)
+        connection = _Connection(response)
+        client = _Client(connection)
+        source_bucket = _Bucket(client=client)
+        source_blob = self._make_one(
+            SOURCE_BLOB, bucket=source_bucket, generation=SOURCE_GENERATION
+        )
+        dest_bucket = _Bucket(client=client, name=DEST_BUCKET)
+        dest_blob = self._make_one(
+            DEST_BLOB, bucket=dest_bucket, generation=DEST_GENERATION
+        )
+
+        token, rewritten, size = dest_blob.rewrite(source_blob)
+
+        self.assertEqual(token, TOKEN)
+        self.assertEqual(rewritten, 33)
+        self.assertEqual(size, 42)
+
+        kw, = connection._requested
+        self.assertEqual(kw["method"], "POST")
+        self.assertEqual(
+            kw["path"],
+            "/b/%s/o/%s/rewriteTo/b/%s/o/%s"
+            % (
+                (source_bucket.name, source_blob.name, dest_bucket.name, dest_blob.name)
+            ),
+        )
+        self.assertEqual(kw["query_params"], {"sourceGeneration": SOURCE_GENERATION})
+
     def test_rewrite_other_bucket_other_name_no_encryption_partial(self):
         SOURCE_BLOB = "source"
         DEST_BLOB = "dest"
@@ -3175,9 +3299,9 @@ class _Bucket(object):
         self.path = "/b/" + name
         self.user_project = user_project
 
-    def delete_blob(self, blob_name, client=None):
+    def delete_blob(self, blob_name, client=None, generation=None):
         del self._blobs[blob_name]
-        self._deleted.append((blob_name, client))
+        self._deleted.append((blob_name, client, generation))
 
 
 class _Signer(object):

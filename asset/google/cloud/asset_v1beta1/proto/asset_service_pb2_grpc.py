@@ -38,8 +38,9 @@ class AssetServiceServicer(object):
     def ExportAssets(self, request, context):
         """Exports assets with time and resource types to a given Cloud Storage
     location. The output format is newline-delimited JSON.
-    This API implements the [google.longrunning.Operation][google.longrunning.Operation] API allowing you
-    to keep track of the export.
+    This API implements the
+    [google.longrunning.Operation][google.longrunning.Operation] API allowing
+    you to keep track of the export.
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")

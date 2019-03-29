@@ -29,11 +29,17 @@ from google.api_core.exceptions import NotFound
 
 from google.cloud.bigtable.policy import Policy
 
+import warnings
 
-_EXISTING_INSTANCE_LOCATION_ID = "see-existing-cluster"
 _INSTANCE_NAME_RE = re.compile(
     r"^projects/(?P<project>[^/]+)/" r"instances/(?P<instance_id>[a-z][-a-z0-9]*)$"
 )
+
+_INSTANCE_CREATE_WARNING = """
+Use of `instance.create({0}, {1}, {2})` will be depricated.
+Please replace with
+`cluster = instance.cluster({0}, {1}, {2})`
+`instance.create(clusters=[cluster])`."""
 
 
 class Instance(object):
@@ -124,6 +130,12 @@ class Instance(object):
     def from_pb(cls, instance_pb, client):
         """Creates an instance instance from a protobuf.
 
+        For example:
+
+        .. literalinclude:: snippets.py
+            :start-after: [START bigtable_instance_from_pb]
+            :end-before: [END bigtable_instance_from_pb]
+
         :type instance_pb: :class:`instance_pb2.Instance`
         :param instance_pb: An instance protobuf object.
 
@@ -162,6 +174,12 @@ class Instance(object):
           This property will not change if ``instance_id`` does not,
           but the return value is not cached.
 
+        For example:
+
+        .. literalinclude:: snippets.py
+            :start-after: [START bigtable_instance_name]
+            :end-before: [END bigtable_instance_name]
+
         The instance name is of the form
 
             ``"projects/{project}/instances/{instance_id}"``
@@ -175,7 +193,15 @@ class Instance(object):
 
     @property
     def state(self):
-        """google.cloud.bigtable.enums.Instance.State: state of Instance."""
+        """google.cloud.bigtable.enums.Instance.State: state of Instance.
+
+        For example:
+
+        .. literalinclude:: snippets.py
+            :start-after: [START bigtable_instance_state]
+            :end-before: [END bigtable_instance_state]
+
+        """
         return self._state
 
     def __eq__(self, other):
@@ -256,6 +282,14 @@ class Instance(object):
         """
 
         if clusters is None:
+            warnings.warn(
+                _INSTANCE_CREATE_WARNING.format(
+                    "location_id", "serve_nodes", "default_storage_type"
+                ),
+                DeprecationWarning,
+                stacklevel=2,
+            )
+
             cluster_id = "{}-cluster".format(self.instance_id)
 
             clusters = [

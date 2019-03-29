@@ -752,6 +752,7 @@ class TestTable(unittest.TestCase):
     def test_yield_retry_rows(self):
         from google.cloud.bigtable_v2.gapic import bigtable_client
         from google.cloud.bigtable_admin_v2.gapic import bigtable_table_admin_client
+        import warnings
 
         data_api = bigtable_client.BigtableClient(mock.Mock())
         table_api = bigtable_table_admin_client.BigtableTableAdminClient(mock.Mock())
@@ -799,8 +800,14 @@ class TestTable(unittest.TestCase):
         )
 
         rows = []
-        for row in table.yield_rows(start_key=self.ROW_KEY_1, end_key=self.ROW_KEY_2):
-            rows.append(row)
+        with warnings.catch_warnings(record=True) as warned:
+            for row in table.yield_rows(
+                start_key=self.ROW_KEY_1, end_key=self.ROW_KEY_2
+            ):
+                rows.append(row)
+
+        self.assertEqual(len(warned), 1)
+        self.assertIs(warned[0].category, DeprecationWarning)
 
         result = rows[1]
         self.assertEqual(result.row_key, self.ROW_KEY_2)
@@ -810,6 +817,7 @@ class TestTable(unittest.TestCase):
         from google.cloud.bigtable_admin_v2.gapic import bigtable_table_admin_client
         from google.cloud.bigtable.row_set import RowSet
         from google.cloud.bigtable.row_set import RowRange
+        import warnings
 
         data_api = bigtable_client.BigtableClient(mock.Mock())
         table_api = bigtable_table_admin_client.BigtableTableAdminClient(mock.Mock())
@@ -866,8 +874,13 @@ class TestTable(unittest.TestCase):
             RowRange(start_key=self.ROW_KEY_1, end_key=self.ROW_KEY_2)
         )
         row_set.add_row_key(self.ROW_KEY_3)
-        for row in table.yield_rows(row_set=row_set):
-            rows.append(row)
+
+        with warnings.catch_warnings(record=True) as warned:
+            for row in table.yield_rows(row_set=row_set):
+                rows.append(row)
+
+        self.assertEqual(len(warned), 1)
+        self.assertIs(warned[0].category, DeprecationWarning)
 
         self.assertEqual(rows[0].row_key, self.ROW_KEY_1)
         self.assertEqual(rows[1].row_key, self.ROW_KEY_2)

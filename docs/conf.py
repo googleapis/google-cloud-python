@@ -333,6 +333,7 @@ static_html_pages = [
     'datastore/usage.html',
     'dns/usage.html',
     'bigquery/usage.html',
+    'bigquery/generated/google.cloud.bigquery.magics.html',
     'runtimeconfig/usage.html',
     'spanner/usage.html',
     'trace/starting.html',

@@ -68,17 +68,11 @@ class MutationsBatcher(object):
         """ Add a row to the batch. If the current batch meets one of the size
         limits, the batch is sent synchronously.
 
-        Example:
-            >>> # Batcher for max row bytes
-            >>> batcher = table.mutations_batcher(max_row_bytes=1024)
-            >>>
-            >>> row = table.row(b'row_key')
-            >>>
-            >>> # In batcher mutate will flush current batch if it
-            >>> # reaches the max_row_bytes
-            >>> batcher.mutate(row)
-            >>>
-            >>> batcher.flush()
+        For example:
+
+        .. literalinclude:: snippets.py
+            :start-after: [START bigtable_batcher_mutate]
+            :end-before: [END bigtable_batcher_mutate]
 
         :type row: class
         :param row: class:`~google.cloud.bigtable.row.DirectRow`.
@@ -113,20 +107,11 @@ class MutationsBatcher(object):
         """ Add a row to the batch. If the current batch meets one of the size
         limits, the batch is sent synchronously.
 
-        Example:
-            >>> # Batcher for flush count
-            >>> batcher = table.mutations_batcher(flush_count=2)
-            >>>
-            >>> row1 = table.row(b'row_key_1')
-            >>> row2 = table.row(b'row_key_2')
-            >>> row3 = table.row(b'row_key_3')
-            >>> row4 = table.row(b'row_key_4')
-            >>>
-            >>> # In batcher mutate will flush current batch if it
-            >>> # reaches the max flush_count
-            >>> batcher.mutate_rows([row_1, row_2, row_3, row_4])
-            >>>
-            >>> batcher.flush()
+        For example:
+
+        .. literalinclude:: snippets.py
+            :start-after: [START bigtable_batcher_mutate_rows]
+            :end-before: [END bigtable_batcher_mutate_rows]
 
         :type rows: list:[`~google.cloud.bigtable.row.DirectRow`]
         :param rows: list:[`~google.cloud.bigtable.row.DirectRow`].
@@ -143,7 +128,14 @@ class MutationsBatcher(object):
             self.mutate(row)
 
     def flush(self):
-        """ Sends the current. batch to Cloud Bigtable. """
+        """ Sends the current. batch to Cloud Bigtable.
+        For example:
+
+        .. literalinclude:: snippets.py
+            :start-after: [START bigtable_batcher_flush]
+            :end-before: [END bigtable_batcher_flush]
+
+        """
         if len(self.rows) != 0:
             self.table.mutate_rows(self.rows)
             self.total_mutation_count = 0

@@ -44,7 +44,9 @@ def _bad_copy(bad_request):
 
 
 retry_429 = RetryErrors(exceptions.TooManyRequests, max_tries=6)
-retry_429_503 = RetryErrors([exceptions.TooManyRequests, exceptions.ServiceUnavailable], max_tries=6)
+retry_429_503 = RetryErrors(
+    [exceptions.TooManyRequests, exceptions.ServiceUnavailable], max_tries=6
+)
 retry_bad_copy = RetryErrors(exceptions.BadRequest, error_predicate=_bad_copy)
 
 
@@ -78,6 +80,7 @@ def setUpModule():
     # In the **very** rare case the bucket name is reserved, this
     # fails with a ConnectionError.
     Config.TEST_BUCKET = Config.CLIENT.bucket(bucket_name)
+    Config.TEST_BUCKET.versioning_enabled = True
     retry_429(Config.TEST_BUCKET.create)()
 
 
@@ -414,6 +417,20 @@ class TestStorageWriteFiles(TestStorageFiles):
 
         # Exercise 'objects.insert' w/ userProject.
         blob.upload_from_filename(file_data["path"])
+        gen0 = blob.generation
+
+        # Upload a second generation of the blob
+        blob.upload_from_string(b"gen1")
+        gen1 = blob.generation
+
+        blob0 = with_user_project.blob("SmallFile", generation=gen0)
+        blob1 = with_user_project.blob("SmallFile", generation=gen1)
+
+        # Exercise 'objects.get' w/ generation
+        self.assertEqual(with_user_project.get_blob(blob.name).generation, gen1)
+        self.assertEqual(
+            with_user_project.get_blob(blob.name, generation=gen0).generation, gen0
+        )
 
         try:
             # Exercise 'objects.get' (metadata) w/ userProject.
@@ -421,22 +438,31 @@ class TestStorageWriteFiles(TestStorageFiles):
             blob.reload()
 
             # Exercise 'objects.get' (media) w/ userProject.
-            downloaded = blob.download_as_string()
-            self.assertEqual(downloaded, file_contents)
+            self.assertEqual(blob0.download_as_string(), file_contents)
+            self.assertEqual(blob1.download_as_string(), b"gen1")
 
             # Exercise 'objects.patch' w/ userProject.
-            blob.content_language = "en"
-            blob.patch()
-            self.assertEqual(blob.content_language, "en")
+            blob0.content_language = "en"
+            blob0.patch()
+            self.assertEqual(blob0.content_language, "en")
+            self.assertIsNone(blob1.content_language)
 
             # Exercise 'objects.update' w/ userProject.
             metadata = {"foo": "Foo", "bar": "Bar"}
-            blob.metadata = metadata
-            blob.update()
-            self.assertEqual(blob.metadata, metadata)
+            blob0.metadata = metadata
+            blob0.update()
+            self.assertEqual(blob0.metadata, metadata)
+            self.assertIsNone(blob1.metadata)
         finally:
             # Exercise 'objects.delete' (metadata) w/ userProject.
-            blob.delete()
+            blobs = with_user_project.list_blobs(prefix=blob.name, versions=True)
+            self.assertEqual([each.generation for each in blobs], [gen0, gen1])
+
+            blob0.delete()
+            blobs = with_user_project.list_blobs(prefix=blob.name, versions=True)
+            self.assertEqual([each.generation for each in blobs], [gen1])
+
+            blob1.delete()
 
     @unittest.skipUnless(USER_PROJECT, "USER_PROJECT not set in environment.")
     def test_blob_acl_w_user_project(self):

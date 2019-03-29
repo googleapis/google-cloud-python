@@ -1,26 +1,26 @@
 {
-  "updateTime": "2019-01-22T23:51:49.703550Z",
+  "updateTime": "2019-03-14T17:19:00.633553Z",
   "sources": [
     {
       "generator": {
         "name": "artman",
-        "version": "0.16.7",
-        "dockerImage": "googleapis/artman@sha256:d6c8ced606eb49973ca95d2af7c55a681acc042db0f87d135968349e7bf6dd80"
+        "version": "0.16.17",
+        "dockerImage": "googleapis/artman@sha256:7231f27272231a884e09edb5953148c85ecd8467780d33c4a35c3e507885715b"
       }
     },
     {
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "33a4e6a0cfb3d0c4919c0978f914dccbcf8a671b",
-        "internalRef": "230421920"
+        "sha": "d05a746ba27b89374c7407c88c0d5dabfb0afc7c",
+        "internalRef": "238372434"
       }
     },
     {
       "template": {
         "name": "python_library",
         "origin": "synthtool.gcp",
-        "version": "2019.1.16"
+        "version": "2019.2.26"
       }
     }
   ],
@@ -33,6 +33,16 @@
         "language": "python",
         "generator": "gapic",
         "config": "google/cloud/asset/artman_cloudasset_v1beta1.yaml"
+      }
+    },
+    {
+      "client": {
+        "source": "googleapis",
+        "apiName": "asset",
+        "apiVersion": "v1",
+        "language": "python",
+        "generator": "gapic",
+        "config": "google/cloud/asset/artman_cloudasset_v1.yaml"
       }
     }
   ]
