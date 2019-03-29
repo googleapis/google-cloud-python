@@ -1300,7 +1300,11 @@ class RowIterator(HTTPIterator):
         )
         self._schema = schema
         self._field_to_index = _helpers._field_to_index_mapping(schema)
+
         self._total_rows = None
+        if table is not None and hasattr(table, "num_rows"):
+            self._total_rows = table.num_rows
+
         self._page_size = page_size
         self._table = table
         self._selected_fields = selected_fields
