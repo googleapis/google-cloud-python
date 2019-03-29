@@ -209,8 +209,8 @@ Impersonated credentials
 ++++++++++++++++++++++++
 
 Impersonated Credentials allows one set of credentials issued to a user or service account
-to impersonate another.  The target service account must grant the source credential
-the "Service Account Token Creator" IAM role::
+to impersonate another.  The source credentials must be granted 
+the "Service Account Token Creator" IAM role. ::
 
     from google.auth import impersonated_credentials
 
@@ -232,7 +232,7 @@ the "Service Account Token Creator" IAM role::
 
 In the example above `source_credentials` does not have direct access to list buckets
 in the target project.  Using `ImpersonatedCredentials` will allow the source_credentials
-to assume the identity of a target_principal that does have access
+to assume the identity of a target_principal that does have access.
 
 Making authenticated requests
 -----------------------------
