@@ -28,6 +28,8 @@ LOCAL_DEPS = (
     os.path.join("..", "bigquery_storage[pandas,fastavro]"),
 )
 
+BLACK_PATHS = ("google", "tests", "docs", "noxfile.py", "setup.py")
+
 
 def default(session):
     """Default unit test session.
@@ -152,6 +154,7 @@ def lint(session):
     session.run("flake8", os.path.join("google", "cloud", "bigquery"))
     session.run("flake8", "tests")
     session.run("flake8", os.path.join("docs", "snippets.py"))
+    session.run("black", "--check", *BLACK_PATHS)
 
 
 @nox.session(python="3.6")
@@ -168,7 +171,7 @@ def blacken(session):
     Format code to uniform standard.
     """
     session.install("black")
-    session.run("black", "google", "tests", "docs", "noxfile.py", "setup.py")
+    session.run("black", *BLACK_PATHS)
 
 
 @nox.session(python="3.6")
