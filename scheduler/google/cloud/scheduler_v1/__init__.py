@@ -16,8 +16,14 @@
 
 from __future__ import absolute_import
 
-from google.cloud.scheduler_v1 import CloudSchedulerClient
-from google.cloud.scheduler_v1 import enums
 from google.cloud.scheduler_v1 import types
+from google.cloud.scheduler_v1.gapic import cloud_scheduler_client
+from google.cloud.scheduler_v1.gapic import enums
+
+
+class CloudSchedulerClient(cloud_scheduler_client.CloudSchedulerClient):
+    __doc__ = cloud_scheduler_client.CloudSchedulerClient.__doc__
+    enums = enums
+
 
 __all__ = ("enums", "types", "CloudSchedulerClient")
