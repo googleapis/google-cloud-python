@@ -88,7 +88,7 @@ As for this library itself, the recommended installation approach is
     # Due to its experimental state, this tool is not published to a
     # package manager; you should clone it.
     # (You can pip install it from GitHub, not not if you want to tinker.)
-    git clone git@github.com:googleapis/gapic-generator-python.git
+    git clone https://github.com/googleapis/gapic-generator-python.git
     cd gapic-generator-python/
 
     # Install the tool. This will handle the virtualenv for you, and
@@ -123,7 +123,7 @@ which define certain client-specific annotations. These are in the
 
 .. code-block:: shell
 
-  $ git clone git@github.com:googleapis/api-common-protos.git
+  $ git clone https://github.com/googleapis/api-common-protos.git
   $ cd api-common-protos
   $ git checkout --track -b input-contract origin/input-contract
   $ cd ..

@@ -7,7 +7,7 @@ a special branch:
 
 .. code-block:: shell
 
-  $ git clone git@github.com:googleapis/googleapis.git
+  $ git clone https://github.com/googleapis/googleapis.git
   $ cd googleapis
   $ git checkout --track -b input-contract origin/input-contract
   $ cd ..

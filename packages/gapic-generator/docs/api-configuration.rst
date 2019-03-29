@@ -47,7 +47,7 @@ Your best bet is to likely clone this repository:
 
 .. code-block:: shell
 
-  $ git clone git@github.com:googleapis/api-common-protos.git
+  $ git clone https://github.com/googleapis/api-common-protos.git
   $ cd api-common-protos
   $ git checkout --track -b input-contract origin/input-contract
 
