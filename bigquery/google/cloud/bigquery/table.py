@@ -1752,5 +1752,9 @@ def _table_arg_to_table(value, default_project=None):
         value = TableReference.from_string(value, default_project=default_project)
     if isinstance(value, TableReference):
         value = Table(value)
+    if isinstance(value, TableListItem):
+        newvalue = Table(value.reference)
+        newvalue._properties = value._properties
+        value = newvalue
 
     return value
