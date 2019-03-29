@@ -729,7 +729,7 @@ class TestStorageSignURLs(TestStorageFiles):
 
         if (
             type(Config.CLIENT._credentials)
-            is not google.oauth2.service_account.credentials
+            is not google.oauth2.service_account.Credentials
         ):
             self.skipTest("Signing tests requires a service account credential")
 
