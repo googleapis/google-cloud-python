@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Pub/Sub Client Types &#8212; google-cloud b866a87 documentation</title>
+    <title>Pub/Sub Client Types &#8212; google-cloud 2940720 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -2061,6 +2061,21 @@ server when it receives the <code class="docutils literal notranslate"><span cla
 populated by the publisher in a <code class="docutils literal notranslate"><span class="pre">Publish</span></code> call.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="google.cloud.pubsub_v1.types.PubsubMessage.ordering_key">
+<code class="descname">ordering_key</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.PubsubMessage.ordering_key" title="Permalink to this definition">#</a></dt>
+<dd><p>Identifies related messages for which publish order should be
+respected. If a <code class="docutils literal notranslate"><span class="pre">Subscription</span></code> has
+<code class="docutils literal notranslate"><span class="pre">enable_message_ordering</span></code> set to <code class="docutils literal notranslate"><span class="pre">true</span></code>, messages
+published with the same <code class="docutils literal notranslate"><span class="pre">ordering_key</span></code> value will be
+delivered to subscribers in the order in which they are
+received by the Pub/Sub system. EXPERIMENTAL: This feature is
+part of a closed alpha release. This API might be changed in
+backward-incompatible ways and is not recommended for
+production use. It is not subject to any SLA or deprecation
+policy.</p>
+</dd></dl>
+
 <dl class="class">
 <dt id="google.cloud.pubsub_v1.types.PubsubMessage.AttributesEntry">
 <em class="property">class </em><code class="descname">AttributesEntry</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.PubsubMessage.AttributesEntry" title="Permalink to this definition">#</a></dt>
@@ -2094,6 +2109,12 @@ populated by the publisher in a <code class="docutils literal notranslate"><span
 <dt>
 <code class="descname">message_id</code></dt>
 <dd><p>Field google.pubsub.v1.PubsubMessage.message_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">ordering_key</code></dt>
+<dd><p>Field google.pubsub.v1.PubsubMessage.ordering_key</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -2826,6 +2847,19 @@ or deprecation policy.</p>
 </dd></dl>
 
 <dl class="attribute">
+<dt id="google.cloud.pubsub_v1.types.Subscription.enable_message_ordering">
+<code class="descname">enable_message_ordering</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.Subscription.enable_message_ordering" title="Permalink to this definition">#</a></dt>
+<dd><p>If true, messages published with the same <code class="docutils literal notranslate"><span class="pre">ordering_key</span></code> in
+<code class="docutils literal notranslate"><span class="pre">PubsubMessage</span></code> will be delivered to the subscribers in the
+order in which they are received by the Pub/Sub system.
+Otherwise, they may be delivered in any order. EXPERIMENTAL:
+This feature is part of a closed alpha release. This API might
+be changed in backward-incompatible ways and is not
+recommended for production use. It is not subject to any SLA
+or deprecation policy.</p>
+</dd></dl>
+
+<dl class="attribute">
 <dt id="google.cloud.pubsub_v1.types.Subscription.expiration_policy">
 <code class="descname">expiration_policy</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.Subscription.expiration_policy" title="Permalink to this definition">#</a></dt>
 <dd><p>A policy that specifies the conditions for this subscription’s
@@ -2861,6 +2895,12 @@ It is not subject to any SLA or deprecation policy.</p>
 <dt>
 <code class="descname">ack_deadline_seconds</code></dt>
 <dd><p>Field google.pubsub.v1.Subscription.ack_deadline_seconds</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">enable_message_ordering</code></dt>
+<dd><p>Field google.pubsub.v1.Subscription.enable_message_ordering</p>
 </dd></dl>
 
 <dl class="attribute">
