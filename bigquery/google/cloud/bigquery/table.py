@@ -1422,9 +1422,7 @@ class RowIterator(HTTPIterator):
                     desc=description, total=self.total_rows, unit=unit
                 )
             elif progress_bar_type == "tqdm_gui":
-                return tqdm.tqdm_gui(
-                    desc=description, total=self.total_rows, unit=unit
-                )
+                return tqdm.tqdm_gui(desc=description, total=self.total_rows, unit=unit)
         except (KeyError, TypeError):
             # Protect ourselves from any tqdm errors. In case of
             # unexpected tqdm behavior, just fall back to showing
