@@ -748,48 +748,41 @@ class TestStorageSignURLs(TestStorageFiles):
             if blob.exists():
                 retry(blob.delete)()
 
-    def test_create_signed_read_url(self):
-        blob = self.bucket.blob("LogoToSign.jpg")
+    def _create_signed_read_url_helper(
+        self, blob_name="LogoToSign.jpg", method="GET", version="v2", payload=None
+    ):
+        blob = self.bucket.blob(blob_name)
+        if payload is not None:
+            blob.upload_from_string(payload)
         expiration = int(time.time() + 10)
         signed_url = blob.generate_signed_url(
-            expiration, method="GET", client=Config.CLIENT
+            expiration, method=method, client=Config.CLIENT, version=version
         )
 
         response = requests.get(signed_url)
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.content, self.LOCAL_FILE)
+        if payload is not None:
+            self.assertEqual(response.content, payload)
+        else:
+            self.assertEqual(response.content, self.LOCAL_FILE)
 
-    def test_create_signed_read_url_lowercase_method(self):
-        blob = self.bucket.blob("LogoToSign.jpg")
-        expiration = int(time.time() + 10)
-        signed_url = blob.generate_signed_url(
-            expiration, method="get", client=Config.CLIENT
+    def test_create_signed_read_url_v2(self):
+        self._create_signed_read_url_helper()
+
+    def test_create_signed_read_url_v2_lowercase_method(self):
+        self._create_signed_read_url_helper(method="get")
+
+    def test_create_signed_read_url_v2_w_non_ascii_name(self):
+        self._create_signed_read_url_helper(
+            blob_name=u"Caf\xe9.txt",
+            payload=b"Test signed URL for blob w/ non-ASCII name",
         )
 
-        response = requests.get(signed_url)
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.content, self.LOCAL_FILE)
-
-    def test_create_signed_read_url_w_non_ascii_name(self):
-        blob = self.bucket.blob(u"Caf\xe9.txt")
-        payload = b"Test signed URL for blob w/ non-ASCII name"
-        blob.upload_from_string(payload)
-        self.case_blobs_to_delete.append(blob)
-
-        expiration = int(time.time() + 10)
-        signed_url = blob.generate_signed_url(
-            expiration, method="GET", client=Config.CLIENT
-        )
-
-        response = requests.get(signed_url)
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.content, payload)
-
-    def test_create_signed_delete_url(self):
+    def _create_signed_delete_url_helper(self, version="v2"):
         blob = self.bucket.blob("LogoToSign.jpg")
         expiration = int(time.time() + 283473274)
         signed_delete_url = blob.generate_signed_url(
-            expiration, method="DELETE", client=Config.CLIENT
+            expiration, method="DELETE", client=Config.CLIENT, version=version
         )
 
         response = requests.request("DELETE", signed_delete_url)
@@ -798,6 +791,9 @@ class TestStorageSignURLs(TestStorageFiles):
 
         # Check that the blob has actually been deleted.
         self.assertFalse(blob.exists())
+
+    def test_create_signed_delete_url_v2(self):
+        self._create_signed_delete_url_helper()
 
 
 class TestStorageCompose(TestStorageFiles):
