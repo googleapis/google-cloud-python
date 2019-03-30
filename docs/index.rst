@@ -18,7 +18,7 @@
   IAM <iam/index>
   IoT <iot/index>
   Key Management <kms/index>
-  Language <language/index>
+  Natural Language <language/index>
   PubSub <pubsub/index>
   OSLogin <oslogin/index>
   Redis <redis/index>
