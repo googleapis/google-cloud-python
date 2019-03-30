@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Transaction API &#8212; google-cloud 2940720 documentation</title>
+    <title>Transaction API &#8212; google-cloud 86c6662 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -41,8 +41,7 @@
 <dl class="class">
 <dt id="google.cloud.spanner_v1.transaction.Transaction">
 <em class="property">class </em><code class="descclassname">google.cloud.spanner_v1.transaction.</code><code class="descname">Transaction</code><span class="sig-paren">(</span><em>session</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner_v1/transaction.html#Transaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_v1.transaction.Transaction" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.spanner_v1.snapshot._SnapshotBase</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.spanner_v1.batch._BatchBase</span></code></p>
-<p>Implement read-write transaction semantics for a session.</p>
+<dd><p>Implement read-write transaction semantics for a session.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -122,6 +121,59 @@ list, nor will any statements following that one.</td>
 </dd></dl>
 
 <dl class="method">
+<dt id="google.cloud.spanner_v1.transaction.Transaction.delete">
+<code class="descname">delete</code><span class="sig-paren">(</span><em>table</em>, <em>keyset</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.spanner_v1.transaction.Transaction.delete" title="Permalink to this definition">#</a></dt>
+<dd><p>Delete one or more table rows.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>table</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Name of the table to be modified.</li>
+<li><strong>keyset</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Keyset</span></code>) – Keys/ranges identifying rows to delete.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.spanner_v1.transaction.Transaction.execute_sql">
+<code class="descname">execute_sql</code><span class="sig-paren">(</span><em>sql</em>, <em>params=None</em>, <em>param_types=None</em>, <em>query_mode=None</em>, <em>partition=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.spanner_v1.transaction.Transaction.execute_sql" title="Permalink to this definition">#</a></dt>
+<dd><p>Perform an <code class="docutils literal notranslate"><span class="pre">ExecuteStreamingSql</span></code> API request.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>sql</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – SQL query statement</li>
+<li><strong>params</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><em>{str -&gt; column value}</em>) – values for parameter replacement.  Keys must match
+the names used in <code class="docutils literal notranslate"><span class="pre">sql</span></code>.</li>
+<li><strong>param_types</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>[</em><em>str -&gt; Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="gapic/v1/types.html#google.cloud.spanner_v1.types.Type" title="google.cloud.spanner_v1.types.Type"><em>types.Type</em></a><em>]</em><em>]</em>) – (Optional) maps explicit types for one or more param values;
+required if parameters are passed.</li>
+<li><strong>query_mode</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.spanner_v1.proto.ExecuteSqlRequest.QueryMode</span></code>) – Mode governing return of results / query plan. See
+<a class="reference external" href="https://cloud.google.com/spanner/reference/rpc/google.spanner.v1#google.spanner.v1.ExecuteSqlRequest.QueryMode1">https://cloud.google.com/spanner/reference/rpc/google.spanner.v1#google.spanner.v1.ExecuteSqlRequest.QueryMode1</a></li>
+<li><strong>partition</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.7)"><em>bytes</em></a>) – (Optional) one of the partition tokens returned
+from <a class="reference internal" href="#google.cloud.spanner_v1.transaction.Transaction.partition_query" title="google.cloud.spanner_v1.transaction.Transaction.partition_query"><code class="xref py py-meth docutils literal notranslate"><span class="pre">partition_query()</span></code></a>.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="streamed-api.html#google.cloud.spanner_v1.streamed.StreamedResultSet" title="google.cloud.spanner_v1.streamed.StreamedResultSet"><code class="xref py py-class docutils literal notranslate"><span class="pre">StreamedResultSet</span></code></a></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">a result set instance which can be used to consume rows.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><strong>ValueError</strong></a> – for reuse of single-use snapshots, or if a transaction ID is
+already pending for multiple-use snapshots.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="google.cloud.spanner_v1.transaction.Transaction.execute_update">
 <code class="descname">execute_update</code><span class="sig-paren">(</span><em>dml</em>, <em>params=None</em>, <em>param_types=None</em>, <em>query_mode=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner_v1/transaction.html#Transaction.execute_update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_v1.transaction.Transaction.execute_update" title="Permalink to this definition">#</a></dt>
 <dd><p>Perform an <code class="docutils literal notranslate"><span class="pre">ExecuteSql</span></code> API request with DML.</p>
@@ -151,9 +203,193 @@ required if parameters are passed.</li>
 </dd></dl>
 
 <dl class="method">
+<dt id="google.cloud.spanner_v1.transaction.Transaction.insert">
+<code class="descname">insert</code><span class="sig-paren">(</span><em>table</em>, <em>columns</em>, <em>values</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.spanner_v1.transaction.Transaction.insert" title="Permalink to this definition">#</a></dt>
+<dd><p>Insert one or more new table rows.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>table</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Name of the table to be modified.</li>
+<li><strong>columns</strong> (<em>list of str</em>) – Name of the table columns to be modified.</li>
+<li><strong>values</strong> (<em>list of lists</em>) – Values to be modified.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.spanner_v1.transaction.Transaction.insert_or_update">
+<code class="descname">insert_or_update</code><span class="sig-paren">(</span><em>table</em>, <em>columns</em>, <em>values</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.spanner_v1.transaction.Transaction.insert_or_update" title="Permalink to this definition">#</a></dt>
+<dd><p>Insert/update one or more table rows.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>table</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Name of the table to be modified.</li>
+<li><strong>columns</strong> (<em>list of str</em>) – Name of the table columns to be modified.</li>
+<li><strong>values</strong> (<em>list of lists</em>) – Values to be modified.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.spanner_v1.transaction.Transaction.partition_query">
+<code class="descname">partition_query</code><span class="sig-paren">(</span><em>sql</em>, <em>params=None</em>, <em>param_types=None</em>, <em>partition_size_bytes=None</em>, <em>max_partitions=None</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.spanner_v1.transaction.Transaction.partition_query" title="Permalink to this definition">#</a></dt>
+<dd><p>Perform a <code class="docutils literal notranslate"><span class="pre">ParitionQuery</span></code> API request.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>sql</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – SQL query statement</li>
+<li><strong>params</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><em>{str -&gt; column value}</em>) – values for parameter replacement.  Keys must match
+the names used in <code class="docutils literal notranslate"><span class="pre">sql</span></code>.</li>
+<li><strong>param_types</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>[</em><em>str -&gt; Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="gapic/v1/types.html#google.cloud.spanner_v1.types.Type" title="google.cloud.spanner_v1.types.Type"><em>types.Type</em></a><em>]</em><em>]</em>) – (Optional) maps explicit types for one or more param values;
+required if parameters are passed.</li>
+<li><strong>partition_size_bytes</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – (Optional) desired size for each partition generated.  The service
+uses this as a hint, the actual partition size may differ.</li>
+<li><strong>max_partitions</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – (Optional) desired maximum number of partitions generated. The
+service uses this as a hint, the actual number of partitions may
+differ.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">iterable of bytes</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">a sequence of partition tokens</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><strong>ValueError</strong></a> – for single-use snapshots, or if a transaction ID is
+already associtated with the snapshot.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.spanner_v1.transaction.Transaction.partition_read">
+<code class="descname">partition_read</code><span class="sig-paren">(</span><em>table</em>, <em>columns</em>, <em>keyset</em>, <em>index=''</em>, <em>partition_size_bytes=None</em>, <em>max_partitions=None</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.spanner_v1.transaction.Transaction.partition_read" title="Permalink to this definition">#</a></dt>
+<dd><p>Perform a <code class="docutils literal notranslate"><span class="pre">ParitionRead</span></code> API request for rows in a table.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>table</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – name of the table from which to fetch data</li>
+<li><strong>columns</strong> (<em>list of str</em>) – names of columns to be retrieved</li>
+<li><strong>keyset</strong> (<a class="reference internal" href="keyset-api.html#google.cloud.spanner_v1.keyset.KeySet" title="google.cloud.spanner_v1.keyset.KeySet"><code class="xref py py-class docutils literal notranslate"><span class="pre">KeySet</span></code></a>) – keys / ranges identifying rows to be retrieved</li>
+<li><strong>index</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – (Optional) name of index to use, rather than the
+table’s primary key</li>
+<li><strong>partition_size_bytes</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – (Optional) desired size for each partition generated.  The service
+uses this as a hint, the actual partition size may differ.</li>
+<li><strong>max_partitions</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – (Optional) desired maximum number of partitions generated. The
+service uses this as a hint, the actual number of partitions may
+differ.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">iterable of bytes</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">a sequence of partition tokens</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><strong>ValueError</strong></a> – for single-use snapshots, or if a transaction ID is
+already associtated with the snapshot.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.spanner_v1.transaction.Transaction.read">
+<code class="descname">read</code><span class="sig-paren">(</span><em>table</em>, <em>columns</em>, <em>keyset</em>, <em>index=''</em>, <em>limit=0</em>, <em>partition=None</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.spanner_v1.transaction.Transaction.read" title="Permalink to this definition">#</a></dt>
+<dd><p>Perform a <code class="docutils literal notranslate"><span class="pre">StreamingRead</span></code> API request for rows in a table.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>table</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – name of the table from which to fetch data</li>
+<li><strong>columns</strong> (<em>list of str</em>) – names of columns to be retrieved</li>
+<li><strong>keyset</strong> (<a class="reference internal" href="keyset-api.html#google.cloud.spanner_v1.keyset.KeySet" title="google.cloud.spanner_v1.keyset.KeySet"><code class="xref py py-class docutils literal notranslate"><span class="pre">KeySet</span></code></a>) – keys / ranges identifying rows to be retrieved</li>
+<li><strong>index</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – (Optional) name of index to use, rather than the
+table’s primary key</li>
+<li><strong>limit</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – (Optional) maximum number of rows to return.
+Incompatible with <code class="docutils literal notranslate"><span class="pre">partition</span></code>.</li>
+<li><strong>partition</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.7)"><em>bytes</em></a>) – (Optional) one of the partition tokens returned
+from <a class="reference internal" href="#google.cloud.spanner_v1.transaction.Transaction.partition_read" title="google.cloud.spanner_v1.transaction.Transaction.partition_read"><code class="xref py py-meth docutils literal notranslate"><span class="pre">partition_read()</span></code></a>.  Incompatible with
+<code class="docutils literal notranslate"><span class="pre">limit</span></code>.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="streamed-api.html#google.cloud.spanner_v1.streamed.StreamedResultSet" title="google.cloud.spanner_v1.streamed.StreamedResultSet"><code class="xref py py-class docutils literal notranslate"><span class="pre">StreamedResultSet</span></code></a></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">a result set instance which can be used to consume rows.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><strong>ValueError</strong></a> – for reuse of single-use snapshots, or if a transaction ID is
+already pending for multiple-use snapshots.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.spanner_v1.transaction.Transaction.replace">
+<code class="descname">replace</code><span class="sig-paren">(</span><em>table</em>, <em>columns</em>, <em>values</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.spanner_v1.transaction.Transaction.replace" title="Permalink to this definition">#</a></dt>
+<dd><p>Replace one or more table rows.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>table</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Name of the table to be modified.</li>
+<li><strong>columns</strong> (<em>list of str</em>) – Name of the table columns to be modified.</li>
+<li><strong>values</strong> (<em>list of lists</em>) – Values to be modified.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="google.cloud.spanner_v1.transaction.Transaction.rollback">
 <code class="descname">rollback</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner_v1/transaction.html#Transaction.rollback"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_v1.transaction.Transaction.rollback" title="Permalink to this definition">#</a></dt>
 <dd><p>Roll back a transaction on the database.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.spanner_v1.transaction.Transaction.update">
+<code class="descname">update</code><span class="sig-paren">(</span><em>table</em>, <em>columns</em>, <em>values</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.spanner_v1.transaction.Transaction.update" title="Permalink to this definition">#</a></dt>
+<dd><p>Update one or more existing table rows.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>table</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Name of the table to be modified.</li>
+<li><strong>columns</strong> (<em>list of str</em>) – Name of the table columns to be modified.</li>
+<li><strong>values</strong> (<em>list of lists</em>) – Values to be modified.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </dd></dl>
