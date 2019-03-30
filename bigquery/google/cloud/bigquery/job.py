@@ -2857,7 +2857,9 @@ class QueryJob(_AsyncJob):
             ValueError: If the `pandas` library cannot be imported.
         """
         return self.result().to_dataframe(
-            bqstorage_client=bqstorage_client, dtypes=dtypes
+            bqstorage_client=bqstorage_client,
+            dtypes=dtypes,
+            progress_bar_type=progress_bar_type,
         )
 
     def __iter__(self):
