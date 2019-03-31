@@ -572,6 +572,10 @@ def generate_signed_url_v4(
     if content_md5 is not None:
         headers["Content-MD5"] = content_md5
 
+    header_names = [key.lower() for key in headers]
+    if "host" not in header_names:
+        headers["Host"] = "storage.googleapis.com"
+
     ordered_headers = sorted(headers.items())
     canonical_headers = "\n".join(
         ["{}:{}".format(key.lower(), val.strip()) for key, val in ordered_headers]

@@ -616,6 +616,9 @@ class Test_generate_signed_url_v4(unittest.TestCase):
     def test_w_generation(self):
         self._generate_helper(generation=12345)
 
+    def test_w_custom_host_header(self):
+        self._generate_helper(headers={"Host": "api.example.com"})
+
     def test_w_custom_headers(self):
         self._generate_helper(headers={"x-goog-foo": "bar"})
 
