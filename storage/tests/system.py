@@ -12,9 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import datetime
 import os
-import tempfile
 import re
+import tempfile
 import time
 import unittest
 
@@ -749,14 +750,27 @@ class TestStorageSignURLs(TestStorageFiles):
                 retry(blob.delete)()
 
     def _create_signed_read_url_helper(
-        self, blob_name="LogoToSign.jpg", method="GET", version="v2", payload=None
+        self,
+        blob_name="LogoToSign.jpg",
+        method="GET",
+        version="v2",
+        payload=None,
+        expiration=None,
+        max_age=None,
     ):
         blob = self.bucket.blob(blob_name)
         if payload is not None:
             blob.upload_from_string(payload)
-        expiration = int(time.time() + 10)
+
+        if expiration is None and max_age is None:
+            max_age = 10
+
         signed_url = blob.generate_signed_url(
-            expiration, method=method, client=Config.CLIENT, version=version
+            expiration=expiration,
+            max_age=max_age,
+            method=method,
+            client=Config.CLIENT,
+            version=version,
         )
 
         response = requests.get(signed_url)
@@ -768,6 +782,12 @@ class TestStorageSignURLs(TestStorageFiles):
 
     def test_create_signed_read_url_v2(self):
         self._create_signed_read_url_helper()
+
+    def test_create_signed_read_url_v2_w_expiration(self):
+        now = datetime.datetime.utcnow()
+        delta = datetime.timedelta(seconds=10)
+
+        self._create_signed_read_url_helper(expiration=now + delta)
 
     def test_create_signed_read_url_v2_lowercase_method(self):
         self._create_signed_read_url_helper(method="get")
