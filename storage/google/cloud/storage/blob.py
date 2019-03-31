@@ -303,7 +303,8 @@ class Blob(_PropertyMixin):
 
     def generate_signed_url(
         self,
-        expiration,
+        expiration=None,
+        max_age=None,
         api_access_endpoint=_API_ACCESS_ENDPOINT,
         method="GET",
         content_md5=None,
@@ -338,8 +339,15 @@ class Blob(_PropertyMixin):
         accessible blobs, but don't want to require users to explicitly
         log in.
 
-        :type expiration: int, long, datetime.datetime, datetime.timedelta
-        :param expiration: When the signed URL should expire.
+        :type expiration: Union[Integer, datetime.datetime, datetime.timedelta]
+        :param expiration: Point in time when the signed URL should expire.
+                           Exclusive with :arg:`max_age`: exactly one of the
+                           two must be passed.
+
+        :type max_age: Integer
+        :param max_age: Max number of seconds until the signature expires.
+                        Exclusive with :arg:`expiration`: exactly one of the
+                        two must be passed.
 
         :type api_access_endpoint: str
         :param api_access_endpoint: Optional URI base. Defaults to empty string.
@@ -403,6 +411,8 @@ class Blob(_PropertyMixin):
                         Must be one of 'v2' | 'v4'.
 
         :raises: :exc:`ValueError` when version is invalid.
+        :raises: :exc:`ValueError` when both :arg:`expiration` and
+                 :arg:`max_age` are passed, or when neither is passed.
         :raises: :exc:`TypeError` when expiration is not a valid type.
         :raises: :exc:`AttributeError` if credentials is not an instance
                 of :class:`google.auth.credentials.Signing`.
@@ -431,6 +441,7 @@ class Blob(_PropertyMixin):
             credentials,
             resource=resource,
             expiration=expiration,
+            max_age=max_age,
             api_access_endpoint=api_access_endpoint,
             method=method.upper(),
             content_md5=content_md5,

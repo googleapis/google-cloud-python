@@ -375,12 +375,20 @@ class Test_Blob(unittest.TestCase):
         headers=None,
         query_parameters=None,
         credentials=None,
+        expiration=None,
+        max_age=None,
     ):
         from six.moves.urllib import parse
+        from google.cloud._helpers import UTC
         from google.cloud.storage.blob import _API_ACCESS_ENDPOINT
 
         api_access_endpoint = api_access_endpoint or _API_ACCESS_ENDPOINT
-        EXPIRATION = "2014-10-16T20:34:37.000Z"
+
+        delta = datetime.timedelta(hours=1)
+
+        if expiration is None and max_age is None:
+            expiration = datetime.datetime.utcnow().replace(tzinfo=UTC) + delta
+
         connection = _Connection()
         client = _Client(connection)
         bucket = _Bucket(client)
@@ -389,7 +397,8 @@ class Test_Blob(unittest.TestCase):
 
         with mock.patch(to_patch) as signer:
             signed_uri = blob.generate_signed_url(
-                EXPIRATION,
+                expiration=expiration,
+                max_age=max_age,
                 api_access_endpoint=api_access_endpoint,
                 method=method,
                 credentials=credentials,
@@ -414,7 +423,8 @@ class Test_Blob(unittest.TestCase):
         expected_resource = "/name/{}".format(parse.quote(encoded_name))
         expected_kwargs = {
             "resource": expected_resource,
-            "expiration": EXPIRATION,
+            "expiration": expiration,
+            "max_age": max_age,
             "api_access_endpoint": api_access_endpoint,
             "method": method.upper(),
             "content_md5": content_md5,
@@ -433,6 +443,15 @@ class Test_Blob(unittest.TestCase):
 
     def test_generate_signed_url_v2_w_defaults(self):
         self._generate_signed_url_v2_helper()
+
+    def test_generate_signed_url_v2_w_expiration(self):
+        from google.cloud._helpers import UTC
+
+        expiration = datetime.datetime.utcnow().replace(tzinfo=UTC)
+        self._generate_signed_url_v2_helper(expiration=expiration)
+
+    def test_generate_signed_url_v2_w_max_age(self):
+        self._generate_signed_url_v2_helper(max_age=3600)
 
     def test_generate_signed_url_v2_w_non_ascii_name(self):
         BLOB_NAME = u"\u0410\u043a\u043a\u043e\u0440\u0434\u044b.txt"
@@ -522,34 +541,6 @@ class Test_Blob(unittest.TestCase):
     def test_generate_signed_url_v4_w_credentials(self):
         credentials = object()
         self._generate_signed_url_v4_helper(credentials=credentials)
-
-    @mock.patch(
-        "google.cloud.storage._signing.get_signed_query_params_v2",
-        return_value={
-            "GoogleAccessId": "service-account-name",
-            "Expires": 12345,
-            "Signature": "signed-data",
-        },
-    )
-    def test_generate_resumable_signed_url(self, mock_get_signed_query_params_v2):
-        """
-        Verify correct behavior of resumable upload URL generation
-        """
-        from google.cloud.storage._signing import get_expiration_seconds
-        from google.cloud.storage._signing import generate_signed_url_v2
-
-        expiry = get_expiration_seconds(datetime.timedelta(hours=1))
-
-        signed_url = generate_signed_url_v2(
-            _make_credentials(), "a-bucket", expiry, method="RESUMABLE"
-        )
-
-        self.assertTrue(mock_get_signed_query_params_v2.called)
-        self.assertGreater(len(signed_url), 0)
-        self.assertIn("a-bucket", signed_url)
-        self.assertIn("GoogleAccessId", signed_url)
-        self.assertIn("Expires", signed_url)
-        self.assertIn("Signature", signed_url)
 
     def test_exists_miss(self):
         NONESUCH = "nonesuch"
