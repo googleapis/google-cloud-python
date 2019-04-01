@@ -12,6 +12,7 @@
   Container <container/index>
   Dataproc <dataproc/index>
   Datastore <datastore/index>
+  Data Labeling <datalabeling/index>
   Data Loss Prevention <dlp/index>
   DNS <dns/index>
   Firestore <firestore/index>
