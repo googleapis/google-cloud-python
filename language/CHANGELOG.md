@@ -17,7 +17,7 @@
 - Add new entity types (via synth). ([#7510](https://github.com/googleapis/google-cloud-python/pull/7510))
 
 ### Documentation
-- Updated client library documentation URLs. ([#7307](https://github.com/googleapis/google-cloud-python/pull/7307))
+- Update client library documentation URLs. ([#7307](https://github.com/googleapis/google-cloud-python/pull/7307))
 - Update copyright headers
 - Pick up stub docstring fix in GAPIC generator. ([#6975](https://github.com/googleapis/google-cloud-python/pull/6975))
 
