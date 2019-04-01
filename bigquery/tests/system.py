@@ -1540,35 +1540,42 @@ class TestBigQuery(unittest.TestCase):
         bqstorage_client = bigquery_storage_v1beta1.BigQueryStorageClient(
             credentials=Config.CLIENT._credentials
         )
-        df = (
-            Config.CLIENT.query(
-                query,
-                # There is a known issue reading small anonymous query result
-                # tables with the BQ Storage API. Writing to a destination
-                # table works around this issue.
-                job_config=bigquery.QueryJobConfig(
-                    destination=dest_ref, write_disposition="WRITE_TRUNCATE"
-                ),
-            )
-            .result()
-            .to_dataframe(bqstorage_client)
+
+        job_configs = (
+            # There is a known issue reading small anonymous query result
+            # tables with the BQ Storage API. Writing to a destination
+            # table works around this issue.
+            bigquery.QueryJobConfig(
+                destination=dest_ref, write_disposition="WRITE_TRUNCATE"
+            ),
+            # Check that the client is able to work around the issue with
+            # reading small anonymous query result tables by falling back to
+            # the tabledata.list API.
+            None,
         )
 
-        self.assertIsInstance(df, pandas.DataFrame)
-        self.assertEqual(len(df), 10)  # verify the number of rows
-        column_names = ["id", "author", "time_ts", "dead"]
-        self.assertEqual(list(df), column_names)
-        exp_datatypes = {
-            "id": int,
-            "author": six.text_type,
-            "time_ts": pandas.Timestamp,
-            "dead": bool,
-        }
-        for index, row in df.iterrows():
-            for col in column_names:
-                # all the schema fields are nullable, so None is acceptable
-                if not row[col] is None:
-                    self.assertIsInstance(row[col], exp_datatypes[col])
+        for job_config in job_configs:
+            df = (
+                Config.CLIENT.query(query, job_config=job_config)
+                .result()
+                .to_dataframe(bqstorage_client)
+            )
+
+            self.assertIsInstance(df, pandas.DataFrame)
+            self.assertEqual(len(df), 10)  # verify the number of rows
+            column_names = ["id", "author", "time_ts", "dead"]
+            self.assertEqual(list(df), column_names)
+            exp_datatypes = {
+                "id": int,
+                "author": six.text_type,
+                "time_ts": pandas.Timestamp,
+                "dead": bool,
+            }
+            for index, row in df.iterrows():
+                for col in column_names:
+                    # all the schema fields are nullable, so None is acceptable
+                    if not row[col] is None:
+                        self.assertIsInstance(row[col], exp_datatypes[col])
 
     def test_insert_rows_nested_nested(self):
         # See #2951

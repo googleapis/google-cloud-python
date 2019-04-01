@@ -10,18 +10,18 @@
   BigQuery Storage <bigquery_storage/index>
   Bigtable <bigtable/index>
   Container <container/index>
-  Dataproc <dataproc/index>
-  Datastore <datastore/index>
   Data Labeling <datalabeling/index>
   Data Loss Prevention <dlp/index>
+  Dataproc <dataproc/index>
+  Datastore <datastore/index>
   DNS <dns/index>
   Firestore <firestore/index>
   IAM <iam/index>
   IoT <iot/index>
   Key Management <kms/index>
   Language <language/index>
-  PubSub <pubsub/index>
   OSLogin <oslogin/index>
+  PubSub <pubsub/index>
   Redis <redis/index>
   Resource Manager <resource-manager/index>
   Runtime Configuration <runtimeconfig/index>
@@ -30,18 +30,18 @@
   Security Scanner <websecurityscanner/index>
   Spanner <spanner/index>
   Speech <speech/index>
-  Storage <storage/index>
-  Talent <talent/index>
-  Tasks <tasks/index>
-  Text-to-Speech <texttospeech/index>
-  Translate <translate/index>
-  Vision <vision/index>
-  Video Intelligence <videointelligence/index>
   Stackdriver Error Reporting <error-reporting/index>
   Stackdriver Incident Response & Management <irm/index>
   Stackdriver Logging <logging/index>
   Stackdriver Monitoring <monitoring/index>
   Stackdriver Trace <trace/index>
+  Storage <storage/index>
+  Talent <talent/index>
+  Tasks <tasks/index>
+  Text-to-Speech <texttospeech/index>
+  Translate <translate/index>
+  Video Intelligence <videointelligence/index>
+  Vision <vision/index>
   Release History <releases>
 
 Google Cloud Client Library for Python
