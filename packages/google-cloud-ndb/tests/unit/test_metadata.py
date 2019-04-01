@@ -12,10 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import unittest.mock
+
 import pytest
 
+from google.cloud.ndb import exceptions
 from google.cloud.ndb import metadata
 from google.cloud.ndb import key as key_module
+from google.cloud.ndb import tasklets
 import tests.unit.utils
 
 
@@ -37,25 +41,9 @@ class Test_BaseMetadata:
 
 class TestEntityGroup:
     @staticmethod
-    def test_get_kind():
-        kind = metadata.EntityGroup.KIND_NAME
-        assert metadata.EntityGroup._get_kind() == kind
-
-    @staticmethod
     def test_constructor():
-        entity_group = metadata.EntityGroup()
-        assert entity_group.__dict__ == {"_values": {}}
-
-    @staticmethod
-    @pytest.mark.usefixtures("in_context")
-    def test_key_for_entity_group():
-        key = key_module.Key(
-            metadata.EntityGroup.KIND_NAME,
-            "test",
-            metadata.EntityGroup.KIND_NAME,
-            1,
-        )
-        assert key == metadata.EntityGroup.key_for_entity_group(key)
+        with pytest.raises(exceptions.NoLongerImplementedError):
+            metadata.EntityGroup()
 
 
 class TestKind:
@@ -199,26 +187,196 @@ class TestProperty:
         assert property.property_name == "test2"
 
 
-def test_get_entity_group_version():
-    with pytest.raises(NotImplementedError):
+@pytest.mark.usefixtures("in_context")
+def test_get_entity_group_version(*args, **kwargs):
+    with pytest.raises(exceptions.NoLongerImplementedError):
         metadata.get_entity_group_version()
 
 
-def test_get_kinds():
-    with pytest.raises(NotImplementedError):
-        metadata.get_kinds()
+@pytest.mark.usefixtures("in_context")
+@unittest.mock.patch("google.cloud.ndb.query._datastore_query")
+def test_get_kinds(_datastore_query):
+    future = tasklets.Future("fetch")
+    future.set_result([])
+    _datastore_query.fetch.return_value = future
+    kinds = metadata.get_kinds()
+    assert kinds == []
 
 
-def test_get_namespaces():
-    with pytest.raises(NotImplementedError):
-        metadata.get_namespaces()
+@pytest.mark.usefixtures("in_context")
+@unittest.mock.patch("google.cloud.ndb.query._datastore_query")
+@unittest.mock.patch("google.cloud.ndb.query.Query")
+def test_get_kinds_with_start(Query, _datastore_query):
+    future = tasklets.Future("fetch")
+    future.set_result([])
+    _datastore_query.fetch.return_value = future
+    query = Query.return_value
+    kinds = metadata.get_kinds(start="a")
+    assert kinds == []
+    query.filter.assert_called_once()
 
 
-def test_get_properties_of_kind():
-    with pytest.raises(NotImplementedError):
-        metadata.get_properties_of_kind()
+@pytest.mark.usefixtures("in_context")
+@unittest.mock.patch("google.cloud.ndb.query._datastore_query")
+@unittest.mock.patch("google.cloud.ndb.query.Query")
+def test_get_kinds_with_end(Query, _datastore_query):
+    future = tasklets.Future("fetch")
+    future.set_result([])
+    _datastore_query.fetch.return_value = future
+    query = Query.return_value
+    kinds = metadata.get_kinds(end="z")
+    assert kinds == []
+    query.filter.assert_called_once()
 
 
-def test_get_representations_of_kind():
-    with pytest.raises(NotImplementedError):
-        metadata.get_representations_of_kind()
+@pytest.mark.usefixtures("in_context")
+@unittest.mock.patch("google.cloud.ndb.query._datastore_query")
+def test_get_kinds_empty_end(_datastore_query):
+    future = tasklets.Future("fetch")
+    future.set_result(["not", "empty"])
+    _datastore_query.fetch.return_value = future
+    kinds = metadata.get_kinds(end="")
+    assert kinds == []
+
+
+@pytest.mark.usefixtures("in_context")
+@unittest.mock.patch("google.cloud.ndb.query._datastore_query")
+def test_get_namespaces(_datastore_query):
+    future = tasklets.Future("fetch")
+    future.set_result([])
+    _datastore_query.fetch.return_value = future
+    names = metadata.get_namespaces()
+    assert names == []
+
+
+@pytest.mark.usefixtures("in_context")
+@unittest.mock.patch("google.cloud.ndb.query._datastore_query")
+@unittest.mock.patch("google.cloud.ndb.query.Query")
+def test_get_namespaces_with_start(Query, _datastore_query):
+    future = tasklets.Future("fetch")
+    future.set_result([])
+    _datastore_query.fetch.return_value = future
+    query = Query.return_value
+    names = metadata.get_namespaces(start="a")
+    assert names == []
+    query.filter.assert_called_once()
+
+
+@pytest.mark.usefixtures("in_context")
+@unittest.mock.patch("google.cloud.ndb.query._datastore_query")
+@unittest.mock.patch("google.cloud.ndb.query.Query")
+def test_get_namespaces_with_end(Query, _datastore_query):
+    future = tasklets.Future("fetch")
+    future.set_result([])
+    _datastore_query.fetch.return_value = future
+    query = Query.return_value
+    names = metadata.get_namespaces(end="z")
+    assert names == []
+    query.filter.assert_called_once()
+
+
+@pytest.mark.usefixtures("in_context")
+@unittest.mock.patch("google.cloud.ndb.query._datastore_query")
+def test_get_properties_of_kind(_datastore_query):
+    future = tasklets.Future("fetch")
+    future.set_result([])
+    _datastore_query.fetch.return_value = future
+    props = metadata.get_properties_of_kind("AnyKind")
+    assert props == []
+
+
+@pytest.mark.usefixtures("in_context")
+@unittest.mock.patch("google.cloud.ndb.query._datastore_query")
+@unittest.mock.patch("google.cloud.ndb.query.Query")
+def test_get_properties_of_kind_with_start(Query, _datastore_query):
+    future = tasklets.Future("fetch")
+    future.set_result([])
+    _datastore_query.fetch.return_value = future
+    query = Query.return_value
+    props = metadata.get_properties_of_kind("AnyKind", start="a")
+    assert props == []
+    query.filter.assert_called_once()
+
+
+@pytest.mark.usefixtures("in_context")
+@unittest.mock.patch("google.cloud.ndb.query._datastore_query")
+@unittest.mock.patch("google.cloud.ndb.query.Query")
+def test_get_properties_of_kind_with_end(Query, _datastore_query):
+    future = tasklets.Future("fetch")
+    future.set_result([])
+    _datastore_query.fetch.return_value = future
+    query = Query.return_value
+    props = metadata.get_properties_of_kind("AnyKind", end="z")
+    assert props == []
+    query.filter.assert_called_once()
+
+
+@pytest.mark.usefixtures("in_context")
+@unittest.mock.patch("google.cloud.ndb.query._datastore_query")
+def test_get_properties_of_kind_empty_end(_datastore_query):
+    future = tasklets.Future("fetch")
+    future.set_result(["not", "empty"])
+    _datastore_query.fetch.return_value = future
+    props = metadata.get_properties_of_kind("AnyKind", end="")
+    assert props == []
+
+
+@pytest.mark.usefixtures("in_context")
+@unittest.mock.patch("google.cloud.ndb.query._datastore_query")
+def test_get_representations_of_kind(_datastore_query):
+    future = tasklets.Future("fetch")
+    future.set_result([])
+    _datastore_query.fetch.return_value = future
+    reps = metadata.get_representations_of_kind("AnyKind")
+    assert reps == {}
+
+
+@pytest.mark.usefixtures("in_context")
+@unittest.mock.patch("google.cloud.ndb.query._datastore_query")
+def test_get_representations_of_kind_with_results(_datastore_query):
+    class MyProp:
+        property_name = "myprop"
+        property_representation = "STR"
+
+    myprop = MyProp()
+    future = tasklets.Future("fetch")
+    future.set_result([myprop])
+    _datastore_query.fetch.return_value = future
+    reps = metadata.get_representations_of_kind("MyModel")
+    assert reps == {"myprop": "STR"}
+
+
+@pytest.mark.usefixtures("in_context")
+@unittest.mock.patch("google.cloud.ndb.query._datastore_query")
+@unittest.mock.patch("google.cloud.ndb.query.Query")
+def test_get_representations_of_kind_with_start(Query, _datastore_query):
+    future = tasklets.Future("fetch")
+    future.set_result([])
+    _datastore_query.fetch.return_value = future
+    query = Query.return_value
+    reps = metadata.get_representations_of_kind("AnyKind", start="a")
+    assert reps == {}
+    query.filter.assert_called_once()
+
+
+@pytest.mark.usefixtures("in_context")
+@unittest.mock.patch("google.cloud.ndb.query._datastore_query")
+@unittest.mock.patch("google.cloud.ndb.query.Query")
+def test_get_representations_of_kind_with_end(Query, _datastore_query):
+    future = tasklets.Future("fetch")
+    future.set_result([])
+    _datastore_query.fetch.return_value = future
+    query = Query.return_value
+    reps = metadata.get_representations_of_kind("AnyKind", end="z")
+    assert reps == {}
+    query.filter.assert_called_once()
+
+
+@pytest.mark.usefixtures("in_context")
+@unittest.mock.patch("google.cloud.ndb.query._datastore_query")
+def test_get_representations_of_kind_empty_end(_datastore_query):
+    future = tasklets.Future("fetch")
+    future.set_result([])
+    _datastore_query.fetch.return_value = future
+    reps = metadata.get_representations_of_kind("AnyKind", end="")
+    assert reps == {}

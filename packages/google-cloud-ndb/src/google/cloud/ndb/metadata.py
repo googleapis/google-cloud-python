@@ -14,7 +14,9 @@
 
 """Access datastore metadata."""
 
+from google.cloud.ndb import exceptions
 from google.cloud.ndb import model
+from google.cloud.ndb import query as query_module
 
 
 __all__ = [
@@ -223,61 +225,140 @@ class Property(_BaseMetadata):
             return key.id()
 
 
-class EntityGroup(_BaseMetadata):
-    """Model for __entity_group__ metadata, available in HR datastore only.
-
-    This metadata contains a numeric __version__ property that is guaranteed
-    to increase on every change to the entity group. The version may increase
-    even in the absence of user-visible changes to the entity group. The
-    __entity_group__ entity may not exist if the entity group was never
-    written to.
-
-    Attributes:
-        version (int): counter for changes in entity group.
+class EntityGroup:
+    """Model for __entity_group__ metadata. No longer supported by datastore.
     """
 
-    __slots__ = ()
-
-    KIND_NAME = "__entity_group__"
-    ID = 1
-
-    version = model.IntegerProperty(name="__version__")
-
-    @classmethod
-    def key_for_entity_group(cls, key):
-        """Return the key for the entity group containing key.
-
-        Args:
-            key (key.Key): a key for an entity group whose __entity_group__ key
-                you want.
-
-        Returns:
-            key.Key: The __entity_group__ key for the entity group containing
-                key.
-        """
-        return model.Key(cls.KIND_NAME, cls.ID, parent=key.root())
+    def __new__(self, *args, **kwargs):
+        raise exceptions.NoLongerImplementedError()
 
 
 def get_entity_group_version(*args, **kwargs):
-    """Need query for this"""
-    raise NotImplementedError
+    """Return the version of the entity group containing key.
+
+    Raises:
+        google.cloud.ndb.excpetions.NoLongerImplementedError. Always. This
+            method is not supported anymore.
+    """
+    raise exceptions.NoLongerImplementedError()
 
 
-def get_kinds(*args, **kwargs):
-    """Need query for this"""
-    raise NotImplementedError
+def get_kinds(start=None, end=None):
+    """Return all kinds in the specified range, for the current namespace.
+
+    Args:
+        start (str): only return kinds >= start if start is not None.
+        end (str): only return kinds < end if end is not None.
+
+    Returns:
+        List[str]: Kind names between the (optional) start and end values.
+    """
+    # This is required for the query to find the model for __kind__
+    Kind._fix_up_properties()
+
+    query = query_module.Query(kind=Kind._get_kind())
+    if start is not None and start != "":
+        query = query.filter(Kind.key >= Kind.key_for_kind(start))
+    if end is not None:
+        if end == "":
+            return []
+        query = query.filter(Kind.key < Kind.key_for_kind(end))
+
+    results = query.fetch()
+    return [result.kind_name for result in results]
 
 
-def get_namespaces(*args, **kwargs):
-    """Need query for this"""
-    raise NotImplementedError
+def get_namespaces(start=None, end=None):
+    """Return all namespaces in the specified range.
+    Args:
+        start (str): only return namespaces >= start if start is not None.
+        end (str): only return namespaces < end if end is not None.
+    Returns:
+        List[str]: Namespace names between the (optional) start and end values.
+    """
+    # This is required for the query to find the model for __namespace__
+    Namespace._fix_up_properties()
+
+    query = query_module.Query(kind=Namespace._get_kind())
+    if start is not None:
+        query = query.filter(
+            Namespace.key >= Namespace.key_for_namespace(start)
+        )
+    if end is not None:
+        query = query.filter(Namespace.key < Namespace.key_for_namespace(end))
+
+    results = query.fetch()
+    return [result.namespace_name for result in results]
 
 
-def get_properties_of_kind(*args, **kwargs):
-    """Need query for this"""
-    raise NotImplementedError
+def get_properties_of_kind(kind, start=None, end=None):
+    """Return all properties of kind in the specified range.
+
+    NOTE: This function does not return unindexed properties.
+
+    Args:
+        kind (str): name of kind whose properties you want.
+        start (str): only return properties >= start if start is not None.
+        end (str): only return properties < end if end is not None.
+    Returns:
+        List[str]: Property names of kind between the (optional) start and end
+            values.
+    """
+    # This is required for the query to find the model for __property__
+    Property._fix_up_properties()
+
+    query = query_module.Query(
+        kind=Property._get_kind(), ancestor=Property.key_for_kind(kind)
+    )
+    if start is not None and start != "":
+        query = query.filter(
+            Property.key >= Property.key_for_property(kind, start)
+        )
+    if end is not None:
+        if end == "":
+            return []
+        query = query.filter(
+            Property.key < Property.key_for_property(kind, end)
+        )
+
+    results = query.fetch()
+    return [prop.property_name for prop in results]
 
 
-def get_representations_of_kind(*args, **kwargs):
-    """Need query for this"""
-    raise NotImplementedError
+def get_representations_of_kind(kind, start=None, end=None):
+    """Return all representations of properties of kind in the specified range.
+
+    NOTE: This function does not return unindexed properties.
+
+    Args:
+        kind: name of kind whose properties you want.
+        start: only return properties >= start if start is not None.
+        end: only return properties < end if end is not None.
+    Returns:
+        dict: map of property names to their list of representations.
+    """
+    # This is required for the query to find the model for __property__
+    Property._fix_up_properties()
+
+    query = query_module.Query(
+        kind=Property._get_kind(), ancestor=Property.key_for_kind(kind)
+    )
+    if start is not None and start != "":
+        query = query.filter(
+            Property.key >= Property.key_for_property(kind, start)
+        )
+    if end is not None:
+        if end == "":
+            return {}
+        query = query.filter(
+            Property.key < Property.key_for_property(kind, end)
+        )
+
+    representations = {}
+    results = query.fetch()
+    for property in results:
+        representations[
+            property.property_name
+        ] = property.property_representation
+
+    return representations

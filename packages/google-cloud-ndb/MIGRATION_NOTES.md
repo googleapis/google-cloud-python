@@ -149,6 +149,10 @@ The primary differences come from:
   only being able to write to a single entity group. In Datastore, currently,
   writing up to 25 entity groups in a transaction is supported by default and
   there is no option to change this.
+- Datastore API does not support Entity Group metadata queries anymore, so
+  `google.cloud.ndb.metadata.EntityGroup` and
+  `google.cloud.ndb.metadata.get_entity_group_version` both throw a
+  `google.cloud.ndb.exceptions.NoLongerImplementedError` exception when used.
 
 ## Privatization
 
