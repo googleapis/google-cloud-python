@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery.table.RowIterator &#8212; google-cloud 682903b documentation</title>
+    <title>google.cloud.bigquery.table.RowIterator &#8212; google-cloud 8049e8a documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -142,7 +142,7 @@ it. Used to call the BigQuery Storage API to fetch rows.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>bqstorage_client</strong> (<a class="reference internal" href="../../bigquery_storage/gapic/v1beta1/api.html#google.cloud.bigquery_storage_v1beta1.BigQueryStorageClient" title="google.cloud.bigquery_storage_v1beta1.BigQueryStorageClient"><em>google.cloud.bigquery_storage_v1beta1.BigQueryStorageClient</em></a>) – <p><strong>Alpha Feature</strong> Optional. A BigQuery Storage API client. If
+<li><strong>bqstorage_client</strong> (<a class="reference internal" href="../../bigquery_storage/gapic/v1beta1/api.html#google.cloud.bigquery_storage_v1beta1.BigQueryStorageClient" title="google.cloud.bigquery_storage_v1beta1.BigQueryStorageClient"><em>google.cloud.bigquery_storage_v1beta1.BigQueryStorageClient</em></a>) – <p><strong>Beta Feature</strong> Optional. A BigQuery Storage API client. If
 supplied, use the faster BigQuery Storage API to fetch rows
 from BigQuery. This API is a billable API.</p>
 <p>This method requires the <code class="docutils literal notranslate"><span class="pre">fastavro</span></code> and
@@ -150,8 +150,9 @@ from BigQuery. This API is a billable API.</p>
 <p>Reading from a specific partition or snapshot is not
 currently supported by this method.</p>
 <p><strong>Caution</strong>: There is a known issue reading small anonymous
-query result tables with the BQ Storage API. Write your query
-results to a destination table to work around this issue.</p>
+query result tables with the BQ Storage API. When a problem
+is encountered reading a table, the tabledata.list method
+from the BigQuery API is used, instead.</p>
 </li>
 <li><strong>dtypes</strong> (<em>Map</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>pandas.Series.dtype</em><em>]</em><em>]</em>) – Optional. A dictionary of column names pandas <code class="docutils literal notranslate"><span class="pre">dtype``s.</span> <span class="pre">The</span>
 <span class="pre">provided</span> <span class="pre">``dtype</span></code> is used when constructing the series for
