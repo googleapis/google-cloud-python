@@ -1,5 +1,5 @@
 {
-  "updateTime": "2019-03-28T12:19:47.281424Z",
+  "updateTime": "2019-03-28T16:24:50.177898Z",
   "sources": [
     {
       "generator": {
@@ -33,6 +33,16 @@
         "language": "python",
         "generator": "gapic",
         "config": "google/cloud/scheduler/artman_cloudscheduler_v1beta1.yaml"
+      }
+    },
+    {
+      "client": {
+        "source": "googleapis",
+        "apiName": "scheduler",
+        "apiVersion": "v1",
+        "language": "python",
+        "generator": "gapic",
+        "config": "google/cloud/scheduler/artman_cloudscheduler_v1.yaml"
       }
     }
   ]

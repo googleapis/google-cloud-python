@@ -27,6 +27,10 @@ try:
     from google.cloud import bigquery_storage_v1beta1
 except (ImportError, AttributeError):  # pragma: NO COVER
     bigquery_storage_v1beta1 = None
+try:
+    from tqdm import tqdm
+except (ImportError, AttributeError):  # pragma: NO COVER
+    tqdm = None
 
 
 def _make_credentials():
@@ -4698,6 +4702,37 @@ class TestQueryJob(unittest.TestCase, _Base):
         self.assertEqual(df.payment_type.dtype.name, "object")
         self.assertEqual(df.complete.dtype.name, "bool")
         self.assertEqual(df.date.dtype.name, "object")
+
+    @unittest.skipIf(pandas is None, "Requires `pandas`")
+    @unittest.skipIf(tqdm is None, "Requires `tqdm`")
+    @mock.patch("tqdm.tqdm")
+    def test_to_dataframe_with_progress_bar(self, tqdm_mock):
+        begun_resource = self._make_resource()
+        query_resource = {
+            "jobComplete": True,
+            "jobReference": {"projectId": self.PROJECT, "jobId": self.JOB_ID},
+            "totalRows": "4",
+            "schema": {
+                "fields": [{"name": "name", "type": "STRING", "mode": "NULLABLE"}]
+            },
+        }
+        done_resource = copy.deepcopy(begun_resource)
+        done_resource["status"] = {"state": "DONE"}
+        connection = _make_connection(
+            begun_resource,
+            query_resource,
+            done_resource,
+            query_resource,
+            query_resource,
+        )
+        client = _make_client(project=self.PROJECT, connection=connection)
+        job = self._make_one(self.JOB_ID, self.QUERY, client)
+
+        job.to_dataframe(progress_bar_type=None)
+        tqdm_mock.assert_not_called()
+
+        job.to_dataframe(progress_bar_type="tqdm")
+        tqdm_mock.assert_called()
 
     def test_iter(self):
         import types

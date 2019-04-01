@@ -14,10 +14,10 @@ from google.protobuf import symbol_database as _symbol_database
 _sym_db = _symbol_database.Default()
 
 
-from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
 from google.protobuf import struct_pb2 as google_dot_protobuf_dot_struct__pb2
 from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__pb2
 from google.type import latlng_pb2 as google_dot_type_dot_latlng__pb2
+from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
 
 
 DESCRIPTOR = _descriptor.FileDescriptor(
@@ -28,13 +28,13 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n\034com.google.firestore.v1beta1B\rDocumentProtoP\001ZAgoogle.golang.org/genproto/googleapis/firestore/v1beta1;firestore\242\002\004GCFS\252\002\036Google.Cloud.Firestore.V1Beta1\312\002\036Google\\Cloud\\Firestore\\V1beta1"
     ),
     serialized_pb=_b(
-        '\n3google/cloud/firestore_v1beta1/proto/document.proto\x12\x18google.firestore.v1beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x1cgoogle/protobuf/struct.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x18google/type/latlng.proto"\x8a\x02\n\x08\x44ocument\x12\x0c\n\x04name\x18\x01 \x01(\t\x12>\n\x06\x66ields\x18\x02 \x03(\x0b\x32..google.firestore.v1beta1.Document.FieldsEntry\x12/\n\x0b\x63reate_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12/\n\x0bupdate_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x1aN\n\x0b\x46ieldsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12.\n\x05value\x18\x02 \x01(\x0b\x32\x1f.google.firestore.v1beta1.Value:\x02\x38\x01"\xb8\x03\n\x05Value\x12\x30\n\nnull_value\x18\x0b \x01(\x0e\x32\x1a.google.protobuf.NullValueH\x00\x12\x17\n\rboolean_value\x18\x01 \x01(\x08H\x00\x12\x17\n\rinteger_value\x18\x02 \x01(\x03H\x00\x12\x16\n\x0c\x64ouble_value\x18\x03 \x01(\x01H\x00\x12\x35\n\x0ftimestamp_value\x18\n \x01(\x0b\x32\x1a.google.protobuf.TimestampH\x00\x12\x16\n\x0cstring_value\x18\x11 \x01(\tH\x00\x12\x15\n\x0b\x62ytes_value\x18\x12 \x01(\x0cH\x00\x12\x19\n\x0freference_value\x18\x05 \x01(\tH\x00\x12.\n\x0fgeo_point_value\x18\x08 \x01(\x0b\x32\x13.google.type.LatLngH\x00\x12;\n\x0b\x61rray_value\x18\t \x01(\x0b\x32$.google.firestore.v1beta1.ArrayValueH\x00\x12\x37\n\tmap_value\x18\x06 \x01(\x0b\x32".google.firestore.v1beta1.MapValueH\x00\x42\x0c\n\nvalue_type"=\n\nArrayValue\x12/\n\x06values\x18\x01 \x03(\x0b\x32\x1f.google.firestore.v1beta1.Value"\x9a\x01\n\x08MapValue\x12>\n\x06\x66ields\x18\x01 \x03(\x0b\x32..google.firestore.v1beta1.MapValue.FieldsEntry\x1aN\n\x0b\x46ieldsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12.\n\x05value\x18\x02 \x01(\x0b\x32\x1f.google.firestore.v1beta1.Value:\x02\x38\x01\x42\xbb\x01\n\x1c\x63om.google.firestore.v1beta1B\rDocumentProtoP\x01ZAgoogle.golang.org/genproto/googleapis/firestore/v1beta1;firestore\xa2\x02\x04GCFS\xaa\x02\x1eGoogle.Cloud.Firestore.V1Beta1\xca\x02\x1eGoogle\\Cloud\\Firestore\\V1beta1b\x06proto3'
+        '\n3google/cloud/firestore_v1beta1/proto/document.proto\x12\x18google.firestore.v1beta1\x1a\x1cgoogle/protobuf/struct.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x18google/type/latlng.proto\x1a\x1cgoogle/api/annotations.proto"\x8a\x02\n\x08\x44ocument\x12\x0c\n\x04name\x18\x01 \x01(\t\x12>\n\x06\x66ields\x18\x02 \x03(\x0b\x32..google.firestore.v1beta1.Document.FieldsEntry\x12/\n\x0b\x63reate_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12/\n\x0bupdate_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x1aN\n\x0b\x46ieldsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12.\n\x05value\x18\x02 \x01(\x0b\x32\x1f.google.firestore.v1beta1.Value:\x02\x38\x01"\xb8\x03\n\x05Value\x12\x30\n\nnull_value\x18\x0b \x01(\x0e\x32\x1a.google.protobuf.NullValueH\x00\x12\x17\n\rboolean_value\x18\x01 \x01(\x08H\x00\x12\x17\n\rinteger_value\x18\x02 \x01(\x03H\x00\x12\x16\n\x0c\x64ouble_value\x18\x03 \x01(\x01H\x00\x12\x35\n\x0ftimestamp_value\x18\n \x01(\x0b\x32\x1a.google.protobuf.TimestampH\x00\x12\x16\n\x0cstring_value\x18\x11 \x01(\tH\x00\x12\x15\n\x0b\x62ytes_value\x18\x12 \x01(\x0cH\x00\x12\x19\n\x0freference_value\x18\x05 \x01(\tH\x00\x12.\n\x0fgeo_point_value\x18\x08 \x01(\x0b\x32\x13.google.type.LatLngH\x00\x12;\n\x0b\x61rray_value\x18\t \x01(\x0b\x32$.google.firestore.v1beta1.ArrayValueH\x00\x12\x37\n\tmap_value\x18\x06 \x01(\x0b\x32".google.firestore.v1beta1.MapValueH\x00\x42\x0c\n\nvalue_type"=\n\nArrayValue\x12/\n\x06values\x18\x01 \x03(\x0b\x32\x1f.google.firestore.v1beta1.Value"\x9a\x01\n\x08MapValue\x12>\n\x06\x66ields\x18\x01 \x03(\x0b\x32..google.firestore.v1beta1.MapValue.FieldsEntry\x1aN\n\x0b\x46ieldsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12.\n\x05value\x18\x02 \x01(\x0b\x32\x1f.google.firestore.v1beta1.Value:\x02\x38\x01\x42\xbb\x01\n\x1c\x63om.google.firestore.v1beta1B\rDocumentProtoP\x01ZAgoogle.golang.org/genproto/googleapis/firestore/v1beta1;firestore\xa2\x02\x04GCFS\xaa\x02\x1eGoogle.Cloud.Firestore.V1Beta1\xca\x02\x1eGoogle\\Cloud\\Firestore\\V1beta1b\x06proto3'
     ),
     dependencies=[
-        google_dot_api_dot_annotations__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_struct__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,
         google_dot_type_dot_latlng__pb2.DESCRIPTOR,
+        google_dot_api_dot_annotations__pb2.DESCRIPTOR,
     ],
 )
 
