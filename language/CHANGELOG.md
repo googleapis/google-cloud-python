@@ -14,7 +14,7 @@
 - Protoc-generated serialization update. ([#7087](https://github.com/googleapis/google-cloud-python/pull/7087))
 
 ### New Features
-- Add new entity types (via synth)
+- Add new entity types (via synth). ([#7510](https://github.com/googleapis/google-cloud-python/pull/7510))
 
 ### Documentation
 - Updated client library documentation URLs. ([#7307](https://github.com/googleapis/google-cloud-python/pull/7307))
