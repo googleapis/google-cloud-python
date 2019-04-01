@@ -60,16 +60,9 @@ def test_make_composite_and_filter():
 @pytest.mark.usefixtures("in_context")
 class Test_fetch:
     @staticmethod
-    def test_unsupported_option():
-        query = mock.Mock(ancestor="foo")
-        tasklet = _datastore_query.fetch(query)
-        with pytest.raises(NotImplementedError):
-            tasklet.result()
-
-    @staticmethod
     @mock.patch(
-        "google.cloud.ndb._datastore_query._process_result",
-        lambda *args: "".join(filter(None, args)),
+        "google.cloud.ndb._datastore_query._Result.entity",
+        lambda self, projection: self.result_type + self.result_pb,
     )
     @mock.patch("google.cloud.ndb._datastore_query._run_query")
     @mock.patch("google.cloud.ndb._datastore_query._query_to_protobuf")
@@ -77,6 +70,7 @@ class Test_fetch:
         query = mock.Mock(
             app="myapp",
             filters=None,
+            order_by=None,
             namespace="zeta",
             projection=None,
             spec=("app", "filters", "namespace", "projection"),
@@ -95,8 +89,8 @@ class Test_fetch:
 
     @staticmethod
     @mock.patch(
-        "google.cloud.ndb._datastore_query._process_result",
-        lambda *args: "".join(filter(None, args)),
+        "google.cloud.ndb._datastore_query._Result.entity",
+        lambda self, projection: self.result_type + self.result_pb,
     )
     @mock.patch("google.cloud.ndb._datastore_query._run_query")
     @mock.patch("google.cloud.ndb._datastore_query._query_to_protobuf")
@@ -104,6 +98,7 @@ class Test_fetch:
         query = mock.Mock(
             app=None,
             filters=None,
+            order_by=None,
             namespace=None,
             projection=None,
             spec=("app", "filters", "namespace", "projection"),
@@ -122,8 +117,8 @@ class Test_fetch:
 
     @staticmethod
     @mock.patch(
-        "google.cloud.ndb._datastore_query._process_result",
-        lambda *args: "".join(filter(None, args)),
+        "google.cloud.ndb._datastore_query._Result.entity",
+        lambda self, projection: self.result_type + self.result_pb,
     )
     @mock.patch("google.cloud.ndb._datastore_query._run_query")
     @mock.patch("google.cloud.ndb._datastore_query._query_to_protobuf")
@@ -134,6 +129,7 @@ class Test_fetch:
         query = mock.Mock(
             app=None,
             filters=filters,
+            order_by=None,
             namespace=None,
             projection=None,
             spec=("app", "filters", "namespace", "projection"),
@@ -152,15 +148,16 @@ class Test_fetch:
 
     @staticmethod
     @mock.patch(
-        "google.cloud.ndb._datastore_query._process_result",
-        lambda *args: "".join(filter(None, args)),
+        "google.cloud.ndb._datastore_query._Result.entity",
+        lambda self, projection: self.result_type + self.result_pb,
     )
-    @mock.patch("google.cloud.ndb._datastore_query._merge_results")
+    @mock.patch(
+        "google.cloud.ndb._datastore_query._merge_results",
+        lambda result_sets, sortable: sum(result_sets, []),
+    )
     @mock.patch("google.cloud.ndb._datastore_query._run_query")
     @mock.patch("google.cloud.ndb._datastore_query._query_to_protobuf")
-    def test_filters(
-        _query_to_protobuf, _run_query, _merge_results, in_context
-    ):
+    def test_filters(_query_to_protobuf, _run_query, in_context):
         filters = mock.Mock(
             _to_filter=mock.Mock(return_value=["filter1", "filter2"]),
             spec="_to_filter",
@@ -168,6 +165,7 @@ class Test_fetch:
         query = mock.Mock(
             app=None,
             filters=filters,
+            order_by=None,
             namespace=None,
             projection=None,
             spec=("app", "filters", "namespace", "projection"),
@@ -177,87 +175,144 @@ class Test_fetch:
         _run_query_future2 = tasklets.Future()
         _run_query.side_effect = [_run_query_future1, _run_query_future2]
 
-        _merge_results.return_value = [("a", "b"), ("c", "d"), ("e", "f")]
-
         tasklet = _datastore_query.fetch(query)
-        _run_query_future1.set_result("some results")
-        _run_query_future2.set_result("some more results")
-        assert tasklet.result() == ["ab", "cd", "ef"]
+        _run_query_future1.set_result([("a", "1"), ("b", "2"), ("c", "3")])
+        _run_query_future2.set_result([("d", "4"), ("e", "5"), ("f", "6")])
+        assert tasklet.result() == ["a1", "b2", "c3", "d4", "e5", "f6"]
 
         assert _query_to_protobuf.call_count == 2
         assert _run_query.call_count == 2
-        _merge_results.assert_called_once_with(
-            ("some results", "some more results")
-        )
 
 
 class Test__merge_results:
     @staticmethod
     def test_unordered():
         def result(name):
-            return query_pb2.EntityResult(
-                entity=entity_pb2.Entity(
-                    key=entity_pb2.Key(
-                        path=[
-                            entity_pb2.Key.PathElement(
-                                kind="thiskind", name=name
-                            )
-                        ]
+            return _datastore_query._Result(
+                None,
+                query_pb2.EntityResult(
+                    entity=entity_pb2.Entity(
+                        key=entity_pb2.Key(
+                            path=[
+                                entity_pb2.Key.PathElement(
+                                    kind="thiskind", name=name
+                                )
+                            ]
+                        )
                     )
-                )
+                ),
             )
 
-        merged = _datastore_query._merge_results(
-            [
-                ((1, result("a")), (2, result("b")), (3, result("c"))),
-                ((4, result("b")), (5, result("d"))),
-            ]
-        )
-        expected = [
-            (1, result("a")),
-            (2, result("b")),
-            (3, result("c")),
-            (5, result("d")),
+        result_sets = [
+            (result("a"), result("b"), result("c")),
+            (result("b"), result("d")),
         ]
+        merged = _datastore_query._merge_results(result_sets, False)
+        expected = [result("a"), result("b"), result("c"), result("d")]
         assert list(merged) == expected
 
-
-class Test__process_result:
     @staticmethod
-    @mock.patch("google.cloud.ndb._datastore_query.model")
-    def test_unsupported_result_type(model):
-        model._entity_from_protobuf.return_value = "bar"
-        result = mock.Mock(entity="foo", spec=("entity",))
-        with pytest.raises(NotImplementedError):
-            _datastore_query._process_result("foo", result, None)
-
-    @staticmethod
-    @mock.patch("google.cloud.ndb._datastore_query.model")
-    def test_full_entity(model):
-        model._entity_from_protobuf.return_value = "bar"
-        result = mock.Mock(entity="foo", spec=("entity",))
-        assert (
-            _datastore_query._process_result(
-                _datastore_query.RESULT_TYPE_FULL, result, None
+    def test_ordered():
+        def result(name):
+            return _datastore_query._Result(
+                None,
+                query_pb2.EntityResult(
+                    entity=entity_pb2.Entity(
+                        key=entity_pb2.Key(
+                            path=[
+                                entity_pb2.Key.PathElement(
+                                    kind="thiskind", name=name
+                                )
+                            ]
+                        ),
+                        properties={
+                            "foo": entity_pb2.Value(string_value=name)
+                        },
+                    )
+                ),
+                order_by=[query_module.PropertyOrder("foo")],
             )
-            == "bar"
+
+        result_sets = [
+            (result("a"), result("c")),
+            (result("b"), result("c"), result("d")),
+        ]
+        merged = list(_datastore_query._merge_results(result_sets, True))
+        expected = [result("a"), result("b"), result("c"), result("d")]
+        assert merged == expected
+
+
+class Test_Result:
+    @staticmethod
+    def test_total_ordering():
+        def result(foo, bar=0, baz=""):
+            return _datastore_query._Result(
+                result_type=None,
+                result_pb=query_pb2.EntityResult(
+                    entity=entity_pb2.Entity(
+                        properties={
+                            "foo": entity_pb2.Value(string_value=foo),
+                            "bar": entity_pb2.Value(integer_value=bar),
+                            "baz": entity_pb2.Value(string_value=baz),
+                        }
+                    )
+                ),
+                order_by=[
+                    query_module.PropertyOrder("foo"),
+                    query_module.PropertyOrder("bar", reverse=True),
+                ],
+            )
+
+        assert result("a") < result("b")
+        assert result("b") > result("a")
+        assert result("a") != result("b")
+
+        assert result("a", 2) < result("a", 1)
+        assert result("a", 1) > result("a", 2)
+        assert result("a", 1) != result("a", 2)
+
+        assert result("a", 1, "femur") == result("a", 1, "patella")
+        assert result("a") != "a"
+
+    @staticmethod
+    def test__compare_no_order_by():
+        result = _datastore_query._Result(None, None)
+        with pytest.raises(NotImplementedError):
+            result._compare("other")
+
+    @staticmethod
+    @mock.patch("google.cloud.ndb._datastore_query.model")
+    def test_entity_unsupported_result_type(model):
+        model._entity_from_protobuf.return_value = "bar"
+        result = _datastore_query._Result(
+            "foo", mock.Mock(entity="foo", spec=("entity",))
+        )
+        with pytest.raises(NotImplementedError):
+            result.entity(None)
+
+    @staticmethod
+    @mock.patch("google.cloud.ndb._datastore_query.model")
+    def test_entity_full_entity(model):
+        model._entity_from_protobuf.return_value = "bar"
+        result = _datastore_query._Result(
+            _datastore_query.RESULT_TYPE_FULL,
+            mock.Mock(entity="foo", spec=("entity",)),
         )
 
+        assert result.entity() == "bar"
         model._entity_from_protobuf.assert_called_once_with("foo")
 
     @staticmethod
     @mock.patch("google.cloud.ndb._datastore_query.model")
-    def test_projection(model):
+    def test_entity_projection(model):
         entity = mock.Mock(spec=("_set_projection",))
         model._entity_from_protobuf.return_value = entity
-        result = mock.Mock(entity="foo", spec=("entity",))
-        assert (
-            _datastore_query._process_result(
-                _datastore_query.RESULT_TYPE_PROJECTION, result, ("a", "b")
-            )
-            is entity
+        result = _datastore_query._Result(
+            _datastore_query.RESULT_TYPE_PROJECTION,
+            mock.Mock(entity="foo", spec=("entity",)),
         )
 
+        assert result.entity(("a", "b")) is entity
         model._entity_from_protobuf.assert_called_once_with("foo")
         entity._set_projection.assert_called_once_with(("a", "b"))
 
@@ -384,6 +439,28 @@ class Test__query_to_protobuf:
             distinct_on=[
                 query_pb2.PropertyReference(name="a"),
                 query_pb2.PropertyReference(name="b"),
+            ]
+        )
+        assert _datastore_query._query_to_protobuf(query) == expected_pb
+
+    @staticmethod
+    def test_order_by():
+        query = query_module.Query(
+            order_by=[
+                query_module.PropertyOrder("a"),
+                query_module.PropertyOrder("b", reverse=True),
+            ]
+        )
+        expected_pb = query_pb2.Query(
+            order=[
+                query_pb2.PropertyOrder(
+                    property=query_pb2.PropertyReference(name="a"),
+                    direction=query_pb2.PropertyOrder.ASCENDING,
+                ),
+                query_pb2.PropertyOrder(
+                    property=query_pb2.PropertyReference(name="b"),
+                    direction=query_pb2.PropertyOrder.DESCENDING,
+                ),
             ]
         )
         assert _datastore_query._query_to_protobuf(query) == expected_pb

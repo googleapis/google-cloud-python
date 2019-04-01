@@ -14,6 +14,8 @@
 
 """Translate NDB queries to Datastore calls."""
 
+import functools
+import heapq
 import itertools
 import logging
 
@@ -35,6 +37,9 @@ MORE_RESULTS_TYPE_NOT_FINISHED = MoreResultsType.Value("NOT_FINISHED")
 ResultType = query_pb2.EntityResult.ResultType
 RESULT_TYPE_FULL = ResultType.Value("FULL")
 RESULT_TYPE_PROJECTION = ResultType.Value("PROJECTION")
+
+DOWN = query_pb2.PropertyOrder.DESCENDING
+UP = query_pb2.PropertyOrder.ASCENDING
 
 FILTER_OPERATORS = {
     "=": query_pb2.PropertyFilter.EQUAL,
@@ -91,12 +96,6 @@ def fetch(query):
     Returns:
         tasklets.Future: Result is List[model.Model]: The query results.
     """
-    for name in ("orders", "default_options"):
-        if getattr(query, name, None):
-            raise NotImplementedError(
-                "{} is not yet implemented for queries.".format(name)
-            )
-
     client = context_module.get_context().client
 
     project_id = query.app
@@ -117,20 +116,116 @@ def fetch(query):
         _run_query(project_id, namespace, _query_to_protobuf(query, filter_pb))
         for filter_pb in filter_pbs
     ]
-    results = yield queries
-
-    if len(results) > 1:
-        results = _merge_results(results)
-    else:
-        results = results[0]
-
-    return [
-        _process_result(result_type, result, query.projection)
-        for result_type, result in results
+    result_sets = yield queries
+    result_sets = [
+        [
+            _Result(result_type, result_pb, query.order_by)
+            for result_type, result_pb in result_set
+        ]
+        for result_set in result_sets
     ]
 
+    if len(result_sets) > 1:
+        sortable = bool(query.order_by)
+        results = _merge_results(result_sets, sortable)
+    else:
+        results = result_sets[0]
 
-def _merge_results(results):
+    return [result.entity(query.projection) for result in results]
+
+
+@functools.total_ordering
+class _Result:
+    """A single, sortable query result.
+
+    Args:
+        result_type (query_pb2.EntityResult.ResultType): The type of result.
+        result_pb (query_pb2.EntityResult): Protocol buffer result.
+        order_by (Optional[Sequence[query.PropertyOrder]]): Ordering for the
+            query. Used to merge sorted result sets while maintaining sort
+            order.
+    """
+
+    def __init__(self, result_type, result_pb, order_by=None):
+        self.result_type = result_type
+        self.result_pb = result_pb
+        self.order_by = order_by
+
+    def __lt__(self, other):
+        """For total ordering. """
+        return self._compare(other) == -1
+
+    def __eq__(self, other):
+        """For total ordering. """
+        if isinstance(other, _Result) and self.result_pb == other.result_pb:
+            return True
+
+        return self._compare(other) == 0
+
+    def _compare(self, other):
+        """Compare this result to another result for sorting.
+
+        Args:
+            other (_Result): The other result to compare to.
+
+        Returns:
+            int: :data:`-1` if this result should come before `other`,
+                :data:`0` if this result is equivalent to `other` for sorting
+                purposes, or :data:`1` if this result should come after
+                `other`.
+
+        Raises:
+            NotImplemented: If `order_by` was not passed to constructor or is
+                :data:`None` or is empty.
+            NotImplemented: If `other` is not a `_Result`.
+        """
+        if not self.order_by:
+            raise NotImplementedError("Can't sort result set without order_by")
+
+        if not isinstance(other, _Result):
+            return NotImplemented
+
+        for order in self.order_by:
+            this_value_pb = self.result_pb.entity.properties[order.name]
+            this_value = helpers._get_value_from_value_pb(this_value_pb)
+            other_value_pb = other.result_pb.entity.properties[order.name]
+            other_value = helpers._get_value_from_value_pb(other_value_pb)
+
+            direction = -1 if order.reverse else 1
+
+            if this_value < other_value:
+                return -direction
+
+            elif this_value > other_value:
+                return direction
+
+        return 0
+
+    def entity(self, projection=None):
+        """Get an entity for an entity result.
+
+        Args:
+            projection (Optional[Sequence[str]]): Sequence of property names to
+                be projected in the query results.
+
+        Returns:
+            Union[model.Model, key.Key]: The processed result.
+        """
+        entity = model._entity_from_protobuf(self.result_pb.entity)
+
+        if self.result_type == RESULT_TYPE_FULL:
+            return entity
+
+        elif self.result_type == RESULT_TYPE_PROJECTION:
+            entity._set_projection(projection)
+            return entity
+
+        raise NotImplementedError(
+            "Got unexpected key only entity result for query."
+        )
+
+
+def _merge_results(result_sets, sortable):
     """Merge the results of distinct queries.
 
     Some queries that in NDB are logically a single query have to be broken
@@ -141,52 +236,28 @@ def _merge_results(results):
     consolidating any results which may be common to two or more result sets.
 
     Args:
-        results (List[Tuple[query_pb2.EntityResult.ResultType,
-            query_pb2.EntityResult]]): List of individual result sets as
+        result_sets (Sequence[_Result]): List of individual result sets as
             returned by :func:`_run_query`. These are merged into the final
             result.
+        sort (bool): Whether the results are sortable. Will depend on whether
+            the query that produced them had `order_by`.
 
     Returns:
-        List[Tuple[query_pb2.EntityResult.ResultType,
-            query_pb2.EntityResult]]: The merged result set.
+        Sequence[_Result]: The merged result set.
     """
     seen_keys = set()
-    for result_type, result in itertools.chain(*results):
-        hash_key = result.entity.key.SerializeToString()
+    if sortable:
+        results = heapq.merge(*result_sets)
+    else:
+        results = itertools.chain(*result_sets)
+
+    for result in results:
+        hash_key = result.result_pb.entity.key.SerializeToString()
         if hash_key in seen_keys:
             continue
 
         seen_keys.add(hash_key)
-        yield result_type, result
-
-
-def _process_result(result_type, result, projection):
-    """Process a single entity result.
-
-    Args:
-        result_type (query_pb2.EntityResult.ResultType): The type of the result
-            (full entity, projection, or key only).
-        result (query_pb2.EntityResult): The protocol buffer representation of
-            the query result.
-        projection (Union[list, tuple]): Sequence of property names to be
-            projected in the query results.
-
-    Returns:
-        Union[model.Model, key.Key]: The processed result.
-    """
-    entity = model._entity_from_protobuf(result.entity)
-
-    if result_type == RESULT_TYPE_FULL:
-        return entity
-
-    elif result_type == RESULT_TYPE_PROJECTION:
-        entity._set_projection(projection)
-        return entity
-
-    raise NotImplementedError(
-        "Processing for key only entity results is not yet "
-        "implemented for queries."
-    )
+        yield result
 
 
 def _query_to_protobuf(query, filter_pb=None):
@@ -216,6 +287,15 @@ def _query_to_protobuf(query, filter_pb=None):
         query_args["distinct_on"] = [
             query_pb2.PropertyReference(name=name)
             for name in query.distinct_on
+        ]
+
+    if query.order_by:
+        query_args["order"] = [
+            query_pb2.PropertyOrder(
+                property=query_pb2.PropertyReference(name=order.name),
+                direction=DOWN if order.reverse else UP,
+            )
+            for order in query.order_by
         ]
 
     if query.ancestor:

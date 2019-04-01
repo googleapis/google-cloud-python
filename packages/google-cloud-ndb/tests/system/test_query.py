@@ -221,5 +221,73 @@ def test_filter_or(dispose_of):
     results = query.fetch()
     assert len(results) == 2
 
-    results = sorted(results, key=operator.attrgetter("foo"))
+    results = sorted(results, key=operator.attrgetter("bar"))
     assert [entity.bar for entity in results] == ["a", "c"]
+
+
+@pytest.mark.usefixtures("client_context")
+def test_order_by_ascending(ds_entity):
+    for i in reversed(range(5)):
+        entity_id = test_utils.system.unique_resource_id()
+        ds_entity(KIND, entity_id, foo=i)
+
+    class SomeKind(ndb.Model):
+        foo = ndb.IntegerProperty()
+
+    # query = SomeKind.query()  # Not implemented yet
+    query = ndb.Query(kind=KIND).order(SomeKind.foo)
+    results = query.fetch()
+    assert len(results) == 5
+
+    assert [entity.foo for entity in results] == [0, 1, 2, 3, 4]
+
+
+@pytest.mark.usefixtures("client_context")
+def test_order_by_descending(ds_entity):
+    for i in range(5):
+        entity_id = test_utils.system.unique_resource_id()
+        ds_entity(KIND, entity_id, foo=i)
+
+    class SomeKind(ndb.Model):
+        foo = ndb.IntegerProperty()
+
+    # query = SomeKind.query()  # Not implemented yet
+    query = ndb.Query(kind=KIND).order(-SomeKind.foo)
+    results = query.fetch()
+    assert len(results) == 5
+
+    assert [entity.foo for entity in results] == [4, 3, 2, 1, 0]
+
+
+@pytest.mark.skip("Requires an index")
+@pytest.mark.usefixtures("client_context")
+def test_order_by_with_or_filter(dispose_of):
+    """
+    Checking to make sure ordering is preserved when merging different
+    results sets.
+    """
+
+    class SomeKind(ndb.Model):
+        foo = ndb.IntegerProperty()
+        bar = ndb.StringProperty()
+
+    @ndb.tasklet
+    def make_entities():
+        keys = yield (
+            SomeKind(foo=0, bar="a").put_async(),
+            SomeKind(foo=1, bar="b").put_async(),
+            SomeKind(foo=2, bar="a").put_async(),
+            SomeKind(foo=3, bar="b").put_async(),
+        )
+        for key in keys:
+            dispose_of(key._key)
+
+    make_entities().check_success()
+    query = ndb.Query(kind=KIND).filter(
+        ndb.OR(SomeKind.bar == "a", SomeKind.bar == "b")
+    )
+    query = query.order(SomeKind.foo)
+    results = query.fetch()
+    assert len(results) == 4
+
+    assert [entity.foo for entity in results] == [0, 1, 2, 3]
