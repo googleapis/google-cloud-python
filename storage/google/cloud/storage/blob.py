@@ -97,6 +97,12 @@ _NUM_RETRIES_MESSAGE = (
 _READ_LESS_THAN_SIZE = (
     "Size {:d} was specified but the file-like object only had " "{:d} bytes remaining."
 )
+_SIGNED_URL_V2_DEFAULT_MESSAGE = (
+    "You have generated a signed URL using the default v2 signing "
+    "implementation. In the future, this will default to v4. "
+    "You may experience breaking changes if you use longer than 7 day "
+    "expiration times with v4. To opt-in to the behavior specify version='v2'."
+)
 
 _DEFAULT_CHUNKSIZE = 104857600  # 1024 * 1024 B * 100 = 100 MB
 _MAX_MULTIPART_SIZE = 8388608  # 8 MB
@@ -316,7 +322,7 @@ class Blob(_PropertyMixin):
         query_parameters=None,
         client=None,
         credentials=None,
-        version="v2",
+        version=None,
     ):
         """Generates a signed URL for this blob.
 
@@ -421,7 +427,10 @@ class Blob(_PropertyMixin):
         :returns: A signed URL you can use to access the resource
                   until expiration.
         """
-        if version not in ("v2", "v4"):
+        if version is None:
+            version = "v2"
+            warnings.warn(DeprecationWarning(_SIGNED_URL_V2_DEFAULT_MESSAGE))
+        elif version not in ("v2", "v4"):
             raise ValueError("'version' must be either 'v2' or 'v4'")
 
         resource = "/{bucket_name}/{quoted_name}".format(

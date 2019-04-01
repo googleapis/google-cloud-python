@@ -20,6 +20,7 @@ import json
 import os
 import tempfile
 import unittest
+import warnings
 
 import google.cloud.storage.blob
 import mock
@@ -363,7 +364,7 @@ class Test_Blob(unittest.TestCase):
 
     def _generate_signed_url_helper(
         self,
-        version,
+        version=None,
         blob_name="blob-name",
         api_access_endpoint=None,
         method="GET",
@@ -393,24 +394,38 @@ class Test_Blob(unittest.TestCase):
         client = _Client(connection)
         bucket = _Bucket(client)
         blob = self._make_one(blob_name, bucket=bucket)
-        to_patch = "google.cloud.storage.blob.generate_signed_url_{}".format(version)
+
+        if version is None:
+            effective_version = "v2"
+        else:
+            effective_version = version
+
+        to_patch = "google.cloud.storage.blob.generate_signed_url_{}".format(
+            effective_version)
 
         with mock.patch(to_patch) as signer:
-            signed_uri = blob.generate_signed_url(
-                expiration=expiration,
-                max_age=max_age,
-                api_access_endpoint=api_access_endpoint,
-                method=method,
-                credentials=credentials,
-                content_md5=content_md5,
-                content_type=content_type,
-                response_type=response_type,
-                response_disposition=response_disposition,
-                generation=generation,
-                headers=headers,
-                query_parameters=query_parameters,
-                version=version,
-            )
+            with warnings.catch_warnings(record=True) as warned:
+                signed_uri = blob.generate_signed_url(
+                    expiration=expiration,
+                    max_age=max_age,
+                    api_access_endpoint=api_access_endpoint,
+                    method=method,
+                    credentials=credentials,
+                    content_md5=content_md5,
+                    content_type=content_type,
+                    response_type=response_type,
+                    response_disposition=response_disposition,
+                    generation=generation,
+                    headers=headers,
+                    query_parameters=query_parameters,
+                    version=version,
+                )
+
+        if version is None:
+            self.assertEqual(len(warned), 1)
+            self.assertIs(warned[0].category, DeprecationWarning)
+        else:
+            self.assertEqual(len(warned), 0)
 
         self.assertEqual(signed_uri, signer.return_value)
 
@@ -436,6 +451,9 @@ class Test_Blob(unittest.TestCase):
             "query_parameters": query_parameters,
         }
         signer.assert_called_once_with(expected_creds, **expected_kwargs)
+
+    def test_generate_signed_url_no_version_passed_warning(self):
+        self._generate_signed_url_helper()
 
     def _generate_signed_url_v2_helper(self, **kw):
         version = "v2"
