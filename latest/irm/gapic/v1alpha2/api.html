@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Client for Stackdriver Incident Response &amp; Management API &#8212; google-cloud f5a0beb documentation</title>
+    <title>Client for Stackdriver Incident Response &amp; Management API &#8212; google-cloud cb9608a documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -1511,26 +1511,35 @@ incidents belong to.</li>
 <li><strong>query</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>An expression that defines which incidents to return.</p>
 <p>Search atoms can be used to match certain specific fields. Otherwise,
 plain text will match text fields in the incident.</p>
-<p>Search atoms: * <code class="docutils literal notranslate"><span class="pre">start</span></code> - (timestamp) The time the incident started.
-* <code class="docutils literal notranslate"><span class="pre">stage</span></code> - The stage of the incident, one of detected, triaged,
+<p>Search atoms:</p>
+<ul>
+<li><code class="docutils literal notranslate"><span class="pre">start</span></code> - (timestamp) The time the incident started.</li>
+<li><code class="docutils literal notranslate"><span class="pre">stage</span></code> - The stage of the incident, one of detected, triaged,
 mitigated, resolved, documented, or duplicate (which correspond to
 values in the Incident.Stage enum). These are ordered, so
 <code class="docutils literal notranslate"><span class="pre">stage&lt;resolved</span></code> is equivalent to
-<code class="docutils literal notranslate"><span class="pre">stage:detected</span> <span class="pre">OR</span> <span class="pre">stage:triaged</span> <span class="pre">OR</span> <span class="pre">stage:mitigated</span></code>. * <code class="docutils literal notranslate"><span class="pre">severity</span></code>
-- (Incident.Severity) The severity of the incident. + Supports matching
-on a specific severity (for example, <code class="docutils literal notranslate"><span class="pre">severity:major</span></code>) or on a range
-(for example, <code class="docutils literal notranslate"><span class="pre">severity&gt;medium</span></code>, <code class="docutils literal notranslate"><span class="pre">severity&lt;=minor</span></code>, etc.).</p>
-<p>Timestamp formats: * yyyy-MM-dd - an absolute date, treated as a
-calendar-day-wide window. In other words, the “&lt;” operator will match
-dates before that date, the “&gt;” operator will match dates after that
-date, and the “:” or “=” operators will match the entire day. * Nd (for
-example, 7d) - a relative number of days ago, treated as a moment in
-time (as opposed to a day-wide span). A multiple of 24 hours ago (as
-opposed to calendar days). In the case of daylight savings time, it will
-apply the current timezone to both ends of the range. Note that exact
-matching (for example, <code class="docutils literal notranslate"><span class="pre">start:7d</span></code>) is unlikely to be useful because
-that would only match incidents created precisely at a particular
-instant in time.</p>
+<code class="docutils literal notranslate"><span class="pre">stage:detected</span> <span class="pre">OR</span> <span class="pre">stage:triaged</span> <span class="pre">OR</span> <span class="pre">stage:mitigated</span></code>.</li>
+<li><code class="docutils literal notranslate"><span class="pre">severity</span></code> - (Incident.Severity) The severity of the incident.<ul>
+<li>Supports matching on a specific severity (for example,
+<code class="docutils literal notranslate"><span class="pre">severity:major</span></code>) or on a range (for example,
+<code class="docutils literal notranslate"><span class="pre">severity&gt;medium</span></code>, <code class="docutils literal notranslate"><span class="pre">severity&lt;=minor</span></code>, etc.).</li>
+</ul>
+</li>
+</ul>
+<p>Timestamp formats:</p>
+<ul>
+<li>yyyy-MM-dd - an absolute date, treated as a calendar-day-wide window.
+In other words, the “&lt;” operator will match dates before that date,
+the “&gt;” operator will match dates after that date, and the “:” or “=”
+operators will match the entire day.</li>
+<li>Nd (for example, 7d) - a relative number of days ago, treated as a
+moment in time (as opposed to a day-wide span). A multiple of 24
+hours ago (as opposed to calendar days). In the case of daylight
+savings time, it will apply the current timezone to both ends of the
+range. Note that exact matching (for example, <code class="docutils literal notranslate"><span class="pre">start:7d</span></code>) is
+unlikely to be useful because that would only match incidents created
+precisely at a particular instant in time.</li>
+</ul>
 <p>Examples:</p>
 <ul>
 <li><code class="docutils literal notranslate"><span class="pre">foo</span></code> - matches incidents containing the word “foo”</li>
@@ -1542,21 +1551,17 @@ the word “foo” but not the word “bar”</li>
 <li><code class="docutils literal notranslate"><span class="pre">foo</span> <span class="pre">OR</span> <span class="pre">bar</span></code> - matches incidents containing the word “foo” or the
 word “bar”</li>
 <li><code class="docutils literal notranslate"><span class="pre">start&gt;2018-11-28</span></code> - matches incidents which started after November
-11,</li>
-</ul>
-<ol class="arabic" start="2018">
+11,<ol class="arabic" start="2018">
 <li></li>
 </ol>
-<ul>
+</li>
 <li><code class="docutils literal notranslate"><span class="pre">start&lt;=2018-11-28</span></code> - matches incidents which started on or before
 November 11, 2018.</li>
 <li><code class="docutils literal notranslate"><span class="pre">start:2018-11-28</span></code> - matches incidents which started on November
-11,</li>
-</ul>
-<ol class="arabic" start="2018">
+11,<ol class="arabic" start="2018">
 <li></li>
 </ol>
-<ul>
+</li>
 <li><code class="docutils literal notranslate"><span class="pre">start&gt;7d</span></code> - matches incidents which started after the point in
 time 7*24 hours ago</li>
 <li><code class="docutils literal notranslate"><span class="pre">start&gt;180d</span></code> - similar to 7d, but likely to cross the daylight
