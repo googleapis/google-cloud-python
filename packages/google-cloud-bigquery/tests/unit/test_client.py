@@ -4276,20 +4276,72 @@ class TestClient(unittest.TestCase):
             method="GET", path="/%s" % PATH, query_params={}
         )
 
-    def test_list_rows_errors(self):
-        from google.cloud.bigquery.table import Table
+    def test_list_rows_with_missing_schema(self):
+        from google.cloud.bigquery.table import Table, TableListItem
+
+        table_path = "/projects/{}/datasets/{}/tables/{}".format(
+            self.PROJECT, self.DS_ID, self.TABLE_ID
+        )
+        tabledata_path = "{}/data".format(table_path)
+
+        table_list_item_data = {
+            "id": "%s:%s:%s" % (self.PROJECT, self.DS_ID, self.TABLE_ID),
+            "tableReference": {
+                "projectId": self.PROJECT,
+                "datasetId": self.DS_ID,
+                "tableId": self.TABLE_ID,
+            },
+        }
+        table_data = copy.deepcopy(table_list_item_data)
+        # Intentionally make wrong, since total_rows can update during iteration.
+        table_data["numRows"] = 2
+        table_data["schema"] = {
+            "fields": [
+                {"name": "name", "type": "STRING"},
+                {"name": "age", "type": "INTEGER"},
+            ]
+        }
+        rows_data = {
+            "totalRows": 3,
+            "pageToken": None,
+            "rows": [
+                {"f": [{"v": "Phred Phlyntstone"}, {"v": "32"}]},
+                {"f": [{"v": "Bharney Rhubble"}, {"v": "31"}]},
+                {"f": [{"v": "Wylma Phlyntstone"}, {"v": None}]},
+            ],
+        }
 
         creds = _make_credentials()
         http = object()
-        client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
 
-        # table ref with no selected fields
-        with self.assertRaises(ValueError):
-            client.list_rows(self.TABLE_REF)
+        schemaless_tables = (
+            "{}.{}".format(self.DS_ID, self.TABLE_ID),
+            self.TABLE_REF,
+            Table(self.TABLE_REF),
+            TableListItem(table_list_item_data),
+        )
 
-        # table with no schema
-        with self.assertRaises(ValueError):
-            client.list_rows(Table(self.TABLE_REF))
+        for table in schemaless_tables:
+            client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
+            conn = client._connection = _make_connection(table_data, rows_data)
+
+            row_iter = client.list_rows(table)
+
+            conn.api_request.assert_called_once_with(method="GET", path=table_path)
+            conn.api_request.reset_mock()
+            self.assertIsNone(row_iter.total_rows, msg=repr(table))
+
+            rows = list(row_iter)
+            conn.api_request.assert_called_once_with(
+                method="GET", path=tabledata_path, query_params={}
+            )
+            self.assertEqual(row_iter.total_rows, 3, msg=repr(table))
+            self.assertEqual(rows[0].name, "Phred Phlyntstone", msg=repr(table))
+            self.assertEqual(rows[1].age, 31, msg=repr(table))
+            self.assertIsNone(rows[2].age, msg=repr(table))
+
+    def test_list_rows_error(self):
+        client = self._make_one()
 
         # neither Table nor tableReference
         with self.assertRaises(TypeError):
