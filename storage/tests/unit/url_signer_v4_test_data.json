@@ -66,5 +66,15 @@
         "expiration": 10,
         "timestamp": "20190201T090000Z",
         "expectedUrl": "https://storage.googleapis.com/test-bucket/test-object?X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential=test-iam-credentials%40dummy-project-id.iam.gserviceaccount.com%2F20190201%2Fauto%2Fstorage%2Fgoog4_request&X-Goog-Date=20190201T090000Z&X-Goog-Expires=10&X-Goog-SignedHeaders=host%3Bx-goog-encryption-algorithm%3Bx-goog-encryption-key%3Bx-goog-encryption-key-sha256&X-Goog-Signature=278a1c5a3bad248637054a047014760353942433955871031ed08f515b54588654ad033e91f046ab202b68673030e117d1b786c325e870238b035ba75b3feed560a17aff9bab6bddebd4a31a52cb68b214e27d3b0bd886502c6b36b164306fe88b5a07c6063592afe746b2a5d205dbe90dd5386b94f0a78f75d9f53ee884e18f476e8fc2eb1dd910ce0b4ae1f5d7b09876ef9bf983f539c028429e14bad3c75dbd4ed1ae37856f6d6f8a1805eaf8b52a0d6fc993902e4c1ee8de477661f7b67c3663000474cb00e178189789b2a3ed6bd21b4ade684fca8108ac4dd106acb17f5954d045775f7aa5a98ebda5d3075e11a8ea49c64c6ad1481e463e8c9f11f704"
+    },
+
+    {
+        "description": "List Objects",
+        "bucket": "test-bucket",
+        "object": "",
+        "method": "GET",
+        "expiration": 10,
+        "timestamp": "20190201T090000Z",
+        "expectedUrl": "https://storage.googleapis.com/test-bucket?X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential=test-iam-credentials%40dummy-project-id.iam.gserviceaccount.com%2F20190201%2Fauto%2Fstorage%2Fgoog4_request&X-Goog-Date=20190201T090000Z&X-Goog-Expires=10&X-Goog-SignedHeaders=host&X-Goog-Signature=6dbe94f8e52b2b8a9a476b1c857efa474e09944e2b52b925800316e094a7169d8dbe0df9c0ac08dabb22ac7e827470ceccd65f5a3eadba2a4fb9beebfe37f0d9bb1e552b851fa31a25045bdf019e507f5feb44f061551ef1aeb18dcec0e38ba2e2f77d560a46eaace9c56ed9aa642281301a9d848b0eb30749e34bc7f73a3d596240533466ff9b5f289cd0d4c845c7d96b82a35a5abd0c3aff83e4440ee6873e796087f43545544dc8c01afe1d79c726696b6f555371e491980e7ec145cca0803cf562c38f3fa1d724242f5dea25aac91d74ec9ddd739ff65523627763eaef25cd1f95ad985aaf0079b7c74eb5bcb2870a9b137a7b2c8e41fbe838c95872f75b"
     }
 ]

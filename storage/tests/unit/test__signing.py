@@ -39,10 +39,10 @@ _SERVICE_ACCOUNT_JSON = _read_local_json("url_signer_v4_test_account.json")
 _CONFORMANCE_TESTS = _read_local_json("url_signer_v4_test_data.json")
 _CLIENT_TESTS = [test for test in _CONFORMANCE_TESTS if "bucket" not in test]
 _BUCKET_TESTS = [
-    test for test in _CONFORMANCE_TESTS if "bucket" in test and "object" not in test
+    test for test in _CONFORMANCE_TESTS if "bucket" in test and not test.get("object")
 ]
 _BLOB_TESTS = [
-    test for test in _CONFORMANCE_TESTS if "bucket" in test and "object" in test
+    test for test in _CONFORMANCE_TESTS if "bucket" in test and test.get("object")
 ]
 
 
@@ -667,23 +667,8 @@ def dummy_service_account():
     return _DUMMY_SERVICE_ACCOUNT
 
 
-@pytest.mark.parametrize("test_data", _CLIENT_TESTS)
-@pytest.mark.skip(reason="Bucketless URLs not yet supported")
-def test_conformance_client(test_data):
-    pass  # pragma: NO COVER
-
-
-@pytest.mark.parametrize("test_data", _BUCKET_TESTS)
-@pytest.mark.skip(reason="Bucket-only URLs not yet supported")
-def test_conformance_bucket(test_data):
-    pass  # pragma: NO COVER
-
-
-@pytest.mark.parametrize("test_data", _BLOB_TESTS)
-def test_conformance_blob(test_data):
+def _run_conformance_test(resource, test_data):
     credentials = dummy_service_account()
-
-    resource = "/{}/{}".format(test_data["bucket"], test_data["object"])
 
     url = Test_generate_signed_url_v4._call_fut(
         credentials,
@@ -695,6 +680,23 @@ def test_conformance_blob(test_data):
     )
 
     assert url == test_data["expectedUrl"]
+
+@pytest.mark.parametrize("test_data", _CLIENT_TESTS)
+@pytest.mark.skip(reason="Bucketless URLs not yet supported")
+def test_conformance_client(test_data):
+    pass  # pragma: NO COVER
+
+
+@pytest.mark.parametrize("test_data", _BUCKET_TESTS)
+def test_conformance_bucket(test_data):
+    resource = "/{}".format(test_data["bucket"])
+    _run_conformance_test(resource, test_data)
+
+
+@pytest.mark.parametrize("test_data", _BLOB_TESTS)
+def test_conformance_blob(test_data):
+    resource = "/{}/{}".format(test_data["bucket"], test_data["object"])
+    _run_conformance_test(resource, test_data)
 
 
 def _make_credentials(signer_email=None):
