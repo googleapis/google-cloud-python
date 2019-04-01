@@ -1,0 +1,39 @@
+{
+  "updateTime": "2019-04-01T18:15:17.513175Z",
+  "sources": [
+    {
+      "generator": {
+        "name": "artman",
+        "version": "0.16.21",
+        "dockerImage": "googleapis/artman@sha256:854131ec1af7b3a313253474c24748dc0acd217a58a0b74dbfb559f340a15d78"
+      }
+    },
+    {
+      "git": {
+        "name": "googleapis",
+        "remote": "https://github.com/googleapis/googleapis.git",
+        "sha": "97b4ae850d71c598dda02b4e62aa2c81d442aa3e",
+        "internalRef": "241345717"
+      }
+    },
+    {
+      "template": {
+        "name": "python_library",
+        "origin": "synthtool.gcp",
+        "version": "2019.2.26"
+      }
+    }
+  ],
+  "destinations": [
+    {
+      "client": {
+        "source": "googleapis",
+        "apiName": "webrisk",
+        "apiVersion": "v1beta1",
+        "language": "python",
+        "generator": "gapic",
+        "config": "google/cloud/webrisk/artman_webrisk.yaml"
+      }
+    }
+  ]
+}
