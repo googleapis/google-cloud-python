@@ -583,14 +583,13 @@ def generate_signed_url_v4(
     if "host" not in header_names:
         headers["Host"] = "storage.googleapis.com"
 
-    ordered_headers = sorted(headers.items())
+    ordered_headers = sorted(
+        [(key.lower(), val.strip()) for key, val in headers.items()]
+    )
     canonical_headers = (
-        "\n".join(
-            ["{}:{}".format(key.lower(), val.strip()) for key, val in ordered_headers]
-        )
-        + "\n"
+        "\n".join(["{}:{}".format(key, val) for key, val in ordered_headers]) + "\n"
     )  # Yes, Virginia, the extra newline is part of the spec.
-    signed_headers = ";".join([key.lower() for key, _ in ordered_headers])
+    signed_headers = ";".join([key for key, _ in ordered_headers])
 
     if query_parameters is None:
         query_parameters = {}

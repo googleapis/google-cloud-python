@@ -681,6 +681,7 @@ def _run_conformance_test(resource, test_data):
 
     assert url == test_data["expectedUrl"]
 
+
 @pytest.mark.parametrize("test_data", _CLIENT_TESTS)
 @pytest.mark.skip(reason="Bucketless URLs not yet supported")
 def test_conformance_client(test_data):
