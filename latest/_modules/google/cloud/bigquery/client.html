@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery.client &#8212; google-cloud 28ad1a8 documentation</title>
+    <title>google.cloud.bigquery.client &#8212; google-cloud 019e905 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -1730,15 +1730,19 @@
 <span class="sd">        Args:</span>
 <span class="sd">            table (Union[ \</span>
 <span class="sd">                :class:`~google.cloud.bigquery.table.Table`, \</span>
+<span class="sd">                :class:`~google.cloud.bigquery.table.TableListItem`, \</span>
 <span class="sd">                :class:`~google.cloud.bigquery.table.TableReference`, \</span>
 <span class="sd">                str, \</span>
 <span class="sd">            ]):</span>
-<span class="sd">                The table to list, or a reference to it.</span>
+<span class="sd">                The table to list, or a reference to it. When the table</span>
+<span class="sd">                object does not contain a schema and ``selected_fields`` is</span>
+<span class="sd">                not supplied, this method calls ``get_table`` to fetch the</span>
+<span class="sd">                table schema.</span>
 <span class="sd">            selected_fields (Sequence[ \</span>
 <span class="sd">                :class:`~google.cloud.bigquery.schema.SchemaField` \</span>
 <span class="sd">            ]):</span>
-<span class="sd">                The fields to return. Required if ``table`` is a</span>
-<span class="sd">                :class:`~google.cloud.bigquery.table.TableReference`.</span>
+<span class="sd">                The fields to return. If not supplied, data for all columns</span>
+<span class="sd">                are downloaded.</span>
 <span class="sd">            max_results (int):</span>
 <span class="sd">                (Optional) maximum number of rows to return.</span>
 <span class="sd">            page_token (str):</span>
@@ -1777,14 +1781,11 @@
         <span class="k">if</span> <span class="n">selected_fields</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">schema</span> <span class="o">=</span> <span class="n">selected_fields</span>
 
-        <span class="c1"># Allow listing rows of an empty table by not raising if the table exists.</span>
-        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">schema</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">table</span><span class="o">.</span><span class="n">created</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="p">(</span>
-                    <span class="s2">&quot;Could not determine schema for table &#39;</span><span class="si">{}</span><span class="s2">&#39;. Call client.get_table() &quot;</span>
-                    <span class="s2">&quot;or pass in a list of schema fields to the selected_fields argument.&quot;</span>
-                <span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>
-            <span class="p">)</span>
+        <span class="c1"># No schema, but no selected_fields. Assume the developer wants all</span>
+        <span class="c1"># columns, so get the table resource for them rather than failing.</span>
+        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">schema</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">table</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_table</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">reference</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">)</span>
+            <span class="n">schema</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">schema</span>
 
         <span class="n">params</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">if</span> <span class="n">selected_fields</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>

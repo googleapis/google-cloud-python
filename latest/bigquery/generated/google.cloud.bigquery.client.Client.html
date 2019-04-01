@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery.client.Client &#8212; google-cloud 28ad1a8 documentation</title>
+    <title>google.cloud.bigquery.client.Client &#8212; google-cloud 019e905 documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -879,9 +879,12 @@ local copy of the schema is up-to-date, call <code class="docutils literal notra
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>table</strong> (Union[                 <a class="reference internal" href="google.cloud.bigquery.table.Table.html#google.cloud.bigquery.table.Table" title="google.cloud.bigquery.table.Table"><code class="xref py py-class docutils literal notranslate"><span class="pre">Table</span></code></a>,                 <a class="reference internal" href="google.cloud.bigquery.table.TableReference.html#google.cloud.bigquery.table.TableReference" title="google.cloud.bigquery.table.TableReference"><code class="xref py py-class docutils literal notranslate"><span class="pre">TableReference</span></code></a>,                 str,             ]) – The table to list, or a reference to it.</li>
-<li><strong>selected_fields</strong> (Sequence[                 <a class="reference internal" href="google.cloud.bigquery.schema.SchemaField.html#google.cloud.bigquery.schema.SchemaField" title="google.cloud.bigquery.schema.SchemaField"><code class="xref py py-class docutils literal notranslate"><span class="pre">SchemaField</span></code></a>             ]) – The fields to return. Required if <code class="docutils literal notranslate"><span class="pre">table</span></code> is a
-<a class="reference internal" href="google.cloud.bigquery.table.TableReference.html#google.cloud.bigquery.table.TableReference" title="google.cloud.bigquery.table.TableReference"><code class="xref py py-class docutils literal notranslate"><span class="pre">TableReference</span></code></a>.</li>
+<li><strong>table</strong> (Union[                 <a class="reference internal" href="google.cloud.bigquery.table.Table.html#google.cloud.bigquery.table.Table" title="google.cloud.bigquery.table.Table"><code class="xref py py-class docutils literal notranslate"><span class="pre">Table</span></code></a>,                 <a class="reference internal" href="google.cloud.bigquery.table.TableListItem.html#google.cloud.bigquery.table.TableListItem" title="google.cloud.bigquery.table.TableListItem"><code class="xref py py-class docutils literal notranslate"><span class="pre">TableListItem</span></code></a>,                 <a class="reference internal" href="google.cloud.bigquery.table.TableReference.html#google.cloud.bigquery.table.TableReference" title="google.cloud.bigquery.table.TableReference"><code class="xref py py-class docutils literal notranslate"><span class="pre">TableReference</span></code></a>,                 str,             ]) – The table to list, or a reference to it. When the table
+object does not contain a schema and <code class="docutils literal notranslate"><span class="pre">selected_fields</span></code> is
+not supplied, this method calls <code class="docutils literal notranslate"><span class="pre">get_table</span></code> to fetch the
+table schema.</li>
+<li><strong>selected_fields</strong> (Sequence[                 <a class="reference internal" href="google.cloud.bigquery.schema.SchemaField.html#google.cloud.bigquery.schema.SchemaField" title="google.cloud.bigquery.schema.SchemaField"><code class="xref py py-class docutils literal notranslate"><span class="pre">SchemaField</span></code></a>             ]) – The fields to return. If not supplied, data for all columns
+are downloaded.</li>
 <li><strong>max_results</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – (Optional) maximum number of rows to return.</li>
 <li><strong>page_token</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – (Optional) Token representing a cursor into the table’s rows.
 If not passed, the API will return the first page of the
