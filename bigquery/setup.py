@@ -38,20 +38,19 @@ extras = {
         "google-cloud-bigquery-storage >= 0.2.0dev1, <2.0.0dev",
         "fastavro>=0.21.2",
     ],
-    "pandas": "pandas>=0.17.1",
+    "pandas": ["pandas>=0.17.1"],
     # Exclude PyArrow dependency from Windows Python 2.7.
-    'pyarrow: platform_system != "Windows" or python_version >= "3.4"': "pyarrow>=0.4.1",
-    "tqdm": "tqdm >= 4.0.0, <5.0.0dev",
+    'pyarrow: platform_system != "Windows" or python_version >= "3.4"': [
+        "pyarrow>=0.4.1"
+    ],
+    "tqdm": ["tqdm >= 4.0.0, <5.0.0dev"],
     "fastparquet": ["fastparquet", "python-snappy"],
 }
 
 all_extras = []
 
 for extra in extras:
-    if isinstance(extras[extra], str):
-        all_extras.append(extras[extra])
-    else:
-        all_extras.extend(extras[extra])
+    all_extras.extend(extras[extra])
 
 extras["all"] = all_extras
 
