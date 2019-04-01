@@ -1,4 +1,4 @@
-Python Client for Data Labeling API (`Alpha`_)
+Python Client for Data Labeling API (`Beta`_)
 ==============================================
 
 `Data Labeling API`_: Public API for Google Cloud AI Data Labeling Service.
@@ -6,7 +6,7 @@ Python Client for Data Labeling API (`Alpha`_)
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. _Alpha: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/README.rst
+.. _Beta: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/README.rst
 .. _Data Labeling API: https://cloud.google.com/datalabeling
 .. _Client Library Documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/datalabeling/usage.html
 .. _Product Documentation:  https://cloud.google.com/datalabeling

@@ -2489,3 +2489,69 @@ class DataLabelingServiceClient(object):
         self._inner_api_calls["delete_instruction"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
+
+    def delete_annotated_dataset(
+        self,
+        name=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
+        """
+        Deletes an annotated dataset by resource name.
+
+        Example:
+            >>> from google.cloud import datalabeling_v1beta1
+            >>>
+            >>> client = datalabeling_v1beta1.DataLabelingServiceClient()
+            >>>
+            >>> client.delete_annotated_dataset()
+
+        Args:
+            name (str): Required. Name of the annotated dataset to delete, format:
+                projects/{project\_id}/datasets/{dataset\_id}/annotatedDatasets/
+                {annotated\_dataset\_id}
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will not
+                be retried.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if "delete_annotated_dataset" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "delete_annotated_dataset"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.delete_annotated_dataset,
+                default_retry=self._method_configs["DeleteAnnotatedDataset"].retry,
+                default_timeout=self._method_configs["DeleteAnnotatedDataset"].timeout,
+                client_info=self._client_info,
+            )
+
+        request = data_labeling_service_pb2.DeleteAnnotatedDatasetRequest(name=name)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
+        self._inner_api_calls["delete_annotated_dataset"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )

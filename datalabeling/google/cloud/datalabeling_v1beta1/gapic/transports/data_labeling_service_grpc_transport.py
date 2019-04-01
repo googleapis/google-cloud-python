@@ -428,3 +428,16 @@ class DataLabelingServiceGrpcTransport(object):
                 deserialized response object.
         """
         return self._stubs["data_labeling_service_stub"].DeleteInstruction
+
+    @property
+    def delete_annotated_dataset(self):
+        """Return the gRPC stub for :meth:`DataLabelingServiceClient.delete_annotated_dataset`.
+
+        Deletes an annotated dataset by resource name.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["data_labeling_service_stub"].DeleteAnnotatedDataset

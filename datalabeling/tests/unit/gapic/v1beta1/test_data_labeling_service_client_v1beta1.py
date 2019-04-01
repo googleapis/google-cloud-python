@@ -1282,3 +1282,28 @@ class TestDataLabelingServiceClient(object):
 
         with pytest.raises(CustomException):
             client.delete_instruction(name)
+
+    def test_delete_annotated_dataset(self):
+        channel = ChannelStub()
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = datalabeling_v1beta1.DataLabelingServiceClient()
+
+        client.delete_annotated_dataset()
+
+        assert len(channel.requests) == 1
+        expected_request = data_labeling_service_pb2.DeleteAnnotatedDatasetRequest()
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_delete_annotated_dataset_exception(self):
+        # Mock the API response
+        channel = ChannelStub(responses=[CustomException()])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = datalabeling_v1beta1.DataLabelingServiceClient()
+
+        with pytest.raises(CustomException):
+            client.delete_annotated_dataset()
