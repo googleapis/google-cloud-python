@@ -16,12 +16,34 @@ import base64
 import binascii
 import calendar
 import datetime
+import io
+import json
+import os
 import time
 import unittest
 
 import mock
+import pytest
 import six
 from six.moves import urllib_parse
+
+
+def _read_local_json(json_file):
+    here = os.path.dirname(__file__)
+    json_path = os.path.abspath(os.path.join(here, json_file))
+    with io.open(json_path, "r", encoding="utf-8-sig") as fileobj:
+        return json.load(fileobj)
+
+
+_SERVICE_ACCOUNT_JSON = _read_local_json("url_signer_v4_test_account.json")
+_CONFORMANCE_TESTS = _read_local_json("url_signer_v4_test_data.json")
+_CLIENT_TESTS = [test for test in _CONFORMANCE_TESTS if "bucket" not in test]
+_BUCKET_TESTS = [
+    test for test in _CONFORMANCE_TESTS if "bucket" in test and "object" not in test
+]
+_BLOB_TESTS = [
+    test for test in _CONFORMANCE_TESTS if "bucket" in test and "object" in test
+]
 
 
 def _utc_seconds(when):
@@ -627,6 +649,52 @@ class Test_generate_signed_url_v4(unittest.TestCase):
 
     def test_w_custom_query_parameters_w_none_value(self):
         self._generate_helper(query_parameters={"qux": None})
+
+
+_DUMMY_SERVICE_ACCOUNT = None
+
+
+def dummy_service_account():
+    global _DUMMY_SERVICE_ACCOUNT
+
+    from google.oauth2.service_account import Credentials
+
+    if _DUMMY_SERVICE_ACCOUNT is None:
+        _DUMMY_SERVICE_ACCOUNT = Credentials.from_service_account_info(
+            _SERVICE_ACCOUNT_JSON
+        )
+
+    return _DUMMY_SERVICE_ACCOUNT
+
+
+@pytest.mark.parametrize("test_data", _CLIENT_TESTS)
+@pytest.mark.skip(reason="Bucketless URLs not yet supported")
+def test_conformance_client(test_data):
+    pass  # pragma: NO COVER
+
+
+@pytest.mark.parametrize("test_data", _BUCKET_TESTS)
+@pytest.mark.skip(reason="Bucket-only URLs not yet supported")
+def test_conformance_bucket(test_data):
+    pass  # pragma: NO COVER
+
+
+@pytest.mark.parametrize("test_data", _BLOB_TESTS)
+def test_conformance_blob(test_data):
+    credentials = dummy_service_account()
+
+    resource = "/{}/{}".format(test_data["bucket"], test_data["object"])
+
+    url = Test_generate_signed_url_v4._call_fut(
+        credentials,
+        resource,
+        max_age=test_data["expiration"],
+        method=test_data["method"],
+        _request_timestamp=test_data["timestamp"],
+        headers=test_data.get("headers"),
+    )
+
+    assert url == test_data["expectedUrl"]
 
 
 def _make_credentials(signer_email=None):

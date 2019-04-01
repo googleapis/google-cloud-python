@@ -437,6 +437,7 @@ def generate_signed_url_v2(
 
 
 SEVEN_DAYS = 7 * 24 * 60 * 60  # max age for V4 signed URLs.
+DEFAULT_ENDPOINT = "https://storage.googleapis.com"
 
 
 def generate_signed_url_v4(
@@ -444,7 +445,7 @@ def generate_signed_url_v4(
     resource,
     expiration=None,
     max_age=None,
-    api_access_endpoint="",
+    api_access_endpoint=DEFAULT_ENDPOINT,
     method="GET",
     content_md5=None,
     content_type=None,
@@ -453,6 +454,7 @@ def generate_signed_url_v4(
     generation=None,
     headers=None,
     query_parameters=None,
+    _request_timestamp=None,  # for testing only
 ):
     """Generate a V4 signed URL to provide query-string auth'n to a resource.
 
@@ -495,7 +497,8 @@ def generate_signed_url_v4(
                     two must be passed.
 
     :type api_access_endpoint: str
-    :param api_access_endpoint: Optional URI base. Defaults to empty string.
+    :param api_access_endpoint: Optional URI base. Defaults to
+                                "https://storage.googleapis.com/"
 
     :type method: str
     :param method: The HTTP verb that will be used when requesting the URL.
@@ -555,9 +558,13 @@ def generate_signed_url_v4(
 
     ensure_signed_credentials(credentials)
 
-    now = NOW()
-    request_timestamp = now.strftime("%Y%m%dT%H%M%SZ")
-    datestamp = now.date().strftime("%Y%m%d")
+    if _request_timestamp is None:
+        now = NOW()
+        request_timestamp = now.strftime("%Y%m%dT%H%M%SZ")
+        datestamp = now.date().strftime("%Y%m%d")
+    else:
+        request_timestamp = _request_timestamp
+        datestamp = _request_timestamp[:8]
 
     client_email = credentials.signer_email
     credential_scope = "{}/auto/storage/goog4_request".format(datestamp)
@@ -577,9 +584,12 @@ def generate_signed_url_v4(
         headers["Host"] = "storage.googleapis.com"
 
     ordered_headers = sorted(headers.items())
-    canonical_headers = "\n".join(
-        ["{}:{}".format(key.lower(), val.strip()) for key, val in ordered_headers]
-    )
+    canonical_headers = (
+        "\n".join(
+            ["{}:{}".format(key.lower(), val.strip()) for key, val in ordered_headers]
+        )
+        + "\n"
+    )  # Yes, Virginia, the extra newline is part of the spec.
     signed_headers = ";".join([key.lower() for key, _ in ordered_headers])
 
     if query_parameters is None:

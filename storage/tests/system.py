@@ -783,6 +783,9 @@ class TestStorageSignURLs(TestStorageFiles):
     def test_create_signed_read_url_v2(self):
         self._create_signed_read_url_helper()
 
+    def test_create_signed_read_url_v4(self):
+        self._create_signed_read_url_helper(version="v4")
+
     def test_create_signed_read_url_v2_w_expiration(self):
         now = datetime.datetime.utcnow()
         delta = datetime.timedelta(seconds=10)
