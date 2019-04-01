@@ -83,6 +83,7 @@ class Test_get_expiration_seconds_v2(unittest.TestCase):
         when = dummy_utcnow + delta
         expiration = _utc_seconds(when)
         self.assertEqual(result, expiration)
+        utcnow.assert_called_once_with()
 
     def test_w_expiration_int(self):
         self.assertEqual(self._call_fut(123, None), 123)
@@ -181,7 +182,8 @@ class Test_get_expiration_seconds_v4(unittest.TestCase):
 
         with patch as utcnow:
             with self.assertRaises(ValueError):
-                result = self._call_fut(expiration_seconds, None)
+                self._call_fut(expiration_seconds, None)
+        utcnow.assert_called_once_with()
 
     def test_w_expiration_int(self):
         dummy_utcnow = datetime.datetime(2004, 8, 19, 0, 0, 0, 0)
