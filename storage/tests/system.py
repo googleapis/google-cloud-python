@@ -761,6 +761,7 @@ class TestStorageSignURLs(TestStorageFiles):
         blob = self.bucket.blob(blob_name)
         if payload is not None:
             blob.upload_from_string(payload)
+            self.case_blobs_to_delete.append(blob)
 
         if expiration is None and max_age is None:
             max_age = 10
@@ -792,8 +793,16 @@ class TestStorageSignURLs(TestStorageFiles):
 
         self._create_signed_read_url_helper(expiration=now + delta)
 
+    def test_create_signed_read_url_v4_w_expiration(self):
+        now = datetime.datetime.utcnow()
+        delta = datetime.timedelta(seconds=10)
+        self._create_signed_read_url_helper(expiration=now + delta, version="v4")
+
     def test_create_signed_read_url_v2_lowercase_method(self):
         self._create_signed_read_url_helper(method="get")
+
+    def test_create_signed_read_url_v4_lowercase_method(self):
+        self._create_signed_read_url_helper(method="get", version="v4")
 
     def test_create_signed_read_url_v2_w_non_ascii_name(self):
         self._create_signed_read_url_helper(
@@ -801,22 +810,41 @@ class TestStorageSignURLs(TestStorageFiles):
             payload=b"Test signed URL for blob w/ non-ASCII name",
         )
 
-    def _create_signed_delete_url_helper(self, version="v2"):
+    def test_create_signed_read_url_v4_w_non_ascii_name(self):
+        self._create_signed_read_url_helper(
+            blob_name=u"Caf\xe9.txt",
+            payload=b"Test signed URL for blob w/ non-ASCII name",
+            version="v4",
+        )
+
+    def _create_signed_delete_url_helper(
+        self, version="v2", expiration=None, max_age=None
+    ):
+
+        if expiration is None and max_age is None:
+            max_age = 10
+
         blob = self.bucket.blob("LogoToSign.jpg")
-        expiration = int(time.time() + 283473274)
+
         signed_delete_url = blob.generate_signed_url(
-            expiration, method="DELETE", client=Config.CLIENT, version=version
+            expiration=expiration,
+            max_age=max_age,
+            method="DELETE",
+            client=Config.CLIENT,
+            version=version,
         )
 
         response = requests.request("DELETE", signed_delete_url)
         self.assertEqual(response.status_code, 204)
         self.assertEqual(response.content, b"")
 
-        # Check that the blob has actually been deleted.
         self.assertFalse(blob.exists())
 
     def test_create_signed_delete_url_v2(self):
         self._create_signed_delete_url_helper()
+
+    def test_create_signed_delete_url_v4(self):
+        self._create_signed_delete_url_helper(version="v4")
 
 
 class TestStorageCompose(TestStorageFiles):
