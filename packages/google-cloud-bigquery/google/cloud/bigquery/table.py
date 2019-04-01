@@ -35,6 +35,7 @@ try:
 except ImportError:  # pragma: NO COVER
     tqdm = None
 
+import google.api_core.exceptions
 from google.api_core.page_iterator import HTTPIterator
 
 import google.cloud._helpers
@@ -1437,7 +1438,7 @@ class RowIterator(HTTPIterator):
             bqstorage_client ( \
                 google.cloud.bigquery_storage_v1beta1.BigQueryStorageClient \
             ):
-                **Alpha Feature** Optional. A BigQuery Storage API client. If
+                **Beta Feature** Optional. A BigQuery Storage API client. If
                 supplied, use the faster BigQuery Storage API to fetch rows
                 from BigQuery. This API is a billable API.
 
@@ -1448,8 +1449,9 @@ class RowIterator(HTTPIterator):
                 currently supported by this method.
 
                 **Caution**: There is a known issue reading small anonymous
-                query result tables with the BQ Storage API. Write your query
-                results to a destination table to work around this issue.
+                query result tables with the BQ Storage API. When a problem
+                is encountered reading a table, the tabledata.list method
+                from the BigQuery API is used, instead.
             dtypes ( \
                 Map[str, Union[str, pandas.Series.dtype]] \
             ):
@@ -1496,9 +1498,16 @@ class RowIterator(HTTPIterator):
         progress_bar = self._get_progress_bar(progress_bar_type)
 
         if bqstorage_client is not None:
-            return self._to_dataframe_bqstorage(bqstorage_client, dtypes)
-        else:
-            return self._to_dataframe_tabledata_list(dtypes, progress_bar=progress_bar)
+            try:
+                return self._to_dataframe_bqstorage(bqstorage_client, dtypes)
+            except google.api_core.exceptions.GoogleAPICallError:
+                # There is a known issue with reading from small anonymous
+                # query results tables, so some errors are expected. Rather
+                # than throw those errors, try reading the DataFrame again, but
+                # with the tabledata.list API.
+                pass
+
+        return self._to_dataframe_tabledata_list(dtypes, progress_bar=progress_bar)
 
 
 class _EmptyRowIterator(object):
