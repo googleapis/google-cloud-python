@@ -21,10 +21,13 @@ import mock
 import pytest
 import six
 
+import google.api_core.exceptions
+
 try:
     from google.cloud import bigquery_storage_v1beta1
 except ImportError:  # pragma: NO COVER
     bigquery_storage_v1beta1 = None
+
 try:
     import pandas
 except (ImportError, AttributeError):  # pragma: NO COVER
@@ -1747,6 +1750,48 @@ class TestRowIterator(unittest.TestCase):
         column_names = ["colA", "colC", "colB"]
         self.assertEqual(list(got), column_names)
         self.assertEqual(len(got.index), 2)
+
+    @unittest.skipIf(pandas is None, "Requires `pandas`")
+    @unittest.skipIf(
+        bigquery_storage_v1beta1 is None, "Requires `google-cloud-bigquery-storage`"
+    )
+    def test_to_dataframe_w_bqstorage_fallback_to_tabledata_list(self):
+        from google.cloud.bigquery import schema
+        from google.cloud.bigquery import table as mut
+
+        bqstorage_client = mock.create_autospec(
+            bigquery_storage_v1beta1.BigQueryStorageClient
+        )
+        bqstorage_client.create_read_session.side_effect = google.api_core.exceptions.InternalServerError(
+            "can't read with bqstorage_client"
+        )
+        iterator_schema = [
+            schema.SchemaField("name", "STRING", mode="REQUIRED"),
+            schema.SchemaField("age", "INTEGER", mode="REQUIRED"),
+        ]
+        rows = [
+            {"f": [{"v": "Phred Phlyntstone"}, {"v": "32"}]},
+            {"f": [{"v": "Bharney Rhubble"}, {"v": "33"}]},
+            {"f": [{"v": "Wylma Phlyntstone"}, {"v": "29"}]},
+            {"f": [{"v": "Bhettye Rhubble"}, {"v": "27"}]},
+        ]
+        path = "/foo"
+        api_request = mock.Mock(return_value={"rows": rows})
+        row_iterator = mut.RowIterator(
+            _mock_client(),
+            api_request,
+            path,
+            iterator_schema,
+            table=mut.Table("proj.dset.tbl"),
+        )
+
+        df = row_iterator.to_dataframe(bqstorage_client=bqstorage_client)
+
+        self.assertIsInstance(df, pandas.DataFrame)
+        self.assertEqual(len(df), 4)  # verify the number of rows
+        self.assertEqual(list(df), ["name", "age"])  # verify the column names
+        self.assertEqual(df.name.dtype.name, "object")
+        self.assertEqual(df.age.dtype.name, "int64")
 
     @unittest.skipIf(
         bigquery_storage_v1beta1 is None, "Requires `google-cloud-bigquery-storage`"
