@@ -1694,15 +1694,19 @@ class Client(ClientWithProject):
         Args:
             table (Union[ \
                 :class:`~google.cloud.bigquery.table.Table`, \
+                :class:`~google.cloud.bigquery.table.TableListItem`, \
                 :class:`~google.cloud.bigquery.table.TableReference`, \
                 str, \
             ]):
-                The table to list, or a reference to it.
+                The table to list, or a reference to it. When the table
+                object does not contain a schema and ``selected_fields`` is
+                not supplied, this method calls ``get_table`` to fetch the
+                table schema.
             selected_fields (Sequence[ \
                 :class:`~google.cloud.bigquery.schema.SchemaField` \
             ]):
-                The fields to return. Required if ``table`` is a
-                :class:`~google.cloud.bigquery.table.TableReference`.
+                The fields to return. If not supplied, data for all columns
+                are downloaded.
             max_results (int):
                 (Optional) maximum number of rows to return.
             page_token (str):
@@ -1741,14 +1745,11 @@ class Client(ClientWithProject):
         if selected_fields is not None:
             schema = selected_fields
 
-        # Allow listing rows of an empty table by not raising if the table exists.
-        elif len(schema) == 0 and table.created is None:
-            raise ValueError(
-                (
-                    "Could not determine schema for table '{}'. Call client.get_table() "
-                    "or pass in a list of schema fields to the selected_fields argument."
-                ).format(table)
-            )
+        # No schema, but no selected_fields. Assume the developer wants all
+        # columns, so get the table resource for them rather than failing.
+        elif len(schema) == 0:
+            table = self.get_table(table.reference, retry=retry)
+            schema = table.schema
 
         params = {}
         if selected_fields is not None:
