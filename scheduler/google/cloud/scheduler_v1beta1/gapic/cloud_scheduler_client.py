@@ -23,6 +23,7 @@ from google.oauth2 import service_account
 import google.api_core.gapic_v1.client_info
 import google.api_core.gapic_v1.config
 import google.api_core.gapic_v1.method
+import google.api_core.gapic_v1.routing_header
 import google.api_core.grpc_helpers
 import google.api_core.page_iterator
 import google.api_core.path_template
@@ -278,6 +279,19 @@ class CloudSchedulerClient(object):
             )
 
         request = cloudscheduler_pb2.ListJobsRequest(parent=parent, page_size=page_size)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(
@@ -348,6 +362,19 @@ class CloudSchedulerClient(object):
             )
 
         request = cloudscheduler_pb2.GetJobRequest(name=name)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["get_job"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -420,6 +447,19 @@ class CloudSchedulerClient(object):
             )
 
         request = cloudscheduler_pb2.CreateJobRequest(parent=parent, job=job)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["create_job"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -498,6 +538,19 @@ class CloudSchedulerClient(object):
             )
 
         request = cloudscheduler_pb2.UpdateJobRequest(job=job, update_mask=update_mask)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("job.name", job.name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["update_job"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -554,6 +607,19 @@ class CloudSchedulerClient(object):
             )
 
         request = cloudscheduler_pb2.DeleteJobRequest(name=name)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         self._inner_api_calls["delete_job"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -618,6 +684,19 @@ class CloudSchedulerClient(object):
             )
 
         request = cloudscheduler_pb2.PauseJobRequest(name=name)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["pause_job"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -682,6 +761,19 @@ class CloudSchedulerClient(object):
             )
 
         request = cloudscheduler_pb2.ResumeJobRequest(name=name)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["resume_job"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -744,6 +836,19 @@ class CloudSchedulerClient(object):
             )
 
         request = cloudscheduler_pb2.RunJobRequest(name=name)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["run_job"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
