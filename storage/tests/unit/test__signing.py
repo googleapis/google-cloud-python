@@ -320,7 +320,10 @@ class Test_get_canonical_headers(unittest.TestCase):
         expected = ["bar:baz,bam,qux", "foo:Foo 1.2.3"]
         self.assertEqual(self._call_fut(headers), expected)
 
-    # TODO:  handle folded line values?
+    def test_w_embedded_ws(self):
+        headers = {"foo": "Foo\n1.2.3", "Bar": "   baz   bam   qux   "}
+        expected = ["bar:baz bam qux", "foo:Foo 1.2.3"]
+        self.assertEqual(self._call_fut(headers), expected)
 
 
 class Test_canonicalize(unittest.TestCase):

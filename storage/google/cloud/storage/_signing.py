@@ -27,6 +27,8 @@ from google.cloud import _helpers
 
 
 NOW = datetime.datetime.utcnow  # To be replaced by tests.
+MULTIPLE_SPACES_RE = r"\s+"
+MULTIPLE_SPACES = re.compile(MULTIPLE_SPACES_RE)
 
 
 def ensure_signed_credentials(credentials):
@@ -221,7 +223,7 @@ def get_canonical_headers(headers):
     normalized = collections.defaultdict(list)
     for key, value in headers:
         key = key.lower().strip()
-        value = value.strip()
+        value = MULTIPLE_SPACES.sub(" ", value.strip())
         normalized[key].append(value)
 
     ordered_headers = sorted(
@@ -400,19 +402,17 @@ def generate_signed_url_v2(
     """
     expiration_stamp = get_expiration_seconds_v2(expiration, max_age)
 
-    method, canonical_resource, normalized_qp, canonical_headers = canonicalize(
-        method, resource, query_parameters, headers
-    )
+    canonical = canonicalize(method, resource, query_parameters, headers)
 
     # Generate the string to sign.
     elements_to_sign = [
-        method,
+        canonical.method,
         content_md5 or "",
         content_type or "",
         str(expiration_stamp),
     ]
-    elements_to_sign.extend(canonical_headers)
-    elements_to_sign.append(canonical_resource)
+    elements_to_sign.extend(canonical.headers)
+    elements_to_sign.append(canonical.resource)
     string_to_sign = "\n".join(elements_to_sign)
 
     # Set the right query parameters.
@@ -427,20 +427,19 @@ def generate_signed_url_v2(
     if generation is not None:
         signed_query_params["generation"] = generation
 
-    signed_query_params.update(normalized_qp)
+    signed_query_params.update(canonical.query_parameters)
+    sorted_signed_query_params = sorted(signed_query_params.items())
 
     # Return the built URL.
     return "{endpoint}{resource}?{querystring}".format(
         endpoint=api_access_endpoint,
         resource=resource,
-        querystring=six.moves.urllib.parse.urlencode(signed_query_params),
+        querystring=six.moves.urllib.parse.urlencode(sorted_signed_query_params),
     )
 
 
 SEVEN_DAYS = 7 * 24 * 60 * 60  # max age for V4 signed URLs.
 DEFAULT_ENDPOINT = "https://storage.googleapis.com"
-MULTIPLE_SPACES_RE = r"\s+"
-MULTIPLE_SPACES = re.compile(MULTIPLE_SPACES_RE)
 
 
 def generate_signed_url_v4(
