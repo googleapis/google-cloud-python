@@ -24,7 +24,7 @@
 ### Internal / Testing Changes
 - Copy lintified proto files (via synth). ([#7468](https://github.com/googleapis/google-cloud-python/pull/7468))
 - Add clarifying comment to blacken nox target. ([#7397](https://github.com/googleapis/google-cloud-python/pull/7397))
-- Copy proto files alongside protoc versions.
+- Copy in correct proto versions via synth. [#7257](https://github.com/googleapis/google-cloud-python/pull/7257))
 - Add protos as an artifact to library ([#7205](https://github.com/googleapis/google-cloud-python/pull/7205))
 
 ## 1.1.1
