@@ -218,19 +218,20 @@ def get_canonical_headers(headers):
         headers = list(headers.items())
 
     if not headers:
-        return []
+        return [], []
 
     normalized = collections.defaultdict(list)
-    for key, value in headers:
+    for key, val in headers:
         key = key.lower().strip()
-        value = MULTIPLE_SPACES.sub(" ", value.strip())
-        normalized[key].append(value)
+        val = MULTIPLE_SPACES.sub(" ", val.strip())
+        normalized[key].append(val)
 
     ordered_headers = sorted(
-        (key, ",".join(value)) for key, value in normalized.items()
+        (key, ",".join(val)) for key, val in normalized.items()
     )
 
-    return ["{}:{}".format(key, value) for key, value in ordered_headers]
+    canonical_headers = ["{}:{}".format(*item) for item in ordered_headers]
+    return canonical_headers, ordered_headers
 
 
 _Canonical = collections.namedtuple(
@@ -270,7 +271,7 @@ def canonicalize(method, resource, query_parameters, headers):
     :rtype: :class:_Canonical
     :returns: Canonical method, resource, query_parameters, and headers.
     """
-    headers = get_canonical_headers(headers)
+    headers, _ = get_canonical_headers(headers)
 
     if method == "RESUMABLE":
         method = "POST"
@@ -556,9 +557,8 @@ def generate_signed_url_v4(
     :returns: A signed URL you can use to access the resource
               until expiration.
     """
-    expiration_seconds = get_expiration_seconds_v4(expiration, max_age)
-
     ensure_signed_credentials(credentials)
+    expiration_seconds = get_expiration_seconds_v4(expiration, max_age)
 
     if _request_timestamp is None:
         now = NOW()
@@ -585,14 +585,9 @@ def generate_signed_url_v4(
     if "host" not in header_names:
         headers["Host"] = "storage.googleapis.com"
 
-    ordered_headers = sorted(
-        [
-            (key.lower(), MULTIPLE_SPACES.sub(" ", val.strip()))
-            for key, val in headers.items()
-        ]
-    )
-    canonical_headers = (
-        "\n".join(["{}:{}".format(key, val) for key, val in ordered_headers]) + "\n"
+    canonical_headers, ordered_headers = get_canonical_headers(headers)
+    canonical_header_string = (
+        "\n".join(canonical_headers) + "\n"
     )  # Yes, Virginia, the extra newline is part of the spec.
     signed_headers = ";".join([key for key, _ in ordered_headers])
 
@@ -623,7 +618,7 @@ def generate_signed_url_v4(
         method,
         resource,
         canonical_query_string,
-        canonical_headers,
+        canonical_header_string,
         signed_headers,
         "UNSIGNED-PAYLOAD",
     ]

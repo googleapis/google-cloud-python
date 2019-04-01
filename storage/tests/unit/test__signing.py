@@ -302,13 +302,19 @@ class Test_get_canonical_headers(unittest.TestCase):
 
     def test_w_none(self):
         headers = None
-        expected = []
-        self.assertEqual(self._call_fut(headers), expected)
+        expected_canonical = []
+        expected_ordered = []
+        canonical, ordered = self._call_fut(headers)
+        self.assertEqual(canonical, expected_canonical)
+        self.assertEqual(ordered, expected_ordered)
 
     def test_w_dict(self):
         headers = {"foo": "Foo 1.2.3", "Bar": " baz,bam,qux   "}
-        expected = ["bar:baz,bam,qux", "foo:Foo 1.2.3"]
-        self.assertEqual(self._call_fut(headers), expected)
+        expected_canonical = ["bar:baz,bam,qux", "foo:Foo 1.2.3"]
+        expected_ordered = [tuple(item.split(":")) for item in expected_canonical]
+        canonical, ordered = self._call_fut(headers)
+        self.assertEqual(canonical, expected_canonical)
+        self.assertEqual(ordered, expected_ordered)
 
     def test_w_list_and_multiples(self):
         headers = [
@@ -317,13 +323,19 @@ class Test_get_canonical_headers(unittest.TestCase):
             ("Bar", "bam"),
             ("Bar", "qux   "),
         ]
-        expected = ["bar:baz,bam,qux", "foo:Foo 1.2.3"]
-        self.assertEqual(self._call_fut(headers), expected)
+        expected_canonical = ["bar:baz,bam,qux", "foo:Foo 1.2.3"]
+        expected_ordered = [tuple(item.split(":")) for item in expected_canonical]
+        canonical, ordered = self._call_fut(headers)
+        self.assertEqual(canonical, expected_canonical)
+        self.assertEqual(ordered, expected_ordered)
 
     def test_w_embedded_ws(self):
         headers = {"foo": "Foo\n1.2.3", "Bar": "   baz   bam   qux   "}
-        expected = ["bar:baz bam qux", "foo:Foo 1.2.3"]
-        self.assertEqual(self._call_fut(headers), expected)
+        expected_canonical = ["bar:baz bam qux", "foo:Foo 1.2.3"]
+        expected_ordered = [tuple(item.split(":")) for item in expected_canonical]
+        canonical, ordered = self._call_fut(headers)
+        self.assertEqual(canonical, expected_canonical)
+        self.assertEqual(ordered, expected_ordered)
 
 
 class Test_canonicalize(unittest.TestCase):
