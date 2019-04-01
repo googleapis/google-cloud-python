@@ -17,20 +17,24 @@
 """ Examples of listing assets in Cloud Security Command Center."""
 import os
 from datetime import datetime, timedelta
+import pytest
 
 
-# The numeric identifier for the organization.
-ORGANIZATION_ID = os.environ["GCLOUD_ORGANIZATION"]
+@pytest.fixture(scope="module")
+def organization_id():
+    """Get Organization ID from the environment variable """
+    return os.environ["GCLOUD_ORGANIZATION"]
 
 
-def test_list_all_assets():
+def test_list_all_assets(organization_id):
     """Demonstrate listing and printing all assets."""
-    from google.cloud import securitycenter_v1beta1 as securitycenter
-
     # [START demo_list_all_assets]
+    from google.cloud import securitycenter as securitycenter
+
     client = securitycenter.SecurityCenterClient()
-    # ORGANIZATION_ID is the numeric ID of the organization (e.g. 123213123121)
-    org_name = "organizations/{org_id}".format(org_id=ORGANIZATION_ID)
+    # organization_id is the numeric ID of the organization.
+    # organization_id=1234567777
+    org_name = "organizations/{org_id}".format(org_id=organization_id)
 
     # Call the API and print results.
     asset_iterator = client.list_assets(org_name)
@@ -40,15 +44,16 @@ def test_list_all_assets():
     assert i > 0
 
 
-def test_list_assets_with_filters():
+def test_list_assets_with_filters(organization_id):
     """Demonstrate listing assets with a filter."""
-    from google.cloud import securitycenter_v1beta1 as securitycenter
-
     # [START demo_list_assets_with_filter]
+    from google.cloud import securitycenter as securitycenter
+
     client = securitycenter.SecurityCenterClient()
 
-    # ORGANIZATION_ID is the numeric ID of the organization (e.g. 123213123121)
-    org_name = "organizations/{org_id}".format(org_id=ORGANIZATION_ID)
+    # organization_id is the numeric ID of the organization.
+    # organization_id=1234567777
+    org_name = "organizations/{org_id}".format(org_id=organization_id)
 
     project_filter = (
         "security_center_properties.resource_type="
@@ -62,17 +67,20 @@ def test_list_assets_with_filters():
     assert i > 0
 
 
-def test_list_assets_with_filters_and_read_time():
+def test_list_assets_with_filters_and_read_time(organization_id):
     """Demonstrate listing assets with a filter."""
+    # [START demo_list_assets_with_filter_and_time]
     from datetime import datetime, timedelta
-    from google.cloud import securitycenter_v1beta1 as securitycenter
+
     from google.protobuf.timestamp_pb2 import Timestamp
 
-    # [START demo_list_assets_with_filter_and_time]
+    from google.cloud import securitycenter as securitycenter
+
     client = securitycenter.SecurityCenterClient()
 
-    # ORGANIZATION_ID is the numeric ID of the organization (e.g. 123213123121)
-    org_name = "organizations/{org_id}".format(org_id=ORGANIZATION_ID)
+    # organization_id is the numeric ID of the organization.
+    # organization_id=1234567777
+    org_name = "organizations/{org_id}".format(org_id=organization_id)
 
     project_filter = (
         "security_center_properties.resource_type="
@@ -94,17 +102,19 @@ def test_list_assets_with_filters_and_read_time():
     assert i > 0
 
 
-def test_list_point_in_time_changes():
+def test_list_point_in_time_changes(organization_id):
     """Demonstrate listing assets along with their state changes."""
-    from google.cloud import securitycenter_v1beta1 as securitycenter
-    from google.protobuf.duration_pb2 import Duration
+    # [START demo_list_assets_changes]
     from datetime import timedelta
 
-    # [START demo_list_assets_changes]
+    from google.protobuf.duration_pb2 import Duration
+    from google.cloud import securitycenter as securitycenter
+
     client = securitycenter.SecurityCenterClient()
 
-    # ORGANIZATION_ID is the numeric ID of the organization (e.g. 123213123121)
-    org_name = "organizations/{org_id}".format(org_id=ORGANIZATION_ID)
+    # organization_id is the numeric ID of the organization.
+    # organization_id=1234567777
+    org_name = "organizations/{org_id}".format(org_id=organization_id)
     project_filter = (
         "security_center_properties.resource_type="
         + '"google.cloud.resourcemanager.Project"'
