@@ -23,6 +23,7 @@ from google.oauth2 import service_account
 import google.api_core.gapic_v1.client_info
 import google.api_core.gapic_v1.config
 import google.api_core.gapic_v1.method
+import google.api_core.gapic_v1.routing_header
 import google.api_core.grpc_helpers
 import google.api_core.operation
 import google.api_core.operations_v1
@@ -305,6 +306,19 @@ class DataLabelingServiceClient(object):
         request = data_labeling_service_pb2.CreateDatasetRequest(
             parent=parent, dataset=dataset
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["create_dataset"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -362,6 +376,19 @@ class DataLabelingServiceClient(object):
             )
 
         request = data_labeling_service_pb2.GetDatasetRequest(name=name)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["get_dataset"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -443,6 +470,19 @@ class DataLabelingServiceClient(object):
         request = data_labeling_service_pb2.ListDatasetsRequest(
             parent=parent, filter=filter_, page_size=page_size
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(
@@ -508,6 +548,19 @@ class DataLabelingServiceClient(object):
             )
 
         request = data_labeling_service_pb2.DeleteDatasetRequest(name=name)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         self._inner_api_calls["delete_dataset"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -588,6 +641,19 @@ class DataLabelingServiceClient(object):
         request = data_labeling_service_pb2.ImportDataRequest(
             name=name, input_config=input_config
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         operation = self._inner_api_calls["import_data"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -684,6 +750,19 @@ class DataLabelingServiceClient(object):
             output_config=output_config,
             filter=filter_,
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         operation = self._inner_api_calls["export_data"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -748,6 +827,19 @@ class DataLabelingServiceClient(object):
             )
 
         request = data_labeling_service_pb2.GetDataItemRequest(name=name)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["get_data_item"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -831,6 +923,19 @@ class DataLabelingServiceClient(object):
         request = data_labeling_service_pb2.ListDataItemsRequest(
             parent=parent, filter=filter_, page_size=page_size
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(
@@ -900,6 +1005,19 @@ class DataLabelingServiceClient(object):
             )
 
         request = data_labeling_service_pb2.GetAnnotatedDatasetRequest(name=name)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["get_annotated_dataset"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -982,6 +1100,19 @@ class DataLabelingServiceClient(object):
         request = data_labeling_service_pb2.ListAnnotatedDatasetsRequest(
             parent=parent, filter=filter_, page_size=page_size
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(
@@ -1119,6 +1250,19 @@ class DataLabelingServiceClient(object):
             polyline_config=polyline_config,
             segmentation_config=segmentation_config,
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         operation = self._inner_api_calls["label_image"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -1251,6 +1395,19 @@ class DataLabelingServiceClient(object):
             object_tracking_config=object_tracking_config,
             event_config=event_config,
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         operation = self._inner_api_calls["label_video"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -1365,6 +1522,19 @@ class DataLabelingServiceClient(object):
             text_classification_config=text_classification_config,
             text_entity_extraction_config=text_entity_extraction_config,
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         operation = self._inner_api_calls["label_text"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -1454,6 +1624,19 @@ class DataLabelingServiceClient(object):
         request = data_labeling_service_pb2.LabelAudioRequest(
             parent=parent, basic_config=basic_config, feature=feature
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         operation = self._inner_api_calls["label_audio"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -1522,6 +1705,19 @@ class DataLabelingServiceClient(object):
             )
 
         request = data_labeling_service_pb2.GetExampleRequest(name=name, filter=filter_)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["get_example"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -1605,6 +1801,19 @@ class DataLabelingServiceClient(object):
         request = data_labeling_service_pb2.ListExamplesRequest(
             parent=parent, filter=filter_, page_size=page_size
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(
@@ -1685,6 +1894,19 @@ class DataLabelingServiceClient(object):
         request = data_labeling_service_pb2.CreateAnnotationSpecSetRequest(
             parent=parent, annotation_spec_set=annotation_spec_set
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["create_annotation_spec_set"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -1742,6 +1964,19 @@ class DataLabelingServiceClient(object):
             )
 
         request = data_labeling_service_pb2.GetAnnotationSpecSetRequest(name=name)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["get_annotation_spec_set"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -1824,6 +2059,19 @@ class DataLabelingServiceClient(object):
         request = data_labeling_service_pb2.ListAnnotationSpecSetsRequest(
             parent=parent, filter=filter_, page_size=page_size
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(
@@ -1889,6 +2137,19 @@ class DataLabelingServiceClient(object):
             )
 
         request = data_labeling_service_pb2.DeleteAnnotationSpecSetRequest(name=name)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         self._inner_api_calls["delete_annotation_spec_set"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -1964,6 +2225,19 @@ class DataLabelingServiceClient(object):
         request = data_labeling_service_pb2.CreateInstructionRequest(
             parent=parent, instruction=instruction
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         operation = self._inner_api_calls["create_instruction"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -2027,6 +2301,19 @@ class DataLabelingServiceClient(object):
             )
 
         request = data_labeling_service_pb2.GetInstructionRequest(name=name)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["get_instruction"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -2108,6 +2395,19 @@ class DataLabelingServiceClient(object):
         request = data_labeling_service_pb2.ListInstructionsRequest(
             parent=parent, filter=filter_, page_size=page_size
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(
@@ -2173,6 +2473,19 @@ class DataLabelingServiceClient(object):
             )
 
         request = data_labeling_service_pb2.DeleteInstructionRequest(name=name)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         self._inner_api_calls["delete_instruction"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )

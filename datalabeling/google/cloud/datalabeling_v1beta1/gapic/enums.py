@@ -50,12 +50,16 @@ class AnnotationType(enum.IntEnum):
       ANNOTATION_TYPE_UNSPECIFIED (int)
       IMAGE_CLASSIFICATION_ANNOTATION (int): Classification annotations in an image.
       IMAGE_BOUNDING_BOX_ANNOTATION (int): Bounding box annotations in an image.
+      IMAGE_ORIENTED_BOUNDING_BOX_ANNOTATION (int): Oriented bounding box. The box does not have to be parallel to horizontal
+      line.
       IMAGE_BOUNDING_POLY_ANNOTATION (int): Bounding poly annotations in an image.
       IMAGE_POLYLINE_ANNOTATION (int): Polyline annotations in an image.
+      IMAGE_SEGMENTATION_ANNOTATION (int): Segmentation annotations in an image.
       VIDEO_SHOTS_CLASSIFICATION_ANNOTATION (int): Classification annotations in video shots.
       VIDEO_OBJECT_TRACKING_ANNOTATION (int): Video object tracking annotation.
       VIDEO_OBJECT_DETECTION_ANNOTATION (int): Video object detection annotation.
       VIDEO_EVENT_ANNOTATION (int): Video event annotation.
+      AUDIO_TRANSCRIPTION_ANNOTATION (int): Speech to text annotation.
       TEXT_CLASSIFICATION_ANNOTATION (int): Classification for text.
       TEXT_ENTITY_EXTRACTION_ANNOTATION (int): Entity extraction for text.
     """
@@ -63,12 +67,15 @@ class AnnotationType(enum.IntEnum):
     ANNOTATION_TYPE_UNSPECIFIED = 0
     IMAGE_CLASSIFICATION_ANNOTATION = 1
     IMAGE_BOUNDING_BOX_ANNOTATION = 2
+    IMAGE_ORIENTED_BOUNDING_BOX_ANNOTATION = 13
     IMAGE_BOUNDING_POLY_ANNOTATION = 10
     IMAGE_POLYLINE_ANNOTATION = 11
+    IMAGE_SEGMENTATION_ANNOTATION = 12
     VIDEO_SHOTS_CLASSIFICATION_ANNOTATION = 3
     VIDEO_OBJECT_TRACKING_ANNOTATION = 4
     VIDEO_OBJECT_DETECTION_ANNOTATION = 5
     VIDEO_EVENT_ANNOTATION = 6
+    AUDIO_TRANSCRIPTION_ANNOTATION = 7
     TEXT_CLASSIFICATION_ANNOTATION = 8
     TEXT_ENTITY_EXTRACTION_ANNOTATION = 9
 

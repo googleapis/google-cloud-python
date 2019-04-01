@@ -32,7 +32,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n%com.google.cloud.datalabeling.v1beta1P\001ZMgoogle.golang.org/genproto/googleapis/cloud/datalabeling/v1beta1;datalabeling"
     ),
     serialized_pb=_b(
-        '\n8google/cloud/datalabeling_v1beta1/proto/annotation.proto\x12!google.cloud.datalabeling.v1beta1\x1a\x41google/cloud/datalabeling_v1beta1/proto/annotation_spec_set.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1cgoogle/protobuf/struct.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1cgoogle/api/annotations.proto"\xe2\x02\n\nAnnotation\x12\x0c\n\x04name\x18\x01 \x01(\t\x12N\n\x11\x61nnotation_source\x18\x02 \x01(\x0e\x32\x33.google.cloud.datalabeling.v1beta1.AnnotationSource\x12L\n\x10\x61nnotation_value\x18\x03 \x01(\x0b\x32\x32.google.cloud.datalabeling.v1beta1.AnnotationValue\x12R\n\x13\x61nnotation_metadata\x18\x04 \x01(\x0b\x32\x35.google.cloud.datalabeling.v1beta1.AnnotationMetadata\x12T\n\x14\x61nnotation_sentiment\x18\x06 \x01(\x0e\x32\x36.google.cloud.datalabeling.v1beta1.AnnotationSentiment"\xf8\x05\n\x0f\x41nnotationValue\x12k\n\x1fimage_classification_annotation\x18\x01 \x01(\x0b\x32@.google.cloud.datalabeling.v1beta1.ImageClassificationAnnotationH\x00\x12h\n\x1eimage_bounding_poly_annotation\x18\x02 \x01(\x0b\x32>.google.cloud.datalabeling.v1beta1.ImageBoundingPolyAnnotationH\x00\x12_\n\x19image_polyline_annotation\x18\x08 \x01(\x0b\x32:.google.cloud.datalabeling.v1beta1.ImagePolylineAnnotationH\x00\x12i\n\x1etext_classification_annotation\x18\x03 \x01(\x0b\x32?.google.cloud.datalabeling.v1beta1.TextClassificationAnnotationH\x00\x12k\n\x1fvideo_classification_annotation\x18\x04 \x01(\x0b\x32@.google.cloud.datalabeling.v1beta1.VideoClassificationAnnotationH\x00\x12l\n video_object_tracking_annotation\x18\x05 \x01(\x0b\x32@.google.cloud.datalabeling.v1beta1.VideoObjectTrackingAnnotationH\x00\x12Y\n\x16video_event_annotation\x18\x06 \x01(\x0b\x32\x37.google.cloud.datalabeling.v1beta1.VideoEventAnnotationH\x00\x42\x0c\n\nvalue_type"k\n\x1dImageClassificationAnnotation\x12J\n\x0f\x61nnotation_spec\x18\x01 \x01(\x0b\x32\x31.google.cloud.datalabeling.v1beta1.AnnotationSpec"\x1e\n\x06Vertex\x12\t\n\x01x\x18\x01 \x01(\x05\x12\t\n\x01y\x18\x02 \x01(\x05"(\n\x10NormalizedVertex\x12\t\n\x01x\x18\x01 \x01(\x02\x12\t\n\x01y\x18\x02 \x01(\x02"K\n\x0c\x42oundingPoly\x12;\n\x08vertices\x18\x01 \x03(\x0b\x32).google.cloud.datalabeling.v1beta1.Vertex"j\n\x16NormalizedBoundingPoly\x12P\n\x13normalized_vertices\x18\x01 \x03(\x0b\x32\x33.google.cloud.datalabeling.v1beta1.NormalizedVertex"\xa2\x02\n\x1bImageBoundingPolyAnnotation\x12H\n\rbounding_poly\x18\x02 \x01(\x0b\x32/.google.cloud.datalabeling.v1beta1.BoundingPolyH\x00\x12]\n\x18normalized_bounding_poly\x18\x03 \x01(\x0b\x32\x39.google.cloud.datalabeling.v1beta1.NormalizedBoundingPolyH\x00\x12J\n\x0f\x61nnotation_spec\x18\x01 \x01(\x0b\x32\x31.google.cloud.datalabeling.v1beta1.AnnotationSpecB\x0e\n\x0c\x62ounded_area"G\n\x08Polyline\x12;\n\x08vertices\x18\x01 \x03(\x0b\x32).google.cloud.datalabeling.v1beta1.Vertex"f\n\x12NormalizedPolyline\x12P\n\x13normalized_vertices\x18\x01 \x03(\x0b\x32\x33.google.cloud.datalabeling.v1beta1.NormalizedVertex"\x84\x02\n\x17ImagePolylineAnnotation\x12?\n\x08polyline\x18\x02 \x01(\x0b\x32+.google.cloud.datalabeling.v1beta1.PolylineH\x00\x12T\n\x13normalized_polyline\x18\x03 \x01(\x0b\x32\x35.google.cloud.datalabeling.v1beta1.NormalizedPolylineH\x00\x12J\n\x0f\x61nnotation_spec\x18\x01 \x01(\x0b\x32\x31.google.cloud.datalabeling.v1beta1.AnnotationSpecB\x06\n\x04poly"j\n\x1cTextClassificationAnnotation\x12J\n\x0f\x61nnotation_spec\x18\x01 \x01(\x0b\x32\x31.google.cloud.datalabeling.v1beta1.AnnotationSpec"w\n\x0bTimeSegment\x12\x34\n\x11start_time_offset\x18\x01 \x01(\x0b\x32\x19.google.protobuf.Duration\x12\x32\n\x0f\x65nd_time_offset\x18\x02 \x01(\x0b\x32\x19.google.protobuf.Duration"\xb1\x01\n\x1dVideoClassificationAnnotation\x12\x44\n\x0ctime_segment\x18\x01 \x01(\x0b\x32..google.cloud.datalabeling.v1beta1.TimeSegment\x12J\n\x0f\x61nnotation_spec\x18\x02 \x01(\x0b\x32\x31.google.cloud.datalabeling.v1beta1.AnnotationSpec"\xfe\x01\n\x13ObjectTrackingFrame\x12H\n\rbounding_poly\x18\x01 \x01(\x0b\x32/.google.cloud.datalabeling.v1beta1.BoundingPolyH\x00\x12]\n\x18normalized_bounding_poly\x18\x02 \x01(\x0b\x32\x39.google.cloud.datalabeling.v1beta1.NormalizedBoundingPolyH\x00\x12.\n\x0btime_offset\x18\x03 \x01(\x0b\x32\x19.google.protobuf.DurationB\x0e\n\x0c\x62ounded_area"\x89\x02\n\x1dVideoObjectTrackingAnnotation\x12J\n\x0f\x61nnotation_spec\x18\x01 \x01(\x0b\x32\x31.google.cloud.datalabeling.v1beta1.AnnotationSpec\x12\x44\n\x0ctime_segment\x18\x02 \x01(\x0b\x32..google.cloud.datalabeling.v1beta1.TimeSegment\x12V\n\x16object_tracking_frames\x18\x03 \x03(\x0b\x32\x36.google.cloud.datalabeling.v1beta1.ObjectTrackingFrame"\xa8\x01\n\x14VideoEventAnnotation\x12J\n\x0f\x61nnotation_spec\x18\x01 \x01(\x0b\x32\x31.google.cloud.datalabeling.v1beta1.AnnotationSpec\x12\x44\n\x0ctime_segment\x18\x02 \x01(\x0b\x32..google.cloud.datalabeling.v1beta1.TimeSegment"d\n\x12\x41nnotationMetadata\x12N\n\x11operator_metadata\x18\x02 \x01(\x0b\x32\x33.google.cloud.datalabeling.v1beta1.OperatorMetadata"]\n\x10OperatorMetadata\x12\r\n\x05score\x18\x01 \x01(\x02\x12\x13\n\x0btotal_votes\x18\x02 \x01(\x05\x12\x13\n\x0blabel_votes\x18\x03 \x01(\x05\x12\x10\n\x08\x63omments\x18\x04 \x03(\t*C\n\x10\x41nnotationSource\x12!\n\x1d\x41NNOTATION_SOURCE_UNSPECIFIED\x10\x00\x12\x0c\n\x08OPERATOR\x10\x03*W\n\x13\x41nnotationSentiment\x12$\n ANNOTATION_SENTIMENT_UNSPECIFIED\x10\x00\x12\x0c\n\x08NEGATIVE\x10\x01\x12\x0c\n\x08POSITIVE\x10\x02*\x9b\x03\n\x0e\x41nnotationType\x12\x1f\n\x1b\x41NNOTATION_TYPE_UNSPECIFIED\x10\x00\x12#\n\x1fIMAGE_CLASSIFICATION_ANNOTATION\x10\x01\x12!\n\x1dIMAGE_BOUNDING_BOX_ANNOTATION\x10\x02\x12"\n\x1eIMAGE_BOUNDING_POLY_ANNOTATION\x10\n\x12\x1d\n\x19IMAGE_POLYLINE_ANNOTATION\x10\x0b\x12)\n%VIDEO_SHOTS_CLASSIFICATION_ANNOTATION\x10\x03\x12$\n VIDEO_OBJECT_TRACKING_ANNOTATION\x10\x04\x12%\n!VIDEO_OBJECT_DETECTION_ANNOTATION\x10\x05\x12\x1a\n\x16VIDEO_EVENT_ANNOTATION\x10\x06\x12"\n\x1eTEXT_CLASSIFICATION_ANNOTATION\x10\x08\x12%\n!TEXT_ENTITY_EXTRACTION_ANNOTATION\x10\tBx\n%com.google.cloud.datalabeling.v1beta1P\x01ZMgoogle.golang.org/genproto/googleapis/cloud/datalabeling/v1beta1;datalabelingb\x06proto3'
+        '\n8google/cloud/datalabeling_v1beta1/proto/annotation.proto\x12!google.cloud.datalabeling.v1beta1\x1a\x41google/cloud/datalabeling_v1beta1/proto/annotation_spec_set.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1cgoogle/protobuf/struct.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1cgoogle/api/annotations.proto"\xe2\x02\n\nAnnotation\x12\x0c\n\x04name\x18\x01 \x01(\t\x12N\n\x11\x61nnotation_source\x18\x02 \x01(\x0e\x32\x33.google.cloud.datalabeling.v1beta1.AnnotationSource\x12L\n\x10\x61nnotation_value\x18\x03 \x01(\x0b\x32\x32.google.cloud.datalabeling.v1beta1.AnnotationValue\x12R\n\x13\x61nnotation_metadata\x18\x04 \x01(\x0b\x32\x35.google.cloud.datalabeling.v1beta1.AnnotationMetadata\x12T\n\x14\x61nnotation_sentiment\x18\x06 \x01(\x0e\x32\x36.google.cloud.datalabeling.v1beta1.AnnotationSentiment"\xc8\x07\n\x0f\x41nnotationValue\x12k\n\x1fimage_classification_annotation\x18\x01 \x01(\x0b\x32@.google.cloud.datalabeling.v1beta1.ImageClassificationAnnotationH\x00\x12h\n\x1eimage_bounding_poly_annotation\x18\x02 \x01(\x0b\x32>.google.cloud.datalabeling.v1beta1.ImageBoundingPolyAnnotationH\x00\x12_\n\x19image_polyline_annotation\x18\x08 \x01(\x0b\x32:.google.cloud.datalabeling.v1beta1.ImagePolylineAnnotationH\x00\x12g\n\x1dimage_segmentation_annotation\x18\t \x01(\x0b\x32>.google.cloud.datalabeling.v1beta1.ImageSegmentationAnnotationH\x00\x12i\n\x1etext_classification_annotation\x18\x03 \x01(\x0b\x32?.google.cloud.datalabeling.v1beta1.TextClassificationAnnotationH\x00\x12k\n\x1fvideo_classification_annotation\x18\x04 \x01(\x0b\x32@.google.cloud.datalabeling.v1beta1.VideoClassificationAnnotationH\x00\x12l\n video_object_tracking_annotation\x18\x05 \x01(\x0b\x32@.google.cloud.datalabeling.v1beta1.VideoObjectTrackingAnnotationH\x00\x12Y\n\x16video_event_annotation\x18\x06 \x01(\x0b\x32\x37.google.cloud.datalabeling.v1beta1.VideoEventAnnotationH\x00\x12\x65\n\x1c\x61udio_recognition_annotation\x18\x07 \x01(\x0b\x32=.google.cloud.datalabeling.v1beta1.AudioRecognitionAnnotationH\x00\x42\x0c\n\nvalue_type"k\n\x1dImageClassificationAnnotation\x12J\n\x0f\x61nnotation_spec\x18\x01 \x01(\x0b\x32\x31.google.cloud.datalabeling.v1beta1.AnnotationSpec"\x1e\n\x06Vertex\x12\t\n\x01x\x18\x01 \x01(\x05\x12\t\n\x01y\x18\x02 \x01(\x05"(\n\x10NormalizedVertex\x12\t\n\x01x\x18\x01 \x01(\x02\x12\t\n\x01y\x18\x02 \x01(\x02"K\n\x0c\x42oundingPoly\x12;\n\x08vertices\x18\x01 \x03(\x0b\x32).google.cloud.datalabeling.v1beta1.Vertex"j\n\x16NormalizedBoundingPoly\x12P\n\x13normalized_vertices\x18\x01 \x03(\x0b\x32\x33.google.cloud.datalabeling.v1beta1.NormalizedVertex"\xa2\x02\n\x1bImageBoundingPolyAnnotation\x12H\n\rbounding_poly\x18\x02 \x01(\x0b\x32/.google.cloud.datalabeling.v1beta1.BoundingPolyH\x00\x12]\n\x18normalized_bounding_poly\x18\x03 \x01(\x0b\x32\x39.google.cloud.datalabeling.v1beta1.NormalizedBoundingPolyH\x00\x12J\n\x0f\x61nnotation_spec\x18\x01 \x01(\x0b\x32\x31.google.cloud.datalabeling.v1beta1.AnnotationSpecB\x0e\n\x0c\x62ounded_area"G\n\x08Polyline\x12;\n\x08vertices\x18\x01 \x03(\x0b\x32).google.cloud.datalabeling.v1beta1.Vertex"f\n\x12NormalizedPolyline\x12P\n\x13normalized_vertices\x18\x01 \x03(\x0b\x32\x33.google.cloud.datalabeling.v1beta1.NormalizedVertex"\x84\x02\n\x17ImagePolylineAnnotation\x12?\n\x08polyline\x18\x02 \x01(\x0b\x32+.google.cloud.datalabeling.v1beta1.PolylineH\x00\x12T\n\x13normalized_polyline\x18\x03 \x01(\x0b\x32\x35.google.cloud.datalabeling.v1beta1.NormalizedPolylineH\x00\x12J\n\x0f\x61nnotation_spec\x18\x01 \x01(\x0b\x32\x31.google.cloud.datalabeling.v1beta1.AnnotationSpecB\x06\n\x04poly"\xa2\x02\n\x1bImageSegmentationAnnotation\x12o\n\x11\x61nnotation_colors\x18\x01 \x03(\x0b\x32T.google.cloud.datalabeling.v1beta1.ImageSegmentationAnnotation.AnnotationColorsEntry\x12\x11\n\tmime_type\x18\x02 \x01(\t\x12\x13\n\x0bimage_bytes\x18\x03 \x01(\x0c\x1aj\n\x15\x41nnotationColorsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12@\n\x05value\x18\x02 \x01(\x0b\x32\x31.google.cloud.datalabeling.v1beta1.AnnotationSpec:\x02\x38\x01"j\n\x1cTextClassificationAnnotation\x12J\n\x0f\x61nnotation_spec\x18\x01 \x01(\x0b\x32\x31.google.cloud.datalabeling.v1beta1.AnnotationSpec"w\n\x0bTimeSegment\x12\x34\n\x11start_time_offset\x18\x01 \x01(\x0b\x32\x19.google.protobuf.Duration\x12\x32\n\x0f\x65nd_time_offset\x18\x02 \x01(\x0b\x32\x19.google.protobuf.Duration"\xb1\x01\n\x1dVideoClassificationAnnotation\x12\x44\n\x0ctime_segment\x18\x01 \x01(\x0b\x32..google.cloud.datalabeling.v1beta1.TimeSegment\x12J\n\x0f\x61nnotation_spec\x18\x02 \x01(\x0b\x32\x31.google.cloud.datalabeling.v1beta1.AnnotationSpec"\xfe\x01\n\x13ObjectTrackingFrame\x12H\n\rbounding_poly\x18\x01 \x01(\x0b\x32/.google.cloud.datalabeling.v1beta1.BoundingPolyH\x00\x12]\n\x18normalized_bounding_poly\x18\x02 \x01(\x0b\x32\x39.google.cloud.datalabeling.v1beta1.NormalizedBoundingPolyH\x00\x12.\n\x0btime_offset\x18\x03 \x01(\x0b\x32\x19.google.protobuf.DurationB\x0e\n\x0c\x62ounded_area"\x89\x02\n\x1dVideoObjectTrackingAnnotation\x12J\n\x0f\x61nnotation_spec\x18\x01 \x01(\x0b\x32\x31.google.cloud.datalabeling.v1beta1.AnnotationSpec\x12\x44\n\x0ctime_segment\x18\x02 \x01(\x0b\x32..google.cloud.datalabeling.v1beta1.TimeSegment\x12V\n\x16object_tracking_frames\x18\x03 \x03(\x0b\x32\x36.google.cloud.datalabeling.v1beta1.ObjectTrackingFrame"\xa8\x01\n\x14VideoEventAnnotation\x12J\n\x0f\x61nnotation_spec\x18\x01 \x01(\x0b\x32\x31.google.cloud.datalabeling.v1beta1.AnnotationSpec\x12\x44\n\x0ctime_segment\x18\x02 \x01(\x0b\x32..google.cloud.datalabeling.v1beta1.TimeSegment"\x90\x01\n\x1a\x41udioRecognitionAnnotation\x12\x12\n\ntranscript\x18\x01 \x01(\t\x12/\n\x0cstart_offset\x18\x02 \x01(\x0b\x32\x19.google.protobuf.Duration\x12-\n\nend_offset\x18\x03 \x01(\x0b\x32\x19.google.protobuf.Duration"d\n\x12\x41nnotationMetadata\x12N\n\x11operator_metadata\x18\x02 \x01(\x0b\x32\x33.google.cloud.datalabeling.v1beta1.OperatorMetadata"]\n\x10OperatorMetadata\x12\r\n\x05score\x18\x01 \x01(\x02\x12\x13\n\x0btotal_votes\x18\x02 \x01(\x05\x12\x13\n\x0blabel_votes\x18\x03 \x01(\x05\x12\x10\n\x08\x63omments\x18\x04 \x03(\t*C\n\x10\x41nnotationSource\x12!\n\x1d\x41NNOTATION_SOURCE_UNSPECIFIED\x10\x00\x12\x0c\n\x08OPERATOR\x10\x03*W\n\x13\x41nnotationSentiment\x12$\n ANNOTATION_SENTIMENT_UNSPECIFIED\x10\x00\x12\x0c\n\x08NEGATIVE\x10\x01\x12\x0c\n\x08POSITIVE\x10\x02*\x8e\x04\n\x0e\x41nnotationType\x12\x1f\n\x1b\x41NNOTATION_TYPE_UNSPECIFIED\x10\x00\x12#\n\x1fIMAGE_CLASSIFICATION_ANNOTATION\x10\x01\x12!\n\x1dIMAGE_BOUNDING_BOX_ANNOTATION\x10\x02\x12*\n&IMAGE_ORIENTED_BOUNDING_BOX_ANNOTATION\x10\r\x12"\n\x1eIMAGE_BOUNDING_POLY_ANNOTATION\x10\n\x12\x1d\n\x19IMAGE_POLYLINE_ANNOTATION\x10\x0b\x12!\n\x1dIMAGE_SEGMENTATION_ANNOTATION\x10\x0c\x12)\n%VIDEO_SHOTS_CLASSIFICATION_ANNOTATION\x10\x03\x12$\n VIDEO_OBJECT_TRACKING_ANNOTATION\x10\x04\x12%\n!VIDEO_OBJECT_DETECTION_ANNOTATION\x10\x05\x12\x1a\n\x16VIDEO_EVENT_ANNOTATION\x10\x06\x12"\n\x1e\x41UDIO_TRANSCRIPTION_ANNOTATION\x10\x07\x12"\n\x1eTEXT_CLASSIFICATION_ANNOTATION\x10\x08\x12%\n!TEXT_ENTITY_EXTRACTION_ANNOTATION\x10\tBx\n%com.google.cloud.datalabeling.v1beta1P\x01ZMgoogle.golang.org/genproto/googleapis/cloud/datalabeling/v1beta1;datalabelingb\x06proto3'
     ),
     dependencies=[
         google_dot_cloud_dot_datalabeling__v1beta1_dot_proto_dot_annotation__spec__set__pb2.DESCRIPTOR,
@@ -62,8 +62,8 @@ _ANNOTATIONSOURCE = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=3810,
-    serialized_end=3877,
+    serialized_start=4458,
+    serialized_end=4525,
 )
 _sym_db.RegisterEnumDescriptor(_ANNOTATIONSOURCE)
 
@@ -90,8 +90,8 @@ _ANNOTATIONSENTIMENT = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=3879,
-    serialized_end=3966,
+    serialized_start=4527,
+    serialized_end=4614,
 )
 _sym_db.RegisterEnumDescriptor(_ANNOTATIONSENTIMENT)
 
@@ -124,57 +124,78 @@ _ANNOTATIONTYPE = _descriptor.EnumDescriptor(
             type=None,
         ),
         _descriptor.EnumValueDescriptor(
-            name="IMAGE_BOUNDING_POLY_ANNOTATION",
+            name="IMAGE_ORIENTED_BOUNDING_BOX_ANNOTATION",
             index=3,
+            number=13,
+            serialized_options=None,
+            type=None,
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="IMAGE_BOUNDING_POLY_ANNOTATION",
+            index=4,
             number=10,
             serialized_options=None,
             type=None,
         ),
         _descriptor.EnumValueDescriptor(
             name="IMAGE_POLYLINE_ANNOTATION",
-            index=4,
+            index=5,
             number=11,
             serialized_options=None,
             type=None,
         ),
         _descriptor.EnumValueDescriptor(
+            name="IMAGE_SEGMENTATION_ANNOTATION",
+            index=6,
+            number=12,
+            serialized_options=None,
+            type=None,
+        ),
+        _descriptor.EnumValueDescriptor(
             name="VIDEO_SHOTS_CLASSIFICATION_ANNOTATION",
-            index=5,
+            index=7,
             number=3,
             serialized_options=None,
             type=None,
         ),
         _descriptor.EnumValueDescriptor(
             name="VIDEO_OBJECT_TRACKING_ANNOTATION",
-            index=6,
+            index=8,
             number=4,
             serialized_options=None,
             type=None,
         ),
         _descriptor.EnumValueDescriptor(
             name="VIDEO_OBJECT_DETECTION_ANNOTATION",
-            index=7,
+            index=9,
             number=5,
             serialized_options=None,
             type=None,
         ),
         _descriptor.EnumValueDescriptor(
             name="VIDEO_EVENT_ANNOTATION",
-            index=8,
+            index=10,
             number=6,
             serialized_options=None,
             type=None,
         ),
         _descriptor.EnumValueDescriptor(
+            name="AUDIO_TRANSCRIPTION_ANNOTATION",
+            index=11,
+            number=7,
+            serialized_options=None,
+            type=None,
+        ),
+        _descriptor.EnumValueDescriptor(
             name="TEXT_CLASSIFICATION_ANNOTATION",
-            index=9,
+            index=12,
             number=8,
             serialized_options=None,
             type=None,
         ),
         _descriptor.EnumValueDescriptor(
             name="TEXT_ENTITY_EXTRACTION_ANNOTATION",
-            index=10,
+            index=13,
             number=9,
             serialized_options=None,
             type=None,
@@ -182,8 +203,8 @@ _ANNOTATIONTYPE = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=3969,
-    serialized_end=4380,
+    serialized_start=4617,
+    serialized_end=5143,
 )
 _sym_db.RegisterEnumDescriptor(_ANNOTATIONTYPE)
 
@@ -196,12 +217,15 @@ POSITIVE = 2
 ANNOTATION_TYPE_UNSPECIFIED = 0
 IMAGE_CLASSIFICATION_ANNOTATION = 1
 IMAGE_BOUNDING_BOX_ANNOTATION = 2
+IMAGE_ORIENTED_BOUNDING_BOX_ANNOTATION = 13
 IMAGE_BOUNDING_POLY_ANNOTATION = 10
 IMAGE_POLYLINE_ANNOTATION = 11
+IMAGE_SEGMENTATION_ANNOTATION = 12
 VIDEO_SHOTS_CLASSIFICATION_ANNOTATION = 3
 VIDEO_OBJECT_TRACKING_ANNOTATION = 4
 VIDEO_OBJECT_DETECTION_ANNOTATION = 5
 VIDEO_EVENT_ANNOTATION = 6
+AUDIO_TRANSCRIPTION_ANNOTATION = 7
 TEXT_CLASSIFICATION_ANNOTATION = 8
 TEXT_ENTITY_EXTRACTION_ANNOTATION = 9
 
@@ -379,9 +403,27 @@ _ANNOTATIONVALUE = _descriptor.Descriptor(
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
+            name="image_segmentation_annotation",
+            full_name="google.cloud.datalabeling.v1beta1.AnnotationValue.image_segmentation_annotation",
+            index=3,
+            number=9,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
             name="text_classification_annotation",
             full_name="google.cloud.datalabeling.v1beta1.AnnotationValue.text_classification_annotation",
-            index=3,
+            index=4,
             number=3,
             type=11,
             cpp_type=10,
@@ -399,7 +441,7 @@ _ANNOTATIONVALUE = _descriptor.Descriptor(
         _descriptor.FieldDescriptor(
             name="video_classification_annotation",
             full_name="google.cloud.datalabeling.v1beta1.AnnotationValue.video_classification_annotation",
-            index=4,
+            index=5,
             number=4,
             type=11,
             cpp_type=10,
@@ -417,7 +459,7 @@ _ANNOTATIONVALUE = _descriptor.Descriptor(
         _descriptor.FieldDescriptor(
             name="video_object_tracking_annotation",
             full_name="google.cloud.datalabeling.v1beta1.AnnotationValue.video_object_tracking_annotation",
-            index=5,
+            index=6,
             number=5,
             type=11,
             cpp_type=10,
@@ -435,8 +477,26 @@ _ANNOTATIONVALUE = _descriptor.Descriptor(
         _descriptor.FieldDescriptor(
             name="video_event_annotation",
             full_name="google.cloud.datalabeling.v1beta1.AnnotationValue.video_event_annotation",
-            index=6,
+            index=7,
             number=6,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="audio_recognition_annotation",
+            full_name="google.cloud.datalabeling.v1beta1.AnnotationValue.audio_recognition_annotation",
+            index=8,
+            number=7,
             type=11,
             cpp_type=10,
             label=1,
@@ -468,7 +528,7 @@ _ANNOTATIONVALUE = _descriptor.Descriptor(
         )
     ],
     serialized_start=645,
-    serialized_end=1405,
+    serialized_end=1613,
 )
 
 
@@ -506,8 +566,8 @@ _IMAGECLASSIFICATIONANNOTATION = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1407,
-    serialized_end=1514,
+    serialized_start=1615,
+    serialized_end=1722,
 )
 
 
@@ -563,8 +623,8 @@ _VERTEX = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1516,
-    serialized_end=1546,
+    serialized_start=1724,
+    serialized_end=1754,
 )
 
 
@@ -620,8 +680,8 @@ _NORMALIZEDVERTEX = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1548,
-    serialized_end=1588,
+    serialized_start=1756,
+    serialized_end=1796,
 )
 
 
@@ -659,8 +719,8 @@ _BOUNDINGPOLY = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1590,
-    serialized_end=1665,
+    serialized_start=1798,
+    serialized_end=1873,
 )
 
 
@@ -698,8 +758,8 @@ _NORMALIZEDBOUNDINGPOLY = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1667,
-    serialized_end=1773,
+    serialized_start=1875,
+    serialized_end=1981,
 )
 
 
@@ -781,8 +841,8 @@ _IMAGEBOUNDINGPOLYANNOTATION = _descriptor.Descriptor(
             fields=[],
         )
     ],
-    serialized_start=1776,
-    serialized_end=2066,
+    serialized_start=1984,
+    serialized_end=2274,
 )
 
 
@@ -820,8 +880,8 @@ _POLYLINE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2068,
-    serialized_end=2139,
+    serialized_start=2276,
+    serialized_end=2347,
 )
 
 
@@ -859,8 +919,8 @@ _NORMALIZEDPOLYLINE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2141,
-    serialized_end=2243,
+    serialized_start=2349,
+    serialized_end=2451,
 )
 
 
@@ -942,8 +1002,139 @@ _IMAGEPOLYLINEANNOTATION = _descriptor.Descriptor(
             fields=[],
         )
     ],
-    serialized_start=2246,
-    serialized_end=2506,
+    serialized_start=2454,
+    serialized_end=2714,
+)
+
+
+_IMAGESEGMENTATIONANNOTATION_ANNOTATIONCOLORSENTRY = _descriptor.Descriptor(
+    name="AnnotationColorsEntry",
+    full_name="google.cloud.datalabeling.v1beta1.ImageSegmentationAnnotation.AnnotationColorsEntry",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="key",
+            full_name="google.cloud.datalabeling.v1beta1.ImageSegmentationAnnotation.AnnotationColorsEntry.key",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="value",
+            full_name="google.cloud.datalabeling.v1beta1.ImageSegmentationAnnotation.AnnotationColorsEntry.value",
+            index=1,
+            number=2,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=_b("8\001"),
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=2901,
+    serialized_end=3007,
+)
+
+_IMAGESEGMENTATIONANNOTATION = _descriptor.Descriptor(
+    name="ImageSegmentationAnnotation",
+    full_name="google.cloud.datalabeling.v1beta1.ImageSegmentationAnnotation",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="annotation_colors",
+            full_name="google.cloud.datalabeling.v1beta1.ImageSegmentationAnnotation.annotation_colors",
+            index=0,
+            number=1,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="mime_type",
+            full_name="google.cloud.datalabeling.v1beta1.ImageSegmentationAnnotation.mime_type",
+            index=1,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="image_bytes",
+            full_name="google.cloud.datalabeling.v1beta1.ImageSegmentationAnnotation.image_bytes",
+            index=2,
+            number=3,
+            type=12,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b(""),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[_IMAGESEGMENTATIONANNOTATION_ANNOTATIONCOLORSENTRY],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=2717,
+    serialized_end=3007,
 )
 
 
@@ -981,8 +1172,8 @@ _TEXTCLASSIFICATIONANNOTATION = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2508,
-    serialized_end=2614,
+    serialized_start=3009,
+    serialized_end=3115,
 )
 
 
@@ -1038,8 +1229,8 @@ _TIMESEGMENT = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2616,
-    serialized_end=2735,
+    serialized_start=3117,
+    serialized_end=3236,
 )
 
 
@@ -1095,8 +1286,8 @@ _VIDEOCLASSIFICATIONANNOTATION = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2738,
-    serialized_end=2915,
+    serialized_start=3239,
+    serialized_end=3416,
 )
 
 
@@ -1178,8 +1369,8 @@ _OBJECTTRACKINGFRAME = _descriptor.Descriptor(
             fields=[],
         )
     ],
-    serialized_start=2918,
-    serialized_end=3172,
+    serialized_start=3419,
+    serialized_end=3673,
 )
 
 
@@ -1253,8 +1444,8 @@ _VIDEOOBJECTTRACKINGANNOTATION = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=3175,
-    serialized_end=3440,
+    serialized_start=3676,
+    serialized_end=3941,
 )
 
 
@@ -1310,8 +1501,83 @@ _VIDEOEVENTANNOTATION = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=3443,
-    serialized_end=3611,
+    serialized_start=3944,
+    serialized_end=4112,
+)
+
+
+_AUDIORECOGNITIONANNOTATION = _descriptor.Descriptor(
+    name="AudioRecognitionAnnotation",
+    full_name="google.cloud.datalabeling.v1beta1.AudioRecognitionAnnotation",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="transcript",
+            full_name="google.cloud.datalabeling.v1beta1.AudioRecognitionAnnotation.transcript",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="start_offset",
+            full_name="google.cloud.datalabeling.v1beta1.AudioRecognitionAnnotation.start_offset",
+            index=1,
+            number=2,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="end_offset",
+            full_name="google.cloud.datalabeling.v1beta1.AudioRecognitionAnnotation.end_offset",
+            index=2,
+            number=3,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=4115,
+    serialized_end=4259,
 )
 
 
@@ -1349,8 +1615,8 @@ _ANNOTATIONMETADATA = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=3613,
-    serialized_end=3713,
+    serialized_start=4261,
+    serialized_end=4361,
 )
 
 
@@ -1442,8 +1708,8 @@ _OPERATORMETADATA = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=3715,
-    serialized_end=3808,
+    serialized_start=4363,
+    serialized_end=4456,
 )
 
 _ANNOTATION.fields_by_name["annotation_source"].enum_type = _ANNOTATIONSOURCE
@@ -1460,6 +1726,9 @@ _ANNOTATIONVALUE.fields_by_name[
     "image_polyline_annotation"
 ].message_type = _IMAGEPOLYLINEANNOTATION
 _ANNOTATIONVALUE.fields_by_name[
+    "image_segmentation_annotation"
+].message_type = _IMAGESEGMENTATIONANNOTATION
+_ANNOTATIONVALUE.fields_by_name[
     "text_classification_annotation"
 ].message_type = _TEXTCLASSIFICATIONANNOTATION
 _ANNOTATIONVALUE.fields_by_name[
@@ -1471,6 +1740,9 @@ _ANNOTATIONVALUE.fields_by_name[
 _ANNOTATIONVALUE.fields_by_name[
     "video_event_annotation"
 ].message_type = _VIDEOEVENTANNOTATION
+_ANNOTATIONVALUE.fields_by_name[
+    "audio_recognition_annotation"
+].message_type = _AUDIORECOGNITIONANNOTATION
 _ANNOTATIONVALUE.oneofs_by_name["value_type"].fields.append(
     _ANNOTATIONVALUE.fields_by_name["image_classification_annotation"]
 )
@@ -1488,6 +1760,12 @@ _ANNOTATIONVALUE.oneofs_by_name["value_type"].fields.append(
 )
 _ANNOTATIONVALUE.fields_by_name[
     "image_polyline_annotation"
+].containing_oneof = _ANNOTATIONVALUE.oneofs_by_name["value_type"]
+_ANNOTATIONVALUE.oneofs_by_name["value_type"].fields.append(
+    _ANNOTATIONVALUE.fields_by_name["image_segmentation_annotation"]
+)
+_ANNOTATIONVALUE.fields_by_name[
+    "image_segmentation_annotation"
 ].containing_oneof = _ANNOTATIONVALUE.oneofs_by_name["value_type"]
 _ANNOTATIONVALUE.oneofs_by_name["value_type"].fields.append(
     _ANNOTATIONVALUE.fields_by_name["text_classification_annotation"]
@@ -1512,6 +1790,12 @@ _ANNOTATIONVALUE.oneofs_by_name["value_type"].fields.append(
 )
 _ANNOTATIONVALUE.fields_by_name[
     "video_event_annotation"
+].containing_oneof = _ANNOTATIONVALUE.oneofs_by_name["value_type"]
+_ANNOTATIONVALUE.oneofs_by_name["value_type"].fields.append(
+    _ANNOTATIONVALUE.fields_by_name["audio_recognition_annotation"]
+)
+_ANNOTATIONVALUE.fields_by_name[
+    "audio_recognition_annotation"
 ].containing_oneof = _ANNOTATIONVALUE.oneofs_by_name["value_type"]
 _IMAGECLASSIFICATIONANNOTATION.fields_by_name[
     "annotation_spec"
@@ -1570,6 +1854,17 @@ _IMAGEPOLYLINEANNOTATION.oneofs_by_name["poly"].fields.append(
 _IMAGEPOLYLINEANNOTATION.fields_by_name[
     "normalized_polyline"
 ].containing_oneof = _IMAGEPOLYLINEANNOTATION.oneofs_by_name["poly"]
+_IMAGESEGMENTATIONANNOTATION_ANNOTATIONCOLORSENTRY.fields_by_name[
+    "value"
+].message_type = (
+    google_dot_cloud_dot_datalabeling__v1beta1_dot_proto_dot_annotation__spec__set__pb2._ANNOTATIONSPEC
+)
+_IMAGESEGMENTATIONANNOTATION_ANNOTATIONCOLORSENTRY.containing_type = (
+    _IMAGESEGMENTATIONANNOTATION
+)
+_IMAGESEGMENTATIONANNOTATION.fields_by_name[
+    "annotation_colors"
+].message_type = _IMAGESEGMENTATIONANNOTATION_ANNOTATIONCOLORSENTRY
 _TEXTCLASSIFICATIONANNOTATION.fields_by_name[
     "annotation_spec"
 ].message_type = (
@@ -1625,6 +1920,12 @@ _VIDEOEVENTANNOTATION.fields_by_name[
     google_dot_cloud_dot_datalabeling__v1beta1_dot_proto_dot_annotation__spec__set__pb2._ANNOTATIONSPEC
 )
 _VIDEOEVENTANNOTATION.fields_by_name["time_segment"].message_type = _TIMESEGMENT
+_AUDIORECOGNITIONANNOTATION.fields_by_name[
+    "start_offset"
+].message_type = google_dot_protobuf_dot_duration__pb2._DURATION
+_AUDIORECOGNITIONANNOTATION.fields_by_name[
+    "end_offset"
+].message_type = google_dot_protobuf_dot_duration__pb2._DURATION
 _ANNOTATIONMETADATA.fields_by_name["operator_metadata"].message_type = _OPERATORMETADATA
 DESCRIPTOR.message_types_by_name["Annotation"] = _ANNOTATION
 DESCRIPTOR.message_types_by_name["AnnotationValue"] = _ANNOTATIONVALUE
@@ -1642,6 +1943,9 @@ DESCRIPTOR.message_types_by_name["Polyline"] = _POLYLINE
 DESCRIPTOR.message_types_by_name["NormalizedPolyline"] = _NORMALIZEDPOLYLINE
 DESCRIPTOR.message_types_by_name["ImagePolylineAnnotation"] = _IMAGEPOLYLINEANNOTATION
 DESCRIPTOR.message_types_by_name[
+    "ImageSegmentationAnnotation"
+] = _IMAGESEGMENTATIONANNOTATION
+DESCRIPTOR.message_types_by_name[
     "TextClassificationAnnotation"
 ] = _TEXTCLASSIFICATIONANNOTATION
 DESCRIPTOR.message_types_by_name["TimeSegment"] = _TIMESEGMENT
@@ -1653,6 +1957,9 @@ DESCRIPTOR.message_types_by_name[
     "VideoObjectTrackingAnnotation"
 ] = _VIDEOOBJECTTRACKINGANNOTATION
 DESCRIPTOR.message_types_by_name["VideoEventAnnotation"] = _VIDEOEVENTANNOTATION
+DESCRIPTOR.message_types_by_name[
+    "AudioRecognitionAnnotation"
+] = _AUDIORECOGNITIONANNOTATION
 DESCRIPTOR.message_types_by_name["AnnotationMetadata"] = _ANNOTATIONMETADATA
 DESCRIPTOR.message_types_by_name["OperatorMetadata"] = _OPERATORMETADATA
 DESCRIPTOR.enum_types_by_name["AnnotationSource"] = _ANNOTATIONSOURCE
@@ -1706,12 +2013,15 @@ AnnotationValue = _reflection.GeneratedProtocolMessageType(
       image_classification_annotation:
           Annotation value for image classification case.
       image_bounding_poly_annotation:
-          Annotation value for image bounding box and polygon cases.
+          Annotation value for image bounding box, oriented bounding box
+          and polygon cases.
       image_polyline_annotation:
           Annotation value for image polyline cases. Polyline here is
           different from BoundingPoly. It is formed by line segments
           connected to each other but not closed form(Bounding Poly).
           The line segments can cross each other.
+      image_segmentation_annotation:
+          Annotation value for image segmentation.
       text_classification_annotation:
           Annotation value for text classification case.
       video_classification_annotation:
@@ -1720,6 +2030,8 @@ AnnotationValue = _reflection.GeneratedProtocolMessageType(
           Annotation value for video object detection and tracking case.
       video_event_annotation:
           Annotation value for video event case.
+      audio_recognition_annotation:
+          Annotation value for speech audio recognition case.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.datalabeling.v1beta1.AnnotationValue)
     ),
@@ -1892,6 +2204,40 @@ ImagePolylineAnnotation = _reflection.GeneratedProtocolMessageType(
 )
 _sym_db.RegisterMessage(ImagePolylineAnnotation)
 
+ImageSegmentationAnnotation = _reflection.GeneratedProtocolMessageType(
+    "ImageSegmentationAnnotation",
+    (_message.Message,),
+    dict(
+        AnnotationColorsEntry=_reflection.GeneratedProtocolMessageType(
+            "AnnotationColorsEntry",
+            (_message.Message,),
+            dict(
+                DESCRIPTOR=_IMAGESEGMENTATIONANNOTATION_ANNOTATIONCOLORSENTRY,
+                __module__="google.cloud.datalabeling_v1beta1.proto.annotation_pb2"
+                # @@protoc_insertion_point(class_scope:google.cloud.datalabeling.v1beta1.ImageSegmentationAnnotation.AnnotationColorsEntry)
+            ),
+        ),
+        DESCRIPTOR=_IMAGESEGMENTATIONANNOTATION,
+        __module__="google.cloud.datalabeling_v1beta1.proto.annotation_pb2",
+        __doc__="""Image segmentation annotation.
+  
+  
+  Attributes:
+      annotation_colors:
+          The mapping between rgb color and annotation spec. The key is
+          the rgb color represented in format of rgb(0, 0, 0). The value
+          is the AnnotationSpec.
+      mime_type:
+          Image format.
+      image_bytes:
+          A byte string of a full image's color map.
+  """,
+        # @@protoc_insertion_point(class_scope:google.cloud.datalabeling.v1beta1.ImageSegmentationAnnotation)
+    ),
+)
+_sym_db.RegisterMessage(ImageSegmentationAnnotation)
+_sym_db.RegisterMessage(ImageSegmentationAnnotation.AnnotationColorsEntry)
+
 TextClassificationAnnotation = _reflection.GeneratedProtocolMessageType(
     "TextClassificationAnnotation",
     (_message.Message,),
@@ -2017,6 +2363,30 @@ VideoEventAnnotation = _reflection.GeneratedProtocolMessageType(
 )
 _sym_db.RegisterMessage(VideoEventAnnotation)
 
+AudioRecognitionAnnotation = _reflection.GeneratedProtocolMessageType(
+    "AudioRecognitionAnnotation",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_AUDIORECOGNITIONANNOTATION,
+        __module__="google.cloud.datalabeling_v1beta1.proto.annotation_pb2",
+        __doc__="""Speech audio recognition.
+  
+  
+  Attributes:
+      transcript:
+          Transcript text representing the words spoken.
+      start_offset:
+          Start position in audio file that the transcription
+          corresponds to.
+      end_offset:
+          End position in audio file that the transcription corresponds
+          to.
+  """,
+        # @@protoc_insertion_point(class_scope:google.cloud.datalabeling.v1beta1.AudioRecognitionAnnotation)
+    ),
+)
+_sym_db.RegisterMessage(AudioRecognitionAnnotation)
+
 AnnotationMetadata = _reflection.GeneratedProtocolMessageType(
     "AnnotationMetadata",
     (_message.Message,),
@@ -2061,4 +2431,5 @@ _sym_db.RegisterMessage(OperatorMetadata)
 
 
 DESCRIPTOR._options = None
+_IMAGESEGMENTATIONANNOTATION_ANNOTATIONCOLORSENTRY._options = None
 # @@protoc_insertion_point(module_scope)
