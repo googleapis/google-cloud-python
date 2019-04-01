@@ -4021,6 +4021,8 @@ class TestQueryJob(unittest.TestCase, _Base):
             "totalRows": "2",
         }
         tabledata_resource = {
+            # Explicitly set totalRows to be different from the query response.
+            # to test update during iteration.
             "totalRows": "1",
             "pageToken": None,
             "rows": [{"f": [{"v": "abc"}]}],
@@ -4038,6 +4040,8 @@ class TestQueryJob(unittest.TestCase, _Base):
         rows = list(result)
         self.assertEqual(len(rows), 1)
         self.assertEqual(rows[0].col1, "abc")
+        # Test that the total_rows property has changed during iteration, based
+        # on the response from tabledata.list.
         self.assertEqual(result.total_rows, 1)
 
     def test_result_w_empty_schema(self):
