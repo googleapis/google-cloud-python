@@ -150,6 +150,7 @@ class Context(object):
     def __init__(self):
         self._credentials = None
         self._project = None
+        self._use_bqstorage_api = None
 
     @property
     def credentials(self):
@@ -210,6 +211,20 @@ class Context(object):
     @project.setter
     def project(self, value):
         self._project = value
+
+    @property
+    def use_bqstorage_api(self):
+        """bool: [Beta] Set to True to use the BigQuery Storage API to
+        download query results
+
+        To use this option, install the BigQuery Storage client library,
+        install the fastavro library, and enable the BigQuery Storage API.
+        """
+        return self._use_bqstorage_api
+
+    @use_bqstorage_api.setter
+    def use_bqstorage_api(self, value):
+        self._use_bqstorage_api = value
 
 
 context = Context()
@@ -275,6 +290,16 @@ def _run_query(client, query, job_config=None):
     ),
 )
 @magic_arguments.argument(
+    "--use_bqstorage_api",
+    action="store_true",
+    default=False,
+    help=(
+        "[Beta] Use the BigQuery Storage API to download large query results. "
+        "To use this option, install the BigQuery Storage client library, "
+        "install the fastavro library, and enable the BigQuery Storage API."
+    ),
+)
+@magic_arguments.argument(
     "--verbose",
     action="store_true",
     default=False,
@@ -328,6 +353,9 @@ def _cell_magic(line, query):
 
     project = args.project or context.project
     client = bigquery.Client(project=project, credentials=context.credentials)
+    bqstorage_client = _make_bqstorage_client(
+        args.use_bqstorage_api or context.use_bqstorage_api, context.credentials
+    )
     job_config = bigquery.job.QueryJobConfig()
     job_config.query_parameters = params
     job_config.use_legacy_sql = args.use_legacy_sql
@@ -336,8 +364,17 @@ def _cell_magic(line, query):
     if not args.verbose:
         display.clear_output()
 
-    result = query_job.to_dataframe()
+    result = query_job.to_dataframe(bqstorage_client=bqstorage_client)
     if args.destination_var:
         IPython.get_ipython().push({args.destination_var: result})
     else:
         return result
+
+
+def _make_bqstorage_client(use_bqstorage_api, credentials):
+    if not use_bqstorage_api:
+        return None
+
+    from google.cloud import bigquery_storage_v1beta1
+
+    return bigquery_storage_v1beta1.BigQueryStorageClient(credentials=credentials)

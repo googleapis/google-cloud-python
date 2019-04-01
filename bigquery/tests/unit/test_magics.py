@@ -31,6 +31,11 @@ except ImportError:  # pragma: NO COVER
     IPython = None
 
 import google.auth.credentials
+
+try:
+    from google.cloud import bigquery_storage_v1beta1
+except ImportError:  # pragma: NO COVER
+    bigquery_storage_v1beta1 = None
 from google.cloud.bigquery import table
 from google.cloud.bigquery import magics
 
@@ -127,6 +132,25 @@ def test__run_query():
     assert len(execution_updates) == 3  # one update per API response
     assert all(re.match("Query executing: .*s", line) for line in execution_updates)
     assert re.match("Query complete after .*s", updates[-1])
+
+
+def test__make_bqstorage_client_false():
+    credentials_mock = mock.create_autospec(
+        google.auth.credentials.Credentials, instance=True
+    )
+    got = magics._make_bqstorage_client(False, credentials_mock)
+    assert got is None
+
+
+@pytest.mark.skipIf(
+    bigquery_storage_v1beta1 is None, "Requires `google-cloud-bigquery-storage`"
+)
+def test__make_bqstorage_client_true():
+    credentials_mock = mock.create_autospec(
+        google.auth.credentials.Credentials, instance=True
+    )
+    got = magics._make_bqstorage_client(True, credentials_mock)
+    assert isinstance(got, bigquery_storage_v1beta1.BigQueryStorageClient)
 
 
 @pytest.mark.usefixtures("ipython_interactive")
@@ -255,6 +279,48 @@ def test_bigquery_magic_clears_display_in_verbose_mode():
         ip.run_cell_magic("bigquery", "", "SELECT 17 as num")
 
         assert clear_mock.call_count == 1
+
+
+@pytest.mark.usefixtures("ipython_interactive")
+@pytest.mark.skipIf(
+    bigquery_storage_v1beta1 is None, "Requires `google-cloud-bigquery-storage`"
+)
+def test_bigquery_magic_with_bqstorage(monkeypatch):
+    ip = IPython.get_ipython()
+    ip.extension_manager.load_extension("google.cloud.bigquery")
+    mock_credentials = mock.create_autospec(
+        google.auth.credentials.Credentials, instance=True
+    )
+    monkeypatch.setattr(magics.context, "credentials", mock_credentials)
+    monkeypatch.setattr(magics.context, "use_bqstorage_api", True)
+
+    sql = "SELECT 17 AS num"
+    result = pandas.DataFrame([17], columns=["num"])
+    make_bqstorage_patch = mock.patch(
+        "google.cloud.bigquery.magics._make_bqstorage_client", autospec=True
+    )
+    bqstorage_mock = mock.create_autospec(
+        bigquery_storage_v1beta1.BigQueryStorageClient, instance=True
+    )
+    run_query_patch = mock.patch(
+        "google.cloud.bigquery.magics._run_query", autospec=True
+    )
+    query_job_mock = mock.create_autospec(
+        google.cloud.bigquery.job.QueryJob, instance=True
+    )
+    query_job_mock.to_dataframe.return_value = result
+    with run_query_patch as run_query_mock, make_bqstorage_patch as make_bqstorage_mock:
+        run_query_mock.return_value = query_job_mock
+        make_bqstorage_mock.return_value = bqstorage_mock
+
+        return_value = ip.run_cell_magic("bigquery", "", sql)
+
+        make_bqstorage_mock.assert_called_once_with(True, mock_credentials)
+        query_job_mock.to_dataframe.assert_called_once_with(
+            bqstorage_client=bqstorage_mock
+        )
+
+    assert isinstance(return_value, pandas.DataFrame)
 
 
 @pytest.mark.usefixtures("ipython_interactive")
