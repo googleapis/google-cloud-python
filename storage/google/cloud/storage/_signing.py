@@ -585,6 +585,10 @@ def generate_signed_url_v4(
     if "host" not in header_names:
         headers["Host"] = "storage.googleapis.com"
 
+    if method.upper() == "RESUMABLE":
+        method = "POST"
+        headers["x-goog-resumable"] = "start"
+
     canonical_headers, ordered_headers = get_canonical_headers(headers)
     canonical_header_string = (
         "\n".join(canonical_headers) + "\n"
