@@ -350,7 +350,7 @@ class Blob(_PropertyMixin):
                         two must be passed.
 
         :type api_access_endpoint: str
-        :param api_access_endpoint: Optional URI base. Defaults to empty string.
+        :param api_access_endpoint: Optional URI base.
 
         :type method: str
         :param method: The HTTP verb that will be used when requesting the URL.
