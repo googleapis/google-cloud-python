@@ -18,6 +18,7 @@ import binascii
 import collections
 import datetime
 import hashlib
+import re
 
 import six
 
@@ -438,6 +439,8 @@ def generate_signed_url_v2(
 
 SEVEN_DAYS = 7 * 24 * 60 * 60  # max age for V4 signed URLs.
 DEFAULT_ENDPOINT = "https://storage.googleapis.com"
+MULTIPLE_SPACES_RE = r"\s+"
+MULTIPLE_SPACES = re.compile(MULTIPLE_SPACES_RE)
 
 
 def generate_signed_url_v4(
@@ -584,7 +587,10 @@ def generate_signed_url_v4(
         headers["Host"] = "storage.googleapis.com"
 
     ordered_headers = sorted(
-        [(key.lower(), val.strip()) for key, val in headers.items()]
+        [
+            (key.lower(), MULTIPLE_SPACES.sub(" ", val.strip()))
+            for key, val in headers.items()
+        ]
     )
     canonical_headers = (
         "\n".join(["{}:{}".format(key, val) for key, val in ordered_headers]) + "\n"
