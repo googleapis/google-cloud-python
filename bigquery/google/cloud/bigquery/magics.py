@@ -32,6 +32,11 @@
     * ``--project <project>`` (optional, line argument):
         Project to use for running the query. Defaults to the context
         :attr:`~google.cloud.bigquery.magics.Context.project`.
+    * ``--use_bqstorage_api`` (optional, line argument):
+        Downloads the DataFrame using the BigQuery Storage API. To use this
+        option, install the ``google-cloud-bigquery-storage`` and ``fastavro``
+        packages, and `enable the BigQuery Storage API
+        <https://console.cloud.google.com/apis/library/bigquerystorage.googleapis.com>`_.
     * ``--use_legacy_sql`` (optional, line argument):
         Runs the query using Legacy SQL syntax. Defaults to Standard SQL if
         this argument not used.
@@ -221,8 +226,9 @@ class Context(object):
         """bool: [Beta] Set to True to use the BigQuery Storage API to
         download query results
 
-        To use this option, install the BigQuery Storage client library,
-        install the fastavro library, and enable the BigQuery Storage API.
+        To use this option, install the ``google-cloud-bigquery-storage`` and
+        ``fastavro`` packages, and `enable the BigQuery Storage API
+        <https://console.cloud.google.com/apis/library/bigquerystorage.googleapis.com>`_.
         """
         return self._use_bqstorage_api
 
@@ -299,8 +305,8 @@ def _run_query(client, query, job_config=None):
     default=False,
     help=(
         "[Beta] Use the BigQuery Storage API to download large query results. "
-        "To use this option, install the BigQuery Storage client library, "
-        "install the fastavro library, and enable the BigQuery Storage API."
+        "To use this option, install the google-cloud-bigquery-storage and "
+        "fastavro packages, and enable the BigQuery Storage API."
     ),
 )
 @magic_arguments.argument(
