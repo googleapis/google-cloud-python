@@ -1244,7 +1244,8 @@ ComputeThreatListDiffResponse = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_COMPUTETHREATLISTDIFFRESPONSE,
         __module__="google.cloud.webrisk_v1beta1.proto.webrisk_pb2",
-        __doc__="""Attributes:
+        __doc__="""
+    Attributes:
       response_type:
           The type of response. This may indicate that an action is
           required by the client when the response is received.
@@ -1320,7 +1321,8 @@ SearchUrisResponse = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_SEARCHURISRESPONSE,
         __module__="google.cloud.webrisk_v1beta1.proto.webrisk_pb2",
-        __doc__="""Attributes:
+        __doc__="""
+    Attributes:
       threat:
           The threat list matches. This may be empty if the URI is on no
           list.
@@ -1383,7 +1385,8 @@ SearchHashesResponse = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_SEARCHHASHESRESPONSE,
         __module__="google.cloud.webrisk_v1beta1.proto.webrisk_pb2",
-        __doc__="""Attributes:
+        __doc__="""
+    Attributes:
       threats:
           The full hashes that matched the requested prefixes. The hash
           will be populated in the key.

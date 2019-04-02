@@ -27,13 +27,23 @@ versions = ["v1beta1"]
 # Generate webrisk GAPIC layer
 # ----------------------------------------------------------------------------
 for version in versions:
-    library = gapic.py_library("webrisk", version, include_protos=True, config_path="artman_webrisk.yaml")
-    s.move(library, excludes=["docs/index.rst", "nox.py", "README.rst", "setup.py"])
+    library = gapic.py_library("webrisk", version, include_protos=True)
+    s.copy(library, excludes=["docs/index.rst", "nox.py", "README.rst", "setup.py"])
+
+
+# Fix docstring issue for classes with no summary line
+s.replace(
+    "google/cloud/**/proto/webrisk_pb2.py",
+    '''__doc__ = """Attributes:''',
+    '''__doc__ = """
+    Attributes:''',
+)
+
 
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
 templated_files = common.py_library(unit_cov_level=97, cov_level=100)
-s.move(templated_files)
+s.move(templated_files, excludes=["noxfile.py"])
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
