@@ -23,6 +23,7 @@ from google.oauth2 import service_account
 import google.api_core.gapic_v1.client_info
 import google.api_core.gapic_v1.config
 import google.api_core.gapic_v1.method
+import google.api_core.gapic_v1.routing_header
 import google.api_core.grpc_helpers
 import google.api_core.page_iterator
 import google.api_core.path_template
@@ -370,6 +371,19 @@ class SubscriberClient(object):
             enable_message_ordering=enable_message_ordering,
             expiration_policy=expiration_policy,
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["create_subscription"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -427,6 +441,19 @@ class SubscriberClient(object):
             )
 
         request = pubsub_pb2.GetSubscriptionRequest(subscription=subscription)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("subscription", subscription)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["get_subscription"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -499,6 +526,19 @@ class SubscriberClient(object):
         request = pubsub_pb2.UpdateSubscriptionRequest(
             subscription=subscription, update_mask=update_mask
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("subscription.name", subscription.name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["update_subscription"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -579,6 +619,19 @@ class SubscriberClient(object):
         request = pubsub_pb2.ListSubscriptionsRequest(
             project=project, page_size=page_size
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("project", project)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(
@@ -649,6 +702,19 @@ class SubscriberClient(object):
             )
 
         request = pubsub_pb2.DeleteSubscriptionRequest(subscription=subscription)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("subscription", subscription)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         self._inner_api_calls["delete_subscription"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -728,6 +794,19 @@ class SubscriberClient(object):
             ack_ids=ack_ids,
             ack_deadline_seconds=ack_deadline_seconds,
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("subscription", subscription)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         self._inner_api_calls["modify_ack_deadline"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -797,6 +876,19 @@ class SubscriberClient(object):
         request = pubsub_pb2.AcknowledgeRequest(
             subscription=subscription, ack_ids=ack_ids
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("subscription", subscription)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         self._inner_api_calls["acknowledge"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -869,6 +961,19 @@ class SubscriberClient(object):
             max_messages=max_messages,
             return_immediately=return_immediately,
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("subscription", subscription)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["pull"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -1015,6 +1120,19 @@ class SubscriberClient(object):
         request = pubsub_pb2.ModifyPushConfigRequest(
             subscription=subscription, push_config=push_config
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("subscription", subscription)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         self._inner_api_calls["modify_push_config"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -1101,6 +1219,19 @@ class SubscriberClient(object):
             )
 
         request = pubsub_pb2.ListSnapshotsRequest(project=project, page_size=page_size)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("project", project)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(
@@ -1203,6 +1334,19 @@ class SubscriberClient(object):
         request = pubsub_pb2.CreateSnapshotRequest(
             name=name, subscription=subscription, labels=labels
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["create_snapshot"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -1284,6 +1428,19 @@ class SubscriberClient(object):
         request = pubsub_pb2.UpdateSnapshotRequest(
             snapshot=snapshot, update_mask=update_mask
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("snapshot.name", snapshot.name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["update_snapshot"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -1350,6 +1507,19 @@ class SubscriberClient(object):
             )
 
         request = pubsub_pb2.DeleteSnapshotRequest(snapshot=snapshot)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("snapshot", snapshot)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         self._inner_api_calls["delete_snapshot"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -1438,6 +1608,19 @@ class SubscriberClient(object):
         request = pubsub_pb2.SeekRequest(
             subscription=subscription, time=time, snapshot=snapshot
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("subscription", subscription)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["seek"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -1508,6 +1691,19 @@ class SubscriberClient(object):
             )
 
         request = iam_policy_pb2.SetIamPolicyRequest(resource=resource, policy=policy)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("resource", resource)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["set_iam_policy"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -1568,6 +1764,19 @@ class SubscriberClient(object):
             )
 
         request = iam_policy_pb2.GetIamPolicyRequest(resource=resource)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("resource", resource)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["get_iam_policy"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -1638,6 +1847,19 @@ class SubscriberClient(object):
         request = iam_policy_pb2.TestIamPermissionsRequest(
             resource=resource, permissions=permissions
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("resource", resource)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["test_iam_permissions"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
