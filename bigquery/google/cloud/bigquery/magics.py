@@ -382,7 +382,7 @@ def _make_bqstorage_client(use_bqstorage_api, credentials):
     if bigquery_storage_v1beta1 is None:
         raise ImportError(
             "Install the google-cloud-bigquery-storage and fastavro packages "
-            "to use the BigQuery storage API."
+            "to use the BigQuery Storage API."
         )
 
     return bigquery_storage_v1beta1.BigQueryStorageClient(credentials=credentials)
