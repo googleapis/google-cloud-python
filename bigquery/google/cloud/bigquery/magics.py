@@ -134,6 +134,10 @@ try:
     from IPython.core import magic_arguments
 except ImportError:  # pragma: NO COVER
     raise ImportError("This module can only be loaded in IPython.")
+try:
+    from google.cloud import bigquery_storage_v1beta1
+except ImportError:  # pragma: NO COVER
+    bigquery_storage_v1beta1 = None
 
 import google.auth
 from google.cloud import bigquery
@@ -375,6 +379,10 @@ def _make_bqstorage_client(use_bqstorage_api, credentials):
     if not use_bqstorage_api:
         return None
 
-    from google.cloud import bigquery_storage_v1beta1
+    if bigquery_storage_v1beta1 is None:
+        raise ImportError(
+            "Install the google-cloud-bigquery-storage and fastavro packages "
+            "to use the BigQuery storage API."
+        )
 
     return bigquery_storage_v1beta1.BigQueryStorageClient(credentials=credentials)
