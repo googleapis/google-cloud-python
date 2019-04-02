@@ -43,7 +43,7 @@ Creating a Table
 Create an empty table with the
 :func:`~google.cloud.bigquery.client.Client.create_table` method:
 
-.. literalinclude:: ../snippets.py
+.. literalinclude:: ../samples/create_table.py
    :language: python
    :dedent: 4
    :start-after: [START bigquery_create_table]

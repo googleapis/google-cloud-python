@@ -522,31 +522,6 @@ def test_list_tables(client, to_delete):
     # [END bigquery_list_tables]
 
 
-def test_create_table(client, to_delete):
-    """Create a table."""
-    dataset_id = "create_table_dataset_{}".format(_millis())
-    dataset_ref = client.dataset(dataset_id)
-    dataset = bigquery.Dataset(dataset_ref)
-    client.create_dataset(dataset)
-    to_delete.append(dataset)
-
-    # [START bigquery_create_table]
-    # from google.cloud import bigquery
-    # client = bigquery.Client()
-    # dataset_ref = client.dataset('my_dataset')
-
-    schema = [
-        bigquery.SchemaField("full_name", "STRING", mode="REQUIRED"),
-        bigquery.SchemaField("age", "INTEGER", mode="REQUIRED"),
-    ]
-    table_ref = dataset_ref.table("my_table")
-    table = bigquery.Table(table_ref, schema=schema)
-    table = client.create_table(table)  # API request
-
-    assert table.table_id == "my_table"
-    # [END bigquery_create_table]
-
-
 def test_create_table_nested_repeated_schema(client, to_delete):
     dataset_id = "create_table_nested_repeated_{}".format(_millis())
     dataset_ref = client.dataset(dataset_id)
