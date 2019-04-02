@@ -23,6 +23,7 @@ from google.oauth2 import service_account
 import google.api_core.gapic_v1.client_info
 import google.api_core.gapic_v1.config
 import google.api_core.gapic_v1.method
+import google.api_core.gapic_v1.routing_header
 import google.api_core.grpc_helpers
 import google.api_core.page_iterator
 import google.api_core.path_template
@@ -305,6 +306,19 @@ class NotificationChannelServiceClient(object):
         request = notification_service_pb2.ListNotificationChannelDescriptorsRequest(
             name=name, page_size=page_size
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(
@@ -383,6 +397,19 @@ class NotificationChannelServiceClient(object):
         request = notification_service_pb2.GetNotificationChannelDescriptorRequest(
             name=name
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["get_notification_channel_descriptor"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -484,6 +511,19 @@ class NotificationChannelServiceClient(object):
         request = notification_service_pb2.ListNotificationChannelsRequest(
             name=name, filter=filter_, order_by=order_by, page_size=page_size
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(
@@ -559,6 +599,19 @@ class NotificationChannelServiceClient(object):
             )
 
         request = notification_service_pb2.GetNotificationChannelRequest(name=name)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["get_notification_channel"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -641,6 +694,19 @@ class NotificationChannelServiceClient(object):
         request = notification_service_pb2.CreateNotificationChannelRequest(
             name=name, notification_channel=notification_channel
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["create_notification_channel"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -717,6 +783,19 @@ class NotificationChannelServiceClient(object):
         request = notification_service_pb2.UpdateNotificationChannelRequest(
             notification_channel=notification_channel, update_mask=update_mask
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("notification_channel.name", notification_channel.name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["update_notification_channel"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -783,6 +862,19 @@ class NotificationChannelServiceClient(object):
         request = notification_service_pb2.DeleteNotificationChannelRequest(
             name=name, force=force
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         self._inner_api_calls["delete_notification_channel"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
