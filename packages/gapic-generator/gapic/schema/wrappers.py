@@ -69,6 +69,48 @@ class Field:
         """Return True if the field is a primitive, False otherwise."""
         return isinstance(self.type, PythonType)
 
+    @utils.cached_property
+    def mock_value(self) -> str:
+        """Return a repr of a valid, usually truthy mock value."""
+        # For primitives, send a truthy value computed from the
+        # field name.
+        answer = 'None'
+        if isinstance(self.type, PythonType):
+            if self.type.python_type == bool:
+                answer = 'True'
+            elif self.type.python_type == str:
+                answer = f"'{self.name}_value'"
+            elif self.type.python_type == bytes:
+                answer = f"b'{self.name}_blob'"
+            elif self.type.python_type == int:
+                answer = f'{sum([ord(i) for i in self.name])}'
+            elif self.type.python_type == float:
+                answer = f'0.{sum([ord(i) for i in self.name])}'
+            else:  # Impossible; skip coverage checks.
+                raise TypeError('Unrecognized PythonType. This should '
+                                'never happen; please file an issue.')
+
+        # If this is an enum, select the first truthy value (or the zero
+        # value if nothing else exists).
+        if isinstance(self.type, EnumType):
+            # Note: The slightly-goofy [:2][-1] lets us gracefully fall
+            # back to index 0 if there is only one element.
+            mock_value = self.type.values[:2][-1]
+            answer = f'{self.type.ident}.{mock_value.name}'
+
+        # If this is another message, set one value on the message.
+        if isinstance(self.type, MessageType) and len(self.type.fields):
+            sub = next(iter(self.type.fields.values()))
+            answer = f'{self.type.ident}({sub.name}={sub.mock_value})'
+
+        # If this is a repeated field, then the mock answer should
+        # be a list.
+        if self.repeated:
+            answer = f'[{answer}]'
+
+        # Done; return the mock value.
+        return answer
+
     @property
     def proto_type(self) -> str:
         """Return the proto type constant to be used in templates."""
@@ -446,6 +488,11 @@ class Method:
         """
         return bool(self.options.Extensions[annotations_pb2.http].get)
 
+    @property
+    def lro(self) -> bool:
+        """Return True if this is an LRO method, False otherwise."""
+        return getattr(self.output, 'lro_response', None)
+
     @utils.cached_property
     def ref_types(self) -> Sequence[Union[MessageType, EnumType]]:
         """Return types referenced by this method."""
@@ -581,8 +628,7 @@ class Service:
     @property
     def has_lro(self) -> bool:
         """Return whether the service has a long-running method."""
-        return any([getattr(m.output, 'lro_response', None)
-                    for m in self.methods.values()])
+        return any([m.lro for m in self.methods.values()])
 
     def with_context(self, *, collisions: Set[str]) -> 'Service':
         """Return a derivative of this service with the provided context.

@@ -19,6 +19,9 @@ import tempfile
 import nox
 
 
+showcase_version = '0.0.16'
+
+
 @nox.session(python=['3.6', '3.7'])
 def unit(session):
     """Run the unit test suite."""
@@ -56,8 +59,6 @@ def showcase(session):
 
     # Install a client library for Showcase.
     with tempfile.TemporaryDirectory() as tmp_dir:
-        showcase_version = '0.0.16'
-
         # Download the Showcase descriptor.
         session.run(
             'curl', 'https://github.com/googleapis/gapic-showcase/releases/'
@@ -81,6 +82,49 @@ def showcase(session):
         session.install(tmp_dir)
 
     session.run('py.test', '--quiet', os.path.join('tests', 'system'))
+
+
+@nox.session(python=['3.6', '3.7'])
+def showcase_unit(session):
+    """Run the generated unit tests against the Showcase library."""
+
+    # Install pytest and gapic-generator-python
+    session.install('coverage', 'pytest', 'pytest-cov')
+    session.install('.')
+
+    # Install a client library for Showcase.
+    with tempfile.TemporaryDirectory() as tmp_dir:
+
+        # Download the Showcase descriptor.
+        session.run(
+            'curl', 'https://github.com/googleapis/gapic-showcase/releases/'
+                    f'download/v{showcase_version}/'
+                    f'gapic-showcase-{showcase_version}.desc',
+            '-L', '--output', os.path.join(tmp_dir, 'showcase.desc'),
+            external=True,
+            silent=True,
+        )
+
+        # Write out a client library for Showcase.
+        session.run('protoc',
+            f'--descriptor_set_in={tmp_dir}{os.path.sep}showcase.desc',
+            f'--python_gapic_out={tmp_dir}',
+            'google/showcase/v1alpha3/echo.proto',
+            'google/showcase/v1alpha3/identity.proto',
+            'google/showcase/v1alpha3/messaging.proto',
+            'google/showcase/v1alpha3/testing.proto',
+            external=True,
+        )
+
+        # Install the library.
+        session.install(tmp_dir)
+
+        # Run the tests.
+        session.run(
+            'py.test',
+            '--quiet',
+            os.path.join(tmp_dir, 'tests', 'unit'),
+        )
 
 
 @nox.session(python='3.6')

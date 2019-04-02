@@ -73,7 +73,8 @@ class Address:
             # Return the dot-separated Python identifier.
             return '.'.join((module_name,) + self.parent + (self.name,))
 
-        # Return the Python identifier for this module-less identifier.
+        # This type does not have a module (most common for PythonType).
+        # Return the Python identifier.
         return '.'.join(self.parent + (self.name,))
 
     @property

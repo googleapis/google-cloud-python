@@ -87,9 +87,9 @@ class {{ service.name }}:
         {%- if method.flattened_fields %}
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request and any([{{ method.flattened_fields.values()|join(', ', attribute='name') }}]):
-            raise TypeError('If the `request` argument is set, then none of '
-                            'the individual field arguments should be set.')
+        if request is not None and any([{{ method.flattened_fields.values()|join(', ', attribute='name') }}]):
+            raise ValueError('If the `request` argument is set, then none of '
+                             'the individual field arguments should be set.')
         {%- endif %}
 
         # Create or coerce a protobuf request object.
@@ -124,11 +124,11 @@ class {{ service.name }}:
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata({
+            gapic_v1.routing_header.to_grpc_metadata((
                 {%- for field_header in method.field_headers %}
-                '{{ field_header }}': request.{{ field_header }},
+                ('{{ field_header }}', request.{{ field_header }}),
                 {%- endfor %}
-            }),
+            )),
         )
         {%- endif %}
 

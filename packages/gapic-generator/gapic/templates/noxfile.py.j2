@@ -1,0 +1,25 @@
+{% extends "_base.py.j2" %}
+
+{% block content %}
+import os
+
+import nox
+
+
+@nox.session(python=['3.6', '3.7'])
+def unit(session):
+    """Run the unit test suite."""
+
+    session.install('coverage', 'pytest', 'pytest-cov')
+    session.install('-e', '.')
+
+    session.run(
+        'py.test',
+        '--quiet',
+        '--cov={{ api.naming.module_namespace|join("/") }}/{{ api.naming.versioned_module_name }}/',
+        '--cov-config=.coveragerc',
+        '--cov-report=term',
+        '--cov-report=html',
+        os.path.join('tests', 'unit', '{{ api.naming.versioned_module_name }}'),
+    )
+{% endblock %}

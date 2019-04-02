@@ -10,5 +10,7 @@ show_missing = True
 exclude_lines =
     # Re-enable the standard pragma
     pragma: NO COVER
+    # Enable an English version.
+    Impossible; skip coverage checks.
     # Ignore debug-only repr
     def __repr__

@@ -53,14 +53,13 @@ class {{ service.name }}Transport(metaclass=abc.ABCMeta):
         self._credentials = credentials
     {%- if service.has_lro %}
 
-    @abc.abstractproperty
+    @property
     def operations_client(self) -> operations_v1.OperationsClient:
         """Return the client designed to process long-running operations."""
         raise NotImplementedError
     {%- endif %}
     {%- for method in service.methods.values() %}
 
-    @abc.abstractmethod
     def {{ method.name|snake_case }}(
             self,
             request: {{ method.input.ident }},
