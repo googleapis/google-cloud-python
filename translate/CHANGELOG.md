@@ -4,6 +4,20 @@
 
 [1]: https://pypi.org/project/google-cloud-translate/#history
 
+## 1.4.0
+
+04-02-2019 14:24 PDT
+
+
+### Implementation Changes
+- Remove classifier for Python 3.4 for end-of-life. ([#7535](https://github.com/googleapis/google-cloud-python/pull/7535))
+
+### New Features
+- Add Translate v3 ([#7637](https://github.com/googleapis/google-cloud-python/pull/7637))
+
+### Documentation
+- Updated client library documentation URLs. ([#7307](https://github.com/googleapis/google-cloud-python/pull/7307))
+
 ## 1.3.3
 
 12-17-2018 17:07 PST
