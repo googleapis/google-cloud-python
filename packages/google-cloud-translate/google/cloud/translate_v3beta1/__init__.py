@@ -14,11 +14,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-try:
-    import pkg_resources
+from __future__ import absolute_import
 
-    pkg_resources.declare_namespace(__name__)
-except ImportError:
-    import pkgutil
+from google.cloud.translate_v3beta1 import types
+from google.cloud.translate_v3beta1.gapic import translation_service_client
 
-    __path__ = pkgutil.extend_path(__path__, __name__)
+
+class TranslationServiceClient(translation_service_client.TranslationServiceClient):
+    __doc__ = translation_service_client.TranslationServiceClient.__doc__
+
+
+__all__ = ("types", "TranslationServiceClient")
