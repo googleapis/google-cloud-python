@@ -10,6 +10,7 @@
   BigQuery Storage <bigquery_storage/index>
   Bigtable <bigtable/index>
   Container <container/index>
+  Data Labeling <datalabeling/index>
   Data Loss Prevention <dlp/index>
   Dataproc <dataproc/index>
   Datastore <datastore/index>
