@@ -14,3 +14,5 @@ exclude_lines =
 omit =
   */gapic/*.py
   */proto/*.py
+  */core/*.py
+  */site-packages/*.py
