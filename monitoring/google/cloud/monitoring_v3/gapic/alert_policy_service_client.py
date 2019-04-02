@@ -23,6 +23,7 @@ from google.oauth2 import service_account
 import google.api_core.gapic_v1.client_info
 import google.api_core.gapic_v1.config
 import google.api_core.gapic_v1.method
+import google.api_core.gapic_v1.routing_header
 import google.api_core.grpc_helpers
 import google.api_core.page_iterator
 import google.api_core.path_template
@@ -306,6 +307,19 @@ class AlertPolicyServiceClient(object):
         request = alert_service_pb2.ListAlertPoliciesRequest(
             name=name, filter=filter_, order_by=order_by, page_size=page_size
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(
@@ -378,6 +392,19 @@ class AlertPolicyServiceClient(object):
             )
 
         request = alert_service_pb2.GetAlertPolicyRequest(name=name)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["get_alert_policy"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -456,6 +483,19 @@ class AlertPolicyServiceClient(object):
         request = alert_service_pb2.CreateAlertPolicyRequest(
             name=name, alert_policy=alert_policy
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["create_alert_policy"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -516,6 +556,19 @@ class AlertPolicyServiceClient(object):
             )
 
         request = alert_service_pb2.DeleteAlertPolicyRequest(name=name)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         self._inner_api_calls["delete_alert_policy"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -613,6 +666,19 @@ class AlertPolicyServiceClient(object):
         request = alert_service_pb2.UpdateAlertPolicyRequest(
             alert_policy=alert_policy, update_mask=update_mask
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("alert_policy.name", alert_policy.name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["update_alert_policy"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
