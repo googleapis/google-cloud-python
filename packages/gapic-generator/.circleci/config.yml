@@ -93,7 +93,7 @@ jobs:
   showcase:
     docker:
       - image: python:3.7-slim
-      - image: gcr.io/gapic-images/gapic-showcase:0.0.13
+      - image: gcr.io/gapic-images/gapic-showcase:0.0.16
     steps:
       - checkout
       - run:
