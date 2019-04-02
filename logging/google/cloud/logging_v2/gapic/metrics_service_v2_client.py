@@ -23,6 +23,7 @@ from google.oauth2 import service_account
 import google.api_core.gapic_v1.client_info
 import google.api_core.gapic_v1.config
 import google.api_core.gapic_v1.method
+import google.api_core.gapic_v1.routing_header
 import google.api_core.grpc_helpers
 import google.api_core.page_iterator
 import google.api_core.path_template
@@ -267,6 +268,19 @@ class MetricsServiceV2Client(object):
         request = logging_metrics_pb2.ListLogMetricsRequest(
             parent=parent, page_size=page_size
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(
@@ -338,6 +352,19 @@ class MetricsServiceV2Client(object):
             )
 
         request = logging_metrics_pb2.GetLogMetricRequest(metric_name=metric_name)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("metric_name", metric_name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["get_log_metric"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -411,6 +438,19 @@ class MetricsServiceV2Client(object):
         request = logging_metrics_pb2.CreateLogMetricRequest(
             parent=parent, metric=metric
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["create_log_metric"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -485,6 +525,19 @@ class MetricsServiceV2Client(object):
         request = logging_metrics_pb2.UpdateLogMetricRequest(
             metric_name=metric_name, metric=metric
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("metric_name", metric_name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["update_log_metric"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -542,6 +595,19 @@ class MetricsServiceV2Client(object):
             )
 
         request = logging_metrics_pb2.DeleteLogMetricRequest(metric_name=metric_name)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("metric_name", metric_name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         self._inner_api_calls["delete_log_metric"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )

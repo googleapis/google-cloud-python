@@ -1,0 +1,39 @@
+{
+  "updateTime": "2019-04-01T20:28:56.710893Z",
+  "sources": [
+    {
+      "generator": {
+        "name": "artman",
+        "version": "0.16.22",
+        "dockerImage": "googleapis/artman@sha256:e7f9554322a8aa1416c122c918fdc4cdec8cfe816f027fc948dec0be7edef320"
+      }
+    },
+    {
+      "git": {
+        "name": "googleapis",
+        "remote": "git@github.com:googleapis/googleapis.git",
+        "sha": "62baea94d3760d9a58064a6e6ee9b99eff2a608e",
+        "internalRef": "241370948"
+      }
+    },
+    {
+      "template": {
+        "name": "python_library",
+        "origin": "synthtool.gcp",
+        "version": "2019.2.26"
+      }
+    }
+  ],
+  "destinations": [
+    {
+      "client": {
+        "source": "googleapis",
+        "apiName": "datalabeling",
+        "apiVersion": "v1beta1",
+        "language": "python",
+        "generator": "gapic",
+        "config": "google/cloud/datalabeling/artman_datalabeling_v1beta1.yaml"
+      }
+    }
+  ]
+}

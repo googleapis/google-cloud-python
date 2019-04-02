@@ -22,6 +22,7 @@ from google.oauth2 import service_account
 import google.api_core.gapic_v1.client_info
 import google.api_core.gapic_v1.config
 import google.api_core.gapic_v1.method
+import google.api_core.gapic_v1.routing_header
 import google.api_core.grpc_helpers
 import google.api_core.path_template
 import grpc
@@ -267,6 +268,19 @@ class IAMCredentialsClient(object):
         request = common_pb2.GenerateAccessTokenRequest(
             name=name, scope=scope, delegates=delegates, lifetime=lifetime
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["generate_access_token"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -349,6 +363,19 @@ class IAMCredentialsClient(object):
             delegates=delegates,
             include_email=include_email,
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["generate_id_token"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -424,6 +451,19 @@ class IAMCredentialsClient(object):
         request = common_pb2.SignBlobRequest(
             name=name, payload=payload, delegates=delegates
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["sign_blob"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -499,6 +539,19 @@ class IAMCredentialsClient(object):
         request = common_pb2.SignJwtRequest(
             name=name, payload=payload, delegates=delegates
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["sign_jwt"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -543,20 +596,25 @@ class IAMCredentialsClient(object):
                 (https://tools.ietf.org/html/rfc7523) and must have 'kid' field in the
                 header. Supported signing algorithms: RS256 (RS512, ES256, ES512 coming
                 soon). Mandatory payload fields (along the lines of RFC 7523, section
-                3): - iss: issuer of the token. Must provide a discovery document at
-                $iss/.well-known/openid-configuration . The document needs to be
-                formatted according to section 4.2 of the OpenID Connect Discovery 1.0
-                specification. - iat: Issue time in seconds since epoch. Must be in the
-                past. - exp: Expiration time in seconds since epoch. Must be less than
-                48 hours after iat. We recommend to create tokens that last shorter than
-                6 hours to improve security unless business reasons mandate longer
-                expiration times. Shorter token lifetimes are generally more secure
-                since tokens that have been exfiltrated by attackers can be used for a
-                shorter time. you can configure the maximum lifetime of the incoming
-                token in the configuration of the mapper. The resulting Google token
-                will expire within an hour or at "exp", whichever is earlier. - sub: JWT
-                subject, identity asserted in the JWT. - aud: Configured in the mapper
-                policy. By default the service account email.
+                3):
+
+                -  iss: issuer of the token. Must provide a discovery document at
+                   $iss/.well-known/openid-configuration . The document needs to be
+                   formatted according to section 4.2 of the OpenID Connect Discovery
+                   1.0 specification.
+                -  iat: Issue time in seconds since epoch. Must be in the past.
+                -  exp: Expiration time in seconds since epoch. Must be less than 48
+                   hours after iat. We recommend to create tokens that last shorter than
+                   6 hours to improve security unless business reasons mandate longer
+                   expiration times. Shorter token lifetimes are generally more secure
+                   since tokens that have been exfiltrated by attackers can be used for
+                   a shorter time. you can configure the maximum lifetime of the
+                   incoming token in the configuration of the mapper. The resulting
+                   Google token will expire within an hour or at "exp", whichever is
+                   earlier.
+                -  sub: JWT subject, identity asserted in the JWT.
+                -  aud: Configured in the mapper policy. By default the service account
+                   email.
 
                 Claims from the incoming token can be transferred into the output token
                 accoding to the mapper configuration. The outgoing claim size is
@@ -606,6 +664,19 @@ class IAMCredentialsClient(object):
         request = common_pb2.GenerateIdentityBindingAccessTokenRequest(
             name=name, scope=scope, jwt=jwt
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["generate_identity_binding_access_token"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )

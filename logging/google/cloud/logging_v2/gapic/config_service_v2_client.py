@@ -23,6 +23,7 @@ from google.oauth2 import service_account
 import google.api_core.gapic_v1.client_info
 import google.api_core.gapic_v1.config
 import google.api_core.gapic_v1.method
+import google.api_core.gapic_v1.routing_header
 import google.api_core.grpc_helpers
 import google.api_core.page_iterator
 import google.api_core.path_template
@@ -280,6 +281,19 @@ class ConfigServiceV2Client(object):
         request = logging_config_pb2.ListSinksRequest(
             parent=parent, page_size=page_size
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(
@@ -356,6 +370,19 @@ class ConfigServiceV2Client(object):
             )
 
         request = logging_config_pb2.GetSinkRequest(sink_name=sink_name)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("sink_name", sink_name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["get_sink"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -448,6 +475,19 @@ class ConfigServiceV2Client(object):
         request = logging_config_pb2.CreateSinkRequest(
             parent=parent, sink=sink, unique_writer_identity=unique_writer_identity
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["create_sink"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -561,6 +601,19 @@ class ConfigServiceV2Client(object):
             unique_writer_identity=unique_writer_identity,
             update_mask=update_mask,
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("sink_name", sink_name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["update_sink"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -625,6 +678,19 @@ class ConfigServiceV2Client(object):
             )
 
         request = logging_config_pb2.DeleteSinkRequest(sink_name=sink_name)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("sink_name", sink_name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         self._inner_api_calls["delete_sink"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -711,6 +777,19 @@ class ConfigServiceV2Client(object):
         request = logging_config_pb2.ListExclusionsRequest(
             parent=parent, page_size=page_size
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(
@@ -787,6 +866,19 @@ class ConfigServiceV2Client(object):
             )
 
         request = logging_config_pb2.GetExclusionRequest(name=name)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["get_exclusion"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -866,6 +958,19 @@ class ConfigServiceV2Client(object):
         request = logging_config_pb2.CreateExclusionRequest(
             parent=parent, exclusion=exclusion
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["create_exclusion"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -956,6 +1061,19 @@ class ConfigServiceV2Client(object):
         request = logging_config_pb2.UpdateExclusionRequest(
             name=name, exclusion=exclusion, update_mask=update_mask
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["update_exclusion"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -1018,6 +1136,19 @@ class ConfigServiceV2Client(object):
             )
 
         request = logging_config_pb2.DeleteExclusionRequest(name=name)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         self._inner_api_calls["delete_exclusion"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )

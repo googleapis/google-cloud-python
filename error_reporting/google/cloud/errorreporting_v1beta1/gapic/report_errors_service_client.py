@@ -22,6 +22,7 @@ from google.oauth2 import service_account
 import google.api_core.gapic_v1.client_info
 import google.api_core.gapic_v1.config
 import google.api_core.gapic_v1.method
+import google.api_core.gapic_v1.routing_header
 import google.api_core.grpc_helpers
 import google.api_core.path_template
 import grpc
@@ -249,6 +250,19 @@ class ReportErrorsServiceClient(object):
         request = report_errors_service_pb2.ReportErrorEventRequest(
             project_name=project_name, event=event
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("project_name", project_name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["report_error_event"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
