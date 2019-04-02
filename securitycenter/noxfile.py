@@ -158,6 +158,7 @@ def snippets(session):
     session.run(
         'py.test',
         '--quiet',
+        os.path.join('docs', 'snippets_list_assets.py'),
         os.path.join('docs', 'snippets_security_marks.py'),
         os.path.join('docs', 'snippets_orgs.py'),
         os.path.join('docs', 'snippets_findings.py'),
