@@ -4,6 +4,26 @@
 
 [1]: https://pypi.org/project/google-cloud-automl/#history
 
+## 0.2.0
+
+04-03-2019 09:16 PDT
+
+
+### Implementation Changes
+- Remove classifier for Python 3.4 for end-of-life. ([#7535](https://github.com/googleapis/google-cloud-python/pull/7535))
+- Sort generated classes (via synth). ([#7256](https://github.com/googleapis/google-cloud-python/pull/7256))
+- Protoc-generated serialization update. ([#7074](https://github.com/googleapis/google-cloud-python/pull/7074))
+
+### New Features
+- Video Classification, Text Extraction, Text Sentiment, Tables support. ([#7650](https://github.com/googleapis/google-cloud-python/pull/7650))
+
+### Documentation
+- Updated client library documentation URLs. ([#7307](https://github.com/googleapis/google-cloud-python/pull/7307))
+- AutoML: pick up stub docstring fix in GAPIC generator. ([#6964](https://github.com/googleapis/google-cloud-python/pull/6964))
+
+### Internal / Testing Changes
+- Update copyright headers
+
 ## 0.1.2
 
 12-17-2018 16:27 PST
