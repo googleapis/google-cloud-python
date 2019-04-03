@@ -36,8 +36,7 @@ def test_fetch_all_of_a_kind(ds_entity):
     class SomeKind(ndb.Model):
         foo = ndb.IntegerProperty()
 
-    # query = SomeKind.query()  # Not implemented yet
-    query = ndb.Query(kind=KIND)
+    query = SomeKind.query()
     results = query.fetch()
     assert len(results) == 5
 
@@ -61,8 +60,7 @@ def test_fetch_lots_of_a_kind(dispose_of):
     for key in make_entities().result():
         dispose_of(key._key)
 
-    # query = SomeKind.query()  # Not implemented yet
-    query = ndb.Query(kind=KIND)
+    query = SomeKind.query()
     results = query.fetch()
     assert len(results) == n_entities
 
@@ -84,7 +82,7 @@ def test_ancestor_query(ds_entity):
     class SomeKind(ndb.Model):
         foo = ndb.IntegerProperty()
 
-    query = ndb.Query(ancestor=ndb.Key(KIND, root_id))
+    query = SomeKind.query(ancestor=ndb.Key(KIND, root_id))
     results = query.fetch()
     assert len(results) == 6
 
@@ -103,7 +101,7 @@ def test_projection(ds_entity):
         foo = ndb.IntegerProperty()
         bar = ndb.StringProperty()
 
-    query = ndb.Query(kind=KIND, projection=("foo",))
+    query = SomeKind.query(projection=("foo",))
     results = query.fetch()
     assert len(results) == 2
 
@@ -128,7 +126,7 @@ def test_distinct_on(ds_entity):
         foo = ndb.IntegerProperty()
         bar = ndb.StringProperty()
 
-    query = ndb.Query(kind=KIND, distinct_on=("foo",))
+    query = SomeKind.query(distinct_on=("foo",))
     results = query.fetch()
     assert len(results) == 2
 
@@ -155,7 +153,7 @@ def test_namespace(dispose_of):
     entity2.put()
     dispose_of(entity2.key._key)
 
-    query = ndb.Query(kind=KIND, namespace=OTHER_NAMESPACE)
+    query = SomeKind.query(namespace=OTHER_NAMESPACE)
     results = query.fetch()
     assert len(results) == 1
 
@@ -173,8 +171,7 @@ def test_filter_equal(ds_entity):
     class SomeKind(ndb.Model):
         foo = ndb.IntegerProperty()
 
-    # query = SomeKind.query()  # Not implemented yet
-    query = ndb.Query(kind=KIND).filter(SomeKind.foo == 2)
+    query = SomeKind.query(SomeKind.foo == 2)
     results = query.fetch()
     assert len(results) == 1
     assert results[0].foo == 2
@@ -189,8 +186,7 @@ def test_filter_not_equal(ds_entity):
     class SomeKind(ndb.Model):
         foo = ndb.IntegerProperty()
 
-    # query = SomeKind.query()  # Not implemented yet
-    query = ndb.Query(kind=KIND).filter(SomeKind.foo != 2)
+    query = SomeKind.query(SomeKind.foo != 2)
     results = query.fetch()
     assert len(results) == 4
 
@@ -215,9 +211,7 @@ def test_filter_or(dispose_of):
             dispose_of(key._key)
 
     make_entities().check_success()
-    query = ndb.Query(kind=KIND).filter(
-        ndb.OR(SomeKind.foo == 1, SomeKind.bar == "c")
-    )
+    query = SomeKind.query(ndb.OR(SomeKind.foo == 1, SomeKind.bar == "c"))
     results = query.fetch()
     assert len(results) == 2
 
@@ -234,8 +228,7 @@ def test_order_by_ascending(ds_entity):
     class SomeKind(ndb.Model):
         foo = ndb.IntegerProperty()
 
-    # query = SomeKind.query()  # Not implemented yet
-    query = ndb.Query(kind=KIND).order(SomeKind.foo)
+    query = SomeKind.query().order(SomeKind.foo)
     results = query.fetch()
     assert len(results) == 5
 
@@ -252,7 +245,7 @@ def test_order_by_descending(ds_entity):
         foo = ndb.IntegerProperty()
 
     # query = SomeKind.query()  # Not implemented yet
-    query = ndb.Query(kind=KIND).order(-SomeKind.foo)
+    query = SomeKind.query().order(-SomeKind.foo)
     results = query.fetch()
     assert len(results) == 5
 
@@ -283,9 +276,7 @@ def test_order_by_with_or_filter(dispose_of):
             dispose_of(key._key)
 
     make_entities().check_success()
-    query = ndb.Query(kind=KIND).filter(
-        ndb.OR(SomeKind.bar == "a", SomeKind.bar == "b")
-    )
+    query = SomeKind.query(ndb.OR(SomeKind.bar == "a", SomeKind.bar == "b"))
     query = query.order(SomeKind.foo)
     results = query.fetch()
     assert len(results) == 4

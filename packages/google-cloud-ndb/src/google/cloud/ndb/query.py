@@ -986,43 +986,52 @@ class Query:
 
     Args:
         kind (str): The kind of entities to be queried.
-        ancestor (Key): Entities returned will be descendants of `ancestor`.
-        filters (Union[Node, tuple]): Node representing a filter expression
-            tree. Property filters applied by this query. The sequence
-            is ``(property_name, operator, value)``.
-        order_by (list[Union[str, google.cloud.ndb.model.Property]]): The model
-            properties used to order query results. Renamed `order` in
-            google.cloud.datastore.
-        orders (list[Union[str, google.cloud.ndb.model.Property]]): Deprecated.
-            Synonym for order_by.
-        app (str): The app to restrict results. If not passed, uses the
-            client's value. Renamed `project` in google.cloud.datastore.
+        filters (FilterNode): Node representing a filter expression tree.
+        ancestor (key.Key): Entities returned will be descendants of
+            `ancestor`.
+        order_by (list[Union[str, google.cloud.ndb.model.Property]]): The
+            model properties used to order query results.
+        orders (list[Union[str, google.cloud.ndb.model.Property]]):
+            Deprecated. Synonym for `order_by`.
+        project (str): The project to perform the query in. Also known as the
+            app, in Google App Engine. If not passed, uses the client's value.
+        app (str): Deprecated. Synonym for `project`.
         namespace (str): The namespace to which to restrict results.
             If not passed, uses the client's value.
+        projection (list[str]): The fields to return as part of the query
+            results.
+        distinct_on (list[str]): The field names used to group query
+            results.
+        group_by (list[str]): Deprecated. Synonym for distinct_on.
         default_options (QueryOptions): QueryOptions object.
-        projection (Union[list, tuple]): The fields returned as part of the
-            query results.
-        distinct_on (Union[list, tuple]): The field names used to group query
-            results. Renamed distinct_on in google.cloud.datastore.
-        group_by (Union[list, tuple]): Deprecated. Synonym for distinct_on.
 
-    Raises: TypeError if any of the arguments are invalid.
+    Raises:
+        TypeError: If any of the arguments are invalid.
     """
 
     def __init__(
         self,
         kind=None,
-        ancestor=None,
         filters=None,
+        ancestor=None,
         order_by=None,
         orders=None,
+        project=None,
         app=None,
         namespace=None,
-        default_options=None,
         projection=None,
         distinct_on=None,
         group_by=None,
+        default_options=None,
     ):
+        if app:
+            if project:
+                raise TypeError(
+                    "Cannot use both app and project, they are synonyms. app "
+                    "is deprecated."
+                )
+            project = app
+
         if ancestor is not None:
             if isinstance(ancestor, ParameterizedThing):
                 if isinstance(ancestor, ParameterizedFunction):
@@ -1039,11 +1048,11 @@ class Query:
                     )
                 if not ancestor.id():
                     raise ValueError("ancestor cannot be an incomplete key")
-                if app is not None:
-                    if app != ancestor.app():
-                        raise TypeError("ancestor/app id mismatch")
+                if project is not None:
+                    if project != ancestor.app():
+                        raise TypeError("ancestor/project id mismatch")
                 else:
-                    app = ancestor.app()
+                    project = ancestor.app()
                 if namespace is not None:
                     if namespace != ancestor.namespace():
                         raise TypeError("ancestor/namespace mismatch")
@@ -1086,7 +1095,7 @@ class Query:
         self.ancestor = ancestor
         self.filters = filters
         self.order_by = order_by
-        self.app = app
+        self.project = project
         self.namespace = namespace
         self.default_options = default_options
 
@@ -1104,11 +1113,12 @@ class Query:
 
         if distinct_on is not None and group_by is not None:
             raise TypeError(
-                "Cannot use both group_by and distinct_on, they are synonyms"
-                "(group_by is deprecated now)"
+                "Cannot use both group_by and distinct_on, they are synonyms. "
+                "group_by is deprecated."
             )
         if distinct_on is None:
             distinct_on = group_by
+
         self.distinct_on = None
         if distinct_on is not None:
             if not distinct_on:
@@ -1123,8 +1133,8 @@ class Query:
 
     def __repr__(self):
         args = []
-        if self.app is not None:
-            args.append("app=%r" % self.app)
+        if self.project is not None:
+            args.append("project=%r" % self.project)
         if self.namespace is not None:
             args.append("namespace=%r" % self.namespace)
         if self.kind is not None:
@@ -1192,7 +1202,7 @@ class Query:
             ancestor=self.ancestor,
             filters=new_filters,
             order_by=self.order_by,
-            app=self.app,
+            project=self.project,
             namespace=self.namespace,
             default_options=self.default_options,
             projection=self.projection,
@@ -1222,7 +1232,7 @@ class Query:
             ancestor=self.ancestor,
             filters=self.filters,
             order_by=order_by,
-            app=self.app,
+            project=self.project,
             namespace=self.namespace,
             default_options=self.default_options,
             projection=self.projection,
@@ -1300,7 +1310,7 @@ class Query:
             ancestor=ancestor,
             filters=filters,
             order_by=self.order_by,
-            app=self.app,
+            project=self.project,
             namespace=self.namespace,
             default_options=self.default_options,
             projection=self.projection,

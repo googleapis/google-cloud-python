@@ -28,7 +28,7 @@ from google.cloud.ndb import _datastore_types
 from google.cloud.ndb import exceptions
 from google.cloud.ndb import key as key_module
 from google.cloud.ndb import model
-from google.cloud.ndb import query
+from google.cloud.ndb import query as query_module
 from google.cloud.ndb import tasklets
 import tests.unit.utils
 
@@ -454,13 +454,13 @@ class TestProperty:
     def test__comparison():
         prop = model.Property("sentiment", indexed=True)
         filter_node = prop._comparison(">=", 0.0)
-        assert filter_node == query.FilterNode("sentiment", ">=", 0.0)
+        assert filter_node == query_module.FilterNode("sentiment", ">=", 0.0)
 
     @staticmethod
     def test__comparison_empty_value():
         prop = model.Property("height", indexed=True)
         filter_node = prop._comparison("=", None)
-        assert filter_node == query.FilterNode("height", "=", None)
+        assert filter_node == query_module.FilterNode("height", "=", None)
         # Cache is untouched.
         assert model.Property._FIND_METHODS_CACHE == {}
 
@@ -468,7 +468,7 @@ class TestProperty:
     def test___eq__():
         prop = model.Property("name", indexed=True)
         value = 1337
-        expected = query.FilterNode("name", "=", value)
+        expected = query_module.FilterNode("name", "=", value)
 
         filter_node_left = prop == value
         assert filter_node_left == expected
@@ -479,9 +479,9 @@ class TestProperty:
     def test___ne__():
         prop = model.Property("name", indexed=True)
         value = 7.0
-        expected = query.DisjunctionNode(
-            query.FilterNode("name", "<", value),
-            query.FilterNode("name", ">", value),
+        expected = query_module.DisjunctionNode(
+            query_module.FilterNode("name", "<", value),
+            query_module.FilterNode("name", ">", value),
         )
 
         or_node_left = prop != value
@@ -493,7 +493,7 @@ class TestProperty:
     def test___lt__():
         prop = model.Property("name", indexed=True)
         value = 2.0
-        expected = query.FilterNode("name", "<", value)
+        expected = query_module.FilterNode("name", "<", value)
 
         filter_node_left = prop < value
         assert filter_node_left == expected
@@ -504,7 +504,7 @@ class TestProperty:
     def test___le__():
         prop = model.Property("name", indexed=True)
         value = 20.0
-        expected = query.FilterNode("name", "<=", value)
+        expected = query_module.FilterNode("name", "<=", value)
 
         filter_node_left = prop <= value
         assert filter_node_left == expected
@@ -515,7 +515,7 @@ class TestProperty:
     def test___gt__():
         prop = model.Property("name", indexed=True)
         value = "new"
-        expected = query.FilterNode("name", ">", value)
+        expected = query_module.FilterNode("name", ">", value)
 
         filter_node_left = prop > value
         assert filter_node_left == expected
@@ -526,7 +526,7 @@ class TestProperty:
     def test___ge__():
         prop = model.Property("name", indexed=True)
         value = "old"
-        expected = query.FilterNode("name", ">=", value)
+        expected = query_module.FilterNode("name", ">=", value)
 
         filter_node_left = prop >= value
         assert filter_node_left == expected
@@ -555,10 +555,10 @@ class TestProperty:
     def test__IN():
         prop = model.Property("name", indexed=True)
         or_node = prop._IN(["a", None, "xy"])
-        expected = query.DisjunctionNode(
-            query.FilterNode("name", "=", "a"),
-            query.FilterNode("name", "=", None),
-            query.FilterNode("name", "=", "xy"),
+        expected = query_module.DisjunctionNode(
+            query_module.FilterNode("name", "=", "a"),
+            query_module.FilterNode("name", "=", None),
+            query_module.FilterNode("name", "=", "xy"),
         )
         assert or_node == expected
         # Also verify the alias
@@ -568,7 +568,7 @@ class TestProperty:
     def test___neg__():
         prop = model.Property("name")
         order = -prop
-        assert isinstance(order, query.PropertyOrder)
+        assert isinstance(order, query_module.PropertyOrder)
         assert order.name == "name"
         assert order.reverse is True
         order = -order
@@ -578,7 +578,7 @@ class TestProperty:
     def test___pos__():
         prop = model.Property("name")
         order = +prop
-        assert isinstance(order, query.PropertyOrder)
+        assert isinstance(order, query_module.PropertyOrder)
         assert order.name == "name"
         assert order.reverse is False
 
@@ -1379,7 +1379,7 @@ class TestModelKey:
         prop = model.ModelKey()
         value = key_module.Key("say", "quay")
         filter_node = prop._comparison(">=", value)
-        assert filter_node == query.FilterNode("__key__", ">=", value)
+        assert filter_node == query_module.FilterNode("__key__", ">=", value)
 
     @staticmethod
     def test_compare_invalid():
@@ -2947,6 +2947,47 @@ class TestModel:
         properties = ["x"]
         with pytest.raises(model.InvalidPropertyError):
             model.Model._check_properties(properties)
+
+    @staticmethod
+    def test_query():
+        class XModel(model.Model):
+            x = model.IntegerProperty()
+
+        query = XModel.query(XModel.x == 42)
+        assert query.kind == "XModel"
+        assert query.filters == (XModel.x == 42)
+
+    @staticmethod
+    def test_query_distinct():
+        class XModel(model.Model):
+            x = model.IntegerProperty()
+
+        query = XModel.query(distinct=True, projection=("x",))
+        assert query.distinct_on == ("x",)
+
+    @staticmethod
+    def test_query_distinct_no_projection():
+        class XModel(model.Model):
+            x = model.IntegerProperty()
+
+        with pytest.raises(TypeError):
+            XModel.query(distinct=True)
+
+    @staticmethod
+    def test_query_distinct_w_distinct_on():
+        class XModel(model.Model):
+            x = model.IntegerProperty()
+
+        with pytest.raises(TypeError):
+            XModel.query(distinct=True, distinct_on=("x",))
+
+    @staticmethod
+    def test_query_distinct_w_group_by():
+        class XModel(model.Model):
+            x = model.IntegerProperty()
+
+        with pytest.raises(TypeError):
+            XModel.query(distinct=True, group_by=("x",))
 
 
 class Test_entity_from_protobuf:

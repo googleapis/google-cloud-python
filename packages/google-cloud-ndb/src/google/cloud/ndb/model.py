@@ -3973,6 +3973,83 @@ class Model(metaclass=MetaModel):
 
     put_async = _put_async
 
+    @classmethod
+    def _query(
+        cls,
+        *filters,
+        distinct=False,
+        ancestor=None,
+        order_by=None,
+        orders=None,
+        project=None,
+        app=None,
+        namespace=None,
+        projection=None,
+        distinct_on=None,
+        group_by=None,
+    ):
+        """Generate a query for this class.
+
+        Args:
+            *filters (query.FilterNode): Filters to apply to this query.
+            distinct (Optional[bool]): Setting this to :data:`True` is
+                shorthand for setting `distinct_on` to `projection`.
+            ancestor (key.Key): Entities returned will be descendants of
+                `ancestor`.
+            order_by (list[Union[str, google.cloud.ndb.model.Property]]):
+                The model properties used to order query results.
+            orders (list[Union[str, google.cloud.ndb.model.Property]]):
+                Deprecated. Synonym for `order_by`.
+            project (str): The project to perform the query in. Also known as
+                the app, in Google App Engine. If not passed, uses the
+                client's value.
+            app (str): Deprecated. Synonym for `project`.
+            namespace (str): The namespace to which to restrict results.
+                If not passed, uses the client's value.
+            projection (list[str]): The fields to return as part of the
+                query results.
+            distinct_on (list[str]): The field names used to group query
+                results.
+            group_by (list[str]): Deprecated. Synonym for distinct_on.
+        """
+        # Validating distinct
+        if distinct:
+            if distinct_on:
+                raise TypeError(
+                    "Cannot use `distinct` and `distinct_on` together."
+                )
+
+            if group_by:
+                raise TypeError(
+                    "Cannot use `distinct` and `group_by` together."
+                )
+
+            if not projection:
+                raise TypeError("Cannot use `distinct` without `projection`.")
+
+            distinct_on = projection
+
+        # Avoid circular import
+        from google.cloud.ndb import query as query_module
+
+        query = query_module.Query(
+            kind=cls._get_kind(),
+            ancestor=ancestor,
+            order_by=order_by,
+            orders=orders,
+            project=project,
+            app=app,
+            namespace=namespace,
+            projection=projection,
+            distinct_on=distinct_on,
+            group_by=group_by,
+        )
+        query = query.filter(*cls._default_filters())
+        query = query.filter(*filters)
+        return query
+
+    query = _query
+
 
 class Expando(Model):
     __slots__ = ()

@@ -1009,6 +1009,11 @@ class TestQuery:
         assert query.order_by is None
 
     @staticmethod
+    def test_constructor_app_and_project():
+        with pytest.raises(TypeError):
+            query_module.Query(app="foo", project="bar")
+
+    @staticmethod
     @pytest.mark.usefixtures("in_context")
     def test_constructor_with_ancestor_parameterized_function():
         query = query_module.Query(
@@ -1022,10 +1027,10 @@ class TestQuery:
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")
-    def test_constructor_with_ancestor_and_app():
+    def test_constructor_with_ancestor_and_project():
         key = key_module.Key("a", "b", app="app")
-        query = query_module.Query(ancestor=key, app="app")
-        assert query.app == "app"
+        query = query_module.Query(ancestor=key, project="app")
+        assert query.project == "app"
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")
@@ -1183,7 +1188,7 @@ class TestQuery:
             order_by=[],
         )
         rep = (
-            "Query(app='app', namespace='space', kind='Foo', ancestor="
+            "Query(project='app', namespace='space', kind='Foo', ancestor="
             "Key('a', 'b', app='app', namespace='space'), filters="
             "FilterNode('f', None, None), order_by=[], projection=['x'], "
             "distinct_on=['X'], default_options=QueryOptions(kind='Bar'))"

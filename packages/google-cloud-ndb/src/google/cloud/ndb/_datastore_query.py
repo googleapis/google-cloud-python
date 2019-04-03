@@ -98,7 +98,7 @@ def fetch(query):
     """
     client = context_module.get_context().client
 
-    project_id = query.app
+    project_id = query.project
     if not project_id:
         project_id = client.project
 

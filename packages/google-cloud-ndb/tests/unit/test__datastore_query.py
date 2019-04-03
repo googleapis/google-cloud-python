@@ -68,7 +68,7 @@ class Test_fetch:
     @mock.patch("google.cloud.ndb._datastore_query._query_to_protobuf")
     def test_project_from_query(_query_to_protobuf, _run_query):
         query = mock.Mock(
-            app="myapp",
+            project="myapp",
             filters=None,
             order_by=None,
             namespace="zeta",
@@ -96,7 +96,7 @@ class Test_fetch:
     @mock.patch("google.cloud.ndb._datastore_query._query_to_protobuf")
     def test_project_from_context(_query_to_protobuf, _run_query, in_context):
         query = mock.Mock(
-            app=None,
+            project=None,
             filters=None,
             order_by=None,
             namespace=None,
@@ -127,7 +127,7 @@ class Test_fetch:
             _to_filter=mock.Mock(return_value="thefilter"), spec="_to_filter"
         )
         query = mock.Mock(
-            app=None,
+            project=None,
             filters=filters,
             order_by=None,
             namespace=None,
@@ -163,7 +163,7 @@ class Test_fetch:
             spec="_to_filter",
         )
         query = mock.Mock(
-            app=None,
+            project=None,
             filters=filters,
             order_by=None,
             namespace=None,
