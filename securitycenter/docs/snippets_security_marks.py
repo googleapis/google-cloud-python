@@ -71,7 +71,6 @@ def finding_name(source_name):
     from google.cloud.securitycenter_v1.proto.finding_pb2 import Finding
     from google.protobuf.timestamp_pb2 import Timestamp
 
-
     client = securitycenter.SecurityCenterClient()
 
     now_proto = Timestamp()
@@ -84,7 +83,7 @@ def finding_name(source_name):
             "state": Finding.ACTIVE,
             "category": "C1",
             "event_time": now_proto,
-            'resource_name': "//cloudresourcemanager.googleapis.com/organizations/11232"
+            "resource_name": "//cloudresourcemanager.googleapis.com/organizations/11232",
         },
     )
     client.create_finding(
