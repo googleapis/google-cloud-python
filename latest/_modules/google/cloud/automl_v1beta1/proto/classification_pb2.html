@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.automl_v1beta1.proto.classification_pb2 &#8212; google-cloud adf203f documentation</title>
+    <title>google.cloud.automl_v1beta1.proto.classification_pb2 &#8212; google-cloud bae67ca documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -52,6 +52,9 @@
 
 
 <span class="kn">from</span> <span class="nn">google.api</span> <span class="k">import</span> <span class="n">annotations_pb2</span> <span class="k">as</span> <span class="n">google_dot_api_dot_annotations__pb2</span>
+<span class="kn">from</span> <span class="nn">google.cloud.automl_v1beta1.proto</span> <span class="k">import</span> <span class="p">(</span>
+    <span class="n">temporal_pb2</span> <span class="k">as</span> <span class="n">google_dot_cloud_dot_automl__v1beta1_dot_proto_dot_temporal__pb2</span><span class="p">,</span>
+<span class="p">)</span>
 
 
 <span class="n">DESCRIPTOR</span> <span class="o">=</span> <span class="n">_descriptor</span><span class="o">.</span><span class="n">FileDescriptor</span><span class="p">(</span>
@@ -62,9 +65,12 @@
         <span class="s2">&quot;</span><span class="se">\n\037</span><span class="s2">com.google.cloud.automl.v1beta1B</span><span class="se">\023</span><span class="s2">ClassificationProtoZAgoogle.golang.org/genproto/googleapis/cloud/automl/v1beta1;automl</span><span class="se">\312\002\033</span><span class="s2">Google</span><span class="se">\\</span><span class="s2">Cloud</span><span class="se">\\</span><span class="s2">AutoMl</span><span class="se">\\</span><span class="s2">V1beta1&quot;</span>
     <span class="p">),</span>
     <span class="n">serialized_pb</span><span class="o">=</span><span class="n">_b</span><span class="p">(</span>
-        <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">6google/cloud/automl_v1beta1/proto/classification.proto</span><span class="se">\x12\x1b</span><span class="s1">google.cloud.automl.v1beta1</span><span class="se">\x1a\x1c</span><span class="s1">google/api/annotations.proto&quot;)</span><span class="se">\n\x18\x43</span><span class="s1">lassificationAnnotation</span><span class="se">\x12\r\n\x05</span><span class="s1">score</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x02</span><span class="s1">&quot;</span><span class="se">\x9d\x05\n\x1f\x43</span><span class="s1">lassificationEvaluationMetrics</span><span class="se">\x12\x0e\n\x06\x61</span><span class="s1">u_prc</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x02\x12\x13\n\x0b\x62\x61</span><span class="s1">se_au_prc</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x02\x12</span><span class="s1">u</span><span class="se">\n\x18\x63</span><span class="s1">onfidence_metrics_entry</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">S.google.cloud.automl.v1beta1.ClassificationEvaluationMetrics.ConfidenceMetricsEntry</span><span class="se">\x12\x66\n\x10\x63</span><span class="s1">onfusion_matrix</span><span class="se">\x18\x04</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">L.google.cloud.automl.v1beta1.ClassificationEvaluationMetrics.ConfusionMatrix</span><span class="se">\x12\x1a\n\x12\x61</span><span class="s1">nnotation_spec_id</span><span class="se">\x18\x05</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\t\x1a\xac\x01\n\x16\x43</span><span class="s1">onfidenceMetricsEntry</span><span class="se">\x12\x1c\n\x14\x63</span><span class="s1">onfidence_threshold</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x02\x12\x0e\n\x06</span><span class="s1">recall</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x02\x12\x11\n\t</span><span class="s1">precision</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x02\x12\x10\n\x08\x66\x31</span><span class="s1">_score</span><span class="se">\x18\x04</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x02\x12\x12\n\n</span><span class="s1">recall_at1</span><span class="se">\x18\x05</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x02\x12\x15\n\r</span><span class="s1">precision_at1</span><span class="se">\x18\x06</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x02\x12\x14\n\x0c\x66\x31</span><span class="s1">_score_at1</span><span class="se">\x18\x07</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x02\x1a\xaa\x01\n\x0f\x43</span><span class="s1">onfusionMatrix</span><span class="se">\x12\x1a\n\x12\x61</span><span class="s1">nnotation_spec_id</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\t\x12</span><span class="s1">]</span><span class="se">\n\x03</span><span class="s1">row</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">P.google.cloud.automl.v1beta1.ClassificationEvaluationMetrics.ConfusionMatrix.Row</span><span class="se">\x1a\x1c\n\x03</span><span class="s1">Row</span><span class="se">\x12\x15\n\r</span><span class="s1">example_count</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x05</span><span class="s1">*Y</span><span class="se">\n\x12\x43</span><span class="s1">lassificationType</span><span class="se">\x12</span><span class="s1">#</span><span class="se">\n\x1f\x43</span><span class="s1">LASSIFICATION_TYPE_UNSPECIFIED</span><span class="se">\x10\x00\x12\x0e\n\n</span><span class="s1">MULTICLASS</span><span class="se">\x10\x01\x12\x0e\n\n</span><span class="s1">MULTILABEL</span><span class="se">\x10\x02\x42\x97\x01\n\x1f\x63</span><span class="s1">om.google.cloud.automl.v1beta1B</span><span class="se">\x13\x43</span><span class="s1">lassificationProtoZAgoogle.golang.org/genproto/googleapis/cloud/automl/v1beta1;automl</span><span class="se">\xca\x02\x1b</span><span class="s1">Google</span><span class="se">\\</span><span class="s1">Cloud</span><span class="se">\\</span><span class="s1">AutoMl</span><span class="se">\\</span><span class="s1">V1beta1b</span><span class="se">\x06</span><span class="s1">proto3&#39;</span>
+        <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">6google/cloud/automl_v1beta1/proto/classification.proto</span><span class="se">\x12\x1b</span><span class="s1">google.cloud.automl.v1beta1</span><span class="se">\x1a\x1c</span><span class="s1">google/api/annotations.proto</span><span class="se">\x1a\x30</span><span class="s1">google/cloud/automl_v1beta1/proto/temporal.proto&quot;)</span><span class="se">\n\x18\x43</span><span class="s1">lassificationAnnotation</span><span class="se">\x12\r\n\x05</span><span class="s1">score</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x02</span><span class="s1">&quot;</span><span class="se">\xc7\x01\n\x1d</span><span class="s1">VideoClassificationAnnotation</span><span class="se">\x12\x0c\n\x04</span><span class="s1">type</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12</span><span class="s1">X</span><span class="se">\n\x19\x63</span><span class="s1">lassification_annotation</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x35</span><span class="s1">.google.cloud.automl.v1beta1.ClassificationAnnotation</span><span class="se">\x12</span><span class="s1">&gt;</span><span class="se">\n\x0c</span><span class="s1">time_segment</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">(.google.cloud.automl.v1beta1.TimeSegment&quot;</span><span class="se">\x93\x07\n\x1f\x43</span><span class="s1">lassificationEvaluationMetrics</span><span class="se">\x12\x0e\n\x06\x61</span><span class="s1">u_prc</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x02\x12\x17\n\x0b\x62\x61</span><span class="s1">se_au_prc</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x02\x42\x02\x18\x01\x12\x0e\n\x06\x61</span><span class="s1">u_roc</span><span class="se">\x18\x06</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x02\x12\x10\n\x08</span><span class="s1">log_loss</span><span class="se">\x18\x07</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x02\x12</span><span class="s1">u</span><span class="se">\n\x18\x63</span><span class="s1">onfidence_metrics_entry</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">S.google.cloud.automl.v1beta1.ClassificationEvaluationMetrics.ConfidenceMetricsEntry</span><span class="se">\x12\x66\n\x10\x63</span><span class="s1">onfusion_matrix</span><span class="se">\x18\x04</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">L.google.cloud.automl.v1beta1.ClassificationEvaluationMetrics.ConfusionMatrix</span><span class="se">\x12\x1a\n\x12\x61</span><span class="s1">nnotation_spec_id</span><span class="se">\x18\x05</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\t\x1a\xfc\x02\n\x16\x43</span><span class="s1">onfidenceMetricsEntry</span><span class="se">\x12\x1c\n\x14\x63</span><span class="s1">onfidence_threshold</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x02\x12\x1a\n\x12</span><span class="s1">position_threshold</span><span class="se">\x18\x0e</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x05\x12\x0e\n\x06</span><span class="s1">recall</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x02\x12\x11\n\t</span><span class="s1">precision</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x02\x12\x1b\n\x13\x66\x61</span><span class="s1">lse_positive_rate</span><span class="se">\x18\x08</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x02\x12\x10\n\x08\x66\x31</span><span class="s1">_score</span><span class="se">\x18\x04</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x02\x12\x12\n\n</span><span class="s1">recall_at1</span><span class="se">\x18\x05</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x02\x12\x15\n\r</span><span class="s1">precision_at1</span><span class="se">\x18\x06</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x02\x12\x1f\n\x17\x66\x61</span><span class="s1">lse_positive_rate_at1</span><span class="se">\x18\t</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x02\x12\x14\n\x0c\x66\x31</span><span class="s1">_score_at1</span><span class="se">\x18\x07</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x02\x12\x1b\n\x13</span><span class="s1">true_positive_count</span><span class="se">\x18\n</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x03\x12\x1c\n\x14\x66\x61</span><span class="s1">lse_positive_count</span><span class="se">\x18\x0b</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x03\x12\x1c\n\x14\x66\x61</span><span class="s1">lse_negative_count</span><span class="se">\x18\x0c</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x03\x12\x1b\n\x13</span><span class="s1">true_negative_count</span><span class="se">\x18\r</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x03\x1a\xaa\x01\n\x0f\x43</span><span class="s1">onfusionMatrix</span><span class="se">\x12\x1a\n\x12\x61</span><span class="s1">nnotation_spec_id</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\t\x12</span><span class="s1">]</span><span class="se">\n\x03</span><span class="s1">row</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">P.google.cloud.automl.v1beta1.ClassificationEvaluationMetrics.ConfusionMatrix.Row</span><span class="se">\x1a\x1c\n\x03</span><span class="s1">Row</span><span class="se">\x12\x15\n\r</span><span class="s1">example_count</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x05</span><span class="s1">*Y</span><span class="se">\n\x12\x43</span><span class="s1">lassificationType</span><span class="se">\x12</span><span class="s1">#</span><span class="se">\n\x1f\x43</span><span class="s1">LASSIFICATION_TYPE_UNSPECIFIED</span><span class="se">\x10\x00\x12\x0e\n\n</span><span class="s1">MULTICLASS</span><span class="se">\x10\x01\x12\x0e\n\n</span><span class="s1">MULTILABEL</span><span class="se">\x10\x02\x42\x97\x01\n\x1f\x63</span><span class="s1">om.google.cloud.automl.v1beta1B</span><span class="se">\x13\x43</span><span class="s1">lassificationProtoZAgoogle.golang.org/genproto/googleapis/cloud/automl/v1beta1;automl</span><span class="se">\xca\x02\x1b</span><span class="s1">Google</span><span class="se">\\</span><span class="s1">Cloud</span><span class="se">\\</span><span class="s1">AutoMl</span><span class="se">\\</span><span class="s1">V1beta1b</span><span class="se">\x06</span><span class="s1">proto3&#39;</span>
     <span class="p">),</span>
-    <span class="n">dependencies</span><span class="o">=</span><span class="p">[</span><span class="n">google_dot_api_dot_annotations__pb2</span><span class="o">.</span><span class="n">DESCRIPTOR</span><span class="p">],</span>
+    <span class="n">dependencies</span><span class="o">=</span><span class="p">[</span>
+        <span class="n">google_dot_api_dot_annotations__pb2</span><span class="o">.</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+        <span class="n">google_dot_cloud_dot_automl__v1beta1_dot_proto_dot_temporal__pb2</span><span class="o">.</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+    <span class="p">],</span>
 <span class="p">)</span>
 
 <span class="n">_CLASSIFICATIONTYPE</span> <span class="o">=</span> <span class="n">_descriptor</span><span class="o">.</span><span class="n">EnumDescriptor</span><span class="p">(</span>
@@ -89,8 +95,8 @@
     <span class="p">],</span>
     <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">832</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">921</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">1330</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">1419</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="n">_sym_db</span><span class="o">.</span><span class="n">RegisterEnumDescriptor</span><span class="p">(</span><span class="n">_CLASSIFICATIONTYPE</span><span class="p">)</span>
 
@@ -134,8 +140,83 @@
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">117</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">158</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">167</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">208</span><span class="p">,</span>
+<span class="p">)</span>
+
+
+<span class="n">_VIDEOCLASSIFICATIONANNOTATION</span> <span class="o">=</span> <span class="n">_descriptor</span><span class="o">.</span><span class="n">Descriptor</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;VideoClassificationAnnotation&quot;</span><span class="p">,</span>
+    <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.cloud.automl.v1beta1.VideoClassificationAnnotation&quot;</span><span class="p">,</span>
+    <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+    <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">fields</span><span class="o">=</span><span class="p">[</span>
+        <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;type&quot;</span><span class="p">,</span>
+            <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.cloud.automl.v1beta1.VideoClassificationAnnotation.type&quot;</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">number</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span>
+            <span class="n">cpp_type</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">default_value</span><span class="o">=</span><span class="n">_b</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">),</span>
+            <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;classification_annotation&quot;</span><span class="p">,</span>
+            <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.cloud.automl.v1beta1.VideoClassificationAnnotation.classification_annotation&quot;</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">number</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span>
+            <span class="n">cpp_type</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">default_value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;time_segment&quot;</span><span class="p">,</span>
+            <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.cloud.automl.v1beta1.VideoClassificationAnnotation.time_segment&quot;</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="n">number</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span>
+            <span class="n">cpp_type</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">default_value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+        <span class="p">),</span>
+    <span class="p">],</span>
+    <span class="n">extensions</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">nested_types</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">enum_types</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">is_extendable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
+    <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">211</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">410</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -165,9 +246,27 @@
             <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
         <span class="p">),</span>
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;position_threshold&quot;</span><span class="p">,</span>
+            <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.cloud.automl.v1beta1.ClassificationEvaluationMetrics.ConfidenceMetricsEntry.position_threshold&quot;</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">number</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+            <span class="n">cpp_type</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">default_value</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
             <span class="n">name</span><span class="o">=</span><span class="s2">&quot;recall&quot;</span><span class="p">,</span>
             <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.cloud.automl.v1beta1.ClassificationEvaluationMetrics.ConfidenceMetricsEntry.recall&quot;</span><span class="p">,</span>
-            <span class="n">index</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
             <span class="n">number</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
             <span class="nb">type</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
             <span class="n">cpp_type</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
@@ -185,8 +284,26 @@
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
             <span class="n">name</span><span class="o">=</span><span class="s2">&quot;precision&quot;</span><span class="p">,</span>
             <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.cloud.automl.v1beta1.ClassificationEvaluationMetrics.ConfidenceMetricsEntry.precision&quot;</span><span class="p">,</span>
-            <span class="n">index</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
             <span class="n">number</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="n">cpp_type</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">default_value</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span>
+            <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;false_positive_rate&quot;</span><span class="p">,</span>
+            <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.cloud.automl.v1beta1.ClassificationEvaluationMetrics.ConfidenceMetricsEntry.false_positive_rate&quot;</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+            <span class="n">number</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span>
             <span class="nb">type</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
             <span class="n">cpp_type</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
             <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
@@ -203,7 +320,7 @@
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
             <span class="n">name</span><span class="o">=</span><span class="s2">&quot;f1_score&quot;</span><span class="p">,</span>
             <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.cloud.automl.v1beta1.ClassificationEvaluationMetrics.ConfidenceMetricsEntry.f1_score&quot;</span><span class="p">,</span>
-            <span class="n">index</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
             <span class="n">number</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
             <span class="nb">type</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
             <span class="n">cpp_type</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
@@ -221,7 +338,7 @@
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
             <span class="n">name</span><span class="o">=</span><span class="s2">&quot;recall_at1&quot;</span><span class="p">,</span>
             <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.cloud.automl.v1beta1.ClassificationEvaluationMetrics.ConfidenceMetricsEntry.recall_at1&quot;</span><span class="p">,</span>
-            <span class="n">index</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
             <span class="n">number</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
             <span class="nb">type</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
             <span class="n">cpp_type</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
@@ -239,8 +356,26 @@
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
             <span class="n">name</span><span class="o">=</span><span class="s2">&quot;precision_at1&quot;</span><span class="p">,</span>
             <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.cloud.automl.v1beta1.ClassificationEvaluationMetrics.ConfidenceMetricsEntry.precision_at1&quot;</span><span class="p">,</span>
-            <span class="n">index</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span>
             <span class="n">number</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="n">cpp_type</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">default_value</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span>
+            <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;false_positive_rate_at1&quot;</span><span class="p">,</span>
+            <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.cloud.automl.v1beta1.ClassificationEvaluationMetrics.ConfidenceMetricsEntry.false_positive_rate_at1&quot;</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span>
+            <span class="n">number</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span>
             <span class="nb">type</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
             <span class="n">cpp_type</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
             <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
@@ -257,13 +392,85 @@
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
             <span class="n">name</span><span class="o">=</span><span class="s2">&quot;f1_score_at1&quot;</span><span class="p">,</span>
             <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.cloud.automl.v1beta1.ClassificationEvaluationMetrics.ConfidenceMetricsEntry.f1_score_at1&quot;</span><span class="p">,</span>
-            <span class="n">index</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span>
             <span class="n">number</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span>
             <span class="nb">type</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
             <span class="n">cpp_type</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
             <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
             <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">default_value</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span>
+            <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;true_positive_count&quot;</span><span class="p">,</span>
+            <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.cloud.automl.v1beta1.ClassificationEvaluationMetrics.ConfidenceMetricsEntry.true_positive_count&quot;</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+            <span class="n">number</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+            <span class="n">cpp_type</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">default_value</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;false_positive_count&quot;</span><span class="p">,</span>
+            <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.cloud.automl.v1beta1.ClassificationEvaluationMetrics.ConfidenceMetricsEntry.false_positive_count&quot;</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span>
+            <span class="n">number</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+            <span class="n">cpp_type</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">default_value</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;false_negative_count&quot;</span><span class="p">,</span>
+            <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.cloud.automl.v1beta1.ClassificationEvaluationMetrics.ConfidenceMetricsEntry.false_negative_count&quot;</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span>
+            <span class="n">number</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+            <span class="n">cpp_type</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">default_value</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;true_negative_count&quot;</span><span class="p">,</span>
+            <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.cloud.automl.v1beta1.ClassificationEvaluationMetrics.ConfidenceMetricsEntry.true_negative_count&quot;</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">13</span><span class="p">,</span>
+            <span class="n">number</span><span class="o">=</span><span class="mi">13</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+            <span class="n">cpp_type</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">default_value</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
             <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -281,8 +488,8 @@
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">485</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">657</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">775</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">1155</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="n">_CLASSIFICATIONEVALUATIONMETRICS_CONFUSIONMATRIX_ROW</span> <span class="o">=</span> <span class="n">_descriptor</span><span class="o">.</span><span class="n">Descriptor</span><span class="p">(</span>
@@ -319,8 +526,8 @@
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">802</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">830</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">1300</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">1328</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="n">_CLASSIFICATIONEVALUATIONMETRICS_CONFUSIONMATRIX</span> <span class="o">=</span> <span class="n">_descriptor</span><span class="o">.</span><span class="n">Descriptor</span><span class="p">(</span>
@@ -375,8 +582,8 @@
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">660</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">830</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">1158</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">1328</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="n">_CLASSIFICATIONEVALUATIONMETRICS</span> <span class="o">=</span> <span class="n">_descriptor</span><span class="o">.</span><span class="n">Descriptor</span><span class="p">(</span>
@@ -419,13 +626,49 @@
             <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="n">_b</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\030\001</span><span class="s2">&quot;</span><span class="p">),</span>
+            <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;au_roc&quot;</span><span class="p">,</span>
+            <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.cloud.automl.v1beta1.ClassificationEvaluationMetrics.au_roc&quot;</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="n">number</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="n">cpp_type</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">default_value</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span>
+            <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;log_loss&quot;</span><span class="p">,</span>
+            <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.cloud.automl.v1beta1.ClassificationEvaluationMetrics.log_loss&quot;</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+            <span class="n">number</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="n">cpp_type</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">default_value</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span>
+            <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
         <span class="p">),</span>
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
             <span class="n">name</span><span class="o">=</span><span class="s2">&quot;confidence_metrics_entry&quot;</span><span class="p">,</span>
             <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.cloud.automl.v1beta1.ClassificationEvaluationMetrics.confidence_metrics_entry&quot;</span><span class="p">,</span>
-            <span class="n">index</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
             <span class="n">number</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
             <span class="nb">type</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span>
             <span class="n">cpp_type</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
@@ -443,7 +686,7 @@
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
             <span class="n">name</span><span class="o">=</span><span class="s2">&quot;confusion_matrix&quot;</span><span class="p">,</span>
             <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.cloud.automl.v1beta1.ClassificationEvaluationMetrics.confusion_matrix&quot;</span><span class="p">,</span>
-            <span class="n">index</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
             <span class="n">number</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
             <span class="nb">type</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span>
             <span class="n">cpp_type</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
@@ -461,7 +704,7 @@
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
             <span class="n">name</span><span class="o">=</span><span class="s2">&quot;annotation_spec_id&quot;</span><span class="p">,</span>
             <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.cloud.automl.v1beta1.ClassificationEvaluationMetrics.annotation_spec_id&quot;</span><span class="p">,</span>
-            <span class="n">index</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
             <span class="n">number</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
             <span class="nb">type</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span>
             <span class="n">cpp_type</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span>
@@ -488,10 +731,18 @@
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">161</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">830</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">413</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">1328</span><span class="p">,</span>
 <span class="p">)</span>
 
+<span class="n">_VIDEOCLASSIFICATIONANNOTATION</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span>
+    <span class="s2">&quot;classification_annotation&quot;</span>
+<span class="p">]</span><span class="o">.</span><span class="n">message_type</span> <span class="o">=</span> <span class="n">_CLASSIFICATIONANNOTATION</span>
+<span class="n">_VIDEOCLASSIFICATIONANNOTATION</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span>
+    <span class="s2">&quot;time_segment&quot;</span>
+<span class="p">]</span><span class="o">.</span><span class="n">message_type</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">google_dot_cloud_dot_automl__v1beta1_dot_proto_dot_temporal__pb2</span><span class="o">.</span><span class="n">_TIMESEGMENT</span>
+<span class="p">)</span>
 <span class="n">_CLASSIFICATIONEVALUATIONMETRICS_CONFIDENCEMETRICSENTRY</span><span class="o">.</span><span class="n">containing_type</span> <span class="o">=</span> <span class="p">(</span>
     <span class="n">_CLASSIFICATIONEVALUATIONMETRICS</span>
 <span class="p">)</span>
@@ -511,6 +762,9 @@
     <span class="s2">&quot;confusion_matrix&quot;</span>
 <span class="p">]</span><span class="o">.</span><span class="n">message_type</span> <span class="o">=</span> <span class="n">_CLASSIFICATIONEVALUATIONMETRICS_CONFUSIONMATRIX</span>
 <span class="n">DESCRIPTOR</span><span class="o">.</span><span class="n">message_types_by_name</span><span class="p">[</span><span class="s2">&quot;ClassificationAnnotation&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_CLASSIFICATIONANNOTATION</span>
+<span class="n">DESCRIPTOR</span><span class="o">.</span><span class="n">message_types_by_name</span><span class="p">[</span>
+    <span class="s2">&quot;VideoClassificationAnnotation&quot;</span>
+<span class="p">]</span> <span class="o">=</span> <span class="n">_VIDEOCLASSIFICATIONANNOTATION</span>
 <span class="n">DESCRIPTOR</span><span class="o">.</span><span class="n">message_types_by_name</span><span class="p">[</span>
     <span class="s2">&quot;ClassificationEvaluationMetrics&quot;</span>
 <span class="p">]</span> <span class="o">=</span> <span class="n">_CLASSIFICATIONEVALUATIONMETRICS</span>
@@ -539,6 +793,50 @@
 <span class="p">)</span>
 <span class="n">_sym_db</span><span class="o">.</span><span class="n">RegisterMessage</span><span class="p">(</span><span class="n">ClassificationAnnotation</span><span class="p">)</span>
 
+<span class="n">VideoClassificationAnnotation</span> <span class="o">=</span> <span class="n">_reflection</span><span class="o">.</span><span class="n">GeneratedProtocolMessageType</span><span class="p">(</span>
+    <span class="s2">&quot;VideoClassificationAnnotation&quot;</span><span class="p">,</span>
+    <span class="p">(</span><span class="n">_message</span><span class="o">.</span><span class="n">Message</span><span class="p">,),</span>
+    <span class="nb">dict</span><span class="p">(</span>
+        <span class="n">DESCRIPTOR</span><span class="o">=</span><span class="n">_VIDEOCLASSIFICATIONANNOTATION</span><span class="p">,</span>
+        <span class="vm">__module__</span><span class="o">=</span><span class="s2">&quot;google.cloud.automl_v1beta1.proto.classification_pb2&quot;</span><span class="p">,</span>
+        <span class="vm">__doc__</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Contains annotation details specific to video classification.</span>
+<span class="s2">  </span>
+<span class="s2">  </span>
+<span class="s2">  Attributes:</span>
+<span class="s2">      type:</span>
+<span class="s2">          Output only. Expresses the type of video classification.</span>
+<span class="s2">          Possible values:  -  ``segment`` - Classification done on a</span>
+<span class="s2">          specified by user time segment    of a video. AnnotationSpec</span>
+<span class="s2">          is answered to be present in that time    segment, if it is</span>
+<span class="s2">          present in any part of it. The video ML model    evaluations</span>
+<span class="s2">          are done only for this type of classification.  -  ``shot``-</span>
+<span class="s2">          Shot-level classification. AutoML Video Intelligence</span>
+<span class="s2">          determines the boundaries for each camera shot in the entire</span>
+<span class="s2">          segment    of the video that user specified in the request</span>
+<span class="s2">          configuration. AutoML    Video Intelligence then returns</span>
+<span class="s2">          labels and their confidence scores    for each detected shot,</span>
+<span class="s2">          along with the start and end time of the    shot. WARNING:</span>
+<span class="s2">          Model evaluation is not done for this classification    type,</span>
+<span class="s2">          the quality of it depends on training data, but there are no</span>
+<span class="s2">          metrics provided to describe that quality.  -  ``1s_interval``</span>
+<span class="s2">          - AutoML Video Intelligence returns labels and their</span>
+<span class="s2">          confidence scores for each second of the entire segment of the</span>
+<span class="s2">          video    that user specified in the request configuration.</span>
+<span class="s2">          WARNING: Model    evaluation is not done for this</span>
+<span class="s2">          classification type, the quality of    it depends on training</span>
+<span class="s2">          data, but there are no metrics provided to    describe that</span>
+<span class="s2">          quality.</span>
+<span class="s2">      classification_annotation:</span>
+<span class="s2">          Output only . The classification details of this annotation.</span>
+<span class="s2">      time_segment:</span>
+<span class="s2">          Output only . The time segment of the video to which the</span>
+<span class="s2">          annotation applies.</span>
+<span class="s2">  &quot;&quot;&quot;</span><span class="p">,</span>
+        <span class="c1"># @@protoc_insertion_point(class_scope:google.cloud.automl.v1beta1.VideoClassificationAnnotation)</span>
+    <span class="p">),</span>
+<span class="p">)</span>
+<span class="n">_sym_db</span><span class="o">.</span><span class="n">RegisterMessage</span><span class="p">(</span><span class="n">VideoClassificationAnnotation</span><span class="p">)</span>
+
 <span class="n">ClassificationEvaluationMetrics</span> <span class="o">=</span> <span class="n">_reflection</span><span class="o">.</span><span class="n">GeneratedProtocolMessageType</span><span class="p">(</span>
     <span class="s2">&quot;ClassificationEvaluationMetrics&quot;</span><span class="p">,</span>
     <span class="p">(</span><span class="n">_message</span><span class="o">.</span><span class="n">Message</span><span class="p">,),</span>
@@ -554,21 +852,35 @@
 <span class="s2">    </span>
 <span class="s2">    Attributes:</span>
 <span class="s2">        confidence_threshold:</span>
-<span class="s2">            Output only. The confidence threshold value used to compute</span>
-<span class="s2">            the metrics.</span>
+<span class="s2">            Output only. Metrics are computed with an assumption that the</span>
+<span class="s2">            model never returns predictions with score lower than this</span>
+<span class="s2">            value.</span>
+<span class="s2">        position_threshold:</span>
+<span class="s2">            Output only. Metrics are computed with an assumption that the</span>
+<span class="s2">            model always returns at most this many predictions (ordered by</span>
+<span class="s2">            their score, descendingly), but they all still need to meet</span>
+<span class="s2">            the confidence\_threshold.</span>
 <span class="s2">        recall:</span>
-<span class="s2">            Output only. Recall under the given confidence threshold.</span>
+<span class="s2">            Output only. Recall (True Positive Rate) for the given</span>
+<span class="s2">            confidence threshold.</span>
 <span class="s2">        precision:</span>
-<span class="s2">            Output only. Precision under the given confidence threshold.</span>
+<span class="s2">            Output only. Precision for the given confidence threshold.</span>
+<span class="s2">        false_positive_rate:</span>
+<span class="s2">            Output only. False Positive Rate for the given confidence</span>
+<span class="s2">            threshold.</span>
 <span class="s2">        f1_score:</span>
 <span class="s2">            Output only. The harmonic mean of recall and precision.</span>
 <span class="s2">        recall_at1:</span>
-<span class="s2">            Output only. The recall when only considering the label that</span>
-<span class="s2">            has the highest prediction score and not below the confidence</span>
-<span class="s2">            threshold for each example.</span>
+<span class="s2">            Output only. The Recall (True Positive Rate) when only</span>
+<span class="s2">            considering the label that has the highest prediction score</span>
+<span class="s2">            and not below the confidence threshold for each example.</span>
 <span class="s2">        precision_at1:</span>
 <span class="s2">            Output only. The precision when only considering the label</span>
-<span class="s2">            that has the highest predictionscore and not below the</span>
+<span class="s2">            that has the highest prediction score and not below the</span>
+<span class="s2">            confidence threshold for each example.</span>
+<span class="s2">        false_positive_rate_at1:</span>
+<span class="s2">            Output only. The False Positive Rate when only considering the</span>
+<span class="s2">            label that has the highest prediction score and not below the</span>
 <span class="s2">            confidence threshold for each example.</span>
 <span class="s2">        f1_score_at1:</span>
 <span class="s2">            Output only. The harmonic mean of [recall\_at1][google.cloud.a</span>
@@ -576,6 +888,19 @@
 <span class="s2">            sEntry.recall\_at1] and [precision\_at1][google.cloud.automl.v</span>
 <span class="s2">            1beta1.ClassificationEvaluationMetrics.ConfidenceMetricsEntry.</span>
 <span class="s2">            precision\_at1].</span>
+<span class="s2">        true_positive_count:</span>
+<span class="s2">            Output only. The number of model created labels that match a</span>
+<span class="s2">            ground truth label.</span>
+<span class="s2">        false_positive_count:</span>
+<span class="s2">            Output only. The number of model created labels that do not</span>
+<span class="s2">            match a ground truth label.</span>
+<span class="s2">        false_negative_count:</span>
+<span class="s2">            Output only. The number of ground truth labels that are not</span>
+<span class="s2">            matched by a model created label.</span>
+<span class="s2">        true_negative_count:</span>
+<span class="s2">            Output only. The number of labels that were not created by the</span>
+<span class="s2">            model, but if they would, they would not match a ground truth</span>
+<span class="s2">            label.</span>
 <span class="s2">    &quot;&quot;&quot;</span><span class="p">,</span>
                 <span class="c1"># @@protoc_insertion_point(class_scope:google.cloud.automl.v1beta1.ClassificationEvaluationMetrics.ConfidenceMetricsEntry)</span>
             <span class="p">),</span>
@@ -596,8 +921,9 @@
 <span class="s2">      Attributes:</span>
 <span class="s2">          example_count:</span>
 <span class="s2">              Output only. Value of the specific cell in the confusion</span>
-<span class="s2">              matrix. The number of values each row is equal to the size of</span>
-<span class="s2">              annotatin\_spec\_id.</span>
+<span class="s2">              matrix. The number of values each row has (i.e. the length of</span>
+<span class="s2">              the row) is equal to the length of the annotation\_spec\_id</span>
+<span class="s2">              field.</span>
 <span class="s2">      &quot;&quot;&quot;</span><span class="p">,</span>
                         <span class="c1"># @@protoc_insertion_point(class_scope:google.cloud.automl.v1beta1.ClassificationEvaluationMetrics.ConfusionMatrix.Row)</span>
                     <span class="p">),</span>
@@ -623,19 +949,30 @@
         <span class="p">),</span>
         <span class="n">DESCRIPTOR</span><span class="o">=</span><span class="n">_CLASSIFICATIONEVALUATIONMETRICS</span><span class="p">,</span>
         <span class="vm">__module__</span><span class="o">=</span><span class="s2">&quot;google.cloud.automl_v1beta1.proto.classification_pb2&quot;</span><span class="p">,</span>
-        <span class="vm">__doc__</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Model evaluation metrics for classification problems. Visible only to</span>
-<span class="s2">  v1beta1</span>
+        <span class="vm">__doc__</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Model evaluation metrics for classification problems. Note: For Video</span>
+<span class="s2">  Classification this metrics only describe quality of the Video</span>
+<span class="s2">  Classification predictions of &quot;segment\_classification&quot; type.</span>
 <span class="s2">  </span>
 <span class="s2">  </span>
 <span class="s2">  Attributes:</span>
 <span class="s2">      au_prc:</span>
-<span class="s2">          Output only. The Area under precision recall curve metric.</span>
+<span class="s2">          Output only. The Area Under Precision-Recall Curve metric.</span>
+<span class="s2">          Micro-averaged for the overall evaluation.</span>
 <span class="s2">      base_au_prc:</span>
-<span class="s2">          Output only. The Area under precision recall curve metric</span>
-<span class="s2">          based on priors.</span>
+<span class="s2">          Output only. The Area Under Precision-Recall Curve metric</span>
+<span class="s2">          based on priors. Micro-averaged for the overall evaluation.</span>
+<span class="s2">          Deprecated.</span>
+<span class="s2">      au_roc:</span>
+<span class="s2">          Output only. The Area Under Receiver Operating Characteristic</span>
+<span class="s2">          curve metric. Micro-averaged for the overall evaluation.</span>
+<span class="s2">      log_loss:</span>
+<span class="s2">          Output only. The Log Loss metric.</span>
 <span class="s2">      confidence_metrics_entry:</span>
-<span class="s2">          Output only. Metrics that have confidence thresholds.</span>
-<span class="s2">          Precision-recall curve can be derived from it.</span>
+<span class="s2">          Output only. Metrics for each confidence\_threshold in</span>
+<span class="s2">          0.00,0.05,0.10,...,0.95,0.96,0.97,0.98,0.99 and</span>
+<span class="s2">          position\_threshold = INT32\_MAX\_VALUE. Precision-recall</span>
+<span class="s2">          curve is derived from them. The above metrics may also be</span>
+<span class="s2">          supplied for additional values of position\_threshold.</span>
 <span class="s2">      confusion_matrix:</span>
 <span class="s2">          Output only. Confusion matrix of the evaluation. Only set for</span>
 <span class="s2">          MULTICLASS classification problems where number of labels is</span>
@@ -654,6 +991,7 @@
 
 
 <span class="n">DESCRIPTOR</span><span class="o">.</span><span class="n">_options</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="n">_CLASSIFICATIONEVALUATIONMETRICS</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span><span class="s2">&quot;base_au_prc&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">_options</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="c1"># @@protoc_insertion_point(module_scope)</span>
 </pre></div>
 
