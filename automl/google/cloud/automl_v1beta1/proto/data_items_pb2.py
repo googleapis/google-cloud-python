@@ -18,6 +18,9 @@ from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
 from google.cloud.automl_v1beta1.proto import (
     io_pb2 as google_dot_cloud_dot_automl__v1beta1_dot_proto_dot_io__pb2,
 )
+from google.protobuf import any_pb2 as google_dot_protobuf_dot_any__pb2
+from google.protobuf import duration_pb2 as google_dot_protobuf_dot_duration__pb2
+from google.protobuf import struct_pb2 as google_dot_protobuf_dot_struct__pb2
 
 
 DESCRIPTOR = _descriptor.FileDescriptor(
@@ -28,11 +31,14 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n\037com.google.cloud.automl.v1beta1P\001ZAgoogle.golang.org/genproto/googleapis/cloud/automl/v1beta1;automl\312\002\033Google\\Cloud\\AutoMl\\V1beta1"
     ),
     serialized_pb=_b(
-        '\n2google/cloud/automl_v1beta1/proto/data_items.proto\x12\x1bgoogle.cloud.automl.v1beta1\x1a\x1cgoogle/api/annotations.proto\x1a*google/cloud/automl_v1beta1/proto/io.proto"\x7f\n\x05Image\x12\x15\n\x0bimage_bytes\x18\x01 \x01(\x0cH\x00\x12@\n\x0cinput_config\x18\x06 \x01(\x0b\x32(.google.cloud.automl.v1beta1.InputConfigH\x00\x12\x15\n\rthumbnail_uri\x18\x04 \x01(\tB\x06\n\x04\x64\x61ta"F\n\x0bTextSnippet\x12\x0f\n\x07\x63ontent\x18\x01 \x01(\t\x12\x11\n\tmime_type\x18\x02 \x01(\t\x12\x13\n\x0b\x63ontent_uri\x18\x04 \x01(\t"\x92\x01\n\x0e\x45xamplePayload\x12\x33\n\x05image\x18\x01 \x01(\x0b\x32".google.cloud.automl.v1beta1.ImageH\x00\x12@\n\x0ctext_snippet\x18\x02 \x01(\x0b\x32(.google.cloud.automl.v1beta1.TextSnippetH\x00\x42\t\n\x07payloadB\x84\x01\n\x1f\x63om.google.cloud.automl.v1beta1P\x01ZAgoogle.golang.org/genproto/googleapis/cloud/automl/v1beta1;automl\xca\x02\x1bGoogle\\Cloud\\AutoMl\\V1beta1b\x06proto3'
+        '\n2google/cloud/automl_v1beta1/proto/data_items.proto\x12\x1bgoogle.cloud.automl.v1beta1\x1a\x1cgoogle/api/annotations.proto\x1a*google/cloud/automl_v1beta1/proto/io.proto\x1a\x19google/protobuf/any.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1cgoogle/protobuf/struct.proto"\x7f\n\x05Image\x12\x15\n\x0bimage_bytes\x18\x01 \x01(\x0cH\x00\x12@\n\x0cinput_config\x18\x06 \x01(\x0b\x32(.google.cloud.automl.v1beta1.InputConfigH\x00\x12\x15\n\rthumbnail_uri\x18\x04 \x01(\tB\x06\n\x04\x64\x61ta"F\n\x0bTextSnippet\x12\x0f\n\x07\x63ontent\x18\x01 \x01(\t\x12\x11\n\tmime_type\x18\x02 \x01(\t\x12\x13\n\x0b\x63ontent_uri\x18\x04 \x01(\t"R\n\x08\x44ocument\x12\x46\n\x0cinput_config\x18\x01 \x01(\x0b\x32\x30.google.cloud.automl.v1beta1.DocumentInputConfig"F\n\x03Row\x12\x17\n\x0f\x63olumn_spec_ids\x18\x02 \x03(\t\x12&\n\x06values\x18\x03 \x03(\x0b\x32\x16.google.protobuf.Value"\xfe\x01\n\x0e\x45xamplePayload\x12\x33\n\x05image\x18\x01 \x01(\x0b\x32".google.cloud.automl.v1beta1.ImageH\x00\x12@\n\x0ctext_snippet\x18\x02 \x01(\x0b\x32(.google.cloud.automl.v1beta1.TextSnippetH\x00\x12\x39\n\x08\x64ocument\x18\x04 \x01(\x0b\x32%.google.cloud.automl.v1beta1.DocumentH\x00\x12/\n\x03row\x18\x03 \x01(\x0b\x32 .google.cloud.automl.v1beta1.RowH\x00\x42\t\n\x07payloadB\x84\x01\n\x1f\x63om.google.cloud.automl.v1beta1P\x01ZAgoogle.golang.org/genproto/googleapis/cloud/automl/v1beta1;automl\xca\x02\x1bGoogle\\Cloud\\AutoMl\\V1beta1b\x06proto3'
     ),
     dependencies=[
         google_dot_api_dot_annotations__pb2.DESCRIPTOR,
         google_dot_cloud_dot_automl__v1beta1_dot_proto_dot_io__pb2.DESCRIPTOR,
+        google_dot_protobuf_dot_any__pb2.DESCRIPTOR,
+        google_dot_protobuf_dot_duration__pb2.DESCRIPTOR,
+        google_dot_protobuf_dot_struct__pb2.DESCRIPTOR,
     ],
 )
 
@@ -115,8 +121,8 @@ _IMAGE = _descriptor.Descriptor(
             fields=[],
         )
     ],
-    serialized_start=157,
-    serialized_end=284,
+    serialized_start=246,
+    serialized_end=373,
 )
 
 
@@ -190,8 +196,104 @@ _TEXTSNIPPET = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=286,
-    serialized_end=356,
+    serialized_start=375,
+    serialized_end=445,
+)
+
+
+_DOCUMENT = _descriptor.Descriptor(
+    name="Document",
+    full_name="google.cloud.automl.v1beta1.Document",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="input_config",
+            full_name="google.cloud.automl.v1beta1.Document.input_config",
+            index=0,
+            number=1,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        )
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=447,
+    serialized_end=529,
+)
+
+
+_ROW = _descriptor.Descriptor(
+    name="Row",
+    full_name="google.cloud.automl.v1beta1.Row",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="column_spec_ids",
+            full_name="google.cloud.automl.v1beta1.Row.column_spec_ids",
+            index=0,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="values",
+            full_name="google.cloud.automl.v1beta1.Row.values",
+            index=1,
+            number=3,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=531,
+    serialized_end=601,
 )
 
 
@@ -238,6 +340,42 @@ _EXAMPLEPAYLOAD = _descriptor.Descriptor(
             serialized_options=None,
             file=DESCRIPTOR,
         ),
+        _descriptor.FieldDescriptor(
+            name="document",
+            full_name="google.cloud.automl.v1beta1.ExamplePayload.document",
+            index=2,
+            number=4,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="row",
+            full_name="google.cloud.automl.v1beta1.ExamplePayload.row",
+            index=3,
+            number=3,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
     ],
     extensions=[],
     nested_types=[],
@@ -255,8 +393,8 @@ _EXAMPLEPAYLOAD = _descriptor.Descriptor(
             fields=[],
         )
     ],
-    serialized_start=359,
-    serialized_end=505,
+    serialized_start=604,
+    serialized_end=858,
 )
 
 _IMAGE.fields_by_name[
@@ -266,8 +404,16 @@ _IMAGE.oneofs_by_name["data"].fields.append(_IMAGE.fields_by_name["image_bytes"]
 _IMAGE.fields_by_name["image_bytes"].containing_oneof = _IMAGE.oneofs_by_name["data"]
 _IMAGE.oneofs_by_name["data"].fields.append(_IMAGE.fields_by_name["input_config"])
 _IMAGE.fields_by_name["input_config"].containing_oneof = _IMAGE.oneofs_by_name["data"]
+_DOCUMENT.fields_by_name[
+    "input_config"
+].message_type = (
+    google_dot_cloud_dot_automl__v1beta1_dot_proto_dot_io__pb2._DOCUMENTINPUTCONFIG
+)
+_ROW.fields_by_name["values"].message_type = google_dot_protobuf_dot_struct__pb2._VALUE
 _EXAMPLEPAYLOAD.fields_by_name["image"].message_type = _IMAGE
 _EXAMPLEPAYLOAD.fields_by_name["text_snippet"].message_type = _TEXTSNIPPET
+_EXAMPLEPAYLOAD.fields_by_name["document"].message_type = _DOCUMENT
+_EXAMPLEPAYLOAD.fields_by_name["row"].message_type = _ROW
 _EXAMPLEPAYLOAD.oneofs_by_name["payload"].fields.append(
     _EXAMPLEPAYLOAD.fields_by_name["image"]
 )
@@ -280,8 +426,22 @@ _EXAMPLEPAYLOAD.oneofs_by_name["payload"].fields.append(
 _EXAMPLEPAYLOAD.fields_by_name[
     "text_snippet"
 ].containing_oneof = _EXAMPLEPAYLOAD.oneofs_by_name["payload"]
+_EXAMPLEPAYLOAD.oneofs_by_name["payload"].fields.append(
+    _EXAMPLEPAYLOAD.fields_by_name["document"]
+)
+_EXAMPLEPAYLOAD.fields_by_name[
+    "document"
+].containing_oneof = _EXAMPLEPAYLOAD.oneofs_by_name["payload"]
+_EXAMPLEPAYLOAD.oneofs_by_name["payload"].fields.append(
+    _EXAMPLEPAYLOAD.fields_by_name["row"]
+)
+_EXAMPLEPAYLOAD.fields_by_name["row"].containing_oneof = _EXAMPLEPAYLOAD.oneofs_by_name[
+    "payload"
+]
 DESCRIPTOR.message_types_by_name["Image"] = _IMAGE
 DESCRIPTOR.message_types_by_name["TextSnippet"] = _TEXTSNIPPET
+DESCRIPTOR.message_types_by_name["Document"] = _DOCUMENT
+DESCRIPTOR.message_types_by_name["Row"] = _ROW
 DESCRIPTOR.message_types_by_name["ExamplePayload"] = _EXAMPLEPAYLOAD
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -291,7 +451,8 @@ Image = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_IMAGE,
         __module__="google.cloud.automl_v1beta1.proto.data_items_pb2",
-        __doc__="""A representation of an image.
+        __doc__="""A representation of an image. Only images up to 30MB in size are
+  supported.
   
   
   Attributes:
@@ -329,10 +490,10 @@ TextSnippet = _reflection.GeneratedProtocolMessageType(
           Required. The content of the text snippet as a string. Up to
           250000 characters long.
       mime_type:
-          The format of the source text. For example, "text/html" or
-          "text/plain". If left blank the format is automatically
-          determined from the type of the uploaded content. The default
-          is "text/html". Up to 25000 characters long.
+          The format of the source text. Currently the only two allowed
+          values are "text/html" and "text/plain". If left blank the
+          format is automatically determined from the type of the
+          uploaded content.
       content_uri:
           Output only. HTTP URI where you can download the content.
   """,
@@ -340,6 +501,54 @@ TextSnippet = _reflection.GeneratedProtocolMessageType(
     ),
 )
 _sym_db.RegisterMessage(TextSnippet)
+
+Document = _reflection.GeneratedProtocolMessageType(
+    "Document",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_DOCUMENT,
+        __module__="google.cloud.automl_v1beta1.proto.data_items_pb2",
+        __doc__="""A structured text document e.g. a PDF.
+  
+  
+  Attributes:
+      input_config:
+          An input config specifying the content of the document.
+  """,
+        # @@protoc_insertion_point(class_scope:google.cloud.automl.v1beta1.Document)
+    ),
+)
+_sym_db.RegisterMessage(Document)
+
+Row = _reflection.GeneratedProtocolMessageType(
+    "Row",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_ROW,
+        __module__="google.cloud.automl_v1beta1.proto.data_items_pb2",
+        __doc__="""A representation of a row in a relational table.
+  
+  
+  Attributes:
+      column_spec_ids:
+          The resource IDs of the column specs describing the columns of
+          the row. If set must contain, but possibly in a different
+          order, all input feature  [column\_spec\_ids][google.cloud.aut
+          oml.v1beta1.TablesModelMetadata.input\_feature\_column\_specs]
+          of the Model this row is being passed to. Note: The below
+          ``values`` field must match order of this field, if this field
+          is set.
+      values:
+          Required. The values of the row cells, given in the same order
+          as the column\_spec\_ids, or, if not set, then in the same
+          order as input feature  [column\_specs][google.cloud.automl.v1
+          beta1.TablesModelMetadata.input\_feature\_column\_specs] of
+          the Model this row is being passed to.
+  """,
+        # @@protoc_insertion_point(class_scope:google.cloud.automl.v1beta1.Row)
+    ),
+)
+_sym_db.RegisterMessage(Row)
 
 ExamplePayload = _reflection.GeneratedProtocolMessageType(
     "ExamplePayload",
@@ -354,9 +563,13 @@ ExamplePayload = _reflection.GeneratedProtocolMessageType(
       payload:
           Required. Input only. The example data.
       image:
-          An example image.
+          Example image.
       text_snippet:
           Example text.
+      document:
+          Example document.
+      row:
+          Example relational table row.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.automl.v1beta1.ExamplePayload)
     ),
