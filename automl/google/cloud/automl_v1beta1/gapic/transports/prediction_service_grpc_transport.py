@@ -15,6 +15,7 @@
 # limitations under the License.
 
 import google.api_core.grpc_helpers
+import google.api_core.operations_v1
 
 from google.cloud.automl_v1beta1.proto import prediction_service_pb2_grpc
 
@@ -69,6 +70,13 @@ class PredictionServiceGrpcTransport(object):
             )
         }
 
+        # Because this API includes a method that returns a
+        # long-running operation (proto: google.longrunning.Operation),
+        # instantiate an LRO client.
+        self._operations_client = google.api_core.operations_v1.OperationsClient(
+            channel
+        )
+
     @classmethod
     def create_channel(cls, address="automl.googleapis.com:443", credentials=None):
         """Create and return a gRPC channel object.
@@ -101,7 +109,23 @@ class PredictionServiceGrpcTransport(object):
     def predict(self):
         """Return the gRPC stub for :meth:`PredictionServiceClient.predict`.
 
-        Perform a prediction.
+        Perform an online prediction. The prediction result will be directly
+        returned in the response. Available for following ML problems, and their
+        expected request payloads:
+
+        -  Image Classification - Image in .JPEG, .GIF or .PNG format,
+           image\_bytes up to 30MB.
+        -  Image Object Detection - Image in .JPEG, .GIF or .PNG format,
+           image\_bytes up to 30MB.
+        -  Text Classification - TextSnippet, content up to 10,000 characters,
+           UTF-8 encoded.
+        -  Text Extraction - TextSnippet, content up to 30,000 characters, UTF-8
+           NFC encoded. \* Translation - TextSnippet, content up to 25,000
+           characters, UTF-8 encoded.
+        -  Tables - Row, with column values matching the columns of the model,
+           up to 5MB.
+        -  Text Sentiment - TextSnippet, content up 500 characters, UTF-8
+           encoded.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -109,3 +133,25 @@ class PredictionServiceGrpcTransport(object):
                 deserialized response object.
         """
         return self._stubs["prediction_service_stub"].Predict
+
+    @property
+    def batch_predict(self):
+        """Return the gRPC stub for :meth:`PredictionServiceClient.batch_predict`.
+
+        Perform a batch prediction. Unlike the online ``Predict``, batch
+        prediction result won't be immediately available in the response.
+        Instead, a long running operation object is returned. User can poll the
+        operation result via ``GetOperation`` method. Once the operation is
+        done, ``BatchPredictResult`` is returned in the ``response`` field.
+        Available for following ML problems:
+
+        -  Video Classification
+        -  Text Extraction
+        -  Tables
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["prediction_service_stub"].BatchPredict

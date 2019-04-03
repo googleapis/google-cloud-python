@@ -28,7 +28,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n\037com.google.cloud.automl.v1beta1B\tTextProtoP\001ZAgoogle.golang.org/genproto/googleapis/cloud/automl/v1beta1;automl\312\002\033Google\\Cloud\\AutoMl\\V1beta1"
     ),
     serialized_pb=_b(
-        '\n,google/cloud/automl_v1beta1/proto/text.proto\x12\x1bgoogle.cloud.automl.v1beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x36google/cloud/automl_v1beta1/proto/classification.proto"q\n!TextClassificationDatasetMetadata\x12L\n\x13\x63lassification_type\x18\x01 \x01(\x0e\x32/.google.cloud.automl.v1beta1.ClassificationType"!\n\x1fTextClassificationModelMetadataB\x8f\x01\n\x1f\x63om.google.cloud.automl.v1beta1B\tTextProtoP\x01ZAgoogle.golang.org/genproto/googleapis/cloud/automl/v1beta1;automl\xca\x02\x1bGoogle\\Cloud\\AutoMl\\V1beta1b\x06proto3'
+        '\n,google/cloud/automl_v1beta1/proto/text.proto\x12\x1bgoogle.cloud.automl.v1beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x36google/cloud/automl_v1beta1/proto/classification.proto"q\n!TextClassificationDatasetMetadata\x12L\n\x13\x63lassification_type\x18\x01 \x01(\x0e\x32/.google.cloud.automl.v1beta1.ClassificationType"!\n\x1fTextClassificationModelMetadata"\x1f\n\x1dTextExtractionDatasetMetadata"\x1d\n\x1bTextExtractionModelMetadata"5\n\x1cTextSentimentDatasetMetadata\x12\x15\n\rsentiment_max\x18\x01 \x01(\x05"\x1c\n\x1aTextSentimentModelMetadataB\x8f\x01\n\x1f\x63om.google.cloud.automl.v1beta1B\tTextProtoP\x01ZAgoogle.golang.org/genproto/googleapis/cloud/automl/v1beta1;automl\xca\x02\x1bGoogle\\Cloud\\AutoMl\\V1beta1b\x06proto3'
     ),
     dependencies=[
         google_dot_api_dot_annotations__pb2.DESCRIPTOR,
@@ -95,6 +95,105 @@ _TEXTCLASSIFICATIONMODELMETADATA = _descriptor.Descriptor(
     serialized_end=311,
 )
 
+
+_TEXTEXTRACTIONDATASETMETADATA = _descriptor.Descriptor(
+    name="TextExtractionDatasetMetadata",
+    full_name="google.cloud.automl.v1beta1.TextExtractionDatasetMetadata",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=313,
+    serialized_end=344,
+)
+
+
+_TEXTEXTRACTIONMODELMETADATA = _descriptor.Descriptor(
+    name="TextExtractionModelMetadata",
+    full_name="google.cloud.automl.v1beta1.TextExtractionModelMetadata",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=346,
+    serialized_end=375,
+)
+
+
+_TEXTSENTIMENTDATASETMETADATA = _descriptor.Descriptor(
+    name="TextSentimentDatasetMetadata",
+    full_name="google.cloud.automl.v1beta1.TextSentimentDatasetMetadata",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="sentiment_max",
+            full_name="google.cloud.automl.v1beta1.TextSentimentDatasetMetadata.sentiment_max",
+            index=0,
+            number=1,
+            type=5,
+            cpp_type=1,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        )
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=377,
+    serialized_end=430,
+)
+
+
+_TEXTSENTIMENTMODELMETADATA = _descriptor.Descriptor(
+    name="TextSentimentModelMetadata",
+    full_name="google.cloud.automl.v1beta1.TextSentimentModelMetadata",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=432,
+    serialized_end=460,
+)
+
 _TEXTCLASSIFICATIONDATASETMETADATA.fields_by_name[
     "classification_type"
 ].enum_type = (
@@ -106,6 +205,18 @@ DESCRIPTOR.message_types_by_name[
 DESCRIPTOR.message_types_by_name[
     "TextClassificationModelMetadata"
 ] = _TEXTCLASSIFICATIONMODELMETADATA
+DESCRIPTOR.message_types_by_name[
+    "TextExtractionDatasetMetadata"
+] = _TEXTEXTRACTIONDATASETMETADATA
+DESCRIPTOR.message_types_by_name[
+    "TextExtractionModelMetadata"
+] = _TEXTEXTRACTIONMODELMETADATA
+DESCRIPTOR.message_types_by_name[
+    "TextSentimentDatasetMetadata"
+] = _TEXTSENTIMENTDATASETMETADATA
+DESCRIPTOR.message_types_by_name[
+    "TextSentimentModelMetadata"
+] = _TEXTSENTIMENTMODELMETADATA
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 TextClassificationDatasetMetadata = _reflection.GeneratedProtocolMessageType(
@@ -138,6 +249,69 @@ TextClassificationModelMetadata = _reflection.GeneratedProtocolMessageType(
     ),
 )
 _sym_db.RegisterMessage(TextClassificationModelMetadata)
+
+TextExtractionDatasetMetadata = _reflection.GeneratedProtocolMessageType(
+    "TextExtractionDatasetMetadata",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_TEXTEXTRACTIONDATASETMETADATA,
+        __module__="google.cloud.automl_v1beta1.proto.text_pb2",
+        __doc__="""Dataset metadata that is specific to text extraction
+  """,
+        # @@protoc_insertion_point(class_scope:google.cloud.automl.v1beta1.TextExtractionDatasetMetadata)
+    ),
+)
+_sym_db.RegisterMessage(TextExtractionDatasetMetadata)
+
+TextExtractionModelMetadata = _reflection.GeneratedProtocolMessageType(
+    "TextExtractionModelMetadata",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_TEXTEXTRACTIONMODELMETADATA,
+        __module__="google.cloud.automl_v1beta1.proto.text_pb2",
+        __doc__="""Model metadata that is specific to text extraction.
+  """,
+        # @@protoc_insertion_point(class_scope:google.cloud.automl.v1beta1.TextExtractionModelMetadata)
+    ),
+)
+_sym_db.RegisterMessage(TextExtractionModelMetadata)
+
+TextSentimentDatasetMetadata = _reflection.GeneratedProtocolMessageType(
+    "TextSentimentDatasetMetadata",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_TEXTSENTIMENTDATASETMETADATA,
+        __module__="google.cloud.automl_v1beta1.proto.text_pb2",
+        __doc__="""Dataset metadata for text sentiment.
+  
+  
+  Attributes:
+      sentiment_max:
+          Required. A sentiment is expressed as an integer ordinal,
+          where higher value means a more positive sentiment. The range
+          of sentiments that will be used is between 0 and
+          sentiment\_max (inclusive on both ends), and all the values in
+          the range must be represented in the dataset before a model
+          can be created. sentiment\_max value must be between 1 and 10
+          (inclusive).
+  """,
+        # @@protoc_insertion_point(class_scope:google.cloud.automl.v1beta1.TextSentimentDatasetMetadata)
+    ),
+)
+_sym_db.RegisterMessage(TextSentimentDatasetMetadata)
+
+TextSentimentModelMetadata = _reflection.GeneratedProtocolMessageType(
+    "TextSentimentModelMetadata",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_TEXTSENTIMENTMODELMETADATA,
+        __module__="google.cloud.automl_v1beta1.proto.text_pb2",
+        __doc__="""Model metadata that is specific to text classification.
+  """,
+        # @@protoc_insertion_point(class_scope:google.cloud.automl.v1beta1.TextSentimentModelMetadata)
+    ),
+)
+_sym_db.RegisterMessage(TextSentimentModelMetadata)
 
 
 DESCRIPTOR._options = None

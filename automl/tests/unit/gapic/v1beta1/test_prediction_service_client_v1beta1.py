@@ -18,9 +18,13 @@
 import mock
 import pytest
 
+from google.rpc import status_pb2
+
 from google.cloud import automl_v1beta1
 from google.cloud.automl_v1beta1.proto import data_items_pb2
+from google.cloud.automl_v1beta1.proto import io_pb2
 from google.cloud.automl_v1beta1.proto import prediction_service_pb2
+from google.longrunning import operations_pb2
 
 
 class MultiCallableStub(object):
@@ -100,3 +104,61 @@ class TestPredictionServiceClient(object):
 
         with pytest.raises(CustomException):
             client.predict(name, payload)
+
+    def test_batch_predict(self):
+        # Setup Expected Response
+        expected_response = {}
+        expected_response = prediction_service_pb2.BatchPredictResult(
+            **expected_response
+        )
+        operation = operations_pb2.Operation(
+            name="operations/test_batch_predict", done=True
+        )
+        operation.response.Pack(expected_response)
+
+        # Mock the API response
+        channel = ChannelStub(responses=[operation])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = automl_v1beta1.PredictionServiceClient()
+
+        # Setup Request
+        name = client.model_path("[PROJECT]", "[LOCATION]", "[MODEL]")
+        input_config = {}
+        output_config = {}
+
+        response = client.batch_predict(name, input_config, output_config)
+        result = response.result()
+        assert expected_response == result
+
+        assert len(channel.requests) == 1
+        expected_request = prediction_service_pb2.BatchPredictRequest(
+            name=name, input_config=input_config, output_config=output_config
+        )
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_batch_predict_exception(self):
+        # Setup Response
+        error = status_pb2.Status()
+        operation = operations_pb2.Operation(
+            name="operations/test_batch_predict_exception", done=True
+        )
+        operation.error.CopyFrom(error)
+
+        # Mock the API response
+        channel = ChannelStub(responses=[operation])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = automl_v1beta1.PredictionServiceClient()
+
+        # Setup Request
+        name = client.model_path("[PROJECT]", "[LOCATION]", "[MODEL]")
+        input_config = {}
+        output_config = {}
+
+        response = client.batch_predict(name, input_config, output_config)
+        exception = response.exception()
+        assert exception.errors[0] == error
