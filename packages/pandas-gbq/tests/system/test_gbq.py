@@ -310,13 +310,15 @@ class TestReadGBQIntegration(object):
             credentials=self.credentials,
             dialect="legacy",
         )
-        tm.assert_frame_equal(
-            df,
-            DataFrame(
-                {"unix_epoch": ["1970-01-01T00:00:00.000000Z"]},
-                dtype="datetime64[ns]",
-            ),
+        expected = DataFrame(
+            {"unix_epoch": ["1970-01-01T00:00:00.000000Z"]},
+            dtype="datetime64[ns]",
         )
+        if expected["unix_epoch"].dt.tz is None:
+            expected["unix_epoch"] = expected["unix_epoch"].dt.tz_localize(
+                "UTC"
+            )
+        tm.assert_frame_equal(df, expected)
 
     def test_should_properly_handle_arbitrary_timestamp(self, project_id):
         query = 'SELECT TIMESTAMP("2004-09-15 05:00:00") AS valid_timestamp'
@@ -326,13 +328,15 @@ class TestReadGBQIntegration(object):
             credentials=self.credentials,
             dialect="legacy",
         )
-        tm.assert_frame_equal(
-            df,
-            DataFrame(
-                {"valid_timestamp": ["2004-09-15T05:00:00.000000Z"]},
-                dtype="datetime64[ns]",
-            ),
+        expected = DataFrame(
+            {"valid_timestamp": ["2004-09-15T05:00:00.000000Z"]},
+            dtype="datetime64[ns]",
         )
+        if expected["valid_timestamp"].dt.tz is None:
+            expected["valid_timestamp"] = expected[
+                "valid_timestamp"
+            ].dt.tz_localize("UTC")
+        tm.assert_frame_equal(df, expected)
 
     def test_should_properly_handle_datetime_unix_epoch(self, project_id):
         query = 'SELECT DATETIME("1970-01-01 00:00:00") AS unix_epoch'
@@ -368,7 +372,7 @@ class TestReadGBQIntegration(object):
         "expression, is_expected_dtype",
         [
             ("current_date()", pandas.api.types.is_datetime64_ns_dtype),
-            ("current_timestamp()", pandas.api.types.is_datetime64_ns_dtype),
+            ("current_timestamp()", pandas.api.types.is_datetime64tz_dtype),
             ("current_datetime()", pandas.api.types.is_datetime64_ns_dtype),
             ("TRUE", pandas.api.types.is_bool_dtype),
             ("FALSE", pandas.api.types.is_bool_dtype),
@@ -402,9 +406,11 @@ class TestReadGBQIntegration(object):
             credentials=self.credentials,
             dialect="legacy",
         )
-        tm.assert_frame_equal(
-            df, DataFrame({"null_timestamp": [NaT]}, dtype="datetime64[ns]")
+        expected = DataFrame({"null_timestamp": [NaT]}, dtype="datetime64[ns]")
+        expected["null_timestamp"] = expected["null_timestamp"].dt.tz_localize(
+            "UTC"
         )
+        tm.assert_frame_equal(df, expected)
 
     def test_should_properly_handle_null_datetime(self, project_id):
         query = "SELECT CAST(NULL AS DATETIME) AS null_datetime"
@@ -594,6 +600,7 @@ class TestReadGBQIntegration(object):
         expected_result = DataFrame(
             empty_columns, columns=["title", "id", "is_bot", "ts"]
         )
+        expected_result["ts"] = expected_result["ts"].dt.tz_localize("UTC")
         tm.assert_frame_equal(df, expected_result, check_index_type=False)
 
     def test_one_row_one_column(self, project_id):

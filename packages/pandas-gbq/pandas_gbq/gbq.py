@@ -494,6 +494,9 @@ class GbqConnector(object):
         if df.empty:
             df = _cast_empty_df_dtypes(schema_fields, df)
 
+        # Ensure any TIMESTAMP columns are tz-aware.
+        df = _localize_df(schema_fields, df)
+
         logger.debug("Got {} rows.\n".format(rows_iter.total_rows))
         return df
 
@@ -644,17 +647,21 @@ class GbqConnector(object):
 
 
 def _bqschema_to_nullsafe_dtypes(schema_fields):
-    # Only specify dtype when the dtype allows nulls. Otherwise, use pandas's
-    # default dtype choice.
-    #
-    # See:
-    # http://pandas.pydata.org/pandas-docs/dev/missing_data.html
-    # #missing-data-casting-rules-and-indexing
+    """Specify explicit dtypes based on BigQuery schema.
+
+    This function only specifies a dtype when the dtype allows nulls.
+    Otherwise, use pandas's default dtype choice.
+
+    See: http://pandas.pydata.org/pandas-docs/dev/missing_data.html
+    #missing-data-casting-rules-and-indexing
+    """
+    # If you update this mapping, also update the table at
+    # `docs/source/reading.rst`.
     dtype_map = {
         "FLOAT": np.dtype(float),
-        # Even though TIMESTAMPs are timezone-aware in BigQuery, pandas doesn't
-        # support datetime64[ns, UTC] as dtype in DataFrame constructors. See:
-        # https://github.com/pandas-dev/pandas/issues/12513
+        # pandas doesn't support timezone-aware dtype in DataFrame/Series
+        # constructors. It's more idiomatic to localize after construction.
+        # https://github.com/pandas-dev/pandas/issues/25843
         "TIMESTAMP": "datetime64[ns]",
         "TIME": "datetime64[ns]",
         "DATE": "datetime64[ns]",
@@ -698,6 +705,24 @@ def _cast_empty_df_dtypes(schema_fields, df):
         dtype = dtype_map.get(field["type"].upper())
         if dtype:
             df[column] = df[column].astype(dtype)
+
+    return df
+
+
+def _localize_df(schema_fields, df):
+    """Localize any TIMESTAMP columns to tz-aware type.
+
+    In pandas versions before 0.24.0, DatetimeTZDtype cannot be used as the
+    dtype in Series/DataFrame construction, so localize those columns after
+    the DataFrame is constructed.
+    """
+    for field in schema_fields:
+        column = str(field["name"])
+        if field["mode"].upper() == "REPEATED":
+            continue
+
+        if field["type"].upper() == "TIMESTAMP" and df[column].dt.tz is None:
+            df[column] = df[column].dt.tz_localize("UTC")
 
     return df
 

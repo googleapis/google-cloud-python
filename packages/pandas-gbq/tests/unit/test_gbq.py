@@ -1,21 +1,26 @@
 # -*- coding: utf-8 -*-
 
-import pandas.util.testing as tm
-import pytest
-import numpy
-from pandas import DataFrame
-
-import pandas_gbq.exceptions
-from pandas_gbq import gbq
-
 try:
     import mock
 except ImportError:  # pragma: NO COVER
     from unittest import mock
 
+import numpy
+from pandas import DataFrame
+import pandas.util.testing as tm
+import pkg_resources
+import pytest
+
+import pandas_gbq.exceptions
+from pandas_gbq import gbq
+
+
 pytestmark = pytest.mark.filter_warnings(
     "ignore:credentials from Google Cloud SDK"
 )
+pandas_installed_version = pkg_resources.get_distribution(
+    "pandas"
+).parsed_version
 
 
 @pytest.fixture
@@ -90,6 +95,7 @@ def no_auth(monkeypatch):
         ("INTEGER", None),  # Can't handle NULL
         ("BOOLEAN", None),  # Can't handle NULL
         ("FLOAT", numpy.dtype(float)),
+        # TIMESTAMP will be localized after DataFrame construction.
         ("TIMESTAMP", "datetime64[ns]"),
         ("DATETIME", "datetime64[ns]"),
     ],
@@ -200,6 +206,10 @@ def test_to_gbq_with_verbose_old_pandas_no_warnings(recwarn, min_bq_version):
         assert len(recwarn) == 0
 
 
+@pytest.mark.skipif(
+    pandas_installed_version < pkg_resources.parse_version("0.24.0"),
+    reason="Requires pandas 0.24+",
+)
 def test_to_gbq_with_private_key_new_pandas_warns_deprecation(
     min_bq_version, monkeypatch
 ):
@@ -413,6 +423,10 @@ def test_read_gbq_with_verbose_old_pandas_no_warnings(recwarn, min_bq_version):
         assert len(recwarn) == 0
 
 
+@pytest.mark.skipif(
+    pandas_installed_version < pkg_resources.parse_version("0.24.0"),
+    reason="Requires pandas 0.24+",
+)
 def test_read_gbq_with_private_key_new_pandas_warns_deprecation(
     min_bq_version, monkeypatch
 ):

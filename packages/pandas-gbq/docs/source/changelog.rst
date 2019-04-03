@@ -12,6 +12,12 @@ Changelog
   version. This is required to use new functionality such as the BigQuery
   Storage API. (:issue:`267`)
 
+Documentation
+~~~~~~~~~~~~~
+
+- Document :ref:`BigQuery data type to pandas dtype conversion
+  <reading-dtypes>` for ``read_gbq``. (:issue:`269`)
+
 Dependency updates
 ~~~~~~~~~~~~~~~~~~
 
@@ -27,11 +33,14 @@ Internal changes
 
 Enhancements
 ~~~~~~~~~~~~
+
 - Allow ``table_schema`` in :func:`to_gbq` to contain only a subset of columns,
   with the rest being populated using the DataFrame dtypes (:issue:`218`)
   (contributed by @johnpaton)
 - Read ``project_id`` in :func:`to_gbq` from provided ``credentials`` if
   available (contributed by @daureg)
+- ``read_gbq`` uses the timezone-aware ``DatetimeTZDtype(unit='ns',
+  tz='UTC')`` dtype for BigQuery ``TIMESTAMP`` columns. (:issue:`269`)
 
 .. _changelog-0.9.0:
 
