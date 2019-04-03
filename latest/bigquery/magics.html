@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>IPython Magics for BigQuery &#8212; google-cloud 09271e5 documentation</title>
+    <title>IPython Magics for BigQuery &#8212; google-cloud 33fcc1c documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -59,6 +59,13 @@ this parameter is used.</dd>
 <dt><code class="docutils literal notranslate"><span class="pre">--project</span> <span class="pre">&lt;project&gt;</span></code> (optional, line argument):</dt>
 <dd>Project to use for running the query. Defaults to the context
 <a class="reference internal" href="#google.cloud.bigquery.magics.Context.project" title="google.cloud.bigquery.magics.Context.project"><code class="xref py py-attr docutils literal notranslate"><span class="pre">project</span></code></a>.</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><code class="docutils literal notranslate"><span class="pre">--use_bqstorage_api</span></code> (optional, line argument):</dt>
+<dd>Downloads the DataFrame using the BigQuery Storage API. To use this
+option, install the <code class="docutils literal notranslate"><span class="pre">google-cloud-bigquery-storage</span></code> and <code class="docutils literal notranslate"><span class="pre">fastavro</span></code>
+packages, and <a class="reference external" href="https://console.cloud.google.com/apis/library/bigquerystorage.googleapis.com">enable the BigQuery Storage API</a>.</dd>
 </dl>
 </li>
 <li><dl class="first docutils">
@@ -229,6 +236,23 @@ demonstrated in the example below.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery.magics.Context.use_bqstorage_api">
+<code class="descname">use_bqstorage_api</code><a class="headerlink" href="#google.cloud.bigquery.magics.Context.use_bqstorage_api" title="Permalink to this definition">#</a></dt>
+<dd><p>[Beta] Set to True to use the BigQuery Storage API to
+download query results</p>
+<p>To use this option, install the <code class="docutils literal notranslate"><span class="pre">google-cloud-bigquery-storage</span></code> and
+<code class="docutils literal notranslate"><span class="pre">fastavro</span></code> packages, and <a class="reference external" href="https://console.cloud.google.com/apis/library/bigquerystorage.googleapis.com">enable the BigQuery Storage API</a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)">bool</a></td>
 </tr>
 </tbody>
 </table>
