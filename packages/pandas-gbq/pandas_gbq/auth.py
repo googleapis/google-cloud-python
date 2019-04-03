@@ -17,8 +17,9 @@ CREDENTIALS_CACHE_FILENAME = "bigquery_credentials.dat"
 SCOPES = ["https://www.googleapis.com/auth/bigquery"]
 
 # The following constants are used for end-user authentication.
-# It identifies the application that is requesting permission to access the
-# BigQuery API on behalf of a G Suite or Gmail user.
+# It identifies (via credentials from the pandas-gbq-auth GCP project) the
+# application that is requesting permission to access the BigQuery API on
+# behalf of a G Suite or Gmail user.
 #
 # In a web application, the client secret would be kept secret, but this is not
 # possible for applications that are installed locally on an end-user's
@@ -26,9 +27,9 @@ SCOPES = ["https://www.googleapis.com/auth/bigquery"]
 #
 # See: https://cloud.google.com/docs/authentication/end-user for details.
 CLIENT_ID = (
-    "495642085510-k0tmvj2m941jhre2nbqka17vqpjfddtd.apps.googleusercontent.com"
+    "725825577420-unm2gnkiprugilg743tkbig250f4sfsj.apps.googleusercontent.com"
 )
-CLIENT_SECRET = "kOc9wMptUtxkcIFbtZCcrEAc"
+CLIENT_SECRET = "4hqze9yI8fxShls8eJWkeMdJ"
 
 
 def get_credentials(
