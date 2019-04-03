@@ -18,7 +18,7 @@ def readme():
 
 INSTALL_REQUIRES = [
     "setuptools",
-    "pandas",
+    "pandas>=0.19.0",
     "pydata-google-auth",
     "google-auth",
     "google-auth-oauthlib",

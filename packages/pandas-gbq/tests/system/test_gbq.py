@@ -7,6 +7,7 @@ from datetime import datetime
 import google.oauth2.service_account
 import numpy as np
 import pandas
+import pandas.api.types
 import pandas.util.testing as tm
 from pandas import DataFrame, NaT, compat
 from pandas.compat import range, u
@@ -364,16 +365,18 @@ class TestReadGBQIntegration(object):
         )
 
     @pytest.mark.parametrize(
-        "expression, type_",
+        "expression, is_expected_dtype",
         [
-            ("current_date()", "<M8[ns]"),
-            ("current_timestamp()", "datetime64[ns]"),
-            ("current_datetime()", "<M8[ns]"),
-            ("TRUE", bool),
-            ("FALSE", bool),
+            ("current_date()", pandas.api.types.is_datetime64_ns_dtype),
+            ("current_timestamp()", pandas.api.types.is_datetime64_ns_dtype),
+            ("current_datetime()", pandas.api.types.is_datetime64_ns_dtype),
+            ("TRUE", pandas.api.types.is_bool_dtype),
+            ("FALSE", pandas.api.types.is_bool_dtype),
         ],
     )
-    def test_return_correct_types(self, project_id, expression, type_):
+    def test_return_correct_types(
+        self, project_id, expression, is_expected_dtype
+    ):
         """
         All type checks can be added to this function using additional
         parameters, rather than creating additional functions.
@@ -389,7 +392,7 @@ class TestReadGBQIntegration(object):
             credentials=self.credentials,
             dialect="standard",
         )
-        assert df["_"].dtype == type_
+        assert is_expected_dtype(df["_"].dtype)
 
     def test_should_properly_handle_null_timestamp(self, project_id):
         query = "SELECT TIMESTAMP(NULL) AS null_timestamp"
