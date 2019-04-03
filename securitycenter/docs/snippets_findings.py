@@ -208,7 +208,7 @@ def test_update_finding(source_name):
     updated_finding = client.update_finding(
         {
             "name": finding_name,
-            "source_properties": {"l_value": value},
+            "source_properties": {"s_value": value},
             "event_time": now_proto,
         },
         update_mask=field_mask,
