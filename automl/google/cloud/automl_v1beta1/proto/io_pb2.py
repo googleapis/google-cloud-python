@@ -988,8 +988,43 @@ InputConfig = _reflection.GeneratedProtocolMessageType(
      that wraps a Document proto with input\_config set. Only PDF
      documents are supported now, and each document may be up to 2MB
      large. Currently annotations on documents cannot be specified at
-     import. Any given .JSONL file must be 100MB or smaller.
-
+     import. Any given .JSONL file must be 100MB or smaller. Three sample
+     CSV rows: TRAIN,gs://folder/file1.jsonl
+     VALIDATE,gs://folder/file2.jsonl TEST,gs://folder/file3.jsonl Sample
+     in-line JSON Lines file (presented here with artificial line breaks,
+     but the only actual line break is denoted by :raw-latex:`\n`).: {
+     "text\_snippet": { "content": "dog car cat" }, "annotations": [ {
+     "display\_name": "animal", "text\_extraction": { "text\_segment":
+     {"start\_offset": 0, "end\_offset": 2} } }, { "display\_name":
+     "vehicle", "text\_extraction": { "text\_segment": {"start\_offset":
+     4, "end\_offset": 6} } }, { "display\_name": "animal",
+     "text\_extraction": { "text\_segment": {"start\_offset": 8,
+     "end\_offset": 10} } } ] }:raw-latex:`\n
+           {
+              "text_snippet": {
+                "content": "This dog is good."
+              },
+              "annotations": [
+                 {
+                   "display_name": "animal",
+                   "text_extraction": {
+                     "text_segment": {"start_offset": 5, "end_offset": 7}
+                   }
+                 }
+              ]
+           }` Sample document JSON Lines file (presented here with
+     artificial line breaks, but the only actual line break is denoted by
+     :raw-latex:`\n`).: { "document": { "input\_config": { "gcs\_source":
+     { "input\_uris": [ "gs://folder/document1.pdf" ] } } }
+     }:raw-latex:`\n
+           {
+             "document": {
+               "input_config": {
+                 "gcs_source": { "input_uris": [ "gs://folder/document2.pdf" ]
+                 }
+               }
+             }
+           }`
   -  For Tables: Either
      [gcs\_source][google.cloud.automl.v1beta1.InputConfig.gcs\_source] or
   
@@ -1126,7 +1161,29 @@ BatchPredictInputConfig = _reflection.GeneratedProtocolMessageType(
      wraps a Document proto with input\_config set. Only PDF documents are
      supported now, and each document must be up to 2MB large. Any given
      .JSONL file must be 100MB or smaller, and no more than 20 files may
-     be given.
+     be given. Sample in-line JSON Lines file (presented here with
+     artificial line breaks, but the only actual line break is denoted by
+     :raw-latex:`\n`): { "id": "my\_first\_id", "text\_snippet": {
+     "content": "dog car cat"} }:raw-latex:`\n
+           {
+             "id": "2",
+             "text_snippet": {
+               "content": "An elaborate content",
+               "mime_type": "text/plain"
+             }
+           }` Sample document JSON Lines file (presented here with
+     artificial line breaks, but the only actual line break is denoted by
+     :raw-latex:`\n`).: { "document": { "input\_config": { "gcs\_source":
+     { "input\_uris": [ "gs://folder/document1.pdf" ] } } }
+     }:raw-latex:`\n
+           {
+             "document": {
+               "input_config": {
+                 "gcs_source": { "input_uris": [ "gs://folder/document2.pdf" ]
+                 }
+               }
+             }
+           }`
   
   -  For Tables: Either
      [gcs\_source][google.cloud.automl.v1beta1.InputConfig.gcs\_source] or
@@ -1486,8 +1543,8 @@ ModelExportOutputConfig = _reflection.GeneratedProtocolMessageType(
           one with name "model-export--", where timestamp is in YYYY-MM-
           DDThh:mm:ss.sssZ ISO-8601 format, will be created. Inside the
           model and any of its supporting files will be written, as
-          described  `here <https:%20//cloud.google.com/vision/automl/al
-          pha/d%20//%20ocs/predict#deployment_to_devices>`__.
+          described  `here <https://cloud.google.com/vision/automl/docs/
+          deploy#deployment_to_devices>`__.
       gcr_destination:
           The GCR location where model image is to be pushed to. This
           location may only be set for the following model formats:
