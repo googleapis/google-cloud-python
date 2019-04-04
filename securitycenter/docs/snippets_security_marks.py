@@ -131,6 +131,7 @@ def test_add_to_asset(asset_name):
 
 
 def test_clear_from_asset(asset_name):
+    """Removes security marks from an asset."""
     # Make sure they are there first
     test_add_to_asset(asset_name)
     # [START clear_marks_asset]
@@ -164,6 +165,7 @@ def test_clear_from_asset(asset_name):
 
 
 def test_delete_and_update_marks(asset_name):
+    """Updates and deletes security marks from an asset in the same call."""
     # Make sure they are there first
     test_add_to_asset(asset_name)
     # [START delete_and_update_marks]
@@ -171,6 +173,10 @@ def test_delete_and_update_marks(asset_name):
     from google.protobuf import field_mask_pb2
 
     client = securitycenter.SecurityCenterClient()
+    # asset_name is the resource path for an asset that exists in CSCC.
+    # Its format is "organization/{organization_id}/assets/{asset_id}
+    # e.g.:
+    # asset_name = organizations/123123342/assets/12312321
     marks_name = "{}/securityMarks".format(asset_name)
 
     field_mask = field_mask_pb2.FieldMask(paths=["marks.key_a", "marks.key_b"])
@@ -185,11 +191,17 @@ def test_delete_and_update_marks(asset_name):
 
 
 def test_add_to_finding(finding_name):
+    """Adds security marks to a finding. """
     # [START add_marks_to_finding]
     from google.cloud import securitycenter as securitycenter
     from google.protobuf import field_mask_pb2
 
     client = securitycenter.SecurityCenterClient()
+    # finding_name is the resource path for a finding that exists in CSCC.
+    # Its format is
+    # "organizations/{org_id}/sources/{source_id}/findings/{finding_id}"
+    # e.g.:
+    # finding_name = "organizations/1112/sources/1234/findings/findingid"
     finding_marks_name = "{}/securityMarks".format(finding_name)
 
     # Notice the suffix after "marks." in the field mask matches the keys
@@ -208,6 +220,7 @@ def test_add_to_finding(finding_name):
 
 
 def test_list_assets_with_query_marks(organization_id, asset_name):
+    """Lists assets with a filter on security marks. """
     test_add_to_asset(asset_name)
     # [START demo_list_assets_with_security_marks]
     from google.cloud import securitycenter as securitycenter
@@ -231,6 +244,7 @@ def test_list_assets_with_query_marks(organization_id, asset_name):
 
 
 def test_list_findings_with_query_marks(source_name, finding_name):
+    """Lists findings with a filter on security marks."""
     # ensure marks are set on finding.
     test_add_to_finding(finding_name)
     i = -1

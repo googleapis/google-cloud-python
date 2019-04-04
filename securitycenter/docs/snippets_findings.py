@@ -14,7 +14,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-""" Examples of working with source and findings in Cloud Security Command Center."""
+"""Examples of working with source and findings in Cloud Security Command Center."""
+
+from itertools import chain
 import os
 import pytest
 
@@ -43,7 +45,7 @@ def source_name(organization_id):
 
 
 def test_create_source(organization_id):
-    """ Create a new findings source. """
+    """Create a new findings source. """
     # [START create_source]
     from google.cloud import securitycenter as securitycenter
 
@@ -52,18 +54,87 @@ def test_create_source(organization_id):
     # organization_id = "111122222444"
     org_name = "organizations/{org_id}".format(org_id=organization_id)
 
-    client.create_source(
+    created = client.create_source(
         org_name,
         {
             "display_name": "Customized Display Name",
             "description": "A new custom source that does X",
         },
     )
+    print("Created Source: {}".format(created.name))
     # [END create_source]
 
 
+def test_update_source(source_name):
+    "Updates a sources display name."
+    # [START update_source]
+    from google.cloud import securitycenter as securitycenter
+    from google.protobuf import field_mask_pb2
+
+    client = securitycenter.SecurityCenterClient()
+
+    # Field mask to only update the display name.
+    field_mask = field_mask_pb2.FieldMask(paths=["display_name"])
+
+    # source_name is the resource path for a source that has been
+    # created previously (you can use list_sources to find a specific one).
+    # Its format is:
+    # source_name = "organizations/{organization_id}/sources/{source_id}"
+    # e.g.:
+    # source_name = "organizations/111122222444/sources/1234"
+    updated = client.update_source(
+        {"name": source_name, "display_name": "Updated Display Name"},
+        update_mask=field_mask,
+    )
+    print("Updated Source: {}".format(updated))
+    # [END update_source]
+    assert updated.display_name == "Updated Display Name"
+
+
+def test_add_user_to_source(source_name):
+    """Gives a user findingsEditor permission to the source."""
+    user_email = "csccclienttest@gmail.com"
+    # [START update_source_iam]
+    from google.cloud import securitycenter as securitycenter
+    from google.iam.v1 import policy_pb2
+
+    client = securitycenter.SecurityCenterClient()
+
+    # source_name is the resource path for a source that has been
+    # created previously (you can use list_sources to find a specific one).
+    # Its format is:
+    # source_name = "organizations/{organization_id}/sources/{source_id}"
+    # e.g.:
+    # source_name = "organizations/111122222444/sources/1234"
+    # Get the old policy so we can do an incremental update.
+    old_policy = client.get_iam_policy(source_name)
+    print("Old Policy: {}".format(old_policy))
+
+    # Setup a new IAM binding.
+    binding = policy_pb2.Binding()
+    binding.role = "roles/securitycenter.findingsEditor"
+    # user_email is an e-mail address known to Cloud IAM (e.g. a gmail address).
+    # user_mail = user@somedomain.com
+    binding.members.append("user:{}".format(user_email))
+
+    # Setting the e-tag avoids over-write existing policy
+    updated = client.set_iam_policy(
+        source_name, {"etag": old_policy.etag, "bindings": [binding]}
+    )
+
+    print("Updated Policy: {}".format(updated))
+
+    # [END update_source_iam]
+    assert any(
+        member == "user:csccclienttest@gmail.com"
+        for member in chain.from_iterable(
+            binding.members for binding in updated.bindings
+        )
+    )
+
+
 def test_list_source(organization_id):
-    """ Create a new findings source. """
+    """Lists finding sources."""
     i = -1
     # [START list_sources]
     from google.cloud import securitycenter as securitycenter
@@ -82,7 +153,7 @@ def test_list_source(organization_id):
 
 
 def test_create_finding(source_name):
-    """Demonstrate listing and printing all assets."""
+    """Creates a new finding."""
     # [START create_finding]
     from google.cloud import securitycenter as securitycenter
     from google.cloud.securitycenter_v1.proto.finding_pb2 import Finding
