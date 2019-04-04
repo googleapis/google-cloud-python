@@ -32,6 +32,7 @@ dependencies = [
     "google-api-core >= 1.6.0, < 2.0.0dev",
     "google-cloud-core >= 0.29.0, < 0.30dev",
     "google-resumable-media >= 0.3.1",
+    'enum34; python_version < "3.4"',
 ]
 extras = {
     "bqstorage": "google-cloud-bigquery-storage >= 0.2.0dev1, <2.0.0dev",

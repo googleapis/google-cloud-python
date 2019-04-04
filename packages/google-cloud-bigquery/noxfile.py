@@ -28,7 +28,7 @@ LOCAL_DEPS = (
     os.path.join("..", "bigquery_storage[pandas,fastavro]"),
 )
 
-BLACK_PATHS = ("google", "tests", "docs", "noxfile.py", "setup.py")
+BLACK_PATHS = ("docs", "google", "samples", "tests", "noxfile.py", "setup.py")
 
 
 def default(session):
@@ -127,6 +127,7 @@ def snippets(session):
 
     # Run py.test against the snippets tests.
     session.run("py.test", os.path.join("docs", "snippets.py"), *session.posargs)
+    session.run("py.test", "samples", *session.posargs)
 
 
 @nox.session(python="3.6")
