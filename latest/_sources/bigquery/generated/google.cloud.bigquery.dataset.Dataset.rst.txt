@@ -17,6 +17,9 @@ google.cloud.bigquery.dataset.Dataset
    ~Dataset.from_string
    
    
+   ~Dataset.model
+   
+   
    ~Dataset.table
    
    

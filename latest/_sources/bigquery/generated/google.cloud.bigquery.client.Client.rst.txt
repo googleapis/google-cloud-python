@@ -29,6 +29,9 @@ google.cloud.bigquery.client.Client
    ~Client.delete_dataset
    
    
+   ~Client.delete_model
+   
+   
    ~Client.delete_table
    
    
@@ -42,6 +45,9 @@ google.cloud.bigquery.client.Client
    
    
    ~Client.get_job
+   
+   
+   ~Client.get_model
    
    
    ~Client.get_service_account_email
@@ -63,6 +69,9 @@ google.cloud.bigquery.client.Client
    
    
    ~Client.list_jobs
+   
+   
+   ~Client.list_models
    
    
    ~Client.list_partitions
@@ -90,6 +99,9 @@ google.cloud.bigquery.client.Client
    
    
    ~Client.update_dataset
+   
+   
+   ~Client.update_model
    
    
    ~Client.update_table

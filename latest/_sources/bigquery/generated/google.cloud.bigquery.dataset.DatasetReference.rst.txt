@@ -17,6 +17,9 @@ google.cloud.bigquery.dataset.DatasetReference
    ~DatasetReference.from_string
    
    
+   ~DatasetReference.model
+   
+   
    ~DatasetReference.table
    
    

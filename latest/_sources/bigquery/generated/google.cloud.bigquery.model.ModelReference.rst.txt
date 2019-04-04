@@ -1,0 +1,47 @@
+google.cloud.bigquery.model.ModelReference
+==========================================
+
+.. currentmodule:: google.cloud.bigquery.model
+
+
+
+.. rubric:: Methods
+
+.. autosummary::
+
+   
+   
+   ~ModelReference.from_api_repr
+   
+   
+   ~ModelReference.from_string
+   
+   
+   ~ModelReference.to_api_repr
+   
+
+
+
+
+
+.. rubric:: Attributes
+
+.. autosummary::
+
+   ~ModelReference.dataset_id
+   ~ModelReference.model_id
+   ~ModelReference.path
+   ~ModelReference.project
+
+
+
+.. raw:: html
+
+    <p>
+    <hr>
+    <p>
+
+.. autoclass:: ModelReference
+   :show-inheritance:
+   :inherited-members:
+   :members:

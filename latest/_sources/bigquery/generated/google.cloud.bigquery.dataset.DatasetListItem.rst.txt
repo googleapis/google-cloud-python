@@ -11,6 +11,9 @@ google.cloud.bigquery.dataset.DatasetListItem
 
    
    
+   ~DatasetListItem.model
+   
+   
    ~DatasetListItem.table
    
 
