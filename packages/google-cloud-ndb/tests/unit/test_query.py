@@ -64,13 +64,6 @@ class TestQueryOptions:
         assert options.__repr__() == representation
 
 
-class TestQueryOrder:
-    @staticmethod
-    def test_constructor():
-        with pytest.raises(NotImplementedError):
-            query_module.QueryOrder()
-
-
 class TestPropertyOrder:
     @staticmethod
     def test_constructor():

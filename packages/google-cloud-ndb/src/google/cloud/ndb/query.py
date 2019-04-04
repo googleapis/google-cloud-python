@@ -22,7 +22,6 @@ from google.cloud.ndb import model
 __all__ = [
     "Cursor",
     "QueryOptions",
-    "QueryOrder",
     "PropertyOrder",
     "RepeatedStructuredPropertyPredicate",
     "ParameterizedThing",
@@ -93,13 +92,6 @@ class QueryOptions:
             ]
         )
         return "QueryOptions({})".format(options)
-
-
-class QueryOrder:
-    __slots__ = ()
-
-    def __init__(self, *args, **kwargs):
-        raise NotImplementedError
 
 
 class PropertyOrder(object):
