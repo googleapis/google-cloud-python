@@ -21,6 +21,7 @@ import copy
 
 import google.cloud._helpers
 from google.cloud.bigquery import _helpers
+from google.cloud.bigquery.model import ModelReference
 from google.cloud.bigquery.table import TableReference
 
 
@@ -35,6 +36,21 @@ def _get_table_reference(self, table_id):
             A table reference for a table in this dataset.
     """
     return TableReference(self, table_id)
+
+
+def _get_model_reference(self, model_id):
+    """Constructs a ModelReference.
+
+    Args:
+        model_id (str): the ID of the model.
+
+    Returns:
+        google.cloud.bigquery.model.ModelReference:
+            A ModelReference for a model in this dataset.
+    """
+    return ModelReference.from_api_repr(
+        {"projectId": self.project, "datasetId": self.dataset_id, "modelId": model_id}
+    )
 
 
 class AccessEntry(object):
@@ -205,6 +221,8 @@ class DatasetReference(object):
         return "/projects/%s/datasets/%s" % (self.project, self.dataset_id)
 
     table = _get_table_reference
+
+    model = _get_model_reference
 
     @classmethod
     def from_api_repr(cls, resource):
@@ -567,21 +585,11 @@ class Dataset(object):
 
     def _build_resource(self, filter_fields):
         """Generate a resource for ``update``."""
-        partial = {}
-        for filter_field in filter_fields:
-            api_field = self._PROPERTY_TO_API_FIELD.get(filter_field)
-            if api_field is None and filter_field not in self._properties:
-                raise ValueError("No Dataset property %s" % filter_field)
-            elif api_field is not None:
-                partial[api_field] = self._properties.get(api_field)
-            else:
-                # allows properties that are not defined in the library
-                # and properties that have the same name as API resource key
-                partial[filter_field] = self._properties[filter_field]
-
-        return partial
+        return _helpers._build_resource_from_properties(self, filter_fields)
 
     table = _get_table_reference
+
+    model = _get_model_reference
 
     def __repr__(self):
         return "Dataset({})".format(repr(self.reference))
@@ -662,3 +670,5 @@ class DatasetListItem(object):
         return DatasetReference(self.project, self.dataset_id)
 
     table = _get_table_reference
+
+    model = _get_model_reference

@@ -60,6 +60,8 @@ from google.cloud.bigquery.job import SchemaUpdateOption
 from google.cloud.bigquery.job import SourceFormat
 from google.cloud.bigquery.job import UnknownJob
 from google.cloud.bigquery.job import WriteDisposition
+from google.cloud.bigquery.model import Model
+from google.cloud.bigquery.model import ModelReference
 from google.cloud.bigquery.query import ArrayQueryParameter
 from google.cloud.bigquery.query import ScalarQueryParameter
 from google.cloud.bigquery.query import StructQueryParameter
@@ -100,6 +102,9 @@ __all__ = [
     "UnknownJob",
     "TimePartitioningType",
     "TimePartitioning",
+    # Models
+    "Model",
+    "ModelReference",
     # Shared helpers
     "SchemaField",
     "UDFResource",
