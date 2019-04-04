@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
+## 1.11.1
+
+04-04-2019 09:19 PDT
+
+### Internal / Testing Changes
+
+- Increment version number in `setup.py`.
+
 ## 1.11.0
 
 04-03-2019 19:33 PDT
