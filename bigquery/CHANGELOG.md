@@ -10,11 +10,11 @@
 
 ### Implementation Changes
 
- - Remove classifier for Python 3.4 for end-of-life. ([#7535](https://github.com/googleapis/google-cloud-python/pull/7535))
+- Remove classifier for Python 3.4 for end-of-life. ([#7535](https://github.com/googleapis/google-cloud-python/pull/7535))
 
- ### New Features
+### New Features
 
- - Enable fastparquet support by using temporary file in `load_table_from_dataframe` ([#7545](https://github.com/googleapis/google-cloud-python/pull/7545))
+- Enable fastparquet support by using temporary file in `load_table_from_dataframe` ([#7545](https://github.com/googleapis/google-cloud-python/pull/7545))
 - Allow string for copy sources, query destination, and default dataset ([#7560](https://github.com/googleapis/google-cloud-python/pull/7560))
 - Add `progress_bar_type` argument to `to_dataframe` to use `tqdm` to display a progress bar ([#7552](https://github.com/googleapis/google-cloud-python/pull/7552))
 - Call `get_table` in `list_rows` if the schema is not available ([#7621](https://github.com/googleapis/google-cloud-python/pull/7621))
@@ -22,14 +22,14 @@
 - Add methods for Models API ([#7562](https://github.com/googleapis/google-cloud-python/pull/7562))
 - Add option to use BigQuery Storage API from IPython magics ([#7640](https://github.com/googleapis/google-cloud-python/pull/7640))
 
- ### Documentation
+### Documentation
 
- - Remove typo in `Table.from_api_repr` docstring. ([#7509](https://github.com/googleapis/google-cloud-python/pull/7509))
+- Remove typo in `Table.from_api_repr` docstring. ([#7509](https://github.com/googleapis/google-cloud-python/pull/7509))
 - Add docs session to nox configuration for BigQuery ([#7541](https://github.com/googleapis/google-cloud-python/pull/7541))
 
- ### Internal / Testing Changes
+### Internal / Testing Changes
 
- - Refactor `table()` methods into shared implementation. ([#7516](https://github.com/googleapis/google-cloud-python/pull/7516))
+- Refactor `table()` methods into shared implementation. ([#7516](https://github.com/googleapis/google-cloud-python/pull/7516))
 - Blacken noxfile and setup file in nox session ([#7619](https://github.com/googleapis/google-cloud-python/pull/7619))
 - Actually use the `progress_bar_type` argument in `QueryJob.to_dataframe()`. ([#7616](https://github.com/googleapis/google-cloud-python/pull/7616))
 
