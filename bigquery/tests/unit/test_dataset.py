@@ -151,6 +151,13 @@ class TestDatasetReference(unittest.TestCase):
         self.assertEqual(table_ref.project, "some-project-1")
         self.assertEqual(table_ref.table_id, "table_1")
 
+    def test_model(self):
+        dataset_ref = self._make_one("some-project-1", "dataset_1")
+        model_ref = dataset_ref.model("model_1")
+        self.assertEqual(model_ref.project, "some-project-1")
+        self.assertEqual(model_ref.dataset_id, "dataset_1")
+        self.assertEqual(model_ref.model_id, "model_1")
+
     def test_to_api_repr(self):
         dataset = self._make_one("project_1", "dataset_1")
 

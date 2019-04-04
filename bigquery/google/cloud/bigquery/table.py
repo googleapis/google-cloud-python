@@ -228,33 +228,13 @@ class TableReference(object):
         """
         from google.cloud.bigquery.dataset import DatasetReference
 
-        output_project_id = default_project
-        output_dataset_id = None
-        output_table_id = None
-        parts = table_id.split(".")
-
-        if len(parts) < 2:
-            raise ValueError(
-                "table_id must be a fully-qualified table ID in "
-                'standard SQL format. e.g. "project.dataset.table", got '
-                "{}".format(table_id)
-            )
-        elif len(parts) == 2:
-            if not default_project:
-                raise ValueError(
-                    "When default_project is not set, table_id must be a "
-                    "fully-qualified table ID in standard SQL format. "
-                    'e.g. "project.dataset_id.table_id", got {}'.format(table_id)
-                )
-            output_dataset_id, output_table_id = parts
-        elif len(parts) == 3:
-            output_project_id, output_dataset_id, output_table_id = parts
-        if len(parts) > 3:
-            raise ValueError(
-                "Too many parts in table_id. Must be a fully-qualified table "
-                'ID in standard SQL format. e.g. "project.dataset.table", '
-                "got {}".format(table_id)
-            )
+        (
+            output_project_id,
+            output_dataset_id,
+            output_table_id,
+        ) = _helpers._parse_3_part_id(
+            table_id, default_project=default_project, property_name="table_id"
+        )
 
         return cls(
             DatasetReference(output_project_id, output_dataset_id), output_table_id
@@ -880,19 +860,7 @@ class Table(object):
 
     def _build_resource(self, filter_fields):
         """Generate a resource for ``update``."""
-        partial = {}
-        for filter_field in filter_fields:
-            api_field = self._PROPERTY_TO_API_FIELD.get(filter_field)
-            if api_field is None and filter_field not in self._properties:
-                raise ValueError("No Table property %s" % filter_field)
-            elif api_field is not None:
-                partial[api_field] = self._properties.get(api_field)
-            else:
-                # allows properties that are not defined in the library
-                # and properties that have the same name as API resource key
-                partial[filter_field] = self._properties[filter_field]
-
-        return partial
+        return _helpers._build_resource_from_properties(self, filter_fields)
 
     def __repr__(self):
         return "Table({})".format(repr(self.reference))

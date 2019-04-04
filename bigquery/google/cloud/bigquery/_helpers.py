@@ -581,3 +581,52 @@ def _str_or_none(value):
     """Helper: serialize value to JSON string."""
     if value is not None:
         return str(value)
+
+
+def _parse_3_part_id(full_id, default_project=None, property_name="table_id"):
+    output_project_id = default_project
+    output_dataset_id = None
+    output_resource_id = None
+    parts = full_id.split(".")
+
+    if len(parts) != 2 and len(parts) != 3:
+        raise ValueError(
+            "{property_name} must be a fully-qualified ID in "
+            'standard SQL format. e.g. "project.dataset.{property_name}", '
+            "got {}".format(full_id, property_name=property_name)
+        )
+
+    if len(parts) == 2 and not default_project:
+        raise ValueError(
+            "When default_project is not set, {property_name} must be a "
+            "fully-qualified ID in standard SQL format. "
+            'e.g. "project.dataset_id.{property_name}", got {}'.format(
+                full_id, property_name=property_name
+            )
+        )
+
+    if len(parts) == 2:
+        output_dataset_id, output_resource_id = parts
+    else:
+        output_project_id, output_dataset_id, output_resource_id = parts
+
+    return output_project_id, output_dataset_id, output_resource_id
+
+
+def _build_resource_from_properties(obj, filter_fields):
+    """Build a resource based on a ``_properties`` dictionary, filtered by
+    ``filter_fields``, which follow the name of the Python object.
+    """
+    partial = {}
+    for filter_field in filter_fields:
+        api_field = obj._PROPERTY_TO_API_FIELD.get(filter_field)
+        if api_field is None and filter_field not in obj._properties:
+            raise ValueError("No property %s" % filter_field)
+        elif api_field is not None:
+            partial[api_field] = obj._properties.get(api_field)
+        else:
+            # allows properties that are not defined in the library
+            # and properties that have the same name as API resource key
+            partial[filter_field] = obj._properties[filter_field]
+
+    return partial
