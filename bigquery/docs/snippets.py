@@ -192,33 +192,6 @@ def test_list_datasets_by_label(client, to_delete):
     assert dataset_id in found
 
 
-def test_create_dataset(client, to_delete):
-    """Create a dataset."""
-    dataset_id = "create_dataset_{}".format(_millis())
-
-    # [START bigquery_create_dataset]
-    # from google.cloud import bigquery
-    # client = bigquery.Client()
-    # dataset_id = 'my_dataset'
-
-    # Create a DatasetReference using a chosen dataset ID.
-    # The project defaults to the Client's project if not specified.
-    dataset_ref = client.dataset(dataset_id)
-
-    # Construct a full Dataset object to send to the API.
-    dataset = bigquery.Dataset(dataset_ref)
-    # Specify the geographic location where the dataset should reside.
-    dataset.location = "US"
-
-    # Send the dataset to the API for creation.
-    # Raises google.api_core.exceptions.Conflict if the Dataset already
-    # exists within the project.
-    dataset = client.create_dataset(dataset)  # API request
-    # [END bigquery_create_dataset]
-
-    to_delete.append(dataset)
-
-
 def test_get_dataset_information(client, to_delete):
     """View information about a dataset."""
     dataset_id = "get_dataset_{}".format(_millis())

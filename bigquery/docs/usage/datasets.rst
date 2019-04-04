@@ -43,7 +43,7 @@ Creating a Dataset
 Create a new dataset with the
 :func:`~google.cloud.bigquery.client.Client.create_dataset` method:
 
-.. literalinclude:: ../snippets.py
+.. literalinclude:: ../samples/create_dataset.py
    :language: python
    :dedent: 4
    :start-after: [START bigquery_create_dataset]
