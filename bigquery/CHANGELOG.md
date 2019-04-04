@@ -4,6 +4,33 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
+## 1.11.0
+
+### Implementation Changes
+
+- Remove classifier for Python 3.4 for end-of-life. (#7535)
+
+### New Features
+
+- Enable fastparquet support by using temporary file in load_table_from_dataframe (#7545)
+- Allow string for copy sources, query destination, and default dataset (#7560)
+- Add tqdm progress bar for to_dataframe downloads (#7552)
+- Call get_table in list_rows if the schema is not available (#7621)
+- Fallback to BQ API when there are problems reading from BQ Storage. (#7633)
+- Add methods for Models API (#7562)
+- Add option to use BigQuery Storage API from IPython magics (#7640)
+
+### Documentation
+
+- Remove typo in 'Table.from_api_repr' docstring. (#7509)
+- Add docs session to nox configuration for BigQuery (#7541)
+
+### Internal / Testing Changes
+
+- Refactor table() methods into shared implementation. (#7516)
+- Blacken noxfile and setup file in nox session (#7619)
+- Actually use the 'progress_bar_type' argument in 'QueryJob.to_dataframe()'. (#7616)
+
 ## 1.10.0
 
 03-06-2019 15:20 PST
