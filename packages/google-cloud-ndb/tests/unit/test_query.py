@@ -1427,18 +1427,33 @@ class TestQuery:
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")
-    def test_fetch_async_with_keys_only():
+    @unittest.mock.patch("google.cloud.ndb.query._datastore_query")
+    def test_fetch_async_with_keys_only(_datastore_query):
         query = query_module.Query()
-        with pytest.raises(NotImplementedError):
-            query.fetch_async(keys_only=True)
+        response = _datastore_query.fetch.return_value
+        assert query.fetch_async(keys_only=True) is response
+        _datastore_query.fetch.assert_called_once_with(
+            query_module.QueryOptions(projection=["__key__"])
+        )
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")
-    def test_fetch_async_with_keys_only_as_option():
+    @unittest.mock.patch("google.cloud.ndb.query._datastore_query")
+    def test_fetch_async_with_keys_only_as_option(_datastore_query):
         query = query_module.Query()
         options = query_module.QueryOptions(keys_only=True)
-        with pytest.raises(NotImplementedError):
-            query.fetch_async(options=options)
+        response = _datastore_query.fetch.return_value
+        assert query.fetch_async(options=options) is response
+        _datastore_query.fetch.assert_called_once_with(
+            query_module.QueryOptions(projection=["__key__"])
+        )
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_fetch_async_with_keys_only_and_projection():
+        query = query_module.Query(projection=["foo", "bar"])
+        with pytest.raises(TypeError):
+            query.fetch_async(keys_only=True)
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")

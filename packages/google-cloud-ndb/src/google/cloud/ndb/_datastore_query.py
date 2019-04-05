@@ -26,6 +26,7 @@ from google.cloud.datastore import helpers
 
 from google.cloud.ndb import context as context_module
 from google.cloud.ndb import _datastore_api
+from google.cloud.ndb import key as key_module
 from google.cloud.ndb import model
 from google.cloud.ndb import tasklets
 
@@ -36,6 +37,7 @@ MORE_RESULTS_TYPE_NOT_FINISHED = MoreResultsType.Value("NOT_FINISHED")
 
 ResultType = query_pb2.EntityResult.ResultType
 RESULT_TYPE_FULL = ResultType.Value("FULL")
+RESULT_TYPE_KEY_ONLY = ResultType.Value("KEY_ONLY")
 RESULT_TYPE_PROJECTION = ResultType.Value("PROJECTION")
 
 DOWN = query_pb2.PropertyOrder.DESCENDING
@@ -211,17 +213,24 @@ class _Result:
         Returns:
             Union[model.Model, key.Key]: The processed result.
         """
-        entity = model._entity_from_protobuf(self.result_pb.entity)
 
         if self.result_type == RESULT_TYPE_FULL:
+            entity = model._entity_from_protobuf(self.result_pb.entity)
             return entity
 
         elif self.result_type == RESULT_TYPE_PROJECTION:
+            entity = model._entity_from_protobuf(self.result_pb.entity)
             entity._set_projection(projection)
             return entity
 
+        elif self.result_type == RESULT_TYPE_KEY_ONLY:
+            key_pb = self.result_pb.entity.key
+            ds_key = helpers.key_from_protobuf(key_pb)
+            key = key_module.Key._from_ds_key(ds_key)
+            return key
+
         raise NotImplementedError(
-            "Got unexpected key only entity result for query."
+            "Got unexpected entity result type for query."
         )
 
 

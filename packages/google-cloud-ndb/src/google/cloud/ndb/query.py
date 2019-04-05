@@ -1503,12 +1503,6 @@ class Query:
                 "directly."
             )
 
-        keys_only = self._option("keys_only", keys_only, options)
-        if keys_only:
-            raise NotImplementedError(
-                "'keys_only' is not implemented yet for queries"
-            )
-
         offset = self._option("offset", offset, options)
         if offset:
             raise NotImplementedError(
@@ -1527,7 +1521,7 @@ class Query:
                 "'batch_size' is not implemented yet for queries"
             )
 
-        prefetch_size = self._option("keys_only", prefetch_size, options)
+        prefetch_size = self._option("prefetch_size", prefetch_size, options)
         if prefetch_size:
             raise NotImplementedError(
                 "'prefetch_size' is not implemented yet for queries"
@@ -1565,6 +1559,15 @@ class Query:
                 "'read_policy' is not implemented yet for queries"
             )
 
+        projection = self._option("projection", projection, options)
+        keys_only = self._option("keys_only", keys_only, options)
+        if keys_only:
+            if projection:
+                raise TypeError(
+                    "Cannot specify 'projection' with 'keys_only=True'"
+                )
+            projection = ["__key__"]
+
         query_arguments = (
             ("kind", self._option("kind", None, options)),
             ("project", self._option("project", None, options)),
@@ -1573,7 +1576,7 @@ class Query:
             ("filters", self._option("filters", None, options)),
             ("order_by", self._option("order_by", None, options)),
             ("distinct_on", self._option("distinct_on", None, options)),
-            ("projection", self._option("projection", projection, options)),
+            ("projection", projection),
         )
         query_arguments = {
             name: value for name, value in query_arguments if value is not None

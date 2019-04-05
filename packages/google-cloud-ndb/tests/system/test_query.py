@@ -282,3 +282,24 @@ def test_order_by_with_or_filter(dispose_of):
     assert len(results) == 4
 
     assert [entity.foo for entity in results] == [0, 1, 2, 3]
+
+
+@pytest.mark.usefixtures("client_context")
+def test_keys_only(ds_entity):
+    # Assuming unique resource ids are assigned in order ascending with time.
+    # Seems to be true so far.
+    entity_id1 = test_utils.system.unique_resource_id()
+    ds_entity(KIND, entity_id1, foo=12, bar="none")
+    entity_id2 = test_utils.system.unique_resource_id()
+    ds_entity(KIND, entity_id2, foo=21, bar="naan")
+
+    class SomeKind(ndb.Model):
+        foo = ndb.IntegerProperty()
+        bar = ndb.StringProperty()
+
+    query = SomeKind.query().order(SomeKind.key)
+    results = query.fetch(keys_only=True)
+    assert len(results) == 2
+
+    assert results[0] == ndb.Key("SomeKind", entity_id1)
+    assert results[1] == ndb.Key("SomeKind", entity_id2)

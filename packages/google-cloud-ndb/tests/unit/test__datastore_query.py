@@ -303,6 +303,21 @@ class Test_Result:
         model._entity_from_protobuf.assert_called_once_with("foo")
 
     @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_entity_key_only():
+        key_pb = entity_pb2.Key(
+            partition_id=entity_pb2.PartitionId(project_id="testing"),
+            path=[entity_pb2.Key.PathElement(kind="ThisKind", id=42)],
+        )
+        result = _datastore_query._Result(
+            _datastore_query.RESULT_TYPE_KEY_ONLY,
+            mock.Mock(
+                entity=mock.Mock(key=key_pb, spec=("key",)), spec=("entity",)
+            ),
+        )
+        assert result.entity() == key_module.Key("ThisKind", 42)
+
+    @staticmethod
     @mock.patch("google.cloud.ndb._datastore_query.model")
     def test_entity_projection(model):
         entity = mock.Mock(spec=("_set_projection",))
