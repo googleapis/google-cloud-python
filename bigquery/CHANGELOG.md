@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
+## 1.11.2
+
+04-05-2019 08:16 PDT
+
+### Dependencies
+
+- Add dependency on protobuf. ([#7668](https://github.com/googleapis/google-cloud-python/pull/7668))
+
 ## 1.11.1
 
 04-04-2019 09:19 PDT
