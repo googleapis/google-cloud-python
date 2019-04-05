@@ -23,6 +23,7 @@ from google.oauth2 import service_account
 import google.api_core.gapic_v1.client_info
 import google.api_core.gapic_v1.config
 import google.api_core.gapic_v1.method
+import google.api_core.gapic_v1.routing_header
 import google.api_core.grpc_helpers
 import google.api_core.operation
 import google.api_core.operations_v1
@@ -242,11 +243,13 @@ class TranslationServiceClient(object):
                 Otherwise 400 is returned.
             model (str): Optional. The ``model`` type requested for this translation.
 
-                The format depends on model type: 1. Custom models:
-                projects/{project-id}/locations/{location-id}/models/{model-id}. 2.
-                General (built-in) models:
-                projects/{project-id}/locations/{location-id}/models/general/nmt
-                projects/{project-id}/locations/{location-id}/models/general/base
+                The format depends on model type:
+
+                1. Custom models:
+                   projects/{project-id}/locations/{location-id}/models/{model-id}.
+                2. General (built-in) models:
+                   projects/{project-id}/locations/{location-id}/models/general/nmt
+                   projects/{project-id}/locations/{location-id}/models/general/base
 
                 For global (non-regionalized) requests, use {location-id} 'global'. For
                 example, projects/{project-id}/locations/global/models/general/nmt
@@ -296,6 +299,19 @@ class TranslationServiceClient(object):
             model=model,
             glossary_config=glossary_config,
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["translate_text"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -370,6 +386,19 @@ class TranslationServiceClient(object):
         request = translation_service_pb2.DetectLanguageRequest(
             parent=parent, model=model, content=content, mime_type=mime_type
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["detect_language"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -445,6 +474,19 @@ class TranslationServiceClient(object):
         request = translation_service_pb2.GetSupportedLanguagesRequest(
             parent=parent, display_language_code=display_language_code, model=model
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["get_supported_languages"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -578,6 +620,19 @@ class TranslationServiceClient(object):
             models=models,
             glossaries=glossaries,
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         operation = self._inner_api_calls["batch_translate_text"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -660,6 +715,19 @@ class TranslationServiceClient(object):
         request = translation_service_pb2.CreateGlossaryRequest(
             parent=parent, glossary=glossary
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         operation = self._inner_api_calls["create_glossary"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -748,6 +816,19 @@ class TranslationServiceClient(object):
         request = translation_service_pb2.ListGlossariesRequest(
             parent=parent, page_size=page_size, filter=filter_
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(
@@ -815,6 +896,19 @@ class TranslationServiceClient(object):
             )
 
         request = translation_service_pb2.GetGlossaryRequest(name=name)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["get_glossary"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -881,6 +975,19 @@ class TranslationServiceClient(object):
             )
 
         request = translation_service_pb2.DeleteGlossaryRequest(name=name)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         operation = self._inner_api_calls["delete_glossary"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
