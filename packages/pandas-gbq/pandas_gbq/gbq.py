@@ -5,6 +5,13 @@ from datetime import datetime
 
 import numpy as np
 
+try:
+    # The BigQuery Storage API client is an optional dependency. It is only
+    # required when use_bqstorage_api=True.
+    from google.cloud import bigquery_storage_v1beta1
+except ImportError:  # pragma: NO COVER
+    bigquery_storage_v1beta1 = None
+
 from pandas_gbq.exceptions import AccessDenied
 
 logger = logging.getLogger(__name__)
@@ -302,6 +309,7 @@ class GbqConnector(object):
         dialect="standard",
         location=None,
         credentials=None,
+        use_bqstorage_api=False,
     ):
         global context
         from google.api_core.exceptions import GoogleAPIError
@@ -352,6 +360,9 @@ class GbqConnector(object):
             context.project = self.project_id
 
         self.client = self.get_client()
+        self.bqstorage_client = _make_bqstorage_client(
+            use_bqstorage_api, self.credentials
+        )
 
         # BQ Queries costs $5 per TB. First 1 TB per month is free
         # see here for more: https://cloud.google.com/bigquery/pricing
@@ -489,7 +500,9 @@ class GbqConnector(object):
 
         schema_fields = [field.to_api_repr() for field in rows_iter.schema]
         nullsafe_dtypes = _bqschema_to_nullsafe_dtypes(schema_fields)
-        df = rows_iter.to_dataframe(dtypes=nullsafe_dtypes)
+        df = rows_iter.to_dataframe(
+            dtypes=nullsafe_dtypes, bqstorage_client=self.bqstorage_client
+        )
 
         if df.empty:
             df = _cast_empty_df_dtypes(schema_fields, df)
@@ -727,6 +740,21 @@ def _localize_df(schema_fields, df):
     return df
 
 
+def _make_bqstorage_client(use_bqstorage_api, credentials):
+    if not use_bqstorage_api:
+        return None
+
+    if bigquery_storage_v1beta1 is None:
+        raise ImportError(
+            "Install the google-cloud-bigquery-storage and fastavro packages "
+            "to use the BigQuery Storage API."
+        )
+
+    return bigquery_storage_v1beta1.BigQueryStorageClient(
+        credentials=credentials
+    )
+
+
 def read_gbq(
     query,
     project_id=None,
@@ -738,6 +766,7 @@ def read_gbq(
     location=None,
     configuration=None,
     credentials=None,
+    use_bqstorage_api=False,
     verbose=None,
     private_key=None,
 ):
@@ -815,6 +844,27 @@ def read_gbq(
         :class:`google.oauth2.service_account.Credentials` directly.
 
         .. versionadded:: 0.8.0
+    use_bqstorage_api : bool, default False
+        Use the `BigQuery Storage API
+        <https://cloud.google.com/bigquery/docs/reference/storage/>`__ to
+        download query results quickly, but at an increased cost. To use this
+        API, first `enable it in the Cloud Console
+        <https://console.cloud.google.com/apis/library/bigquerystorage.googleapis.com>`__.
+        You must also have the `bigquery.readsessions.create
+        <https://cloud.google.com/bigquery/docs/access-control#roles>`__
+        permission on the project you are billing queries to.
+
+        **Note:** Due to a `known issue in the ``google-cloud-bigquery``
+        package
+        <https://github.com/googleapis/google-cloud-python/pull/7633>`__
+        (fixed in version 1.11.0), you must write your query results to a
+        destination table. To do this with ``read_gbq``, supply a
+        ``configuration`` dictionary.
+
+        This feature requires the ``google-cloud-bigquery-storage`` and
+        ``fastavro`` packages.
+
+        .. versionadded:: 0.10.0
     verbose : None, deprecated
         Deprecated in Pandas-GBQ 0.4.0. Use the `logging module
         to adjust verbosity instead
@@ -871,6 +921,7 @@ def read_gbq(
         location=location,
         credentials=credentials,
         private_key=private_key,
+        use_bqstorage_api=use_bqstorage_api,
     )
 
     final_df = connector.run_query(query, configuration=configuration)

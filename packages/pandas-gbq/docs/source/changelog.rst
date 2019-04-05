@@ -41,6 +41,10 @@ Enhancements
   available (contributed by @daureg)
 - ``read_gbq`` uses the timezone-aware ``DatetimeTZDtype(unit='ns',
   tz='UTC')`` dtype for BigQuery ``TIMESTAMP`` columns. (:issue:`269`)
+- Add ``use_bqstorage_api`` to :func:`read_gbq`. The BigQuery Storage API can
+  be used to download large query results (>125 MB) more quickly. If the BQ
+  Storage API can't be used, the BigQuery API is used instead. (:issue:`133`,
+  :issue:`270`)
 
 .. _changelog-0.9.0:
 

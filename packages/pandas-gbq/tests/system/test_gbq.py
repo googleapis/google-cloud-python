@@ -895,8 +895,34 @@ class TestReadGBQIntegration(object):
             location="asia-northeast1",
             private_key=private_key_path,
         )
-        print(df)
         assert df["max_year"][0] >= 2000
+
+
+@pytest.mark.skip(reason="large query for BQ Storage API tests")
+def test_read_gbq_w_bqstorage_api(credentials):
+    df = gbq.read_gbq(
+        """
+        SELECT
+            dependency_name,
+            dependency_platform,
+            project_name,
+            project_id,
+            version_number,
+            version_id,
+            dependency_kind,
+            optional_dependency,
+            dependency_requirements,
+            dependency_project_id
+        FROM
+            `bigquery-public-data.libraries_io.dependencies`
+        WHERE
+            LOWER(dependency_platform) = 'npm'
+        LIMIT 2500000
+        """,
+        use_bqstorage_api=True,
+        credentials=credentials,
+    )
+    assert len(df) == 2500000
 
 
 class TestToGBQIntegration(object):

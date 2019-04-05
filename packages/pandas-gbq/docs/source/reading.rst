@@ -84,3 +84,41 @@ DATETIME           datetime64[ns]
 TIME               datetime64[ns]
 DATE               datetime64[ns]
 ================== =========================
+
+.. _reading-bqstorage-api:
+
+Using the BigQuery Storage API
+------------------------------
+
+Use the BigQuery Storage API to download large (>125 MB) query results more
+quickly (but at an `increased cost
+<https://cloud.google.com/bigquery/pricing#storage-api>`__) by setting
+``use_bqstorage_api`` to ``True``.
+
+1.  Enable the BigQuery Storage API on the project you are using to run
+    queries.
+
+    `Enable the API
+    <https://console.cloud.google.com/apis/library/bigquerystorage.googleapis.com>`__.
+2.  Ensure you have the `*bigquery.readsessions.create permission*
+    <https://cloud.google.com/bigquery/docs/access-control#bq-permissions>`__. to
+    create BigQuery Storage API read sessions. This permission is provided by
+    the `*bigquery.user* role
+    <https://cloud.google.com/bigquery/docs/access-control#roles>`__.
+4.  Install the ``google-cloud-bigquery-storage``, ``fastavro``, and
+     ``python-snappy`` packages.
+
+     With pip:
+
+    ..code-block:: sh
+
+       pip install --upgrade google-cloud-bigquery-storage fastavro python-snappy
+
+    With conda:
+
+       conda install -c conda-forge google-cloud-bigquery-storage fastavro python-snappy
+4. Set ``use_bqstorage_api`` to ``True`` when calling the
+   :func:`~pandas_gbq.read_gbq` function. As of the ``google-cloud-bigquery``
+   package, version 1.11.1 or later,the function will fallback to the
+   BigQuery API if the BigQuery Storage API cannot be used, such as with
+   small query results.
