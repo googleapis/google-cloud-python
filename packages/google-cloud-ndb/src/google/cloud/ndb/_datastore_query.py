@@ -91,7 +91,7 @@ def fetch(query):
     """Fetch query results.
 
     Args:
-        query (query.Query): The query.
+        query (query.QueryOptions): The query spec.
 
     Returns:
         tasklets.Future: Result is List[model.Model]: The query results.
@@ -264,7 +264,7 @@ def _query_to_protobuf(query, filter_pb=None):
     """Convert an NDB query to a Datastore protocol buffer.
 
     Args:
-        query (query.Query): The query.
+        query (query.QueryOptions): The query spec.
         filter_pb (Optional[query_pb2.Filter]): The filter to apply for this
         query.
 

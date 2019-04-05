@@ -63,6 +63,16 @@ class TestQueryOptions:
         options = query_module.QueryOptions(kind="test", project="app")
         assert options.__repr__() == representation
 
+    @staticmethod
+    def test__eq__():
+        options = query_module.QueryOptions(kind="test", project="app")
+        other = query_module.QueryOptions(kind="test", project="app")
+        otherother = query_module.QueryOptions(kind="nope", project="noway")
+
+        assert options == other
+        assert options != otherother
+        assert options != "foo"
+
 
 class TestPropertyOrder:
     @staticmethod
@@ -1417,6 +1427,51 @@ class TestQuery:
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")
+    def test_fetch_async_with_keys_only():
+        query = query_module.Query()
+        with pytest.raises(NotImplementedError):
+            query.fetch_async(keys_only=True)
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_fetch_async_with_keys_only_as_option():
+        query = query_module.Query()
+        options = query_module.QueryOptions(keys_only=True)
+        with pytest.raises(NotImplementedError):
+            query.fetch_async(options=options)
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    @unittest.mock.patch("google.cloud.ndb.query._datastore_query")
+    def test_fetch_async_with_projection(_datastore_query):
+        query = query_module.Query()
+        response = _datastore_query.fetch.return_value
+        assert query.fetch_async(projection=("foo", "bar")) is response
+        _datastore_query.fetch.assert_called_once_with(
+            query_module.QueryOptions(projection=("foo", "bar"))
+        )
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    @unittest.mock.patch("google.cloud.ndb.query._datastore_query")
+    def test_fetch_async_with_projection_from_query(_datastore_query):
+        query = query_module.Query(projection=("foo", "bar"))
+        options = query_module.QueryOptions()
+        response = _datastore_query.fetch.return_value
+        assert query.fetch_async(options=options) is response
+        _datastore_query.fetch.assert_called_once_with(
+            query_module.QueryOptions(projection=("foo", "bar"))
+        )
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_fetch_async_with_offset():
+        query = query_module.Query()
+        with pytest.raises(NotImplementedError):
+            query.fetch_async(offset=20)
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
     def test_fetch_async_with_limit():
         query = query_module.Query()
         with pytest.raises(NotImplementedError):
@@ -1424,10 +1479,52 @@ class TestQuery:
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")
-    def test_fetch_async_with_options():
+    def test_fetch_async_with_batch_size():
         query = query_module.Query()
         with pytest.raises(NotImplementedError):
-            query.fetch_async(foo="bar")
+            query.fetch_async(batch_size=20)
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_fetch_async_with_prefetch_size():
+        query = query_module.Query()
+        with pytest.raises(NotImplementedError):
+            query.fetch_async(prefetch_size=20)
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_fetch_async_with_produce_cursors():
+        query = query_module.Query()
+        with pytest.raises(NotImplementedError):
+            query.fetch_async(produce_cursors=True)
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_fetch_async_with_start_cursor():
+        query = query_module.Query()
+        with pytest.raises(NotImplementedError):
+            query.fetch_async(start_cursor=20)
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_fetch_async_with_end_cursor():
+        query = query_module.Query()
+        with pytest.raises(NotImplementedError):
+            query.fetch_async(end_cursor=20)
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_fetch_async_with_deadline():
+        query = query_module.Query()
+        with pytest.raises(NotImplementedError):
+            query.fetch_async(deadline=20)
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_fetch_async_with_read_policy():
+        query = query_module.Query()
+        with pytest.raises(NotImplementedError):
+            query.fetch_async(read_policy=20)
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")

@@ -14,6 +14,8 @@
 
 """High-level wrapper for datastore queries."""
 
+import logging
+
 from google.cloud.ndb import _datastore_query
 from google.cloud.ndb import exceptions
 from google.cloud.ndb import model
@@ -50,38 +52,56 @@ _LT_OP = "<"
 _GT_OP = ">"
 _OPS = frozenset([_EQ_OP, _NE_OP, _LT_OP, "<=", _GT_OP, ">=", _IN_OP])
 
+_log = logging.getLogger(__name__)
+
 
 class QueryOptions:
     __slots__ = (
-        "client",
+        # Query options
         "kind",
         "project",
         "namespace",
         "ancestor",
         "filters",
-        "projection",
         "order_by",
         "orders",
         "distinct_on",
         "group_by",
+        # Fetch options
+        "keys_only",
         "limit",
         "offset",
         "start_cursor",
         "end_cursor",
         "eventual",
+        "batch_size",
+        "prefetch_size",
+        "produce_cursors",
+        "start_cursor",
+        "end_cursor",
+        "deadline",
+        "read_policy",
+        # Both (!?!)
+        "projection",
     )
 
     def __init__(self, config=None, **kwargs):
-        if config is not None:
-            if isinstance(config, QueryOptions):
-                for key in config.__slots__:
-                    default = getattr(config, key, None)
-                    if default is not None:
-                        setattr(self, key, default)
-            else:
-                raise TypeError("Config must be a QueryOptions instance.")
-        for key, value in kwargs.items():
-            setattr(self, key, value)
+        if config is not None and not isinstance(config, QueryOptions):
+            raise TypeError("Config must be a QueryOptions instance.")
+
+        for key in self.__slots__:
+            default = getattr(config, key, None) if config else None
+            setattr(self, key, kwargs.get(key, default))
+
+    def __eq__(self, other):
+        if not isinstance(other, QueryOptions):
+            return NotImplemented
+
+        for key in self.__slots__:
+            if getattr(self, key, None) != getattr(other, key, None):
+                return False
+
+        return True
 
     def __repr__(self):
         options = ", ".join(
@@ -1016,6 +1036,44 @@ class Query:
         group_by=None,
         default_options=None,
     ):
+        self.default_options = None
+
+        if default_options is not None:
+            _log.warning(
+                "Deprecation warning: passing default_options to the Query"
+                "constructor is deprecated. Please directly pass any "
+                "arguments you want to use to the Query constructor or its "
+                "methods."
+            )
+
+            if not isinstance(default_options, QueryOptions):
+                raise TypeError(
+                    "default_options must be QueryOptions or None; "
+                    "received {}".format(default_options)
+                )
+
+            # Not sure why we're doing all this checking just for this one
+            # option.
+            if projection is not None:
+                if getattr(default_options, "projection", None) is not None:
+                    raise TypeError(
+                        "cannot use projection keyword argument and "
+                        "default_options.projection at the same time"
+                    )
+
+            self.default_options = default_options
+            kind = self._option("kind", kind)
+            filters = self._option("filters", filters)
+            ancestor = self._option("ancestor", ancestor)
+            order_by = self._option("order_by", order_by)
+            orders = self._option("orders", orders)
+            project = self._option("project", project)
+            app = self._option("app", app)
+            namespace = self._option("namespace", namespace)
+            projection = self._option("projection", projection)
+            distinct_on = self._option("distinct_on", distinct_on)
+            group_by = self._option("group_by", group_by)
+
         if app:
             if project:
                 raise TypeError(
@@ -1070,18 +1128,6 @@ class Query:
                     "received {}".format(order_by)
                 )
             order_by = self._to_property_orders(order_by)
-        if default_options is not None:
-            if not isinstance(default_options, QueryOptions):
-                raise TypeError(
-                    "default_options must be QueryOptions or None; "
-                    "received {}".format(default_options)
-                )
-            if projection is not None:
-                if getattr(default_options, "projection", None) is not None:
-                    raise TypeError(
-                        "cannot use projection keyword argument and "
-                        "default_options.projection at the same time"
-                    )
 
         self.kind = kind
         self.ancestor = ancestor
@@ -1089,7 +1135,6 @@ class Query:
         self.order_by = order_by
         self.project = project
         self.namespace = namespace
-        self.default_options = default_options
 
         self.projection = None
         if projection is not None:
@@ -1349,42 +1394,233 @@ class Query:
         if modelclass is not None:
             modelclass._check_properties(fixed, **kwargs)
 
-    def fetch(self, limit=None, **options):
+    def fetch(
+        self,
+        keys_only=None,
+        projection=None,
+        offset=0,
+        limit=None,
+        batch_size=None,  # 20?   # placeholder
+        prefetch_size=None,
+        produce_cursors=False,
+        start_cursor=None,
+        end_cursor=None,
+        deadline=None,
+        read_policy=None,  #  _datastore_api.EVENTUAL,  # placeholder
+        options=None,
+    ):
         """Run a query, fetching results.
 
         Args:
-            limit (int): Maximum number of results to fetch. data:`None`
-                or data:`0` indicates no limit.
-            options (Dict[str, Any]): TBD.
+            limit (Optional[int]): Maximum number of results to fetch.
+                data:`None` or data:`0` indicates no limit.
+            keys_only (bool): Return keys instead of entities.
+            projection (list[str]): The fields to return as part of the query
+                results.
+            offset (int): Number of query results to skip.
+            limit (Optional[int]): Maximum number of query results to return.
+                If not specified, there is no limit.
+            batch_size (Optional[int]): Number of results to fetch in a single
+                RPC call. Affects efficiency of queries only. Larger batch
+                sizes use more memory but make fewer RPC calls.
+            prefetch_size (Optional[int]): Overrides batch size for first batch
+                returned.
+            produce_cursors (bool): Whether to generate cursors from query.
+            start_cursor: Starting point for search.
+            end_cursor: Endpoint point for search.
+            deadline (Optional[int]): Override the RPC deadline, in seconds.
+            read_policy: Defaults to `ndb.EVENTUAL` for potentially faster
+                query results without having to wait for Datastore to apply
+                pending changes to all returned records.
+            options (QueryOptions): DEPRECATED: An object containing options
+                values for some of these arguments.
 
         Returns:
             List([model.Model]): The query results.
         """
-        return self.fetch_async(limit, **options).result()
+        return self.fetch_async(
+            keys_only=keys_only,
+            projection=projection,
+            offset=offset,
+            limit=limit,
+            batch_size=batch_size,
+            prefetch_size=prefetch_size,
+            produce_cursors=produce_cursors,
+            start_cursor=start_cursor,
+            end_cursor=end_cursor,
+            deadline=deadline,
+            read_policy=read_policy,
+            options=options,
+        ).result()
 
-    def fetch_async(self, limit=None, **options):
+    def fetch_async(
+        self,
+        keys_only=None,
+        projection=None,
+        offset=0,
+        limit=None,
+        batch_size=None,  # 20?   # placeholder
+        prefetch_size=None,
+        produce_cursors=False,
+        start_cursor=None,
+        end_cursor=None,
+        deadline=None,
+        read_policy=None,  #  _datastore_api.EVENTUAL,  # placeholder
+        options=None,
+    ):
         """Run a query, asynchronously fetching the results.
 
         Args:
-            limit (int): Maximum number of results to fetch. data:`None`
-                or data:`0` indicates no limit.
-            options (Dict[str, Any]): TBD.
+            keys_only (bool): Return keys instead of entities.
+            projection (list[str]): The fields to return as part of the query
+                results.
+            offset (int): Number of query results to skip.
+            limit (Optional[int]): Maximum number of query results to return.
+                If not specified, there is no limit.
+            batch_size (Optional[int]): Number of results to fetch in a single
+                RPC call. Affects efficiency of queries only. Larger batch
+                sizes use more memory but make fewer RPC calls.
+            prefetch_size (Optional[int]): Overrides batch size for first batch
+                returned.
+            produce_cursors (bool): Whether to generate cursors from query.
+            start_cursor: Starting point for search.
+            end_cursor: Endpoint point for search.
+            deadline (Optional[int]): Override the RPC deadline, in seconds.
+            read_policy: Defaults to `ndb.EVENTUAL` for potentially faster
+                query results without having to wait for Datastore to apply
+                pending changes to all returned records.
+            options (QueryOptions): DEPRECATED: An object containing options
+                values for some of these arguments.
 
         Returns:
             tasklets.Future: Eventual result will be a List[model.Model] of the
                 results.
         """
+        if options is not None:
+            _log.warning(
+                "Deprecation warning: passing options to Query.fetch or "
+                "Query.fetch_async is deprecated. Please pass arguments "
+                "directly."
+            )
+
+        keys_only = self._option("keys_only", keys_only, options)
+        if keys_only:
+            raise NotImplementedError(
+                "'keys_only' is not implemented yet for queries"
+            )
+
+        offset = self._option("offset", offset, options)
+        if offset:
+            raise NotImplementedError(
+                "'offset' is not implemented yet for queries"
+            )
+
+        limit = self._option("limit", limit, options)
         if limit:
             raise NotImplementedError(
                 "'limit' is not implemented yet for queries"
             )
 
-        if options:
+        batch_size = self._option("batch_size", batch_size, options)
+        if batch_size:
             raise NotImplementedError(
-                "'options' are not implemented yet for queries"
+                "'batch_size' is not implemented yet for queries"
             )
 
-        return _datastore_query.fetch(self)
+        prefetch_size = self._option("keys_only", prefetch_size, options)
+        if prefetch_size:
+            raise NotImplementedError(
+                "'prefetch_size' is not implemented yet for queries"
+            )
+
+        produce_cursors = self._option(
+            "produce_cursors", produce_cursors, options
+        )
+        if produce_cursors:
+            raise NotImplementedError(
+                "'produce_cursors' is not implemented yet for queries"
+            )
+
+        start_cursor = self._option("start_cursor", start_cursor, options)
+        if start_cursor:
+            raise NotImplementedError(
+                "'start_cursor' is not implemented yet for queries"
+            )
+
+        end_cursor = self._option("end_cursor", end_cursor, options)
+        if end_cursor:
+            raise NotImplementedError(
+                "'end_cursor' is not implemented yet for queries"
+            )
+
+        deadline = self._option("deadline", deadline, options)
+        if deadline:
+            raise NotImplementedError(
+                "'deadline' is not implemented yet for queries"
+            )
+
+        read_policy = self._option("read_policy", read_policy, options)
+        if read_policy:
+            raise NotImplementedError(
+                "'read_policy' is not implemented yet for queries"
+            )
+
+        query_arguments = (
+            ("kind", self._option("kind", None, options)),
+            ("project", self._option("project", None, options)),
+            ("namespace", self._option("namespace", None, options)),
+            ("ancestor", self._option("ancestor", None, options)),
+            ("filters", self._option("filters", None, options)),
+            ("order_by", self._option("order_by", None, options)),
+            ("distinct_on", self._option("distinct_on", None, options)),
+            ("projection", self._option("projection", projection, options)),
+        )
+        query_arguments = {
+            name: value for name, value in query_arguments if value is not None
+        }
+        query_options = QueryOptions(**query_arguments)
+
+        return _datastore_query.fetch(query_options)
+
+    def _option(self, name, given, options=None):
+        """Get given value or a provided default for an option.
+
+        Precedence is given first to the `given` value, then any value passed
+        in with `options`, then any value that is already set on this query,
+        and, lastly, any default value in `default_options` if provided to the
+        :class:`Query` constructor.
+
+        This attempts to reconcile, in as rational a way possible, all the
+        different ways of passing the same option to a query established by
+        legacy NDB. Because of the absurd amount of complexity involved,
+        `QueryOptions` is deprecated in favor of just passing arguments
+        directly to the `Query` constructor or its methods.
+
+        Args:
+            name (str): Name of the option.
+            given (Any): The given value for the option.
+            options (Optional[QueryOptions]): An object containing option
+                values.
+
+        Returns:
+            Any: Either the given value or a provided default.
+        """
+        if given is not None:
+            return given
+
+        if options is not None:
+            value = getattr(options, name, None)
+            if value is not None:
+                return value
+
+        value = getattr(self, name, None)
+        if value is not None:
+            return value
+
+        if self.default_options is not None:
+            return getattr(self.default_options, name, None)
+
+        return None
 
 
 def gql(*args, **kwargs):
