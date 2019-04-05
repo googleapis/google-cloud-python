@@ -1810,11 +1810,7 @@ class TestRowIterator(unittest.TestCase):
         path = "/foo"
         api_request = mock.Mock(return_value={"rows": []})
         row_iterator = mut.RowIterator(
-            _mock_client(),
-            api_request,
-            path,
-            [],
-            table=mut.Table("proj.dset.tbl"),
+            _mock_client(), api_request, path, [], table=mut.Table("proj.dset.tbl")
         )
 
         with pytest.raises(google.api_core.exceptions.Forbidden):
