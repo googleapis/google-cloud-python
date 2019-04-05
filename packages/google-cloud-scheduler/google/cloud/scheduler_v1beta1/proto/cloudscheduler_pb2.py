@@ -15,6 +15,7 @@ _sym_db = _symbol_database.Default()
 
 
 from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
+from google.api import resource_pb2 as google_dot_api_dot_resource__pb2
 from google.cloud.scheduler_v1beta1.proto import (
     job_pb2 as google_dot_cloud_dot_scheduler__v1beta1_dot_proto_dot_job__pb2,
 )
@@ -30,10 +31,11 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         '\n"com.google.cloud.scheduler.v1beta1B\016SchedulerProtoP\001ZGgoogle.golang.org/genproto/googleapis/cloud/scheduler/v1beta1;scheduler\242\002\tSCHEDULER'
     ),
     serialized_pb=_b(
-        '\n9google/cloud/scheduler_v1beta1/proto/cloudscheduler.proto\x12\x1egoogle.cloud.scheduler.v1beta1\x1a\x1cgoogle/api/annotations.proto\x1a.google/cloud/scheduler_v1beta1/proto/job.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto"H\n\x0fListJobsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x11\n\tpage_size\x18\x05 \x01(\x05\x12\x12\n\npage_token\x18\x06 \x01(\t"^\n\x10ListJobsResponse\x12\x31\n\x04jobs\x18\x01 \x03(\x0b\x32#.google.cloud.scheduler.v1beta1.Job\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"\x1d\n\rGetJobRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"T\n\x10\x43reateJobRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x30\n\x03job\x18\x02 \x01(\x0b\x32#.google.cloud.scheduler.v1beta1.Job"u\n\x10UpdateJobRequest\x12\x30\n\x03job\x18\x01 \x01(\x0b\x32#.google.cloud.scheduler.v1beta1.Job\x12/\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMask" \n\x10\x44\x65leteJobRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"\x1f\n\x0fPauseJobRequest\x12\x0c\n\x04name\x18\x01 \x01(\t" \n\x10ResumeJobRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"\x1d\n\rRunJobRequest\x12\x0c\n\x04name\x18\x01 \x01(\t2\x88\n\n\x0e\x43loudScheduler\x12\xa4\x01\n\x08ListJobs\x12/.google.cloud.scheduler.v1beta1.ListJobsRequest\x1a\x30.google.cloud.scheduler.v1beta1.ListJobsResponse"5\x82\xd3\xe4\x93\x02/\x12-/v1beta1/{parent=projects/*/locations/*}/jobs\x12\x93\x01\n\x06GetJob\x12-.google.cloud.scheduler.v1beta1.GetJobRequest\x1a#.google.cloud.scheduler.v1beta1.Job"5\x82\xd3\xe4\x93\x02/\x12-/v1beta1/{name=projects/*/locations/*/jobs/*}\x12\x9e\x01\n\tCreateJob\x12\x30.google.cloud.scheduler.v1beta1.CreateJobRequest\x1a#.google.cloud.scheduler.v1beta1.Job":\x82\xd3\xe4\x93\x02\x34"-/v1beta1/{parent=projects/*/locations/*}/jobs:\x03job\x12\xa2\x01\n\tUpdateJob\x12\x30.google.cloud.scheduler.v1beta1.UpdateJobRequest\x1a#.google.cloud.scheduler.v1beta1.Job">\x82\xd3\xe4\x93\x02\x38\x32\x31/v1beta1/{job.name=projects/*/locations/*/jobs/*}:\x03job\x12\x8c\x01\n\tDeleteJob\x12\x30.google.cloud.scheduler.v1beta1.DeleteJobRequest\x1a\x16.google.protobuf.Empty"5\x82\xd3\xe4\x93\x02/*-/v1beta1/{name=projects/*/locations/*/jobs/*}\x12\xa0\x01\n\x08PauseJob\x12/.google.cloud.scheduler.v1beta1.PauseJobRequest\x1a#.google.cloud.scheduler.v1beta1.Job">\x82\xd3\xe4\x93\x02\x38"3/v1beta1/{name=projects/*/locations/*/jobs/*}:pause:\x01*\x12\xa3\x01\n\tResumeJob\x12\x30.google.cloud.scheduler.v1beta1.ResumeJobRequest\x1a#.google.cloud.scheduler.v1beta1.Job"?\x82\xd3\xe4\x93\x02\x39"4/v1beta1/{name=projects/*/locations/*/jobs/*}:resume:\x01*\x12\x9a\x01\n\x06RunJob\x12-.google.cloud.scheduler.v1beta1.RunJobRequest\x1a#.google.cloud.scheduler.v1beta1.Job"<\x82\xd3\xe4\x93\x02\x36"1/v1beta1/{name=projects/*/locations/*/jobs/*}:run:\x01*B\x8b\x01\n"com.google.cloud.scheduler.v1beta1B\x0eSchedulerProtoP\x01ZGgoogle.golang.org/genproto/googleapis/cloud/scheduler/v1beta1;scheduler\xa2\x02\tSCHEDULERb\x06proto3'
+        '\n9google/cloud/scheduler_v1beta1/proto/cloudscheduler.proto\x12\x1egoogle.cloud.scheduler.v1beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x19google/api/resource.proto\x1a.google/cloud/scheduler_v1beta1/proto/job.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto"H\n\x0fListJobsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x11\n\tpage_size\x18\x05 \x01(\x05\x12\x12\n\npage_token\x18\x06 \x01(\t"^\n\x10ListJobsResponse\x12\x31\n\x04jobs\x18\x01 \x03(\x0b\x32#.google.cloud.scheduler.v1beta1.Job\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"\x1d\n\rGetJobRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"T\n\x10\x43reateJobRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x30\n\x03job\x18\x02 \x01(\x0b\x32#.google.cloud.scheduler.v1beta1.Job"u\n\x10UpdateJobRequest\x12\x30\n\x03job\x18\x01 \x01(\x0b\x32#.google.cloud.scheduler.v1beta1.Job\x12/\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMask" \n\x10\x44\x65leteJobRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"\x1f\n\x0fPauseJobRequest\x12\x0c\n\x04name\x18\x01 \x01(\t" \n\x10ResumeJobRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"\x1d\n\rRunJobRequest\x12\x0c\n\x04name\x18\x01 \x01(\t2\x88\n\n\x0e\x43loudScheduler\x12\xa4\x01\n\x08ListJobs\x12/.google.cloud.scheduler.v1beta1.ListJobsRequest\x1a\x30.google.cloud.scheduler.v1beta1.ListJobsResponse"5\x82\xd3\xe4\x93\x02/\x12-/v1beta1/{parent=projects/*/locations/*}/jobs\x12\x93\x01\n\x06GetJob\x12-.google.cloud.scheduler.v1beta1.GetJobRequest\x1a#.google.cloud.scheduler.v1beta1.Job"5\x82\xd3\xe4\x93\x02/\x12-/v1beta1/{name=projects/*/locations/*/jobs/*}\x12\x9e\x01\n\tCreateJob\x12\x30.google.cloud.scheduler.v1beta1.CreateJobRequest\x1a#.google.cloud.scheduler.v1beta1.Job":\x82\xd3\xe4\x93\x02\x34"-/v1beta1/{parent=projects/*/locations/*}/jobs:\x03job\x12\xa2\x01\n\tUpdateJob\x12\x30.google.cloud.scheduler.v1beta1.UpdateJobRequest\x1a#.google.cloud.scheduler.v1beta1.Job">\x82\xd3\xe4\x93\x02\x38\x32\x31/v1beta1/{job.name=projects/*/locations/*/jobs/*}:\x03job\x12\x8c\x01\n\tDeleteJob\x12\x30.google.cloud.scheduler.v1beta1.DeleteJobRequest\x1a\x16.google.protobuf.Empty"5\x82\xd3\xe4\x93\x02/*-/v1beta1/{name=projects/*/locations/*/jobs/*}\x12\xa0\x01\n\x08PauseJob\x12/.google.cloud.scheduler.v1beta1.PauseJobRequest\x1a#.google.cloud.scheduler.v1beta1.Job">\x82\xd3\xe4\x93\x02\x38"3/v1beta1/{name=projects/*/locations/*/jobs/*}:pause:\x01*\x12\xa3\x01\n\tResumeJob\x12\x30.google.cloud.scheduler.v1beta1.ResumeJobRequest\x1a#.google.cloud.scheduler.v1beta1.Job"?\x82\xd3\xe4\x93\x02\x39"4/v1beta1/{name=projects/*/locations/*/jobs/*}:resume:\x01*\x12\x9a\x01\n\x06RunJob\x12-.google.cloud.scheduler.v1beta1.RunJobRequest\x1a#.google.cloud.scheduler.v1beta1.Job"<\x82\xd3\xe4\x93\x02\x36"1/v1beta1/{name=projects/*/locations/*/jobs/*}:run:\x01*B\x8b\x01\n"com.google.cloud.scheduler.v1beta1B\x0eSchedulerProtoP\x01ZGgoogle.golang.org/genproto/googleapis/cloud/scheduler/v1beta1;scheduler\xa2\x02\tSCHEDULERb\x06proto3'
     ),
     dependencies=[
         google_dot_api_dot_annotations__pb2.DESCRIPTOR,
+        google_dot_api_dot_resource__pb2.DESCRIPTOR,
         google_dot_cloud_dot_scheduler__v1beta1_dot_proto_dot_job__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_empty__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_field__mask__pb2.DESCRIPTOR,
@@ -111,8 +113,8 @@ _LISTJOBSREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=234,
-    serialized_end=306,
+    serialized_start=261,
+    serialized_end=333,
 )
 
 
@@ -168,8 +170,8 @@ _LISTJOBSRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=308,
-    serialized_end=402,
+    serialized_start=335,
+    serialized_end=429,
 )
 
 
@@ -207,8 +209,8 @@ _GETJOBREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=404,
-    serialized_end=433,
+    serialized_start=431,
+    serialized_end=460,
 )
 
 
@@ -264,8 +266,8 @@ _CREATEJOBREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=435,
-    serialized_end=519,
+    serialized_start=462,
+    serialized_end=546,
 )
 
 
@@ -321,8 +323,8 @@ _UPDATEJOBREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=521,
-    serialized_end=638,
+    serialized_start=548,
+    serialized_end=665,
 )
 
 
@@ -360,8 +362,8 @@ _DELETEJOBREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=640,
-    serialized_end=672,
+    serialized_start=667,
+    serialized_end=699,
 )
 
 
@@ -399,8 +401,8 @@ _PAUSEJOBREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=674,
-    serialized_end=705,
+    serialized_start=701,
+    serialized_end=732,
 )
 
 
@@ -438,8 +440,8 @@ _RESUMEJOBREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=707,
-    serialized_end=739,
+    serialized_start=734,
+    serialized_end=766,
 )
 
 
@@ -477,8 +479,8 @@ _RUNJOBREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=741,
-    serialized_end=770,
+    serialized_start=768,
+    serialized_end=797,
 )
 
 _LISTJOBSRESPONSE.fields_by_name[
@@ -731,8 +733,8 @@ _CLOUDSCHEDULER = _descriptor.ServiceDescriptor(
     file=DESCRIPTOR,
     index=0,
     serialized_options=None,
-    serialized_start=773,
-    serialized_end=2061,
+    serialized_start=800,
+    serialized_end=2088,
     methods=[
         _descriptor.MethodDescriptor(
             name="ListJobs",
