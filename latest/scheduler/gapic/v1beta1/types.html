@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Types for Cloud Scheduler API Client &#8212; google-cloud 2f82703 documentation</title>
+    <title>Types for Cloud Scheduler API Client &#8212; google-cloud 23ba642 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -101,8 +101,9 @@ Cloud Scheduler sets some headers to default values:  -
 <span class="pre">Google;</span> <span class="pre">(+http://code.google.com/appengine)&quot;</span></code>. This    header
 can be modified, but Cloud Scheduler will append
 <code class="docutils literal notranslate"><span class="pre">&quot;AppEngine-Google;</span> <span class="pre">(+http://code.google.com/appengine)&quot;</span></code> to
-the    modified <code class="docutils literal notranslate"><span class="pre">User-Agent</span></code>.  If the job has an [body][goog
-le.cloud.scheduler.v1beta1.AppEngineHttpTarget.body], Cloud
+the    modified <code class="docutils literal notranslate"><span class="pre">User-Agent</span></code>. -  <code class="docutils literal notranslate"><span class="pre">X-CloudScheduler</span></code>: This
+header will be set to true.  If the job has an [body][google.c
+loud.scheduler.v1beta1.AppEngineHttpTarget.body], Cloud
 Scheduler sets the following headers:  -  <code class="docutils literal notranslate"><span class="pre">Content-Type</span></code>: By
 default, the <code class="docutils literal notranslate"><span class="pre">Content-Type</span></code> header is set to
 <code class="docutils literal notranslate"><span class="pre">&quot;application/octet-stream&quot;</span></code>. The default can be overridden
@@ -113,10 +114,9 @@ can be set to    <code class="docutils literal notranslate"><span class="pre">&q
 is output only. It cannot be changed.  The headers below are
 output only. They cannot be set or overridden:  -
 <code class="docutils literal notranslate"><span class="pre">X-Google-*</span></code>: For Google internal use only. -
-<code class="docutils literal notranslate"><span class="pre">X-AppEngine-*</span></code>: For Google internal use only. See <a class="reference external" href="https://cloud.google.com/appengine/docs/python/taskqueue/push/creating-handlers#reading_request_headers">Reading
-request    headers</a>.  In addition, some App
-Engine headers, which contain job-specific information, are
-also be sent to the job handler; see <a class="reference external" href="https://cloud.google.com/appengine/docs/standard/python/config/cron#securing_urls_for_cron">request headers</a>.</p>
+<code class="docutils literal notranslate"><span class="pre">X-AppEngine-*</span></code>: For Google internal use only.  In addition,
+some App Engine headers, which contain job-specific
+information, are also be sent to the job handler.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -235,28 +235,28 @@ is associated with the job’s project ID.  -  <code class="docutils literal not
 ice]  -  <code class="docutils literal notranslate"><span class="pre">version</span> <span class="pre">=</span></code>    [version][google.cloud.scheduler.v1b
 eta1.AppEngineRouting.version]  -  <code class="docutils literal notranslate"><span class="pre">version_dot_service</span> <span class="pre">=</span></code>
 [version][google.cloud.scheduler.v1beta1.AppEngineRouting.vers
-ion]    <code class="docutils literal notranslate"><span class="pre">+</span> <span class="pre">'.'</span>&#160;&#160; <span class="pre">+</span></code>    [service][google.cloud.scheduler.v1be
-ta1.AppEngineRouting.service]  -  <code class="docutils literal notranslate"><span class="pre">instance</span> <span class="pre">=</span></code>    [instance]
-[google.cloud.scheduler.v1beta1.AppEngineRouting.instance]  -
+ion]    <code class="docutils literal notranslate"><span class="pre">+</span> <span class="pre">'.'</span> <span class="pre">+</span></code>    [service][google.cloud.scheduler.v1beta
+1.AppEngineRouting.service]  -  <code class="docutils literal notranslate"><span class="pre">instance</span> <span class="pre">=</span></code>    [instance][g
+oogle.cloud.scheduler.v1beta1.AppEngineRouting.instance]  -
 <code class="docutils literal notranslate"><span class="pre">instance_dot_service</span> <span class="pre">=</span></code>    [instance][google.cloud.schedule
-r.v1beta1.AppEngineRouting.instance]    <code class="docutils literal notranslate"><span class="pre">+</span>&#160;&#160; <span class="pre">'.'</span> <span class="pre">+</span></code>    [serv
-ice][google.cloud.scheduler.v1beta1.AppEngineRouting.service]
--  <code class="docutils literal notranslate"><span class="pre">instance_dot_version</span> <span class="pre">=</span></code>    [instance][google.cloud.sched
-uler.v1beta1.AppEngineRouting.instance]    <code class="docutils literal notranslate"><span class="pre">+</span>&#160;&#160; <span class="pre">'.'</span> <span class="pre">+</span></code>    [v
-ersion][google.cloud.scheduler.v1beta1.AppEngineRouting.versio
-n]  -  <code class="docutils literal notranslate"><span class="pre">instance_dot_version_dot_service</span> <span class="pre">=</span></code>    [instance][go
-ogle.cloud.scheduler.v1beta1.AppEngineRouting.instance]    <code class="docutils literal notranslate"><span class="pre">+</span>
-<span class="pre">'.'</span> <span class="pre">+</span></code>    [version][google.cloud.scheduler.v1beta1.AppEngineR
-outing.version]    <code class="docutils literal notranslate"><span class="pre">+</span> <span class="pre">'.'</span> <span class="pre">+</span></code>    [service][google.cloud.sched
-uler.v1beta1.AppEngineRouting.service]  If [service][google.cl
-oud.scheduler.v1beta1.AppEngineRouting.service] is empty, then
-the job will be sent to the service which is the default
-service when the job is attempted.  If [version][google.cloud.
-scheduler.v1beta1.AppEngineRouting.version] is empty, then the
-job will be sent to the version which is the default version
-when the job is attempted.  If [instance][google.cloud.schedul
-er.v1beta1.AppEngineRouting.instance] is empty, then the job
-will be sent to an instance which is available when the job is
+r.v1beta1.AppEngineRouting.instance]    <code class="docutils literal notranslate"><span class="pre">+</span> <span class="pre">'.'</span> <span class="pre">+</span></code>    [servic
+e][google.cloud.scheduler.v1beta1.AppEngineRouting.service]  -
+<code class="docutils literal notranslate"><span class="pre">instance_dot_version</span> <span class="pre">=</span></code>    [instance][google.cloud.schedule
+r.v1beta1.AppEngineRouting.instance]    <code class="docutils literal notranslate"><span class="pre">+</span> <span class="pre">'.'</span> <span class="pre">+</span></code>    [versio
+n][google.cloud.scheduler.v1beta1.AppEngineRouting.version]  -
+<code class="docutils literal notranslate"><span class="pre">instance_dot_version_dot_service</span> <span class="pre">=</span></code>    [instance][google.cl
+oud.scheduler.v1beta1.AppEngineRouting.instance]    <code class="docutils literal notranslate"><span class="pre">+</span> <span class="pre">'.'</span>
+<span class="pre">+</span></code>    [version][google.cloud.scheduler.v1beta1.AppEngineRouti
+ng.version]    <code class="docutils literal notranslate"><span class="pre">+</span> <span class="pre">'.'</span> <span class="pre">+</span></code>    [service][google.cloud.scheduler
+.v1beta1.AppEngineRouting.service]  If [service][google.cloud.
+scheduler.v1beta1.AppEngineRouting.service] is empty, then the
+job will be sent to the service which is the default service
+when the job is attempted.  If [version][google.cloud.schedule
+r.v1beta1.AppEngineRouting.version] is empty, then the job
+will be sent to the version which is the default version when
+the job is attempted.  If [instance][google.cloud.scheduler.v1
+beta1.AppEngineRouting.instance] is empty, then the job will
+be sent to an instance which is available when the job is
 attempted.  If [service][google.cloud.scheduler.v1beta1.AppEng
 ineRouting.service], [version][google.cloud.scheduler.v1beta1.
 AppEngineRouting.version], or [instance][google.cloud.schedule
@@ -460,6 +460,33 @@ job with an incompatible
 [HttpMethod][google.cloud.scheduler.v1beta1.HttpMethod].</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="google.cloud.scheduler_v1beta1.types.HttpTarget.authorization_header">
+<code class="descname">authorization_header</code><a class="headerlink" href="#google.cloud.scheduler_v1beta1.types.HttpTarget.authorization_header" title="Permalink to this definition">#</a></dt>
+<dd><p>The mode for generating an <code class="docutils literal notranslate"><span class="pre">Authorization</span></code> header for HTTP
+requests.  If specified, all <code class="docutils literal notranslate"><span class="pre">Authorization</span></code> headers in the
+[HttpTarget.headers][google.cloud.scheduler.v1beta1.HttpTarget
+.headers] field will be overridden.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.scheduler_v1beta1.types.HttpTarget.oauth_token">
+<code class="descname">oauth_token</code><a class="headerlink" href="#google.cloud.scheduler_v1beta1.types.HttpTarget.oauth_token" title="Permalink to this definition">#</a></dt>
+<dd><p>If specified, an <a class="reference external" href="https://developers.google.com/identity/protocols/OAuth2">OAuth token</a>
+will be generated and attached as an <code class="docutils literal notranslate"><span class="pre">Authorization</span></code> header
+in the HTTP request.  This type of authorization should be
+used when sending requests to a GCP endpoint.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.scheduler_v1beta1.types.HttpTarget.oidc_token">
+<code class="descname">oidc_token</code><a class="headerlink" href="#google.cloud.scheduler_v1beta1.types.HttpTarget.oidc_token" title="Permalink to this definition">#</a></dt>
+<dd><p>If specified, an <a class="reference external" href="https://developers.google.com/identity/protocols/OpenIDConnect">OIDC</a> token will be generated and
+attached as an <code class="docutils literal notranslate"><span class="pre">Authorization</span></code> header in the HTTP request.
+This type of authorization should be used when sending
+requests to third party endpoints.</p>
+</dd></dl>
+
 <dl class="class">
 <dt id="google.cloud.scheduler_v1beta1.types.HttpTarget.HeadersEntry">
 <em class="property">class </em><code class="descname">HeadersEntry</code><a class="headerlink" href="#google.cloud.scheduler_v1beta1.types.HttpTarget.HeadersEntry" title="Permalink to this definition">#</a></dt>
@@ -497,6 +524,18 @@ job with an incompatible
 
 <dl class="attribute">
 <dt>
+<code class="descname">oauth_token</code></dt>
+<dd><p>Field google.cloud.scheduler.v1beta1.HttpTarget.oauth_token</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">oidc_token</code></dt>
+<dd><p>Field google.cloud.scheduler.v1beta1.HttpTarget.oidc_token</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
 <code class="descname">uri</code></dt>
 <dd><p>Field google.cloud.scheduler.v1beta1.HttpTarget.uri</p>
 </dd></dl>
@@ -510,7 +549,9 @@ job with an incompatible
 <dl class="attribute">
 <dt id="google.cloud.scheduler_v1beta1.types.Job.name">
 <code class="descname">name</code><a class="headerlink" href="#google.cloud.scheduler_v1beta1.types.Job.name" title="Permalink to this definition">#</a></dt>
-<dd><p>The job name. For example:
+<dd><p>Optionally caller-specified in [CreateJob][google.cloud.schedu
+ler.v1beta1.CloudScheduler.CreateJob], after which it becomes
+output only.  The job name. For example:
 <code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/locations/LOCATION_ID/jobs/JOB_ID</span></code>.  -
 <code class="docutils literal notranslate"><span class="pre">PROJECT_ID</span></code> can contain letters ([A-Za-z]), numbers
 ([0-9]),    hyphens (-), colons (:), or periods (.). For more
@@ -528,8 +569,11 @@ characters.</p>
 <dl class="attribute">
 <dt id="google.cloud.scheduler_v1beta1.types.Job.description">
 <code class="descname">description</code><a class="headerlink" href="#google.cloud.scheduler_v1beta1.types.Job.description" title="Permalink to this definition">#</a></dt>
-<dd><p>A human-readable description for the job. This string must not
-contain more than 500 characters.</p>
+<dd><p>Optionally caller-specified in [CreateJob][google.cloud.schedu
+ler.v1beta1.CloudScheduler.CreateJob] or [UpdateJob][google.cl
+oud.scheduler.v1beta1.CloudScheduler.UpdateJob].  A human-
+readable description for the job. This string must not contain
+more than 500 characters.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -560,8 +604,11 @@ parameters.</p>
 <dl class="attribute">
 <dt id="google.cloud.scheduler_v1beta1.types.Job.schedule">
 <code class="descname">schedule</code><a class="headerlink" href="#google.cloud.scheduler_v1beta1.types.Job.schedule" title="Permalink to this definition">#</a></dt>
-<dd><p>Required.  Describes the schedule on which the job will be
-executed.  As a general rule, execution <code class="docutils literal notranslate"><span class="pre">n</span> <span class="pre">+</span> <span class="pre">1</span></code> of a job
+<dd><p>Required, except when used with [UpdateJob][google.cloud.sched
+uler.v1beta1.CloudScheduler.UpdateJob].  Describes the
+schedule on which the job will be executed.  The schedule can
+be either of the following types:  -  <a class="reference external" href="http://en.wikipedia.org/wiki/Cron#Overview">Crontab</a> -  English-
+like    <a class="reference external" href="https://cloud.google.com/scheduler/docs/configuring/cron-job-schedules">schedule</a>  As a general rule, execution <code class="docutils literal notranslate"><span class="pre">n</span> <span class="pre">+</span> <span class="pre">1</span></code> of a job
 will not begin until execution <code class="docutils literal notranslate"><span class="pre">n</span></code> has finished. Cloud
 Scheduler will never allow two simultaneously outstanding
 executions. For example, this implies that if the <code class="docutils literal notranslate"><span class="pre">n+1</span></code>th
@@ -573,9 +620,7 @@ scheduled time occurs.  If [retry_count][google.cloud.schedul
 er.v1beta1.RetryConfig.retry_count] &gt; 0 and a job attempt
 fails, the job will be tried a total of [retry_count][google.
 cloud.scheduler.v1beta1.RetryConfig.retry_count] times, with
-exponential backoff, until the next scheduled start time.  The
-schedule can be either of the following types:  -  <a class="reference external" href="http://en.wikipedia.org/wiki/Cron#Overview">Crontab</a> -  English-
-like    <a class="reference external" href="https://cloud.google.com/scheduler/docs/configuring/cron-job-schedules">schedule</a></p>
+exponential backoff, until the next scheduled start time.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -631,9 +676,32 @@ execution time according to the schedule.</p>
 </dd></dl>
 
 <dl class="attribute">
+<dt id="google.cloud.scheduler_v1beta1.types.Job.attempt_deadline">
+<code class="descname">attempt_deadline</code><a class="headerlink" href="#google.cloud.scheduler_v1beta1.types.Job.attempt_deadline" title="Permalink to this definition">#</a></dt>
+<dd><p>The deadline for job attempts. If the request handler does not
+respond by this deadline then the request is cancelled and the
+attempt is marked as a <code class="docutils literal notranslate"><span class="pre">DEADLINE_EXCEEDED</span></code> failure. The
+failed attempt can be viewed in execution logs. Cloud
+Scheduler will retry the job according to the
+[RetryConfig][google.cloud.scheduler.v1beta1.RetryConfig].
+The allowed duration for this deadline is:  -  For [HTTP
+targets][google.cloud.scheduler.v1beta1.Job.http_target],
+between 15 seconds and 30 minutes. -  For [App Engine HTTP
+targets][google.cloud.scheduler.v1beta1.Job.app_engine_http          _target],    between 15 seconds and 24 hours. -  For [PubSub
+targets][google.cloud.scheduler.v1beta1.Job.pubsub_target],
+this    field is ignored.</p>
+</dd></dl>
+
+<dl class="attribute">
 <dt>
 <code class="descname">app_engine_http_target</code></dt>
 <dd><p>Field google.cloud.scheduler.v1beta1.Job.app_engine_http_target</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">attempt_deadline</code></dt>
+<dd><p>Field google.cloud.scheduler.v1beta1.Job.attempt_deadline</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -799,6 +867,81 @@ paginate.  The page token is valid for only 2 hours.</p>
 <dt>
 <code class="descname">next_page_token</code></dt>
 <dd><p>Field google.cloud.scheduler.v1beta1.ListJobsResponse.next_page_token</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.scheduler_v1beta1.types.OAuthToken">
+<em class="property">class </em><code class="descclassname">google.cloud.scheduler_v1beta1.types.</code><code class="descname">OAuthToken</code><a class="headerlink" href="#google.cloud.scheduler_v1beta1.types.OAuthToken" title="Permalink to this definition">#</a></dt>
+<dd><p>Contains information needed for generating an <a class="reference external" href="https://developers.google.com/identity/protocols/OAuth2">OAuth
+token</a>. This
+type of authorization should be used when sending requests to a GCP
+endpoint.</p>
+<dl class="attribute">
+<dt id="google.cloud.scheduler_v1beta1.types.OAuthToken.service_account_email">
+<code class="descname">service_account_email</code><a class="headerlink" href="#google.cloud.scheduler_v1beta1.types.OAuthToken.service_account_email" title="Permalink to this definition">#</a></dt>
+<dd><p><a class="reference external" href="https://cloud.google.com/iam/docs/service-accounts">Service account email</a> to be
+used for generating OAuth token. The service account must be
+within the same project as the job. The caller must have
+iam.serviceAccounts.actAs permission for the service account.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.scheduler_v1beta1.types.OAuthToken.scope">
+<code class="descname">scope</code><a class="headerlink" href="#google.cloud.scheduler_v1beta1.types.OAuthToken.scope" title="Permalink to this definition">#</a></dt>
+<dd><p>OAuth scope to be used for generating OAuth access token. If
+not specified, “<a class="reference external" href="https://www.googleapis.com/auth/cloud">https://www.googleapis.com/auth/cloud</a>-
+platform” will be used.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">scope</code></dt>
+<dd><p>Field google.cloud.scheduler.v1beta1.OAuthToken.scope</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">service_account_email</code></dt>
+<dd><p>Field google.cloud.scheduler.v1beta1.OAuthToken.service_account_email</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.scheduler_v1beta1.types.OidcToken">
+<em class="property">class </em><code class="descclassname">google.cloud.scheduler_v1beta1.types.</code><code class="descname">OidcToken</code><a class="headerlink" href="#google.cloud.scheduler_v1beta1.types.OidcToken" title="Permalink to this definition">#</a></dt>
+<dd><p>Contains information needed for generating an <a class="reference external" href="https://developers.google.com/identity/protocols/OpenIDConnect">OpenID Connect
+token</a>.
+This type of authorization should be used when sending requests to third
+party endpoints.</p>
+<dl class="attribute">
+<dt id="google.cloud.scheduler_v1beta1.types.OidcToken.service_account_email">
+<code class="descname">service_account_email</code><a class="headerlink" href="#google.cloud.scheduler_v1beta1.types.OidcToken.service_account_email" title="Permalink to this definition">#</a></dt>
+<dd><p><a class="reference external" href="https://cloud.google.com/iam/docs/service-accounts">Service account email</a> to be
+used for generating OIDC token. The service account must be
+within the same project as the job. The caller must have
+iam.serviceAccounts.actAs permission for the service account.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.scheduler_v1beta1.types.OidcToken.audience">
+<code class="descname">audience</code><a class="headerlink" href="#google.cloud.scheduler_v1beta1.types.OidcToken.audience" title="Permalink to this definition">#</a></dt>
+<dd><p>Audience to be used when generating OIDC token. If not
+specified, the URI specified in target will be used.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">audience</code></dt>
+<dd><p>Field google.cloud.scheduler.v1beta1.OidcToken.audience</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">service_account_email</code></dt>
+<dd><p>Field google.cloud.scheduler.v1beta1.OidcToken.service_account_email</p>
 </dd></dl>
 
 </dd></dl>
