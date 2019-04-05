@@ -5,6 +5,14 @@
 [1]: https://pypi.org/project/google-cloud-firestore/#history
 
 
+## 0.32.1
+
+04-05-2019 10:51 PDT
+
+
+### Dependencies
+- Update google-api-core dependency
+
 ## 0.32.0
 
 04-01-2019 11:44 PDT
