@@ -137,7 +137,7 @@ class Key:
 
         from unittest import mock
         from google.cloud.ndb import context as context_module
-        client = mock.Mock(project="testing", spec=("project",))
+        client = mock.Mock(project="testing", spec=("project",), namespace="")
         context = context_module.Context(client, stub=mock.Mock(spec=())).use()
         context.__enter__()
         kind1, id1 = "Parent", "C"
@@ -274,6 +274,11 @@ class Key:
     def __new__(cls, *path_args, **kwargs):
         _constructor_handle_positional(path_args, kwargs)
         instance = super(Key, cls).__new__(cls)
+        # Make sure to pass in the namespace if it's not explicitly set.
+        if "namespace" not in kwargs:
+            client = context_module.get_context().client
+            if client.namespace:
+                kwargs["namespace"] = client.namespace
         if (
             "reference" in kwargs
             or "serialized" in kwargs

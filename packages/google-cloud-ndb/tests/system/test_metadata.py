@@ -230,6 +230,36 @@ def test_get_properties_of_kind(dispose_of):
 
 
 @pytest.mark.usefixtures("client_context")
+@pytest.mark.parametrize("namespace", ["DiffNamespace"])
+def test_get_properties_of_kind_different_namespace(dispose_of, namespace):
+    from google.cloud.ndb.metadata import get_properties_of_kind
+
+    class AnyKind(ndb.Model):
+        foo = ndb.IntegerProperty()
+        bar = ndb.StringProperty()
+        baz = ndb.IntegerProperty()
+        qux = ndb.StringProperty()
+
+    entity1 = AnyKind(
+        foo=1, bar="x", baz=3, qux="y", namespace="DiffNamespace"
+    )
+    entity1.put()
+    dispose_of(entity1.key._key)
+
+    properties = get_properties_of_kind("AnyKind")
+    assert properties == ["bar", "baz", "foo", "qux"]
+
+    properties = get_properties_of_kind("AnyKind", start="c")
+    assert properties == ["foo", "qux"]
+
+    properties = get_properties_of_kind("AnyKind", end="e")
+    assert properties == ["bar", "baz"]
+
+    properties = get_properties_of_kind("AnyKind", start="c", end="p")
+    assert properties == ["foo"]
+
+
+@pytest.mark.usefixtures("client_context")
 def test_get_representations_of_kind(dispose_of):
     from google.cloud.ndb.metadata import get_representations_of_kind
 

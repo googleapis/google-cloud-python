@@ -2992,6 +2992,7 @@ class TestModel:
 
 class Test_entity_from_protobuf:
     @staticmethod
+    @pytest.mark.usefixtures("in_context")
     def test_standard_case():
         class ThisKind(model.Model):
             a = model.IntegerProperty()
@@ -3048,6 +3049,7 @@ class Test_entity_from_protobuf:
 
 class Test_entity_to_protobuf:
     @staticmethod
+    @pytest.mark.usefixtures("in_context")
     def test_standard_case():
         class ThisKind(model.Model):
             a = model.IntegerProperty()
@@ -3084,6 +3086,7 @@ class Test_entity_to_protobuf:
         assert "__key__" not in entity_pb.properties
 
     @staticmethod
+    @pytest.mark.usefixtures("in_context")
     def test_property_named_key():
         class ThisKind(model.Model):
             key = model.StringProperty()
@@ -3097,6 +3100,7 @@ class Test_entity_to_protobuf:
         assert entity_pb.key.path[0].id == 123
 
     @staticmethod
+    @pytest.mark.usefixtures("in_context")
     def test_override_property():
         class ThatKind(model.Model):
             a = model.StringProperty()

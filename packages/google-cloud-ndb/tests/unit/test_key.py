@@ -45,6 +45,18 @@ class TestKey:
         assert key._reference is None
 
     @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_constructor_with_different_namespace(context):
+        context.client.namespace = "DiffNamespace"
+        key = key_module.Key("Kind", 42)
+
+        assert key._key == google.cloud.datastore.Key(
+            "Kind", 42, project="testing", namespace="DiffNamespace"
+        )
+        assert key._reference is None
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
     def test_constructor_empty_path():
         with pytest.raises(TypeError):
             key_module.Key(pairs=())
@@ -63,6 +75,7 @@ class TestKey:
         assert key._reference is None
 
     @staticmethod
+    @pytest.mark.usefixtures("in_context")
     def test_constructor_invalid_id_type():
         with pytest.raises(TypeError):
             key_module.Key("Kind", object())
@@ -70,6 +83,7 @@ class TestKey:
             key_module.Key("Kind", None, "Also", 10)
 
     @staticmethod
+    @pytest.mark.usefixtures("in_context")
     def test_constructor_invalid_kind_type():
         with pytest.raises(TypeError):
             key_module.Key(object(), 47)
@@ -89,6 +103,7 @@ class TestKey:
         assert key._reference is None
 
     @staticmethod
+    @pytest.mark.usefixtures("in_context")
     def test_constructor_with_reference():
         reference = make_reference()
         key = key_module.Key(reference=reference)
@@ -104,6 +119,7 @@ class TestKey:
         assert key._reference is reference
 
     @staticmethod
+    @pytest.mark.usefixtures("in_context")
     def test_constructor_with_serialized():
         serialized = (
             b"j\x18s~sample-app-no-locationr\n\x0b\x12\x04Zorp\x18X\x0c"
@@ -119,6 +135,7 @@ class TestKey:
             namespace=None,
         )
 
+    @pytest.mark.usefixtures("in_context")
     def test_constructor_with_urlsafe(self):
         key = key_module.Key(urlsafe=self.URLSAFE)
 
@@ -152,11 +169,13 @@ class TestKey:
         assert key._reference is None
 
     @staticmethod
+    @pytest.mark.usefixtures("in_context")
     def test_constructor_with_flat_and_pairs():
         with pytest.raises(TypeError):
             key_module.Key(pairs=[("Kind", 1)], flat=["Kind", 1])
 
     @staticmethod
+    @pytest.mark.usefixtures("in_context")
     def test_constructor_with_app():
         key = key_module.Key("Kind", 10, app="s~foo")
 
@@ -175,6 +194,7 @@ class TestKey:
         )
         assert key._reference is None
 
+    @pytest.mark.usefixtures("in_context")
     def test_constructor_with_parent(self):
         parent = key_module.Key(urlsafe=self.URLSAFE)
         key = key_module.Key("Zip", 10, parent=parent)
@@ -184,16 +204,19 @@ class TestKey:
         )
         assert key._reference is None
 
+    @pytest.mark.usefixtures("in_context")
     def test_constructor_with_parent_bad_type(self):
         parent = unittest.mock.sentinel.parent
         with pytest.raises(exceptions.BadValueError):
             key_module.Key("Zip", 10, parent=parent)
 
     @staticmethod
+    @pytest.mark.usefixtures("in_context")
     def test_constructor_insufficient_args():
         with pytest.raises(TypeError):
             key_module.Key(app="foo")
 
+    @pytest.mark.usefixtures("in_context")
     def test_no_subclass_for_reference(self):
         class KeySubclass(key_module.Key):
             pass
@@ -202,10 +225,12 @@ class TestKey:
             KeySubclass(urlsafe=self.URLSAFE)
 
     @staticmethod
+    @pytest.mark.usefixtures("in_context")
     def test_invalid_argument_combination():
         with pytest.raises(TypeError):
             key_module.Key(flat=["a", "b"], urlsafe=b"foo")
 
+    @pytest.mark.usefixtures("in_context")
     def test_colliding_reference_arguments(self):
         urlsafe = self.URLSAFE
         padding = b"=" * (-len(urlsafe) % 4)
@@ -390,6 +415,7 @@ class TestKey:
         assert key.namespace() == namespace
 
     @staticmethod
+    @pytest.mark.usefixtures("in_context")
     def test_app():
         app = "s~example"
         key = key_module.Key("X", 100, app=app)
@@ -452,6 +478,7 @@ class TestKey:
         assert key.kind() == "c"
 
     @staticmethod
+    @pytest.mark.usefixtures("in_context")
     def test_reference():
         key = key_module.Key("This", "key", app="fire")
         assert key.reference() == make_reference(
@@ -466,6 +493,7 @@ class TestKey:
         assert key.reference() is unittest.mock.sentinel.reference
 
     @staticmethod
+    @pytest.mark.usefixtures("in_context")
     def test_reference_bad_kind():
         too_long = "a" * (key_module._MAX_KEYPART_BYTES + 1)
         for kind in ("", too_long):
@@ -474,6 +502,7 @@ class TestKey:
                 key.reference()
 
     @staticmethod
+    @pytest.mark.usefixtures("in_context")
     def test_reference_bad_string_id():
         too_long = "a" * (key_module._MAX_KEYPART_BYTES + 1)
         for id_ in ("", too_long):
@@ -482,6 +511,7 @@ class TestKey:
                 key.reference()
 
     @staticmethod
+    @pytest.mark.usefixtures("in_context")
     def test_reference_bad_integer_id():
         for id_ in (-10, 0, 2 ** 64):
             key = key_module.Key("kind", id_, app="app")
@@ -489,11 +519,13 @@ class TestKey:
                 key.reference()
 
     @staticmethod
+    @pytest.mark.usefixtures("in_context")
     def test_serialized():
         key = key_module.Key("a", 108, app="c")
         assert key.serialized() == b"j\x01cr\x07\x0b\x12\x01a\x18l\x0c"
 
     @staticmethod
+    @pytest.mark.usefixtures("in_context")
     def test_urlsafe():
         key = key_module.Key("d", None, app="f")
         assert key.urlsafe() == b"agFmcgULEgFkDA"

@@ -104,7 +104,12 @@ def dispose_of(ds_client, to_delete):
 
 
 @pytest.fixture
-def client_context():
-    client = ndb.Client()
+def namespace():
+    return ""
+
+
+@pytest.fixture
+def client_context(namespace):
+    client = ndb.Client(namespace=namespace)
     with client.context():
         yield
