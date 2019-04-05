@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import itertools
+
 from unittest import mock
 
 import pytest
@@ -94,7 +96,7 @@ class Test_fetch:
     )
     @mock.patch("google.cloud.ndb._datastore_query._run_query")
     @mock.patch("google.cloud.ndb._datastore_query._query_to_protobuf")
-    def test_project_from_context(_query_to_protobuf, _run_query, in_context):
+    def test_project_from_context(_query_to_protobuf, _run_query):
         query = mock.Mock(
             project=None,
             filters=None,
@@ -122,7 +124,7 @@ class Test_fetch:
     )
     @mock.patch("google.cloud.ndb._datastore_query._run_query")
     @mock.patch("google.cloud.ndb._datastore_query._query_to_protobuf")
-    def test_filter(_query_to_protobuf, _run_query, in_context):
+    def test_filter(_query_to_protobuf, _run_query):
         filters = mock.Mock(
             _to_filter=mock.Mock(return_value="thefilter"), spec="_to_filter"
         )
@@ -153,23 +155,16 @@ class Test_fetch:
     )
     @mock.patch(
         "google.cloud.ndb._datastore_query._merge_results",
-        lambda result_sets, sortable: sum(result_sets, []),
+        lambda result_sets, sortable: itertools.chain(*result_sets),
     )
     @mock.patch("google.cloud.ndb._datastore_query._run_query")
     @mock.patch("google.cloud.ndb._datastore_query._query_to_protobuf")
-    def test_filters(_query_to_protobuf, _run_query, in_context):
+    def test_filters(_query_to_protobuf, _run_query):
         filters = mock.Mock(
             _to_filter=mock.Mock(return_value=["filter1", "filter2"]),
             spec="_to_filter",
         )
-        query = mock.Mock(
-            project=None,
-            filters=filters,
-            order_by=None,
-            namespace=None,
-            projection=None,
-            spec=("app", "filters", "namespace", "projection"),
-        )
+        query = query_module.QueryOptions(filters=filters)
 
         _run_query_future1 = tasklets.Future()
         _run_query_future2 = tasklets.Future()
@@ -180,6 +175,38 @@ class Test_fetch:
         _run_query_future2.set_result([("d", "4"), ("e", "5"), ("f", "6")])
         assert tasklet.result() == ["a1", "b2", "c3", "d4", "e5", "f6"]
 
+        assert _query_to_protobuf.call_count == 2
+        assert _run_query.call_count == 2
+
+    @staticmethod
+    @mock.patch(
+        "google.cloud.ndb._datastore_query._Result.entity",
+        lambda self, projection: self.result_type + self.result_pb,
+    )
+    @mock.patch(
+        "google.cloud.ndb._datastore_query._merge_results",
+        lambda result_sets, sortable: itertools.chain(*result_sets),
+    )
+    @mock.patch("google.cloud.ndb._datastore_query._run_query")
+    @mock.patch("google.cloud.ndb._datastore_query._query_to_protobuf")
+    def test_filters_with_offset_and_limit(_query_to_protobuf, _run_query):
+        filters = mock.Mock(
+            _to_filter=mock.Mock(return_value=["filter1", "filter2"]),
+            spec="_to_filter",
+        )
+        query = query_module.QueryOptions(filters=filters, offset=2, limit=3)
+
+        _run_query_future1 = tasklets.Future()
+        _run_query_future2 = tasklets.Future()
+        _run_query.side_effect = [_run_query_future1, _run_query_future2]
+
+        tasklet = _datastore_query.fetch(query)
+        _run_query_future1.set_result([("a", "1"), ("b", "2"), ("c", "3")])
+        _run_query_future2.set_result([("d", "4"), ("e", "5"), ("f", "6")])
+        assert tasklet.result() == ["c3", "d4", "e5"]
+
+        assert query.offset == 2  # Not mutated
+        assert query.limit == 3  # Not mutated
         assert _query_to_protobuf.call_count == 2
         assert _run_query.call_count == 2
 
@@ -336,12 +363,12 @@ class Test_Result:
 class Test__query_to_protobuf:
     @staticmethod
     def test_no_args():
-        query = query_module.Query()
+        query = query_module.QueryOptions()
         assert _datastore_query._query_to_protobuf(query) == query_pb2.Query()
 
     @staticmethod
     def test_kind():
-        query = query_module.Query(kind="Foo")
+        query = query_module.QueryOptions(kind="Foo")
         assert _datastore_query._query_to_protobuf(query) == query_pb2.Query(
             kind=[query_pb2.KindExpression(name="Foo")]
         )
@@ -349,7 +376,7 @@ class Test__query_to_protobuf:
     @staticmethod
     def test_ancestor():
         key = key_module.Key("Foo", 123)
-        query = query_module.Query(ancestor=key)
+        query = query_module.QueryOptions(ancestor=key)
         expected_pb = query_pb2.Query(
             filter=query_pb2.Filter(
                 property_filter=query_pb2.PropertyFilter(
@@ -366,7 +393,7 @@ class Test__query_to_protobuf:
     @staticmethod
     def test_ancestor_with_property_filter():
         key = key_module.Key("Foo", 123)
-        query = query_module.Query(ancestor=key)
+        query = query_module.QueryOptions(ancestor=key)
         filter_pb = query_pb2.PropertyFilter(
             property=query_pb2.PropertyReference(name="foo"),
             op=query_pb2.PropertyFilter.EQUAL,
@@ -394,7 +421,7 @@ class Test__query_to_protobuf:
     @staticmethod
     def test_ancestor_with_composite_filter():
         key = key_module.Key("Foo", 123)
-        query = query_module.Query(ancestor=key)
+        query = query_module.QueryOptions(ancestor=key)
         filter_pb1 = query_pb2.PropertyFilter(
             property=query_pb2.PropertyReference(name="foo"),
             op=query_pb2.PropertyFilter.EQUAL,
@@ -434,7 +461,7 @@ class Test__query_to_protobuf:
 
     @staticmethod
     def test_projection():
-        query = query_module.Query(projection=("a", "b"))
+        query = query_module.QueryOptions(projection=("a", "b"))
         expected_pb = query_pb2.Query(
             projection=[
                 query_pb2.Projection(
@@ -449,7 +476,7 @@ class Test__query_to_protobuf:
 
     @staticmethod
     def test_distinct_on():
-        query = query_module.Query(group_by=("a", "b"))
+        query = query_module.QueryOptions(distinct_on=("a", "b"))
         expected_pb = query_pb2.Query(
             distinct_on=[
                 query_pb2.PropertyReference(name="a"),
@@ -460,7 +487,7 @@ class Test__query_to_protobuf:
 
     @staticmethod
     def test_order_by():
-        query = query_module.Query(
+        query = query_module.QueryOptions(
             order_by=[
                 query_module.PropertyOrder("a"),
                 query_module.PropertyOrder("b", reverse=True),
@@ -487,13 +514,27 @@ class Test__query_to_protobuf:
             op=query_pb2.PropertyFilter.EQUAL,
             value=entity_pb2.Value(string_value="bar"),
         )
-        query = query_module.Query(kind="Foo")
+        query = query_module.QueryOptions(kind="Foo")
         query_pb = _datastore_query._query_to_protobuf(query, filter_pb)
         expected_pb = query_pb2.Query(
             kind=[query_pb2.KindExpression(name="Foo")],
             filter=query_pb2.Filter(property_filter=filter_pb),
         )
         assert query_pb == expected_pb
+
+    @staticmethod
+    def test_offset():
+        query = query_module.QueryOptions(offset=20)
+        assert _datastore_query._query_to_protobuf(query) == query_pb2.Query(
+            offset=20
+        )
+
+    @staticmethod
+    def test_limit():
+        query = query_module.QueryOptions(limit=20)
+        expected_pb = query_pb2.Query()
+        expected_pb.limit.value = 20
+        assert _datastore_query._query_to_protobuf(query) == expected_pb
 
 
 @pytest.mark.usefixtures("in_context")

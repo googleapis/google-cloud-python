@@ -303,3 +303,47 @@ def test_keys_only(ds_entity):
 
     assert results[0] == ndb.Key("SomeKind", entity_id1)
     assert results[1] == ndb.Key("SomeKind", entity_id2)
+
+
+@pytest.mark.usefixtures("client_context")
+def test_offset_and_limit(ds_entity):
+    for i in range(5):
+        entity_id = test_utils.system.unique_resource_id()
+        ds_entity(KIND, entity_id, foo=i)
+
+    class SomeKind(ndb.Model):
+        foo = ndb.IntegerProperty()
+
+    query = SomeKind.query(order_by=["foo"])
+    results = query.fetch(offset=2, limit=2)
+    assert len(results) == 2
+    assert [entity.foo for entity in results] == [2, 3]
+
+
+@pytest.mark.skip("Requires an index")
+@pytest.mark.usefixtures("client_context")
+def test_offset_and_limit_with_or_filter(dispose_of):
+    class SomeKind(ndb.Model):
+        foo = ndb.IntegerProperty()
+        bar = ndb.StringProperty()
+
+    @ndb.tasklet
+    def make_entities():
+        keys = yield (
+            SomeKind(foo=0, bar="a").put_async(),
+            SomeKind(foo=1, bar="b").put_async(),
+            SomeKind(foo=2, bar="a").put_async(),
+            SomeKind(foo=3, bar="b").put_async(),
+            SomeKind(foo=4, bar="a").put_async(),
+            SomeKind(foo=5, bar="b").put_async(),
+        )
+        for key in keys:
+            dispose_of(key._key)
+
+    make_entities().check_success()
+    query = SomeKind.query(ndb.OR(SomeKind.bar == "a", SomeKind.bar == "b"))
+    query = query.order(SomeKind.foo)
+    results = query.fetch(offset=1, limit=2)
+    assert len(results) == 2
+
+    assert [entity.foo for entity in results] == [1, 2]

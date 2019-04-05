@@ -114,16 +114,28 @@ def fetch(query):
         if not isinstance(filter_pbs, (tuple, list)):
             filter_pbs = (filter_pbs,)
 
+    multiple_queries = len(filter_pbs) > 1
+
+    if multiple_queries:
+        # If we're aggregating multiple queries, then limit and offset will be
+        # have to applied to the aggregate, not passed to Datastore to use on
+        # individual queries
+        offset = query.offset
+        limit = query.limit
+        query = query.copy(offset=0, limit=None)
+    else:
+        offset = limit = None
+
     queries = [
         _run_query(project_id, namespace, _query_to_protobuf(query, filter_pb))
         for filter_pb in filter_pbs
     ]
     result_sets = yield queries
     result_sets = [
-        [
+        (
             _Result(result_type, result_pb, query.order_by)
             for result_type, result_pb in result_set
-        ]
+        )
         for result_set in result_sets
     ]
 
@@ -132,6 +144,9 @@ def fetch(query):
         results = _merge_results(result_sets, sortable)
     else:
         results = result_sets[0]
+
+    if offset or limit:
+        results = itertools.islice(results, offset, offset + limit)
 
     return [result.entity(query.projection) for result in results]
 
@@ -333,7 +348,15 @@ def _query_to_protobuf(query, filter_pb=None):
     if filter_pb is not None:
         query_args["filter"] = _filter_pb(filter_pb)
 
-    return query_pb2.Query(**query_args)
+    query_pb = query_pb2.Query(**query_args)
+
+    if query.offset:
+        query_pb.offset = query.offset
+
+    if query.limit:
+        query_pb.limit.value = query.limit
+
+    return query_pb
 
 
 def _filter_pb(filter_pb):

@@ -113,6 +113,9 @@ class QueryOptions:
         )
         return "QueryOptions({})".format(options)
 
+    def copy(self, **kwargs):
+        return type(self)(config=self, **kwargs)
+
 
 class PropertyOrder(object):
     """The sort order for a property name, to be used when ordering the
@@ -1398,7 +1401,7 @@ class Query:
         self,
         keys_only=None,
         projection=None,
-        offset=0,
+        offset=None,
         limit=None,
         batch_size=None,  # 20?   # placeholder
         prefetch_size=None,
@@ -1457,7 +1460,7 @@ class Query:
         self,
         keys_only=None,
         projection=None,
-        offset=0,
+        offset=None,
         limit=None,
         batch_size=None,  # 20?   # placeholder
         prefetch_size=None,
@@ -1501,18 +1504,6 @@ class Query:
                 "Deprecation warning: passing options to Query.fetch or "
                 "Query.fetch_async is deprecated. Please pass arguments "
                 "directly."
-            )
-
-        offset = self._option("offset", offset, options)
-        if offset:
-            raise NotImplementedError(
-                "'offset' is not implemented yet for queries"
-            )
-
-        limit = self._option("limit", limit, options)
-        if limit:
-            raise NotImplementedError(
-                "'limit' is not implemented yet for queries"
             )
 
         batch_size = self._option("batch_size", batch_size, options)
@@ -1577,6 +1568,8 @@ class Query:
             ("order_by", self._option("order_by", None, options)),
             ("distinct_on", self._option("distinct_on", None, options)),
             ("projection", projection),
+            ("offset", self._option("offset", offset, options)),
+            ("limit", self._option("limit", limit, options)),
         )
         query_arguments = {
             name: value for name, value in query_arguments if value is not None

@@ -1480,17 +1480,25 @@ class TestQuery:
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")
-    def test_fetch_async_with_offset():
+    @unittest.mock.patch("google.cloud.ndb.query._datastore_query")
+    def test_fetch_async_with_offset(_datastore_query):
         query = query_module.Query()
-        with pytest.raises(NotImplementedError):
-            query.fetch_async(offset=20)
+        response = _datastore_query.fetch.return_value
+        assert query.fetch_async(offset=20) is response
+        _datastore_query.fetch.assert_called_once_with(
+            query_module.QueryOptions(offset=20)
+        )
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")
-    def test_fetch_async_with_limit():
+    @unittest.mock.patch("google.cloud.ndb.query._datastore_query")
+    def test_fetch_async_with_limit(_datastore_query):
         query = query_module.Query()
-        with pytest.raises(NotImplementedError):
-            query.fetch_async(limit=20)
+        response = _datastore_query.fetch.return_value
+        assert query.fetch_async(limit=20) is response
+        _datastore_query.fetch.assert_called_once_with(
+            query_module.QueryOptions(limit=20)
+        )
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")
