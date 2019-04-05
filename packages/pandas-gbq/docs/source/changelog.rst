@@ -3,14 +3,8 @@ Changelog
 
 .. _changelog-0.10.0:
 
-0.10.0 / TBD
-------------
-
-- Fix a bug where pandas-gbq could not upload an empty DataFrame. (:issue:`237`)
-- Update the authentication credentials. **Note:** You may need to set
-  ``reauth=True`` in order to update your credentials to the most recent
-  version. This is required to use new functionality such as the BigQuery
-  Storage API. (:issue:`267`)
+0.10.0 / 2019-04-05
+-------------------
 
 Documentation
 ~~~~~~~~~~~~~
@@ -28,12 +22,17 @@ Dependency updates
 Internal changes
 ~~~~~~~~~~~~~~~~
 
+- Update the authentication credentials. **Note:** You may need to set
+  ``reauth=True`` in order to update your credentials to the most recent
+  version. This is required to use new functionality such as the BigQuery
+  Storage API. (:issue:`267`)
 - Use ``to_dataframe()`` from ``google-cloud-bigquery`` in the ``read_gbq()``
   function. (:issue:`247`)
 
 Enhancements
 ~~~~~~~~~~~~
 
+- Fix a bug where pandas-gbq could not upload an empty DataFrame. (:issue:`237`)
 - Allow ``table_schema`` in :func:`to_gbq` to contain only a subset of columns,
   with the rest being populated using the DataFrame dtypes (:issue:`218`)
   (contributed by @johnpaton)
