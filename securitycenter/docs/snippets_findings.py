@@ -65,8 +65,28 @@ def test_create_source(organization_id):
     # [END create_source]
 
 
+def test_get_source(source_name):
+    """Gets an existing source."""
+    # [START get_source]
+    from google.cloud import securitycenter as securitycenter
+    from google.protobuf import field_mask_pb2
+
+    client = securitycenter.SecurityCenterClient()
+
+    # source_name is the resource path for a source that has been
+    # created previously (you can use list_sources to find a specific one).
+    # Its format is:
+    # source_name = "organizations/{organization_id}/sources/{source_id}"
+    # e.g.:
+    # source_name = "organizations/111122222444/sources/1234"
+    source = client.get_source(source_name)
+
+    print("Source: {}".format(source))
+    # [END get_source]
+
+
 def test_update_source(source_name):
-    "Updates a sources display name."
+    """Updates a source's display name."""
     # [START update_source]
     from google.cloud import securitycenter as securitycenter
     from google.protobuf import field_mask_pb2
@@ -447,3 +467,24 @@ def test_list_findings_at_time(source_name):
         )
     # [END list_findings_at_a_time]
     assert i == -1
+
+
+def test_get_iam_policy(source_name):
+    """Gives a user findingsEditor permission to the source."""
+    user_email = "csccclienttest@gmail.com"
+    # [START get_source_iam]
+    from google.cloud import securitycenter as securitycenter
+    from google.iam.v1 import policy_pb2
+
+    client = securitycenter.SecurityCenterClient()
+
+    # source_name is the resource path for a source that has been
+    # created previously (you can use list_sources to find a specific one).
+    # Its format is:
+    # source_name = "organizations/{organization_id}/sources/{source_id}"
+    # e.g.:
+    # source_name = "organizations/111122222444/sources/1234"
+    # Get the old policy so we can do an incremental update.
+    policy = client.get_iam_policy(source_name)
+    print("Policy: {}".format(policy))
+    # [END get_source_iam]
