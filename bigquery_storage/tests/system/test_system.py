@@ -89,15 +89,3 @@ def test_read_rows_to_dataframe(client, project_id):
     assert frame.latitude.dtype.name == "float16"
     assert frame.longitude.dtype.name == "float64"
     assert frame["name"].str.startswith("Central Park").any()
-
-
-def test_split_read_stream(client, project_id, table_reference):
-    session = client.create_read_session(
-        table_reference, parent="projects/{}".format(project_id)
-    )
-
-    split = client.split_read_stream(session.streams[0])
-
-    assert split.primary_stream is not None
-    assert split.remainder_stream is not None
-    assert split.primary_stream != split.remainder_stream
