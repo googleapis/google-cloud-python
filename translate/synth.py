@@ -32,12 +32,12 @@ for version in versions:
         "translate",
         version,
         include_protos=True,
-        private=True,
     )
 
     #s.move(library / f'google/cloud/translation_{version}', f'google/cloud/translate_{version}', excludes=excludes)
     s.move(library / f'google/cloud/translate_{version}', excludes=excludes)
     s.move(library / 'tests')
+    s.move(library / f"docs/gapic/{version}")
 
 # translation -> translate
 s.replace(
