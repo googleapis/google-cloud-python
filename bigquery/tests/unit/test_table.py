@@ -1798,7 +1798,6 @@ class TestRowIterator(unittest.TestCase):
         bigquery_storage_v1beta1 is None, "Requires `google-cloud-bigquery-storage`"
     )
     def test_to_dataframe_w_bqstorage_raises_auth_error(self):
-        from google.cloud.bigquery import schema
         from google.cloud.bigquery import table as mut
 
         bqstorage_client = mock.create_autospec(
