@@ -1793,6 +1793,28 @@ class TestRowIterator(unittest.TestCase):
         self.assertEqual(df.name.dtype.name, "object")
         self.assertEqual(df.age.dtype.name, "int64")
 
+    @unittest.skipIf(pandas is None, "Requires `pandas`")
+    @unittest.skipIf(
+        bigquery_storage_v1beta1 is None, "Requires `google-cloud-bigquery-storage`"
+    )
+    def test_to_dataframe_w_bqstorage_raises_auth_error(self):
+        from google.cloud.bigquery import table as mut
+
+        bqstorage_client = mock.create_autospec(
+            bigquery_storage_v1beta1.BigQueryStorageClient
+        )
+        bqstorage_client.create_read_session.side_effect = google.api_core.exceptions.Forbidden(
+            "TEST BigQuery Storage API not enabled. TEST"
+        )
+        path = "/foo"
+        api_request = mock.Mock(return_value={"rows": []})
+        row_iterator = mut.RowIterator(
+            _mock_client(), api_request, path, [], table=mut.Table("proj.dset.tbl")
+        )
+
+        with pytest.raises(google.api_core.exceptions.Forbidden):
+            row_iterator.to_dataframe(bqstorage_client=bqstorage_client)
+
     @unittest.skipIf(
         bigquery_storage_v1beta1 is None, "Requires `google-cloud-bigquery-storage`"
     )

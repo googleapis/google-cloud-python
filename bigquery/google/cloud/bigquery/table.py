@@ -1468,6 +1468,12 @@ class RowIterator(HTTPIterator):
         if bqstorage_client is not None:
             try:
                 return self._to_dataframe_bqstorage(bqstorage_client, dtypes)
+            except google.api_core.exceptions.Forbidden:
+                # Don't hide errors such as insufficient permissions to create
+                # a read session, or the API is not enabled. Both of those are
+                # clearly problems if the developer has explicitly asked for
+                # BigQuery Storage API support.
+                raise
             except google.api_core.exceptions.GoogleAPICallError:
                 # There is a known issue with reading from small anonymous
                 # query results tables, so some errors are expected. Rather
