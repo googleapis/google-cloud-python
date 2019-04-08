@@ -19,7 +19,7 @@ Listing Datasets
 List datasets for a project with the
 :func:`~google.cloud.bigquery.client.Client.list_datasets` method:
 
-.. literalinclude:: ../snippets.py
+.. literalinclude:: ../samples/list_datasets.py
    :language: python
    :dedent: 4
    :start-after: [START bigquery_list_datasets]
@@ -31,7 +31,7 @@ Getting a Dataset
 Get a dataset resource (to pick up changes made by another client) with the
 :func:`~google.cloud.bigquery.client.Client.get_dataset` method:
 
-.. literalinclude:: ../snippets.py
+.. literalinclude:: ../samples/get_dataset.py
    :language: python
    :dedent: 4
    :start-after: [START bigquery_get_dataset]
@@ -55,7 +55,7 @@ Updating a Dataset
 Update a property in a dataset's metadata with the
 :func:`~google.cloud.bigquery.client.Client.update_dataset` method:
 
-.. literalinclude:: ../snippets.py
+.. literalinclude:: ../samples/update_dataset_description.py
    :language: python
    :dedent: 4
    :start-after: [START bigquery_update_dataset_description]
@@ -64,7 +64,7 @@ Update a property in a dataset's metadata with the
 Modify user permissions on a dataset with the
 :func:`~google.cloud.bigquery.client.Client.update_dataset` method:
 
-.. literalinclude:: ../snippets.py
+.. literalinclude:: ../samples/update_dataset_access.py
    :language: python
    :dedent: 4
    :start-after: [START bigquery_update_dataset_access]
@@ -76,7 +76,7 @@ Deleting a Dataset
 Delete a dataset with the
 :func:`~google.cloud.bigquery.client.Client.delete_dataset` method:
 
-.. literalinclude:: ../snippets.py
+.. literalinclude:: ../samples/delete_dataset.py
    :language: python
    :dedent: 4
    :start-after: [START bigquery_delete_dataset]
