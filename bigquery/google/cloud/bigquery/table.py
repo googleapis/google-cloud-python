@@ -907,6 +907,42 @@ class TableListItem(object):
         self._properties = resource
 
     @property
+    def created(self):
+        """Union[datetime.datetime, None]: Datetime at which the table was
+        created (:data:`None` until set from the server).
+        """
+        creation_time = self._properties.get("creationTime")
+        if creation_time is not None:
+            # creation_time will be in milliseconds.
+            return google.cloud._helpers._datetime_from_microseconds(
+                1000.0 * float(creation_time)
+            )
+
+    @property
+    def expires(self):
+        """Union[datetime.datetime, None]: Datetime at which the table will be
+        deleted.
+
+        Raises:
+            ValueError: For invalid value types.
+        """
+        expiration_time = self._properties.get("expirationTime")
+        if expiration_time is not None:
+            # expiration_time will be in milliseconds.
+            return google.cloud._helpers._datetime_from_microseconds(
+                1000.0 * float(expiration_time)
+            )
+
+    @expires.setter
+    def expires(self, value):
+        if not isinstance(value, datetime.datetime) and value is not None:
+            raise ValueError("Pass a datetime, or None")
+        value_ms = google.cloud._helpers._millis_from_datetime(value)
+        self._properties["tableReference"]["expirationTime"] = _helpers._str_or_none(
+            value_ms
+        )
+
+    @property
     def project(self):
         """str: Project bound to the table."""
         return self._properties["tableReference"]["projectId"]
