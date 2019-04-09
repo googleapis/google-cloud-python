@@ -2913,8 +2913,8 @@ OutputConfig = _reflection.GeneratedProtocolMessageType(
           generate at most 2 \* n output files. (n is the # of
           target\_language\_codes in the BatchTranslateTextRequest).
           Output files (tsv) generated are compliant with RFC 4180
-          except that record delimiters are ':raw-latex:`\n`' instead of
-          ':raw-latex:`\r`:raw-latex:`\n`'. We don't provide any way to
+          except that record delimiters are ``\\\\n`` instead of
+          ``\\\\r\\\\n``. We don't provide any way to
           change record delimiters.  While the input files are being
           processed, we write/update an index file 'index.csv' under
           'output\_uri\_prefix' (for example, gs://translation-

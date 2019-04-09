@@ -1,19 +1,19 @@
 {
-  "updateTime": "2019-04-04T12:25:29.184680Z",
+  "updateTime": "2019-04-08T22:42:12.391231Z",
   "sources": [
     {
       "generator": {
         "name": "artman",
-        "version": "0.16.23",
-        "dockerImage": "googleapis/artman@sha256:f3a3f88000dc1cd1b4826104c5574aa5c534f6793fbf66e888d11c0d7ef5762e"
+        "version": "0.16.25",
+        "dockerImage": "googleapis/artman@sha256:d9597f983d1d4e61272c63cb97b7d8f8234da9999526c35d357de3d781f0ec1b"
       }
     },
     {
       "git": {
-        "name": "googleapis-private",
-        "remote": "https://github.com/googleapis/googleapis-private.git",
-        "sha": "6c972ee69c6f4e4ae19df06c4c2a082cee64cab0",
-        "internalRef": "241798897"
+        "name": "googleapis",
+        "remote": "git@github.com:googleapis/googleapis.git",
+        "sha": "9a02c5acecb43f38fae4fa52c6420f21c335b888",
+        "internalRef": "242170119"
       }
     },
     {
@@ -27,7 +27,7 @@
   "destinations": [
     {
       "client": {
-        "source": "googleapis-private",
+        "source": "googleapis",
         "apiName": "translate",
         "apiVersion": "v3beta1",
         "language": "python",
