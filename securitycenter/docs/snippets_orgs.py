@@ -15,12 +15,15 @@
 # limitations under the License.
 """Examples for working with organization settings. """
 import os
+import pytest
+
+@pytest.fixture(scope="module")
+def organization_id():
+    """Get Organization ID from the environment variable """
+    return os.environ["GCLOUD_ORGANIZATION"]
 
 
-ORGANIZATION_ID = os.environ["GCLOUD_ORGANIZATION"]
-
-
-def test_get_settings():
+def test_get_settings(organization_id):
     """Example showing how to retreive current organization settings."""
     # [START get_org_settings]
     from google.cloud import securitycenter as securitycenter
@@ -29,7 +32,7 @@ def test_get_settings():
     # ORGANIZATION_ID is numeric ID for the organization. e.g.
     # ORGANIZATION_ID = "111112223333"
     org_settings_name = "organizations/{org_id}/organizationSettings".format(
-        org_id=ORGANIZATION_ID
+        org_id=organization_id
     )
 
     org_settings = client.get_organization_settings(org_settings_name)
@@ -37,7 +40,7 @@ def test_get_settings():
     # [END get_org_settings]
 
 
-def test_update_asset_discovery_org_settings():
+def test_update_asset_discovery_org_settings(organization_id):
     """Example showing how to update the asset discovery configuration
     for an organization."""
     # [START update_org_settings]
@@ -49,7 +52,7 @@ def test_update_asset_discovery_org_settings():
     # ORGANIZATION_ID is numeric ID for the organization. e.g.
     # ORGANIZATION_ID = "111112223333"
     org_settings_name = "organizations/{org_id}/organizationSettings".format(
-        org_id=ORGANIZATION_ID
+        org_id=organization_id
     )
     # Only update the enable_asset_discovery_value (leave others untouched).
     field_mask = field_mask_pb2.FieldMask(paths=["enable_asset_discovery"])

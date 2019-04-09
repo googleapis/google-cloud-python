@@ -394,7 +394,8 @@ def test_list_all_findings(organization_id):
     # The "sources/-" suffix lists findings across all sources.  You
     # also use a specific source_name instead.
     all_sources = "{org_name}/sources/-".format(org_name=org_name)
-    for i, finding_result in enumerate(client.list_findings(all_sources)):
+    finding_result_iterator = client.list_findings(all_sources)
+    for i, finding_result in enumerate(finding_result_iterator):
         print(
             "{}: name: {} resource: {}".format(
                 i, finding_result.finding.name, finding_result.finding.resource_name
