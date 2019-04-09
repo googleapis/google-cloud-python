@@ -922,9 +922,6 @@ class TableListItem(object):
     def expires(self):
         """Union[datetime.datetime, None]: Datetime at which the table will be
         deleted.
-
-        Raises:
-            ValueError: For invalid value types.
         """
         expiration_time = self._properties.get("expirationTime")
         if expiration_time is not None:
@@ -932,15 +929,6 @@ class TableListItem(object):
             return google.cloud._helpers._datetime_from_microseconds(
                 1000.0 * float(expiration_time)
             )
-
-    @expires.setter
-    def expires(self, value):
-        if not isinstance(value, datetime.datetime) and value is not None:
-            raise ValueError("Pass a datetime, or None")
-        value_ms = google.cloud._helpers._millis_from_datetime(value)
-        self._properties["tableReference"]["expirationTime"] = _helpers._str_or_none(
-            value_ms
-        )
 
     @property
     def project(self):

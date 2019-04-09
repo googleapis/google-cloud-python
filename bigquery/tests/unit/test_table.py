@@ -1119,16 +1119,20 @@ class TestTableListItem(unittest.TestCase):
         import datetime
         from google.cloud._helpers import UTC
 
-        self.WHEN_TS = 1437767599.006
+        self.WHEN_TS = 1437767599.125
         self.WHEN = datetime.datetime.utcfromtimestamp(self.WHEN_TS).replace(tzinfo=UTC)
+        self.EXP_TIME = datetime.datetime(2015, 8, 1, 23, 59, 59, tzinfo=UTC)
 
     def test_ctor(self):
+        from google.cloud._helpers import _millis
+
         self._setUpConstants()
         project = "test-project"
         dataset_id = "test_dataset"
         table_id = "coffee_table"
         resource = {
             "creationTime": self.WHEN_TS * 1000,
+            "expirationTime": _millis(self.EXP_TIME),
             "kind": "bigquery#table",
             "id": "{}:{}.{}".format(project, dataset_id, table_id),
             "tableReference": {
@@ -1148,16 +1152,8 @@ class TestTableListItem(unittest.TestCase):
 
         table = self._make_one(resource)
 
-        if "creationTime" in resource:
-            self.assertEqual(table.created, self.WHEN)
-        else:
-            self.assertIsNone(table.created)
-
-        if "expirationTime" in resource:
-            self.assertEqual(table.expires, self.EXP_TIME)
-        else:
-            self.assertIsNone(table.expires)
-
+        self.assertEqual(table.created, self.WHEN)
+        self.assertEqual(table.expires, self.EXP_TIME)
         self.assertEqual(table.project, project)
         self.assertEqual(table.dataset_id, dataset_id)
         self.assertEqual(table.table_id, table_id)
@@ -1174,7 +1170,7 @@ class TestTableListItem(unittest.TestCase):
         self.assertEqual(table.time_partitioning.field, "mycolumn")
         self.assertEqual(table.labels["some-stuff"], "this-is-a-label")
         self.assertIsNone(table.view_use_legacy_sql)
-        self.assertIsNone(table.expires)
+        # self.assertIsNone(table.expires)
 
         with warnings.catch_warnings(record=True) as warned:
             self.assertEqual(table.partitioning_type, "DAY")
