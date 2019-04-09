@@ -32,12 +32,12 @@ for version in versions:
         "translate",
         version,
         include_protos=True,
-        private=True,
     )
 
     #s.move(library / f'google/cloud/translation_{version}', f'google/cloud/translate_{version}', excludes=excludes)
     s.move(library / f'google/cloud/translate_{version}', excludes=excludes)
     s.move(library / 'tests')
+    s.move(library / f"docs/gapic/{version}")
 
 # translation -> translate
 s.replace(
@@ -46,6 +46,12 @@ s.replace(
     "google.cloud.translate_v3beta1.proto",
 )
 
+s.replace(
+    "google/cloud/**/translation_service_pb2.py",
+    r"""record delimiters are ':raw-latex:`\\n`' instead of
+          ':raw-latex:`\\r`:raw-latex:`\\n`'.""",
+    r"""record delimiters are ``\\\\\\\\n`` instead of
+          ``\\\\\\\\r\\\\\\\\n``.""",)
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
