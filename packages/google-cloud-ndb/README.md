@@ -11,6 +11,9 @@ https://github.com/GoogleCloudPlatform/datastore-ndb-python. This version of
 `ndb` is designed for the [Google App Engine][1] Python 3 runtime, and will
 run on other Python 3 platforms as well.
 
+[0]: https://cloud.google.com/datastore
+[1]: https://cloud.google.com/appengine
+
 ## Release Status
 
 This version of the client is not yet officially released (it is in a
