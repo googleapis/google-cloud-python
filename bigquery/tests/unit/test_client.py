@@ -37,6 +37,7 @@ except (ImportError, AttributeError):  # pragma: NO COVER
     pyarrow = None
 
 import google.api_core.exceptions
+import google.cloud._helpers
 from google.cloud.bigquery.dataset import DatasetReference
 
 
@@ -81,6 +82,7 @@ class TestClient(unittest.TestCase):
     PROJECT = "PROJECT"
     DS_ID = "DATASET_ID"
     TABLE_ID = "TABLE_ID"
+    MODEL_ID = "MODEL_ID"
     TABLE_REF = DatasetReference(PROJECT, DS_ID).table(TABLE_ID)
     KMS_KEY_NAME = "projects/1/locations/global/keyRings/1/cryptoKeys/1"
     LOCATION = "us-central"
@@ -1306,6 +1308,54 @@ class TestClient(unittest.TestCase):
             ]
         )
 
+    def test_get_model(self):
+        path = "projects/%s/datasets/%s/models/%s" % (
+            self.PROJECT,
+            self.DS_ID,
+            self.MODEL_ID,
+        )
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
+        resource = {
+            "modelReference": {
+                "projectId": self.PROJECT,
+                "datasetId": self.DS_ID,
+                "modelId": self.MODEL_ID,
+            }
+        }
+        conn = client._connection = _make_connection(resource)
+
+        model_ref = client.dataset(self.DS_ID).model(self.MODEL_ID)
+        got = client.get_model(model_ref)
+
+        conn.api_request.assert_called_once_with(method="GET", path="/%s" % path)
+        self.assertEqual(got.model_id, self.MODEL_ID)
+
+    def test_get_model_w_string(self):
+        path = "projects/%s/datasets/%s/models/%s" % (
+            self.PROJECT,
+            self.DS_ID,
+            self.MODEL_ID,
+        )
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
+        resource = {
+            "modelReference": {
+                "projectId": self.PROJECT,
+                "datasetId": self.DS_ID,
+                "modelId": self.MODEL_ID,
+            }
+        }
+        conn = client._connection = _make_connection(resource)
+
+        model_id = "{}.{}.{}".format(self.PROJECT, self.DS_ID, self.MODEL_ID)
+        got = client.get_model(model_id)
+
+        conn.api_request.assert_called_once_with(method="GET", path="/%s" % path)
+        self.assertEqual(got.model_id, self.MODEL_ID)
+
     def test_get_table(self):
         path = "projects/%s/datasets/%s/tables/%s" % (
             self.PROJECT,
@@ -1421,6 +1471,66 @@ class TestClient(unittest.TestCase):
         self.assertEqual(dataset.dataset_id, self.DS_ID)
         self.assertEqual(dataset.project, self.PROJECT)
         self.assertEqual(dataset._properties["newAlphaProperty"], "unreleased property")
+
+    def test_update_model(self):
+        from google.cloud.bigquery.model import Model
+
+        path = "projects/%s/datasets/%s/models/%s" % (
+            self.PROJECT,
+            self.DS_ID,
+            self.MODEL_ID,
+        )
+        description = "description"
+        title = "title"
+        expires = datetime.datetime(
+            2012, 12, 21, 16, 0, 0, tzinfo=google.cloud._helpers.UTC
+        )
+        resource = {
+            "modelReference": {
+                "projectId": self.PROJECT,
+                "datasetId": self.DS_ID,
+                "modelId": self.MODEL_ID,
+            },
+            "description": description,
+            "etag": "etag",
+            "expirationTime": str(google.cloud._helpers._millis(expires)),
+            "friendlyName": title,
+            "labels": {"x": "y"},
+        }
+        creds = _make_credentials()
+        client = self._make_one(project=self.PROJECT, credentials=creds)
+        conn = client._connection = _make_connection(resource, resource)
+        model_id = "{}.{}.{}".format(self.PROJECT, self.DS_ID, self.MODEL_ID)
+        model = Model(model_id)
+        model.description = description
+        model.friendly_name = title
+        model.expires = expires
+        model.labels = {"x": "y"}
+
+        updated_model = client.update_model(
+            model, ["description", "friendly_name", "labels", "expires"]
+        )
+
+        sent = {
+            "description": description,
+            "expirationTime": str(google.cloud._helpers._millis(expires)),
+            "friendlyName": title,
+            "labels": {"x": "y"},
+        }
+        conn.api_request.assert_called_once_with(
+            method="PATCH", data=sent, path="/" + path, headers=None
+        )
+        self.assertEqual(updated_model.model_id, model.model_id)
+        self.assertEqual(updated_model.description, model.description)
+        self.assertEqual(updated_model.friendly_name, model.friendly_name)
+        self.assertEqual(updated_model.labels, model.labels)
+        self.assertEqual(updated_model.expires, model.expires)
+
+        # ETag becomes If-Match header.
+        model._proto.etag = "etag"
+        client.update_model(model, [])
+        req = conn.api_request.call_args
+        self.assertEqual(req[1]["headers"]["If-Match"], "etag")
 
     def test_update_table(self):
         from google.cloud.bigquery.table import Table, SchemaField
@@ -1773,6 +1883,78 @@ class TestClient(unittest.TestCase):
             method="GET", path=path, query_params={}
         )
 
+    def test_list_models_empty(self):
+        path = "/projects/{}/datasets/{}/models".format(self.PROJECT, self.DS_ID)
+        creds = _make_credentials()
+        client = self._make_one(project=self.PROJECT, credentials=creds)
+        conn = client._connection = _make_connection({})
+
+        dataset_id = "{}.{}".format(self.PROJECT, self.DS_ID)
+        iterator = client.list_models(dataset_id)
+        page = six.next(iterator.pages)
+        models = list(page)
+        token = iterator.next_page_token
+
+        self.assertEqual(models, [])
+        self.assertIsNone(token)
+        conn.api_request.assert_called_once_with(
+            method="GET", path=path, query_params={}
+        )
+
+    def test_list_models_defaults(self):
+        from google.cloud.bigquery.model import Model
+
+        MODEL_1 = "model_one"
+        MODEL_2 = "model_two"
+        PATH = "projects/%s/datasets/%s/models" % (self.PROJECT, self.DS_ID)
+        TOKEN = "TOKEN"
+        DATA = {
+            "nextPageToken": TOKEN,
+            "models": [
+                {
+                    "modelReference": {
+                        "modelId": MODEL_1,
+                        "datasetId": self.DS_ID,
+                        "projectId": self.PROJECT,
+                    }
+                },
+                {
+                    "modelReference": {
+                        "modelId": MODEL_2,
+                        "datasetId": self.DS_ID,
+                        "projectId": self.PROJECT,
+                    }
+                },
+            ],
+        }
+
+        creds = _make_credentials()
+        client = self._make_one(project=self.PROJECT, credentials=creds)
+        conn = client._connection = _make_connection(DATA)
+        dataset = client.dataset(self.DS_ID)
+
+        iterator = client.list_models(dataset)
+        self.assertIs(iterator.dataset, dataset)
+        page = six.next(iterator.pages)
+        models = list(page)
+        token = iterator.next_page_token
+
+        self.assertEqual(len(models), len(DATA["models"]))
+        for found, expected in zip(models, DATA["models"]):
+            self.assertIsInstance(found, Model)
+            self.assertEqual(found.model_id, expected["modelReference"]["modelId"])
+        self.assertEqual(token, TOKEN)
+
+        conn.api_request.assert_called_once_with(
+            method="GET", path="/%s" % PATH, query_params={}
+        )
+
+    def test_list_models_wrong_type(self):
+        creds = _make_credentials()
+        client = self._make_one(project=self.PROJECT, credentials=creds)
+        with self.assertRaises(TypeError):
+            client.list_models(client.dataset(self.DS_ID).model("foo"))
+
     def test_list_tables_defaults(self):
         from google.cloud.bigquery.table import TableListItem
 
@@ -1959,6 +2141,68 @@ class TestClient(unittest.TestCase):
         client.delete_dataset(self.DS_ID, not_found_ok=True)
 
         conn.api_request.assert_called_with(method="DELETE", path=path, query_params={})
+
+    def test_delete_model(self):
+        from google.cloud.bigquery.model import Model
+
+        path = "projects/%s/datasets/%s/models/%s" % (
+            self.PROJECT,
+            self.DS_ID,
+            self.MODEL_ID,
+        )
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
+        model_id = "{}.{}.{}".format(self.PROJECT, self.DS_ID, self.MODEL_ID)
+        models = (
+            model_id,
+            client.dataset(self.DS_ID).model(self.MODEL_ID),
+            Model(model_id),
+        )
+        conn = client._connection = _make_connection(*([{}] * len(models)))
+
+        for arg in models:
+            client.delete_model(arg)
+            conn.api_request.assert_called_with(method="DELETE", path="/%s" % path)
+
+    def test_delete_model_w_wrong_type(self):
+        creds = _make_credentials()
+        client = self._make_one(project=self.PROJECT, credentials=creds)
+        with self.assertRaises(TypeError):
+            client.delete_model(client.dataset(self.DS_ID))
+
+    def test_delete_model_w_not_found_ok_false(self):
+        path = "/projects/{}/datasets/{}/models/{}".format(
+            self.PROJECT, self.DS_ID, self.MODEL_ID
+        )
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
+        conn = client._connection = _make_connection(
+            google.api_core.exceptions.NotFound("model not found")
+        )
+
+        with self.assertRaises(google.api_core.exceptions.NotFound):
+            client.delete_model("{}.{}".format(self.DS_ID, self.MODEL_ID))
+
+        conn.api_request.assert_called_with(method="DELETE", path=path)
+
+    def test_delete_model_w_not_found_ok_true(self):
+        path = "/projects/{}/datasets/{}/models/{}".format(
+            self.PROJECT, self.DS_ID, self.MODEL_ID
+        )
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
+        conn = client._connection = _make_connection(
+            google.api_core.exceptions.NotFound("model not found")
+        )
+
+        client.delete_model(
+            "{}.{}".format(self.DS_ID, self.MODEL_ID), not_found_ok=True
+        )
+
+        conn.api_request.assert_called_with(method="DELETE", path=path)
 
     def test_delete_table(self):
         from google.cloud.bigquery.table import Table

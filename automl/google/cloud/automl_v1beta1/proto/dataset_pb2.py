@@ -25,10 +25,16 @@ from google.cloud.automl_v1beta1.proto import (
     image_pb2 as google_dot_cloud_dot_automl__v1beta1_dot_proto_dot_image__pb2,
 )
 from google.cloud.automl_v1beta1.proto import (
+    tables_pb2 as google_dot_cloud_dot_automl__v1beta1_dot_proto_dot_tables__pb2,
+)
+from google.cloud.automl_v1beta1.proto import (
     text_pb2 as google_dot_cloud_dot_automl__v1beta1_dot_proto_dot_text__pb2,
 )
 from google.cloud.automl_v1beta1.proto import (
     translation_pb2 as google_dot_cloud_dot_automl__v1beta1_dot_proto_dot_translation__pb2,
+)
+from google.cloud.automl_v1beta1.proto import (
+    video_pb2 as google_dot_cloud_dot_automl__v1beta1_dot_proto_dot_video__pb2,
 )
 from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__pb2
 
@@ -41,15 +47,17 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n\037com.google.cloud.automl.v1beta1P\001ZAgoogle.golang.org/genproto/googleapis/cloud/automl/v1beta1;automl\312\002\033Google\\Cloud\\AutoMl\\V1beta1"
     ),
     serialized_pb=_b(
-        '\n/google/cloud/automl_v1beta1/proto/dataset.proto\x12\x1bgoogle.cloud.automl.v1beta1\x1a\x1cgoogle/api/annotations.proto\x1a:google/cloud/automl_v1beta1/proto/annotation_payload.proto\x1a\x32google/cloud/automl_v1beta1/proto/data_items.proto\x1a-google/cloud/automl_v1beta1/proto/image.proto\x1a,google/cloud/automl_v1beta1/proto/text.proto\x1a\x33google/cloud/automl_v1beta1/proto/translation.proto\x1a\x1fgoogle/protobuf/timestamp.proto"\xcc\x03\n\x07\x44\x61taset\x12_\n\x1ctranslation_dataset_metadata\x18\x17 \x01(\x0b\x32\x37.google.cloud.automl.v1beta1.TranslationDatasetMetadataH\x00\x12p\n%image_classification_dataset_metadata\x18\x18 \x01(\x0b\x32?.google.cloud.automl.v1beta1.ImageClassificationDatasetMetadataH\x00\x12n\n$text_classification_dataset_metadata\x18\x19 \x01(\x0b\x32>.google.cloud.automl.v1beta1.TextClassificationDatasetMetadataH\x00\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x02 \x01(\t\x12\x15\n\rexample_count\x18\x15 \x01(\x05\x12/\n\x0b\x63reate_time\x18\x0e \x01(\x0b\x32\x1a.google.protobuf.TimestampB\x12\n\x10\x64\x61taset_metadataB\x84\x01\n\x1f\x63om.google.cloud.automl.v1beta1P\x01ZAgoogle.golang.org/genproto/googleapis/cloud/automl/v1beta1;automl\xca\x02\x1bGoogle\\Cloud\\AutoMl\\V1beta1b\x06proto3'
+        '\n/google/cloud/automl_v1beta1/proto/dataset.proto\x12\x1bgoogle.cloud.automl.v1beta1\x1a\x1cgoogle/api/annotations.proto\x1a:google/cloud/automl_v1beta1/proto/annotation_payload.proto\x1a\x32google/cloud/automl_v1beta1/proto/data_items.proto\x1a-google/cloud/automl_v1beta1/proto/image.proto\x1a.google/cloud/automl_v1beta1/proto/tables.proto\x1a,google/cloud/automl_v1beta1/proto/text.proto\x1a\x33google/cloud/automl_v1beta1/proto/translation.proto\x1a-google/cloud/automl_v1beta1/proto/video.proto\x1a\x1fgoogle/protobuf/timestamp.proto"\xfb\x07\n\x07\x44\x61taset\x12_\n\x1ctranslation_dataset_metadata\x18\x17 \x01(\x0b\x32\x37.google.cloud.automl.v1beta1.TranslationDatasetMetadataH\x00\x12p\n%image_classification_dataset_metadata\x18\x18 \x01(\x0b\x32?.google.cloud.automl.v1beta1.ImageClassificationDatasetMetadataH\x00\x12n\n$text_classification_dataset_metadata\x18\x19 \x01(\x0b\x32>.google.cloud.automl.v1beta1.TextClassificationDatasetMetadataH\x00\x12s\n\'image_object_detection_dataset_metadata\x18\x1a \x01(\x0b\x32@.google.cloud.automl.v1beta1.ImageObjectDetectionDatasetMetadataH\x00\x12p\n%video_classification_dataset_metadata\x18\x1f \x01(\x0b\x32?.google.cloud.automl.v1beta1.VideoClassificationDatasetMetadataH\x00\x12\x66\n text_extraction_dataset_metadata\x18\x1c \x01(\x0b\x32:.google.cloud.automl.v1beta1.TextExtractionDatasetMetadataH\x00\x12\x64\n\x1ftext_sentiment_dataset_metadata\x18\x1e \x01(\x0b\x32\x39.google.cloud.automl.v1beta1.TextSentimentDatasetMetadataH\x00\x12U\n\x17tables_dataset_metadata\x18! \x01(\x0b\x32\x32.google.cloud.automl.v1beta1.TablesDatasetMetadataH\x00\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x02 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x03 \x01(\t\x12\x15\n\rexample_count\x18\x15 \x01(\x05\x12/\n\x0b\x63reate_time\x18\x0e \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x0c\n\x04\x65tag\x18\x11 \x01(\tB\x12\n\x10\x64\x61taset_metadata"K\n\x0e\x41nnotationSpec\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x02 \x01(\t\x12\x15\n\rexample_count\x18\t \x01(\x05\x42\x84\x01\n\x1f\x63om.google.cloud.automl.v1beta1P\x01ZAgoogle.golang.org/genproto/googleapis/cloud/automl/v1beta1;automl\xca\x02\x1bGoogle\\Cloud\\AutoMl\\V1beta1b\x06proto3'
     ),
     dependencies=[
         google_dot_api_dot_annotations__pb2.DESCRIPTOR,
         google_dot_cloud_dot_automl__v1beta1_dot_proto_dot_annotation__payload__pb2.DESCRIPTOR,
         google_dot_cloud_dot_automl__v1beta1_dot_proto_dot_data__items__pb2.DESCRIPTOR,
         google_dot_cloud_dot_automl__v1beta1_dot_proto_dot_image__pb2.DESCRIPTOR,
+        google_dot_cloud_dot_automl__v1beta1_dot_proto_dot_tables__pb2.DESCRIPTOR,
         google_dot_cloud_dot_automl__v1beta1_dot_proto_dot_text__pb2.DESCRIPTOR,
         google_dot_cloud_dot_automl__v1beta1_dot_proto_dot_translation__pb2.DESCRIPTOR,
+        google_dot_cloud_dot_automl__v1beta1_dot_proto_dot_video__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,
     ],
 )
@@ -117,9 +125,99 @@ _DATASET = _descriptor.Descriptor(
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
+            name="image_object_detection_dataset_metadata",
+            full_name="google.cloud.automl.v1beta1.Dataset.image_object_detection_dataset_metadata",
+            index=3,
+            number=26,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="video_classification_dataset_metadata",
+            full_name="google.cloud.automl.v1beta1.Dataset.video_classification_dataset_metadata",
+            index=4,
+            number=31,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="text_extraction_dataset_metadata",
+            full_name="google.cloud.automl.v1beta1.Dataset.text_extraction_dataset_metadata",
+            index=5,
+            number=28,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="text_sentiment_dataset_metadata",
+            full_name="google.cloud.automl.v1beta1.Dataset.text_sentiment_dataset_metadata",
+            index=6,
+            number=30,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="tables_dataset_metadata",
+            full_name="google.cloud.automl.v1beta1.Dataset.tables_dataset_metadata",
+            index=7,
+            number=33,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
             name="name",
             full_name="google.cloud.automl.v1beta1.Dataset.name",
-            index=3,
+            index=8,
             number=1,
             type=9,
             cpp_type=9,
@@ -137,8 +235,26 @@ _DATASET = _descriptor.Descriptor(
         _descriptor.FieldDescriptor(
             name="display_name",
             full_name="google.cloud.automl.v1beta1.Dataset.display_name",
-            index=4,
+            index=9,
             number=2,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="description",
+            full_name="google.cloud.automl.v1beta1.Dataset.description",
+            index=10,
+            number=3,
             type=9,
             cpp_type=9,
             label=1,
@@ -155,7 +271,7 @@ _DATASET = _descriptor.Descriptor(
         _descriptor.FieldDescriptor(
             name="example_count",
             full_name="google.cloud.automl.v1beta1.Dataset.example_count",
-            index=5,
+            index=11,
             number=21,
             type=5,
             cpp_type=1,
@@ -173,13 +289,31 @@ _DATASET = _descriptor.Descriptor(
         _descriptor.FieldDescriptor(
             name="create_time",
             full_name="google.cloud.automl.v1beta1.Dataset.create_time",
-            index=6,
+            index=12,
             number=14,
             type=11,
             cpp_type=10,
             label=1,
             has_default_value=False,
             default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="etag",
+            full_name="google.cloud.automl.v1beta1.Dataset.etag",
+            index=13,
+            number=17,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
             message_type=None,
             enum_type=None,
             containing_type=None,
@@ -205,8 +339,83 @@ _DATASET = _descriptor.Descriptor(
             fields=[],
         )
     ],
-    serialized_start=402,
-    serialized_end=862,
+    serialized_start=497,
+    serialized_end=1516,
+)
+
+
+_ANNOTATIONSPEC = _descriptor.Descriptor(
+    name="AnnotationSpec",
+    full_name="google.cloud.automl.v1beta1.AnnotationSpec",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="name",
+            full_name="google.cloud.automl.v1beta1.AnnotationSpec.name",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="display_name",
+            full_name="google.cloud.automl.v1beta1.AnnotationSpec.display_name",
+            index=1,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="example_count",
+            full_name="google.cloud.automl.v1beta1.AnnotationSpec.example_count",
+            index=2,
+            number=9,
+            type=5,
+            cpp_type=1,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=1518,
+    serialized_end=1593,
 )
 
 _DATASET.fields_by_name[
@@ -223,6 +432,31 @@ _DATASET.fields_by_name[
     "text_classification_dataset_metadata"
 ].message_type = (
     google_dot_cloud_dot_automl__v1beta1_dot_proto_dot_text__pb2._TEXTCLASSIFICATIONDATASETMETADATA
+)
+_DATASET.fields_by_name[
+    "image_object_detection_dataset_metadata"
+].message_type = (
+    google_dot_cloud_dot_automl__v1beta1_dot_proto_dot_image__pb2._IMAGEOBJECTDETECTIONDATASETMETADATA
+)
+_DATASET.fields_by_name[
+    "video_classification_dataset_metadata"
+].message_type = (
+    google_dot_cloud_dot_automl__v1beta1_dot_proto_dot_video__pb2._VIDEOCLASSIFICATIONDATASETMETADATA
+)
+_DATASET.fields_by_name[
+    "text_extraction_dataset_metadata"
+].message_type = (
+    google_dot_cloud_dot_automl__v1beta1_dot_proto_dot_text__pb2._TEXTEXTRACTIONDATASETMETADATA
+)
+_DATASET.fields_by_name[
+    "text_sentiment_dataset_metadata"
+].message_type = (
+    google_dot_cloud_dot_automl__v1beta1_dot_proto_dot_text__pb2._TEXTSENTIMENTDATASETMETADATA
+)
+_DATASET.fields_by_name[
+    "tables_dataset_metadata"
+].message_type = (
+    google_dot_cloud_dot_automl__v1beta1_dot_proto_dot_tables__pb2._TABLESDATASETMETADATA
 )
 _DATASET.fields_by_name[
     "create_time"
@@ -245,7 +479,38 @@ _DATASET.oneofs_by_name["dataset_metadata"].fields.append(
 _DATASET.fields_by_name[
     "text_classification_dataset_metadata"
 ].containing_oneof = _DATASET.oneofs_by_name["dataset_metadata"]
+_DATASET.oneofs_by_name["dataset_metadata"].fields.append(
+    _DATASET.fields_by_name["image_object_detection_dataset_metadata"]
+)
+_DATASET.fields_by_name[
+    "image_object_detection_dataset_metadata"
+].containing_oneof = _DATASET.oneofs_by_name["dataset_metadata"]
+_DATASET.oneofs_by_name["dataset_metadata"].fields.append(
+    _DATASET.fields_by_name["video_classification_dataset_metadata"]
+)
+_DATASET.fields_by_name[
+    "video_classification_dataset_metadata"
+].containing_oneof = _DATASET.oneofs_by_name["dataset_metadata"]
+_DATASET.oneofs_by_name["dataset_metadata"].fields.append(
+    _DATASET.fields_by_name["text_extraction_dataset_metadata"]
+)
+_DATASET.fields_by_name[
+    "text_extraction_dataset_metadata"
+].containing_oneof = _DATASET.oneofs_by_name["dataset_metadata"]
+_DATASET.oneofs_by_name["dataset_metadata"].fields.append(
+    _DATASET.fields_by_name["text_sentiment_dataset_metadata"]
+)
+_DATASET.fields_by_name[
+    "text_sentiment_dataset_metadata"
+].containing_oneof = _DATASET.oneofs_by_name["dataset_metadata"]
+_DATASET.oneofs_by_name["dataset_metadata"].fields.append(
+    _DATASET.fields_by_name["tables_dataset_metadata"]
+)
+_DATASET.fields_by_name[
+    "tables_dataset_metadata"
+].containing_oneof = _DATASET.oneofs_by_name["dataset_metadata"]
 DESCRIPTOR.message_types_by_name["Dataset"] = _DATASET
+DESCRIPTOR.message_types_by_name["AnnotationSpec"] = _ANNOTATIONSPEC
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 Dataset = _reflection.GeneratedProtocolMessageType(
@@ -268,6 +533,16 @@ Dataset = _reflection.GeneratedProtocolMessageType(
           Metadata for a dataset used for image classification.
       text_classification_dataset_metadata:
           Metadata for a dataset used for text classification.
+      image_object_detection_dataset_metadata:
+          Metadata for a dataset used for image object detection.
+      video_classification_dataset_metadata:
+          Metadata for a dataset used for video classification.
+      text_extraction_dataset_metadata:
+          Metadata for a dataset used for text extraction.
+      text_sentiment_dataset_metadata:
+          Metadata for a dataset used for text sentiment.
+      tables_dataset_metadata:
+          Metadata for a dataset used for Tables.
       name:
           Output only. The resource name of the dataset. Form: ``project
           s/{project_id}/locations/{location_id}/datasets/{dataset_id}``
@@ -276,15 +551,49 @@ Dataset = _reflection.GeneratedProtocolMessageType(
           The name can be up to 32 characters long and can consist only
           of ASCII Latin letters A-Z and a-z, underscores (\_), and
           ASCII digits 0-9.
+      description:
+          User-provided description of the dataset. The description can
+          be up to 25000 characters long.
       example_count:
           Output only. The number of examples in the dataset.
       create_time:
           Output only. Timestamp when this dataset was created.
+      etag:
+          Used to perform consistent read-modify-write updates. If not
+          set, a blind "overwrite" update happens.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.automl.v1beta1.Dataset)
     ),
 )
 _sym_db.RegisterMessage(Dataset)
+
+AnnotationSpec = _reflection.GeneratedProtocolMessageType(
+    "AnnotationSpec",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_ANNOTATIONSPEC,
+        __module__="google.cloud.automl_v1beta1.proto.dataset_pb2",
+        __doc__="""A definition of an annotation.
+  
+  
+  Attributes:
+      name:
+          Output only. Resource name of the annotation spec. Form:  'pro
+          jects/{project\_id}/locations/{location\_id}/datasets/{dataset
+          \_id}/annotationSpecs/{annotation\_spec\_id}'
+      display_name:
+          Required. The name of the annotation spec to show in the
+          interface. The name can be up to 32 characters long and can
+          consist only of ASCII Latin letters A-Z and a-z, underscores
+          (\_), and ASCII digits 0-9.
+      example_count:
+          Output only. The number of examples in the parent dataset
+          labeled by the annotation spec.
+  """,
+        # @@protoc_insertion_point(class_scope:google.cloud.automl.v1beta1.AnnotationSpec)
+    ),
+)
+_sym_db.RegisterMessage(AnnotationSpec)
 
 
 DESCRIPTOR._options = None

@@ -29,7 +29,7 @@ from google.api_core.exceptions import InvalidArgument
 from google.api_core.exceptions import NotFound
 from google.cloud._helpers import _pb_timestamp_to_datetime
 from google.cloud._helpers import UTC
-from google.cloud import firestore
+from google.cloud import firestore_v1 as firestore
 from test_utils.system import unique_resource_id
 
 from time import sleep

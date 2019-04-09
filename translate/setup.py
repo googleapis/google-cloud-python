@@ -22,14 +22,14 @@ import setuptools
 
 name = 'google-cloud-translate'
 description = 'Google Cloud Translation API client library'
-version = '1.3.3'
+version = '1.4.0'
 # Should be one of:
 # 'Development Status :: 3 - Alpha'
 # 'Development Status :: 4 - Beta'
 # 'Development Status :: 5 - Production/Stable'
 release_status = 'Development Status :: 5 - Production/Stable'
 dependencies = [
-    'google-api-core >= 1.6.0, < 2.0.0dev',
+    'google-api-core[grpc] >= 1.6.0, < 2.0.0dev',
     'google-cloud-core >= 0.29.0, < 0.30dev',
 ]
 extras = {

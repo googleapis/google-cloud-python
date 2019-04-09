@@ -22,13 +22,18 @@ config = {
                     "retry_codes_name": "non_idempotent",
                     "retry_params_name": "default",
                 },
+                "UpdateDataset": {
+                    "timeout_millis": 5000,
+                    "retry_codes_name": "non_idempotent",
+                    "retry_params_name": "default",
+                },
                 "GetDataset": {
                     "timeout_millis": 5000,
                     "retry_codes_name": "idempotent",
                     "retry_params_name": "default",
                 },
                 "ListDatasets": {
-                    "timeout_millis": 5000,
+                    "timeout_millis": 50000,
                     "retry_codes_name": "idempotent",
                     "retry_params_name": "default",
                 },
@@ -38,7 +43,7 @@ config = {
                     "retry_params_name": "default",
                 },
                 "ImportData": {
-                    "timeout_millis": 5000,
+                    "timeout_millis": 20000,
                     "retry_codes_name": "non_idempotent",
                     "retry_params_name": "default",
                 },
@@ -48,7 +53,7 @@ config = {
                     "retry_params_name": "default",
                 },
                 "CreateModel": {
-                    "timeout_millis": 5000,
+                    "timeout_millis": 20000,
                     "retry_codes_name": "non_idempotent",
                     "retry_params_name": "default",
                 },
@@ -58,7 +63,7 @@ config = {
                     "retry_params_name": "default",
                 },
                 "ListModels": {
-                    "timeout_millis": 5000,
+                    "timeout_millis": 50000,
                     "retry_codes_name": "idempotent",
                     "retry_params_name": "default",
                 },
@@ -82,7 +87,52 @@ config = {
                     "retry_codes_name": "idempotent",
                     "retry_params_name": "default",
                 },
+                "ExportModel": {
+                    "timeout_millis": 5000,
+                    "retry_codes_name": "non_idempotent",
+                    "retry_params_name": "default",
+                },
+                "ExportEvaluatedExamples": {
+                    "timeout_millis": 5000,
+                    "retry_codes_name": "non_idempotent",
+                    "retry_params_name": "default",
+                },
                 "ListModelEvaluations": {
+                    "timeout_millis": 50000,
+                    "retry_codes_name": "non_idempotent",
+                    "retry_params_name": "default",
+                },
+                "GetAnnotationSpec": {
+                    "timeout_millis": 5000,
+                    "retry_codes_name": "idempotent",
+                    "retry_params_name": "default",
+                },
+                "GetTableSpec": {
+                    "timeout_millis": 5000,
+                    "retry_codes_name": "idempotent",
+                    "retry_params_name": "default",
+                },
+                "ListTableSpecs": {
+                    "timeout_millis": 5000,
+                    "retry_codes_name": "idempotent",
+                    "retry_params_name": "default",
+                },
+                "UpdateTableSpec": {
+                    "timeout_millis": 5000,
+                    "retry_codes_name": "non_idempotent",
+                    "retry_params_name": "default",
+                },
+                "GetColumnSpec": {
+                    "timeout_millis": 5000,
+                    "retry_codes_name": "idempotent",
+                    "retry_params_name": "default",
+                },
+                "ListColumnSpecs": {
+                    "timeout_millis": 5000,
+                    "retry_codes_name": "idempotent",
+                    "retry_params_name": "default",
+                },
+                "UpdateColumnSpec": {
                     "timeout_millis": 5000,
                     "retry_codes_name": "non_idempotent",
                     "retry_params_name": "default",

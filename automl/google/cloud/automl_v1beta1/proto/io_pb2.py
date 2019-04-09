@@ -25,11 +25,67 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n\037com.google.cloud.automl.v1beta1P\001ZAgoogle.golang.org/genproto/googleapis/cloud/automl/v1beta1;automl\312\002\033Google\\Cloud\\AutoMl\\V1beta1"
     ),
     serialized_pb=_b(
-        '\n*google/cloud/automl_v1beta1/proto/io.proto\x12\x1bgoogle.cloud.automl.v1beta1\x1a\x1cgoogle/api/annotations.proto"U\n\x0bInputConfig\x12<\n\ngcs_source\x18\x01 \x01(\x0b\x32&.google.cloud.automl.v1beta1.GcsSourceH\x00\x42\x08\n\x06source"e\n\x0cOutputConfig\x12\x46\n\x0fgcs_destination\x18\x01 \x01(\x0b\x32+.google.cloud.automl.v1beta1.GcsDestinationH\x00\x42\r\n\x0b\x64\x65stination"\x1f\n\tGcsSource\x12\x12\n\ninput_uris\x18\x01 \x03(\t"+\n\x0eGcsDestination\x12\x19\n\x11output_uri_prefix\x18\x01 \x01(\tB\x84\x01\n\x1f\x63om.google.cloud.automl.v1beta1P\x01ZAgoogle.golang.org/genproto/googleapis/cloud/automl/v1beta1;automl\xca\x02\x1bGoogle\\Cloud\\AutoMl\\V1beta1b\x06proto3'
+        '\n*google/cloud/automl_v1beta1/proto/io.proto\x12\x1bgoogle.cloud.automl.v1beta1\x1a\x1cgoogle/api/annotations.proto"\x92\x02\n\x0bInputConfig\x12<\n\ngcs_source\x18\x01 \x01(\x0b\x32&.google.cloud.automl.v1beta1.GcsSourceH\x00\x12\x46\n\x0f\x62igquery_source\x18\x03 \x01(\x0b\x32+.google.cloud.automl.v1beta1.BigQuerySourceH\x00\x12\x44\n\x06params\x18\x02 \x03(\x0b\x32\x34.google.cloud.automl.v1beta1.InputConfig.ParamsEntry\x1a-\n\x0bParamsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x42\x08\n\x06source"\xa9\x01\n\x17\x42\x61tchPredictInputConfig\x12<\n\ngcs_source\x18\x01 \x01(\x0b\x32&.google.cloud.automl.v1beta1.GcsSourceH\x00\x12\x46\n\x0f\x62igquery_source\x18\x02 \x01(\x0b\x32+.google.cloud.automl.v1beta1.BigQuerySourceH\x00\x42\x08\n\x06source"Q\n\x13\x44ocumentInputConfig\x12:\n\ngcs_source\x18\x01 \x01(\x0b\x32&.google.cloud.automl.v1beta1.GcsSource"\xb7\x01\n\x0cOutputConfig\x12\x46\n\x0fgcs_destination\x18\x01 \x01(\x0b\x32+.google.cloud.automl.v1beta1.GcsDestinationH\x00\x12P\n\x14\x62igquery_destination\x18\x02 \x01(\x0b\x32\x30.google.cloud.automl.v1beta1.BigQueryDestinationH\x00\x42\r\n\x0b\x64\x65stination"\xc3\x01\n\x18\x42\x61tchPredictOutputConfig\x12\x46\n\x0fgcs_destination\x18\x01 \x01(\x0b\x32+.google.cloud.automl.v1beta1.GcsDestinationH\x00\x12P\n\x14\x62igquery_destination\x18\x02 \x01(\x0b\x32\x30.google.cloud.automl.v1beta1.BigQueryDestinationH\x00\x42\r\n\x0b\x64\x65stination"\xcf\x02\n\x17ModelExportOutputConfig\x12\x46\n\x0fgcs_destination\x18\x01 \x01(\x0b\x32+.google.cloud.automl.v1beta1.GcsDestinationH\x00\x12\x46\n\x0fgcr_destination\x18\x03 \x01(\x0b\x32+.google.cloud.automl.v1beta1.GcrDestinationH\x00\x12\x14\n\x0cmodel_format\x18\x04 \x01(\t\x12P\n\x06params\x18\x02 \x03(\x0b\x32@.google.cloud.automl.v1beta1.ModelExportOutputConfig.ParamsEntry\x1a-\n\x0bParamsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x42\r\n\x0b\x64\x65stination"\x86\x01\n#ExportEvaluatedExamplesOutputConfig\x12P\n\x14\x62igquery_destination\x18\x02 \x01(\x0b\x32\x30.google.cloud.automl.v1beta1.BigQueryDestinationH\x00\x42\r\n\x0b\x64\x65stination"\x1f\n\tGcsSource\x12\x12\n\ninput_uris\x18\x01 \x03(\t"#\n\x0e\x42igQuerySource\x12\x11\n\tinput_uri\x18\x01 \x01(\t"+\n\x0eGcsDestination\x12\x19\n\x11output_uri_prefix\x18\x01 \x01(\t")\n\x13\x42igQueryDestination\x12\x12\n\noutput_uri\x18\x01 \x01(\t"$\n\x0eGcrDestination\x12\x12\n\noutput_uri\x18\x01 \x01(\tB\x84\x01\n\x1f\x63om.google.cloud.automl.v1beta1P\x01ZAgoogle.golang.org/genproto/googleapis/cloud/automl/v1beta1;automl\xca\x02\x1bGoogle\\Cloud\\AutoMl\\V1beta1b\x06proto3'
     ),
     dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR],
 )
 
+
+_INPUTCONFIG_PARAMSENTRY = _descriptor.Descriptor(
+    name="ParamsEntry",
+    full_name="google.cloud.automl.v1beta1.InputConfig.ParamsEntry",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="key",
+            full_name="google.cloud.automl.v1beta1.InputConfig.ParamsEntry.key",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="value",
+            full_name="google.cloud.automl.v1beta1.InputConfig.ParamsEntry.value",
+            index=1,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=_b("8\001"),
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=325,
+    serialized_end=370,
+)
 
 _INPUTCONFIG = _descriptor.Descriptor(
     name="InputConfig",
@@ -55,10 +111,46 @@ _INPUTCONFIG = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
-        )
+        ),
+        _descriptor.FieldDescriptor(
+            name="bigquery_source",
+            full_name="google.cloud.automl.v1beta1.InputConfig.bigquery_source",
+            index=1,
+            number=3,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="params",
+            full_name="google.cloud.automl.v1beta1.InputConfig.params",
+            index=2,
+            number=2,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
     ],
     extensions=[],
-    nested_types=[],
+    nested_types=[_INPUTCONFIG_PARAMSENTRY],
     enum_types=[],
     serialized_options=None,
     is_extendable=False,
@@ -73,8 +165,112 @@ _INPUTCONFIG = _descriptor.Descriptor(
             fields=[],
         )
     ],
-    serialized_start=105,
-    serialized_end=190,
+    serialized_start=106,
+    serialized_end=380,
+)
+
+
+_BATCHPREDICTINPUTCONFIG = _descriptor.Descriptor(
+    name="BatchPredictInputConfig",
+    full_name="google.cloud.automl.v1beta1.BatchPredictInputConfig",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="gcs_source",
+            full_name="google.cloud.automl.v1beta1.BatchPredictInputConfig.gcs_source",
+            index=0,
+            number=1,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="bigquery_source",
+            full_name="google.cloud.automl.v1beta1.BatchPredictInputConfig.bigquery_source",
+            index=1,
+            number=2,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[
+        _descriptor.OneofDescriptor(
+            name="source",
+            full_name="google.cloud.automl.v1beta1.BatchPredictInputConfig.source",
+            index=0,
+            containing_type=None,
+            fields=[],
+        )
+    ],
+    serialized_start=383,
+    serialized_end=552,
+)
+
+
+_DOCUMENTINPUTCONFIG = _descriptor.Descriptor(
+    name="DocumentInputConfig",
+    full_name="google.cloud.automl.v1beta1.DocumentInputConfig",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="gcs_source",
+            full_name="google.cloud.automl.v1beta1.DocumentInputConfig.gcs_source",
+            index=0,
+            number=1,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        )
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=554,
+    serialized_end=635,
 )
 
 
@@ -102,7 +298,25 @@ _OUTPUTCONFIG = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
-        )
+        ),
+        _descriptor.FieldDescriptor(
+            name="bigquery_destination",
+            full_name="google.cloud.automl.v1beta1.OutputConfig.bigquery_destination",
+            index=1,
+            number=2,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
     ],
     extensions=[],
     nested_types=[],
@@ -120,8 +334,277 @@ _OUTPUTCONFIG = _descriptor.Descriptor(
             fields=[],
         )
     ],
-    serialized_start=192,
-    serialized_end=293,
+    serialized_start=638,
+    serialized_end=821,
+)
+
+
+_BATCHPREDICTOUTPUTCONFIG = _descriptor.Descriptor(
+    name="BatchPredictOutputConfig",
+    full_name="google.cloud.automl.v1beta1.BatchPredictOutputConfig",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="gcs_destination",
+            full_name="google.cloud.automl.v1beta1.BatchPredictOutputConfig.gcs_destination",
+            index=0,
+            number=1,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="bigquery_destination",
+            full_name="google.cloud.automl.v1beta1.BatchPredictOutputConfig.bigquery_destination",
+            index=1,
+            number=2,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[
+        _descriptor.OneofDescriptor(
+            name="destination",
+            full_name="google.cloud.automl.v1beta1.BatchPredictOutputConfig.destination",
+            index=0,
+            containing_type=None,
+            fields=[],
+        )
+    ],
+    serialized_start=824,
+    serialized_end=1019,
+)
+
+
+_MODELEXPORTOUTPUTCONFIG_PARAMSENTRY = _descriptor.Descriptor(
+    name="ParamsEntry",
+    full_name="google.cloud.automl.v1beta1.ModelExportOutputConfig.ParamsEntry",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="key",
+            full_name="google.cloud.automl.v1beta1.ModelExportOutputConfig.ParamsEntry.key",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="value",
+            full_name="google.cloud.automl.v1beta1.ModelExportOutputConfig.ParamsEntry.value",
+            index=1,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=_b("8\001"),
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=325,
+    serialized_end=370,
+)
+
+_MODELEXPORTOUTPUTCONFIG = _descriptor.Descriptor(
+    name="ModelExportOutputConfig",
+    full_name="google.cloud.automl.v1beta1.ModelExportOutputConfig",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="gcs_destination",
+            full_name="google.cloud.automl.v1beta1.ModelExportOutputConfig.gcs_destination",
+            index=0,
+            number=1,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="gcr_destination",
+            full_name="google.cloud.automl.v1beta1.ModelExportOutputConfig.gcr_destination",
+            index=1,
+            number=3,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="model_format",
+            full_name="google.cloud.automl.v1beta1.ModelExportOutputConfig.model_format",
+            index=2,
+            number=4,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="params",
+            full_name="google.cloud.automl.v1beta1.ModelExportOutputConfig.params",
+            index=3,
+            number=2,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[_MODELEXPORTOUTPUTCONFIG_PARAMSENTRY],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[
+        _descriptor.OneofDescriptor(
+            name="destination",
+            full_name="google.cloud.automl.v1beta1.ModelExportOutputConfig.destination",
+            index=0,
+            containing_type=None,
+            fields=[],
+        )
+    ],
+    serialized_start=1022,
+    serialized_end=1357,
+)
+
+
+_EXPORTEVALUATEDEXAMPLESOUTPUTCONFIG = _descriptor.Descriptor(
+    name="ExportEvaluatedExamplesOutputConfig",
+    full_name="google.cloud.automl.v1beta1.ExportEvaluatedExamplesOutputConfig",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="bigquery_destination",
+            full_name="google.cloud.automl.v1beta1.ExportEvaluatedExamplesOutputConfig.bigquery_destination",
+            index=0,
+            number=2,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        )
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[
+        _descriptor.OneofDescriptor(
+            name="destination",
+            full_name="google.cloud.automl.v1beta1.ExportEvaluatedExamplesOutputConfig.destination",
+            index=0,
+            containing_type=None,
+            fields=[],
+        )
+    ],
+    serialized_start=1360,
+    serialized_end=1494,
 )
 
 
@@ -159,8 +642,47 @@ _GCSSOURCE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=295,
-    serialized_end=326,
+    serialized_start=1496,
+    serialized_end=1527,
+)
+
+
+_BIGQUERYSOURCE = _descriptor.Descriptor(
+    name="BigQuerySource",
+    full_name="google.cloud.automl.v1beta1.BigQuerySource",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="input_uri",
+            full_name="google.cloud.automl.v1beta1.BigQuerySource.input_uri",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        )
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=1529,
+    serialized_end=1564,
 )
 
 
@@ -198,49 +720,491 @@ _GCSDESTINATION = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=328,
-    serialized_end=371,
+    serialized_start=1566,
+    serialized_end=1609,
 )
 
+
+_BIGQUERYDESTINATION = _descriptor.Descriptor(
+    name="BigQueryDestination",
+    full_name="google.cloud.automl.v1beta1.BigQueryDestination",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="output_uri",
+            full_name="google.cloud.automl.v1beta1.BigQueryDestination.output_uri",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        )
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=1611,
+    serialized_end=1652,
+)
+
+
+_GCRDESTINATION = _descriptor.Descriptor(
+    name="GcrDestination",
+    full_name="google.cloud.automl.v1beta1.GcrDestination",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="output_uri",
+            full_name="google.cloud.automl.v1beta1.GcrDestination.output_uri",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        )
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=1654,
+    serialized_end=1690,
+)
+
+_INPUTCONFIG_PARAMSENTRY.containing_type = _INPUTCONFIG
 _INPUTCONFIG.fields_by_name["gcs_source"].message_type = _GCSSOURCE
+_INPUTCONFIG.fields_by_name["bigquery_source"].message_type = _BIGQUERYSOURCE
+_INPUTCONFIG.fields_by_name["params"].message_type = _INPUTCONFIG_PARAMSENTRY
 _INPUTCONFIG.oneofs_by_name["source"].fields.append(
     _INPUTCONFIG.fields_by_name["gcs_source"]
 )
 _INPUTCONFIG.fields_by_name[
     "gcs_source"
 ].containing_oneof = _INPUTCONFIG.oneofs_by_name["source"]
+_INPUTCONFIG.oneofs_by_name["source"].fields.append(
+    _INPUTCONFIG.fields_by_name["bigquery_source"]
+)
+_INPUTCONFIG.fields_by_name[
+    "bigquery_source"
+].containing_oneof = _INPUTCONFIG.oneofs_by_name["source"]
+_BATCHPREDICTINPUTCONFIG.fields_by_name["gcs_source"].message_type = _GCSSOURCE
+_BATCHPREDICTINPUTCONFIG.fields_by_name[
+    "bigquery_source"
+].message_type = _BIGQUERYSOURCE
+_BATCHPREDICTINPUTCONFIG.oneofs_by_name["source"].fields.append(
+    _BATCHPREDICTINPUTCONFIG.fields_by_name["gcs_source"]
+)
+_BATCHPREDICTINPUTCONFIG.fields_by_name[
+    "gcs_source"
+].containing_oneof = _BATCHPREDICTINPUTCONFIG.oneofs_by_name["source"]
+_BATCHPREDICTINPUTCONFIG.oneofs_by_name["source"].fields.append(
+    _BATCHPREDICTINPUTCONFIG.fields_by_name["bigquery_source"]
+)
+_BATCHPREDICTINPUTCONFIG.fields_by_name[
+    "bigquery_source"
+].containing_oneof = _BATCHPREDICTINPUTCONFIG.oneofs_by_name["source"]
+_DOCUMENTINPUTCONFIG.fields_by_name["gcs_source"].message_type = _GCSSOURCE
 _OUTPUTCONFIG.fields_by_name["gcs_destination"].message_type = _GCSDESTINATION
+_OUTPUTCONFIG.fields_by_name["bigquery_destination"].message_type = _BIGQUERYDESTINATION
 _OUTPUTCONFIG.oneofs_by_name["destination"].fields.append(
     _OUTPUTCONFIG.fields_by_name["gcs_destination"]
 )
 _OUTPUTCONFIG.fields_by_name[
     "gcs_destination"
 ].containing_oneof = _OUTPUTCONFIG.oneofs_by_name["destination"]
+_OUTPUTCONFIG.oneofs_by_name["destination"].fields.append(
+    _OUTPUTCONFIG.fields_by_name["bigquery_destination"]
+)
+_OUTPUTCONFIG.fields_by_name[
+    "bigquery_destination"
+].containing_oneof = _OUTPUTCONFIG.oneofs_by_name["destination"]
+_BATCHPREDICTOUTPUTCONFIG.fields_by_name[
+    "gcs_destination"
+].message_type = _GCSDESTINATION
+_BATCHPREDICTOUTPUTCONFIG.fields_by_name[
+    "bigquery_destination"
+].message_type = _BIGQUERYDESTINATION
+_BATCHPREDICTOUTPUTCONFIG.oneofs_by_name["destination"].fields.append(
+    _BATCHPREDICTOUTPUTCONFIG.fields_by_name["gcs_destination"]
+)
+_BATCHPREDICTOUTPUTCONFIG.fields_by_name[
+    "gcs_destination"
+].containing_oneof = _BATCHPREDICTOUTPUTCONFIG.oneofs_by_name["destination"]
+_BATCHPREDICTOUTPUTCONFIG.oneofs_by_name["destination"].fields.append(
+    _BATCHPREDICTOUTPUTCONFIG.fields_by_name["bigquery_destination"]
+)
+_BATCHPREDICTOUTPUTCONFIG.fields_by_name[
+    "bigquery_destination"
+].containing_oneof = _BATCHPREDICTOUTPUTCONFIG.oneofs_by_name["destination"]
+_MODELEXPORTOUTPUTCONFIG_PARAMSENTRY.containing_type = _MODELEXPORTOUTPUTCONFIG
+_MODELEXPORTOUTPUTCONFIG.fields_by_name[
+    "gcs_destination"
+].message_type = _GCSDESTINATION
+_MODELEXPORTOUTPUTCONFIG.fields_by_name[
+    "gcr_destination"
+].message_type = _GCRDESTINATION
+_MODELEXPORTOUTPUTCONFIG.fields_by_name[
+    "params"
+].message_type = _MODELEXPORTOUTPUTCONFIG_PARAMSENTRY
+_MODELEXPORTOUTPUTCONFIG.oneofs_by_name["destination"].fields.append(
+    _MODELEXPORTOUTPUTCONFIG.fields_by_name["gcs_destination"]
+)
+_MODELEXPORTOUTPUTCONFIG.fields_by_name[
+    "gcs_destination"
+].containing_oneof = _MODELEXPORTOUTPUTCONFIG.oneofs_by_name["destination"]
+_MODELEXPORTOUTPUTCONFIG.oneofs_by_name["destination"].fields.append(
+    _MODELEXPORTOUTPUTCONFIG.fields_by_name["gcr_destination"]
+)
+_MODELEXPORTOUTPUTCONFIG.fields_by_name[
+    "gcr_destination"
+].containing_oneof = _MODELEXPORTOUTPUTCONFIG.oneofs_by_name["destination"]
+_EXPORTEVALUATEDEXAMPLESOUTPUTCONFIG.fields_by_name[
+    "bigquery_destination"
+].message_type = _BIGQUERYDESTINATION
+_EXPORTEVALUATEDEXAMPLESOUTPUTCONFIG.oneofs_by_name["destination"].fields.append(
+    _EXPORTEVALUATEDEXAMPLESOUTPUTCONFIG.fields_by_name["bigquery_destination"]
+)
+_EXPORTEVALUATEDEXAMPLESOUTPUTCONFIG.fields_by_name[
+    "bigquery_destination"
+].containing_oneof = _EXPORTEVALUATEDEXAMPLESOUTPUTCONFIG.oneofs_by_name["destination"]
 DESCRIPTOR.message_types_by_name["InputConfig"] = _INPUTCONFIG
+DESCRIPTOR.message_types_by_name["BatchPredictInputConfig"] = _BATCHPREDICTINPUTCONFIG
+DESCRIPTOR.message_types_by_name["DocumentInputConfig"] = _DOCUMENTINPUTCONFIG
 DESCRIPTOR.message_types_by_name["OutputConfig"] = _OUTPUTCONFIG
+DESCRIPTOR.message_types_by_name["BatchPredictOutputConfig"] = _BATCHPREDICTOUTPUTCONFIG
+DESCRIPTOR.message_types_by_name["ModelExportOutputConfig"] = _MODELEXPORTOUTPUTCONFIG
+DESCRIPTOR.message_types_by_name[
+    "ExportEvaluatedExamplesOutputConfig"
+] = _EXPORTEVALUATEDEXAMPLESOUTPUTCONFIG
 DESCRIPTOR.message_types_by_name["GcsSource"] = _GCSSOURCE
+DESCRIPTOR.message_types_by_name["BigQuerySource"] = _BIGQUERYSOURCE
 DESCRIPTOR.message_types_by_name["GcsDestination"] = _GCSDESTINATION
+DESCRIPTOR.message_types_by_name["BigQueryDestination"] = _BIGQUERYDESTINATION
+DESCRIPTOR.message_types_by_name["GcrDestination"] = _GCRDESTINATION
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 InputConfig = _reflection.GeneratedProtocolMessageType(
     "InputConfig",
     (_message.Message,),
     dict(
+        ParamsEntry=_reflection.GeneratedProtocolMessageType(
+            "ParamsEntry",
+            (_message.Message,),
+            dict(
+                DESCRIPTOR=_INPUTCONFIG_PARAMSENTRY,
+                __module__="google.cloud.automl_v1beta1.proto.io_pb2"
+                # @@protoc_insertion_point(class_scope:google.cloud.automl.v1beta1.InputConfig.ParamsEntry)
+            ),
+        ),
         DESCRIPTOR=_INPUTCONFIG,
         __module__="google.cloud.automl_v1beta1.proto.io_pb2",
-        __doc__="""Input configuration.
+        __doc__="""Input configuration for ImportData Action.
+  
+  The format of input depends on dataset\_metadata the Dataset into which
+  the import is happening has. As input source the
+  [gcs\_source][google.cloud.automl.v1beta1.InputConfig.gcs\_source] is
+  expected, unless specified otherwise. If a file with identical content
+  (even if it had different GCS\_FILE\_PATH) is mentioned multiple times ,
+  then its label, bounding boxes etc. are appended. The same file should
+  be always provided with the same ML\_USE and GCS\_FILE\_PATH, if it is
+  not then these values are nondeterministically selected from the given
+  ones.
+  
+  The formats are represented in EBNF with commas being literal and with
+  non-terminal symbols defined near the end of this comment. The formats
+  are:
+  
+  -  For Image Object Detection: CSV file(s) with each line in format:
+     ML\_USE,GCS\_FILE\_PATH,LABEL,BOUNDING\_BOX GCS\_FILE\_PATH leads to
+     image of up to 30MB in size. Supported extensions: .JPEG, .GIF, .PNG.
+     Each image is assumed to be exhaustively labeled. The minimum allowed
+     BOUNDING\_BOX edge length is 0.01, and no more than 500
+     BOUNDING\_BOX-es per image are allowed. Three sample rows:
+     TRAIN,gs://folder/image1.png,car,0.1,0.1,,,0.3,0.3,,
+     TRAIN,gs://folder/image1.png,bike,.7,.6,,,.8,.9,,
+     TEST,gs://folder/im2.png,car,0.1,0.1,0.2,0.1,0.2,0.3,0.1,0.3
+  
+  -  For Video Classification: CSV file(s) with each line in format:
+     ML\_USE,GCS\_FILE\_PATH where ML\_USE VALIDATE value should not be
+     used. The GCS\_FILE\_PATH should lead to another .csv file which
+     describes examples that have given ML\_USE, using the following row
+     format: GCS\_FILE\_PATH,LABEL,TIME\_SEGMENT\_START,TIME\_SEGMENT\_END
+     Here GCS\_FILE\_PATH leads to a video of up to 50GB in size and up to
+     3h duration. Supported extensions: .MOV, .MPEG4, .MP4, .AVI.
+     TIME\_SEGMENT\_START and TIME\_SEGMENT\_END must be within the length
+     of the video, and end has to be after the start. Any segment of a
+     video which has one or more labels on it, is considered a hard
+     negative for all other labels. Any segment with no labels on it is
+     considered to be unknown. Sample top level CSV file:
+     TRAIN,gs://folder/train\_videos.csv TEST,gs://folder/test\_videos.csv
+     UNASSIGNED,gs://folder/other\_videos.csv Three sample rows of a CSV
+     file for a particular ML\_USE:
+     gs://folder/video1.avi,car,120,180.000021
+     gs://folder/video1.avi,bike,150,180.000021
+     gs://folder/vid2.avi,car,0,60.5
+  -  For Text Extraction: CSV file(s) with each line in format:
+     ML\_USE,GCS\_FILE\_PATH GCS\_FILE\_PATH leads to a .JSONL (i.e. JSON
+     Lines) file which either imports text in-line or as documents. The
+     in-line .JSONL file contains, per line, a proto that wraps a
+     TextSnippet proto (in json representation) followed by one or more
+     AnnotationPayload protos (called annotations), which have
+     display\_name and text\_extraction detail populated. Given text is
+     expected to be annotated exhaustively, e.g. if you look for animals
+     and text contains "dolphin" that is not labeled, then "dolphin" will
+     be assumed to not be an animal. Any given text snippet content must
+     have 30,000 characters or less, and also be UTF-8 NFC encoded (ASCII
+     already is). The document .JSONL file contains, per line, a proto
+     that wraps a Document proto with input\_config set. Only PDF
+     documents are supported now, and each document may be up to 2MB
+     large. Currently annotations on documents cannot be specified at
+     import. Any given .JSONL file must be 100MB or smaller.
+
+  -  For Tables: Either
+     [gcs\_source][google.cloud.automl.v1beta1.InputConfig.gcs\_source] or
+  
+  [bigquery\_source][google.cloud.automl.v1beta1.InputConfig.bigquery\_source]
+  can be used. All inputs will be concatenated into a single
+  
+  [primary\_table][google.cloud.automl.v1beta1.TablesDatasetMetadata.primary\_table\_name]
+  For gcs\_source: CSV file(s), where first file must have a header
+  containing unique column names, other files may have such header line
+  too, and all other lines contain values for the header columns. Each
+  line must have 1,000,000 or fewer characters. First three sample rows of
+  a CSV file: "Id","First Name","Last Name","Dob","Addresses"
+  
+  "1","John","Doe","1968-01-22","[{"status":"current","address":"123\_First\_Avenue","city":"Seattle","state":"WA","zip":"11111","numberOfYears":"1"},{"status":"previous","address":"456\_Main\_Street","city":"Portland","state":"OR","zip":"22222","numberOfYears":"5"}]"
+  
+  "2","Jane","Doe","1980-10-16","[{"status":"current","address":"789\_Any\_Avenue","city":"Albany","state":"NY","zip":"33333","numberOfYears":"2"},{"status":"previous","address":"321\_Main\_Street","city":"Hoboken","state":"NJ","zip":"44444","numberOfYears":"3"}]}
+  For bigquery\_source: An URI of a BigQuery table. An imported table must
+  have between 2 and 1,000 columns, inclusive, and between 1,000 and
+  10,000,000 rows, inclusive.
+  
+  -  For Text Sentiment: CSV file(s) with each line in format:
+     ML\_USE,TEXT\_SNIPPET,SENTIMENT TEXT\_SNIPPET must have up to 500
+     characters. Three sample rows: TRAIN,"@freewrytin God is way too good
+     for Claritin",2 TRAIN,"I need Claritin so bad",3 TEST,"Thank god for
+     Claritin.",4
+  
+  Definitions: ML\_USE = "TRAIN" \| "VALIDATE" \| "TEST" \| "UNASSIGNED"
+  Describes how the given example (file) should be used for model
+  training. "UNASSIGNED" can be used when user has no preference.
+  GCS\_FILE\_PATH = A path to file on GCS, e.g. "gs://folder/image1.png".
+  LABEL = A display name of an object on an image, video etc., e.g. "dog".
+  Must be up to 32 characters long and can consist only of ASCII Latin
+  letters A-Z and a-z, underscores(\_), and ASCII digits 0-9. For each
+  label an AnnotationSpec is created which display\_name becomes the
+  label; AnnotationSpecs are given back in predictions. INSTANCE\_ID = A
+  positive integer that identifies a specific instance of a labeled entity
+  on an example. Used e.g. to track two cars on a video while being able
+  to tell apart which one is which. BOUNDING\_BOX =
+  VERTEX,VERTEX,VERTEX,VERTEX \| VERTEX,,,VERTEX,, A rectangle parallel to
+  the frame of the example (image, video). If 4 vertices are given they
+  are connected by edges in the order provided, if 2 are given they are
+  recognized as diagonally opposite vertices of the rectangle. VERTEX =
+  COORDINATE,COORDINATE First coordinate is horizontal (x), the second is
+  vertical (y). COORDINATE = A float in 0 to 1 range, relative to total
+  length of image or video in given dimension. For fractions the leading
+  non-decimal 0 can be omitted (i.e. 0.3 = .3). Point 0,0 is in top left.
+  TIME\_SEGMENT\_START = TIME\_OFFSET Expresses a beginning, inclusive, of
+  a time segment within an example that has a time dimension (e.g. video).
+  TIME\_SEGMENT\_END = TIME\_OFFSET Expresses an end, exclusive, of a time
+  segment within an example that has a time dimension (e.g. video).
+  TIME\_OFFSET = A number of seconds as measured from the start of an
+  example (e.g. video). Fractions are allowed, up to a microsecond
+  precision. "inf" is allowed, and it means the end of the example.
+  TEXT\_SNIPPET = A content of a text snippet, UTF-8 encoded. SENTIMENT =
+  An integer between 0 and
+  Dataset.text\_sentiment\_dataset\_metadata.sentiment\_max (inclusive).
+  Describes the ordinal of the sentiment - higher value means a more
+  positive sentiment. All the values are completely relative, i.e. neither
+  0 needs to mean a negative or neutral sentiment nor sentiment\_max needs
+  to mean a positive one - it is just required that 0 is the least
+  positive sentiment in the data, and sentiment\_max is the most positive
+  one. The SENTIMENT shouldn't be confused with "score" or "magnitude"
+  from the previous Natural Language Sentiment Analysis API. All SENTIMENT
+  values between 0 and sentiment\_max must be represented in the imported
+  data. On prediction the same 0 to sentiment\_max range will be used. The
+  difference between neighboring sentiment values needs not to be uniform,
+  e.g. 1 and 2 may be similar whereas the difference between 2 and 3 may
+  be huge.
+  
+  Errors: If any of the provided CSV files can't be parsed or if more than
+  certain percent of CSV rows cannot be processed then the operation fails
+  and nothing is imported. Regardless of overall success or failure the
+  per-row failures, up to a certain count cap, will be listed in
+  Operation.metadata.partial\_failures.
   
   
   Attributes:
       source:
           Required. The source of the input.
       gcs_source:
-          The GCS location for the input content.
+          The Google Cloud Storage location for the input content.
+      bigquery_source:
+          The BigQuery location for the input content.
+      params:
+          Additional domain-specific parameters describing the semantic
+          of the imported data, any string must be up to 25000
+          characters long.  -  For Tables: ``schema_inference_version``
+          - (integer) Required. The    version of the algorithm that
+          should be used for the initial    inference of the schema
+          (columns' DataTypes) of the table the data is    being
+          imported into. Allowed values: "1".
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.automl.v1beta1.InputConfig)
     ),
 )
 _sym_db.RegisterMessage(InputConfig)
+_sym_db.RegisterMessage(InputConfig.ParamsEntry)
+
+BatchPredictInputConfig = _reflection.GeneratedProtocolMessageType(
+    "BatchPredictInputConfig",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_BATCHPREDICTINPUTCONFIG,
+        __module__="google.cloud.automl_v1beta1.proto.io_pb2",
+        __doc__="""Input configuration for BatchPredict Action.
+  
+  The format of input depends on the ML problem of the model used for
+  prediction. As input source the
+  [gcs\_source][google.cloud.automl.v1beta1.InputConfig.gcs\_source] is
+  expected, unless specified otherwise.
+  
+  The formats are represented in EBNF with commas being literal and with
+  non-terminal symbols defined near the end of this comment. The formats
+  are:
+  
+  -  For Video Classification: CSV file(s) with each line in format:
+     GCS\_FILE\_PATH,TIME\_SEGMENT\_START,TIME\_SEGMENT\_END
+     GCS\_FILE\_PATH leads to video of up to 50GB in size and up to 3h
+     duration. Supported extensions: .MOV, .MPEG4, .MP4, .AVI.
+     TIME\_SEGMENT\_START and TIME\_SEGMENT\_END must be within the length
+     of the video, and end has to be after the start. Three sample rows:
+     gs://folder/video1.mp4,10,40 gs://folder/video1.mp4,20,60
+     gs://folder/vid2.mov,0,inf
+  
+  -  For Text Extraction .JSONL (i.e. JSON Lines) file(s) which either
+     provide text in-line or as documents (for a single BatchPredict call
+     only one of the these formats may be used). The in-line .JSONL
+     file(s) contain per line a proto that wraps a temporary user-assigned
+     TextSnippet ID (string up to 2000 characters long) called "id"
+     followed by a TextSnippet proto (in json representation). Any given
+     text snippet content must have 30,000 characters or less, and also be
+     UTF-8 NFC encoded (ASCII already is). The IDs provided should be
+     unique. The document .JSONL file(s) contain, per line, a proto that
+     wraps a Document proto with input\_config set. Only PDF documents are
+     supported now, and each document must be up to 2MB large. Any given
+     .JSONL file must be 100MB or smaller, and no more than 20 files may
+     be given.
+  
+  -  For Tables: Either
+     [gcs\_source][google.cloud.automl.v1beta1.InputConfig.gcs\_source] or
+  
+  [bigquery\_source][google.cloud.automl.v1beta1.InputConfig.bigquery\_source].
+  For gcs\_source: CSV file(s), where first file must have a header
+  containing column names, other files may have such header line too, and
+  all other lines contain values for the header columns. The column names
+  must be exactly same (order may differ) as the model's
+  
+  [input\_feature\_column\_specs'][google.cloud.automl.v1beta1.TablesModelMetadata.input\_feature\_column\_specs]
+  [display\_names][google.cloud.automl.v1beta1.display\_name], with values
+  compatible with these column specs data types. Prediction on all the
+  rows, i.e. the CSV lines, will be attempted. Each line must have
+  1,000,000 or fewer characters. First three sample rows of a CSV file:
+  "First Name","Last Name","Dob","Addresses"
+  
+  "John","Doe","1968-01-22","[{"status":"current","address":"123\_First\_Avenue","city":"Seattle","state":"WA","zip":"11111","numberOfYears":"1"},{"status":"previous","address":"456\_Main\_Street","city":"Portland","state":"OR","zip":"22222","numberOfYears":"5"}]"
+  
+  "Jane","Doe","1980-10-16","[{"status":"current","address":"789\_Any\_Avenue","city":"Albany","state":"NY","zip":"33333","numberOfYears":"2"},{"status":"previous","address":"321\_Main\_Street","city":"Hoboken","state":"NJ","zip":"44444","numberOfYears":"3"}]}
+  For bigquery\_source: An URI of a BigQuery table. The table's columns
+  must be exactly same (order may differ) as all model's
+  
+  [input\_feature\_column\_specs'][google.cloud.automl.v1beta1.TablesModelMetadata.input\_feature\_column\_specs]
+  [display\_names][google.cloud.automl.v1beta1.display\_name], with data
+  compatible with these colum specs data types. Prediction on all the rows
+  of the table will be attempted.
+  
+  Definitions: GCS\_FILE\_PATH = A path to file on GCS, e.g.
+  "gs://folder/video.avi". TIME\_SEGMENT\_START = TIME\_OFFSET Expresses a
+  beginning, inclusive, of a time segment within an example that has a
+  time dimension (e.g. video). TIME\_SEGMENT\_END = TIME\_OFFSET Expresses
+  an end, exclusive, of a time segment within an example that has a time
+  dimension (e.g. video). TIME\_OFFSET = A number of seconds as measured
+  from the start of an example (e.g. video). Fractions are allowed, up to
+  a microsecond precision. "inf" is allowed and it means the end of the
+  example.
+  
+  Errors: If any of the provided CSV files can't be parsed or if more than
+  certain percent of CSV rows cannot be processed then the operation fails
+  and prediction does not happen. Regardless of overall success or failure
+  the per-row failures, up to a certain count cap, will be listed in
+  Operation.metadata.partial\_failures.
+  
+  
+  Attributes:
+      source:
+          Required. The source of the input.
+      gcs_source:
+          The Google Cloud Storage location for the input content.
+      bigquery_source:
+          The BigQuery location for the input content.
+  """,
+        # @@protoc_insertion_point(class_scope:google.cloud.automl.v1beta1.BatchPredictInputConfig)
+    ),
+)
+_sym_db.RegisterMessage(BatchPredictInputConfig)
+
+DocumentInputConfig = _reflection.GeneratedProtocolMessageType(
+    "DocumentInputConfig",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_DOCUMENTINPUTCONFIG,
+        __module__="google.cloud.automl_v1beta1.proto.io_pb2",
+        __doc__="""Input configuration of a
+  [Document][google.cloud.automl.v1beta1.Document].
+  
+  
+  Attributes:
+      gcs_source:
+          The Google Cloud Storage location of the document file. Only a
+          single path should be given. Max supported size: 512MB.
+          Supported extensions: .PDF.
+  """,
+        # @@protoc_insertion_point(class_scope:google.cloud.automl.v1beta1.DocumentInputConfig)
+    ),
+)
+_sym_db.RegisterMessage(DocumentInputConfig)
 
 OutputConfig = _reflection.GeneratedProtocolMessageType(
     "OutputConfig",
@@ -248,19 +1212,364 @@ OutputConfig = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_OUTPUTCONFIG,
         __module__="google.cloud.automl_v1beta1.proto.io_pb2",
-        __doc__="""Output configuration.
+        __doc__="""Output configuration for ExportData.
+  
+  As destination the
+  [gcs\_destination][google.cloud.automl.v1beta1.OutputConfig.gcs\_destination]
+  must be set unless specified otherwise for a domain. Only ground truth
+  annotations are exported (not approved annotations are not exported).
+  
+  The outputs correspond to how the data was imported, and may be used as
+  input to import data. The output formats are represented as EBNF with
+  literal commas and same non-terminal symbols definitions are these in
+  import data's [InputConfig][google.cloud.automl.v1beta1.InputConfig]:
+  
+  -  For Image Object Detection: CSV file(s)
+     ``image_object_detection_1.csv``,
+     ``image_object_detection_2.csv``,...,\ ``image_object_detection_N.csv``
+     with each line in format: ML\_USE,GCS\_FILE\_PATH,LABEL,BOUNDING\_BOX
+     where GCS\_FILE\_PATHs point at the original, source locations of the
+     imported images.
+  
+  -  For Video Classification: CSV file ``video_classification.csv``, with
+     each line in format: ML\_USE,GCS\_FILE\_PATH (may have muliple lines
+     per a single ML\_USE). Each GCS\_FILE\_PATH leads to another .csv
+     file which describes examples that have given ML\_USE, using the
+     following row format:
+     GCS\_FILE\_PATH,LABEL,TIME\_SEGMENT\_START,TIME\_SEGMENT\_END Here
+     GCS\_FILE\_PATHs point at the original, source locations of the
+     imported videos.
+  -  For Text Extraction: CSV file ``text_extraction.csv``, with each line
+     in format: ML\_USE,GCS\_FILE\_PATH GCS\_FILE\_PATH leads to a .JSONL
+     (i.e. JSON Lines) file which contains, per line, a proto that wraps a
+     TextSnippet proto (in json representation) followed by
+     AnnotationPayload protos (called annotations). If initially documents
+     had been imported, corresponding OCR-ed representation is returned.
+  
+  -  For Tables: Output depends on whether the dataset was imported from
+     GCS or BigQuery. GCS case:
+  
+  [gcs\_destination][google.cloud.automl.v1beta1.OutputConfig.gcs\_destination]
+  must be set. Exported are CSV file(s) ``tables_1.csv``,
+  ``tables_2.csv``,...,\ ``tables_N.csv`` with each having as header line
+  the table's column names, and all other lines contain values for the
+  header columns. BigQuery case:
+  
+  [bigquery\_destination][google.cloud.automl.v1beta1.OutputConfig.bigquery\_destination]
+  pointing to a BigQuery project must be set. In the given project a new
+  dataset will be created with name
+  
+  ``export_data_<automl-dataset-display-name>_<timestamp-of-export-call>``
+  where will be made BigQuery-dataset-name compatible (e.g. most special
+  characters will become underscores), and timestamp will be in
+  YYYY\_MM\_DDThh\_mm\_ss\_sssZ "based on ISO-8601" format. In that
+  dataset a new table called ``primary_table`` will be created, and filled
+  with precisely the same data as this obtained on import.
   
   
   Attributes:
       destination:
           Required. The destination of the output.
       gcs_destination:
-          The GCS location where the output must be written to.
+          The Google Cloud Storage location where the output is to be
+          written to. For Image Object Detection, Text Extraction, Video
+          Classification and Tables, in the given directory a new
+          directory will be created with name: export\_data-- where
+          timestamp is in YYYY-MM-DDThh:mm:ss.sssZ ISO-8601 format. All
+          export output will be written into that directory.
+      bigquery_destination:
+          The BigQuery location where the output is to be written to.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.automl.v1beta1.OutputConfig)
     ),
 )
 _sym_db.RegisterMessage(OutputConfig)
+
+BatchPredictOutputConfig = _reflection.GeneratedProtocolMessageType(
+    "BatchPredictOutputConfig",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_BATCHPREDICTOUTPUTCONFIG,
+        __module__="google.cloud.automl_v1beta1.proto.io_pb2",
+        __doc__="""Output configuration for BatchPredict Action.
+  
+  As destination the
+  
+  [gcs\_destination][google.cloud.automl.v1beta1.BatchPredictOutputConfig.gcs\_destination]
+  must be set unless specified otherwise for a domain. If gcs\_destination
+  is set then in the given directory a new directory will be created. Its
+  name will be "prediction--", where timestamp is in
+  YYYY-MM-DDThh:mm:ss.sssZ ISO-8601 format. The contents of it depend on
+  the ML problem the predictions are made for.
+  
+  -  For Video Classification: In the created directory a
+     video\_classification.csv file, and a .JSON file per each video
+     classification requested in the input (i.e. each line in given
+     CSV(s)), will be created.
+  
+     ::
+  
+         The format of video_classification.csv is:
+  
+  GCS\_FILE\_PATH,TIME\_SEGMENT\_START,TIME\_SEGMENT\_END,JSON\_FILE\_NAME,STATUS
+  where: GCS\_FILE\_PATH,TIME\_SEGMENT\_START,TIME\_SEGMENT\_END = matches
+  1 to 1 the prediction input lines (i.e. video\_classification.csv has
+  precisely the same number of lines as the prediction input had.)
+  JSON\_FILE\_NAME = Name of .JSON file in the output directory, which
+  contains prediction responses for the video time segment. STATUS = "OK"
+  if prediction completed successfully, or an error code and,or message
+  otherwise. If STATUS is not "OK" then the .JSON file for that line may
+  not exist or be empty.
+  
+  ::
+  
+          Each .JSON file, assuming STATUS is "OK", will contain a list of
+          AnnotationPayload protos in JSON format, which are the predictions
+          for the video time segment the file is assigned to in the
+          video_classification.csv. All AnnotationPayload protos will have
+          video_classification field set, and will be sorted by
+          video_classification.type field (note that the returned types are
+          governed by `classifaction_types` parameter in
+          [PredictService.BatchPredictRequest.params][]).
+  
+  -  For Text Extraction: In the created directory files
+     ``text_extraction_1.jsonl``,
+     ``text_extraction_2.jsonl``,...,\ ``text_extraction_N.jsonl`` will be
+     created, where N may be 1, and depends on the total number of inputs
+     and annotations found. The contents of these .JSONL file(s) depend on
+     whether the input used inline text, or documents. If input was
+     inline, then each .JSONL file will contain, per line, a JSON
+     representation of a proto that wraps given in request text snippet's
+     "id" : "" followed by a list of zero or more AnnotationPayload protos
+     (called annotations), which have text\_extraction detail populated. A
+     single text snippet will be listed only once with all its
+     annotations, and its annotations will never be split across files. If
+     input used documents, then each .JSONL file will contain, per line, a
+     JSON representation of a proto that wraps given in request document
+     proto, followed by its OCR-ed representation in the form of a text
+     snippet, finally followed by a list of zero or more AnnotationPayload
+     protos (called annotations), which have text\_extraction detail
+     populated and refer, via their indices, to the OCR-ed text snippet. A
+     single document (and its text snippet) will be listed only once with
+     all its annotations, and its annotations will never be split across
+     files. If prediction for any text snippet failed (partially or
+     completely), then additional ``errors_1.jsonl``,
+     ``errors_2.jsonl``,..., ``errors_N.jsonl`` files will be created (N
+     depends on total number of failed predictions). These files will have
+     a JSON representation of a proto that wraps either the "id" : "" (in
+     case of inline) or the document proto (in case of document) but here
+     followed by exactly one
+  
+  ```google.rpc.Status`` <https:%20//github.com/googleapis/googleapis/blob/master/google/rpc/status.proto>`__
+  containing only ``code`` and ``message``.
+  
+  -  For Tables: Output depends on whether
+  
+  [gcs\_destination][google.cloud.automl.v1beta1.BatchPredictOutputConfig.gcs\_destination]
+  or
+  
+  [bigquery\_destination][google.cloud.automl.v1beta1.BatchPredictOutputConfig.bigquery\_destination]
+  is set (either is allowed). GCS case: In the created directory files
+  ``tables_1.csv``, ``tables_2.csv``,..., ``tables_N.csv`` will be
+  created, where N may be 1, and depends on the total number of the
+  successfully predicted rows. For the classification models: Each .csv
+  file will contain a header, listing all model's
+  
+  [input\_feature\_column\_specs'][google.cloud.automl.v1beta1.TablesModelMetadata.input\_feature\_column\_specs]
+  
+  [display\_names][google.cloud.automl.v1beta1.ColumnSpec.display\_name]
+  followed by M target column names in the format of
+  
+  "<[target\_column\_specs][google.cloud.automl.v1beta1.TablesModelMetadata.target\_column\_spec]
+  
+  [display\_name][google.cloud.automl.v1beta1.ColumnSpec.display\_name]>\_\_score"
+  where M is the number of distinct target values, i.e. number of distinct
+  values in the target column of the table used to train the model.
+  Subsequent lines will contain the respective values of successfully
+  predicted rows, with the last, i.e. the target, columns having the
+  corresponding prediction
+  [scores][google.cloud.automl.v1beta1.TablesAnnotation.score]. For the
+  regression models: Each .csv file will contain a header, listing all
+  model's
+  
+  [input\_feature\_column\_specs][google.cloud.automl.v1beta1.TablesModelMetadata.input\_feature\_column\_specs]
+  [display\_names][google.cloud.automl.v1beta1.display\_name] followed by
+  the target column with name equal to
+  
+  [target\_column\_specs'][google.cloud.automl.v1beta1.TablesModelMetadata.target\_column\_spec]
+  
+  [display\_name][google.cloud.automl.v1beta1.ColumnSpec.display\_name].
+  Subsequent lines will contain the respective values of successfully
+  predicted rows, with the last, i.e. the target, column having the
+  predicted target value. If prediction for any rows failed, then an
+  additional ``errors_1.csv``, ``errors_2.csv``,..., ``errors_N.csv`` will
+  be created (N depends on total number of failed rows). These files will
+  have analogous format as ``tables_*.csv``, but always with a single
+  target column having
+  
+  ```google.rpc.Status`` <https:%20//github.com/googleapis/googleapis/blob/master/google/rpc/status.proto>`__
+  represented as a JSON string, and containing only ``code`` and
+  ``message``. BigQuery case:
+  
+  [bigquery\_destination][google.cloud.automl.v1beta1.OutputConfig.bigquery\_destination]
+  pointing to a BigQuery project must be set. In the given project a new
+  dataset will be created with name
+  ``prediction_<model-display-name>_<timestamp-of-prediction-call>`` where
+  will be made BigQuery-dataset-name compatible (e.g. most special
+  characters will become underscores), and timestamp will be in
+  YYYY\_MM\_DDThh\_mm\_ss\_sssZ "based on ISO-8601" format. In the dataset
+  two tables will be created, ``predictions``, and ``errors``. The
+  ``predictions`` table's column names will be the
+  
+  [input\_feature\_column\_specs'][google.cloud.automl.v1beta1.TablesModelMetadata.input\_feature\_column\_specs]
+  
+  [display\_names][google.cloud.automl.v1beta1.ColumnSpec.display\_name]
+  followed by model's
+  
+  [target\_column\_specs'][google.cloud.automl.v1beta1.TablesModelMetadata.target\_column\_spec]
+  
+  [display\_name][google.cloud.automl.v1beta1.ColumnSpec.display\_name].
+  The input feature columns will contain the respective values of
+  successfully predicted rows, with the target column having an ARRAY of
+  
+  [AnnotationPayloads][google.cloud.automl.v1beta1.AnnotationPayload],
+  represented as STRUCT-s, containing
+  [TablesAnnotation][google.cloud.automl.v1beta1.TablesAnnotation]. The
+  ``errors`` table contains rows for which the prediction has failed, it
+  has analogous input feature and target columns, but here the target
+  column as a value has
+  
+  ```google.rpc.Status`` <https:%20//github.com/googleapis/googleapis/blob/master/google/rpc/status.proto>`__
+  represented as a STRUCT, and containing only ``code`` and ``message``.
+  
+  
+  Attributes:
+      destination:
+          Required. The destination of the output.
+      gcs_destination:
+          The Google Cloud Storage location of the directory where the
+          output is to be written to.
+      bigquery_destination:
+          The BigQuery location where the output is to be written to.
+  """,
+        # @@protoc_insertion_point(class_scope:google.cloud.automl.v1beta1.BatchPredictOutputConfig)
+    ),
+)
+_sym_db.RegisterMessage(BatchPredictOutputConfig)
+
+ModelExportOutputConfig = _reflection.GeneratedProtocolMessageType(
+    "ModelExportOutputConfig",
+    (_message.Message,),
+    dict(
+        ParamsEntry=_reflection.GeneratedProtocolMessageType(
+            "ParamsEntry",
+            (_message.Message,),
+            dict(
+                DESCRIPTOR=_MODELEXPORTOUTPUTCONFIG_PARAMSENTRY,
+                __module__="google.cloud.automl_v1beta1.proto.io_pb2"
+                # @@protoc_insertion_point(class_scope:google.cloud.automl.v1beta1.ModelExportOutputConfig.ParamsEntry)
+            ),
+        ),
+        DESCRIPTOR=_MODELEXPORTOUTPUTCONFIG,
+        __module__="google.cloud.automl_v1beta1.proto.io_pb2",
+        __doc__="""Output configuration for ModelExport Action.
+  
+  
+  Attributes:
+      destination:
+          Required. The destination of the output.
+      gcs_destination:
+          The Google Cloud Storage location where the model is to be
+          written to. This location may only be set for the following
+          model formats: "tflite", "edgetpu\_tflite", "core\_ml",
+          "docker".  Under the directory given as the destination a new
+          one with name "model-export--", where timestamp is in YYYY-MM-
+          DDThh:mm:ss.sssZ ISO-8601 format, will be created. Inside the
+          model and any of its supporting files will be written, as
+          described  `here <https://cloud.google.com/vision/automl/docs/
+          deploy#deployment_to_devices>`__.
+      gcr_destination:
+          The GCR location where model image is to be pushed to. This
+          location may only be set for the following model formats:
+          "docker".  The model image will be created under the given
+          URI.
+      model_format:
+          The format in which the model must be exported. The available,
+          and default, formats depend on the problem and model type (if
+          given problem and type combination doesn't have a format
+          listed, it means its models are not exportable):  -  For Image
+          Classification mobile-low-latency-1, mobile-versatile-1,
+          mobile-high-accuracy-1: "tflite" (default), "edgetpu\_tflite",
+          "tf\_saved\_model", "docker".  -  For Image Classification
+          mobile-core-ml-low-latency-1,    mobile-core-ml-versatile-1,
+          mobile-core-ml-high-accuracy-1:    "core\_ml" (default).
+          Formats description:  -  tflite - Used for Android mobile
+          devices. -  edgetpu\_tflite - Used for `Edge    TPU
+          <https://cloud.google.com/edge-tpu/>`__ devices. -
+          tf\_saved\_model - A tensorflow model in SavedModel format. -
+          docker - Used for Docker containers. Use the params field to
+          customize the container. The container is verified to work
+          correctly    on ubuntu 16.04 operating system. -  core\_ml -
+          Used for iOS mobile devices.
+      params:
+          Additional model-type and format specific parameters
+          describing the requirements for the to be exported model
+          files, any string must be up to 25000 characters long.  -  For
+          ``docker`` format: ``cpu_architecture`` - (string) "x86\_64"
+          (default). ``gpu_architecture`` - (string) "none" (default),
+          "nvidia".
+  """,
+        # @@protoc_insertion_point(class_scope:google.cloud.automl.v1beta1.ModelExportOutputConfig)
+    ),
+)
+_sym_db.RegisterMessage(ModelExportOutputConfig)
+_sym_db.RegisterMessage(ModelExportOutputConfig.ParamsEntry)
+
+ExportEvaluatedExamplesOutputConfig = _reflection.GeneratedProtocolMessageType(
+    "ExportEvaluatedExamplesOutputConfig",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_EXPORTEVALUATEDEXAMPLESOUTPUTCONFIG,
+        __module__="google.cloud.automl_v1beta1.proto.io_pb2",
+        __doc__="""Output configuration for ExportEvaluatedExamples Action. Note that this
+  call is available only for 30 days since the moment the model was
+  evaluated. The output depends on the domain, as follows (note that only
+  examples from the TEST set are exported):
+  
+  -  For Tables:
+  
+  [bigquery\_destination][google.cloud.automl.v1beta1.OutputConfig.bigquery\_destination]
+  pointing to a BigQuery project must be set. In the given project a new
+  dataset will be created with name
+  
+  ``export_evaluated_examples_<model-display-name>_<timestamp-of-export-call>``
+  where will be made BigQuery-dataset-name compatible (e.g. most special
+  characters will become underscores), and timestamp will be in
+  YYYY\_MM\_DDThh\_mm\_ss\_sssZ "based on ISO-8601" format. In the dataset
+  an ``evaluated_examples`` table will be created. It will have all the
+  same columns as the [primary
+  
+  table][google.cloud.automl.v1beta1.TablesDatasetMetadata.primary\_table\_spec\_id]
+  of the [dataset][google.cloud.automl.v1beta1.Model.dataset\_id] from
+  which the model was created, as they were at the moment of model's
+  evaluation (this includes the target column with its ground truth),
+  followed by a column called "predicted\_". That last column will contain
+  the model's prediction result for each respective row, given as ARRAY of
+  [AnnotationPayloads][google.cloud.automl.v1beta1.AnnotationPayload],
+  represented as STRUCT-s, containing
+  [TablesAnnotation][google.cloud.automl.v1beta1.TablesAnnotation].
+  
+  
+  Attributes:
+      destination:
+          Required. The destination of the output.
+      bigquery_destination:
+          The BigQuery location where the output is to be written to.
+  """,
+        # @@protoc_insertion_point(class_scope:google.cloud.automl.v1beta1.ExportEvaluatedExamplesOutputConfig)
+    ),
+)
+_sym_db.RegisterMessage(ExportEvaluatedExamplesOutputConfig)
 
 GcsSource = _reflection.GeneratedProtocolMessageType(
     "GcsSource",
@@ -268,13 +1577,13 @@ GcsSource = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_GCSSOURCE,
         __module__="google.cloud.automl_v1beta1.proto.io_pb2",
-        __doc__="""The GCS location for the input content.
+        __doc__="""The Google Cloud Storage location for the input content.
   
   
   Attributes:
       input_uris:
           Required. Google Cloud Storage URIs to input files, up to 2000
-          characters long. Accepted forms: \* Full object path:
+          characters long. Accepted forms: \* Full object path, e.g.
           gs://bucket/directory/object.csv
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.automl.v1beta1.GcsSource)
@@ -282,13 +1591,33 @@ GcsSource = _reflection.GeneratedProtocolMessageType(
 )
 _sym_db.RegisterMessage(GcsSource)
 
+BigQuerySource = _reflection.GeneratedProtocolMessageType(
+    "BigQuerySource",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_BIGQUERYSOURCE,
+        __module__="google.cloud.automl_v1beta1.proto.io_pb2",
+        __doc__="""The BigQuery location for the input content.
+  
+  
+  Attributes:
+      input_uri:
+          Required. BigQuery URI to a table, up to 2000 characters long.
+          Accepted forms: \* BigQuery path e.g.
+          bq://projectId.bqDatasetId.bqTableId
+  """,
+        # @@protoc_insertion_point(class_scope:google.cloud.automl.v1beta1.BigQuerySource)
+    ),
+)
+_sym_db.RegisterMessage(BigQuerySource)
+
 GcsDestination = _reflection.GeneratedProtocolMessageType(
     "GcsDestination",
     (_message.Message,),
     dict(
         DESCRIPTOR=_GCSDESTINATION,
         __module__="google.cloud.automl_v1beta1.proto.io_pb2",
-        __doc__="""The GCS location where the output must be written to
+        __doc__="""The Google Cloud Storage location where the output is to be written to.
   
   
   Attributes:
@@ -304,6 +1633,51 @@ GcsDestination = _reflection.GeneratedProtocolMessageType(
 )
 _sym_db.RegisterMessage(GcsDestination)
 
+BigQueryDestination = _reflection.GeneratedProtocolMessageType(
+    "BigQueryDestination",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_BIGQUERYDESTINATION,
+        __module__="google.cloud.automl_v1beta1.proto.io_pb2",
+        __doc__="""The BigQuery location for the output content.
+  
+  
+  Attributes:
+      output_uri:
+          Required. BigQuery URI to a project, up to 2000 characters
+          long. Accepted forms: \* BigQuery path e.g. bq://projectId
+  """,
+        # @@protoc_insertion_point(class_scope:google.cloud.automl.v1beta1.BigQueryDestination)
+    ),
+)
+_sym_db.RegisterMessage(BigQueryDestination)
+
+GcrDestination = _reflection.GeneratedProtocolMessageType(
+    "GcrDestination",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_GCRDESTINATION,
+        __module__="google.cloud.automl_v1beta1.proto.io_pb2",
+        __doc__="""The GCR location where the image must be pushed to.
+  
+  
+  Attributes:
+      output_uri:
+          Required. Google Contained Registry URI of the new image, up
+          to 2000 characters long. See  https:
+          //cloud.google.com/container-registry/do // cs/pushing-and-
+          pulling#pushing\_an\_image\_to\_a\_registry Accepted forms: \*
+          [HOSTNAME]/[PROJECT-ID]/[IMAGE] \* [HOSTNAME]/[PROJECT-
+          ID]/[IMAGE]:[TAG]  The requesting user must have permission to
+          push images the project.
+  """,
+        # @@protoc_insertion_point(class_scope:google.cloud.automl.v1beta1.GcrDestination)
+    ),
+)
+_sym_db.RegisterMessage(GcrDestination)
+
 
 DESCRIPTOR._options = None
+_INPUTCONFIG_PARAMSENTRY._options = None
+_MODELEXPORTOUTPUTCONFIG_PARAMSENTRY._options = None
 # @@protoc_insertion_point(module_scope)

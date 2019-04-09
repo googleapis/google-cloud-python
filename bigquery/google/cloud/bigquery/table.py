@@ -35,6 +35,7 @@ try:
 except ImportError:  # pragma: NO COVER
     tqdm = None
 
+import google.api_core.exceptions
 from google.api_core.page_iterator import HTTPIterator
 
 import google.cloud._helpers
@@ -227,33 +228,13 @@ class TableReference(object):
         """
         from google.cloud.bigquery.dataset import DatasetReference
 
-        output_project_id = default_project
-        output_dataset_id = None
-        output_table_id = None
-        parts = table_id.split(".")
-
-        if len(parts) < 2:
-            raise ValueError(
-                "table_id must be a fully-qualified table ID in "
-                'standard SQL format. e.g. "project.dataset.table", got '
-                "{}".format(table_id)
-            )
-        elif len(parts) == 2:
-            if not default_project:
-                raise ValueError(
-                    "When default_project is not set, table_id must be a "
-                    "fully-qualified table ID in standard SQL format. "
-                    'e.g. "project.dataset_id.table_id", got {}'.format(table_id)
-                )
-            output_dataset_id, output_table_id = parts
-        elif len(parts) == 3:
-            output_project_id, output_dataset_id, output_table_id = parts
-        if len(parts) > 3:
-            raise ValueError(
-                "Too many parts in table_id. Must be a fully-qualified table "
-                'ID in standard SQL format. e.g. "project.dataset.table", '
-                "got {}".format(table_id)
-            )
+        (
+            output_project_id,
+            output_dataset_id,
+            output_table_id,
+        ) = _helpers._parse_3_part_id(
+            table_id, default_project=default_project, property_name="table_id"
+        )
 
         return cls(
             DatasetReference(output_project_id, output_dataset_id), output_table_id
@@ -879,19 +860,7 @@ class Table(object):
 
     def _build_resource(self, filter_fields):
         """Generate a resource for ``update``."""
-        partial = {}
-        for filter_field in filter_fields:
-            api_field = self._PROPERTY_TO_API_FIELD.get(filter_field)
-            if api_field is None and filter_field not in self._properties:
-                raise ValueError("No Table property %s" % filter_field)
-            elif api_field is not None:
-                partial[api_field] = self._properties.get(api_field)
-            else:
-                # allows properties that are not defined in the library
-                # and properties that have the same name as API resource key
-                partial[filter_field] = self._properties[filter_field]
-
-        return partial
+        return _helpers._build_resource_from_properties(self, filter_fields)
 
     def __repr__(self):
         return "Table({})".format(repr(self.reference))
@@ -1437,7 +1406,7 @@ class RowIterator(HTTPIterator):
             bqstorage_client ( \
                 google.cloud.bigquery_storage_v1beta1.BigQueryStorageClient \
             ):
-                **Alpha Feature** Optional. A BigQuery Storage API client. If
+                **Beta Feature** Optional. A BigQuery Storage API client. If
                 supplied, use the faster BigQuery Storage API to fetch rows
                 from BigQuery. This API is a billable API.
 
@@ -1448,8 +1417,9 @@ class RowIterator(HTTPIterator):
                 currently supported by this method.
 
                 **Caution**: There is a known issue reading small anonymous
-                query result tables with the BQ Storage API. Write your query
-                results to a destination table to work around this issue.
+                query result tables with the BQ Storage API. When a problem
+                is encountered reading a table, the tabledata.list method
+                from the BigQuery API is used, instead.
             dtypes ( \
                 Map[str, Union[str, pandas.Series.dtype]] \
             ):
@@ -1496,9 +1466,22 @@ class RowIterator(HTTPIterator):
         progress_bar = self._get_progress_bar(progress_bar_type)
 
         if bqstorage_client is not None:
-            return self._to_dataframe_bqstorage(bqstorage_client, dtypes)
-        else:
-            return self._to_dataframe_tabledata_list(dtypes, progress_bar=progress_bar)
+            try:
+                return self._to_dataframe_bqstorage(bqstorage_client, dtypes)
+            except google.api_core.exceptions.Forbidden:
+                # Don't hide errors such as insufficient permissions to create
+                # a read session, or the API is not enabled. Both of those are
+                # clearly problems if the developer has explicitly asked for
+                # BigQuery Storage API support.
+                raise
+            except google.api_core.exceptions.GoogleAPICallError:
+                # There is a known issue with reading from small anonymous
+                # query results tables, so some errors are expected. Rather
+                # than throw those errors, try reading the DataFrame again, but
+                # with the tabledata.list API.
+                pass
+
+        return self._to_dataframe_tabledata_list(dtypes, progress_bar=progress_bar)
 
 
 class _EmptyRowIterator(object):

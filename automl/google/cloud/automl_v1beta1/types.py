@@ -19,35 +19,47 @@ import sys
 
 from google.api_core.protobuf_helpers import get_messages
 
-from google.api import http_pb2
 from google.cloud.automl_v1beta1.proto import annotation_payload_pb2
 from google.cloud.automl_v1beta1.proto import classification_pb2
+from google.cloud.automl_v1beta1.proto import column_spec_pb2
 from google.cloud.automl_v1beta1.proto import data_items_pb2
+from google.cloud.automl_v1beta1.proto import data_stats_pb2
+from google.cloud.automl_v1beta1.proto import data_types_pb2
 from google.cloud.automl_v1beta1.proto import dataset_pb2
+from google.cloud.automl_v1beta1.proto import detection_pb2
+from google.cloud.automl_v1beta1.proto import geometry_pb2
 from google.cloud.automl_v1beta1.proto import image_pb2
 from google.cloud.automl_v1beta1.proto import io_pb2
 from google.cloud.automl_v1beta1.proto import model_evaluation_pb2
 from google.cloud.automl_v1beta1.proto import model_pb2
 from google.cloud.automl_v1beta1.proto import operations_pb2 as proto_operations_pb2
 from google.cloud.automl_v1beta1.proto import prediction_service_pb2
+from google.cloud.automl_v1beta1.proto import ranges_pb2
+from google.cloud.automl_v1beta1.proto import regression_pb2
 from google.cloud.automl_v1beta1.proto import service_pb2
+from google.cloud.automl_v1beta1.proto import table_spec_pb2
+from google.cloud.automl_v1beta1.proto import tables_pb2
+from google.cloud.automl_v1beta1.proto import temporal_pb2
+from google.cloud.automl_v1beta1.proto import text_extraction_pb2
 from google.cloud.automl_v1beta1.proto import text_pb2
+from google.cloud.automl_v1beta1.proto import text_segment_pb2
+from google.cloud.automl_v1beta1.proto import text_sentiment_pb2
 from google.cloud.automl_v1beta1.proto import translation_pb2
+from google.cloud.automl_v1beta1.proto import video_pb2
 from google.longrunning import operations_pb2 as longrunning_operations_pb2
 from google.protobuf import any_pb2
-from google.protobuf import descriptor_pb2
-from google.protobuf import empty_pb2
+from google.protobuf import duration_pb2
 from google.protobuf import field_mask_pb2
+from google.protobuf import struct_pb2
 from google.protobuf import timestamp_pb2
 from google.rpc import status_pb2
 
 _shared_modules = [
-    http_pb2,
     longrunning_operations_pb2,
     any_pb2,
-    descriptor_pb2,
-    empty_pb2,
+    duration_pb2,
     field_mask_pb2,
+    struct_pb2,
     timestamp_pb2,
     status_pb2,
 ]
@@ -55,17 +67,31 @@ _shared_modules = [
 _local_modules = [
     annotation_payload_pb2,
     classification_pb2,
+    column_spec_pb2,
     data_items_pb2,
+    data_stats_pb2,
+    data_types_pb2,
     dataset_pb2,
+    detection_pb2,
+    geometry_pb2,
     image_pb2,
     io_pb2,
     model_evaluation_pb2,
     model_pb2,
     proto_operations_pb2,
     prediction_service_pb2,
+    ranges_pb2,
+    regression_pb2,
     service_pb2,
+    table_spec_pb2,
+    tables_pb2,
+    temporal_pb2,
+    text_extraction_pb2,
     text_pb2,
+    text_segment_pb2,
+    text_sentiment_pb2,
     translation_pb2,
+    video_pb2,
 ]
 
 names = []

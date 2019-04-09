@@ -1,0 +1,39 @@
+{
+  "updateTime": "2019-04-04T12:25:29.184680Z",
+  "sources": [
+    {
+      "generator": {
+        "name": "artman",
+        "version": "0.16.23",
+        "dockerImage": "googleapis/artman@sha256:f3a3f88000dc1cd1b4826104c5574aa5c534f6793fbf66e888d11c0d7ef5762e"
+      }
+    },
+    {
+      "git": {
+        "name": "googleapis-private",
+        "remote": "https://github.com/googleapis/googleapis-private.git",
+        "sha": "6c972ee69c6f4e4ae19df06c4c2a082cee64cab0",
+        "internalRef": "241798897"
+      }
+    },
+    {
+      "template": {
+        "name": "python_library",
+        "origin": "synthtool.gcp",
+        "version": "2019.2.26"
+      }
+    }
+  ],
+  "destinations": [
+    {
+      "client": {
+        "source": "googleapis-private",
+        "apiName": "translate",
+        "apiVersion": "v3beta1",
+        "language": "python",
+        "generator": "gapic",
+        "config": "google/cloud/translate/artman_translate_v3beta1.yaml"
+      }
+    }
+  ]
+}

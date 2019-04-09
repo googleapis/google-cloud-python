@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-api-core/#history
 
+## 1.9.0
+
+04-05-2019 10:38 PDT
+
+
+### Implementation Changes
+- Allow passing metadata as part of creating a bidi ([#7514](https://github.com/googleapis/google-cloud-python/pull/7514))
+
+### Internal / Testing Changes
+- Update setup.py
+- API Core: specify a pytype output directory in setup.cfg. ([#7639](https://github.com/googleapis/google-cloud-python/pull/7639))
+
 ## 1.8.2
 
 03-22-2019 16:27 PDT
