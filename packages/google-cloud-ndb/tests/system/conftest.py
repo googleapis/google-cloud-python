@@ -1,5 +1,6 @@
 import itertools
 import time
+import uuid
 
 import pytest
 
@@ -35,8 +36,8 @@ def to_delete():
 
 
 @pytest.fixture
-def ds_client(to_delete, deleted_keys):
-    client = datastore.Client()
+def ds_client(namespace, to_delete, deleted_keys):
+    client = datastore.Client(namespace=namespace)
 
     # Make sure we're leaving database as clean as we found it after each test
     results = [
@@ -105,7 +106,7 @@ def dispose_of(ds_client, to_delete):
 
 @pytest.fixture
 def namespace():
-    return ""
+    return str(uuid.uuid4())
 
 
 @pytest.fixture
