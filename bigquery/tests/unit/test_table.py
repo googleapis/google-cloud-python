@@ -1115,11 +1115,20 @@ class TestTableListItem(unittest.TestCase):
     def _make_one(self, *args, **kw):
         return self._get_target_class()(*args, **kw)
 
+    def _setUpConstants(self):
+        import datetime
+        from google.cloud._helpers import UTC
+
+        self.WHEN_TS = 1437767599.006
+        self.WHEN = datetime.datetime.utcfromtimestamp(self.WHEN_TS).replace(tzinfo=UTC)
+
     def test_ctor(self):
+        self._setUpConstants()
         project = "test-project"
         dataset_id = "test_dataset"
         table_id = "coffee_table"
         resource = {
+            "creationTime": self.WHEN_TS * 1000,
             "kind": "bigquery#table",
             "id": "{}:{}.{}".format(project, dataset_id, table_id),
             "tableReference": {
@@ -1138,6 +1147,17 @@ class TestTableListItem(unittest.TestCase):
         }
 
         table = self._make_one(resource)
+
+        if "creationTime" in resource:
+            self.assertEqual(table.created, self.WHEN)
+        else:
+            self.assertIsNone(table.created)
+
+        if "expirationTime" in resource:
+            self.assertEqual(table.expires, self.EXP_TIME)
+        else:
+            self.assertIsNone(table.expires)
+
         self.assertEqual(table.project, project)
         self.assertEqual(table.dataset_id, dataset_id)
         self.assertEqual(table.table_id, table_id)
@@ -1154,6 +1174,7 @@ class TestTableListItem(unittest.TestCase):
         self.assertEqual(table.time_partitioning.field, "mycolumn")
         self.assertEqual(table.labels["some-stuff"], "this-is-a-label")
         self.assertIsNone(table.view_use_legacy_sql)
+        self.assertIsNone(table.expires)
 
         with warnings.catch_warnings(record=True) as warned:
             self.assertEqual(table.partitioning_type, "DAY")
