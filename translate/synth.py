@@ -46,6 +46,12 @@ s.replace(
     "google.cloud.translate_v3beta1.proto",
 )
 
+s.replace(
+    "google/cloud/**/translation_service_pb2.py",
+    r"""record delimiters are ':raw-latex:`\\n`' instead of
+          ':raw-latex:`\\r`:raw-latex:`\\n`'.""",
+    r"""record delimiters are ``\\\\\\\\n`` instead of
+          ``\\\\\\\\r\\\\\\\\n``.""",)
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
