@@ -20,7 +20,6 @@ import functools
 import pkg_resources
 import warnings
 
-from google.api_core import exceptions as core_exceptions
 from google.oauth2 import service_account
 import google.api_core.gapic_v1.client_info
 import google.api_core.gapic_v1.config
@@ -32,6 +31,7 @@ import google.api_core.page_iterator
 import google.api_core.path_template
 import grpc
 
+from google.cloud.pubsub_v1.gapic import custom_retry
 from google.cloud.pubsub_v1.gapic import publisher_client_config
 from google.cloud.pubsub_v1.gapic.transports import publisher_grpc_transport
 from google.cloud.pubsub_v1.proto import pubsub_pb2
@@ -42,32 +42,6 @@ from google.protobuf import empty_pb2
 from google.protobuf import field_mask_pb2
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution("google-cloud-pubsub").version
-
-
-def _patch_retry_predicate(method_config):
-    """Patch method config to *not* retry on service accout missing errors.
-
-    If Retry is None in the config, the config is returned unmodified.
-
-    Args:
-        method_config (:class:`google.api_core.gapic_v1.config.MethodConfig`):
-            The method config to patch.
-
-    Returns:
-        :class:`google.api_core.gapic_v1.config.MethodConfig`: The modified config.
-    """
-    if method_config.retry is None:
-        return method_config  # there's nothing to patch
-
-    orig_predicate = method_config.retry._predicate
-
-    def should_retry(exc):
-        if isinstance(exc, core_exceptions.ServiceUnavailable):
-            return "invalid_grant" not in exc.message
-        return orig_predicate(exc)
-
-    new_retry = method_config.retry.with_predicate(should_retry)
-    return method_config._replace(retry=new_retry)
 
 
 class PublisherClient(object):
@@ -222,7 +196,7 @@ class PublisherClient(object):
         # "invalid grant" error that should fail the request immediately, thus
         # the patching.
         for method_name, method_config in copy.copy(self._method_configs).items():
-            new_config = _patch_retry_predicate(method_config)
+            new_config = custom_retry.patch_retry_predicate(method_config)
             self._method_configs[method_name] = new_config
 
         # Save a dictionary of cached API call functions.
