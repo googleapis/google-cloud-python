@@ -1170,7 +1170,6 @@ class TestTableListItem(unittest.TestCase):
         self.assertEqual(table.time_partitioning.field, "mycolumn")
         self.assertEqual(table.labels["some-stuff"], "this-is-a-label")
         self.assertIsNone(table.view_use_legacy_sql)
-        # self.assertIsNone(table.expires)
 
         with warnings.catch_warnings(record=True) as warned:
             self.assertEqual(table.partitioning_type, "DAY")
