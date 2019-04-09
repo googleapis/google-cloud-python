@@ -445,7 +445,10 @@ class StreamingPullManager(object):
         exception = _maybe_wrap_exception(exception)
         # If this is in the list of idempotent exceptions, then we want to
         # recover.
-        if isinstance(exception, _RETRYABLE_STREAM_ERRORS):
+        if isinstance(exception, _RETRYABLE_STREAM_ERRORS) and (
+            not isinstance(exception, exceptions.ServiceUnavailable)
+            or "invalid_grant" not in exception.message
+        ):
             _LOGGER.info("Observed recoverable stream error %s", exception)
             return True
         _LOGGER.info("Observed non-recoverable stream error %s", exception)

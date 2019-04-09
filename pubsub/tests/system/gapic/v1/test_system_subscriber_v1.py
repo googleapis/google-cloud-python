@@ -50,3 +50,17 @@ class TestSystemSubscriber(object):
         # will fail with a timeout (RefreshError).
         with pytest.raises(exceptions.ServiceUnavailable):
             client.pull(subscription_path, max_messages=100)
+
+    def test_no_account_no_retry_timeout_async(self, invalid_credentials_file):
+        client = pubsub_v1.SubscriberClient.from_service_account_json(
+            invalid_credentials_file
+        )
+
+        project_id = os.environ["PROJECT_ID"]
+        subscription_name = "foo_events"
+        subscription_path = client.subscription_path(project_id, subscription_name)
+
+        future = client.subscribe(subscription_path, callback=lambda msg: None)
+
+        with pytest.raises(exceptions.ServiceUnavailable):
+            future.result(timeout=10)
