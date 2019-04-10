@@ -1115,11 +1115,24 @@ class TestTableListItem(unittest.TestCase):
     def _make_one(self, *args, **kw):
         return self._get_target_class()(*args, **kw)
 
+    def _setUpConstants(self):
+        import datetime
+        from google.cloud._helpers import UTC
+
+        self.WHEN_TS = 1437767599.125
+        self.WHEN = datetime.datetime.utcfromtimestamp(self.WHEN_TS).replace(tzinfo=UTC)
+        self.EXP_TIME = datetime.datetime(2015, 8, 1, 23, 59, 59, tzinfo=UTC)
+
     def test_ctor(self):
+        from google.cloud._helpers import _millis
+
+        self._setUpConstants()
         project = "test-project"
         dataset_id = "test_dataset"
         table_id = "coffee_table"
         resource = {
+            "creationTime": self.WHEN_TS * 1000,
+            "expirationTime": _millis(self.EXP_TIME),
             "kind": "bigquery#table",
             "id": "{}:{}.{}".format(project, dataset_id, table_id),
             "tableReference": {
@@ -1138,6 +1151,9 @@ class TestTableListItem(unittest.TestCase):
         }
 
         table = self._make_one(resource)
+
+        self.assertEqual(table.created, self.WHEN)
+        self.assertEqual(table.expires, self.EXP_TIME)
         self.assertEqual(table.project, project)
         self.assertEqual(table.dataset_id, dataset_id)
         self.assertEqual(table.table_id, table_id)
@@ -1204,6 +1220,8 @@ class TestTableListItem(unittest.TestCase):
         self.assertEqual(table.project, "testproject")
         self.assertEqual(table.dataset_id, "testdataset")
         self.assertEqual(table.table_id, "testtable")
+        self.assertIsNone(table.created)
+        self.assertIsNone(table.expires)
         self.assertIsNone(table.full_table_id)
         self.assertIsNone(table.friendly_name)
         self.assertIsNone(table.table_type)
