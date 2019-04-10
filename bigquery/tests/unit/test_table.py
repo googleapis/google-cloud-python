@@ -1220,6 +1220,8 @@ class TestTableListItem(unittest.TestCase):
         self.assertEqual(table.project, "testproject")
         self.assertEqual(table.dataset_id, "testdataset")
         self.assertEqual(table.table_id, "testtable")
+        self.assertIsNone(table.created)
+        self.assertIsNone(table.expires)
         self.assertIsNone(table.full_table_id)
         self.assertIsNone(table.friendly_name)
         self.assertIsNone(table.table_type)
