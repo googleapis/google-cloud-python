@@ -1,5 +1,4 @@
 import itertools
-import time
 import uuid
 
 import pytest
@@ -53,32 +52,12 @@ def ds_client(namespace, to_delete, deleted_keys):
         client.delete_multi(to_delete)
         deleted_keys.update(to_delete)
 
-    # Datastore takes some time to delete entities even after it says it's
-    # deleted them. (With Firestore using the Datastore interface, an entity is
-    # deleted when you get a return from a call to delete.) Keep checking for
-    # up to 2 minutes.
-    deadline = time.time() + 120
-    while True:
-        results = list(all_entities(client))
-        print(results)
-        if not results:
-            # all clean, yeah
-            break
-
-        # Make sure we're only waiting on entities that have been deleted
-        not_deleted = [
-            entity for entity in results if entity.key not in deleted_keys
-        ]
-        assert not not_deleted
-
-        # How are we doing on time?
-        assert (
-            time.time() < deadline
-        ), "Entities taking too long to delete: {}".format(results)
-
-        # Give Datastore a second to find a consistent state before checking
-        # again
-        time.sleep(1)
+    not_deleted = [
+        entity
+        for entity in all_entities(client)
+        if entity.key not in deleted_keys
+    ]
+    assert not not_deleted
 
 
 @pytest.fixture
