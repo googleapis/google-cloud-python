@@ -73,7 +73,6 @@ class QueryOptions:
         "offset",
         "start_cursor",
         "end_cursor",
-        "eventual",
         "batch_size",
         "prefetch_size",
         "produce_cursors",
@@ -1399,11 +1398,12 @@ class Query:
 
     def fetch(
         self,
+        limit=None,
+        *,
         keys_only=None,
         projection=None,
         offset=None,
-        limit=None,
-        batch_size=None,  # 20?   # placeholder
+        batch_size=None,
         prefetch_size=None,
         produce_cursors=False,
         start_cursor=None,
@@ -1458,11 +1458,12 @@ class Query:
 
     def fetch_async(
         self,
+        limit=None,
+        *,
         keys_only=None,
         projection=None,
         offset=None,
-        limit=None,
-        batch_size=None,  # 20?   # placeholder
+        batch_size=None,
         prefetch_size=None,
         produce_cursors=False,
         start_cursor=None,
@@ -1508,15 +1509,11 @@ class Query:
 
         batch_size = self._option("batch_size", batch_size, options)
         if batch_size:
-            raise NotImplementedError(
-                "'batch_size' is not implemented yet for queries"
-            )
+            raise exceptions.NoLongerImplementedError()
 
         prefetch_size = self._option("prefetch_size", prefetch_size, options)
         if prefetch_size:
-            raise NotImplementedError(
-                "'prefetch_size' is not implemented yet for queries"
-            )
+            raise exceptions.NoLongerImplementedError()
 
         produce_cursors = self._option(
             "produce_cursors", produce_cursors, options
@@ -1617,6 +1614,369 @@ class Query:
             return getattr(self.default_options, name, None)
 
         return None
+
+    def run_to_queue(self, queue, conn, options=None, dsquery=None):
+        """Run this query, putting entities into the given queue."""
+        raise exceptions.NoLongerImplementedError()
+
+    def iter(
+        self,
+        limit=None,
+        *,
+        keys_only=None,
+        projection=None,
+        offset=None,
+        batch_size=None,
+        prefetch_size=None,
+        produce_cursors=False,
+        start_cursor=None,
+        end_cursor=None,
+        deadline=None,
+        read_policy=None,  #  _datastore_api.EVENTUAL,  # placeholder
+        options=None,
+    ):
+        """Get an iterator over query results.
+
+        Args:
+            keys_only (bool): Return keys instead of entities.
+            projection (list[str]): The fields to return as part of the query
+                results.
+            offset (int): Number of query results to skip.
+            limit (Optional[int]): Maximum number of query results to return.
+                If not specified, there is no limit.
+            batch_size (Optional[int]): Number of results to fetch in a single
+                RPC call. Affects efficiency of queries only. Larger batch
+                sizes use more memory but make fewer RPC calls.
+            prefetch_size (Optional[int]): Overrides batch size for first batch
+                returned.
+            produce_cursors (bool): Whether to generate cursors from query.
+            start_cursor: Starting point for search.
+            end_cursor: Endpoint point for search.
+            deadline (Optional[int]): Override the RPC deadline, in seconds.
+            read_policy: Defaults to `ndb.EVENTUAL` for potentially faster
+                query results without having to wait for Datastore to apply
+                pending changes to all returned records.
+            options (QueryOptions): DEPRECATED: An object containing options
+                values for some of these arguments.
+
+        Returns:
+            QueryIterator: An iterator.
+        """
+        raise NotImplementedError
+
+    __iter__ = iter
+
+    def map(
+        self,
+        callback,
+        *,
+        pass_batch_into_callback=None,
+        merge_future=None,
+        keys_only=None,
+        limit=None,
+        projection=None,
+        offset=None,
+        batch_size=None,
+        prefetch_size=None,
+        produce_cursors=False,
+        start_cursor=None,
+        end_cursor=None,
+        deadline=None,
+        read_policy=None,  #  _datastore_api.EVENTUAL,  # placeholder
+        options=None,
+    ):
+        """Map a callback function or tasklet over the query results.
+
+        Args:
+            callback (Callable): A function or tasklet to be applied to each
+                result; see below.
+            merge_future: Optional ``Future`` subclass; see below.
+            keys_only (bool): Return keys instead of entities.
+            projection (list[str]): The fields to return as part of the query
+                results.
+            offset (int): Number of query results to skip.
+            limit (Optional[int]): Maximum number of query results to return.
+                If not specified, there is no limit.
+            batch_size (Optional[int]): Number of results to fetch in a single
+                RPC call. Affects efficiency of queries only. Larger batch
+                sizes use more memory but make fewer RPC calls.
+            prefetch_size (Optional[int]): Overrides batch size for first batch
+                returned.
+            produce_cursors (bool): Whether to generate cursors from query.
+            start_cursor: Starting point for search.
+            end_cursor: Endpoint point for search.
+            deadline (Optional[int]): Override the RPC deadline, in seconds.
+            read_policy: Defaults to `ndb.EVENTUAL` for potentially faster
+                query results without having to wait for Datastore to apply
+                pending changes to all returned records.
+            options (QueryOptions): DEPRECATED: An object containing options
+                values for some of these arguments.
+
+        Callback signature: The callback is normally called with an entity
+        as argument.  However if keys_only=True is given, it is called
+        with a Key.  Also, when pass_batch_into_callback is True, it is
+        called with three arguments: the current batch, the index within
+        the batch, and the entity or Key at that index.  The callback can
+        return whatever it wants.  If the callback is None, a trivial
+        callback is assumed that just returns the entity or key passed in
+        (ignoring produce_cursors).
+
+        Optional merge future: The merge_future is an advanced argument
+        that can be used to override how the callback results are combined
+        into the overall map() return value.  By default a list of
+        callback return values is produced.  By substituting one of a
+        small number of specialized alternatives you can arrange
+        otherwise.  See tasklets.MultiFuture for the default
+        implementation and a description of the protocol the merge_future
+        object must implement the default.  Alternatives from the same
+        module include QueueFuture, SerialQueueFuture and ReducingFuture.
+
+        Returns:
+            Any: When the query has run to completion and all callbacks have
+                returned, map() returns a list of the results of all callbacks.
+                (But see 'optional merge future' above.)
+        """
+        raise NotImplementedError
+
+    def map_async(
+        self,
+        callback,
+        *,
+        pass_batch_into_callback=None,
+        merge_future=None,
+        keys_only=None,
+        limit=None,
+        projection=None,
+        offset=None,
+        batch_size=None,
+        prefetch_size=None,
+        produce_cursors=False,
+        start_cursor=None,
+        end_cursor=None,
+        deadline=None,
+        read_policy=None,  #  _datastore_api.EVENTUAL,  # placeholder
+        options=None,
+    ):
+        """Map a callback function or tasklet over the query results.
+
+        This is the asynchronous version of :meth:`Query.map`.
+
+        Returns:
+            tasklets.Future: See :meth:`Query.map` for eventual result.
+        """
+        raise NotImplementedError
+
+    def get(
+        self,
+        keys_only=None,
+        limit=None,
+        projection=None,
+        offset=None,
+        batch_size=None,
+        prefetch_size=None,
+        produce_cursors=False,
+        start_cursor=None,
+        end_cursor=None,
+        deadline=None,
+        read_policy=None,  #  _datastore_api.EVENTUAL,  # placeholder
+        options=None,
+    ):
+        """Get the first query result, if any.
+
+        This is equivalent to calling ``q.fetch(1)`` and returning the first
+        result, if any.
+
+        Args:
+            keys_only (bool): Return keys instead of entities.
+            projection (list[str]): The fields to return as part of the query
+                results.
+            offset (int): Number of query results to skip.
+            limit (Optional[int]): Maximum number of query results to return.
+                If not specified, there is no limit.
+            batch_size (Optional[int]): Number of results to fetch in a single
+                RPC call. Affects efficiency of queries only. Larger batch
+                sizes use more memory but make fewer RPC calls.
+            prefetch_size (Optional[int]): Overrides batch size for first batch
+                returned.
+            produce_cursors (bool): Whether to generate cursors from query.
+            start_cursor: Starting point for search.
+            end_cursor: Endpoint point for search.
+            deadline (Optional[int]): Override the RPC deadline, in seconds.
+            read_policy: Defaults to `ndb.EVENTUAL` for potentially faster
+                query results without having to wait for Datastore to apply
+                pending changes to all returned records.
+            options (QueryOptions): DEPRECATED: An object containing options
+                values for some of these arguments.
+
+            Returns:
+                Optional[Union[entity.Entity, key.Key]]: A single result, or
+                    :data:`None` if there are no results.
+        """
+        raise NotImplementedError
+
+    def get_async(
+        self,
+        keys_only=None,
+        limit=None,
+        projection=None,
+        offset=None,
+        batch_size=None,
+        prefetch_size=None,
+        produce_cursors=False,
+        start_cursor=None,
+        end_cursor=None,
+        deadline=None,
+        read_policy=None,  #  _datastore_api.EVENTUAL,  # placeholder
+        options=None,
+    ):
+        """Get the first query result, if any.
+
+        This is the asynchronous version of :meth:`Query.get`.
+
+        Returns:
+            tasklets.Future: See :meth:`Query.get` for eventual result.
+        """
+        raise NotImplementedError
+
+    def count(
+        self,
+        keys_only=None,
+        limit=None,
+        projection=None,
+        offset=None,
+        batch_size=None,
+        prefetch_size=None,
+        produce_cursors=False,
+        start_cursor=None,
+        end_cursor=None,
+        deadline=None,
+        read_policy=None,  #  _datastore_api.EVENTUAL,  # placeholder
+        options=None,
+    ):
+        """Count the number of query results, up to a limit.
+
+        This returns the same result as ``len(q.fetch(limit))`` but more
+        efficiently.
+
+        Note that you should pass a maximum value to limit the amount of
+        work done by the query.
+
+        Args:
+            keys_only (bool): Return keys instead of entities.
+            projection (list[str]): The fields to return as part of the query
+                results.
+            offset (int): Number of query results to skip.
+            limit (Optional[int]): Maximum number of query results to return.
+                If not specified, there is no limit.
+            batch_size (Optional[int]): Number of results to fetch in a single
+                RPC call. Affects efficiency of queries only. Larger batch
+                sizes use more memory but make fewer RPC calls.
+            prefetch_size (Optional[int]): Overrides batch size for first batch
+                returned.
+            produce_cursors (bool): Whether to generate cursors from query.
+            start_cursor: Starting point for search.
+            end_cursor: Endpoint point for search.
+            deadline (Optional[int]): Override the RPC deadline, in seconds.
+            read_policy: Defaults to `ndb.EVENTUAL` for potentially faster
+                query results without having to wait for Datastore to apply
+                pending changes to all returned records.
+            options (QueryOptions): DEPRECATED: An object containing options
+                values for some of these arguments.
+
+            Returns:
+                Optional[Union[entity.Entity, key.Key]]: A single result, or
+                    :data:`None` if there are no results.
+        """
+        raise NotImplementedError
+
+    def count_async(
+        self,
+        keys_only=None,
+        limit=None,
+        projection=None,
+        offset=None,
+        batch_size=None,
+        prefetch_size=None,
+        produce_cursors=False,
+        start_cursor=None,
+        end_cursor=None,
+        deadline=None,
+        read_policy=None,  #  _datastore_api.EVENTUAL,  # placeholder
+        options=None,
+    ):
+        """Count the number of query results, up to a limit.
+
+        This is the asynchronous version of :meth:`Query.count`.
+
+        Returns:
+            tasklets.Future: See :meth:`Query.count` for eventual result.
+        """
+        raise NotImplementedError
+
+    def fetch_page(
+        self,
+        page_size,
+        *,
+        keys_only=None,
+        limit=None,
+        projection=None,
+        offset=None,
+        batch_size=None,
+        prefetch_size=None,
+        produce_cursors=False,
+        start_cursor=None,
+        end_cursor=None,
+        deadline=None,
+        read_policy=None,  #  _datastore_api.EVENTUAL,  # placeholder
+        options=None,
+    ):
+        """Fetch a page of results.
+
+        This is a specialized method for use by paging user interfaces.
+
+        To fetch the next page, you pass the cursor returned by one call to the
+        next call using the `start_cursor` argument.  A common idiom is to pass
+        the cursor to the client using `Cursor.to_websafe_string` and to
+        reconstruct that cursor on a subsequent request using
+        `Cursor.from_websafe_string`.
+
+        Args:
+            page_size (int): The number of results per page. At most, this many
+                results will be returned.
+
+        Returns:
+            Tuple[list, bytes, bool]: A tuple `(results, cursor, more)` where
+                `results` is a list of query results, `cursor` is a cursor
+                pointing just after the last result returned, and `more`
+                indicates whether there are (likely) more results after that.
+        """
+        raise NotImplementedError
+
+    def fetch_page_async(
+        self,
+        page_size,
+        *,
+        keys_only=None,
+        limit=None,
+        projection=None,
+        offset=None,
+        batch_size=None,
+        prefetch_size=None,
+        produce_cursors=False,
+        start_cursor=None,
+        end_cursor=None,
+        deadline=None,
+        read_policy=None,  #  _datastore_api.EVENTUAL,  # placeholder
+        options=None,
+    ):
+        """Fetch a page of results.
+
+        This is the asynchronous version of :meth:`Query.fetch_page`.
+
+        Returns:
+            tasklets.Future: See :meth:`Query.fetch_page` for eventual result.
+        """
+        raise NotImplementedError
 
 
 def gql(*args, **kwargs):

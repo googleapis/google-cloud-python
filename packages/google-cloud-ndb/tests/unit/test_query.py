@@ -1502,6 +1502,17 @@ class TestQuery:
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")
+    @unittest.mock.patch("google.cloud.ndb.query._datastore_query")
+    def test_fetch_async_with_limit_as_positional_arg(_datastore_query):
+        query = query_module.Query()
+        response = _datastore_query.fetch.return_value
+        assert query.fetch_async(20) is response
+        _datastore_query.fetch.assert_called_once_with(
+            query_module.QueryOptions(limit=20)
+        )
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
     def test_fetch_async_with_batch_size():
         query = query_module.Query()
         with pytest.raises(NotImplementedError):
@@ -1558,6 +1569,96 @@ class TestQuery:
         _datastore_query.fetch.return_value = future
         query = query_module.Query()
         assert query.fetch() == "foo"
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    @unittest.mock.patch("google.cloud.ndb.query._datastore_query")
+    def test_fetch_with_limit_as_positional_arg(_datastore_query):
+        future = tasklets.Future("fetch")
+        future.set_result("foo")
+        _datastore_query.fetch.return_value = future
+        query = query_module.Query()
+        assert query.fetch(20) == "foo"
+        _datastore_query.fetch.assert_called_once_with(
+            query_module.QueryOptions(limit=20)
+        )
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_run_to_queue():
+        query = query_module.Query()
+        with pytest.raises(NotImplementedError):
+            query.run_to_queue("foo", "bar")
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_iter():
+        query = query_module.Query()
+        with pytest.raises(NotImplementedError):
+            query.iter()
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test___iter__():
+        query = query_module.Query()
+        with pytest.raises(NotImplementedError):
+            iter(query)
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_map():
+        query = query_module.Query()
+        with pytest.raises(NotImplementedError):
+            query.map(None)
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_map_async():
+        query = query_module.Query()
+        with pytest.raises(NotImplementedError):
+            query.map_async(None)
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_get():
+        query = query_module.Query()
+        with pytest.raises(NotImplementedError):
+            query.get(None)
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_get_async():
+        query = query_module.Query()
+        with pytest.raises(NotImplementedError):
+            query.get_async(None)
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_count():
+        query = query_module.Query()
+        with pytest.raises(NotImplementedError):
+            query.count(None)
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_count_async():
+        query = query_module.Query()
+        with pytest.raises(NotImplementedError):
+            query.count_async(None)
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_fetch_page():
+        query = query_module.Query()
+        with pytest.raises(NotImplementedError):
+            query.fetch_page(None)
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_fetch_page_async():
+        query = query_module.Query()
+        with pytest.raises(NotImplementedError):
+            query.fetch_page_async(None)
 
 
 def test_gql():
