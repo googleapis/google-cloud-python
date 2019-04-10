@@ -1148,6 +1148,7 @@ class TestTableListItem(unittest.TestCase):
                 "expirationMs": "10000",
             },
             "labels": {"some-stuff": "this-is-a-label"},
+            "clustering": {"fields": ["string"]},
         }
 
         table = self._make_one(resource)
@@ -1170,6 +1171,7 @@ class TestTableListItem(unittest.TestCase):
         self.assertEqual(table.time_partitioning.field, "mycolumn")
         self.assertEqual(table.labels["some-stuff"], "this-is-a-label")
         self.assertIsNone(table.view_use_legacy_sql)
+        self.assertEqual(table.clustering_fields, ["string"])
 
         with warnings.catch_warnings(record=True) as warned:
             self.assertEqual(table.partitioning_type, "DAY")
@@ -1222,6 +1224,7 @@ class TestTableListItem(unittest.TestCase):
         self.assertEqual(table.table_id, "testtable")
         self.assertIsNone(table.created)
         self.assertIsNone(table.expires)
+        self.assertIsNone(table.clustering_fields)
         self.assertIsNone(table.full_table_id)
         self.assertIsNone(table.friendly_name)
         self.assertIsNone(table.table_type)
