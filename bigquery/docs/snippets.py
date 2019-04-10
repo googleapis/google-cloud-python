@@ -147,24 +147,6 @@ def test_create_client_json_credentials():
     assert client is not None
 
 
-def test_list_datasets(client):
-    """List datasets for a project."""
-    # [START bigquery_list_datasets]
-    # from google.cloud import bigquery
-    # client = bigquery.Client()
-
-    datasets = list(client.list_datasets())
-    project = client.project
-
-    if datasets:
-        print("Datasets in project {}:".format(project))
-        for dataset in datasets:  # API request(s)
-            print("\t{}".format(dataset.dataset_id))
-    else:
-        print("{} project does not contain any datasets.".format(project))
-    # [END bigquery_list_datasets]
-
-
 def test_list_datasets_by_label(client, to_delete):
     dataset_id = "list_datasets_by_label_{}".format(_millis())
     dataset = bigquery.Dataset(client.dataset(dataset_id))
@@ -190,78 +172,6 @@ def test_list_datasets_by_label(client, to_delete):
     # [END bigquery_list_datasets_by_label]
     found = set([dataset.dataset_id for dataset in datasets])
     assert dataset_id in found
-
-
-def test_create_dataset(client, to_delete):
-    """Create a dataset."""
-    dataset_id = "create_dataset_{}".format(_millis())
-
-    # [START bigquery_create_dataset]
-    # from google.cloud import bigquery
-    # client = bigquery.Client()
-    # dataset_id = 'my_dataset'
-
-    # Create a DatasetReference using a chosen dataset ID.
-    # The project defaults to the Client's project if not specified.
-    dataset_ref = client.dataset(dataset_id)
-
-    # Construct a full Dataset object to send to the API.
-    dataset = bigquery.Dataset(dataset_ref)
-    # Specify the geographic location where the dataset should reside.
-    dataset.location = "US"
-
-    # Send the dataset to the API for creation.
-    # Raises google.api_core.exceptions.Conflict if the Dataset already
-    # exists within the project.
-    dataset = client.create_dataset(dataset)  # API request
-    # [END bigquery_create_dataset]
-
-    to_delete.append(dataset)
-
-
-def test_get_dataset_information(client, to_delete):
-    """View information about a dataset."""
-    dataset_id = "get_dataset_{}".format(_millis())
-    dataset_labels = {"color": "green"}
-    dataset_ref = client.dataset(dataset_id)
-    dataset = bigquery.Dataset(dataset_ref)
-    dataset.description = ORIGINAL_DESCRIPTION
-    dataset.labels = dataset_labels
-    dataset = client.create_dataset(dataset)  # API request
-    to_delete.append(dataset)
-
-    # [START bigquery_get_dataset]
-    # from google.cloud import bigquery
-    # client = bigquery.Client()
-    # dataset_id = 'my_dataset'
-
-    dataset_ref = client.dataset(dataset_id)
-    dataset = client.get_dataset(dataset_ref)  # API request
-
-    # View dataset properties
-    print("Dataset ID: {}".format(dataset_id))
-    print("Description: {}".format(dataset.description))
-    print("Labels:")
-    labels = dataset.labels
-    if labels:
-        for label, value in labels.items():
-            print("\t{}: {}".format(label, value))
-    else:
-        print("\tDataset has no labels defined.")
-
-    # View tables in dataset
-    print("Tables:")
-    tables = list(client.list_tables(dataset_ref))  # API request(s)
-    if tables:
-        for table in tables:
-            print("\t{}".format(table.table_id))
-    else:
-        print("\tThis dataset does not contain any tables.")
-    # [END bigquery_get_dataset]
-
-    assert dataset.description == ORIGINAL_DESCRIPTION
-    assert dataset.labels == dataset_labels
-    assert tables == []
 
 
 # [START bigquery_dataset_exists]
@@ -299,66 +209,6 @@ def test_dataset_exists(client, to_delete):
 
     assert dataset_exists(client, dataset_ref)
     assert not dataset_exists(client, client.dataset("i_dont_exist"))
-
-
-@pytest.mark.skip(
-    reason=(
-        "update_dataset() is flaky "
-        "https://github.com/GoogleCloudPlatform/google-cloud-python/issues/5588"
-    )
-)
-def test_update_dataset_description(client, to_delete):
-    """Update a dataset's description."""
-    dataset_id = "update_dataset_description_{}".format(_millis())
-    dataset = bigquery.Dataset(client.dataset(dataset_id))
-    dataset.description = "Original description."
-    client.create_dataset(dataset)
-    to_delete.append(dataset)
-
-    # [START bigquery_update_dataset_description]
-    # from google.cloud import bigquery
-    # client = bigquery.Client()
-    # dataset_ref = client.dataset('my_dataset')
-    # dataset = client.get_dataset(dataset_ref)  # API request
-
-    assert dataset.description == "Original description."
-    dataset.description = "Updated description."
-
-    dataset = client.update_dataset(dataset, ["description"])  # API request
-
-    assert dataset.description == "Updated description."
-    # [END bigquery_update_dataset_description]
-
-
-@pytest.mark.skip(
-    reason=(
-        "update_dataset() is flaky "
-        "https://github.com/GoogleCloudPlatform/google-cloud-python/issues/5588"
-    )
-)
-def test_update_dataset_default_table_expiration(client, to_delete):
-    """Update a dataset's default table expiration."""
-    dataset_id = "update_dataset_default_expiration_{}".format(_millis())
-    dataset = bigquery.Dataset(client.dataset(dataset_id))
-    dataset = client.create_dataset(dataset)
-    to_delete.append(dataset)
-
-    # [START bigquery_update_dataset_expiration]
-    # from google.cloud import bigquery
-    # client = bigquery.Client()
-    # dataset_ref = client.dataset('my_dataset')
-    # dataset = client.get_dataset(dataset_ref)  # API request
-
-    assert dataset.default_table_expiration_ms is None
-    one_day_ms = 24 * 60 * 60 * 1000  # in milliseconds
-    dataset.default_table_expiration_ms = one_day_ms
-
-    dataset = client.update_dataset(
-        dataset, ["default_table_expiration_ms"]
-    )  # API request
-
-    assert dataset.default_table_expiration_ms == one_day_ms
-    # [END bigquery_update_dataset_expiration]
 
 
 @pytest.mark.skip(
@@ -422,129 +272,6 @@ def test_manage_dataset_labels(client, to_delete):
 
     assert dataset.labels == {}
     # [END bigquery_delete_label_dataset]
-
-
-@pytest.mark.skip(
-    reason=(
-        "update_dataset() is flaky "
-        "https://github.com/GoogleCloudPlatform/google-cloud-python/issues/5588"
-    )
-)
-def test_update_dataset_access(client, to_delete):
-    """Update a dataset's access controls."""
-    dataset_id = "update_dataset_access_{}".format(_millis())
-    dataset = bigquery.Dataset(client.dataset(dataset_id))
-    dataset = client.create_dataset(dataset)
-    to_delete.append(dataset)
-
-    # [START bigquery_update_dataset_access]
-    # from google.cloud import bigquery
-    # client = bigquery.Client()
-    # dataset = client.get_dataset(client.dataset('my_dataset'))
-
-    entry = bigquery.AccessEntry(
-        role="READER",
-        entity_type="userByEmail",
-        entity_id="sample.bigquery.dev@gmail.com",
-    )
-    assert entry not in dataset.access_entries
-    entries = list(dataset.access_entries)
-    entries.append(entry)
-    dataset.access_entries = entries
-
-    dataset = client.update_dataset(dataset, ["access_entries"])  # API request
-
-    assert entry in dataset.access_entries
-    # [END bigquery_update_dataset_access]
-
-
-def test_delete_dataset(client):
-    """Delete a dataset."""
-    from google.cloud.exceptions import NotFound
-
-    dataset1_id = "delete_dataset_{}".format(_millis())
-    dataset1 = bigquery.Dataset(client.dataset(dataset1_id))
-    client.create_dataset(dataset1)
-
-    dataset2_id = "delete_dataset_with_tables{}".format(_millis())
-    dataset2 = bigquery.Dataset(client.dataset(dataset2_id))
-    client.create_dataset(dataset2)
-
-    table = bigquery.Table(dataset2.table("new_table"))
-    client.create_table(table)
-
-    # [START bigquery_delete_dataset]
-    # from google.cloud import bigquery
-    # client = bigquery.Client()
-
-    # Delete a dataset that does not contain any tables
-    # dataset1_id = 'my_empty_dataset'
-    dataset1_ref = client.dataset(dataset1_id)
-    client.delete_dataset(dataset1_ref)  # API request
-
-    print("Dataset {} deleted.".format(dataset1_id))
-
-    # Use the delete_contents parameter to delete a dataset and its contents
-    # dataset2_id = 'my_dataset_with_tables'
-    dataset2_ref = client.dataset(dataset2_id)
-    client.delete_dataset(dataset2_ref, delete_contents=True)  # API request
-
-    print("Dataset {} deleted.".format(dataset2_id))
-    # [END bigquery_delete_dataset]
-
-    for dataset in [dataset1, dataset2]:
-        with pytest.raises(NotFound):
-            client.get_dataset(dataset)  # API request
-
-
-def test_list_tables(client, to_delete):
-    """List tables within a dataset."""
-    dataset_id = "list_tables_dataset_{}".format(_millis())
-    dataset_ref = client.dataset(dataset_id)
-    dataset = client.create_dataset(bigquery.Dataset(dataset_ref))
-    to_delete.append(dataset)
-
-    # [START bigquery_list_tables]
-    # from google.cloud import bigquery
-    # client = bigquery.Client()
-    # dataset_ref = client.dataset('my_dataset')
-
-    tables = list(client.list_tables(dataset_ref))  # API request(s)
-    assert len(tables) == 0
-
-    table_ref = dataset.table("my_table")
-    table = bigquery.Table(table_ref)
-    client.create_table(table)  # API request
-    tables = list(client.list_tables(dataset))  # API request(s)
-
-    assert len(tables) == 1
-    assert tables[0].table_id == "my_table"
-    # [END bigquery_list_tables]
-
-
-def test_create_table(client, to_delete):
-    """Create a table."""
-    dataset_id = "create_table_dataset_{}".format(_millis())
-    dataset_ref = client.dataset(dataset_id)
-    dataset = bigquery.Dataset(dataset_ref)
-    client.create_dataset(dataset)
-    to_delete.append(dataset)
-
-    # [START bigquery_create_table]
-    # from google.cloud import bigquery
-    # client = bigquery.Client()
-    # dataset_ref = client.dataset('my_dataset')
-
-    schema = [
-        bigquery.SchemaField("full_name", "STRING", mode="REQUIRED"),
-        bigquery.SchemaField("age", "INTEGER", mode="REQUIRED"),
-    ]
-    table_ref = dataset_ref.table("my_table")
-    table = bigquery.Table(table_ref, schema=schema)
-    table = client.create_table(table)  # API request
-
-    assert table.table_id == "my_table"
-    # [END bigquery_create_table]
 
 
 def test_create_table_nested_repeated_schema(client, to_delete):
@@ -727,40 +454,6 @@ def test_load_and_query_partitioned_table(client, to_delete):
     print("{} states were admitted to the US in the 1800s".format(len(rows)))
     # [END bigquery_query_partitioned_table]
     assert len(rows) == 29
-
-
-def test_get_table_information(client, to_delete):
-    """Show a table's properties."""
-    dataset_id = "show_table_dataset_{}".format(_millis())
-    table_id = "show_table_table_{}".format(_millis())
-    dataset_ref = client.dataset(dataset_id)
-    dataset = bigquery.Dataset(dataset_ref)
-    client.create_dataset(dataset)
-    to_delete.append(dataset)
-
-    table = bigquery.Table(dataset.table(table_id), schema=SCHEMA)
-    table.description = ORIGINAL_DESCRIPTION
-    table = client.create_table(table)
-
-    # [START bigquery_get_table]
-    # from google.cloud import bigquery
-    # client = bigquery.Client()
-    # dataset_id = 'my_dataset'
-    # table_id = 'my_table'
-
-    dataset_ref = client.dataset(dataset_id)
-    table_ref = dataset_ref.table(table_id)
-    table = client.get_table(table_ref)  # API Request
-
-    # View table properties
-    print(table.schema)
-    print(table.description)
-    print(table.num_rows)
-    # [END bigquery_get_table]
-
-    assert table.schema == SCHEMA
-    assert table.description == ORIGINAL_DESCRIPTION
-    assert table.num_rows == 0
 
 
 # [START bigquery_table_exists]
@@ -2079,37 +1772,6 @@ def test_extract_table_compressed(client, to_delete):
     assert blob.exists
     assert blob.size > 0
     to_delete.insert(0, blob)
-
-
-def test_delete_table(client, to_delete):
-    """Delete a table."""
-    from google.cloud.exceptions import NotFound
-
-    dataset_id = "delete_table_dataset_{}".format(_millis())
-    table_id = "delete_table_table_{}".format(_millis())
-    dataset_ref = client.dataset(dataset_id)
-    dataset = bigquery.Dataset(dataset_ref)
-    dataset.location = "US"
-    dataset = client.create_dataset(dataset)
-    to_delete.append(dataset)
-
-    table_ref = dataset.table(table_id)
-    table = bigquery.Table(table_ref, schema=SCHEMA)
-    client.create_table(table)
-    # [START bigquery_delete_table]
-    # from google.cloud import bigquery
-    # client = bigquery.Client()
-    # dataset_id = 'my_dataset'
-    # table_id = 'my_table'
-
-    table_ref = client.dataset(dataset_id).table(table_id)
-    client.delete_table(table_ref)  # API request
-
-    print("Table {}:{} deleted.".format(dataset_id, table_id))
-    # [END bigquery_delete_table]
-
-    with pytest.raises(NotFound):
-        client.get_table(table)  # API request
 
 
 def test_undelete_table(client, to_delete):
