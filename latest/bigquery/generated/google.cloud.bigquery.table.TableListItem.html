@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery.table.TableListItem &#8212; google-cloud 93f8d71 documentation</title>
+    <title>google.cloud.bigquery.table.TableListItem &#8212; google-cloud 14ed4fd documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -59,8 +59,14 @@
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#google.cloud.bigquery.table.TableListItem.dataset_id" title="google.cloud.bigquery.table.TableListItem.dataset_id"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dataset_id</span></code></a></td>
+<tr class="row-odd"><td><a class="reference internal" href="#google.cloud.bigquery.table.TableListItem.created" title="google.cloud.bigquery.table.TableListItem.created"><code class="xref py py-obj docutils literal notranslate"><span class="pre">created</span></code></a></td>
+<td>Datetime at which the table was created (<a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a> until set from the server).</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#google.cloud.bigquery.table.TableListItem.dataset_id" title="google.cloud.bigquery.table.TableListItem.dataset_id"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dataset_id</span></code></a></td>
 <td>ID of dataset containing the table.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#google.cloud.bigquery.table.TableListItem.expires" title="google.cloud.bigquery.table.TableListItem.expires"><code class="xref py py-obj docutils literal notranslate"><span class="pre">expires</span></code></a></td>
+<td>Datetime at which the table will be deleted.</td>
 </tr>
 <tr class="row-even"><td><a class="reference internal" href="#google.cloud.bigquery.table.TableListItem.friendly_name" title="google.cloud.bigquery.table.TableListItem.friendly_name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">friendly_name</span></code></a></td>
 <td>Title of the table (defaults to <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a>).</td>
@@ -123,6 +129,21 @@ from <code class="docutils literal notranslate"><span class="pre">resource</span
 </tbody>
 </table>
 <dl class="attribute">
+<dt id="google.cloud.bigquery.table.TableListItem.created">
+<code class="descname">created</code><a class="headerlink" href="#google.cloud.bigquery.table.TableListItem.created" title="Permalink to this definition">#</a></dt>
+<dd><p>Datetime at which the table was
+created (<a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a> until set from the server).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">Union[<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.7)">datetime.datetime</a>, <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)">None</a>]</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
 <dt id="google.cloud.bigquery.table.TableListItem.dataset_id">
 <code class="descname">dataset_id</code><a class="headerlink" href="#google.cloud.bigquery.table.TableListItem.dataset_id" title="Permalink to this definition">#</a></dt>
 <dd><p>ID of dataset containing the table.</p>
@@ -131,6 +152,21 @@ from <code class="docutils literal notranslate"><span class="pre">resource</span
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery.table.TableListItem.expires">
+<code class="descname">expires</code><a class="headerlink" href="#google.cloud.bigquery.table.TableListItem.expires" title="Permalink to this definition">#</a></dt>
+<dd><p>Datetime at which the table will be
+deleted.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">Union[<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.7)">datetime.datetime</a>, <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)">None</a>]</td>
 </tr>
 </tbody>
 </table>

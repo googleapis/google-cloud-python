@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery.table &#8212; google-cloud 93f8d71 documentation</title>
+    <title>google.cloud.bigquery.table &#8212; google-cloud 14ed4fd documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -941,6 +941,30 @@
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;resource[&#39;tableReference&#39;] must contain a tableId value&quot;</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span> <span class="o">=</span> <span class="n">resource</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">created</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Union[datetime.datetime, None]: Datetime at which the table was</span>
+<span class="sd">        created (:data:`None` until set from the server).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">creation_time</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;creationTime&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">creation_time</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># creation_time will be in milliseconds.</span>
+            <span class="k">return</span> <span class="n">google</span><span class="o">.</span><span class="n">cloud</span><span class="o">.</span><span class="n">_helpers</span><span class="o">.</span><span class="n">_datetime_from_microseconds</span><span class="p">(</span>
+                <span class="mf">1000.0</span> <span class="o">*</span> <span class="nb">float</span><span class="p">(</span><span class="n">creation_time</span><span class="p">)</span>
+            <span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">expires</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Union[datetime.datetime, None]: Datetime at which the table will be</span>
+<span class="sd">        deleted.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">expiration_time</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;expirationTime&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">expiration_time</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># expiration_time will be in milliseconds.</span>
+            <span class="k">return</span> <span class="n">google</span><span class="o">.</span><span class="n">cloud</span><span class="o">.</span><span class="n">_helpers</span><span class="o">.</span><span class="n">_datetime_from_microseconds</span><span class="p">(</span>
+                <span class="mf">1000.0</span> <span class="o">*</span> <span class="nb">float</span><span class="p">(</span><span class="n">expiration_time</span><span class="p">)</span>
+            <span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">project</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>

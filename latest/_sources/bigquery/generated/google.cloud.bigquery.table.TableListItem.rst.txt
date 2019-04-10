@@ -25,7 +25,9 @@ google.cloud.bigquery.table.TableListItem
 
 .. autosummary::
 
+   ~TableListItem.created
    ~TableListItem.dataset_id
+   ~TableListItem.expires
    ~TableListItem.friendly_name
    ~TableListItem.full_table_id
    ~TableListItem.labels
