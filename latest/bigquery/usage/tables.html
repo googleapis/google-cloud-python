@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Managing Tables &#8212; google-cloud 14ed4fd documentation</title>
+    <title>Managing Tables &#8212; google-cloud 7ba0220 documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -43,20 +43,20 @@ on <a class="reference external" href="https://cloud.google.com/bigquery/docs/ta
 <h2>Listing Tables<a class="headerlink" href="#listing-tables" title="Permalink to this headline">#</a></h2>
 <p>List the tables belonging to a dataset with the
 <a class="reference internal" href="../generated/google.cloud.bigquery.client.Client.html#google.cloud.bigquery.client.Client.list_tables" title="google.cloud.bigquery.client.Client.list_tables"><code class="xref py py-func docutils literal notranslate"><span class="pre">list_tables()</span></code></a> method:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># from google.cloud import bigquery</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">bigquery</span>
+
+<span class="c1"># TODO(developer): Construct a BigQuery client object.</span>
 <span class="c1"># client = bigquery.Client()</span>
-<span class="c1"># dataset_ref = client.dataset(&#39;my_dataset&#39;)</span>
 
-<span class="n">tables</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">client</span><span class="o">.</span><span class="n">list_tables</span><span class="p">(</span><span class="n">dataset_ref</span><span class="p">))</span>  <span class="c1"># API request(s)</span>
-<span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">tables</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+<span class="c1"># TODO(developer): Set dataset_id to the ID of the dataset that contains</span>
+<span class="c1">#                  the tables you are listing.</span>
+<span class="c1"># dataset_id = &#39;your-project.your_dataset&#39;</span>
 
-<span class="n">table_ref</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s2">&quot;my_table&quot;</span><span class="p">)</span>
-<span class="n">table</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="n">table_ref</span><span class="p">)</span>
-<span class="n">client</span><span class="o">.</span><span class="n">create_table</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>  <span class="c1"># API request</span>
-<span class="n">tables</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">client</span><span class="o">.</span><span class="n">list_tables</span><span class="p">(</span><span class="n">dataset</span><span class="p">))</span>  <span class="c1"># API request(s)</span>
+<span class="n">tables</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">list_tables</span><span class="p">(</span><span class="n">dataset_id</span><span class="p">)</span>
 
-<span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">tables</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
-<span class="k">assert</span> <span class="n">tables</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">table_id</span> <span class="o">==</span> <span class="s2">&quot;my_table&quot;</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;Tables contained in &#39;{}&#39;:&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">dataset_id</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">table</span> <span class="ow">in</span> <span class="n">tables</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;{}.{}.{}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">project</span><span class="p">,</span> <span class="n">table</span><span class="o">.</span><span class="n">dataset_id</span><span class="p">,</span> <span class="n">table</span><span class="o">.</span><span class="n">table_id</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -64,19 +64,24 @@ on <a class="reference external" href="https://cloud.google.com/bigquery/docs/ta
 <h2>Getting a Table<a class="headerlink" href="#getting-a-table" title="Permalink to this headline">#</a></h2>
 <p>Get a table resource with the
 <a class="reference internal" href="../generated/google.cloud.bigquery.client.Client.html#google.cloud.bigquery.client.Client.get_table" title="google.cloud.bigquery.client.Client.get_table"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_table()</span></code></a> method:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># from google.cloud import bigquery</span>
-<span class="c1"># client = bigquery.Client()</span>
-<span class="c1"># dataset_id = &#39;my_dataset&#39;</span>
-<span class="c1"># table_id = &#39;my_table&#39;</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">bigquery</span>
 
-<span class="n">dataset_ref</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">dataset</span><span class="p">(</span><span class="n">dataset_id</span><span class="p">)</span>
-<span class="n">table_ref</span> <span class="o">=</span> <span class="n">dataset_ref</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="n">table_id</span><span class="p">)</span>
-<span class="n">table</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_table</span><span class="p">(</span><span class="n">table_ref</span><span class="p">)</span>  <span class="c1"># API Request</span>
+<span class="c1"># TODO(developer): Construct a BigQuery client object.</span>
+<span class="c1"># client = bigquery.Client()</span>
+
+<span class="c1"># TODO(developer): Set table_id to the ID of the model to fetch.</span>
+<span class="c1"># table_id = &#39;your-project.your_dataset.your_table&#39;</span>
+
+<span class="n">table</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_table</span><span class="p">(</span><span class="n">table_id</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span>
+    <span class="s2">&quot;Got table &#39;{}.{}.{}&#39;.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">project</span><span class="p">,</span> <span class="n">table</span><span class="o">.</span><span class="n">dataset_id</span><span class="p">,</span> <span class="n">table</span><span class="o">.</span><span class="n">table_id</span><span class="p">)</span>
+<span class="p">)</span>
 
 <span class="c1"># View table properties</span>
-<span class="k">print</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">schema</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">description</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">num_rows</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;Table schema: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">schema</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;Table description: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">description</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;Table has {} rows&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">num_rows</span><span class="p">))</span>
 </pre></div>
 </div>
 <p>Browse data rows in a table with the
@@ -118,19 +123,24 @@ on <a class="reference external" href="https://cloud.google.com/bigquery/docs/ta
 <h2>Creating a Table<a class="headerlink" href="#creating-a-table" title="Permalink to this headline">#</a></h2>
 <p>Create an empty table with the
 <a class="reference internal" href="../generated/google.cloud.bigquery.client.Client.html#google.cloud.bigquery.client.Client.create_table" title="google.cloud.bigquery.client.Client.create_table"><code class="xref py py-func docutils literal notranslate"><span class="pre">create_table()</span></code></a> method:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># from google.cloud import bigquery</span>
-<span class="c1"># client = bigquery.Client()</span>
-<span class="c1"># dataset_ref = client.dataset(&#39;my_dataset&#39;)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">bigquery</span>
 
 <span class="n">schema</span> <span class="o">=</span> <span class="p">[</span>
     <span class="n">bigquery</span><span class="o">.</span><span class="n">SchemaField</span><span class="p">(</span><span class="s2">&quot;full_name&quot;</span><span class="p">,</span> <span class="s2">&quot;STRING&quot;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;REQUIRED&quot;</span><span class="p">),</span>
     <span class="n">bigquery</span><span class="o">.</span><span class="n">SchemaField</span><span class="p">(</span><span class="s2">&quot;age&quot;</span><span class="p">,</span> <span class="s2">&quot;INTEGER&quot;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;REQUIRED&quot;</span><span class="p">),</span>
 <span class="p">]</span>
-<span class="n">table_ref</span> <span class="o">=</span> <span class="n">dataset_ref</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s2">&quot;my_table&quot;</span><span class="p">)</span>
-<span class="n">table</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="n">table_ref</span><span class="p">,</span> <span class="n">schema</span><span class="o">=</span><span class="n">schema</span><span class="p">)</span>
-<span class="n">table</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">create_table</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>  <span class="c1"># API request</span>
 
-<span class="k">assert</span> <span class="n">table</span><span class="o">.</span><span class="n">table_id</span> <span class="o">==</span> <span class="s2">&quot;my_table&quot;</span>
+<span class="c1"># TODO(developer): Construct a BigQuery client object.</span>
+<span class="c1"># client = bigquery.Client()</span>
+
+<span class="c1"># TODO(developer): Set table_id to the ID of the table to create</span>
+<span class="c1"># table_id = &quot;your-project.your_dataset.your_table_name&quot;</span>
+
+<span class="n">table</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="n">table_id</span><span class="p">,</span> <span class="n">schema</span><span class="o">=</span><span class="n">schema</span><span class="p">)</span>
+<span class="n">table</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">create_table</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>  <span class="c1"># API request</span>
+<span class="k">print</span><span class="p">(</span>
+    <span class="s2">&quot;Created table {}.{}.{}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">project</span><span class="p">,</span> <span class="n">table</span><span class="o">.</span><span class="n">dataset_id</span><span class="p">,</span> <span class="n">table</span><span class="o">.</span><span class="n">table_id</span><span class="p">)</span>
+<span class="p">)</span>
 </pre></div>
 </div>
 <p>Load table data from a file with the
@@ -339,15 +349,18 @@ on <a class="reference external" href="https://cloud.google.com/bigquery/docs/ta
 <h2>Deleting a Table<a class="headerlink" href="#deleting-a-table" title="Permalink to this headline">#</a></h2>
 <p>Delete a table with the
 <a class="reference internal" href="../generated/google.cloud.bigquery.client.Client.html#google.cloud.bigquery.client.Client.delete_table" title="google.cloud.bigquery.client.Client.delete_table"><code class="xref py py-func docutils literal notranslate"><span class="pre">delete_table()</span></code></a> method:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># from google.cloud import bigquery</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">bigquery</span>
+
+<span class="c1"># TODO(developer): Construct a BigQuery client object.</span>
 <span class="c1"># client = bigquery.Client()</span>
-<span class="c1"># dataset_id = &#39;my_dataset&#39;</span>
-<span class="c1"># table_id = &#39;my_table&#39;</span>
 
-<span class="n">table_ref</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">dataset</span><span class="p">(</span><span class="n">dataset_id</span><span class="p">)</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="n">table_id</span><span class="p">)</span>
-<span class="n">client</span><span class="o">.</span><span class="n">delete_table</span><span class="p">(</span><span class="n">table_ref</span><span class="p">)</span>  <span class="c1"># API request</span>
+<span class="c1"># TODO(developer): Set table_id to the ID of the table to fetch.</span>
+<span class="c1"># table_id = &#39;your-project.your_dataset.your_table&#39;</span>
 
-<span class="k">print</span><span class="p">(</span><span class="s2">&quot;Table {}:{} deleted.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">dataset_id</span><span class="p">,</span> <span class="n">table_id</span><span class="p">))</span>
+<span class="c1"># If the table does not exist, delete_table raises</span>
+<span class="c1"># google.api_core.exceptions.NotFound unless not_found_ok is True</span>
+<span class="n">client</span><span class="o">.</span><span class="n">delete_table</span><span class="p">(</span><span class="n">table_id</span><span class="p">,</span> <span class="n">not_found_ok</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;Deleted table &#39;{}&#39;.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">table_id</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
