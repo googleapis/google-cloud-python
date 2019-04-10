@@ -15,6 +15,7 @@
 """
 System tests for metadata.
 """
+import time
 
 import pytest
 
@@ -216,7 +217,7 @@ def test_get_properties_of_kind(dispose_of):
     entity1.put()
     dispose_of(entity1.key._key)
 
-    properties = get_properties_of_kind("AnyKind")
+    properties = _wait_for_metadata_update(get_properties_of_kind, "AnyKind")
     assert properties == ["bar", "baz", "foo", "qux"]
 
     properties = get_properties_of_kind("AnyKind", start="c")
@@ -246,7 +247,7 @@ def test_get_properties_of_kind_different_namespace(dispose_of, namespace):
     entity1.put()
     dispose_of(entity1.key._key)
 
-    properties = get_properties_of_kind("AnyKind")
+    properties = _wait_for_metadata_update(get_properties_of_kind, "AnyKind")
     assert properties == ["bar", "baz", "foo", "qux"]
 
     properties = get_properties_of_kind("AnyKind", start="c")
@@ -273,7 +274,9 @@ def test_get_representations_of_kind(dispose_of):
     entity1.put()
     dispose_of(entity1.key._key)
 
-    representations = get_representations_of_kind("AnyKind")
+    representations = _wait_for_metadata_update(
+        get_representations_of_kind, "AnyKind"
+    )
     assert representations == {
         "bar": ["STRING"],
         "baz": ["INT64"],
@@ -291,3 +294,20 @@ def test_get_representations_of_kind(dispose_of):
         "AnyKind", start="c", end="p"
     )
     assert representations == {"foo": ["INT64"]}
+
+
+def _wait_for_metadata_update(func, arg):
+    # Datastore apparently takes some time to update the metadata
+    # before queries can be made. We'll give it a few seconds to see
+    # if the query works.
+
+    deadline = time.time() + 30
+    while True:
+        result = func(arg)
+        if result:
+            break
+
+        assert time.time() < deadline, "Metadata was not updated in time."
+
+        time.sleep(1)
+    return result
