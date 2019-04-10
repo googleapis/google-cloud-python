@@ -29,8 +29,8 @@ def test_get_settings(organization_id):
     from google.cloud import securitycenter as securitycenter
 
     client = securitycenter.SecurityCenterClient()
-    # ORGANIZATION_ID is numeric ID for the organization. e.g.
-    # ORGANIZATION_ID = "111112223333"
+    # organization_id is numeric ID for the organization. e.g.
+    # organization_id = "111112223333"
     org_settings_name = "organizations/{org_id}/organizationSettings".format(
         org_id=organization_id
     )
@@ -49,8 +49,8 @@ def test_update_asset_discovery_org_settings(organization_id):
 
     # Create the client
     client = securitycenter.SecurityCenterClient()
-    # ORGANIZATION_ID is numeric ID for the organization. e.g.
-    # ORGANIZATION_ID = "111112223333"
+    # organization_id is numeric ID for the organization. e.g.
+    # organization_id = "111112223333"
     org_settings_name = "organizations/{org_id}/organizationSettings".format(
         org_id=organization_id
     )
