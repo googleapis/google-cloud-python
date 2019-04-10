@@ -56,6 +56,19 @@ def dataset_id(client):
 
 
 @pytest.fixture
+def table_id(client, dataset_id):
+    now = datetime.datetime.now()
+    table_id = "python_samples_{}_{}".format(
+        now.strftime("%Y%m%d%H%M%S"), uuid.uuid4().hex[:8]
+    )
+
+    table = bigquery.Table("{}.{}".format(dataset_id, table_id))
+    table = client.create_table(table)
+    yield "{}.{}.{}".format(table.project, table.dataset_id, table.table_id)
+    client.delete_table(table, not_found_ok=True)
+
+
+@pytest.fixture
 def model_id(client, dataset_id):
     model_id = "{}.{}".format(dataset_id, uuid.uuid4().hex)
 
