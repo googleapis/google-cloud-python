@@ -25,6 +25,7 @@ google.cloud.bigquery.table.TableListItem
 
 .. autosummary::
 
+   ~TableListItem.clustering_fields
    ~TableListItem.created
    ~TableListItem.dataset_id
    ~TableListItem.expires
