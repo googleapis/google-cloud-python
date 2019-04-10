@@ -1021,6 +1021,23 @@ class TableListItem(object):
 
     view_use_legacy_sql = property(_view_use_legacy_sql_getter)
 
+    @property
+    def clustering_fields(self):
+        """Union[List[str], None]: Fields defining clustering for the table
+
+        (Defaults to :data:`None`).
+
+        Clustering fields are immutable after table creation.
+
+        .. note::
+
+           As of 2018-06-29, clustering fields cannot be set on a table
+           which does not also have time partioning defined.
+        """
+        prop = self._properties.get("clustering")
+        if prop is not None:
+            return list(prop.get("fields", ()))
+
     @classmethod
     def from_string(cls, full_table_id):
         """Construct a table from fully-qualified table ID.
