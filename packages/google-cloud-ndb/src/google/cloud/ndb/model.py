@@ -4082,33 +4082,98 @@ def non_transactional(*args, **kwargs):
     raise NotImplementedError
 
 
-def get_multi_async(*args, **kwargs):
+def get_multi_async(keys, **options):
+    """Fetches a sequence of keys.
+
+    Args:
+        keys (Sequence[:class:`~google.cloud.ndb.key.Key`]): A sequence of keys.
+        **options (Dict[str, Any]): The options for the request. For example,
+            ``{"read_consistency": EVENTUAL}``.
+    Returns:
+        List[:class:`~google.cloud.ndb.tasklets.Future`]: List of futures.
+    """
+    return [key.get_async(**options) for key in keys]
+
+
+def get_multi(keys, **options):
+    """Fetches a sequence of keys.
+
+    Args:
+        keys (Sequence[:class:`~google.cloud.ndb.key.Key`]): A sequence of keys.
+        **options (Dict[str, Any]): The options for the request. For example,
+            ``{"read_consistency": EVENTUAL}``.
+    Returns:
+        List[Union[:class:`~google.cloud.ndb.model.Model`, :data:`None`]]: List
+            containing the retrieved models or None where a key was not found.
+    """
+    futures = [key.get_async(**options) for key in keys]
+    return [future.result() for future in futures]
+
+
+def put_multi_async(entities, **options):
+    """Stores a sequence of Model instances.
+
+    Args:
+        entities (List[:class:`~google.cloud.ndb.model.Model`]): A sequence
+            of models to store.
+        **options (Dict[str, Any]): The options for the request. For example,
+            ``{"read_consistency": EVENTUAL}``.
+    Returns:
+        List[:class:`~google.cloud.ndb.tasklets.Future`]: List of futures.
+    """
+    return [entity.put_async(**options) for entity in entities]
+
+
+def put_multi(entities, **options):
+    """Stores a sequence of Model instances.
+
+    Args:
+        entities (List[:class:`~google.cloud.ndb.model.Model`]): A sequence
+            of models to store.
+        **options (Dict[str, Any]): The options for the request. For example,
+            ``{"read_consistency": EVENTUAL}``.
+    Returns:
+        List[:class:`~google.cloud.ndb.key.Key`]: A list with the stored keys.
+    """
+    futures = [entity.put_async(**options) for entity in entities]
+    return [future.result() for future in futures]
+
+
+def delete_multi_async(keys, **options):
+    """Deletes a sequence of keys.
+
+    Args:
+        keys (Sequence[:class:`~google.cloud.ndb.key.Key`]): A sequence of keys.
+        **options (Dict[str, Any]): The options for the request. For example,
+            ``{"deadline": 5}``.
+    Returns:
+        List[:class:`~google.cloud.ndb.tasklets.Future`]: List of futures.
+    """
+    return [key.delete_async(**options) for key in keys]
+
+
+def delete_multi(keys, **options):
+    """Deletes a sequence of keys.
+
+    Args:
+        keys (Sequence[:class:`~google.cloud.ndb.key.Key`]): A sequence of keys.
+        **options (Dict[str, Any]): The options for the request. For example,
+            ``{"deadline": 5}``.
+    Returns:
+        List[:data:`None`]: A list whose items are all None, one per deleted
+            key.
+    """
+    futures = [key.delete_async(**options) for key in keys]
+    return [future.result() for future in futures]
+
+
+def get_indexes_async(**options):
+    """Get a data structure representing the configured indexes.
+    """
     raise NotImplementedError
 
 
-def get_multi(*args, **kwargs):
-    raise NotImplementedError
-
-
-def put_multi_async(*args, **kwargs):
-    raise NotImplementedError
-
-
-def put_multi(*args, **kwargs):
-    raise NotImplementedError
-
-
-def delete_multi_async(*args, **kwargs):
-    raise NotImplementedError
-
-
-def delete_multi(*args, **kwargs):
-    raise NotImplementedError
-
-
-def get_indexes_async(*args, **kwargs):
-    raise NotImplementedError
-
-
-def get_indexes(*args, **kwargs):
+def get_indexes(**options):
+    """Get a data structure representing the configured indexes.
+    """
     raise NotImplementedError
