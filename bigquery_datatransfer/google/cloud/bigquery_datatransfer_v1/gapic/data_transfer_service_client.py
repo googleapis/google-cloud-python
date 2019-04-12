@@ -52,9 +52,9 @@ _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
 class DataTransferServiceClient(object):
     """
     The Google BigQuery Data Transfer Service API enables BigQuery users to
-    configure the transfer of their data from other Google Products into BigQuery.
-    This service contains methods that are end user exposed. It backs up the
-    frontend.
+    configure the transfer of their data from other Google Products into
+    BigQuery. This service contains methods that are end user exposed. It backs
+    up the frontend.
     """
 
     SERVICE_ADDRESS = "bigquerydatatransfer.googleapis.com:443"
@@ -432,7 +432,7 @@ class DataTransferServiceClient(object):
                 configuration. This is required if new credentials are needed, as
                 indicated by ``CheckValidCreds``. In order to obtain
                 authorization\_code, please make a request to
-                https://www.gstatic.com/bigquerydatatransfer/oauthz/auth?client\_id=&scope=&redirect\_uri=
+                https://www.gstatic.com/bigquerydatatransfer/oauthz/auth?client\_id=&scope=<data\_source\_scopes>&redirect\_uri=<redirect\_uri>
 
                 -  client\_id should be OAuth client\_id of BigQuery DTS API for the
                    given data source returned by ListDataSources method.
@@ -536,7 +536,7 @@ class DataTransferServiceClient(object):
                 configuration. If it is provided, the transfer configuration will be
                 associated with the authorizing user. In order to obtain
                 authorization\_code, please make a request to
-                https://www.gstatic.com/bigquerydatatransfer/oauthz/auth?client\_id=&scope=&redirect\_uri=
+                https://www.gstatic.com/bigquerydatatransfer/oauthz/auth?client\_id=&scope=<data\_source\_scopes>&redirect\_uri=<redirect\_uri>
 
                 -  client\_id should be OAuth client\_id of BigQuery DTS API for the
                    given data source returned by ListDataSources method.
