@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery_datatransfer_v1.gapic.data_transfer_service_client &#8212; google-cloud 0479d93 documentation</title>
+    <title>google.cloud.bigquery_datatransfer_v1.gapic.data_transfer_service_client &#8212; google-cloud d9bad5c documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -88,9 +88,9 @@
 <span class="k">class</span> <span class="nc">DataTransferServiceClient</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    The Google BigQuery Data Transfer Service API enables BigQuery users to</span>
-<span class="sd">    configure the transfer of their data from other Google Products into BigQuery.</span>
-<span class="sd">    This service contains methods that are end user exposed. It backs up the</span>
-<span class="sd">    frontend.</span>
+<span class="sd">    configure the transfer of their data from other Google Products into</span>
+<span class="sd">    BigQuery. This service contains methods that are end user exposed. It backs</span>
+<span class="sd">    up the frontend.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">SERVICE_ADDRESS</span> <span class="o">=</span> <span class="s2">&quot;bigquerydatatransfer.googleapis.com:443&quot;</span>
@@ -468,7 +468,7 @@
 <span class="sd">                configuration. This is required if new credentials are needed, as</span>
 <span class="sd">                indicated by ``CheckValidCreds``. In order to obtain</span>
 <span class="sd">                authorization\_code, please make a request to</span>
-<span class="sd">                https://www.gstatic.com/bigquerydatatransfer/oauthz/auth?client\_id=&amp;scope=&amp;redirect\_uri=</span>
+<span class="sd">                https://www.gstatic.com/bigquerydatatransfer/oauthz/auth?client\_id=&amp;scope=&lt;data\_source\_scopes&gt;&amp;redirect\_uri=&lt;redirect\_uri&gt;</span>
 
 <span class="sd">                -  client\_id should be OAuth client\_id of BigQuery DTS API for the</span>
 <span class="sd">                   given data source returned by ListDataSources method.</span>
@@ -572,7 +572,7 @@
 <span class="sd">                configuration. If it is provided, the transfer configuration will be</span>
 <span class="sd">                associated with the authorizing user. In order to obtain</span>
 <span class="sd">                authorization\_code, please make a request to</span>
-<span class="sd">                https://www.gstatic.com/bigquerydatatransfer/oauthz/auth?client\_id=&amp;scope=&amp;redirect\_uri=</span>
+<span class="sd">                https://www.gstatic.com/bigquerydatatransfer/oauthz/auth?client\_id=&amp;scope=&lt;data\_source\_scopes&gt;&amp;redirect\_uri=&lt;redirect\_uri&gt;</span>
 
 <span class="sd">                -  client\_id should be OAuth client\_id of BigQuery DTS API for the</span>
 <span class="sd">                   given data source returned by ListDataSources method.</span>
