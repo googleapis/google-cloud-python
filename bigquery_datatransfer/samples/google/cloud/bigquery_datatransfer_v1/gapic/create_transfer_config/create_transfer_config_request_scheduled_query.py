@@ -14,10 +14,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# DO NOT EDIT! This is a generated sample ("Request",  "scheduled_query")
-
 # To install the latest published package dependency, execute the following:
-#   pip install google-cloud-bigquerydatatransfer
+#   pip install google-cloud-bigquery-datatransfer
 
 
 def sample_create_transfer_config(project_id, authorization_code):
