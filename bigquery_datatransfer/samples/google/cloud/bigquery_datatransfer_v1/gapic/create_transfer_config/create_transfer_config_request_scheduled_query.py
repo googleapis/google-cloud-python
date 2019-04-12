@@ -20,7 +20,7 @@
 #   pip install google-cloud-bigquerydatatransfer
 
 
-def sample_create_transfer_config(project_id):
+def sample_create_transfer_config(project_id, authorization_code):
     # [START bigquerydatatransfer_create_scheduled_query]
     from google.cloud import bigquery_datatransfer_v1
     import google.protobuf.json_format
@@ -29,7 +29,18 @@ def sample_create_transfer_config(project_id):
 
     # TODO(developer): Set the project_id to the project that contains the
     #                  destination dataset.
-    # project_id = 'your-project-id'
+    # project_id = "your-project-id"
+
+    # TODO(developer): The first time you run this sample, set the
+    # authorization code to a value from the URL:
+    # https://www.gstatic.com/bigquerydatatransfer/oauthz/auth?client_id=433065040935-hav5fqnc9p9cht3rqneus9115ias2kn1.apps.googleusercontent.com&scope=https://www.googleapis.com/auth/bigquery%20https://www.googleapis.com/auth/drive&redirect_uri=urn:ietf:wg:oauth:2.0:oob
+    #
+    # authorization_code = "_4/ABCD-EFGHIJKLMNOP-QRSTUVWXYZ"
+    #
+    # You can use an empty string for authorization_code in subsequent runs of
+    # this code sample with the same credentials.
+    #
+    # authorization_code = ""
 
     parent = client.project_path(project_id)
 
@@ -39,19 +50,19 @@ def sample_create_transfer_config(project_id):
             "display_name": "Your Scheduled Query Name",
             "data_source_id": "scheduled_query",
             "params": {
-                "fields": {
-                    "query": "SELECT 1;  -- Use standard SQL syntax.",
-                    "destination_table_name_template": "your_table_{run_date}",
-                    "write_disposition": "WRITE_TRUNCATE",
-                    "partitioning_field": "",
-                }
+                "query": "SELECT 1;  -- Use standard SQL syntax.",
+                "destination_table_name_template": "your_table_{run_date}",
+                "write_disposition": "WRITE_TRUNCATE",
+                "partitioning_field": "",
             },
             "schedule": "every 24 hours",
         },
         bigquery_datatransfer_v1.types.TransferConfig(),
     )
 
-    response = client.create_transfer_config(parent, transfer_config)
+    response = client.create_transfer_config(
+        parent, transfer_config, authorization_code=authorization_code
+    )
 
     print(response)
     # [END bigquerydatatransfer_create_scheduled_query]
@@ -62,9 +73,12 @@ def main():
 
     parser = argparse.ArgumentParser()
     parser.add_argument("--project_id", type=str, default="your-project-id")
+    parser.add_argument(
+        "--authorization_code", type=str, default=""
+    )
     args = parser.parse_args()
 
-    sample_create_transfer_config(args.project_id)
+    sample_create_transfer_config(args.project_id, args.authorization_code)
 
 
 if __name__ == "__main__":
