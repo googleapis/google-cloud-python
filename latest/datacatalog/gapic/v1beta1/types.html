@@ -1,0 +1,534 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Types for Google Cloud Data Catalog API Client &#8212; google-cloud da665e8 documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Changelog" href="../../changelog.html" />
+    <link rel="prev" title="Client for Google Cloud Data Catalog API" href="api.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="module-google.cloud.datacatalog_v1beta1.types">
+<span id="types-for-google-cloud-data-catalog-api-client"></span><h1>Types for Google Cloud Data Catalog API Client<a class="headerlink" href="#module-google.cloud.datacatalog_v1beta1.types" title="Permalink to this headline">#</a></h1>
+<dl class="class">
+<dt id="google.cloud.datacatalog_v1beta1.types.BigQueryTableSpec">
+<em class="property">class </em><code class="descclassname">google.cloud.datacatalog_v1beta1.types.</code><code class="descname">BigQueryTableSpec</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.BigQueryTableSpec" title="Permalink to this definition">#</a></dt>
+<dd><p>Describes a BigQuery table.</p>
+<dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.BigQueryTableSpec.table_source_type">
+<code class="descname">table_source_type</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.BigQueryTableSpec.table_source_type" title="Permalink to this definition">#</a></dt>
+<dd><p>The table source type.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.BigQueryTableSpec.view_spec">
+<code class="descname">view_spec</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.BigQueryTableSpec.view_spec" title="Permalink to this definition">#</a></dt>
+<dd><p>Table view specification. This field should only be populated
+if table_source_type is BIGQUERY_VIEW.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">table_source_type</code></dt>
+<dd><p>Field google.cloud.datacatalog.v1beta1.BigQueryTableSpec.table_source_type</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">view_spec</code></dt>
+<dd><p>Field google.cloud.datacatalog.v1beta1.BigQueryTableSpec.view_spec</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.datacatalog_v1beta1.types.ColumnSchema">
+<em class="property">class </em><code class="descclassname">google.cloud.datacatalog_v1beta1.types.</code><code class="descname">ColumnSchema</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.ColumnSchema" title="Permalink to this definition">#</a></dt>
+<dd><p>Representation of a column within a schema. Columns could be nested
+inside other columns.</p>
+<dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.ColumnSchema.column">
+<code class="descname">column</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.ColumnSchema.column" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. Name of the column.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.ColumnSchema.type">
+<code class="descname">type</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.ColumnSchema.type" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. Type of the column.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.ColumnSchema.description">
+<code class="descname">description</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.ColumnSchema.description" title="Permalink to this definition">#</a></dt>
+<dd><p>Description of the column.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.ColumnSchema.mode">
+<code class="descname">mode</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.ColumnSchema.mode" title="Permalink to this definition">#</a></dt>
+<dd><p>A column’s mode indicates whether the values in this column
+are required, nullable, etc. Only ‘NULLABLE’, ‘REQUIRED’ and
+‘REPEATED’ are supported, default mode is ‘NULLABLE’.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.ColumnSchema.subcolumns">
+<code class="descname">subcolumns</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.ColumnSchema.subcolumns" title="Permalink to this definition">#</a></dt>
+<dd><p>Schema of sub-columns.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">column</code></dt>
+<dd><p>Field google.cloud.datacatalog.v1beta1.ColumnSchema.column</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">description</code></dt>
+<dd><p>Field google.cloud.datacatalog.v1beta1.ColumnSchema.description</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">mode</code></dt>
+<dd><p>Field google.cloud.datacatalog.v1beta1.ColumnSchema.mode</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">subcolumns</code></dt>
+<dd><p>Field google.cloud.datacatalog.v1beta1.ColumnSchema.subcolumns</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">type</code></dt>
+<dd><p>Field google.cloud.datacatalog.v1beta1.ColumnSchema.type</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.datacatalog_v1beta1.types.Entry">
+<em class="property">class </em><code class="descclassname">google.cloud.datacatalog_v1beta1.types.</code><code class="descname">Entry</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.Entry" title="Permalink to this definition">#</a></dt>
+<dd><p>Entry Metadata. A Data Catalog Entry resource represents another
+resource in Google Cloud Platform, such as a BigQuery Dataset or a
+Pub/Sub Topic. Clients can use the <code class="docutils literal notranslate"><span class="pre">linked_resource</span></code> field in the
+Entry resource to refer to the original resource id of the source
+system.</p>
+<p>An Entry resource contains resource details, such as its schema.</p>
+<dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.Entry.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.Entry.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. The Data Catalog resource name of the entry in
+URL format. For example, “projects/{project_id}/locations/{lo
+cation}/entryGroups/{entry_group_id}/entries/{entry_id}”.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.Entry.linked_resource">
+<code class="descname">linked_resource</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.Entry.linked_resource" title="Permalink to this definition">#</a></dt>
+<dd><p>The full name of the cloud resource the entry belongs to. See:
+<a class="reference external" href="https://cloud.google.com/apis/design/resource_names#full_res">https://cloud.google.com/apis/design/resource_names#full_res</a>
+ource_name  Data Catalog supports resources from select
+Google Cloud Platform systems. <code class="docutils literal notranslate"><span class="pre">linked_resource</span></code> is the full
+name of the Google Cloud Platform resource. For example, the
+<code class="docutils literal notranslate"><span class="pre">linked_resource</span></code> for a table resource from BigQuery is:  “/
+/bigquery.googleapis.com/projects/projectId/datasets/datasetId
+/tables/tableId”.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.Entry.type">
+<code class="descname">type</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.Entry.type" title="Permalink to this definition">#</a></dt>
+<dd><p>Type of entry.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.Entry.type_spec">
+<code class="descname">type_spec</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.Entry.type_spec" title="Permalink to this definition">#</a></dt>
+<dd><p>Type specification information.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.Entry.bigquery_table_spec">
+<code class="descname">bigquery_table_spec</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.Entry.bigquery_table_spec" title="Permalink to this definition">#</a></dt>
+<dd><p>Specification that applies to a BigQuery table. This is only
+valid on entries of type TABLE.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.Entry.display_name">
+<code class="descname">display_name</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.Entry.display_name" title="Permalink to this definition">#</a></dt>
+<dd><p>Display information such as title and description. A short
+name to identify the entry, for example, “Analytics Data - Jan
+2011”.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.Entry.description">
+<code class="descname">description</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.Entry.description" title="Permalink to this definition">#</a></dt>
+<dd><p>Entry description, which can consist of several sentences or
+paragraphs that describe entry contents.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.Entry.schema">
+<code class="descname">schema</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.Entry.schema" title="Permalink to this definition">#</a></dt>
+<dd><p>Schema of the entry.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.Entry.source_system_timestamps">
+<code class="descname">source_system_timestamps</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.Entry.source_system_timestamps" title="Permalink to this definition">#</a></dt>
+<dd><p>Timestamps about the underlying Google Cloud Platform resource
+– not about this Data Catalog Entry.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">bigquery_table_spec</code></dt>
+<dd><p>Field google.cloud.datacatalog.v1beta1.Entry.bigquery_table_spec</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">description</code></dt>
+<dd><p>Field google.cloud.datacatalog.v1beta1.Entry.description</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">display_name</code></dt>
+<dd><p>Field google.cloud.datacatalog.v1beta1.Entry.display_name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">linked_resource</code></dt>
+<dd><p>Field google.cloud.datacatalog.v1beta1.Entry.linked_resource</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.cloud.datacatalog.v1beta1.Entry.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">schema</code></dt>
+<dd><p>Field google.cloud.datacatalog.v1beta1.Entry.schema</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">source_system_timestamps</code></dt>
+<dd><p>Field google.cloud.datacatalog.v1beta1.Entry.source_system_timestamps</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">type</code></dt>
+<dd><p>Field google.cloud.datacatalog.v1beta1.Entry.type</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.datacatalog_v1beta1.types.LookupEntryRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.datacatalog_v1beta1.types.</code><code class="descname">LookupEntryRequest</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.LookupEntryRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message for
+[LookupEntry][google.cloud.datacatalog.v1beta1.DataCatalog.LookupEntry].</p>
+<dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.LookupEntryRequest.target_name">
+<code class="descname">target_name</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.LookupEntryRequest.target_name" title="Permalink to this definition">#</a></dt>
+<dd><p>Represents either the Google Cloud Platform resource or SQL
+name for a Google Cloud Platform resource.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.LookupEntryRequest.linked_resource">
+<code class="descname">linked_resource</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.LookupEntryRequest.linked_resource" title="Permalink to this definition">#</a></dt>
+<dd><p>The full name of the Google Cloud Platform resource the Data
+Catalog entry represents. See: <a class="reference external" href="https://cloud.google.com/apis/d">https://cloud.google.com/apis/d</a>
+esign/resource_names#full_resource_name Full names are
+case-sensitive.  Examples: “//bigquery.googleapis.com/projects
+/projectId/datasets/datasetId/tables/tableId”.
+“//pubsub.googleapis.com/projects/projectId/topics/topicId”</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.LookupEntryRequest.sql_resource">
+<code class="descname">sql_resource</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.LookupEntryRequest.sql_resource" title="Permalink to this definition">#</a></dt>
+<dd><p>The SQL name of the entry. SQL names are case-sensitive.
+Examples: 1. cloud_pubsub.project_id.topic_id 2.
+bigquery.project_id.dataset_id.table_id 3. datacatalog.proj
+ect_id.location_id.entry_group_id.entry_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">linked_resource</code></dt>
+<dd><p>Field google.cloud.datacatalog.v1beta1.LookupEntryRequest.linked_resource</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">sql_resource</code></dt>
+<dd><p>Field google.cloud.datacatalog.v1beta1.LookupEntryRequest.sql_resource</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.datacatalog_v1beta1.types.Schema">
+<em class="property">class </em><code class="descclassname">google.cloud.datacatalog_v1beta1.types.</code><code class="descname">Schema</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.Schema" title="Permalink to this definition">#</a></dt>
+<dd><p>Represents a schema (e.g. BigQuery, GoogleSQL, Avro schema).</p>
+<dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.Schema.columns">
+<code class="descname">columns</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.Schema.columns" title="Permalink to this definition">#</a></dt>
+<dd><p>Schema of columns. A maximum of 10,000 columns and sub-columns
+can be specified.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">columns</code></dt>
+<dd><p>Field google.cloud.datacatalog.v1beta1.Schema.columns</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.datacatalog_v1beta1.types.SystemTimestamps">
+<em class="property">class </em><code class="descclassname">google.cloud.datacatalog_v1beta1.types.</code><code class="descname">SystemTimestamps</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.SystemTimestamps" title="Permalink to this definition">#</a></dt>
+<dd><p>Timestamps about this resource according to a particular system.</p>
+<dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.SystemTimestamps.create_time">
+<code class="descname">create_time</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.SystemTimestamps.create_time" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. The creation time of the resource within the
+given system.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.SystemTimestamps.update_time">
+<code class="descname">update_time</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.SystemTimestamps.update_time" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. The last-modified time of the resource within the
+given system.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.SystemTimestamps.expire_time">
+<code class="descname">expire_time</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.SystemTimestamps.expire_time" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. The expiration time of the resource within the
+given system.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">create_time</code></dt>
+<dd><p>Field google.cloud.datacatalog.v1beta1.SystemTimestamps.create_time</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">expire_time</code></dt>
+<dd><p>Field google.cloud.datacatalog.v1beta1.SystemTimestamps.expire_time</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">update_time</code></dt>
+<dd><p>Field google.cloud.datacatalog.v1beta1.SystemTimestamps.update_time</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.datacatalog_v1beta1.types.Timestamp">
+<em class="property">class </em><code class="descclassname">google.cloud.datacatalog_v1beta1.types.</code><code class="descname">Timestamp</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.Timestamp" title="Permalink to this definition">#</a></dt>
+<dd><dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.Timestamp.nanos">
+<code class="descname">nanos</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.Timestamp.nanos" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.Timestamp.nanos</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.Timestamp.seconds">
+<code class="descname">seconds</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.Timestamp.seconds" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.Timestamp.seconds</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.datacatalog_v1beta1.types.ViewSpec">
+<em class="property">class </em><code class="descclassname">google.cloud.datacatalog_v1beta1.types.</code><code class="descname">ViewSpec</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.ViewSpec" title="Permalink to this definition">#</a></dt>
+<dd><p>Table view specification.</p>
+<dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.ViewSpec.view_query">
+<code class="descname">view_query</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.ViewSpec.view_query" title="Permalink to this definition">#</a></dt>
+<dd><p>The query that defines the table view.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">view_query</code></dt>
+<dd><p>Field google.cloud.datacatalog.v1beta1.ViewSpec.view_query</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">google-cloud</a></h1>
+
+
+
+<p class="blurb">Google Cloud Client Libraries for Python</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=GoogleCloudPlatform&repo=google-cloud-python&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../core/index.html">Core Libraries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../asset/index.html">Asset Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../automl/index.html">AutoML</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../bigquery/index.html">BigQuery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../bigquery_datatransfer/index.html">BigQuery Data-Transfer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../bigquery_storage/index.html">BigQuery Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../bigtable/index.html">Bigtable</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../container/index.html">Container</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Data Catalog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../datalabeling/index.html">Data Labeling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dlp/index.html">Data Loss Prevention</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dataproc/index.html">Dataproc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../datastore/index.html">Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dns/index.html">DNS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../firestore/index.html">Firestore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../iam/index.html">IAM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../iot/index.html">IoT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../kms/index.html">Key Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../language/index.html">Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../oslogin/index.html">OSLogin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pubsub/index.html">PubSub</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../redis/index.html">Redis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../resource-manager/index.html">Resource Manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../runtimeconfig/index.html">Python Client for Google Cloud RuntimeConfig</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../runtimeconfig/index.html#api-reference">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../scheduler/index.html">Scheduler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../securitycenter/index.html">Security Center</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../websecurityscanner/index.html">Security Scanner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../spanner/index.html">Spanner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../speech/index.html">Speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../error-reporting/index.html">Stackdriver Error Reporting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../irm/index.html">Stackdriver Incident Response &amp; Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../logging/index.html">Stackdriver Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../monitoring/index.html">Stackdriver Monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../trace/index.html">Stackdriver Trace</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../storage/index.html">Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../talent/index.html">Talent</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tasks/index.html">Tasks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../texttospeech/index.html">Text-to-Speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../translate/index.html">Translate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../videointelligence/index.html">Video Intelligence</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../vision/index.html">Vision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../webrisk/index.html">Web Risk</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../releases.html">Release History</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Python Client for Google Cloud Data Catalog API (Alpha)</a><ul>
+      <li>Previous: <a href="api.html" title="previous chapter">Client for Google Cloud Data Catalog API</a></li>
+      <li>Next: <a href="../../changelog.html" title="next chapter">Changelog</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2014-2017, Google.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../../_sources/datacatalog/gapic/v1beta1/types.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/GoogleCloudPlatform/google-cloud-python" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>
