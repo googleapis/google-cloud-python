@@ -1262,8 +1262,10 @@ class LoadJob(_AsyncJob):
 
     @property
     def destination(self):
-        """See
-        :attr:`google.cloud.bigquery.job.LoadJobConfig.destination`.
+        """google.cloud.bigquery.table.TableReference: table where loaded rows are written
+
+        See:
+        https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.load.destinationTable
         """
         return self._destination
 
