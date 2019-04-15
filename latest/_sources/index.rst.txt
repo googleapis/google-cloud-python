@@ -42,6 +42,7 @@
   Translate <translate/index>
   Video Intelligence <videointelligence/index>
   Vision <vision/index>
+  Web Risk <webrisk/index>
   Release History <releases>
 
 Google Cloud Client Library for Python
