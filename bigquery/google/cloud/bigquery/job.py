@@ -1257,8 +1257,15 @@ class LoadJob(_AsyncJob):
             job_config = LoadJobConfig()
 
         self.source_uris = source_uris
-        self.destination = destination
+        self._destination = destination
         self._configuration = job_config
+
+    @property
+    def destination(self):
+        """See
+        :attr:`google.cloud.bigquery.job.LoadJobConfig.destination`.
+        """
+        return self._destination
 
     @property
     def allow_jagged_rows(self):
