@@ -1257,8 +1257,17 @@ class LoadJob(_AsyncJob):
             job_config = LoadJobConfig()
 
         self.source_uris = source_uris
-        self.destination = destination
+        self._destination = destination
         self._configuration = job_config
+
+    @property
+    def destination(self):
+        """google.cloud.bigquery.table.TableReference: table where loaded rows are written
+
+        See:
+        https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.load.destinationTable
+        """
+        return self._destination
 
     @property
     def allow_jagged_rows(self):
@@ -1370,6 +1379,24 @@ class LoadJob(_AsyncJob):
         :attr:`google.cloud.bigquery.job.LoadJobConfig.destination_encryption_configuration`.
         """
         return self._configuration.destination_encryption_configuration
+
+    @property
+    def destination_table_description(self):
+        """Union[str, None] name given to destination table.
+
+        See:
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.destinationTableProperties.description
+        """
+        return self._configuration.destination_table_description
+
+    @property
+    def destination_table_friendly_name(self):
+        """Union[str, None] name given to destination table.
+
+        See:
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.destinationTableProperties.friendlyName
+        """
+        return self._configuration.destination_table_friendly_name
 
     @property
     def time_partitioning(self):

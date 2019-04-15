@@ -1786,6 +1786,8 @@ class TestLoadJob(unittest.TestCase, _Base):
         self.assertIsNone(job.source_format)
         self.assertIsNone(job.write_disposition)
         self.assertIsNone(job.destination_encryption_configuration)
+        self.assertIsNone(job.destination_table_description)
+        self.assertIsNone(job.destination_table_friendly_name)
         self.assertIsNone(job.time_partitioning)
         self.assertIsNone(job.use_avro_logical_types)
         self.assertIsNone(job.clustering_fields)
@@ -1804,6 +1806,16 @@ class TestLoadJob(unittest.TestCase, _Base):
             self.JOB_ID, [self.SOURCE1], self.TABLE_REF, client, config
         )
         self.assertEqual(job.schema, [full_name, age])
+        config.destination_table_description = "Description"
+        expected = {"description": "Description"}
+        self.assertEqual(
+            config._properties["load"]["destinationTableProperties"], expected
+        )
+        friendly_name = "Friendly Name"
+        config._properties["load"]["destinationTableProperties"] = {
+            "friendlyName": friendly_name
+        }
+        self.assertEqual(config.destination_table_friendly_name, friendly_name)
 
     def test_ctor_w_job_reference(self):
         from google.cloud.bigquery import job
