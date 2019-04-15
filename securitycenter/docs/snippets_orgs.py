@@ -17,6 +17,7 @@
 import os
 import pytest
 
+
 @pytest.fixture(scope="module")
 def organization_id():
     """Get Organization ID from the environment variable """

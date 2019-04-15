@@ -343,7 +343,7 @@ def test_update_finding_state(source_name):
 
 
 def test_trouble_shoot(source_name):
-    """Demonstrate calling test_iam_permissions to determine if the 
+    """Demonstrate calling test_iam_permissions to determine if the
     service account has the correct permisions."""
     # [START test_iam_permissions]
     from google.cloud import securitycenter as securitycenter
@@ -489,3 +489,115 @@ def test_get_iam_policy(source_name):
     policy = client.get_iam_policy(source_name)
     print("Policy: {}".format(policy))
     # [END get_source_iam]
+
+
+def test_group_all_findings(organization_id):
+    """Demonstrates grouping all findings across an organization."""
+    # [START group_all_findings]
+    from google.cloud import securitycenter as securitycenter
+
+    # Create a client.
+    client = securitycenter.SecurityCenterClient()
+
+    # organization_id is the numeric ID of the organization. e.g.:
+    # organization_id = "111122222444"
+    org_name = "organizations/{org_id}".format(org_id=organization_id)
+    # The "sources/-" suffix lists findings across all sources.  You
+    # also use a specific source_name instead.
+    all_sources = "{org_name}/sources/-".format(org_name=org_name)
+    group_result_iterator = client.group_findings(all_sources, group_by="category")
+    for i, group_result in enumerate(group_result_iterator):
+        print((i + 1), group_result)
+    # [END group_all_findings]
+    assert i > 0
+
+
+def test_group_filtered_findings(source_name):
+    """Demonstrates grouping all findings across an organization."""
+    # [START group_filtered_findings]
+    from google.cloud import securitycenter as securitycenter
+
+    # Create a client.
+    client = securitycenter.SecurityCenterClient()
+
+    # source_name is the resource path for a source that has been
+    # created previously (you can use list_sources to find a specific one).
+    # Its format is:
+    # source_name = "organizations/{organization_id}/sources/{source_id}"
+    # e.g.:
+    # source_name = "organizations/111122222444/sources/1234"
+
+    group_result_iterator = client.group_findings(
+        source_name, group_by="category", filter_='state="ACTIVE"'
+    )
+    for i, group_result in enumerate(group_result_iterator):
+        print((i + 1), group_result)
+    # [END group_filtered_findings]
+    assert i == 0
+
+
+def test_group_findings_at_time(source_name):
+    """Demonstrates grouping all findings across an organization as of
+    a specific time."""
+    i = -1
+    # [START group_findings_at_time]
+    from datetime import datetime, timedelta
+    from google.cloud import securitycenter as securitycenter
+    from google.protobuf.timestamp_pb2 import Timestamp
+
+    # Create a client.
+    client = securitycenter.SecurityCenterClient()
+
+    # source_name is the resource path for a source that has been
+    # created previously (you can use list_sources to find a specific one).
+    # Its format is:
+    # source_name = "organizations/{organization_id}/sources/{source_id}"
+    # e.g.:
+    # source_name = "organizations/111122222444/sources/1234"
+
+    # Group findings as of yesterday.
+    read_time = datetime.utcnow() - timedelta(days=1)
+    timestamp_proto = Timestamp()
+    timestamp_proto.FromDatetime(read_time)
+
+    group_result_iterator = client.group_findings(
+        source_name, group_by="category", read_time=timestamp_proto
+    )
+    for i, group_result in enumerate(group_result_iterator):
+        print((i + 1), group_result)
+    # [END group_filtered_findings_at_time]
+    assert i == -1
+
+
+def test_group_findings_and_changes(source_name):
+    """Demonstrates grouping all findings across an organization and
+    associated changes."""
+    # [START group_filtered_findings_with_changes]
+    from datetime import timedelta
+
+    from google.cloud import securitycenter as securitycenter
+    from google.protobuf.duration_pb2 import Duration
+
+    # Create a client.
+    client = securitycenter.SecurityCenterClient()
+
+    # source_name is the resource path for a source that has been
+    # created previously (you can use list_sources to find a specific one).
+    # Its format is:
+    # source_name = "organizations/{organization_id}/sources/{source_id}"
+    # e.g.:
+    # source_name = "organizations/111122222444/sources/1234"
+
+    # List assets and their state change the last 30 days
+    compare_delta = timedelta(days=30)
+    # Convert the timedelta to a Duration
+    duration_proto = Duration()
+    duration_proto.FromTimedelta(compare_delta)
+
+    group_result_iterator = client.group_findings(
+        source_name, group_by="state_change", compare_duration=duration_proto
+    )
+    for i, group_result in enumerate(group_result_iterator):
+        print((i + 1), group_result)
+    # [END group_findings_with_changes]
+    assert i == 0
