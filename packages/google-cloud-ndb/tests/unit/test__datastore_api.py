@@ -764,7 +764,8 @@ class Test__TransactionalCommitBatch:
         rpc = tasklets.Future("_datastore_commit")
         datastore_commit.return_value = rpc
 
-        eventloop = mock.Mock(spec=("queue_rpc", "run"))
+        eventloop = mock.Mock(spec=("queue_rpc", "run", "call_soon"))
+        eventloop.call_soon = lambda f, *args, **kwargs: f(*args, **kwargs)
         with in_context.new(eventloop=eventloop).use():
             future = batch.commit()
 
@@ -788,7 +789,8 @@ class Test__TransactionalCommitBatch:
         rpc = tasklets.Future("_datastore_commit")
         datastore_commit.return_value = rpc
 
-        eventloop = mock.Mock(spec=("queue_rpc", "run"))
+        eventloop = mock.Mock(spec=("queue_rpc", "run", "call_soon"))
+        eventloop.call_soon = lambda f, *args, **kwargs: f(*args, **kwargs)
         with in_context.new(eventloop=eventloop).use():
             future = batch.commit()
 
@@ -824,7 +826,8 @@ class Test__TransactionalCommitBatch:
         rpc = tasklets.Future("_datastore_commit")
         datastore_commit.return_value = rpc
 
-        eventloop = mock.Mock(spec=("queue_rpc", "run"))
+        eventloop = mock.Mock(spec=("queue_rpc", "run", "call_soon"))
+        eventloop.call_soon = lambda f, *args, **kwargs: f(*args, **kwargs)
         with in_context.new(eventloop=eventloop).use():
             future = batch.commit()
 

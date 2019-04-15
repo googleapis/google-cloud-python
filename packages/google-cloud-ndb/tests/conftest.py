@@ -24,9 +24,16 @@ from unittest import mock
 
 from google.cloud import environment_vars
 from google.cloud.ndb import context as context_module
+from google.cloud.ndb import _eventloop
 from google.cloud.ndb import model
 
 import pytest
+
+
+class TestingEventLoop(_eventloop.EventLoop):
+    def call_soon(self, callback, *args, **kwargs):
+        """For testing, call the callback immediately."""
+        callback(*args, **kwargs)
 
 
 @pytest.fixture(autouse=True)
@@ -76,7 +83,9 @@ def context():
     client = mock.Mock(
         project="testing", namespace=None, spec=("project", "namespace")
     )
-    context = context_module.Context(client, stub=mock.Mock(spec=()))
+    context = context_module.Context(
+        client, stub=mock.Mock(spec=()), eventloop=TestingEventLoop()
+    )
     return context
 
 

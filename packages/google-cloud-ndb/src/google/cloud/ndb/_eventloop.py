@@ -25,6 +25,7 @@ from google.cloud.ndb import context as context_module
 
 __all__ = [
     "add_idle",
+    "call_soon",
     "EventLoop",
     "get_event_loop",
     "queue_call",
@@ -80,25 +81,14 @@ class EventLoop:
     other futures were waiting on those results and results derived from those
     results.
 
-    This is somewhat of a work in progress. Initially this was ported (cargo
-    culted) from legacy NDB without a clear understanding of how all the pieces
-    would fit together or what all the different features were actually for. As
-    we've been forced to do some things a little differently with the rewrite,
-    it's not entirely clear that all of the features here have a purpose in the
-    rewrite, but it's still early to say definitively.
-
     Currently, these are the seperate queues used by the event loop in the
     order they are checked by :meth:`~EventLoop.run1`. For each call to
     :meth:`~EventLoop.run1`, the first thing it finds is called:
 
-        current: These callbacks are called first, if there are any. In legacy
-            NDB, these were used by tasklets to queue calls to
-            ``_help_tasklet_along`` when a result from a yielded future was
-            ready. With the rewrite, I haven't seen any reason not to just go
-            ahead and call :meth:`~tasklets.TaskletFuture._advance_tasklet`
-            immediately when a result is available. If a good reason becomes
-            apparent in the course of the rewrite, this is subject to change.
-            Currently, nothing uses this.
+        current: These callbacks are called first, if there are any. Currently
+            this is used to schedule calls to
+            :meth:`tasklets.TaskletFuture._advance_tasklet` when it's time to
+            send a tasklet a value that it was previously waiting on.
 
         idlers: Effectively, these are the same as ``current``, but just get
             called afterwards. These currently are used for batching certain
@@ -113,8 +103,7 @@ class EventLoop:
             time.
 
         queue: These are callbacks that are supposed to be run at (or after) a
-            certain time. Nothing uses these currently. It's not clear, yet,
-            what the use case was in legacy NDB.
+            certain time. This is used by :function:`tasklets.sleep`.
 
         rpcs: If all other queues are empty, and we are waiting on results of a
             gRPC call, then we'll call :method:`queue.Queue.get` on the
@@ -125,7 +114,8 @@ class EventLoop:
 
     Atrributes:
         current (deque): a FIFO list of (callback, args, kwds). These callbacks
-            run immediately when the eventloop runs. Not currently used.
+            run immediately when the eventloop runs. Used by tasklets to
+            schedule calls to :meth:`tasklets.TaskletFuture._advance_tasklet`.
         idlers (deque): a FIFO list of (callback, args, kwds). Thes callbacks
             run only when no other RPCs need to be fired first. Used for
             batching calls to the Datastore back end.
@@ -205,6 +195,16 @@ class EventLoop:
                 low = mid + 1
         queue.insert(low, event)
 
+    def call_soon(self, callback, *args, **kwargs):
+        """Schedule a function to be called soon, without a delay.
+
+        Arguments:
+            callback (callable): The function to eventually call.
+            *args: Positional arguments to be passed to callback.
+            **kwargs: Keyword arguments to be passed to callback.
+        """
+        self.current.append((callback, args, kwargs))
+
     def queue_call(self, delay, callback, *args, **kwargs):
         """Schedule a function call at a specific time in the future.
 
@@ -216,10 +216,6 @@ class EventLoop:
             *args: Positional arguments to be passed to callback.
             **kwargs: Keyword arguments to be passed to callback.
         """
-        if delay is None:
-            self.current.append((callback, args, kwargs))
-            return
-
         when = time.time() + delay if delay < 1e9 else delay
         event = _Event(when, callback, args, kwargs)
         self.insort_event_right(event)
@@ -377,6 +373,12 @@ def add_idle(callback, *args, **kwargs):
     """Calls :method:`EventLoop.add_idle` on current event loop."""
     loop = get_event_loop()
     loop.add_idle(callback, *args, **kwargs)
+
+
+def call_soon(callback, *args, **kwargs):
+    """Calls :method:`EventLoop.call_soon` on current event loop. """
+    loop = get_event_loop()
+    loop.call_soon(callback, *args, **kwargs)
 
 
 def queue_call(delay, callback, *args, **kwargs):

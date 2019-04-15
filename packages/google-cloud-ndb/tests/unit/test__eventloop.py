@@ -122,14 +122,14 @@ class TestEventLoop:
             _Event(2, "baz"),
         ]
 
-    def test_queue_call_now(self):
+    def test_call_soon(self):
         loop = self._make_one()
-        loop.queue_call(None, "foo", "bar", baz="qux")
+        loop.call_soon("foo", "bar", baz="qux")
         assert list(loop.current) == [("foo", ("bar",), {"baz": "qux"})]
         assert not loop.queue
 
     @unittest.mock.patch("google.cloud.ndb._eventloop.time")
-    def test_queue_call_soon(self, time):
+    def test_queue_call_delay(self, time):
         loop = self._make_one()
         time.time.return_value = 5
         loop.queue_call(5, "foo", "bar", baz="qux")
@@ -214,7 +214,7 @@ class TestEventLoop:
     def test_run0_current(self):
         callback = unittest.mock.Mock(__name__="callback")
         loop = self._make_one()
-        loop.queue_call(None, callback, "foo", bar="baz")
+        loop.call_soon(callback, "foo", bar="baz")
         loop.inactive = 88
         assert loop.run0() == 0
         callback.assert_called_once_with("foo", bar="baz")
@@ -275,7 +275,7 @@ class TestEventLoop:
     def test_run1_has_work_now(self, time):
         callback = unittest.mock.Mock(__name__="callback")
         loop = self._make_one()
-        loop.queue_call(None, callback)
+        loop.call_soon(callback)
         assert loop.run1() is True
         time.sleep.assert_not_called()
         callback.assert_called_once_with()
@@ -304,7 +304,7 @@ class TestEventLoop:
         runlater = unittest.mock.Mock(__name__="runlater")
         loop = self._make_one()
         loop.add_idle(idler)
-        loop.queue_call(None, runnow)
+        loop.call_soon(runnow)
         loop.queue_call(5, runlater)
         loop.run()
         idler.assert_called_once_with()
@@ -326,6 +326,13 @@ def test_add_idle(context):
     with context.new(eventloop=loop).use():
         _eventloop.add_idle("foo", "bar", baz="qux")
         loop.add_idle.assert_called_once_with("foo", "bar", baz="qux")
+
+
+def test_call_soon(context):
+    loop = unittest.mock.Mock(spec=("run", "call_soon"))
+    with context.new(eventloop=loop).use():
+        _eventloop.call_soon("foo", "bar", baz="qux")
+        loop.call_soon.assert_called_once_with("foo", "bar", baz="qux")
 
 
 def test_queue_call(context):
