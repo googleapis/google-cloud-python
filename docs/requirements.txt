@@ -44,4 +44,5 @@ grpcio-gcp >= 0.2.2
 -e translate/
 -e videointelligence/
 -e vision/
+-e webrisk/
 -e websecurityscanner/
