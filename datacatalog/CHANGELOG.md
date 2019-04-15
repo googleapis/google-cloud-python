@@ -3,6 +3,7 @@
 [PyPI History][1]
 
 [1]: https://pypi.org/project/google-cloud-datacatalog/#history
+
 ## 0.1.0
 
 04-15-2019 15:46 PDT
