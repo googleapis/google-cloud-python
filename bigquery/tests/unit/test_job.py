@@ -1796,7 +1796,6 @@ class TestLoadJob(unittest.TestCase, _Base):
     def test_ctor_w_config(self):
         from google.cloud.bigquery.schema import SchemaField
         from google.cloud.bigquery.job import LoadJobConfig
-        from google.cloud.bigquery.job import LoadJob
 
         client = _make_client(project=self.PROJECT)
         full_name = SchemaField("full_name", "STRING", mode="REQUIRED")
@@ -1807,13 +1806,11 @@ class TestLoadJob(unittest.TestCase, _Base):
             self.JOB_ID, [self.SOURCE1], self.TABLE_REF, client, config
         )
         self.assertEqual(job.schema, [full_name, age])
-
         config.destination_table_description = "Description"
         expected = {"description": "Description"}
         self.assertEqual(
             config._properties["load"]["destinationTableProperties"], expected
         )
-
         friendly_name = "Friendly Name"
         config._properties["load"]["destinationTableProperties"] = {
             "friendlyName": friendly_name
