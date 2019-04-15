@@ -64,7 +64,10 @@ google.cloud.bigquery.job.LoadJob
    ~LoadJob.clustering_fields
    ~LoadJob.create_disposition
    ~LoadJob.created
+   ~LoadJob.destination
    ~LoadJob.destination_encryption_configuration
+   ~LoadJob.destination_table_description
+   ~LoadJob.destination_table_friendly_name
    ~LoadJob.encoding
    ~LoadJob.ended
    ~LoadJob.error_result
