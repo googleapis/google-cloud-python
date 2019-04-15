@@ -1753,6 +1753,24 @@ class TestLoadJob(unittest.TestCase, _Base):
         else:
             self.assertIsNone(job.destination_encryption_configuration)
 
+        if "destinationTableDescription" in config:
+            self.assertIsNotNone(job.destination_table_description)
+            self.assertEqual(
+                job.destination_table_description.description,
+                config["destinationTableDescription"]["description"],
+            )
+        else:
+            self.assertIsNone(job.destination_table_description)
+
+        if "destinationTableFriendlyName" in config:
+            self.assertIsNotNone(job.destination_table_friendly_name)
+            self.assertEqual(
+                job.destination_table_friendly_name.friendly_name,
+                config["destinationTableFriendlyName"]["friendlyName"],
+            )
+        else:
+            self.assertIsNone(job.destination_table_description)
+
     def test_ctor(self):
         client = _make_client(project=self.PROJECT)
         job = self._make_one(self.JOB_ID, [self.SOURCE1], self.TABLE_REF, client)
@@ -1786,6 +1804,8 @@ class TestLoadJob(unittest.TestCase, _Base):
         self.assertIsNone(job.source_format)
         self.assertIsNone(job.write_disposition)
         self.assertIsNone(job.destination_encryption_configuration)
+        self.assertIsNone(job.destination_table_description)
+        self.assertIsNone(job.destination_table_friendly_name)
         self.assertIsNone(job.time_partitioning)
         self.assertIsNone(job.use_avro_logical_types)
         self.assertIsNone(job.clustering_fields)

@@ -1372,6 +1372,24 @@ class LoadJob(_AsyncJob):
         return self._configuration.destination_encryption_configuration
 
     @property
+    def destination_table_description(self):
+        """Union[str, None] name given to destination table.
+
+        See:
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.destinationTableProperties.description
+        """
+        return self._configuration.destination_table_description
+
+    @property
+    def destination_table_friendly_name(self):
+        """Union[str, None] name given to destination table.
+
+        See:
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.destinationTableProperties.friendlyName
+        """
+        return self._configuration.destination_table_friendly_name
+
+    @property
     def time_partitioning(self):
         """See
         :attr:`google.cloud.bigquery.job.LoadJobConfig.time_partitioning`.
