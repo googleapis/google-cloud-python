@@ -1,4 +1,4 @@
-// Copyright 2018 Google LLC.
+// Copyright 2019 Google LLC.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@ syntax = "proto3";
 package google.privacy.dlp.v2;
 
 import "google/api/annotations.proto";
+import "google/api/resource.proto";
 import "google/protobuf/timestamp.proto";
 
 option csharp_namespace = "Google.Cloud.Dlp.V2";
@@ -26,7 +27,6 @@ option java_multiple_files = true;
 option java_outer_classname = "DlpStorage";
 option java_package = "com.google.privacy.dlp.v2";
 option php_namespace = "Google\\Cloud\\Dlp\\V2";
-
 
 // Type of information detected by the API.
 message InfoType {
