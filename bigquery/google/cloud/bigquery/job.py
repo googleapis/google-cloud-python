@@ -2835,6 +2835,7 @@ class QueryJob(_AsyncJob):
         schema = self._query_results.schema
         dest_table_ref = self.destination
         dest_table = Table(dest_table_ref, schema=schema)
+        dest_table._properties["numRows"] = self._query_results.total_rows
         return self._client.list_rows(dest_table, retry=retry)
 
     def to_dataframe(self, bqstorage_client=None, dtypes=None, progress_bar_type=None):

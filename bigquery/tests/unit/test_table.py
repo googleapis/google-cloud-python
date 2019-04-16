@@ -1306,51 +1306,85 @@ class TestRow(unittest.TestCase):
 
 
 class Test_EmptyRowIterator(unittest.TestCase):
-    @mock.patch("google.cloud.bigquery.table.pandas", new=None)
-    def test_to_dataframe_error_if_pandas_is_none(self):
+    def _make_one(self):
         from google.cloud.bigquery.table import _EmptyRowIterator
 
-        row_iterator = _EmptyRowIterator()
+        return _EmptyRowIterator()
+
+    def test_total_rows_eq_zero(self):
+        row_iterator = self._make_one()
+        self.assertEqual(row_iterator.total_rows, 0)
+
+    @mock.patch("google.cloud.bigquery.table.pandas", new=None)
+    def test_to_dataframe_error_if_pandas_is_none(self):
+        row_iterator = self._make_one()
         with self.assertRaises(ValueError):
             row_iterator.to_dataframe()
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
     def test_to_dataframe(self):
-        from google.cloud.bigquery.table import _EmptyRowIterator
-
-        row_iterator = _EmptyRowIterator()
+        row_iterator = self._make_one()
         df = row_iterator.to_dataframe()
         self.assertIsInstance(df, pandas.DataFrame)
         self.assertEqual(len(df), 0)  # verify the number of rows
 
 
 class TestRowIterator(unittest.TestCase):
-    def test_constructor(self):
+    def _make_one(
+        self, client=None, api_request=None, path=None, schema=None, **kwargs
+    ):
         from google.cloud.bigquery.table import RowIterator
+
+        if client is None:
+            client = _mock_client()
+
+        if api_request is None:
+            api_request = mock.sentinel.api_request
+
+        if path is None:
+            path = "/foo"
+
+        if schema is None:
+            schema = []
+
+        return RowIterator(client, api_request, path, schema, **kwargs)
+
+    def test_constructor(self):
         from google.cloud.bigquery.table import _item_to_row
         from google.cloud.bigquery.table import _rows_page_start
 
         client = _mock_client()
-        api_request = mock.sentinel.api_request
-        path = "/foo"
-        schema = []
-        iterator = RowIterator(client, api_request, path, schema)
+        path = "/some/path"
+        iterator = self._make_one(client=client, path=path)
 
-        self.assertFalse(iterator._started)
+        # Objects are set without copying.
         self.assertIs(iterator.client, client)
-        self.assertEqual(iterator.path, path)
         self.assertIs(iterator.item_to_value, _item_to_row)
+        self.assertIs(iterator._page_start, _rows_page_start)
+        # Properties have the expect value.
+        self.assertEqual(iterator.extra_params, {})
         self.assertEqual(iterator._items_key, "rows")
         self.assertIsNone(iterator.max_results)
-        self.assertEqual(iterator.extra_params, {})
-        self.assertIs(iterator._page_start, _rows_page_start)
+        self.assertEqual(iterator.path, path)
+        self.assertFalse(iterator._started)
+        self.assertIsNone(iterator.total_rows)
         # Changing attributes.
         self.assertEqual(iterator.page_number, 0)
         self.assertIsNone(iterator.next_page_token)
         self.assertEqual(iterator.num_results, 0)
 
+    def test_constructor_with_table(self):
+        from google.cloud.bigquery.table import Table
+
+        table = Table("proj.dset.tbl")
+        table._properties["numRows"] = 100
+
+        iterator = self._make_one(table=table)
+
+        self.assertIs(iterator._table, table)
+        self.assertEqual(iterator.total_rows, 100)
+
     def test_iterate(self):
-        from google.cloud.bigquery.table import RowIterator
         from google.cloud.bigquery.table import SchemaField
 
         schema = [
@@ -1363,7 +1397,7 @@ class TestRowIterator(unittest.TestCase):
         ]
         path = "/foo"
         api_request = mock.Mock(return_value={"rows": rows})
-        row_iterator = RowIterator(_mock_client(), api_request, path, schema)
+        row_iterator = self._make_one(_mock_client(), api_request, path, schema)
         self.assertEqual(row_iterator.num_results, 0)
 
         rows_iter = iter(row_iterator)
@@ -1382,7 +1416,6 @@ class TestRowIterator(unittest.TestCase):
         api_request.assert_called_once_with(method="GET", path=path, query_params={})
 
     def test_page_size(self):
-        from google.cloud.bigquery.table import RowIterator
         from google.cloud.bigquery.table import SchemaField
 
         schema = [
@@ -1396,7 +1429,7 @@ class TestRowIterator(unittest.TestCase):
         path = "/foo"
         api_request = mock.Mock(return_value={"rows": rows})
 
-        row_iterator = RowIterator(
+        row_iterator = self._make_one(
             _mock_client(), api_request, path, schema, page_size=4
         )
         row_iterator._get_next_page_response()
@@ -1409,7 +1442,6 @@ class TestRowIterator(unittest.TestCase):
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
     def test_to_dataframe(self):
-        from google.cloud.bigquery.table import RowIterator
         from google.cloud.bigquery.table import SchemaField
 
         schema = [
@@ -1424,7 +1456,7 @@ class TestRowIterator(unittest.TestCase):
         ]
         path = "/foo"
         api_request = mock.Mock(return_value={"rows": rows})
-        row_iterator = RowIterator(_mock_client(), api_request, path, schema)
+        row_iterator = self._make_one(_mock_client(), api_request, path, schema)
 
         df = row_iterator.to_dataframe()
 
@@ -1442,7 +1474,6 @@ class TestRowIterator(unittest.TestCase):
     def test_to_dataframe_progress_bar(
         self, tqdm_mock, tqdm_notebook_mock, tqdm_gui_mock
     ):
-        from google.cloud.bigquery.table import RowIterator
         from google.cloud.bigquery.table import SchemaField
 
         schema = [
@@ -1465,7 +1496,7 @@ class TestRowIterator(unittest.TestCase):
         )
 
         for progress_bar_type, progress_bar_mock in progress_bars:
-            row_iterator = RowIterator(_mock_client(), api_request, path, schema)
+            row_iterator = self._make_one(_mock_client(), api_request, path, schema)
             df = row_iterator.to_dataframe(progress_bar_type=progress_bar_type)
 
             progress_bar_mock.assert_called()
@@ -1475,7 +1506,6 @@ class TestRowIterator(unittest.TestCase):
     @unittest.skipIf(pandas is None, "Requires `pandas`")
     @mock.patch("google.cloud.bigquery.table.tqdm", new=None)
     def test_to_dataframe_no_tqdm_no_progress_bar(self):
-        from google.cloud.bigquery.table import RowIterator
         from google.cloud.bigquery.table import SchemaField
 
         schema = [
@@ -1490,7 +1520,7 @@ class TestRowIterator(unittest.TestCase):
         ]
         path = "/foo"
         api_request = mock.Mock(return_value={"rows": rows})
-        row_iterator = RowIterator(_mock_client(), api_request, path, schema)
+        row_iterator = self._make_one(_mock_client(), api_request, path, schema)
 
         with warnings.catch_warnings(record=True) as warned:
             df = row_iterator.to_dataframe()
@@ -1501,7 +1531,6 @@ class TestRowIterator(unittest.TestCase):
     @unittest.skipIf(pandas is None, "Requires `pandas`")
     @mock.patch("google.cloud.bigquery.table.tqdm", new=None)
     def test_to_dataframe_no_tqdm(self):
-        from google.cloud.bigquery.table import RowIterator
         from google.cloud.bigquery.table import SchemaField
 
         schema = [
@@ -1516,7 +1545,7 @@ class TestRowIterator(unittest.TestCase):
         ]
         path = "/foo"
         api_request = mock.Mock(return_value={"rows": rows})
-        row_iterator = RowIterator(_mock_client(), api_request, path, schema)
+        row_iterator = self._make_one(_mock_client(), api_request, path, schema)
 
         with warnings.catch_warnings(record=True) as warned:
             df = row_iterator.to_dataframe(progress_bar_type="tqdm")
@@ -1535,7 +1564,6 @@ class TestRowIterator(unittest.TestCase):
     @mock.patch("tqdm.tqdm_notebook", new=None)  # will raise TypeError on call
     @mock.patch("tqdm.tqdm", new=None)  # will raise TypeError on call
     def test_to_dataframe_tqdm_error(self):
-        from google.cloud.bigquery.table import RowIterator
         from google.cloud.bigquery.table import SchemaField
 
         schema = [
@@ -1552,14 +1580,13 @@ class TestRowIterator(unittest.TestCase):
 
         for progress_bar_type in ("tqdm", "tqdm_notebook", "tqdm_gui"):
             api_request = mock.Mock(return_value={"rows": rows})
-            row_iterator = RowIterator(_mock_client(), api_request, path, schema)
+            row_iterator = self._make_one(_mock_client(), api_request, path, schema)
             df = row_iterator.to_dataframe(progress_bar_type=progress_bar_type)
 
             self.assertEqual(len(df), 4)  # all should be well
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
     def test_to_dataframe_w_empty_results(self):
-        from google.cloud.bigquery.table import RowIterator
         from google.cloud.bigquery.table import SchemaField
 
         schema = [
@@ -1568,7 +1595,7 @@ class TestRowIterator(unittest.TestCase):
         ]
         path = "/foo"
         api_request = mock.Mock(return_value={"rows": []})
-        row_iterator = RowIterator(_mock_client(), api_request, path, schema)
+        row_iterator = self._make_one(_mock_client(), api_request, path, schema)
 
         df = row_iterator.to_dataframe()
 
@@ -1579,7 +1606,6 @@ class TestRowIterator(unittest.TestCase):
     @unittest.skipIf(pandas is None, "Requires `pandas`")
     def test_to_dataframe_w_various_types_nullable(self):
         import datetime
-        from google.cloud.bigquery.table import RowIterator
         from google.cloud.bigquery.table import SchemaField
 
         schema = [
@@ -1599,7 +1625,7 @@ class TestRowIterator(unittest.TestCase):
         rows = [{"f": [{"v": field} for field in row]} for row in row_data]
         path = "/foo"
         api_request = mock.Mock(return_value={"rows": rows})
-        row_iterator = RowIterator(_mock_client(), api_request, path, schema)
+        row_iterator = self._make_one(_mock_client(), api_request, path, schema)
 
         df = row_iterator.to_dataframe()
 
@@ -1620,7 +1646,6 @@ class TestRowIterator(unittest.TestCase):
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
     def test_to_dataframe_column_dtypes(self):
-        from google.cloud.bigquery.table import RowIterator
         from google.cloud.bigquery.table import SchemaField
 
         schema = [
@@ -1640,7 +1665,7 @@ class TestRowIterator(unittest.TestCase):
         rows = [{"f": [{"v": field} for field in row]} for row in row_data]
         path = "/foo"
         api_request = mock.Mock(return_value={"rows": rows})
-        row_iterator = RowIterator(_mock_client(), api_request, path, schema)
+        row_iterator = self._make_one(_mock_client(), api_request, path, schema)
 
         df = row_iterator.to_dataframe(dtypes={"km": "float16"})
 
@@ -1659,7 +1684,6 @@ class TestRowIterator(unittest.TestCase):
 
     @mock.patch("google.cloud.bigquery.table.pandas", new=None)
     def test_to_dataframe_error_if_pandas_is_none(self):
-        from google.cloud.bigquery.table import RowIterator
         from google.cloud.bigquery.table import SchemaField
 
         schema = [
@@ -1672,7 +1696,7 @@ class TestRowIterator(unittest.TestCase):
         ]
         path = "/foo"
         api_request = mock.Mock(return_value={"rows": rows})
-        row_iterator = RowIterator(_mock_client(), api_request, path, schema)
+        row_iterator = self._make_one(_mock_client(), api_request, path, schema)
 
         with self.assertRaises(ValueError):
             row_iterator.to_dataframe()

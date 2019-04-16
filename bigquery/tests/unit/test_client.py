@@ -4359,18 +4359,21 @@ class TestClient(unittest.TestCase):
         client._connection = _make_connection(response, response)
 
         # Table that has no schema because it's an empty table.
-        rows = tuple(
-            client.list_rows(
-                # Test with using a string for the table ID.
-                "{}.{}.{}".format(
-                    self.TABLE_REF.project,
-                    self.TABLE_REF.dataset_id,
-                    self.TABLE_REF.table_id,
-                ),
-                selected_fields=[],
-            )
+        rows = client.list_rows(
+            # Test with using a string for the table ID.
+            "{}.{}.{}".format(
+                self.TABLE_REF.project,
+                self.TABLE_REF.dataset_id,
+                self.TABLE_REF.table_id,
+            ),
+            selected_fields=[],
         )
-        self.assertEqual(rows, ())
+
+        # When a table reference / string and selected_fields is provided,
+        # total_rows can't be populated until iteration starts.
+        self.assertIsNone(rows.total_rows)
+        self.assertEqual(tuple(rows), ())
+        self.assertEqual(rows.total_rows, 0)
 
     def test_list_rows_query_params(self):
         from google.cloud.bigquery.table import Table, SchemaField
@@ -4573,7 +4576,7 @@ class TestClient(unittest.TestCase):
 
             conn.api_request.assert_called_once_with(method="GET", path=table_path)
             conn.api_request.reset_mock()
-            self.assertIsNone(row_iter.total_rows, msg=repr(table))
+            self.assertEqual(row_iter.total_rows, 2, msg=repr(table))
 
             rows = list(row_iter)
             conn.api_request.assert_called_once_with(
