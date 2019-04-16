@@ -1,7 +1,11 @@
 Python Client for Web Risk API (`Alpha`_)
 =========================================
 
-`Web Risk API`_:
+**Note:** Cloud Web Risk is not yet publicly available. You must be whitelisted in order to gain access. See `Setting up the Web Risk API`_ in the product documentation for a link to the sign-up form.
+
+.. _Setting up the Web Risk API: 
+
+`Web Risk API`: https://cloud.google.com/web-risk/docs/quickstart
 
 - `Client Library Documentation`_
 - `Product Documentation`_
