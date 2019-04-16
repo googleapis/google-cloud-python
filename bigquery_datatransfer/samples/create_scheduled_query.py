@@ -18,7 +18,7 @@
 #   pip install google-cloud-bigquery-datatransfer
 
 
-def sample_create_transfer_config(project_id, authorization_code):
+def sample_create_transfer_config(project_id, authorization_code=""):
     # [START bigquerydatatransfer_create_scheduled_query]
     from google.cloud import bigquery_datatransfer_v1
     import google.protobuf.json_format
@@ -62,8 +62,10 @@ def sample_create_transfer_config(project_id, authorization_code):
         parent, transfer_config, authorization_code=authorization_code
     )
 
-    print(response)
+    print("Created scheduled query '{}'".format(response.name))
     # [END bigquerydatatransfer_create_scheduled_query]
+    # Return the config name for testing purposes, so that it can be deleted.
+    return response.name
 
 
 def main():
