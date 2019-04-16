@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.trace_v1.gapic.trace_service_client &#8212; google-cloud 184b83f documentation</title>
+    <title>google.cloud.trace_v1.gapic.trace_service_client &#8212; google-cloud 0699d82 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -393,9 +393,11 @@
 <span class="sd">            project_id (str): ID of the Cloud project where the trace data is stored.</span>
 <span class="sd">            view (~google.cloud.trace_v1.types.ViewType): Type of data returned for traces in the list. Optional. Default is</span>
 <span class="sd">                ``MINIMAL``.</span>
-<span class="sd">            page_size (int): Maximum number of traces to return. If not specified or &lt;= 0, the</span>
-<span class="sd">                implementation selects a reasonable value.  The implementation may</span>
-<span class="sd">                return fewer traces than the requested page size. Optional.</span>
+<span class="sd">            page_size (int): The maximum number of resources contained in the</span>
+<span class="sd">                underlying API response. If page streaming is performed per-</span>
+<span class="sd">                resource, this parameter does not affect the return value. If page</span>
+<span class="sd">                streaming is performed per-page, this determines the maximum number</span>
+<span class="sd">                of resources in a page.</span>
 <span class="sd">            start_time (Union[dict, ~google.cloud.trace_v1.types.Timestamp]): Start of the time interval (inclusive) during which the trace data was</span>
 <span class="sd">                collected from the application.</span>
 
