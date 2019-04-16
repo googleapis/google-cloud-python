@@ -4024,21 +4024,41 @@ class TestQueryJob(unittest.TestCase, _Base):
         self.assertEqual(job.estimated_bytes_processed, est_bytes)
 
     def test_result(self):
+        from google.cloud.bigquery.table import RowIterator
+
         query_resource = {
             "jobComplete": True,
             "jobReference": {"projectId": self.PROJECT, "jobId": self.JOB_ID},
             "schema": {"fields": [{"name": "col1", "type": "STRING"}]},
+            "totalRows": "2",
         }
-        connection = _make_connection(query_resource, query_resource)
+        tabledata_resource = {
+            # Explicitly set totalRows to be different from the query response.
+            # to test update during iteration.
+            "totalRows": "1",
+            "pageToken": None,
+            "rows": [{"f": [{"v": "abc"}]}],
+        }
+        connection = _make_connection(query_resource, tabledata_resource)
         client = _make_client(self.PROJECT, connection=connection)
         resource = self._make_resource(ended=True)
         job = self._get_target_class().from_api_repr(resource, client)
 
         result = job.result()
 
-        self.assertEqual(list(result), [])
+        self.assertIsInstance(result, RowIterator)
+        self.assertEqual(result.total_rows, 2)
+
+        rows = list(result)
+        self.assertEqual(len(rows), 1)
+        self.assertEqual(rows[0].col1, "abc")
+        # Test that the total_rows property has changed during iteration, based
+        # on the response from tabledata.list.
+        self.assertEqual(result.total_rows, 1)
 
     def test_result_w_empty_schema(self):
+        from google.cloud.bigquery.table import _EmptyRowIterator
+
         # Destination table may have no schema for some DDL and DML queries.
         query_resource = {
             "jobComplete": True,
@@ -4052,6 +4072,7 @@ class TestQueryJob(unittest.TestCase, _Base):
 
         result = job.result()
 
+        self.assertIsInstance(result, _EmptyRowIterator)
         self.assertEqual(list(result), [])
 
     def test_result_invokes_begins(self):
