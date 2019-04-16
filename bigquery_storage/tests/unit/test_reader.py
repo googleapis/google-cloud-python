@@ -186,8 +186,9 @@ def test_rows_w_empty_stream(class_under_test, mock_client):
         [], mock_client, bigquery_storage_v1beta1.types.StreamPosition(), {}
     )
 
-    got = tuple(reader.rows(read_session))
-    assert got == ()
+    got = reader.rows(read_session)
+    assert got.total_rows is None
+    assert tuple(got) == ()
 
 
 def test_rows_w_scalars(class_under_test, mock_client):
@@ -217,6 +218,10 @@ def test_rows_w_reconnect(class_under_test, mock_client):
     )
     bq_blocks_2 = [[{"int_col": 567}, {"int_col": 789}], [{"int_col": 890}]]
     avro_blocks_2 = _bq_to_avro_blocks(bq_blocks_2, avro_schema)
+
+    for block in avro_blocks_2:
+        block.status.estimated_row_count = 7
+
     mock_client.read_rows.return_value = avro_blocks_2
     stream_position = bigquery_storage_v1beta1.types.StreamPosition(
         stream={"name": "test"}
@@ -228,7 +233,7 @@ def test_rows_w_reconnect(class_under_test, mock_client):
         stream_position,
         {"metadata": {"test-key": "test-value"}},
     )
-    got = tuple(reader.rows(read_session))
+    got = reader.rows(read_session)
 
     expected = tuple(
         itertools.chain(
@@ -237,7 +242,8 @@ def test_rows_w_reconnect(class_under_test, mock_client):
         )
     )
 
-    assert got == expected
+    assert tuple(got) == expected
+    assert got.total_rows == 7
     mock_client.read_rows.assert_called_once_with(
         bigquery_storage_v1beta1.types.StreamPosition(
             stream={"name": "test"}, offset=4
@@ -246,17 +252,87 @@ def test_rows_w_reconnect(class_under_test, mock_client):
     )
 
 
+def test_rows_w_reconnect_by_page(class_under_test, mock_client):
+    bq_columns = [{"name": "int_col", "type": "int64"}]
+    avro_schema = _bq_to_avro_schema(bq_columns)
+    read_session = _generate_read_session(avro_schema)
+    bq_blocks_1 = [
+        [{"int_col": 123}, {"int_col": 234}],
+        [{"int_col": 345}, {"int_col": 456}],
+    ]
+    avro_blocks_1 = _bq_to_avro_blocks(bq_blocks_1, avro_schema)
+    bq_blocks_2 = [[{"int_col": 567}, {"int_col": 789}], [{"int_col": 890}]]
+    avro_blocks_2 = _bq_to_avro_blocks(bq_blocks_2, avro_schema)
+
+    avro_blocks_1[0].status.estimated_row_count = 8
+    avro_blocks_1[1].status.estimated_row_count = 6
+    avro_blocks_2[0].status.estimated_row_count = 9
+    avro_blocks_2[1].status.estimated_row_count = 7
+
+    mock_client.read_rows.return_value = avro_blocks_2
+    stream_position = bigquery_storage_v1beta1.types.StreamPosition(
+        stream={"name": "test"}
+    )
+
+    reader = class_under_test(
+        _avro_blocks_w_deadline(avro_blocks_1),
+        mock_client,
+        stream_position,
+        {"metadata": {"test-key": "test-value"}},
+    )
+    got = reader.rows(read_session)
+    pages = iter(got.pages)
+
+    assert got.total_rows is None
+
+    page_1 = next(pages)
+    assert got.total_rows == 8
+    assert page_1.num_items == 2
+    assert page_1.remaining == 2
+    assert tuple(page_1) == tuple(bq_blocks_1[0])
+    assert page_1.num_items == 2
+    assert page_1.remaining == 0
+
+    page_2 = next(pages)
+    assert got.total_rows == 6
+    assert next(page_2) == bq_blocks_1[1][0]
+    assert page_2.num_items == 2
+    assert page_2.remaining == 1
+    assert next(page_2) == bq_blocks_1[1][1]
+
+    page_3 = next(pages)
+    assert tuple(page_3) == tuple(bq_blocks_2[0])
+    assert page_3.num_items == 2
+    assert page_3.remaining == 0
+    assert got.total_rows == 9
+
+    page_4 = next(pages)
+    assert got.total_rows == 7
+    assert tuple(page_4) == tuple(bq_blocks_2[1])
+    assert page_4.num_items == 1
+    assert page_4.remaining == 0
+
+
 def test_to_dataframe_no_pandas_raises_import_error(
     mut, class_under_test, mock_client, monkeypatch
 ):
     monkeypatch.setattr(mut, "pandas", None)
+    avro_schema = _bq_to_avro_schema(SCALAR_COLUMNS)
+    read_session = _generate_read_session(avro_schema)
+    avro_blocks = _bq_to_avro_blocks(SCALAR_BLOCKS, avro_schema)
+
     reader = class_under_test(
-        [], mock_client, bigquery_storage_v1beta1.types.StreamPosition(), {}
+        avro_blocks, mock_client, bigquery_storage_v1beta1.types.StreamPosition(), {}
     )
-    read_session = bigquery_storage_v1beta1.types.ReadSession()
 
     with pytest.raises(ImportError):
         reader.to_dataframe(read_session)
+
+    with pytest.raises(ImportError):
+        reader.rows(read_session).to_dataframe()
+
+    with pytest.raises(ImportError):
+        next(reader.rows(read_session).pages).to_dataframe()
 
 
 def test_to_dataframe_no_fastavro_raises_import_error(
@@ -305,7 +381,6 @@ def test_to_dataframe_w_scalars(class_under_test):
 
 
 def test_to_dataframe_w_dtypes(class_under_test):
-    # TODOTODOTODOTODO
     avro_schema = _bq_to_avro_schema(
         [
             {"name": "bigfloat", "type": "float64"},
@@ -334,6 +409,71 @@ def test_to_dataframe_w_dtypes(class_under_test):
     pandas.testing.assert_frame_equal(
         got.reset_index(drop=True),  # reset_index to ignore row labels
         expected.reset_index(drop=True),
+    )
+
+
+def test_to_dataframe_by_page(class_under_test, mock_client):
+    bq_columns = [
+        {"name": "int_col", "type": "int64"},
+        {"name": "bool_col", "type": "bool"},
+    ]
+    avro_schema = _bq_to_avro_schema(bq_columns)
+    read_session = _generate_read_session(avro_schema)
+    block_1 = [{"int_col": 123, "bool_col": True}, {"int_col": 234, "bool_col": False}]
+    block_2 = [{"int_col": 345, "bool_col": True}, {"int_col": 456, "bool_col": False}]
+    block_3 = [{"int_col": 567, "bool_col": True}, {"int_col": 789, "bool_col": False}]
+    block_4 = [{"int_col": 890, "bool_col": True}]
+    # Break blocks into two groups to test that iteration continues across
+    # reconnection.
+    bq_blocks_1 = [block_1, block_2]
+    bq_blocks_2 = [block_3, block_4]
+    avro_blocks_1 = _bq_to_avro_blocks(bq_blocks_1, avro_schema)
+    avro_blocks_2 = _bq_to_avro_blocks(bq_blocks_2, avro_schema)
+
+    mock_client.read_rows.return_value = avro_blocks_2
+    stream_position = bigquery_storage_v1beta1.types.StreamPosition(
+        stream={"name": "test"}
+    )
+
+    reader = class_under_test(
+        _avro_blocks_w_deadline(avro_blocks_1),
+        mock_client,
+        stream_position,
+        {"metadata": {"test-key": "test-value"}},
+    )
+    got = reader.rows(read_session)
+    pages = iter(got.pages)
+
+    page_1 = next(pages)
+    pandas.testing.assert_frame_equal(
+        page_1.to_dataframe().reset_index(drop=True),
+        pandas.DataFrame(block_1, columns=["int_col", "bool_col"]).reset_index(
+            drop=True
+        ),
+    )
+
+    page_2 = next(pages)
+    pandas.testing.assert_frame_equal(
+        page_2.to_dataframe().reset_index(drop=True),
+        pandas.DataFrame(block_2, columns=["int_col", "bool_col"]).reset_index(
+            drop=True
+        ),
+    )
+
+    page_3 = next(pages)
+    pandas.testing.assert_frame_equal(
+        page_3.to_dataframe().reset_index(drop=True),
+        pandas.DataFrame(block_3, columns=["int_col", "bool_col"]).reset_index(
+            drop=True
+        ),
+    )
+
+    page_4 = next(pages)
+    pandas.testing.assert_frame_equal(
+        page_4.to_dataframe().reset_index(drop=True),
+        pandas.DataFrame(block_4, columns=["int_col", "bool_col"]).reset_index(
+            drop=True
+        ),
     )
 
 
