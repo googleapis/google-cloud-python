@@ -51,15 +51,11 @@ retry_bad_copy = RetryErrors(exceptions.BadRequest, error_predicate=_bad_copy)
 
 
 def _empty_bucket(bucket):
-    """Empty a bucket of all existing blobs.
-
-    This accounts (partially) for the eventual consistency of the
-    list blobs API call.
-    """
-    for blob in bucket.list_blobs():
+    """Empty a bucket of all existing blobs (including multiple versions)."""
+    for blob in bucket.list_blobs(versions=True):
         try:
             blob.delete()
-        except exceptions.NotFound:  # eventual consistency
+        except exceptions.NotFound:
             pass
 
 
