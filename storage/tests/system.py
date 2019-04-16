@@ -87,6 +87,7 @@ def setUpModule():
 def tearDownModule():
     errors = (exceptions.Conflict, exceptions.TooManyRequests)
     retry = RetryErrors(errors, max_tries=9)
+    retry(_empty_bucket(Config.TEST_BUCKET))
     retry(Config.TEST_BUCKET.delete)(force=True)
 
 
