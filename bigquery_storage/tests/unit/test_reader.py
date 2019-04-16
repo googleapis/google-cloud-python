@@ -419,15 +419,15 @@ def test_to_dataframe_by_page(class_under_test, mock_client):
     ]
     avro_schema = _bq_to_avro_schema(bq_columns)
     read_session = _generate_read_session(avro_schema)
-    bq_blocks_1 = [
-        [{"int_col": 123, "bool_col": True}, {"int_col": 234, "bool_col": False}],
-        [{"int_col": 345, "bool_col": True}, {"int_col": 456, "bool_col": False}],
-    ]
+    block_1 = [{"int_col": 123, "bool_col": True}, {"int_col": 234, "bool_col": False}]
+    block_2 = [{"int_col": 345, "bool_col": True}, {"int_col": 456, "bool_col": False}]
+    block_3 = [{"int_col": 567, "bool_col": True}, {"int_col": 789, "bool_col": False}]
+    block_4 = [{"int_col": 890, "bool_col": True}]
+    # Break blocks into two groups to test that iteration continues across
+    # reconnection.
+    bq_blocks_1 = [block_1, block_2]
+    bq_blocks_2 = [block_3, block_4]
     avro_blocks_1 = _bq_to_avro_blocks(bq_blocks_1, avro_schema)
-    bq_blocks_2 = [
-        [{"int_col": 567, "bool_col": True}, {"int_col": 789, "bool_col": False}],
-        [{"int_col": 890, "bool_col": True}],
-    ]
     avro_blocks_2 = _bq_to_avro_blocks(bq_blocks_2, avro_schema)
 
     mock_client.read_rows.return_value = avro_blocks_2
@@ -447,36 +447,33 @@ def test_to_dataframe_by_page(class_under_test, mock_client):
     page_1 = next(pages)
     pandas.testing.assert_frame_equal(
         page_1.to_dataframe().reset_index(drop=True),
-        pandas.DataFrame(
-            {"int_col": [123, 234], "bool_col": [True, False]},
-            columns=["int_col", "bool_col"],
-        ).reset_index(drop=True),
+        pandas.DataFrame(block_1, columns=["int_col", "bool_col"]).reset_index(
+            drop=True
+        ),
     )
 
     page_2 = next(pages)
     pandas.testing.assert_frame_equal(
         page_2.to_dataframe().reset_index(drop=True),
-        pandas.DataFrame(
-            {"int_col": [345, 456], "bool_col": [True, False]},
-            columns=["int_col", "bool_col"],
-        ).reset_index(drop=True),
+        pandas.DataFrame(block_2, columns=["int_col", "bool_col"]).reset_index(
+            drop=True
+        ),
     )
 
     page_3 = next(pages)
     pandas.testing.assert_frame_equal(
         page_3.to_dataframe().reset_index(drop=True),
-        pandas.DataFrame(
-            {"int_col": [567, 789], "bool_col": [True, False]},
-            columns=["int_col", "bool_col"],
-        ).reset_index(drop=True),
+        pandas.DataFrame(block_3, columns=["int_col", "bool_col"]).reset_index(
+            drop=True
+        ),
     )
 
     page_4 = next(pages)
     pandas.testing.assert_frame_equal(
         page_4.to_dataframe().reset_index(drop=True),
-        pandas.DataFrame(
-            {"int_col": [890], "bool_col": [True]}, columns=["int_col", "bool_col"]
-        ).reset_index(drop=True),
+        pandas.DataFrame(block_4, columns=["int_col", "bool_col"]).reset_index(
+            drop=True
+        ),
     )
 
 
