@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-scheduler/#history
 
+## 0.3.0
+
+04-15-2019 10:32 PDT
+
+
+### New Features
+- add auth and configurable timeouts to v1beta1 (via synth). ([#7665](https://github.com/googleapis/google-cloud-python/pull/7665))
+
 ## 0.2.0
 
 04-01-2019 15:39 PDT
