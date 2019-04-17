@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Types for Cloud Security Command Center API Client &#8212; google-cloud 11efc46 documentation</title>
+    <title>Types for Cloud Security Command Center API Client &#8212; google-cloud 6dce574 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -766,8 +766,18 @@ security_marks.marks.marka  The supported operators are:  -
 integer values. -  <code class="docutils literal notranslate"><span class="pre">:</span></code>, meaning substring matching, for
 strings.  The supported value types are:  -  string literals
 in quotes. -  integer literals without quotes. -  boolean
-literals <code class="docutils literal notranslate"><span class="pre">true</span></code> and <code class="docutils literal notranslate"><span class="pre">false</span></code> without quotes.  For example,
-<code class="docutils literal notranslate"><span class="pre">resource_properties.size</span> <span class="pre">=</span> <span class="pre">100</span></code> is a valid filter string.</p>
+literals <code class="docutils literal notranslate"><span class="pre">true</span></code> and <code class="docutils literal notranslate"><span class="pre">false</span></code> without quotes.  The following
+field and operator combinations are supported: name | <code class="docutils literal notranslate"><span class="pre">=</span></code>
+update_time | <code class="docutils literal notranslate"><span class="pre">&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&gt;=</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;=</span></code>
+iam_policy.policy_blob | ‘=’, ‘:’ resource_properties |
+‘=’, ‘:’, <code class="docutils literal notranslate"><span class="pre">&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&gt;=</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;=</span></code> security_marks | ‘=’,
+‘:’ security_center_properties.resource_name | ‘=’, ‘:’
+security_center_properties.resource_type | ‘=’, ‘:’
+security_center_properties.resource_parent | ‘=’, ‘:’
+security_center_properties.resource_project | ‘=’, ‘:’
+security_center_properties.resource_owners | ‘=’, ‘:’  For
+example, <code class="docutils literal notranslate"><span class="pre">resource_properties.size</span> <span class="pre">=</span> <span class="pre">100</span></code> is a valid filter
+string.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -969,8 +979,13 @@ The supported operators are:  -  <code class="docutils literal notranslate"><spa
 meaning substring matching, for strings.  The supported value
 types are:  -  string literals in quotes. -  integer literals
 without quotes. -  boolean literals <code class="docutils literal notranslate"><span class="pre">true</span></code> and <code class="docutils literal notranslate"><span class="pre">false</span></code>
-without quotes.  For example, <code class="docutils literal notranslate"><span class="pre">source_properties.size</span> <span class="pre">=</span> <span class="pre">100</span></code>
-is a valid filter string.</p>
+without quotes.  The following field and operator combinations
+are supported: name | <code class="docutils literal notranslate"><span class="pre">=</span></code> parent | ‘=’, ‘:’ resource_name
+| ‘=’, ‘:’ state | ‘=’, ‘:’ category | ‘=’, ‘:’
+external_uri | ‘=’, ‘:’ event_time | <code class="docutils literal notranslate"><span class="pre">&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&gt;=</span></code>,
+<code class="docutils literal notranslate"><span class="pre">&lt;=</span></code> security_marks | ‘=’, ‘:’ source_properties | ‘=’,
+‘:’, <code class="docutils literal notranslate"><span class="pre">&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&gt;=</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;=</span></code>  For example,
+<code class="docutils literal notranslate"><span class="pre">source_properties.size</span> <span class="pre">=</span> <span class="pre">100</span></code> is a valid filter string.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -980,8 +995,9 @@ is a valid filter string.</p>
 (including <code class="docutils literal notranslate"><span class="pre">state_change</span></code>). The string value should follow
 SQL syntax: comma separated list of fields. For example:
 “parent,resource_name”.  The following fields are supported:
--  resource_name -  category -  state -  state_change -
-parent</p>
+-  resource_name -  category -  state -  parent  The
+following fields are supported when compare_duration is set:
+-  state_change</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1215,8 +1231,18 @@ security_marks.marks.marka  The supported operators are:  -
 integer values. -  <code class="docutils literal notranslate"><span class="pre">:</span></code>, meaning substring matching, for
 strings.  The supported value types are:  -  string literals
 in quotes. -  integer literals without quotes. -  boolean
-literals <code class="docutils literal notranslate"><span class="pre">true</span></code> and <code class="docutils literal notranslate"><span class="pre">false</span></code> without quotes.  For example,
-<code class="docutils literal notranslate"><span class="pre">resource_properties.size</span> <span class="pre">=</span> <span class="pre">100</span></code> is a valid filter string.</p>
+literals <code class="docutils literal notranslate"><span class="pre">true</span></code> and <code class="docutils literal notranslate"><span class="pre">false</span></code> without quotes.  The following
+are the allowed field and operator combinations: name | <code class="docutils literal notranslate"><span class="pre">=</span></code>
+update_time | <code class="docutils literal notranslate"><span class="pre">&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&gt;=</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;=</span></code>
+iam_policy.policy_blob | ‘=’, ‘:’ resource_properties |
+‘=’, ‘:’, <code class="docutils literal notranslate"><span class="pre">&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&gt;=</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;=</span></code> security_marks | ‘=’,
+‘:’ security_center_properties.resource_name | ‘=’, ‘:’
+security_center_properties.resource_type | ‘=’, ‘:’
+security_center_properties.resource_parent | ‘=’, ‘:’
+security_center_properties.resource_project | ‘=’, ‘:’
+security_center_properties.resource_owners | ‘=’, ‘:’  For
+example, <code class="docutils literal notranslate"><span class="pre">resource_properties.size</span> <span class="pre">=</span> <span class="pre">100</span></code> is a valid filter
+string.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1231,7 +1257,13 @@ suffix ” desc” should be appended to the field name. For
 example: “name desc,resource_properties.a_property”.
 Redundant space characters in the syntax are insignificant.
 “name desc,resource_properties.a_property” and ” name desc ,
-resource_properties.a_property ” are equivalent.</p>
+resource_properties.a_property ” are equivalent.  The
+following fields are supported: name update_time
+resource_properties security_marks
+security_center_properties.resource_name
+security_center_properties.resource_parent
+security_center_properties.resource_project
+security_center_properties.resource_type</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1456,8 +1488,13 @@ The supported operators are:  -  <code class="docutils literal notranslate"><spa
 meaning substring matching, for strings.  The supported value
 types are:  -  string literals in quotes. -  integer literals
 without quotes. -  boolean literals <code class="docutils literal notranslate"><span class="pre">true</span></code> and <code class="docutils literal notranslate"><span class="pre">false</span></code>
-without quotes.  For example, <code class="docutils literal notranslate"><span class="pre">source_properties.size</span> <span class="pre">=</span> <span class="pre">100</span></code>
-is a valid filter string.</p>
+without quotes.  The following field and operator combinations
+are supported: name | <code class="docutils literal notranslate"><span class="pre">=</span></code> parent | ‘=’, ‘:’ resource_name
+| ‘=’, ‘:’ state | ‘=’, ‘:’ category | ‘=’, ‘:’
+external_uri | ‘=’, ‘:’ event_time | <code class="docutils literal notranslate"><span class="pre">&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&gt;=</span></code>,
+<code class="docutils literal notranslate"><span class="pre">&lt;=</span></code> security_marks | ‘=’, ‘:’ source_properties | ‘=’,
+‘:’, <code class="docutils literal notranslate"><span class="pre">&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&gt;=</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;=</span></code>  For example,
+<code class="docutils literal notranslate"><span class="pre">source_properties.size</span> <span class="pre">=</span> <span class="pre">100</span></code> is a valid filter string.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1472,7 +1509,9 @@ suffix ” desc” should be appended to the field name. For
 example: “name desc,source_properties.a_property”. Redundant
 space characters in the syntax are insignificant. “name
 desc,source_properties.a_property” and ” name desc ,
-source_properties.a_property ” are equivalent.</p>
+source_properties.a_property ” are equivalent.  The
+following fields are supported: name parent state category
+resource_name event_time source_properties security_marks</p>
 </dd></dl>
 
 <dl class="attribute">

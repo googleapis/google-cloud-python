@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Client for Cloud Security Command Center API &#8212; google-cloud 11efc46 documentation</title>
+    <title>Client for Cloud Security Command Center API &#8212; google-cloud 6dce574 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -76,6 +76,12 @@ your own client library.</li>
 </tr>
 </tbody>
 </table>
+<dl class="classmethod">
+<dt id="google.cloud.securitycenter_v1.SecurityCenterClient.asset_path">
+<em class="property">classmethod </em><code class="descname">asset_path</code><span class="sig-paren">(</span><em>organization</em>, <em>asset</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/securitycenter_v1/gapic/security_center_client.html#SecurityCenterClient.asset_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.securitycenter_v1.SecurityCenterClient.asset_path" title="Permalink to this definition">#</a></dt>
+<dd><p>Return a fully-qualified asset string.</p>
+</dd></dl>
+
 <dl class="classmethod">
 <dt id="google.cloud.securitycenter_v1.SecurityCenterClient.asset_security_marks_path">
 <em class="property">classmethod </em><code class="descname">asset_security_marks_path</code><span class="sig-paren">(</span><em>organization</em>, <em>asset</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/securitycenter_v1/gapic/security_center_client.html#SecurityCenterClient.asset_security_marks_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.securitycenter_v1.SecurityCenterClient.asset_security_marks_path" title="Permalink to this definition">#</a></dt>
@@ -494,6 +500,15 @@ those defined in the Asset resource. Examples include:</p>
 <li>integer literals without quotes.</li>
 <li>boolean literals <code class="docutils literal notranslate"><span class="pre">true</span></code> and <code class="docutils literal notranslate"><span class="pre">false</span></code> without quotes.</li>
 </ul>
+<p>The following field and operator combinations are supported: name |
+<code class="docutils literal notranslate"><span class="pre">=</span></code> update_time | <code class="docutils literal notranslate"><span class="pre">&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&gt;=</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;=</span></code>
+iam_policy.policy_blob | ‘=’, ‘:’ resource_properties | ‘=’, ‘:’,
+<code class="docutils literal notranslate"><span class="pre">&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&gt;=</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;=</span></code> security_marks | ‘=’, ‘:’
+security_center_properties.resource_name | ‘=’, ‘:’
+security_center_properties.resource_type | ‘=’, ‘:’
+security_center_properties.resource_parent | ‘=’, ‘:’
+security_center_properties.resource_project | ‘=’, ‘:’
+security_center_properties.resource_owners | ‘=’, ‘:’</p>
 <p>For example, <code class="docutils literal notranslate"><span class="pre">resource_properties.size</span> <span class="pre">=</span> <span class="pre">100</span></code> is a valid filter
 string.</p>
 </li>
@@ -615,8 +630,11 @@ comma separated list of fields. For example: “parent,resource_name”.</p>
 <li>resource_name</li>
 <li>category</li>
 <li>state</li>
-<li>state_change</li>
 <li>parent</li>
+</ul>
+<p>The following fields are supported when compare_duration is set:</p>
+<ul>
+<li>state_change</li>
 </ul>
 </li>
 <li><strong>filter</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Expression that defines the filter to apply across findings. The
@@ -642,6 +660,11 @@ higher precedence than <code class="docutils literal notranslate"><span class="p
 <li>integer literals without quotes.</li>
 <li>boolean literals <code class="docutils literal notranslate"><span class="pre">true</span></code> and <code class="docutils literal notranslate"><span class="pre">false</span></code> without quotes.</li>
 </ul>
+<p>The following field and operator combinations are supported: name |
+<code class="docutils literal notranslate"><span class="pre">=</span></code> parent | ‘=’, ‘:’ resource_name | ‘=’, ‘:’ state | ‘=’, ‘:’
+category | ‘=’, ‘:’ external_uri | ‘=’, ‘:’ event_time | <code class="docutils literal notranslate"><span class="pre">&gt;</span></code>,
+<code class="docutils literal notranslate"><span class="pre">&lt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&gt;=</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;=</span></code> security_marks | ‘=’, ‘:’ source_properties |
+‘=’, ‘:’, <code class="docutils literal notranslate"><span class="pre">&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&gt;=</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;=</span></code></p>
 <p>For example, <code class="docutils literal notranslate"><span class="pre">source_properties.size</span> <span class="pre">=</span> <span class="pre">100</span></code> is a valid filter string.</p>
 </li>
 <li><strong>read_time</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.securitycenter_v1.types.Timestamp" title="google.cloud.securitycenter_v1.types.Timestamp"><em>Timestamp</em></a><em>]</em>) – <p>Time used as a reference point when filtering findings. The filter is
@@ -771,10 +794,19 @@ those defined in the Asset resource. Examples include:</p>
 <li>integer literals without quotes.</li>
 <li>boolean literals <code class="docutils literal notranslate"><span class="pre">true</span></code> and <code class="docutils literal notranslate"><span class="pre">false</span></code> without quotes.</li>
 </ul>
+<p>The following are the allowed field and operator combinations: name |
+<code class="docutils literal notranslate"><span class="pre">=</span></code> update_time | <code class="docutils literal notranslate"><span class="pre">&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&gt;=</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;=</span></code>
+iam_policy.policy_blob | ‘=’, ‘:’ resource_properties | ‘=’, ‘:’,
+<code class="docutils literal notranslate"><span class="pre">&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&gt;=</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;=</span></code> security_marks | ‘=’, ‘:’
+security_center_properties.resource_name | ‘=’, ‘:’
+security_center_properties.resource_type | ‘=’, ‘:’
+security_center_properties.resource_parent | ‘=’, ‘:’
+security_center_properties.resource_project | ‘=’, ‘:’
+security_center_properties.resource_owners | ‘=’, ‘:’</p>
 <p>For example, <code class="docutils literal notranslate"><span class="pre">resource_properties.size</span> <span class="pre">=</span> <span class="pre">100</span></code> is a valid filter
 string.</p>
 </li>
-<li><strong>order_by</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Expression that defines what fields and order to use for sorting. The
+<li><strong>order_by</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Expression that defines what fields and order to use for sorting. The
 string value should follow SQL syntax: comma separated list of fields.
 For example: “name,resource_properties.a_property”. The default
 sorting order is ascending. To specify descending order for a field, a
@@ -782,7 +814,14 @@ suffix ” desc” should be appended to the field name. For example: “name
 desc,resource_properties.a_property”. Redundant space characters in
 the syntax are insignificant. “name
 desc,resource_properties.a_property” and ” name desc ,
-resource_properties.a_property ” are equivalent.</li>
+resource_properties.a_property ” are equivalent.</p>
+<p>The following fields are supported: name update_time
+resource_properties security_marks
+security_center_properties.resource_name
+security_center_properties.resource_parent
+security_center_properties.resource_project
+security_center_properties.resource_type</p>
+</li>
 <li><strong>read_time</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.securitycenter_v1.types.Timestamp" title="google.cloud.securitycenter_v1.types.Timestamp"><em>Timestamp</em></a><em>]</em>) – <p>Time used as a reference point when filtering assets. The filter is limited
 to assets existing at the supplied time and their values are those at that
 specific time. Absence of this field will default to the API’s version of
@@ -917,16 +956,24 @@ higher precedence than <code class="docutils literal notranslate"><span class="p
 <li>integer literals without quotes.</li>
 <li>boolean literals <code class="docutils literal notranslate"><span class="pre">true</span></code> and <code class="docutils literal notranslate"><span class="pre">false</span></code> without quotes.</li>
 </ul>
+<p>The following field and operator combinations are supported: name |
+<code class="docutils literal notranslate"><span class="pre">=</span></code> parent | ‘=’, ‘:’ resource_name | ‘=’, ‘:’ state | ‘=’, ‘:’
+category | ‘=’, ‘:’ external_uri | ‘=’, ‘:’ event_time | <code class="docutils literal notranslate"><span class="pre">&gt;</span></code>,
+<code class="docutils literal notranslate"><span class="pre">&lt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&gt;=</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;=</span></code> security_marks | ‘=’, ‘:’ source_properties |
+‘=’, ‘:’, <code class="docutils literal notranslate"><span class="pre">&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&gt;=</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;=</span></code></p>
 <p>For example, <code class="docutils literal notranslate"><span class="pre">source_properties.size</span> <span class="pre">=</span> <span class="pre">100</span></code> is a valid filter string.</p>
 </li>
-<li><strong>order_by</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Expression that defines what fields and order to use for sorting. The
+<li><strong>order_by</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Expression that defines what fields and order to use for sorting. The
 string value should follow SQL syntax: comma separated list of fields.
 For example: “name,resource_properties.a_property”. The default
 sorting order is ascending. To specify descending order for a field, a
 suffix ” desc” should be appended to the field name. For example: “name
 desc,source_properties.a_property”. Redundant space characters in the
 syntax are insignificant. “name desc,source_properties.a_property” and
-” name desc , source_properties.a_property ” are equivalent.</li>
+” name desc , source_properties.a_property ” are equivalent.</p>
+<p>The following fields are supported: name parent state category
+resource_name event_time source_properties security_marks</p>
+</li>
 <li><strong>read_time</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.securitycenter_v1.types.Timestamp" title="google.cloud.securitycenter_v1.types.Timestamp"><em>Timestamp</em></a><em>]</em>) – <p>Time used as a reference point when filtering findings. The filter is
 limited to findings existing at the supplied time and their values are
 those at that specific time. Absence of this field will default to the
