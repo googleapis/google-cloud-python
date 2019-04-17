@@ -19,7 +19,6 @@ import tempfile
 import time
 import unittest
 
-import pytest
 import requests
 import six
 
