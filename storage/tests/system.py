@@ -780,11 +780,9 @@ class TestStorageSignURLs(unittest.TestCase):
 
         self._create_signed_list_blobs_url_helper(expiration=now + delta, version="v2")
 
-    @pytest.mark.skip(reason="Back-end case-flattening bug: revisit 2019-04-03")
     def test_create_signed_list_blobs_url_v4(self):
         self._create_signed_list_blobs_url_helper(version="v4")
 
-    @pytest.mark.skip(reason="Back-end case-flattening bug: revisit 2019-04-03")
     def test_create_signed_list_blobs_url_v4_w_expiration(self):
         now = datetime.datetime.utcnow()
         delta = datetime.timedelta(seconds=10)
