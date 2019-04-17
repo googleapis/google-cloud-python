@@ -97,12 +97,6 @@ _NUM_RETRIES_MESSAGE = (
 _READ_LESS_THAN_SIZE = (
     "Size {:d} was specified but the file-like object only had " "{:d} bytes remaining."
 )
-_SIGNED_URL_V2_DEFAULT_MESSAGE = (
-    "You have generated a signed URL using the default v2 signing "
-    "implementation. In the future, this will default to v4. "
-    "You may experience breaking changes if you use longer than 7 day "
-    "expiration times with v4. To opt-in to the behavior specify version='v2'."
-)
 
 _DEFAULT_CHUNKSIZE = 104857600  # 1024 * 1024 B * 100 = 100 MB
 _MAX_MULTIPART_SIZE = 8388608  # 8 MB
