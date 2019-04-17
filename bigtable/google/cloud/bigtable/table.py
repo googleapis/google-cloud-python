@@ -695,9 +695,13 @@ class _RetryableMutateRowsWorker(object):
         """
         max_thread_to_start = min(self.no_of_batches, _MAX_THREAD_LIMIT)
         lock = threading.Lock()
+        thread_list = []
         for _ in range(max_thread_to_start):
-            threading.Thread(target=self.thread_func, args=(lock, retry,)).start()
-            
+            thread = threading.Thread(target=self.thread_func, args=(lock, retry,))
+            thread.start()
+            thread_list.append(thread)
+        for thread in thread_list:
+            thread.join()
         return self.responses_statuses
 
     def thread_func(self,lock ,retry=DEFAULT_RETRY):
