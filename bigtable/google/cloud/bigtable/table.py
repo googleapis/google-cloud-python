@@ -13,7 +13,7 @@
 # limitations under the License.
 
 """User-friendly container for Google Cloud Bigtable Table."""
-
+import threading
 
 from grpc import StatusCode
 
@@ -50,7 +50,7 @@ import warnings
 #  google.bigtable.v2#google.bigtable.v2.MutateRowRequest)
 _MAX_BULK_MUTATIONS = 100000
 VIEW_NAME_ONLY = enums.Table.View.NAME_ONLY
-
+_MAX_THREAD_LIMIT = 10
 
 class _BigtableRetryableError(Exception):
     """Retry-able error expected by the default retry strategy."""
@@ -476,7 +476,7 @@ class Table(object):
         )
         return self.read_rows(**kwargs)
 
-    def mutate_rows(self, rows, retry=DEFAULT_RETRY):
+    def mutate_rows(self, batches, retry=DEFAULT_RETRY):
         """Mutates multiple rows in bulk.
 
         For example:
@@ -514,7 +514,7 @@ class Table(object):
         retryable_mutate_rows = _RetryableMutateRowsWorker(
             self._instance._client,
             self.name,
-            rows,
+            batches,
             app_profile_id=self._app_profile_id,
             timeout=self.mutation_timeout,
         )
@@ -671,13 +671,16 @@ class _RetryableMutateRowsWorker(object):
     )
     # pylint: enable=unsubscriptable-object
 
-    def __init__(self, client, table_name, rows, app_profile_id=None, timeout=None):
+    def __init__(self, client, table_name, batches, app_profile_id=None, timeout=None):
         self.client = client
         self.table_name = table_name
-        self.rows = rows
+        self.batches = dict([(index,batch) for index, batch in enumerate(self.batches)])
         self.app_profile_id = app_profile_id
-        self.responses_statuses = [None] * len(self.rows)
+        self.responses_statuses = dict([(index,[None] * len(batch)) for index, batch in enumerate(self.batches)])
         self.timeout = timeout
+        self.latest_executing_batch_index = 0
+        self.no_of_batches = len(batches)
+        self.is_operation_completed = False
 
     def __call__(self, retry=DEFAULT_RETRY):
         """Attempt to mutate all rows and retry rows with transient errors.
@@ -690,26 +693,44 @@ class _RetryableMutateRowsWorker(object):
                   corresponding to success or failure of each row mutation
                   sent. These will be in the same order as the ``rows``.
         """
-        mutate_rows = self._do_mutate_retryable_rows
-        if retry:
-            mutate_rows = retry(self._do_mutate_retryable_rows)
-
-        try:
-            mutate_rows()
-        except (_BigtableRetryableError, RetryError):
-            # - _BigtableRetryableError raised when no retry strategy is used
-            #   and a retryable error on a mutation occurred.
-            # - RetryError raised when retry deadline is reached.
-            # In both cases, just return current `responses_statuses`.
-            pass
+        max_thread_to_start = min(self.no_of_batches, _MAX_THREAD_LIMIT)
+        lock = threading.Lock()
+        for _ in range(max_thread_to_start):
+            threading.Thread(target=self.thread_func, args=(lock, retry,)).start()
 
         return self.responses_statuses
+
+    def thread_func(self,lock ,retry=DEFAULT_RETRY):
+        while not self.is_operation_completed:
+
+            lock.acquire()
+            current_batch_index = self.latest_executing_batch_index
+            current_batch = self.batches[current_batch_index]
+            current_batch_response = self.responses_statuses[current_batch_index]
+            self.latest_executing_batch_index += 1
+            if self.latest_executing_batch_index >= self.no_of_batches:
+                self.is_operation_completed = False
+            lock.release()
+
+            mutate_rows = self._do_mutate_retryable_rows
+            if retry:
+                mutate_rows = retry(self._do_mutate_retryable_rows)
+
+            try:
+                mutate_rows(current_batch, current_batch_index, current_batch_response)
+            except (_BigtableRetryableError, RetryError):
+                # - _BigtableRetryableError raised when no retry strategy is used
+                #   and a retryable error on a mutation occurred.
+                # - RetryError raised when retry deadline is reached.
+                # In both cases, just return current `responses_statuses`.
+                pass
+
 
     @staticmethod
     def _is_retryable(status):
         return status is None or status.code in _RetryableMutateRowsWorker.RETRY_CODES
 
-    def _do_mutate_retryable_rows(self):
+    def _do_mutate_retryable_rows(self, batch, batch_index,responses_statuses):
         """Mutate all the rows that are eligible for retry.
 
         A row is eligible for retry if it has not been tried or if it resulted
@@ -727,9 +748,9 @@ class _RetryableMutateRowsWorker(object):
         """
         retryable_rows = []
         index_into_all_rows = []
-        for index, status in enumerate(self.responses_statuses):
+        for index, status in enumerate(responses_statuses):
             if self._is_retryable(status):
-                retryable_rows.append(self.rows[index])
+                retryable_rows.append(batch[index])
                 index_into_all_rows.append(index)
 
         if not retryable_rows:
@@ -764,11 +785,14 @@ class _RetryableMutateRowsWorker(object):
             for entry in response.entries:
                 num_responses += 1
                 index = index_into_all_rows[entry.index]
-                self.responses_statuses[index] = entry.status
+                responses_statuses[index] = entry.status
                 if self._is_retryable(entry.status):
                     num_retryable_responses += 1
                 if entry.status.code == 0:
-                    self.rows[index].clear()
+                    batch[index].clear()
+
+        self.responses_statuses[batch_index] = responses_statuses
+        self.batches[batch_index] = batch
 
         if len(retryable_rows) != num_responses:
             raise RuntimeError(
@@ -781,7 +805,7 @@ class _RetryableMutateRowsWorker(object):
         if num_retryable_responses:
             raise _BigtableRetryableError
 
-        return self.responses_statuses
+        return responses_statuses
 
 
 class ClusterState(object):
