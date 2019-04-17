@@ -15,7 +15,7 @@
 - Protoc-generated serialization update. ([#7081](https://github.com/googleapis/google-cloud-python/pull/7081))
 
 ### New Features
-- DLP: Add support for filtering job triggers, add CryptoDeterministicConfig, update docs/conf.py. (via synth). ([#7390](https://github.com/googleapis/google-cloud-python/pull/7390))
+- Add support for filtering job triggers; add CryptoDeterministicConfig; update docs/conf.py. (via synth). ([#7390](https://github.com/googleapis/google-cloud-python/pull/7390))
 
 ### Documentation
 - Updated client library documentation URLs. ([#7307](https://github.com/googleapis/google-cloud-python/pull/7307))
