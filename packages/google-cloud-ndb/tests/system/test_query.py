@@ -347,3 +347,18 @@ def test_offset_and_limit_with_or_filter(dispose_of):
     assert len(results) == 2
 
     assert [entity.foo for entity in results] == [1, 2]
+
+
+@pytest.mark.usefixtures("client_context")
+def test_iter_all_of_a_kind(ds_entity):
+    for i in range(5):
+        entity_id = test_utils.system.unique_resource_id()
+        ds_entity(KIND, entity_id, foo=i)
+
+    class SomeKind(ndb.Model):
+        foo = ndb.IntegerProperty()
+
+    query = SomeKind.query().order("foo")
+    results = list(query)
+    assert len(results) == 5
+    assert [entity.foo for entity in results] == [0, 1, 2, 3, 4]

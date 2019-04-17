@@ -12,19 +12,32 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import itertools
+import base64
 
 from unittest import mock
 
 import pytest
 
+from google.cloud.datastore_v1.proto import datastore_pb2
 from google.cloud.datastore_v1.proto import entity_pb2
 from google.cloud.datastore_v1.proto import query_pb2
 
 from google.cloud.ndb import _datastore_query
+from google.cloud.ndb import exceptions
 from google.cloud.ndb import key as key_module
+from google.cloud.ndb import model
 from google.cloud.ndb import query as query_module
 from google.cloud.ndb import tasklets
+
+
+def future_result(result):
+    future = tasklets.Future()
+    future.set_result(result)
+    return future
+
+
+def future_results(*results):
+    return [future_result(result) for result in results]
 
 
 def test_make_filter():
@@ -59,214 +72,619 @@ def test_make_composite_and_filter():
     assert _datastore_query.make_composite_and_filter(filters) == expected
 
 
-@pytest.mark.usefixtures("in_context")
 class Test_fetch:
     @staticmethod
-    @mock.patch(
-        "google.cloud.ndb._datastore_query._Result.entity",
-        lambda self, projection: self.result_type + self.result_pb,
-    )
-    @mock.patch("google.cloud.ndb._datastore_query._run_query")
-    @mock.patch("google.cloud.ndb._datastore_query._query_to_protobuf")
-    def test_project_from_query(_query_to_protobuf, _run_query):
+    @pytest.mark.usefixtures("in_context")
+    @mock.patch("google.cloud.ndb._datastore_query.iterate")
+    def test_fetch(iterate):
+        results = iterate.return_value
+        results.has_next_async.side_effect = future_results(
+            True, True, True, False
+        )
+        results.next.side_effect = ["a", "b", "c", "d"]
+        assert _datastore_query.fetch("foo").result() == ["a", "b", "c"]
+        iterate.assert_called_once_with("foo")
+
+
+class Test_iterate:
+    @staticmethod
+    @mock.patch("google.cloud.ndb._datastore_query._QueryIteratorImpl")
+    def test_iterate_single(QueryIterator):
         query = mock.Mock(
-            project="myapp",
-            filters=None,
-            order_by=None,
-            namespace="zeta",
-            projection=None,
-            spec=("app", "filters", "namespace", "projection"),
+            filters=mock.Mock(_multiquery=False, spec=("_multiquery",)),
+            spec=("filters",),
         )
-        query_pb = _query_to_protobuf.return_value
-
-        _run_query_future = tasklets.Future()
-        _run_query.return_value = _run_query_future
-
-        tasklet = _datastore_query.fetch(query)
-        _run_query_future.set_result([("a", "b"), ("c", "d"), ("e", "f")])
-        assert tasklet.result() == ["ab", "cd", "ef"]
-
-        _query_to_protobuf.assert_called_once_with(query, None)
-        _run_query.assert_called_once_with("myapp", "zeta", query_pb)
+        iterator = QueryIterator.return_value
+        assert _datastore_query.iterate(query) is iterator
+        QueryIterator.assert_called_once_with(query)
 
     @staticmethod
-    @mock.patch(
-        "google.cloud.ndb._datastore_query._Result.entity",
-        lambda self, projection: self.result_type + self.result_pb,
-    )
-    @mock.patch("google.cloud.ndb._datastore_query._run_query")
-    @mock.patch("google.cloud.ndb._datastore_query._query_to_protobuf")
-    def test_project_from_context(_query_to_protobuf, _run_query):
+    @mock.patch("google.cloud.ndb._datastore_query._MultiQueryIteratorImpl")
+    def test_iterate_multi(MultiQueryIterator):
         query = mock.Mock(
-            project=None,
-            filters=None,
-            order_by=None,
-            namespace=None,
-            projection=None,
-            spec=("app", "filters", "namespace", "projection"),
+            filters=mock.Mock(_multiquery=True, spec=("_multiquery",)),
+            spec=("filters",),
         )
-        query_pb = _query_to_protobuf.return_value
+        iterator = MultiQueryIterator.return_value
+        assert _datastore_query.iterate(query) is iterator
+        MultiQueryIterator.assert_called_once_with(query)
 
-        _run_query_future = tasklets.Future()
-        _run_query.return_value = _run_query_future
 
-        tasklet = _datastore_query.fetch(query)
-        _run_query_future.set_result([("a", "b"), ("c", "d"), ("e", "f")])
-        assert tasklet.result() == ["ab", "cd", "ef"]
-
-        _query_to_protobuf.assert_called_once_with(query, None)
-        _run_query.assert_called_once_with("testing", None, query_pb)
+class TestQueryIterator:
+    @staticmethod
+    def test_has_next():
+        with pytest.raises(NotImplementedError):
+            _datastore_query.QueryIterator().has_next()
 
     @staticmethod
-    @mock.patch(
-        "google.cloud.ndb._datastore_query._Result.entity",
-        lambda self, projection: self.result_type + self.result_pb,
-    )
-    @mock.patch("google.cloud.ndb._datastore_query._run_query")
-    @mock.patch("google.cloud.ndb._datastore_query._query_to_protobuf")
-    def test_filter(_query_to_protobuf, _run_query):
-        filters = mock.Mock(
-            _to_filter=mock.Mock(return_value="thefilter"), spec="_to_filter"
-        )
-        query = mock.Mock(
-            project=None,
-            filters=filters,
-            order_by=None,
-            namespace=None,
-            projection=None,
-            spec=("app", "filters", "namespace", "projection"),
-        )
-        query_pb = _query_to_protobuf.return_value
-
-        _run_query_future = tasklets.Future()
-        _run_query.return_value = _run_query_future
-
-        tasklet = _datastore_query.fetch(query)
-        _run_query_future.set_result([("a", "b"), ("c", "d"), ("e", "f")])
-        assert tasklet.result() == ["ab", "cd", "ef"]
-
-        _query_to_protobuf.assert_called_once_with(query, "thefilter")
-        _run_query.assert_called_once_with("testing", None, query_pb)
+    def test_has_next_async():
+        with pytest.raises(NotImplementedError):
+            _datastore_query.QueryIterator().has_next_async()
 
     @staticmethod
-    @mock.patch(
-        "google.cloud.ndb._datastore_query._Result.entity",
-        lambda self, projection: self.result_type + self.result_pb,
-    )
-    @mock.patch(
-        "google.cloud.ndb._datastore_query._merge_results",
-        lambda result_sets, sortable: itertools.chain(*result_sets),
-    )
-    @mock.patch("google.cloud.ndb._datastore_query._run_query")
-    @mock.patch("google.cloud.ndb._datastore_query._query_to_protobuf")
-    def test_filters(_query_to_protobuf, _run_query):
-        filters = mock.Mock(
-            _to_filter=mock.Mock(return_value=["filter1", "filter2"]),
-            spec="_to_filter",
-        )
-        query = query_module.QueryOptions(filters=filters)
-
-        _run_query_future1 = tasklets.Future()
-        _run_query_future2 = tasklets.Future()
-        _run_query.side_effect = [_run_query_future1, _run_query_future2]
-
-        tasklet = _datastore_query.fetch(query)
-        _run_query_future1.set_result([("a", "1"), ("b", "2"), ("c", "3")])
-        _run_query_future2.set_result([("d", "4"), ("e", "5"), ("f", "6")])
-        assert tasklet.result() == ["a1", "b2", "c3", "d4", "e5", "f6"]
-
-        assert _query_to_protobuf.call_count == 2
-        assert _run_query.call_count == 2
+    def test_probably_has_next():
+        with pytest.raises(NotImplementedError):
+            _datastore_query.QueryIterator().probably_has_next()
 
     @staticmethod
-    @mock.patch(
-        "google.cloud.ndb._datastore_query._Result.entity",
-        lambda self, projection: self.result_type + self.result_pb,
-    )
-    @mock.patch(
-        "google.cloud.ndb._datastore_query._merge_results",
-        lambda result_sets, sortable: itertools.chain(*result_sets),
-    )
-    @mock.patch("google.cloud.ndb._datastore_query._run_query")
-    @mock.patch("google.cloud.ndb._datastore_query._query_to_protobuf")
-    def test_filters_with_offset_and_limit(_query_to_protobuf, _run_query):
-        filters = mock.Mock(
-            _to_filter=mock.Mock(return_value=["filter1", "filter2"]),
-            spec="_to_filter",
-        )
-        query = query_module.QueryOptions(filters=filters, offset=2, limit=3)
+    def test_next():
+        with pytest.raises(NotImplementedError):
+            _datastore_query.QueryIterator().next()
 
-        _run_query_future1 = tasklets.Future()
-        _run_query_future2 = tasklets.Future()
-        _run_query.side_effect = [_run_query_future1, _run_query_future2]
-
-        tasklet = _datastore_query.fetch(query)
-        _run_query_future1.set_result([("a", "1"), ("b", "2"), ("c", "3")])
-        _run_query_future2.set_result([("d", "4"), ("e", "5"), ("f", "6")])
-        assert tasklet.result() == ["c3", "d4", "e5"]
-
-        assert query.offset == 2  # Not mutated
-        assert query.limit == 3  # Not mutated
-        assert _query_to_protobuf.call_count == 2
-        assert _run_query.call_count == 2
-
-
-class Test__merge_results:
     @staticmethod
-    def test_unordered():
-        def result(name):
-            return _datastore_query._Result(
-                None,
-                query_pb2.EntityResult(
-                    entity=entity_pb2.Entity(
-                        key=entity_pb2.Key(
-                            path=[
-                                entity_pb2.Key.PathElement(
-                                    kind="thiskind", name=name
-                                )
-                            ]
-                        )
-                    )
-                ),
-            )
+    def test_cursor_before():
+        with pytest.raises(NotImplementedError):
+            _datastore_query.QueryIterator().cursor_before()
 
-        result_sets = [
-            (result("a"), result("b"), result("c")),
-            (result("b"), result("d")),
+    @staticmethod
+    def test_cursor_after():
+        with pytest.raises(NotImplementedError):
+            _datastore_query.QueryIterator().cursor_after()
+
+    @staticmethod
+    def test_index_list():
+        with pytest.raises(NotImplementedError):
+            _datastore_query.QueryIterator().index_list()
+
+
+class Test_QueryIteratorImpl:
+    @staticmethod
+    def test_constructor():
+        iterator = _datastore_query._QueryIteratorImpl("foo")
+        assert iterator._query == "foo"
+        assert iterator._batch is None
+        assert iterator._index is None
+        assert iterator._has_next_batch is None
+        assert iterator._cursor_before is None
+        assert iterator._cursor_after is None
+        assert not iterator._raw
+
+    @staticmethod
+    def test_constructor_raw():
+        iterator = _datastore_query._QueryIteratorImpl("foo", raw=True)
+        assert iterator._query == "foo"
+        assert iterator._batch is None
+        assert iterator._index is None
+        assert iterator._has_next_batch is None
+        assert iterator._cursor_before is None
+        assert iterator._cursor_after is None
+        assert iterator._raw
+
+    @staticmethod
+    def test___iter__():
+        iterator = _datastore_query._QueryIteratorImpl("foo")
+        assert iter(iterator) is iterator
+
+    @staticmethod
+    def test_has_next():
+        iterator = _datastore_query._QueryIteratorImpl("foo")
+        iterator.has_next_async = mock.Mock(return_value=future_result("bar"))
+        assert iterator.has_next() == "bar"
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_has_next_async_not_started():
+        iterator = _datastore_query._QueryIteratorImpl("foo")
+
+        def dummy_next_batch():
+            iterator._index = 0
+            iterator._batch = ["a", "b", "c"]
+            return future_result(None)
+
+        iterator._next_batch = dummy_next_batch
+        assert iterator.has_next_async().result()
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_has_next_async_started():
+        iterator = _datastore_query._QueryIteratorImpl("foo")
+        iterator._index = 0
+        iterator._batch = ["a", "b", "c"]
+        assert iterator.has_next_async().result()
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_has_next_async_finished():
+        iterator = _datastore_query._QueryIteratorImpl("foo")
+        iterator._index = 3
+        iterator._batch = ["a", "b", "c"]
+        assert not iterator.has_next_async().result()
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_has_next_async_next_batch():
+        iterator = _datastore_query._QueryIteratorImpl("foo")
+        iterator._index = 3
+        iterator._batch = ["a", "b", "c"]
+        iterator._has_next_batch = True
+
+        def dummy_next_batch():
+            iterator._index = 0
+            iterator._batch = ["d", "e", "f"]
+            return future_result(None)
+
+        iterator._next_batch = dummy_next_batch
+        assert iterator.has_next_async().result()
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_has_next_async_next_batch_finished():
+        iterator = _datastore_query._QueryIteratorImpl("foo")
+        iterator._index = 3
+        iterator._batch = ["a", "b", "c"]
+        iterator._has_next_batch = True
+
+        def dummy_next_batch():
+            iterator._index = 3
+            iterator._batch = ["d", "e", "f"]
+            return future_result(None)
+
+        iterator._next_batch = dummy_next_batch
+        assert not iterator.has_next_async().result()
+
+    @staticmethod
+    def test_probably_has_next_not_started():
+        iterator = _datastore_query._QueryIteratorImpl("foo")
+        assert iterator.probably_has_next()
+
+    @staticmethod
+    def test_probably_has_next_more_batches():
+        iterator = _datastore_query._QueryIteratorImpl("foo")
+        iterator._batch = "foo"
+        iterator._has_next_batch = True
+        assert iterator.probably_has_next()
+
+    @staticmethod
+    def test_probably_has_next_in_batch():
+        iterator = _datastore_query._QueryIteratorImpl("foo")
+        iterator._batch = ["a", "b", "c"]
+        iterator._index = 1
+        assert iterator.probably_has_next()
+
+    @staticmethod
+    def test_probably_has_next_finished():
+        iterator = _datastore_query._QueryIteratorImpl("foo")
+        iterator._batch = ["a", "b", "c"]
+        iterator._index = 3
+        assert not iterator.probably_has_next()
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    @mock.patch("google.cloud.ndb._datastore_query._datastore_run_query")
+    def test__next_batch(_datastore_run_query):
+        entity_results = [
+            mock.Mock(entity="entity1", cursor=b"a"),
+            mock.Mock(entity="entity2", cursor=b"b"),
+            mock.Mock(entity="entity3", cursor=b"c"),
         ]
-        merged = _datastore_query._merge_results(result_sets, False)
-        expected = [result("a"), result("b"), result("c"), result("d")]
-        assert list(merged) == expected
+        _datastore_run_query.return_value = future_result(
+            mock.Mock(
+                batch=mock.Mock(
+                    entity_result_type=query_pb2.EntityResult.FULL,
+                    entity_results=entity_results,
+                    end_cursor=b"abc",
+                    more_results=query_pb2.QueryResultBatch.NO_MORE_RESULTS,
+                )
+            )
+        )
+
+        query = query_module.QueryOptions()
+        iterator = _datastore_query._QueryIteratorImpl(query)
+        assert iterator._next_batch().result() is None
+        assert iterator._index == 0
+        assert len(iterator._batch) == 3
+        assert iterator._batch[0].result_pb.entity == "entity1"
+        assert iterator._batch[0].result_type == query_pb2.EntityResult.FULL
+        assert iterator._batch[0].order_by is None
+        assert not iterator._has_next_batch
 
     @staticmethod
-    def test_ordered():
-        def result(name):
-            return _datastore_query._Result(
-                None,
-                query_pb2.EntityResult(
-                    entity=entity_pb2.Entity(
-                        key=entity_pb2.Key(
-                            path=[
-                                entity_pb2.Key.PathElement(
-                                    kind="thiskind", name=name
-                                )
-                            ]
-                        ),
-                        properties={
-                            "foo": entity_pb2.Value(string_value=name)
-                        },
-                    )
-                ),
-                order_by=[query_module.PropertyOrder("foo")],
-            )
-
-        result_sets = [
-            (result("a"), result("c")),
-            (result("b"), result("c"), result("d")),
+    @pytest.mark.usefixtures("in_context")
+    @mock.patch("google.cloud.ndb._datastore_query._datastore_run_query")
+    def test__next_batch_has_more(_datastore_run_query):
+        entity_results = [
+            mock.Mock(entity="entity1", cursor=b"a"),
+            mock.Mock(entity="entity2", cursor=b"b"),
+            mock.Mock(entity="entity3", cursor=b"c"),
         ]
-        merged = list(_datastore_query._merge_results(result_sets, True))
-        expected = [result("a"), result("b"), result("c"), result("d")]
-        assert merged == expected
+        _datastore_run_query.return_value = future_result(
+            mock.Mock(
+                batch=mock.Mock(
+                    entity_result_type=query_pb2.EntityResult.FULL,
+                    entity_results=entity_results,
+                    end_cursor=b"abc",
+                    more_results=query_pb2.QueryResultBatch.NOT_FINISHED,
+                )
+            )
+        )
+
+        query = query_module.QueryOptions()
+        iterator = _datastore_query._QueryIteratorImpl(query)
+        assert iterator._next_batch().result() is None
+        assert iterator._index == 0
+        assert len(iterator._batch) == 3
+        assert iterator._batch[0].result_pb.entity == "entity1"
+        assert iterator._batch[0].result_type == query_pb2.EntityResult.FULL
+        assert iterator._batch[0].order_by is None
+        assert iterator._has_next_batch
+        assert iterator._query.start_cursor.cursor == b"abc"
+
+    @staticmethod
+    def test_next_done():
+        iterator = _datastore_query._QueryIteratorImpl("foo")
+        iterator.has_next = mock.Mock(return_value=False)
+        iterator._cursor_before = b"abc"
+        iterator._cursor_after = b"bcd"
+        with pytest.raises(StopIteration):
+            iterator.next()
+
+        with pytest.raises(exceptions.BadArgumentError):
+            iterator.cursor_before()
+
+        with pytest.raises(exceptions.BadArgumentError):
+            iterator.cursor_after()
+
+    @staticmethod
+    def test_next_raw():
+        iterator = _datastore_query._QueryIteratorImpl("foo", raw=True)
+        iterator.has_next = mock.Mock(return_value=True)
+        iterator._index = 0
+        result = mock.Mock(cursor=b"abc")
+        iterator._batch = [result]
+        assert iterator.next() is result
+        assert iterator._index == 1
+        assert iterator._cursor_after == b"abc"
+
+    @staticmethod
+    def test_next_entity():
+        iterator = _datastore_query._QueryIteratorImpl("foo")
+        iterator.has_next = mock.Mock(return_value=True)
+        iterator._index = 1
+        iterator._cursor_before = b"abc"
+        result = mock.Mock(cursor=b"bcd")
+        iterator._batch = [None, result]
+        assert iterator.next() is result.entity.return_value
+        assert iterator._index == 2
+        assert iterator._cursor_after == b"bcd"
+
+    @staticmethod
+    def test__peek():
+        iterator = _datastore_query._QueryIteratorImpl("foo")
+        iterator._index = 1
+        iterator._batch = ["a", "b", "c"]
+        assert iterator._peek() == "b"
+
+    @staticmethod
+    def test__peek_key_error():
+        iterator = _datastore_query._QueryIteratorImpl("foo")
+        with pytest.raises(KeyError):
+            iterator._peek()
+
+    @staticmethod
+    def test_cursor_before():
+        iterator = _datastore_query._QueryIteratorImpl("foo")
+        iterator._cursor_before = "foo"
+        assert iterator.cursor_before() == "foo"
+
+    @staticmethod
+    def test_cursor_before_no_cursor():
+        iterator = _datastore_query._QueryIteratorImpl("foo")
+        with pytest.raises(exceptions.BadArgumentError):
+            iterator.cursor_before()
+
+    @staticmethod
+    def test_cursor_after():
+        iterator = _datastore_query._QueryIteratorImpl("foo")
+        iterator._cursor_after = "foo"
+        assert iterator.cursor_after() == "foo"
+
+    @staticmethod
+    def test_cursor_after_no_cursor():
+        iterator = _datastore_query._QueryIteratorImpl("foo")
+        with pytest.raises(exceptions.BadArgumentError):
+            iterator.cursor_after()
+
+    @staticmethod
+    def test_index_list():
+        iterator = _datastore_query._QueryIteratorImpl("foo")
+        with pytest.raises(NotImplementedError):
+            iterator.index_list()
+
+
+class Test_MultiQueryIteratorImpl:
+    @staticmethod
+    def test_constructor():
+        foo = model.StringProperty("foo")
+        query = query_module.QueryOptions(
+            offset=20,
+            limit=10,
+            filters=query_module.OR(foo == "this", foo == "that"),
+        )
+        iterator = _datastore_query._MultiQueryIteratorImpl(query)
+        assert iterator._result_sets[0]._query == query_module.QueryOptions(
+            filters=foo == "this"
+        )
+        assert iterator._result_sets[1]._query == query_module.QueryOptions(
+            filters=foo == "that"
+        )
+        assert not iterator._sortable
+        assert iterator._offset == 20
+        assert iterator._limit == 10
+
+    @staticmethod
+    def test_constructor_sortable():
+        foo = model.StringProperty("foo")
+        query = query_module.QueryOptions(
+            filters=query_module.OR(foo == "this", foo == "that"),
+            order_by=["foo"],
+        )
+        iterator = _datastore_query._MultiQueryIteratorImpl(query)
+        assert iterator._result_sets[0]._query == query_module.QueryOptions(
+            filters=foo == "this", order_by=["foo"]
+        )
+        assert iterator._result_sets[1]._query == query_module.QueryOptions(
+            filters=foo == "that", order_by=["foo"]
+        )
+        assert iterator._sortable
+
+    @staticmethod
+    def test_iter():
+        foo = model.StringProperty("foo")
+        query = query_module.QueryOptions(
+            filters=query_module.OR(foo == "this", foo == "that")
+        )
+        iterator = _datastore_query._MultiQueryIteratorImpl(query)
+        assert iter(iterator) is iterator
+
+    @staticmethod
+    def test_has_next():
+        foo = model.StringProperty("foo")
+        query = query_module.QueryOptions(
+            filters=query_module.OR(foo == "this", foo == "that")
+        )
+        iterator = _datastore_query._MultiQueryIteratorImpl(query)
+        iterator.has_next_async = mock.Mock(return_value=future_result("bar"))
+        assert iterator.has_next() == "bar"
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_has_next_async_next_loaded():
+        foo = model.StringProperty("foo")
+        query = query_module.QueryOptions(
+            filters=query_module.OR(foo == "this", foo == "that")
+        )
+        iterator = _datastore_query._MultiQueryIteratorImpl(query)
+        iterator._next_result = "foo"
+        assert iterator.has_next_async().result()
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_has_next_async_exhausted():
+        foo = model.StringProperty("foo")
+        query = query_module.QueryOptions(
+            filters=query_module.OR(foo == "this", foo == "that")
+        )
+        iterator = _datastore_query._MultiQueryIteratorImpl(query)
+        iterator._result_sets = []
+        assert not iterator.has_next_async().result()
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_iterate_async():
+        foo = model.StringProperty("foo")
+        query = query_module.QueryOptions(
+            filters=query_module.OR(foo == "this", foo == "that")
+        )
+        iterator = _datastore_query._MultiQueryIteratorImpl(query)
+        iterator._result_sets = [
+            MockResultSet(["a", "c", "e", "g", "i"]),
+            MockResultSet(["b", "d", "f", "h", "j"]),
+        ]
+
+        @tasklets.tasklet
+        def iterate():
+            results = []
+            while (yield iterator.has_next_async()):
+                results.append(iterator.next())
+            return results
+
+        assert iterate().result() == [
+            "a",
+            "c",
+            "e",
+            "g",
+            "i",
+            "b",
+            "d",
+            "f",
+            "h",
+            "j",
+        ]
+
+        with pytest.raises(StopIteration):
+            iterator.next()
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_iterate_async_ordered():
+        foo = model.StringProperty("foo")
+        query = query_module.QueryOptions(
+            filters=query_module.OR(foo == "this", foo == "that")
+        )
+        iterator = _datastore_query._MultiQueryIteratorImpl(query)
+        iterator._sortable = True
+        iterator._result_sets = [
+            MockResultSet(["a", "c", "e", "g", "i"]),
+            MockResultSet(["b", "d", "f", "h", "j"]),
+        ]
+
+        @tasklets.tasklet
+        def iterate():
+            results = []
+            while (yield iterator.has_next_async()):
+                results.append(iterator.next())
+            return results
+
+        assert iterate().result() == [
+            "a",
+            "b",
+            "c",
+            "d",
+            "e",
+            "f",
+            "g",
+            "h",
+            "i",
+            "j",
+        ]
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_iterate_async_ordered_limit_and_offset():
+        foo = model.StringProperty("foo")
+        query = query_module.QueryOptions(
+            offset=5,
+            limit=4,
+            filters=query_module.OR(foo == "this", foo == "that"),
+        )
+        iterator = _datastore_query._MultiQueryIteratorImpl(query)
+        iterator._sortable = True
+        iterator._result_sets = [
+            MockResultSet(["a", "c", "e", "g", "i"]),
+            MockResultSet(["a", "b", "d", "f", "h", "j"]),
+        ]
+
+        @tasklets.tasklet
+        def iterate():
+            results = []
+            while (yield iterator.has_next_async()):
+                results.append(iterator.next())
+            return results
+
+        assert iterate().result() == ["f", "g", "h", "i"]
+
+    @staticmethod
+    def test_probably_has_next_loaded():
+        foo = model.StringProperty("foo")
+        query = query_module.QueryOptions(
+            filters=query_module.OR(foo == "this", foo == "that")
+        )
+        iterator = _datastore_query._MultiQueryIteratorImpl(query)
+        iterator._next = "foo"
+        assert iterator.probably_has_next()
+
+    @staticmethod
+    def test_probably_has_next_delegate():
+        foo = model.StringProperty("foo")
+        query = query_module.QueryOptions(
+            filters=query_module.OR(foo == "this", foo == "that")
+        )
+        iterator = _datastore_query._MultiQueryIteratorImpl(query)
+        iterator._result_sets = [MockResultSet(["a"]), MockResultSet([])]
+        assert iterator.probably_has_next()
+
+    @staticmethod
+    def test_probably_has_next_doesnt():
+        foo = model.StringProperty("foo")
+        query = query_module.QueryOptions(
+            filters=query_module.OR(foo == "this", foo == "that")
+        )
+        iterator = _datastore_query._MultiQueryIteratorImpl(query)
+        iterator._result_sets = [MockResultSet([])]
+        assert not iterator.probably_has_next()
+
+    @staticmethod
+    def test_cursor_before():
+        foo = model.StringProperty("foo")
+        query = query_module.QueryOptions(
+            filters=query_module.OR(foo == "this", foo == "that")
+        )
+        iterator = _datastore_query._MultiQueryIteratorImpl(query)
+        with pytest.raises(exceptions.BadArgumentError):
+            iterator.cursor_before()
+
+    @staticmethod
+    def test_cursor_after():
+        foo = model.StringProperty("foo")
+        query = query_module.QueryOptions(
+            filters=query_module.OR(foo == "this", foo == "that")
+        )
+        iterator = _datastore_query._MultiQueryIteratorImpl(query)
+        with pytest.raises(exceptions.BadArgumentError):
+            iterator.cursor_after()
+
+    @staticmethod
+    def test_index_list():
+        foo = model.StringProperty("foo")
+        query = query_module.QueryOptions(
+            filters=query_module.OR(foo == "this", foo == "that")
+        )
+        iterator = _datastore_query._MultiQueryIteratorImpl(query)
+        with pytest.raises(NotImplementedError):
+            iterator.index_list()
+
+
+class MockResult:
+    def __init__(self, result):
+        self.result = result
+
+    def entity(self):
+        return self.result
+
+    @property
+    def result_pb(self):
+        return MockResultPB(self.result)
+
+
+class MockResultPB:
+    def __init__(self, result):
+        self.result = result
+        self.entity = self
+        self.key = self
+
+    def SerializeToString(self):
+        return self.result
+
+
+class MockResultSet:
+    def __init__(self, results):
+        self.results = results
+        self.len = len(results)
+        self.index = 0
+
+    def has_next_async(self):
+        return future_result(self.index < self.len)
+
+    def next(self):
+        result = self._peek()
+        self.index += 1
+        return MockResult(result)
+
+    def _peek(self):
+        return self.results[self.index]
+
+    def probably_has_next(self):
+        return self.index < self.len
 
 
 class Test_Result:
@@ -293,17 +711,21 @@ class Test_Result:
         assert result("a") < result("b")
         assert result("b") > result("a")
         assert result("a") != result("b")
+        assert result("a") == result("a")
 
         assert result("a", 2) < result("a", 1)
         assert result("a", 1) > result("a", 2)
         assert result("a", 1) != result("a", 2)
+        assert result("a", 1) == result("a", 1)
 
         assert result("a", 1, "femur") == result("a", 1, "patella")
         assert result("a") != "a"
 
     @staticmethod
     def test__compare_no_order_by():
-        result = _datastore_query._Result(None, None)
+        result = _datastore_query._Result(
+            None, mock.Mock(cursor=b"123", spec=("cursor",))
+        )
         with pytest.raises(NotImplementedError):
             result._compare("other")
 
@@ -312,10 +734,11 @@ class Test_Result:
     def test_entity_unsupported_result_type(model):
         model._entity_from_protobuf.return_value = "bar"
         result = _datastore_query._Result(
-            "foo", mock.Mock(entity="foo", spec=("entity",))
+            "foo",
+            mock.Mock(entity="foo", cursor=b"123", spec=("entity", "cursor")),
         )
         with pytest.raises(NotImplementedError):
-            result.entity(None)
+            result.entity()
 
     @staticmethod
     @mock.patch("google.cloud.ndb._datastore_query.model")
@@ -323,7 +746,7 @@ class Test_Result:
         model._entity_from_protobuf.return_value = "bar"
         result = _datastore_query._Result(
             _datastore_query.RESULT_TYPE_FULL,
-            mock.Mock(entity="foo", spec=("entity",)),
+            mock.Mock(entity="foo", cursor=b"123", spec=("entity", "cursor")),
         )
 
         assert result.entity() == "bar"
@@ -339,7 +762,9 @@ class Test_Result:
         result = _datastore_query._Result(
             _datastore_query.RESULT_TYPE_KEY_ONLY,
             mock.Mock(
-                entity=mock.Mock(key=key_pb, spec=("key",)), spec=("entity",)
+                entity=mock.Mock(key=key_pb, spec=("key",)),
+                cursor=b"123",
+                spec=("entity", "cursor"),
             ),
         )
         assert result.entity() == key_module.Key("ThisKind", 42)
@@ -348,14 +773,19 @@ class Test_Result:
     @mock.patch("google.cloud.ndb._datastore_query.model")
     def test_entity_projection(model):
         entity = mock.Mock(spec=("_set_projection",))
+        entity_pb = mock.Mock(
+            properties={"a": 0, "b": 1}, spec=("properties",)
+        )
         model._entity_from_protobuf.return_value = entity
         result = _datastore_query._Result(
             _datastore_query.RESULT_TYPE_PROJECTION,
-            mock.Mock(entity="foo", spec=("entity",)),
+            mock.Mock(
+                entity=entity_pb, cursor=b"123", spec=("entity", "cursor")
+            ),
         )
 
-        assert result.entity(("a", "b")) is entity
-        model._entity_from_protobuf.assert_called_once_with("foo")
+        assert result.entity() is entity
+        model._entity_from_protobuf.assert_called_once_with(entity_pb)
         entity._set_projection.assert_called_once_with(("a", "b"))
 
 
@@ -393,7 +823,10 @@ class Test__query_to_protobuf:
     @staticmethod
     def test_ancestor_with_property_filter():
         key = key_module.Key("Foo", 123)
-        query = query_module.QueryOptions(ancestor=key)
+        foo = model.StringProperty("foo")
+        query = query_module.QueryOptions(ancestor=key, filters=foo == "bar")
+        query_pb = _datastore_query._query_to_protobuf(query)
+
         filter_pb = query_pb2.PropertyFilter(
             property=query_pb2.PropertyReference(name="foo"),
             op=query_pb2.PropertyFilter.EQUAL,
@@ -415,13 +848,19 @@ class Test__query_to_protobuf:
                 )
             )
         )
-        query_pb = _datastore_query._query_to_protobuf(query, filter_pb)
         assert query_pb == expected_pb
 
     @staticmethod
     def test_ancestor_with_composite_filter():
         key = key_module.Key("Foo", 123)
-        query = query_module.QueryOptions(ancestor=key)
+        foo = model.StringProperty("foo")
+        food = model.StringProperty("food")
+        query = query_module.QueryOptions(
+            ancestor=key,
+            filters=query_module.AND(foo == "bar", food == "barn"),
+        )
+        query_pb = _datastore_query._query_to_protobuf(query)
+
         filter_pb1 = query_pb2.PropertyFilter(
             property=query_pb2.PropertyReference(name="foo"),
             op=query_pb2.PropertyFilter.EQUAL,
@@ -431,13 +870,6 @@ class Test__query_to_protobuf:
             property=query_pb2.PropertyReference(name="food"),
             op=query_pb2.PropertyFilter.EQUAL,
             value=entity_pb2.Value(string_value="barn"),
-        )
-        filter_pb = query_pb2.CompositeFilter(
-            op=query_pb2.CompositeFilter.AND,
-            filters=[
-                query_pb2.Filter(property_filter=filter_pb1),
-                query_pb2.Filter(property_filter=filter_pb2),
-            ],
         )
         ancestor_pb = query_pb2.PropertyFilter(
             property=query_pb2.PropertyReference(name="__key__"),
@@ -456,7 +888,6 @@ class Test__query_to_protobuf:
                 )
             )
         )
-        query_pb = _datastore_query._query_to_protobuf(query, filter_pb)
         assert query_pb == expected_pb
 
     @staticmethod
@@ -509,13 +940,15 @@ class Test__query_to_protobuf:
 
     @staticmethod
     def test_filter_pb():
+        foo = model.StringProperty("foo")
+        query = query_module.QueryOptions(kind="Foo", filters=(foo == "bar"))
+        query_pb = _datastore_query._query_to_protobuf(query)
+
         filter_pb = query_pb2.PropertyFilter(
             property=query_pb2.PropertyReference(name="foo"),
             op=query_pb2.PropertyFilter.EQUAL,
             value=entity_pb2.Value(string_value="bar"),
         )
-        query = query_module.QueryOptions(kind="Foo")
-        query_pb = _datastore_query._query_to_protobuf(query, filter_pb)
         expected_pb = query_pb2.Query(
             kind=[query_pb2.KindExpression(name="Foo")],
             filter=query_pb2.Filter(property_filter=filter_pb),
@@ -536,85 +969,78 @@ class Test__query_to_protobuf:
         expected_pb.limit.value = 20
         assert _datastore_query._query_to_protobuf(query) == expected_pb
 
-
-@pytest.mark.usefixtures("in_context")
-class Test__run_query:
     @staticmethod
-    @mock.patch("google.cloud.ndb._datastore_query.datastore_pb2")
+    def test_start_cursor():
+        query = query_module.QueryOptions(
+            start_cursor=_datastore_query.Cursor(b"abc")
+        )
+        assert _datastore_query._query_to_protobuf(query) == query_pb2.Query(
+            start_cursor=b"abc"
+        )
+
+    @staticmethod
+    def test_end_cursor():
+        query = query_module.QueryOptions(
+            end_cursor=_datastore_query.Cursor(b"abc")
+        )
+        assert _datastore_query._query_to_protobuf(query) == query_pb2.Query(
+            end_cursor=b"abc"
+        )
+
+
+class Test__datastore_run_query:
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
     @mock.patch("google.cloud.ndb._datastore_query._datastore_api")
-    def test_single_batch(_datastore_api, datastore_pb2):
-        request = datastore_pb2.RunQueryRequest.return_value
-        query_pb = object()
-
-        make_call_future = tasklets.Future("RunQuery")
-        _datastore_api.make_call.return_value = make_call_future
-
-        batch = mock.Mock(
-            more_results="nope",
-            entity_result_type="this type",
-            entity_results=["foo", "bar", "baz"],
-            spec=("more_results", "entity_result_type", "entity_results"),
+    def test_it(_datastore_api):
+        query = query_module.QueryOptions(project="testing", namespace="")
+        query_pb = _datastore_query._query_to_protobuf(query)
+        request = datastore_pb2.RunQueryRequest(
+            project_id="testing",
+            partition_id=entity_pb2.PartitionId(
+                project_id="testing", namespace_id=""
+            ),
+            query=query_pb,
         )
-
-        tasklet = _datastore_query._run_query("testing", None, query_pb)
-        make_call_future.set_result(mock.Mock(batch=batch, spec=("batch",)))
-
-        assert tasklet.result() == [
-            ("this type", "foo"),
-            ("this type", "bar"),
-            ("this type", "baz"),
-        ]
-
-        partition_id = entity_pb2.PartitionId(
-            project_id="testing", namespace_id=None
-        )
-        datastore_pb2.RunQueryRequest.assert_called_once_with(
-            project_id="testing", partition_id=partition_id, query=query_pb
-        )
+        _datastore_api.make_call.return_value = future_result("foo")
+        assert _datastore_query._datastore_run_query(query).result() == "foo"
         _datastore_api.make_call.assert_called_once_with("RunQuery", request)
 
+
+class TestCursor:
     @staticmethod
-    @mock.patch("google.cloud.ndb._datastore_query.datastore_pb2")
-    @mock.patch("google.cloud.ndb._datastore_query._datastore_api")
-    def test_double_batch(_datastore_api, datastore_pb2):
-        query_pb = mock.Mock(spec=("start_cursor",))
+    def test_constructor():
+        cursor = _datastore_query.Cursor(b"123")
+        assert cursor.cursor == b"123"
 
-        make_call_future1 = tasklets.Future("RunQuery")
-        make_call_future2 = tasklets.Future("RunQuery")
-        _datastore_api.make_call.side_effect = (
-            make_call_future1,
-            make_call_future2,
-        )
+    @staticmethod
+    def test_constructor_cursor_and_urlsafe():
+        with pytest.raises(TypeError):
+            _datastore_query.Cursor(b"123", urlsafe="what?")
 
-        batch1 = mock.Mock(
-            more_results=_datastore_query.MORE_RESULTS_TYPE_NOT_FINISHED,
-            entity_result_type="this type",
-            entity_results=["foo"],
-            end_cursor=b"end",
-            spec=(
-                "more_results",
-                "entity_result_type",
-                "entity_results",
-                "end_cursor",
-            ),
-        )
-        batch2 = mock.Mock(
-            more_results="nope",
-            entity_result_type="that type",
-            entity_results=["bar", "baz"],
-            spec=("more_results", "entity_result_type", "entity_results"),
-        )
+    @staticmethod
+    def test_constructor_urlsafe():
+        urlsafe = base64.urlsafe_b64encode(b"123")
+        cursor = _datastore_query.Cursor(urlsafe=urlsafe)
+        assert cursor.cursor == b"123"
 
-        tasklet = _datastore_query._run_query("testing", None, query_pb)
-        make_call_future1.set_result(mock.Mock(batch=batch1, spec=("batch",)))
-        make_call_future2.set_result(mock.Mock(batch=batch2, spec=("batch",)))
+        cursor = _datastore_query.Cursor(urlsafe=urlsafe.decode("ascii"))
+        assert cursor.cursor == b"123"
 
-        assert tasklet.result() == [
-            ("this type", "foo"),
-            ("that type", "bar"),
-            ("that type", "baz"),
-        ]
+    @staticmethod
+    def test_from_websafe_string():
+        urlsafe = base64.urlsafe_b64encode(b"123")
+        cursor = _datastore_query.Cursor.from_websafe_string(urlsafe)
+        assert cursor.cursor == b"123"
 
-        assert datastore_pb2.RunQueryRequest.call_count == 2
-        assert _datastore_api.make_call.call_count == 2
-        assert query_pb.start_cursor == b"end"
+    @staticmethod
+    def test_to_websafe_string():
+        urlsafe = base64.urlsafe_b64encode(b"123")
+        cursor = _datastore_query.Cursor(b"123")
+        assert cursor.to_websafe_string() == urlsafe
+
+    @staticmethod
+    def test_urlsafe():
+        urlsafe = base64.urlsafe_b64encode(b"123")
+        cursor = _datastore_query.Cursor(b"123")
+        assert cursor.urlsafe() == urlsafe

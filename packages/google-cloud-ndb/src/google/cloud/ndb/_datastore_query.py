@@ -14,9 +14,8 @@
 
 """Translate NDB queries to Datastore calls."""
 
+import base64
 import functools
-import heapq
-import itertools
 import logging
 
 from google.cloud.datastore_v1.proto import datastore_pb2
@@ -24,8 +23,8 @@ from google.cloud.datastore_v1.proto import entity_pb2
 from google.cloud.datastore_v1.proto import query_pb2
 from google.cloud.datastore import helpers
 
-from google.cloud.ndb import context as context_module
 from google.cloud.ndb import _datastore_api
+from google.cloud.ndb import exceptions
 from google.cloud.ndb import key as key_module
 from google.cloud.ndb import model
 from google.cloud.ndb import tasklets
@@ -96,59 +95,397 @@ def fetch(query):
         query (query.QueryOptions): The query spec.
 
     Returns:
-        tasklets.Future: Result is List[model.Model]: The query results.
+        tasklets.Future: Result is List[Union[model.Model, key.Key]]: The query
+            results.
     """
-    client = context_module.get_context().client
+    results = iterate(query)
+    entities = []
+    while (yield results.has_next_async()):
+        entities.append(results.next())
 
-    project_id = query.project
-    if not project_id:
-        project_id = client.project
+    return entities
 
-    namespace = query.namespace
-    if not namespace:
-        namespace = client.namespace
 
-    filter_pbs = (None,)
-    if query.filters:
-        filter_pbs = query.filters._to_filter()
-        if not isinstance(filter_pbs, (tuple, list)):
-            filter_pbs = (filter_pbs,)
+def iterate(query):
+    """Get iterator for query results.
 
-    multiple_queries = len(filter_pbs) > 1
+    Args:
+        query (query.QueryOptions): The query spec.
 
-    if multiple_queries:
-        # If we're aggregating multiple queries, then limit and offset will be
-        # have to applied to the aggregate, not passed to Datastore to use on
-        # individual queries
-        offset = query.offset
-        limit = query.limit
-        query = query.copy(offset=0, limit=None)
-    else:
-        offset = limit = None
+    Returns:
+        QueryIterator: The iterator.
+    """
+    filters = query.filters
+    if filters and filters._multiquery:
+        return _MultiQueryIteratorImpl(query)
 
-    queries = [
-        _run_query(project_id, namespace, _query_to_protobuf(query, filter_pb))
-        for filter_pb in filter_pbs
-    ]
-    result_sets = yield queries
-    result_sets = [
-        (
-            _Result(result_type, result_pb, query.order_by)
-            for result_type, result_pb in result_set
+    return _QueryIteratorImpl(query)
+
+
+class QueryIterator:
+    """An iterator for query results.
+
+    Executes the given query and provides an interface for iterating over
+    instances of either :class:`model.Model` or :class:`key.Key` depending on
+    whether ``keys_only`` was specified for the query.
+
+    This is an abstract base class. Users should not instantiate an iterator
+    class directly. Use :meth:`query.Query.iter` or ``iter(query)`` to get an
+    instance of :class:`QueryIterator`.
+    """
+
+    def __iter__(self):
+        return self
+
+    def has_next(self):
+        """Is there at least one more result?
+
+        Blocks until the answer to this question is known and buffers the
+        result (if any) until retrieved with :meth:`next`.
+
+        Returns:
+            bool: :data:`True` if a subsequent call to
+                :meth:`QueryIterator.next` will return a result, otherwise
+                :data:`False`.
+        """
+        raise NotImplementedError()
+
+    def has_next_async(self):
+        """Asynchronous version of :meth:`has_next`.
+
+        Returns:
+            tasklets.Future: See :meth:`has_next`.
+        """
+        raise NotImplementedError()
+
+    def probably_has_next(self):
+        """Like :meth:`has_next` but won't block.
+
+        This uses a (sometimes inaccurate) shortcut to avoid having to hit the
+        Datastore for the answer.
+
+        May return a false positive (:data:`True` when :meth:`next` would
+        actually raise ``StopIteration``), but never a false negative
+        (:data:`False` when :meth:`next` would actually return a result).
+        """
+        raise NotImplementedError()
+
+    def next(self):
+        """Get the next result.
+
+        May block. Guaranteed not to block if immediately following a call to
+        :meth:`has_next` or :meth:`has_next_async` which will buffer the next
+        result.
+
+        Returns:
+            Union[model.Model, key.Key]: Depending on if ``keys_only=True`` was
+                passed in as an option.
+        """
+        raise NotImplementedError()
+
+    def cursor_before(self):
+        """Get a cursor to the point just before the last result returned.
+
+        Returns:
+            Cursor: The cursor.
+
+        Raises:
+            exceptions.BadArgumentError: If there is no cursor to return. This
+                will happen if the iterator hasn't returned a result yet, has
+                only returned a single result so far, or if the iterator has
+                been exhausted. Also, if query uses ``OR``, ``!=``, or ``IN``,
+                since those are composites of multiple Datastore queries each
+                with their own cursors—it is impossible to return a cursor for
+                the composite query.
+        """
+        raise NotImplementedError()
+
+    def cursor_after(self):
+        """Get a cursor to the point just after the last result returned.
+
+        Returns:
+            Cursor: The cursor.
+
+        Raises:
+            exceptions.BadArgumentError: If there is no cursor to return. This
+                will happen if the iterator hasn't returned a result yet or if
+                the iterator has been exhausted. Also, if query uses ``OR``,
+                ``!=``, or ``IN``, since those are composites of multiple
+                Datastore queries each with their own cursors—it is impossible
+                to return a cursor for the composite query.
+        """
+        raise NotImplementedError()
+
+    def index_list(self):
+        """Return a list of indexes used by the query.
+
+        Raises:
+            NotImplementedError: Always. This information is no longer
+                available from query results in Datastore.
+        """
+        raise exceptions.NoLongerImplementedError()
+
+
+class _QueryIteratorImpl(QueryIterator):
+    """Implementation of :class:`QueryIterator` for single Datastore queries.
+
+    Args:
+        query (query.QueryOptions): The query spec.
+        raw (bool): Whether or not marshall NDB entities or keys for query
+            results or return internal representations (:class:`_Result`). For
+            internal use only.
+    """
+
+    def __init__(self, query, raw=False):
+        self._query = query
+        self._batch = None
+        self._index = None
+        self._has_next_batch = None
+        self._cursor_before = None
+        self._cursor_after = None
+        self._raw = raw
+
+    def has_next(self):
+        """Implements :meth:`QueryIterator.has_next`."""
+        return self.has_next_async().result()
+
+    @tasklets.tasklet
+    def has_next_async(self):
+        """Implements :meth:`QueryIterator.has_next_async`."""
+        if self._batch is None:
+            yield self._next_batch()  # First time
+
+        if self._index < len(self._batch):
+            return True
+
+        elif self._has_next_batch:
+            yield self._next_batch()
+            return self._index < len(self._batch)
+
+        return False
+
+    def probably_has_next(self):
+        """Implements :meth:`QueryIterator.probably_has_next`."""
+        return (
+            self._batch is None
+            or self._has_next_batch  # Haven't even started yet
+            or self._index  # There's another batch to fetch
+            < len(self._batch)  # Not done with current batch
         )
-        for result_set in result_sets
-    ]
 
-    if len(result_sets) > 1:
-        sortable = bool(query.order_by)
-        results = _merge_results(result_sets, sortable)
-    else:
-        results = result_sets[0]
+    @tasklets.tasklet
+    def _next_batch(self):
+        """Get the next batch from Datastore.
 
-    if offset or limit:
-        results = itertools.islice(results, offset, offset + limit)
+        If this batch isn't the last batch for the query, update the internal
+        query spec with a cursor pointing to the next batch.
+        """
+        query = self._query
+        response = yield _datastore_run_query(query)
 
-    return [result.entity(query.projection) for result in results]
+        batch = response.batch
+        result_type = batch.entity_result_type
+
+        self._start_cursor = query.start_cursor
+        self._index = 0
+        self._batch = [
+            _Result(result_type, result_pb, query.order_by)
+            for result_pb in response.batch.entity_results
+        ]
+
+        self._has_next_batch = more_results = (
+            batch.more_results == MORE_RESULTS_TYPE_NOT_FINISHED
+        )
+
+        if more_results:
+            # Fix up query for next batch
+            self._query = self._query.copy(
+                start_cursor=Cursor(batch.end_cursor)
+            )
+
+    def next(self):
+        """Implements :meth:`QueryIterator.next`."""
+        # May block
+        if not self.has_next():
+            self._cursor_before = self._cursor_after = None
+            raise StopIteration
+
+        # Won't block
+        next_result = self._batch[self._index]
+        self._index += 1
+
+        # Adjust cursors
+        self._cursor_before = self._cursor_after
+        self._cursor_after = next_result.cursor
+
+        if not self._raw:
+            next_result = next_result.entity()
+
+        return next_result
+
+    def _peek(self):
+        """Get the current, buffered result without advancing the iterator.
+
+        Returns:
+            _Result: The current result.
+
+        Raises:
+            KeyError: If there's no current, buffered result.
+        """
+        batch = self._batch
+        index = self._index
+
+        if batch and index < len(batch):
+            return batch[index]
+
+        raise KeyError(index)
+
+    __next__ = next
+
+    def cursor_before(self):
+        """Implements :meth:`QueryIterator.cursor_before`."""
+        if self._cursor_before is None:
+            raise exceptions.BadArgumentError("There is no cursor currently")
+
+        return self._cursor_before
+
+    def cursor_after(self):
+        """Implements :meth:`QueryIterator.cursor_after."""
+        if self._cursor_after is None:
+            raise exceptions.BadArgumentError("There is no cursor currently")
+
+        return self._cursor_after
+
+
+class _MultiQueryIteratorImpl(QueryIterator):
+    """Multiple Query Iterator
+
+    Some queries that in NDB are logically a single query have to be broken
+    up into two or more Datastore queries, because Datastore doesn't have a
+    composite filter with a boolean OR. This iterator merges two or more query
+    result sets. If the results are ordered, it merges results in sort order,
+    otherwise it simply chains result sets together. In either case, it removes
+    any duplicates so that entities that appear in more than one result set
+    only appear once in the merged set.
+
+    Args:
+        query (query.QueryOptions): The query spec.
+    """
+
+    def __init__(self, query):
+        queries = [
+            query.copy(filters=node, offset=None, limit=None)
+            for node in query.filters._nodes
+        ]
+        self._result_sets = [
+            _QueryIteratorImpl(query, raw=True) for query in queries
+        ]
+        self._sortable = bool(query.order_by)
+        self._seen_keys = set()
+        self._next_result = None
+
+        self._offset = query.offset
+        self._limit = query.limit
+
+    def has_next(self):
+        """Implements :meth:`QueryIterator.has_next`."""
+        return self.has_next_async().result()
+
+    @tasklets.tasklet
+    def has_next_async(self):
+        """Implements :meth:`QueryIterator.has_next_async`."""
+        if self._next_result:
+            return True
+
+        if not self._result_sets:
+            return False
+
+        if self._limit == 0:
+            return False
+
+        # Actually get the next result and load it into memory, or else we
+        # can't really know
+        while True:
+            has_nexts = yield [
+                result_set.has_next_async() for result_set in self._result_sets
+            ]
+
+            self._result_sets = result_sets = [
+                result_set
+                for i, result_set in enumerate(self._result_sets)
+                if has_nexts[i]
+            ]
+
+            if not result_sets:
+                return False
+
+            # If sorting, peek at the next values from all result sets and take
+            # the mininum.
+            if self._sortable:
+                min_index, min_value = 0, result_sets[0]._peek()
+                for i, result_set in enumerate(result_sets[1:], 1):
+                    value = result_sets[i]._peek()
+                    if value < min_value:
+                        min_value = value
+                        min_index = i
+
+                next_result = result_sets[min_index].next()
+
+            # If not sorting, just take the next result from the first result set.
+            # Will exhaust each result set in turn.
+            else:
+                next_result = result_sets[0].next()
+
+            # Check to see if it's a duplicate
+            hash_key = next_result.result_pb.entity.key.SerializeToString()
+            if hash_key in self._seen_keys:
+                continue
+
+            # Not a duplicate
+            self._seen_keys.add(hash_key)
+
+            # Offset?
+            if self._offset:
+                self._offset -= 1
+                continue
+
+            # Limit?
+            if self._limit:
+                self._limit -= 1
+
+            self._next_result = next_result
+
+            return True
+
+    def probably_has_next(self):
+        """Implements :meth:`QueryIterator.probably_has_next`."""
+        return self._next_result or any(
+            [
+                result_set.probably_has_next()
+                for result_set in self._result_sets
+            ]
+        )
+
+    def next(self):
+        """Implements :meth:`QueryIterator.next`."""
+        # Might block
+        if not self.has_next():
+            raise StopIteration()
+
+        # Won't block
+        next_result = self._next_result
+        self._next_result = None
+        return next_result.entity()
+
+    __next__ = next
+
+    def cursor_before(self):
+        """Implements :meth:`QueryIterator.cursor_before`."""
+        raise exceptions.BadArgumentError("Can't have cursors with OR filter")
+
+    def cursor_after(self):
+        """Implements :meth:`QueryIterator.cursor_after`."""
+        raise exceptions.BadArgumentError("Can't have cursors with OR filter")
 
 
 @functools.total_ordering
@@ -167,6 +504,8 @@ class _Result:
         self.result_type = result_type
         self.result_pb = result_pb
         self.order_by = order_by
+
+        self.cursor = Cursor(result_pb.cursor)
 
     def __lt__(self, other):
         """For total ordering. """
@@ -218,7 +557,7 @@ class _Result:
 
         return 0
 
-    def entity(self, projection=None):
+    def entity(self):
         """Get an entity for an entity result.
 
         Args:
@@ -235,6 +574,7 @@ class _Result:
 
         elif self.result_type == RESULT_TYPE_PROJECTION:
             entity = model._entity_from_protobuf(self.result_pb.entity)
+            projection = tuple(self.result_pb.entity.properties.keys())
             entity._set_projection(projection)
             return entity
 
@@ -249,48 +589,11 @@ class _Result:
         )
 
 
-def _merge_results(result_sets, sortable):
-    """Merge the results of distinct queries.
-
-    Some queries that in NDB are logically a single query have to be broken
-    up into two or more Datastore queries, because Datastore doesn't have a
-    composite filter with a boolean OR. The `results` are the result sets from
-    two or more queries which logically form a composite query joined by OR.
-    The individual result sets are combined into a single result set,
-    consolidating any results which may be common to two or more result sets.
-
-    Args:
-        result_sets (Sequence[_Result]): List of individual result sets as
-            returned by :func:`_run_query`. These are merged into the final
-            result.
-        sort (bool): Whether the results are sortable. Will depend on whether
-            the query that produced them had `order_by`.
-
-    Returns:
-        Sequence[_Result]: The merged result set.
-    """
-    seen_keys = set()
-    if sortable:
-        results = heapq.merge(*result_sets)
-    else:
-        results = itertools.chain(*result_sets)
-
-    for result in results:
-        hash_key = result.result_pb.entity.key.SerializeToString()
-        if hash_key in seen_keys:
-            continue
-
-        seen_keys.add(hash_key)
-        yield result
-
-
-def _query_to_protobuf(query, filter_pb=None):
+def _query_to_protobuf(query):
     """Convert an NDB query to a Datastore protocol buffer.
 
     Args:
         query (query.QueryOptions): The query spec.
-        filter_pb (Optional[query_pb2.Filter]): The filter to apply for this
-        query.
 
     Returns:
         query_pb2.Query: The protocol buffer representation of the query.
@@ -322,6 +625,8 @@ def _query_to_protobuf(query, filter_pb=None):
             for order in query.order_by
         ]
 
+    filter_pb = query.filters._to_filter() if query.filters else None
+
     if query.ancestor:
         ancestor_pb = query.ancestor._key.to_protobuf()
         ancestor_filter_pb = query_pb2.PropertyFilter(
@@ -347,6 +652,12 @@ def _query_to_protobuf(query, filter_pb=None):
 
     if filter_pb is not None:
         query_args["filter"] = _filter_pb(filter_pb)
+
+    if query.start_cursor:
+        query_args["start_cursor"] = query.start_cursor.cursor
+
+    if query.end_cursor:
+        query_args["end_cursor"] = query.end_cursor.cursor
 
     query_pb = query_pb2.Query(**query_args)
 
@@ -380,46 +691,61 @@ def _filter_pb(filter_pb):
 
 
 @tasklets.tasklet
-def _run_query(project_id, namespace, query_pb):
+def _datastore_run_query(query):
     """Run a query in Datastore.
 
-    Will potentially repeat the query to get all results.
-
     Args:
-        project_id (str): The project/app id of the Datastore instance.
-        namespace (str): The namespace to which to restrict results.
-        query_pb (query_pb2.Query): The query protocol buffer representation.
+        query (query.QueryOptions): The query spec.
 
     Returns:
-        tasklets.Future: List[Tuple[query_pb2.EntityResult.ResultType,
-            query_pb2.EntityResult]]: The raw query results.
+        tasklets.Future:
     """
-    results = []
+    query_pb = _query_to_protobuf(query)
     partition_id = entity_pb2.PartitionId(
-        project_id=project_id, namespace_id=namespace
+        project_id=query.project, namespace_id=query.namespace
     )
+    request = datastore_pb2.RunQueryRequest(
+        project_id=query.project, partition_id=partition_id, query=query_pb
+    )
+    response = yield _datastore_api.make_call("RunQuery", request)
+    log.debug(response)
+    return response
 
-    while True:
-        # See what results we get from the backend
-        request = datastore_pb2.RunQueryRequest(
-            project_id=project_id, partition_id=partition_id, query=query_pb
-        )
-        response = yield _datastore_api.make_call("RunQuery", request)
-        log.debug(response)
 
-        batch = response.batch
-        results.extend(
-            (
-                (batch.entity_result_type, result)
-                for result in batch.entity_results
-            )
-        )
+class Cursor:
+    """Cursor.
 
-        # Did we get all of them?
-        if batch.more_results != MORE_RESULTS_TYPE_NOT_FINISHED:
-            break
+    A pointer to a place in a sequence of query results. Cursor itself is just
+    a byte sequence passed back by Datastore. This class wraps that with
+    methods to convert to/from a URL safe string.
 
-        # Still some results left to fetch. Update cursors and try again.
-        query_pb.start_cursor = batch.end_cursor
+    API for converting to/from a URL safe string is different depending on
+    whether you're reading the Legacy NDB docstrings or the official Legacy NDB
+    documentation on the web. We do both here.
 
-    return results
+    Args:
+        cursor (bytes): Raw cursor value from Datastore
+    """
+
+    @classmethod
+    def from_websafe_string(cls, urlsafe):
+        # Documented in Legacy NDB docstring for query.Query.fetch
+        return cls(urlsafe=urlsafe)
+
+    def __init__(self, cursor=None, urlsafe=None):
+        if cursor and urlsafe:
+            raise TypeError("Can't pass both 'cursor' and 'urlsafe'")
+
+        self.cursor = cursor
+
+        # Documented in official Legacy NDB docs
+        if urlsafe:
+            self.cursor = base64.urlsafe_b64decode(urlsafe)
+
+    def to_websafe_string(self):
+        # Documented in Legacy NDB docstring for query.Query.fetch
+        return self.urlsafe()
+
+    def urlsafe(self):
+        # Documented in official Legacy NDB docs
+        return base64.urlsafe_b64encode(self.cursor)

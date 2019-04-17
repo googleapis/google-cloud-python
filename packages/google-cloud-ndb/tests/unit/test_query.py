@@ -17,6 +17,7 @@ import unittest.mock
 
 import pytest
 
+from google.cloud.ndb import _datastore_query
 from google.cloud.ndb import exceptions
 from google.cloud.ndb import key as key_module
 from google.cloud.ndb import model
@@ -27,10 +28,6 @@ import tests.unit.utils
 
 def test___all__():
     tests.unit.utils.verify___all__(query_module)
-
-
-def test_Cursor():
-    assert query_module.Cursor is NotImplemented
 
 
 class TestQueryOptions:
@@ -72,6 +69,14 @@ class TestQueryOptions:
         assert options == other
         assert options != otherother
         assert options != "foo"
+
+    @staticmethod
+    def test_copy():
+        options = query_module.QueryOptions(kind="test", project="app")
+        options = options.copy(project="app2", namespace="foo")
+        assert options.kind == "test"
+        assert options.project == "app2"
+        assert options.namespace == "foo"
 
 
 class TestPropertyOrder:
@@ -974,17 +979,6 @@ class TestDisjunctionNode:
         node1.resolve.assert_called_once_with(bindings, used)
 
     @staticmethod
-    def test__to_filter():
-        node1 = unittest.mock.Mock(spec=query_module.FilterNode)
-        node2 = unittest.mock.Mock(spec=query_module.FilterNode)
-        or_node = query_module.DisjunctionNode(node1, node2)
-
-        assert or_node._to_filter() == [
-            node1._to_filter.return_value,
-            node2._to_filter.return_value,
-        ]
-
-    @staticmethod
     def test__to_filter_post():
         node1 = unittest.mock.Mock(spec=query_module.FilterNode)
         node2 = unittest.mock.Mock(spec=query_module.FilterNode)
@@ -1428,12 +1422,25 @@ class TestQuery:
     @staticmethod
     @pytest.mark.usefixtures("in_context")
     @unittest.mock.patch("google.cloud.ndb.query._datastore_query")
+    def test_fetch_async_w_project_and_namespace_from_query(_datastore_query):
+        query = query_module.Query(project="foo", namespace="bar")
+        response = _datastore_query.fetch.return_value
+        assert query.fetch_async() is response
+        _datastore_query.fetch.assert_called_once_with(
+            query_module.QueryOptions(project="foo", namespace="bar")
+        )
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    @unittest.mock.patch("google.cloud.ndb.query._datastore_query")
     def test_fetch_async_with_keys_only(_datastore_query):
         query = query_module.Query()
         response = _datastore_query.fetch.return_value
         assert query.fetch_async(keys_only=True) is response
         _datastore_query.fetch.assert_called_once_with(
-            query_module.QueryOptions(projection=["__key__"])
+            query_module.QueryOptions(
+                project="testing", projection=["__key__"]
+            )
         )
 
     @staticmethod
@@ -1445,7 +1452,9 @@ class TestQuery:
         response = _datastore_query.fetch.return_value
         assert query.fetch_async(options=options) is response
         _datastore_query.fetch.assert_called_once_with(
-            query_module.QueryOptions(projection=["__key__"])
+            query_module.QueryOptions(
+                project="testing", projection=["__key__"]
+            )
         )
 
     @staticmethod
@@ -1463,7 +1472,9 @@ class TestQuery:
         response = _datastore_query.fetch.return_value
         assert query.fetch_async(projection=("foo", "bar")) is response
         _datastore_query.fetch.assert_called_once_with(
-            query_module.QueryOptions(projection=("foo", "bar"))
+            query_module.QueryOptions(
+                project="testing", projection=("foo", "bar")
+            )
         )
 
     @staticmethod
@@ -1475,7 +1486,9 @@ class TestQuery:
         response = _datastore_query.fetch.return_value
         assert query.fetch_async(options=options) is response
         _datastore_query.fetch.assert_called_once_with(
-            query_module.QueryOptions(projection=("foo", "bar"))
+            query_module.QueryOptions(
+                project="testing", projection=("foo", "bar")
+            )
         )
 
     @staticmethod
@@ -1486,7 +1499,7 @@ class TestQuery:
         response = _datastore_query.fetch.return_value
         assert query.fetch_async(offset=20) is response
         _datastore_query.fetch.assert_called_once_with(
-            query_module.QueryOptions(offset=20)
+            query_module.QueryOptions(project="testing", offset=20)
         )
 
     @staticmethod
@@ -1497,7 +1510,7 @@ class TestQuery:
         response = _datastore_query.fetch.return_value
         assert query.fetch_async(limit=20) is response
         _datastore_query.fetch.assert_called_once_with(
-            query_module.QueryOptions(limit=20)
+            query_module.QueryOptions(project="testing", limit=20)
         )
 
     @staticmethod
@@ -1508,8 +1521,15 @@ class TestQuery:
         response = _datastore_query.fetch.return_value
         assert query.fetch_async(20) is response
         _datastore_query.fetch.assert_called_once_with(
-            query_module.QueryOptions(limit=20)
+            query_module.QueryOptions(project="testing", limit=20)
         )
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_fetch_async_with_limit_twice():
+        query = query_module.Query()
+        with pytest.raises(TypeError):
+            query.fetch_async(20, limit=10)
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")
@@ -1527,24 +1547,36 @@ class TestQuery:
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")
-    def test_fetch_async_with_produce_cursors():
+    @unittest.mock.patch("google.cloud.ndb.query._datastore_query")
+    def test_fetch_async_with_produce_cursors(_datastore_query):
         query = query_module.Query()
-        with pytest.raises(NotImplementedError):
-            query.fetch_async(produce_cursors=True)
+        response = _datastore_query.fetch.return_value
+        assert query.fetch_async(produce_cursors=True) is response
+        _datastore_query.fetch.assert_called_once_with(
+            query_module.QueryOptions(project="testing")
+        )
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")
-    def test_fetch_async_with_start_cursor():
+    @unittest.mock.patch("google.cloud.ndb.query._datastore_query")
+    def test_fetch_async_with_start_cursor(_datastore_query):
         query = query_module.Query()
-        with pytest.raises(NotImplementedError):
-            query.fetch_async(start_cursor=20)
+        response = _datastore_query.fetch.return_value
+        assert query.fetch_async(start_cursor="cursor") is response
+        _datastore_query.fetch.assert_called_once_with(
+            query_module.QueryOptions(project="testing", start_cursor="cursor")
+        )
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")
-    def test_fetch_async_with_end_cursor():
+    @unittest.mock.patch("google.cloud.ndb.query._datastore_query")
+    def test_fetch_async_with_end_cursor(_datastore_query):
         query = query_module.Query()
-        with pytest.raises(NotImplementedError):
-            query.fetch_async(end_cursor=20)
+        response = _datastore_query.fetch.return_value
+        assert query.fetch_async(end_cursor="cursor") is response
+        _datastore_query.fetch.assert_called_once_with(
+            query_module.QueryOptions(project="testing", end_cursor="cursor")
+        )
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")
@@ -1559,6 +1591,13 @@ class TestQuery:
         query = query_module.Query()
         with pytest.raises(NotImplementedError):
             query.fetch_async(read_policy=20)
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_fetch_async_with_bogus_argument():
+        query = query_module.Query()
+        with pytest.raises(TypeError):
+            query.fetch_async(bogus_argument=20)
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")
@@ -1580,7 +1619,7 @@ class TestQuery:
         query = query_module.Query()
         assert query.fetch(20) == "foo"
         _datastore_query.fetch.assert_called_once_with(
-            query_module.QueryOptions(limit=20)
+            query_module.QueryOptions(project="testing", limit=20)
         )
 
     @staticmethod
@@ -1594,15 +1633,17 @@ class TestQuery:
     @pytest.mark.usefixtures("in_context")
     def test_iter():
         query = query_module.Query()
-        with pytest.raises(NotImplementedError):
-            query.iter()
+        iterator = query.iter()
+        assert isinstance(iterator, _datastore_query.QueryIterator)
+        assert iterator._query == query_module.QueryOptions(project="testing")
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")
     def test___iter__():
         query = query_module.Query()
-        with pytest.raises(NotImplementedError):
-            iter(query)
+        iterator = iter(query)
+        assert isinstance(iterator, _datastore_query.QueryIterator)
+        assert iterator._query == query_module.QueryOptions(project="testing")
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")
@@ -1664,10 +1705,3 @@ class TestQuery:
 def test_gql():
     with pytest.raises(NotImplementedError):
         query_module.gql()
-
-
-class TestQueryIterator:
-    @staticmethod
-    def test_constructor():
-        with pytest.raises(NotImplementedError):
-            query_module.QueryIterator()

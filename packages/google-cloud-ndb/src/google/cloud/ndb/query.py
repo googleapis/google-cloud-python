@@ -14,15 +14,17 @@
 
 """High-level wrapper for datastore queries."""
 
+import functools
+import inspect
 import logging
 
+from google.cloud.ndb import context as context_module
 from google.cloud.ndb import _datastore_query
 from google.cloud.ndb import exceptions
 from google.cloud.ndb import model
 
 
 __all__ = [
-    "Cursor",
     "QueryOptions",
     "PropertyOrder",
     "RepeatedStructuredPropertyPredicate",
@@ -40,11 +42,9 @@ __all__ = [
     "OR",
     "Query",
     "gql",
-    "QueryIterator",
 ]
 
 
-Cursor = NotImplemented  # From `google.appengine.datastore.datastore_query`
 _EQ_OP = "="
 _NE_OP = "!="
 _IN_OP = "in"
@@ -71,8 +71,6 @@ class QueryOptions:
         "keys_only",
         "limit",
         "offset",
-        "start_cursor",
-        "end_cursor",
         "batch_size",
         "prefetch_size",
         "produce_cursors",
@@ -269,6 +267,8 @@ class Node:
     Raises:
         TypeError: Always, only subclasses are allowed.
     """
+
+    _multiquery = False
 
     __slots__ = ()
 
@@ -907,6 +907,7 @@ class DisjunctionNode(Node):
         TypeError: If ``nodes`` is empty.
     """
 
+    _multiquery = True
     __slots__ = ("_nodes",)
 
     def __new__(cls, *nodes):
@@ -972,27 +973,160 @@ class DisjunctionNode(Node):
 
         return DisjunctionNode(*resolved_nodes)
 
-    def _to_filter(self, post=False):
-        """Helper to convert to low-level filters.
-
-        Args:
-            post (bool): Indicates if this is a post-filter node.
-
-        Returns:
-            Optional[List[Node]]: List of filter protocol buffers that should
-                be combined using OR. The code in `_datastore_query` will
-                recognize that a list has been returned and run multiple
-                queries.
-        """
-        if post:
-            raise NotImplementedError("No idea what I should do here, yet.")
-
-        return [node._to_filter(post=post) for node in self._nodes]
-
 
 # AND and OR are preferred aliases for these.
 AND = ConjunctionNode
 OR = DisjunctionNode
+
+
+def _query_options(wrapped):
+    """A decorator for functions with query arguments for arguments.
+
+    Many methods of :class:`Query` all take more or less the same arguments
+    from which they need to create a :class:`QueryOptions` instance following
+    the same somewhat complicated rules.
+
+    This decorator wraps these methods with a function that does this
+    processing for them and passes in a :class:`QueryOptions` instance using
+    the ``_query_options`` argument to those functions, bypassing all of the
+    other arguments.
+    """
+    # If there are any positional arguments, get their names
+    signature = inspect.signature(wrapped)
+    positional = [
+        name
+        for name, parameter in signature.parameters.items()
+        if parameter.kind
+        in (parameter.POSITIONAL_ONLY, parameter.POSITIONAL_OR_KEYWORD)
+        and name != "self"
+    ]
+    assert not (positional and positional[0] == "self")
+
+    @functools.wraps(wrapped)
+    def wrapper(self, *args, **kwargs):
+        # Maybe we already did this (in the case of X calling X_async)
+        if "_query_options" in kwargs:
+            return wrapped(self, _query_options=kwargs["_query_options"])
+
+        # Transfer any positional args to keyword args, so they're all in the
+        # same structure.
+        for name, value in zip(positional, args):
+            if name in kwargs:
+                raise TypeError(
+                    "{}() got multiple values for argument '{}'".format(
+                        wrapped.__name__, name
+                    )
+                )
+            kwargs[name] = value
+
+        options = kwargs.pop("options", None)
+        if options is not None:
+            _log.warning(
+                "Deprecation warning: passing 'options' to 'Query' methods is "
+                "deprecated. Please pass arguments directly."
+            )
+
+        batch_size = kwargs.pop("batch_size", None)
+        batch_size = self._option("batch_size", batch_size, options)
+        if batch_size:
+            raise exceptions.NoLongerImplementedError()
+
+        prefetch_size = kwargs.pop("prefetch_size", None)
+        prefetch_size = self._option("prefetch_size", prefetch_size, options)
+        if prefetch_size:
+            raise exceptions.NoLongerImplementedError()
+
+        produce_cursors = kwargs.pop("produce_cursors", None)
+        produce_cursors = self._option(
+            "produce_cursors", produce_cursors, options
+        )
+        if produce_cursors:
+            _log.warning(
+                "Deprecation warning: 'produce_cursors' is deprecated. "
+                "Cursors are always produced when available. This option is "
+                "ignored."
+            )
+
+        start_cursor = kwargs.pop("start_cursor", None)
+        start_cursor = self._option("start_cursor", start_cursor, options)
+
+        end_cursor = kwargs.pop("end_cursor", None)
+        end_cursor = self._option("end_cursor", end_cursor, options)
+
+        deadline = kwargs.pop("deadline", None)
+        deadline = self._option("deadline", deadline, options)
+        if deadline:
+            raise NotImplementedError(
+                "'deadline' is not implemented yet for queries"
+            )
+
+        read_policy = kwargs.pop("read_policy", None)
+        read_policy = self._option("read_policy", read_policy, options)
+        if read_policy:
+            raise NotImplementedError(
+                "'read_policy' is not implemented yet for queries"
+            )
+
+        projection = kwargs.pop("projection", None)
+        projection = self._option("projection", projection, options)
+
+        keys_only = kwargs.pop("keys_only", None)
+        keys_only = self._option("keys_only", keys_only, options)
+
+        if keys_only:
+            if projection:
+                raise TypeError(
+                    "Cannot specify 'projection' with 'keys_only=True'"
+                )
+            projection = ["__key__"]
+
+        offset = kwargs.pop("offset", None)
+        limit = kwargs.pop("limit", None)
+
+        client = context_module.get_context().client
+
+        project = kwargs.pop("project", None)
+        project = self._option("project", project, options)
+        if not project:
+            project = client.project
+
+        namespace = kwargs.pop("namespace", None)
+        namespace = self._option("namespace", namespace, options)
+        if not namespace:
+            namespace = client.namespace
+
+        if kwargs:
+            raise TypeError(
+                "{}() got unexpected keyword argument '{}'".format(
+                    wrapped.__name__, next(iter(kwargs))
+                )
+            )
+
+        query_arguments = (
+            ("kind", self._option("kind", None, options)),
+            ("project", project),
+            ("namespace", namespace),
+            ("ancestor", self._option("ancestor", None, options)),
+            ("filters", self._option("filters", None, options)),
+            ("order_by", self._option("order_by", None, options)),
+            ("distinct_on", self._option("distinct_on", None, options)),
+            ("projection", projection),
+            ("offset", self._option("offset", offset, options)),
+            ("limit", self._option("limit", limit, options)),
+            (
+                "start_cursor",
+                self._option("start_cursor", start_cursor, options),
+            ),
+            ("end_cursor", self._option("end_cursor", end_cursor, options)),
+        )
+        query_arguments = {
+            name: value for name, value in query_arguments if value is not None
+        }
+        query_options = QueryOptions(**query_arguments)
+
+        return wrapped(self, _query_options=query_options)
+
+    return wrapper
 
 
 class Query:
@@ -1396,6 +1530,7 @@ class Query:
         if modelclass is not None:
             modelclass._check_properties(fixed, **kwargs)
 
+    @_query_options
     def fetch(
         self,
         limit=None,
@@ -1411,6 +1546,7 @@ class Query:
         deadline=None,
         read_policy=None,  #  _datastore_api.EVENTUAL,  # placeholder
         options=None,
+        _query_options=None,
     ):
         """Run a query, fetching results.
 
@@ -1441,21 +1577,9 @@ class Query:
         Returns:
             List([model.Model]): The query results.
         """
-        return self.fetch_async(
-            keys_only=keys_only,
-            projection=projection,
-            offset=offset,
-            limit=limit,
-            batch_size=batch_size,
-            prefetch_size=prefetch_size,
-            produce_cursors=produce_cursors,
-            start_cursor=start_cursor,
-            end_cursor=end_cursor,
-            deadline=deadline,
-            read_policy=read_policy,
-            options=options,
-        ).result()
+        return self.fetch_async(_query_options=_query_options).result()
 
+    @_query_options
     def fetch_async(
         self,
         limit=None,
@@ -1471,6 +1595,7 @@ class Query:
         deadline=None,
         read_policy=None,  #  _datastore_api.EVENTUAL,  # placeholder
         options=None,
+        _query_options=None,
     ):
         """Run a query, asynchronously fetching the results.
 
@@ -1500,80 +1625,7 @@ class Query:
             tasklets.Future: Eventual result will be a List[model.Model] of the
                 results.
         """
-        if options is not None:
-            _log.warning(
-                "Deprecation warning: passing options to Query.fetch or "
-                "Query.fetch_async is deprecated. Please pass arguments "
-                "directly."
-            )
-
-        batch_size = self._option("batch_size", batch_size, options)
-        if batch_size:
-            raise exceptions.NoLongerImplementedError()
-
-        prefetch_size = self._option("prefetch_size", prefetch_size, options)
-        if prefetch_size:
-            raise exceptions.NoLongerImplementedError()
-
-        produce_cursors = self._option(
-            "produce_cursors", produce_cursors, options
-        )
-        if produce_cursors:
-            raise NotImplementedError(
-                "'produce_cursors' is not implemented yet for queries"
-            )
-
-        start_cursor = self._option("start_cursor", start_cursor, options)
-        if start_cursor:
-            raise NotImplementedError(
-                "'start_cursor' is not implemented yet for queries"
-            )
-
-        end_cursor = self._option("end_cursor", end_cursor, options)
-        if end_cursor:
-            raise NotImplementedError(
-                "'end_cursor' is not implemented yet for queries"
-            )
-
-        deadline = self._option("deadline", deadline, options)
-        if deadline:
-            raise NotImplementedError(
-                "'deadline' is not implemented yet for queries"
-            )
-
-        read_policy = self._option("read_policy", read_policy, options)
-        if read_policy:
-            raise NotImplementedError(
-                "'read_policy' is not implemented yet for queries"
-            )
-
-        projection = self._option("projection", projection, options)
-        keys_only = self._option("keys_only", keys_only, options)
-        if keys_only:
-            if projection:
-                raise TypeError(
-                    "Cannot specify 'projection' with 'keys_only=True'"
-                )
-            projection = ["__key__"]
-
-        query_arguments = (
-            ("kind", self._option("kind", None, options)),
-            ("project", self._option("project", None, options)),
-            ("namespace", self._option("namespace", None, options)),
-            ("ancestor", self._option("ancestor", None, options)),
-            ("filters", self._option("filters", None, options)),
-            ("order_by", self._option("order_by", None, options)),
-            ("distinct_on", self._option("distinct_on", None, options)),
-            ("projection", projection),
-            ("offset", self._option("offset", offset, options)),
-            ("limit", self._option("limit", limit, options)),
-        )
-        query_arguments = {
-            name: value for name, value in query_arguments if value is not None
-        }
-        query_options = QueryOptions(**query_arguments)
-
-        return _datastore_query.fetch(query_options)
+        return _datastore_query.fetch(_query_options)
 
     def _option(self, name, given, options=None):
         """Get given value or a provided default for an option.
@@ -1619,11 +1671,11 @@ class Query:
         """Run this query, putting entities into the given queue."""
         raise exceptions.NoLongerImplementedError()
 
+    @_query_options
     def iter(
         self,
-        limit=None,
-        *,
         keys_only=None,
+        limit=None,
         projection=None,
         offset=None,
         batch_size=None,
@@ -1634,16 +1686,17 @@ class Query:
         deadline=None,
         read_policy=None,  #  _datastore_api.EVENTUAL,  # placeholder
         options=None,
+        _query_options=None,
     ):
         """Get an iterator over query results.
 
         Args:
             keys_only (bool): Return keys instead of entities.
+            limit (Optional[int]): Maximum number of query results to return.
+                If not specified, there is no limit.
             projection (list[str]): The fields to return as part of the query
                 results.
             offset (int): Number of query results to skip.
-            limit (Optional[int]): Maximum number of query results to return.
-                If not specified, there is no limit.
             batch_size (Optional[int]): Number of results to fetch in a single
                 RPC call. Affects efficiency of queries only. Larger batch
                 sizes use more memory but make fewer RPC calls.
@@ -1662,7 +1715,7 @@ class Query:
         Returns:
             QueryIterator: An iterator.
         """
-        raise NotImplementedError
+        return _datastore_query.iterate(_query_options)
 
     __iter__ = iter
 
@@ -1936,9 +1989,9 @@ class Query:
 
         To fetch the next page, you pass the cursor returned by one call to the
         next call using the `start_cursor` argument.  A common idiom is to pass
-        the cursor to the client using `Cursor.to_websafe_string` and to
-        reconstruct that cursor on a subsequent request using
-        `Cursor.from_websafe_string`.
+        the cursor to the client using :meth:`_datastore_query.Cursor.urlsafe`
+        and to reconstruct that cursor on a subsequent request using the
+        `urlsafe` argument to :class:`Cursor`.
 
         Args:
             page_size (int): The number of results per page. At most, this many
@@ -1981,10 +2034,3 @@ class Query:
 
 def gql(*args, **kwargs):
     raise NotImplementedError
-
-
-class QueryIterator:
-    __slots__ = ()
-
-    def __init__(self, *args, **kwargs):
-        raise NotImplementedError

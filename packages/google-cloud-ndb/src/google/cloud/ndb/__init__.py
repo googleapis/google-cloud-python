@@ -131,6 +131,8 @@ from google.cloud.ndb.context import get_context
 from google.cloud.ndb.context import TransactionOptions
 from google.cloud.ndb._datastore_api import EVENTUAL
 from google.cloud.ndb._datastore_api import EVENTUAL_CONSISTENCY
+from google.cloud.ndb._datastore_query import Cursor
+from google.cloud.ndb._datastore_query import QueryIterator
 from google.cloud.ndb.key import Key
 from google.cloud.ndb.model import BlobKey
 from google.cloud.ndb.model import BlobKeyProperty
@@ -188,7 +190,6 @@ from google.cloud.ndb.model import UserNotFoundError
 from google.cloud.ndb.model import UserProperty
 from google.cloud.ndb.query import ConjunctionNode
 from google.cloud.ndb.query import AND
-from google.cloud.ndb.query import Cursor
 from google.cloud.ndb.query import DisjunctionNode
 from google.cloud.ndb.query import OR
 from google.cloud.ndb.query import FalseNode
@@ -201,7 +202,6 @@ from google.cloud.ndb.query import ParameterizedThing
 from google.cloud.ndb.query import ParameterNode
 from google.cloud.ndb.query import PostFilterNode
 from google.cloud.ndb.query import Query
-from google.cloud.ndb.query import QueryIterator
 from google.cloud.ndb.query import QueryOptions
 from google.cloud.ndb.query import RepeatedStructuredPropertyPredicate
 from google.cloud.ndb.tasklets import add_flow_exception

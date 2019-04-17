@@ -156,6 +156,12 @@ The primary differences come from:
 - The `batch_size` and `prefetch_size` arguments to `Query.fetch` and
   `Query.fetch_async` are no longer supported. These were passed through
   directly to Datastore, which no longer supports these options.
+- The `index_list` method of `QueryIterator` is not implemented. Datastore no
+  longer returns this data with query results, so it is not available from the
+  API in this way. 
+- The `produce_cursors` query option is deprecated. Datastore always returns
+  cursors, where it can, and NDB always makes them available when possible.
+  This option can be passed in but it will be ignored.
 
 ## Privatization
 
