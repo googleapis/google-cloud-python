@@ -16,6 +16,7 @@ import datetime
 import os
 import re
 import tempfile
+import time
 import unittest
 
 import pytest
@@ -727,6 +728,7 @@ class TestStoragePseudoHierarchy(TestStorageFiles):
 
 class TestStorageSignURLs(unittest.TestCase):
     BLOB_CONTENT = b"This time for sure, Rocky!"
+
     @classmethod
     def setUpClass(cls):
         if (
@@ -747,18 +749,23 @@ class TestStorageSignURLs(unittest.TestCase):
         retry = RetryErrors(errors, max_tries=6)
         retry(cls.bucket.delete)(force=True)
 
+    @staticmethod
+    def _morph_expiration(version, expiration):
+        if expiration is not None:
+            return expiration
+
+        if version == "v2":
+            return int(time.time()) + 10
+
+        return 10
+
     def _create_signed_list_blobs_url_helper(
-        self, version, expiration=None, max_age=None, method="GET"
+        self, version, expiration=None, method="GET"
     ):
-        if expiration is None and max_age is None:
-            max_age = 10
+        expiration = self._morph_expiration(version, expiration)
 
         signed_url = self.bucket.generate_signed_url(
-            expiration=expiration,
-            max_age=max_age,
-            method=method,
-            client=Config.CLIENT,
-            version=version,
+            expiration=expiration, method=method, client=Config.CLIENT, version=version
         )
 
         response = requests.get(signed_url)
@@ -790,23 +797,17 @@ class TestStorageSignURLs(unittest.TestCase):
         version="v2",
         payload=None,
         expiration=None,
-        max_age=None,
     ):
+        expiration = self._morph_expiration(version, expiration)
+
         if payload is not None:
             blob = self.bucket.blob(blob_name)
             blob.upload_from_string(payload)
         else:
             blob = self.blob
 
-        if expiration is None and max_age is None:
-            max_age = 10
-
         signed_url = blob.generate_signed_url(
-            expiration=expiration,
-            max_age=max_age,
-            method=method,
-            client=Config.CLIENT,
-            version=version,
+            expiration=expiration, method=method, client=Config.CLIENT, version=version
         )
 
         response = requests.get(signed_url)
@@ -852,19 +853,14 @@ class TestStorageSignURLs(unittest.TestCase):
             version="v4",
         )
 
-    def _create_signed_delete_url_helper(
-        self, version="v2", expiration=None, max_age=None
-    ):
-
-        if expiration is None and max_age is None:
-            max_age = 10
+    def _create_signed_delete_url_helper(self, version="v2", expiration=None):
+        expiration = self._morph_expiration(version, expiration)
 
         blob = self.bucket.blob("DELETE_ME.txt")
         blob.upload_from_string(b"DELETE ME!")
 
         signed_delete_url = blob.generate_signed_url(
             expiration=expiration,
-            max_age=max_age,
             method="DELETE",
             client=Config.CLIENT,
             version=version,
@@ -882,22 +878,14 @@ class TestStorageSignURLs(unittest.TestCase):
     def test_create_signed_delete_url_v4(self):
         self._create_signed_delete_url_helper(version="v4")
 
-    def _signed_resumable_upload_url_helper(
-        self,
-        version="v2",
-        expiration=None,
-        max_age=None,
-    ):
+    def _signed_resumable_upload_url_helper(self, version="v2", expiration=None):
+        expiration = self._morph_expiration(version, expiration)
         blob = self.bucket.blob("cruddy.txt")
         payload = b"DEADBEEF"
-
-        if expiration is None and max_age is None:
-            max_age = 3600
 
         # Initiate the upload using a signed URL.
         signed_resumable_upload_url = blob.generate_signed_url(
             expiration=expiration,
-            max_age=max_age,
             method="RESUMABLE",
             client=Config.CLIENT,
             version=version,
@@ -915,11 +903,7 @@ class TestStorageSignURLs(unittest.TestCase):
 
         # Download using a signed URL and verify.
         signed_download_url = blob.generate_signed_url(
-            expiration=expiration,
-            max_age=max_age,
-            method="GET",
-            client=Config.CLIENT,
-            version=version,
+            expiration=expiration, method="GET", client=Config.CLIENT, version=version
         )
 
         get_response = requests.get(signed_download_url)
@@ -929,7 +913,6 @@ class TestStorageSignURLs(unittest.TestCase):
         # Finally, delete the blob using a signed URL.
         signed_delete_url = blob.generate_signed_url(
             expiration=expiration,
-            max_age=max_age,
             method="DELETE",
             client=Config.CLIENT,
             version=version,

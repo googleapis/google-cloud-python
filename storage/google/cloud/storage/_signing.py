@@ -86,34 +86,17 @@ def get_signed_query_params_v2(credentials, expiration, string_to_sign):
     }
 
 
-def get_expiration_seconds_v2(expiration, max_age):
+def get_expiration_seconds_v2(expiration):
     """Convert 'expiration' to a number of seconds in the future.
 
     :type expiration: Union[Integer, datetime.datetime, datetime.timedelta]
     :param expiration: Point in time when the signed URL should expire.
-                       Exclusive with :arg:`max_age`: exactly one of the
-                       two must be passed.
 
-    :type max_age: Integer
-    :param max_age: Max number of seconds until the signature expires.
-                    Exclusive with :arg:`expiration`: exactly one of the
-                    two must be passed.
-
-    :raises: :exc:`ValueError` when both :arg:`expiration` and
-                :arg:`max_age` are passed, or when neither is passed.
     :raises: :exc:`TypeError` when expiration is not a valid type.
 
     :rtype: int
     :returns: a timestamp as an absolute number of seconds since epoch.
     """
-    if (expiration is None and max_age is None) or (
-        expiration is not None and max_age is not None
-    ):
-        raise ValueError("Pass exactly one of 'expiration' or 'max_age'.")
-
-    if max_age is not None:
-        expiration = datetime.timedelta(seconds=max_age)
-
     # If it's a timedelta, add it to `now` in UTC.
     if isinstance(expiration, datetime.timedelta):
         now = NOW().replace(tzinfo=_helpers.UTC)
@@ -135,34 +118,17 @@ def get_expiration_seconds_v2(expiration, max_age):
 _EXPIRATION_TYPES = six.integer_types + (datetime.datetime, datetime.timedelta)
 
 
-def get_expiration_seconds_v4(expiration, max_age):
+def get_expiration_seconds_v4(expiration):
     """Convert 'expiration' to a number of seconds offset from the current time.
 
     :type expiration: Union[Integer, datetime.datetime, datetime.timedelta]
     :param expiration: Point in time when the signed URL should expire.
-                       Exclusive with :arg:`max_age`: exactly one of the
-                       two must be passed.
 
-    :type max_age: Integer
-    :param max_age: Max number of seconds until the signature expires.
-                    Exclusive with :arg:`expiration`: exactly one of the
-                    two must be passed.
-
-    :raises: :exc:`ValueError` when both :arg:`expiration` and
-                :arg:`max_age` are passed, or when neither is passed.
     :raises: :exc:`TypeError` when expiration is not a valid type.
     :raises: :exc:`ValueError` when expiration is too large.
     :rtype: Integer
     :returns: seconds in the future when the signed URL will expire
     """
-    if (expiration is None and max_age is None) or (
-        expiration is not None and max_age is not None
-    ):
-        raise ValueError("Pass exactly one of 'expiration' or 'max_age'.")
-
-    if max_age is not None:
-        return max_age
-
     if not isinstance(expiration, _EXPIRATION_TYPES):
         raise TypeError(
             "Expected an integer timestamp, datetime, or "
@@ -172,8 +138,7 @@ def get_expiration_seconds_v4(expiration, max_age):
     now = NOW().replace(tzinfo=_helpers.UTC)
 
     if isinstance(expiration, six.integer_types):
-        now_seconds = _helpers._microseconds_from_datetime(now) // 10 ** 6
-        seconds = expiration - now_seconds
+        seconds = expiration
 
     if isinstance(expiration, datetime.datetime):
 
@@ -226,9 +191,7 @@ def get_canonical_headers(headers):
         val = MULTIPLE_SPACES.sub(" ", val.strip())
         normalized[key].append(val)
 
-    ordered_headers = sorted(
-        (key, ",".join(val)) for key, val in normalized.items()
-    )
+    ordered_headers = sorted((key, ",".join(val)) for key, val in normalized.items())
 
     canonical_headers = ["{}:{}".format(*item) for item in ordered_headers]
     return canonical_headers, ordered_headers
@@ -292,8 +255,7 @@ def canonicalize(method, resource, query_parameters, headers):
 def generate_signed_url_v2(
     credentials,
     resource,
-    expiration=None,
-    max_age=None,
+    expiration,
     api_access_endpoint="",
     method="GET",
     content_md5=None,
@@ -336,13 +298,6 @@ def generate_signed_url_v2(
 
     :type expiration: Union[Integer, datetime.datetime, datetime.timedelta]
     :param expiration: Point in time when the signed URL should expire.
-                        Exclusive with :arg:`max_age`: exactly one of the
-                        two must be passed.
-
-    :type max_age: Integer
-    :param max_age: Max number of seconds until the signature expires.
-                    Exclusive with :arg:`expiration`: exactly one of the
-                    two must be passed.
 
     :type api_access_endpoint: str
     :param api_access_endpoint: Optional URI base. Defaults to empty string.
@@ -392,8 +347,6 @@ def generate_signed_url_v2(
         https://cloud.google.com/storage/docs/xml-api/reference-headers#query
 
     :raises: :exc:`TypeError` when expiration is not a valid type.
-    :raises: :exc:`ValueError` when both :arg:`expiration` and
-                :arg:`max_age` are passed, or when neither is passed.
     :raises: :exc:`AttributeError` if credentials is not an instance
             of :class:`google.auth.credentials.Signing`.
 
@@ -401,7 +354,7 @@ def generate_signed_url_v2(
     :returns: A signed URL you can use to access the resource
               until expiration.
     """
-    expiration_stamp = get_expiration_seconds_v2(expiration, max_age)
+    expiration_stamp = get_expiration_seconds_v2(expiration)
 
     canonical = canonicalize(method, resource, query_parameters, headers)
 
@@ -446,8 +399,7 @@ DEFAULT_ENDPOINT = "https://storage.googleapis.com"
 def generate_signed_url_v4(
     credentials,
     resource,
-    expiration=None,
-    max_age=None,
+    expiration,
     api_access_endpoint=DEFAULT_ENDPOINT,
     method="GET",
     content_md5=None,
@@ -491,13 +443,6 @@ def generate_signed_url_v4(
 
     :type expiration: Union[Integer, datetime.datetime, datetime.timedelta]
     :param expiration: Point in time when the signed URL should expire.
-                        Exclusive with :arg:`max_age`: exactly one of the
-                        two must be passed.
-
-    :type max_age: Integer
-    :param max_age: Max number of seconds until the signature expires.
-                    Exclusive with :arg:`expiration`: exactly one of the
-                    two must be passed.
 
     :type api_access_endpoint: str
     :param api_access_endpoint: Optional URI base. Defaults to
@@ -548,8 +493,6 @@ def generate_signed_url_v4(
         https://cloud.google.com/storage/docs/xml-api/reference-headers#query
 
     :raises: :exc:`TypeError` when expiration is not a valid type.
-    :raises: :exc:`ValueError` when both :arg:`expiration` and
-                :arg:`max_age` are passed, or when neither is passed.
     :raises: :exc:`AttributeError` if credentials is not an instance
             of :class:`google.auth.credentials.Signing`.
 
@@ -558,7 +501,7 @@ def generate_signed_url_v4(
               until expiration.
     """
     ensure_signed_credentials(credentials)
-    expiration_seconds = get_expiration_seconds_v4(expiration, max_age)
+    expiration_seconds = get_expiration_seconds_v4(expiration)
 
     if _request_timestamp is None:
         now = NOW()

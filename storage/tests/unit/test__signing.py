@@ -52,59 +52,39 @@ def _utc_seconds(when):
 
 class Test_get_expiration_seconds_v2(unittest.TestCase):
     @staticmethod
-    def _call_fut(expiration, max_age):
+    def _call_fut(expiration):
         from google.cloud.storage._signing import get_expiration_seconds_v2
 
-        return get_expiration_seconds_v2(expiration, max_age)
+        return get_expiration_seconds_v2(expiration)
 
     def test_w_invalid_expiration_type(self):
         with self.assertRaises(TypeError):
             self._call_fut(object(), None)
 
-    def test_w_neither_expiration_nor_max_age(self):
-        with self.assertRaises(ValueError):
-            self._call_fut(None, None)
-
-    def test_w_both_expiration_and_max_age(self):
-        with self.assertRaises(ValueError):
-            self._call_fut(123, 123)
-
-    def test_w_max_age_int(self):
-        dummy_utcnow = datetime.datetime(2004, 8, 19, 0, 0, 0, 0)
-
-        patch = mock.patch(
-            "google.cloud.storage._signing.NOW", return_value=dummy_utcnow
-        )
-
-        with patch as utcnow:
-            result = self._call_fut(None, 10)
-
-        delta = datetime.timedelta(seconds=10)
-        when = dummy_utcnow + delta
-        expiration = _utc_seconds(when)
-        self.assertEqual(result, expiration)
-        utcnow.assert_called_once_with()
+    def test_w_expiration_none(self):
+        with self.assertRaises(TypeError):
+            self._call_fut(None)
 
     def test_w_expiration_int(self):
-        self.assertEqual(self._call_fut(123, None), 123)
+        self.assertEqual(self._call_fut(123), 123)
 
     def test_w_expiration_long(self):
         if six.PY3:
             raise unittest.SkipTest("No long on Python 3")
 
-        self.assertEqual(self._call_fut(long(123), None), 123)  # noqa: F821
+        self.assertEqual(self._call_fut(long(123)), 123)  # noqa: F821
 
     def test_w_expiration_naive_datetime(self):
         expiration_no_tz = datetime.datetime(2004, 8, 19, 0, 0, 0, 0)
         utc_seconds = _utc_seconds(expiration_no_tz)
-        self.assertEqual(self._call_fut(expiration_no_tz, None), utc_seconds)
+        self.assertEqual(self._call_fut(expiration_no_tz), utc_seconds)
 
     def test_w_expiration_utc_datetime(self):
         from google.cloud._helpers import UTC
 
         expiration_utc = datetime.datetime(2004, 8, 19, 0, 0, 0, 0, UTC)
         utc_seconds = _utc_seconds(expiration_utc)
-        self.assertEqual(self._call_fut(expiration_utc, None), utc_seconds)
+        self.assertEqual(self._call_fut(expiration_utc), utc_seconds)
 
     def test_w_expiration_other_zone_datetime(self):
         from google.cloud._helpers import _UTC
@@ -117,7 +97,7 @@ class Test_get_expiration_seconds_v2(unittest.TestCase):
         expiration_other = datetime.datetime(2004, 8, 19, 0, 0, 0, 0, zone)
         utc_seconds = _utc_seconds(expiration_other)
         cet_seconds = utc_seconds - (60 * 60)  # CET one hour earlier than UTC
-        self.assertEqual(self._call_fut(expiration_other, None), cet_seconds)
+        self.assertEqual(self._call_fut(expiration_other), cet_seconds)
 
     def test_w_expiration_timedelta_seconds(self):
         dummy_utcnow = datetime.datetime(2004, 8, 19, 0, 0, 0, 0)
@@ -128,7 +108,7 @@ class Test_get_expiration_seconds_v2(unittest.TestCase):
             "google.cloud.storage._signing.NOW", return_value=dummy_utcnow
         )
         with patch as utcnow:
-            result = self._call_fut(expiration_as_delta, None)
+            result = self._call_fut(expiration_as_delta)
 
         self.assertEqual(result, utc_seconds + 10)
         utcnow.assert_called_once_with()
@@ -142,7 +122,7 @@ class Test_get_expiration_seconds_v2(unittest.TestCase):
             "google.cloud.storage._signing.NOW", return_value=dummy_utcnow
         )
         with patch as utcnow:
-            result = self._call_fut(expiration_as_delta, None)
+            result = self._call_fut(expiration_as_delta)
 
         self.assertEqual(result, utc_seconds + 86400)
         utcnow.assert_called_once_with()
@@ -150,25 +130,18 @@ class Test_get_expiration_seconds_v2(unittest.TestCase):
 
 class Test_get_expiration_seconds_v4(unittest.TestCase):
     @staticmethod
-    def _call_fut(expiration, max_age):
+    def _call_fut(expiration):
         from google.cloud.storage._signing import get_expiration_seconds_v4
 
-        return get_expiration_seconds_v4(expiration, max_age)
+        return get_expiration_seconds_v4(expiration)
 
     def test_w_invalid_expiration_type(self):
         with self.assertRaises(TypeError):
             self._call_fut(object(), None)
 
-    def test_w_neither_expiration_nor_max_age(self):
-        with self.assertRaises(ValueError):
-            self._call_fut(None, None)
-
-    def test_w_both_expiration_and_max_age(self):
-        with self.assertRaises(ValueError):
-            self._call_fut(123, 123)
-
-    def test_w_max_age_int(self):
-        self.assertEqual(self._call_fut(None, 10), 10)
+    def test_w_expiration_none(self):
+        with self.assertRaises(TypeError):
+            self._call_fut(None)
 
     def test_w_expiration_int_gt_seven_days(self):
         dummy_utcnow = datetime.datetime(2004, 8, 19, 0, 0, 0, 0)
@@ -182,23 +155,21 @@ class Test_get_expiration_seconds_v4(unittest.TestCase):
 
         with patch as utcnow:
             with self.assertRaises(ValueError):
-                self._call_fut(expiration_seconds, None)
+                self._call_fut(expiration_seconds)
         utcnow.assert_called_once_with()
 
     def test_w_expiration_int(self):
         dummy_utcnow = datetime.datetime(2004, 8, 19, 0, 0, 0, 0)
-        delta = datetime.timedelta(seconds=10)
-        expiration_utc = dummy_utcnow + delta
-        expiration_seconds = _utc_seconds(expiration_utc)
+        expiration_seconds = 10
 
         patch = mock.patch(
             "google.cloud.storage._signing.NOW", return_value=dummy_utcnow
         )
 
         with patch as utcnow:
-            result = self._call_fut(expiration_seconds, None)
+            result = self._call_fut(expiration_seconds)
 
-        self.assertEqual(result, delta.seconds)
+        self.assertEqual(result, expiration_seconds)
         utcnow.assert_called_once_with()
 
     def test_w_expiration_naive_datetime(self):
@@ -210,7 +181,7 @@ class Test_get_expiration_seconds_v4(unittest.TestCase):
             "google.cloud.storage._signing.NOW", return_value=dummy_utcnow
         )
         with patch as utcnow:
-            result = self._call_fut(expiration_no_tz, None)
+            result = self._call_fut(expiration_no_tz)
 
         self.assertEqual(result, delta.seconds)
         utcnow.assert_called_once_with()
@@ -226,7 +197,7 @@ class Test_get_expiration_seconds_v4(unittest.TestCase):
             "google.cloud.storage._signing.NOW", return_value=dummy_utcnow
         )
         with patch as utcnow:
-            result = self._call_fut(expiration_utc, None)
+            result = self._call_fut(expiration_utc)
 
         self.assertEqual(result, delta.seconds)
         utcnow.assert_called_once_with()
@@ -249,7 +220,7 @@ class Test_get_expiration_seconds_v4(unittest.TestCase):
             "google.cloud.storage._signing.NOW", return_value=dummy_utcnow
         )
         with patch as utcnow:
-            result = self._call_fut(expiration_other, None)
+            result = self._call_fut(expiration_other)
 
         self.assertEqual(result, delta.seconds)
         utcnow.assert_called_once_with()
@@ -262,7 +233,7 @@ class Test_get_expiration_seconds_v4(unittest.TestCase):
             "google.cloud.storage._signing.NOW", return_value=dummy_utcnow
         )
         with patch as utcnow:
-            result = self._call_fut(expiration_as_delta, None)
+            result = self._call_fut(expiration_as_delta)
 
         self.assertEqual(result, expiration_as_delta.total_seconds())
         utcnow.assert_called_once_with()
@@ -535,6 +506,8 @@ class Test_generate_signed_url_v2(unittest.TestCase):
 
 
 class Test_generate_signed_url_v4(unittest.TestCase):
+    DEFAULT_EXPIRATION = 1000
+
     @staticmethod
     def _call_fut(*args, **kwargs):
         from google.cloud.storage._signing import generate_signed_url_v4
@@ -543,8 +516,7 @@ class Test_generate_signed_url_v4(unittest.TestCase):
 
     def _generate_helper(
         self,
-        expiration=None,
-        max_age=1000,
+        expiration=DEFAULT_EXPIRATION,
         api_access_endpoint="",
         method="GET",
         content_type=None,
@@ -566,7 +538,6 @@ class Test_generate_signed_url_v4(unittest.TestCase):
                 credentials,
                 resource,
                 expiration=expiration,
-                max_age=max_age,
                 api_access_endpoint=api_access_endpoint,
                 method=method,
                 content_type=content_type,
@@ -603,7 +574,7 @@ class Test_generate_signed_url_v4(unittest.TestCase):
 
         now_stamp = now.strftime("%Y%m%dT%H%M%SZ")
         self.assertEqual(params["X-Goog-Date"], now_stamp)
-        self.assertEqual(params["X-Goog-Expires"], str(max_age))
+        self.assertEqual(params["X-Goog-Expires"], str(self.DEFAULT_EXPIRATION))
 
         signed = binascii.hexlify(credentials.sign_bytes.return_value).decode("ascii")
         self.assertEqual(params["X-Goog-Signature"], signed)
@@ -624,7 +595,7 @@ class Test_generate_signed_url_v4(unittest.TestCase):
                 value = value.strip() if value else ""
                 self.assertEqual(params[key].lower(), value)
 
-    def test_w_max_age_too_long(self):
+    def test_w_expiration_too_long(self):
         with self.assertRaises(ValueError):
             self._generate_helper(expiration=datetime.timedelta(days=8))
 
@@ -690,7 +661,7 @@ def _run_conformance_test(resource, test_data):
     url = Test_generate_signed_url_v4._call_fut(
         credentials,
         resource,
-        max_age=test_data["expiration"],
+        expiration=test_data["expiration"],
         method=test_data["method"],
         _request_timestamp=test_data["timestamp"],
         headers=test_data.get("headers"),

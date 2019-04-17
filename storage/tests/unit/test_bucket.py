@@ -2597,7 +2597,6 @@ class Test_Bucket(unittest.TestCase):
         query_parameters=None,
         credentials=None,
         expiration=None,
-        max_age=None,
     ):
         from six.moves.urllib import parse
         from google.cloud._helpers import UTC
@@ -2607,7 +2606,7 @@ class Test_Bucket(unittest.TestCase):
 
         delta = datetime.timedelta(hours=1)
 
-        if expiration is None and max_age is None:
+        if expiration is None:
             expiration = datetime.datetime.utcnow().replace(tzinfo=UTC) + delta
 
         connection = _Connection()
@@ -2620,13 +2619,13 @@ class Test_Bucket(unittest.TestCase):
             effective_version = version
 
         to_patch = "google.cloud.storage.bucket.generate_signed_url_{}".format(
-            effective_version)
+            effective_version
+        )
 
         with mock.patch(to_patch) as signer:
             with warnings.catch_warnings(record=True) as warned:
                 signed_uri = bucket.generate_signed_url(
                     expiration=expiration,
-                    max_age=max_age,
                     api_access_endpoint=api_access_endpoint,
                     method=method,
                     credentials=credentials,
@@ -2653,7 +2652,6 @@ class Test_Bucket(unittest.TestCase):
         expected_kwargs = {
             "resource": expected_resource,
             "expiration": expiration,
-            "max_age": max_age,
             "api_access_endpoint": api_access_endpoint,
             "method": method.upper(),
             "headers": headers,
@@ -2676,9 +2674,6 @@ class Test_Bucket(unittest.TestCase):
 
         expiration = datetime.datetime.utcnow().replace(tzinfo=UTC)
         self._generate_signed_url_v2_helper(expiration=expiration)
-
-    def test_generate_signed_url_v2_w_max_age(self):
-        self._generate_signed_url_v2_helper(max_age=3600)
 
     def test_generate_signed_url_v2_w_endpoint(self):
         self._generate_signed_url_v2_helper(
