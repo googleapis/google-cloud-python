@@ -93,25 +93,6 @@ class SecurityCenterClient(object):
         )
 
     @classmethod
-    def asset_security_marks_path(cls, organization, asset):
-        """Return a fully-qualified asset_security_marks string."""
-        return google.api_core.path_template.expand(
-            "organizations/{organization}/assets/{asset}/securityMarks",
-            organization=organization,
-            asset=asset,
-        )
-
-    @classmethod
-    def finding_security_marks_path(cls, organization, source, finding):
-        """Return a fully-qualified finding_security_marks string."""
-        return google.api_core.path_template.expand(
-            "organizations/{organization}/sources/{source}/findings/{finding}/securityMarks",
-            organization=organization,
-            source=source,
-            finding=finding,
-        )
-
-    @classmethod
     def organization_settings_path(cls, organization):
         """Return a fully-qualified organization_settings string."""
         return google.api_core.path_template.expand(
@@ -120,10 +101,21 @@ class SecurityCenterClient(object):
         )
 
     @classmethod
-    def organization_sources_path(cls, organization):
-        """Return a fully-qualified organization_sources string."""
+    def asset_path(cls, organization, asset):
+        """Return a fully-qualified asset string."""
         return google.api_core.path_template.expand(
-            "organizations/{organization}/sources/-", organization=organization
+            "organizations/{organization}/assets/{asset}",
+            organization=organization,
+            asset=asset,
+        )
+
+    @classmethod
+    def asset_security_marks_path(cls, organization, asset):
+        """Return a fully-qualified asset_security_marks string."""
+        return google.api_core.path_template.expand(
+            "organizations/{organization}/assets/{asset}/securityMarks",
+            organization=organization,
+            asset=asset,
         )
 
     @classmethod
@@ -136,10 +128,27 @@ class SecurityCenterClient(object):
         )
 
     @classmethod
+    def organization_sources_path(cls, organization):
+        """Return a fully-qualified organization_sources string."""
+        return google.api_core.path_template.expand(
+            "organizations/{organization}/sources/-", organization=organization
+        )
+
+    @classmethod
     def finding_path(cls, organization, source, finding):
         """Return a fully-qualified finding string."""
         return google.api_core.path_template.expand(
             "organizations/{organization}/sources/{source}/findings/{finding}",
+            organization=organization,
+            source=source,
+            finding=finding,
+        )
+
+    @classmethod
+    def finding_security_marks_path(cls, organization, source, finding):
+        """Return a fully-qualified finding_security_marks string."""
+        return google.api_core.path_template.expand(
+            "organizations/{organization}/sources/{source}/findings/{finding}/securityMarks",
             organization=organization,
             source=source,
             finding=finding,
@@ -708,6 +717,16 @@ class SecurityCenterClient(object):
                 -  integer literals without quotes.
                 -  boolean literals ``true`` and ``false`` without quotes.
 
+                The following field and operator combinations are supported: name \|
+                ``=`` update\_time \| ``>``, ``<``, ``>=``, ``<=``
+                iam\_policy.policy\_blob \| '=', ':' resource\_properties \| '=', ':',
+                ``>``, ``<``, ``>=``, ``<=`` security\_marks \| '=', ':'
+                security\_center\_properties.resource\_name \| '=', ':'
+                security\_center\_properties.resource\_type \| '=', ':'
+                security\_center\_properties.resource\_parent \| '=', ':'
+                security\_center\_properties.resource\_project \| '=', ':'
+                security\_center\_properties.resource\_owners \| '=', ':'
+
                 For example, ``resource_properties.size = 100`` is a valid filter
                 string.
             compare_duration (Union[dict, ~google.cloud.securitycenter_v1.types.Duration]): When compare\_duration is set, the GroupResult's "state\_change"
@@ -878,8 +897,11 @@ class SecurityCenterClient(object):
                 -  resource\_name
                 -  category
                 -  state
-                -  state\_change
                 -  parent
+
+                The following fields are supported when compare\_duration is set:
+
+                -  state\_change
             filter_ (str): Expression that defines the filter to apply across findings. The
                 expression is a list of one or more restrictions combined via logical
                 operators ``AND`` and ``OR``. Parentheses are supported, and ``OR`` has
@@ -903,6 +925,12 @@ class SecurityCenterClient(object):
                 -  string literals in quotes.
                 -  integer literals without quotes.
                 -  boolean literals ``true`` and ``false`` without quotes.
+
+                The following field and operator combinations are supported: name \|
+                ``=`` parent \| '=', ':' resource\_name \| '=', ':' state \| '=', ':'
+                category \| '=', ':' external\_uri \| '=', ':' event\_time \| ``>``,
+                ``<``, ``>=``, ``<=`` security\_marks \| '=', ':' source\_properties \|
+                '=', ':', ``>``, ``<``, ``>=``, ``<=``
 
                 For example, ``source_properties.size = 100`` is a valid filter string.
             read_time (Union[dict, ~google.cloud.securitycenter_v1.types.Timestamp]): Time used as a reference point when filtering findings. The filter is
@@ -1082,6 +1110,16 @@ class SecurityCenterClient(object):
                 -  integer literals without quotes.
                 -  boolean literals ``true`` and ``false`` without quotes.
 
+                The following are the allowed field and operator combinations: name \|
+                ``=`` update\_time \| ``>``, ``<``, ``>=``, ``<=``
+                iam\_policy.policy\_blob \| '=', ':' resource\_properties \| '=', ':',
+                ``>``, ``<``, ``>=``, ``<=`` security\_marks \| '=', ':'
+                security\_center\_properties.resource\_name \| '=', ':'
+                security\_center\_properties.resource\_type \| '=', ':'
+                security\_center\_properties.resource\_parent \| '=', ':'
+                security\_center\_properties.resource\_project \| '=', ':'
+                security\_center\_properties.resource\_owners \| '=', ':'
+
                 For example, ``resource_properties.size = 100`` is a valid filter
                 string.
             order_by (str): Expression that defines what fields and order to use for sorting. The
@@ -1093,6 +1131,13 @@ class SecurityCenterClient(object):
                 the syntax are insignificant. "name
                 desc,resource\_properties.a\_property" and " name desc ,
                 resource\_properties.a\_property " are equivalent.
+
+                The following fields are supported: name update\_time
+                resource\_properties security\_marks
+                security\_center\_properties.resource\_name
+                security\_center\_properties.resource\_parent
+                security\_center\_properties.resource\_project
+                security\_center\_properties.resource\_type
             read_time (Union[dict, ~google.cloud.securitycenter_v1.types.Timestamp]): Time used as a reference point when filtering assets. The filter is limited
                 to assets existing at the supplied time and their values are those at that
                 specific time. Absence of this field will default to the API's version of
@@ -1279,6 +1324,12 @@ class SecurityCenterClient(object):
                 -  integer literals without quotes.
                 -  boolean literals ``true`` and ``false`` without quotes.
 
+                The following field and operator combinations are supported: name \|
+                ``=`` parent \| '=', ':' resource\_name \| '=', ':' state \| '=', ':'
+                category \| '=', ':' external\_uri \| '=', ':' event\_time \| ``>``,
+                ``<``, ``>=``, ``<=`` security\_marks \| '=', ':' source\_properties \|
+                '=', ':', ``>``, ``<``, ``>=``, ``<=``
+
                 For example, ``source_properties.size = 100`` is a valid filter string.
             order_by (str): Expression that defines what fields and order to use for sorting. The
                 string value should follow SQL syntax: comma separated list of fields.
@@ -1288,6 +1339,9 @@ class SecurityCenterClient(object):
                 desc,source\_properties.a\_property". Redundant space characters in the
                 syntax are insignificant. "name desc,source\_properties.a\_property" and
                 " name desc , source\_properties.a\_property " are equivalent.
+
+                The following fields are supported: name parent state category
+                resource\_name event\_time source\_properties security\_marks
             read_time (Union[dict, ~google.cloud.securitycenter_v1.types.Timestamp]): Time used as a reference point when filtering findings. The filter is
                 limited to findings existing at the supplied time and their values are
                 those at that specific time. Absence of this field will default to the
