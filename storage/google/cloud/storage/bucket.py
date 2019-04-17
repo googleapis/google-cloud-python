@@ -37,7 +37,6 @@ from google.cloud.storage._signing import generate_signed_url_v2
 from google.cloud.storage._signing import generate_signed_url_v4
 from google.cloud.storage.acl import BucketACL
 from google.cloud.storage.acl import DefaultObjectACL
-from google.cloud.storage.blob import _SIGNED_URL_V2_DEFAULT_MESSAGE
 from google.cloud.storage.blob import Blob
 from google.cloud.storage.notification import BucketNotification
 from google.cloud.storage.notification import NONE_PAYLOAD_FORMAT
@@ -2056,7 +2055,6 @@ class Bucket(_PropertyMixin):
         """
         if version is None:
             version = "v2"
-            warnings.warn(DeprecationWarning(_SIGNED_URL_V2_DEFAULT_MESSAGE))
         elif version not in ("v2", "v4"):
             raise ValueError("'version' must be either 'v2' or 'v4'")
 
