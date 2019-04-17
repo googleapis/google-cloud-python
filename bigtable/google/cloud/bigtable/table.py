@@ -697,27 +697,23 @@ class _RetryableMutateRowsWorker(object):
         lock = threading.Lock()
         for _ in range(max_thread_to_start):
             threading.Thread(target=self.thread_func, args=(lock, retry,)).start()
-
+            
         return self.responses_statuses
 
     def thread_func(self,lock ,retry=DEFAULT_RETRY):
         while not self.is_operation_completed:
-
             lock.acquire()
             current_batch_index = self.latest_executing_batch_index
-            current_batch = self.batches[current_batch_index]
-            current_batch_response = self.responses_statuses[current_batch_index]
             self.latest_executing_batch_index += 1
             if self.latest_executing_batch_index >= self.no_of_batches:
                 self.is_operation_completed = False
             lock.release()
-
             mutate_rows = self._do_mutate_retryable_rows
             if retry:
                 mutate_rows = retry(self._do_mutate_retryable_rows)
 
             try:
-                mutate_rows(current_batch, current_batch_index, current_batch_response)
+                mutate_rows(current_batch_index)
             except (_BigtableRetryableError, RetryError):
                 # - _BigtableRetryableError raised when no retry strategy is used
                 #   and a retryable error on a mutation occurred.
@@ -725,12 +721,11 @@ class _RetryableMutateRowsWorker(object):
                 # In both cases, just return current `responses_statuses`.
                 pass
 
-
     @staticmethod
     def _is_retryable(status):
         return status is None or status.code in _RetryableMutateRowsWorker.RETRY_CODES
 
-    def _do_mutate_retryable_rows(self, batch, batch_index,responses_statuses):
+    def _do_mutate_retryable_rows(self, batch_index):
         """Mutate all the rows that are eligible for retry.
 
         A row is eligible for retry if it has not been tried or if it resulted
@@ -746,6 +741,8 @@ class _RetryableMutateRowsWorker(object):
                  * :exc:`RuntimeError` if the number of responses doesn't
                    match the number of rows that were retried
         """
+        batch = self.batches[batch_index]
+        responses_statuses = self.responses_statuses[batch_index]
         retryable_rows = []
         index_into_all_rows = []
         for index, status in enumerate(responses_statuses):
@@ -755,7 +752,7 @@ class _RetryableMutateRowsWorker(object):
 
         if not retryable_rows:
             # All mutations are either successful or non-retryable now.
-            return self.responses_statuses
+            return responses_statuses
 
         mutate_rows_request = _mutate_rows_request(
             self.table_name, retryable_rows, app_profile_id=self.app_profile_id
