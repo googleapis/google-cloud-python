@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Blobs / Objects &#8212; google-cloud eecb0b8 documentation</title>
+    <title>Blobs / Objects &#8212; google-cloud 7527784 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -488,7 +488,7 @@ to the <code class="docutils literal notranslate"><span class="pre">client</span
 
 <dl class="method">
 <dt id="google.cloud.storage.blob.Blob.generate_signed_url">
-<code class="descname">generate_signed_url</code><span class="sig-paren">(</span><em>expiration</em>, <em>method='GET'</em>, <em>content_type=None</em>, <em>generation=None</em>, <em>response_disposition=None</em>, <em>response_type=None</em>, <em>client=None</em>, <em>credentials=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/storage/blob.html#Blob.generate_signed_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.storage.blob.Blob.generate_signed_url" title="Permalink to this definition">#</a></dt>
+<code class="descname">generate_signed_url</code><span class="sig-paren">(</span><em>expiration=None</em>, <em>api_access_endpoint='https://storage.googleapis.com'</em>, <em>method='GET'</em>, <em>content_md5=None</em>, <em>content_type=None</em>, <em>response_disposition=None</em>, <em>response_type=None</em>, <em>generation=None</em>, <em>headers=None</em>, <em>query_parameters=None</em>, <em>client=None</em>, <em>credentials=None</em>, <em>version=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/storage/blob.html#Blob.generate_signed_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.storage.blob.Blob.generate_signed_url" title="Permalink to this definition">#</a></dt>
 <dd><p>Generates a signed URL for this blob.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -509,12 +509,13 @@ log in.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>expiration</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>, </em><em>long</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.7)"><em>datetime.datetime</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.timedelta" title="(in Python v3.7)"><em>datetime.timedelta</em></a>) – When the signed URL should expire.</li>
+<li><strong>expiration</strong> (<em>Union</em><em>[</em><em>Integer</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.7)"><em>datetime.datetime</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.timedelta" title="(in Python v3.7)"><em>datetime.timedelta</em></a><em>]</em>) – Point in time when the signed URL should expire.</li>
+<li><strong>api_access_endpoint</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Optional URI base.</li>
 <li><strong>method</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The HTTP verb that will be used when requesting the URL.</li>
+<li><strong>content_md5</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – (Optional) The MD5 hash of the object referenced by
+<code class="docutils literal notranslate"><span class="pre">resource</span></code>.</li>
 <li><strong>content_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – (Optional) The content type of the object
 referenced by <code class="docutils literal notranslate"><span class="pre">resource</span></code>.</li>
-<li><strong>generation</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – (Optional) A value that indicates which generation
-of the resource to fetch.</li>
 <li><strong>response_disposition</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – (Optional) Content disposition of
 responses to requests for the signed URL.
 For example, to enable the signed URL
@@ -524,6 +525,16 @@ the value
 <li><strong>response_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – (Optional) Content type of responses to requests
 for the signed URL. Used to over-ride the content
 type of the underlying blob/object.</li>
+<li><strong>generation</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – (Optional) A value that indicates which generation
+of the resource to fetch.</li>
+<li><strong>headers</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – (Optional) Additional HTTP headers to be included as part of the
+signed URLs.  See:
+<a class="reference external" href="https://cloud.google.com/storage/docs/xml-api/reference-headers">https://cloud.google.com/storage/docs/xml-api/reference-headers</a>
+Requests using the signed URL <em>must</em> pass the specified header
+(name and value) with each request for the URL.</li>
+<li><strong>query_parameters</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – (Optional) Additional query paramtersto be included as part of the
+signed URLs.  See:
+<a class="reference external" href="https://cloud.google.com/storage/docs/xml-api/reference-headers#query">https://cloud.google.com/storage/docs/xml-api/reference-headers#query</a></li>
 <li><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.storage.client.Client" title="google.cloud.storage.client.Client"><code class="xref py py-class docutils literal notranslate"><span class="pre">Client</span></code></a> or
 <code class="docutils literal notranslate"><span class="pre">NoneType</span></code>) – (Optional) The client to use.  If not passed, falls back
 to the <code class="docutils literal notranslate"><span class="pre">client</span></code> stored on the blob’s bucket.</li>
@@ -531,20 +542,25 @@ to the <code class="docutils literal notranslate"><span class="pre">client</span
 <code class="xref py py-class docutils literal notranslate"><span class="pre">NoneType</span></code>) – (Optional) The OAuth2 credentials to use to sign
 the URL. Defaults to the credentials stored on the
 client used.</li>
+<li><strong>version</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – (Optional) The version of signed credential to create.
+Must be one of ‘v2’ | ‘v4’.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">TypeError</span></code></a> when expiration is not a valid type.</p>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> when version is invalid.</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><p class="first"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#AttributeError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">AttributeError</span></code></a> if credentials is not an instance
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><p class="first"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">TypeError</span></code></a> when expiration is not a valid type.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#AttributeError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">AttributeError</span></code></a> if credentials is not an instance
 of <a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.credentials.html#google.auth.credentials.Signing" title="(in google-auth v1.6.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.auth.credentials.Signing</span></code></a>.</p>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a></p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a></p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A signed URL you can use to access the resource
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A signed URL you can use to access the resource
 until expiration.</p>
 </td>
 </tr>
