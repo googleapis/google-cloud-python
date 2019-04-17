@@ -74,10 +74,10 @@ class Instance(object):
     :param instance_type: (Optional) The type of the instance.
                           Possible values are represented
                           by the following constants:
-                          :data:`google.cloud.bigtable.enums.InstanceType.PRODUCTION`.
-                          :data:`google.cloud.bigtable.enums.InstanceType.DEVELOPMENT`,
+                          :data:`google.cloud.bigtable.enums.Instance.Type.PRODUCTION`.
+                          :data:`google.cloud.bigtable.enums.Instance.Type.DEVELOPMENT`,
                           Defaults to
-                          :data:`google.cloud.bigtable.enums.InstanceType.UNSPECIFIED`.
+                          :data:`google.cloud.bigtable.enums.Instance.Type.UNSPECIFIED`.
 
     :type labels: dict
     :param labels: (Optional) Labels are a flexible and lightweight
