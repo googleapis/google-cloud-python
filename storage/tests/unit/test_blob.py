@@ -20,7 +20,6 @@ import json
 import os
 import tempfile
 import unittest
-import warnings
 
 import google.cloud.storage.blob
 import mock
@@ -404,27 +403,20 @@ class Test_Blob(unittest.TestCase):
         )
 
         with mock.patch(to_patch) as signer:
-            with warnings.catch_warnings(record=True) as warned:
-                signed_uri = blob.generate_signed_url(
-                    expiration=expiration,
-                    api_access_endpoint=api_access_endpoint,
-                    method=method,
-                    credentials=credentials,
-                    content_md5=content_md5,
-                    content_type=content_type,
-                    response_type=response_type,
-                    response_disposition=response_disposition,
-                    generation=generation,
-                    headers=headers,
-                    query_parameters=query_parameters,
-                    version=version,
-                )
-
-        if version is None:
-            self.assertEqual(len(warned), 1)
-            self.assertIs(warned[0].category, DeprecationWarning)
-        else:
-            self.assertEqual(len(warned), 0)
+            signed_uri = blob.generate_signed_url(
+                expiration=expiration,
+                api_access_endpoint=api_access_endpoint,
+                method=method,
+                credentials=credentials,
+                content_md5=content_md5,
+                content_type=content_type,
+                response_type=response_type,
+                response_disposition=response_disposition,
+                generation=generation,
+                headers=headers,
+                query_parameters=query_parameters,
+                version=version,
+            )
 
         self.assertEqual(signed_uri, signer.return_value)
 

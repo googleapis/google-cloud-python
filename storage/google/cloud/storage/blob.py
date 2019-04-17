@@ -419,7 +419,6 @@ class Blob(_PropertyMixin):
         """
         if version is None:
             version = "v2"
-            warnings.warn(DeprecationWarning(_SIGNED_URL_V2_DEFAULT_MESSAGE))
         elif version not in ("v2", "v4"):
             raise ValueError("'version' must be either 'v2' or 'v4'")
 
