@@ -15,7 +15,6 @@
 # limitations under the License.
 """Accesses the google.pubsub.v1 Publisher API."""
 
-import copy
 import functools
 import pkg_resources
 import warnings
@@ -186,7 +185,7 @@ class PublisherClient(object):
         # from the client configuration.
         # (Ordinarily, these are the defaults specified in the `*_config.py`
         # file next to this one.)
-        self._method_configs = google.api_core.gapic_v1.config.parse_method_configs(
+        method_configs = google.api_core.gapic_v1.config.parse_method_configs(
             client_config["interfaces"][self._INTERFACE_NAME]
         )
 
@@ -195,9 +194,10 @@ class PublisherClient(object):
         # raised, because a Pub/Sub service account does not exist - that is an
         # "invalid grant" error that should fail the request immediately, thus
         # the patching.
-        for method_name, method_config in copy.copy(self._method_configs).items():
-            new_config = custom_retry.patch_retry_predicate(method_config)
-            self._method_configs[method_name] = new_config
+        self._method_configs = {
+            method_name: custom_retry.patch_retry_predicate(method_config)
+            for method_name, method_config in method_configs.items()
+        }
 
         # Save a dictionary of cached API call functions.
         # These are the actual callables which invoke the proper
