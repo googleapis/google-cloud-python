@@ -9,7 +9,7 @@
 
 
 ### New Features
-- Generate Web Risk. ([#7651](https://github.com/googleapis/google-cloud-python/pull/7651))
+- Initial release of Web Risk. ([#7651](https://github.com/googleapis/google-cloud-python/pull/7651))
 
 ### Documentation
 - Add whitelist info to README. ([#7717](https://github.com/googleapis/google-cloud-python/pull/7717))
