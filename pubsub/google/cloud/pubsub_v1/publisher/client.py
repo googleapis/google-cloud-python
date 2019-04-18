@@ -26,6 +26,7 @@ from google.oauth2 import service_account
 
 from google.cloud.pubsub_v1 import _gapic
 from google.cloud.pubsub_v1 import types
+from google.cloud.pubsub_v1.gapic import custom_retry
 from google.cloud.pubsub_v1.gapic import publisher_client
 from google.cloud.pubsub_v1.gapic.transports import publisher_grpc_transport
 from google.cloud.pubsub_v1.publisher._batch import thread
@@ -95,6 +96,16 @@ class Client(object):
         # client.
         self.api = publisher_client.PublisherClient(**kwargs)
         self.batch_settings = types.BatchSettings(*batch_settings)
+
+        # RPC may raise the ServiceUnavailable error, which is a retryable error.
+        # However, we do not want to retry a request if ServiceUnavailable was
+        # raised, because a Pub/Sub service account does not exist - that is an
+        # "invalid grant" error that should fail the request immediately, thus
+        # the patching.
+        self.api._method_configs = {
+            method_name: custom_retry.patch_retry_predicate(method_config)
+            for method_name, method_config in self.api._method_configs.items()
+        }
 
         # The batches on the publisher client are responsible for holding
         # messages. One batch exists for each topic.

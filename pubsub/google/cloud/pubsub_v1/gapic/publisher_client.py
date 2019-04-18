@@ -30,7 +30,6 @@ import google.api_core.page_iterator
 import google.api_core.path_template
 import grpc
 
-from google.cloud.pubsub_v1.gapic import custom_retry
 from google.cloud.pubsub_v1.gapic import publisher_client_config
 from google.cloud.pubsub_v1.gapic.transports import publisher_grpc_transport
 from google.cloud.pubsub_v1.proto import pubsub_pb2
@@ -185,19 +184,9 @@ class PublisherClient(object):
         # from the client configuration.
         # (Ordinarily, these are the defaults specified in the `*_config.py`
         # file next to this one.)
-        method_configs = google.api_core.gapic_v1.config.parse_method_configs(
+        self._method_configs = google.api_core.gapic_v1.config.parse_method_configs(
             client_config["interfaces"][self._INTERFACE_NAME]
         )
-
-        # RPC may raise the ServiceUnavailable error, which is a retryable error.
-        # However, we do not want to retry a request if ServiceUnavailable was
-        # raised, because a Pub/Sub service account does not exist - that is an
-        # "invalid grant" error that should fail the request immediately, thus
-        # the patching.
-        self._method_configs = {
-            method_name: custom_retry.patch_retry_predicate(method_config)
-            for method_name, method_config in method_configs.items()
-        }
 
         # Save a dictionary of cached API call functions.
         # These are the actual callables which invoke the proper
