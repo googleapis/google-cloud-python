@@ -742,9 +742,14 @@ class Query(object):
         )
 
         for response in response_iterator:
-            snapshot = _query_response_to_snapshot(
-                response, self._parent, expected_prefix
-            )
+            if self._all_descendants:
+                snapshot = _collection_group_query_response_to_snapshot(
+                    response, self._parent
+                )
+            else:
+                snapshot = _query_response_to_snapshot(
+                    response, self._parent, expected_prefix
+                )
             if snapshot is not None:
                 yield snapshot
 
@@ -961,6 +966,35 @@ def _query_response_to_snapshot(response_pb, collection, expected_prefix):
 
     document_id = _helpers.get_doc_id(response_pb.document, expected_prefix)
     reference = collection.document(document_id)
+    data = _helpers.decode_dict(response_pb.document.fields, collection._client)
+    snapshot = document.DocumentSnapshot(
+        reference,
+        data,
+        exists=True,
+        read_time=response_pb.read_time,
+        create_time=response_pb.document.create_time,
+        update_time=response_pb.document.update_time,
+    )
+    return snapshot
+
+
+def _collection_group_query_response_to_snapshot(response_pb, collection):
+    """Parse a query response protobuf to a document snapshot.
+
+    Args:
+        response_pb (google.cloud.proto.firestore.v1.\
+            firestore_pb2.RunQueryResponse): A
+        collection (~.firestore_v1.collection.CollectionReference): A
+            reference to the collection that initiated the query.
+
+    Returns:
+        Optional[~.firestore.document.DocumentSnapshot]: A
+        snapshot of the data returned in the query. If ``response_pb.document``
+        is not set, the snapshot will be :data:`None`.
+    """
+    if not response_pb.HasField("document"):
+        return None
+    reference = collection._client.document(response_pb.document.name)
     data = _helpers.decode_dict(response_pb.document.fields, collection._client)
     snapshot = document.DocumentSnapshot(
         reference,
