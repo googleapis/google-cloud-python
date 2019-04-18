@@ -138,3 +138,21 @@ def cover(session):
     session.run("coverage", "report", "--show-missing", "--fail-under=100")
 
     session.run("coverage", "erase")
+
+@nox.session(python="3.7")
+def docs(session):
+    """Build the docs for this library."""
+
+    session.install('sphinx', 'alabaster', 'recommonmark')
+
+    shutil.rmtree(os.path.join('docs', '_build'), ignore_errors=True)
+    session.run(
+        'sphinx-build',
+        '-W',  # warnings as errors
+        '-T',  # show full traceback on exception
+        '-N',  # no colors
+        '-b', 'html',
+        '-d', os.path.join('docs', '_build', 'doctrees', ''),
+        os.path.join('docs', ''),
+        os.path.join('docs', '_build', 'html', ''),
+    )
