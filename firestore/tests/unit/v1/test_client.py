@@ -130,6 +130,24 @@ class TestClient(unittest.TestCase):
         self.assertIs(collection2._client, client)
         self.assertIsInstance(collection2, CollectionReference)
 
+    def test_collection_group(self):
+        from google.cloud.firestore_v1.collection import CollectionReference
+
+        client = self._make_default_one()
+        query = client.collection_group('collectionId').where('foo', '==', 'bar')
+
+        assert query._field_filters[0].field.field_path  == 'foo'
+        assert query._field_filters[0].value.string_value == 'bar'
+        assert query._field_filters[0].op == query._field_filters[0].EQUAL
+        assert query._parent.id == 'collectionId
+
+    def test_collection_group_no_slashes(self):
+        from google.cloud.firestore_v1.collection import CollectionReference
+
+        client = self._make_default_one()
+        with self.assertRaises(ValueError):
+            query = client.collection_group('foo/bar')
+
     def test_document_factory(self):
         from google.cloud.firestore_v1.document import DocumentReference
 
