@@ -9,8 +9,7 @@ import numpy as np
 import pandas
 import pandas.api.types
 import pandas.util.testing as tm
-from pandas import DataFrame, NaT, compat
-from pandas.compat import range, u
+from pandas import DataFrame, NaT
 import pytest
 import pytz
 
@@ -447,13 +446,8 @@ class TestReadGBQIntegration(object):
         )
 
     def test_unicode_string_conversion_and_normalization(self, project_id):
-        correct_test_datatype = DataFrame({"unicode_string": [u("\xe9\xfc")]})
-
-        unicode_string = "\xc3\xa9\xc3\xbc"
-
-        if compat.PY3:
-            unicode_string = unicode_string.encode("latin-1").decode("utf8")
-
+        correct_test_datatype = DataFrame({"unicode_string": ["éü"]})
+        unicode_string = "éü"
         query = 'SELECT "{0}" AS unicode_string'.format(unicode_string)
 
         df = gbq.read_gbq(

@@ -21,7 +21,7 @@
 *   Build the package
 
         git clean -xfd
-        python setup.py register sdist bdist_wheel --universal
+        python setup.py register sdist bdist_wheel
 
 *   Upload to test PyPI
 

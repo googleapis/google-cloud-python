@@ -1,9 +1,6 @@
 # -*- coding: utf-8 -*-
 
-try:
-    from unittest import mock
-except ImportError:  # pragma: NO COVER
-    import mock
+from unittest import mock
 
 import pytest
 

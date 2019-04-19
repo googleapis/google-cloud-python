@@ -5,8 +5,6 @@ import logging
 import os
 import os.path
 
-import pandas.compat
-
 import pandas_gbq.exceptions
 
 logger = logging.getLogger(__name__)
@@ -72,9 +70,7 @@ def get_service_account_credentials(private_key):
                 "   ", "\n"
             )
 
-        if pandas.compat.PY3:
-            json_key["private_key"] = bytes(json_key["private_key"], "UTF-8")
-
+        json_key["private_key"] = bytes(json_key["private_key"], "UTF-8")
         credentials = Credentials.from_service_account_info(json_key)
         credentials = credentials.with_scopes(SCOPES)
 

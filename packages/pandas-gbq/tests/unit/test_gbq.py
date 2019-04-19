@@ -1,9 +1,6 @@
 # -*- coding: utf-8 -*-
 
-try:
-    import mock
-except ImportError:  # pragma: NO COVER
-    from unittest import mock
+from unittest import mock
 
 import numpy
 from pandas import DataFrame

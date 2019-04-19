@@ -10,8 +10,8 @@ import shutil
 import nox
 
 
-supported_pythons = ["2.7", "3.5", "3.6", "3.7"]
-latest_python = "3.6"
+supported_pythons = ["3.5", "3.6", "3.7"]
+latest_python = "3.7"
 
 
 @nox.session
@@ -31,7 +31,7 @@ def blacken(session):
 
 @nox.session(python=supported_pythons)
 def unit(session):
-    session.install("mock", "pytest", "pytest-cov")
+    session.install("pytest", "pytest-cov")
     session.install("-e", ".")
     session.run(
         "pytest",

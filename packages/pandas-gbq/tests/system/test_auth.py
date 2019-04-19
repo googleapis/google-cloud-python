@@ -1,9 +1,7 @@
 """System tests for fetching Google BigQuery credentials."""
 
-try:
-    import mock
-except ImportError:  # pragma: NO COVER
-    from unittest import mock
+from unittest import mock
+
 import pytest
 
 from pandas_gbq import auth

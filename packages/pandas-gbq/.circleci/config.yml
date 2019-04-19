@@ -1,14 +1,6 @@
 version: 2
 jobs:
   # Pip
-  "pip-2.7":
-    docker:
-      - image: thekevjames/nox
-    steps:
-      - checkout
-      - run: ci/config_auth.sh
-      - run: nox -s unit-2.7 system-2.7
-
   "pip-3.5":
     docker:
       - image: thekevjames/nox
@@ -60,7 +52,6 @@ workflows:
   version: 2
   build:
     jobs:
-      - "pip-2.7"
       - "pip-3.5"
       - "pip-3.6"
       - "pip-3.7"

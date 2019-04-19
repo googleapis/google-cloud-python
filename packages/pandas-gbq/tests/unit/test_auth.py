@@ -5,10 +5,7 @@ import os.path
 
 from pandas_gbq import auth
 
-try:
-    import mock
-except ImportError:  # pragma: NO COVER
-    from unittest import mock
+from unittest import mock
 
 
 def test_get_credentials_private_key_contents(monkeypatch):

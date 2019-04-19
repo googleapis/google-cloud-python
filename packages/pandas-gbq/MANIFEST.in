@@ -1,6 +1,7 @@
 include MANIFEST.in
 include README.rst
-include LICENSE.md
+include AUTHORS.md
+include LICENSE.txt
 include setup.py
 
 graft pandas_gbq

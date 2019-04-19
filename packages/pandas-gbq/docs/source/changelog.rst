@@ -1,6 +1,15 @@
 Changelog
 =========
 
+.. _changelog-0.11.0:
+
+0.11.0 / TBD
+------------
+
+- **Breaking Change:** Python 2 support has been dropped. This is to align
+  with the pandas package which dropped Python 2 support at the end of 2019.
+  (:issue:`268`)
+
 .. _changelog-0.10.0:
 
 0.10.0 / 2019-04-05
