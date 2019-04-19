@@ -797,6 +797,11 @@ def test_watch_collection(client, cleanup):
             "Expected the last document update to update born: " + str(on_snapshot.born)
         )
 
+def test_collection_group_query(client, cleanup):
+    db = client
+    group = db.collection_group('a')
+    for i in group.stream():
+        print(i)
 
 def test_watch_query(client, cleanup):
     db = client
