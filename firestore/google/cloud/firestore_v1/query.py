@@ -111,6 +111,10 @@ class Query(object):
             any matching documents will be included in the result set.
             When the query is formed, the document values
             will be used in the order given by ``orders``.
+        all_descendants (Optional[bool]): When false, selects only collections
+            that are immediate children of the `parent` specified in the
+            containing `RunQueryRequest`. When true, selects all descendant
+            collections.
     """
 
     ASCENDING = "ASCENDING"
@@ -128,7 +132,7 @@ class Query(object):
         offset=None,
         start_at=None,
         end_at=None,
-        all_descendants=None,
+        all_descendants=False,
     ):
         self._parent = parent
         self._projection = projection
@@ -205,6 +209,7 @@ class Query(object):
             offset=self._offset,
             start_at=self._start_at,
             end_at=self._end_at,
+            all_descendants=self._all_descendants,
         )
 
     def where(self, field_path, op_string, value):
@@ -272,6 +277,7 @@ class Query(object):
             offset=self._offset,
             start_at=self._start_at,
             end_at=self._end_at,
+            all_descendants=self._all_descendants,
         )
 
     @staticmethod
@@ -323,6 +329,7 @@ class Query(object):
             offset=self._offset,
             start_at=self._start_at,
             end_at=self._end_at,
+            all_descendants=self._all_descendants,
         )
 
     def limit(self, count):
@@ -348,6 +355,7 @@ class Query(object):
             offset=self._offset,
             start_at=self._start_at,
             end_at=self._end_at,
+            all_descendants=self._all_descendants,
         )
 
     def offset(self, num_to_skip):
@@ -374,6 +382,7 @@ class Query(object):
             offset=num_to_skip,
             start_at=self._start_at,
             end_at=self._end_at,
+            all_descendants=self._all_descendants,
         )
 
     def _cursor_helper(self, document_fields, before, start):
