@@ -17,6 +17,7 @@
 from __future__ import absolute_import
 
 import collections
+import concurrent.futures
 import copy
 import datetime
 import json
@@ -24,6 +25,11 @@ import operator
 import warnings
 
 import six
+
+try:
+    from google.cloud import bigquery_storage_v1beta1
+except ImportError:  # pragma: NO COVER
+    bigquery_storage_v1beta1 = None
 
 try:
     import pandas
@@ -46,6 +52,10 @@ from google.cloud.bigquery.schema import _parse_schema_resource
 from google.cloud.bigquery.external_config import ExternalConfig
 
 
+_NO_BQSTORAGE_ERROR = (
+    "The google-cloud-bigquery-storage library is not installed, "
+    "please install google-cloud-bigquery-storage to use bqstorage features."
+)
 _NO_PANDAS_ERROR = (
     "The pandas library is not installed, please install "
     "pandas to use the to_dataframe() function."
@@ -274,6 +284,9 @@ class TableReference(object):
     def to_bqstorage(self):
         """Construct a BigQuery Storage API representation of this table.
 
+        Install the ``google-cloud-bigquery-storage`` package to use this
+        feature.
+
         If the ``table_id`` contains a partition identifier (e.g.
         ``my_table$201812``) or a snapshot identifier (e.g.
         ``mytable@1234567890``), it is ignored. Use
@@ -285,8 +298,14 @@ class TableReference(object):
         Returns:
             google.cloud.bigquery_storage_v1beta1.types.TableReference:
                 A reference to this table in the BigQuery Storage API.
+
+        Raises:
+            ValueError:
+                If the :mod:`google.cloud.bigquery_storage_v1beta1` module
+                cannot be imported.
         """
-        from google.cloud import bigquery_storage_v1beta1
+        if bigquery_storage_v1beta1 is None:
+            raise ValueError(_NO_BQSTORAGE_ERROR)
 
         table_ref = bigquery_storage_v1beta1.types.TableReference()
         table_ref.project_id = self._project
@@ -1369,8 +1388,8 @@ class RowIterator(HTTPIterator):
 
     def _to_dataframe_bqstorage(self, bqstorage_client, dtypes):
         """Use (faster, but billable) BQ Storage API to construct DataFrame."""
-        import concurrent.futures
-        from google.cloud import bigquery_storage_v1beta1
+        if bigquery_storage_v1beta1 is None:
+            raise ValueError(_NO_BQSTORAGE_ERROR)
 
         if "$" in self._table.table_id:
             raise ValueError(
@@ -1496,7 +1515,10 @@ class RowIterator(HTTPIterator):
                 from the destination table's schema.
 
         Raises:
-            ValueError: If the :mod:`pandas` library cannot be imported.
+            ValueError:
+                If the :mod:`pandas` library cannot be imported, or the
+                :mod:`google.cloud.bigquery_storage_v1beta1` module is
+                required but cannot be imported.
 
         """
         if pandas is None:
