@@ -1860,6 +1860,28 @@ class TestRowIterator(unittest.TestCase):
         with pytest.raises(google.api_core.exceptions.Forbidden):
             row_iterator.to_dataframe(bqstorage_client=bqstorage_client)
 
+    @unittest.skipIf(pandas is None, "Requires `pandas`")
+    @unittest.skipIf(
+        bigquery_storage_v1beta1 is None, "Requires `google-cloud-bigquery-storage`"
+    )
+    def test_to_dataframe_w_bqstorage_raises_import_error(self):
+        from google.cloud.bigquery import table as mut
+
+        bqstorage_client = mock.create_autospec(
+            bigquery_storage_v1beta1.BigQueryStorageClient
+        )
+        path = "/foo"
+        api_request = mock.Mock(return_value={"rows": []})
+        row_iterator = mut.RowIterator(
+            _mock_client(), api_request, path, [], table=mut.Table("proj.dset.tbl")
+        )
+
+        with mock.patch.object(mut, "bigquery_storage_v1beta1", None), pytest.raises(
+            ValueError
+        ) as exc:
+            row_iterator.to_dataframe(bqstorage_client=bqstorage_client)
+        assert mut._NO_BQSTORAGE_ERROR in str(exc)
+
     @unittest.skipIf(
         bigquery_storage_v1beta1 is None, "Requires `google-cloud-bigquery-storage`"
     )
@@ -2112,3 +2134,18 @@ def test_table_reference_to_bqstorage():
     for case, cls in itertools.product(cases, classes):
         got = cls.from_string(case).to_bqstorage()
         assert got == expected
+
+
+@unittest.skipIf(
+    bigquery_storage_v1beta1 is None, "Requires `google-cloud-bigquery-storage`"
+)
+def test_table_reference_to_bqstorage_raises_import_error():
+    from google.cloud.bigquery import table as mut
+
+    classes = (mut.TableReference, mut.Table, mut.TableListItem)
+    for cls in classes:
+        with mock.patch.object(mut, "bigquery_storage_v1beta1", None), pytest.raises(
+            ValueError
+        ) as exc:
+            cls.from_string("my-project.my_dataset.my_table").to_bqstorage()
+        assert mut._NO_BQSTORAGE_ERROR in str(exc)
