@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery.table &#8212; google-cloud 546ae39 documentation</title>
+    <title>google.cloud.bigquery.table &#8212; google-cloud 8faa54d documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -53,6 +53,7 @@
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">absolute_import</span>
 
 <span class="kn">import</span> <span class="nn">collections</span>
+<span class="kn">import</span> <span class="nn">concurrent.futures</span>
 <span class="kn">import</span> <span class="nn">copy</span>
 <span class="kn">import</span> <span class="nn">datetime</span>
 <span class="kn">import</span> <span class="nn">json</span>
@@ -60,6 +61,11 @@
 <span class="kn">import</span> <span class="nn">warnings</span>
 
 <span class="kn">import</span> <span class="nn">six</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">bigquery_storage_v1beta1</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>  <span class="c1"># pragma: NO COVER</span>
+    <span class="n">bigquery_storage_v1beta1</span> <span class="o">=</span> <span class="kc">None</span>
 
 <span class="k">try</span><span class="p">:</span>
     <span class="kn">import</span> <span class="nn">pandas</span>
@@ -82,6 +88,10 @@
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery.external_config</span> <span class="k">import</span> <span class="n">ExternalConfig</span>
 
 
+<span class="n">_NO_BQSTORAGE_ERROR</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s2">&quot;The google-cloud-bigquery-storage library is not installed, &quot;</span>
+    <span class="s2">&quot;please install google-cloud-bigquery-storage to use bqstorage features.&quot;</span>
+<span class="p">)</span>
 <span class="n">_NO_PANDAS_ERROR</span> <span class="o">=</span> <span class="p">(</span>
     <span class="s2">&quot;The pandas library is not installed, please install &quot;</span>
     <span class="s2">&quot;pandas to use the to_dataframe() function.&quot;</span>
@@ -310,6 +320,9 @@
 <div class="viewcode-block" id="TableReference.to_bqstorage"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.table.TableReference.html#google.cloud.bigquery.table.TableReference.to_bqstorage">[docs]</a>    <span class="k">def</span> <span class="nf">to_bqstorage</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Construct a BigQuery Storage API representation of this table.</span>
 
+<span class="sd">        Install the ``google-cloud-bigquery-storage`` package to use this</span>
+<span class="sd">        feature.</span>
+
 <span class="sd">        If the ``table_id`` contains a partition identifier (e.g.</span>
 <span class="sd">        ``my_table$201812``) or a snapshot identifier (e.g.</span>
 <span class="sd">        ``mytable@1234567890``), it is ignored. Use</span>
@@ -321,8 +334,14 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            google.cloud.bigquery_storage_v1beta1.types.TableReference:</span>
 <span class="sd">                A reference to this table in the BigQuery Storage API.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError:</span>
+<span class="sd">                If the :mod:`google.cloud.bigquery_storage_v1beta1` module</span>
+<span class="sd">                cannot be imported.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">bigquery_storage_v1beta1</span>
+        <span class="k">if</span> <span class="n">bigquery_storage_v1beta1</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">_NO_BQSTORAGE_ERROR</span><span class="p">)</span>
 
         <span class="n">table_ref</span> <span class="o">=</span> <span class="n">bigquery_storage_v1beta1</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">TableReference</span><span class="p">()</span>
         <span class="n">table_ref</span><span class="o">.</span><span class="n">project_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_project</span>
@@ -1405,8 +1424,8 @@
 
     <span class="k">def</span> <span class="nf">_to_dataframe_bqstorage</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bqstorage_client</span><span class="p">,</span> <span class="n">dtypes</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Use (faster, but billable) BQ Storage API to construct DataFrame.&quot;&quot;&quot;</span>
-        <span class="kn">import</span> <span class="nn">concurrent.futures</span>
-        <span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">bigquery_storage_v1beta1</span>
+        <span class="k">if</span> <span class="n">bigquery_storage_v1beta1</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">_NO_BQSTORAGE_ERROR</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="s2">&quot;$&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_table</span><span class="o">.</span><span class="n">table_id</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
@@ -1532,7 +1551,10 @@
 <span class="sd">                from the destination table&#39;s schema.</span>
 
 <span class="sd">        Raises:</span>
-<span class="sd">            ValueError: If the :mod:`pandas` library cannot be imported.</span>
+<span class="sd">            ValueError:</span>
+<span class="sd">                If the :mod:`pandas` library cannot be imported, or the</span>
+<span class="sd">                :mod:`google.cloud.bigquery_storage_v1beta1` module is</span>
+<span class="sd">                required but cannot be imported.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">pandas</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
