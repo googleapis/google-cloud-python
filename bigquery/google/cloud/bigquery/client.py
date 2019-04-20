@@ -23,6 +23,8 @@ except ImportError:  # Python 2.7
 
 import functools
 import gzip
+import io
+import json
 import os
 import tempfile
 import uuid
@@ -50,6 +52,7 @@ from google.cloud.bigquery.model import Model
 from google.cloud.bigquery.model import ModelReference
 from google.cloud.bigquery.query import _QueryResults
 from google.cloud.bigquery.retry import DEFAULT_RETRY
+from google.cloud.bigquery.schema import SchemaField
 from google.cloud.bigquery.table import _table_arg_to_table
 from google.cloud.bigquery.table import _table_arg_to_table_ref
 from google.cloud.bigquery.table import Table
@@ -70,6 +73,9 @@ _RESUMABLE_URL_TEMPLATE = _BASE_UPLOAD_TEMPLATE + u"resumable"
 _GENERIC_CONTENT_TYPE = u"*/*"
 _READ_LESS_THAN_SIZE = (
     "Size {:d} was specified but the file-like object only had " "{:d} bytes remaining."
+)
+_NEED_JSON_FILE_ARGUMENT = (
+    "The JSON file argument should be a file object or a file path"
 )
 _NEED_TABLE_ARGUMENT = (
     "The table argument should be a table ID string, Table, or TableReference"
@@ -1928,6 +1934,60 @@ class Client(ClientWithProject):
             selected_fields=selected_fields,
         )
         return row_iterator
+
+    def schema_from_json(self, file_or_path):
+        """Takes a file object or file path that contains json that describes
+            a table schema.
+
+            Returns:
+                List of schema field objects.
+        """
+        file_obj = None
+        json_data = None
+        schema_field_list = list()
+
+        if isinstance(file_or_path, io.IOBase):
+            file_obj = file_or_path
+        else:
+            try:
+                file_obj = open(file_or_path)
+            except OSError:
+                raise TypeError(_NEED_JSON_FILE_ARGUMENT)
+
+        try:
+            json_data = json.load(file_obj)
+        except JSONDecodeError:
+            raise TypeError(_NEED_JSON_FILE_ARGUMENT)
+
+        for field in json_data:
+            schema_field = SchemaField.from_api_repr(field)
+            schema_field_list.append(schema_field)
+
+        return schema_field_list
+
+    def schema_to_json(self, schema_list, destination):
+        """Takes a list of schema field objects.
+
+            Serializes the list of schema field objects as json to a file.
+
+            Destination is a file path or a file object. 
+        """
+        file_obj = None
+        json_schema_list = list()
+
+        if isinstance(destination, io.IOBase):
+            file_obj = destination
+        else:
+            try:
+                file_obj = open(destination, mode="w")
+            except OSError:
+                raise TypeError(_NEED_JSON_FILE_ARGUMENT)
+
+        for field in schema_list:
+            schema_field = field.to_api_repr()
+            json_schema_list.append(schema_field)
+
+        file_obj.write(json.dumps(json_schema_list, indent=2, sort_keys=True))
 
 
 # pylint: disable=unused-argument
