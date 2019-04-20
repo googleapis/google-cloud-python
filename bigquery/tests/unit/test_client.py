@@ -5161,3 +5161,84 @@ class TestClientUpload(object):
 
         with pytest.raises(ValueError):
             client._do_multipart_upload(file_obj, {}, file_obj_len + 1, None)
+
+    def test__schema_from_json(self):
+        from google.cloud.bigquery.schema import SchemaField
+
+        file_content = """[
+          {
+            "description": "quarter",
+            "mode": "REQUIRED",
+            "name": "qtr",
+            "type": "STRING"
+          },
+          {
+            "description": "sales representative",
+            "mode": "NULLABLE",
+            "name": "rep",
+            "type": "STRING"
+          },
+          {
+            "description": "total sales",
+            "mode": "NULLABLE",
+            "name": "sales",
+            "type": "FLOAT"
+          }
+        ]"""
+        expected = list()
+        json_data = json.loads(file_content)
+
+        for field in json_data:
+            schema_field = SchemaField.from_api_repr(field)
+            expected.append(schema_field)
+
+        client = self._make_client()
+        mock_file_path = "/mocked/file.json"
+
+        open_patch = mock.patch(
+            "builtins.open", new=mock.mock_open(read_data=file_content)
+        )
+        with open_patch as _mock_file:
+            actual = client.schema_from_json(mock_file_path)
+            _mock_file.assert_called_once_with(mock_file_path)
+
+        assert expected == actual
+
+    def test__schema_to_json(self):
+        from google.cloud.bigquery.schema import SchemaField
+
+        file_content = """[
+          {
+            "description": "quarter",
+            "mode": "REQUIRED",
+            "name": "qtr",
+            "type": "STRING"
+          },
+          {
+            "description": "sales representative",
+            "mode": "NULLABLE",
+            "name": "rep",
+            "type": "STRING"
+          },
+          {
+            "description": "total sales",
+            "mode": "NULLABLE",
+            "name": "sales",
+            "type": "FLOAT"
+          }
+        ]"""
+        schema_list = list()
+        json_data = json.loads(file_content)
+
+        for field in json_data:
+            schema_field = SchemaField.from_api_repr(field)
+            schema_list.append(schema_field)
+
+        client = self._make_client()
+        mock_file_path = "/mocked/file.json"
+
+        open_patch = mock.patch("builtins.open", mock.mock_open())
+        with open_patch as _mock_file:
+            actual = client.schema_to_json(schema_list, mock_file_path)
+            _mock_file.assert_called_once_with(mock_file_path, mode="w")
+            _mock_file().write.assert_called_once_with(file_content)
