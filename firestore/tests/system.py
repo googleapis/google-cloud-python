@@ -482,7 +482,6 @@ def test_collection_add(client, cleanup):
     assert set(collection2.list_documents()) == {document_ref3, document_ref4}
     assert set(collection3.list_documents()) == {document_ref5}
 
-
 def test_query_stream(client, cleanup):
     sub_collection = "child" + unique_resource_id("-")
     collection = client.collection("collek", "shun", sub_collection)
@@ -633,6 +632,32 @@ def test_query_unary(client, cleanup):
     assert len(data1) == 1
     assert math.isnan(data1[field_name])
 
+def test_collection_group_queries(client, cleanup):
+    collection_group = "child" + unique_resource_id("-")
+
+    doc_paths = [
+      'abc/123/' + collection_group + '/cg-doc1',
+      'abc/123/' + collection_group + '/cg-doc2',
+      collection_group + '/cg-doc3',
+      collection_group + '/cg-doc4',
+      'def/456/' + collection_group + '/cg-doc5',
+      collection_group + '/virtual-doc/nested-coll/not-cg-doc',
+      'x' + collection_group + '/not-cg-doc',
+      collection_group + 'x/not-cg-doc',
+      'abc/123/' + collection_group + 'x/not-cg-doc',
+      'abc/123/x' + collection_group + '/not-cg-doc',
+      'abc/' + collection_group
+    ];
+    
+    batch = client.batch()
+    for doc_path in doc_paths:
+        doc_ref = client.document(doc_path)
+        batch.set(doc_ref, {'x': 1});
+    
+    batch.commit()
+
+    results = [i for i in client.collection_group(collection_group).stream()]
+    assert [i.id for i in results] == ['cg-doc1', 'cg-doc2', 'cg-doc3', 'cg-doc4', 'cg-doc5']
 
 def test_get_all(client, cleanup):
     collection_name = "get-all" + unique_resource_id("-")
@@ -796,12 +821,6 @@ def test_watch_collection(client, cleanup):
         raise AssertionError(
             "Expected the last document update to update born: " + str(on_snapshot.born)
         )
-
-def test_collection_group_query(client, cleanup):
-    db = client
-    group = db.collection_group('a')
-    for i in group.stream():
-        print(i)
 
 def test_watch_query(client, cleanup):
     db = client
