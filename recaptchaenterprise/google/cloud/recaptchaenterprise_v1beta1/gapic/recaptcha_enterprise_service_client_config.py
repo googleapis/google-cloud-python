@@ -1,6 +1,6 @@
 config = {
     "interfaces": {
-        "google.cloud.recaptchaenterprise.v1beta1.RecaptchaEnterpriseServiceV1Beta1": {
+        "google.cloud.recaptchaenterprise.v1beta1.RecaptchaEnterpriseService": {
             "retry_codes": {
                 "idempotent": ["DEADLINE_EXCEEDED", "UNAVAILABLE"],
                 "non_idempotent": [],

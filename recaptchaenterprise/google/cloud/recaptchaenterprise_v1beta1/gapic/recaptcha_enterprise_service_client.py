@@ -13,7 +13,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-"""Accesses the google.cloud.recaptchaenterprise.v1beta1 RecaptchaEnterpriseServiceV1Beta1 API."""
+"""Accesses the google.cloud.recaptchaenterprise.v1beta1 RecaptchaEnterpriseService API."""
 
 import pkg_resources
 import warnings
@@ -51,7 +51,7 @@ class RecaptchaEnterpriseServiceClient(object):
     # The name of the interface for this client. This is the key used to
     # find the method configuration in the client_config dictionary.
     _INTERFACE_NAME = (
-        "google.cloud.recaptchaenterprise.v1beta1.RecaptchaEnterpriseServiceV1Beta1"
+        "google.cloud.recaptchaenterprise.v1beta1.RecaptchaEnterpriseService"
     )
 
     @classmethod

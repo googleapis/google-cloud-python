@@ -28,9 +28,8 @@ common = gcp.CommonTemplates()
 # ----------------------------------------------------------------------------
 library = gapic.py_library("recaptchaenterprise", "v1beta1", include_protos=True)
 
-# ----------------------------------------------------------------------------
+
 # Rename client from (exclude V1Beta1 from Client name)
-# ----------------------------------------------------------------------------
 client = "google/cloud/recaptchaenterprise_v1beta1/gapic/recaptcha_enterprise_service_v1_beta1_client.py"
 client_config = "google/cloud/recaptchaenterprise_v1beta1/gapic/recaptcha_enterprise_service_v1_beta1_client_config.py"
 transport = "google/cloud/recaptchaenterprise_v1beta1/gapic/transports/recaptcha_enterprise_service_v1_beta1_grpc_transport.py"
@@ -45,8 +44,8 @@ s.move(library / transport, transport.replace("_v1_beta1", ""))
 s.move(library / unit_test, unit_test.replace("_v1beta1", ""))
 
 s.replace(
-    "**/*.py",
-    "RecaptchaEnterpriseServiceClient",
+    "*/**/*.py",
+    "RecaptchaEnterpriseServiceV1Beta1Client",
     "RecaptchaEnterpriseServiceClient",
 )
 
@@ -56,8 +55,13 @@ s.replace(
     "recaptcha_enterprise_service_client")
 
 s.replace(
-    "**/*.py",
-    "RecaptchaEnterpriseServiceGrpcTransport",
+    "google/cloud/**/recaptcha_enterprise_service_client_config.py",
+    "RecaptchaEnterpriseServiceV1Beta1",
+    "RecaptchaEnterpriseService")
+
+s.replace(
+    "*/cloud/**/*.py",
+    "RecaptchaEnterpriseServiceV1Beta1GrpcTransport",
     "RecaptchaEnterpriseServiceGrpcTransport"
 )
 
