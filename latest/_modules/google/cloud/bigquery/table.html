@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery.table &#8212; google-cloud 3e28997 documentation</title>
+    <title>google.cloud.bigquery.table &#8212; google-cloud ee804a1 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -102,6 +102,7 @@
 <span class="p">)</span>
 <span class="n">_TABLE_HAS_NO_SCHEMA</span> <span class="o">=</span> <span class="s1">&#39;Table has no schema:  call &quot;client.get_table()&quot;&#39;</span>
 <span class="n">_MARKER</span> <span class="o">=</span> <span class="nb">object</span><span class="p">()</span>
+<span class="n">_PROGRESS_INTERVAL</span> <span class="o">=</span> <span class="mf">1.0</span>  <span class="c1"># Time between download status updates, in seconds.</span>
 
 
 <span class="k">def</span> <span class="nf">_reference_getter</span><span class="p">(</span><span class="n">table</span><span class="p">):</span>
@@ -1422,6 +1423,27 @@
 
         <span class="k">return</span> <span class="n">pandas</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">frames</span><span class="p">)</span>
 
+    <span class="k">def</span> <span class="nf">_to_dataframe_bqstorage_stream</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">bqstorage_client</span><span class="p">,</span> <span class="n">dtypes</span><span class="p">,</span> <span class="n">columns</span><span class="p">,</span> <span class="n">session</span><span class="p">,</span> <span class="n">stream</span>
+    <span class="p">):</span>
+        <span class="n">position</span> <span class="o">=</span> <span class="n">bigquery_storage_v1beta1</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">StreamPosition</span><span class="p">(</span><span class="n">stream</span><span class="o">=</span><span class="n">stream</span><span class="p">)</span>
+        <span class="n">rowstream</span> <span class="o">=</span> <span class="n">bqstorage_client</span><span class="o">.</span><span class="n">read_rows</span><span class="p">(</span><span class="n">position</span><span class="p">)</span><span class="o">.</span><span class="n">rows</span><span class="p">(</span><span class="n">session</span><span class="p">)</span>
+
+        <span class="n">frames</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">rowstream</span><span class="o">.</span><span class="n">pages</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_to_dataframe_finished</span><span class="p">:</span>
+                <span class="k">return</span>
+            <span class="n">frames</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">page</span><span class="o">.</span><span class="n">to_dataframe</span><span class="p">(</span><span class="n">dtypes</span><span class="o">=</span><span class="n">dtypes</span><span class="p">))</span>
+
+        <span class="c1"># Avoid errors on unlucky streams with no blocks. pandas.concat</span>
+        <span class="c1"># will fail on an empty list.</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">frames</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">columns</span><span class="p">)</span>
+
+        <span class="c1"># page.to_dataframe() does not preserve column order. Rearrange at</span>
+        <span class="c1"># the end using manually-parsed schema.</span>
+        <span class="k">return</span> <span class="n">pandas</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">frames</span><span class="p">)[</span><span class="n">columns</span><span class="p">]</span>
+
     <span class="k">def</span> <span class="nf">_to_dataframe_bqstorage</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bqstorage_client</span><span class="p">,</span> <span class="n">dtypes</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Use (faster, but billable) BQ Storage API to construct DataFrame.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">bigquery_storage_v1beta1</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -1457,17 +1479,46 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="n">session</span><span class="o">.</span><span class="n">streams</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">columns</span><span class="p">)</span>
 
-        <span class="k">def</span> <span class="nf">get_dataframe</span><span class="p">(</span><span class="n">stream</span><span class="p">):</span>
-            <span class="n">position</span> <span class="o">=</span> <span class="n">bigquery_storage_v1beta1</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">StreamPosition</span><span class="p">(</span><span class="n">stream</span><span class="o">=</span><span class="n">stream</span><span class="p">)</span>
-            <span class="n">rowstream</span> <span class="o">=</span> <span class="n">bqstorage_client</span><span class="o">.</span><span class="n">read_rows</span><span class="p">(</span><span class="n">position</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">rowstream</span><span class="o">.</span><span class="n">to_dataframe</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">dtypes</span><span class="o">=</span><span class="n">dtypes</span><span class="p">)</span>
+        <span class="c1"># Use _to_dataframe_finished to notify worker threads when to quit.</span>
+        <span class="c1"># See: https://stackoverflow.com/a/29237343/101923</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_to_dataframe_finished</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="k">def</span> <span class="nf">get_frames</span><span class="p">(</span><span class="n">pool</span><span class="p">):</span>
+            <span class="n">frames</span> <span class="o">=</span> <span class="p">[]</span>
+
+            <span class="c1"># Manually submit jobs and wait for download to complete rather</span>
+            <span class="c1"># than using pool.map because pool.map continues running in the</span>
+            <span class="c1"># background even if there is an exception on the main thread.</span>
+            <span class="c1"># See: https://github.com/googleapis/google-cloud-python/pull/7698</span>
+            <span class="n">not_done</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="n">pool</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_to_dataframe_bqstorage_stream</span><span class="p">,</span>
+                    <span class="n">bqstorage_client</span><span class="p">,</span>
+                    <span class="n">dtypes</span><span class="p">,</span>
+                    <span class="n">columns</span><span class="p">,</span>
+                    <span class="n">session</span><span class="p">,</span>
+                    <span class="n">stream</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="k">for</span> <span class="n">stream</span> <span class="ow">in</span> <span class="n">session</span><span class="o">.</span><span class="n">streams</span>
+            <span class="p">]</span>
+
+            <span class="k">while</span> <span class="n">not_done</span><span class="p">:</span>
+                <span class="n">done</span><span class="p">,</span> <span class="n">not_done</span> <span class="o">=</span> <span class="n">concurrent</span><span class="o">.</span><span class="n">futures</span><span class="o">.</span><span class="n">wait</span><span class="p">(</span>
+                    <span class="n">not_done</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">_PROGRESS_INTERVAL</span>
+                <span class="p">)</span>
+                <span class="n">frames</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">future</span><span class="o">.</span><span class="n">result</span><span class="p">()</span> <span class="k">for</span> <span class="n">future</span> <span class="ow">in</span> <span class="n">done</span><span class="p">])</span>
+            <span class="k">return</span> <span class="n">frames</span>
 
         <span class="k">with</span> <span class="n">concurrent</span><span class="o">.</span><span class="n">futures</span><span class="o">.</span><span class="n">ThreadPoolExecutor</span><span class="p">()</span> <span class="k">as</span> <span class="n">pool</span><span class="p">:</span>
-            <span class="n">frames</span> <span class="o">=</span> <span class="n">pool</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">get_dataframe</span><span class="p">,</span> <span class="n">session</span><span class="o">.</span><span class="n">streams</span><span class="p">)</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">frames</span> <span class="o">=</span> <span class="n">get_frames</span><span class="p">(</span><span class="n">pool</span><span class="p">)</span>
+            <span class="k">finally</span><span class="p">:</span>
+                <span class="c1"># No need for a lock because reading/replacing a variable is</span>
+                <span class="c1"># defined to be an atomic operation in the Python language</span>
+                <span class="c1"># definition (enforced by the global interpreter lock).</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_to_dataframe_finished</span> <span class="o">=</span> <span class="kc">True</span>
 
-        <span class="c1"># rowstream.to_dataframe() does not preserve column order. Rearrange at</span>
-        <span class="c1"># the end using manually-parsed schema.</span>
-        <span class="k">return</span> <span class="n">pandas</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">frames</span><span class="p">)[</span><span class="n">columns</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">pandas</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">frames</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_get_progress_bar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">progress_bar_type</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Construct a tqdm progress bar object, if tqdm is installed.&quot;&quot;&quot;</span>
