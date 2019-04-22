@@ -1385,6 +1385,10 @@ class RowIterator(HTTPIterator):
                 progress_bar.total = progress_bar.total or self.total_rows
                 progress_bar.update(len(current_frame))
 
+        if progress_bar is not None:
+            # Indicate that the download has finished.
+            progress_bar.close()
+
         return pandas.concat(frames)
 
     def _to_dataframe_bqstorage_stream(
