@@ -66,6 +66,7 @@ _NO_TQDM_ERROR = (
 )
 _TABLE_HAS_NO_SCHEMA = 'Table has no schema:  call "client.get_table()"'
 _MARKER = object()
+_PROGRESS_INTERVAL = 1.0  # Time between download status updates, in seconds.
 
 
 def _reference_getter(table):
@@ -1386,6 +1387,27 @@ class RowIterator(HTTPIterator):
 
         return pandas.concat(frames)
 
+    def _to_dataframe_bqstorage_stream(
+        self, bqstorage_client, dtypes, columns, session, stream
+    ):
+        position = bigquery_storage_v1beta1.types.StreamPosition(stream=stream)
+        rowstream = bqstorage_client.read_rows(position).rows(session)
+
+        frames = []
+        for page in rowstream.pages:
+            if self._to_dataframe_finished:
+                return
+            frames.append(page.to_dataframe(dtypes=dtypes))
+
+        # Avoid errors on unlucky streams with no blocks. pandas.concat
+        # will fail on an empty list.
+        if not frames:
+            return pandas.DataFrame(columns=columns)
+
+        # page.to_dataframe() does not preserve column order. Rearrange at
+        # the end using manually-parsed schema.
+        return pandas.concat(frames)[columns]
+
     def _to_dataframe_bqstorage(self, bqstorage_client, dtypes):
         """Use (faster, but billable) BQ Storage API to construct DataFrame."""
         if bigquery_storage_v1beta1 is None:
@@ -1421,17 +1443,46 @@ class RowIterator(HTTPIterator):
         if not session.streams:
             return pandas.DataFrame(columns=columns)
 
-        def get_dataframe(stream):
-            position = bigquery_storage_v1beta1.types.StreamPosition(stream=stream)
-            rowstream = bqstorage_client.read_rows(position)
-            return rowstream.to_dataframe(session, dtypes=dtypes)
+        # Use _to_dataframe_finished to notify worker threads when to quit.
+        # See: https://stackoverflow.com/a/29237343/101923
+        self._to_dataframe_finished = False
+
+        def get_frames(pool):
+            frames = []
+
+            # Manually submit jobs and wait for download to complete rather
+            # than using pool.map because pool.map continues running in the
+            # background even if there is an exception on the main thread.
+            # See: https://github.com/googleapis/google-cloud-python/pull/7698
+            not_done = [
+                pool.submit(
+                    self._to_dataframe_bqstorage_stream,
+                    bqstorage_client,
+                    dtypes,
+                    columns,
+                    session,
+                    stream,
+                )
+                for stream in session.streams
+            ]
+
+            while not_done:
+                done, not_done = concurrent.futures.wait(
+                    not_done, timeout=_PROGRESS_INTERVAL
+                )
+                frames.extend([future.result() for future in done])
+            return frames
 
         with concurrent.futures.ThreadPoolExecutor() as pool:
-            frames = pool.map(get_dataframe, session.streams)
+            try:
+                frames = get_frames(pool)
+            finally:
+                # No need for a lock because reading/replacing a variable is
+                # defined to be an atomic operation in the Python language
+                # definition (enforced by the global interpreter lock).
+                self._to_dataframe_finished = True
 
-        # rowstream.to_dataframe() does not preserve column order. Rearrange at
-        # the end using manually-parsed schema.
-        return pandas.concat(frames)[columns]
+        return pandas.concat(frames)
 
     def _get_progress_bar(self, progress_bar_type):
         """Construct a tqdm progress bar object, if tqdm is installed."""
