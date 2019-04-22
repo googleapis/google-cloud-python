@@ -1503,6 +1503,7 @@ class TestRowIterator(unittest.TestCase):
 
             progress_bar_mock.assert_called()
             progress_bar_mock().update.assert_called()
+            progress_bar_mock().close.assert_called_once()
             self.assertEqual(len(df), 4)
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
