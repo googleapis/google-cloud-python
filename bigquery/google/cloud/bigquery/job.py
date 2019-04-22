@@ -15,6 +15,7 @@
 """Define API Jobs."""
 
 import copy
+import re
 import threading
 
 import six
@@ -90,6 +91,14 @@ def _error_result_to_exception(error_result):
     return exceptions.from_http_status(
         status_code, error_result.get("message", ""), errors=[error_result]
     )
+
+
+def _contains_order_by(query):
+    """Do we need to preserve the order of the query results?"""
+    if query is None:
+        return False
+
+    return re.search(r"ORDER\s+BY", query, re.IGNORECASE) is not None
 
 
 class Compression(object):
@@ -2546,7 +2555,7 @@ class QueryJob(_AsyncJob):
         :returns: Job parsed from ``resource``.
         """
         job_id, config = cls._get_resource_config(resource)
-        query = config["query"]["query"]
+        query = _helpers._get_sub_prop(config, ["query", "query"])
         job = cls(job_id, query, client=client)
         job._set_properties(resource)
         return job
@@ -2849,7 +2858,9 @@ class QueryJob(_AsyncJob):
         dest_table_ref = self.destination
         dest_table = Table(dest_table_ref, schema=schema)
         dest_table._properties["numRows"] = self._query_results.total_rows
-        return self._client.list_rows(dest_table, retry=retry)
+        rows = self._client.list_rows(dest_table, retry=retry)
+        rows._preserve_order = _contains_order_by(self.query)
+        return rows
 
     def to_dataframe(self, bqstorage_client=None, dtypes=None, progress_bar_type=None):
         """Return a pandas DataFrame from a QueryJob
