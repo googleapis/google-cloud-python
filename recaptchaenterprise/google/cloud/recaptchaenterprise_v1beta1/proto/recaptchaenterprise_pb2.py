@@ -683,7 +683,8 @@ Event = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_EVENT,
         __module__="google.cloud.recaptchaenterprise_v1beta1.proto.recaptchaenterprise_pb2",
-        __doc__="""Attributes:
+        __doc__="""
+    Attributes:
       token:
           The user response token provided by the reCAPTCHA client-side
           integration on your site.
@@ -702,7 +703,8 @@ TokenProperties = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_TOKENPROPERTIES,
         __module__="google.cloud.recaptchaenterprise_v1beta1.proto.recaptchaenterprise_pb2",
-        __doc__="""Attributes:
+        __doc__="""
+    Attributes:
       valid:
           Output only. Whether the provided user response token is
           valid.

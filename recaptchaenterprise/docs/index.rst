@@ -1,5 +1,6 @@
 .. include:: README.rst 
 
+
 Api Reference
 -------------
 .. toctree::
@@ -7,3 +8,4 @@ Api Reference
 
     gapic/v1beta1/api
     gapic/v1beta1/types
+    changelog
