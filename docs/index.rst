@@ -23,6 +23,7 @@
   Language <language/index>
   OSLogin <oslogin/index>
   PubSub <pubsub/index>
+  reCAPTCHA enterprise <recaptchaenterprise/index>
   Redis <redis/index>
   Resource Manager <resource-manager/index>
   Runtime Configuration <runtimeconfig/index>

@@ -31,6 +31,7 @@ grpcio-gcp >= 0.2.2
 -e monitoring/
 -e pubsub/
 -e oslogin/
+-e recaptchaenterprise/
 -e redis/
 -e resource_manager/
 -e runtimeconfig/
