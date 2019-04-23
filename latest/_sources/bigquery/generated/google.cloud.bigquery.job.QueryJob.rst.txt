@@ -89,6 +89,7 @@ google.cloud.bigquery.job.QueryJob
    ~QueryJob.path
    ~QueryJob.priority
    ~QueryJob.project
+   ~QueryJob.query
    ~QueryJob.query_parameters
    ~QueryJob.query_plan
    ~QueryJob.referenced_tables

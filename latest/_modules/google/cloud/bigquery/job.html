@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery.job &#8212; google-cloud 11c854d documentation</title>
+    <title>google.cloud.bigquery.job &#8212; google-cloud fb8c802 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -2393,7 +2393,10 @@
         <span class="k">if</span> <span class="n">job_config</span><span class="o">.</span><span class="n">use_legacy_sql</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">job_config</span><span class="o">.</span><span class="n">use_legacy_sql</span> <span class="o">=</span> <span class="kc">False</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">query</span> <span class="o">=</span> <span class="n">query</span>
+        <span class="n">_helpers</span><span class="o">.</span><span class="n">_set_sub_prop</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;configuration&quot;</span><span class="p">,</span> <span class="s2">&quot;query&quot;</span><span class="p">,</span> <span class="s2">&quot;query&quot;</span><span class="p">],</span> <span class="n">query</span>
+        <span class="p">)</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">_configuration</span> <span class="o">=</span> <span class="n">job_config</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_query_results</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_done_timeout</span> <span class="o">=</span> <span class="kc">None</span>
@@ -2459,6 +2462,17 @@
 <span class="sd">        :attr:`google.cloud.bigquery.job.QueryJobConfig.priority`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_configuration</span><span class="o">.</span><span class="n">priority</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">query</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;str: The query text used in this query job.</span>
+
+<span class="sd">        See:</span>
+<span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.query</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">_get_sub_prop</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;configuration&quot;</span><span class="p">,</span> <span class="s2">&quot;query&quot;</span><span class="p">,</span> <span class="s2">&quot;query&quot;</span><span class="p">]</span>
+        <span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">query_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -2552,7 +2566,6 @@
     <span class="k">def</span> <span class="nf">_copy_configuration_properties</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">configuration</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Helper:  assign subclass configuration properties in cleaned.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_configuration</span><span class="o">.</span><span class="n">_properties</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">configuration</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">query</span> <span class="o">=</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">_get_sub_prop</span><span class="p">(</span><span class="n">configuration</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;query&quot;</span><span class="p">,</span> <span class="s2">&quot;query&quot;</span><span class="p">])</span>
 
 <div class="viewcode-block" id="QueryJob.from_api_repr"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.job.QueryJob.html#google.cloud.bigquery.job.QueryJob.from_api_repr">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">resource</span><span class="p">,</span> <span class="n">client</span><span class="p">):</span>
