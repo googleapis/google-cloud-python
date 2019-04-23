@@ -351,9 +351,9 @@ class Watch(object):
     def for_query(
         cls, query, snapshot_callback, snapshot_class_instance, reference_class_instance
     ):
+        parent_path, _ = query._parent._parent_info()
         query_target = firestore_pb2.Target.QueryTarget(
-            parent=query._client._database_string + "/documents",
-            structured_query=query._to_protobuf(),
+            parent=parent_path, structured_query=query._to_protobuf()
         )
 
         return cls(
