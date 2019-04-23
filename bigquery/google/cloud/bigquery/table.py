@@ -22,9 +22,12 @@ import copy
 import datetime
 import json
 import operator
+import threading
+import time
 import warnings
 
 import six
+from six.moves import queue
 
 try:
     from google.cloud import bigquery_storage_v1beta1
@@ -66,7 +69,12 @@ _NO_TQDM_ERROR = (
 )
 _TABLE_HAS_NO_SCHEMA = 'Table has no schema:  call "client.get_table()"'
 _MARKER = object()
-_PROGRESS_INTERVAL = 1.0  # Time between download status updates, in seconds.
+_PROGRESS_INTERVAL = 0.2  # Time between download status updates, in seconds.
+
+# Send multiple updates from the worker threads, so there are at least a few
+# waiting next time the prgrogess bar is updated.
+_PROGRESS_UPDATES_PER_INTERVAL = 3
+_PROGRESS_WORKER_INTERVAL = _PROGRESS_INTERVAL / _PROGRESS_UPDATES_PER_INTERVAL
 
 
 def _reference_getter(table):
@@ -1274,6 +1282,16 @@ class Row(object):
         return "Row({}, {})".format(self._xxx_values, f2i)
 
 
+class _NoopProgressBarQueue(object):
+    """A fake Queue class that does nothing.
+
+    This is used when there is no progress bar to send updates to.
+    """
+
+    def put_nowait(self, item):
+        """Don't actually do anything with the item."""
+
+
 class RowIterator(HTTPIterator):
     """A class for iterating through HTTP/JSON API row list responses.
 
@@ -1392,7 +1410,7 @@ class RowIterator(HTTPIterator):
         return pandas.concat(frames)
 
     def _to_dataframe_bqstorage_stream(
-        self, bqstorage_client, dtypes, columns, session, stream
+        self, bqstorage_client, dtypes, columns, session, stream, worker_queue
     ):
         position = bigquery_storage_v1beta1.types.StreamPosition(stream=stream)
         rowstream = bqstorage_client.read_rows(position).rows(session)
@@ -1403,6 +1421,13 @@ class RowIterator(HTTPIterator):
                 return
             frames.append(page.to_dataframe(dtypes=dtypes))
 
+            try:
+                worker_queue.put_nowait(page.num_items)
+            except queue.Full:
+                # It's okay if we miss a few progress updates. Don't slow
+                # down parsing for that.
+                pass
+
         # Avoid errors on unlucky streams with no blocks. pandas.concat
         # will fail on an empty list.
         if not frames:
@@ -1412,7 +1437,47 @@ class RowIterator(HTTPIterator):
         # the end using manually-parsed schema.
         return pandas.concat(frames)[columns]
 
-    def _to_dataframe_bqstorage(self, bqstorage_client, dtypes):
+    def _process_worker_updates(self, worker_queue, progress_queue):
+        last_update_time = time.time()
+        current_update = 0
+
+        # Sum all updates in a contant loop.
+        while True:
+            try:
+                current_update += worker_queue.get(timeout=_PROGRESS_INTERVAL)
+
+                # Time to send to the progress bar queue?
+                current_time = time.time()
+                elapsed_time = current_time - last_update_time
+                if elapsed_time > _PROGRESS_WORKER_INTERVAL:
+                    progress_queue.put(current_update)
+                    last_update_time = current_time
+                    current_update = 0
+
+            except queue.Empty:
+                # Keep going, unless there probably aren't going to be any
+                # additional updates.
+                if self._to_dataframe_finished:
+                    progress_queue.put(current_update)
+                    return
+
+    def _process_progress_updates(self, progress_queue, progress_bar):
+        if progress_bar is None:
+            return
+
+        # Output all updates since the last interval.
+        while True:
+            try:
+                next_update = progress_queue.get_nowait()
+                progress_bar.update(next_update)
+            except queue.Empty:
+                break
+
+        if self._to_dataframe_finished:
+            progress_bar.close()
+            return
+
+    def _to_dataframe_bqstorage(self, bqstorage_client, dtypes, progress_bar=None):
         """Use (faster, but billable) BQ Storage API to construct DataFrame."""
         if bigquery_storage_v1beta1 is None:
             raise ValueError(_NO_BQSTORAGE_ERROR)
@@ -1451,6 +1516,18 @@ class RowIterator(HTTPIterator):
         # See: https://stackoverflow.com/a/29237343/101923
         self._to_dataframe_finished = False
 
+        # Create a queue to track progress updates across threads.
+        worker_queue = _NoopProgressBarQueue()
+        progress_queue = None
+        progress_thread = None
+        if progress_bar is not None:
+            worker_queue = queue.Queue()
+            progress_queue = queue.Queue()
+            progress_thread = threading.Thread(
+                target=self._process_worker_updates, args=(worker_queue, progress_queue)
+            )
+            progress_thread.start()
+
         def get_frames(pool):
             frames = []
 
@@ -1466,6 +1543,7 @@ class RowIterator(HTTPIterator):
                     columns,
                     session,
                     stream,
+                    worker_queue,
                 )
                 for stream in session.streams
             ]
@@ -1475,6 +1553,11 @@ class RowIterator(HTTPIterator):
                     not_done, timeout=_PROGRESS_INTERVAL
                 )
                 frames.extend([future.result() for future in done])
+
+                # The progress bar needs to update on the main thread to avoid
+                # contention over stdout / stderr.
+                self._process_progress_updates(progress_queue, progress_bar)
+
             return frames
 
         with concurrent.futures.ThreadPoolExecutor() as pool:
@@ -1486,6 +1569,14 @@ class RowIterator(HTTPIterator):
                 # definition (enforced by the global interpreter lock).
                 self._to_dataframe_finished = True
 
+                # Shutdown all background threads, now that they should know to
+                # exit early.
+                pool.shutdown(wait=True)
+                if progress_thread is not None:
+                    progress_thread.join()
+
+        # Update the progress bar one last time to close it.
+        self._process_progress_updates(progress_queue, progress_bar)
         return pandas.concat(frames)
 
     def _get_progress_bar(self, progress_bar_type):
@@ -1585,7 +1676,9 @@ class RowIterator(HTTPIterator):
 
         if bqstorage_client is not None:
             try:
-                return self._to_dataframe_bqstorage(bqstorage_client, dtypes)
+                return self._to_dataframe_bqstorage(
+                    bqstorage_client, dtypes, progress_bar=progress_bar
+                )
             except google.api_core.exceptions.Forbidden:
                 # Don't hide errors such as insufficient permissions to create
                 # a read session, or the API is not enabled. Both of those are

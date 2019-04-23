@@ -22,6 +22,7 @@ import warnings
 import mock
 import pytest
 import six
+from six.moves import queue
 
 import google.api_core.exceptions
 
@@ -1816,9 +1817,12 @@ class TestRowIterator(unittest.TestCase):
         bqstorage_client = mock.create_autospec(
             bigquery_storage_v1beta1.BigQueryStorageClient
         )
-        session = bigquery_storage_v1beta1.types.ReadSession(
-            streams=[{"name": "/projects/proj/dataset/dset/tables/tbl/streams/1234"}]
-        )
+        streams = [
+            # Use two streams we want to check frames are read from each stream.
+            {"name": "/projects/proj/dataset/dset/tables/tbl/streams/1234"},
+            {"name": "/projects/proj/dataset/dset/tables/tbl/streams/5678"},
+        ]
+        session = bigquery_storage_v1beta1.types.ReadSession(streams=streams)
         session.avro_schema.schema = json.dumps(
             {
                 "fields": [
@@ -1836,20 +1840,25 @@ class TestRowIterator(unittest.TestCase):
 
         mock_rows = mock.create_autospec(reader.ReadRowsIterable)
         mock_rowstream.rows.return_value = mock_rows
+        page_items = [
+            {"colA": 1, "colB": "abc", "colC": 2.0},
+            {"colA": -1, "colB": "def", "colC": 4.0},
+        ]
 
         def blocking_to_dataframe(*args, **kwargs):
             # Sleep for longer than the waiting interval so that we know we're
             # only reading one page per loop at most.
             time.sleep(2 * mut._PROGRESS_INTERVAL)
-            return pandas.DataFrame(
-                {"colA": [1, -1], "colB": ["abc", "def"], "colC": [2.0, 4.0]},
-                columns=["colA", "colB", "colC"],
-            )
+            return pandas.DataFrame(page_items, columns=["colA", "colB", "colC"])
 
         mock_page = mock.create_autospec(reader.ReadRowsPage)
         mock_page.to_dataframe.side_effect = blocking_to_dataframe
-        mock_pages = mock.PropertyMock(return_value=(mock_page, mock_page, mock_page))
-        type(mock_rows).pages = mock_pages
+        mock_pages = (mock_page, mock_page, mock_page)
+        type(mock_rows).pages = mock.PropertyMock(return_value=mock_pages)
+
+        # Test that full queue errors are ignored.
+        mock_queue = mock.create_autospec(mut._NoopProgressBarQueue)
+        mock_queue().put_nowait.side_effect = queue.Full
 
         schema = [
             schema.SchemaField("colA", "IGNORED"),
@@ -1866,16 +1875,99 @@ class TestRowIterator(unittest.TestCase):
             selected_fields=schema,
         )
 
-        with mock.patch(
+        with mock.patch.object(mut, "_NoopProgressBarQueue", mock_queue), mock.patch(
             "concurrent.futures.wait", wraps=concurrent.futures.wait
         ) as mock_wait:
             got = row_iterator.to_dataframe(bqstorage_client=bqstorage_client)
 
+        # Are the columns in the expected order?
         column_names = ["colA", "colC", "colB"]
         self.assertEqual(list(got), column_names)
-        self.assertEqual(len(got.index), 6)
+
+        # Have expected number of rows?
+        total_pages = len(streams) * len(mock_pages)
+        total_rows = len(page_items) * total_pages
+        self.assertEqual(len(got.index), total_rows)
+
         # Make sure that this test looped through multiple progress intervals.
         self.assertGreaterEqual(mock_wait.call_count, 2)
+
+        # Make sure that this test pushed to the progress queue.
+        self.assertEqual(mock_queue().put_nowait.call_count, total_pages)
+
+    @unittest.skipIf(pandas is None, "Requires `pandas`")
+    @unittest.skipIf(
+        bigquery_storage_v1beta1 is None, "Requires `google-cloud-bigquery-storage`"
+    )
+    @unittest.skipIf(tqdm is None, "Requires `tqdm`")
+    @mock.patch("tqdm.tqdm")
+    def test_to_dataframe_w_bqstorage_updates_progress_bar(self, tqdm_mock):
+        from google.cloud.bigquery import schema
+        from google.cloud.bigquery import table as mut
+        from google.cloud.bigquery_storage_v1beta1 import reader
+
+        # Speed up testing.
+        mut._PROGRESS_INTERVAL = 0.01
+
+        bqstorage_client = mock.create_autospec(
+            bigquery_storage_v1beta1.BigQueryStorageClient
+        )
+        streams = [
+            # Use two streams we want to check that progress bar updates are
+            # sent from each stream.
+            {"name": "/projects/proj/dataset/dset/tables/tbl/streams/1234"},
+            {"name": "/projects/proj/dataset/dset/tables/tbl/streams/5678"},
+        ]
+        session = bigquery_storage_v1beta1.types.ReadSession(streams=streams)
+        session.avro_schema.schema = json.dumps({"fields": [{"name": "testcol"}]})
+        bqstorage_client.create_read_session.return_value = session
+
+        mock_rowstream = mock.create_autospec(reader.ReadRowsStream)
+        bqstorage_client.read_rows.return_value = mock_rowstream
+
+        mock_rows = mock.create_autospec(reader.ReadRowsIterable)
+        mock_rowstream.rows.return_value = mock_rows
+        mock_page = mock.create_autospec(reader.ReadRowsPage)
+        page_items = [-1, 0, 1]
+        type(mock_page).num_items = mock.PropertyMock(return_value=len(page_items))
+
+        def blocking_to_dataframe(*args, **kwargs):
+            # Sleep for longer than the waiting interval. This ensures the
+            # progress_queue gets written to more than once because it gives
+            # the worker->progress updater time to sum intermediate updates.
+            time.sleep(2 * mut._PROGRESS_INTERVAL)
+            return pandas.DataFrame({"testcol": page_items})
+
+        mock_page.to_dataframe.side_effect = blocking_to_dataframe
+        mock_pages = (mock_page, mock_page, mock_page, mock_page, mock_page)
+        type(mock_rows).pages = mock.PropertyMock(return_value=mock_pages)
+
+        schema = [schema.SchemaField("testcol", "IGNORED")]
+
+        row_iterator = mut.RowIterator(
+            _mock_client(),
+            None,  # api_request: ignored
+            None,  # path: ignored
+            schema,
+            table=mut.TableReference.from_string("proj.dset.tbl"),
+            selected_fields=schema,
+        )
+
+        row_iterator.to_dataframe(
+            bqstorage_client=bqstorage_client, progress_bar_type="tqdm"
+        )
+
+        # Make sure that this test updated the progress bar once per page from
+        # each stream.
+        total_pages = len(streams) * len(mock_pages)
+        expected_total_rows = total_pages * len(page_items)
+        progress_updates = [
+            args[0] for args, kwargs in tqdm_mock().update.call_args_list
+        ]
+        # Should have sent >1 update due to delay in blocking_to_dataframe.
+        self.assertGreater(len(progress_updates), 1)
+        self.assertEqual(sum(progress_updates), expected_total_rows)
+        tqdm_mock().close.assert_called_once()
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
     @unittest.skipIf(
