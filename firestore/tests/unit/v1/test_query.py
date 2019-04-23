@@ -190,7 +190,7 @@ class TestQuery(unittest.TestCase):
             query.select(["*"])
 
     def test_select(self):
-        query1 = self._make_one_all_fields()
+        query1 = self._make_one_all_fields(all_descendants=True)
 
         field_paths2 = ["foo", "bar"]
         query2 = query1.select(field_paths2)
@@ -222,7 +222,9 @@ class TestQuery(unittest.TestCase):
         from google.cloud.firestore_v1.proto import document_pb2
         from google.cloud.firestore_v1.proto import query_pb2
 
-        query = self._make_one_all_fields(skip_fields=("field_filters",))
+        query = self._make_one_all_fields(
+            skip_fields=("field_filters",), all_descendants=True
+        )
         new_query = query.where("power.level", ">", 9000)
 
         self.assertIsNot(query, new_query)
@@ -311,7 +313,9 @@ class TestQuery(unittest.TestCase):
         from google.cloud.firestore_v1.gapic import enums
 
         klass = self._get_target_class()
-        query1 = self._make_one_all_fields(skip_fields=("orders",))
+        query1 = self._make_one_all_fields(
+            skip_fields=("orders",), all_descendants=True
+        )
 
         field_path2 = "a"
         query2 = query1.order_by(field_path2)
@@ -335,7 +339,7 @@ class TestQuery(unittest.TestCase):
         self._compare_queries(query2, query3, "_orders")
 
     def test_limit(self):
-        query1 = self._make_one_all_fields()
+        query1 = self._make_one_all_fields(all_descendants=True)
 
         limit2 = 100
         query2 = query1.limit(limit2)
@@ -353,7 +357,7 @@ class TestQuery(unittest.TestCase):
         self._compare_queries(query2, query3, "_limit")
 
     def test_offset(self):
-        query1 = self._make_one_all_fields()
+        query1 = self._make_one_all_fields(all_descendants=True)
 
         offset2 = 23
         query2 = query1.offset(offset2)
@@ -391,6 +395,7 @@ class TestQuery(unittest.TestCase):
     def test__cursor_helper_w_dict(self):
         values = {"a": 7, "b": "foo"}
         query1 = self._make_one(mock.sentinel.parent)
+        query1._all_descendants = True
         query2 = query1._cursor_helper(values, True, True)
 
         self.assertIs(query2._parent, mock.sentinel.parent)
@@ -400,6 +405,7 @@ class TestQuery(unittest.TestCase):
         self.assertIsNone(query2._limit)
         self.assertIsNone(query2._offset)
         self.assertIsNone(query2._end_at)
+        self.assertTrue(query2._all_descendants)
 
         cursor, before = query2._start_at
 
@@ -477,7 +483,9 @@ class TestQuery(unittest.TestCase):
 
     def test_start_at(self):
         collection = self._make_collection("here")
-        query1 = self._make_one_all_fields(parent=collection, skip_fields=("orders",))
+        query1 = self._make_one_all_fields(
+            parent=collection, skip_fields=("orders",), all_descendants=True
+        )
         query2 = query1.order_by("hi")
 
         document_fields3 = {"hi": "mom"}

@@ -430,6 +430,7 @@ class Query(object):
             "orders": self._orders,
             "limit": self._limit,
             "offset": self._offset,
+            "all_descendants": self._all_descendants,
         }
         if start:
             query_kwargs["start_at"] = cursor_pair
