@@ -2357,7 +2357,10 @@ class QueryJob(_AsyncJob):
         if job_config.use_legacy_sql is None:
             job_config.use_legacy_sql = False
 
-        self.query = query
+        _helpers._set_sub_prop(
+            self._properties, ["configuration", "query", "query"], query
+        )
+
         self._configuration = job_config
         self._query_results = None
         self._done_timeout = None
@@ -2423,6 +2426,17 @@ class QueryJob(_AsyncJob):
         :attr:`google.cloud.bigquery.job.QueryJobConfig.priority`.
         """
         return self._configuration.priority
+
+    @property
+    def query(self):
+        """str: The query text used in this query job.
+
+        See:
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.query
+        """
+        return _helpers._get_sub_prop(
+            self._properties, ["configuration", "query", "query"]
+        )
 
     @property
     def query_parameters(self):
@@ -2516,7 +2530,6 @@ class QueryJob(_AsyncJob):
     def _copy_configuration_properties(self, configuration):
         """Helper:  assign subclass configuration properties in cleaned."""
         self._configuration._properties = copy.deepcopy(configuration)
-        self.query = _helpers._get_sub_prop(configuration, ["query", "query"])
 
     @classmethod
     def from_api_repr(cls, resource, client):
