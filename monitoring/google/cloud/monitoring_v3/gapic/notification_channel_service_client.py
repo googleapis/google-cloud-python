@@ -91,13 +91,6 @@ class NotificationChannelServiceClient(object):
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def project_path(cls, project):
-        """Return a fully-qualified project string."""
-        return google.api_core.path_template.expand(
-            "projects/{project}", project=project
-        )
-
-    @classmethod
     def notification_channel_path(cls, project, notification_channel):
         """Return a fully-qualified notification_channel string."""
         return google.api_core.path_template.expand(
@@ -113,6 +106,13 @@ class NotificationChannelServiceClient(object):
             "projects/{project}/notificationChannelDescriptors/{channel_descriptor}",
             project=project,
             channel_descriptor=channel_descriptor,
+        )
+
+    @classmethod
+    def project_path(cls, project):
+        """Return a fully-qualified project string."""
+        return google.api_core.path_template.expand(
+            "projects/{project}", project=project
         )
 
     def __init__(
