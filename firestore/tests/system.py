@@ -658,91 +658,99 @@ def test_collection_group_queries(client, cleanup):
 
     batch.commit()
 
-    results = [i for i in client.collection_group(collection_group).stream()]
-    assert [i.id for i in results] == [
+    query = client.collection_group(collection_group)
+    snapshots = list(query.stream())
+    found = [snapshot.id for snapshot in snapshots]
+    expected = [
         "cg-doc1",
         "cg-doc2",
         "cg-doc3",
         "cg-doc4",
         "cg-doc5",
     ]
+    assert found == expected
 
 
-# def test_collection_group_queries_startat_endat(client, cleanup):
-#     collection_group = "col" + unique_resource_id("-")
+def test_collection_group_queries_startat_endat(client, cleanup):
+    collection_group = "col" + unique_resource_id("-")
 
-#     doc_paths = [
-#         "a/a/" + collection_group + "/cg-doc1",
-#         "a/b/a/b/" + collection_group + "/cg-doc2",
-#         "a/b/" + collection_group + "/cg-doc3",
-#         "a/b/c/d/" + collection_group + "/cg-doc4",
-#         "a/c/" + collection_group + "/cg-doc5",
-#         collection_group + "/cg-doc6",
-#         "a/b/nope/nope",
-#     ]
+    doc_paths = [
+        "a/a/" + collection_group + "/cg-doc1",
+        "a/b/a/b/" + collection_group + "/cg-doc2",
+        "a/b/" + collection_group + "/cg-doc3",
+        "a/b/c/d/" + collection_group + "/cg-doc4",
+        "a/c/" + collection_group + "/cg-doc5",
+        collection_group + "/cg-doc6",
+        "a/b/nope/nope",
+    ]
 
-#     batch = client.batch()
-#     for doc_path in doc_paths:
-#         doc_ref = client.document(doc_path)
-#         batch.set(doc_ref, {"x": doc_path})
+    batch = client.batch()
+    for doc_path in doc_paths:
+        doc_ref = client.document(doc_path)
+        batch.set(doc_ref, {"x": doc_path})
 
-#     batch.commit()
+    batch.commit()
 
-#     query_snapshot = (
-#         client.collection_group(collection_group)
-#         .order_by('documentId')
-#         .start_at("a/b")
-#         .end_at("a/b0")
-#         .stream()
-#     )
-#     assert [i.id for i in query_snapshot], ["cg-doc2", "cg-doc3", "cg-doc4"]
+    query = (
+        client.collection_group(collection_group)
+        .order_by("__name__")
+        .start_at([client.document("a/b")])
+        .end_at([client.document("a/b0")])
+    )
+    snapshots = list(query.stream())
+    found = set(snapshot.id for snapshot in snapshots)
+    assert found == set(["cg-doc2", "cg-doc3", "cg-doc4"])
 
-#     query_snapshot = (
-#         firestore.collectionGroup(collectionGroup)
-#         .order_by('documentId')
-#         .start_after("a/b")
-#         .end_before("a/b/" + collection_group + "/cg-doc3")
-#         .stream()
-#     )
-#     assert [i.id for i in query_snapshot], ["cg-doc2"]
+    query = (
+        client.collection_group(collection_group)
+        .order_by("__name__")
+        .start_after([client.document("a/b")])
+        .end_before([client.document("a/b/" + collection_group + "/cg-doc3")])
+    )
+    snapshots = list(query.stream())
+    found = set(snapshot.id for snapshot in snapshots)
+    assert found == set(["cg-doc2", "cg-doc4"])
 
 
-# def test_collection_group_queries_filters(client, cleanup):
-#     collection_group = "col" + unique_resource_id("-")
+@pytest.mark.skip("where query across group requires custom index.")
+def test_collection_group_queries_filters(client, cleanup):
+    collection_group = "col" + unique_resource_id("-")
 
-#     doc_paths = [
-#         "a/a/" + collection_group + "/cg-doc1",
-#         "a/b/a/b/" + collection_group + "/cg-doc2",
-#         "a/b/" + collection_group + "/cg-doc3",
-#         "a/b/c/d/" + collection_group + "/cg-doc4",
-#         "a/c/" + collection_group + "/cg-doc5",
-#         collection_group + "/cg-doc6",
-#         "a/b/nope/nope",
-#     ]
+    doc_paths = [
+        "a/a/" + collection_group + "/cg-doc1",
+        "a/b/a/b/" + collection_group + "/cg-doc2",
+        "a/b/" + collection_group + "/cg-doc3",
+        "a/b/c/d/" + collection_group + "/cg-doc4",
+        "a/c/" + collection_group + "/cg-doc5",
+        collection_group + "/cg-doc6",
+        "a/b/nope/nope",
+    ]
 
-#     batch = client.batch()
+    batch = client.batch()
 
-#     for doc_path in doc_paths:
-#         doc_ref = client.document(doc_path)
-#         batch.set(doc_ref, {"x": 1})
+    for index, doc_path in enumerate(doc_paths):
+        doc_ref = client.document(doc_path)
+        batch.set(doc_ref, {"x": index})
 
-#     batch.commit()
+    batch.commit()
 
-#     query_snapshot = (
-#         client.collection_group(collection_group)
-#         .where('documentId', ">=", "a/b")
-#         .where('documentId', "<=", "a/b0")
-#         .stream()
-#     )
-#     assert [i.id for i in query_snapshot], ["cg-doc2", "cg-doc3", "cg-doc4"]
+    query = (
+        client.collection_group(collection_group)
+        .where("x", ">=", 1)
+        .where("x", "<=", len(doc_paths) - 1)
+    )
+    snapshots = list(query.stream())
+    found = set(snapshot.id for snapshot in snapshots)
+    assert found == set(["cg-doc2", "cg-doc3", "cg-doc4"])
 
-#     query_snapshot = (
-#         client.collection_group(collection_group)
-#         .where('documentId', ">", "a/b")
-#         .where('documentId', "<", "a/b/" + collection_group + "/cg-doc3")
-#         .stream()
-#     )
-#     assert [i.id for i in query_snapshot], ["cg-doc2"]
+    query = (
+        client.collection_group(collection_group)
+        .where("x", ">", 0)
+        .where("x", "<", 2)
+    )
+    snapshots = list(query.stream())
+    found = set(snapshot.id for snapshot in snapshots)
+    assert found == set(["cg-doc2"])
 
 
 def test_get_all(client, cleanup):
