@@ -1927,11 +1927,18 @@ class TestRowIterator(unittest.TestCase):
 
         mock_rows = mock.create_autospec(reader.ReadRowsIterable)
         mock_rowstream.rows.return_value = mock_rows
-
         mock_page = mock.create_autospec(reader.ReadRowsPage)
         page_items = [-1, 0, 1]
         type(mock_page).num_items = mock.PropertyMock(return_value=len(page_items))
-        mock_page.to_dataframe.return_value = pandas.DataFrame({"testcol": page_items})
+
+        def blocking_to_dataframe(*args, **kwargs):
+            # Sleep for longer than the waiting interval. This ensures the
+            # progress_queue gets written to more than once because it gives
+            # the worker->progress updater time to sum intermediate updates.
+            time.sleep(2 * mut._PROGRESS_INTERVAL)
+            return pandas.DataFrame({"testcol": page_items})
+
+        mock_page.to_dataframe.side_effect = blocking_to_dataframe
         mock_pages = (mock_page, mock_page, mock_page, mock_page, mock_page)
         type(mock_rows).pages = mock.PropertyMock(return_value=mock_pages)
 
@@ -1954,10 +1961,12 @@ class TestRowIterator(unittest.TestCase):
         # each stream.
         total_pages = len(streams) * len(mock_pages)
         expected_total_rows = total_pages * len(page_items)
-        actual_total_rows = sum(
-            [args[0] for args, kwargs in tqdm_mock().update.call_args_list]
-        )
-        self.assertEqual(actual_total_rows, expected_total_rows)
+        progress_updates = [
+            args[0] for args, kwargs in tqdm_mock().update.call_args_list
+        ]
+        # Should have sent >1 update due to delay in blocking_to_dataframe.
+        self.assertGreater(len(progress_updates), 1)
+        self.assertEqual(sum(progress_updates), expected_total_rows)
         tqdm_mock().close.assert_called_once()
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
