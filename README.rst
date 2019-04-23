@@ -111,6 +111,7 @@ The following client libraries have **alpha** support:
 -  `Google Cloud Memorystore for Redis`_ (`Redis README`_)
 -  `Google Cloud Resource Manager`_ (`Resource Manager README`_)
 -  `Google Cloud Runtime Configuration`_ (`Runtime Config README`_)
+-  `Google Cloud Scheduler`_ (`Scheduler README`_)
 -  `Google Cloud Security Scanner`_ (`Security Scanner README`_ )
 -  `Google Cloud Tasks`_ (`Tasks README`_)
 -  `Google Cloud Trace`_ (`Trace README`_)
@@ -144,6 +145,8 @@ The following client libraries have **alpha** support:
 .. _Resource Manager README: https://github.com/googleapis/google-cloud-python/tree/master/resource_manager
 .. _Google Cloud Runtime Configuration: https://pypi.org/project/google-cloud-runtimeconfig/
 .. _Runtime Config README: https://github.com/googleapis/google-cloud-python/tree/master/runtimeconfig
+.. _Google Cloud Scheduler: https://pypi.org/project/google-cloud-scheduler/
+.. _Scheduler README: https://github.com/googleapis/google-cloud-python/tree/master/scheduler
 .. _Google Cloud Security Scanner: https://pypi.org/project/google-cloud-websecurityscanner/
 .. _Security Scanner README: https://github.com/googleapis/google-cloud-python/blob/master/websecurityscanner
 .. _Google Cloud Tasks: https://pypi.org/project/google-cloud-tasks/
