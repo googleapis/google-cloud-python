@@ -236,7 +236,8 @@ def test_listen_testprotos(test_proto):  # pragma: NO COVER
                 def callback(keys, applied_changes, read_time):
                     snapshots.append((keys, applied_changes, read_time))
 
-                query = DummyQuery(client=client)
+                collection = DummyCollection(client=client)
+                query = DummyQuery(parent=collection)
                 watch = Watch.for_query(
                     query, callback, DocumentSnapshot, DocumentReference
                 )
@@ -374,10 +375,23 @@ class DummyBackgroundConsumer(object):  # pragma: NO COVER
         self.is_active = False
 
 
+class DummyCollection(object):
+    def __init__(self, client, parent=None):
+        self._client = client
+        self._parent = parent
+
+    def _parent_info(self):
+        return "{}/documents".format(self._client._database_string), None
+
+
 class DummyQuery(object):  # pragma: NO COVER
-    def __init__(self, **kw):
-        self._client = kw["client"]
+    def __init__(self, parent):
+        self._parent = parent
         self._comparator = lambda x, y: 1
+
+    @property
+    def _client(self):
+        return self._parent._client
 
     def _to_protobuf(self):
         from google.cloud.firestore_v1.proto import query_pb2
