@@ -145,6 +145,7 @@ def docs(session):
     """Build the docs for this library."""
 
     session.install('sphinx', 'alabaster', 'recommonmark')
+    session.install('e', '.')
 
     shutil.rmtree(os.path.join('docs', '_build'), ignore_errors=True)
     session.run(
