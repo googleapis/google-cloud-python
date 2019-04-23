@@ -1857,7 +1857,7 @@ class TestRowIterator(unittest.TestCase):
         type(mock_rows).pages = mock.PropertyMock(return_value=mock_pages)
 
         # Test that full queue errors are ignored.
-        mock_queue = mock.create_autospec(mut._FakeQueue)
+        mock_queue = mock.create_autospec(mut._NoopProgressBarQueue)
         mock_queue().put_nowait.side_effect = queue.Full
 
         schema = [
@@ -1875,7 +1875,7 @@ class TestRowIterator(unittest.TestCase):
             selected_fields=schema,
         )
 
-        with mock.patch.object(mut, "_FakeQueue", mock_queue), mock.patch(
+        with mock.patch.object(mut, "_NoopProgressBarQueue", mock_queue), mock.patch(
             "concurrent.futures.wait", wraps=concurrent.futures.wait
         ) as mock_wait:
             got = row_iterator.to_dataframe(bqstorage_client=bqstorage_client)
@@ -1953,8 +1953,11 @@ class TestRowIterator(unittest.TestCase):
         # Make sure that this test updated the progress bar once per page from
         # each stream.
         total_pages = len(streams) * len(mock_pages)
-        self.assertEqual(tqdm_mock().update.call_count, total_pages)
-        tqdm_mock().update.assert_called_with(len(page_items))
+        expected_total_rows = total_pages * len(page_items)
+        actual_total_rows = sum(
+            [args[0] for args, kwargs in tqdm_mock().update.call_args_list]
+        )
+        self.assertEqual(actual_total_rows, expected_total_rows)
         tqdm_mock().close.assert_called_once()
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
