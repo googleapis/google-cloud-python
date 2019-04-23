@@ -45,8 +45,11 @@ class TestQuery(unittest.TestCase):
         self.assertIsNone(query._offset)
         self.assertIsNone(query._start_at)
         self.assertIsNone(query._end_at)
+        self.assertFalse(query._all_descendants)
 
-    def _make_one_all_fields(self, limit=9876, offset=12, skip_fields=(), parent=None):
+    def _make_one_all_fields(
+        self, limit=9876, offset=12, skip_fields=(), parent=None, all_descendants=True
+    ):
         kwargs = {
             "projection": mock.sentinel.projection,
             "field_filters": mock.sentinel.filters,
@@ -55,6 +58,7 @@ class TestQuery(unittest.TestCase):
             "offset": offset,
             "start_at": mock.sentinel.start_at,
             "end_at": mock.sentinel.end_at,
+            "all_descendants": all_descendants,
         }
         for field in skip_fields:
             kwargs.pop(field)
@@ -74,6 +78,7 @@ class TestQuery(unittest.TestCase):
         self.assertEqual(query._offset, offset)
         self.assertIs(query._start_at, mock.sentinel.start_at)
         self.assertIs(query._end_at, mock.sentinel.end_at)
+        self.assertTrue(query._all_descendants)
 
     def test__client_property(self):
         parent = mock.Mock(_client=mock.sentinel.client, spec=["_client"])
@@ -81,75 +86,79 @@ class TestQuery(unittest.TestCase):
         self.assertIs(query._client, mock.sentinel.client)
 
     def test___eq___other_type(self):
-        client = self._make_one_all_fields()
+        query = self._make_one_all_fields()
         other = object()
-        self.assertFalse(client == other)
+        self.assertFalse(query == other)
 
     def test___eq___different_parent(self):
         parent = mock.sentinel.parent
         other_parent = mock.sentinel.other_parent
-        client = self._make_one_all_fields(parent=parent)
+        query = self._make_one_all_fields(parent=parent)
         other = self._make_one_all_fields(parent=other_parent)
-        self.assertFalse(client == other)
+        self.assertFalse(query == other)
 
     def test___eq___different_projection(self):
         parent = mock.sentinel.parent
-        client = self._make_one_all_fields(parent=parent, skip_fields=("projection",))
-        client._projection = mock.sentinel.projection
+        query = self._make_one_all_fields(parent=parent, skip_fields=("projection",))
+        query._projection = mock.sentinel.projection
         other = self._make_one_all_fields(parent=parent, skip_fields=("projection",))
         other._projection = mock.sentinel.other_projection
-        self.assertFalse(client == other)
+        self.assertFalse(query == other)
 
     def test___eq___different_field_filters(self):
         parent = mock.sentinel.parent
-        client = self._make_one_all_fields(
-            parent=parent, skip_fields=("field_filters",)
-        )
-        client._field_filters = mock.sentinel.field_filters
+        query = self._make_one_all_fields(parent=parent, skip_fields=("field_filters",))
+        query._field_filters = mock.sentinel.field_filters
         other = self._make_one_all_fields(parent=parent, skip_fields=("field_filters",))
         other._field_filters = mock.sentinel.other_field_filters
-        self.assertFalse(client == other)
+        self.assertFalse(query == other)
 
     def test___eq___different_orders(self):
         parent = mock.sentinel.parent
-        client = self._make_one_all_fields(parent=parent, skip_fields=("orders",))
-        client._orders = mock.sentinel.orders
+        query = self._make_one_all_fields(parent=parent, skip_fields=("orders",))
+        query._orders = mock.sentinel.orders
         other = self._make_one_all_fields(parent=parent, skip_fields=("orders",))
         other._orders = mock.sentinel.other_orders
-        self.assertFalse(client == other)
+        self.assertFalse(query == other)
 
     def test___eq___different_limit(self):
         parent = mock.sentinel.parent
-        client = self._make_one_all_fields(parent=parent, limit=10)
+        query = self._make_one_all_fields(parent=parent, limit=10)
         other = self._make_one_all_fields(parent=parent, limit=20)
-        self.assertFalse(client == other)
+        self.assertFalse(query == other)
 
     def test___eq___different_offset(self):
         parent = mock.sentinel.parent
-        client = self._make_one_all_fields(parent=parent, offset=10)
+        query = self._make_one_all_fields(parent=parent, offset=10)
         other = self._make_one_all_fields(parent=parent, offset=20)
-        self.assertFalse(client == other)
+        self.assertFalse(query == other)
 
     def test___eq___different_start_at(self):
         parent = mock.sentinel.parent
-        client = self._make_one_all_fields(parent=parent, skip_fields=("start_at",))
-        client._start_at = mock.sentinel.start_at
+        query = self._make_one_all_fields(parent=parent, skip_fields=("start_at",))
+        query._start_at = mock.sentinel.start_at
         other = self._make_one_all_fields(parent=parent, skip_fields=("start_at",))
         other._start_at = mock.sentinel.other_start_at
-        self.assertFalse(client == other)
+        self.assertFalse(query == other)
 
     def test___eq___different_end_at(self):
         parent = mock.sentinel.parent
-        client = self._make_one_all_fields(parent=parent, skip_fields=("end_at",))
-        client._end_at = mock.sentinel.end_at
+        query = self._make_one_all_fields(parent=parent, skip_fields=("end_at",))
+        query._end_at = mock.sentinel.end_at
         other = self._make_one_all_fields(parent=parent, skip_fields=("end_at",))
         other._end_at = mock.sentinel.other_end_at
-        self.assertFalse(client == other)
+        self.assertFalse(query == other)
+
+    def test___eq___different_all_descendants(self):
+        parent = mock.sentinel.parent
+        query = self._make_one_all_fields(parent=parent, all_descendants=True)
+        other = self._make_one_all_fields(parent=parent, all_descendants=False)
+        self.assertFalse(query == other)
 
     def test___eq___hit(self):
-        client = self._make_one_all_fields()
+        query = self._make_one_all_fields()
         other = self._make_one_all_fields()
-        self.assertTrue(client == other)
+        self.assertTrue(query == other)
 
     def _compare_queries(self, query1, query2, attr_name):
         attrs1 = query1.__dict__.copy()

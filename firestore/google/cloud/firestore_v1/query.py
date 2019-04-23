@@ -156,6 +156,7 @@ class Query(object):
             and self._offset == other._offset
             and self._start_at == other._start_at
             and self._end_at == other._end_at
+            and self._all_descendants == other._all_descendants
         )
 
     @property
