@@ -1935,29 +1935,15 @@ class Client(ClientWithProject):
         )
         return row_iterator
 
-    def schema_from_json(self, file_or_path):
-        """Takes a file object or file path that contains json that describes
-            a table schema.
+    def _schema_from_json_file_object(self, file):
+        """Helper function for schema_from_json that takes a
+           file object that describes a table schema.
 
-            Returns:
+           Returns:
                 List of schema field objects.
         """
-        file_obj = None
-        json_data = None
         schema_field_list = list()
-
-        if isinstance(file_or_path, io.IOBase):
-            file_obj = file_or_path
-        else:
-            try:
-                file_obj = open(file_or_path)
-            except OSError:
-                raise TypeError(_NEED_JSON_FILE_ARGUMENT)
-
-        try:
-            json_data = json.load(file_obj)
-        except JSONDecodeError:
-            raise TypeError(_NEED_JSON_FILE_ARGUMENT)
+        json_data = json.load(file)
 
         for field in json_data:
             schema_field = SchemaField.from_api_repr(field)
@@ -1965,29 +1951,44 @@ class Client(ClientWithProject):
 
         return schema_field_list
 
+    def schema_from_json(self, file_or_path):
+        """Takes a file object or file path that contains json that describes
+            a table schema.
+
+            Returns:
+                List of schema field objects.
+        """
+        if isinstance(file_or_path, io.IOBase):
+            return self._schema_from_json_file_object(file_or_path)
+        else:
+            try:
+                with open(file_or_path) as file:
+                    return self._schema_from_json_file_object(file)
+            except OSError:
+                raise ValueError(_NEED_JSON_FILE_ARGUMENT)
+
     def schema_to_json(self, schema_list, destination):
         """Takes a list of schema field objects.
 
             Serializes the list of schema field objects as json to a file.
 
-            Destination is a file path or a file object. 
+            Destination is a file path or a file object.
         """
         file_obj = None
         json_schema_list = list()
-
-        if isinstance(destination, io.IOBase):
-            file_obj = destination
-        else:
-            try:
-                file_obj = open(destination, mode="w")
-            except OSError:
-                raise TypeError(_NEED_JSON_FILE_ARGUMENT)
 
         for field in schema_list:
             schema_field = field.to_api_repr()
             json_schema_list.append(schema_field)
 
-        file_obj.write(json.dumps(json_schema_list, indent=2, sort_keys=True))
+        if isinstance(destination, io.IOBase):
+            destination.write(json.dumps(json_schema_list, indent=2, sort_keys=True))
+        else:
+            try:
+                with open(destination, mode="w") as file:
+                    file.write(json.dumps(json_schema_list, indent=2, sort_keys=True))
+            except OSError:
+                raise ValueError(_NEED_JSON_FILE_ARGUMENT)
 
 
 # pylint: disable=unused-argument

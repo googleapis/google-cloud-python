@@ -5162,7 +5162,7 @@ class TestClientUpload(object):
         with pytest.raises(ValueError):
             client._do_multipart_upload(file_obj, {}, file_obj_len + 1, None)
 
-    def test__schema_from_json(self):
+    def test_schema_from_json_with_file_path(self):
         from google.cloud.bigquery.schema import SchemaField
 
         file_content = """[
@@ -5185,12 +5185,13 @@ class TestClientUpload(object):
             "type": "FLOAT"
           }
         ]"""
-        expected = list()
-        json_data = json.loads(file_content)
 
-        for field in json_data:
-            schema_field = SchemaField.from_api_repr(field)
-            expected.append(schema_field)
+        expected = list()
+        expected.append(SchemaField("qtr", "STRING", "REQUIRED", "quarter"))
+        expected.append(
+            SchemaField("rep", "STRING", "NULLABLE", "sales representative")
+        )
+        expected.append(SchemaField("sales", "FLOAT", "NULLABLE", "total sales"))
 
         client = self._make_client()
         mock_file_path = "/mocked/file.json"
@@ -5198,13 +5199,17 @@ class TestClientUpload(object):
         open_patch = mock.patch(
             "builtins.open", new=mock.mock_open(read_data=file_content)
         )
+
         with open_patch as _mock_file:
             actual = client.schema_from_json(mock_file_path)
             _mock_file.assert_called_once_with(mock_file_path)
+            # This assert is to make sure __exit__ is called in the context
+            # manager that opens the file in the function
+            _mock_file().__exit__.assert_called_once_with(None, None, None)
 
         assert expected == actual
 
-    def test__schema_to_json(self):
+    def test_schema_from_json_with_file_object(self):
         from google.cloud.bigquery.schema import SchemaField
 
         file_content = """[
@@ -5227,12 +5232,50 @@ class TestClientUpload(object):
             "type": "FLOAT"
           }
         ]"""
-        schema_list = list()
-        json_data = json.loads(file_content)
 
-        for field in json_data:
-            schema_field = SchemaField.from_api_repr(field)
-            schema_list.append(schema_field)
+        expected = list()
+        expected.append(SchemaField("qtr", "STRING", "REQUIRED", "quarter"))
+        expected.append(
+            SchemaField("rep", "STRING", "NULLABLE", "sales representative")
+        )
+        expected.append(SchemaField("sales", "FLOAT", "NULLABLE", "total sales"))
+
+        client = self._make_client()
+
+        fake_file = io.StringIO(file_content)
+        actual = client.schema_from_json(fake_file)
+
+        assert expected == actual
+
+    def test_schema_to_json_with_file_path(self):
+        from google.cloud.bigquery.schema import SchemaField
+
+        file_content = """[
+  {
+    "description": "quarter",
+    "mode": "REQUIRED",
+    "name": "qtr",
+    "type": "STRING"
+  },
+  {
+    "description": "sales representative",
+    "mode": "NULLABLE",
+    "name": "rep",
+    "type": "STRING"
+  },
+  {
+    "description": "total sales",
+    "mode": "NULLABLE",
+    "name": "sales",
+    "type": "FLOAT"
+  }
+]"""
+        schema_list = list()
+        schema_list.append(SchemaField("qtr", "STRING", "REQUIRED", "quarter"))
+        schema_list.append(
+            SchemaField("rep", "STRING", "NULLABLE", "sales representative")
+        )
+        schema_list.append(SchemaField("sales", "FLOAT", "NULLABLE", "total sales"))
 
         client = self._make_client()
         mock_file_path = "/mocked/file.json"
@@ -5242,3 +5285,42 @@ class TestClientUpload(object):
             actual = client.schema_to_json(schema_list, mock_file_path)
             _mock_file.assert_called_once_with(mock_file_path, mode="w")
             _mock_file().write.assert_called_once_with(file_content)
+            # This assert is to make sure __exit__ is called in the context
+            # manager that opens the file in the function
+            _mock_file().__exit__.assert_called_once_with(None, None, None)
+
+    def test_schema_to_json_with_file_object(self):
+        from google.cloud.bigquery.schema import SchemaField
+
+        file_content = """[
+  {
+    "description": "quarter",
+    "mode": "REQUIRED",
+    "name": "qtr",
+    "type": "STRING"
+  },
+  {
+    "description": "sales representative",
+    "mode": "NULLABLE",
+    "name": "rep",
+    "type": "STRING"
+  },
+  {
+    "description": "total sales",
+    "mode": "NULLABLE",
+    "name": "sales",
+    "type": "FLOAT"
+  }
+]"""
+        schema_list = list()
+        schema_list.append(SchemaField("qtr", "STRING", "REQUIRED", "quarter"))
+        schema_list.append(
+            SchemaField("rep", "STRING", "NULLABLE", "sales representative")
+        )
+        schema_list.append(SchemaField("sales", "FLOAT", "NULLABLE", "total sales"))
+
+        fake_file = io.StringIO()
+        client = self._make_client()
+
+        client.schema_to_json(schema_list, fake_file)
+        assert file_content == fake_file.getvalue()
