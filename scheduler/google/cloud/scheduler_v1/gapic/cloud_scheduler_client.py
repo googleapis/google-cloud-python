@@ -77,10 +77,13 @@ class CloudSchedulerClient(object):
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def project_path(cls, project):
-        """Return a fully-qualified project string."""
+    def job_path(cls, project, location, job):
+        """Return a fully-qualified job string."""
         return google.api_core.path_template.expand(
-            "projects/{project}", project=project
+            "projects/{project}/locations/{location}/jobs/{job}",
+            project=project,
+            location=location,
+            job=job,
         )
 
     @classmethod
@@ -93,13 +96,10 @@ class CloudSchedulerClient(object):
         )
 
     @classmethod
-    def job_path(cls, project, location, job):
-        """Return a fully-qualified job string."""
+    def project_path(cls, project):
+        """Return a fully-qualified project string."""
         return google.api_core.path_template.expand(
-            "projects/{project}/locations/{location}/jobs/{job}",
-            project=project,
-            location=location,
-            job=job,
+            "projects/{project}", project=project
         )
 
     def __init__(
