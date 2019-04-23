@@ -353,8 +353,7 @@ class Watch(object):
     ):
         parent_path, _ = query._parent._parent_info()
         query_target = firestore_pb2.Target.QueryTarget(
-            parent=parent_path,
-            structured_query=query._to_protobuf(),
+            parent=parent_path, structured_query=query._to_protobuf()
         )
 
         return cls(

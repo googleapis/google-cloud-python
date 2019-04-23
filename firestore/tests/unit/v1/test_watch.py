@@ -255,7 +255,7 @@ class TestWatch(unittest.TestCase):
         document_reference_class_instance = DummyDocumentReference
         client = DummyFirestore()
         root = DummyCollection(client)
-        grandparent = DummyDocument('document', parent=root)
+        grandparent = DummyDocument("document", parent=root)
         parent = DummyCollection(client, parent=grandparent)
         modulename = "google.cloud.firestore_v1.watch"
         pb2 = DummyPb2()
