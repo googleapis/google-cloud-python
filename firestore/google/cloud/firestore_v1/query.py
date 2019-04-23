@@ -142,7 +142,7 @@ class Query(object):
         self._offset = offset
         self._start_at = start_at
         self._end_at = end_at
-        self._all_descendants=all_descendants
+        self._all_descendants = all_descendants
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
@@ -690,8 +690,7 @@ class Query(object):
             "select": projection,
             "from": [
                 query_pb2.StructuredQuery.CollectionSelector(
-                    collection_id=self._parent.id,
-                    all_descendants=self._all_descendants,
+                    collection_id=self._parent.id, all_descendants=self._all_descendants
                 )
             ],
             "where": self._filters_pb(),

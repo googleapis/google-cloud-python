@@ -194,13 +194,16 @@ class Client(ClientWithProject):
         Every collection or subcollection with this ID as the last segment of its
         path will be included. Cannot contain a slash.
         @returns {Query} The created Query.
-        """    
-        if '/' in collection_id:
-            raise ValueError("Invalid collection_id " + collection_id + ". Collection IDs must not contain '/'.")
-        
+        """
+        if "/" in collection_id:
+            raise ValueError(
+                "Invalid collection_id "
+                + collection_id
+                + ". Collection IDs must not contain '/'."
+            )
+
         collection = self.collection(collection_id)
         return query.Query(collection, all_descendants=True)
-  
 
     def document(self, *document_path):
         """Get a reference to a document in a collection.
@@ -242,7 +245,7 @@ class Client(ClientWithProject):
         base_path = self._database_string
         joined_path = _helpers.DOCUMENT_PATH_DELIMITER.join(path)
         if joined_path.startswith(base_path):
-            joined_path = joined_path[len(base_path):]
+            joined_path = joined_path[len(base_path) :]
         path = joined_path.split(_helpers.DOCUMENT_PATH_DELIMITER)
 
         return DocumentReference(*path, client=self)
