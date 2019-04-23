@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery.table &#8212; google-cloud fb8c802 documentation</title>
+    <title>google.cloud.bigquery.table &#8212; google-cloud 4dc8c36 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -58,9 +58,12 @@
 <span class="kn">import</span> <span class="nn">datetime</span>
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">operator</span>
+<span class="kn">import</span> <span class="nn">threading</span>
+<span class="kn">import</span> <span class="nn">time</span>
 <span class="kn">import</span> <span class="nn">warnings</span>
 
 <span class="kn">import</span> <span class="nn">six</span>
+<span class="kn">from</span> <span class="nn">six.moves</span> <span class="k">import</span> <span class="n">queue</span>
 
 <span class="k">try</span><span class="p">:</span>
     <span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">bigquery_storage_v1beta1</span>
@@ -102,7 +105,12 @@
 <span class="p">)</span>
 <span class="n">_TABLE_HAS_NO_SCHEMA</span> <span class="o">=</span> <span class="s1">&#39;Table has no schema:  call &quot;client.get_table()&quot;&#39;</span>
 <span class="n">_MARKER</span> <span class="o">=</span> <span class="nb">object</span><span class="p">()</span>
-<span class="n">_PROGRESS_INTERVAL</span> <span class="o">=</span> <span class="mf">1.0</span>  <span class="c1"># Time between download status updates, in seconds.</span>
+<span class="n">_PROGRESS_INTERVAL</span> <span class="o">=</span> <span class="mf">0.2</span>  <span class="c1"># Time between download status updates, in seconds.</span>
+
+<span class="c1"># Send multiple updates from the worker threads, so there are at least a few</span>
+<span class="c1"># waiting next time the prgrogess bar is updated.</span>
+<span class="n">_PROGRESS_UPDATES_PER_INTERVAL</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="n">_PROGRESS_WORKER_INTERVAL</span> <span class="o">=</span> <span class="n">_PROGRESS_INTERVAL</span> <span class="o">/</span> <span class="n">_PROGRESS_UPDATES_PER_INTERVAL</span>
 
 
 <span class="k">def</span> <span class="nf">_reference_getter</span><span class="p">(</span><span class="n">table</span><span class="p">):</span>
@@ -1310,6 +1318,16 @@
         <span class="k">return</span> <span class="s2">&quot;Row(</span><span class="si">{}</span><span class="s2">, </span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_xxx_values</span><span class="p">,</span> <span class="n">f2i</span><span class="p">)</span></div>
 
 
+<span class="k">class</span> <span class="nc">_NoopProgressBarQueue</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A fake Queue class that does nothing.</span>
+
+<span class="sd">    This is used when there is no progress bar to send updates to.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">put_nowait</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Don&#39;t actually do anything with the item.&quot;&quot;&quot;</span>
+
+
 <div class="viewcode-block" id="RowIterator"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.table.RowIterator.html#google.cloud.bigquery.table.RowIterator">[docs]</a><span class="k">class</span> <span class="nc">RowIterator</span><span class="p">(</span><span class="n">HTTPIterator</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A class for iterating through HTTP/JSON API row list responses.</span>
 
@@ -1428,7 +1446,7 @@
         <span class="k">return</span> <span class="n">pandas</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">frames</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_to_dataframe_bqstorage_stream</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">bqstorage_client</span><span class="p">,</span> <span class="n">dtypes</span><span class="p">,</span> <span class="n">columns</span><span class="p">,</span> <span class="n">session</span><span class="p">,</span> <span class="n">stream</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">bqstorage_client</span><span class="p">,</span> <span class="n">dtypes</span><span class="p">,</span> <span class="n">columns</span><span class="p">,</span> <span class="n">session</span><span class="p">,</span> <span class="n">stream</span><span class="p">,</span> <span class="n">worker_queue</span>
     <span class="p">):</span>
         <span class="n">position</span> <span class="o">=</span> <span class="n">bigquery_storage_v1beta1</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">StreamPosition</span><span class="p">(</span><span class="n">stream</span><span class="o">=</span><span class="n">stream</span><span class="p">)</span>
         <span class="n">rowstream</span> <span class="o">=</span> <span class="n">bqstorage_client</span><span class="o">.</span><span class="n">read_rows</span><span class="p">(</span><span class="n">position</span><span class="p">)</span><span class="o">.</span><span class="n">rows</span><span class="p">(</span><span class="n">session</span><span class="p">)</span>
@@ -1439,6 +1457,13 @@
                 <span class="k">return</span>
             <span class="n">frames</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">page</span><span class="o">.</span><span class="n">to_dataframe</span><span class="p">(</span><span class="n">dtypes</span><span class="o">=</span><span class="n">dtypes</span><span class="p">))</span>
 
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">worker_queue</span><span class="o">.</span><span class="n">put_nowait</span><span class="p">(</span><span class="n">page</span><span class="o">.</span><span class="n">num_items</span><span class="p">)</span>
+            <span class="k">except</span> <span class="n">queue</span><span class="o">.</span><span class="n">Full</span><span class="p">:</span>
+                <span class="c1"># It&#39;s okay if we miss a few progress updates. Don&#39;t slow</span>
+                <span class="c1"># down parsing for that.</span>
+                <span class="k">pass</span>
+
         <span class="c1"># Avoid errors on unlucky streams with no blocks. pandas.concat</span>
         <span class="c1"># will fail on an empty list.</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">frames</span><span class="p">:</span>
@@ -1448,7 +1473,47 @@
         <span class="c1"># the end using manually-parsed schema.</span>
         <span class="k">return</span> <span class="n">pandas</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">frames</span><span class="p">)[</span><span class="n">columns</span><span class="p">]</span>
 
-    <span class="k">def</span> <span class="nf">_to_dataframe_bqstorage</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bqstorage_client</span><span class="p">,</span> <span class="n">dtypes</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_process_worker_updates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">worker_queue</span><span class="p">,</span> <span class="n">progress_queue</span><span class="p">):</span>
+        <span class="n">last_update_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="n">current_update</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="c1"># Sum all updates in a contant loop.</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">current_update</span> <span class="o">+=</span> <span class="n">worker_queue</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="n">_PROGRESS_INTERVAL</span><span class="p">)</span>
+
+                <span class="c1"># Time to send to the progress bar queue?</span>
+                <span class="n">current_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+                <span class="n">elapsed_time</span> <span class="o">=</span> <span class="n">current_time</span> <span class="o">-</span> <span class="n">last_update_time</span>
+                <span class="k">if</span> <span class="n">elapsed_time</span> <span class="o">&gt;</span> <span class="n">_PROGRESS_WORKER_INTERVAL</span><span class="p">:</span>
+                    <span class="n">progress_queue</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">current_update</span><span class="p">)</span>
+                    <span class="n">last_update_time</span> <span class="o">=</span> <span class="n">current_time</span>
+                    <span class="n">current_update</span> <span class="o">=</span> <span class="mi">0</span>
+
+            <span class="k">except</span> <span class="n">queue</span><span class="o">.</span><span class="n">Empty</span><span class="p">:</span>
+                <span class="c1"># Keep going, unless there probably aren&#39;t going to be any</span>
+                <span class="c1"># additional updates.</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_to_dataframe_finished</span><span class="p">:</span>
+                    <span class="n">progress_queue</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">current_update</span><span class="p">)</span>
+                    <span class="k">return</span>
+
+    <span class="k">def</span> <span class="nf">_process_progress_updates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">progress_queue</span><span class="p">,</span> <span class="n">progress_bar</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">progress_bar</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="c1"># Output all updates since the last interval.</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">next_update</span> <span class="o">=</span> <span class="n">progress_queue</span><span class="o">.</span><span class="n">get_nowait</span><span class="p">()</span>
+                <span class="n">progress_bar</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">next_update</span><span class="p">)</span>
+            <span class="k">except</span> <span class="n">queue</span><span class="o">.</span><span class="n">Empty</span><span class="p">:</span>
+                <span class="k">break</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_to_dataframe_finished</span><span class="p">:</span>
+            <span class="n">progress_bar</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+            <span class="k">return</span>
+
+    <span class="k">def</span> <span class="nf">_to_dataframe_bqstorage</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bqstorage_client</span><span class="p">,</span> <span class="n">dtypes</span><span class="p">,</span> <span class="n">progress_bar</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Use (faster, but billable) BQ Storage API to construct DataFrame.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">bigquery_storage_v1beta1</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">_NO_BQSTORAGE_ERROR</span><span class="p">)</span>
@@ -1487,6 +1552,18 @@
         <span class="c1"># See: https://stackoverflow.com/a/29237343/101923</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_to_dataframe_finished</span> <span class="o">=</span> <span class="kc">False</span>
 
+        <span class="c1"># Create a queue to track progress updates across threads.</span>
+        <span class="n">worker_queue</span> <span class="o">=</span> <span class="n">_NoopProgressBarQueue</span><span class="p">()</span>
+        <span class="n">progress_queue</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">progress_thread</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">progress_bar</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">worker_queue</span> <span class="o">=</span> <span class="n">queue</span><span class="o">.</span><span class="n">Queue</span><span class="p">()</span>
+            <span class="n">progress_queue</span> <span class="o">=</span> <span class="n">queue</span><span class="o">.</span><span class="n">Queue</span><span class="p">()</span>
+            <span class="n">progress_thread</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span>
+                <span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_process_worker_updates</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">worker_queue</span><span class="p">,</span> <span class="n">progress_queue</span><span class="p">)</span>
+            <span class="p">)</span>
+            <span class="n">progress_thread</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+
         <span class="k">def</span> <span class="nf">get_frames</span><span class="p">(</span><span class="n">pool</span><span class="p">):</span>
             <span class="n">frames</span> <span class="o">=</span> <span class="p">[]</span>
 
@@ -1502,6 +1579,7 @@
                     <span class="n">columns</span><span class="p">,</span>
                     <span class="n">session</span><span class="p">,</span>
                     <span class="n">stream</span><span class="p">,</span>
+                    <span class="n">worker_queue</span><span class="p">,</span>
                 <span class="p">)</span>
                 <span class="k">for</span> <span class="n">stream</span> <span class="ow">in</span> <span class="n">session</span><span class="o">.</span><span class="n">streams</span>
             <span class="p">]</span>
@@ -1511,6 +1589,11 @@
                     <span class="n">not_done</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">_PROGRESS_INTERVAL</span>
                 <span class="p">)</span>
                 <span class="n">frames</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">future</span><span class="o">.</span><span class="n">result</span><span class="p">()</span> <span class="k">for</span> <span class="n">future</span> <span class="ow">in</span> <span class="n">done</span><span class="p">])</span>
+
+                <span class="c1"># The progress bar needs to update on the main thread to avoid</span>
+                <span class="c1"># contention over stdout / stderr.</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_process_progress_updates</span><span class="p">(</span><span class="n">progress_queue</span><span class="p">,</span> <span class="n">progress_bar</span><span class="p">)</span>
+
             <span class="k">return</span> <span class="n">frames</span>
 
         <span class="k">with</span> <span class="n">concurrent</span><span class="o">.</span><span class="n">futures</span><span class="o">.</span><span class="n">ThreadPoolExecutor</span><span class="p">()</span> <span class="k">as</span> <span class="n">pool</span><span class="p">:</span>
@@ -1522,6 +1605,14 @@
                 <span class="c1"># definition (enforced by the global interpreter lock).</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_to_dataframe_finished</span> <span class="o">=</span> <span class="kc">True</span>
 
+                <span class="c1"># Shutdown all background threads, now that they should know to</span>
+                <span class="c1"># exit early.</span>
+                <span class="n">pool</span><span class="o">.</span><span class="n">shutdown</span><span class="p">(</span><span class="n">wait</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">progress_thread</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">progress_thread</span><span class="o">.</span><span class="n">join</span><span class="p">()</span>
+
+        <span class="c1"># Update the progress bar one last time to close it.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_process_progress_updates</span><span class="p">(</span><span class="n">progress_queue</span><span class="p">,</span> <span class="n">progress_bar</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">pandas</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">frames</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_get_progress_bar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">progress_bar_type</span><span class="p">):</span>
@@ -1621,7 +1712,9 @@
 
         <span class="k">if</span> <span class="n">bqstorage_client</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">try</span><span class="p">:</span>
-                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_to_dataframe_bqstorage</span><span class="p">(</span><span class="n">bqstorage_client</span><span class="p">,</span> <span class="n">dtypes</span><span class="p">)</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_to_dataframe_bqstorage</span><span class="p">(</span>
+                    <span class="n">bqstorage_client</span><span class="p">,</span> <span class="n">dtypes</span><span class="p">,</span> <span class="n">progress_bar</span><span class="o">=</span><span class="n">progress_bar</span>
+                <span class="p">)</span>
             <span class="k">except</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">Forbidden</span><span class="p">:</span>
                 <span class="c1"># Don&#39;t hide errors such as insufficient permissions to create</span>
                 <span class="c1"># a read session, or the API is not enabled. Both of those are</span>
