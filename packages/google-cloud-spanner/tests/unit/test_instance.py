@@ -531,9 +531,13 @@ class TestInstance(unittest.TestCase):
         self.assertTrue(databases[0].name.endswith("/aa"))
         self.assertTrue(databases[1].name.endswith("/bb"))
 
+        expected_metadata = [
+            ("google-cloud-resource-prefix", instance.name),
+            ("x-goog-request-params", "parent={}".format(instance.name)),
+        ]
         ld_api.assert_called_once_with(
             spanner_database_admin_pb2.ListDatabasesRequest(parent=self.INSTANCE_NAME),
-            metadata=[("google-cloud-resource-prefix", instance.name)],
+            metadata=expected_metadata,
             retry=mock.ANY,
             timeout=mock.ANY,
         )
@@ -562,11 +566,15 @@ class TestInstance(unittest.TestCase):
 
         self.assertEqual(databases, [])
 
+        expected_metadata = [
+            ("google-cloud-resource-prefix", instance.name),
+            ("x-goog-request-params", "parent={}".format(instance.name)),
+        ]
         ld_api.assert_called_once_with(
             spanner_database_admin_pb2.ListDatabasesRequest(
                 parent=self.INSTANCE_NAME, page_size=page_size, page_token=page_token
             ),
-            metadata=[("google-cloud-resource-prefix", instance.name)],
+            metadata=expected_metadata,
             retry=mock.ANY,
             timeout=mock.ANY,
         )

@@ -23,6 +23,7 @@ from google.oauth2 import service_account
 import google.api_core.gapic_v1.client_info
 import google.api_core.gapic_v1.config
 import google.api_core.gapic_v1.method
+import google.api_core.gapic_v1.routing_header
 import google.api_core.grpc_helpers
 import google.api_core.page_iterator
 import google.api_core.path_template
@@ -272,6 +273,19 @@ class SpannerClient(object):
             )
 
         request = spanner_pb2.CreateSessionRequest(database=database, session=session)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("database", database)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["create_session"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -329,6 +343,19 @@ class SpannerClient(object):
             )
 
         request = spanner_pb2.GetSessionRequest(name=name)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["get_session"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -419,6 +446,19 @@ class SpannerClient(object):
         request = spanner_pb2.ListSessionsRequest(
             database=database, page_size=page_size, filter=filter_
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("database", database)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(
@@ -485,6 +525,19 @@ class SpannerClient(object):
             )
 
         request = spanner_pb2.DeleteSessionRequest(name=name)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         self._inner_api_calls["delete_session"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -639,6 +692,19 @@ class SpannerClient(object):
             partition_token=partition_token,
             seqno=seqno,
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("session", session)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["execute_sql"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -788,6 +854,19 @@ class SpannerClient(object):
             partition_token=partition_token,
             seqno=seqno,
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("session", session)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["execute_streaming_sql"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -893,6 +972,19 @@ class SpannerClient(object):
         request = spanner_pb2.ExecuteBatchDmlRequest(
             session=session, transaction=transaction, statements=statements, seqno=seqno
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("session", session)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["execute_batch_dml"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -1022,6 +1114,19 @@ class SpannerClient(object):
             resume_token=resume_token,
             partition_token=partition_token,
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("session", session)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["read"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -1148,6 +1253,19 @@ class SpannerClient(object):
             resume_token=resume_token,
             partition_token=partition_token,
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("session", session)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["streaming_read"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -1214,6 +1332,19 @@ class SpannerClient(object):
             )
 
         request = spanner_pb2.BeginTransactionRequest(session=session, options=options_)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("session", session)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["begin_transaction"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -1311,6 +1442,19 @@ class SpannerClient(object):
             transaction_id=transaction_id,
             single_use_transaction=single_use_transaction,
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("session", session)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["commit"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -1377,6 +1521,19 @@ class SpannerClient(object):
         request = spanner_pb2.RollbackRequest(
             session=session, transaction_id=transaction_id
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("session", session)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         self._inner_api_calls["rollback"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -1504,6 +1661,19 @@ class SpannerClient(object):
             param_types=param_types,
             partition_options=partition_options,
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("session", session)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["partition_query"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -1618,6 +1788,19 @@ class SpannerClient(object):
             columns=columns,
             partition_options=partition_options,
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("session", session)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["partition_read"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )

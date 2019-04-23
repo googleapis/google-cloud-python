@@ -204,9 +204,13 @@ class TestClient(unittest.TestCase):
         self.assertEqual(instance_config.name, self.CONFIGURATION_NAME)
         self.assertEqual(instance_config.display_name, self.DISPLAY_NAME)
 
+        expected_metadata = [
+            ("google-cloud-resource-prefix", client.project_name),
+            ("x-goog-request-params", "parent={}".format(client.project_name)),
+        ]
         lic_api.assert_called_once_with(
             spanner_instance_admin_pb2.ListInstanceConfigsRequest(parent=self.PATH),
-            metadata=[("google-cloud-resource-prefix", client.project_name)],
+            metadata=expected_metadata,
             retry=mock.ANY,
             timeout=mock.ANY,
         )
@@ -238,11 +242,15 @@ class TestClient(unittest.TestCase):
         page_size = 42
         list(client.list_instance_configs(page_token=token, page_size=42))
 
+        expected_metadata = [
+            ("google-cloud-resource-prefix", client.project_name),
+            ("x-goog-request-params", "parent={}".format(client.project_name)),
+        ]
         lic_api.assert_called_once_with(
             spanner_instance_admin_pb2.ListInstanceConfigsRequest(
                 parent=self.PATH, page_size=page_size, page_token=token
             ),
-            metadata=[("google-cloud-resource-prefix", client.project_name)],
+            metadata=expected_metadata,
             retry=mock.ANY,
             timeout=mock.ANY,
         )
@@ -320,9 +328,13 @@ class TestClient(unittest.TestCase):
         self.assertEqual(instance.display_name, self.DISPLAY_NAME)
         self.assertEqual(instance.node_count, self.NODE_COUNT)
 
+        expected_metadata = [
+            ("google-cloud-resource-prefix", client.project_name),
+            ("x-goog-request-params", "parent={}".format(client.project_name)),
+        ]
         li_api.assert_called_once_with(
             spanner_instance_admin_pb2.ListInstancesRequest(parent=self.PATH),
-            metadata=[("google-cloud-resource-prefix", client.project_name)],
+            metadata=expected_metadata,
             retry=mock.ANY,
             timeout=mock.ANY,
         )
@@ -348,11 +360,15 @@ class TestClient(unittest.TestCase):
         page_size = 42
         list(client.list_instances(page_token=token, page_size=42))
 
+        expected_metadata = [
+            ("google-cloud-resource-prefix", client.project_name),
+            ("x-goog-request-params", "parent={}".format(client.project_name)),
+        ]
         li_api.assert_called_once_with(
             spanner_instance_admin_pb2.ListInstancesRequest(
                 parent=self.PATH, page_size=page_size, page_token=token
             ),
-            metadata=[("google-cloud-resource-prefix", client.project_name)],
+            metadata=expected_metadata,
             retry=mock.ANY,
             timeout=mock.ANY,
         )
