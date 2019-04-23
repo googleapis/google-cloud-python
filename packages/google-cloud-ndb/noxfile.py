@@ -113,7 +113,6 @@ def docs(session):
     # Building the docs.
     run_args = [
         "sphinx-build",
-        "-W",
         "-b",
         "html",
         "-d",
@@ -132,7 +131,6 @@ def doctest(session):
     # Run the script for building docs and running doctests.
     run_args = [
         "sphinx-build",
-        "-W",
         "-b",
         "doctest",
         "-d",
