@@ -23,6 +23,7 @@ from google.oauth2 import service_account
 import google.api_core.gapic_v1.client_info
 import google.api_core.gapic_v1.config
 import google.api_core.gapic_v1.method
+import google.api_core.gapic_v1.routing_header
 import google.api_core.grpc_helpers
 import google.api_core.operation
 import google.api_core.operations_v1
@@ -99,10 +100,12 @@ class InstanceAdminClient(object):
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def project_path(cls, project):
-        """Return a fully-qualified project string."""
+    def instance_path(cls, project, instance):
+        """Return a fully-qualified instance string."""
         return google.api_core.path_template.expand(
-            "projects/{project}", project=project
+            "projects/{project}/instances/{instance}",
+            project=project,
+            instance=instance,
         )
 
     @classmethod
@@ -115,12 +118,10 @@ class InstanceAdminClient(object):
         )
 
     @classmethod
-    def instance_path(cls, project, instance):
-        """Return a fully-qualified instance string."""
+    def project_path(cls, project):
+        """Return a fully-qualified project string."""
         return google.api_core.path_template.expand(
-            "projects/{project}/instances/{instance}",
-            project=project,
-            instance=instance,
+            "projects/{project}", project=project
         )
 
     def __init__(
@@ -299,6 +300,19 @@ class InstanceAdminClient(object):
         request = spanner_instance_admin_pb2.ListInstanceConfigsRequest(
             parent=parent, page_size=page_size
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(
@@ -367,6 +381,19 @@ class InstanceAdminClient(object):
             )
 
         request = spanner_instance_admin_pb2.GetInstanceConfigRequest(name=name)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["get_instance_config"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -466,6 +493,19 @@ class InstanceAdminClient(object):
         request = spanner_instance_admin_pb2.ListInstancesRequest(
             parent=parent, page_size=page_size, filter=filter_
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(
@@ -534,6 +574,19 @@ class InstanceAdminClient(object):
             )
 
         request = spanner_instance_admin_pb2.GetInstanceRequest(name=name)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["get_instance"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -648,6 +701,19 @@ class InstanceAdminClient(object):
         request = spanner_instance_admin_pb2.CreateInstanceRequest(
             parent=parent, instance_id=instance_id, instance=instance
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         operation = self._inner_api_calls["create_instance"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -668,7 +734,7 @@ class InstanceAdminClient(object):
     ):
         """
         Updates an instance, and begins allocating or releasing resources as
-        requested. The returned ``long-running  operation`` can be used to track
+        requested. The returned ``long-running operation`` can be used to track
         the progress of updating the instance. If the named instance does not
         exist, returns ``NOT_FOUND``.
 
@@ -776,6 +842,19 @@ class InstanceAdminClient(object):
         request = spanner_instance_admin_pb2.UpdateInstanceRequest(
             instance=instance, field_mask=field_mask
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("instance.name", instance.name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         operation = self._inner_api_calls["update_instance"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -846,6 +925,19 @@ class InstanceAdminClient(object):
             )
 
         request = spanner_instance_admin_pb2.DeleteInstanceRequest(name=name)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         self._inner_api_calls["delete_instance"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -919,6 +1011,19 @@ class InstanceAdminClient(object):
             )
 
         request = iam_policy_pb2.SetIamPolicyRequest(resource=resource, policy=policy)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("resource", resource)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["set_iam_policy"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -981,6 +1086,19 @@ class InstanceAdminClient(object):
             )
 
         request = iam_policy_pb2.GetIamPolicyRequest(resource=resource)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("resource", resource)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["get_iam_policy"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -1055,6 +1173,19 @@ class InstanceAdminClient(object):
         request = iam_policy_pb2.TestIamPermissionsRequest(
             resource=resource, permissions=permissions
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("resource", resource)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["test_iam_permissions"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
