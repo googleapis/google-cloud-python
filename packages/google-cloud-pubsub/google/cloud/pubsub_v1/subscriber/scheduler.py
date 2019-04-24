@@ -73,7 +73,7 @@ def _make_default_thread_pool_executor():
     return concurrent.futures.ThreadPoolExecutor(max_workers=10, **executor_kwargs)
 
 
-class ThreadScheduler(object):
+class ThreadScheduler(Scheduler):
     """A thread pool-based scheduler.
 
     This scheduler is useful in typical I/O-bound message processing.
