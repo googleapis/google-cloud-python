@@ -5186,12 +5186,11 @@ class TestClientUpload(object):
           }
         ]"""
 
-        expected = list()
-        expected.append(SchemaField("qtr", "STRING", "REQUIRED", "quarter"))
-        expected.append(
-            SchemaField("rep", "STRING", "NULLABLE", "sales representative")
-        )
-        expected.append(SchemaField("sales", "FLOAT", "NULLABLE", "total sales"))
+        expected = [
+            SchemaField("qtr", "STRING", "REQUIRED", "quarter"),
+            SchemaField("rep", "STRING", "NULLABLE", "sales representative"),
+            SchemaField("sales", "FLOAT", "NULLABLE", "total sales"),
+        ]
 
         client = self._make_client()
         mock_file_path = "/mocked/file.json"
@@ -5233,12 +5232,11 @@ class TestClientUpload(object):
           }
         ]"""
 
-        expected = list()
-        expected.append(SchemaField("qtr", "STRING", "REQUIRED", "quarter"))
-        expected.append(
-            SchemaField("rep", "STRING", "NULLABLE", "sales representative")
-        )
-        expected.append(SchemaField("sales", "FLOAT", "NULLABLE", "total sales"))
+        expected = [
+            SchemaField("qtr", "STRING", "REQUIRED", "quarter"),
+            SchemaField("rep", "STRING", "NULLABLE", "sales representative"),
+            SchemaField("sales", "FLOAT", "NULLABLE", "total sales"),
+        ]
 
         client = self._make_client()
 
