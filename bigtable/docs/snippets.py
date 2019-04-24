@@ -38,7 +38,7 @@ from google.cloud.bigtable import Client
 from google.cloud.bigtable import enums
 
 
-INSTANCE_ID = "snippet-" + unique_resource_id("-")
+INSTANCE_ID = "snippet-tests" + unique_resource_id("-")
 CLUSTER_ID = "clus-1-" + unique_resource_id("-")
 LOCATION_ID = "us-central1-f"
 ALT_LOCATION_ID = "us-central1-a"
@@ -52,6 +52,7 @@ LABEL_STAMP = (
     .strftime("%Y-%m-%dt%H-%M-%S")
 )
 LABELS = {LABEL_KEY: str(LABEL_STAMP)}
+INSTANCES_TO_DELETE = []
 
 
 class Config(object):
@@ -66,6 +67,7 @@ class Config(object):
 
 
 def setup_module():
+    global INSTANCES_TO_DELETE
     client = Config.CLIENT = Client(admin=True)
     Config.INSTANCE = client.instance(
         INSTANCE_ID, instance_type=PRODUCTION, labels=LABELS
@@ -79,13 +81,24 @@ def setup_module():
     operation = Config.INSTANCE.create(clusters=[cluster])
     # We want to make sure the operation completes.
     operation.result(timeout=100)
+    INSTANCES_TO_DELETE.append(Config.INSTANCE)
 
 
 def teardown_module():
-    Config.INSTANCE.delete()
+    for instance in INSTANCES_TO_DELETE:
+        if instance.exists():
+            instance.delete()
+
+    # Avoid any leak of snippet instances.
+    client = Client(admin=True)
+    (instances_list, failed_locations_list) = client.list_instances()
+    for instance in instances_list:
+        if "snippet-tests" in instance.instance_id:
+            instance.delete()
 
 
 def test_bigtable_create_instance():
+    global INSTANCES_TO_DELETE
     # [START bigtable_create_prod_instance]
     from google.cloud.bigtable import Client
     from google.cloud.bigtable import enums
@@ -107,9 +120,14 @@ def test_bigtable_create_instance():
         default_storage_type=storage_type,
     )
     operation = instance.create(clusters=[cluster])
+
+    # Make sure this instance gets deleted after the test case.
+    INSTANCES_TO_DELETE.append(instance)
+
     # We want to make sure the operation completes.
     operation.result(timeout=100)
     # [END bigtable_create_prod_instance]
+
     assert instance.exists()
     instance.delete()
 
@@ -270,6 +288,7 @@ def test_bigtable_reload_cluster():
 
 
 def test_bigtable_update_instance():
+    global INSTANCES_TO_DELETE
     # [START bigtable_update_instance]
     from google.cloud.bigtable import Client
 
@@ -280,6 +299,9 @@ def test_bigtable_update_instance():
     instance.update()
     # [END bigtable_update_instance]
     assert instance.display_name == display_name
+
+    # Make sure this instance gets deleted after the test case.
+    INSTANCES_TO_DELETE.append(instance)
 
 
 def test_bigtable_update_cluster():
@@ -348,6 +370,7 @@ def test_bigtable_delete_cluster():
 
 
 def test_bigtable_delete_instance():
+    global INSTANCES_TO_DELETE
     # [START bigtable_delete_instance]
     from google.cloud.bigtable import Client
 
@@ -367,6 +390,10 @@ def test_bigtable_delete_instance():
         default_storage_type=STORAGE_TYPE,
     )
     operation = instance.create(clusters=[cluster])
+
+    # Make sure this instance gets deleted after the test case.
+    INSTANCES_TO_DELETE.append(instance_id_to_delete)
+
     # We want to make sure the operation completes.
     operation.result(timeout=100)
 
