@@ -1,4 +1,4 @@
-.. include:: /../websecurityscanner/README.rst
+.. include:: README.rst
 
 Api Reference
 -------------
@@ -7,3 +7,4 @@ Api Reference
 
     gapic/v1alpha/api
     gapic/v1alpha/types
+    changelog
