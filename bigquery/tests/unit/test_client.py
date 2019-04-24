@@ -22,7 +22,6 @@ import json
 import unittest
 
 import mock
-import requests
 import six
 from six.moves import http_client
 import pytest
