@@ -74,9 +74,6 @@ _GENERIC_CONTENT_TYPE = u"*/*"
 _READ_LESS_THAN_SIZE = (
     "Size {:d} was specified but the file-like object only had " "{:d} bytes remaining."
 )
-_NEED_JSON_FILE_ARGUMENT = (
-    "The JSON file argument should be a file object or a file path"
-)
 _NEED_TABLE_ARGUMENT = (
     "The table argument should be a table ID string, Table, or TableReference"
 )
@@ -1961,11 +1958,8 @@ class Client(ClientWithProject):
         if isinstance(file_or_path, io.IOBase):
             return self._schema_from_json_file_object(file_or_path)
 
-        try:
-            with open(file_or_path) as file_obj:
-                return self._schema_from_json_file_object(file_obj)
-        except OSError:
-            raise ValueError(_NEED_JSON_FILE_ARGUMENT)
+        with open(file_or_path) as file_obj:
+            return self._schema_from_json_file_object(file_obj)
 
     def schema_to_json(self, schema_list, destination):
         """Takes a list of schema field objects.
@@ -1979,11 +1973,8 @@ class Client(ClientWithProject):
         if isinstance(destination, io.IOBase):
             return self._schema_to_json_file_object(json_schema_list, destination)
 
-        try:
-            with open(destination, mode="w") as file_obj:
-                return self._schema_to_json_file_object(json_schema_list, file_obj)
-        except OSError:
-            raise ValueError(_NEED_JSON_FILE_ARGUMENT)
+        with open(destination, mode="w") as file_obj:
+            return self._schema_to_json_file_object(json_schema_list, file_obj)
 
 
 # pylint: disable=unused-argument
