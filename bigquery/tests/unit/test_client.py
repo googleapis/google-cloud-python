@@ -5292,26 +5292,27 @@ class TestClientUpload(object):
     def test_schema_to_json_with_file_object(self):
         from google.cloud.bigquery.schema import SchemaField
 
-        file_content = """[
-  {
-    "description": "quarter",
-    "mode": "REQUIRED",
-    "name": "qtr",
-    "type": "STRING"
-  },
-  {
-    "description": "sales representative",
-    "mode": "NULLABLE",
-    "name": "rep",
-    "type": "STRING"
-  },
-  {
-    "description": "total sales",
-    "mode": "NULLABLE",
-    "name": "sales",
-    "type": "FLOAT"
-  }
-]"""
+        file_content = [
+            {
+                "description": "quarter",
+                "mode": "REQUIRED",
+                "name": "qtr",
+                "type": "STRING",
+            },
+            {
+                "description": "sales representative",
+                "mode": "NULLABLE",
+                "name": "rep",
+                "type": "STRING",
+            },
+            {
+                "description": "total sales",
+                "mode": "NULLABLE",
+                "name": "sales",
+                "type": "FLOAT",
+            },
+        ]
+
         schema_list = [
             SchemaField("qtr", "STRING", "REQUIRED", "quarter"),
             SchemaField("rep", "STRING", "NULLABLE", "sales representative"),
@@ -5322,4 +5323,4 @@ class TestClientUpload(object):
         client = self._make_client()
 
         client.schema_to_json(schema_list, fake_file)
-        assert file_content == fake_file.getvalue()
+        assert file_content == json.loads(fake_file.getvalue())
