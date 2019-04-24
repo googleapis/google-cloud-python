@@ -5279,16 +5279,15 @@ class TestClientUpload(object):
         mock_file_path = "/mocked/file.json"
 
         open_patch = mock.patch("builtins.open", mock.mock_open())
-        with open_patch as _mock_file:
-            with mock.patch("json.dump") as _mock_dump:
-                client.schema_to_json(schema_list, mock_file_path)
-                _mock_file.assert_called_once_with(mock_file_path, mode="w")
-                # This assert is to make sure __exit__ is called in the context
-                # manager that opens the file in the function
-                _mock_file().__exit__.assert_called_once()
-                _mock_dump.assert_called_with(
-                    file_content, _mock_file.return_value, indent=2, sort_keys=True
-                )
+        with open_patch as mock_file, mock.patch("json.dump") as mock_dump:
+            client.schema_to_json(schema_list, mock_file_path)
+            mock_file.assert_called_once_with(mock_file_path, mode="w")
+            # This assert is to make sure __exit__ is called in the context
+            # manager that opens the file in the function
+            mock_file().__exit__.assert_called_once()
+            mock_dump.assert_called_with(
+                file_content, mock_file.return_value, indent=2, sort_keys=True
+            )
 
     def test_schema_to_json_with_file_object(self):
         from google.cloud.bigquery.schema import SchemaField

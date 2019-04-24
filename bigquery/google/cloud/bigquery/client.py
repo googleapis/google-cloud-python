@@ -1943,7 +1943,7 @@ class Client(ClientWithProject):
             List of schema field objects.
         """
         json_data = json.load(file_obj)
-        return [SchemaField.from_api_repr(f) for f in json_data]
+        return [SchemaField.from_api_repr(field) for field in json_data]
 
     def _schema_to_json_file_object(self, schema_list, file_obj):
         """Helper function for schema_to_json that takes a schema list and file
