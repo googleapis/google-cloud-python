@@ -1974,7 +1974,6 @@ class Client(ClientWithProject):
 
         Destination is a file path or a file object.
         """
-        file_obj = None
         json_schema_list = [f.to_api_repr() for f in schema_list]
 
         if isinstance(destination, io.IOBase):
