@@ -1935,60 +1935,56 @@ class Client(ClientWithProject):
         )
         return row_iterator
 
-    def _schema_from_json_file_object(self, file):
+    def _schema_from_json_file_object(self, file_obj):
         """Helper function for schema_from_json that takes a
-           file object that describes a table schema.
+       file object that describes a table schema.
 
-           Returns:
-                List of schema field objects.
+       Returns:
+            List of schema field objects.
         """
-        schema_field_list = list()
-        json_data = json.load(file)
+        json_data = json.load(file_obj)
+        return [SchemaField.from_api_repr(f) for f in json_data]
 
-        for field in json_data:
-            schema_field = SchemaField.from_api_repr(field)
-            schema_field_list.append(schema_field)
-
-        return schema_field_list
+    def _schema_to_json_file_object(self, schema_list, file_obj):
+        """Helper function for schema_to_json that takes a schema list and file
+        object and writes the schema list to the file object with json.dump
+        """
+        json.dump(schema_list, file_obj, indent=2, sort_keys=True)
 
     def schema_from_json(self, file_or_path):
         """Takes a file object or file path that contains json that describes
-            a table schema.
+        a table schema.
 
-            Returns:
-                List of schema field objects.
+        Returns:
+            List of schema field objects.
         """
         if isinstance(file_or_path, io.IOBase):
             return self._schema_from_json_file_object(file_or_path)
-        else:
-            try:
-                with open(file_or_path) as file:
-                    return self._schema_from_json_file_object(file)
-            except OSError:
-                raise ValueError(_NEED_JSON_FILE_ARGUMENT)
+
+        try:
+            with open(file_or_path) as file_obj:
+                return self._schema_from_json_file_object(file_obj)
+        except OSError:
+            raise ValueError(_NEED_JSON_FILE_ARGUMENT)
 
     def schema_to_json(self, schema_list, destination):
         """Takes a list of schema field objects.
 
-            Serializes the list of schema field objects as json to a file.
+        Serializes the list of schema field objects as json to a file.
 
-            Destination is a file path or a file object.
+        Destination is a file path or a file object.
         """
         file_obj = None
-        json_schema_list = list()
-
-        for field in schema_list:
-            schema_field = field.to_api_repr()
-            json_schema_list.append(schema_field)
+        json_schema_list = [f.to_api_repr() for f in schema_list]
 
         if isinstance(destination, io.IOBase):
-            destination.write(json.dumps(json_schema_list, indent=2, sort_keys=True))
-        else:
-            try:
-                with open(destination, mode="w") as file:
-                    file.write(json.dumps(json_schema_list, indent=2, sort_keys=True))
-            except OSError:
-                raise ValueError(_NEED_JSON_FILE_ARGUMENT)
+            return self._schema_to_json_file_object(json_schema_list, destination)
+
+        try:
+            with open(destination, mode="w") as file_obj:
+                return self._schema_to_json_file_object(json_schema_list, file_obj)
+        except OSError:
+            raise ValueError(_NEED_JSON_FILE_ARGUMENT)
 
 
 # pylint: disable=unused-argument

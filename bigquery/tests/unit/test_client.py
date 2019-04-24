@@ -5205,7 +5205,7 @@ class TestClientUpload(object):
             _mock_file.assert_called_once_with(mock_file_path)
             # This assert is to make sure __exit__ is called in the context
             # manager that opens the file in the function
-            _mock_file().__exit__.assert_called_once_with(None, None, None)
+            _mock_file().__exit__.assert_called_once()
 
         assert expected == actual
 
@@ -5250,44 +5250,47 @@ class TestClientUpload(object):
     def test_schema_to_json_with_file_path(self):
         from google.cloud.bigquery.schema import SchemaField
 
-        file_content = """[
-  {
-    "description": "quarter",
-    "mode": "REQUIRED",
-    "name": "qtr",
-    "type": "STRING"
-  },
-  {
-    "description": "sales representative",
-    "mode": "NULLABLE",
-    "name": "rep",
-    "type": "STRING"
-  },
-  {
-    "description": "total sales",
-    "mode": "NULLABLE",
-    "name": "sales",
-    "type": "FLOAT"
-  }
-]"""
-        schema_list = list()
-        schema_list.append(SchemaField("qtr", "STRING", "REQUIRED", "quarter"))
-        schema_list.append(
-            SchemaField("rep", "STRING", "NULLABLE", "sales representative")
-        )
-        schema_list.append(SchemaField("sales", "FLOAT", "NULLABLE", "total sales"))
+        file_content = [
+            {
+                "description": "quarter",
+                "mode": "REQUIRED",
+                "name": "qtr",
+                "type": "STRING",
+            },
+            {
+                "description": "sales representative",
+                "mode": "NULLABLE",
+                "name": "rep",
+                "type": "STRING",
+            },
+            {
+                "description": "total sales",
+                "mode": "NULLABLE",
+                "name": "sales",
+                "type": "FLOAT",
+            },
+        ]
+
+        schema_list = [
+            SchemaField("qtr", "STRING", "REQUIRED", "quarter"),
+            SchemaField("rep", "STRING", "NULLABLE", "sales representative"),
+            SchemaField("sales", "FLOAT", "NULLABLE", "total sales"),
+        ]
 
         client = self._make_client()
         mock_file_path = "/mocked/file.json"
 
         open_patch = mock.patch("builtins.open", mock.mock_open())
         with open_patch as _mock_file:
-            actual = client.schema_to_json(schema_list, mock_file_path)
-            _mock_file.assert_called_once_with(mock_file_path, mode="w")
-            _mock_file().write.assert_called_once_with(file_content)
-            # This assert is to make sure __exit__ is called in the context
-            # manager that opens the file in the function
-            _mock_file().__exit__.assert_called_once_with(None, None, None)
+            with mock.patch("json.dump") as _mock_dump:
+                client.schema_to_json(schema_list, mock_file_path)
+                _mock_file.assert_called_once_with(mock_file_path, mode="w")
+                # This assert is to make sure __exit__ is called in the context
+                # manager that opens the file in the function
+                _mock_file().__exit__.assert_called_once()
+                _mock_dump.assert_called_with(
+                    file_content, _mock_file.return_value, indent=2, sort_keys=True
+                )
 
     def test_schema_to_json_with_file_object(self):
         from google.cloud.bigquery.schema import SchemaField
@@ -5312,12 +5315,11 @@ class TestClientUpload(object):
     "type": "FLOAT"
   }
 ]"""
-        schema_list = list()
-        schema_list.append(SchemaField("qtr", "STRING", "REQUIRED", "quarter"))
-        schema_list.append(
-            SchemaField("rep", "STRING", "NULLABLE", "sales representative")
-        )
-        schema_list.append(SchemaField("sales", "FLOAT", "NULLABLE", "total sales"))
+        schema_list = [
+            SchemaField("qtr", "STRING", "REQUIRED", "quarter"),
+            SchemaField("rep", "STRING", "NULLABLE", "sales representative"),
+            SchemaField("sales", "FLOAT", "NULLABLE", "total sales"),
+        ]
 
         fake_file = io.StringIO()
         client = self._make_client()
