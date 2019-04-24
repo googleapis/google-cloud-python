@@ -204,20 +204,18 @@ def test_bigtable_list_clusters_in_project():
 
 
 def test_bigtable_list_app_profiles():
-    # [START bigtable_list_app_profiles]
-    from google.cloud.bigtable import Client
-
-    client = Client(admin=True)
-    instance = client.instance(INSTANCE_ID)
-    # [END bigtable_list_app_profiles]
-
-    app_profile = instance.app_profile(
+    app_profile = Config.INSTANCE.app_profile(
         app_profile_id="app-prof-" + unique_resource_id("-"),
         routing_policy_type=enums.RoutingPolicyType.ANY,
     )
     app_profile = app_profile.create(ignore_warnings=True)
 
     # [START bigtable_list_app_profiles]
+    from google.cloud.bigtable import Client
+
+    client = Client(admin=True)
+    instance = client.instance(INSTANCE_ID)
+
     app_profiles_list = instance.list_app_profiles()
     # [END bigtable_list_app_profiles]
     assert len(app_profiles_list) > 0
@@ -348,22 +346,16 @@ def test_bigtable_delete_cluster():
 
 
 def test_bigtable_delete_instance():
-    # [START bigtable_delete_instance]
     from google.cloud.bigtable import Client
-
     client = Client(admin=True)
-    instance_id_to_delete = "inst-my-" + unique_resource_id("-")
-    # [END bigtable_delete_instance]
-
-    cluster_id = "clus-my-" + unique_resource_id("-")
 
     instance = client.instance(
-        instance_id_to_delete, instance_type=PRODUCTION, labels=LABELS
+        "inst-my-123", instance_type=PRODUCTION, labels=LABELS
     )
     cluster = instance.cluster(
-        cluster_id,
+        "clus-my-123",
         location_id=ALT_LOCATION_ID,
-        serve_nodes=SERVER_NODES,
+        serve_nodes=1,
         default_storage_type=STORAGE_TYPE,
     )
     operation = instance.create(clusters=[cluster])
@@ -371,7 +363,12 @@ def test_bigtable_delete_instance():
     operation.result(timeout=100)
 
     # [START bigtable_delete_instance]
-    instance_to_delete = client.instance(instance_id_to_delete)
+    from google.cloud.bigtable import Client
+
+    client = Client(admin=True)
+
+    instance_id = "inst-my-123"
+    instance_to_delete = client.instance(instance_id)
     instance_to_delete.delete()
     # [END bigtable_delete_instance]
 
@@ -393,16 +390,13 @@ def test_bigtable_test_iam_permissions():
 
 
 def test_bigtable_set_iam_policy_then_get_iam_policy():
+    service_account_email = Config.CLIENT._credentials.service_account_email
+
     # [START bigtable_set_iam_policy]
     from google.cloud.bigtable import Client
     from google.cloud.bigtable.policy import Policy
     from google.cloud.bigtable.policy import BIGTABLE_ADMIN_ROLE
 
-    # [END bigtable_set_iam_policy]
-
-    service_account_email = Config.CLIENT._credentials.service_account_email
-
-    # [START bigtable_set_iam_policy]
     client = Client(admin=True)
     instance = client.instance(INSTANCE_ID)
     instance.reload()
@@ -471,16 +465,13 @@ def test_bigtable_instance_admin_client():
 
 
 def test_bigtable_admins_policy():
+    service_account_email = Config.CLIENT._credentials.service_account_email
+
     # [START bigtable_admins_policy]
     from google.cloud.bigtable import Client
     from google.cloud.bigtable.policy import Policy
     from google.cloud.bigtable.policy import BIGTABLE_ADMIN_ROLE
 
-    # [END bigtable_admins_policy]
-
-    service_account_email = Config.CLIENT._credentials.service_account_email
-
-    # [START bigtable_admins_policy]
     client = Client(admin=True)
     instance = client.instance(INSTANCE_ID)
     instance.reload()
@@ -495,16 +486,13 @@ def test_bigtable_admins_policy():
 
 
 def test_bigtable_readers_policy():
+    service_account_email = Config.CLIENT._credentials.service_account_email
+
     # [START bigtable_readers_policy]
     from google.cloud.bigtable import Client
     from google.cloud.bigtable.policy import Policy
     from google.cloud.bigtable.policy import BIGTABLE_READER_ROLE
 
-    # [END bigtable_readers_policy]
-
-    service_account_email = Config.CLIENT._credentials.service_account_email
-
-    # [START bigtable_readers_policy]
     client = Client(admin=True)
     instance = client.instance(INSTANCE_ID)
     instance.reload()
@@ -519,16 +507,13 @@ def test_bigtable_readers_policy():
 
 
 def test_bigtable_users_policy():
+    service_account_email = Config.CLIENT._credentials.service_account_email
+
     # [START bigtable_users_policy]
     from google.cloud.bigtable import Client
     from google.cloud.bigtable.policy import Policy
     from google.cloud.bigtable.policy import BIGTABLE_USER_ROLE
 
-    # [END bigtable_users_policy]
-
-    service_account_email = Config.CLIENT._credentials.service_account_email
-
-    # [START bigtable_users_policy]
     client = Client(admin=True)
     instance = client.instance(INSTANCE_ID)
     instance.reload()
@@ -543,16 +528,13 @@ def test_bigtable_users_policy():
 
 
 def test_bigtable_viewers_policy():
+    service_account_email = Config.CLIENT._credentials.service_account_email
+
     # [START bigtable_viewers_policy]
     from google.cloud.bigtable import Client
     from google.cloud.bigtable.policy import Policy
     from google.cloud.bigtable.policy import BIGTABLE_VIEWER_ROLE
 
-    # [END bigtable_viewers_policy]
-
-    service_account_email = Config.CLIENT._credentials.service_account_email
-
-    # [START bigtable_viewers_policy]
     client = Client(admin=True)
     instance = client.instance(INSTANCE_ID)
     instance.reload()
