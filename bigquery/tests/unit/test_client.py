@@ -5278,7 +5278,11 @@ class TestClientUpload(object):
         client = self._make_client()
         mock_file_path = "/mocked/file.json"
 
-        open_patch = mock.patch("builtins.open", mock.mock_open())
+        if six.PY2:
+            open_patch = mock.patch("__builtins__.open", mock.mock_open())
+        else:
+            open_patch = mock.patch("builtins.open", mock.mock_open())
+
         with open_patch as mock_file, mock.patch("json.dump") as mock_dump:
             client.schema_to_json(schema_list, mock_file_path)
             mock_file.assert_called_once_with(mock_file_path, mode="w")
