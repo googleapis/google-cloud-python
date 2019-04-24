@@ -16,9 +16,7 @@
 
 from __future__ import absolute_import
 
-from google.cloud.phishingprotection_v1beta1 import (
-    PhishingProtectionServiceV1Beta1Client,
-)
+from google.cloud.phishingprotection_v1beta1 import PhishingProtectionServiceClient
 from google.cloud.phishingprotection_v1beta1 import types
 
-__all__ = ("types", "PhishingProtectionServiceV1Beta1Client")
+__all__ = ("types", "PhishingProtectionServiceClient")

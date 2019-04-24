@@ -18,16 +18,14 @@ from __future__ import absolute_import
 
 from google.cloud.phishingprotection_v1beta1 import types
 from google.cloud.phishingprotection_v1beta1.gapic import (
-    phishing_protection_service_v1_beta1_client,
+    phishing_protection_service_client,
 )
 
 
-class PhishingProtectionServiceV1Beta1Client(
-    phishing_protection_service_v1_beta1_client.PhishingProtectionServiceV1Beta1Client
+class PhishingProtectionServiceClient(
+    phishing_protection_service_client.PhishingProtectionServiceClient
 ):
-    __doc__ = (
-        phishing_protection_service_v1_beta1_client.PhishingProtectionServiceV1Beta1Client.__doc__
-    )
+    __doc__ = phishing_protection_service_client.PhishingProtectionServiceClient.__doc__
 
 
-__all__ = ("types", "PhishingProtectionServiceV1Beta1Client")
+__all__ = ("types", "PhishingProtectionServiceClient")

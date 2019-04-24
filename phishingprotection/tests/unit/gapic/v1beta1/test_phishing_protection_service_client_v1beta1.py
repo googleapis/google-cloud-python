@@ -58,7 +58,7 @@ class CustomException(Exception):
     pass
 
 
-class TestPhishingProtectionServiceV1Beta1Client(object):
+class TestPhishingProtectionServiceClient(object):
     def test_report_phishing(self):
         # Setup Expected Response
         expected_response = {}
@@ -71,7 +71,7 @@ class TestPhishingProtectionServiceV1Beta1Client(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = phishingprotection_v1beta1.PhishingProtectionServiceV1Beta1Client()
+            client = phishingprotection_v1beta1.PhishingProtectionServiceClient()
 
         # Setup Request
         parent = client.project_path("[PROJECT]")
@@ -93,7 +93,7 @@ class TestPhishingProtectionServiceV1Beta1Client(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = phishingprotection_v1beta1.PhishingProtectionServiceV1Beta1Client()
+            client = phishingprotection_v1beta1.PhishingProtectionServiceClient()
 
         # Setup request
         parent = client.project_path("[PROJECT]")

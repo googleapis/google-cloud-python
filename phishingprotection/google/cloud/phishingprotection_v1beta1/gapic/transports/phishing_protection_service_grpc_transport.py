@@ -19,7 +19,7 @@ import google.api_core.grpc_helpers
 from google.cloud.phishingprotection_v1beta1.proto import phishingprotection_pb2_grpc
 
 
-class PhishingProtectionServiceV1Beta1GrpcTransport(object):
+class PhishingProtectionServiceGrpcTransport(object):
     """gRPC transport class providing stubs for
     google.cloud.phishingprotection.v1beta1 PhishingProtectionServiceV1Beta1 API.
 
@@ -104,7 +104,7 @@ class PhishingProtectionServiceV1Beta1GrpcTransport(object):
 
     @property
     def report_phishing(self):
-        """Return the gRPC stub for :meth:`PhishingProtectionServiceV1Beta1Client.report_phishing`.
+        """Return the gRPC stub for :meth:`PhishingProtectionServiceClient.report_phishing`.
 
         Reports a URI suspected of containing phishing content to be reviewed.
         Once the report review is completed, if its result verifies the

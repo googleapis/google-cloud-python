@@ -28,10 +28,10 @@ import google.api_core.path_template
 import grpc
 
 from google.cloud.phishingprotection_v1beta1.gapic import (
-    phishing_protection_service_v1_beta1_client_config,
+    phishing_protection_service_client_config,
 )
 from google.cloud.phishingprotection_v1beta1.gapic.transports import (
-    phishing_protection_service_v1_beta1_grpc_transport,
+    phishing_protection_service_grpc_transport,
 )
 from google.cloud.phishingprotection_v1beta1.proto import phishingprotection_pb2
 from google.cloud.phishingprotection_v1beta1.proto import phishingprotection_pb2_grpc
@@ -41,7 +41,7 @@ _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
 ).version
 
 
-class PhishingProtectionServiceV1Beta1Client(object):
+class PhishingProtectionServiceClient(object):
     """Service to report phishing URIs."""
 
     SERVICE_ADDRESS = "phishingprotection.googleapis.com:443"
@@ -65,7 +65,7 @@ class PhishingProtectionServiceV1Beta1Client(object):
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            PhishingProtectionServiceV1Beta1Client: The constructed client.
+            PhishingProtectionServiceClient: The constructed client.
         """
         credentials = service_account.Credentials.from_service_account_file(filename)
         kwargs["credentials"] = credentials
@@ -91,8 +91,8 @@ class PhishingProtectionServiceV1Beta1Client(object):
         """Constructor.
 
         Args:
-            transport (Union[~.PhishingProtectionServiceV1Beta1GrpcTransport,
-                    Callable[[~.Credentials, type], ~.PhishingProtectionServiceV1Beta1GrpcTransport]): A transport
+            transport (Union[~.PhishingProtectionServiceGrpcTransport,
+                    Callable[[~.Credentials, type], ~.PhishingProtectionServiceGrpcTransport]): A transport
                 instance, responsible for actually making the API calls.
                 The default transport uses the gRPC protocol.
                 This argument may also be a callable which returns a
@@ -126,7 +126,7 @@ class PhishingProtectionServiceV1Beta1Client(object):
                 stacklevel=2,
             )
         else:
-            client_config = phishing_protection_service_v1_beta1_client_config.config
+            client_config = phishing_protection_service_client_config.config
 
         if channel:
             warnings.warn(
@@ -142,7 +142,7 @@ class PhishingProtectionServiceV1Beta1Client(object):
             if callable(transport):
                 self.transport = transport(
                     credentials=credentials,
-                    default_class=phishing_protection_service_v1_beta1_grpc_transport.PhishingProtectionServiceV1Beta1GrpcTransport,
+                    default_class=phishing_protection_service_grpc_transport.PhishingProtectionServiceGrpcTransport,
                 )
             else:
                 if credentials:
@@ -152,7 +152,7 @@ class PhishingProtectionServiceV1Beta1Client(object):
                     )
                 self.transport = transport
         else:
-            self.transport = phishing_protection_service_v1_beta1_grpc_transport.PhishingProtectionServiceV1Beta1GrpcTransport(
+            self.transport = phishing_protection_service_grpc_transport.PhishingProtectionServiceGrpcTransport(
                 address=self.SERVICE_ADDRESS, channel=channel, credentials=credentials
             )
 
@@ -199,7 +199,7 @@ class PhishingProtectionServiceV1Beta1Client(object):
         Example:
             >>> from google.cloud import phishingprotection_v1beta1
             >>>
-            >>> client = phishingprotection_v1beta1.PhishingProtectionServiceV1Beta1Client()
+            >>> client = phishingprotection_v1beta1.PhishingProtectionServiceClient()
             >>>
             >>> parent = client.project_path('[PROJECT]')
             >>>
