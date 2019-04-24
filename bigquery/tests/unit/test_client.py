@@ -5195,9 +5195,14 @@ class TestClientUpload(object):
         client = self._make_client()
         mock_file_path = "/mocked/file.json"
 
-        open_patch = mock.patch(
-            "builtins.open", new=mock.mock_open(read_data=file_content)
-        )
+        if six.PY2:
+            open_patch = mock.patch(
+                "__builtin__.open", mock.mock_open(read_data=file_content)
+            )
+        else:
+            open_patch = mock.patch(
+                "builtins.open", new=mock.mock_open(read_data=file_content)
+            )
 
         with open_patch as _mock_file:
             actual = client.schema_from_json(mock_file_path)
@@ -5240,7 +5245,11 @@ class TestClientUpload(object):
 
         client = self._make_client()
 
-        fake_file = io.StringIO(file_content)
+        if six.PY2:
+            fake_file = io.BytesIO(file_content)
+        else:
+            fake_file = io.StringIO(file_content)
+
         actual = client.schema_from_json(fake_file)
 
         assert expected == actual
@@ -5279,7 +5288,7 @@ class TestClientUpload(object):
         mock_file_path = "/mocked/file.json"
 
         if six.PY2:
-            open_patch = mock.patch("__builtins__.open", mock.mock_open())
+            open_patch = mock.patch("__builtin__.open", mock.mock_open())
         else:
             open_patch = mock.patch("builtins.open", mock.mock_open())
 
@@ -5323,7 +5332,11 @@ class TestClientUpload(object):
             SchemaField("sales", "FLOAT", "NULLABLE", "total sales"),
         ]
 
-        fake_file = io.StringIO()
+        if six.PY2:
+            fake_file = io.BytesIO()
+        else:
+            fake_file = io.StringIO()
+
         client = self._make_client()
 
         client.schema_to_json(schema_list, fake_file)
