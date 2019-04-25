@@ -5161,3 +5161,183 @@ class TestClientUpload(object):
 
         with pytest.raises(ValueError):
             client._do_multipart_upload(file_obj, {}, file_obj_len + 1, None)
+
+    def test_schema_from_json_with_file_path(self):
+        from google.cloud.bigquery.schema import SchemaField
+
+        file_content = """[
+          {
+            "description": "quarter",
+            "mode": "REQUIRED",
+            "name": "qtr",
+            "type": "STRING"
+          },
+          {
+            "description": "sales representative",
+            "mode": "NULLABLE",
+            "name": "rep",
+            "type": "STRING"
+          },
+          {
+            "description": "total sales",
+            "mode": "NULLABLE",
+            "name": "sales",
+            "type": "FLOAT"
+          }
+        ]"""
+
+        expected = [
+            SchemaField("qtr", "STRING", "REQUIRED", "quarter"),
+            SchemaField("rep", "STRING", "NULLABLE", "sales representative"),
+            SchemaField("sales", "FLOAT", "NULLABLE", "total sales"),
+        ]
+
+        client = self._make_client()
+        mock_file_path = "/mocked/file.json"
+
+        if six.PY2:
+            open_patch = mock.patch(
+                "__builtin__.open", mock.mock_open(read_data=file_content)
+            )
+        else:
+            open_patch = mock.patch(
+                "builtins.open", new=mock.mock_open(read_data=file_content)
+            )
+
+        with open_patch as _mock_file:
+            actual = client.schema_from_json(mock_file_path)
+            _mock_file.assert_called_once_with(mock_file_path)
+            # This assert is to make sure __exit__ is called in the context
+            # manager that opens the file in the function
+            _mock_file().__exit__.assert_called_once()
+
+        assert expected == actual
+
+    def test_schema_from_json_with_file_object(self):
+        from google.cloud.bigquery.schema import SchemaField
+
+        file_content = """[
+          {
+            "description": "quarter",
+            "mode": "REQUIRED",
+            "name": "qtr",
+            "type": "STRING"
+          },
+          {
+            "description": "sales representative",
+            "mode": "NULLABLE",
+            "name": "rep",
+            "type": "STRING"
+          },
+          {
+            "description": "total sales",
+            "mode": "NULLABLE",
+            "name": "sales",
+            "type": "FLOAT"
+          }
+        ]"""
+
+        expected = [
+            SchemaField("qtr", "STRING", "REQUIRED", "quarter"),
+            SchemaField("rep", "STRING", "NULLABLE", "sales representative"),
+            SchemaField("sales", "FLOAT", "NULLABLE", "total sales"),
+        ]
+
+        client = self._make_client()
+
+        if six.PY2:
+            fake_file = io.BytesIO(file_content)
+        else:
+            fake_file = io.StringIO(file_content)
+
+        actual = client.schema_from_json(fake_file)
+
+        assert expected == actual
+
+    def test_schema_to_json_with_file_path(self):
+        from google.cloud.bigquery.schema import SchemaField
+
+        file_content = [
+            {
+                "description": "quarter",
+                "mode": "REQUIRED",
+                "name": "qtr",
+                "type": "STRING",
+            },
+            {
+                "description": "sales representative",
+                "mode": "NULLABLE",
+                "name": "rep",
+                "type": "STRING",
+            },
+            {
+                "description": "total sales",
+                "mode": "NULLABLE",
+                "name": "sales",
+                "type": "FLOAT",
+            },
+        ]
+
+        schema_list = [
+            SchemaField("qtr", "STRING", "REQUIRED", "quarter"),
+            SchemaField("rep", "STRING", "NULLABLE", "sales representative"),
+            SchemaField("sales", "FLOAT", "NULLABLE", "total sales"),
+        ]
+
+        client = self._make_client()
+        mock_file_path = "/mocked/file.json"
+
+        if six.PY2:
+            open_patch = mock.patch("__builtin__.open", mock.mock_open())
+        else:
+            open_patch = mock.patch("builtins.open", mock.mock_open())
+
+        with open_patch as mock_file, mock.patch("json.dump") as mock_dump:
+            client.schema_to_json(schema_list, mock_file_path)
+            mock_file.assert_called_once_with(mock_file_path, mode="w")
+            # This assert is to make sure __exit__ is called in the context
+            # manager that opens the file in the function
+            mock_file().__exit__.assert_called_once()
+            mock_dump.assert_called_with(
+                file_content, mock_file.return_value, indent=2, sort_keys=True
+            )
+
+    def test_schema_to_json_with_file_object(self):
+        from google.cloud.bigquery.schema import SchemaField
+
+        file_content = [
+            {
+                "description": "quarter",
+                "mode": "REQUIRED",
+                "name": "qtr",
+                "type": "STRING",
+            },
+            {
+                "description": "sales representative",
+                "mode": "NULLABLE",
+                "name": "rep",
+                "type": "STRING",
+            },
+            {
+                "description": "total sales",
+                "mode": "NULLABLE",
+                "name": "sales",
+                "type": "FLOAT",
+            },
+        ]
+
+        schema_list = [
+            SchemaField("qtr", "STRING", "REQUIRED", "quarter"),
+            SchemaField("rep", "STRING", "NULLABLE", "sales representative"),
+            SchemaField("sales", "FLOAT", "NULLABLE", "total sales"),
+        ]
+
+        if six.PY2:
+            fake_file = io.BytesIO()
+        else:
+            fake_file = io.StringIO()
+
+        client = self._make_client()
+
+        client.schema_to_json(schema_list, fake_file)
+        assert file_content == json.loads(fake_file.getvalue())
