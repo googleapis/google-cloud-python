@@ -96,6 +96,16 @@ class TestClient(unittest.TestCase):
     def _make_one(self, *args, **kw):
         return self._get_target_class()(*args, **kw)
 
+    def _make_table_resource(self):
+        return {
+            "id": "%s:%s:%s" % (self.PROJECT, self.DS_ID, self.TABLE_ID),
+            "tableReference": {
+                "projectId": self.PROJECT,
+                "datasetId": self.DS_ID,
+                "tableId": self.TABLE_ID,
+            },
+        }
+
     def test_ctor_defaults(self):
         from google.cloud.bigquery._http import Connection
 
@@ -869,14 +879,7 @@ class TestClient(unittest.TestCase):
         path = "projects/%s/datasets/%s/tables" % (self.PROJECT, self.DS_ID)
         creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds)
-        resource = {
-            "id": "%s:%s:%s" % (self.PROJECT, self.DS_ID, self.TABLE_ID),
-            "tableReference": {
-                "projectId": self.PROJECT,
-                "datasetId": self.DS_ID,
-                "tableId": self.TABLE_ID,
-            },
-        }
+        resource = self._make_table_resource()
         conn = client._connection = _make_connection(resource)
         table = Table(self.TABLE_REF)
         table.time_partitioning = TimePartitioning()
@@ -907,15 +910,8 @@ class TestClient(unittest.TestCase):
         path = "projects/%s/datasets/%s/tables" % (self.PROJECT, self.DS_ID)
         creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds)
-        resource = {
-            "id": "%s:%s:%s" % (self.PROJECT, self.DS_ID, self.TABLE_ID),
-            "tableReference": {
-                "projectId": self.PROJECT,
-                "datasetId": self.DS_ID,
-                "tableId": self.TABLE_ID,
-            },
-            "newAlphaProperty": "unreleased property",
-        }
+        resource = self._make_table_resource()
+        resource["newAlphaProperty"] = "unreleased property"
         conn = client._connection = _make_connection(resource)
         table = Table(self.TABLE_REF)
         table._properties["newAlphaProperty"] = "unreleased property"
@@ -945,14 +941,7 @@ class TestClient(unittest.TestCase):
         path = "projects/%s/datasets/%s/tables" % (self.PROJECT, self.DS_ID)
         creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds)
-        resource = {
-            "id": "%s:%s:%s" % (self.PROJECT, self.DS_ID, self.TABLE_ID),
-            "tableReference": {
-                "projectId": self.PROJECT,
-                "datasetId": self.DS_ID,
-                "tableId": self.TABLE_ID,
-            },
-        }
+        resource = self._make_table_resource()
         conn = client._connection = _make_connection(resource)
         table = Table(self.TABLE_REF)
         table.encryption_configuration = EncryptionConfiguration(
@@ -983,14 +972,7 @@ class TestClient(unittest.TestCase):
         path = "projects/%s/datasets/%s/tables" % (self.PROJECT, self.DS_ID)
         creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds)
-        resource = {
-            "id": "%s:%s:%s" % (self.PROJECT, self.DS_ID, self.TABLE_ID),
-            "tableReference": {
-                "projectId": self.PROJECT,
-                "datasetId": self.DS_ID,
-                "tableId": self.TABLE_ID,
-            },
-        }
+        resource = self._make_table_resource()
         conn = client._connection = _make_connection(resource)
         table = Table(self.TABLE_REF)
         table.time_partitioning = TimePartitioning(expiration_ms=100)
@@ -1021,31 +1003,28 @@ class TestClient(unittest.TestCase):
         query = "SELECT * from %s:%s" % (self.DS_ID, self.TABLE_ID)
         creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds)
-        resource = {
-            "id": "%s:%s:%s" % (self.PROJECT, self.DS_ID, self.TABLE_ID),
-            "tableReference": {
-                "projectId": self.PROJECT,
-                "datasetId": self.DS_ID,
-                "tableId": self.TABLE_ID,
-            },
-            "schema": {
-                "fields": [
-                    {
-                        "name": "full_name",
-                        "type": "STRING",
-                        "mode": "REQUIRED",
-                        "description": None,
-                    },
-                    {
-                        "name": "age",
-                        "type": "INTEGER",
-                        "mode": "REQUIRED",
-                        "description": None,
-                    },
-                ]
-            },
-            "view": {"query": query},
-        }
+        resource = self._make_table_resource()
+        resource.update(
+            {
+                "schema": {
+                    "fields": [
+                        {
+                            "name": "full_name",
+                            "type": "STRING",
+                            "mode": "REQUIRED",
+                            "description": None,
+                        },
+                        {
+                            "name": "age",
+                            "type": "INTEGER",
+                            "mode": "REQUIRED",
+                            "description": None,
+                        },
+                    ]
+                },
+                "view": {"query": query},
+            }
+        )
         schema = [
             SchemaField("full_name", "STRING", mode="REQUIRED"),
             SchemaField("age", "INTEGER", mode="REQUIRED"),
@@ -1099,18 +1078,15 @@ class TestClient(unittest.TestCase):
         path = "projects/%s/datasets/%s/tables" % (self.PROJECT, self.DS_ID)
         creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds)
-        resource = {
-            "id": "%s:%s:%s" % (self.PROJECT, self.DS_ID, self.TABLE_ID),
-            "tableReference": {
-                "projectId": self.PROJECT,
-                "datasetId": self.DS_ID,
-                "tableId": self.TABLE_ID,
-            },
-            "externalDataConfiguration": {
-                "sourceFormat": SourceFormat.CSV,
-                "autodetect": True,
-            },
-        }
+        resource = self._make_table_resource()
+        resource.update(
+            {
+                "externalDataConfiguration": {
+                    "sourceFormat": SourceFormat.CSV,
+                    "autodetect": True,
+                }
+            }
+        )
         conn = client._connection = _make_connection(resource)
         table = Table(self.TABLE_REF)
         ec = ExternalConfig("CSV")
@@ -1147,14 +1123,7 @@ class TestClient(unittest.TestCase):
         path = "projects/%s/datasets/%s/tables" % (self.PROJECT, self.DS_ID)
         creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds)
-        resource = {
-            "id": "%s:%s:%s" % (self.PROJECT, self.DS_ID, self.TABLE_ID),
-            "tableReference": {
-                "projectId": self.PROJECT,
-                "datasetId": self.DS_ID,
-                "tableId": self.TABLE_ID,
-            },
-        }
+        resource = self._make_table_resource()
         conn = client._connection = _make_connection(resource)
 
         got = client.create_table(self.TABLE_REF)
@@ -1177,14 +1146,7 @@ class TestClient(unittest.TestCase):
         path = "projects/%s/datasets/%s/tables" % (self.PROJECT, self.DS_ID)
         creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds)
-        resource = {
-            "id": "%s:%s:%s" % (self.PROJECT, self.DS_ID, self.TABLE_ID),
-            "tableReference": {
-                "projectId": self.PROJECT,
-                "datasetId": self.DS_ID,
-                "tableId": self.TABLE_ID,
-            },
-        }
+        resource = self._make_table_resource()
         conn = client._connection = _make_connection(resource)
 
         got = client.create_table(
@@ -1209,14 +1171,7 @@ class TestClient(unittest.TestCase):
         path = "projects/%s/datasets/%s/tables" % (self.PROJECT, self.DS_ID)
         creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds)
-        resource = {
-            "id": "%s:%s:%s" % (self.PROJECT, self.DS_ID, self.TABLE_ID),
-            "tableReference": {
-                "projectId": self.PROJECT,
-                "datasetId": self.DS_ID,
-                "tableId": self.TABLE_ID,
-            },
-        }
+        resource = self._make_table_resource()
         conn = client._connection = _make_connection(resource)
 
         got = client.create_table("{}.{}".format(self.DS_ID, self.TABLE_ID))
@@ -1266,14 +1221,7 @@ class TestClient(unittest.TestCase):
         get_path = "/projects/{}/datasets/{}/tables/{}".format(
             self.PROJECT, self.DS_ID, self.TABLE_ID
         )
-        resource = {
-            "id": "%s:%s:%s" % (self.PROJECT, self.DS_ID, self.TABLE_ID),
-            "tableReference": {
-                "projectId": self.PROJECT,
-                "datasetId": self.DS_ID,
-                "tableId": self.TABLE_ID,
-            },
-        }
+        resource = self._make_table_resource()
         creds = _make_credentials()
         client = self._make_one(
             project=self.PROJECT, credentials=creds, location=self.LOCATION
@@ -1365,14 +1313,7 @@ class TestClient(unittest.TestCase):
         creds = _make_credentials()
         http = object()
         client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
-        resource = {
-            "id": "%s:%s:%s" % (self.PROJECT, self.DS_ID, self.TABLE_ID),
-            "tableReference": {
-                "projectId": self.PROJECT,
-                "datasetId": self.DS_ID,
-                "tableId": self.TABLE_ID,
-            },
-        }
+        resource = self._make_table_resource()
         conn = client._connection = _make_connection(resource)
         table = client.get_table(self.TABLE_REF)
 
@@ -1542,34 +1483,31 @@ class TestClient(unittest.TestCase):
         )
         description = "description"
         title = "title"
-        resource = {
-            "id": "%s:%s:%s" % (self.PROJECT, self.DS_ID, self.TABLE_ID),
-            "tableReference": {
-                "projectId": self.PROJECT,
-                "datasetId": self.DS_ID,
-                "tableId": self.TABLE_ID,
-            },
-            "schema": {
-                "fields": [
-                    {
-                        "name": "full_name",
-                        "type": "STRING",
-                        "mode": "REQUIRED",
-                        "description": None,
-                    },
-                    {
-                        "name": "age",
-                        "type": "INTEGER",
-                        "mode": "REQUIRED",
-                        "description": None,
-                    },
-                ]
-            },
-            "etag": "etag",
-            "description": description,
-            "friendlyName": title,
-            "labels": {"x": "y"},
-        }
+        resource = self._make_table_resource()
+        resource.update(
+            {
+                "schema": {
+                    "fields": [
+                        {
+                            "name": "full_name",
+                            "type": "STRING",
+                            "mode": "REQUIRED",
+                            "description": None,
+                        },
+                        {
+                            "name": "age",
+                            "type": "INTEGER",
+                            "mode": "REQUIRED",
+                            "description": None,
+                        },
+                    ]
+                },
+                "etag": "etag",
+                "description": description,
+                "friendlyName": title,
+                "labels": {"x": "y"},
+            }
+        )
         schema = [
             SchemaField("full_name", "STRING", mode="REQUIRED"),
             SchemaField("age", "INTEGER", mode="REQUIRED"),
@@ -1629,15 +1567,8 @@ class TestClient(unittest.TestCase):
             self.DS_ID,
             self.TABLE_ID,
         )
-        resource = {
-            "id": "%s:%s:%s" % (self.PROJECT, self.DS_ID, self.TABLE_ID),
-            "tableReference": {
-                "projectId": self.PROJECT,
-                "datasetId": self.DS_ID,
-                "tableId": self.TABLE_ID,
-            },
-            "newAlphaProperty": "unreleased property",
-        }
+        resource = self._make_table_resource()
+        resource["newAlphaProperty"] = "unreleased property"
         creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds)
         conn = client._connection = _make_connection(resource)
@@ -1664,15 +1595,8 @@ class TestClient(unittest.TestCase):
             self.DS_ID,
             self.TABLE_ID,
         )
-        resource = {
-            "id": "%s:%s:%s" % (self.PROJECT, self.DS_ID, self.TABLE_ID),
-            "tableReference": {
-                "projectId": self.PROJECT,
-                "datasetId": self.DS_ID,
-                "tableId": self.TABLE_ID,
-            },
-            "view": {"useLegacySql": True},
-        }
+        resource = self._make_table_resource()
+        resource["view"] = {"useLegacySql": True}
         creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds)
         conn = client._connection = _make_connection(resource)
@@ -1723,18 +1647,15 @@ class TestClient(unittest.TestCase):
             SchemaField("full_name", "STRING", mode="REQUIRED"),
             SchemaField("age", "INTEGER", mode="REQUIRED"),
         ]
-        resource = {
-            "id": "%s:%s:%s" % (self.PROJECT, self.DS_ID, self.TABLE_ID),
-            "tableReference": {
-                "projectId": self.PROJECT,
-                "datasetId": self.DS_ID,
-                "tableId": self.TABLE_ID,
-            },
-            "schema": schema_resource,
-            "view": {"query": query, "useLegacySql": True},
-            "location": location,
-            "expirationTime": _millis(exp_time),
-        }
+        resource = self._make_table_resource()
+        resource.update(
+            {
+                "schema": schema_resource,
+                "view": {"query": query, "useLegacySql": True},
+                "location": location,
+                "expirationTime": _millis(exp_time),
+            }
+        )
         creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds)
         conn = client._connection = _make_connection(resource)
@@ -1771,28 +1692,18 @@ class TestClient(unittest.TestCase):
             self.DS_ID,
             self.TABLE_ID,
         )
-        resource1 = {
-            "id": "%s:%s:%s" % (self.PROJECT, self.DS_ID, self.TABLE_ID),
-            "tableReference": {
-                "projectId": self.PROJECT,
-                "datasetId": self.DS_ID,
-                "tableId": self.TABLE_ID,
-            },
-            "schema": {
-                "fields": [
-                    {"name": "full_name", "type": "STRING", "mode": "REQUIRED"},
-                    {"name": "age", "type": "INTEGER", "mode": "REQUIRED"},
-                ]
-            },
-        }
-        resource2 = {
-            "id": "%s:%s:%s" % (self.PROJECT, self.DS_ID, self.TABLE_ID),
-            "tableReference": {
-                "projectId": self.PROJECT,
-                "datasetId": self.DS_ID,
-                "tableId": self.TABLE_ID,
-            },
-        }
+        resource1 = self._make_table_resource()
+        resource1.update(
+            {
+                "schema": {
+                    "fields": [
+                        {"name": "full_name", "type": "STRING", "mode": "REQUIRED"},
+                        {"name": "age", "type": "INTEGER", "mode": "REQUIRED"},
+                    ]
+                }
+            }
+        )
+        resource2 = self._make_table_resource()
         creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds)
         conn = client._connection = _make_connection(resource1, resource2)
@@ -1826,25 +1737,10 @@ class TestClient(unittest.TestCase):
             self.DS_ID,
             self.TABLE_ID,
         )
-        resource1 = {
-            "id": "%s:%s:%s" % (self.PROJECT, self.DS_ID, self.TABLE_ID),
-            "tableReference": {
-                "projectId": self.PROJECT,
-                "datasetId": self.DS_ID,
-                "tableId": self.TABLE_ID,
-            },
-            "description": description,
-            "friendlyName": title,
-        }
-        resource2 = {
-            "id": "%s:%s:%s" % (self.PROJECT, self.DS_ID, self.TABLE_ID),
-            "tableReference": {
-                "projectId": self.PROJECT,
-                "datasetId": self.DS_ID,
-                "tableId": self.TABLE_ID,
-            },
-            "description": None,
-        }
+        resource1 = self._make_table_resource()
+        resource1.update({"description": description, "friendlyName": title})
+        resource2 = self._make_table_resource()
+        resource2["description"] = None
         creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds)
         conn = client._connection = _make_connection(resource1, resource2)
