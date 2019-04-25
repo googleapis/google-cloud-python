@@ -98,6 +98,12 @@ google.cloud.bigquery.client.Client
    ~Client.query
    
    
+   ~Client.schema_from_json
+   
+   
+   ~Client.schema_to_json
+   
+   
    ~Client.update_dataset
    
    

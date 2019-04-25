@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery.client.Client &#8212; google-cloud 7755867 documentation</title>
+    <title>google.cloud.bigquery.client.Client &#8212; google-cloud 55a8097 documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -130,6 +130,12 @@
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="#google.cloud.bigquery.client.Client.query" title="google.cloud.bigquery.client.Client.query"><code class="xref py py-obj docutils literal notranslate"><span class="pre">query</span></code></a>(query[,&nbsp;job_config,&nbsp;job_id,&nbsp;…])</td>
 <td>Run a SQL query.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#google.cloud.bigquery.client.Client.schema_from_json" title="google.cloud.bigquery.client.Client.schema_from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">schema_from_json</span></code></a>(file_or_path)</td>
+<td>Takes a file object or file path that contains json that describes a table schema.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#google.cloud.bigquery.client.Client.schema_to_json" title="google.cloud.bigquery.client.Client.schema_to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">schema_to_json</span></code></a>(schema_list,&nbsp;destination)</td>
+<td>Takes a list of schema field objects.</td>
 </tr>
 <tr class="row-even"><td><a class="reference internal" href="#google.cloud.bigquery.client.Client.update_dataset" title="google.cloud.bigquery.client.Client.update_dataset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_dataset</span></code></a>(dataset,&nbsp;fields[,&nbsp;retry])</td>
 <td>Change some fields of a dataset.</td>
@@ -1248,6 +1254,29 @@ to the client’s project.</li>
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.bigquery.client.Client.schema_from_json">
+<code class="descname">schema_from_json</code><span class="sig-paren">(</span><em>file_or_path</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/google/cloud/bigquery/client.html#Client.schema_from_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.client.Client.schema_from_json" title="Permalink to this definition">#</a></dt>
+<dd><p>Takes a file object or file path that contains json that describes
+a table schema.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">List of schema field objects.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.bigquery.client.Client.schema_to_json">
+<code class="descname">schema_to_json</code><span class="sig-paren">(</span><em>schema_list</em>, <em>destination</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/google/cloud/bigquery/client.html#Client.schema_to_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.client.Client.schema_to_json" title="Permalink to this definition">#</a></dt>
+<dd><p>Takes a list of schema field objects.</p>
+<p>Serializes the list of schema field objects as json to a file.</p>
+<p>Destination is a file path or a file object.</p>
 </dd></dl>
 
 <dl class="method">

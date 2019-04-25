@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery.client &#8212; google-cloud 7755867 documentation</title>
+    <title>google.cloud.bigquery.client &#8212; google-cloud 55a8097 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -59,6 +59,8 @@
 
 <span class="kn">import</span> <span class="nn">functools</span>
 <span class="kn">import</span> <span class="nn">gzip</span>
+<span class="kn">import</span> <span class="nn">io</span>
+<span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">tempfile</span>
 <span class="kn">import</span> <span class="nn">uuid</span>
@@ -86,6 +88,7 @@
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery.model</span> <span class="k">import</span> <span class="n">ModelReference</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery.query</span> <span class="k">import</span> <span class="n">_QueryResults</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery.retry</span> <span class="k">import</span> <span class="n">DEFAULT_RETRY</span>
+<span class="kn">from</span> <span class="nn">google.cloud.bigquery.schema</span> <span class="k">import</span> <span class="n">SchemaField</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery.table</span> <span class="k">import</span> <span class="n">_table_arg_to_table</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery.table</span> <span class="k">import</span> <span class="n">_table_arg_to_table_ref</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery.table</span> <span class="k">import</span> <span class="n">Table</span>
@@ -1963,7 +1966,51 @@
             <span class="c1"># tables can be fetched without a column filter.</span>
             <span class="n">selected_fields</span><span class="o">=</span><span class="n">selected_fields</span><span class="p">,</span>
         <span class="p">)</span>
-        <span class="k">return</span> <span class="n">row_iterator</span></div></div>
+        <span class="k">return</span> <span class="n">row_iterator</span></div>
+
+    <span class="k">def</span> <span class="nf">_schema_from_json_file_object</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_obj</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Helper function for schema_from_json that takes a</span>
+<span class="sd">       file object that describes a table schema.</span>
+
+<span class="sd">       Returns:</span>
+<span class="sd">            List of schema field objects.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">json_data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">file_obj</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">SchemaField</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">field</span><span class="p">)</span> <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">json_data</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">_schema_to_json_file_object</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">schema_list</span><span class="p">,</span> <span class="n">file_obj</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Helper function for schema_to_json that takes a schema list and file</span>
+<span class="sd">        object and writes the schema list to the file object with json.dump</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">schema_list</span><span class="p">,</span> <span class="n">file_obj</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">sort_keys</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Client.schema_from_json"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.client.Client.html#google.cloud.bigquery.client.Client.schema_from_json">[docs]</a>    <span class="k">def</span> <span class="nf">schema_from_json</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_or_path</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Takes a file object or file path that contains json that describes</span>
+<span class="sd">        a table schema.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            List of schema field objects.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">file_or_path</span><span class="p">,</span> <span class="n">io</span><span class="o">.</span><span class="n">IOBase</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_schema_from_json_file_object</span><span class="p">(</span><span class="n">file_or_path</span><span class="p">)</span>
+
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_or_path</span><span class="p">)</span> <span class="k">as</span> <span class="n">file_obj</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_schema_from_json_file_object</span><span class="p">(</span><span class="n">file_obj</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Client.schema_to_json"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.client.Client.html#google.cloud.bigquery.client.Client.schema_to_json">[docs]</a>    <span class="k">def</span> <span class="nf">schema_to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">schema_list</span><span class="p">,</span> <span class="n">destination</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Takes a list of schema field objects.</span>
+
+<span class="sd">        Serializes the list of schema field objects as json to a file.</span>
+
+<span class="sd">        Destination is a file path or a file object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">json_schema_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span><span class="o">.</span><span class="n">to_api_repr</span><span class="p">()</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">schema_list</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">destination</span><span class="p">,</span> <span class="n">io</span><span class="o">.</span><span class="n">IOBase</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_schema_to_json_file_object</span><span class="p">(</span><span class="n">json_schema_list</span><span class="p">,</span> <span class="n">destination</span><span class="p">)</span>
+
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">destination</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file_obj</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_schema_to_json_file_object</span><span class="p">(</span><span class="n">json_schema_list</span><span class="p">,</span> <span class="n">file_obj</span><span class="p">)</span></div></div>
 
 
 <span class="c1"># pylint: disable=unused-argument</span>
