@@ -30,5 +30,6 @@ v2beta2:
 
 .. toctree::
     :maxdepth: 2
+    
     gapic/v2beta2/api
     gapic/v2beta2/types
