@@ -16,8 +16,9 @@
 
 
 # DO NOT MODIFY! AUTO-GENERATED!
-# This file is auto-generated on 2019-04-24.
+# This file is auto-generated on 2019-04-26.
 
+# flake8: noqa
 
 import os
 import pytest
