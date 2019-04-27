@@ -20,6 +20,7 @@ import logging
 
 from google.cloud.ndb import context as context_module
 from google.cloud.ndb import _datastore_query
+from google.cloud.ndb import _gql
 from google.cloud.ndb import exceptions
 from google.cloud.ndb import model
 
@@ -1470,9 +1471,9 @@ class Query:
         if filters is not None:
             filters = filters.resolve(bindings, used)
         unused = []
-        for arg in positional:
-            if arg not in used:
-                unused.append(i)
+        for i, arg in enumerate(positional):
+            if i + 1 not in used:
+                unused.append(i + 1)
         if unused:
             raise exceptions.BadArgumentError(
                 "Positional arguments %s were given but not used."
@@ -2032,5 +2033,22 @@ class Query:
         raise NotImplementedError
 
 
-def gql(*args, **kwargs):
-    raise NotImplementedError
+def gql(query_string, *args, **kwds):
+    """Parse a GQL query string.
+
+    Args:
+        query_string (str): Full GQL query, e.g. 'SELECT * FROM Kind WHERE
+            prop = 1 ORDER BY prop2'.
+        args: If present, used to call bind().
+        kwds: If present, used to call bind().
+
+    Returns:
+        Query: a query instance.
+
+    Raises:
+        google.cloud.ndb.exceptions.BadQueryError: When bad gql is passed in.
+    """
+    query = _gql.GQL(query_string).get_query()
+    if args or kwds:
+        query = query.bind(*args, **kwds)
+    return query

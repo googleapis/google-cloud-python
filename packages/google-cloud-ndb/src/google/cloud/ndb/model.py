@@ -3934,6 +3934,30 @@ class Model(metaclass=MetaModel):
         """
         return key
 
+    @classmethod
+    def _gql(cls, query_string, *args, **kwds):
+        """Run a GQL query using this model as the FROM entity.
+
+        Args:
+            query_string (str): The WHERE part of a GQL query (including the
+                WHERE kwyword).
+            args: if present, used to call bind() on the query.
+            kwds: if present, used to call bind() on the query.
+
+        Returns:
+            :class:query.Query: A query instance.
+        """
+        # import late to avoid circular import problems
+        from google.cloud.ndb import query
+
+        return query.gql(
+            "SELECT * FROM {} {}".format(
+                cls._class_name(), query_string, *args, *kwds
+            )
+        )
+
+    gql = _gql
+
     def _put(self, **options):
         """Synchronously write this entity to Cloud Datastore.
 

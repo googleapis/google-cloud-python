@@ -2989,6 +2989,18 @@ class TestModel:
         with pytest.raises(TypeError):
             XModel.query(distinct=True, group_by=("x",))
 
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_gql():
+        class Simple(model.Model):
+            x = model.IntegerProperty()
+
+        entity = Simple()
+        query = entity.gql("WHERE x=1")
+        assert isinstance(query, query_module.Query)
+        assert query.kind == "Simple"
+        assert query.filters == query_module.FilterNode("x", "=", 1)
+
 
 class Test_entity_from_protobuf:
     @staticmethod

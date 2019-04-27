@@ -1702,6 +1702,95 @@ class TestQuery:
             query.fetch_page_async(None)
 
 
-def test_gql():
-    with pytest.raises(NotImplementedError):
-        query_module.gql()
+class TestGQL:
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_gql():
+        class SomeKind(model.Model):
+            prop1 = model.StringProperty()
+            prop2 = model.StringProperty()
+            prop3 = model.IntegerProperty()
+            prop4 = model.IntegerProperty()
+
+        rep = (
+            "Query(kind='SomeKind', filters=AND(FilterNode('prop2', '=', 'xxx'"
+            "), FilterNode('prop3', '>', 5)), order_by=[PropertyOrder(name="
+            "'prop4', reverse=False)], projection=['prop1', 'prop2'], "
+            "default_options=QueryOptions(limit=10, offset=5))"
+        )
+        gql_query = (
+            "SELECT prop1, prop2 FROM SomeKind WHERE prop3>5 and prop2='xxx' "
+            "ORDER BY prop4 LIMIT 10 OFFSET 5"
+        )
+        query = query_module.gql(gql_query)
+        assert query.__repr__() == rep
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_gql_with_bind_positional():
+        class SomeKind(model.Model):
+            prop1 = model.StringProperty()
+            prop2 = model.StringProperty()
+            prop3 = model.IntegerProperty()
+            prop4 = model.IntegerProperty()
+
+        rep = (
+            "Query(kind='SomeKind', filters=AND(FilterNode('prop2', '=', 'xxx'"
+            "), FilterNode('prop3', '>', 5)), order_by=[PropertyOrder(name="
+            "'prop4', reverse=False)], projection=['prop1', 'prop2'], "
+            "default_options=QueryOptions(limit=10, offset=5))"
+        )
+        gql_query = (
+            "SELECT prop1, prop2 FROM SomeKind WHERE prop3>:1 AND prop2=:2 "
+            "ORDER BY prop4 LIMIT 10 OFFSET 5"
+        )
+        positional = [5, "xxx"]
+        query = query_module.gql(gql_query, *positional)
+        assert query.__repr__() == rep
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_gql_with_bind_keywords():
+        class SomeKind(model.Model):
+            prop1 = model.StringProperty()
+            prop2 = model.StringProperty()
+            prop3 = model.IntegerProperty()
+            prop4 = model.IntegerProperty()
+
+        rep = (
+            "Query(kind='SomeKind', filters=AND(FilterNode('prop2', '=', 'xxx'"
+            "), FilterNode('prop3', '>', 5)), order_by=[PropertyOrder(name="
+            "'prop4', reverse=False)], projection=['prop1', 'prop2'], "
+            "default_options=QueryOptions(limit=10, offset=5))"
+        )
+        gql_query = (
+            "SELECT prop1, prop2 FROM SomeKind WHERE prop3 > :param1 and "
+            "prop2 = :param2 ORDER BY prop4 LIMIT 10 OFFSET 5"
+        )
+        keywords = {"param1": 5, "param2": "xxx"}
+        query = query_module.gql(gql_query, **keywords)
+        assert query.__repr__() == rep
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_gql_with_bind_mixed():
+        class SomeKind(model.Model):
+            prop1 = model.StringProperty()
+            prop2 = model.StringProperty()
+            prop3 = model.IntegerProperty()
+            prop4 = model.IntegerProperty()
+
+        rep = (
+            "Query(kind='SomeKind', filters=AND(FilterNode('prop2', '=', 'xxx'"
+            "), FilterNode('prop3', '>', 5)), order_by=[PropertyOrder(name="
+            "'prop4', reverse=False)], projection=['prop1', 'prop2'], "
+            "default_options=QueryOptions(limit=10, offset=5))"
+        )
+        gql_query = (
+            "SELECT prop1, prop2 FROM SomeKind WHERE prop3 > :1 and "
+            "prop2 = :param1 ORDER BY prop4 LIMIT 10 OFFSET 5"
+        )
+        positional = [5]
+        keywords = {"param1": "xxx"}
+        query = query_module.gql(gql_query, *positional, **keywords)
+        assert query.__repr__() == rep

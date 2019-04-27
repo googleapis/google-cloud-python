@@ -26,6 +26,7 @@ __all__ = [
     "BadValueError",
     "BadArgumentError",
     "Rollback",
+    "BadQueryError",
     "BadFilterError",
 ]
 
