@@ -661,13 +661,7 @@ def test_collection_group_queries(client, cleanup):
     query = client.collection_group(collection_group)
     snapshots = list(query.stream())
     found = [snapshot.id for snapshot in snapshots]
-    expected = [
-        "cg-doc1",
-        "cg-doc2",
-        "cg-doc3",
-        "cg-doc4",
-        "cg-doc5",
-    ]
+    expected = ["cg-doc1", "cg-doc2", "cg-doc3", "cg-doc4", "cg-doc5"]
     assert found == expected
 
 
