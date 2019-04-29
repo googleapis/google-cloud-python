@@ -33,6 +33,7 @@ import datetime
 import pytest
 
 from test_utils.system import unique_resource_id
+from google.api_core.exceptions import NotFound
 from google.cloud._helpers import UTC
 from google.cloud.bigtable import Client
 from google.cloud.bigtable import enums
@@ -67,7 +68,6 @@ class Config(object):
 
 
 def setup_module():
-    global INSTANCES_TO_DELETE
     client = Config.CLIENT = Client(admin=True)
     Config.INSTANCE = client.instance(
         INSTANCE_ID, instance_type=PRODUCTION, labels=LABELS
@@ -86,19 +86,13 @@ def setup_module():
 
 def teardown_module():
     for instance in INSTANCES_TO_DELETE:
-        if instance.exists():
+        try:
             instance.delete()
-
-    # Avoid any leak of snippet instances.
-    client = Client(admin=True)
-    (instances_list, failed_locations_list) = client.list_instances()
-    for instance in instances_list:
-        if "snippet-tests" in instance.instance_id:
-            instance.delete()
+        except NotFound:
+            pass
 
 
 def test_bigtable_create_instance():
-    global INSTANCES_TO_DELETE
     # [START bigtable_create_prod_instance]
     from google.cloud.bigtable import Client
     from google.cloud.bigtable import enums
@@ -288,7 +282,6 @@ def test_bigtable_reload_cluster():
 
 
 def test_bigtable_update_instance():
-    global INSTANCES_TO_DELETE
     # [START bigtable_update_instance]
     from google.cloud.bigtable import Client
 
@@ -370,7 +363,6 @@ def test_bigtable_delete_cluster():
 
 
 def test_bigtable_delete_instance():
-    global INSTANCES_TO_DELETE
     # [START bigtable_delete_instance]
     from google.cloud.bigtable import Client
 
