@@ -59,7 +59,9 @@ class Connection(_http.JSONConnection):
 
     @property
     def _EXTRA_HEADERS(self):
-        self._extra_headers[_http.CLIENT_INFO_HEADER] = self._client_info.to_user_agent()
+        self._extra_headers[
+            _http.CLIENT_INFO_HEADER
+        ] = self._client_info.to_user_agent()
         return self._extra_headers
 
     @_EXTRA_HEADERS.setter

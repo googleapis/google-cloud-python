@@ -1339,7 +1339,7 @@ class TestClient(unittest.TestCase):
             _http=http,
         )
 
-        table = client.get_table(self.TABLE_REF)
+        client.get_table(self.TABLE_REF)
 
         expected_user_agent = user_agent_override.to_user_agent()
         http.request.assert_called_once_with(
