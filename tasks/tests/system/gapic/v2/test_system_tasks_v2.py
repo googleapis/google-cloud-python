@@ -18,12 +18,9 @@ from google.cloud import tasks_v2
 
 
 class TestSystemTasks(object):
-    def test_recognize(self):
+    def test_list_queues(self):
         client = tasks_v2.CloudTasksClient()
 
         # Setup Request
         parent = client.location_path(os.environ["PROJECT_ID"], "us-central1")
-
-        paged_list_response = client.list_queues(parent)
-        resources = list(paged_list_response)
-        assert len(resources) == 0
+        client.list_queues(parent)
