@@ -46,6 +46,7 @@ from google.cloud.bigquery import _helpers
 _DONE_STATE = "DONE"
 _STOPPED_REASON = "stopped"
 _TIMEOUT_BUFFER_SECS = 0.1
+_CONTAINS_ORDER_BY = re.compile(r"ORDER\s+BY", re.IGNORECASE)
 
 _ERROR_REASON_TO_EXCEPTION = {
     "accessDenied": http_client.FORBIDDEN,
@@ -94,11 +95,26 @@ def _error_result_to_exception(error_result):
 
 
 def _contains_order_by(query):
-    """Do we need to preserve the order of the query results?"""
-    if query is None:
-        return False
+    """Do we need to preserve the order of the query results?
 
-    return re.search(r"ORDER\s+BY", query, re.IGNORECASE) is not None
+    This function has known false positives, such as with ordered window
+    functions:
+
+    .. code-block:: sql
+
+       SELECT SUM(x) OVER (
+           window_name
+           PARTITION BY...
+           ORDER BY...
+           window_frame_clause)
+       FROM ...
+
+    This false positive failure case means the behavior will be correct, but
+    downloading results with the BigQuery Storage API may be slower than it
+    otherwise would. This is preferable to the false negative case, where
+    results are expected to be in order but are not (due to parallel reads).
+    """
+    return query and _CONTAINS_ORDER_BY.search(query)
 
 
 class Compression(object):
