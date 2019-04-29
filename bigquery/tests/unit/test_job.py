@@ -5098,7 +5098,10 @@ class TestTimelineEntry(unittest.TestCase, _Base):
 def test__contains_order_by(query, expected):
     from google.cloud.bigquery import job as mut
 
-    assert mut._contains_order_by(query) == expected
+    if expected:
+        assert mut._contains_order_by(query)
+    else:
+        assert not mut._contains_order_by(query)
 
 
 @pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
