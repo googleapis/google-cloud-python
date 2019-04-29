@@ -152,8 +152,6 @@ The following client libraries have **alpha** support:
 .. _Scheduler README: https://github.com/googleapis/google-cloud-python/tree/master/scheduler
 .. _Google Cloud Security Scanner: https://pypi.org/project/google-cloud-websecurityscanner/
 .. _Security Scanner README: https://github.com/googleapis/google-cloud-python/blob/master/websecurityscanner
-.. _Google Cloud Tasks: https://pypi.org/project/google-cloud-tasks/
-.. _Tasks README: https://github.com/googleapis/google-cloud-python/tree/master/tasks
 .. _Google Cloud Text-to-Speech: https://pypi.org/project/google-cloud-texttospeech/
 .. _Text-to-Speech README: https://github.com/googleapis/google-cloud-python/tree/master/texttospeech
 .. _Google Cloud Trace: https://pypi.org/project/google-cloud-trace/
