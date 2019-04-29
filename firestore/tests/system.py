@@ -736,8 +736,8 @@ def test_collection_group_queries_filters(client, cleanup):
 
     query = (
         client.collection_group(collection_group)
-        .where("x", ">=", 1)
-        .where("x", "<=", len(doc_paths) - 1)
+        .where("__name__", ">=", "a/b")
+        .where("__name__", "<=", "a/b0")
     )
     snapshots = list(query.stream())
     found = set(snapshot.id for snapshot in snapshots)
@@ -745,8 +745,8 @@ def test_collection_group_queries_filters(client, cleanup):
 
     query = (
         client.collection_group(collection_group)
-        .where("x", ">", 0)
-        .where("x", "<", 2)
+        .where("__name__", ">", "a/b")
+        .where("__name__", "<", "a/b/{}/cg-doc3".format(collection_group))
     )
     snapshots = list(query.stream())
     found = set(snapshot.id for snapshot in snapshots)
