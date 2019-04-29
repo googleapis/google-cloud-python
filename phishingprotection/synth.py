@@ -50,7 +50,7 @@ for version in versions:
     unit_test =  Path("tests/unit/gapic/v1beta1/test_phishing_protection_service_v1_beta1_client_v1beta1.py")
 
     files = [client, client_config, transport, unit_test]
-    for file in files:
+    for f in files:
         new_name = str(file).replace("v1_beta1_", "")
         os.rename(file, new_name)
 
