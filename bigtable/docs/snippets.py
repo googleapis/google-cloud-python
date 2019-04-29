@@ -384,7 +384,7 @@ def test_bigtable_delete_instance():
     operation = instance.create(clusters=[cluster])
 
     # Make sure this instance gets deleted after the test case.
-    INSTANCES_TO_DELETE.append(instance_id_to_delete)
+    INSTANCES_TO_DELETE.append(instance)
 
     # We want to make sure the operation completes.
     operation.result(timeout=100)
