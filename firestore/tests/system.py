@@ -635,7 +635,7 @@ def test_query_unary(client, cleanup):
 
 
 def test_collection_group_queries(client, cleanup):
-    collection_group = "col" + unique_resource_id("-")
+    collection_group = "b" + unique_resource_id("-")
 
     doc_paths = [
         "abc/123/" + collection_group + "/cg-doc1",
@@ -672,7 +672,7 @@ def test_collection_group_queries(client, cleanup):
 
 
 def test_collection_group_queries_startat_endat(client, cleanup):
-    collection_group = "col" + unique_resource_id("-")
+    collection_group = "b" + unique_resource_id("-")
 
     doc_paths = [
         "a/a/" + collection_group + "/cg-doc1",
@@ -709,12 +709,12 @@ def test_collection_group_queries_startat_endat(client, cleanup):
     )
     snapshots = list(query.stream())
     found = set(snapshot.id for snapshot in snapshots)
-    assert found == set(["cg-doc2", "cg-doc4"])
+    assert found == set(["cg-doc2"])
 
 
 @pytest.mark.skip("where query across group requires custom index.")
 def test_collection_group_queries_filters(client, cleanup):
-    collection_group = "col" + unique_resource_id("-")
+    collection_group = "b" + unique_resource_id("-")
 
     doc_paths = [
         "a/a/" + collection_group + "/cg-doc1",
