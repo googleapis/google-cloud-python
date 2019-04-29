@@ -8,25 +8,37 @@ The primary differences come from:
 - Absence of "legacy" APIs provided by Google App Engine (e.g.
   `google.appengine.api.datastore_types`) as well as other environment
   specific features (e.g. the `APPLICATION_ID` environment variable)
+- Differences in Datastore APIs between the versions provided by Google App
+  Engine and Google Clould Platform.
 - Presence of new features in Python 3 like keyword only arguments and
   async support
 
-## Assumptions
+## Bootstrapping
 
-- In production, the `APPLICATION_ID` environment variable will be set to
-  a useful value (since there is no `dev_appserver.py` for
-  `runtime: python37`). This is used as a fallback for the `ndb.Key()`
-  constructor much like `google.cloud.datastore.Client()` determines a default
-  project via one of
+The biggest difference is in establishing a runtime context for your NDB
+application. In the Google App Engine environment, Legacy NDB could just
+shoehorn the runtime context onto the current HTTP request. Decoupling NDB from
+GAE, means we can't assume we're running in the context of a GAE request. 
 
-  - `DATASTORE_DATASET` environment variable (for `gcd` / emulator testing)
-  - `GOOGLE_CLOUD_PROJECT` environment variable
-  - Google App Engine application ID (this is legacy / standard GAE)
-  - Google Compute Engine project ID (from metadata server)
+To deal with this, the ``Client`` class has been introduced which by and large
+works the same as Datastore's ``Client`` class and uses ``google.auth`` for
+authentication. While this is different from how Legacy NDB worked, this is
+consistent with how APIs in Google Cloud Platform work. You can pass a
+``credentials`` parameter to ``Client`` or use the
+``GOOGLE_APPLICATION_CREDENTIALS`` environment variable (recommended).
 
-  The correct fallback is likely different than this and should probably cache
-  the output of `google.cloud.datastore.client._determine_default_project()`
-  on the `ndb.Key` class or `ndb.key` module (it should cache at import time)
+Once a client has been obtained, you still need to establish a runtime context,
+which you can do using the ``Client.context`` method.
+
+```
+from google.cloud import ndb
+
+# Assume GOOGLE_APPLICATION_CREDENTIALS is set in environment
+client = ndb.Client()
+
+with context as client.context():
+    do_stuff_with_ndb()
+```
 
 ## Differences (between old and new implementations)
 
@@ -198,12 +210,17 @@ significant internal refactoring.
   Datastore RPC client so that calls to Datastore RPCs could yield NDB entities
   directly from Datastore RPC calls. AFAIK, Datastore no longer accepts an
   adapter for adapting entities. At any rate, we no longer do it that way.
-- `Property._db_get_value` is no longer used. It worked directly with Datastore
-  protocol buffers, work which is now delegated to `google.cloud.datastore`.
-- `Model._deserialize` is no longer used. It worked directly with protocol
-  buffers, so wasn't really salvageable. Unfortunately, there were comments
-  indicating it was overridden by subclasses. Hopefully this isn't broadly the
-  case.
+- `Property._db_get_value`, `Property._db_set_value`, are no longer used. They
+  worked directly with Datastore protocol buffers, work which is now delegated
+  to `google.cloud.datastore`.
+- `Property._db_set_compressed_meaning` and 
+  `Property._db_set_uncompressed_meaning` were used by `Property._db_set_value`
+  and are no longer used.
+- `Model._deserialize` and `Model._serialize` are no longer used. They worked
+  directly with protocol buffers, so weren't really salvageable. Unfortunately,
+  there were comments indicating they were overridden by subclasses. Hopefully
+  this isn't broadly the case.
+- `model.make_connection` is no longer implemented.
 
 ## Comments
 

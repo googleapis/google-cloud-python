@@ -359,7 +359,7 @@ def _entity_to_protobuf(entity):
 
 
 def make_connection(*args, **kwargs):
-    raise NotImplementedError
+    raise exceptions.NoLongerImplementedError()
 
 
 class ModelAttribute:
@@ -1525,9 +1525,9 @@ class Property(ModelAttribute):
                 :data:`None` if the instance is not a projection.
 
         Raises:
-            NotImplementedError: Always. This method is virtual.
+            NotImplementedError: Always. No longer implemented.
         """
-        raise NotImplementedError
+        raise exceptions.NoLongerImplementedError()
 
     def _deserialize(self, entity, p, unused_depth=1):
         """Deserialize this property from a protocol buffer.
@@ -1756,9 +1756,9 @@ class BooleanProperty(Property):
         """Helper for :meth:`_serialize`.
 
         Raises:
-            NotImplementedError: Always. This method is virtual.
+            NotImplementedError: Always. No longer implemented.
         """
-        raise NotImplementedError
+        raise exceptions.NoLongerImplementedError()
 
     def _db_get_value(self, v, unused_p):
         """Helper for :meth:`_deserialize`.
@@ -1805,9 +1805,9 @@ class IntegerProperty(Property):
         """Helper for :meth:`_serialize`.
 
         Raises:
-            NotImplementedError: Always. This method is virtual.
+            NotImplementedError: Always. No longer implemented.
         """
-        raise NotImplementedError
+        raise exceptions.NoLongerImplementedError()
 
     def _db_get_value(self, v, unused_p):
         """Helper for :meth:`_deserialize`.
@@ -1855,9 +1855,9 @@ class FloatProperty(Property):
         """Helper for :meth:`_serialize`.
 
         Raises:
-            NotImplementedError: Always. This method is virtual.
+            NotImplementedError: Always. No longer implemented.
         """
-        raise NotImplementedError
+        raise exceptions.NoLongerImplementedError()
 
     def _db_get_value(self, v, unused_p):
         """Helper for :meth:`_deserialize`.
@@ -2042,25 +2042,25 @@ class BlobProperty(Property):
         """Helper for :meth:`_serialize`.
 
         Raises:
-            NotImplementedError: Always. This method is virtual.
+            NotImplementedError: Always. No longer implemented.
         """
-        raise NotImplementedError
+        raise exceptions.NoLongerImplementedError()
 
     def _db_set_compressed_meaning(self, p):
         """Helper for :meth:`_db_set_value`.
 
         Raises:
-            NotImplementedError: Always. This method is virtual.
+            NotImplementedError: Always. No longer implemented.
         """
-        raise NotImplementedError
+        raise exceptions.NoLongerImplementedError()
 
     def _db_set_uncompressed_meaning(self, p):
         """Helper for :meth:`_db_set_value`.
 
         Raises:
-            NotImplementedError: Always. This method is virtual.
+            NotImplementedError: Always. No longer implemented.
         """
-        raise NotImplementedError
+        raise exceptions.NoLongerImplementedError()
 
     def _db_get_value(self, v, unused_p):
         """Helper for :meth:`_deserialize`.
@@ -2206,9 +2206,9 @@ class TextProperty(Property):
         """Helper for :meth:`_db_set_value`.
 
         Raises:
-            NotImplementedError: Always. This method is virtual.
+            NotImplementedError: Always. No longer implemented.
         """
-        raise NotImplementedError
+        raise exceptions.NoLongerImplementedError()
 
 
 class StringProperty(TextProperty):
@@ -2267,9 +2267,9 @@ class GeoPtProperty(Property):
         """Helper for :meth:`_serialize`.
 
         Raises:
-            NotImplementedError: Always. This method is virtual.
+            NotImplementedError: Always. No longer implemented.
         """
-        raise NotImplementedError
+        raise exceptions.NoLongerImplementedError()
 
     def _db_get_value(self, v, unused_p):
         """Helper for :meth:`_deserialize`.
@@ -2728,13 +2728,10 @@ class UserProperty(Property):
             write_empty_list=write_empty_list,
         )
         if auto_current_user is not None:
-            raise NotImplementedError(
-                "The auto_current_user argument is no longer supported."
-            )
+            raise exceptions.NoLongerImplementedError()
+
         if auto_current_user_add is not None:
-            raise NotImplementedError(
-                "The auto_current_user_add argument is no longer supported."
-            )
+            raise exceptions.NoLongerImplementedError()
 
     def _validate(self, value):
         """Validate a ``value`` before setting it.
@@ -2765,9 +2762,9 @@ class UserProperty(Property):
         """Helper for :meth:`_serialize`.
 
         Raises:
-            NotImplementedError: Always. This method is virtual.
+            NotImplementedError: Always. No longer implemented.
         """
-        raise NotImplementedError
+        raise exceptions.NoLongerImplementedError()
 
     def _db_get_value(self, v, unused_p):
         """Helper for :meth:`_deserialize`.
@@ -3000,9 +2997,9 @@ class KeyProperty(Property):
         """Helper for :meth:`_serialize`.
 
         Raises:
-            NotImplementedError: Always. This method is virtual.
+            NotImplementedError: Always. No longer implemented.
         """
-        raise NotImplementedError
+        raise exceptions.NoLongerImplementedError()
 
     def _db_get_value(self, v, unused_p):
         """Helper for :meth:`_deserialize`.
@@ -3040,9 +3037,9 @@ class BlobKeyProperty(Property):
         """Helper for :meth:`_serialize`.
 
         Raises:
-            NotImplementedError: Always. This method is virtual.
+            NotImplementedError: Always. No longer implemented.
         """
-        raise NotImplementedError
+        raise exceptions.NoLongerImplementedError()
 
     def _db_get_value(self, v, unused_p):
         """Helper for :meth:`_deserialize`.
@@ -3192,9 +3189,9 @@ class DateTimeProperty(Property):
         """Helper for :meth:`_serialize`.
 
         Raises:
-            NotImplementedError: Always. This method is virtual.
+            NotImplementedError: Always. No longer implemented.
         """
-        raise NotImplementedError
+        raise exceptions.NoLongerImplementedError()
 
     def _db_get_value(self, v, unused_p):
         """Helper for :meth:`_deserialize`.
