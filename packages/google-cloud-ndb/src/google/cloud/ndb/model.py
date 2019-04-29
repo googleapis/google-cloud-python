@@ -44,6 +44,7 @@ from google.cloud.ndb import _datastore_api
 from google.cloud.ndb import _datastore_types
 from google.cloud.ndb import exceptions
 from google.cloud.ndb import key as key_module
+from google.cloud.ndb import _options
 from google.cloud.ndb import tasklets
 
 
@@ -3955,38 +3956,96 @@ class Model(metaclass=MetaModel):
 
     gql = _gql
 
-    def _put(self, **options):
+    @_options.Options.options
+    def _put(
+        self,
+        retries=None,
+        deadline=None,
+        force_writes=None,
+        use_cache=None,
+        use_memcache=None,
+        use_datastore=None,
+        memcache_timeout=None,
+        max_memcache_items=None,
+        _options=None,
+    ):
         """Synchronously write this entity to Cloud Datastore.
 
         If the operation creates or completes a key, the entity's key
         attribute is set to the new, complete key.
 
-        Arguments:
-            options (Dict[str, Any]): Options for this request.
+        Args:
+            deadline (float): Length of time, in seconds, to wait for server
+                before timing out.
+            force_writes (bool): Specifies whether a write request should
+                succeed even if the app is read-only. (This only applies to
+                user controlled read-only periods.)
+            use_cache (bool): Specifies whether to store entities in in-process
+                cache; overrides in-process cache policy for this operation.
+            use_memcache (bool): Specifies whether to store entities in
+                memcache; overrides memcache policy for this operation.
+            use_datastore (bool): Specifies whether to store entities in
+                Datastore; overrides Datastore policy for this operation.
+            memcache_timeout (int): Maximum lifetime for entities in memcache;
+                overrides memcache timeout policy for this operation.
+            max_memcache_items (int): Maximum batch size for the auto-batching
+                feature of the Context memcache methods. For example, with the
+                default size of max_memcache_items (100), up to 100 memcache
+                set operations will be combined into a single set_multi
+                operation.
 
         Returns:
             key.Key: The key for the entity. This is always a complete key.
         """
-        return self._put_async(**options).result()
+        return self._put_async(_options=_options).result()
 
     put = _put
 
     @tasklets.tasklet
-    def _put_async(self, **options):
+    @_options.Options.options
+    def _put_async(
+        self,
+        retries=None,
+        deadline=None,
+        force_writes=None,
+        use_cache=None,
+        use_memcache=None,
+        use_datastore=None,
+        memcache_timeout=None,
+        max_memcache_items=None,
+        _options=None,
+    ):
         """Asynchronously write this entity to Cloud Datastore.
 
         If the operation creates or completes a key, the entity's key
         attribute is set to the new, complete key.
 
-        Arguments:
-            options (Dict[str, Any]): Options for this request.
+        Args:
+            deadline (float): Length of time, in seconds, to wait for server
+                before timing out.
+            force_writes (bool): Specifies whether a write request should
+                succeed even if the app is read-only. (This only applies to
+                user controlled read-only periods.)
+            use_cache (bool): Specifies whether to store entities in in-process
+                cache; overrides in-process cache policy for this operation.
+            use_memcache (bool): Specifies whether to store entities in
+                memcache; overrides memcache policy for this operation.
+            use_datastore (bool): Specifies whether to store entities in
+                Datastore; overrides Datastore policy for this operation.
+            memcache_timeout (int): Maximum lifetime for entities in memcache;
+                overrides memcache timeout policy for this operation.
+            max_memcache_items (int): Maximum batch size for the auto-batching
+                feature of the Context memcache methods. For example, with the
+                default size of max_memcache_items (100), up to 100 memcache
+                set operations will be combined into a single set_multi
+                operation.
 
         Returns:
             tasklets.Future: The eventual result will be the key for the
                 entity. This is always a complete key.
         """
         entity_pb = _entity_to_protobuf(self)
-        key_pb = yield _datastore_api.put(entity_pb, **options)
+        key_pb = yield _datastore_api.put(entity_pb, _options)
         if key_pb:
             ds_key = helpers.key_from_protobuf(key_pb)
             self._key = key_module.Key._from_ds_key(ds_key)
@@ -4103,88 +4162,298 @@ def non_transactional(*args, **kwargs):
     raise NotImplementedError
 
 
-def get_multi_async(keys, **options):
+@_options.ReadOptions.options
+def get_multi_async(
+    keys,
+    read_consistency=None,
+    read_policy=None,
+    transaction=None,
+    retries=None,
+    deadline=None,
+    force_writes=None,
+    use_cache=None,
+    use_memcache=None,
+    use_datastore=None,
+    memcache_timeout=None,
+    max_memcache_items=None,
+    _options=None,
+):
     """Fetches a sequence of keys.
 
     Args:
-        keys (Sequence[:class:`~google.cloud.ndb.key.Key`]): A sequence of keys.
-        **options (Dict[str, Any]): The options for the request. For example,
-            ``{"read_consistency": EVENTUAL}``.
+        keys (Sequence[:class:`~google.cloud.ndb.key.Key`]): A sequence of
+            keys.
+        read_consistency: Set this to ``ndb.EVENTUAL`` if, instead of
+            waiting for the Datastore to finish applying changes to all
+            returned results, you wish to get possibly-not-current results
+            faster. You can't do this if using a transaction.
+        transaction (bytes): Any results returned will be consistent with
+            the Datastore state represented by this transaction id.
+            Defaults to the currently running transaction. Cannot be used
+            with ``read_consistency=ndb.EVENTUAL``.
+        retries (int): Number of times to retry this operation in the case
+            of transient server errors. Operation will potentially be tried
+            up to ``retries`` + 1 times. Set to ``0`` to try operation only
+            once, with no retries.
+        deadline (float): Length of time, in seconds, to wait for server
+            before timing out.
+        force_writes (bool): Specifies whether a write request should
+            succeed even if the app is read-only. (This only applies to
+            user controlled read-only periods.)
+        use_cache (bool): Specifies whether to store entities in in-process
+            cache; overrides in-process cache policy for this operation.
+        use_memcache (bool): Specifies whether to store entities in
+            memcache; overrides memcache policy for this operation.
+        use_datastore (bool): Specifies whether to store entities in
+            Datastore; overrides Datastore policy for this operation.
+        memcache_timeout (int): Maximum lifetime for entities in memcache;
+            overrides memcache timeout policy for this operation.
+        max_memcache_items (int): Maximum batch size for the auto-batching
+            feature of the Context memcache methods. For example, with the
+            default size of max_memcache_items (100), up to 100 memcache
+            set operations will be combined into a single set_multi
+            operation.
+        read_policy: DEPRECATED: Synonym for ``read_consistency``.
+
     Returns:
         List[:class:`~google.cloud.ndb.tasklets.Future`]: List of futures.
     """
-    return [key.get_async(**options) for key in keys]
+    return [key.get_async(_options=_options) for key in keys]
 
 
-def get_multi(keys, **options):
+@_options.ReadOptions.options
+def get_multi(
+    keys,
+    read_consistency=None,
+    read_policy=None,
+    transaction=None,
+    retries=None,
+    deadline=None,
+    force_writes=None,
+    use_cache=None,
+    use_memcache=None,
+    use_datastore=None,
+    memcache_timeout=None,
+    max_memcache_items=None,
+    _options=None,
+):
     """Fetches a sequence of keys.
 
     Args:
-        keys (Sequence[:class:`~google.cloud.ndb.key.Key`]): A sequence of keys.
-        **options (Dict[str, Any]): The options for the request. For example,
-            ``{"read_consistency": EVENTUAL}``.
+        keys (Sequence[:class:`~google.cloud.ndb.key.Key`]): A sequence of
+            keys.
+        read_consistency: Set this to ``ndb.EVENTUAL`` if, instead of
+            waiting for the Datastore to finish applying changes to all
+            returned results, you wish to get possibly-not-current results
+            faster. You can't do this if using a transaction.
+        transaction (bytes): Any results returned will be consistent with
+            the Datastore state represented by this transaction id.
+            Defaults to the currently running transaction. Cannot be used
+            with ``read_consistency=ndb.EVENTUAL``.
+        retries (int): Number of times to retry this operation in the case
+            of transient server errors. Operation will potentially be tried
+            up to ``retries`` + 1 times. Set to ``0`` to try operation only
+            once, with no retries.
+        deadline (float): Length of time, in seconds, to wait for server
+            before timing out.
+        force_writes (bool): Specifies whether a write request should
+            succeed even if the app is read-only. (This only applies to
+            user controlled read-only periods.)
+        use_cache (bool): Specifies whether to store entities in in-process
+            cache; overrides in-process cache policy for this operation.
+        use_memcache (bool): Specifies whether to store entities in
+            memcache; overrides memcache policy for this operation.
+        use_datastore (bool): Specifies whether to store entities in
+            Datastore; overrides Datastore policy for this operation.
+        memcache_timeout (int): Maximum lifetime for entities in memcache;
+            overrides memcache timeout policy for this operation.
+        max_memcache_items (int): Maximum batch size for the auto-batching
+            feature of the Context memcache methods. For example, with the
+            default size of max_memcache_items (100), up to 100 memcache
+            set operations will be combined into a single set_multi
+            operation.
+        read_policy: DEPRECATED: Synonym for ``read_consistency``.
+
     Returns:
         List[Union[:class:`~google.cloud.ndb.model.Model`, :data:`None`]]: List
             containing the retrieved models or None where a key was not found.
     """
-    futures = [key.get_async(**options) for key in keys]
+    futures = [key.get_async(_options=_options) for key in keys]
     return [future.result() for future in futures]
 
 
-def put_multi_async(entities, **options):
+@_options.Options.options
+def put_multi_async(
+    entities,
+    retries=None,
+    deadline=None,
+    force_writes=None,
+    use_cache=None,
+    use_memcache=None,
+    use_datastore=None,
+    memcache_timeout=None,
+    max_memcache_items=None,
+    _options=None,
+):
     """Stores a sequence of Model instances.
 
     Args:
         entities (List[:class:`~google.cloud.ndb.model.Model`]): A sequence
             of models to store.
-        **options (Dict[str, Any]): The options for the request. For example,
-            ``{"read_consistency": EVENTUAL}``.
+        deadline (float): Length of time, in seconds, to wait for server
+            before timing out.
+        force_writes (bool): Specifies whether a write request should
+            succeed even if the app is read-only. (This only applies to
+            user controlled read-only periods.)
+        use_cache (bool): Specifies whether to store entities in in-process
+            cache; overrides in-process cache policy for this operation.
+        use_memcache (bool): Specifies whether to store entities in
+            memcache; overrides memcache policy for this operation.
+        use_datastore (bool): Specifies whether to store entities in
+            Datastore; overrides Datastore policy for this operation.
+        memcache_timeout (int): Maximum lifetime for entities in memcache;
+            overrides memcache timeout policy for this operation.
+        max_memcache_items (int): Maximum batch size for the auto-batching
+            feature of the Context memcache methods. For example, with the
+            default size of max_memcache_items (100), up to 100 memcache
+            set operations will be combined into a single set_multi
+            operation.
+
     Returns:
         List[:class:`~google.cloud.ndb.tasklets.Future`]: List of futures.
     """
-    return [entity.put_async(**options) for entity in entities]
+    return [entity.put_async(_options=_options) for entity in entities]
 
 
-def put_multi(entities, **options):
+@_options.Options.options
+def put_multi(
+    entities,
+    retries=None,
+    deadline=None,
+    force_writes=None,
+    use_cache=None,
+    use_memcache=None,
+    use_datastore=None,
+    memcache_timeout=None,
+    max_memcache_items=None,
+    _options=None,
+):
     """Stores a sequence of Model instances.
 
     Args:
         entities (List[:class:`~google.cloud.ndb.model.Model`]): A sequence
             of models to store.
-        **options (Dict[str, Any]): The options for the request. For example,
-            ``{"read_consistency": EVENTUAL}``.
+        deadline (float): Length of time, in seconds, to wait for server
+            before timing out.
+        force_writes (bool): Specifies whether a write request should
+            succeed even if the app is read-only. (This only applies to
+            user controlled read-only periods.)
+        use_cache (bool): Specifies whether to store entities in in-process
+            cache; overrides in-process cache policy for this operation.
+        use_memcache (bool): Specifies whether to store entities in
+            memcache; overrides memcache policy for this operation.
+        use_datastore (bool): Specifies whether to store entities in
+            Datastore; overrides Datastore policy for this operation.
+        memcache_timeout (int): Maximum lifetime for entities in memcache;
+            overrides memcache timeout policy for this operation.
+        max_memcache_items (int): Maximum batch size for the auto-batching
+            feature of the Context memcache methods. For example, with the
+            default size of max_memcache_items (100), up to 100 memcache
+            set operations will be combined into a single set_multi
+            operation.
+
     Returns:
         List[:class:`~google.cloud.ndb.key.Key`]: A list with the stored keys.
     """
-    futures = [entity.put_async(**options) for entity in entities]
+    futures = [entity.put_async(_options=_options) for entity in entities]
     return [future.result() for future in futures]
 
 
-def delete_multi_async(keys, **options):
+@_options.Options.options
+def delete_multi_async(
+    keys,
+    retries=None,
+    deadline=None,
+    force_writes=None,
+    use_cache=None,
+    use_memcache=None,
+    use_datastore=None,
+    memcache_timeout=None,
+    max_memcache_items=None,
+    _options=None,
+):
     """Deletes a sequence of keys.
 
     Args:
-        keys (Sequence[:class:`~google.cloud.ndb.key.Key`]): A sequence of keys.
-        **options (Dict[str, Any]): The options for the request. For example,
-            ``{"deadline": 5}``.
+        keys (Sequence[:class:`~google.cloud.ndb.key.Key`]): A sequence of
+            keys.
+        deadline (float): Length of time, in seconds, to wait for server
+            before timing out.
+        force_writes (bool): Specifies whether a write request should
+            succeed even if the app is read-only. (This only applies to
+            user controlled read-only periods.)
+        use_cache (bool): Specifies whether to store entities in in-process
+            cache; overrides in-process cache policy for this operation.
+        use_memcache (bool): Specifies whether to store entities in
+            memcache; overrides memcache policy for this operation.
+        use_datastore (bool): Specifies whether to store entities in
+            Datastore; overrides Datastore policy for this operation.
+        memcache_timeout (int): Maximum lifetime for entities in memcache;
+            overrides memcache timeout policy for this operation.
+        max_memcache_items (int): Maximum batch size for the auto-batching
+            feature of the Context memcache methods. For example, with the
+            default size of max_memcache_items (100), up to 100 memcache
+            set operations will be combined into a single set_multi
+            operation.
+
     Returns:
         List[:class:`~google.cloud.ndb.tasklets.Future`]: List of futures.
     """
-    return [key.delete_async(**options) for key in keys]
+    return [key.delete_async(_options=_options) for key in keys]
 
 
-def delete_multi(keys, **options):
+@_options.Options.options
+def delete_multi(
+    keys,
+    retries=None,
+    deadline=None,
+    force_writes=None,
+    use_cache=None,
+    use_memcache=None,
+    use_datastore=None,
+    memcache_timeout=None,
+    max_memcache_items=None,
+    _options=None,
+):
     """Deletes a sequence of keys.
 
     Args:
-        keys (Sequence[:class:`~google.cloud.ndb.key.Key`]): A sequence of keys.
-        **options (Dict[str, Any]): The options for the request. For example,
-            ``{"deadline": 5}``.
+        keys (Sequence[:class:`~google.cloud.ndb.key.Key`]): A sequence of
+            keys.
+        deadline (float): Length of time, in seconds, to wait for server
+            before timing out.
+        force_writes (bool): Specifies whether a write request should
+            succeed even if the app is read-only. (This only applies to
+            user controlled read-only periods.)
+        use_cache (bool): Specifies whether to store entities in in-process
+            cache; overrides in-process cache policy for this operation.
+        use_memcache (bool): Specifies whether to store entities in
+            memcache; overrides memcache policy for this operation.
+        use_datastore (bool): Specifies whether to store entities in
+            Datastore; overrides Datastore policy for this operation.
+        memcache_timeout (int): Maximum lifetime for entities in memcache;
+            overrides memcache timeout policy for this operation.
+        max_memcache_items (int): Maximum batch size for the auto-batching
+            feature of the Context memcache methods. For example, with the
+            default size of max_memcache_items (100), up to 100 memcache
+            set operations will be combined into a single set_multi
+            operation.
+
     Returns:
         List[:data:`None`]: A list whose items are all None, one per deleted
             key.
     """
-    futures = [key.delete_async(**options) for key in keys]
+    futures = [key.delete_async(_options=_options) for key in keys]
     return [future.result() for future in futures]
 
 

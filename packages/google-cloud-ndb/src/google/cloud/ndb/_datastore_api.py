@@ -27,6 +27,7 @@ from google.cloud.datastore_v1.proto import entity_pb2
 
 from google.cloud.ndb import context as context_module
 from google.cloud.ndb import _eventloop
+from google.cloud.ndb import _options
 from google.cloud.ndb import _remote
 from google.cloud.ndb import _retry
 from google.cloud.ndb import tasklets
@@ -105,7 +106,7 @@ def make_call(rpc_name, request, retries=None):
     return rpc_call()
 
 
-def lookup(key, **options):
+def lookup(key, options):
     """Look up a Datastore entity.
 
     Gets an entity from Datastore, asynchronously. Actually adds the request to
@@ -114,15 +115,13 @@ def lookup(key, **options):
 
     Args:
         key (~datastore.Key): The key for the entity to retrieve.
-        options (Dict[str, Any]): The options for the request. For example,
-            ``{"read_consistency": EVENTUAL}``.
+        options (_options.ReadOptions): The options for the request. For
+            example, ``{"read_consistency": EVENTUAL}``.
 
     Returns:
         :class:`~tasklets.Future`: If not an exception, future's result will be
             either an entity protocol buffer or _NOT_FOUND.
     """
-    _check_unsupported_options(options)
-
     batch = _get_batch(_LookupBatch, options)
     return batch.add(key)
 
@@ -138,9 +137,8 @@ def _get_batch(batch_cls, options):
     Args:
         batch_cls (type): Class representing the kind of operation being
             batched.
-        options (Dict[str, Any]): The options for the request. For example,
-            ``{"read_consistency": EVENTUAL}``. Calls with different options
-            will be placed in different batches.
+        options (_options.ReadOptions): The options for the request. Calls with
+            different options will be placed in different batches.
 
     Returns:
         batch_cls: An instance of the batch class.
@@ -150,7 +148,15 @@ def _get_batch(batch_cls, options):
     if batches is None:
         context.batches[batch_cls] = batches = {}
 
-    options_key = tuple(sorted(options.items()))
+    options_key = tuple(
+        sorted(
+            (
+                (key, value)
+                for key, value in options.items()
+                if value is not None
+            )
+        )
+    )
     batch = batches.get(options_key)
     if batch is not None:
         return batch
@@ -173,9 +179,8 @@ class _LookupBatch:
             protocol buffers to dependent futures.
 
     Args:
-        options (Dict[str, Any]): The options for the request. For example,
-            ``{"read_consistency": EVENTUAL}``. Calls with different options
-            will be placed in different batches.
+        options (_options.ReadOptions): The options for the request. Calls with
+            different options will be placed in different batches.
     """
 
     def __init__(self, options):
@@ -205,7 +210,7 @@ class _LookupBatch:
             keys.append(key_pb)
 
         read_options = _get_read_options(self.options)
-        retries = self.options.get("retries")
+        retries = self.options.retries
         rpc = _datastore_lookup(keys, read_options, retries=retries)
         rpc.add_done_callback(self.lookup_callback)
 
@@ -288,10 +293,9 @@ def _get_read_options(options):
     """Get the read options for a request.
 
     Args:
-        options (Dict[str, Any]): The options for the request. For example,
-            ``{"read_consistency": EVENTUAL}``. May contain options unrelated
-            to creating a :class:`datastore_pb2.ReadOptions` instance, which
-            will be ignored.
+        options (_options.ReadOptions): The options for the request. May
+            contain options unrelated to creating a
+            :class:`datastore_pb2.ReadOptions` instance, which will be ignored.
 
     Returns:
         datastore_pb2.ReadOptions: The options instance for passing to the
@@ -303,13 +307,11 @@ def _get_read_options(options):
     """
     transaction = _get_transaction(options)
 
-    read_consistency = options.get("read_consistency")
-    if read_consistency is None:
-        read_consistency = options.get("read_policy")  # Legacy NDB
+    read_consistency = options.read_consistency
 
     if transaction is not None and read_consistency is EVENTUAL:
         raise ValueError(
-            "read_consistency must be EVENTUAL when in transaction"
+            "read_consistency must not be EVENTUAL when in transaction"
         )
 
     return datastore_pb2.ReadOptions(
@@ -324,17 +326,21 @@ def _get_transaction(options):
     it will return the transaction for the current context.
 
     Args:
-        options (Dict[str, Any]): The options for the request. Only
+        options (_options.ReadOptions): The options for the request. Only
             ``transaction`` will have any bearing here.
 
     Returns:
         Union[bytes, NoneType]: The transaction identifier, or :data:`None`.
     """
-    context = context_module.get_context()
-    return options.get("transaction", context.transaction)
+    transaction = getattr(options, "transaction", None)
+    if transaction is None:
+        context = context_module.get_context()
+        transaction = context.transaction
+
+    return transaction
 
 
-def put(entity_pb, **options):
+def put(entity_pb, options):
     """Store an entity in datastore.
 
     The entity can be a new entity to be saved for the first time or an
@@ -342,7 +348,7 @@ def put(entity_pb, **options):
 
     Args:
         entity_pb (datastore_v1.types.Entity): The entity to be stored.
-        options (Dict[str, Any]): Options for this request.
+        options (_options.Options): Options for this request.
 
     Returns:
         tasklets.Future: Result will be completed datastore key
@@ -357,7 +363,7 @@ def put(entity_pb, **options):
     return batch.put(entity_pb)
 
 
-def delete(key, **options):
+def delete(key, options):
     """Delete an entity from Datastore.
 
     Deleting an entity that doesn't exist does not result in an error. The
@@ -365,7 +371,7 @@ def delete(key, **options):
 
     Args:
         key (datastore.Key): The key for the entity to be deleted.
-        options (Dict[str, Any]): Options for this request.
+        options (_options.Options): Options for this request.
 
     Returns:
         tasklets.Future: Will be finished when entity is deleted. Result will
@@ -384,7 +390,7 @@ class _NonTransactionalCommitBatch:
     """Batch for tracking a set of mutations for a non-transactional commit.
 
     Attributes:
-        options (Dict[str, Any]): See Args.
+        options (_options.Options): See Args.
         mutations (List[datastore_pb2.Mutation]): Sequence of mutation protocol
             buffers accumumlated for this batch.
         futures (List[tasklets.Future]): Sequence of futures for return results
@@ -392,12 +398,11 @@ class _NonTransactionalCommitBatch:
             i-th element of ``mutations``.
 
     Args:
-        options (Dict[str, Any]): The options for the request. Calls with
+        options (_options.Options): The options for the request. Calls with
             different options will be placed in different batches.
     """
 
     def __init__(self, options):
-        _check_unsupported_options(options)
         self.options = options
         self.mutations = []
         self.futures = []
@@ -441,7 +446,7 @@ class _NonTransactionalCommitBatch:
         def commit_callback(rpc):
             _process_commit(rpc, futures)
 
-        retries = self.options.get("retries")
+        retries = self.options.retries
         rpc = _datastore_commit(self.mutations, None, retries=retries)
         rpc.add_done_callback(commit_callback)
 
@@ -459,7 +464,7 @@ def commit(transaction, retries=None):
         tasklets.Future: Result will be none, will finish when the transaction
             is committed.
     """
-    batch = _get_commit_batch(transaction, {})
+    batch = _get_commit_batch(transaction, _options.Options())
     return batch.commit(retries=retries)
 
 
@@ -469,27 +474,26 @@ def _get_commit_batch(transaction, options):
     Args:
         transaction (bytes): The transaction id. Different transactions will
             have different batchs.
-        options (Dict[str, Any]): Options for the batch. Only "transaction" is
-            supported at this time.
+        options (_options.Options): Options for the batch. Not supported at
+            this time.
 
     Returns:
         _TransactionalCommitBatch: The batch.
     """
     # Support for different options will be tricky if we're in a transaction,
     # since we can only do one commit, so any options that affect that gRPC
-    # call would all need to be identical. For now, only "transaction" is
-    # suppoorted if there is a transaction.
-    options = options.copy()
-    options.pop("transaction", None)
-    for key in options:
-        raise NotImplementedError("Passed bad option: {!r}".format(key))
+    # call would all need to be identical. For now, no options are supported
+    # here.
+    for key, value in options.items():
+        if value:
+            raise NotImplementedError("Passed bad option: {!r}".format(key))
 
     # Since we're in a transaction, we need to hang on to the batch until
     # commit time, so we need to store it separately from other batches.
     context = context_module.get_context()
     batch = context.commit_batches.get(transaction)
     if batch is None:
-        batch = _TransactionalCommitBatch({"transaction": transaction})
+        batch = _TransactionalCommitBatch(transaction, options)
         context.commit_batches[transaction] = batch
 
     return batch
@@ -499,14 +503,14 @@ class _TransactionalCommitBatch(_NonTransactionalCommitBatch):
     """Batch for tracking a set of mutations to be committed for a transaction.
 
     Attributes:
-        options (Dict[str, Any]): See Args.
+        options (_options.Options): See Args.
         mutations (List[datastore_pb2.Mutation]): Sequence of mutation protocol
             buffers accumumlated for this batch.
         futures (List[tasklets.Future]): Sequence of futures for return results
             of the commit. The i-th element of ``futures`` corresponds to the
             i-th element of ``mutations``.
         transaction (bytes): The transaction id of the transaction for this
-            commit, if in a transaction.
+            commit.
         allocating_ids (List[tasklets.Future]): Futures for any calls to
             AllocateIds that are fired off before commit.
         incomplete_mutations (List[datastore_pb2.Mutation]): List of mutations
@@ -519,13 +523,15 @@ class _TransactionalCommitBatch(_NonTransactionalCommitBatch):
             receive results of id allocation.
 
     Args:
-        options (Dict[str, Any]): The options for the request. Calls with
+        transaction (bytes): The transaction id of the transaction for this
+            commit.
+        options (_options.Options): The options for the request. Calls with
             different options will be placed in different batches.
     """
 
-    def __init__(self, options):
+    def __init__(self, transaction, options):
         super(_TransactionalCommitBatch, self).__init__(options)
-        self.transaction = _get_transaction(options)
+        self.transaction = transaction
         self.allocating_ids = []
         self.incomplete_mutations = []
         self.incomplete_futures = []
@@ -582,7 +588,7 @@ class _TransactionalCommitBatch(_NonTransactionalCommitBatch):
             # Signal that we're done allocating these ids
             allocating_ids.set_result(None)
 
-        retries = self.options.get("retries")
+        retries = self.options.retries
         keys = [mutation.upsert.key for mutation in mutations]
         rpc = _datastore_allocate_ids(keys, retries=retries)
         rpc.add_done_callback(callback)
@@ -612,8 +618,9 @@ class _TransactionalCommitBatch(_NonTransactionalCommitBatch):
 
         Args:
             retries (int): Number of times to potentially retry the call. If
-                :data:`None` is passed, will use :data:`_retry._DEFAULT_RETRIES`.
-                If :data:`0` is passed, the call is attempted only once.
+                :data:`None` is passed, will use
+                :data:`_retry._DEFAULT_RETRIES`.  If :data:`0` is passed, the
+                call is attempted only once.
         """
         if not self.mutations:
             return
@@ -851,46 +858,3 @@ def _datastore_rollback(transaction, retries=None):
     )
 
     return make_call("Rollback", request, retries=retries)
-
-
-_OPTIONS_SUPPORTED = {
-    "transaction",
-    "read_consistency",
-    "read_policy",
-    "retries",
-}
-
-_OPTIONS_NOT_IMPLEMENTED = {
-    "deadline",
-    "force_writes",
-    "use_cache",
-    "use_memcache",
-    "use_datastore",
-    "memcache_timeout",
-    "max_memcache_items",
-    "xg",
-    "propagation",
-    "retries",
-}
-
-
-def _check_unsupported_options(options):
-    """Check to see if any passed options are not supported.
-
-    options (Dict[str, Any]): The options for the request. For example,
-        ``{"read_consistency": EVENTUAL}``.
-
-    Raises: NotImplementedError if any options are not supported.
-    """
-    for key in options:
-        if key in _OPTIONS_NOT_IMPLEMENTED:
-            # option is used in Legacy NDB, but has not yet been implemented in
-            # the rewrite, nor have we determined it won't be used, yet.
-            raise NotImplementedError(
-                "Support for option {!r} has not yet been implemented".format(
-                    key
-                )
-            )
-
-        elif key not in _OPTIONS_SUPPORTED:
-            raise NotImplementedError("Passed bad option: {!r}".format(key))

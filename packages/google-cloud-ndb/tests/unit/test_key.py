@@ -23,6 +23,7 @@ import pytest
 from google.cloud.ndb import exceptions
 from google.cloud.ndb import key as key_module
 from google.cloud.ndb import model
+from google.cloud.ndb import _options
 from google.cloud.ndb import tasklets
 import tests.unit.utils
 
@@ -543,7 +544,9 @@ class TestKey:
         key = key_module.Key("a", "b", app="c")
         assert key.get() == "the entity"
 
-        _datastore_api.lookup.assert_called_once_with(key._key)
+        _datastore_api.lookup.assert_called_once_with(
+            key._key, _options.ReadOptions()
+        )
         _entity_from_protobuf.assert_called_once_with("ds_entity")
 
     @staticmethod
@@ -560,7 +563,9 @@ class TestKey:
         ds_future.set_result("ds_entity")
         assert future.result() == "the entity"
 
-        _datastore_api.lookup.assert_called_once_with(key._key)
+        _datastore_api.lookup.assert_called_once_with(
+            key._key, _options.ReadOptions()
+        )
         _entity_from_protobuf.assert_called_once_with("ds_entity")
 
     @staticmethod
@@ -585,7 +590,9 @@ class TestKey:
 
         key = key_module.Key("a", "b", app="c")
         assert key.delete() == "result"
-        _datastore_api.delete.assert_called_once_with(key._key)
+        _datastore_api.delete.assert_called_once_with(
+            key._key, _options.Options()
+        )
 
     @staticmethod
     @unittest.mock.patch("google.cloud.ndb.key._datastore_api")
@@ -595,7 +602,9 @@ class TestKey:
         with in_context.new(transaction=b"tx123").use():
             key = key_module.Key("a", "b", app="c")
             assert key.delete() is None
-            _datastore_api.delete.assert_called_once_with(key._key)
+            _datastore_api.delete.assert_called_once_with(
+                key._key, _options.Options()
+            )
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")
@@ -604,7 +613,9 @@ class TestKey:
         key = key_module.Key("a", "b", app="c")
         future = key.delete_async()
 
-        _datastore_api.delete.assert_called_once_with(key._key)
+        _datastore_api.delete.assert_called_once_with(
+            key._key, _options.Options()
+        )
         assert future is _datastore_api.delete.return_value
 
     @staticmethod

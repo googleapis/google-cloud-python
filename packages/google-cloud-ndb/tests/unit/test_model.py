@@ -28,6 +28,7 @@ from google.cloud.ndb import _datastore_types
 from google.cloud.ndb import exceptions
 from google.cloud.ndb import key as key_module
 from google.cloud.ndb import model
+from google.cloud.ndb import _options
 from google.cloud.ndb import query as query_module
 from google.cloud.ndb import tasklets
 import tests.unit.utils
@@ -2873,7 +2874,9 @@ class TestModel:
 
         entity_pb = model._entity_to_protobuf(entity)
         assert entity._put() == entity.key
-        _datastore_api.put.assert_called_once_with(entity_pb)
+        _datastore_api.put.assert_called_once_with(
+            entity_pb, _options.Options()
+        )
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")
@@ -2887,7 +2890,9 @@ class TestModel:
 
         entity_pb = model._entity_to_protobuf(entity)
         assert entity._put() == key
-        _datastore_api.put.assert_called_once_with(entity_pb)
+        _datastore_api.put.assert_called_once_with(
+            entity_pb, _options.Options()
+        )
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")
@@ -2902,7 +2907,9 @@ class TestModel:
         entity_pb = model._entity_to_protobuf(entity)
         tasklet_future = entity._put_async()
         assert tasklet_future.result() == key
-        _datastore_api.put.assert_called_once_with(entity_pb)
+        _datastore_api.put.assert_called_once_with(
+            entity_pb, _options.Options()
+        )
 
     @staticmethod
     def test__lookup_model():

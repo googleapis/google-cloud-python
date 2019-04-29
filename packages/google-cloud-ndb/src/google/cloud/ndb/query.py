@@ -23,6 +23,7 @@ from google.cloud.ndb import _datastore_query
 from google.cloud.ndb import _gql
 from google.cloud.ndb import exceptions
 from google.cloud.ndb import model
+from google.cloud.ndb import _options
 
 
 __all__ = [
@@ -54,65 +55,6 @@ _GT_OP = ">"
 _OPS = frozenset([_EQ_OP, _NE_OP, _LT_OP, "<=", _GT_OP, ">=", _IN_OP])
 
 _log = logging.getLogger(__name__)
-
-
-class QueryOptions:
-    __slots__ = (
-        # Query options
-        "kind",
-        "project",
-        "namespace",
-        "ancestor",
-        "filters",
-        "order_by",
-        "orders",
-        "distinct_on",
-        "group_by",
-        # Fetch options
-        "keys_only",
-        "limit",
-        "offset",
-        "batch_size",
-        "prefetch_size",
-        "produce_cursors",
-        "start_cursor",
-        "end_cursor",
-        "deadline",
-        "read_policy",
-        # Both (!?!)
-        "projection",
-    )
-
-    def __init__(self, config=None, **kwargs):
-        if config is not None and not isinstance(config, QueryOptions):
-            raise TypeError("Config must be a QueryOptions instance.")
-
-        for key in self.__slots__:
-            default = getattr(config, key, None) if config else None
-            setattr(self, key, kwargs.get(key, default))
-
-    def __eq__(self, other):
-        if not isinstance(other, QueryOptions):
-            return NotImplemented
-
-        for key in self.__slots__:
-            if getattr(self, key, None) != getattr(other, key, None):
-                return False
-
-        return True
-
-    def __repr__(self):
-        options = ", ".join(
-            [
-                "{}={}".format(key, repr(getattr(self, key, None)))
-                for key in self.__slots__
-                if getattr(self, key, None) is not None
-            ]
-        )
-        return "QueryOptions({})".format(options)
-
-    def copy(self, **kwargs):
-        return type(self)(config=self, **kwargs)
 
 
 class PropertyOrder(object):
@@ -989,7 +931,7 @@ def _query_options(wrapped):
 
     This decorator wraps these methods with a function that does this
     processing for them and passes in a :class:`QueryOptions` instance using
-    the ``_query_options`` argument to those functions, bypassing all of the
+    the ``_options`` argument to those functions, bypassing all of the
     other arguments.
     """
     # If there are any positional arguments, get their names
@@ -1006,8 +948,8 @@ def _query_options(wrapped):
     @functools.wraps(wrapped)
     def wrapper(self, *args, **kwargs):
         # Maybe we already did this (in the case of X calling X_async)
-        if "_query_options" in kwargs:
-            return wrapped(self, _query_options=kwargs["_query_options"])
+        if "_options" in kwargs:
+            return wrapped(self, _options=kwargs["_options"])
 
         # Transfer any positional args to keyword args, so they're all in the
         # same structure.
@@ -1027,107 +969,80 @@ def _query_options(wrapped):
                 "deprecated. Please pass arguments directly."
             )
 
-        batch_size = kwargs.pop("batch_size", None)
-        batch_size = self._option("batch_size", batch_size, options)
-        if batch_size:
+        if kwargs.get("keys_only"):
+            if kwargs.get("projection"):
+                raise TypeError(
+                    "Cannot specify 'projection' with 'keys_only=True'"
+                )
+            kwargs["projection"] = ["__key__"]
+            del kwargs["keys_only"]
+
+        # Get arguments for QueryOptions attributes
+        query_arguments = {
+            name: self._option(name, kwargs.pop(name, None), options)
+            for name in QueryOptions.slots()
+        }
+
+        # Any left over kwargs don't actually correspond to slots in
+        # QueryOptions, but should be left to the QueryOptions constructor to
+        # sort out. Some might be synonyms or shorthand for other options.
+        query_arguments.update(kwargs)
+
+        client = context_module.get_context().client
+        query_options = QueryOptions(client=client, **query_arguments)
+
+        return wrapped(self, _options=query_options)
+
+    return wrapper
+
+
+class QueryOptions(_options.Options):
+    __slots__ = (
+        # Query options
+        "kind",
+        "ancestor",
+        "filters",
+        "order_by",
+        "orders",
+        "distinct_on",
+        "group_by",
+        "namespace",
+        "project",
+        # Fetch options
+        "keys_only",
+        "limit",
+        "offset",
+        "start_cursor",
+        "end_cursor",
+        # Both (!?!)
+        "projection",
+    )
+
+    def __init__(self, config=None, client=None, **kwargs):
+        if kwargs.get("read_policy") or kwargs.get("read_consistency"):
+            raise NotImplementedError
+
+        if kwargs.get("batch_size"):
             raise exceptions.NoLongerImplementedError()
 
-        prefetch_size = kwargs.pop("prefetch_size", None)
-        prefetch_size = self._option("prefetch_size", prefetch_size, options)
-        if prefetch_size:
+        if kwargs.get("prefetch_size"):
             raise exceptions.NoLongerImplementedError()
 
-        produce_cursors = kwargs.pop("produce_cursors", None)
-        produce_cursors = self._option(
-            "produce_cursors", produce_cursors, options
-        )
-        if produce_cursors:
+        if kwargs.pop("produce_cursors", None):
             _log.warning(
                 "Deprecation warning: 'produce_cursors' is deprecated. "
                 "Cursors are always produced when available. This option is "
                 "ignored."
             )
 
-        start_cursor = kwargs.pop("start_cursor", None)
-        start_cursor = self._option("start_cursor", start_cursor, options)
+        super(QueryOptions, self).__init__(config=config, **kwargs)
 
-        end_cursor = kwargs.pop("end_cursor", None)
-        end_cursor = self._option("end_cursor", end_cursor, options)
+        if client:
+            if not self.project:
+                self.project = client.project
 
-        deadline = kwargs.pop("deadline", None)
-        deadline = self._option("deadline", deadline, options)
-        if deadline:
-            raise NotImplementedError(
-                "'deadline' is not implemented yet for queries"
-            )
-
-        read_policy = kwargs.pop("read_policy", None)
-        read_policy = self._option("read_policy", read_policy, options)
-        if read_policy:
-            raise NotImplementedError(
-                "'read_policy' is not implemented yet for queries"
-            )
-
-        projection = kwargs.pop("projection", None)
-        projection = self._option("projection", projection, options)
-
-        keys_only = kwargs.pop("keys_only", None)
-        keys_only = self._option("keys_only", keys_only, options)
-
-        if keys_only:
-            if projection:
-                raise TypeError(
-                    "Cannot specify 'projection' with 'keys_only=True'"
-                )
-            projection = ["__key__"]
-
-        offset = kwargs.pop("offset", None)
-        limit = kwargs.pop("limit", None)
-
-        client = context_module.get_context().client
-
-        project = kwargs.pop("project", None)
-        project = self._option("project", project, options)
-        if not project:
-            project = client.project
-
-        namespace = kwargs.pop("namespace", None)
-        namespace = self._option("namespace", namespace, options)
-        if not namespace:
-            namespace = client.namespace
-
-        if kwargs:
-            raise TypeError(
-                "{}() got unexpected keyword argument '{}'".format(
-                    wrapped.__name__, next(iter(kwargs))
-                )
-            )
-
-        query_arguments = (
-            ("kind", self._option("kind", None, options)),
-            ("project", project),
-            ("namespace", namespace),
-            ("ancestor", self._option("ancestor", None, options)),
-            ("filters", self._option("filters", None, options)),
-            ("order_by", self._option("order_by", None, options)),
-            ("distinct_on", self._option("distinct_on", None, options)),
-            ("projection", projection),
-            ("offset", self._option("offset", offset, options)),
-            ("limit", self._option("limit", limit, options)),
-            (
-                "start_cursor",
-                self._option("start_cursor", start_cursor, options),
-            ),
-            ("end_cursor", self._option("end_cursor", end_cursor, options)),
-        )
-        query_arguments = {
-            name: value for name, value in query_arguments if value is not None
-        }
-        query_options = QueryOptions(**query_arguments)
-
-        return wrapped(self, _query_options=query_options)
-
-    return wrapper
+            if not self.namespace:
+                self.namespace = client.namespace
 
 
 class Query:
@@ -1175,6 +1090,14 @@ class Query:
     ):
         self.default_options = None
 
+        if app:
+            if project:
+                raise TypeError(
+                    "Cannot use both app and project, they are synonyms. app "
+                    "is deprecated."
+                )
+            project = app
+
         if default_options is not None:
             _log.warning(
                 "Deprecation warning: passing default_options to the Query"
@@ -1210,14 +1133,6 @@ class Query:
             projection = self._option("projection", projection)
             distinct_on = self._option("distinct_on", distinct_on)
             group_by = self._option("group_by", group_by)
-
-        if app:
-            if project:
-                raise TypeError(
-                    "Cannot use both app and project, they are synonyms. app "
-                    "is deprecated."
-                )
-            project = app
 
         if ancestor is not None:
             if isinstance(ancestor, ParameterizedThing):
@@ -1547,7 +1462,7 @@ class Query:
         deadline=None,
         read_policy=None,  #  _datastore_api.EVENTUAL,  # placeholder
         options=None,
-        _query_options=None,
+        _options=None,
     ):
         """Run a query, fetching results.
 
@@ -1578,7 +1493,7 @@ class Query:
         Returns:
             List([model.Model]): The query results.
         """
-        return self.fetch_async(_query_options=_query_options).result()
+        return self.fetch_async(_options=_options).result()
 
     @_query_options
     def fetch_async(
@@ -1596,7 +1511,7 @@ class Query:
         deadline=None,
         read_policy=None,  #  _datastore_api.EVENTUAL,  # placeholder
         options=None,
-        _query_options=None,
+        _options=None,
     ):
         """Run a query, asynchronously fetching the results.
 
@@ -1626,7 +1541,7 @@ class Query:
             tasklets.Future: Eventual result will be a List[model.Model] of the
                 results.
         """
-        return _datastore_query.fetch(_query_options)
+        return _datastore_query.fetch(_options)
 
     def _option(self, name, given, options=None):
         """Get given value or a provided default for an option.
@@ -1687,7 +1602,7 @@ class Query:
         deadline=None,
         read_policy=None,  #  _datastore_api.EVENTUAL,  # placeholder
         options=None,
-        _query_options=None,
+        _options=None,
     ):
         """Get an iterator over query results.
 
@@ -1716,7 +1631,7 @@ class Query:
         Returns:
             QueryIterator: An iterator.
         """
-        return _datastore_query.iterate(_query_options)
+        return _datastore_query.iterate(_options)
 
     __iter__ = iter
 

@@ -94,6 +94,7 @@ import google.cloud.datastore
 from google.cloud.ndb import context as context_module
 from google.cloud.ndb import _datastore_api
 from google.cloud.ndb import exceptions
+from google.cloud.ndb import _options
 from google.cloud.ndb import tasklets
 from google.cloud.ndb import _transaction
 
@@ -711,42 +712,142 @@ class Key:
         raw_bytes = self.serialized()
         return base64.urlsafe_b64encode(raw_bytes).strip(b"=")
 
-    def get(self, **options):
+    @_options.ReadOptions.options
+    def get(
+        self,
+        read_consistency=None,
+        read_policy=None,
+        transaction=None,
+        retries=None,
+        deadline=None,
+        force_writes=None,
+        use_cache=None,
+        use_memcache=None,
+        use_datastore=None,
+        memcache_timeout=None,
+        max_memcache_items=None,
+        _options=None,
+    ):
         """Synchronously get the entity for this key.
 
         Returns the retrieved :class:`.Model` or :data:`None` if there is no
         such entity.
 
         Args:
-            options (Dict[str, Any]): The options for the request. For
-                example, ``{"read_consistency": EVENTUAL}``.
+            read_consistency: Set this to ``ndb.EVENTUAL`` if, instead of
+                waiting for the Datastore to finish applying changes to all
+                returned results, you wish to get possibly-not-current results
+                faster. You can't do this if using a transaction.
+            transaction (bytes): Any results returned will be consistent with
+                the Datastore state represented by this transaction id.
+                Defaults to the currently running transaction. Cannot be used
+                with ``read_consistency=ndb.EVENTUAL``.
+            retries (int): Number of times to retry this operation in the case
+                of transient server errors. Operation will potentially be tried
+                up to ``retries`` + 1 times. Set to ``0`` to try operation only
+                once, with no retries.
+            deadline (float): Length of time, in seconds, to wait for server
+                before timing out.
+            force_writes (bool): Specifies whether a write request should
+                succeed even if the app is read-only. (This only applies to
+                user controlled read-only periods.)
+            use_cache (bool): Specifies whether to store entities in in-process
+                cache; overrides in-process cache policy for this operation.
+            use_memcache (bool): Specifies whether to store entities in
+                memcache; overrides memcache policy for this operation.
+            use_datastore (bool): Specifies whether to store entities in
+                Datastore; overrides Datastore policy for this operation.
+            memcache_timeout (int): Maximum lifetime for entities in memcache;
+                overrides memcache timeout policy for this operation.
+            max_memcache_items (int): Maximum batch size for the auto-batching
+                feature of the Context memcache methods. For example, with the
+                default size of max_memcache_items (100), up to 100 memcache
+                set operations will be combined into a single set_multi
+                operation.
+            read_policy: DEPRECATED: Synonym for ``read_consistency``.
 
         Returns:
             Union[:class:`.Model`, :data:`None`]
         """
-        return self.get_async(**options).result()
+        return self.get_async(_options=_options).result()
 
     @tasklets.tasklet
-    def get_async(self, **options):
+    @_options.ReadOptions.options
+    def get_async(
+        self,
+        read_consistency=None,
+        read_policy=None,
+        transaction=None,
+        retries=None,
+        deadline=None,
+        force_writes=None,
+        use_cache=None,
+        use_memcache=None,
+        use_datastore=None,
+        memcache_timeout=None,
+        max_memcache_items=None,
+        _options=None,
+    ):
         """Asynchronously get the entity for this key.
 
         The result for the returned future will either be the retrieved
         :class:`.Model` or :data:`None` if there is no such entity.
 
         Args:
-            options (Dict[str, Any]): The options for the request. For
-                example, ``{"read_consistency": EVENTUAL}``.
+            read_consistency: Set this to ``ndb.EVENTUAL`` if, instead of
+                waiting for the Datastore to finish applying changes to all
+                returned results, you wish to get possibly-not-current results
+                faster. You can't do this if using a transaction.
+            transaction (bytes): Any results returned will be consistent with
+                the Datastore state represented by this transaction id.
+                Defaults to the currently running transaction. Cannot be used
+                with ``read_consistency=ndb.EVENTUAL``.
+            retries (int): Number of times to retry this operation in the case
+                of transient server errors. Operation will potentially be tried
+                up to ``retries`` + 1 times. Set to ``0`` to try operation only
+                once, with no retries.
+            deadline (float): Length of time, in seconds, to wait for server
+                before timing out.
+            force_writes (bool): Specifies whether a write request should
+                succeed even if the app is read-only. (This only applies to
+                user controlled read-only periods.)
+            use_cache (bool): Specifies whether to store entities in in-process
+                cache; overrides in-process cache policy for this operation.
+            use_memcache (bool): Specifies whether to store entities in
+                memcache; overrides memcache policy for this operation.
+            use_datastore (bool): Specifies whether to store entities in
+                Datastore; overrides Datastore policy for this operation.
+            memcache_timeout (int): Maximum lifetime for entities in memcache;
+                overrides memcache timeout policy for this operation.
+            max_memcache_items (int): Maximum batch size for the auto-batching
+                feature of the Context memcache methods. For example, with the
+                default size of max_memcache_items (100), up to 100 memcache
+                set operations will be combined into a single set_multi
+                operation.
+            read_policy: DEPRECATED: Synonym for ``read_consistency``.
 
         Returns:
             :class:`~google.cloud.ndb.tasklets.Future`
         """
         from google.cloud.ndb import model  # avoid circular import
 
-        entity_pb = yield _datastore_api.lookup(self._key, **options)
+        entity_pb = yield _datastore_api.lookup(self._key, _options)
         if entity_pb is not _datastore_api._NOT_FOUND:
             return model._entity_from_protobuf(entity_pb)
 
-    def delete(self, **options):
+    @_options.Options.options
+    def delete(
+        self,
+        retries=None,
+        deadline=None,
+        force_writes=None,
+        use_cache=None,
+        use_memcache=None,
+        use_datastore=None,
+        memcache_timeout=None,
+        max_memcache_items=None,
+        _options=None,
+    ):
         """Synchronously delete the entity for this key.
 
         This is a no-op if no such entity exists.
@@ -761,14 +862,42 @@ class Key:
             entity is deleted, as one would expect.
 
         Args:
-            options (Dict[str, Any]): The context options for the request.
-                For example, ``{"deadline": 5}``.
+            deadline (float): Length of time, in seconds, to wait for server
+                before timing out.
+            force_writes (bool): Specifies whether a write request should
+                succeed even if the app is read-only. (This only applies to
+                user controlled read-only periods.)
+            use_cache (bool): Specifies whether to store entities in in-process
+                cache; overrides in-process cache policy for this operation.
+            use_memcache (bool): Specifies whether to store entities in
+                memcache; overrides memcache policy for this operation.
+            use_datastore (bool): Specifies whether to store entities in
+                Datastore; overrides Datastore policy for this operation.
+            memcache_timeout (int): Maximum lifetime for entities in memcache;
+                overrides memcache timeout policy for this operation.
+            max_memcache_items (int): Maximum batch size for the auto-batching
+                feature of the Context memcache methods. For example, with the
+                default size of max_memcache_items (100), up to 100 memcache
+                set operations will be combined into a single set_multi
+                operation.
         """
-        future = self.delete_async(**options)
+        future = self.delete_async(_options=_options)
         if not _transaction.in_transaction():
             return future.result()
 
-    def delete_async(self, **options):
+    @_options.Options.options
+    def delete_async(
+        self,
+        retries=None,
+        deadline=None,
+        force_writes=None,
+        use_cache=None,
+        use_memcache=None,
+        use_datastore=None,
+        memcache_timeout=None,
+        max_memcache_items=None,
+        _options=None,
+    ):
         """Schedule deletion of the entity for this key.
 
         The result of the returned future becomes available once the
@@ -776,10 +905,26 @@ class Key:
         (i.e. there is no way to tell whether the entity existed or not).
 
         Args:
-            options (Dict[str, Any]): The context options for the request.
-                For example, ``{"deadline": 5}``.
+            deadline (float): Length of time, in seconds, to wait for server
+                before timing out.
+            force_writes (bool): Specifies whether a write request should
+                succeed even if the app is read-only. (This only applies to
+                user controlled read-only periods.)
+            use_cache (bool): Specifies whether to store entities in in-process
+                cache; overrides in-process cache policy for this operation.
+            use_memcache (bool): Specifies whether to store entities in
+                memcache; overrides memcache policy for this operation.
+            use_datastore (bool): Specifies whether to store entities in
+                Datastore; overrides Datastore policy for this operation.
+            memcache_timeout (int): Maximum lifetime for entities in memcache;
+                overrides memcache timeout policy for this operation.
+            max_memcache_items (int): Maximum batch size for the auto-batching
+                feature of the Context memcache methods. For example, with the
+                default size of max_memcache_items (100), up to 100 memcache
+                set operations will be combined into a single set_multi
+                operation.
         """
-        return _datastore_api.delete(self._key, **options)
+        return _datastore_api.delete(self._key, _options)
 
     @classmethod
     def from_old_key(cls, old_key):

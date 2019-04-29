@@ -1,0 +1,138 @@
+# Copyright 2018 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+import pytest
+
+from google.cloud.ndb import _datastore_api
+from google.cloud.ndb import _options
+
+
+class MyOptions(_options.Options):
+    __slots__ = ["foo", "bar"]
+
+
+class TestOptions:
+    @staticmethod
+    def test_constructor_w_bad_arg():
+        with pytest.raises(TypeError):
+            MyOptions(kind="test")
+
+    @staticmethod
+    def test_constructor_w_deadline():
+        with pytest.raises(NotImplementedError):
+            MyOptions(deadline=20)
+
+    @staticmethod
+    def test_constructor_w_use_memcache():
+        with pytest.raises(NotImplementedError):
+            MyOptions(use_memcache=20)
+
+    @staticmethod
+    def test_constructor_w_use_datastore():
+        with pytest.raises(NotImplementedError):
+            MyOptions(use_datastore=20)
+
+    @staticmethod
+    def test_constructor_w_use_cache():
+        with pytest.raises(NotImplementedError):
+            MyOptions(use_cache=20)
+
+    @staticmethod
+    def test_constructor_w_memcache_timeout():
+        with pytest.raises(NotImplementedError):
+            MyOptions(memcache_timeout=20)
+
+    @staticmethod
+    def test_constructor_w_max_memcache_items():
+        with pytest.raises(NotImplementedError):
+            MyOptions(max_memcache_items=20)
+
+    @staticmethod
+    def test_constructor_w_force_writes():
+        with pytest.raises(NotImplementedError):
+            MyOptions(force_writes=20)
+
+    @staticmethod
+    def test_constructor_w_propagation():
+        with pytest.raises(NotImplementedError):
+            MyOptions(propagation=20)
+
+    @staticmethod
+    def test_constructor_w_xg():
+        options = MyOptions(xg=True)
+        assert options == MyOptions()
+
+    @staticmethod
+    def test_constructor_with_config():
+        config = MyOptions(retries=5, foo="config_test")
+        options = MyOptions(config=config, retries=8, bar="app")
+        assert options.retries == 8
+        assert options.bar == "app"
+        assert options.foo == "config_test"
+
+    @staticmethod
+    def test_constructor_with_bad_config():
+        with pytest.raises(TypeError):
+            MyOptions(config="bad")
+
+    @staticmethod
+    def test___repr__():
+        representation = "MyOptions(foo='test', bar='app')"
+        options = MyOptions(foo="test", bar="app")
+        assert options.__repr__() == representation
+
+    @staticmethod
+    def test__eq__():
+        options = MyOptions(foo="test", bar="app")
+        other = MyOptions(foo="test", bar="app")
+        otherother = MyOptions(foo="nope", bar="noway")
+
+        assert options == other
+        assert options != otherother
+        assert options != "foo"
+
+    @staticmethod
+    def test_copy():
+        options = MyOptions(retries=8, bar="app")
+        options = options.copy(bar="app2", foo="foo")
+        assert options.retries == 8
+        assert options.bar == "app2"
+        assert options.foo == "foo"
+
+    @staticmethod
+    def test_items():
+        options = MyOptions(retries=8, bar="app")
+        items = [
+            (key, value) for key, value in options.items() if value is not None
+        ]
+        assert items == [("bar", "app"), ("retries", 8)]
+
+
+class TestReadOptions:
+    @staticmethod
+    def test_constructor_w_read_policy():
+        options = _options.ReadOptions(
+            read_policy=_datastore_api.EVENTUAL_CONSISTENCY
+        )
+        assert options == _options.ReadOptions(
+            read_consistency=_datastore_api.EVENTUAL
+        )
+
+    @staticmethod
+    def test_constructor_w_read_policy_and_read_consistency():
+        with pytest.raises(TypeError):
+            _options.ReadOptions(
+                read_policy=_datastore_api.EVENTUAL_CONSISTENCY,
+                read_consistency=_datastore_api.EVENTUAL,
+            )

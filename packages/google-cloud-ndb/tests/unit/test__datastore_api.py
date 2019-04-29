@@ -20,8 +20,9 @@ from google.cloud import _http
 from google.cloud.datastore_v1.proto import datastore_pb2
 from google.cloud.datastore_v1.proto import entity_pb2
 from google.cloud.ndb import context as context_module
-from google.cloud.ndb import key as key_module
 from google.cloud.ndb import _datastore_api as _api
+from google.cloud.ndb import key as key_module
+from google.cloud.ndb import _options
 from google.cloud.ndb import tasklets
 
 
@@ -132,9 +133,9 @@ class TestLookup:
     def test_it(context):
         eventloop = mock.Mock(spec=("add_idle", "run"))
         with context.new(eventloop=eventloop).use() as context:
-            future1 = _api.lookup(_mock_key("foo"))
-            future2 = _api.lookup(_mock_key("foo"))
-            future3 = _api.lookup(_mock_key("bar"))
+            future1 = _api.lookup(_mock_key("foo"), _options.ReadOptions())
+            future2 = _api.lookup(_mock_key("foo"), _options.ReadOptions())
+            future3 = _api.lookup(_mock_key("bar"), _options.ReadOptions())
 
             batch = context.batches[_api._LookupBatch][()]
             assert batch.todo["foo"] == [future1, future2]
@@ -145,11 +146,12 @@ class TestLookup:
     def test_it_with_options(context):
         eventloop = mock.Mock(spec=("add_idle", "run"))
         with context.new(eventloop=eventloop).use() as context:
-            future1 = _api.lookup(_mock_key("foo"))
+            future1 = _api.lookup(_mock_key("foo"), _options.ReadOptions())
             future2 = _api.lookup(
-                _mock_key("foo"), read_consistency=_api.EVENTUAL
+                _mock_key("foo"),
+                _options.ReadOptions(read_consistency=_api.EVENTUAL),
             )
-            future3 = _api.lookup(_mock_key("bar"))
+            future3 = _api.lookup(_mock_key("bar"), _options.ReadOptions())
 
             batches = context.batches[_api._LookupBatch]
             batch1 = batches[()]
@@ -163,15 +165,10 @@ class TestLookup:
             assert add_idle.call_count == 2
 
     @staticmethod
-    def test_it_with_bad_option(context):
-        with pytest.raises(NotImplementedError):
-            _api.lookup(_mock_key("foo"), foo="bar")
-
-    @staticmethod
     def test_idle_callback(context):
         eventloop = mock.Mock(spec=("add_idle", "run"))
         with context.new(eventloop=eventloop).use() as context:
-            future = _api.lookup(_mock_key("foo"))
+            future = _api.lookup(_mock_key("foo"), _options.ReadOptions())
 
             batches = context.batches[_api._LookupBatch]
             batch = batches[()]
@@ -202,7 +199,7 @@ class Test_LookupBatch:
         entity_pb2.Key = MockKey
         eventloop = mock.Mock(spec=("queue_rpc", "run"))
         with context.new(eventloop=eventloop).use() as context:
-            batch = _api._LookupBatch({})
+            batch = _api._LookupBatch(_options.ReadOptions())
             batch.lookup_callback = mock.Mock()
             batch.todo.update({"foo": ["one", "two"], "bar": ["three"]})
             batch.idle_callback()
@@ -221,7 +218,7 @@ class Test_LookupBatch:
     @staticmethod
     def test_lookup_callback_exception():
         future1, future2, future3 = (tasklets.Future() for _ in range(3))
-        batch = _api._LookupBatch({})
+        batch = _api._LookupBatch(_options.ReadOptions())
         batch.todo.update({"foo": [future1, future2], "bar": [future3]})
         error = Exception("Spurious error.")
 
@@ -240,7 +237,7 @@ class Test_LookupBatch:
             return mock_key
 
         future1, future2, future3 = (tasklets.Future() for _ in range(3))
-        batch = _api._LookupBatch({})
+        batch = _api._LookupBatch(_options.ReadOptions())
         batch.todo.update({"foo": [future1, future2], "bar": [future3]})
 
         entity1 = mock.Mock(key=key_pb("foo"), spec=("key",))
@@ -271,7 +268,7 @@ class Test_LookupBatch:
             return mock_key
 
         future1, future2, future3 = (tasklets.Future() for _ in range(3))
-        batch = _api._LookupBatch({})
+        batch = _api._LookupBatch(_options.ReadOptions())
         batch.todo.update({"foo": [future1, future2], "bar": [future3]})
 
         entity1 = mock.Mock(key=key_pb("foo"), spec=("key",))
@@ -304,7 +301,7 @@ class Test_LookupBatch:
         eventloop = mock.Mock(spec=("add_idle", "run"))
         with context.new(eventloop=eventloop).use() as context:
             future1, future2, future3 = (tasklets.Future() for _ in range(3))
-            batch = _api._LookupBatch({})
+            batch = _api._LookupBatch(_options.ReadOptions())
             batch.todo.update({"foo": [future1, future2], "bar": [future3]})
 
             response = mock.Mock(
@@ -336,7 +333,7 @@ class Test_LookupBatch:
         eventloop = mock.Mock(spec=("add_idle", "run"))
         with context.new(eventloop=eventloop).use() as context:
             future1, future2, future3 = (tasklets.Future() for _ in range(3))
-            batch = _api._LookupBatch({})
+            batch = _api._LookupBatch(_options.ReadOptions())
             batch.todo.update(
                 {"foo": [future1], "bar": [future2], "baz": [future3]}
             )
@@ -384,77 +381,34 @@ def test__datastore_lookup(datastore_pb2, context):
         )
 
 
-class Test_check_unsupported_options:
-    @staticmethod
-    def test_supported():
-        _api._check_unsupported_options(
-            {
-                "transaction": None,
-                "read_consistency": None,
-                "read_policy": None,
-            }
-        )
-
-    @staticmethod
-    def test_not_implemented():
-        with pytest.raises(NotImplementedError):
-            _api._check_unsupported_options({"deadline": None})
-        with pytest.raises(NotImplementedError):
-            _api._check_unsupported_options({"force_writes": None})
-        with pytest.raises(NotImplementedError):
-            _api._check_unsupported_options({"use_cache": None})
-        with pytest.raises(NotImplementedError):
-            _api._check_unsupported_options({"use_memcache": None})
-        with pytest.raises(NotImplementedError):
-            _api._check_unsupported_options({"use_datastore": None})
-        with pytest.raises(NotImplementedError):
-            _api._check_unsupported_options({"memcache_timeout": None})
-        with pytest.raises(NotImplementedError):
-            _api._check_unsupported_options({"max_memcache_items": None})
-        with pytest.raises(NotImplementedError):
-            _api._check_unsupported_options({"xg": None})
-        with pytest.raises(NotImplementedError):
-            _api._check_unsupported_options({"propagation": None})
-        with pytest.raises(NotImplementedError):
-            _api._check_unsupported_options({"retries": None})
-
-    @staticmethod
-    def test_not_supported():
-        with pytest.raises(NotImplementedError):
-            _api._check_unsupported_options({"say_what": None})
-
-
 class Test_get_read_options:
     @staticmethod
     @pytest.mark.usefixtures("in_context")
     def test_no_args_no_transaction():
-        assert _api._get_read_options({}) == datastore_pb2.ReadOptions()
+        assert (
+            _api._get_read_options(_options.ReadOptions())
+            == datastore_pb2.ReadOptions()
+        )
 
     @staticmethod
     def test_no_args_transaction(context):
         with context.new(transaction=b"txfoo").use():
-            options = _api._get_read_options({})
+            options = _api._get_read_options(_options.ReadOptions())
             assert options == datastore_pb2.ReadOptions(transaction=b"txfoo")
 
     @staticmethod
     def test_args_override_transaction(context):
         with context.new(transaction=b"txfoo").use():
-            options = _api._get_read_options({"transaction": b"txbar"})
+            options = _api._get_read_options(
+                _options.ReadOptions(transaction=b"txbar")
+            )
             assert options == datastore_pb2.ReadOptions(transaction=b"txbar")
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")
     def test_eventually_consistent():
-        options = _api._get_read_options({"read_consistency": _api.EVENTUAL})
-        assert options == datastore_pb2.ReadOptions(
-            read_consistency=datastore_pb2.ReadOptions.EVENTUAL
-        )
-
-    @staticmethod
-    @pytest.mark.usefixtures("in_context")
-    def test_eventually_consistent_legacy():
         options = _api._get_read_options(
-            {"read_policy": _api.EVENTUAL_CONSISTENCY}
+            _options.ReadOptions(read_consistency=_api.EVENTUAL)
         )
         assert options == datastore_pb2.ReadOptions(
             read_consistency=datastore_pb2.ReadOptions.EVENTUAL
@@ -465,7 +419,9 @@ class Test_get_read_options:
     def test_eventually_consistent_with_transaction():
         with pytest.raises(ValueError):
             _api._get_read_options(
-                {"read_consistency": _api.EVENTUAL, "transaction": b"txfoo"}
+                _options.ReadOptions(
+                    read_consistency=_api.EVENTUAL, transaction=b"txfoo"
+                )
             )
 
 
@@ -485,9 +441,9 @@ class Test_put:
             datastore_pb2.Mutation = Mutation
 
             entity1, entity2, entity3 = object(), object(), object()
-            future1 = _api.put(entity1)
-            future2 = _api.put(entity2)
-            future3 = _api.put(entity3)
+            future1 = _api.put(entity1, _options.Options())
+            future2 = _api.put(entity2, _options.Options())
+            future3 = _api.put(entity3, _options.Options())
 
             batch = context.batches[_api._NonTransactionalCommitBatch][()]
             assert batch.mutations == [
@@ -518,17 +474,18 @@ class Test_put:
             return mock.Mock(key=mock.Mock(path=path))
 
         eventloop = mock.Mock(spec=("add_idle", "run"))
-        with in_context.new(eventloop=eventloop).use() as context:
+        context = in_context.new(eventloop=eventloop, transaction=b"123")
+        with context.use() as context:
             datastore_pb2.Mutation = Mutation
 
             entity1 = MockEntity("a", "1")
-            future1 = _api.put(entity1, transaction=b"123")
+            future1 = _api.put(entity1, _options.Options())
 
             entity2 = MockEntity("a", None)
-            future2 = _api.put(entity2, transaction=b"123")
+            future2 = _api.put(entity2, _options.Options())
 
             entity3 = MockEntity()
-            future3 = _api.put(entity3, transaction=b"123")
+            future3 = _api.put(entity3, _options.Options())
 
             batch = context.commit_batches[b"123"]
             assert batch.mutations == [
@@ -563,9 +520,9 @@ class Test_delete:
             key1 = key_module.Key("SomeKind", 1)._key
             key2 = key_module.Key("SomeKind", 2)._key
             key3 = key_module.Key("SomeKind", 3)._key
-            future1 = _api.delete(key1)
-            future2 = _api.delete(key2)
-            future3 = _api.delete(key3)
+            future1 = _api.delete(key1, _options.Options())
+            future2 = _api.delete(key2, _options.Options())
+            future3 = _api.delete(key3, _options.Options())
 
             batch = context.batches[_api._NonTransactionalCommitBatch][()]
             assert batch.mutations == [
@@ -594,9 +551,9 @@ class Test_delete:
             key1 = key_module.Key("SomeKind", 1)._key
             key2 = key_module.Key("SomeKind", 2)._key
             key3 = key_module.Key("SomeKind", 3)._key
-            future1 = _api.delete(key1)
-            future2 = _api.delete(key2)
-            future3 = _api.delete(key3)
+            future1 = _api.delete(key1, _options.Options())
+            future2 = _api.delete(key2, _options.Options())
+            future3 = _api.delete(key3, _options.Options())
 
             batch = context.commit_batches[b"tx123"]
             assert batch.mutations == [
@@ -619,7 +576,7 @@ class Test_NonTransactionalCommitBatch:
 
         with context.new(eventloop=eventloop).use() as context:
             mutation1, mutation2 = object(), object()
-            batch = _api._NonTransactionalCommitBatch({})
+            batch = _api._NonTransactionalCommitBatch(_options.Options())
             batch.mutations = [mutation1, mutation2]
             batch.idle_callback()
 
@@ -633,31 +590,31 @@ class Test_NonTransactionalCommitBatch:
 @mock.patch("google.cloud.ndb._datastore_api._get_commit_batch")
 def test_commit(get_commit_batch):
     _api.commit(b"123")
-    get_commit_batch.assert_called_once_with(b"123", {})
+    get_commit_batch.assert_called_once_with(b"123", _options.Options())
     get_commit_batch.return_value.commit.assert_called_once_with(retries=None)
 
 
 class Test_get_commit_batch:
     @staticmethod
     def test_create_batch(in_context):
-        batch = _api._get_commit_batch(b"123", {})
+        batch = _api._get_commit_batch(b"123", _options.Options())
         assert isinstance(batch, _api._TransactionalCommitBatch)
         assert in_context.commit_batches[b"123"] is batch
         assert batch.transaction == b"123"
-        assert _api._get_commit_batch(b"123", {}) is batch
-        assert _api._get_commit_batch(b"234", {}) is not batch
+        assert _api._get_commit_batch(b"123", _options.Options()) is batch
+        assert _api._get_commit_batch(b"234", _options.Options()) is not batch
 
     @staticmethod
-    def test_bad_options():
+    def test_bad_option():
         with pytest.raises(NotImplementedError):
-            _api._get_commit_batch(b"123", {"foo": "bar"})
+            _api._get_commit_batch(b"123", _options.Options(retries=5))
 
 
 class Test__TransactionalCommitBatch:
     @staticmethod
     @pytest.mark.usefixtures("in_context")
     def test_idle_callback_nothing_to_do():
-        batch = _api._TransactionalCommitBatch({})
+        batch = _api._TransactionalCommitBatch(b"123", _options.Options())
         batch.idle_callback()
         assert not batch.allocating_ids
 
@@ -671,7 +628,7 @@ class Test__TransactionalCommitBatch:
             )
 
         mutation1, mutation2 = Mutation(), Mutation()
-        batch = _api._TransactionalCommitBatch({})
+        batch = _api._TransactionalCommitBatch(b"123", _options.Options())
         batch.incomplete_mutations = [mutation1, mutation2]
         future1, future2 = tasklets.Future(), tasklets.Future()
         batch.incomplete_futures = [future1, future2]
@@ -721,7 +678,7 @@ class Test__TransactionalCommitBatch:
             )
 
         mutation1, mutation2 = Mutation(), Mutation()
-        batch = _api._TransactionalCommitBatch({})
+        batch = _api._TransactionalCommitBatch(b"123", _options.Options())
         batch.incomplete_mutations = [mutation1, mutation2]
         future1, future2 = tasklets.Future(), tasklets.Future()
         batch.incomplete_futures = [future1, future2]
@@ -743,7 +700,7 @@ class Test__TransactionalCommitBatch:
 
     @staticmethod
     def test_commit_nothing_to_do(in_context):
-        batch = _api._TransactionalCommitBatch({})
+        batch = _api._TransactionalCommitBatch(b"123", _options.Options())
 
         eventloop = mock.Mock(spec=("queue_rpc", "run"))
         with in_context.new(eventloop=eventloop).use():
@@ -756,7 +713,7 @@ class Test__TransactionalCommitBatch:
     @mock.patch("google.cloud.ndb._datastore_api._process_commit")
     @mock.patch("google.cloud.ndb._datastore_api._datastore_commit")
     def test_commit(datastore_commit, process_commit, in_context):
-        batch = _api._TransactionalCommitBatch({})
+        batch = _api._TransactionalCommitBatch(b"123", _options.Options())
         batch.futures = object()
         batch.mutations = object()
         batch.transaction = b"abc"
@@ -781,7 +738,7 @@ class Test__TransactionalCommitBatch:
     @mock.patch("google.cloud.ndb._datastore_api._process_commit")
     @mock.patch("google.cloud.ndb._datastore_api._datastore_commit")
     def test_commit_error(datastore_commit, process_commit, in_context):
-        batch = _api._TransactionalCommitBatch({})
+        batch = _api._TransactionalCommitBatch(b"123", _options.Options())
         batch.futures = object()
         batch.mutations = object()
         batch.transaction = b"abc"
@@ -811,7 +768,7 @@ class Test__TransactionalCommitBatch:
     def test_commit_allocating_ids(
         datastore_commit, process_commit, in_context
     ):
-        batch = _api._TransactionalCommitBatch({})
+        batch = _api._TransactionalCommitBatch(b"123", _options.Options())
         batch.futures = object()
         batch.mutations = object()
         batch.transaction = b"abc"
