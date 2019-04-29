@@ -24,7 +24,14 @@ import test_utils.system
 
 from google.cloud import ndb
 
-from . import KIND, OTHER_NAMESPACE
+from tests.system import KIND, OTHER_NAMESPACE, eventually
+
+
+def _length_equals(n):
+    def predicate(sequence):
+        return len(sequence) == n
+
+    return predicate
 
 
 @pytest.mark.usefixtures("client_context")
@@ -37,8 +44,7 @@ def test_fetch_all_of_a_kind(ds_entity):
         foo = ndb.IntegerProperty()
 
     query = SomeKind.query()
-    results = query.fetch()
-    assert len(results) == 5
+    results = eventually(query.fetch, _length_equals(5))
 
     results = sorted(results, key=operator.attrgetter("foo"))
     assert [entity.foo for entity in results] == [0, 1, 2, 3, 4]
@@ -61,8 +67,7 @@ def test_fetch_lots_of_a_kind(dispose_of):
         dispose_of(key._key)
 
     query = SomeKind.query()
-    results = query.fetch()
-    assert len(results) == n_entities
+    results = eventually(query.fetch, _length_equals(n_entities))
 
     results = sorted(results, key=operator.attrgetter("foo"))
     assert [entity.foo for entity in results][:5] == [0, 1, 2, 3, 4]
@@ -83,8 +88,7 @@ def test_ancestor_query(ds_entity):
         foo = ndb.IntegerProperty()
 
     query = SomeKind.query(ancestor=ndb.Key(KIND, root_id))
-    results = query.fetch()
-    assert len(results) == 6
+    results = eventually(query.fetch, _length_equals(6))
 
     results = sorted(results, key=operator.attrgetter("foo"))
     assert [entity.foo for entity in results] == [-1, 0, 1, 2, 3, 4]
@@ -102,8 +106,7 @@ def test_projection(ds_entity):
         bar = ndb.StringProperty()
 
     query = SomeKind.query(projection=("foo",))
-    results = query.fetch()
-    assert len(results) == 2
+    results = eventually(query.fetch, _length_equals(2))
 
     results = sorted(results, key=operator.attrgetter("foo"))
 
@@ -127,8 +130,7 @@ def test_distinct_on(ds_entity):
         bar = ndb.StringProperty()
 
     query = SomeKind.query(distinct_on=("foo",))
-    results = query.fetch()
-    assert len(results) == 2
+    results = eventually(query.fetch, _length_equals(2))
 
     results = sorted(results, key=operator.attrgetter("foo"))
 
@@ -154,8 +156,7 @@ def test_namespace(dispose_of):
     dispose_of(entity2.key._key)
 
     query = SomeKind.query(namespace=OTHER_NAMESPACE)
-    results = query.fetch()
-    assert len(results) == 1
+    results = eventually(query.fetch, _length_equals(1))
 
     assert results[0].foo == 1
     assert results[0].bar == "a"
@@ -172,8 +173,7 @@ def test_filter_equal(ds_entity):
         foo = ndb.IntegerProperty()
 
     query = SomeKind.query(SomeKind.foo == 2)
-    results = query.fetch()
-    assert len(results) == 1
+    results = eventually(query.fetch, _length_equals(1))
     assert results[0].foo == 2
 
 
@@ -187,8 +187,7 @@ def test_filter_not_equal(ds_entity):
         foo = ndb.IntegerProperty()
 
     query = SomeKind.query(SomeKind.foo != 2)
-    results = query.fetch()
-    assert len(results) == 4
+    results = eventually(query.fetch, _length_equals(4))
 
     results = sorted(results, key=operator.attrgetter("foo"))
     assert [entity.foo for entity in results] == [0, 1, 3, 4]
@@ -212,8 +211,7 @@ def test_filter_or(dispose_of):
 
     make_entities().check_success()
     query = SomeKind.query(ndb.OR(SomeKind.foo == 1, SomeKind.bar == "c"))
-    results = query.fetch()
-    assert len(results) == 2
+    results = eventually(query.fetch, _length_equals(2))
 
     results = sorted(results, key=operator.attrgetter("bar"))
     assert [entity.bar for entity in results] == ["a", "c"]
@@ -229,8 +227,7 @@ def test_order_by_ascending(ds_entity):
         foo = ndb.IntegerProperty()
 
     query = SomeKind.query().order(SomeKind.foo)
-    results = query.fetch()
-    assert len(results) == 5
+    results = eventually(query.fetch, _length_equals(5))
 
     assert [entity.foo for entity in results] == [0, 1, 2, 3, 4]
 
@@ -246,7 +243,7 @@ def test_order_by_descending(ds_entity):
 
     # query = SomeKind.query()  # Not implemented yet
     query = SomeKind.query().order(-SomeKind.foo)
-    results = query.fetch()
+    results = eventually(query.fetch, _length_equals(5))
     assert len(results) == 5
 
     assert [entity.foo for entity in results] == [4, 3, 2, 1, 0]
@@ -278,8 +275,7 @@ def test_order_by_with_or_filter(dispose_of):
     make_entities().check_success()
     query = SomeKind.query(ndb.OR(SomeKind.bar == "a", SomeKind.bar == "b"))
     query = query.order(SomeKind.foo)
-    results = query.fetch()
-    assert len(results) == 4
+    results = eventually(query.fetch, _length_equals(4))
 
     assert [entity.foo for entity in results] == [0, 1, 2, 3]
 
@@ -298,8 +294,9 @@ def test_keys_only(ds_entity):
         bar = ndb.StringProperty()
 
     query = SomeKind.query().order(SomeKind.key)
-    results = query.fetch(keys_only=True)
-    assert len(results) == 2
+    results = eventually(
+        lambda: query.fetch(keys_only=True), _length_equals(2)
+    )
 
     assert results[0] == ndb.Key("SomeKind", entity_id1)
     assert results[1] == ndb.Key("SomeKind", entity_id2)
@@ -315,8 +312,9 @@ def test_offset_and_limit(ds_entity):
         foo = ndb.IntegerProperty()
 
     query = SomeKind.query(order_by=["foo"])
-    results = query.fetch(offset=2, limit=2)
-    assert len(results) == 2
+    results = eventually(
+        lambda: query.fetch(offset=2, limit=2), _length_equals(2)
+    )
     assert [entity.foo for entity in results] == [2, 3]
 
 
@@ -343,8 +341,9 @@ def test_offset_and_limit_with_or_filter(dispose_of):
     make_entities().check_success()
     query = SomeKind.query(ndb.OR(SomeKind.bar == "a", SomeKind.bar == "b"))
     query = query.order(SomeKind.foo)
-    results = query.fetch(offset=1, limit=2)
-    assert len(results) == 2
+    results = eventually(
+        lambda: query.fetch(offset=1, limit=2), _length_equals(2)
+    )
 
     assert [entity.foo for entity in results] == [1, 2]
 
@@ -359,6 +358,5 @@ def test_iter_all_of_a_kind(ds_entity):
         foo = ndb.IntegerProperty()
 
     query = SomeKind.query().order("foo")
-    results = list(query)
-    assert len(results) == 5
+    results = eventually(lambda: list(query), _length_equals(5))
     assert [entity.foo for entity in results] == [0, 1, 2, 3, 4]

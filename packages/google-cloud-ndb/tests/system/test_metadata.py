@@ -22,6 +22,13 @@ from google.cloud import ndb
 from tests.system import eventually
 
 
+def _length_at_least(n):
+    def predicate(sequence):
+        return len(sequence) >= n
+
+    return predicate
+
+
 @pytest.mark.usefixtures("client_context")
 def test_kind_metadata(dispose_of):
     from google.cloud.ndb.metadata import Kind
@@ -41,8 +48,7 @@ def test_kind_metadata(dispose_of):
     dispose_of(entity2.key._key)
 
     query = ndb.Query(kind=Kind.KIND_NAME, namespace="_test_namespace_")
-    results = query.fetch()
-    assert len(results) >= 2
+    results = eventually(query.fetch, _length_at_least(2))
 
     kinds = [result.kind_name for result in results]
     assert all(kind in kinds for kind in ["AnyKind", "MyKind"]) != []
@@ -80,7 +86,7 @@ def test_get_kinds(dispose_of):
     entity4.put()
     dispose_of(entity4.key._key)
 
-    kinds = get_kinds()
+    kinds = eventually(get_kinds, _length_at_least(4))
     assert (
         all(
             kind in kinds
@@ -121,8 +127,7 @@ def test_namespace_metadata(dispose_of):
     dispose_of(entity2.key._key)
 
     query = ndb.Query(kind=Namespace.KIND_NAME)
-    results = query.fetch()
-    assert len(results) >= 2
+    results = eventually(query.fetch, _length_at_least(2))
 
     names = [result.namespace_name for result in results]
     assert (
@@ -153,7 +158,7 @@ def test_get_namespaces(dispose_of):
     entity3.put()
     dispose_of(entity3.key._key)
 
-    names = get_namespaces()
+    names = eventually(get_namespaces, _length_at_least(3))
     assert (
         all(
             name in names
@@ -192,8 +197,7 @@ def test_property_metadata(dispose_of):
     dispose_of(entity1.key._key)
 
     query = ndb.Query(kind=Property.KIND_NAME)
-    results = query.fetch()
-    assert len(results) >= 2
+    results = eventually(query.fetch, _length_at_least(2))
 
     properties = [
         result.property_name
@@ -217,9 +221,10 @@ def test_get_properties_of_kind(dispose_of):
     entity1.put()
     dispose_of(entity1.key._key)
 
-    eventually(lambda: len(get_properties_of_kind("AnyKind")) == 4)
+    properties = eventually(
+        lambda: get_properties_of_kind("AnyKind"), _length_at_least(4)
+    )
 
-    properties = get_properties_of_kind("AnyKind")
     assert properties == ["bar", "baz", "foo", "qux"]
 
     properties = get_properties_of_kind("AnyKind", start="c")
@@ -249,9 +254,10 @@ def test_get_properties_of_kind_different_namespace(dispose_of, namespace):
     entity1.put()
     dispose_of(entity1.key._key)
 
-    eventually(lambda: len(get_properties_of_kind("AnyKind")) == 4)
+    properties = eventually(
+        lambda: get_properties_of_kind("AnyKind"), _length_at_least(4)
+    )
 
-    properties = get_properties_of_kind("AnyKind")
     assert properties == ["bar", "baz", "foo", "qux"]
 
     properties = get_properties_of_kind("AnyKind", start="c")
@@ -278,9 +284,10 @@ def test_get_representations_of_kind(dispose_of):
     entity1.put()
     dispose_of(entity1.key._key)
 
-    eventually(lambda: len(get_representations_of_kind("AnyKind")) == 4)
+    representations = eventually(
+        lambda: get_representations_of_kind("AnyKind"), _length_at_least(4)
+    )
 
-    representations = get_representations_of_kind("AnyKind")
     assert representations == {
         "bar": ["STRING"],
         "baz": ["INT64"],

@@ -18,8 +18,8 @@ KIND = "SomeKind"
 OTHER_NAMESPACE = "other-namespace"
 
 
-def eventually(predicate, timeout=30, interval=1):
-    """Runs `predicate` in a loop, hoping for eventual success.
+def eventually(f, predicate, timeout=60, interval=2):
+    """Runs `f` in a loop, hoping for eventual success.
 
     Some things we're trying to test in Datastore are eventually
     consistent—we'll write something to the Datastore and can read back out
@@ -34,17 +34,30 @@ def eventually(predicate, timeout=30, interval=1):
     loop until it either returns `True` or `timeout` is exceeded.
 
     Args:
-        predicate (Callable[[], bool]): A function to be called. A return value
-            of `True` indicates a consistent state and will cause `eventually`
-            to return so execution can proceed in the calling context.
+        f (Callable[[], Any]): A function to be called. Its result will be
+            passed to ``predicate`` to determine success or failure.
+        predicate (Callable[[Any], bool]): A function to be called with the
+            result of calling ``f``. A return value of :data:`True` indicates a
+            consistent state and will cause `eventually` to return so execution
+            can proceed in the calling context.
         timeout (float): Time in seconds to wait for predicate to return
             `True`. After this amount of time, `eventually` will return
             regardless of `predicate` return value.
         interval (float): Time in seconds to wait in between invocations of
             `predicate`.
+
+    Returns:
+        Any: The return value of ``f``.
+
+    Raises:
+        AssertionError: If ``predicate`` fails to return :data:`True` before
+            the timeout has expired.
     """
     deadline = time.time() + timeout
     while time.time() < deadline:
-        if predicate():
-            break
+        value = f()
+        if predicate(value):
+            return value
         time.sleep(interval)
+
+    assert predicate(value)
