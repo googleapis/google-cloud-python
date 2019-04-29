@@ -41,6 +41,7 @@ The following client libraries have **GA** support:
 -  `Google Cloud Natural Language`_ (`Natural Language README`_)
 -  `Google Cloud Spanner`_ (`Spanner README`_)
 -  `Google Cloud Storage`_ (`Storage README`_)
+-  `Google Cloud Tasks`_ (`Tasks README`_)
 -  `Google Cloud Translation`_ (`Translation README`_)
 -  `Stackdriver Logging`_ (`Logging README`_)
 
@@ -54,6 +55,8 @@ The following client libraries have **GA** support:
 .. _Spanner README: https://github.com/googleapis/google-cloud-python/tree/master/spanner
 .. _Google Cloud Storage: https://pypi.org/project/google-cloud-storage/
 .. _Storage README: https://github.com/googleapis/google-cloud-python/tree/master/storage
+.. _Google Cloud Tasks: https://pypi.org/project/google-cloud-tasks/
+.. _Tasks README: https://github.com/googleapis/google-cloud-python/tree/master/tasks
 .. _Google Cloud Translation: https://pypi.org/project/google-cloud-translate/
 .. _Translation README: https://github.com/googleapis/google-cloud-python/tree/master/translate
 .. _Stackdriver Logging: https://pypi.org/project/google-cloud-logging/
