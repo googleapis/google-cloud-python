@@ -81,6 +81,14 @@ def retry_async(callback, retries=_DEFAULT_RETRIES):
     return retry_wrapper
 
 
+# Possibly we should include DEADLINE_EXCEEDED. The caveat is that I think the
+# timeout is enforced on the client side, so it might be possible that a Commit
+# request times out on the client side, but still writes data on the server
+# side, in which case we don't want to retry, since we can't commit the same
+# transaction more than once. Some more research is needed here. If we discover
+# that a DEADLINE_EXCEEDED status code guarantees the operation was cancelled,
+# then we can add DEADLINE_EXCEEDED to our retryable status codes. Not knowing
+# the answer, it's best not to take that risk.
 TRANSIENT_CODES = (grpc.StatusCode.UNAVAILABLE, grpc.StatusCode.INTERNAL)
 
 

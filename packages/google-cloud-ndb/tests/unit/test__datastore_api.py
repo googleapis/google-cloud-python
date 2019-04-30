@@ -118,6 +118,22 @@ class Test_make_call:
         assert _api.make_call("foo", request, retries=0).result() == "bar"
         _retry.retry_async.assert_not_called()
 
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    @mock.patch("google.cloud.ndb._datastore_api._retry")
+    @mock.patch("google.cloud.ndb._datastore_api.stub")
+    def test_explicit_timeout(stub, _retry):
+        api = stub.return_value
+        future = tasklets.Future()
+        api.foo.future.return_value = future
+        _retry.retry_async.return_value = mock.Mock(return_value=future)
+        future.set_result("bar")
+
+        request = object()
+        call = _api.make_call("foo", request, retries=0, timeout=20)
+        assert call.result() == "bar"
+        api.foo.future.assert_called_once_with(request, timeout=20)
+
 
 def _mock_key(key_str):
     key = mock.Mock(spec=("to_protobuf",))
@@ -377,7 +393,8 @@ def test__datastore_lookup(datastore_pb2, context):
             project_id="theproject", keys=["foo", "bar"], read_options=None
         )
         context.stub.Lookup.future.assert_called_once_with(
-            datastore_pb2.LookupRequest.return_value
+            datastore_pb2.LookupRequest.return_value,
+            timeout=_api._DEFAULT_TIMEOUT,
         )
 
 
@@ -581,7 +598,7 @@ class Test_NonTransactionalCommitBatch:
             batch.idle_callback()
 
             _datastore_commit.assert_called_once_with(
-                [mutation1, mutation2], None, retries=None
+                [mutation1, mutation2], None, retries=None, timeout=None
             )
             rpc.set_result(None)
             _process_commit.assert_called_once_with(rpc, batch.futures)
@@ -591,7 +608,9 @@ class Test_NonTransactionalCommitBatch:
 def test_commit(get_commit_batch):
     _api.commit(b"123")
     get_commit_batch.assert_called_once_with(b"123", _options.Options())
-    get_commit_batch.return_value.commit.assert_called_once_with(retries=None)
+    get_commit_batch.return_value.commit.assert_called_once_with(
+        retries=None, timeout=None
+    )
 
 
 class Test_get_commit_batch:
@@ -727,7 +746,7 @@ class Test__TransactionalCommitBatch:
             future = batch.commit()
 
             datastore_commit.assert_called_once_with(
-                batch.mutations, transaction=b"abc", retries=None
+                batch.mutations, transaction=b"abc", retries=None, timeout=None
             )
             rpc.set_result(None)
             process_commit.assert_called_once_with(rpc, batch.futures)
@@ -752,7 +771,7 @@ class Test__TransactionalCommitBatch:
             future = batch.commit()
 
             datastore_commit.assert_called_once_with(
-                batch.mutations, transaction=b"abc", retries=None
+                batch.mutations, transaction=b"abc", retries=None, timeout=None
             )
 
             error = Exception("Spurious error")
@@ -793,7 +812,7 @@ class Test__TransactionalCommitBatch:
 
             allocating_ids.set_result(None)
             datastore_commit.assert_called_once_with(
-                batch.mutations, transaction=b"abc", retries=None
+                batch.mutations, transaction=b"abc", retries=None, timeout=None
             )
 
             rpc.set_result(None)
@@ -939,7 +958,7 @@ def test_begin_transaction(_datastore_begin_transaction):
 
     future = _api.begin_transaction("read only")
     _datastore_begin_transaction.assert_called_once_with(
-        "read only", retries=None
+        "read only", retries=None, timeout=None
     )
     rpc.set_result(mock.Mock(transaction=b"tx123", spec=("transaction")))
 
@@ -1001,7 +1020,9 @@ def test_rollback(_datastore_rollback):
     _datastore_rollback.return_value = rpc
     future = _api.rollback(b"tx123")
 
-    _datastore_rollback.assert_called_once_with(b"tx123", retries=None)
+    _datastore_rollback.assert_called_once_with(
+        b"tx123", retries=None, timeout=None
+    )
     rpc.set_result(None)
 
     assert future.result() is None

@@ -34,6 +34,7 @@ from google.cloud.ndb import tasklets
 
 EVENTUAL = datastore_pb2.ReadOptions.EVENTUAL
 EVENTUAL_CONSISTENCY = EVENTUAL  # Legacy NDB
+_DEFAULT_TIMEOUT = None
 _NOT_FOUND = object()
 
 log = logging.getLogger(__name__)
@@ -72,7 +73,7 @@ def make_stub(client):
     return datastore_pb2_grpc.DatastoreStub(channel)
 
 
-def make_call(rpc_name, request, retries=None):
+def make_call(rpc_name, request, retries=None, timeout=None):
     """Make a call to the Datastore API.
 
     Args:
@@ -82,21 +83,28 @@ def make_call(rpc_name, request, retries=None):
         retries (int): Number of times to potentially retry the call. If
             :data:`None` is passed, will use :data:`_retry._DEFAULT_RETRIES`.
             If :data:`0` is passed, the call is attempted only once.
+        timeout (float): Timeout, in seconds, to pass to gRPC call. If
+            :data:`None` is passed, will use :data:`_DEFAULT_TIMEOUT`.
 
     Returns:
         tasklets.Future: Future for the eventual response for the API call.
     """
     api = stub()
     method = getattr(api, rpc_name)
+
     if retries is None:
         retries = _retry._DEFAULT_RETRIES
 
+    if timeout is None:
+        timeout = _DEFAULT_TIMEOUT
+
     @tasklets.tasklet
     def rpc_call():
-        rpc = _remote.RemoteCall(
-            method.future(request), "{}({})".format(rpc_name, request)
-        )
+        call = method.future(request, timeout=timeout)
+        rpc = _remote.RemoteCall(call, "{}({})".format(rpc_name, request))
         log.debug(rpc)
+        log.debug("timeout={}".format(timeout))
+
         result = yield rpc
         return result
 
@@ -210,8 +218,12 @@ class _LookupBatch:
             keys.append(key_pb)
 
         read_options = _get_read_options(self.options)
-        retries = self.options.retries
-        rpc = _datastore_lookup(keys, read_options, retries=retries)
+        rpc = _datastore_lookup(
+            keys,
+            read_options,
+            retries=self.options.retries,
+            timeout=self.options.timeout,
+        )
         rpc.add_done_callback(self.lookup_callback)
 
     def lookup_callback(self, rpc):
@@ -264,7 +276,7 @@ class _LookupBatch:
                 future.set_result(entity)
 
 
-def _datastore_lookup(keys, read_options, retries=None):
+def _datastore_lookup(keys, read_options, retries=None, timeout=None):
     """Issue a Lookup call to Datastore using gRPC.
 
     Args:
@@ -275,6 +287,8 @@ def _datastore_lookup(keys, read_options, retries=None):
         retries (int): Number of times to potentially retry the call. If
             :data:`None` is passed, will use :data:`_retry._DEFAULT_RETRIES`.
             If :data:`0` is passed, the call is attempted only once.
+        timeout (float): Timeout, in seconds, to pass to gRPC call. If
+            :data:`None` is passed, will use :data:`_DEFAULT_TIMEOUT`.
 
     Returns:
         tasklets.Future: Future object for eventual result of lookup.
@@ -286,7 +300,7 @@ def _datastore_lookup(keys, read_options, retries=None):
         read_options=read_options,
     )
 
-    return make_call("Lookup", request, retries=retries)
+    return make_call("Lookup", request, retries=retries, timeout=timeout)
 
 
 def _get_read_options(options):
@@ -446,12 +460,16 @@ class _NonTransactionalCommitBatch:
         def commit_callback(rpc):
             _process_commit(rpc, futures)
 
-        retries = self.options.retries
-        rpc = _datastore_commit(self.mutations, None, retries=retries)
+        rpc = _datastore_commit(
+            self.mutations,
+            None,
+            retries=self.options.retries,
+            timeout=self.options.timeout,
+        )
         rpc.add_done_callback(commit_callback)
 
 
-def commit(transaction, retries=None):
+def commit(transaction, retries=None, timeout=None):
     """Commit a transaction.
 
     Args:
@@ -459,13 +477,15 @@ def commit(transaction, retries=None):
         retries (int): Number of times to potentially retry the call. If
             :data:`None` is passed, will use :data:`_retry._DEFAULT_RETRIES`.
             If :data:`0` is passed, the call is attempted only once.
+        timeout (float): Timeout, in seconds, to pass to gRPC call. If
+            :data:`None` is passed, will use :data:`_DEFAULT_TIMEOUT`.
 
     Returns:
         tasklets.Future: Result will be none, will finish when the transaction
             is committed.
     """
     batch = _get_commit_batch(transaction, _options.Options())
-    return batch.commit(retries=retries)
+    return batch.commit(retries=retries, timeout=timeout)
 
 
 def _get_commit_batch(transaction, options):
@@ -588,9 +608,10 @@ class _TransactionalCommitBatch(_NonTransactionalCommitBatch):
             # Signal that we're done allocating these ids
             allocating_ids.set_result(None)
 
-        retries = self.options.retries
         keys = [mutation.upsert.key for mutation in mutations]
-        rpc = _datastore_allocate_ids(keys, retries=retries)
+        rpc = _datastore_allocate_ids(
+            keys, retries=self.options.retries, timeout=self.options.timeout
+        )
         rpc.add_done_callback(callback)
 
         self.incomplete_mutations = []
@@ -613,7 +634,7 @@ class _TransactionalCommitBatch(_NonTransactionalCommitBatch):
             future.set_result(key)
 
     @tasklets.tasklet
-    def commit(self, retries=None):
+    def commit(self, retries=None, timeout=None):
         """Commit transaction.
 
         Args:
@@ -621,6 +642,8 @@ class _TransactionalCommitBatch(_NonTransactionalCommitBatch):
                 :data:`None` is passed, will use
                 :data:`_retry._DEFAULT_RETRIES`.  If :data:`0` is passed, the
                 call is attempted only once.
+            timeout (float): Timeout, in seconds, to pass to gRPC call. If
+                :data:`None` is passed, will use :data:`_DEFAULT_TIMEOUT`.
         """
         if not self.mutations:
             return
@@ -649,7 +672,10 @@ class _TransactionalCommitBatch(_NonTransactionalCommitBatch):
                 future.set_result(None)
 
         rpc = _datastore_commit(
-            self.mutations, transaction=self.transaction, retries=retries
+            self.mutations,
+            transaction=self.transaction,
+            retries=retries,
+            timeout=timeout,
         )
         rpc.add_done_callback(commit_callback)
 
@@ -718,7 +744,7 @@ def _complete(key_pb):
     return False
 
 
-def _datastore_commit(mutations, transaction, retries=None):
+def _datastore_commit(mutations, transaction, retries=None, timeout=None):
     """Call Commit on Datastore.
 
     Args:
@@ -730,6 +756,8 @@ def _datastore_commit(mutations, transaction, retries=None):
         retries (int): Number of times to potentially retry the call. If
             :data:`None` is passed, will use :data:`_retry._DEFAULT_RETRIES`.
             If :data:`0` is passed, the call is attempted only once.
+        timeout (float): Timeout, in seconds, to pass to gRPC call. If
+            :data:`None` is passed, will use :data:`_DEFAULT_TIMEOUT`.
 
     Returns:
         tasklets.Tasklet: A future for
@@ -748,10 +776,10 @@ def _datastore_commit(mutations, transaction, retries=None):
         transaction=transaction,
     )
 
-    return make_call("Commit", request, retries=retries)
+    return make_call("Commit", request, retries=retries, timeout=timeout)
 
 
-def _datastore_allocate_ids(keys, retries=None):
+def _datastore_allocate_ids(keys, retries=None, timeout=None):
     """Calls ``AllocateIds`` on Datastore.
 
     Args:
@@ -760,6 +788,8 @@ def _datastore_allocate_ids(keys, retries=None):
         retries (int): Number of times to potentially retry the call. If
             :data:`None` is passed, will use :data:`_retry._DEFAULT_RETRIES`.
             If :data:`0` is passed, the call is attempted only once.
+        timeout (float): Timeout, in seconds, to pass to gRPC call. If
+            :data:`None` is passed, will use :data:`_DEFAULT_TIMEOUT`.
 
     Returns:
         tasklets.Tasklet: A future for
@@ -770,11 +800,11 @@ def _datastore_allocate_ids(keys, retries=None):
         project_id=client.project, keys=keys
     )
 
-    return make_call("AllocateIds", request, retries=retries)
+    return make_call("AllocateIds", request, retries=retries, timeout=timeout)
 
 
 @tasklets.tasklet
-def begin_transaction(read_only, retries=None):
+def begin_transaction(read_only, retries=None, timeout=None):
     """Start a new transction.
 
     Args:
@@ -783,16 +813,20 @@ def begin_transaction(read_only, retries=None):
         retries (int): Number of times to potentially retry the call. If
             :data:`None` is passed, will use :data:`_retry._DEFAULT_RETRIES`.
             If :data:`0` is passed, the call is attempted only once.
+        timeout (float): Timeout, in seconds, to pass to gRPC call. If
+            :data:`None` is passed, will use :data:`_DEFAULT_TIMEOUT`.
 
     Returns:
         tasklets.Future: Result will be Transaction Id (bytes) of new
             transaction.
     """
-    response = yield _datastore_begin_transaction(read_only, retries=retries)
+    response = yield _datastore_begin_transaction(
+        read_only, retries=retries, timeout=timeout
+    )
     return response.transaction
 
 
-def _datastore_begin_transaction(read_only, retries=None):
+def _datastore_begin_transaction(read_only, retries=None, timeout=None):
     """Calls ``BeginTransaction`` on Datastore.
 
     Args:
@@ -801,6 +835,8 @@ def _datastore_begin_transaction(read_only, retries=None):
         retries (int): Number of times to potentially retry the call. If
             :data:`None` is passed, will use :data:`_retry._DEFAULT_RETRIES`.
             If :data:`0` is passed, the call is attempted only once.
+        timeout (float): Timeout, in seconds, to pass to gRPC call. If
+            :data:`None` is passed, will use :data:`_DEFAULT_TIMEOUT`.
 
     Returns:
         tasklets.Tasklet: A future for
@@ -820,11 +856,13 @@ def _datastore_begin_transaction(read_only, retries=None):
         project_id=client.project, transaction_options=options
     )
 
-    return make_call("BeginTransaction", request, retries=retries)
+    return make_call(
+        "BeginTransaction", request, retries=retries, timeout=timeout
+    )
 
 
 @tasklets.tasklet
-def rollback(transaction, retries=None):
+def rollback(transaction, retries=None, timeout=None):
     """Rollback a transaction.
 
     Args:
@@ -832,14 +870,16 @@ def rollback(transaction, retries=None):
         retries (int): Number of times to potentially retry the call. If
             :data:`None` is passed, will use :data:`_retry._DEFAULT_RETRIES`.
             If :data:`0` is passed, the call is attempted only once.
+        timeout (float): Timeout, in seconds, to pass to gRPC call. If
+            :data:`None` is passed, will use :data:`_DEFAULT_TIMEOUT`.
 
     Returns:
         tasklets.Future: Future completes when rollback is finished.
     """
-    yield _datastore_rollback(transaction, retries=retries)
+    yield _datastore_rollback(transaction, retries=retries, timeout=timeout)
 
 
-def _datastore_rollback(transaction, retries=None):
+def _datastore_rollback(transaction, retries=None, timeout=None):
     """Calls Rollback in Datastore.
 
     Args:
@@ -847,6 +887,8 @@ def _datastore_rollback(transaction, retries=None):
         retries (int): Number of times to potentially retry the call. If
             :data:`None` is passed, will use :data:`_retry._DEFAULT_RETRIES`.
             If :data:`0` is passed, the call is attempted only once.
+        timeout (float): Timeout, in seconds, to pass to gRPC call. If
+            :data:`None` is passed, will use :data:`_DEFAULT_TIMEOUT`.
 
     Returns:
         tasklets.Tasklet: Future for
@@ -857,4 +899,4 @@ def _datastore_rollback(transaction, retries=None):
         project_id=client.project, transaction=transaction
     )
 
-    return make_call("Rollback", request, retries=retries)
+    return make_call("Rollback", request, retries=retries, timeout=timeout)

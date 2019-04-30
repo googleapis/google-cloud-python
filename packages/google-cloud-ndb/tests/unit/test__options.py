@@ -30,8 +30,13 @@ class TestOptions:
 
     @staticmethod
     def test_constructor_w_deadline():
-        with pytest.raises(NotImplementedError):
-            MyOptions(deadline=20)
+        options = MyOptions(deadline=20)
+        assert options.timeout == 20
+
+    @staticmethod
+    def test_constructor_w_deadline_and_timeout():
+        with pytest.raises(TypeError):
+            MyOptions(timeout=20, deadline=10)
 
     @staticmethod
     def test_constructor_w_use_memcache():

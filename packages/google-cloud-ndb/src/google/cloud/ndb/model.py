@@ -3960,6 +3960,7 @@ class Model(metaclass=MetaModel):
     def _put(
         self,
         retries=None,
+        timeout=None,
         deadline=None,
         force_writes=None,
         use_cache=None,
@@ -3975,8 +3976,8 @@ class Model(metaclass=MetaModel):
         attribute is set to the new, complete key.
 
         Args:
-            deadline (float): Length of time, in seconds, to wait for server
-                before timing out.
+            timeout (float): Override the gRPC timeout, in seconds.
+            deadline (float): DEPRECATED: Synonym for ``timeout``.
             force_writes (bool): Specifies whether a write request should
                 succeed even if the app is read-only. (This only applies to
                 user controlled read-only periods.)
@@ -4006,6 +4007,7 @@ class Model(metaclass=MetaModel):
     def _put_async(
         self,
         retries=None,
+        timeout=None,
         deadline=None,
         force_writes=None,
         use_cache=None,
@@ -4021,8 +4023,8 @@ class Model(metaclass=MetaModel):
         attribute is set to the new, complete key.
 
         Args:
-            deadline (float): Length of time, in seconds, to wait for server
-                before timing out.
+            timeout (float): Override the gRPC timeout, in seconds.
+            deadline (float): DEPRECATED: Synonym for ``timeout``.
             force_writes (bool): Specifies whether a write request should
                 succeed even if the app is read-only. (This only applies to
                 user controlled read-only periods.)
@@ -4169,6 +4171,7 @@ def get_multi_async(
     read_policy=None,
     transaction=None,
     retries=None,
+    timeout=None,
     deadline=None,
     force_writes=None,
     use_cache=None,
@@ -4195,8 +4198,8 @@ def get_multi_async(
             of transient server errors. Operation will potentially be tried
             up to ``retries`` + 1 times. Set to ``0`` to try operation only
             once, with no retries.
-        deadline (float): Length of time, in seconds, to wait for server
-            before timing out.
+        timeout (float): Override the gRPC timeout, in seconds.
+        deadline (float): DEPRECATED: Synonym for ``timeout``.
         force_writes (bool): Specifies whether a write request should
             succeed even if the app is read-only. (This only applies to
             user controlled read-only periods.)
@@ -4228,6 +4231,7 @@ def get_multi(
     read_policy=None,
     transaction=None,
     retries=None,
+    timeout=None,
     deadline=None,
     force_writes=None,
     use_cache=None,
@@ -4254,8 +4258,8 @@ def get_multi(
             of transient server errors. Operation will potentially be tried
             up to ``retries`` + 1 times. Set to ``0`` to try operation only
             once, with no retries.
-        deadline (float): Length of time, in seconds, to wait for server
-            before timing out.
+        timeout (float): Override the gRPC timeout, in seconds.
+        deadline (float): DEPRECATED: Synonym for ``timeout``.
         force_writes (bool): Specifies whether a write request should
             succeed even if the app is read-only. (This only applies to
             user controlled read-only periods.)
@@ -4286,6 +4290,7 @@ def get_multi(
 def put_multi_async(
     entities,
     retries=None,
+    timeout=None,
     deadline=None,
     force_writes=None,
     use_cache=None,
@@ -4300,8 +4305,8 @@ def put_multi_async(
     Args:
         entities (List[:class:`~google.cloud.ndb.model.Model`]): A sequence
             of models to store.
-        deadline (float): Length of time, in seconds, to wait for server
-            before timing out.
+        timeout (float): Override the gRPC timeout, in seconds.
+        deadline (float): DEPRECATED: Synonym for ``timeout``.
         force_writes (bool): Specifies whether a write request should
             succeed even if the app is read-only. (This only applies to
             user controlled read-only periods.)
@@ -4329,6 +4334,7 @@ def put_multi_async(
 def put_multi(
     entities,
     retries=None,
+    timeout=None,
     deadline=None,
     force_writes=None,
     use_cache=None,
@@ -4343,8 +4349,8 @@ def put_multi(
     Args:
         entities (List[:class:`~google.cloud.ndb.model.Model`]): A sequence
             of models to store.
-        deadline (float): Length of time, in seconds, to wait for server
-            before timing out.
+        timeout (float): Override the gRPC timeout, in seconds.
+        deadline (float): DEPRECATED: Synonym for ``timeout``.
         force_writes (bool): Specifies whether a write request should
             succeed even if the app is read-only. (This only applies to
             user controlled read-only periods.)
@@ -4373,6 +4379,7 @@ def put_multi(
 def delete_multi_async(
     keys,
     retries=None,
+    timeout=None,
     deadline=None,
     force_writes=None,
     use_cache=None,
@@ -4387,8 +4394,8 @@ def delete_multi_async(
     Args:
         keys (Sequence[:class:`~google.cloud.ndb.key.Key`]): A sequence of
             keys.
-        deadline (float): Length of time, in seconds, to wait for server
-            before timing out.
+        timeout (float): Override the gRPC timeout, in seconds.
+        deadline (float): DEPRECATED: Synonym for ``timeout``.
         force_writes (bool): Specifies whether a write request should
             succeed even if the app is read-only. (This only applies to
             user controlled read-only periods.)
@@ -4416,6 +4423,7 @@ def delete_multi_async(
 def delete_multi(
     keys,
     retries=None,
+    timeout=None,
     deadline=None,
     force_writes=None,
     use_cache=None,
@@ -4430,8 +4438,8 @@ def delete_multi(
     Args:
         keys (Sequence[:class:`~google.cloud.ndb.key.Key`]): A sequence of
             keys.
-        deadline (float): Length of time, in seconds, to wait for server
-            before timing out.
+        timeout (float): Override the gRPC timeout, in seconds.
+        deadline (float): DEPRECATED: Synonym for ``timeout``.
         force_writes (bool): Specifies whether a write request should
             succeed even if the app is read-only. (This only applies to
             user controlled read-only periods.)

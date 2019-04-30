@@ -27,8 +27,8 @@ class Options:
     __slots__ = (
         # Supported
         "retries",
+        "timeout",
         # Not yet implemented
-        "deadline",
         "use_cache",
         "use_memcache",
         "use_datastore",
@@ -68,6 +68,13 @@ class Options:
                 "Config must be a {} instance.".format(cls.__name__)
             )
 
+        deadline = kwargs.pop("deadline", None)
+        if deadline is not None:
+            timeout = kwargs.get("timeout")
+            if timeout:
+                raise TypeError("Can't specify both 'deadline' and 'timeout'")
+            kwargs["timeout"] = deadline
+
         for key in self.slots():
             default = getattr(config, key, None) if config else None
             setattr(self, key, kwargs.pop(key, default))
@@ -85,9 +92,6 @@ class Options:
                     type(self).__name__, next(iter(kwargs))
                 )
             )
-
-        if self.deadline is not None:
-            raise NotImplementedError
 
         if self.use_cache is not None:
             raise NotImplementedError

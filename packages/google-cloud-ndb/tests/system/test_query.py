@@ -18,6 +18,7 @@ System tests for queries.
 
 import operator
 
+import grpc
 import pytest
 
 import test_utils.system
@@ -48,6 +49,23 @@ def test_fetch_all_of_a_kind(ds_entity):
 
     results = sorted(results, key=operator.attrgetter("foo"))
     assert [entity.foo for entity in results] == [0, 1, 2, 3, 4]
+
+
+@pytest.mark.usefixtures("client_context")
+def test_fetch_w_absurdly_short_timeout(ds_entity):
+    for i in range(5):
+        entity_id = test_utils.system.unique_resource_id()
+        ds_entity(KIND, entity_id, foo=i)
+
+    class SomeKind(ndb.Model):
+        foo = ndb.IntegerProperty()
+
+    query = SomeKind.query()
+    timeout = 1e-9  # One nanosecend
+    with pytest.raises(Exception) as error_context:
+        query.fetch(timeout=timeout)
+
+    assert error_context.value.code() == grpc.StatusCode.DEADLINE_EXCEEDED
 
 
 @pytest.mark.usefixtures("client_context")

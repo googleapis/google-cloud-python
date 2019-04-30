@@ -1004,7 +1004,9 @@ class Test__datastore_run_query:
         )
         _datastore_api.make_call.return_value = future_result("foo")
         assert _datastore_query._datastore_run_query(query).result() == "foo"
-        _datastore_api.make_call.assert_called_once_with("RunQuery", request)
+        _datastore_api.make_call.assert_called_once_with(
+            "RunQuery", request, timeout=None
+        )
 
 
 class TestCursor:

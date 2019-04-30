@@ -1579,10 +1579,25 @@ class TestQuery:
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")
-    def test_fetch_async_with_deadline():
+    @unittest.mock.patch("google.cloud.ndb.query._datastore_query")
+    def test_fetch_async_with_deadline(_datastore_query):
         query = query_module.Query()
-        with pytest.raises(NotImplementedError):
-            query.fetch_async(deadline=20)
+        response = _datastore_query.fetch.return_value
+        assert query.fetch_async(deadline=20) is response
+        _datastore_query.fetch.assert_called_once_with(
+            query_module.QueryOptions(project="testing", timeout=20)
+        )
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    @unittest.mock.patch("google.cloud.ndb.query._datastore_query")
+    def test_fetch_async_with_timeout(_datastore_query):
+        query = query_module.Query()
+        response = _datastore_query.fetch.return_value
+        assert query.fetch_async(timeout=20) is response
+        _datastore_query.fetch.assert_called_once_with(
+            query_module.QueryOptions(project="testing", timeout=20)
+        )
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")

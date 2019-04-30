@@ -1459,6 +1459,7 @@ class Query:
         produce_cursors=False,
         start_cursor=None,
         end_cursor=None,
+        timeout=None,
         deadline=None,
         read_policy=None,  #  _datastore_api.EVENTUAL,  # placeholder
         options=None,
@@ -1483,7 +1484,8 @@ class Query:
             produce_cursors (bool): Whether to generate cursors from query.
             start_cursor: Starting point for search.
             end_cursor: Endpoint point for search.
-            deadline (Optional[int]): Override the RPC deadline, in seconds.
+            timeout (Optional[int]): Override the gRPC timeout, in seconds.
+            deadline (Optional[int]): DEPRECATED: Synonym for ``timeout``.
             read_policy: Defaults to `ndb.EVENTUAL` for potentially faster
                 query results without having to wait for Datastore to apply
                 pending changes to all returned records.
@@ -1508,6 +1510,7 @@ class Query:
         produce_cursors=False,
         start_cursor=None,
         end_cursor=None,
+        timeout=None,
         deadline=None,
         read_policy=None,  #  _datastore_api.EVENTUAL,  # placeholder
         options=None,
@@ -1530,7 +1533,8 @@ class Query:
             produce_cursors (bool): Whether to generate cursors from query.
             start_cursor: Starting point for search.
             end_cursor: Endpoint point for search.
-            deadline (Optional[int]): Override the RPC deadline, in seconds.
+            timeout (Optional[int]): Override the gRPC timeout, in seconds.
+            deadline (Optional[int]): DEPRECATED: Synonym for ``timeout``.
             read_policy: Defaults to `ndb.EVENTUAL` for potentially faster
                 query results without having to wait for Datastore to apply
                 pending changes to all returned records.
@@ -1599,6 +1603,7 @@ class Query:
         produce_cursors=False,
         start_cursor=None,
         end_cursor=None,
+        timeout=None,
         deadline=None,
         read_policy=None,  #  _datastore_api.EVENTUAL,  # placeholder
         options=None,
@@ -1621,7 +1626,8 @@ class Query:
             produce_cursors (bool): Whether to generate cursors from query.
             start_cursor: Starting point for search.
             end_cursor: Endpoint point for search.
-            deadline (Optional[int]): Override the RPC deadline, in seconds.
+            timeout (Optional[int]): Override the gRPC timeout, in seconds.
+            deadline (Optional[int]): DEPRECATED: Synonym for ``timeout``.
             read_policy: Defaults to `ndb.EVENTUAL` for potentially faster
                 query results without having to wait for Datastore to apply
                 pending changes to all returned records.
@@ -1650,6 +1656,7 @@ class Query:
         produce_cursors=False,
         start_cursor=None,
         end_cursor=None,
+        timeout=None,
         deadline=None,
         read_policy=None,  #  _datastore_api.EVENTUAL,  # placeholder
         options=None,
@@ -1674,7 +1681,8 @@ class Query:
             produce_cursors (bool): Whether to generate cursors from query.
             start_cursor: Starting point for search.
             end_cursor: Endpoint point for search.
-            deadline (Optional[int]): Override the RPC deadline, in seconds.
+            timeout (Optional[int]): Override the gRPC timeout, in seconds.
+            deadline (Optional[int]): DEPRECATED: Synonym for ``timeout``.
             read_policy: Defaults to `ndb.EVENTUAL` for potentially faster
                 query results without having to wait for Datastore to apply
                 pending changes to all returned records.
@@ -1722,6 +1730,7 @@ class Query:
         produce_cursors=False,
         start_cursor=None,
         end_cursor=None,
+        timeout=None,
         deadline=None,
         read_policy=None,  #  _datastore_api.EVENTUAL,  # placeholder
         options=None,
@@ -1746,6 +1755,7 @@ class Query:
         produce_cursors=False,
         start_cursor=None,
         end_cursor=None,
+        timeout=None,
         deadline=None,
         read_policy=None,  #  _datastore_api.EVENTUAL,  # placeholder
         options=None,
@@ -1770,7 +1780,8 @@ class Query:
             produce_cursors (bool): Whether to generate cursors from query.
             start_cursor: Starting point for search.
             end_cursor: Endpoint point for search.
-            deadline (Optional[int]): Override the RPC deadline, in seconds.
+            timeout (Optional[int]): Override the gRPC timeout, in seconds.
+            deadline (Optional[int]): DEPRECATED: Synonym for ``timeout``.
             read_policy: Defaults to `ndb.EVENTUAL` for potentially faster
                 query results without having to wait for Datastore to apply
                 pending changes to all returned records.
@@ -1794,6 +1805,7 @@ class Query:
         produce_cursors=False,
         start_cursor=None,
         end_cursor=None,
+        timeout=None,
         deadline=None,
         read_policy=None,  #  _datastore_api.EVENTUAL,  # placeholder
         options=None,
@@ -1818,6 +1830,7 @@ class Query:
         produce_cursors=False,
         start_cursor=None,
         end_cursor=None,
+        timeout=None,
         deadline=None,
         read_policy=None,  #  _datastore_api.EVENTUAL,  # placeholder
         options=None,
@@ -1845,7 +1858,8 @@ class Query:
             produce_cursors (bool): Whether to generate cursors from query.
             start_cursor: Starting point for search.
             end_cursor: Endpoint point for search.
-            deadline (Optional[int]): Override the RPC deadline, in seconds.
+            timeout (Optional[int]): Override the gRPC timeout, in seconds.
+            deadline (Optional[int]): DEPRECATED: Synonym for ``timeout``.
             read_policy: Defaults to `ndb.EVENTUAL` for potentially faster
                 query results without having to wait for Datastore to apply
                 pending changes to all returned records.
@@ -1869,6 +1883,7 @@ class Query:
         produce_cursors=False,
         start_cursor=None,
         end_cursor=None,
+        timeout=None,
         deadline=None,
         read_policy=None,  #  _datastore_api.EVENTUAL,  # placeholder
         options=None,
@@ -1895,6 +1910,7 @@ class Query:
         produce_cursors=False,
         start_cursor=None,
         end_cursor=None,
+        timeout=None,
         deadline=None,
         read_policy=None,  #  _datastore_api.EVENTUAL,  # placeholder
         options=None,
@@ -1934,6 +1950,7 @@ class Query:
         produce_cursors=False,
         start_cursor=None,
         end_cursor=None,
+        timeout=None,
         deadline=None,
         read_policy=None,  #  _datastore_api.EVENTUAL,  # placeholder
         options=None,

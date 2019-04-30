@@ -707,7 +707,9 @@ def _datastore_run_query(query):
     request = datastore_pb2.RunQueryRequest(
         project_id=query.project, partition_id=partition_id, query=query_pb
     )
-    response = yield _datastore_api.make_call("RunQuery", request)
+    response = yield _datastore_api.make_call(
+        "RunQuery", request, timeout=query.timeout
+    )
     log.debug(response)
     return response
 

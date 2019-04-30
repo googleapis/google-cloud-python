@@ -719,6 +719,7 @@ class Key:
         read_policy=None,
         transaction=None,
         retries=None,
+        timeout=None,
         deadline=None,
         force_writes=None,
         use_cache=None,
@@ -746,8 +747,8 @@ class Key:
                 of transient server errors. Operation will potentially be tried
                 up to ``retries`` + 1 times. Set to ``0`` to try operation only
                 once, with no retries.
-            deadline (float): Length of time, in seconds, to wait for server
-                before timing out.
+            timeout (float): Override the gRPC timeout, in seconds.
+            deadline (float): DEPRECATED: Synonym for ``timeout``.
             force_writes (bool): Specifies whether a write request should
                 succeed even if the app is read-only. (This only applies to
                 user controlled read-only periods.)
@@ -779,6 +780,7 @@ class Key:
         read_policy=None,
         transaction=None,
         retries=None,
+        timeout=None,
         deadline=None,
         force_writes=None,
         use_cache=None,
@@ -806,8 +808,8 @@ class Key:
                 of transient server errors. Operation will potentially be tried
                 up to ``retries`` + 1 times. Set to ``0`` to try operation only
                 once, with no retries.
-            deadline (float): Length of time, in seconds, to wait for server
-                before timing out.
+            timeout (float): Override the gRPC timeout, in seconds.
+            deadline (float): DEPRECATED: Synonym for ``timeout``.
             force_writes (bool): Specifies whether a write request should
                 succeed even if the app is read-only. (This only applies to
                 user controlled read-only periods.)
@@ -839,6 +841,7 @@ class Key:
     def delete(
         self,
         retries=None,
+        timeout=None,
         deadline=None,
         force_writes=None,
         use_cache=None,
@@ -862,8 +865,8 @@ class Key:
             entity is deleted, as one would expect.
 
         Args:
-            deadline (float): Length of time, in seconds, to wait for server
-                before timing out.
+            timeout (float): Override the gRPC timeout, in seconds.
+            deadline (float): DEPRECATED: Synonym for ``timeout``.
             force_writes (bool): Specifies whether a write request should
                 succeed even if the app is read-only. (This only applies to
                 user controlled read-only periods.)
@@ -889,6 +892,7 @@ class Key:
     def delete_async(
         self,
         retries=None,
+        timeout=None,
         deadline=None,
         force_writes=None,
         use_cache=None,
@@ -905,8 +909,8 @@ class Key:
         (i.e. there is no way to tell whether the entity existed or not).
 
         Args:
-            deadline (float): Length of time, in seconds, to wait for server
-                before timing out.
+            timeout (float): Override the gRPC timeout, in seconds.
+            deadline (float): DEPRECATED: Synonym for ``timeout``.
             force_writes (bool): Specifies whether a write request should
                 succeed even if the app is read-only. (This only applies to
                 user controlled read-only periods.)
