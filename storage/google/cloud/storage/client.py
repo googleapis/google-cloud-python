@@ -202,7 +202,7 @@ class Client(ClientWithProject):
         """
         return Batch(client=self)
 
-    def get_bucket(self, bucket_name):
+    def get_bucket(self, bucket_or_name):
         """Get a bucket by name.
 
         If the bucket isn't found, this will raise a
@@ -223,7 +223,12 @@ class Client(ClientWithProject):
         :returns: The bucket matching the name provided.
         :raises: :class:`google.cloud.exceptions.NotFound`
         """
-        bucket = Bucket(self, name=bucket_name)
+        bucket = None
+        if isinstance(bucket_or_name, Bucket):
+            bucket = bucket_or_name
+        else:
+            bucket = Bucket(self, name=bucket_or_name)
+
         bucket.reload(client=self)
         return bucket
 
@@ -265,8 +270,8 @@ class Client(ClientWithProject):
         To set additional properties when creating a bucket, such as the
         bucket location, use :meth:`~.Bucket.create`.
 
-        :type bucket_name: str
-        :param bucket_name: The bucket name to create.
+        :type bucket_or_name: str or resource
+        :param bucket_or_name: The bucket resource to pass or name to create.
 
         :type requester_pays: bool
         :param requester_pays:
