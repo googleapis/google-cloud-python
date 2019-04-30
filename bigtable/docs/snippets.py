@@ -33,12 +33,13 @@ import datetime
 import pytest
 
 from test_utils.system import unique_resource_id
+from google.api_core.exceptions import NotFound
 from google.cloud._helpers import UTC
 from google.cloud.bigtable import Client
 from google.cloud.bigtable import enums
 
 
-INSTANCE_ID = "snippet-" + unique_resource_id("-")
+INSTANCE_ID = "snippet-tests" + unique_resource_id("-")
 CLUSTER_ID = "clus-1-" + unique_resource_id("-")
 LOCATION_ID = "us-central1-f"
 ALT_LOCATION_ID = "us-central1-a"
@@ -52,6 +53,7 @@ LABEL_STAMP = (
     .strftime("%Y-%m-%dt%H-%M-%S")
 )
 LABELS = {LABEL_KEY: str(LABEL_STAMP)}
+INSTANCES_TO_DELETE = []
 
 
 class Config(object):
@@ -79,10 +81,15 @@ def setup_module():
     operation = Config.INSTANCE.create(clusters=[cluster])
     # We want to make sure the operation completes.
     operation.result(timeout=100)
+    INSTANCES_TO_DELETE.append(Config.INSTANCE)
 
 
 def teardown_module():
-    Config.INSTANCE.delete()
+    for instance in INSTANCES_TO_DELETE:
+        try:
+            instance.delete()
+        except NotFound:
+            pass
 
 
 def test_bigtable_create_instance():
@@ -107,9 +114,14 @@ def test_bigtable_create_instance():
         default_storage_type=storage_type,
     )
     operation = instance.create(clusters=[cluster])
+
+    # Make sure this instance gets deleted after the test case.
+    INSTANCES_TO_DELETE.append(instance)
+
     # We want to make sure the operation completes.
     operation.result(timeout=100)
     # [END bigtable_create_prod_instance]
+
     assert instance.exists()
     instance.delete()
 
@@ -281,6 +293,9 @@ def test_bigtable_update_instance():
     # [END bigtable_update_instance]
     assert instance.display_name == display_name
 
+    # Make sure this instance gets deleted after the test case.
+    INSTANCES_TO_DELETE.append(instance)
+
 
 def test_bigtable_update_cluster():
     # [START bigtable_update_cluster]
@@ -367,6 +382,10 @@ def test_bigtable_delete_instance():
         default_storage_type=STORAGE_TYPE,
     )
     operation = instance.create(clusters=[cluster])
+
+    # Make sure this instance gets deleted after the test case.
+    INSTANCES_TO_DELETE.append(instance)
+
     # We want to make sure the operation completes.
     operation.result(timeout=100)
 
