@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Client &#8212; google-cloud a114633 documentation</title>
+    <title>Client &#8212; google-cloud 86f81d1 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -121,6 +121,10 @@ and <code class="docutils literal notranslate"><span class="pre">admin</span></c
         <span class="n">default_storage_type</span><span class="o">=</span><span class="n">storage_type</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">operation</span> <span class="o">=</span> <span class="n">instance</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">clusters</span><span class="o">=</span><span class="p">[</span><span class="n">cluster</span><span class="p">])</span>
+
+    <span class="c1"># Make sure this instance gets deleted after the test case.</span>
+    <span class="n">INSTANCES_TO_DELETE</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">instance</span><span class="p">)</span>
+
     <span class="c1"># We want to make sure the operation completes.</span>
     <span class="n">operation</span><span class="o">.</span><span class="n">result</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
 </pre></div>
