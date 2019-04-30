@@ -1,4 +1,4 @@
-.. include:: /../vision/README.rst
+.. include:: README.rst
 
 Using the Library
 -----------------
