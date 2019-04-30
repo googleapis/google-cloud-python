@@ -65,7 +65,6 @@ def cleanup():
     for to_call, argument in registry:
         to_call(argument)
 
-
 def test_publish_messages(publisher, topic_path, cleanup):
     futures = []
     # Make sure the topic gets deleted.
