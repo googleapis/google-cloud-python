@@ -14,7 +14,7 @@
 
 """This script is used to synthesize generated parts of this library."""
 import os
-from pathlib import Path 
+from pathlib import Path
 
 import synthtool as s
 import synthtool.gcp as gcp
@@ -43,19 +43,26 @@ for version in versions:
     s.move(library, excludes=excludes)
 
     # Files to be renamed (remove v1_beta1 from name)
-    gapic_dir =  Path(f"google/cloud/phishingprotection_{version}/gapic")
-    client =  gapic_dir / "phishing_protection_service_v1_beta1_client.py"
+    gapic_dir = Path(f"google/cloud/phishingprotection_{version}/gapic")
+    client = gapic_dir / "phishing_protection_service_v1_beta1_client.py"
     client_config = gapic_dir / "phishing_protection_service_v1_beta1_client_config.py"
-    transport = gapic_dir / "transports/phishing_protection_service_v1_beta1_grpc_transport.py"
-    unit_test =  Path("tests/unit/gapic/v1beta1/test_phishing_protection_service_v1_beta1_client_v1beta1.py")
+    transport = (
+        gapic_dir / "transports/phishing_protection_service_v1_beta1_grpc_transport.py"
+    )
+    unit_test = Path(
+        "tests/unit/gapic/v1beta1/test_phishing_protection_service_v1_beta1_client_v1beta1.py"
+    )
 
     files = [client, client_config, transport, unit_test]
-    for f in files:
-        new_name = str(f).replace("v1_beta1_", "")
-        os.rename(f, new_name)
+    for file_ in files:
+        new_name = str(file_).replace("v1_beta1_", "")
+        os.rename(file_, new_name)
 
 # Rename classes in google/cloud and in tests/
-class_names = [ "PhishingProtectionServiceV1Beta1Client", "PhishingProtectionServiceV1Beta1GrpcTransport"]
+class_names = [
+    "PhishingProtectionServiceV1Beta1Client",
+    "PhishingProtectionServiceV1Beta1GrpcTransport",
+]
 
 for name in class_names:
     new_name = name.replace("V1Beta1", "")
@@ -64,7 +71,11 @@ for name in class_names:
 
 # Rename references to modules
 
-module_names = ["phishing_protection_v1_beta1_service_client", "phishing_protection_service_v1_beta1_grpc_transport", "phishing_protection_service_v1_beta1_client"]
+module_names = [
+    "phishing_protection_v1_beta1_service_client",
+    "phishing_protection_service_v1_beta1_grpc_transport",
+    "phishing_protection_service_v1_beta1_client",
+]
 
 for name in module_names:
     new_name = name.replace("v1_beta1_", "")
