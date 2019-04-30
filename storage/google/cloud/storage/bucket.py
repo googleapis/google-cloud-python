@@ -398,7 +398,7 @@ class Bucket(_PropertyMixin):
     https://cloud.google.com/storage/docs/storage-classes
     """
 
-    def __init__(self, client=None, name=None, user_project=None):
+    def __init__(self, client, name=None, user_project=None):
         name = _validate_name(name)
         super(Bucket, self).__init__(name=name)
         self._client = client

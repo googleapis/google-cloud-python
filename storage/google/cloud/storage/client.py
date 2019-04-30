@@ -202,7 +202,7 @@ class Client(ClientWithProject):
         """
         return Batch(client=self)
 
-    def get_bucket(self, bucket_or_name):
+    def get_bucket(self, bucket_name):
         """Get a bucket by name.
 
         If the bucket isn't found, this will raise a
@@ -223,11 +223,7 @@ class Client(ClientWithProject):
         :returns: The bucket matching the name provided.
         :raises: :class:`google.cloud.exceptions.NotFound`
         """
-        bucket = None
-        if isinstance(bucket_or_name, Bucket):
-            bucket = bucket_or_name
-        else:
-            bucket = Bucket(self, name=bucket_or_name)
+        bucket = Bucket(self, name=bucket_name)
 
         bucket.reload(client=self)
         return bucket
