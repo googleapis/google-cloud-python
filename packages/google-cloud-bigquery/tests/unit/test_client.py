@@ -22,6 +22,7 @@ import json
 import unittest
 
 import mock
+import requests
 import six
 from six.moves import http_client
 import pytest
@@ -37,6 +38,7 @@ except (ImportError, AttributeError):  # pragma: NO COVER
     pyarrow = None
 
 import google.api_core.exceptions
+from google.api_core.gapic_v1 import client_info
 import google.cloud._helpers
 from google.cloud.bigquery.dataset import DatasetReference
 
@@ -1319,6 +1321,38 @@ class TestClient(unittest.TestCase):
 
         conn.api_request.assert_called_once_with(method="GET", path="/%s" % path)
         self.assertEqual(table.table_id, self.TABLE_ID)
+
+    def test_get_table_sets_user_agent(self):
+        creds = _make_credentials()
+        http = mock.create_autospec(requests.Session)
+        mock_response = http.request(
+            url=mock.ANY, method=mock.ANY, headers=mock.ANY, data=mock.ANY
+        )
+        http.reset_mock()
+        mock_response.status_code = 200
+        mock_response.json.return_value = self._make_table_resource()
+        user_agent_override = client_info.ClientInfo(user_agent="my-application/1.2.3")
+        client = self._make_one(
+            project=self.PROJECT,
+            credentials=creds,
+            client_info=user_agent_override,
+            _http=http,
+        )
+
+        client.get_table(self.TABLE_REF)
+
+        expected_user_agent = user_agent_override.to_user_agent()
+        http.request.assert_called_once_with(
+            url=mock.ANY,
+            method="GET",
+            headers={
+                "X-Goog-API-Client": expected_user_agent,
+                "Accept-Encoding": "gzip",
+                "User-Agent": expected_user_agent,
+            },
+            data=mock.ANY,
+        )
+        self.assertIn("my-application/1.2.3", expected_user_agent)
 
     def test_update_dataset_w_invalid_field(self):
         from google.cloud.bigquery.dataset import Dataset
