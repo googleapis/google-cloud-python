@@ -379,35 +379,35 @@ class TestClient(unittest.TestCase):
     def test_create_bucket_with_string_conflict(self):
         from google.cloud.exceptions import Conflict
 
-        PROJECT = "PROJECT"
-        OTHER_PROJECT = "OTHER_PROJECT"
-        CREDENTIALS = _make_credentials()
-        client = self._make_one(project=PROJECT, credentials=CREDENTIALS)
+        project = "PROJECT"
+        other_project = "OTHER_PROJECT"
+        credentials = _make_credentials()
+        client = self._make_one(project=project, credentials=credentials)
 
-        BUCKET_NAME = "bucket-name"
+        bucket_name = "bucket-name"
         URI = "/".join(
             [
                 client._connection.API_BASE_URL,
                 "storage",
                 client._connection.API_VERSION,
-                "b?project=%s" % (OTHER_PROJECT,),
+                "b?project=%s" % (other_project,),
             ]
         )
         data = {"error": {"message": "Conflict"}}
-        sent = {"name": BUCKET_NAME}
+        json_expected = {"name": bucket_name}
         http = _make_requests_session(
             [_make_json_response(data, status=http_client.CONFLICT)]
         )
         client._http_internal = http
 
         with self.assertRaises(Conflict):
-            client.create_bucket(BUCKET_NAME, project=OTHER_PROJECT)
+            client.create_bucket(bucket_name, project=other_project)
 
         http.request.assert_called_once_with(
             method="POST", url=URI, data=mock.ANY, headers=mock.ANY
         )
         json_sent = http.request.call_args_list[0][1]["data"]
-        self.assertEqual(sent, json.loads(json_sent))
+        self.assertEqual(json_expected, json.loads(json_sent))
 
     def test_create_bucket_with_object_conflict(self):
         from google.cloud.exceptions import Conflict
@@ -460,8 +460,8 @@ class TestClient(unittest.TestCase):
                 "b?project=%s" % (project,),
             ]
         )
-        sent = {"name": bucket_name, "billing": {"requesterPays": True}}
-        data = sent
+        json_expected = {"name": bucket_name, "billing": {"requesterPays": True}}
+        data = json_expected
         http = _make_requests_session([_make_json_response(data)])
         client._http_internal = http
 
@@ -474,7 +474,7 @@ class TestClient(unittest.TestCase):
             method="POST", url=URI, data=mock.ANY, headers=mock.ANY
         )
         json_sent = http.request.call_args_list[0][1]["data"]
-        self.assertEqual(sent, json.loads(json_sent))
+        self.assertEqual(json_expected, json.loads(json_sent))
 
     def test_create_bucket_with_object_success(self):
         from google.cloud.storage.bucket import Bucket
@@ -485,6 +485,9 @@ class TestClient(unittest.TestCase):
 
         bucket_name = "bucket-name"
         bucket_obj = Bucket(client, bucket_name)
+        bucket_obj.storage_class = "COLDLINE"
+        bucket_obj.requester_pays = True
+
         URI = "/".join(
             [
                 client._connection.API_BASE_URL,
@@ -493,12 +496,16 @@ class TestClient(unittest.TestCase):
                 "b?project=%s" % (project,),
             ]
         )
-        sent = {"name": bucket_name, "billing": {"requesterPays": True}}
-        data = sent
+        json_expected = {
+            "name": bucket_name,
+            "billing": {"requesterPays": True},
+            "storageClass": "COLDLINE",
+        }
+        data = json_expected
         http = _make_requests_session([_make_json_response(data)])
         client._http_internal = http
 
-        bucket = client.create_bucket(bucket_obj, requester_pays=True)
+        bucket = client.create_bucket(bucket_obj)
 
         self.assertIsInstance(bucket, Bucket)
         self.assertEqual(bucket.name, bucket_name)
@@ -507,7 +514,7 @@ class TestClient(unittest.TestCase):
             method="POST", url=URI, data=mock.ANY, headers=mock.ANY
         )
         json_sent = http.request.call_args_list[0][1]["data"]
-        self.assertEqual(sent, json.loads(json_sent))
+        self.assertEqual(json_expected, json.loads(json_sent))
 
     def test_list_buckets_wo_project(self):
         CREDENTIALS = _make_credentials()
