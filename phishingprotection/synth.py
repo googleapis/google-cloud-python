@@ -51,8 +51,8 @@ for version in versions:
 
     files = [client, client_config, transport, unit_test]
     for f in files:
-        new_name = str(file).replace("v1_beta1_", "")
-        os.rename(file, new_name)
+        new_name = str(f).replace("v1_beta1_", "")
+        os.rename(f, new_name)
 
 # Rename classes in google/cloud and in tests/
 class_names = [ "PhishingProtectionServiceV1Beta1Client", "PhishingProtectionServiceV1Beta1GrpcTransport"]
