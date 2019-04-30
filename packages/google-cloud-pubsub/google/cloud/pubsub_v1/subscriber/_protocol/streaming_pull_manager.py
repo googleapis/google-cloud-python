@@ -193,12 +193,10 @@ class StreamingPullManager(object):
         if self._leaser is None:
             return 0
 
-        return max(
-            [
-                self._leaser.message_count / self._flow_control.max_messages,
-                self._leaser.bytes / self._flow_control.max_bytes,
-            ]
-        )
+        messages_percent = self._leaser.message_count / self._flow_control.max_messages
+        bytes_percent = self._leaser.bytes / self._flow_control.max_bytes
+        print(f"{messages_percent}, {bytes_percent}")
+        return max(messages_percent, bytes_percent)
 
     def add_close_callback(self, callback):
         """Schedules a callable when the manager closes.
@@ -210,10 +208,12 @@ class StreamingPullManager(object):
 
     def maybe_pause_consumer(self):
         """Check the current load and pause the consumer if needed."""
+        print(self.load)
         if self.load >= 1.0:
             if self._consumer is not None and not self._consumer.is_paused:
                 _LOGGER.debug("Message backlog over load at %.2f, pausing.", self.load)
                 self._consumer.pause()
+                print('paused')
 
     def maybe_resume_consumer(self):
         """Check the current load and resume the consumer if needed."""
@@ -227,6 +227,7 @@ class StreamingPullManager(object):
             return
 
         if self.load < self.flow_control.resume_threshold:
+            print('resuming')
             self._consumer.resume()
         else:
             _LOGGER.debug("Did not resume, current load is %s", self.load)
