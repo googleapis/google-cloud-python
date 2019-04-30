@@ -248,7 +248,7 @@ class Client(ClientWithProject):
         except NotFound:
             return None
 
-    def create_bucket(self, bucket_name, requester_pays=None, project=None):
+    def create_bucket(self, bucket_or_name, requester_pays=None, project=None):
         """Create a new bucket.
 
         For example:
@@ -281,7 +281,12 @@ class Client(ClientWithProject):
         :rtype: :class:`google.cloud.storage.bucket.Bucket`
         :returns: The newly created bucket.
         """
-        bucket = Bucket(self, name=bucket_name)
+        bucket = None
+        if isinstance(bucket_or_name, Bucket):
+            bucket = bucket_or_name
+        else:
+            bucket = Bucket(self, name=bucket_or_name)
+
         if requester_pays is not None:
             bucket.requester_pays = requester_pays
         bucket.create(client=self, project=project)

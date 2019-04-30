@@ -376,7 +376,7 @@ class TestClient(unittest.TestCase):
             method="GET", url=URI, data=mock.ANY, headers=mock.ANY
         )
 
-    def test_create_bucket_conflict(self):
+    def test_create_bucket_with_string_conflict(self):
         from google.cloud.exceptions import Conflict
 
         PROJECT = "PROJECT"
@@ -409,7 +409,42 @@ class TestClient(unittest.TestCase):
         json_sent = http.request.call_args_list[0][1]["data"]
         self.assertEqual(sent, json.loads(json_sent))
 
-    def test_create_bucket_success(self):
+    def test_create_bucket_with_object_conflict(self):
+        from google.cloud.exceptions import Conflict
+        from google.cloud.storage.bucket import Bucket
+
+        PROJECT = "PROJECT"
+        OTHER_PROJECT = "OTHER_PROJECT"
+        CREDENTIALS = _make_credentials()
+        client = self._make_one(project=PROJECT, credentials=CREDENTIALS)
+
+        BUCKET_NAME = "bucket-name"
+        bucket_obj = Bucket(client, BUCKET_NAME)
+        URI = "/".join(
+            [
+                client._connection.API_BASE_URL,
+                "storage",
+                client._connection.API_VERSION,
+                "b?project=%s" % (OTHER_PROJECT,),
+            ]
+        )
+        data = {"error": {"message": "Conflict"}}
+        sent = {"name": BUCKET_NAME}
+        http = _make_requests_session(
+            [_make_json_response(data, status=http_client.CONFLICT)]
+        )
+        client._http_internal = http
+
+        with self.assertRaises(Conflict):
+            client.create_bucket(bucket_obj, project=OTHER_PROJECT)
+
+        http.request.assert_called_once_with(
+            method="POST", url=URI, data=mock.ANY, headers=mock.ANY
+        )
+        json_sent = http.request.call_args_list[0][1]["data"]
+        self.assertEqual(sent, json.loads(json_sent))
+
+    def test_create_bucket_with_string_success(self):
         from google.cloud.storage.bucket import Bucket
 
         PROJECT = "PROJECT"
@@ -431,6 +466,39 @@ class TestClient(unittest.TestCase):
         client._http_internal = http
 
         bucket = client.create_bucket(BUCKET_NAME, requester_pays=True)
+
+        self.assertIsInstance(bucket, Bucket)
+        self.assertEqual(bucket.name, BUCKET_NAME)
+        self.assertTrue(bucket.requester_pays)
+        http.request.assert_called_once_with(
+            method="POST", url=URI, data=mock.ANY, headers=mock.ANY
+        )
+        json_sent = http.request.call_args_list[0][1]["data"]
+        self.assertEqual(sent, json.loads(json_sent))
+
+    def test_create_bucket_with_object_success(self):
+        from google.cloud.storage.bucket import Bucket
+
+        PROJECT = "PROJECT"
+        CREDENTIALS = _make_credentials()
+        client = self._make_one(project=PROJECT, credentials=CREDENTIALS)
+
+        BUCKET_NAME = "bucket-name"
+        bucket_obj = Bucket(client, BUCKET_NAME)
+        URI = "/".join(
+            [
+                client._connection.API_BASE_URL,
+                "storage",
+                client._connection.API_VERSION,
+                "b?project=%s" % (PROJECT,),
+            ]
+        )
+        sent = {"name": BUCKET_NAME, "billing": {"requesterPays": True}}
+        data = sent
+        http = _make_requests_session([_make_json_response(data)])
+        client._http_internal = http
+
+        bucket = client.create_bucket(bucket_obj, requester_pays=True)
 
         self.assertIsInstance(bucket, Bucket)
         self.assertEqual(bucket.name, BUCKET_NAME)
