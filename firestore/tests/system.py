@@ -706,7 +706,6 @@ def test_collection_group_queries_startat_endat(client, cleanup):
     assert found == set(["cg-doc2"])
 
 
-@pytest.mark.skip("where query across group requires custom index.")
 def test_collection_group_queries_filters(client, cleanup):
     collection_group = "b" + unique_resource_id("-")
 
@@ -730,8 +729,8 @@ def test_collection_group_queries_filters(client, cleanup):
 
     query = (
         client.collection_group(collection_group)
-        .where("__name__", ">=", "a/b")
-        .where("__name__", "<=", "a/b0")
+        .where("__name__", ">=", client.document("a/b"))
+        .where("__name__", "<=", client.document("a/b0"))
     )
     snapshots = list(query.stream())
     found = set(snapshot.id for snapshot in snapshots)
@@ -739,8 +738,8 @@ def test_collection_group_queries_filters(client, cleanup):
 
     query = (
         client.collection_group(collection_group)
-        .where("__name__", ">", "a/b")
-        .where("__name__", "<", "a/b/{}/cg-doc3".format(collection_group))
+        .where("__name__", ">", client.document("a/b"))
+        .where("__name__", "<", client.document("a/b/{}/cg-doc3".format(collection_group)))
     )
     snapshots = list(query.stream())
     found = set(snapshot.id for snapshot in snapshots)
