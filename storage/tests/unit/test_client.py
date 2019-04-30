@@ -429,7 +429,6 @@ class TestClient(unittest.TestCase):
             ]
         )
         data = {"error": {"message": "Conflict"}}
-        sent = {"name": bucket_name}
         http = _make_requests_session(
             [_make_json_response(data, status=http_client.CONFLICT)]
         )
@@ -441,8 +440,9 @@ class TestClient(unittest.TestCase):
         http.request.assert_called_once_with(
             method="POST", url=URI, data=mock.ANY, headers=mock.ANY
         )
+        json_expected = {"name": bucket_name}
         json_sent = http.request.call_args_list[0][1]["data"]
-        self.assertEqual(sent, json.loads(json_sent))
+        self.assertEqual(json_expected, json.loads(json_sent))
 
     def test_create_bucket_with_string_success(self):
         from google.cloud.storage.bucket import Bucket
