@@ -179,7 +179,7 @@ def test_bigtable_write_read_drop_truncate():
     response = table.mutate_rows(rows)
     # validate that all rows written successfully
     for i, status in enumerate(response):
-        if status.code is not 0:
+        if status.code != 0:
             print("Row number {} failed to write".format(i))
     # [END bigtable_mutate_rows]
     assert len(response) == len(rows)
@@ -305,7 +305,7 @@ def test_bigtable_list_tables():
     instance = client.instance(INSTANCE_ID)
     tables_list = instance.list_tables()
     # [END bigtable_list_tables]
-    assert len(tables_list) is not 0
+    assert len(tables_list) != 0
 
 
 def test_bigtable_table_name():
