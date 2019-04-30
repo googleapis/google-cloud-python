@@ -1348,6 +1348,7 @@ class RowIterator(HTTPIterator):
         )
         self._field_to_index = _helpers._field_to_index_mapping(schema)
         self._page_size = page_size
+        self._preserve_order = False
         self._project = client.project
         self._schema = schema
         self._selected_fields = selected_fields
@@ -1496,10 +1497,15 @@ class RowIterator(HTTPIterator):
             for field in self._selected_fields:
                 read_options.selected_fields.append(field.name)
 
+        requested_streams = 0
+        if self._preserve_order:
+            requested_streams = 1
+
         session = bqstorage_client.create_read_session(
             self._table.to_bqstorage(),
             "projects/{}".format(self._project),
             read_options=read_options,
+            requested_streams=requested_streams,
         )
 
         # We need to parse the schema manually so that we can rearrange the
@@ -1511,6 +1517,8 @@ class RowIterator(HTTPIterator):
         # empty list.
         if not session.streams:
             return pandas.DataFrame(columns=columns)
+
+        total_streams = len(session.streams)
 
         # Use _to_dataframe_finished to notify worker threads when to quit.
         # See: https://stackoverflow.com/a/29237343/101923
@@ -1560,7 +1568,7 @@ class RowIterator(HTTPIterator):
 
             return frames
 
-        with concurrent.futures.ThreadPoolExecutor() as pool:
+        with concurrent.futures.ThreadPoolExecutor(max_workers=total_streams) as pool:
             try:
                 frames = get_frames(pool)
             finally:

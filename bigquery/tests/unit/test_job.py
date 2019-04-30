@@ -17,6 +17,7 @@ import json
 import unittest
 
 import mock
+import pytest
 from six.moves import http_client
 
 try:
@@ -57,6 +58,47 @@ def _make_connection(*responses):
     mock_conn = mock.create_autospec(google.cloud.bigquery._http.Connection)
     mock_conn.api_request.side_effect = list(responses) + [NotFound("miss")]
     return mock_conn
+
+
+def _make_job_resource(
+    creation_time_ms=1437767599006,
+    started_time_ms=1437767600007,
+    ended_time_ms=1437767601008,
+    started=False,
+    ended=False,
+    etag="abc-def-hjk",
+    endpoint="https://www.googleapis.com",
+    job_type="load",
+    job_id="a-random-id",
+    project_id="some-project",
+    user_email="bq-user@example.com",
+):
+    resource = {
+        "configuration": {job_type: {}},
+        "statistics": {"creationTime": creation_time_ms, job_type: {}},
+        "etag": etag,
+        "id": "{}:{}".format(project_id, job_id),
+        "jobReference": {"projectId": project_id, "jobId": job_id},
+        "selfLink": "{}/bigquery/v2/projects/{}/jobs/{}".format(
+            endpoint, project_id, job_id
+        ),
+        "user_email": user_email,
+    }
+
+    if started or ended:
+        resource["statistics"]["startTime"] = started_time_ms
+
+    if ended:
+        resource["statistics"]["endTime"] = ended_time_ms
+
+    if job_type == "query":
+        resource["configuration"]["query"]["destinationTable"] = {
+            "projectId": project_id,
+            "datasetId": "_temp_dataset",
+            "tableId": "_temp_table",
+        }
+
+    return resource
 
 
 class Test__error_result_to_exception(unittest.TestCase):
@@ -974,6 +1016,7 @@ class _Base(object):
     from google.cloud.bigquery.dataset import DatasetReference
     from google.cloud.bigquery.table import TableReference
 
+    ENDPOINT = "https://www.googleapis.com"
     PROJECT = "project"
     SOURCE1 = "http://example.com/source1.csv"
     DS_ID = "dataset_id"
@@ -994,7 +1037,9 @@ class _Base(object):
         self.WHEN = datetime.datetime.utcfromtimestamp(self.WHEN_TS).replace(tzinfo=UTC)
         self.ETAG = "ETAG"
         self.FULL_JOB_ID = "%s:%s" % (self.PROJECT, self.JOB_ID)
-        self.RESOURCE_URL = "http://example.com/path/to/resource"
+        self.RESOURCE_URL = "{}/bigquery/v2/projects/{}/jobs/{}".format(
+            self.ENDPOINT, self.PROJECT, self.JOB_ID
+        )
         self.USER_EMAIL = "phred@example.com"
 
     def _table_ref(self, table_id):
@@ -1004,30 +1049,19 @@ class _Base(object):
 
     def _make_resource(self, started=False, ended=False):
         self._setUpConstants()
-        resource = {
-            "configuration": {self.JOB_TYPE: {}},
-            "statistics": {"creationTime": self.WHEN_TS * 1000, self.JOB_TYPE: {}},
-            "etag": self.ETAG,
-            "id": self.FULL_JOB_ID,
-            "jobReference": {"projectId": self.PROJECT, "jobId": self.JOB_ID},
-            "selfLink": self.RESOURCE_URL,
-            "user_email": self.USER_EMAIL,
-        }
-
-        if started or ended:
-            resource["statistics"]["startTime"] = self.WHEN_TS * 1000
-
-        if ended:
-            resource["statistics"]["endTime"] = (self.WHEN_TS + 1000) * 1000
-
-        if self.JOB_TYPE == "query":
-            resource["configuration"]["query"]["destinationTable"] = {
-                "projectId": self.PROJECT,
-                "datasetId": "_temp_dataset",
-                "tableId": "_temp_table",
-            }
-
-        return resource
+        return _make_job_resource(
+            creation_time_ms=int(self.WHEN_TS * 1000),
+            started_time_ms=int(self.WHEN_TS * 1000),
+            ended_time_ms=int(self.WHEN_TS * 1000) + 1000000,
+            started=started,
+            ended=ended,
+            etag=self.ETAG,
+            endpoint=self.ENDPOINT,
+            job_type=self.JOB_TYPE,
+            job_id=self.JOB_ID,
+            project_id=self.PROJECT,
+            user_email=self.USER_EMAIL,
+        )
 
     def _verifyInitialReadonlyProperties(self, job):
         # root elements of resource
@@ -4684,7 +4718,11 @@ class TestQueryJob(unittest.TestCase, _Base):
         job.to_dataframe(bqstorage_client=bqstorage_client)
 
         bqstorage_client.create_read_session.assert_called_once_with(
-            mock.ANY, "projects/{}".format(self.PROJECT), read_options=mock.ANY
+            mock.ANY,
+            "projects/{}".format(self.PROJECT),
+            read_options=mock.ANY,
+            # Use default number of streams for best performance.
+            requested_streams=0,
         )
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
@@ -5039,3 +5077,93 @@ class TestTimelineEntry(unittest.TestCase, _Base):
         self.assertEqual(entry.pending_units, self.PENDING_UNITS)
         self.assertEqual(entry.completed_units, self.COMPLETED_UNITS)
         self.assertEqual(entry.slot_millis, self.SLOT_MILLIS)
+
+
+@pytest.mark.parametrize(
+    "query,expected",
+    (
+        (None, False),
+        ("", False),
+        ("select name, age from table", False),
+        ("select name, age from table LIMIT 10;", False),
+        ("select name, age from table order by other_column;", True),
+        ("Select name, age From table Order By other_column", True),
+        ("SELECT name, age FROM table ORDER BY other_column;", True),
+        ("select name, age from table order\nby other_column", True),
+        ("Select name, age From table Order\nBy other_column;", True),
+        ("SELECT name, age FROM table ORDER\nBY other_column", True),
+        ("SelecT name, age froM table OrdeR \n\t BY other_column;", True),
+    ),
+)
+def test__contains_order_by(query, expected):
+    from google.cloud.bigquery import job as mut
+
+    if expected:
+        assert mut._contains_order_by(query)
+    else:
+        assert not mut._contains_order_by(query)
+
+
+@pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
+@pytest.mark.skipif(
+    bigquery_storage_v1beta1 is None, reason="Requires `google-cloud-bigquery-storage`"
+)
+@pytest.mark.parametrize(
+    "query",
+    (
+        "select name, age from table order by other_column;",
+        "Select name, age From table Order By other_column;",
+        "SELECT name, age FROM table ORDER BY other_column;",
+        "select name, age from table order\nby other_column;",
+        "Select name, age From table Order\nBy other_column;",
+        "SELECT name, age FROM table ORDER\nBY other_column;",
+        "SelecT name, age froM table OrdeR \n\t BY other_column;",
+    ),
+)
+def test_to_dataframe_bqstorage_preserve_order(query):
+    from google.cloud.bigquery.job import QueryJob as target_class
+
+    job_resource = _make_job_resource(
+        project_id="test-project", job_type="query", ended=True
+    )
+    job_resource["configuration"]["query"]["query"] = query
+    job_resource["status"] = {"state": "DONE"}
+    get_query_results_resource = {
+        "jobComplete": True,
+        "jobReference": {"projectId": "test-project", "jobId": "test-job"},
+        "schema": {
+            "fields": [
+                {"name": "name", "type": "STRING", "mode": "NULLABLE"},
+                {"name": "age", "type": "INTEGER", "mode": "NULLABLE"},
+            ]
+        },
+        "totalRows": "4",
+    }
+    connection = _make_connection(get_query_results_resource, job_resource)
+    client = _make_client(connection=connection)
+    job = target_class.from_api_repr(job_resource, client)
+    bqstorage_client = mock.create_autospec(
+        bigquery_storage_v1beta1.BigQueryStorageClient
+    )
+    session = bigquery_storage_v1beta1.types.ReadSession()
+    session.avro_schema.schema = json.dumps(
+        {
+            "type": "record",
+            "name": "__root__",
+            "fields": [
+                {"name": "name", "type": ["null", "string"]},
+                {"name": "age", "type": ["null", "long"]},
+            ],
+        }
+    )
+    bqstorage_client.create_read_session.return_value = session
+
+    job.to_dataframe(bqstorage_client=bqstorage_client)
+
+    bqstorage_client.create_read_session.assert_called_once_with(
+        mock.ANY,
+        "projects/test-project",
+        read_options=mock.ANY,
+        # Use a single stream to preserve row order.
+        requested_streams=1,
+    )
