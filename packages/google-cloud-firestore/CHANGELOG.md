@@ -5,6 +5,14 @@
 [1]: https://pypi.org/project/google-cloud-firestore/#history
 
 
+## 1.0.0
+
+04-30-2019 10:00 PDT
+
+### Implementation Changes
+- Use parent path for watch on queries. ([#7752](https://github.com/googleapis/google-cloud-python/pull/7752))
+- Add routing header to method metadata (via synth). ([#7749](https://github.com/googleapis/google-cloud-python/pull/7749))
+
 ## 0.32.1
 
 04-05-2019 10:51 PDT
