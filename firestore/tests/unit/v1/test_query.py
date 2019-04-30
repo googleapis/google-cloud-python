@@ -1287,6 +1287,47 @@ class TestQuery(unittest.TestCase):
             metadata=client._rpc_metadata,
         )
 
+    def test_stream_w_collection_group(self):
+        # Create a minimal fake GAPIC.
+        firestore_api = mock.Mock(spec=["run_query"])
+
+        # Attach the fake GAPIC to a real client.
+        client = _make_client()
+        client._firestore_api_internal = firestore_api
+
+        # Make a **real** collection reference as parent.
+        parent = client.collection("charles")
+        other = client.collection("dora")
+
+        # Add two dummy responses to the minimal fake GAPIC.
+        _, other_prefix = other._parent_info()
+        name = "{}/bark".format(other_prefix)
+        data = {"lee": "hoop"}
+        response_pb1 = _make_query_response(name=name, data=data)
+        response_pb2 = _make_query_response()
+        firestore_api.run_query.return_value = iter([response_pb1, response_pb2])
+
+        # Execute the query and check the response.
+        query = self._make_one(parent)
+        query._all_descendants = True
+        get_response = query.stream()
+        self.assertIsInstance(get_response, types.GeneratorType)
+        returned = list(get_response)
+        self.assertEqual(len(returned), 1)
+        snapshot = returned[0]
+        to_match = other.document("bark")
+        self.assertEqual(snapshot.reference._document_path, to_match._document_path)
+        self.assertEqual(snapshot.to_dict(), data)
+
+        # Verify the mock call.
+        parent_path, _ = parent._parent_info()
+        firestore_api.run_query.assert_called_once_with(
+            parent_path,
+            query._to_protobuf(),
+            transaction=None,
+            metadata=client._rpc_metadata,
+        )
+
     @mock.patch("google.cloud.firestore_v1.query.Watch", autospec=True)
     def test_on_snapshot(self, watch):
         query = self._make_one(mock.sentinel.parent)
@@ -1547,6 +1588,46 @@ class Test__query_response_to_snapshot(unittest.TestCase):
         self.assertIsInstance(snapshot, DocumentSnapshot)
         expected_path = collection._path + (doc_id,)
         self.assertEqual(snapshot.reference._path, expected_path)
+        self.assertEqual(snapshot.to_dict(), data)
+        self.assertTrue(snapshot.exists)
+        self.assertEqual(snapshot.read_time, response_pb.read_time)
+        self.assertEqual(snapshot.create_time, response_pb.document.create_time)
+        self.assertEqual(snapshot.update_time, response_pb.document.update_time)
+
+
+class Test__collection_group_query_response_to_snapshot(unittest.TestCase):
+    @staticmethod
+    def _call_fut(response_pb, collection):
+        from google.cloud.firestore_v1.query import (
+            _collection_group_query_response_to_snapshot,
+        )
+
+        return _collection_group_query_response_to_snapshot(response_pb, collection)
+
+    def test_empty(self):
+        response_pb = _make_query_response()
+        snapshot = self._call_fut(response_pb, None)
+        self.assertIsNone(snapshot)
+
+    def test_after_offset(self):
+        skipped_results = 410
+        response_pb = _make_query_response(skipped_results=skipped_results)
+        snapshot = self._call_fut(response_pb, None)
+        self.assertIsNone(snapshot)
+
+    def test_response(self):
+        from google.cloud.firestore_v1.document import DocumentSnapshot
+
+        client = _make_client()
+        collection = client.collection("a", "b", "c")
+        other_collection = client.collection("a", "b", "d")
+        to_match = other_collection.document("gigantic")
+        data = {"a": 901, "b": True}
+        response_pb = _make_query_response(name=to_match._document_path, data=data)
+
+        snapshot = self._call_fut(response_pb, collection)
+        self.assertIsInstance(snapshot, DocumentSnapshot)
+        self.assertEqual(snapshot.reference._document_path, to_match._document_path)
         self.assertEqual(snapshot.to_dict(), data)
         self.assertTrue(snapshot.exists)
         self.assertEqual(snapshot.read_time, response_pb.read_time)

@@ -242,7 +242,7 @@ class Client(ClientWithProject):
             path = document_path
 
         # DocumentReference takes a relative path. Strip the database string if present.
-        base_path = self._database_string
+        base_path = self._database_string + "/documents/"
         joined_path = _helpers.DOCUMENT_PATH_DELIMITER.join(path)
         if joined_path.startswith(base_path):
             joined_path = joined_path[len(base_path) :]
