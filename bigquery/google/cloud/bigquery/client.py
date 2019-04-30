@@ -128,6 +128,11 @@ class Client(ClientWithProject):
         default_query_job_config (google.cloud.bigquery.job.QueryJobConfig):
             (Optional) Default ``QueryJobConfig``.
             Will be merged into job configs passed into the ``query`` method.
+        client_info (google.api_core.gapic_v1.client_info.ClientInfo):
+            The client info used to send a user-agent string along with API
+            requests. If ``None``, then default info will be used. Generally,
+            you only need to set this if you're developing your own library
+            or partner tool.
 
     Raises:
         google.auth.exceptions.DefaultCredentialsError:
@@ -148,11 +153,12 @@ class Client(ClientWithProject):
         _http=None,
         location=None,
         default_query_job_config=None,
+        client_info=None,
     ):
         super(Client, self).__init__(
             project=project, credentials=credentials, _http=_http
         )
-        self._connection = Connection(self)
+        self._connection = Connection(self, client_info=client_info)
         self._location = location
         self._default_query_job_config = default_query_job_config
 
