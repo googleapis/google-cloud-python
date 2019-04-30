@@ -185,9 +185,9 @@ class Client(ClientWithProject):
         Creates and returns a new Query that includes all documents in the
         database that are contained in a collection or subcollection with the
         given collection_id.
-   
+
         .. code-block:: python
-        
+
             >>> query = firestore.collection_group('mygroup')
 
         @param {string} collectionId Identifies the collections to query over.
