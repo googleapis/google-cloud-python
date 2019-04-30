@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery.table &#8212; google-cloud 86f81d1 documentation</title>
+    <title>google.cloud.bigquery.table &#8212; google-cloud 64b66da documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -1384,6 +1384,7 @@
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_field_to_index</span> <span class="o">=</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">_field_to_index_mapping</span><span class="p">(</span><span class="n">schema</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_page_size</span> <span class="o">=</span> <span class="n">page_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_preserve_order</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_project</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">project</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_schema</span> <span class="o">=</span> <span class="n">schema</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_selected_fields</span> <span class="o">=</span> <span class="n">selected_fields</span>
@@ -1532,10 +1533,15 @@
             <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_selected_fields</span><span class="p">:</span>
                 <span class="n">read_options</span><span class="o">.</span><span class="n">selected_fields</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
 
+        <span class="n">requested_streams</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_preserve_order</span><span class="p">:</span>
+            <span class="n">requested_streams</span> <span class="o">=</span> <span class="mi">1</span>
+
         <span class="n">session</span> <span class="o">=</span> <span class="n">bqstorage_client</span><span class="o">.</span><span class="n">create_read_session</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_table</span><span class="o">.</span><span class="n">to_bqstorage</span><span class="p">(),</span>
             <span class="s2">&quot;projects/</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_project</span><span class="p">),</span>
             <span class="n">read_options</span><span class="o">=</span><span class="n">read_options</span><span class="p">,</span>
+            <span class="n">requested_streams</span><span class="o">=</span><span class="n">requested_streams</span><span class="p">,</span>
         <span class="p">)</span>
 
         <span class="c1"># We need to parse the schema manually so that we can rearrange the</span>
@@ -1547,6 +1553,8 @@
         <span class="c1"># empty list.</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">session</span><span class="o">.</span><span class="n">streams</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">columns</span><span class="p">)</span>
+
+        <span class="n">total_streams</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">session</span><span class="o">.</span><span class="n">streams</span><span class="p">)</span>
 
         <span class="c1"># Use _to_dataframe_finished to notify worker threads when to quit.</span>
         <span class="c1"># See: https://stackoverflow.com/a/29237343/101923</span>
@@ -1596,7 +1604,7 @@
 
             <span class="k">return</span> <span class="n">frames</span>
 
-        <span class="k">with</span> <span class="n">concurrent</span><span class="o">.</span><span class="n">futures</span><span class="o">.</span><span class="n">ThreadPoolExecutor</span><span class="p">()</span> <span class="k">as</span> <span class="n">pool</span><span class="p">:</span>
+        <span class="k">with</span> <span class="n">concurrent</span><span class="o">.</span><span class="n">futures</span><span class="o">.</span><span class="n">ThreadPoolExecutor</span><span class="p">(</span><span class="n">max_workers</span><span class="o">=</span><span class="n">total_streams</span><span class="p">)</span> <span class="k">as</span> <span class="n">pool</span><span class="p">:</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">frames</span> <span class="o">=</span> <span class="n">get_frames</span><span class="p">(</span><span class="n">pool</span><span class="p">)</span>
             <span class="k">finally</span><span class="p">:</span>
