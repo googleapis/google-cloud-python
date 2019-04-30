@@ -148,8 +148,9 @@ def test_distinct_on(ds_entity):
         bar = ndb.StringProperty()
 
     query = SomeKind.query(distinct_on=("foo",))
-    results = eventually(query.fetch, _length_equals(2))
+    eventually(SomeKind.query().fetch, _length_equals(6))
 
+    results = query.fetch()
     results = sorted(results, key=operator.attrgetter("foo"))
 
     assert results[0].foo == 0
@@ -173,6 +174,8 @@ def test_namespace(dispose_of):
     entity2.put()
     dispose_of(entity2.key._key)
 
+    eventually(SomeKind.query().fetch, _length_equals(1))
+
     query = SomeKind.query(namespace=OTHER_NAMESPACE)
     results = eventually(query.fetch, _length_equals(1))
 
@@ -190,8 +193,10 @@ def test_filter_equal(ds_entity):
     class SomeKind(ndb.Model):
         foo = ndb.IntegerProperty()
 
+    eventually(SomeKind.query().fetch, _length_equals(5))
+
     query = SomeKind.query(SomeKind.foo == 2)
-    results = eventually(query.fetch, _length_equals(1))
+    results = query.fetch()
     assert results[0].foo == 2
 
 
@@ -204,9 +209,10 @@ def test_filter_not_equal(ds_entity):
     class SomeKind(ndb.Model):
         foo = ndb.IntegerProperty()
 
-    query = SomeKind.query(SomeKind.foo != 2)
-    results = eventually(query.fetch, _length_equals(4))
+    eventually(SomeKind.query().fetch, _length_equals(5))
 
+    query = SomeKind.query(SomeKind.foo != 2)
+    results = query.fetch()
     results = sorted(results, key=operator.attrgetter("foo"))
     assert [entity.foo for entity in results] == [0, 1, 3, 4]
 
@@ -228,9 +234,10 @@ def test_filter_or(dispose_of):
             dispose_of(key._key)
 
     make_entities().check_success()
-    query = SomeKind.query(ndb.OR(SomeKind.foo == 1, SomeKind.bar == "c"))
-    results = eventually(query.fetch, _length_equals(2))
+    eventually(SomeKind.query().fetch, _length_equals(3))
 
+    query = SomeKind.query(ndb.OR(SomeKind.foo == 1, SomeKind.bar == "c"))
+    results = query.fetch()
     results = sorted(results, key=operator.attrgetter("bar"))
     assert [entity.bar for entity in results] == ["a", "c"]
 
@@ -329,10 +336,10 @@ def test_offset_and_limit(ds_entity):
     class SomeKind(ndb.Model):
         foo = ndb.IntegerProperty()
 
+    eventually(SomeKind.query().fetch, _length_equals(5))
+
     query = SomeKind.query(order_by=["foo"])
-    results = eventually(
-        lambda: query.fetch(offset=2, limit=2), _length_equals(2)
-    )
+    results = query.fetch(offset=2, limit=2)
     assert [entity.foo for entity in results] == [2, 3]
 
 
@@ -357,11 +364,11 @@ def test_offset_and_limit_with_or_filter(dispose_of):
             dispose_of(key._key)
 
     make_entities().check_success()
+    eventually(SomeKind.query().fetch, _length_equals(6))
+
     query = SomeKind.query(ndb.OR(SomeKind.bar == "a", SomeKind.bar == "b"))
     query = query.order(SomeKind.foo)
-    results = eventually(
-        lambda: query.fetch(offset=1, limit=2), _length_equals(2)
-    )
+    results = query.fetch(offset=1, limit=2)
 
     assert [entity.foo for entity in results] == [1, 2]
 
