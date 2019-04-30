@@ -704,8 +704,14 @@ def _datastore_run_query(query):
     partition_id = entity_pb2.PartitionId(
         project_id=query.project, namespace_id=query.namespace
     )
+    read_options = _datastore_api.get_read_options(
+        query, default_read_consistency=_datastore_api.EVENTUAL
+    )
     request = datastore_pb2.RunQueryRequest(
-        project_id=query.project, partition_id=partition_id, query=query_pb
+        project_id=query.project,
+        partition_id=partition_id,
+        query=query_pb,
+        read_options=read_options,
     )
     response = yield _datastore_api.make_call(
         "RunQuery", request, timeout=query.timeout

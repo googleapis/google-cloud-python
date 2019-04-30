@@ -403,20 +403,20 @@ class Test_get_read_options:
     @pytest.mark.usefixtures("in_context")
     def test_no_args_no_transaction():
         assert (
-            _api._get_read_options(_options.ReadOptions())
+            _api.get_read_options(_options.ReadOptions())
             == datastore_pb2.ReadOptions()
         )
 
     @staticmethod
     def test_no_args_transaction(context):
         with context.new(transaction=b"txfoo").use():
-            options = _api._get_read_options(_options.ReadOptions())
+            options = _api.get_read_options(_options.ReadOptions())
             assert options == datastore_pb2.ReadOptions(transaction=b"txfoo")
 
     @staticmethod
     def test_args_override_transaction(context):
         with context.new(transaction=b"txfoo").use():
-            options = _api._get_read_options(
+            options = _api.get_read_options(
                 _options.ReadOptions(transaction=b"txbar")
             )
             assert options == datastore_pb2.ReadOptions(transaction=b"txbar")
@@ -424,7 +424,7 @@ class Test_get_read_options:
     @staticmethod
     @pytest.mark.usefixtures("in_context")
     def test_eventually_consistent():
-        options = _api._get_read_options(
+        options = _api.get_read_options(
             _options.ReadOptions(read_consistency=_api.EVENTUAL)
         )
         assert options == datastore_pb2.ReadOptions(
@@ -435,7 +435,7 @@ class Test_get_read_options:
     @pytest.mark.usefixtures("in_context")
     def test_eventually_consistent_with_transaction():
         with pytest.raises(ValueError):
-            _api._get_read_options(
+            _api.get_read_options(
                 _options.ReadOptions(
                     read_consistency=_api.EVENTUAL, transaction=b"txfoo"
                 )

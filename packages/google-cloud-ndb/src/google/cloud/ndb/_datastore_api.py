@@ -34,6 +34,8 @@ from google.cloud.ndb import tasklets
 
 EVENTUAL = datastore_pb2.ReadOptions.EVENTUAL
 EVENTUAL_CONSISTENCY = EVENTUAL  # Legacy NDB
+STRONG = datastore_pb2.ReadOptions.STRONG
+
 _DEFAULT_TIMEOUT = None
 _NOT_FOUND = object()
 
@@ -217,7 +219,7 @@ class _LookupBatch:
             key_pb.ParseFromString(todo_key)
             keys.append(key_pb)
 
-        read_options = _get_read_options(self.options)
+        read_options = get_read_options(self.options)
         rpc = _datastore_lookup(
             keys,
             read_options,
@@ -303,13 +305,16 @@ def _datastore_lookup(keys, read_options, retries=None, timeout=None):
     return make_call("Lookup", request, retries=retries, timeout=timeout)
 
 
-def _get_read_options(options):
+def get_read_options(options, default_read_consistency=None):
     """Get the read options for a request.
 
     Args:
         options (_options.ReadOptions): The options for the request. May
             contain options unrelated to creating a
             :class:`datastore_pb2.ReadOptions` instance, which will be ignored.
+        default_read_consistency: Use this value for ``read_consistency`` if
+            neither ``transaction`` nor ``read_consistency`` are otherwise
+            specified.
 
     Returns:
         datastore_pb2.ReadOptions: The options instance for passing to the
@@ -323,7 +328,11 @@ def _get_read_options(options):
 
     read_consistency = options.read_consistency
 
-    if transaction is not None and read_consistency is EVENTUAL:
+    if transaction is None:
+        if read_consistency is None:
+            read_consistency = default_read_consistency
+
+    elif read_consistency is EVENTUAL:
         raise ValueError(
             "read_consistency must not be EVENTUAL when in transaction"
         )

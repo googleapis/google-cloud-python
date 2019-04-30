@@ -19,6 +19,7 @@ import inspect
 import logging
 
 from google.cloud.ndb import context as context_module
+from google.cloud.ndb import _datastore_api
 from google.cloud.ndb import _datastore_query
 from google.cloud.ndb import _gql
 from google.cloud.ndb import exceptions
@@ -977,6 +978,15 @@ def _query_options(wrapped):
             kwargs["projection"] = ["__key__"]
             del kwargs["keys_only"]
 
+        if kwargs.get("transaction"):
+            read_consistency = kwargs.pop(
+                "read_consistency", kwargs.pop("read_policy", None)
+            )
+            if read_consistency == _datastore_api.EVENTUAL:
+                raise TypeError(
+                    "Can't use 'transaction' with 'read_policy=ndb.EVENTUAL'"
+                )
+
         # Get arguments for QueryOptions attributes
         query_arguments = {
             name: self._option(name, kwargs.pop(name, None), options)
@@ -996,7 +1006,7 @@ def _query_options(wrapped):
     return wrapper
 
 
-class QueryOptions(_options.Options):
+class QueryOptions(_options.ReadOptions):
     __slots__ = (
         # Query options
         "kind",
@@ -1019,9 +1029,6 @@ class QueryOptions(_options.Options):
     )
 
     def __init__(self, config=None, client=None, **kwargs):
-        if kwargs.get("read_policy") or kwargs.get("read_consistency"):
-            raise NotImplementedError
-
         if kwargs.get("batch_size"):
             raise exceptions.NoLongerImplementedError()
 
@@ -1461,7 +1468,9 @@ class Query:
         end_cursor=None,
         timeout=None,
         deadline=None,
-        read_policy=None,  #  _datastore_api.EVENTUAL,  # placeholder
+        read_consistency=None,
+        read_policy=None,
+        transaction=None,
         options=None,
         _options=None,
     ):
@@ -1486,9 +1495,15 @@ class Query:
             end_cursor: Endpoint point for search.
             timeout (Optional[int]): Override the gRPC timeout, in seconds.
             deadline (Optional[int]): DEPRECATED: Synonym for ``timeout``.
-            read_policy: Defaults to `ndb.EVENTUAL` for potentially faster
-                query results without having to wait for Datastore to apply
-                pending changes to all returned records.
+            read_consistency: If not in a transaction, defaults to
+                ``ndb.EVENTUAL`` for potentially faster query results without
+                having to wait for Datastore to apply pending changes to all
+                returned records. Otherwise consistency with current
+                transaction is maintained.
+            read_policy: DEPRECATED: Synonym for ``read_consistency``.
+            transaction (bytes): Transaction ID to use for query. Results will
+                be consistent with Datastore state for that transaction.
+                Implies ``read_policy=ndb.STRONG``.
             options (QueryOptions): DEPRECATED: An object containing options
                 values for some of these arguments.
 
@@ -1512,7 +1527,9 @@ class Query:
         end_cursor=None,
         timeout=None,
         deadline=None,
-        read_policy=None,  #  _datastore_api.EVENTUAL,  # placeholder
+        read_consistency=None,
+        read_policy=None,
+        transaction=None,
         options=None,
         _options=None,
     ):
@@ -1535,9 +1552,15 @@ class Query:
             end_cursor: Endpoint point for search.
             timeout (Optional[int]): Override the gRPC timeout, in seconds.
             deadline (Optional[int]): DEPRECATED: Synonym for ``timeout``.
-            read_policy: Defaults to `ndb.EVENTUAL` for potentially faster
-                query results without having to wait for Datastore to apply
-                pending changes to all returned records.
+            read_consistency: If not in a transaction, defaults to
+                ``ndb.EVENTUAL`` for potentially faster query results without
+                having to wait for Datastore to apply pending changes to all
+                returned records. Otherwise consistency with current
+                transaction is maintained.
+            read_policy: DEPRECATED: Synonym for ``read_consistency``.
+            transaction (bytes): Transaction ID to use for query. Results will
+                be consistent with Datastore state for that transaction.
+                Implies ``read_policy=ndb.STRONG``.
             options (QueryOptions): DEPRECATED: An object containing options
                 values for some of these arguments.
 
@@ -1605,7 +1628,9 @@ class Query:
         end_cursor=None,
         timeout=None,
         deadline=None,
-        read_policy=None,  #  _datastore_api.EVENTUAL,  # placeholder
+        read_consistency=None,
+        read_policy=None,
+        transaction=None,
         options=None,
         _options=None,
     ):
@@ -1628,9 +1653,15 @@ class Query:
             end_cursor: Endpoint point for search.
             timeout (Optional[int]): Override the gRPC timeout, in seconds.
             deadline (Optional[int]): DEPRECATED: Synonym for ``timeout``.
-            read_policy: Defaults to `ndb.EVENTUAL` for potentially faster
-                query results without having to wait for Datastore to apply
-                pending changes to all returned records.
+            read_consistency: If not in a transaction, defaults to
+                ``ndb.EVENTUAL`` for potentially faster query results without
+                having to wait for Datastore to apply pending changes to all
+                returned records. Otherwise consistency with current
+                transaction is maintained.
+            read_policy: DEPRECATED: Synonym for ``read_consistency``.
+            transaction (bytes): Transaction ID to use for query. Results will
+                be consistent with Datastore state for that transaction.
+                Implies ``read_policy=ndb.STRONG``.
             options (QueryOptions): DEPRECATED: An object containing options
                 values for some of these arguments.
 
@@ -1658,7 +1689,9 @@ class Query:
         end_cursor=None,
         timeout=None,
         deadline=None,
-        read_policy=None,  #  _datastore_api.EVENTUAL,  # placeholder
+        read_consistency=None,
+        read_policy=None,
+        transaction=None,
         options=None,
     ):
         """Map a callback function or tasklet over the query results.
@@ -1683,9 +1716,15 @@ class Query:
             end_cursor: Endpoint point for search.
             timeout (Optional[int]): Override the gRPC timeout, in seconds.
             deadline (Optional[int]): DEPRECATED: Synonym for ``timeout``.
-            read_policy: Defaults to `ndb.EVENTUAL` for potentially faster
-                query results without having to wait for Datastore to apply
-                pending changes to all returned records.
+            read_consistency: If not in a transaction, defaults to
+                ``ndb.EVENTUAL`` for potentially faster query results without
+                having to wait for Datastore to apply pending changes to all
+                returned records. Otherwise consistency with current
+                transaction is maintained.
+            read_policy: DEPRECATED: Synonym for ``read_consistency``.
+            transaction (bytes): Transaction ID to use for query. Results will
+                be consistent with Datastore state for that transaction.
+                Implies ``read_policy=ndb.STRONG``.
             options (QueryOptions): DEPRECATED: An object containing options
                 values for some of these arguments.
 
@@ -1732,7 +1771,9 @@ class Query:
         end_cursor=None,
         timeout=None,
         deadline=None,
-        read_policy=None,  #  _datastore_api.EVENTUAL,  # placeholder
+        read_consistency=None,
+        read_policy=None,
+        transaction=None,
         options=None,
     ):
         """Map a callback function or tasklet over the query results.
@@ -1757,7 +1798,9 @@ class Query:
         end_cursor=None,
         timeout=None,
         deadline=None,
-        read_policy=None,  #  _datastore_api.EVENTUAL,  # placeholder
+        read_consistency=None,
+        read_policy=None,
+        transaction=None,
         options=None,
     ):
         """Get the first query result, if any.
@@ -1782,9 +1825,15 @@ class Query:
             end_cursor: Endpoint point for search.
             timeout (Optional[int]): Override the gRPC timeout, in seconds.
             deadline (Optional[int]): DEPRECATED: Synonym for ``timeout``.
-            read_policy: Defaults to `ndb.EVENTUAL` for potentially faster
-                query results without having to wait for Datastore to apply
-                pending changes to all returned records.
+            read_consistency: If not in a transaction, defaults to
+                ``ndb.EVENTUAL`` for potentially faster query results without
+                having to wait for Datastore to apply pending changes to all
+                returned records. Otherwise consistency with current
+                transaction is maintained.
+            read_policy: DEPRECATED: Synonym for ``read_consistency``.
+            transaction (bytes): Transaction ID to use for query. Results will
+                be consistent with Datastore state for that transaction.
+                Implies ``read_policy=ndb.STRONG``.
             options (QueryOptions): DEPRECATED: An object containing options
                 values for some of these arguments.
 
@@ -1807,7 +1856,9 @@ class Query:
         end_cursor=None,
         timeout=None,
         deadline=None,
-        read_policy=None,  #  _datastore_api.EVENTUAL,  # placeholder
+        read_consistency=None,
+        read_policy=None,
+        transaction=None,
         options=None,
     ):
         """Get the first query result, if any.
@@ -1832,7 +1883,9 @@ class Query:
         end_cursor=None,
         timeout=None,
         deadline=None,
-        read_policy=None,  #  _datastore_api.EVENTUAL,  # placeholder
+        read_consistency=None,
+        read_policy=None,
+        transaction=None,
         options=None,
     ):
         """Count the number of query results, up to a limit.
@@ -1860,9 +1913,15 @@ class Query:
             end_cursor: Endpoint point for search.
             timeout (Optional[int]): Override the gRPC timeout, in seconds.
             deadline (Optional[int]): DEPRECATED: Synonym for ``timeout``.
-            read_policy: Defaults to `ndb.EVENTUAL` for potentially faster
-                query results without having to wait for Datastore to apply
-                pending changes to all returned records.
+            read_consistency: If not in a transaction, defaults to
+                ``ndb.EVENTUAL`` for potentially faster query results without
+                having to wait for Datastore to apply pending changes to all
+                returned records. Otherwise consistency with current
+                transaction is maintained.
+            read_policy: DEPRECATED: Synonym for ``read_consistency``.
+            transaction (bytes): Transaction ID to use for query. Results will
+                be consistent with Datastore state for that transaction.
+                Implies ``read_policy=ndb.STRONG``.
             options (QueryOptions): DEPRECATED: An object containing options
                 values for some of these arguments.
 
@@ -1885,7 +1944,9 @@ class Query:
         end_cursor=None,
         timeout=None,
         deadline=None,
-        read_policy=None,  #  _datastore_api.EVENTUAL,  # placeholder
+        read_consistency=None,
+        read_policy=None,
+        transaction=None,
         options=None,
     ):
         """Count the number of query results, up to a limit.
@@ -1912,7 +1973,9 @@ class Query:
         end_cursor=None,
         timeout=None,
         deadline=None,
-        read_policy=None,  #  _datastore_api.EVENTUAL,  # placeholder
+        read_consistency=None,
+        read_policy=None,
+        transaction=None,
         options=None,
     ):
         """Fetch a page of results.
@@ -1952,7 +2015,9 @@ class Query:
         end_cursor=None,
         timeout=None,
         deadline=None,
-        read_policy=None,  #  _datastore_api.EVENTUAL,  # placeholder
+        read_consistency=None,
+        read_policy=None,
+        transaction=None,
         options=None,
     ):
         """Fetch a page of results.

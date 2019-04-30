@@ -995,17 +995,23 @@ class Test__datastore_run_query:
     def test_it(_datastore_api):
         query = query_module.QueryOptions(project="testing", namespace="")
         query_pb = _datastore_query._query_to_protobuf(query)
+        _datastore_api.make_call.return_value = future_result("foo")
+        read_options = datastore_pb2.ReadOptions()
         request = datastore_pb2.RunQueryRequest(
             project_id="testing",
             partition_id=entity_pb2.PartitionId(
                 project_id="testing", namespace_id=""
             ),
             query=query_pb,
+            read_options=read_options,
         )
-        _datastore_api.make_call.return_value = future_result("foo")
+        _datastore_api.get_read_options.return_value = read_options
         assert _datastore_query._datastore_run_query(query).result() == "foo"
         _datastore_api.make_call.assert_called_once_with(
             "RunQuery", request, timeout=None
+        )
+        _datastore_api.get_read_options.assert_called_once_with(
+            query, default_read_consistency=_datastore_api.EVENTUAL
         )
 
 

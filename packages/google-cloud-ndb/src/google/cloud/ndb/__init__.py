@@ -30,6 +30,7 @@ __all__ = [
     "ContextOptions",
     "EVENTUAL",
     "EVENTUAL_CONSISTENCY",
+    "STRONG",
     "TransactionOptions",
     "Key",
     "BlobKey",
@@ -131,6 +132,7 @@ from google.cloud.ndb.context import get_context
 from google.cloud.ndb.context import TransactionOptions
 from google.cloud.ndb._datastore_api import EVENTUAL
 from google.cloud.ndb._datastore_api import EVENTUAL_CONSISTENCY
+from google.cloud.ndb._datastore_api import STRONG
 from google.cloud.ndb._datastore_query import Cursor
 from google.cloud.ndb._datastore_query import QueryIterator
 from google.cloud.ndb.key import Key

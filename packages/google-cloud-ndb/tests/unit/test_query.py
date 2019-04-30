@@ -17,6 +17,7 @@ import unittest.mock
 
 import pytest
 
+from google.cloud.ndb import _datastore_api
 from google.cloud.ndb import _datastore_query
 from google.cloud.ndb import exceptions
 from google.cloud.ndb import key as key_module
@@ -1601,10 +1602,47 @@ class TestQuery:
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")
-    def test_fetch_async_with_read_policy():
+    @unittest.mock.patch("google.cloud.ndb.query._datastore_query")
+    def test_fetch_async_with_read_policy(_datastore_query):
         query = query_module.Query()
-        with pytest.raises(NotImplementedError):
-            query.fetch_async(read_policy=20)
+        response = _datastore_query.fetch.return_value
+        assert query.fetch_async(read_policy="foo") is response
+        _datastore_query.fetch.assert_called_once_with(
+            query_module.QueryOptions(
+                project="testing", read_consistency="foo"
+            )
+        )
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    @unittest.mock.patch("google.cloud.ndb.query._datastore_query")
+    def test_fetch_async_with_transaction(_datastore_query):
+        query = query_module.Query()
+        response = _datastore_query.fetch.return_value
+        assert query.fetch_async(transaction="foo") is response
+        _datastore_query.fetch.assert_called_once_with(
+            query_module.QueryOptions(project="testing", transaction="foo")
+        )
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    @unittest.mock.patch("google.cloud.ndb.query._datastore_query")
+    def test_fetch_async_with_tx_and_read_consistency(_datastore_query):
+        query = query_module.Query()
+        with pytest.raises(TypeError):
+            query.fetch_async(
+                transaction="foo", read_consistency=_datastore_api.EVENTUAL
+            )
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    @unittest.mock.patch("google.cloud.ndb.query._datastore_query")
+    def test_fetch_async_with_tx_and_read_policy(_datastore_query):
+        query = query_module.Query()
+        with pytest.raises(TypeError):
+            query.fetch_async(
+                transaction="foo", read_policy=_datastore_api.EVENTUAL
+            )
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")
