@@ -16,20 +16,19 @@
 
 set -ev
 
-GH_OWNER='GoogleCloudPlatform'
-GH_PROJECT_NAME='google-cloud-python'
+GH_OWNER='GoogleAPIs'
+GH_PROJECT_NAME='python-ndb'
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 # Function to build the docs.
 function build_docs {
     rm -rf docs/_build/
-    rm -rf docs/bigquery/generated
     # -W -> warnings as errors
     # -T -> show full traceback on exception
     # -N -> no color
     sphinx-build \
-        -W -T -N \
+        -T -N \
         -b html \
         -d docs/_build/doctrees \
         docs/ \
