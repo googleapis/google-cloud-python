@@ -74,15 +74,6 @@ class DataCatalogClient(object):
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def location_path(cls, project, location):
-        """Return a fully-qualified location string."""
-        return google.api_core.path_template.expand(
-            "projects/{project}/locations/{location}",
-            project=project,
-            location=location,
-        )
-
-    @classmethod
     def entry_path(cls, project, location, entry_group, entry):
         """Return a fully-qualified entry string."""
         return google.api_core.path_template.expand(
@@ -91,6 +82,15 @@ class DataCatalogClient(object):
             location=location,
             entry_group=entry_group,
             entry=entry,
+        )
+
+    @classmethod
+    def location_path(cls, project, location):
+        """Return a fully-qualified location string."""
+        return google.api_core.path_template.expand(
+            "projects/{project}/locations/{location}",
+            project=project,
+            location=location,
         )
 
     def __init__(
