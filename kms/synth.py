@@ -37,6 +37,7 @@ library = gapic.py_library(
     include_protos=True,
 )
 
+s.move (library / "docs/conf.py")
 s.move(library, excludes=["README.rst", "setup.py", "nox*.py", "docs/**/*"])
 
 # ----------------------------------------------------------------------------
