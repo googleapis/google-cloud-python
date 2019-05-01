@@ -347,11 +347,10 @@ def test_bigtable_delete_cluster():
 
 def test_bigtable_delete_instance():
     from google.cloud.bigtable import Client
+
     client = Client(admin=True)
 
-    instance = client.instance(
-        "inst-my-123", instance_type=PRODUCTION, labels=LABELS
-    )
+    instance = client.instance("inst-my-123", instance_type=PRODUCTION, labels=LABELS)
     cluster = instance.cluster(
         "clus-my-123",
         location_id=ALT_LOCATION_ID,
