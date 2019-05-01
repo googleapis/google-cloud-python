@@ -16,6 +16,7 @@
 System tests for queries.
 """
 
+import functools
 import operator
 
 import grpc
@@ -33,6 +34,10 @@ def _length_equals(n):
         return len(sequence) == n
 
     return predicate
+
+
+def _equals(n):
+    return functools.partial(operator.eq, n)
 
 
 @pytest.mark.usefixtures("client_context")
@@ -427,3 +432,61 @@ def test_get_none(ds_entity):
     query = SomeKind.query().order(SomeKind.foo)
     eventually(query.fetch, _length_equals(5))
     assert query.filter(SomeKind.foo == -1).get() is None
+
+
+@pytest.mark.usefixtures("client_context")
+def test_count_all(ds_entity):
+    for i in range(5):
+        entity_id = test_utils.system.unique_resource_id()
+        ds_entity(KIND, entity_id, foo=i)
+
+    class SomeKind(ndb.Model):
+        foo = ndb.IntegerProperty()
+
+    query = SomeKind.query()
+    eventually(query.count, _equals(5))
+
+
+@pytest.mark.usefixtures("client_context")
+def test_count_with_limit(ds_entity):
+    for i in range(5):
+        entity_id = test_utils.system.unique_resource_id()
+        ds_entity(KIND, entity_id, foo=i)
+
+    class SomeKind(ndb.Model):
+        foo = ndb.IntegerProperty()
+
+    query = SomeKind.query()
+    eventually(query.count, _equals(5))
+
+    assert query.count(3) == 3
+
+
+@pytest.mark.usefixtures("client_context")
+def test_count_with_filter(ds_entity):
+    for i in range(5):
+        entity_id = test_utils.system.unique_resource_id()
+        ds_entity(KIND, entity_id, foo=i)
+
+    class SomeKind(ndb.Model):
+        foo = ndb.IntegerProperty()
+
+    query = SomeKind.query()
+    eventually(query.count, _equals(5))
+
+    assert query.filter(SomeKind.foo == 2).count() == 1
+
+
+@pytest.mark.usefixtures("client_context")
+def test_count_with_multi_query(ds_entity):
+    for i in range(5):
+        entity_id = test_utils.system.unique_resource_id()
+        ds_entity(KIND, entity_id, foo=i)
+
+    class SomeKind(ndb.Model):
+        foo = ndb.IntegerProperty()
+
+    query = SomeKind.query()
+    eventually(query.count, _equals(5))
+
+    assert query.filter(SomeKind.foo != 2).count() == 4

@@ -88,7 +88,7 @@ class Test_iterate:
         )
         iterator = QueryIterator.return_value
         assert _datastore_query.iterate(query) is iterator
-        QueryIterator.assert_called_once_with(query)
+        QueryIterator.assert_called_once_with(query, raw=False)
 
     @staticmethod
     @mock.patch("google.cloud.ndb._datastore_query._MultiQueryIteratorImpl")
@@ -99,7 +99,7 @@ class Test_iterate:
         )
         iterator = MultiQueryIterator.return_value
         assert _datastore_query.iterate(query) is iterator
-        MultiQueryIterator.assert_called_once_with(query)
+        MultiQueryIterator.assert_called_once_with(query, raw=False)
 
 
 class TestQueryIterator:
@@ -522,6 +522,42 @@ class Test_MultiQueryIteratorImpl:
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")
+    def test_iterate_async_raw():
+        foo = model.StringProperty("foo")
+        query = query_module.QueryOptions(
+            filters=query_module.OR(foo == "this", foo == "that")
+        )
+        iterator = _datastore_query._MultiQueryIteratorImpl(query, raw=True)
+        iterator._result_sets = [
+            MockResultSet(["a", "c", "e", "g", "i"]),
+            MockResultSet(["b", "d", "f", "h", "j"]),
+        ]
+
+        @tasklets.tasklet
+        def iterate():
+            results = []
+            while (yield iterator.has_next_async()):
+                results.append(iterator.next())
+            return results
+
+        assert iterate().result() == [
+            MockResult("a"),
+            MockResult("c"),
+            MockResult("e"),
+            MockResult("g"),
+            MockResult("i"),
+            MockResult("b"),
+            MockResult("d"),
+            MockResult("f"),
+            MockResult("h"),
+            MockResult("j"),
+        ]
+
+        with pytest.raises(StopIteration):
+            iterator.next()
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
     def test_iterate_async_ordered():
         foo = model.StringProperty("foo")
         query = query_module.QueryOptions(
@@ -650,6 +686,9 @@ class MockResult:
     @property
     def result_pb(self):
         return MockResultPB(self.result)
+
+    def __eq__(self, other):
+        return self.result == getattr(other, "result", object())
 
 
 class MockResultPB:

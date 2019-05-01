@@ -106,7 +106,7 @@ def fetch(query):
     return entities
 
 
-def iterate(query):
+def iterate(query, raw=False):
     """Get iterator for query results.
 
     Args:
@@ -117,9 +117,9 @@ def iterate(query):
     """
     filters = query.filters
     if filters and filters._multiquery:
-        return _MultiQueryIteratorImpl(query)
+        return _MultiQueryIteratorImpl(query, raw=raw)
 
-    return _QueryIteratorImpl(query)
+    return _QueryIteratorImpl(query, raw=raw)
 
 
 class QueryIterator:
@@ -372,7 +372,7 @@ class _MultiQueryIteratorImpl(QueryIterator):
         query (query.QueryOptions): The query spec.
     """
 
-    def __init__(self, query):
+    def __init__(self, query, raw=False):
         queries = [
             query.copy(filters=node, offset=None, limit=None)
             for node in query.filters._nodes
@@ -386,6 +386,7 @@ class _MultiQueryIteratorImpl(QueryIterator):
 
         self._offset = query.offset
         self._limit = query.limit
+        self._raw = raw
 
     def has_next(self):
         """Implements :meth:`QueryIterator.has_next`."""
@@ -475,7 +476,10 @@ class _MultiQueryIteratorImpl(QueryIterator):
         # Won't block
         next_result = self._next_result
         self._next_result = None
-        return next_result.entity()
+        if self._raw:
+            return next_result
+        else:
+            return next_result.entity()
 
     __next__ = next
 

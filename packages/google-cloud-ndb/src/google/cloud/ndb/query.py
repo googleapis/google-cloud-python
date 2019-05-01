@@ -1877,11 +1877,11 @@ class Query:
         if results:
             return results[0]
 
+    @_query_options
     def count(
         self,
-        keys_only=None,
         limit=None,
-        projection=None,
+        *,
         offset=None,
         batch_size=None,
         prefetch_size=None,
@@ -1894,14 +1894,27 @@ class Query:
         read_policy=None,
         transaction=None,
         options=None,
+        _options=None,
     ):
         """Count the number of query results, up to a limit.
 
-        This returns the same result as ``len(q.fetch(limit))`` but more
-        efficiently.
+        This returns the same result as ``len(q.fetch(limit))``.
 
         Note that you should pass a maximum value to limit the amount of
         work done by the query.
+
+        Note:
+            The legacy GAE version of NDB claims this is more efficient than
+            just calling ``len(q.fetch(limit))``. Since Datastore does not
+            provide API for ``count``, this version ends up performing the
+            fetch underneath hood. We can specify ``keys_only`` to save some
+            network traffic, making this call really equivalent to
+            ``len(q.fetch(limit, keys_only=True))``. We can also avoid
+            marshalling NDB key objects from the returned protocol buffers, but
+            this is a minor savings--most applications that use NDB will have
+            their perfomance bound by the Datastore backend, not the CPU.
+            Generally, any claim of performance improvement using this versus
+            the equivalent call to ``fetch`` is exaggerated, at best.
 
         Args:
             keys_only (bool): Return keys instead of entities.
@@ -1932,17 +1945,18 @@ class Query:
             options (QueryOptions): DEPRECATED: An object containing options
                 values for some of these arguments.
 
-            Returns:
-                Optional[Union[entity.Entity, key.Key]]: A single result, or
-                    :data:`None` if there are no results.
+        Returns:
+            Optional[Union[entity.Entity, key.Key]]: A single result, or
+                :data:`None` if there are no results.
         """
-        raise NotImplementedError
+        return self.count_async(_options=_options).result()
 
+    @tasklets.tasklet
+    @_query_options
     def count_async(
         self,
-        keys_only=None,
         limit=None,
-        projection=None,
+        *,
         offset=None,
         batch_size=None,
         prefetch_size=None,
@@ -1955,6 +1969,7 @@ class Query:
         read_policy=None,
         transaction=None,
         options=None,
+        _options=None,
     ):
         """Count the number of query results, up to a limit.
 
@@ -1963,7 +1978,18 @@ class Query:
         Returns:
             tasklets.Future: See :meth:`Query.count` for eventual result.
         """
-        raise NotImplementedError
+        options = _options.copy(keys_only=True)
+        results = _datastore_query.iterate(options, raw=True)
+        count = 0
+        limit = options.limit
+        while (yield results.has_next_async()):
+            count += 1
+            if limit and count == limit:
+                break
+
+            results.next()
+
+        return count
 
     def fetch_page(
         self,

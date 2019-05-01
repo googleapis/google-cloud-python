@@ -1746,17 +1746,72 @@ class TestQuery:
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")
-    def test_count():
+    @unittest.mock.patch("google.cloud.ndb.query._datastore_query")
+    def test_count(_datastore_query):
+        class DummyQueryIterator:
+            def __init__(self, items):
+                self.items = list(items)
+
+            def has_next_async(self):
+                return utils.future_result(bool(self.items))
+
+            def next(self):
+                return self.items.pop()
+
+        _datastore_query.iterate.return_value = DummyQueryIterator(range(5))
         query = query_module.Query()
-        with pytest.raises(NotImplementedError):
-            query.count(None)
+        assert query.count() == 5
+        _datastore_query.iterate.assert_called_once_with(
+            query_module.QueryOptions(project="testing", keys_only=True),
+            raw=True,
+        )
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")
-    def test_count_async():
+    @unittest.mock.patch("google.cloud.ndb.query._datastore_query")
+    def test_count_with_limit(_datastore_query):
+        class DummyQueryIterator:
+            def __init__(self, items):
+                self.items = list(items)
+
+            def has_next_async(self):
+                return utils.future_result(bool(self.items))
+
+            def next(self):
+                return self.items.pop()
+
+        _datastore_query.iterate.return_value = DummyQueryIterator(range(5))
         query = query_module.Query()
-        with pytest.raises(NotImplementedError):
-            query.count_async(None)
+        assert query.count(3) == 3
+        _datastore_query.iterate.assert_called_once_with(
+            query_module.QueryOptions(
+                project="testing", keys_only=True, limit=3
+            ),
+            raw=True,
+        )
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    @unittest.mock.patch("google.cloud.ndb.query._datastore_query")
+    def test_count_async(_datastore_query):
+        class DummyQueryIterator:
+            def __init__(self, items):
+                self.items = list(items)
+
+            def has_next_async(self):
+                return utils.future_result(bool(self.items))
+
+            def next(self):
+                return self.items.pop()
+
+        _datastore_query.iterate.return_value = DummyQueryIterator(range(5))
+        query = query_module.Query()
+        future = query.count_async()
+        assert future.result() == 5
+        _datastore_query.iterate.assert_called_once_with(
+            query_module.QueryOptions(project="testing", keys_only=True),
+            raw=True,
+        )
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")
