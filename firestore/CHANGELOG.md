@@ -5,6 +5,14 @@
 [1]: https://pypi.org/project/google-cloud-firestore/#history
 
 
+## 1.1.0
+
+04-30-2019 12:29 PDT
+
+
+### New Features
+- Add support for CollectionGroup queries. ([#7758](https://github.com/googleapis/google-cloud-python/pull/7758))
+
 ## 1.0.0
 
 04-30-2019 10:00 PDT
