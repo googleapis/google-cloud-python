@@ -2,7 +2,7 @@
 
 [PyPI History][1]
 
-[1]: https://pypi.org/project/google-cloud-phishingprotection/#history
+[1]: https://pypi.org/project/google-cloud-phishing-protection/#history
 
 ## 0.1.0
 
