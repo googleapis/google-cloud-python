@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Storage Client &#8212; google-cloud 517fb9d documentation</title>
+    <title>Storage Client &#8212; google-cloud ad2cbe0 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -147,41 +147,58 @@ listing their contents and downloading their blobs.</p>
 
 <dl class="method">
 <dt id="google.cloud.storage.client.Client.create_bucket">
-<code class="descname">create_bucket</code><span class="sig-paren">(</span><em>bucket_name</em>, <em>requester_pays=None</em>, <em>project=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/storage/client.html#Client.create_bucket"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.storage.client.Client.create_bucket" title="Permalink to this definition">#</a></dt>
-<dd><p>Create a new bucket.</p>
-<p>For example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">bucket</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">create_bucket</span><span class="p">(</span><span class="s2">&quot;my-bucket&quot;</span><span class="p">)</span>
-    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">bucket</span><span class="p">,</span> <span class="n">Bucket</span><span class="p">)</span>
-    <span class="c1"># &lt;Bucket: my-bucket&gt;</span>
-</pre></div>
-</div>
-<p>This implements “storage.buckets.insert”.</p>
-<p>If the bucket already exists, will raise
-<code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.exceptions.Conflict</span></code>.</p>
-<p>To set additional properties when creating a bucket, such as the
-bucket location, use <a class="reference internal" href="buckets.html#google.cloud.storage.bucket.Bucket.create" title="google.cloud.storage.bucket.Bucket.create"><code class="xref py py-meth docutils literal notranslate"><span class="pre">create()</span></code></a>.</p>
+<code class="descname">create_bucket</code><span class="sig-paren">(</span><em>bucket_or_name</em>, <em>requester_pays=None</em>, <em>project=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/storage/client.html#Client.create_bucket"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.storage.client.Client.create_bucket" title="Permalink to this definition">#</a></dt>
+<dd><p>API call: create a new bucket via a POST request.</p>
+<p>See
+<a class="reference external" href="https://cloud.google.com/storage/docs/json_api/v1/buckets/insert">https://cloud.google.com/storage/docs/json_api/v1/buckets/insert</a></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>bucket_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The bucket name to create.</li>
-<li><strong>requester_pays</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – (Optional) Whether requester pays for API requests for this
+<li><strong>bucket_or_name</strong> (Union[                 <a class="reference internal" href="buckets.html#google.cloud.storage.bucket.Bucket" title="google.cloud.storage.bucket.Bucket"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bucket</span></code></a>,                  str,             ]) – The bucket resource to pass or name to create.</li>
+<li><strong>requester_pays</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – Optional. Whether requester pays for API requests for this
 bucket and its blobs.</li>
-<li><strong>project</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – (Optional) the project under which the  bucket is to
-be created.  If not passed, uses the project set on
-the client.</li>
+<li><strong>project</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Optional. the project under which the  bucket is to be created.
+If not passed, uses the project set on the client.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="buckets.html#google.cloud.storage.bucket.Bucket" title="google.cloud.storage.bucket.Bucket"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.storage.bucket.Bucket</span></code></a></p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><dl class="docutils">
+<dt>google.cloud.storage.bucket.Bucket</dt>
+<dd><p class="first last">The newly created bucket.</p>
+</dd>
+</dl>
+</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The newly created bucket.</p>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.cloud.exceptions.Conflict</span></code> – If the bucket already exists.</p>
 </td>
 </tr>
 </tbody>
 </table>
+<p class="rubric">Examples</p>
+<p>Create a bucket using a string.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">bucket</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">create_bucket</span><span class="p">(</span><span class="s2">&quot;my-bucket&quot;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">bucket</span><span class="p">,</span> <span class="n">Bucket</span><span class="p">)</span>
+    <span class="c1"># &lt;Bucket: my-bucket&gt;</span>
+</pre></div>
+</div>
+<p>Create a bucket using a resource.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">storage</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Set properties on a plain resource object.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">Bucket</span><span class="p">(</span><span class="s2">&quot;my-bucket-name&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span><span class="o">.</span><span class="n">location</span> <span class="o">=</span> <span class="s2">&quot;europe-west6&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span><span class="o">.</span><span class="n">storage_class</span> <span class="o">=</span> <span class="s2">&quot;COLDLINE&quot;</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Pass that resource object to the client.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">create_bucket</span><span class="p">(</span><span class="n">bucket</span><span class="p">)</span>  <span class="c1"># API request.</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="attribute">
