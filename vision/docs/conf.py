@@ -313,7 +313,7 @@ texinfo_documents = [
         u"google-cloud-vision Documentation",
         author,
         "google-cloud-vision",
-        "GAPIC library for the {metadata.shortName} v1p3beta1 service",
+        "GAPIC library for the {metadata.shortName} v1p4beta1 service",
         "APIs",
     )
 ]
