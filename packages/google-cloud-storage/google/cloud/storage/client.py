@@ -224,6 +224,7 @@ class Client(ClientWithProject):
         :raises: :class:`google.cloud.exceptions.NotFound`
         """
         bucket = Bucket(self, name=bucket_name)
+
         bucket.reload(client=self)
         return bucket
 
@@ -248,40 +249,61 @@ class Client(ClientWithProject):
         except NotFound:
             return None
 
-    def create_bucket(self, bucket_name, requester_pays=None, project=None):
-        """Create a new bucket.
+    def create_bucket(self, bucket_or_name, requester_pays=None, project=None):
+        """API call: create a new bucket via a POST request.
 
-        For example:
+        See
+        https://cloud.google.com/storage/docs/json_api/v1/buckets/insert
 
-        .. literalinclude:: snippets.py
-            :start-after: [START create_bucket]
-            :end-before: [END create_bucket]
+        Args:
+            bucket_or_name (Union[ \
+                :class:`~google.cloud.storage.bucket.Bucket`, \
+                 str, \
+            ]):
+                The bucket resource to pass or name to create.
+            requester_pays (bool):
+                Optional. Whether requester pays for API requests for this
+                bucket and its blobs.
+            project (str):
+                Optional. the project under which the  bucket is to be created.
+                If not passed, uses the project set on the client.
 
-        This implements "storage.buckets.insert".
+        Returns:
+            google.cloud.storage.bucket.Bucket
+                The newly created bucket.
 
-        If the bucket already exists, will raise
-        :class:`google.cloud.exceptions.Conflict`.
+        Raises:
+            google.cloud.exceptions.Conflict
+                If the bucket already exists.
 
-        To set additional properties when creating a bucket, such as the
-        bucket location, use :meth:`~.Bucket.create`.
+        Examples:
+            Create a bucket using a string.
 
-        :type bucket_name: str
-        :param bucket_name: The bucket name to create.
+            .. literalinclude:: snippets.py
+                :start-after: [START create_bucket]
+                :end-before: [END create_bucket]
 
-        :type requester_pays: bool
-        :param requester_pays:
-            (Optional) Whether requester pays for API requests for this
-            bucket and its blobs.
+            Create a bucket using a resource.
 
-        :type project: str
-        :param project: (Optional) the project under which the  bucket is to
-                        be created.  If not passed, uses the project set on
-                        the client.
+            >>> from google.cloud import storage
+            >>> client = storage.Client()
 
-        :rtype: :class:`google.cloud.storage.bucket.Bucket`
-        :returns: The newly created bucket.
+            >>> # Set properties on a plain resource object.
+            >>> bucket = storage.Bucket("my-bucket-name")
+            >>> bucket.location = "europe-west6"
+            >>> bucket.storage_class = "COLDLINE"
+
+            >>> # Pass that resource object to the client.
+            >>> bucket = client.create_bucket(bucket)  # API request.
+
         """
-        bucket = Bucket(self, name=bucket_name)
+
+        bucket = None
+        if isinstance(bucket_or_name, Bucket):
+            bucket = bucket_or_name
+        else:
+            bucket = Bucket(self, name=bucket_or_name)
+
         if requester_pays is not None:
             bucket.requester_pays = requester_pays
         bucket.create(client=self, project=project)
