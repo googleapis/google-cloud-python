@@ -19,7 +19,7 @@ import os
 
 import setuptools
 
-name = 'google-cloud-phishingprotection'
+name = 'google-cloud-phishing-protection'
 description = 'Phishing Protection API API client library'
 version = '0.1.0'
 release_status = '3 - Alpha'

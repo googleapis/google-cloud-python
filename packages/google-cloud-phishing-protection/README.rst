@@ -7,9 +7,9 @@ Python Client for Phishing Protection API (`Alpha`_)
 - `Product Documentation`_
 
 .. _Alpha: https://github.com/googleapis/google-cloud-python/blob/master/README.rst
-.. _Phishing Protection API: https://cloud.google.com/phishingprotection
+.. _Phishing Protection API: https://cloud.google.com/phishing-protection
 .. _Client Library Documentation: https://googleapis.github.io/google-cloud-python/latest/phishingprotection/usage.html
-.. _Product Documentation:  https://cloud.google.com/phishingprotection
+.. _Product Documentation:  https://cloud.google.com/phishing-protection
 
 Quick Start
 -----------
@@ -23,7 +23,7 @@ In order to use this library, you first need to go through the following steps:
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Phishing Protection API.:  https://cloud.google.com/phishingprotection
+.. _Enable the Phishing Protection API.:  https://cloud.google.com/phishing-protection
 .. _Setup Authentication.: https://googleapis.github.io/google-cloud-python/latest/core/auth.html
 
 Installation
@@ -48,7 +48,7 @@ Mac/Linux
     pip install virtualenv
     virtualenv <your-env>
     source <your-env>/bin/activate
-    <your-env>/bin/pip install google-cloud-phishingprotection
+    <your-env>/bin/pip install google-cloud-phishing-protection
 
 
 Windows
@@ -59,7 +59,7 @@ Windows
     pip install virtualenv
     virtualenv <your-env>
     <your-env>\Scripts\activate
-    <your-env>\Scripts\pip.exe install google-cloud-phishingprotection
+    <your-env>\Scripts\pip.exe install google-cloud-phishing-protection
 
 Next Steps
 ~~~~~~~~~~
@@ -71,5 +71,5 @@ Next Steps
 -  View this `repository’s main README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Phishing Protection API Product documentation:  https://cloud.google.com/phishingprotection
+.. _Phishing Protection API Product documentation:  https://cloud.google.com/phishing-protection
 .. _repository’s main README: https://github.com/googleapis/google-cloud-python/blob/master/README.rst
