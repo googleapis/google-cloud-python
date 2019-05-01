@@ -1,5 +1,5 @@
 {
-  "updateTime": "2019-04-30T21:43:21.680465Z",
+  "updateTime": "2019-05-01T12:12:19.124173Z",
   "sources": [
     {
       "generator": {
@@ -20,7 +20,7 @@
       "template": {
         "name": "python_library",
         "origin": "synthtool.gcp",
-        "version": "2019.4.24"
+        "version": "2019.4.10"
       }
     }
   ],
