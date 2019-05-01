@@ -34,7 +34,6 @@ library = gapic.py_library(
 s.move(
     library,
     excludes=[
-        'docs/conf.py',
         'docs/index.rst',
         'google/cloud/datacatalog_v1beta1/__init__.py',
         'README.rst',
