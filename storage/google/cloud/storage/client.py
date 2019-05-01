@@ -250,38 +250,42 @@ class Client(ClientWithProject):
             return None
 
     def create_bucket(self, bucket_or_name, requester_pays=None, project=None):
-        """Create a new bucket.
+        """API call: create a new bucket via a POST request.
 
-        For example:
+        See
+        https://cloud.google.com/storage/docs/json_api/v1/
 
-        .. literalinclude:: snippets.py
-            :start-after: [START create_bucket]
-            :end-before: [END create_bucket]
-
-        This implements "storage.buckets.insert".
-
-        If the bucket already exists, will raise
-        :class:`google.cloud.exceptions.Conflict`.
-
-        To set additional properties when creating a bucket, such as the
-        bucket location, use :meth:`~.Bucket.create`.
-
-        :type bucket_or_name: str or resource
-        :param bucket_or_name: The bucket resource to pass or name to create.
-
-        :type requester_pays: bool
-        :param requester_pays:
-            (Optional) Whether requester pays for API requests for this
+        Args:
+            bucket_or_name (str or resource): The bucket resource to pass or name to create.
+            requester_pays (bool): Optional. Whether requester pays for API requests for this
             bucket and its blobs.
+            project (str): Optional. the project under which the  bucket is to be created.
+                If not passed, uses the project set on the client.
 
-        :type project: str
-        :param project: (Optional) the project under which the  bucket is to
-                        be created.  If not passed, uses the project set on
-                        the client.
+        Returns:
+            google.cloud.storage.bucket.Bucket:
+                The newly created bucket.
 
-        :rtype: :class:`google.cloud.storage.bucket.Bucket`
-        :returns: The newly created bucket.
+        Raises:
+            google.cloud.exceptions.Conflict
+                If the bucket already exists.
+
+        Example:
+
+            >>> from google.cloud import storage
+            >>> client = storage.Client()
+
+            >>> # Set properties on a plain resource object.
+            >>> bucket = storage.Bucket("my-bucket-name")
+            >>> bucket.location = "europe-west6"
+            >>> bucket.storage_class = "COLDLINE"
+
+            >>> # Pass that resource object to the client.
+            # API request. Returns bucket.
+            >>> bucket = client.create_bucket(bucket)
+
         """
+
         bucket = None
         if isinstance(bucket_or_name, Bucket):
             bucket = bucket_or_name
