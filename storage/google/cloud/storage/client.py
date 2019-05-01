@@ -253,24 +253,37 @@ class Client(ClientWithProject):
         """API call: create a new bucket via a POST request.
 
         See
-        https://cloud.google.com/storage/docs/json_api/v1/
+        https://cloud.google.com/storage/docs/json_api/v1/buckets/insert
 
         Args:
-            bucket_or_name (str or resource): The bucket resource to pass or name to create.
-            requester_pays (bool): Optional. Whether requester pays for API requests for this
-            bucket and its blobs.
-            project (str): Optional. the project under which the  bucket is to be created.
+            bucket_or_name (Union[ \
+                :class:`~google.cloud.storage.bucket.Bucket`, \
+                 str, \
+            ]):
+                The bucket resource to pass or name to create.
+            requester_pays (bool):
+                Optional. Whether requester pays for API requests for this
+                bucket and its blobs.
+            project (str):
+                Optional. the project under which the  bucket is to be created.
                 If not passed, uses the project set on the client.
 
         Returns:
-            google.cloud.storage.bucket.Bucket:
+            google.cloud.storage.bucket.Bucket
                 The newly created bucket.
 
         Raises:
             google.cloud.exceptions.Conflict
                 If the bucket already exists.
 
-        Example:
+        Examples:
+            Create a bucket using a string.
+
+            .. literalinclude:: snippets.py
+                :start-after: [START create_bucket]
+                :end-before: [END create_bucket]
+
+            Create a bucket using a resource.
 
             >>> from google.cloud import storage
             >>> client = storage.Client()
@@ -281,8 +294,7 @@ class Client(ClientWithProject):
             >>> bucket.storage_class = "COLDLINE"
 
             >>> # Pass that resource object to the client.
-            # API request. Returns bucket.
-            >>> bucket = client.create_bucket(bucket)
+            >>> bucket = client.create_bucket(bucket)  # API request.
 
         """
 
