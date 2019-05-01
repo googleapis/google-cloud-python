@@ -38,6 +38,7 @@ The following client libraries have **GA** support:
 
 -  `Google BigQuery`_ (`BigQuery README`_)
 -  `Google Cloud Datastore`_ (`Datastore README`_)
+-  `Google Cloud KMS`_ (`KMS README`_)
 -  `Google Cloud Natural Language`_ (`Natural Language README`_)
 -  `Google Cloud Spanner`_ (`Spanner README`_)
 -  `Google Cloud Storage`_ (`Storage README`_)
@@ -48,6 +49,8 @@ The following client libraries have **GA** support:
 .. _BigQuery README: https://github.com/googleapis/google-cloud-python/tree/master/bigquery
 .. _Google Cloud Datastore: https://pypi.org/project/google-cloud-datastore/
 .. _Datastore README: https://github.com/googleapis/google-cloud-python/tree/master/datastore
+.. _Google Cloud KMS: https://pypi.org/project/google-cloud-kms/
+.. _KMS README: https://github.com/googleapis/google-cloud-python/tree/master/kms
 .. _Google Cloud Natural Language: https://pypi.org/project/google-cloud-language/
 .. _Natural Language README: https://github.com/googleapis/google-cloud-python/tree/master/language
 .. _Google Cloud Spanner: https://pypi.org/project/google-cloud-spanner
@@ -107,7 +110,6 @@ The following client libraries have **alpha** support:
 -  `Google Cloud DLP`_ (`DLP README`_)
 -  `Google Cloud DNS`_ (`DNS README`_)
 -  `Google Cloud IoT`_ (`IoT README`_)
--  `Google Cloud KMS`_ (`KMS README`_)
 -  `Google Cloud Memorystore for Redis`_ (`Redis README`_)
 -  `Google Cloud Resource Manager`_ (`Resource Manager README`_)
 -  `Google Cloud Runtime Configuration`_ (`Runtime Config README`_)
@@ -137,8 +139,6 @@ The following client libraries have **alpha** support:
 .. _DNS README: https://github.com/googleapis/google-cloud-python/tree/master/dns
 .. _Google Cloud IoT: https://pypi.org/project/google-cloud-iot/
 .. _IoT README: https://github.com/googleapis/google-cloud-python/tree/master/iot
-.. _Google Cloud KMS: https://pypi.org/project/google-cloud-kms/
-.. _KMS README: https://github.com/googleapis/google-cloud-python/tree/master/kms
 .. _Google Cloud Memorystore for Redis: https://pypi.org/project/google-cloud-redis/
 .. _Redis README: https://github.com/googleapis/google-cloud-python/tree/master/redis
 .. _Google Cloud Resource Manager: https://pypi.org/project/google-cloud-resource-manager/
