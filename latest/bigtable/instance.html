@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Instance &#8212; google-cloud 768d49f documentation</title>
+    <title>Instance &#8212; google-cloud 8a0486e documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -317,7 +317,10 @@ and <code class="docutils literal notranslate"><span class="pre">default_storage
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="kn">from</span> <span class="nn">google.cloud.bigtable</span> <span class="k">import</span> <span class="n">Client</span>
 
     <span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="n">admin</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="n">instance_id_to_delete</span> <span class="o">=</span> <span class="s2">&quot;inst-my-&quot;</span> <span class="o">+</span> <span class="n">unique_resource_id</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">)</span>
+
+    <span class="n">instance_id</span> <span class="o">=</span> <span class="s2">&quot;inst-my-123&quot;</span>
+    <span class="n">instance_to_delete</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">instance</span><span class="p">(</span><span class="n">instance_id</span><span class="p">)</span>
+    <span class="n">instance_to_delete</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>Marks an instance and all of its tables for permanent deletion
@@ -443,6 +446,8 @@ on the client.</p>
 
     <span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="n">admin</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="n">instance</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">instance</span><span class="p">(</span><span class="n">INSTANCE_ID</span><span class="p">)</span>
+
+    <span class="n">app_profiles_list</span> <span class="o">=</span> <span class="n">instance</span><span class="o">.</span><span class="n">list_app_profiles</span><span class="p">()</span>
 </pre></div>
 </div>
 <table class="docutils field-list" frame="void" rules="none">
@@ -572,6 +577,13 @@ class <cite>google.cloud.bigtable.policy.Policy</cite></p>
     <span class="kn">from</span> <span class="nn">google.cloud.bigtable.policy</span> <span class="k">import</span> <span class="n">Policy</span>
     <span class="kn">from</span> <span class="nn">google.cloud.bigtable.policy</span> <span class="k">import</span> <span class="n">BIGTABLE_ADMIN_ROLE</span>
 
+    <span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="n">admin</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">instance</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">instance</span><span class="p">(</span><span class="n">INSTANCE_ID</span><span class="p">)</span>
+    <span class="n">instance</span><span class="o">.</span><span class="n">reload</span><span class="p">()</span>
+    <span class="n">new_policy</span> <span class="o">=</span> <span class="n">Policy</span><span class="p">()</span>
+    <span class="n">new_policy</span><span class="p">[</span><span class="n">BIGTABLE_ADMIN_ROLE</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">Policy</span><span class="o">.</span><span class="n">service_account</span><span class="p">(</span><span class="n">service_account_email</span><span class="p">)]</span>
+
+    <span class="n">policy_latest</span> <span class="o">=</span> <span class="n">instance</span><span class="o">.</span><span class="n">set_iam_policy</span><span class="p">(</span><span class="n">new_policy</span><span class="p">)</span>
 </pre></div>
 </div>
 <table class="docutils field-list" frame="void" rules="none">
