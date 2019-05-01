@@ -24,11 +24,12 @@ from google.cloud.ndb import key as key_module
 from google.cloud.ndb import model
 from google.cloud.ndb import query as query_module
 from google.cloud.ndb import tasklets
-import tests.unit.utils
+
+from tests.unit import utils
 
 
 def test___all__():
-    tests.unit.utils.verify___all__(query_module)
+    utils.verify___all__(query_module)
 
 
 class TestQueryOptions:
@@ -1713,17 +1714,35 @@ class TestQuery:
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")
-    def test_get():
+    @unittest.mock.patch("google.cloud.ndb.query._datastore_query")
+    def test_get(_datastore_query):
         query = query_module.Query()
-        with pytest.raises(NotImplementedError):
-            query.get(None)
+        _datastore_query.fetch.return_value = utils.future_result(
+            ["foo", "bar"]
+        )
+        assert query.get() == "foo"
+        _datastore_query.fetch.assert_called_once_with(
+            query_module.QueryOptions(project="testing", limit=1)
+        )
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")
-    def test_get_async():
+    @unittest.mock.patch("google.cloud.ndb.query._datastore_query")
+    def test_get_no_results(_datastore_query):
         query = query_module.Query()
-        with pytest.raises(NotImplementedError):
-            query.get_async(None)
+        _datastore_query.fetch.return_value = utils.future_result([])
+        assert query.get() is None
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    @unittest.mock.patch("google.cloud.ndb.query._datastore_query")
+    def test_get_async(_datastore_query):
+        query = query_module.Query()
+        _datastore_query.fetch.return_value = utils.future_result(
+            ["foo", "bar"]
+        )
+        future = query.get_async()
+        assert future.result() == "foo"
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")

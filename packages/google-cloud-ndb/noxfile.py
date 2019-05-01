@@ -111,11 +111,9 @@ def docs(session):
     session.install("Sphinx < 2.0dev")
     session.install(".")
     # Building the docs.
-    run_args = [
-        "bash",
-        "test_utils/test_utils/scripts/update_docs.sh",
-    ]
+    run_args = ["bash", "test_utils/test_utils/scripts/update_docs.sh"]
     session.run(*run_args)
+
 
 @nox.session(py=DEFAULT_INTERPRETER)
 def doctest(session):

@@ -14,6 +14,8 @@
 
 import types
 
+from google.cloud.ndb import tasklets
+
 
 def verify___all__(module_obj):
     expected = []
@@ -24,3 +26,15 @@ def verify___all__(module_obj):
                 expected.append(name)
     expected.sort(key=str.lower)
     assert sorted(module_obj.__all__, key=str.lower) == expected
+
+
+def future_result(result):
+    """Return a future with the given result."""
+    future = tasklets.Future()
+    future.set_result(result)
+    return future
+
+
+def future_results(*results):
+    """Return a sequence of futures for the given results."""
+    return [future_result(result) for result in results]

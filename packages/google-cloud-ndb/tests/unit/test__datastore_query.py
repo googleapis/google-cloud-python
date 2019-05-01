@@ -29,15 +29,7 @@ from google.cloud.ndb import model
 from google.cloud.ndb import query as query_module
 from google.cloud.ndb import tasklets
 
-
-def future_result(result):
-    future = tasklets.Future()
-    future.set_result(result)
-    return future
-
-
-def future_results(*results):
-    return [future_result(result) for result in results]
+from tests.unit import utils
 
 
 def test_make_filter():
@@ -78,7 +70,7 @@ class Test_fetch:
     @mock.patch("google.cloud.ndb._datastore_query.iterate")
     def test_fetch(iterate):
         results = iterate.return_value
-        results.has_next_async.side_effect = future_results(
+        results.has_next_async.side_effect = utils.future_results(
             True, True, True, False
         )
         results.next.side_effect = ["a", "b", "c", "d"]
@@ -178,7 +170,9 @@ class Test_QueryIteratorImpl:
     @staticmethod
     def test_has_next():
         iterator = _datastore_query._QueryIteratorImpl("foo")
-        iterator.has_next_async = mock.Mock(return_value=future_result("bar"))
+        iterator.has_next_async = mock.Mock(
+            return_value=utils.future_result("bar")
+        )
         assert iterator.has_next() == "bar"
 
     @staticmethod
@@ -189,7 +183,7 @@ class Test_QueryIteratorImpl:
         def dummy_next_batch():
             iterator._index = 0
             iterator._batch = ["a", "b", "c"]
-            return future_result(None)
+            return utils.future_result(None)
 
         iterator._next_batch = dummy_next_batch
         assert iterator.has_next_async().result()
@@ -221,7 +215,7 @@ class Test_QueryIteratorImpl:
         def dummy_next_batch():
             iterator._index = 0
             iterator._batch = ["d", "e", "f"]
-            return future_result(None)
+            return utils.future_result(None)
 
         iterator._next_batch = dummy_next_batch
         assert iterator.has_next_async().result()
@@ -237,7 +231,7 @@ class Test_QueryIteratorImpl:
         def dummy_next_batch():
             iterator._index = 3
             iterator._batch = ["d", "e", "f"]
-            return future_result(None)
+            return utils.future_result(None)
 
         iterator._next_batch = dummy_next_batch
         assert not iterator.has_next_async().result()
@@ -277,7 +271,7 @@ class Test_QueryIteratorImpl:
             mock.Mock(entity="entity2", cursor=b"b"),
             mock.Mock(entity="entity3", cursor=b"c"),
         ]
-        _datastore_run_query.return_value = future_result(
+        _datastore_run_query.return_value = utils.future_result(
             mock.Mock(
                 batch=mock.Mock(
                     entity_result_type=query_pb2.EntityResult.FULL,
@@ -307,7 +301,7 @@ class Test_QueryIteratorImpl:
             mock.Mock(entity="entity2", cursor=b"b"),
             mock.Mock(entity="entity3", cursor=b"c"),
         ]
-        _datastore_run_query.return_value = future_result(
+        _datastore_run_query.return_value = utils.future_result(
             mock.Mock(
                 batch=mock.Mock(
                     entity_result_type=query_pb2.EntityResult.FULL,
@@ -463,7 +457,9 @@ class Test_MultiQueryIteratorImpl:
             filters=query_module.OR(foo == "this", foo == "that")
         )
         iterator = _datastore_query._MultiQueryIteratorImpl(query)
-        iterator.has_next_async = mock.Mock(return_value=future_result("bar"))
+        iterator.has_next_async = mock.Mock(
+            return_value=utils.future_result("bar")
+        )
         assert iterator.has_next() == "bar"
 
     @staticmethod
@@ -673,7 +669,7 @@ class MockResultSet:
         self.index = 0
 
     def has_next_async(self):
-        return future_result(self.index < self.len)
+        return utils.future_result(self.index < self.len)
 
     def next(self):
         result = self._peek()
@@ -995,7 +991,7 @@ class Test__datastore_run_query:
     def test_it(_datastore_api):
         query = query_module.QueryOptions(project="testing", namespace="")
         query_pb = _datastore_query._query_to_protobuf(query)
-        _datastore_api.make_call.return_value = future_result("foo")
+        _datastore_api.make_call.return_value = utils.future_result("foo")
         read_options = datastore_pb2.ReadOptions()
         request = datastore_pb2.RunQueryRequest(
             project_id="testing",

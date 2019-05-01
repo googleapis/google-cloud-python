@@ -385,3 +385,45 @@ def test_iter_all_of_a_kind(ds_entity):
     query = SomeKind.query().order("foo")
     results = eventually(lambda: list(query), _length_equals(5))
     assert [entity.foo for entity in results] == [0, 1, 2, 3, 4]
+
+
+@pytest.mark.usefixtures("client_context")
+def test_get_first(ds_entity):
+    for i in range(5):
+        entity_id = test_utils.system.unique_resource_id()
+        ds_entity(KIND, entity_id, foo=i)
+
+    class SomeKind(ndb.Model):
+        foo = ndb.IntegerProperty()
+
+    query = SomeKind.query().order(SomeKind.foo)
+    eventually(query.fetch, _length_equals(5))
+    assert query.get().foo == 0
+
+
+@pytest.mark.usefixtures("client_context")
+def test_get_only(ds_entity):
+    for i in range(5):
+        entity_id = test_utils.system.unique_resource_id()
+        ds_entity(KIND, entity_id, foo=i)
+
+    class SomeKind(ndb.Model):
+        foo = ndb.IntegerProperty()
+
+    query = SomeKind.query().order(SomeKind.foo)
+    eventually(query.fetch, _length_equals(5))
+    assert query.filter(SomeKind.foo == 2).get().foo == 2
+
+
+@pytest.mark.usefixtures("client_context")
+def test_get_none(ds_entity):
+    for i in range(5):
+        entity_id = test_utils.system.unique_resource_id()
+        ds_entity(KIND, entity_id, foo=i)
+
+    class SomeKind(ndb.Model):
+        foo = ndb.IntegerProperty()
+
+    query = SomeKind.query().order(SomeKind.foo)
+    eventually(query.fetch, _length_equals(5))
+    assert query.filter(SomeKind.foo == -1).get() is None

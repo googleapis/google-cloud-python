@@ -25,6 +25,7 @@ from google.cloud.ndb import _gql
 from google.cloud.ndb import exceptions
 from google.cloud.ndb import model
 from google.cloud.ndb import _options
+from google.cloud.ndb import tasklets
 
 
 __all__ = [
@@ -1785,10 +1786,10 @@ class Query:
         """
         raise NotImplementedError
 
+    @_query_options
     def get(
         self,
         keys_only=None,
-        limit=None,
         projection=None,
         offset=None,
         batch_size=None,
@@ -1802,6 +1803,7 @@ class Query:
         read_policy=None,
         transaction=None,
         options=None,
+        _options=None,
     ):
         """Get the first query result, if any.
 
@@ -1837,16 +1839,17 @@ class Query:
             options (QueryOptions): DEPRECATED: An object containing options
                 values for some of these arguments.
 
-            Returns:
-                Optional[Union[entity.Entity, key.Key]]: A single result, or
-                    :data:`None` if there are no results.
+        Returns:
+            Optional[Union[entity.Entity, key.Key]]: A single result, or
+                :data:`None` if there are no results.
         """
-        raise NotImplementedError
+        return self.get_async(_options=_options).result()
 
+    @tasklets.tasklet
+    @_query_options
     def get_async(
         self,
         keys_only=None,
-        limit=None,
         projection=None,
         offset=None,
         batch_size=None,
@@ -1860,6 +1863,7 @@ class Query:
         read_policy=None,
         transaction=None,
         options=None,
+        _options=None,
     ):
         """Get the first query result, if any.
 
@@ -1868,7 +1872,10 @@ class Query:
         Returns:
             tasklets.Future: See :meth:`Query.get` for eventual result.
         """
-        raise NotImplementedError
+        options = _options.copy(limit=1)
+        results = yield _datastore_query.fetch(options)
+        if results:
+            return results[0]
 
     def count(
         self,
