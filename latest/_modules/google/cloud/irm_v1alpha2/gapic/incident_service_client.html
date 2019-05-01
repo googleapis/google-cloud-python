@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.irm_v1alpha2.gapic.incident_service_client &#8212; google-cloud 7c3f9d5 documentation</title>
+    <title>google.cloud.irm_v1alpha2.gapic.incident_service_client &#8212; google-cloud 517fb9d documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -107,22 +107,6 @@
 
     <span class="n">from_service_account_json</span> <span class="o">=</span> <span class="n">from_service_account_file</span>
 
-<div class="viewcode-block" id="IncidentServiceClient.project_path"><a class="viewcode-back" href="../../../../../irm/gapic/v1alpha2/api.html#google.cloud.irm_v1alpha2.IncidentServiceClient.project_path">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">project_path</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">project</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Return a fully-qualified project string.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">path_template</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span>
-            <span class="s2">&quot;projects/</span><span class="si">{project}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="n">project</span>
-        <span class="p">)</span></div>
-
-<div class="viewcode-block" id="IncidentServiceClient.incident_path"><a class="viewcode-back" href="../../../../../irm/gapic/v1alpha2/api.html#google.cloud.irm_v1alpha2.IncidentServiceClient.incident_path">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">incident_path</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">project</span><span class="p">,</span> <span class="n">incident</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Return a fully-qualified incident string.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">path_template</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span>
-            <span class="s2">&quot;projects/</span><span class="si">{project}</span><span class="s2">/incidents/</span><span class="si">{incident}</span><span class="s2">&quot;</span><span class="p">,</span>
-            <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span>
-            <span class="n">incident</span><span class="o">=</span><span class="n">incident</span><span class="p">,</span>
-        <span class="p">)</span></div>
-
 <div class="viewcode-block" id="IncidentServiceClient.annotation_path"><a class="viewcode-back" href="../../../../../irm/gapic/v1alpha2/api.html#google.cloud.irm_v1alpha2.IncidentServiceClient.annotation_path">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">annotation_path</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">project</span><span class="p">,</span> <span class="n">incident</span><span class="p">,</span> <span class="n">annotation</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return a fully-qualified annotation string.&quot;&quot;&quot;</span>
@@ -143,6 +127,22 @@
             <span class="n">artifact</span><span class="o">=</span><span class="n">artifact</span><span class="p">,</span>
         <span class="p">)</span></div>
 
+<div class="viewcode-block" id="IncidentServiceClient.incident_path"><a class="viewcode-back" href="../../../../../irm/gapic/v1alpha2/api.html#google.cloud.irm_v1alpha2.IncidentServiceClient.incident_path">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">incident_path</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">project</span><span class="p">,</span> <span class="n">incident</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return a fully-qualified incident string.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">path_template</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span>
+            <span class="s2">&quot;projects/</span><span class="si">{project}</span><span class="s2">/incidents/</span><span class="si">{incident}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span>
+            <span class="n">incident</span><span class="o">=</span><span class="n">incident</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="IncidentServiceClient.project_path"><a class="viewcode-back" href="../../../../../irm/gapic/v1alpha2/api.html#google.cloud.irm_v1alpha2.IncidentServiceClient.project_path">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">project_path</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">project</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return a fully-qualified project string.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">path_template</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span>
+            <span class="s2">&quot;projects/</span><span class="si">{project}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="n">project</span>
+        <span class="p">)</span></div>
+
 <div class="viewcode-block" id="IncidentServiceClient.role_assignment_path"><a class="viewcode-back" href="../../../../../irm/gapic/v1alpha2/api.html#google.cloud.irm_v1alpha2.IncidentServiceClient.role_assignment_path">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">role_assignment_path</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">project</span><span class="p">,</span> <span class="n">incident</span><span class="p">,</span> <span class="n">role_assignment</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return a fully-qualified role_assignment string.&quot;&quot;&quot;</span>
@@ -151,6 +151,13 @@
             <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span>
             <span class="n">incident</span><span class="o">=</span><span class="n">incident</span><span class="p">,</span>
             <span class="n">role_assignment</span><span class="o">=</span><span class="n">role_assignment</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="IncidentServiceClient.signal_path"><a class="viewcode-back" href="../../../../../irm/gapic/v1alpha2/api.html#google.cloud.irm_v1alpha2.IncidentServiceClient.signal_path">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">signal_path</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">project</span><span class="p">,</span> <span class="n">signal</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return a fully-qualified signal string.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">path_template</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span>
+            <span class="s2">&quot;projects/</span><span class="si">{project}</span><span class="s2">/signals/</span><span class="si">{signal}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span> <span class="n">signal</span><span class="o">=</span><span class="n">signal</span>
         <span class="p">)</span></div>
 
 <div class="viewcode-block" id="IncidentServiceClient.subscription_path"><a class="viewcode-back" href="../../../../../irm/gapic/v1alpha2/api.html#google.cloud.irm_v1alpha2.IncidentServiceClient.subscription_path">[docs]</a>    <span class="nd">@classmethod</span>
@@ -171,13 +178,6 @@
             <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span>
             <span class="n">incident</span><span class="o">=</span><span class="n">incident</span><span class="p">,</span>
             <span class="n">tag</span><span class="o">=</span><span class="n">tag</span><span class="p">,</span>
-        <span class="p">)</span></div>
-
-<div class="viewcode-block" id="IncidentServiceClient.signal_path"><a class="viewcode-back" href="../../../../../irm/gapic/v1alpha2/api.html#google.cloud.irm_v1alpha2.IncidentServiceClient.signal_path">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">signal_path</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">project</span><span class="p">,</span> <span class="n">signal</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Return a fully-qualified signal string.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">path_template</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span>
-            <span class="s2">&quot;projects/</span><span class="si">{project}</span><span class="s2">/signals/</span><span class="si">{signal}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span> <span class="n">signal</span><span class="o">=</span><span class="n">signal</span>
         <span class="p">)</span></div>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span>
