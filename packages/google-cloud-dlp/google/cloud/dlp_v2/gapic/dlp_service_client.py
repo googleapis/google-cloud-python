@@ -82,6 +82,13 @@ class DlpServiceClient(object):
     from_service_account_json = from_service_account_file
 
     @classmethod
+    def dlp_job_path(cls, project, dlp_job):
+        """Return a fully-qualified dlp_job string."""
+        return google.api_core.path_template.expand(
+            "projects/{project}/dlpJobs/{dlp_job}", project=project, dlp_job=dlp_job
+        )
+
+    @classmethod
     def organization_path(cls, organization):
         """Return a fully-qualified organization string."""
         return google.api_core.path_template.expand(
@@ -98,21 +105,37 @@ class DlpServiceClient(object):
         )
 
     @classmethod
-    def project_deidentify_template_path(cls, project, deidentify_template):
-        """Return a fully-qualified project_deidentify_template string."""
-        return google.api_core.path_template.expand(
-            "projects/{project}/deidentifyTemplates/{deidentify_template}",
-            project=project,
-            deidentify_template=deidentify_template,
-        )
-
-    @classmethod
     def organization_inspect_template_path(cls, organization, inspect_template):
         """Return a fully-qualified organization_inspect_template string."""
         return google.api_core.path_template.expand(
             "organizations/{organization}/inspectTemplates/{inspect_template}",
             organization=organization,
             inspect_template=inspect_template,
+        )
+
+    @classmethod
+    def organization_stored_info_type_path(cls, organization, stored_info_type):
+        """Return a fully-qualified organization_stored_info_type string."""
+        return google.api_core.path_template.expand(
+            "organizations/{organization}/storedInfoTypes/{stored_info_type}",
+            organization=organization,
+            stored_info_type=stored_info_type,
+        )
+
+    @classmethod
+    def project_path(cls, project):
+        """Return a fully-qualified project string."""
+        return google.api_core.path_template.expand(
+            "projects/{project}", project=project
+        )
+
+    @classmethod
+    def project_deidentify_template_path(cls, project, deidentify_template):
+        """Return a fully-qualified project_deidentify_template string."""
+        return google.api_core.path_template.expand(
+            "projects/{project}/deidentifyTemplates/{deidentify_template}",
+            project=project,
+            deidentify_template=deidentify_template,
         )
 
     @classmethod
@@ -131,29 +154,6 @@ class DlpServiceClient(object):
             "projects/{project}/jobTriggers/{job_trigger}",
             project=project,
             job_trigger=job_trigger,
-        )
-
-    @classmethod
-    def project_path(cls, project):
-        """Return a fully-qualified project string."""
-        return google.api_core.path_template.expand(
-            "projects/{project}", project=project
-        )
-
-    @classmethod
-    def dlp_job_path(cls, project, dlp_job):
-        """Return a fully-qualified dlp_job string."""
-        return google.api_core.path_template.expand(
-            "projects/{project}/dlpJobs/{dlp_job}", project=project, dlp_job=dlp_job
-        )
-
-    @classmethod
-    def organization_stored_info_type_path(cls, organization, stored_info_type):
-        """Return a fully-qualified organization_stored_info_type string."""
-        return google.api_core.path_template.expand(
-            "organizations/{organization}/storedInfoTypes/{stored_info_type}",
-            organization=organization,
-            stored_info_type=stored_info_type,
         )
 
     @classmethod
