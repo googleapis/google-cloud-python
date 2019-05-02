@@ -55,11 +55,6 @@ s.replace(
     "recaptcha_enterprise_service_client")
 
 s.replace(
-    "google/cloud/**/recaptcha_enterprise_service_client_config.py",
-    "RecaptchaEnterpriseServiceV1Beta1",
-    "RecaptchaEnterpriseService")
-
-s.replace(
     "*/cloud/**/*.py",
     "RecaptchaEnterpriseServiceV1Beta1GrpcTransport",
     "RecaptchaEnterpriseServiceGrpcTransport"
