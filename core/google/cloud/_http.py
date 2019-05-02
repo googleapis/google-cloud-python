@@ -21,6 +21,7 @@ import warnings
 from pkg_resources import get_distribution
 from six.moves.urllib.parse import urlencode
 
+from google.api_core.gapic_v1.client_info import ClientInfo
 from google.cloud import exceptions
 
 
@@ -51,13 +52,21 @@ class Connection(object):
 
     :type client: :class:`~google.cloud.client.Client`
     :param client: The client that owns the current connection.
+
+    :type client_info: :class:`~google.api_core.client_info.ClientInfo`
+    :param client_info: (Optional) instance used to generate user agent.
     """
 
     _user_agent = DEFAULT_USER_AGENT
     _extra_headers = None
 
-    def __init__(self, client):
+    def __init__(self, client, client_info=None):
         self._client = client
+
+        if client_info is None:
+            client_info = ClientInfo()
+
+        self._client_info = client_info
 
     @property
     def USER_AGENT(self):

@@ -31,9 +31,18 @@ class TestConnection(unittest.TestCase):
     def _make_one(self, *args, **kw):
         return self._get_target_class()(*args, **kw)
 
-    def test_constructor(self):
+    def test_constructor_defaults(self):
+        from google.api_core.gapic_v1.client_info import ClientInfo
+
         client = object()
         conn = self._make_one(client)
+        self.assertIs(conn._client, client)
+        self.assertIsInstance(conn._client_info, ClientInfo)
+
+    def test_constructor_explicit(self):
+        client = object()
+        client_info = object()
+        conn = self._make_one(client, client_info=client_info)
         self.assertIs(conn._client, client)
 
     def test_user_agent_all_caps_getter_deprecated(self):
