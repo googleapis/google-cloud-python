@@ -19,7 +19,7 @@ import os
 
 import setuptools
 
-name = 'google-cloud-recaptchaenterprise'
+name = 'google-cloud-recaptcha-enterprise'
 description = 'reCAPTCHA Enterprise API client library'
 version = '0.1.0'
 release_status = '3 - Alpha'

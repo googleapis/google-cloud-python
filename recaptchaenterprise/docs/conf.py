@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# google-cloud-recaptchaenterprise documentation build configuration file
+# google-cloud-recaptcha-enterprise documentation build configuration file
 #
 # This file is execfile()d with the current directory set to its
 # containing dir.
@@ -64,7 +64,7 @@ source_suffix = [".rst", ".md"]
 master_doc = "index"
 
 # General information about the project.
-project = u"google-cloud-recaptchaenterprise"
+project = u"google-cloud-recaptcha-enterprise"
 copyright = u"2017, Google"
 author = u"Google APIs"
 
@@ -225,7 +225,7 @@ html_theme_options = {
 # html_search_scorer = 'scorer.js'
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = "google-cloud-recaptchaenterprise-doc"
+htmlhelp_basename = "google-cloud-recaptcha-enterprise-doc"
 
 # -- Options for warnings ------------------------------------------------------
 
@@ -257,8 +257,8 @@ latex_elements = {
 latex_documents = [
     (
         master_doc,
-        "google-cloud-recaptchaenterprise.tex",
-        u"google-cloud-recaptchaenterprise Documentation",
+        "google-cloud-recaptcha-enterprise.tex",
+        u"google-cloud-recaptcha-enterprise Documentation",
         author,
         "manual",
     )
@@ -291,8 +291,8 @@ latex_documents = [
 man_pages = [
     (
         master_doc,
-        "google-cloud-recaptchaenterprise",
-        u"google-cloud-recaptchaenterprise Documentation",
+        "google-cloud-recaptcha-enterprise",
+        u"google-cloud-recaptcha-enterprise Documentation",
         [author],
         1,
     )
@@ -309,10 +309,10 @@ man_pages = [
 texinfo_documents = [
     (
         master_doc,
-        "google-cloud-recaptchaenterprise",
-        u"google-cloud-recaptchaenterprise Documentation",
+        "google-cloud-recaptcha-enterprise",
+        u"google-cloud-recaptcha-enterprise Documentation",
         author,
-        "google-cloud-recaptchaenterprise",
+        "google-cloud-recaptcha-enterprise",
         "GAPIC library for the {metadata.shortName} v1beta1 service",
         "APIs",
     )

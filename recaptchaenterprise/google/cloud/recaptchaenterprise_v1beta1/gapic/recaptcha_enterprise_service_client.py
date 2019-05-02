@@ -13,7 +13,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-"""Accesses the google.cloud.recaptchaenterprise.v1beta1 RecaptchaEnterpriseService API."""
+"""Accesses the google.cloud.recaptchaenterprise.v1beta1 RecaptchaEnterpriseServiceV1Beta1 API."""
 
 import pkg_resources
 import warnings
@@ -51,7 +51,7 @@ class RecaptchaEnterpriseServiceClient(object):
     # The name of the interface for this client. This is the key used to
     # find the method configuration in the client_config dictionary.
     _INTERFACE_NAME = (
-        "google.cloud.recaptchaenterprise.v1beta1.RecaptchaEnterpriseService"
+        "google.cloud.recaptchaenterprise.v1beta1.RecaptchaEnterpriseServiceV1Beta1"
     )
 
     @classmethod
@@ -75,19 +75,19 @@ class RecaptchaEnterpriseServiceClient(object):
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def project_path(cls, project):
-        """Return a fully-qualified project string."""
-        return google.api_core.path_template.expand(
-            "projects/{project}", project=project
-        )
-
-    @classmethod
     def assessment_path(cls, project, assessment):
         """Return a fully-qualified assessment string."""
         return google.api_core.path_template.expand(
             "projects/{project}/assessments/{assessment}",
             project=project,
             assessment=assessment,
+        )
+
+    @classmethod
+    def project_path(cls, project):
+        """Return a fully-qualified project string."""
+        return google.api_core.path_template.expand(
+            "projects/{project}", project=project
         )
 
     def __init__(

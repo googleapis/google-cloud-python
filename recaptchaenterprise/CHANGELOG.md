@@ -2,4 +2,4 @@
 
 [PyPI History][1]
 
-[1]: https://pypi.org/project/google-cloud-recaptchaenterprise/#history
+[1]: https://pypi.org/project/google-cloud-recaptcha-enterprise/#history

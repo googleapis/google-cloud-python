@@ -35,7 +35,7 @@ client_config = "google/cloud/recaptchaenterprise_v1beta1/gapic/recaptcha_enterp
 transport = "google/cloud/recaptchaenterprise_v1beta1/gapic/transports/recaptcha_enterprise_service_v1_beta1_grpc_transport.py"
 unit_test = "tests/unit/gapic/v1beta1/test_recaptcha_enterprise_service_v1_beta1_client_v1beta1.py"
 
-excludes = ["README.rst", "nox.py", "noxfile.py", "setup.py", "docs/index.rst", "tests", client, client_config, transport, unit_test]
+excludes = ["README.rst", "nox.py", "noxfile.py", "setup.py", "docs/index.rst", "docs/conf.py", "tests", client, client_config, transport, unit_test]
 s.move(library, excludes=excludes)
 
 s.move(library / client, client.replace("_v1_beta1", ""))
