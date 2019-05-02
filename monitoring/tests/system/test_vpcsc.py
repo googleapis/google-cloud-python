@@ -16,7 +16,7 @@
 
 
 # DO NOT MODIFY! AUTO-GENERATED!
-# This file is auto-generated on 2019-04-26.
+# This file is auto-generated on 2019-05-02.
 
 # flake8: noqa
 
@@ -359,5 +359,136 @@ class TestVPCServiceControlV3(object):
         name_outside = client.project_path(PROJECT_OUTSIDE)
         delayed_outside = lambda: client.list_time_series(
             name_outside, "", {}, enums.ListTimeSeriesRequest.TimeSeriesView.FULL
+        )
+        TestVPCServiceControlV3._do_test(delayed_inside, delayed_outside)
+
+    @pytest.mark.skipif(
+        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_ID"
+    )
+    @pytest.mark.skipif(
+        PROJECT_OUTSIDE is None,
+        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT",
+    )
+    def test_create_notification_channel(self):
+        client = monitoring_v3.NotificationChannelServiceClient()
+        name_inside = client.project_path(PROJECT_INSIDE)
+        delayed_inside = lambda: client.create_notification_channel(name_inside, {})
+        name_outside = client.project_path(PROJECT_OUTSIDE)
+        delayed_outside = lambda: client.create_notification_channel(name_outside, {})
+        TestVPCServiceControlV3._do_test(delayed_inside, delayed_outside)
+
+    @pytest.mark.skipif(
+        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_ID"
+    )
+    @pytest.mark.skipif(
+        PROJECT_OUTSIDE is None,
+        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT",
+    )
+    def test_delete_notification_channel(self):
+        client = monitoring_v3.NotificationChannelServiceClient()
+        name_inside = client.notification_channel_path(
+            PROJECT_INSIDE, "mock_notification_channel"
+        )
+        delayed_inside = lambda: client.delete_notification_channel(name_inside)
+        name_outside = client.notification_channel_path(
+            PROJECT_OUTSIDE, "mock_notification_channel"
+        )
+        delayed_outside = lambda: client.delete_notification_channel(name_outside)
+        TestVPCServiceControlV3._do_test(delayed_inside, delayed_outside)
+
+    @pytest.mark.skipif(
+        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_ID"
+    )
+    @pytest.mark.skipif(
+        PROJECT_OUTSIDE is None,
+        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT",
+    )
+    def test_get_notification_channel(self):
+        client = monitoring_v3.NotificationChannelServiceClient()
+        name_inside = client.notification_channel_path(
+            PROJECT_INSIDE, "mock_notification_channel"
+        )
+        delayed_inside = lambda: client.get_notification_channel(name_inside)
+        name_outside = client.notification_channel_path(
+            PROJECT_OUTSIDE, "mock_notification_channel"
+        )
+        delayed_outside = lambda: client.get_notification_channel(name_outside)
+        TestVPCServiceControlV3._do_test(delayed_inside, delayed_outside)
+
+    @pytest.mark.skipif(
+        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_ID"
+    )
+    @pytest.mark.skipif(
+        PROJECT_OUTSIDE is None,
+        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT",
+    )
+    def test_get_notification_channel_descriptor(self):
+        client = monitoring_v3.NotificationChannelServiceClient()
+        name_inside = client.notification_channel_descriptor_path(
+            PROJECT_INSIDE, "mock_notification_channel_descriptor"
+        )
+        delayed_inside = lambda: client.get_notification_channel_descriptor(name_inside)
+        name_outside = client.notification_channel_descriptor_path(
+            PROJECT_OUTSIDE, "mock_notification_channel_descriptor"
+        )
+        delayed_outside = lambda: client.get_notification_channel_descriptor(
+            name_outside
+        )
+        TestVPCServiceControlV3._do_test(delayed_inside, delayed_outside)
+
+    @pytest.mark.skipif(
+        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_ID"
+    )
+    @pytest.mark.skipif(
+        PROJECT_OUTSIDE is None,
+        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT",
+    )
+    def test_list_notification_channel_descriptors(self):
+        client = monitoring_v3.NotificationChannelServiceClient()
+        name_inside = client.project_path(PROJECT_INSIDE)
+        delayed_inside = lambda: client.list_notification_channel_descriptors(
+            name_inside
+        )
+        name_outside = client.project_path(PROJECT_OUTSIDE)
+        delayed_outside = lambda: client.list_notification_channel_descriptors(
+            name_outside
+        )
+        TestVPCServiceControlV3._do_test(delayed_inside, delayed_outside)
+
+    @pytest.mark.skipif(
+        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_ID"
+    )
+    @pytest.mark.skipif(
+        PROJECT_OUTSIDE is None,
+        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT",
+    )
+    def test_list_notification_channels(self):
+        client = monitoring_v3.NotificationChannelServiceClient()
+        name_inside = client.project_path(PROJECT_INSIDE)
+        delayed_inside = lambda: client.list_notification_channels(name_inside)
+        name_outside = client.project_path(PROJECT_OUTSIDE)
+        delayed_outside = lambda: client.list_notification_channels(name_outside)
+        TestVPCServiceControlV3._do_test(delayed_inside, delayed_outside)
+
+    @pytest.mark.skipif(
+        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_ID"
+    )
+    @pytest.mark.skipif(
+        PROJECT_OUTSIDE is None,
+        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT",
+    )
+    def test_update_notification_channel(self):
+        client = monitoring_v3.NotificationChannelServiceClient()
+        name_inside = client.notification_channel_path(
+            PROJECT_INSIDE, "mock_notification_channel"
+        )
+        delayed_inside = lambda: client.update_notification_channel(
+            {"name": name_inside}
+        )
+        name_outside = client.notification_channel_path(
+            PROJECT_OUTSIDE, "mock_notification_channel"
+        )
+        delayed_outside = lambda: client.update_notification_channel(
+            {"name": name_outside}
         )
         TestVPCServiceControlV3._do_test(delayed_inside, delayed_outside)
