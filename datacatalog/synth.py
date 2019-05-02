@@ -45,6 +45,7 @@ s.move(
         'google/cloud/datacatalog_v1beta1/__init__.py',
         'README.rst',
         'nox*.py',
+        'samples/google/cloud/datacatalog_v1beta1/gapic/lookup_entry/*.py',
         'setup.py',
         'setup.cfg',
     ],
