@@ -33,6 +33,11 @@ library = gapic.py_library(
 )
 
 s.move(
+    'samples/google/cloud/datacatalog_v1beta1/gapic/lookup_entry/*.py',
+    destination='samples/'
+)
+
+s.move(
     library,
     excludes=[
         'docs/conf.py',
