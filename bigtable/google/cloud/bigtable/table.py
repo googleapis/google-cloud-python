@@ -674,13 +674,14 @@ class _RetryableMutateRowsWorker(object):
     def __init__(self, client, table_name, batches, app_profile_id=None, timeout=None):
         self.client = client
         self.table_name = table_name
-        self.batches = dict([(index,batch) for index, batch in enumerate(self.batches)])
+        self.batches = dict([(index,batch) for index, batch in enumerate(batches)])
         self.app_profile_id = app_profile_id
-        self.responses_statuses = dict([(index,[None] * len(batch)) for index, batch in enumerate(self.batches)])
+        self.responses_statuses = dict([(index,[None] * len(batch)) for index, batch in enumerate(batches)])
         self.timeout = timeout
         self.latest_executing_batch_index = 0
         self.no_of_batches = len(batches)
         self.is_operation_completed = False
+        self._lock = threading.Lock()
 
     def __call__(self, retry=DEFAULT_RETRY):
         """Attempt to mutate all rows and retry rows with transient errors.
@@ -694,24 +695,24 @@ class _RetryableMutateRowsWorker(object):
                   sent. These will be in the same order as the ``rows``.
         """
         max_thread_to_start = min(self.no_of_batches, _MAX_THREAD_LIMIT)
-        lock = threading.Lock()
+
         thread_list = []
         for _ in range(max_thread_to_start):
-            thread = threading.Thread(target=self.thread_func, args=(lock, retry,))
+            thread = threading.Thread(target=self.thread_func, args=(retry,))
             thread.start()
             thread_list.append(thread)
         for thread in thread_list:
             thread.join()
         return self.responses_statuses
 
-    def thread_func(self,lock ,retry=DEFAULT_RETRY):
+    def thread_func(self, retry=DEFAULT_RETRY):
         while not self.is_operation_completed:
-            lock.acquire()
+            self._lock.acquire()
             current_batch_index = self.latest_executing_batch_index
             self.latest_executing_batch_index += 1
             if self.latest_executing_batch_index >= self.no_of_batches:
                 self.is_operation_completed = False
-            lock.release()
+            self._lock.release()
             mutate_rows = self._do_mutate_retryable_rows
             if retry:
                 mutate_rows = retry(self._do_mutate_retryable_rows)
@@ -792,8 +793,10 @@ class _RetryableMutateRowsWorker(object):
                 if entry.status.code == 0:
                     batch[index].clear()
 
+        self._lock.acquire()
         self.responses_statuses[batch_index] = responses_statuses
         self.batches[batch_index] = batch
+        self._lock.release()
 
         if len(retryable_rows) != num_responses:
             raise RuntimeError(
