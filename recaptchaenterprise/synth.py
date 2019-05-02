@@ -71,6 +71,12 @@ s.replace(
     "recaptcha_enterprise_service_grpc_transport")
 
 
+# Rename package to google-cloud-recaptcha-enterprise
+s.replace(
+    "google/cloud/**/*.py",
+    "google-cloud-recaptchaenterprise",
+    "google-cloud-recaptcha-enterprise")
+
 # Fix docstring issue for classes with no summary line
 s.replace(
     "google/cloud/**/proto/recaptchaenterprise_pb2.py",

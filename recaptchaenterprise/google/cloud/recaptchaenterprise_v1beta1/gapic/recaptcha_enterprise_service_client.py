@@ -38,7 +38,7 @@ from google.cloud.recaptchaenterprise_v1beta1.proto import recaptchaenterprise_p
 from google.cloud.recaptchaenterprise_v1beta1.proto import recaptchaenterprise_pb2_grpc
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
-    "google-cloud-recaptchaenterprise"
+    "google-cloud-recaptcha-enterprise"
 ).version
 
 
