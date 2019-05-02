@@ -75,9 +75,15 @@ class TestConnection(unittest.TestCase):
         self.assertEqual(conn._client_info.user_agent, user_agent)
 
     def test_extra_headers_all_caps_getter_deprecated(self):
+        from google.cloud._http import CLIENT_INFO_HEADER
+
         client = object()
         conn = self._make_one(client)
-        expected = conn._extra_headers = {"foo": "bar"}
+        conn._extra_headers = {"foo": "bar"}
+        expected = {
+            CLIENT_INFO_HEADER: conn._client_info.to_user_agent(),
+            "foo": "bar",
+        }
 
         with mock.patch.object(warnings, "warn", autospec=True) as warn:
             self.assertEqual(conn._EXTRA_HEADERS, expected)
@@ -95,12 +101,21 @@ class TestConnection(unittest.TestCase):
         warn.assert_called_once_with(mock.ANY, DeprecationWarning, stacklevel=2)
 
     def test_extra_headers_getter_default(self):
+        from google.cloud._http import CLIENT_INFO_HEADER
+
         conn = self._make_one(object())
-        self.assertEqual(conn.extra_headers, {})
+        expected = {CLIENT_INFO_HEADER: conn._client_info.to_user_agent()}
+        self.assertEqual(conn.extra_headers, expected)
 
     def test_extra_headers_getter_overridden(self):
+        from google.cloud._http import CLIENT_INFO_HEADER
+
         conn = self._make_one(object())
-        expected = conn._extra_headers = {"foo": "bar"}
+        conn._extra_headers = {"foo": "bar"}
+        expected = {
+            CLIENT_INFO_HEADER: conn._client_info.to_user_agent(),
+            "foo": "bar",
+        }
         self.assertEqual(conn.extra_headers, expected)
 
     def test_extra_headers_setter(self):
@@ -192,6 +207,8 @@ class TestJSONConnection(unittest.TestCase):
         self.assertEqual(parms["qux"], ["quux", "corge"])
 
     def test__make_request_no_data_no_content_type_no_headers(self):
+        from google.cloud._http import CLIENT_INFO_HEADER
+
         http = make_requests_session([make_response()])
         client = mock.Mock(_http=http, spec=["_http"])
         conn = self._make_one(client)
@@ -202,12 +219,18 @@ class TestJSONConnection(unittest.TestCase):
         self.assertEqual(response.status_code, http_client.OK)
         self.assertEqual(response.content, b"")
 
-        expected_headers = {"Accept-Encoding": "gzip", "User-Agent": conn.user_agent}
+        expected_headers = {
+            "Accept-Encoding": "gzip",
+            "User-Agent": conn.user_agent,
+            CLIENT_INFO_HEADER: conn.user_agent,
+        }
         http.request.assert_called_once_with(
             method="GET", url=url, headers=expected_headers, data=None
         )
 
     def test__make_request_w_data_no_extra_headers(self):
+        from google.cloud._http import CLIENT_INFO_HEADER
+
         http = make_requests_session([make_response()])
         client = mock.Mock(_http=http, spec=["_http"])
         conn = self._make_one(client)
@@ -220,12 +243,15 @@ class TestJSONConnection(unittest.TestCase):
             "Accept-Encoding": "gzip",
             "Content-Type": "application/json",
             "User-Agent": conn.user_agent,
+            CLIENT_INFO_HEADER: conn.user_agent,
         }
         http.request.assert_called_once_with(
             method="GET", url=url, headers=expected_headers, data=data
         )
 
     def test__make_request_w_extra_headers(self):
+        from google.cloud._http import CLIENT_INFO_HEADER
+
         http = make_requests_session([make_response()])
         client = mock.Mock(_http=http, spec=["_http"])
         conn = self._make_one(client)
@@ -237,12 +263,15 @@ class TestJSONConnection(unittest.TestCase):
             "Accept-Encoding": "gzip",
             "X-Foo": "foo",
             "User-Agent": conn.user_agent,
+            CLIENT_INFO_HEADER: conn.user_agent,
         }
         http.request.assert_called_once_with(
             method="GET", url=url, headers=expected_headers, data=None
         )
 
     def test_api_request_defaults(self):
+        from google.cloud._http import CLIENT_INFO_HEADER
+
         http = make_requests_session(
             [make_response(content=b"{}", headers=self.JSON_HEADERS)]
         )
@@ -252,7 +281,11 @@ class TestJSONConnection(unittest.TestCase):
 
         self.assertEqual(conn.api_request("GET", path), {})
 
-        expected_headers = {"Accept-Encoding": "gzip", "User-Agent": conn.user_agent}
+        expected_headers = {
+            "Accept-Encoding": "gzip",
+            "User-Agent": conn.user_agent,
+            CLIENT_INFO_HEADER: conn.user_agent,
+        }
         expected_url = "{base}/mock/{version}{path}".format(
             base=conn.API_BASE_URL, version=conn.API_VERSION, path=path
         )
@@ -280,6 +313,7 @@ class TestJSONConnection(unittest.TestCase):
     def test_api_request_w_query_params(self):
         from six.moves.urllib.parse import parse_qs
         from six.moves.urllib.parse import urlsplit
+        from google.cloud._http import CLIENT_INFO_HEADER
 
         http = make_requests_session([self.EMPTY_JSON_RESPONSE])
         client = mock.Mock(_http=http, spec=["_http"])
@@ -289,7 +323,11 @@ class TestJSONConnection(unittest.TestCase):
 
         self.assertEqual(result, {})
 
-        expected_headers = {"Accept-Encoding": "gzip", "User-Agent": conn.user_agent}
+        expected_headers = {
+            "Accept-Encoding": "gzip",
+            "User-Agent": conn.user_agent,
+            CLIENT_INFO_HEADER: conn.user_agent,
+        }
         http.request.assert_called_once_with(
             method="GET", url=mock.ANY, headers=expected_headers, data=None
         )
@@ -305,6 +343,8 @@ class TestJSONConnection(unittest.TestCase):
         self.assertEqual(parms["baz"], ["qux", "quux"])
 
     def test_api_request_w_headers(self):
+        from google.cloud._http import CLIENT_INFO_HEADER
+
         http = make_requests_session([self.EMPTY_JSON_RESPONSE])
         client = mock.Mock(_http=http, spec=["_http"])
         conn = self._make_mock_one(client)
@@ -316,12 +356,15 @@ class TestJSONConnection(unittest.TestCase):
             "Accept-Encoding": "gzip",
             "User-Agent": conn.user_agent,
             "X-Foo": "bar",
+            CLIENT_INFO_HEADER: conn.user_agent,
         }
         http.request.assert_called_once_with(
             method="GET", url=mock.ANY, headers=expected_headers, data=None
         )
 
     def test_api_request_w_extra_headers(self):
+        from google.cloud._http import CLIENT_INFO_HEADER
+
         http = make_requests_session([self.EMPTY_JSON_RESPONSE])
         client = mock.Mock(_http=http, spec=["_http"])
         conn = self._make_mock_one(client)
@@ -339,12 +382,15 @@ class TestJSONConnection(unittest.TestCase):
             "User-Agent": conn.user_agent,
             "X-Foo": "not-bar",  # The one passed-in is overridden.
             "X-Baz": "dax-quux",
+            CLIENT_INFO_HEADER: conn.user_agent,
         }
         http.request.assert_called_once_with(
             method="GET", url=mock.ANY, headers=expected_headers, data=None
         )
 
     def test_api_request_w_data(self):
+        from google.cloud._http import CLIENT_INFO_HEADER
+
         http = make_requests_session([self.EMPTY_JSON_RESPONSE])
         client = mock.Mock(_http=http, spec=["_http"])
         conn = self._make_mock_one(client)
@@ -358,6 +404,7 @@ class TestJSONConnection(unittest.TestCase):
             "Accept-Encoding": "gzip",
             "Content-Type": "application/json",
             "User-Agent": conn.user_agent,
+            CLIENT_INFO_HEADER: conn.user_agent,
         }
 
         http.request.assert_called_once_with(

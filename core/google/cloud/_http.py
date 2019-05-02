@@ -122,7 +122,9 @@ class Connection(object):
         :rtype: dict
         :returns: header keys / values
         """
-        return self._extra_headers or {}
+        result = self._extra_headers.copy() if self._extra_headers else {}
+        result[CLIENT_INFO_HEADER] = self.user_agent
+        return result
 
     @extra_headers.setter
     def extra_headers(self, value):
