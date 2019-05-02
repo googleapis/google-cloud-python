@@ -14,6 +14,7 @@
 
 import json
 import unittest
+import warnings
 
 import mock
 import requests
@@ -35,6 +36,81 @@ class TestConnection(unittest.TestCase):
         conn = self._make_one(client)
         self.assertIs(conn._client, client)
 
+    def test_user_agent_all_caps_getter_deprecated(self):
+        client = object()
+        conn = self._make_one(client)
+        conn._user_agent = user_agent = 'testing'
+
+        with mock.patch.object(warnings, "warn", autospec=True) as warn:
+            self.assertEqual(conn.USER_AGENT, user_agent)
+
+        warn.assert_called_once_with(mock.ANY, DeprecationWarning, stacklevel=2)
+
+    def test_user_agent_all_caps_setter_deprecated(self):
+        conn = self._make_one(object())
+        user_agent = 'testing'
+
+        with mock.patch.object(warnings, "warn", autospec=True) as warn:
+            conn.USER_AGENT = user_agent
+
+        self.assertEqual(conn._user_agent, user_agent)
+        warn.assert_called_once_with(mock.ANY, DeprecationWarning, stacklevel=2)
+
+    def test_user_agent_getter_default(self):
+        from pkg_resources import get_distribution
+
+        expected = "gcloud-python/{0}".format(
+            get_distribution("google-cloud-core").version
+        )
+        conn = self._make_one(object())
+        self.assertEqual(conn.user_agent, expected)
+
+    def test_user_agent_getter_overridden(self):
+        conn = self._make_one(object())
+        expected = conn._user_agent = "testing"
+        self.assertEqual(conn.user_agent, expected)
+
+    def test_user_agent_setter(self):
+        conn = self._make_one(object())
+        expected = "testing"
+        conn.user_agent = expected
+        self.assertEqual(conn._user_agent, expected)
+
+    def test_extra_headers_all_caps_getter_deprecated(self):
+        client = object()
+        conn = self._make_one(client)
+        expected = conn._extra_headers = {"foo": "bar"}
+
+        with mock.patch.object(warnings, "warn", autospec=True) as warn:
+            self.assertEqual(conn._EXTRA_HEADERS, expected)
+
+        warn.assert_called_once_with(mock.ANY, DeprecationWarning, stacklevel=2)
+
+    def test_extra_headers_all_caps_setter_deprecated(self):
+        conn = self._make_one(object())
+        extra_headers = {"foo": "bar"}
+
+        with mock.patch.object(warnings, "warn", autospec=True) as warn:
+            conn._EXTRA_HEADERS = extra_headers
+
+        self.assertEqual(conn._extra_headers, extra_headers)
+        warn.assert_called_once_with(mock.ANY, DeprecationWarning, stacklevel=2)
+
+    def test_extra_headers_getter_default(self):
+        conn = self._make_one(object())
+        self.assertEqual(conn.extra_headers, {})
+
+    def test_extra_headers_getter_overridden(self):
+        conn = self._make_one(object())
+        expected = conn._extra_headers = {"foo": "bar"}
+        self.assertEqual(conn.extra_headers, expected)
+
+    def test_extra_headers_setter(self):
+        conn = self._make_one(object())
+        expected = {"foo": "bar"}
+        conn.extra_headers = expected
+        self.assertEqual(conn._extra_headers, expected)
+
     def test_credentials_property(self):
         client = mock.Mock(spec=["_credentials"])
         conn = self._make_one(client)
@@ -44,15 +120,6 @@ class TestConnection(unittest.TestCase):
         client = mock.Mock(spec=["_http"])
         conn = self._make_one(client)
         self.assertIs(conn.http, client._http)
-
-    def test_user_agent_format(self):
-        from pkg_resources import get_distribution
-
-        expected_ua = "gcloud-python/{0}".format(
-            get_distribution("google-cloud-core").version
-        )
-        conn = self._make_one(object())
-        self.assertEqual(conn.USER_AGENT, expected_ua)
 
 
 def make_response(status=http_client.OK, content=b"", headers={}):
@@ -137,7 +204,7 @@ class TestJSONConnection(unittest.TestCase):
         self.assertEqual(response.status_code, http_client.OK)
         self.assertEqual(response.content, b"")
 
-        expected_headers = {"Accept-Encoding": "gzip", "User-Agent": conn.USER_AGENT}
+        expected_headers = {"Accept-Encoding": "gzip", "User-Agent": conn.user_agent}
         http.request.assert_called_once_with(
             method="GET", url=url, headers=expected_headers, data=None
         )
@@ -154,7 +221,7 @@ class TestJSONConnection(unittest.TestCase):
         expected_headers = {
             "Accept-Encoding": "gzip",
             "Content-Type": "application/json",
-            "User-Agent": conn.USER_AGENT,
+            "User-Agent": conn.user_agent,
         }
         http.request.assert_called_once_with(
             method="GET", url=url, headers=expected_headers, data=data
@@ -171,7 +238,7 @@ class TestJSONConnection(unittest.TestCase):
         expected_headers = {
             "Accept-Encoding": "gzip",
             "X-Foo": "foo",
-            "User-Agent": conn.USER_AGENT,
+            "User-Agent": conn.user_agent,
         }
         http.request.assert_called_once_with(
             method="GET", url=url, headers=expected_headers, data=None
@@ -187,7 +254,7 @@ class TestJSONConnection(unittest.TestCase):
 
         self.assertEqual(conn.api_request("GET", path), {})
 
-        expected_headers = {"Accept-Encoding": "gzip", "User-Agent": conn.USER_AGENT}
+        expected_headers = {"Accept-Encoding": "gzip", "User-Agent": conn.user_agent}
         expected_url = "{base}/mock/{version}{path}".format(
             base=conn.API_BASE_URL, version=conn.API_VERSION, path=path
         )
@@ -224,7 +291,7 @@ class TestJSONConnection(unittest.TestCase):
 
         self.assertEqual(result, {})
 
-        expected_headers = {"Accept-Encoding": "gzip", "User-Agent": conn.USER_AGENT}
+        expected_headers = {"Accept-Encoding": "gzip", "User-Agent": conn.user_agent}
         http.request.assert_called_once_with(
             method="GET", url=mock.ANY, headers=expected_headers, data=None
         )
@@ -249,7 +316,7 @@ class TestJSONConnection(unittest.TestCase):
 
         expected_headers = {
             "Accept-Encoding": "gzip",
-            "User-Agent": conn.USER_AGENT,
+            "User-Agent": conn.user_agent,
             "X-Foo": "bar",
         }
         http.request.assert_called_once_with(
@@ -260,7 +327,7 @@ class TestJSONConnection(unittest.TestCase):
         http = make_requests_session([self.EMPTY_JSON_RESPONSE])
         client = mock.Mock(_http=http, spec=["_http"])
         conn = self._make_mock_one(client)
-        conn._EXTRA_HEADERS = {
+        conn.extra_headers = {
             "X-Baz": "dax-quux",
             "X-Foo": "not-bar",  # Collision with ``headers``.
         }
@@ -271,7 +338,7 @@ class TestJSONConnection(unittest.TestCase):
 
         expected_headers = {
             "Accept-Encoding": "gzip",
-            "User-Agent": conn.USER_AGENT,
+            "User-Agent": conn.user_agent,
             "X-Foo": "not-bar",  # The one passed-in is overridden.
             "X-Baz": "dax-quux",
         }
@@ -292,7 +359,7 @@ class TestJSONConnection(unittest.TestCase):
         expected_headers = {
             "Accept-Encoding": "gzip",
             "Content-Type": "application/json",
-            "User-Agent": conn.USER_AGENT,
+            "User-Agent": conn.user_agent,
         }
 
         http.request.assert_called_once_with(
