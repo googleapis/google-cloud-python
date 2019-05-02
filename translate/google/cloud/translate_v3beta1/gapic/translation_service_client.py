@@ -76,15 +76,6 @@ class TranslationServiceClient(object):
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def location_path(cls, project, location):
-        """Return a fully-qualified location string."""
-        return google.api_core.path_template.expand(
-            "projects/{project}/locations/{location}",
-            project=project,
-            location=location,
-        )
-
-    @classmethod
     def glossary_path(cls, project, location, glossary):
         """Return a fully-qualified glossary string."""
         return google.api_core.path_template.expand(
@@ -92,6 +83,15 @@ class TranslationServiceClient(object):
             project=project,
             location=location,
             glossary=glossary,
+        )
+
+    @classmethod
+    def location_path(cls, project, location):
+        """Return a fully-qualified location string."""
+        return google.api_core.path_template.expand(
+            "projects/{project}/locations/{location}",
+            project=project,
+            location=location,
         )
 
     def __init__(

@@ -1,4 +1,4 @@
-.. include:: /../videointelligence/README.rst
+.. include:: README.rst
 
 API Reference
 -------------

@@ -14,6 +14,7 @@ grpcio-gcp >= 0.2.2
 -e bigquery_storage/
 -e bigtable/
 -e container/
+-e datacatalog/
 -e datalabeling/
 -e dataproc/
 -e datastore/
@@ -44,4 +45,5 @@ grpcio-gcp >= 0.2.2
 -e translate/
 -e videointelligence/
 -e vision/
+-e webrisk/
 -e websecurityscanner/

@@ -130,6 +130,21 @@ class TestClient(unittest.TestCase):
         self.assertIs(collection2._client, client)
         self.assertIsInstance(collection2, CollectionReference)
 
+    def test_collection_group(self):
+        client = self._make_default_one()
+        query = client.collection_group("collectionId").where("foo", "==", u"bar")
+
+        assert query._all_descendants
+        assert query._field_filters[0].field.field_path == "foo"
+        assert query._field_filters[0].value.string_value == u"bar"
+        assert query._field_filters[0].op == query._field_filters[0].EQUAL
+        assert query._parent.id == "collectionId"
+
+    def test_collection_group_no_slashes(self):
+        client = self._make_default_one()
+        with self.assertRaises(ValueError):
+            client.collection_group("foo/bar")
+
     def test_document_factory(self):
         from google.cloud.firestore_v1.document import DocumentReference
 
@@ -148,7 +163,20 @@ class TestClient(unittest.TestCase):
         self.assertIs(document2._client, client)
         self.assertIsInstance(document2, DocumentReference)
 
-    def test_document_factory_nested(self):
+    def test_document_factory_w_absolute_path(self):
+        from google.cloud.firestore_v1.document import DocumentReference
+
+        parts = ("rooms", "roomA")
+        client = self._make_default_one()
+        doc_path = "/".join(parts)
+        to_match = client.document(doc_path)
+        document1 = client.document(to_match._document_path)
+
+        self.assertEqual(document1._path, parts)
+        self.assertIs(document1._client, client)
+        self.assertIsInstance(document1, DocumentReference)
+
+    def test_document_factory_w_nested_path(self):
         from google.cloud.firestore_v1.document import DocumentReference
 
         client = self._make_default_one()

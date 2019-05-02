@@ -222,6 +222,13 @@ s.replace(
 
 s.replace(
     "google/cloud/dlp_v2/proto/dlp_pb2.py",
+    r'''(\s+)__doc__ = """Attributes:''',
+    r'\g<1>__doc="""\n    Attributes:'
+)
+
+
+s.replace(
+    "google/cloud/dlp_v2/proto/dlp_pb2.py",
     "(////////.*)\n\s+(///////////////\n)",
     "\g<1> \g<2>",
 )

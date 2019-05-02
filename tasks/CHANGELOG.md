@@ -4,6 +4,27 @@
 
 [1]: https://pypi.org/project/google-cloud-tasks/#history
 
+## 1.0.0
+
+04-29-2019 16:35 PDT
+
+### Documentation
+- Correct docs/index.rst. ([#7808](https://github.com/googleapis/google-cloud-python/pull/7808))
+
+### Internal / Testing Changes
+- Add smoke test. ([#7808](https://github.com/googleapis/google-cloud-python/pull/7808))
+
+## 0.7.0
+
+04-15-2019 10:21 PDT
+
+
+### New Features
+- Add auth and stackdriver logging configuration (via synth). ([#7666](https://github.com/googleapis/google-cloud-python/pull/7666))
+
+### Documentation
+- Tasks: Format docstrings for enums (via synth). ([#7601](https://github.com/googleapis/google-cloud-python/pull/7601))
+
 ## 0.6.0
 
 03-26-2019 13:35 PDT

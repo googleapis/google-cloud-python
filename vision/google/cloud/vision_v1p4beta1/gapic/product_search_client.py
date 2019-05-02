@@ -98,16 +98,6 @@ class ProductSearchClient(object):
         )
 
     @classmethod
-    def product_set_path(cls, project, location, product_set):
-        """Return a fully-qualified product_set string."""
-        return google.api_core.path_template.expand(
-            "projects/{project}/locations/{location}/productSets/{product_set}",
-            project=project,
-            location=location,
-            product_set=product_set,
-        )
-
-    @classmethod
     def product_path(cls, project, location, product):
         """Return a fully-qualified product string."""
         return google.api_core.path_template.expand(
@@ -115,6 +105,16 @@ class ProductSearchClient(object):
             project=project,
             location=location,
             product=product,
+        )
+
+    @classmethod
+    def product_set_path(cls, project, location, product_set):
+        """Return a fully-qualified product_set string."""
+        return google.api_core.path_template.expand(
+            "projects/{project}/locations/{location}/productSets/{product_set}",
+            project=project,
+            location=location,
+            product_set=product_set,
         )
 
     @classmethod

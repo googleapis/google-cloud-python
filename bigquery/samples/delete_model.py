@@ -26,6 +26,5 @@ def delete_model(client, model_id):
     # model_id = 'your-project.your_dataset.your_model'
 
     client.delete_model(model_id)
-    # [END bigquery_delete_model]
-
     print("Deleted model '{}'.".format(model_id))
+    # [END bigquery_delete_model]

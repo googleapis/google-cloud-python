@@ -357,9 +357,11 @@ class TraceServiceClient(object):
             project_id (str): ID of the Cloud project where the trace data is stored.
             view (~google.cloud.trace_v1.types.ViewType): Type of data returned for traces in the list. Optional. Default is
                 ``MINIMAL``.
-            page_size (int): Maximum number of traces to return. If not specified or <= 0, the
-                implementation selects a reasonable value.  The implementation may
-                return fewer traces than the requested page size. Optional.
+            page_size (int): The maximum number of resources contained in the
+                underlying API response. If page streaming is performed per-
+                resource, this parameter does not affect the return value. If page
+                streaming is performed per-page, this determines the maximum number
+                of resources in a page.
             start_time (Union[dict, ~google.cloud.trace_v1.types.Timestamp]): Start of the time interval (inclusive) during which the trace data was
                 collected from the application.
 

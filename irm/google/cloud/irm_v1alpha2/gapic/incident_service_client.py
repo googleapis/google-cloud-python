@@ -72,22 +72,6 @@ class IncidentServiceClient(object):
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def project_path(cls, project):
-        """Return a fully-qualified project string."""
-        return google.api_core.path_template.expand(
-            "projects/{project}", project=project
-        )
-
-    @classmethod
-    def incident_path(cls, project, incident):
-        """Return a fully-qualified incident string."""
-        return google.api_core.path_template.expand(
-            "projects/{project}/incidents/{incident}",
-            project=project,
-            incident=incident,
-        )
-
-    @classmethod
     def annotation_path(cls, project, incident, annotation):
         """Return a fully-qualified annotation string."""
         return google.api_core.path_template.expand(
@@ -108,6 +92,22 @@ class IncidentServiceClient(object):
         )
 
     @classmethod
+    def incident_path(cls, project, incident):
+        """Return a fully-qualified incident string."""
+        return google.api_core.path_template.expand(
+            "projects/{project}/incidents/{incident}",
+            project=project,
+            incident=incident,
+        )
+
+    @classmethod
+    def project_path(cls, project):
+        """Return a fully-qualified project string."""
+        return google.api_core.path_template.expand(
+            "projects/{project}", project=project
+        )
+
+    @classmethod
     def role_assignment_path(cls, project, incident, role_assignment):
         """Return a fully-qualified role_assignment string."""
         return google.api_core.path_template.expand(
@@ -115,6 +115,13 @@ class IncidentServiceClient(object):
             project=project,
             incident=incident,
             role_assignment=role_assignment,
+        )
+
+    @classmethod
+    def signal_path(cls, project, signal):
+        """Return a fully-qualified signal string."""
+        return google.api_core.path_template.expand(
+            "projects/{project}/signals/{signal}", project=project, signal=signal
         )
 
     @classmethod
@@ -135,13 +142,6 @@ class IncidentServiceClient(object):
             project=project,
             incident=incident,
             tag=tag,
-        )
-
-    @classmethod
-    def signal_path(cls, project, signal):
-        """Return a fully-qualified signal string."""
-        return google.api_core.path_template.expand(
-            "projects/{project}/signals/{signal}", project=project, signal=signal
         )
 
     def __init__(

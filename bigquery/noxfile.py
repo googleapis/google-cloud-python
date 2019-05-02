@@ -20,13 +20,7 @@ import shutil
 import nox
 
 
-LOCAL_DEPS = (
-    os.path.join("..", "api_core[grpc]"),
-    os.path.join("..", "core"),
-    # TODO: Move bigquery_storage back to dev_install once dtypes feature is
-    #       released. Issue #7049
-    os.path.join("..", "bigquery_storage[pandas,fastavro]"),
-)
+LOCAL_DEPS = (os.path.join("..", "api_core[grpc]"), os.path.join("..", "core"))
 
 BLACK_PATHS = ("docs", "google", "samples", "tests", "noxfile.py", "setup.py")
 
@@ -45,10 +39,7 @@ def default(session):
         session.install("-e", local_dep)
 
     # Pyarrow does not support Python 3.7
-    if session.python == "3.7":
-        dev_install = ".[pandas, tqdm]"
-    else:
-        dev_install = ".[pandas, pyarrow, tqdm]"
+    dev_install = ".[all]"
     session.install("-e", dev_install)
 
     # IPython does not support Python 2 after version 5.x
@@ -95,7 +86,7 @@ def system(session):
         session.install("-e", local_dep)
     session.install("-e", os.path.join("..", "storage"))
     session.install("-e", os.path.join("..", "test_utils"))
-    session.install("-e", ".[pandas]")
+    session.install("-e", ".[all]")
 
     # IPython does not support Python 2 after version 5.x
     if session.python == "2.7":
@@ -123,7 +114,7 @@ def snippets(session):
         session.install("-e", local_dep)
     session.install("-e", os.path.join("..", "storage"))
     session.install("-e", os.path.join("..", "test_utils"))
-    session.install("-e", ".[pandas, pyarrow, fastparquet]")
+    session.install("-e", ".[all]")
 
     # Run py.test against the snippets tests.
     session.run("py.test", os.path.join("docs", "snippets.py"), *session.posargs)
@@ -183,7 +174,7 @@ def docs(session):
     for local_dep in LOCAL_DEPS:
         session.install("-e", local_dep)
     session.install("-e", os.path.join("..", "storage"))
-    session.install("-e", ".[pandas, pyarrow]")
+    session.install("-e", ".[all]")
 
     shutil.rmtree(os.path.join("docs", "_build"), ignore_errors=True)
     session.run(
