@@ -72,21 +72,59 @@ class FirestoreModel:
         class Query(object):
             def __init__(self, model, _offset, _limit):
                 self.__collection = Client().collection(model.__name__)
-                self.offset = _offset
-                self.limit = _limit
-                self.cursor = 0
-                self.__fetch_pos = 0
+                self.__offset = _offset
+                self.__limit = _limit
+                self.__cursor = 0
+                self.__fetched = False
+                self.__model = model
 
-            def where(self, field, value, operand="=="):
-                self.__collection.filter(field, operand, value)
+            def equal(self, field, value):
+                self.__collection.filter(field, "==", value)
                 return self
 
+            def greater_than(self, field, value):
+                self.__collection.filter(field, ">", value)
+
+            def less_than(self, field, value):
+                self.__collection.filter(field, "<", value)
+
+            def greater_than_or_equal(self, field, value):
+                self.__collection.filter(field, ">=", value)
+
+            def less_than_or_equal(self, field, value):
+                self.__collection.filter(field, "<=", value)
+
+            def contains(self, field, value):
+                model_field = getattr(self.__model, field)
+                if not isinstance(model_field, ListField):
+                    raise MalformedQueryError("Invalid field %s, query field for contains must be a list" % field)
+                self.__collection.filter(field, "array_contains", value)
+                return self
+
+            def order(self, field):
+                self.__collection.order(field)
+
             def __fetch(self):
-                # Only keep 100 a maximum of 100 records in memory all the time
-                self.__collection.query()
+                self.__docs = self.__collection.get()
+                self.__fetched = True
 
             def __iter__(self):
-                self.cursor += 1
+                return self
+
+            def fetch(self):
+                if not self.__fetched:
+                    self.fetch()
+                return [model for model in self]
+
+            def __next__(self):
+                if not self.__fetched:
+                    self.__fetch()
+
+                if not self.__docs:
+                    raise StopIteration
+                doc = self.__docs[self.__cursor]
+                self.__cursor += 1
+                return self.__model(id=doc.id, **doc.to_dict())
 
         return Query(cls, offset, limit)
 
@@ -129,5 +167,13 @@ class InvalidValueError(Exception):
         self.value = value
 
     def __str__(self):
-        return "%s is not a valid value for field %s of type %s" %\
+        return "InvalidValueError %s is not a valid value for field %s of type %s" %\
             (self.value, self.field.name, self.field.type)
+
+
+class MalformedQueryError(Exception):
+    def __init__(self, message):
+        self.message = message
+
+    def __str__(self):
+        return "MalformedQueryError %s" % self.message
