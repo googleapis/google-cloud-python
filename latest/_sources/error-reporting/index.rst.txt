@@ -1,4 +1,4 @@
-.. include:: /../error_reporting/README.rst
+.. include:: README.rst
 
 Usage Documentation
 -------------------

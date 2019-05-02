@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.dlp_v2.gapic.dlp_service_client &#8212; google-cloud 6f78228 documentation</title>
+    <title>google.cloud.dlp_v2.gapic.dlp_service_client &#8212; google-cloud d1a5391 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -117,6 +117,13 @@
 
     <span class="n">from_service_account_json</span> <span class="o">=</span> <span class="n">from_service_account_file</span>
 
+<div class="viewcode-block" id="DlpServiceClient.dlp_job_path"><a class="viewcode-back" href="../../../../../dlp/gapic/v2/api.html#google.cloud.dlp_v2.DlpServiceClient.dlp_job_path">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">dlp_job_path</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">project</span><span class="p">,</span> <span class="n">dlp_job</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return a fully-qualified dlp_job string.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">path_template</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span>
+            <span class="s2">&quot;projects/</span><span class="si">{project}</span><span class="s2">/dlpJobs/</span><span class="si">{dlp_job}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span> <span class="n">dlp_job</span><span class="o">=</span><span class="n">dlp_job</span>
+        <span class="p">)</span></div>
+
 <div class="viewcode-block" id="DlpServiceClient.organization_path"><a class="viewcode-back" href="../../../../../dlp/gapic/v2/api.html#google.cloud.dlp_v2.DlpServiceClient.organization_path">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">organization_path</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">organization</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return a fully-qualified organization string.&quot;&quot;&quot;</span>
@@ -133,15 +140,6 @@
             <span class="n">deidentify_template</span><span class="o">=</span><span class="n">deidentify_template</span><span class="p">,</span>
         <span class="p">)</span></div>
 
-<div class="viewcode-block" id="DlpServiceClient.project_deidentify_template_path"><a class="viewcode-back" href="../../../../../dlp/gapic/v2/api.html#google.cloud.dlp_v2.DlpServiceClient.project_deidentify_template_path">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">project_deidentify_template_path</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">project</span><span class="p">,</span> <span class="n">deidentify_template</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Return a fully-qualified project_deidentify_template string.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">path_template</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span>
-            <span class="s2">&quot;projects/</span><span class="si">{project}</span><span class="s2">/deidentifyTemplates/</span><span class="si">{deidentify_template}</span><span class="s2">&quot;</span><span class="p">,</span>
-            <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span>
-            <span class="n">deidentify_template</span><span class="o">=</span><span class="n">deidentify_template</span><span class="p">,</span>
-        <span class="p">)</span></div>
-
 <div class="viewcode-block" id="DlpServiceClient.organization_inspect_template_path"><a class="viewcode-back" href="../../../../../dlp/gapic/v2/api.html#google.cloud.dlp_v2.DlpServiceClient.organization_inspect_template_path">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">organization_inspect_template_path</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">organization</span><span class="p">,</span> <span class="n">inspect_template</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return a fully-qualified organization_inspect_template string.&quot;&quot;&quot;</span>
@@ -149,6 +147,31 @@
             <span class="s2">&quot;organizations/</span><span class="si">{organization}</span><span class="s2">/inspectTemplates/</span><span class="si">{inspect_template}</span><span class="s2">&quot;</span><span class="p">,</span>
             <span class="n">organization</span><span class="o">=</span><span class="n">organization</span><span class="p">,</span>
             <span class="n">inspect_template</span><span class="o">=</span><span class="n">inspect_template</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="DlpServiceClient.organization_stored_info_type_path"><a class="viewcode-back" href="../../../../../dlp/gapic/v2/api.html#google.cloud.dlp_v2.DlpServiceClient.organization_stored_info_type_path">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">organization_stored_info_type_path</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">organization</span><span class="p">,</span> <span class="n">stored_info_type</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return a fully-qualified organization_stored_info_type string.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">path_template</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span>
+            <span class="s2">&quot;organizations/</span><span class="si">{organization}</span><span class="s2">/storedInfoTypes/</span><span class="si">{stored_info_type}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="n">organization</span><span class="o">=</span><span class="n">organization</span><span class="p">,</span>
+            <span class="n">stored_info_type</span><span class="o">=</span><span class="n">stored_info_type</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="DlpServiceClient.project_path"><a class="viewcode-back" href="../../../../../dlp/gapic/v2/api.html#google.cloud.dlp_v2.DlpServiceClient.project_path">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">project_path</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">project</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return a fully-qualified project string.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">path_template</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span>
+            <span class="s2">&quot;projects/</span><span class="si">{project}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="n">project</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="DlpServiceClient.project_deidentify_template_path"><a class="viewcode-back" href="../../../../../dlp/gapic/v2/api.html#google.cloud.dlp_v2.DlpServiceClient.project_deidentify_template_path">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">project_deidentify_template_path</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">project</span><span class="p">,</span> <span class="n">deidentify_template</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return a fully-qualified project_deidentify_template string.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">path_template</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span>
+            <span class="s2">&quot;projects/</span><span class="si">{project}</span><span class="s2">/deidentifyTemplates/</span><span class="si">{deidentify_template}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span>
+            <span class="n">deidentify_template</span><span class="o">=</span><span class="n">deidentify_template</span><span class="p">,</span>
         <span class="p">)</span></div>
 
 <div class="viewcode-block" id="DlpServiceClient.project_inspect_template_path"><a class="viewcode-back" href="../../../../../dlp/gapic/v2/api.html#google.cloud.dlp_v2.DlpServiceClient.project_inspect_template_path">[docs]</a>    <span class="nd">@classmethod</span>
@@ -167,29 +190,6 @@
             <span class="s2">&quot;projects/</span><span class="si">{project}</span><span class="s2">/jobTriggers/</span><span class="si">{job_trigger}</span><span class="s2">&quot;</span><span class="p">,</span>
             <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span>
             <span class="n">job_trigger</span><span class="o">=</span><span class="n">job_trigger</span><span class="p">,</span>
-        <span class="p">)</span></div>
-
-<div class="viewcode-block" id="DlpServiceClient.project_path"><a class="viewcode-back" href="../../../../../dlp/gapic/v2/api.html#google.cloud.dlp_v2.DlpServiceClient.project_path">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">project_path</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">project</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Return a fully-qualified project string.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">path_template</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span>
-            <span class="s2">&quot;projects/</span><span class="si">{project}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="n">project</span>
-        <span class="p">)</span></div>
-
-<div class="viewcode-block" id="DlpServiceClient.dlp_job_path"><a class="viewcode-back" href="../../../../../dlp/gapic/v2/api.html#google.cloud.dlp_v2.DlpServiceClient.dlp_job_path">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">dlp_job_path</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">project</span><span class="p">,</span> <span class="n">dlp_job</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Return a fully-qualified dlp_job string.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">path_template</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span>
-            <span class="s2">&quot;projects/</span><span class="si">{project}</span><span class="s2">/dlpJobs/</span><span class="si">{dlp_job}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span> <span class="n">dlp_job</span><span class="o">=</span><span class="n">dlp_job</span>
-        <span class="p">)</span></div>
-
-<div class="viewcode-block" id="DlpServiceClient.organization_stored_info_type_path"><a class="viewcode-back" href="../../../../../dlp/gapic/v2/api.html#google.cloud.dlp_v2.DlpServiceClient.organization_stored_info_type_path">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">organization_stored_info_type_path</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">organization</span><span class="p">,</span> <span class="n">stored_info_type</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Return a fully-qualified organization_stored_info_type string.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">path_template</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span>
-            <span class="s2">&quot;organizations/</span><span class="si">{organization}</span><span class="s2">/storedInfoTypes/</span><span class="si">{stored_info_type}</span><span class="s2">&quot;</span><span class="p">,</span>
-            <span class="n">organization</span><span class="o">=</span><span class="n">organization</span><span class="p">,</span>
-            <span class="n">stored_info_type</span><span class="o">=</span><span class="n">stored_info_type</span><span class="p">,</span>
         <span class="p">)</span></div>
 
 <div class="viewcode-block" id="DlpServiceClient.project_stored_info_type_path"><a class="viewcode-back" href="../../../../../dlp/gapic/v2/api.html#google.cloud.dlp_v2.DlpServiceClient.project_stored_info_type_path">[docs]</a>    <span class="nd">@classmethod</span>
@@ -3043,7 +3043,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../../container/index.html">Container</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../datacatalog/index.html">Data Catalog</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../datalabeling/index.html">Data Labeling</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../../dlp/index.html">Data Loss Prevention</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../dlp/index.html">Api Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../dlp/index.html#changelog">Changelog</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../dataproc/index.html">Dataproc</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../datastore/index.html">Datastore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../dns/index.html">DNS</a></li>
@@ -3063,7 +3064,9 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../../websecurityscanner/index.html">Security Scanner</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../spanner/index.html">Spanner</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../speech/index.html">Speech</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../../error-reporting/index.html">Stackdriver Error Reporting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../error-reporting/index.html">Usage Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../error-reporting/index.html#api-reference">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../error-reporting/index.html#changelog">Changelog</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../irm/index.html">Stackdriver Incident Response &amp; Management</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../logging/index.html">Stackdriver Logging</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../monitoring/index.html">Stackdriver Monitoring</a></li>
