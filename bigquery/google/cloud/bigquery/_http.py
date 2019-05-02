@@ -14,7 +14,6 @@
 
 """Create / interact with Google BigQuery connections."""
 
-import google.api_core.gapic_v1.client_info
 from google.cloud import _http
 
 from google.cloud.bigquery import __version__
