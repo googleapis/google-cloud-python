@@ -48,42 +48,31 @@ class TestConnection(unittest.TestCase):
     def test_user_agent_all_caps_getter_deprecated(self):
         client = object()
         conn = self._make_one(client)
-        conn._user_agent = user_agent = 'testing'
 
         with mock.patch.object(warnings, "warn", autospec=True) as warn:
-            self.assertEqual(conn.USER_AGENT, user_agent)
+            self.assertEqual(conn.USER_AGENT, conn._client_info.to_user_agent())
 
         warn.assert_called_once_with(mock.ANY, DeprecationWarning, stacklevel=2)
 
     def test_user_agent_all_caps_setter_deprecated(self):
         conn = self._make_one(object())
-        user_agent = 'testing'
+        user_agent = "testing"
 
         with mock.patch.object(warnings, "warn", autospec=True) as warn:
             conn.USER_AGENT = user_agent
 
-        self.assertEqual(conn._user_agent, user_agent)
+        self.assertEqual(conn._client_info.user_agent, user_agent)
         warn.assert_called_once_with(mock.ANY, DeprecationWarning, stacklevel=2)
 
-    def test_user_agent_getter_default(self):
-        from pkg_resources import get_distribution
-
-        expected = "gcloud-python/{0}".format(
-            get_distribution("google-cloud-core").version
-        )
+    def test_user_agent_getter(self):
         conn = self._make_one(object())
-        self.assertEqual(conn.user_agent, expected)
-
-    def test_user_agent_getter_overridden(self):
-        conn = self._make_one(object())
-        expected = conn._user_agent = "testing"
-        self.assertEqual(conn.user_agent, expected)
+        self.assertEqual(conn.user_agent, conn._client_info.to_user_agent())
 
     def test_user_agent_setter(self):
         conn = self._make_one(object())
-        expected = "testing"
-        conn.user_agent = expected
-        self.assertEqual(conn._user_agent, expected)
+        user_agent = "testing"
+        conn.user_agent = user_agent
+        self.assertEqual(conn._client_info.user_agent, user_agent)
 
     def test_extra_headers_all_caps_getter_deprecated(self):
         client = object()

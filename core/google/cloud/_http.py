@@ -92,11 +92,11 @@ class Connection(object):
         :rtype: str
         :returns: user agent
         """
-        return self._user_agent
+        return self._client_info.to_user_agent()
 
     @user_agent.setter
     def user_agent(self, value):
-        self._user_agent = value
+        self._client_info.user_agent = value
 
     @property
     def _EXTRA_HEADERS(self):
