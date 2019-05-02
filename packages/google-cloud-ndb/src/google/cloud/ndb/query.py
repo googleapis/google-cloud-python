@@ -945,13 +945,15 @@ def _query_options(wrapped):
         in (parameter.POSITIONAL_ONLY, parameter.POSITIONAL_OR_KEYWORD)
         and name != "self"
     ]
-    assert not (positional and positional[0] == "self")
+
+    # Provide dummy values for positional args to avoid TypeError
+    dummy_args = [None for _ in positional]
 
     @functools.wraps(wrapped)
     def wrapper(self, *args, **kwargs):
         # Maybe we already did this (in the case of X calling X_async)
         if "_options" in kwargs:
-            return wrapped(self, _options=kwargs["_options"])
+            return wrapped(self, *dummy_args, _options=kwargs["_options"])
 
         # Transfer any positional args to keyword args, so they're all in the
         # same structure.
@@ -988,6 +990,12 @@ def _query_options(wrapped):
                     "Can't use 'transaction' with 'read_policy=ndb.EVENTUAL'"
                 )
 
+        # The 'page_size' arg for 'fetch_page' can just be translated to
+        # 'limit'
+        page_size = kwargs.pop("page_size", None)
+        if page_size:
+            kwargs["limit"] = page_size
+
         # Get arguments for QueryOptions attributes
         query_arguments = {
             name: self._option(name, kwargs.pop(name, None), options)
@@ -1002,7 +1010,7 @@ def _query_options(wrapped):
         client = context_module.get_context().client
         query_options = QueryOptions(client=client, **query_arguments)
 
-        return wrapped(self, _options=query_options)
+        return wrapped(self, *dummy_args, _options=query_options)
 
     return wrapper
 
@@ -1618,6 +1626,7 @@ class Query:
     @_query_options
     def iter(
         self,
+        *,
         keys_only=None,
         limit=None,
         projection=None,
@@ -1789,9 +1798,9 @@ class Query:
     @_query_options
     def get(
         self,
+        *,
         keys_only=None,
         projection=None,
-        offset=None,
         batch_size=None,
         prefetch_size=None,
         produce_cursors=False,
@@ -1814,9 +1823,6 @@ class Query:
             keys_only (bool): Return keys instead of entities.
             projection (list[str]): The fields to return as part of the query
                 results.
-            offset (int): Number of query results to skip.
-            limit (Optional[int]): Maximum number of query results to return.
-                If not specified, there is no limit.
             batch_size (Optional[int]): Number of results to fetch in a single
                 RPC call. Affects efficiency of queries only. Larger batch
                 sizes use more memory but make fewer RPC calls.
@@ -1849,6 +1855,7 @@ class Query:
     @_query_options
     def get_async(
         self,
+        *,
         keys_only=None,
         projection=None,
         offset=None,
@@ -1917,12 +1924,11 @@ class Query:
             the equivalent call to ``fetch`` is exaggerated, at best.
 
         Args:
-            keys_only (bool): Return keys instead of entities.
+            limit (Optional[int]): Maximum number of query results to return.
+                If not specified, there is no limit.
             projection (list[str]): The fields to return as part of the query
                 results.
             offset (int): Number of query results to skip.
-            limit (Optional[int]): Maximum number of query results to return.
-                If not specified, there is no limit.
             batch_size (Optional[int]): Number of results to fetch in a single
                 RPC call. Affects efficiency of queries only. Larger batch
                 sizes use more memory but make fewer RPC calls.
@@ -1991,14 +1997,13 @@ class Query:
 
         return count
 
+    @_query_options
     def fetch_page(
         self,
         page_size,
         *,
         keys_only=None,
-        limit=None,
         projection=None,
-        offset=None,
         batch_size=None,
         prefetch_size=None,
         produce_cursors=False,
@@ -2010,6 +2015,7 @@ class Query:
         read_policy=None,
         transaction=None,
         options=None,
+        _options=None,
     ):
         """Fetch a page of results.
 
@@ -2021,26 +2027,56 @@ class Query:
         and to reconstruct that cursor on a subsequent request using the
         `urlsafe` argument to :class:`Cursor`.
 
+        NOTE:
+            This method relies on cursors which are not available for queries
+            that inolve ``OR``, ``!=``, ``IN`` operators. This feature is not
+            available for those queries.
+
         Args:
             page_size (int): The number of results per page. At most, this many
-                results will be returned.
+            keys_only (bool): Return keys instead of entities.
+            projection (list[str]): The fields to return as part of the query
+                results.
+            batch_size (Optional[int]): Number of results to fetch in a single
+                RPC call. Affects efficiency of queries only. Larger batch
+                sizes use more memory but make fewer RPC calls.
+            prefetch_size (Optional[int]): Overrides batch size for first batch
+                returned.
+            produce_cursors (bool): Whether to generate cursors from query.
+            start_cursor: Starting point for search.
+            end_cursor: Endpoint point for search.
+            timeout (Optional[int]): Override the gRPC timeout, in seconds.
+            deadline (Optional[int]): DEPRECATED: Synonym for ``timeout``.
+            read_consistency: If not in a transaction, defaults to
+                ``ndb.EVENTUAL`` for potentially faster query results without
+                having to wait for Datastore to apply pending changes to all
+                returned records. Otherwise consistency with current
+                transaction is maintained.
+            read_policy: DEPRECATED: Synonym for ``read_consistency``.
+            transaction (bytes): Transaction ID to use for query. Results will
+                be consistent with Datastore state for that transaction.
+                Implies ``read_policy=ndb.STRONG``.
+            options (QueryOptions): DEPRECATED: An object containing options
+                values for some of these arguments.
+
+               results will be returned.
 
         Returns:
-            Tuple[list, bytes, bool]: A tuple `(results, cursor, more)` where
+            Tuple[list, Cursor, bool]: A tuple `(results, cursor, more)` where
                 `results` is a list of query results, `cursor` is a cursor
                 pointing just after the last result returned, and `more`
                 indicates whether there are (likely) more results after that.
         """
-        raise NotImplementedError
+        return self.fetch_page_async(None, _options=_options).result()
 
+    @tasklets.tasklet
+    @_query_options
     def fetch_page_async(
         self,
         page_size,
         *,
         keys_only=None,
-        limit=None,
         projection=None,
-        offset=None,
         batch_size=None,
         prefetch_size=None,
         produce_cursors=False,
@@ -2052,6 +2088,7 @@ class Query:
         read_policy=None,
         transaction=None,
         options=None,
+        _options=None,
     ):
         """Fetch a page of results.
 
@@ -2060,7 +2097,24 @@ class Query:
         Returns:
             tasklets.Future: See :meth:`Query.fetch_page` for eventual result.
         """
-        raise NotImplementedError
+        if _options.filters and _options.filters._multiquery:
+            raise TypeError(
+                "Can't use 'fetch_page' or 'fetch_page_async' with query that "
+                "uses 'OR', '!=', or 'IN'."
+            )
+
+        iterator = _datastore_query.iterate(_options, raw=True)
+        results = []
+        cursor = None
+        while (yield iterator.has_next_async()):
+            result = iterator.next()
+            results.append(result.entity())
+            cursor = result.cursor
+
+        more = (
+            iterator._more_results_after_limit or iterator.probably_has_next()
+        )
+        return results, cursor, more
 
 
 def gql(query_string, *args, **kwds):

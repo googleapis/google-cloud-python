@@ -1815,17 +1815,111 @@ class TestQuery:
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")
-    def test_fetch_page():
+    def test_fetch_page_multiquery():
         query = query_module.Query()
-        with pytest.raises(NotImplementedError):
-            query.fetch_page(None)
+        query.filters = unittest.mock.Mock(_multiquery=True)
+        with pytest.raises(TypeError):
+            query.fetch_page(5)
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")
-    def test_fetch_page_async():
+    @unittest.mock.patch("google.cloud.ndb.query._datastore_query")
+    def test_fetch_page_first_page(_datastore_query):
+        class DummyQueryIterator:
+            _more_results_after_limit = True
+
+            def __init__(self):
+                self.items = list(range(5))
+
+            def has_next_async(self):
+                return utils.future_result(bool(self.items))
+
+            def next(self):
+                item = self.items.pop(0)
+                return unittest.mock.Mock(
+                    entity=unittest.mock.Mock(return_value=item),
+                    cursor="cursor{}".format(item),
+                )
+
+        _datastore_query.iterate.return_value = DummyQueryIterator()
         query = query_module.Query()
-        with pytest.raises(NotImplementedError):
-            query.fetch_page_async(None)
+        results, cursor, more = query.fetch_page(5)
+        assert results == [0, 1, 2, 3, 4]
+        assert cursor == "cursor4"
+        assert more
+
+        _datastore_query.iterate.assert_called_once_with(
+            query_module.QueryOptions(project="testing", limit=5), raw=True
+        )
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    @unittest.mock.patch("google.cloud.ndb.query._datastore_query")
+    def test_fetch_page_last_page(_datastore_query):
+        class DummyQueryIterator:
+            _more_results_after_limit = False
+
+            def __init__(self):
+                self.items = list(range(5))
+
+            def has_next_async(self):
+                return utils.future_result(bool(self.items))
+
+            def probably_has_next(self):
+                return bool(self.items)
+
+            def next(self):
+                item = self.items.pop(0)
+                return unittest.mock.Mock(
+                    entity=unittest.mock.Mock(return_value=item),
+                    cursor="cursor{}".format(item),
+                )
+
+        _datastore_query.iterate.return_value = DummyQueryIterator()
+        query = query_module.Query()
+        results, cursor, more = query.fetch_page(5, start_cursor="cursor000")
+        assert results == [0, 1, 2, 3, 4]
+        assert cursor == "cursor4"
+        assert not more
+
+        _datastore_query.iterate.assert_called_once_with(
+            query_module.QueryOptions(
+                project="testing", limit=5, start_cursor="cursor000"
+            ),
+            raw=True,
+        )
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    @unittest.mock.patch("google.cloud.ndb.query._datastore_query")
+    def test_fetch_page_async(_datastore_query):
+        class DummyQueryIterator:
+            _more_results_after_limit = True
+
+            def __init__(self):
+                self.items = list(range(5))
+
+            def has_next_async(self):
+                return utils.future_result(bool(self.items))
+
+            def next(self):
+                item = self.items.pop(0)
+                return unittest.mock.Mock(
+                    entity=unittest.mock.Mock(return_value=item),
+                    cursor="cursor{}".format(item),
+                )
+
+        _datastore_query.iterate.return_value = DummyQueryIterator()
+        query = query_module.Query()
+        future = query.fetch_page_async(5)
+        results, cursor, more = future.result()
+        assert results == [0, 1, 2, 3, 4]
+        assert cursor == "cursor4"
+        assert more
+
+        _datastore_query.iterate.assert_called_once_with(
+            query_module.QueryOptions(project="testing", limit=5), raw=True
+        )
 
 
 class TestGQL:

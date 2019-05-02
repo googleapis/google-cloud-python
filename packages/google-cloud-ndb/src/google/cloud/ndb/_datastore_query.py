@@ -33,6 +33,7 @@ log = logging.getLogger(__name__)
 
 MoreResultsType = query_pb2.QueryResultBatch.MoreResultsType
 MORE_RESULTS_TYPE_NOT_FINISHED = MoreResultsType.Value("NOT_FINISHED")
+MORE_RESULTS_AFTER_LIMIT = MoreResultsType.Value("MORE_RESULTS_AFTER_LIMIT")
 
 ResultType = query_pb2.EntityResult.ResultType
 RESULT_TYPE_FULL = ResultType.Value("FULL")
@@ -295,6 +296,10 @@ class _QueryIteratorImpl(QueryIterator):
 
         self._has_next_batch = more_results = (
             batch.more_results == MORE_RESULTS_TYPE_NOT_FINISHED
+        )
+
+        self._more_results_after_limit = (
+            batch.more_results == MORE_RESULTS_AFTER_LIMIT
         )
 
         if more_results:
