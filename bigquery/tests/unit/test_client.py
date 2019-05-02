@@ -4518,7 +4518,9 @@ class TestClient(unittest.TestCase):
             self.assertIsNone(rows[2].age, msg=repr(table))
 
     def test_list_rows_error(self):
-        client = self._make_one()
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
 
         # neither Table nor tableReference
         with self.assertRaises(TypeError):
