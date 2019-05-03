@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# google-cloud-phishingprotection documentation build configuration file
+# google-cloud-phishing-protection documentation build configuration file
 #
 # This file is execfile()d with the current directory set to its
 # containing dir.
@@ -64,7 +64,7 @@ source_suffix = [".rst", ".md"]
 master_doc = "index"
 
 # General information about the project.
-project = u"google-cloud-phishingprotection"
+project = u"google-cloud-phishing-protection"
 copyright = u"2017, Google"
 author = u"Google APIs"
 
@@ -225,7 +225,7 @@ html_theme_options = {
 # html_search_scorer = 'scorer.js'
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = "google-cloud-phishingprotection-doc"
+htmlhelp_basename = "google-cloud-phishing-protection-doc"
 
 # -- Options for warnings ------------------------------------------------------
 
@@ -257,8 +257,8 @@ latex_elements = {
 latex_documents = [
     (
         master_doc,
-        "google-cloud-phishingprotection.tex",
-        u"google-cloud-phishingprotection Documentation",
+        "google-cloud-phishing-protection.tex",
+        u"google-cloud-phishing-protection Documentation",
         author,
         "manual",
     )
@@ -291,8 +291,8 @@ latex_documents = [
 man_pages = [
     (
         master_doc,
-        "google-cloud-phishingprotection",
-        u"google-cloud-phishingprotection Documentation",
+        "google-cloud-phishing-protection",
+        u"google-cloud-phishing-protection Documentation",
         [author],
         1,
     )
@@ -309,10 +309,10 @@ man_pages = [
 texinfo_documents = [
     (
         master_doc,
-        "google-cloud-phishingprotection",
-        u"google-cloud-phishingprotection Documentation",
+        "google-cloud-phishing-protection",
+        u"google-cloud-phishing-protection Documentation",
         author,
-        "google-cloud-phishingprotection",
+        "google-cloud-phishing-protection",
         "GAPIC library for the {metadata.shortName} v1beta1 service",
         "APIs",
     )
