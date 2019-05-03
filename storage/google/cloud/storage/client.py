@@ -203,7 +203,7 @@ class Client(ClientWithProject):
         return Batch(client=self)
 
     def get_bucket(self, bucket_or_name):
-        """API call: get a bucket by name.
+        """API call: retrieve a bucket via a GET request.
 
         See
         https://cloud.google.com/storage/docs/json_api/v1/buckets/get
