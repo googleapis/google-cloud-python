@@ -16,7 +16,7 @@
 
 
 # DO NOT MODIFY! AUTO-GENERATED!
-# This file is auto-generated on 2019-05-02.
+# This file is auto-generated on 2019-05-03.
 
 # flake8: noqa
 
@@ -489,6 +489,97 @@ class TestVPCServiceControlV3(object):
             PROJECT_OUTSIDE, "mock_notification_channel"
         )
         delayed_outside = lambda: client.update_notification_channel(
+            {"name": name_outside}
+        )
+        TestVPCServiceControlV3._do_test(delayed_inside, delayed_outside)
+
+    @pytest.mark.skipif(
+        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_ID"
+    )
+    @pytest.mark.skipif(
+        PROJECT_OUTSIDE is None,
+        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT",
+    )
+    def test_create_uptime_check_config(self):
+        client = monitoring_v3.UptimeCheckServiceClient()
+        name_inside = client.project_path(PROJECT_INSIDE)
+        delayed_inside = lambda: client.create_uptime_check_config(name_inside, {})
+        name_outside = client.project_path(PROJECT_OUTSIDE)
+        delayed_outside = lambda: client.create_uptime_check_config(name_outside, {})
+        TestVPCServiceControlV3._do_test(delayed_inside, delayed_outside)
+
+    @pytest.mark.skipif(
+        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_ID"
+    )
+    @pytest.mark.skipif(
+        PROJECT_OUTSIDE is None,
+        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT",
+    )
+    def test_delete_uptime_check_config(self):
+        client = monitoring_v3.UptimeCheckServiceClient()
+        name_inside = client.uptime_check_config_path(
+            PROJECT_INSIDE, "mock_uptime_check_config"
+        )
+        delayed_inside = lambda: client.delete_uptime_check_config(name_inside)
+        name_outside = client.uptime_check_config_path(
+            PROJECT_OUTSIDE, "mock_uptime_check_config"
+        )
+        delayed_outside = lambda: client.delete_uptime_check_config(name_outside)
+        TestVPCServiceControlV3._do_test(delayed_inside, delayed_outside)
+
+    @pytest.mark.skipif(
+        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_ID"
+    )
+    @pytest.mark.skipif(
+        PROJECT_OUTSIDE is None,
+        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT",
+    )
+    def test_get_uptime_check_config(self):
+        client = monitoring_v3.UptimeCheckServiceClient()
+        name_inside = client.uptime_check_config_path(
+            PROJECT_INSIDE, "mock_uptime_check_config"
+        )
+        delayed_inside = lambda: client.get_uptime_check_config(name_inside)
+        name_outside = client.uptime_check_config_path(
+            PROJECT_OUTSIDE, "mock_uptime_check_config"
+        )
+        delayed_outside = lambda: client.get_uptime_check_config(name_outside)
+        TestVPCServiceControlV3._do_test(delayed_inside, delayed_outside)
+
+    @pytest.mark.skipif(
+        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_ID"
+    )
+    @pytest.mark.skipif(
+        PROJECT_OUTSIDE is None,
+        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT",
+    )
+    def test_list_uptime_check_configs(self):
+        client = monitoring_v3.UptimeCheckServiceClient()
+        name_inside = client.project_path(PROJECT_INSIDE)
+        delayed_inside = lambda: client.list_uptime_check_configs(name_inside)
+        name_outside = client.project_path(PROJECT_OUTSIDE)
+        delayed_outside = lambda: client.list_uptime_check_configs(name_outside)
+        TestVPCServiceControlV3._do_test(delayed_inside, delayed_outside)
+
+    @pytest.mark.skipif(
+        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_ID"
+    )
+    @pytest.mark.skipif(
+        PROJECT_OUTSIDE is None,
+        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT",
+    )
+    def test_update_uptime_check_config(self):
+        client = monitoring_v3.UptimeCheckServiceClient()
+        name_inside = client.uptime_check_config_path(
+            PROJECT_INSIDE, "mock_uptime_check_config"
+        )
+        delayed_inside = lambda: client.update_uptime_check_config(
+            {"name": name_inside}
+        )
+        name_outside = client.uptime_check_config_path(
+            PROJECT_OUTSIDE, "mock_uptime_check_config"
+        )
+        delayed_outside = lambda: client.update_uptime_check_config(
             {"name": name_outside}
         )
         TestVPCServiceControlV3._do_test(delayed_inside, delayed_outside)
