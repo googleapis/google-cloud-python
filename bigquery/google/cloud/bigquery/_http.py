@@ -24,6 +24,9 @@ class Connection(_http.JSONConnection):
 
     :type client: :class:`~google.cloud.bigquery.client.Client`
     :param client: The client that owns the current connection.
+
+    :type client_info: :class:`~google.api_core.client_info.ClientInfo`
+    :param client_info: (Optional) instance used to generate user agent.
     """
 
     def __init__(self, client, client_info=None):
