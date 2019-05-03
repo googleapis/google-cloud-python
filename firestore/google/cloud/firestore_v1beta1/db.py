@@ -1,4 +1,5 @@
 from google.cloud.firestore_v1beta1.client import Client, DEFAULT_DATABASE
+import os
 
 
 class _Field:
@@ -15,10 +16,19 @@ class _Field:
             raise InvalidValueError(self, value)
 
 
+def initialize_database(project=None, credentials=None, database=DEFAULT_DATABASE):
+    os.environ["__project"] = project
+    os.environ["__credentials"] = credentials
+    os.environ["__database"] = database
+
+
 class FirestoreModel:
-    def __init__(self, __project=None, __credentials=None, __database=DEFAULT_DATABASE, **data):
+    def __init__(self, **data):
+        """
+        :param data:
+        """
         self.__setup_fields__()
-        self.__db = Client(project=__project, credentials=__credentials, database=__database)
+        self.__db = self.__init_client__()
         self.__model_name = type(self).__name__
         self.__collection = self.__db.collection(self.__model_name)
         self.id = None
@@ -29,6 +39,13 @@ class FirestoreModel:
                 setattr(self, key, value)
             else:
                 raise InvalidPropertyError(key, self.__model_name)
+
+    @classmethod
+    def __init_client__(cls):
+        project = os.environ.get("__project", None)
+        credentials = os.environ.get("__credentials", None)
+        database = os.environ.get("__database", DEFAULT_DATABASE)
+        return Client(project=project, credentials=credentials, database=database)
 
     def __str__(self):
         return "<Model %s>" % self.__model_name
@@ -63,7 +80,7 @@ class FirestoreModel:
 
     @classmethod
     def get(cls, key_id: str):
-        db = Client().collection(cls.__name__).document(key_id)
+        db = cls.__init_client__().collection(cls.__name__).document(key_id)
         data = db.get()
         if not data.exists:
             return None
@@ -72,15 +89,15 @@ class FirestoreModel:
     @classmethod
     def query(cls, offset=0, limit=0):
         class Query(object):
-            def __init__(self, model, _offset, _limit):
-                self.__collection = Client().collection(model.__name__)
+            def __init__(self, _offset, _limit):
+                self.__collection = cls.__init_client__().collection(cls.__name__)
                 if _offset:
                     self.__collection.start_at(_offset)
                 if _limit:
                     self.__collection.limit(_limit)
                 self.__cursor = 0
                 self.__fetched = False
-                self.__model = model
+                self.__model = cls
 
             def equal(self, field, value):
                 self.__collection.filter(field, "==", value)
