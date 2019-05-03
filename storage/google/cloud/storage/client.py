@@ -202,28 +202,52 @@ class Client(ClientWithProject):
         """
         return Batch(client=self)
 
-    def get_bucket(self, bucket_name):
-        """Get a bucket by name.
+    def get_bucket(self, bucket_or_name):
+        """API call: get a bucket by name.
 
-        If the bucket isn't found, this will raise a
-        :class:`google.cloud.exceptions.NotFound`.
+        See
+        https://cloud.google.com/storage/docs/json_api/v1/buckets/get
 
-        For example:
+        Args:
+            bucket_or_name (Union[ \
+                :class:`~google.cloud.storage.bucket.Bucket`, \
+                 str, \
+            ]):
+                The bucket resource to pass or name to create.
 
-        .. literalinclude:: snippets.py
-            :start-after: [START get_bucket]
-            :end-before: [END get_bucket]
+        Returns:
+            google.cloud.storage.bucket.Bucket
+                The bucket matching the name provided.
 
-        This implements "storage.buckets.get".
+        Raises:
+            google.cloud.exceptions.NotFound
+                If the bucket is not found.
 
-        :type bucket_name: str
-        :param bucket_name: The name of the bucket to get.
+        Examples:
+            Retrieve a bucket using a string.
 
-        :rtype: :class:`google.cloud.storage.bucket.Bucket`
-        :returns: The bucket matching the name provided.
-        :raises: :class:`google.cloud.exceptions.NotFound`
+            .. literalinclude:: snippets.py
+                :start-after: [START get_bucket]
+                :end-before: [END get_bucket]
+
+            Get a bucket using a resource.
+
+            >>> from google.cloud import storage
+            >>> client = storage.Client()
+
+            >>> # Set properties on a plain resource object.
+            >>> bucket = storage.Bucket("my-bucket-name")
+
+            >>> # Pass that resource object to the client.
+            >>> bucket = client.get_bucket(bucket)  # API request.
+
         """
-        bucket = Bucket(self, name=bucket_name)
+
+        bucket = None
+        if isinstance(bucket_or_name, Bucket):
+            bucket = bucket_or_name
+        else:
+            bucket = Bucket(self, name=bucket_or_name)
 
         bucket.reload(client=self)
         return bucket
