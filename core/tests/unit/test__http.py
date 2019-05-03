@@ -75,15 +75,9 @@ class TestConnection(unittest.TestCase):
         self.assertEqual(conn._client_info.user_agent, user_agent)
 
     def test_extra_headers_all_caps_getter_deprecated(self):
-        from google.cloud._http import CLIENT_INFO_HEADER
-
         client = object()
         conn = self._make_one(client)
-        conn._extra_headers = {"foo": "bar"}
-        expected = {
-            CLIENT_INFO_HEADER: conn._client_info.to_user_agent(),
-            "foo": "bar",
-        }
+        expected = conn._extra_headers = {"foo": "bar"}
 
         with mock.patch.object(warnings, "warn", autospec=True) as warn:
             self.assertEqual(conn._EXTRA_HEADERS, expected)
@@ -101,21 +95,13 @@ class TestConnection(unittest.TestCase):
         warn.assert_called_once_with(mock.ANY, DeprecationWarning, stacklevel=2)
 
     def test_extra_headers_getter_default(self):
-        from google.cloud._http import CLIENT_INFO_HEADER
-
         conn = self._make_one(object())
-        expected = {CLIENT_INFO_HEADER: conn._client_info.to_user_agent()}
+        expected = {}
         self.assertEqual(conn.extra_headers, expected)
 
     def test_extra_headers_getter_overridden(self):
-        from google.cloud._http import CLIENT_INFO_HEADER
-
         conn = self._make_one(object())
-        conn._extra_headers = {"foo": "bar"}
-        expected = {
-            CLIENT_INFO_HEADER: conn._client_info.to_user_agent(),
-            "foo": "bar",
-        }
+        expected = conn._extra_headers = {"foo": "bar"}
         self.assertEqual(conn.extra_headers, expected)
 
     def test_extra_headers_setter(self):

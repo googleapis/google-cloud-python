@@ -58,7 +58,6 @@ class Connection(object):
     """
 
     _user_agent = DEFAULT_USER_AGENT
-    _extra_headers = None
 
     def __init__(self, client, client_info=None):
         self._client = client
@@ -67,6 +66,7 @@ class Connection(object):
             client_info = ClientInfo()
 
         self._client_info = client_info
+        self._extra_headers = {}
 
     @property
     def USER_AGENT(self):
@@ -122,9 +122,7 @@ class Connection(object):
         :rtype: dict
         :returns: header keys / values
         """
-        result = self._extra_headers.copy() if self._extra_headers else {}
-        result[CLIENT_INFO_HEADER] = self.user_agent
-        return result
+        return self._extra_headers
 
     @extra_headers.setter
     def extra_headers(self, value):
@@ -265,6 +263,7 @@ class JSONConnection(Connection):
         if content_type:
             headers["Content-Type"] = content_type
 
+        headers[CLIENT_INFO_HEADER] = self.user_agent
         headers["User-Agent"] = self.user_agent
 
         return self._do_request(method, url, headers, data, target_object)
