@@ -22,7 +22,7 @@ import setuptools
 name = 'google-cloud-phishing-protection'
 description = 'Phishing Protection API API client library'
 version = '0.1.0'
-release_status = '3 - Alpha'
+release_status = 'Development Status :: 3 - Alpha'
 dependencies = [
     'google-api-core[grpc] >= 1.4.1, < 2.0.0dev',
     'enum34; python_version < "3.4"',
@@ -70,6 +70,7 @@ setuptools.setup(
     packages=packages,
     namespace_packages=namespaces,
     install_requires=dependencies,
+    python_requires='>=2.7,!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*',
     include_package_data=True,
     zip_safe=False,
 )

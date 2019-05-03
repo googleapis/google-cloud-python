@@ -81,6 +81,14 @@ for name in module_names:
     new_name = name.replace("v1_beta1_", "")
     s.replace("google/cloud/**/*.py", name, new_name)
 
+
+# Rename package to "google-cloud-phishing-protection"
+s.replace(
+    ["google/cloud/**/*.py", "docs/conf.py"],
+    "google-cloud-phishingprotection",
+    "google-cloud-phishing-protection",
+)
+
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------

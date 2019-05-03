@@ -37,7 +37,7 @@ from google.cloud.phishingprotection_v1beta1.proto import phishingprotection_pb2
 from google.cloud.phishingprotection_v1beta1.proto import phishingprotection_pb2_grpc
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
-    "google-cloud-phishingprotection"
+    "google-cloud-phishing-protection"
 ).version
 
 
