@@ -1363,7 +1363,7 @@ class Client(ClientWithProject):
         """
         chunk_size = _DEFAULT_CHUNKSIZE
         transport = self._http
-        headers = _get_upload_headers(self._connection.USER_AGENT)
+        headers = _get_upload_headers(self._connection.user_agent)
         upload_url = _RESUMABLE_URL_TEMPLATE.format(project=self.project)
         # TODO: modify ResumableUpload to take a retry.Retry object
         # that it can use for the initial RPC.
@@ -1409,7 +1409,7 @@ class Client(ClientWithProject):
             msg = _READ_LESS_THAN_SIZE.format(size, len(data))
             raise ValueError(msg)
 
-        headers = _get_upload_headers(self._connection.USER_AGENT)
+        headers = _get_upload_headers(self._connection.user_agent)
 
         upload_url = _MULTIPART_URL_TEMPLATE.format(project=self.project)
         upload = MultipartUpload(upload_url, headers=headers)
