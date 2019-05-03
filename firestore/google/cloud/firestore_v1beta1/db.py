@@ -17,7 +17,7 @@ class _Field:
 
 class FirestoreModel:
     def __init__(self, __project=None, __credentials=None, __database=DEFAULT_DATABASE, **data):
-        self.__setup_fields()
+        self.__setup_fields__()
         self.__db = Client(project=__project, credentials=__credentials, database=__database)
         self.__model_name = type(self).__name__
         self.__collection = self.__db.collection(self.__model_name)
@@ -27,11 +27,13 @@ class FirestoreModel:
         for key, value in data.items():
             if key in self.fields:
                 setattr(self, key, value)
+            else:
+                raise InvalidPropertyError(key, self.__model_name)
 
     def __str__(self):
         return "<Model %s>" % self.__model_name
 
-    def __setup_fields(self):
+    def __setup_fields__(self):
         self.fields = dict()
         for attribute in dir(self):
             if attribute.startswith("_"):
@@ -42,7 +44,7 @@ class FirestoreModel:
                 self.fields[attribute] = value
                 setattr(self, attribute, value.default)
 
-    def __prepare(self):
+    def __prepare__(self):
         values = dict()
         for key, field in self.fields.items():
             value = getattr(self, key)
@@ -51,7 +53,7 @@ class FirestoreModel:
         return values
 
     def put(self):
-        data = self.__prepare()
+        data = self.__prepare__()
         if self.id:
             self.__collection.document(self.id).set(data)
             return True
@@ -72,8 +74,10 @@ class FirestoreModel:
         class Query(object):
             def __init__(self, model, _offset, _limit):
                 self.__collection = Client().collection(model.__name__)
-                self.__offset = _offset
-                self.__limit = _limit
+                if _offset:
+                    self.__collection.start_at(_offset)
+                if _limit:
+                    self.__collection.limit(_limit)
                 self.__cursor = 0
                 self.__fetched = False
                 self.__model = model
@@ -120,7 +124,8 @@ class FirestoreModel:
                 if not self.__fetched:
                     self.__fetch()
 
-                if not self.__docs:
+                if self.__cursor == len(self.__docs):
+                    self.__cursor = 0
                     raise StopIteration
                 doc = self.__docs[self.__cursor]
                 self.__cursor += 1
@@ -177,3 +182,12 @@ class MalformedQueryError(Exception):
 
     def __str__(self):
         return "MalformedQueryError %s" % self.message
+
+
+class InvalidPropertyError(Exception):
+    def __init__(self, prop_name, model_name):
+        self.prop_name = prop_name
+        self.model_name = model_name
+
+    def __str__(self):
+        return "InvalidPropertyError: %s not found in model %s" % (self.prop_name, self.model_name)
