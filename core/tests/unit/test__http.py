@@ -32,7 +32,7 @@ class TestConnection(unittest.TestCase):
         return self._get_target_class()(*args, **kw)
 
     def test_constructor_defaults(self):
-        from google.api_core.gapic_v1.client_info import ClientInfo
+        from google.api_core.client_info import ClientInfo
 
         client = object()
         conn = self._make_one(client)

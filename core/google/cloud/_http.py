@@ -21,7 +21,7 @@ import warnings
 from pkg_resources import get_distribution
 from six.moves.urllib.parse import urlencode
 
-from google.api_core.gapic_v1.client_info import ClientInfo
+from google.api_core.client_info import ClientInfo
 from google.cloud import exceptions
 
 
