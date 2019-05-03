@@ -105,8 +105,9 @@ class FirestoreModel:
                 self.__collection.filter(field, "array_contains", value)
                 return self
 
-            def order(self, field):
-                self.__collection.order(field)
+            def order_by(self, field):
+                self.__collection.order_by(field)
+                return self
 
             def __fetch(self):
                 self.__docs = self.__collection.get()
