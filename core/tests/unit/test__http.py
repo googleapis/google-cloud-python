@@ -104,6 +104,12 @@ class TestConnection(unittest.TestCase):
         expected = conn._extra_headers = {"foo": "bar"}
         self.assertEqual(conn.extra_headers, expected)
 
+    def test_extra_headers_item_assignment(self):
+        conn = self._make_one(object())
+        expected = {"foo": "bar"}
+        conn.extra_headers["foo"] = "bar"
+        self.assertEqual(conn._extra_headers, expected)
+
     def test_extra_headers_setter(self):
         conn = self._make_one(object())
         expected = {"foo": "bar"}
