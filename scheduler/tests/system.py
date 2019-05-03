@@ -20,5 +20,5 @@ from google.cloud import scheduler_v1
 class TestSystemScheduler(object):
     def test_create_job(self):
         client = scheduler_v1.CloudSchedulerClient()
-        parent = client.location_path(os.environ.get('PROJECT_ID'), 'us-central1')
+        parent = client.location_path(os.environ.get("PROJECT_ID"), "us-central1")
         client.list_jobs(parent)
