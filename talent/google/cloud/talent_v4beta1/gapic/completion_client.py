@@ -22,6 +22,7 @@ from google.oauth2 import service_account
 import google.api_core.gapic_v1.client_info
 import google.api_core.gapic_v1.config
 import google.api_core.gapic_v1.method
+import google.api_core.gapic_v1.routing_header
 import google.api_core.grpc_helpers
 import google.api_core.path_template
 import grpc
@@ -29,6 +30,9 @@ import grpc
 from google.cloud.talent_v4beta1.gapic import completion_client_config
 from google.cloud.talent_v4beta1.gapic import enums
 from google.cloud.talent_v4beta1.gapic.transports import completion_grpc_transport
+from google.cloud.talent_v4beta1.proto import application_pb2
+from google.cloud.talent_v4beta1.proto import application_service_pb2
+from google.cloud.talent_v4beta1.proto import application_service_pb2_grpc
 from google.cloud.talent_v4beta1.proto import company_pb2
 from google.cloud.talent_v4beta1.proto import company_service_pb2
 from google.cloud.talent_v4beta1.proto import company_service_pb2_grpc
@@ -71,10 +75,20 @@ class CompletionClient(object):
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def project_path(cls, project):
-        """Return a fully-qualified project string."""
+    def company_path(cls, project, tenant, company):
+        """Return a fully-qualified company string."""
         return google.api_core.path_template.expand(
-            "projects/{project}", project=project
+            "projects/{project}/tenants/{tenant}/companies/{company}",
+            project=project,
+            tenant=tenant,
+            company=company,
+        )
+
+    @classmethod
+    def tenant_path(cls, project, tenant):
+        """Return a fully-qualified tenant string."""
+        return google.api_core.path_template.expand(
+            "projects/{project}/tenants/{tenant}", project=project, tenant=tenant
         )
 
     def __init__(
@@ -178,11 +192,11 @@ class CompletionClient(object):
     # Service calls
     def complete_query(
         self,
-        name,
+        parent,
         query,
         page_size,
         language_codes=None,
-        company_name=None,
+        company=None,
         scope=None,
         type_=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
@@ -198,7 +212,7 @@ class CompletionClient(object):
             >>>
             >>> client = talent_v4beta1.CompletionClient()
             >>>
-            >>> name = client.project_path('[PROJECT]')
+            >>> parent = client.tenant_path('[PROJECT]', '[TENANT]')
             >>>
             >>> # TODO: Initialize `query`:
             >>> query = ''
@@ -206,15 +220,18 @@ class CompletionClient(object):
             >>> # TODO: Initialize `page_size`:
             >>> page_size = 0
             >>>
-            >>> response = client.complete_query(name, query, page_size)
+            >>> response = client.complete_query(parent, query, page_size)
 
         Args:
-            name (str): Required.
+            parent (str): Required.
 
-                Resource name of project the completion is performed within.
+                Resource name of tenant the completion is performed within.
 
-                The format is "projects/{project\_id}", for example,
-                "projects/api-test-project".
+                The format is "projects/{project\_id}/tenants/{tenant\_id}", for
+                example, "projects/api-test-project/tenant/foo".
+
+                Tenant id is optional and the default tenant is used if unspecified, for
+                example, "projects/api-test-project".
             query (str): Required.
 
                 The query used to generate suggestions.
@@ -242,12 +259,16 @@ class CompletionClient(object):
                 ``language_codes`` are returned.
 
                 The maximum number of allowed characters is 255.
-            company_name (str): Optional.
+            company (str): Optional.
 
                 If provided, restricts completion to specified company.
 
-                The format is "projects/{project\_id}/companies/{company\_id}", for
-                example, "projects/api-test-project/companies/foo".
+                The format is
+                "projects/{project\_id}/tenants/{tenant\_id}/companies/{company\_id}",
+                for example, "projects/api-test-project/tenants/foo/companies/bar".
+
+                Tenant id is optional and the default tenant is used if unspecified, for
+                example, "projects/api-test-project/companies/bar".
             scope (~google.cloud.talent_v4beta1.types.CompletionScope): Optional.
 
                 The scope of the completion. The defaults is ``CompletionScope.PUBLIC``.
@@ -285,14 +306,27 @@ class CompletionClient(object):
             )
 
         request = completion_service_pb2.CompleteQueryRequest(
-            name=name,
+            parent=parent,
             query=query,
             page_size=page_size,
             language_codes=language_codes,
-            company_name=company_name,
+            company=company,
             scope=scope,
             type=type_,
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["complete_query"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )

@@ -26,11 +26,9 @@ class CommuteMethod(enum.IntEnum):
       COMMUTE_METHOD_UNSPECIFIED (int): Commute method isn't specified.
       DRIVING (int): Commute time is calculated based on driving time.
       TRANSIT (int): Commute time is calculated based on public transit including bus, metro,
-      subway, etc.
+      subway, and so on.
       WALKING (int): Commute time is calculated based on walking time.
       CYCLING (int): Commute time is calculated based on biking time.
-      TRANSIT_ACCESSIBLE (int): Commute time is calculated based on public transit that is wheelchair
-      accessible.
     """
 
     COMMUTE_METHOD_UNSPECIFIED = 0
@@ -38,7 +36,6 @@ class CommuteMethod(enum.IntEnum):
     TRANSIT = 2
     WALKING = 3
     CYCLING = 4
-    TRANSIT_ACCESSIBLE = 5
 
 
 class CompanySize(enum.IntEnum):
@@ -346,11 +343,11 @@ class JobView(enum.IntEnum):
       JOB_VIEW_ID_ONLY (int): A ID only view of job, with following attributes: ``Job.name``,
       ``Job.requisition_id``, ``Job.language_code``.
       JOB_VIEW_MINIMAL (int): A minimal view of the job, with the following attributes: ``Job.name``,
-      ``Job.requisition_id``, ``Job.job_title``, ``Job.company_name``,
+      ``Job.requisition_id``, ``Job.job_title``, ``Job.company``,
       ``Job.DerivedInfo.locations``, ``Job.language_code``.
       JOB_VIEW_SMALL (int): A small view of the job, with the following attributes in the search
       results: ``Job.name``, ``Job.requisition_id``, ``Job.job_title``,
-      ``Job.company_name``, ``Job.DerivedInfo.locations``, ``Job.visibility``,
+      ``Job.company``, ``Job.DerivedInfo.locations``, ``Job.visibility``,
       ``Job.language_code``, ``Job.description``.
       JOB_VIEW_FULL (int): All available attributes are included in the search results.
     """
@@ -360,6 +357,30 @@ class JobView(enum.IntEnum):
     JOB_VIEW_MINIMAL = 2
     JOB_VIEW_SMALL = 3
     JOB_VIEW_FULL = 4
+
+
+class Outcome(enum.IntEnum):
+    """
+    The overall outcome /decision / result indicator.
+
+    Attributes:
+      OUTCOME_UNSPECIFIED (int): Default value.
+      POSITIVE (int): A positive outcome / passing indicator (for example, candidate was
+      recommended for hiring or to be moved forward in the hiring process,
+      candidate passed a test).
+      NEUTRAL (int): A neutral outcome / no clear indicator (for example, no strong
+      reccommendation either to move forward / not move forward, neutral score).
+      NEGATIVE (int): A negative outcome / failing indicator (for example, candidate was
+      recommended to NOT move forward in the hiring process, failed a test).
+      OUTCOME_NOT_AVAILABLE (int): The assessment outcome is not available or otherwise unknown (for example,
+      candidate did not complete assessment).
+    """
+
+    OUTCOME_UNSPECIFIED = 0
+    POSITIVE = 1
+    NEUTRAL = 2
+    NEGATIVE = 3
+    OUTCOME_NOT_AVAILABLE = 4
 
 
 class PostingRegion(enum.IntEnum):
@@ -395,6 +416,31 @@ class PostingRegion(enum.IntEnum):
     TELECOMMUTE = 3
 
 
+class SkillProficiencyLevel(enum.IntEnum):
+    """
+    Enum that represents the skill proficiency level.
+
+    Attributes:
+      SKILL_PROFICIENCY_LEVEL_UNSPECIFIED (int): Default value.
+      FUNDAMENTAL_AWARENESS (int): Have a common knowledge or an understanding of basic techniques and
+      concepts.
+      NOVICE (int): Have the level of experience gained in a classroom and/or experimental
+      scenarios or as a trainee on-the-job.
+      INTERMEDIATE (int): Be able to successfully complete tasks in this skill as requested. Help
+      from an expert may be required from time to time, but can usually perform
+      skill independently.
+      ADVANCED (int): Can perform the actions associated with this skill without assistance.
+      EXPERT (int): Known as an expert in this area.
+    """
+
+    SKILL_PROFICIENCY_LEVEL_UNSPECIFIED = 0
+    FUNDAMENTAL_AWARENESS = 1
+    NOVICE = 2
+    INTERMEDIATE = 3
+    ADVANCED = 4
+    EXPERT = 5
+
+
 class Visibility(enum.IntEnum):
     """
     An enum that represents who has view access to the resource.
@@ -412,6 +458,60 @@ class Visibility(enum.IntEnum):
     ACCOUNT_ONLY = 1
     SHARED_WITH_GOOGLE = 2
     SHARED_WITH_PUBLIC = 3
+
+
+class Application(object):
+    class ApplicationStage(enum.IntEnum):
+        """
+        The stage of the application.
+
+        Attributes:
+          APPLICATION_STAGE_UNSPECIFIED (int): Default value.
+          NEW (int): Candidate has applied or a recruiter put candidate into consideration but
+          candidate is not yet screened / no decision has been made to move or not
+          move the candidate to the next stage.
+          SCREEN (int): A recruiter decided to screen the candidate for this role.
+          HIRING_MANAGER_REVIEW (int): Candidate is being / was sent to the customer / hiring manager for
+          detailed review.
+          INTERVIEW (int): Candidate was approved by the client / hiring manager and is being / was
+          interviewed for the role.
+          OFFER_EXTENDED (int): Candidate will be / has been given an offer of employment.
+          OFFER_ACCEPTED (int): Candidate has accepted their offer of employment.
+          STARTED (int): Candidate has begun (or completed) their employment or assignment with
+          the employer.
+        """
+
+        APPLICATION_STAGE_UNSPECIFIED = 0
+        NEW = 1
+        SCREEN = 2
+        HIRING_MANAGER_REVIEW = 3
+        INTERVIEW = 4
+        OFFER_EXTENDED = 5
+        OFFER_ACCEPTED = 6
+        STARTED = 7
+
+    class ApplicationState(enum.IntEnum):
+        """
+        Enum that represents the application status.
+
+        Attributes:
+          APPLICATION_STATE_UNSPECIFIED (int): Default value.
+          IN_PROGRESS (int): The current stage is in progress or pending, for example, interviews in
+          progress.
+          CANDIDATE_WITHDREW (int): The current stage was terminated by a candidate decision.
+          EMPLOYER_WITHDREW (int): The current stage was terminated by an employer or agency decision.
+          COMPLETED (int): The current stage is successfully completed, but the next stage (if
+          applicable) has not begun.
+          CLOSED (int): The current stage was closed without an exception, or terminated for
+          reasons unrealated to the candidate.
+        """
+
+        APPLICATION_STATE_UNSPECIFIED = 0
+        IN_PROGRESS = 1
+        CANDIDATE_WITHDREW = 2
+        EMPLOYER_WITHDREW = 3
+        COMPLETED = 4
+        CLOSED = 5
 
 
 class CommuteFilter(object):
@@ -454,11 +554,11 @@ class CompensationFilter(object):
 
           Set exactly one ``units`` and populate ``range``.
           ANNUALIZED_BASE_AMOUNT (int): Filter by annualized base compensation amount and
-          ``base compensation  entry's`` unit. Populate ``range`` and zero or more
+          ``base compensation entry's`` unit. Populate ``range`` and zero or more
           ``units``.
           ANNUALIZED_TOTAL_AMOUNT (int): Filter by annualized total compensation amount and
-          ``base compensation  entry's`` unit . Populate ``range`` and zero or
-          more ``units``.
+          ``base compensation entry's`` unit . Populate ``range`` and zero or more
+          ``units``.
         """
 
         FILTER_TYPE_UNSPECIFIED = 0
@@ -619,32 +719,6 @@ class EmployerFilter(object):
         PAST_EMPLOYMENT_RECORDS_ONLY = 3
 
 
-class JobApplication(object):
-    class ApplicationStatus(enum.IntEnum):
-        """
-        Enum that represents the application status.
-
-        Attributes:
-          APPLICATION_STATUS_UNSPECIFIED (int): Default value.
-          OFFER_EXTENDED (int): The offer is extended.
-          REJECTED_BY_CANDIDATE (int): The offer is rejected by candidate.
-          ACTIVE (int): The application is active.
-          REJECTED_BY_EMPLOYER (int): The candidate is rejected by employer.
-          HIRED_PENDING_DATE (int): The candidate is hired and hasn't started the new job.
-          HIRED_STARTED (int): The candidate is hired started.
-          PROSPECTED (int): The candidate is a prospect candidate.
-        """
-
-        APPLICATION_STATUS_UNSPECIFIED = 0
-        OFFER_EXTENDED = 1
-        REJECTED_BY_CANDIDATE = 2
-        ACTIVE = 3
-        REJECTED_BY_EMPLOYER = 4
-        HIRED_PENDING_DATE = 5
-        HIRED_STARTED = 6
-        PROSPECTED = 7
-
-
 class JobEvent(object):
     class JobEventType(enum.IntEnum):
         """
@@ -797,11 +871,11 @@ class Phone(object):
           TTY_OR_TDD (int): A TTY (test telephone) or TDD (telecommunication device for the deaf).
           VOICEMAIL (int): A voicemail.
           VIRTUAL (int): A virtual telephone number is a number that can be routed to another
-          number and managed by the user via Web, SMS, IVR, etc. It is associated
-          with a particular person, and may be routed to either a MOBILE or
-          LANDLINE number. The phone usage (see ContactInfoUsage above) should be
-          set to PERSONAL for these phone types. Some more information can be
-          found here: http://en.wikipedia.org/wiki/Personal\_Numbers
+          number and managed by the user via Web, SMS, IVR, and so on. It is
+          associated with a particular person, and may be routed to either a
+          MOBILE or LANDLINE number. The phone usage (see ContactInfoUsage above)
+          should be set to PERSONAL for these phone types. Some more information
+          can be found here: http://en.wikipedia.org/wiki/Personal\_Numbers
           VOIP (int): Voice over IP numbers. This includes TSoIP (Telephony Service over IP).
           MOBILE_OR_LANDLINE (int): In some regions (e.g. the USA), it is impossible to distinguish between
           fixed-line and mobile numbers by looking at the phone number itself.
@@ -829,30 +903,12 @@ class ProfileEvent(object):
           IMPRESSION (int): The profile is displayed.
           VIEW (int): The profile is viewed.
           BOOKMARK (int): The profile is bookmarked.
-          COMMENT_ADDED (int): Comment added to the profile.
-          EMAIL_SENT (int): Email sent regarding the profile.
-          RESUME_VIEWED (int): The resume of the profile is viewed.
-          ADD_TO_JOB (int): The profile is added to a job.
-          POSITIVE_REACTION_TO_PROFILE (int): The recruiter explicitly highlights that a given profile is interesting
-          enough for later review or is a good result for the search.
-          NEGATIVE_REACTION_TO_PROFILE (int): The recruiter explicitly highlights that a given profile is not
-          interesting enough for later review or is not a good result for the
-          search.
-          SCREEN (int): The candidate is interesting enough to set up an initial screen with the
-          recruiter. This step may be skipped based on the interview process.
         """
 
         PROFILE_EVENT_TYPE_UNSPECIFIED = 0
         IMPRESSION = 1
         VIEW = 2
         BOOKMARK = 3
-        COMMENT_ADDED = 4
-        EMAIL_SENT = 5
-        RESUME_VIEWED = 6
-        ADD_TO_JOB = 7
-        POSITIVE_REACTION_TO_PROFILE = 8
-        NEGATIVE_REACTION_TO_PROFILE = 9
-        SCREEN = 10
 
 
 class SearchJobsRequest(object):
@@ -933,32 +989,6 @@ class SearchJobsRequest(object):
             MEDIUM = 4
             HIGH = 5
             EXTREME = 6
-
-
-class Skill(object):
-    class SkillProficiencyLevel(enum.IntEnum):
-        """
-        Enum that represents the skill proficiency level.
-
-        Attributes:
-          SKILL_PROFICIENCY_LEVEL_UNSPECIFIED (int): Default value.
-          FUNDAMENTAL_AWARENESS (int): Have a common knowledge or an understanding of basic techniques and
-          concepts.
-          NOVICE (int): Have the level of experience gained in a classroom and/or experimental
-          scenarios or as a trainee on-the-job.
-          INTERMEDIATE (int): Be able to successfully complete tasks in this skill as requested. Help
-          from an expert may be required from time to time, but can usually perform
-          skill independently.
-          ADVANCED (int): Can perform the actions associated with this skill without assistance.
-          EXPERT (int): Known as an expert in this area.
-        """
-
-        SKILL_PROFICIENCY_LEVEL_UNSPECIFIED = 0
-        FUNDAMENTAL_AWARENESS = 1
-        NOVICE = 2
-        INTERMEDIATE = 3
-        ADVANCED = 4
-        EXPERT = 5
 
 
 class Tenant(object):

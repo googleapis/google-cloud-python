@@ -19,6 +19,8 @@ import sys
 
 from google.api_core.protobuf_helpers import get_messages
 
+from google.cloud.talent_v4beta1.proto import application_pb2
+from google.cloud.talent_v4beta1.proto import application_service_pb2
 from google.cloud.talent_v4beta1.proto import common_pb2
 from google.cloud.talent_v4beta1.proto import company_pb2
 from google.cloud.talent_v4beta1.proto import company_service_pb2
@@ -31,7 +33,6 @@ from google.cloud.talent_v4beta1.proto import job_pb2
 from google.cloud.talent_v4beta1.proto import job_service_pb2
 from google.cloud.talent_v4beta1.proto import profile_pb2
 from google.cloud.talent_v4beta1.proto import profile_service_pb2
-from google.cloud.talent_v4beta1.proto import resume_service_pb2
 from google.cloud.talent_v4beta1.proto import tenant_pb2
 from google.cloud.talent_v4beta1.proto import tenant_service_pb2
 from google.protobuf import duration_pb2
@@ -59,6 +60,8 @@ _shared_modules = [
 ]
 
 _local_modules = [
+    application_pb2,
+    application_service_pb2,
     common_pb2,
     company_pb2,
     company_service_pb2,
@@ -71,7 +74,6 @@ _local_modules = [
     job_service_pb2,
     profile_pb2,
     profile_service_pb2,
-    resume_service_pb2,
     tenant_pb2,
     tenant_service_pb2,
 ]

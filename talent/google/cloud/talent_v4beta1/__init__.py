@@ -17,14 +17,19 @@
 from __future__ import absolute_import
 
 from google.cloud.talent_v4beta1 import types
+from google.cloud.talent_v4beta1.gapic import application_service_client
 from google.cloud.talent_v4beta1.gapic import company_service_client
 from google.cloud.talent_v4beta1.gapic import completion_client
 from google.cloud.talent_v4beta1.gapic import enums
 from google.cloud.talent_v4beta1.gapic import event_service_client
 from google.cloud.talent_v4beta1.gapic import job_service_client
 from google.cloud.talent_v4beta1.gapic import profile_service_client
-from google.cloud.talent_v4beta1.gapic import resume_service_client
 from google.cloud.talent_v4beta1.gapic import tenant_service_client
+
+
+class ApplicationServiceClient(application_service_client.ApplicationServiceClient):
+    __doc__ = application_service_client.ApplicationServiceClient.__doc__
+    enums = enums
 
 
 class CompanyServiceClient(company_service_client.CompanyServiceClient):
@@ -52,11 +57,6 @@ class ProfileServiceClient(profile_service_client.ProfileServiceClient):
     enums = enums
 
 
-class ResumeServiceClient(resume_service_client.ResumeServiceClient):
-    __doc__ = resume_service_client.ResumeServiceClient.__doc__
-    enums = enums
-
-
 class TenantServiceClient(tenant_service_client.TenantServiceClient):
     __doc__ = tenant_service_client.TenantServiceClient.__doc__
     enums = enums
@@ -65,11 +65,11 @@ class TenantServiceClient(tenant_service_client.TenantServiceClient):
 __all__ = (
     "enums",
     "types",
+    "ApplicationServiceClient",
     "CompanyServiceClient",
     "CompletionClient",
     "EventServiceClient",
     "JobServiceClient",
     "ProfileServiceClient",
-    "ResumeServiceClient",
     "TenantServiceClient",
 )
