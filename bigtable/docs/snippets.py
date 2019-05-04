@@ -163,8 +163,12 @@ def test_bigtable_create_additional_cluster():
 
 def test_bigtable_create_reload_delete_app_profile():
     import re
+
     # [START bigtable_create_app_profile]
     from google.cloud.bigtable import Client
+    from google.cloud.bigtable import enums
+
+    routing_policy_type = enums.RoutingPolicyType.ANY
 
     client = Client(admin=True)
     instance = client.instance(INSTANCE_ID)
@@ -173,7 +177,7 @@ def test_bigtable_create_reload_delete_app_profile():
 
     app_profile = instance.app_profile(
         app_profile_id=APP_PROFILE_ID,
-        routing_policy_type=ROUTING_POLICY_TYPE,
+        routing_policy_type=routing_policy_type,
         description=description,
         cluster_id=CLUSTER_ID,
     )
@@ -191,10 +195,12 @@ def test_bigtable_create_reload_delete_app_profile():
 
     app_profile_name = app_profile.name
     # [END bigtable_app_profile_name]
-    _profile_name_re = re.compile(r'^projects/(?P<project>[^/]+)/'
-                                  r'instances/(?P<instance>[^/]+)/'
-                                  r'appProfiles/(?P<appprofile_id>'
-                                  r'[_a-zA-Z0-9][-_.a-zA-Z0-9]*)$')
+    _profile_name_re = re.compile(
+        r"^projects/(?P<project>[^/]+)/"
+        r"instances/(?P<instance>[^/]+)/"
+        r"appProfiles/(?P<appprofile_id>"
+        r"[_a-zA-Z0-9][-_.a-zA-Z0-9]*)$"
+    )
     assert _profile_name_re.match(app_profile_name)
 
     # [START bigtable_app_profile_exists]
