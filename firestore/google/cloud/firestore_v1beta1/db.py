@@ -2,7 +2,7 @@ from google.cloud.firestore_v1beta1.client import Client, DEFAULT_DATABASE
 from google.cloud.firestore_v1beta1.query import Query
 import os
 import json
-from datetime import datetime, date, time
+from datetime import datetime, date
 
 
 class _Field:
@@ -59,6 +59,8 @@ class FirestoreModel:
             self.id = data.pop("id")
         for key, value in data.items():
             if key in self.__fields:
+                if isinstance(self.__fields[key], DateTimeField) and str(value).isnumeric():
+                    value = datetime.fromtimestamp(value)
                 setattr(self, key, value)
             else:
                 raise InvalidPropertyError(key, self.__model_name)
@@ -142,6 +144,10 @@ class FirestoreModel:
             self.__array_contains_queries = 0
             self.__range_filter_queries = {}
 
+        def __validate_value(self, field_name, value):
+            field = getattr(self.__model, field_name)
+            return field.validate(value)
+
         def __add_range_filter(self, field):
             self.__range_filter_queries[field] = True
 
@@ -161,7 +167,7 @@ class FirestoreModel:
             Returns:
                 FirestoreModel.__Query: A query object with this condition added
             """
-            self.__collection.filter(field, "==", value)
+            self.__collection.filter(field, "==", self.__validate_value(field, value))
             return self
 
         def greater_than(self, field: str, value: any):
@@ -176,7 +182,7 @@ class FirestoreModel:
                 FirestoreModel.__Query: A query object with this condition added
             """
             self.__add_range_filter(field)
-            self.__collection.filter(field, ">", value)
+            self.__collection.filter(field, ">", self.__validate_value(field, value))
 
         def less_than(self, field, value):
             """
@@ -190,7 +196,7 @@ class FirestoreModel:
                 FirestoreModel.__Query: A query object with this condition added
             """
             self.__add_range_filter(field)
-            self.__collection.filter(field, "<", value)
+            self.__collection.filter(field, "<", self.__validate_value(field, value))
 
         def greater_than_or_equal(self, field, value):
             """
@@ -204,7 +210,7 @@ class FirestoreModel:
                 FirestoreModel.__Query: A query object with this condition added
             """
             self.__add_range_filter(field)
-            self.__collection.filter(field, ">=", value)
+            self.__collection.filter(field, ">=", self.__validate_value(field, value))
 
         def less_than_or_equal(self, field, value):
             """
@@ -218,7 +224,7 @@ class FirestoreModel:
                 FirestoreModel.__Query: A query object with this condition added
             """
             self.__add_range_filter(field)
-            self.__collection.filter(field, "<=", value)
+            self.__collection.filter(field, "<=", self.__validate_value(field, value))
 
         def contains(self, field, value):
             """
