@@ -1,5 +1,5 @@
 setuptools >= 36.4.0
-sphinx >= 1.6.3
+sphinx >= 1.6.3, < 2.0dev
 ipython >= 4
 recommonmark >= 0.4.0
 grpcio-gcp >= 0.2.2
@@ -11,8 +11,11 @@ grpcio-gcp >= 0.2.2
 -e automl/
 -e bigquery/
 -e bigquery_datatransfer/
+-e bigquery_storage/
 -e bigtable/
 -e container/
+-e datacatalog/
+-e datalabeling/
 -e dataproc/
 -e datastore/
 -e dlp/
@@ -20,6 +23,7 @@ grpcio-gcp >= 0.2.2
 -e firestore/
 -e iam/
 -e iot/
+-e irm/
 -e kms/
 -e language/
 -e logging/
@@ -34,10 +38,12 @@ grpcio-gcp >= 0.2.2
 -e securitycenter/
 -e spanner/
 -e speech/
+-e talent/
 -e tasks/
 -e texttospeech/
 -e trace/
 -e translate/
 -e videointelligence/
 -e vision/
+-e webrisk/
 -e websecurityscanner/

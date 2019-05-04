@@ -25,11 +25,12 @@ version = "v1"
 # Generate bigquery_datatransfer GAPIC layer
 # ----------------------------------------------------------------------------
 library = gapic.py_library(
-    "bigquery-datatransfer",
+    "bigquery_datatransfer",
     version,
     config_path="/google/cloud/bigquery/datatransfer/"
     "artman_bigquerydatatransfer.yaml",
     artman_output_name="bigquerydatatransfer-v1",
+    include_protos=True,
 )
 
 s.move(
@@ -61,7 +62,7 @@ s.replace(
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
-templated_files = common.py_library(unit_cov_level=80, cov_level=80)
+templated_files = common.py_library(unit_cov_level=79, cov_level=79)
 s.move(templated_files)
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)

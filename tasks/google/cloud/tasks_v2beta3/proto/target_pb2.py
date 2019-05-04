@@ -9,7 +9,6 @@ from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
-from google.protobuf import descriptor_pb2
 
 # @@protoc_insertion_point(imports)
 
@@ -23,8 +22,11 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     name="google/cloud/tasks_v2beta3/proto/target.proto",
     package="google.cloud.tasks.v2beta3",
     syntax="proto3",
+    serialized_options=_b(
+        "\n\036com.google.cloud.tasks.v2beta3B\013TargetProtoP\001Z?google.golang.org/genproto/googleapis/cloud/tasks/v2beta3;tasks"
+    ),
     serialized_pb=_b(
-        '\n-google/cloud/tasks_v2beta3/proto/target.proto\x12\x1agoogle.cloud.tasks.v2beta3\x1a\x1cgoogle/api/annotations.proto"g\n\x12\x41ppEngineHttpQueue\x12Q\n\x1b\x61pp_engine_routing_override\x18\x01 \x01(\x0b\x32,.google.cloud.tasks.v2beta3.AppEngineRouting"\xc1\x02\n\x14\x41ppEngineHttpRequest\x12;\n\x0bhttp_method\x18\x01 \x01(\x0e\x32&.google.cloud.tasks.v2beta3.HttpMethod\x12H\n\x12\x61pp_engine_routing\x18\x02 \x01(\x0b\x32,.google.cloud.tasks.v2beta3.AppEngineRouting\x12\x14\n\x0crelative_uri\x18\x03 \x01(\t\x12N\n\x07headers\x18\x04 \x03(\x0b\x32=.google.cloud.tasks.v2beta3.AppEngineHttpRequest.HeadersEntry\x12\x0c\n\x04\x62ody\x18\x05 \x01(\x0c\x1a.\n\x0cHeadersEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01"T\n\x10\x41ppEngineRouting\x12\x0f\n\x07service\x18\x01 \x01(\t\x12\x0f\n\x07version\x18\x02 \x01(\t\x12\x10\n\x08instance\x18\x03 \x01(\t\x12\x0c\n\x04host\x18\x04 \x01(\t*[\n\nHttpMethod\x12\x1b\n\x17HTTP_METHOD_UNSPECIFIED\x10\x00\x12\x08\n\x04POST\x10\x01\x12\x07\n\x03GET\x10\x02\x12\x08\n\x04HEAD\x10\x03\x12\x07\n\x03PUT\x10\x04\x12\n\n\x06\x44\x45LETE\x10\x05\x42p\n\x1e\x63om.google.cloud.tasks.v2beta3B\x0bTargetProtoP\x01Z?google.golang.org/genproto/googleapis/cloud/tasks/v2beta3;tasksb\x06proto3'
+        '\n-google/cloud/tasks_v2beta3/proto/target.proto\x12\x1agoogle.cloud.tasks.v2beta3\x1a\x1cgoogle/api/annotations.proto"\xf0\x02\n\x0bHttpRequest\x12\x0b\n\x03url\x18\x01 \x01(\t\x12;\n\x0bhttp_method\x18\x02 \x01(\x0e\x32&.google.cloud.tasks.v2beta3.HttpMethod\x12\x45\n\x07headers\x18\x03 \x03(\x0b\x32\x34.google.cloud.tasks.v2beta3.HttpRequest.HeadersEntry\x12\x0c\n\x04\x62ody\x18\x04 \x01(\x0c\x12=\n\x0boauth_token\x18\x05 \x01(\x0b\x32&.google.cloud.tasks.v2beta3.OAuthTokenH\x00\x12;\n\noidc_token\x18\x06 \x01(\x0b\x32%.google.cloud.tasks.v2beta3.OidcTokenH\x00\x1a.\n\x0cHeadersEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x42\x16\n\x14\x61uthorization_header"g\n\x12\x41ppEngineHttpQueue\x12Q\n\x1b\x61pp_engine_routing_override\x18\x01 \x01(\x0b\x32,.google.cloud.tasks.v2beta3.AppEngineRouting"\xc1\x02\n\x14\x41ppEngineHttpRequest\x12;\n\x0bhttp_method\x18\x01 \x01(\x0e\x32&.google.cloud.tasks.v2beta3.HttpMethod\x12H\n\x12\x61pp_engine_routing\x18\x02 \x01(\x0b\x32,.google.cloud.tasks.v2beta3.AppEngineRouting\x12\x14\n\x0crelative_uri\x18\x03 \x01(\t\x12N\n\x07headers\x18\x04 \x03(\x0b\x32=.google.cloud.tasks.v2beta3.AppEngineHttpRequest.HeadersEntry\x12\x0c\n\x04\x62ody\x18\x05 \x01(\x0c\x1a.\n\x0cHeadersEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01"T\n\x10\x41ppEngineRouting\x12\x0f\n\x07service\x18\x01 \x01(\t\x12\x0f\n\x07version\x18\x02 \x01(\t\x12\x10\n\x08instance\x18\x03 \x01(\t\x12\x0c\n\x04host\x18\x04 \x01(\t":\n\nOAuthToken\x12\x1d\n\x15service_account_email\x18\x01 \x01(\t\x12\r\n\x05scope\x18\x02 \x01(\t"<\n\tOidcToken\x12\x1d\n\x15service_account_email\x18\x01 \x01(\t\x12\x10\n\x08\x61udience\x18\x02 \x01(\t*s\n\nHttpMethod\x12\x1b\n\x17HTTP_METHOD_UNSPECIFIED\x10\x00\x12\x08\n\x04POST\x10\x01\x12\x07\n\x03GET\x10\x02\x12\x08\n\x04HEAD\x10\x03\x12\x07\n\x03PUT\x10\x04\x12\n\n\x06\x44\x45LETE\x10\x05\x12\t\n\x05PATCH\x10\x06\x12\x0b\n\x07OPTIONS\x10\x07\x42p\n\x1e\x63om.google.cloud.tasks.v2beta3B\x0bTargetProtoP\x01Z?google.golang.org/genproto/googleapis/cloud/tasks/v2beta3;tasksb\x06proto3'
     ),
     dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR],
 )
@@ -36,28 +38,38 @@ _HTTPMETHOD = _descriptor.EnumDescriptor(
     file=DESCRIPTOR,
     values=[
         _descriptor.EnumValueDescriptor(
-            name="HTTP_METHOD_UNSPECIFIED", index=0, number=0, options=None, type=None
+            name="HTTP_METHOD_UNSPECIFIED",
+            index=0,
+            number=0,
+            serialized_options=None,
+            type=None,
         ),
         _descriptor.EnumValueDescriptor(
-            name="POST", index=1, number=1, options=None, type=None
+            name="POST", index=1, number=1, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="GET", index=2, number=2, options=None, type=None
+            name="GET", index=2, number=2, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="HEAD", index=3, number=3, options=None, type=None
+            name="HEAD", index=3, number=3, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="PUT", index=4, number=4, options=None, type=None
+            name="PUT", index=4, number=4, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="DELETE", index=5, number=5, options=None, type=None
+            name="DELETE", index=5, number=5, serialized_options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="PATCH", index=6, number=6, serialized_options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="OPTIONS", index=7, number=7, serialized_options=None, type=None
         ),
     ],
     containing_type=None,
-    options=None,
-    serialized_start=622,
-    serialized_end=713,
+    serialized_options=None,
+    serialized_start=1115,
+    serialized_end=1230,
 )
 _sym_db.RegisterEnumDescriptor(_HTTPMETHOD)
 
@@ -68,6 +80,201 @@ GET = 2
 HEAD = 3
 PUT = 4
 DELETE = 5
+PATCH = 6
+OPTIONS = 7
+
+
+_HTTPREQUEST_HEADERSENTRY = _descriptor.Descriptor(
+    name="HeadersEntry",
+    full_name="google.cloud.tasks.v2beta3.HttpRequest.HeadersEntry",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="key",
+            full_name="google.cloud.tasks.v2beta3.HttpRequest.HeadersEntry.key",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="value",
+            full_name="google.cloud.tasks.v2beta3.HttpRequest.HeadersEntry.value",
+            index=1,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=_b("8\001"),
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=406,
+    serialized_end=452,
+)
+
+_HTTPREQUEST = _descriptor.Descriptor(
+    name="HttpRequest",
+    full_name="google.cloud.tasks.v2beta3.HttpRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="url",
+            full_name="google.cloud.tasks.v2beta3.HttpRequest.url",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="http_method",
+            full_name="google.cloud.tasks.v2beta3.HttpRequest.http_method",
+            index=1,
+            number=2,
+            type=14,
+            cpp_type=8,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="headers",
+            full_name="google.cloud.tasks.v2beta3.HttpRequest.headers",
+            index=2,
+            number=3,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="body",
+            full_name="google.cloud.tasks.v2beta3.HttpRequest.body",
+            index=3,
+            number=4,
+            type=12,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b(""),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="oauth_token",
+            full_name="google.cloud.tasks.v2beta3.HttpRequest.oauth_token",
+            index=4,
+            number=5,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="oidc_token",
+            full_name="google.cloud.tasks.v2beta3.HttpRequest.oidc_token",
+            index=5,
+            number=6,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[_HTTPREQUEST_HEADERSENTRY],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[
+        _descriptor.OneofDescriptor(
+            name="authorization_header",
+            full_name="google.cloud.tasks.v2beta3.HttpRequest.authorization_header",
+            index=0,
+            containing_type=None,
+            fields=[],
+        )
+    ],
+    serialized_start=108,
+    serialized_end=476,
+)
 
 
 _APPENGINEHTTPQUEUE = _descriptor.Descriptor(
@@ -92,20 +299,20 @@ _APPENGINEHTTPQUEUE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=107,
-    serialized_end=210,
+    serialized_start=478,
+    serialized_end=581,
 )
 
 
@@ -131,7 +338,7 @@ _APPENGINEHTTPREQUEST_HEADERSENTRY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -149,20 +356,20 @@ _APPENGINEHTTPREQUEST_HEADERSENTRY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=_descriptor._ParseOptions(descriptor_pb2.MessageOptions(), _b("8\001")),
+    serialized_options=_b("8\001"),
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=488,
-    serialized_end=534,
+    serialized_start=406,
+    serialized_end=452,
 )
 
 _APPENGINEHTTPREQUEST = _descriptor.Descriptor(
@@ -187,7 +394,7 @@ _APPENGINEHTTPREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -205,7 +412,7 @@ _APPENGINEHTTPREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -223,7 +430,7 @@ _APPENGINEHTTPREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -241,7 +448,7 @@ _APPENGINEHTTPREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -259,20 +466,20 @@ _APPENGINEHTTPREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[_APPENGINEHTTPREQUEST_HEADERSENTRY],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=213,
-    serialized_end=534,
+    serialized_start=584,
+    serialized_end=905,
 )
 
 
@@ -298,7 +505,7 @@ _APPENGINEROUTING = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -316,7 +523,7 @@ _APPENGINEROUTING = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -334,7 +541,7 @@ _APPENGINEROUTING = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -352,22 +559,153 @@ _APPENGINEROUTING = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=536,
-    serialized_end=620,
+    serialized_start=907,
+    serialized_end=991,
 )
 
+
+_OAUTHTOKEN = _descriptor.Descriptor(
+    name="OAuthToken",
+    full_name="google.cloud.tasks.v2beta3.OAuthToken",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="service_account_email",
+            full_name="google.cloud.tasks.v2beta3.OAuthToken.service_account_email",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="scope",
+            full_name="google.cloud.tasks.v2beta3.OAuthToken.scope",
+            index=1,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=993,
+    serialized_end=1051,
+)
+
+
+_OIDCTOKEN = _descriptor.Descriptor(
+    name="OidcToken",
+    full_name="google.cloud.tasks.v2beta3.OidcToken",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="service_account_email",
+            full_name="google.cloud.tasks.v2beta3.OidcToken.service_account_email",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="audience",
+            full_name="google.cloud.tasks.v2beta3.OidcToken.audience",
+            index=1,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=1053,
+    serialized_end=1113,
+)
+
+_HTTPREQUEST_HEADERSENTRY.containing_type = _HTTPREQUEST
+_HTTPREQUEST.fields_by_name["http_method"].enum_type = _HTTPMETHOD
+_HTTPREQUEST.fields_by_name["headers"].message_type = _HTTPREQUEST_HEADERSENTRY
+_HTTPREQUEST.fields_by_name["oauth_token"].message_type = _OAUTHTOKEN
+_HTTPREQUEST.fields_by_name["oidc_token"].message_type = _OIDCTOKEN
+_HTTPREQUEST.oneofs_by_name["authorization_header"].fields.append(
+    _HTTPREQUEST.fields_by_name["oauth_token"]
+)
+_HTTPREQUEST.fields_by_name[
+    "oauth_token"
+].containing_oneof = _HTTPREQUEST.oneofs_by_name["authorization_header"]
+_HTTPREQUEST.oneofs_by_name["authorization_header"].fields.append(
+    _HTTPREQUEST.fields_by_name["oidc_token"]
+)
+_HTTPREQUEST.fields_by_name[
+    "oidc_token"
+].containing_oneof = _HTTPREQUEST.oneofs_by_name["authorization_header"]
 _APPENGINEHTTPQUEUE.fields_by_name[
     "app_engine_routing_override"
 ].message_type = _APPENGINEROUTING
@@ -379,11 +717,130 @@ _APPENGINEHTTPREQUEST.fields_by_name[
 _APPENGINEHTTPREQUEST.fields_by_name[
     "headers"
 ].message_type = _APPENGINEHTTPREQUEST_HEADERSENTRY
+DESCRIPTOR.message_types_by_name["HttpRequest"] = _HTTPREQUEST
 DESCRIPTOR.message_types_by_name["AppEngineHttpQueue"] = _APPENGINEHTTPQUEUE
 DESCRIPTOR.message_types_by_name["AppEngineHttpRequest"] = _APPENGINEHTTPREQUEST
 DESCRIPTOR.message_types_by_name["AppEngineRouting"] = _APPENGINEROUTING
+DESCRIPTOR.message_types_by_name["OAuthToken"] = _OAUTHTOKEN
+DESCRIPTOR.message_types_by_name["OidcToken"] = _OIDCTOKEN
 DESCRIPTOR.enum_types_by_name["HttpMethod"] = _HTTPMETHOD
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
+
+HttpRequest = _reflection.GeneratedProtocolMessageType(
+    "HttpRequest",
+    (_message.Message,),
+    dict(
+        HeadersEntry=_reflection.GeneratedProtocolMessageType(
+            "HeadersEntry",
+            (_message.Message,),
+            dict(
+                DESCRIPTOR=_HTTPREQUEST_HEADERSENTRY,
+                __module__="google.cloud.tasks_v2beta3.proto.target_pb2"
+                # @@protoc_insertion_point(class_scope:google.cloud.tasks.v2beta3.HttpRequest.HeadersEntry)
+            ),
+        ),
+        DESCRIPTOR=_HTTPREQUEST,
+        __module__="google.cloud.tasks_v2beta3.proto.target_pb2",
+        __doc__="""HTTP request.
+  
+  Warning: This is an
+  `alpha <https://cloud.google.com/terms/launch-stages>`_ feature. If you
+  haven't already joined, you can `use this form to sign
+  up <https://docs.google.com/forms/d/e/1FAIpQLSfc4uEy9CBHKYUSdnY1hdhKDCX7julVZHy3imOiR-XrU7bUNQ/viewform>`_.
+  
+  The task will be pushed to the worker as an HTTP request. If the worker
+  or the redirected worker acknowledges the task by returning a successful
+  HTTP response code ([``200`` - ``299``]), the task will removed from the
+  queue. If any other HTTP response code is returned or no response is
+  received, the task will be retried according to the following:
+  
+  -  User-specified throttling: [retry configuration][Queue.RetryConfig],
+     [rate limits][Queue.RateLimits], and the [queue's
+     state][google.cloud.tasks.v2beta3.Queue.state].
+  
+  -  System throttling: To prevent the worker from overloading, Cloud
+     Tasks may temporarily reduce the queue's effective rate.
+     User-specified settings will not be changed.
+  
+  System throttling happens because:
+  
+  -  Cloud Tasks backoffs on all errors. Normally the backoff specified in
+     [rate limits][Queue.RateLimits] will be used. But if the worker
+     returns ``429`` (Too Many Requests), ``503`` (Service Unavailable),
+     or the rate of errors is high, Cloud Tasks will use a higher backoff
+     rate. The retry specified in the ``Retry-After`` HTTP response header
+     is considered.
+  
+  -  To prevent traffic spikes and to smooth sudden large traffic spikes,
+     dispatches ramp up slowly when the queue is newly created or idle and
+     if large numbers of tasks suddenly become available to dispatch (due
+     to spikes in create task rates, the queue being unpaused, or many
+     tasks that are scheduled at the same time).
+  
+  
+  Attributes:
+      url:
+          Required. The full url path that the request will be sent to.
+          This string must begin with either "http://" or "https://".
+          Some examples are: ``http://acme.com`` and
+          ``https://acme.com/sales:8080``. Cloud Tasks will encode some
+          characters for safety and compatibility. The maximum allowed
+          URL length is 2083 characters after encoding.  The
+          ``Location`` header response from a redirect response [``300``
+          - ``399``] may be followed. The redirect is not counted as a
+          separate attempt.
+      http_method:
+          The HTTP method to use for the request. The default is POST.
+      headers:
+          HTTP request headers.  This map contains the header field
+          names and values. Headers can be set when the [task is
+          created][google.cloud.tasks.v2beta3.CloudTasks.CreateTask].
+          These headers represent a subset of the headers that will
+          accompany the task's HTTP request. Some HTTP request headers
+          will be ignored or replaced.  A partial list of headers that
+          will be ignored or replaced is:  -  Host: This will be
+          computed by Cloud Tasks and derived from
+          [HttpRequest.url][google.cloud.tasks.v2beta3.HttpRequest.url].
+          -  Content-Length: This will be computed by Cloud Tasks. -
+          User-Agent: This will be set to ``"Google-Cloud-Tasks"``. -
+          X-Google-\*: Google use only. -  X-AppEngine-\*: Google use
+          only.  ``Content-Type`` won't be set by Cloud Tasks. You can
+          explicitly set ``Content-Type`` to a media type when the [task
+          is created][google.cloud.tasks.v2beta3.CloudTasks.CreateTask].
+          For example, ``Content-Type`` can be set to
+          ``"application/octet-stream"`` or ``"application/json"``.
+          Headers which can have multiple values (according to RFC2616)
+          can be specified using comma-separated values.  The size of
+          the headers must be less than 80KB.
+      body:
+          HTTP request body.  A request body is allowed only if the
+          [HTTP
+          method][google.cloud.tasks.v2beta3.HttpRequest.http\_method]
+          is POST, PUT, or PATCH. It is an error to set body on a task
+          with an incompatible
+          [HttpMethod][google.cloud.tasks.v2beta3.HttpMethod].
+      authorization_header:
+          The mode for generating an ``Authorization`` header for HTTP
+          requests.  If specified, all ``Authorization`` headers in the
+          [HttpTarget.headers][] field will be overridden.
+      oauth_token:
+          If specified, an `OAuth token
+          <https://developers.google.com/identity/protocols/OAuth2>`_
+          will be generated and attached as an ``Authorization`` header
+          in the HTTP request.  This type of authorization should be
+          used when sending requests to a GCP endpoint.
+      oidc_token:
+          If specified, an `OIDC <https://developers.google.com/identity
+          /protocols/OpenIDConnect>`_ token will be generated and
+          attached as an ``Authorization`` header in the HTTP request.
+          This type of authorization should be used when sending
+          requests to third party endpoints.
+  """,
+        # @@protoc_insertion_point(class_scope:google.cloud.tasks.v2beta3.HttpRequest)
+    ),
+)
+_sym_db.RegisterMessage(HttpRequest)
+_sym_db.RegisterMessage(HttpRequest.HeadersEntry)
 
 AppEngineHttpQueue = _reflection.GeneratedProtocolMessageType(
     "AppEngineHttpQueue",
@@ -461,6 +918,11 @@ AppEngineHttpRequest = _reflection.GeneratedProtocolMessageType(
   Routed <https://cloud.google.com/appengine/docs/standard/python/how-requests-are-routed>`_
   and how routing is affected by `dispatch
   files <https://cloud.google.com/appengine/docs/python/config/dispatchref>`_.
+  Traffic is encrypted during transport and never leaves Google
+  datacenters. Because this traffic is carried over a communication
+  mechanism internal to Google, you cannot explicitly set the protocol
+  (for example, HTTP or HTTPS). The request to the handler, however, will
+  appear to have used the HTTP protocol.
   
   The [AppEngineRouting][google.cloud.tasks.v2beta3.AppEngineRouting] used
   to construct the URL that the task is delivered to can be set at the
@@ -477,6 +939,14 @@ AppEngineHttpRequest = _reflection.GeneratedProtocolMessageType(
   -  ``url =`` [host][google.cloud.tasks.v2beta3.AppEngineRouting.host]
      ``+``
      [relative\_uri][google.cloud.tasks.v2beta3.AppEngineHttpRequest.relative\_uri]
+  
+  Tasks can be dispatched to secure app handlers, unsecure app handlers,
+  and URIs restricted with
+  ```login: admin`` <https://cloud.google.com/appengine/docs/standard/python/config/appref>`_.
+  Because tasks are not run as any user, they cannot be dispatched to URIs
+  restricted with
+  ```login: required`` <https://cloud.google.com/appengine/docs/standard/python/config/appref>`_
+  Task dispatches also do not follow redirects.
   
   The task attempt has succeeded if the app's request handler returns an
   HTTP response code in the range [``200`` - ``299``]. ``503`` is
@@ -569,14 +1039,8 @@ AppEngineRouting = _reflection.GeneratedProtocolMessageType(
         __module__="google.cloud.tasks_v2beta3.proto.target_pb2",
         __doc__="""App Engine Routing.
   
-  Specifies the target URI. Since this target type dispatches tasks to
-  secure app handlers, unsecure app handlers, and URIs restricted with
-  ```login: admin`` <https://cloud.google.com/appengine/docs/standard/python/config/appref>`_
-  the protocol (for example, HTTP or HTTPS) cannot be explictly specified.
-  Task dispatches do not follow redirects and cannot target URI paths
-  restricted with
-  ```login: required`` <https://cloud.google.com/appengine/docs/standard/python/config/appref>`_
-  because tasks are not run as any user.
+  Defines routing characteristics specific to App Engine - service,
+  version, and instance.
   
   For more information about services, versions, and instances see `An
   Overview of App
@@ -655,16 +1119,65 @@ AppEngineRouting = _reflection.GeneratedProtocolMessageType(
 )
 _sym_db.RegisterMessage(AppEngineRouting)
 
-
-DESCRIPTOR.has_options = True
-DESCRIPTOR._options = _descriptor._ParseOptions(
-    descriptor_pb2.FileOptions(),
-    _b(
-        "\n\036com.google.cloud.tasks.v2beta3B\013TargetProtoP\001Z?google.golang.org/genproto/googleapis/cloud/tasks/v2beta3;tasks"
+OAuthToken = _reflection.GeneratedProtocolMessageType(
+    "OAuthToken",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_OAUTHTOKEN,
+        __module__="google.cloud.tasks_v2beta3.proto.target_pb2",
+        __doc__="""Contains information needed for generating an `OAuth
+  token <https://developers.google.com/identity/protocols/OAuth2>`_. This
+  type of authorization should be used when sending requests to a GCP
+  endpoint.
+  
+  
+  Attributes:
+      service_account_email:
+          `Service account email
+          <https://cloud.google.com/iam/docs/service-accounts>`_ to be
+          used for generating OAuth token. The service account must be
+          within the same project as the queue. The caller must have
+          iam.serviceAccounts.actAs permission for the service account.
+      scope:
+          OAuth scope to be used for generating OAuth access token. If
+          not specified, "https://www.googleapis.com/auth/cloud-
+          platform" will be used.
+  """,
+        # @@protoc_insertion_point(class_scope:google.cloud.tasks.v2beta3.OAuthToken)
     ),
 )
-_APPENGINEHTTPREQUEST_HEADERSENTRY.has_options = True
-_APPENGINEHTTPREQUEST_HEADERSENTRY._options = _descriptor._ParseOptions(
-    descriptor_pb2.MessageOptions(), _b("8\001")
+_sym_db.RegisterMessage(OAuthToken)
+
+OidcToken = _reflection.GeneratedProtocolMessageType(
+    "OidcToken",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_OIDCTOKEN,
+        __module__="google.cloud.tasks_v2beta3.proto.target_pb2",
+        __doc__="""Contains information needed for generating an `OpenID Connect
+  token <https://developers.google.com/identity/protocols/OpenIDConnect>`_.
+  This type of authorization should be used when sending requests to third
+  party endpoints.
+  
+  
+  Attributes:
+      service_account_email:
+          `Service account email
+          <https://cloud.google.com/iam/docs/service-accounts>`_ to be
+          used for generating OIDC token. The service account must be
+          within the same project as the queue. The caller must have
+          iam.serviceAccounts.actAs permission for the service account.
+      audience:
+          Audience to be used when generating OIDC token. If not
+          specified, the URI specified in target will be used.
+  """,
+        # @@protoc_insertion_point(class_scope:google.cloud.tasks.v2beta3.OidcToken)
+    ),
 )
+_sym_db.RegisterMessage(OidcToken)
+
+
+DESCRIPTOR._options = None
+_HTTPREQUEST_HEADERSENTRY._options = None
+_APPENGINEHTTPREQUEST_HEADERSENTRY._options = None
 # @@protoc_insertion_point(module_scope)

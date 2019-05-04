@@ -13,15 +13,25 @@
 # limitations under the License.
 
 import copy
+import json
 import unittest
 
 import mock
+import pytest
 from six.moves import http_client
 
 try:
     import pandas
 except (ImportError, AttributeError):  # pragma: NO COVER
     pandas = None
+try:
+    from google.cloud import bigquery_storage_v1beta1
+except (ImportError, AttributeError):  # pragma: NO COVER
+    bigquery_storage_v1beta1 = None
+try:
+    from tqdm import tqdm
+except (ImportError, AttributeError):  # pragma: NO COVER
+    tqdm = None
 
 
 def _make_credentials():
@@ -48,6 +58,47 @@ def _make_connection(*responses):
     mock_conn = mock.create_autospec(google.cloud.bigquery._http.Connection)
     mock_conn.api_request.side_effect = list(responses) + [NotFound("miss")]
     return mock_conn
+
+
+def _make_job_resource(
+    creation_time_ms=1437767599006,
+    started_time_ms=1437767600007,
+    ended_time_ms=1437767601008,
+    started=False,
+    ended=False,
+    etag="abc-def-hjk",
+    endpoint="https://www.googleapis.com",
+    job_type="load",
+    job_id="a-random-id",
+    project_id="some-project",
+    user_email="bq-user@example.com",
+):
+    resource = {
+        "configuration": {job_type: {}},
+        "statistics": {"creationTime": creation_time_ms, job_type: {}},
+        "etag": etag,
+        "id": "{}:{}".format(project_id, job_id),
+        "jobReference": {"projectId": project_id, "jobId": job_id},
+        "selfLink": "{}/bigquery/v2/projects/{}/jobs/{}".format(
+            endpoint, project_id, job_id
+        ),
+        "user_email": user_email,
+    }
+
+    if started or ended:
+        resource["statistics"]["startTime"] = started_time_ms
+
+    if ended:
+        resource["statistics"]["endTime"] = ended_time_ms
+
+    if job_type == "query":
+        resource["configuration"]["query"]["destinationTable"] = {
+            "projectId": project_id,
+            "datasetId": "_temp_dataset",
+            "tableId": "_temp_table",
+        }
+
+    return resource
 
 
 class Test__error_result_to_exception(unittest.TestCase):
@@ -965,6 +1016,7 @@ class _Base(object):
     from google.cloud.bigquery.dataset import DatasetReference
     from google.cloud.bigquery.table import TableReference
 
+    ENDPOINT = "https://www.googleapis.com"
     PROJECT = "project"
     SOURCE1 = "http://example.com/source1.csv"
     DS_ID = "dataset_id"
@@ -985,7 +1037,9 @@ class _Base(object):
         self.WHEN = datetime.datetime.utcfromtimestamp(self.WHEN_TS).replace(tzinfo=UTC)
         self.ETAG = "ETAG"
         self.FULL_JOB_ID = "%s:%s" % (self.PROJECT, self.JOB_ID)
-        self.RESOURCE_URL = "http://example.com/path/to/resource"
+        self.RESOURCE_URL = "{}/bigquery/v2/projects/{}/jobs/{}".format(
+            self.ENDPOINT, self.PROJECT, self.JOB_ID
+        )
         self.USER_EMAIL = "phred@example.com"
 
     def _table_ref(self, table_id):
@@ -995,30 +1049,19 @@ class _Base(object):
 
     def _make_resource(self, started=False, ended=False):
         self._setUpConstants()
-        resource = {
-            "configuration": {self.JOB_TYPE: {}},
-            "statistics": {"creationTime": self.WHEN_TS * 1000, self.JOB_TYPE: {}},
-            "etag": self.ETAG,
-            "id": self.FULL_JOB_ID,
-            "jobReference": {"projectId": self.PROJECT, "jobId": self.JOB_ID},
-            "selfLink": self.RESOURCE_URL,
-            "user_email": self.USER_EMAIL,
-        }
-
-        if started or ended:
-            resource["statistics"]["startTime"] = self.WHEN_TS * 1000
-
-        if ended:
-            resource["statistics"]["endTime"] = (self.WHEN_TS + 1000) * 1000
-
-        if self.JOB_TYPE == "query":
-            resource["configuration"]["query"]["destinationTable"] = {
-                "projectId": self.PROJECT,
-                "datasetId": "_temp_dataset",
-                "tableId": "_temp_table",
-            }
-
-        return resource
+        return _make_job_resource(
+            creation_time_ms=int(self.WHEN_TS * 1000),
+            started_time_ms=int(self.WHEN_TS * 1000),
+            ended_time_ms=int(self.WHEN_TS * 1000) + 1000000,
+            started=started,
+            ended=ended,
+            etag=self.ETAG,
+            endpoint=self.ENDPOINT,
+            job_type=self.JOB_TYPE,
+            job_id=self.JOB_ID,
+            project_id=self.PROJECT,
+            user_email=self.USER_EMAIL,
+        )
 
     def _verifyInitialReadonlyProperties(self, job):
         # root elements of resource
@@ -1777,6 +1820,8 @@ class TestLoadJob(unittest.TestCase, _Base):
         self.assertIsNone(job.source_format)
         self.assertIsNone(job.write_disposition)
         self.assertIsNone(job.destination_encryption_configuration)
+        self.assertIsNone(job.destination_table_description)
+        self.assertIsNone(job.destination_table_friendly_name)
         self.assertIsNone(job.time_partitioning)
         self.assertIsNone(job.use_avro_logical_types)
         self.assertIsNone(job.clustering_fields)
@@ -1795,6 +1840,16 @@ class TestLoadJob(unittest.TestCase, _Base):
             self.JOB_ID, [self.SOURCE1], self.TABLE_REF, client, config
         )
         self.assertEqual(job.schema, [full_name, age])
+        config.destination_table_description = "Description"
+        expected = {"description": "Description"}
+        self.assertEqual(
+            config._properties["load"]["destinationTableProperties"], expected
+        )
+        friendly_name = "Friendly Name"
+        config._properties["load"]["destinationTableProperties"] = {
+            "friendlyName": friendly_name
+        }
+        self.assertEqual(config.destination_table_friendly_name, friendly_name)
 
     def test_ctor_w_job_reference(self):
         from google.cloud.bigquery import job
@@ -3158,6 +3213,49 @@ class TestQueryJobConfig(unittest.TestCase, _Base):
         self.assertFalse(config.use_query_cache)
         self.assertTrue(config.use_legacy_sql)
 
+    def test_ctor_w_string_default_dataset(self):
+        from google.cloud.bigquery import dataset
+
+        default_dataset = "default-proj.default_dset"
+        config = self._get_target_class()(default_dataset=default_dataset)
+        expected = dataset.DatasetReference.from_string(default_dataset)
+        self.assertEqual(config.default_dataset, expected)
+
+    def test_ctor_w_string_destinaton(self):
+        from google.cloud.bigquery import table
+
+        destination = "dest-proj.dest_dset.dest_tbl"
+        config = self._get_target_class()(destination=destination)
+        expected = table.TableReference.from_string(destination)
+        self.assertEqual(config.destination, expected)
+
+    def test_default_dataset_w_string(self):
+        from google.cloud.bigquery import dataset
+
+        default_dataset = "default-proj.default_dset"
+        config = self._make_one()
+        config.default_dataset = default_dataset
+        expected = dataset.DatasetReference.from_string(default_dataset)
+        self.assertEqual(config.default_dataset, expected)
+
+    def test_default_dataset_w_dataset(self):
+        from google.cloud.bigquery import dataset
+
+        default_dataset = "default-proj.default_dset"
+        expected = dataset.DatasetReference.from_string(default_dataset)
+        config = self._make_one()
+        config.default_dataset = dataset.Dataset(expected)
+        self.assertEqual(config.default_dataset, expected)
+
+    def test_destinaton_w_string(self):
+        from google.cloud.bigquery import table
+
+        destination = "dest-proj.dest_dset.dest_tbl"
+        config = self._make_one()
+        config.destination = destination
+        expected = table.TableReference.from_string(destination)
+        self.assertEqual(config.destination, expected)
+
     def test_time_partitioning(self):
         from google.cloud.bigquery import table
 
@@ -3960,21 +4058,41 @@ class TestQueryJob(unittest.TestCase, _Base):
         self.assertEqual(job.estimated_bytes_processed, est_bytes)
 
     def test_result(self):
+        from google.cloud.bigquery.table import RowIterator
+
         query_resource = {
             "jobComplete": True,
             "jobReference": {"projectId": self.PROJECT, "jobId": self.JOB_ID},
             "schema": {"fields": [{"name": "col1", "type": "STRING"}]},
+            "totalRows": "2",
         }
-        connection = _make_connection(query_resource, query_resource)
+        tabledata_resource = {
+            # Explicitly set totalRows to be different from the query response.
+            # to test update during iteration.
+            "totalRows": "1",
+            "pageToken": None,
+            "rows": [{"f": [{"v": "abc"}]}],
+        }
+        connection = _make_connection(query_resource, tabledata_resource)
         client = _make_client(self.PROJECT, connection=connection)
         resource = self._make_resource(ended=True)
         job = self._get_target_class().from_api_repr(resource, client)
 
         result = job.result()
 
-        self.assertEqual(list(result), [])
+        self.assertIsInstance(result, RowIterator)
+        self.assertEqual(result.total_rows, 2)
+
+        rows = list(result)
+        self.assertEqual(len(rows), 1)
+        self.assertEqual(rows[0].col1, "abc")
+        # Test that the total_rows property has changed during iteration, based
+        # on the response from tabledata.list.
+        self.assertEqual(result.total_rows, 1)
 
     def test_result_w_empty_schema(self):
+        from google.cloud.bigquery.table import _EmptyRowIterator
+
         # Destination table may have no schema for some DDL and DML queries.
         query_resource = {
             "jobComplete": True,
@@ -3988,6 +4106,7 @@ class TestQueryJob(unittest.TestCase, _Base):
 
         result = job.result()
 
+        self.assertIsInstance(result, _EmptyRowIterator)
         self.assertEqual(list(result), [])
 
     def test_result_invokes_begins(self):
@@ -4543,6 +4662,149 @@ class TestQueryJob(unittest.TestCase, _Base):
         self.assertEqual(len(df), 4)  # verify the number of rows
         self.assertEqual(list(df), ["name", "age"])  # verify the column names
 
+    @unittest.skipIf(pandas is None, "Requires `pandas`")
+    def test_to_dataframe_ddl_query(self):
+        # Destination table may have no schema for some DDL and DML queries.
+        query_resource = {
+            "jobComplete": True,
+            "jobReference": {"projectId": self.PROJECT, "jobId": self.JOB_ID},
+            "schema": {"fields": []},
+        }
+        connection = _make_connection(query_resource)
+        client = _make_client(self.PROJECT, connection=connection)
+        resource = self._make_resource(ended=True)
+        job = self._get_target_class().from_api_repr(resource, client)
+
+        df = job.to_dataframe()
+
+        self.assertEqual(len(df), 0)
+
+    @unittest.skipIf(pandas is None, "Requires `pandas`")
+    @unittest.skipIf(
+        bigquery_storage_v1beta1 is None, "Requires `google-cloud-bigquery-storage`"
+    )
+    def test_to_dataframe_bqstorage(self):
+        query_resource = {
+            "jobComplete": True,
+            "jobReference": {"projectId": self.PROJECT, "jobId": self.JOB_ID},
+            "totalRows": "4",
+            "schema": {
+                "fields": [
+                    {"name": "name", "type": "STRING", "mode": "NULLABLE"},
+                    {"name": "age", "type": "INTEGER", "mode": "NULLABLE"},
+                ]
+            },
+        }
+        connection = _make_connection(query_resource)
+        client = _make_client(self.PROJECT, connection=connection)
+        resource = self._make_resource(ended=True)
+        job = self._get_target_class().from_api_repr(resource, client)
+        bqstorage_client = mock.create_autospec(
+            bigquery_storage_v1beta1.BigQueryStorageClient
+        )
+        session = bigquery_storage_v1beta1.types.ReadSession()
+        session.avro_schema.schema = json.dumps(
+            {
+                "type": "record",
+                "name": "__root__",
+                "fields": [
+                    {"name": "name", "type": ["null", "string"]},
+                    {"name": "age", "type": ["null", "long"]},
+                ],
+            }
+        )
+        bqstorage_client.create_read_session.return_value = session
+
+        job.to_dataframe(bqstorage_client=bqstorage_client)
+
+        bqstorage_client.create_read_session.assert_called_once_with(
+            mock.ANY,
+            "projects/{}".format(self.PROJECT),
+            read_options=mock.ANY,
+            # Use default number of streams for best performance.
+            requested_streams=0,
+        )
+
+    @unittest.skipIf(pandas is None, "Requires `pandas`")
+    def test_to_dataframe_column_dtypes(self):
+        begun_resource = self._make_resource()
+        query_resource = {
+            "jobComplete": True,
+            "jobReference": {"projectId": self.PROJECT, "jobId": self.JOB_ID},
+            "totalRows": "4",
+            "schema": {
+                "fields": [
+                    {"name": "start_timestamp", "type": "TIMESTAMP"},
+                    {"name": "seconds", "type": "INT64"},
+                    {"name": "miles", "type": "FLOAT64"},
+                    {"name": "km", "type": "FLOAT64"},
+                    {"name": "payment_type", "type": "STRING"},
+                    {"name": "complete", "type": "BOOL"},
+                    {"name": "date", "type": "DATE"},
+                ]
+            },
+        }
+        row_data = [
+            ["1.4338368E9", "420", "1.1", "1.77", "Cash", "true", "1999-12-01"],
+            ["1.3878117E9", "2580", "17.7", "28.5", "Cash", "false", "1953-06-14"],
+            ["1.3855653E9", "2280", "4.4", "7.1", "Credit", "true", "1981-11-04"],
+        ]
+        rows = [{"f": [{"v": field} for field in row]} for row in row_data]
+        query_resource["rows"] = rows
+        done_resource = copy.deepcopy(begun_resource)
+        done_resource["status"] = {"state": "DONE"}
+        connection = _make_connection(
+            begun_resource, query_resource, done_resource, query_resource
+        )
+        client = _make_client(project=self.PROJECT, connection=connection)
+        job = self._make_one(self.JOB_ID, self.QUERY, client)
+
+        df = job.to_dataframe(dtypes={"km": "float16"})
+
+        self.assertIsInstance(df, pandas.DataFrame)
+        self.assertEqual(len(df), 3)  # verify the number of rows
+        exp_columns = [field["name"] for field in query_resource["schema"]["fields"]]
+        self.assertEqual(list(df), exp_columns)  # verify the column names
+
+        self.assertEqual(df.start_timestamp.dtype.name, "datetime64[ns, UTC]")
+        self.assertEqual(df.seconds.dtype.name, "int64")
+        self.assertEqual(df.miles.dtype.name, "float64")
+        self.assertEqual(df.km.dtype.name, "float16")
+        self.assertEqual(df.payment_type.dtype.name, "object")
+        self.assertEqual(df.complete.dtype.name, "bool")
+        self.assertEqual(df.date.dtype.name, "object")
+
+    @unittest.skipIf(pandas is None, "Requires `pandas`")
+    @unittest.skipIf(tqdm is None, "Requires `tqdm`")
+    @mock.patch("tqdm.tqdm")
+    def test_to_dataframe_with_progress_bar(self, tqdm_mock):
+        begun_resource = self._make_resource()
+        query_resource = {
+            "jobComplete": True,
+            "jobReference": {"projectId": self.PROJECT, "jobId": self.JOB_ID},
+            "totalRows": "4",
+            "schema": {
+                "fields": [{"name": "name", "type": "STRING", "mode": "NULLABLE"}]
+            },
+        }
+        done_resource = copy.deepcopy(begun_resource)
+        done_resource["status"] = {"state": "DONE"}
+        connection = _make_connection(
+            begun_resource,
+            query_resource,
+            done_resource,
+            query_resource,
+            query_resource,
+        )
+        client = _make_client(project=self.PROJECT, connection=connection)
+        job = self._make_one(self.JOB_ID, self.QUERY, client)
+
+        job.to_dataframe(progress_bar_type=None)
+        tqdm_mock.assert_not_called()
+
+        job.to_dataframe(progress_bar_type="tqdm")
+        tqdm_mock.assert_called()
+
     def test_iter(self):
         import types
 
@@ -4815,3 +5077,93 @@ class TestTimelineEntry(unittest.TestCase, _Base):
         self.assertEqual(entry.pending_units, self.PENDING_UNITS)
         self.assertEqual(entry.completed_units, self.COMPLETED_UNITS)
         self.assertEqual(entry.slot_millis, self.SLOT_MILLIS)
+
+
+@pytest.mark.parametrize(
+    "query,expected",
+    (
+        (None, False),
+        ("", False),
+        ("select name, age from table", False),
+        ("select name, age from table LIMIT 10;", False),
+        ("select name, age from table order by other_column;", True),
+        ("Select name, age From table Order By other_column", True),
+        ("SELECT name, age FROM table ORDER BY other_column;", True),
+        ("select name, age from table order\nby other_column", True),
+        ("Select name, age From table Order\nBy other_column;", True),
+        ("SELECT name, age FROM table ORDER\nBY other_column", True),
+        ("SelecT name, age froM table OrdeR \n\t BY other_column;", True),
+    ),
+)
+def test__contains_order_by(query, expected):
+    from google.cloud.bigquery import job as mut
+
+    if expected:
+        assert mut._contains_order_by(query)
+    else:
+        assert not mut._contains_order_by(query)
+
+
+@pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
+@pytest.mark.skipif(
+    bigquery_storage_v1beta1 is None, reason="Requires `google-cloud-bigquery-storage`"
+)
+@pytest.mark.parametrize(
+    "query",
+    (
+        "select name, age from table order by other_column;",
+        "Select name, age From table Order By other_column;",
+        "SELECT name, age FROM table ORDER BY other_column;",
+        "select name, age from table order\nby other_column;",
+        "Select name, age From table Order\nBy other_column;",
+        "SELECT name, age FROM table ORDER\nBY other_column;",
+        "SelecT name, age froM table OrdeR \n\t BY other_column;",
+    ),
+)
+def test_to_dataframe_bqstorage_preserve_order(query):
+    from google.cloud.bigquery.job import QueryJob as target_class
+
+    job_resource = _make_job_resource(
+        project_id="test-project", job_type="query", ended=True
+    )
+    job_resource["configuration"]["query"]["query"] = query
+    job_resource["status"] = {"state": "DONE"}
+    get_query_results_resource = {
+        "jobComplete": True,
+        "jobReference": {"projectId": "test-project", "jobId": "test-job"},
+        "schema": {
+            "fields": [
+                {"name": "name", "type": "STRING", "mode": "NULLABLE"},
+                {"name": "age", "type": "INTEGER", "mode": "NULLABLE"},
+            ]
+        },
+        "totalRows": "4",
+    }
+    connection = _make_connection(get_query_results_resource, job_resource)
+    client = _make_client(connection=connection)
+    job = target_class.from_api_repr(job_resource, client)
+    bqstorage_client = mock.create_autospec(
+        bigquery_storage_v1beta1.BigQueryStorageClient
+    )
+    session = bigquery_storage_v1beta1.types.ReadSession()
+    session.avro_schema.schema = json.dumps(
+        {
+            "type": "record",
+            "name": "__root__",
+            "fields": [
+                {"name": "name", "type": ["null", "string"]},
+                {"name": "age", "type": ["null", "long"]},
+            ],
+        }
+    )
+    bqstorage_client.create_read_session.return_value = session
+
+    job.to_dataframe(bqstorage_client=bqstorage_client)
+
+    bqstorage_client.create_read_session.assert_called_once_with(
+        mock.ANY,
+        "projects/test-project",
+        read_options=mock.ANY,
+        # Use a single stream to preserve row order.
+        requested_streams=1,
+    )

@@ -4,6 +4,65 @@
 
 [1]: https://pypi.org/project/google-api-core/#history
 
+## 1.10.0
+
+04-29-2019 10:12 PDT
+
+### Implementation Changes
+
+- Append leading zeros for nanosecond precision DateTimes
+  ([#7663](https://github.com/googleapis/google-cloud-python/pull/7663))
+
+### New Features
+
+- Add `user_agent` property to `ClientInfo`
+  ([#7799](https://github.com/googleapis/google-cloud-python/pull/7799))
+
+## 1.9.0
+
+04-05-2019 10:38 PDT
+
+
+### Implementation Changes
+- Allow passing metadata as part of creating a bidi ([#7514](https://github.com/googleapis/google-cloud-python/pull/7514))
+
+### Internal / Testing Changes
+- Update setup.py
+- API Core: specify a pytype output directory in setup.cfg. ([#7639](https://github.com/googleapis/google-cloud-python/pull/7639))
+
+## 1.8.2
+
+03-22-2019 16:27 PDT
+
+
+### Implementation Changes
+- Remove classifier for Python 3.4 for end-of-life. ([#7535](https://github.com/googleapis/google-cloud-python/pull/7535))
+
+### Internal / Testing Changes
+- When re-opening a `ResumableBidiRPC` set `_request_queue_generator` to `None`. ([#7548](https://github.com/googleapis/google-cloud-python/pull/7548))
+
+## 1.8.1
+
+03-12-2019 12:45 PDT
+
+### Implementation Changes
+- Protect the creation of a background thread in BackgroundConsumer and wait on it starting. ([#7499](https://github.com/googleapis/google-cloud-python/pull/7499))
+
+## 1.8.0
+
+02-23-2019 15:46 PST
+
+
+### New Features
+- Add support to unwrap Anys into wrapped pb2 objects. ([#7430](https://github.com/googleapis/google-cloud-python/pull/7430))
+- Add `Operation.deserialize`. ([#7427](https://github.com/googleapis/google-cloud-python/pull/7427))
+
+### Documentation
+- Updated client library documentation URLs. ([#7307](https://github.com/googleapis/google-cloud-python/pull/7307))
+
+### Internal / Testing Changes
+- Fix new lint failure. ([#7382](https://github.com/googleapis/google-cloud-python/pull/7382))
+
 ## 1.7.0
 
 12-17-2018 13:56 PST

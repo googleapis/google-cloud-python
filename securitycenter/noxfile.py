@@ -45,6 +45,10 @@ def blacken(session):
     """Run black.
 
     Format code to uniform standard.
+    
+    This currently uses Python 3.6 due to the automated Kokoro run of synthtool.
+    That run uses an image that doesn't have 3.6 installed. Before updating this
+    check the state of the `gcp_ubuntu_config` we use for that Kokoro run.
     """
     session.install("black")
     session.run(
@@ -134,3 +138,26 @@ def cover(session):
     session.run("coverage", "report", "--show-missing", "--fail-under=100")
 
     session.run("coverage", "erase")
+
+
+@nox.session(python=["2.7", "3.5", "3.6", "3.7"])
+def snippets(session):
+    """Run the documentation example snippets."""
+    # Sanity check: Only run snippets system tests if the environment variable
+    # is set.
+    if not os.environ.get('GOOGLE_APPLICATION_CREDENTIALS', ''):
+        session.skip('Credentials must be set via environment variable.')
+    if not os.environ.get('GCLOUD_ORGANIZATION', ''):
+        session.skip('Credentials must be set via environment variable.')
+
+
+    # Install all test dependencies, then install local packages in place.
+    session.install('mock', 'pytest')
+    session.install('-e', '../test_utils/')
+    session.install('-e', '.')
+    session.run(
+        'py.test',
+        '--quiet',
+        os.path.join('docs', 'snippets_list_assets.py'),
+        *session.posargs
+    )

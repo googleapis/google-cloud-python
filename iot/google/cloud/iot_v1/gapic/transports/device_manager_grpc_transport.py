@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2018 Google LLC
+# Copyright 2019 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -100,7 +100,7 @@ class DeviceManagerGrpcTransport(object):
 
     @property
     def create_device_registry(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`DeviceManagerClient.create_device_registry`.
 
         Creates a device registry that contains devices.
 
@@ -113,7 +113,7 @@ class DeviceManagerGrpcTransport(object):
 
     @property
     def get_device_registry(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`DeviceManagerClient.get_device_registry`.
 
         Gets a device registry configuration.
 
@@ -126,7 +126,7 @@ class DeviceManagerGrpcTransport(object):
 
     @property
     def update_device_registry(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`DeviceManagerClient.update_device_registry`.
 
         Updates a device registry configuration.
 
@@ -139,7 +139,7 @@ class DeviceManagerGrpcTransport(object):
 
     @property
     def delete_device_registry(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`DeviceManagerClient.delete_device_registry`.
 
         Deletes a device registry configuration.
 
@@ -152,7 +152,7 @@ class DeviceManagerGrpcTransport(object):
 
     @property
     def list_device_registries(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`DeviceManagerClient.list_device_registries`.
 
         Lists device registries.
 
@@ -165,7 +165,7 @@ class DeviceManagerGrpcTransport(object):
 
     @property
     def create_device(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`DeviceManagerClient.create_device`.
 
         Creates a device in a device registry.
 
@@ -178,7 +178,7 @@ class DeviceManagerGrpcTransport(object):
 
     @property
     def get_device(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`DeviceManagerClient.get_device`.
 
         Gets details about a device.
 
@@ -191,7 +191,7 @@ class DeviceManagerGrpcTransport(object):
 
     @property
     def update_device(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`DeviceManagerClient.update_device`.
 
         Updates a device.
 
@@ -204,7 +204,7 @@ class DeviceManagerGrpcTransport(object):
 
     @property
     def delete_device(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`DeviceManagerClient.delete_device`.
 
         Deletes a device.
 
@@ -217,7 +217,7 @@ class DeviceManagerGrpcTransport(object):
 
     @property
     def list_devices(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`DeviceManagerClient.list_devices`.
 
         List devices in a device registry.
 
@@ -230,7 +230,7 @@ class DeviceManagerGrpcTransport(object):
 
     @property
     def modify_cloud_to_device_config(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`DeviceManagerClient.modify_cloud_to_device_config`.
 
         Modifies the configuration for the device, which is eventually sent from
         the Cloud IoT Core servers. Returns the modified configuration version and
@@ -245,7 +245,7 @@ class DeviceManagerGrpcTransport(object):
 
     @property
     def list_device_config_versions(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`DeviceManagerClient.list_device_config_versions`.
 
         Lists the last few versions of the device configuration in descending
         order (i.e.: newest first).
@@ -259,7 +259,7 @@ class DeviceManagerGrpcTransport(object):
 
     @property
     def list_device_states(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`DeviceManagerClient.list_device_states`.
 
         Lists the last few versions of the device state in descending order (i.e.:
         newest first).
@@ -273,7 +273,7 @@ class DeviceManagerGrpcTransport(object):
 
     @property
     def set_iam_policy(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`DeviceManagerClient.set_iam_policy`.
 
         Sets the access control policy on the specified resource. Replaces any
         existing policy.
@@ -287,7 +287,7 @@ class DeviceManagerGrpcTransport(object):
 
     @property
     def get_iam_policy(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`DeviceManagerClient.get_iam_policy`.
 
         Gets the access control policy for a resource.
         Returns an empty policy if the resource exists and does not have a policy
@@ -302,7 +302,7 @@ class DeviceManagerGrpcTransport(object):
 
     @property
     def test_iam_permissions(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`DeviceManagerClient.test_iam_permissions`.
 
         Returns permissions that a caller has on the specified resource. If the
         resource does not exist, this will return an empty set of permissions,
@@ -317,21 +317,23 @@ class DeviceManagerGrpcTransport(object):
 
     @property
     def send_command_to_device(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`DeviceManagerClient.send_command_to_device`.
 
         Sends a command to the specified device. In order for a device to be
-        able to receive commands, it must: 1) be connected to Cloud IoT Core
-        using the MQTT protocol, and 2) be subscribed to the group of MQTT
-        topics specified by /devices/{device-id}/commands/#. This subscription
-        will receive commands at the top-level topic
-        /devices/{device-id}/commands as well as commands for subfolders, like
-        /devices/{device-id}/commands/subfolder. Note that subscribing to
-        specific subfolders is not supported. If the command could not be
-        delivered to the device, this method will return an error; in
-        particular, if the device is not subscribed, this method will return
-        FAILED\_PRECONDITION. Otherwise, this method will return OK. If the
-        subscription is QoS 1, at least once delivery will be guaranteed; for
-        QoS 0, no acknowledgment will be expected from the device.
+        able to receive commands, it must:
+
+        1) be connected to Cloud IoT Core using the MQTT protocol, and
+        2) be subscribed to the group of MQTT topics specified by
+           /devices/{device-id}/commands/#. This subscription will receive
+           commands at the top-level topic /devices/{device-id}/commands as well
+           as commands for subfolders, like
+           /devices/{device-id}/commands/subfolder. Note that subscribing to
+           specific subfolders is not supported. If the command could not be
+           delivered to the device, this method will return an error; in
+           particular, if the device is not subscribed, this method will return
+           FAILED\_PRECONDITION. Otherwise, this method will return OK. If the
+           subscription is QoS 1, at least once delivery will be guaranteed; for
+           QoS 0, no acknowledgment will be expected from the device.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -342,7 +344,7 @@ class DeviceManagerGrpcTransport(object):
 
     @property
     def bind_device_to_gateway(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`DeviceManagerClient.bind_device_to_gateway`.
 
         Associates the device with the gateway.
 
@@ -355,7 +357,7 @@ class DeviceManagerGrpcTransport(object):
 
     @property
     def unbind_device_from_gateway(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`DeviceManagerClient.unbind_device_from_gateway`.
 
         Deletes the association between the device and the gateway.
 

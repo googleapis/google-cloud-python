@@ -4,6 +4,86 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
+## 1.11.2
+
+04-05-2019 08:16 PDT
+
+### Dependencies
+
+- Add dependency on protobuf. ([#7668](https://github.com/googleapis/google-cloud-python/pull/7668))
+
+## 1.11.1
+
+04-04-2019 09:19 PDT
+
+### Internal / Testing Changes
+
+- Increment version number in `setup.py`.
+
+## 1.11.0
+
+04-03-2019 19:33 PDT
+
+### Implementation Changes
+
+- Remove classifier for Python 3.4 for end-of-life. ([#7535](https://github.com/googleapis/google-cloud-python/pull/7535))
+
+### New Features
+
+- Enable fastparquet support by using temporary file in `load_table_from_dataframe` ([#7545](https://github.com/googleapis/google-cloud-python/pull/7545))
+- Allow string for copy sources, query destination, and default dataset ([#7560](https://github.com/googleapis/google-cloud-python/pull/7560))
+- Add `progress_bar_type` argument to `to_dataframe` to use `tqdm` to display a progress bar ([#7552](https://github.com/googleapis/google-cloud-python/pull/7552))
+- Call `get_table` in `list_rows` if the schema is not available ([#7621](https://github.com/googleapis/google-cloud-python/pull/7621))
+- Fallback to BQ API when there are problems reading from BQ Storage. ([#7633](https://github.com/googleapis/google-cloud-python/pull/7633))
+- Add methods for Models API ([#7562](https://github.com/googleapis/google-cloud-python/pull/7562))
+- Add option to use BigQuery Storage API from IPython magics ([#7640](https://github.com/googleapis/google-cloud-python/pull/7640))
+
+### Documentation
+
+- Remove typo in `Table.from_api_repr` docstring. ([#7509](https://github.com/googleapis/google-cloud-python/pull/7509))
+- Add docs session to nox configuration for BigQuery ([#7541](https://github.com/googleapis/google-cloud-python/pull/7541))
+
+### Internal / Testing Changes
+
+- Refactor `table()` methods into shared implementation. ([#7516](https://github.com/googleapis/google-cloud-python/pull/7516))
+- Blacken noxfile and setup file in nox session ([#7619](https://github.com/googleapis/google-cloud-python/pull/7619))
+- Actually use the `progress_bar_type` argument in `QueryJob.to_dataframe()`. ([#7616](https://github.com/googleapis/google-cloud-python/pull/7616))
+
+## 1.10.0
+
+03-06-2019 15:20 PST
+
+### Implementation Changes
+
+- Harden 'ArrayQueryParameter.from_api_repr' against missing 'parameterValue'. ([#7311](https://github.com/googleapis/google-cloud-python/pull/7311))
+- Allow nested records w/ null values. ([#7297](https://github.com/googleapis/google-cloud-python/pull/7297))
+
+### New Features
+
+- Add options to ignore errors when creating/deleting datasets/tables. ([#7491](https://github.com/googleapis/google-cloud-python/pull/7491))
+- Accept a string in Table and Dataset constructors. ([#7483](https://github.com/googleapis/google-cloud-python/pull/7483))
+
+### Documentation
+
+- Update docstring of RowIterator's to_dataframe ([#7306](https://github.com/googleapis/google-cloud-python/pull/7306))
+- Updated client library documentation URLs. ([#7307](https://github.com/googleapis/google-cloud-python/pull/7307))
+
+### Internal / Testing Changes
+
+- Fix lint. ([#7383](https://github.com/googleapis/google-cloud-python/pull/7383))
+
+## 1.9.0
+
+02-04-2019 13:28 PST
+
+### New Features
+
+- Add arguments to select `dtypes` and use BQ Storage API to `QueryJob.to_dataframe()`. ([#7241](https://github.com/googleapis/google-cloud-python/pull/7241))
+
+### Documentation
+
+- Add sample for fetching `total_rows` from query results. ([#7217](https://github.com/googleapis/google-cloud-python/pull/7217))
+
 ## 1.8.1
 
 12-17-2018 17:53 PST

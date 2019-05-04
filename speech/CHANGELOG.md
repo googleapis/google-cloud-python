@@ -4,6 +4,50 @@
 
 [1]: https://pypi.org/project/google-cloud-speech/#history
 
+## 1.0.0
+
+03-18-2019 08:05 PDT
+
+
+### Implementation Changes
+- Remove unused message exports. ([#7275](https://github.com/googleapis/google-cloud-python/pull/7275))
+
+### New Features
+- Promote google-cloud-speech to GA ([#7525](https://github.com/googleapis/google-cloud-python/pull/7525))
+
+### Documentation
+- Updated client library documentation URLs. ([#7307](https://github.com/googleapis/google-cloud-python/pull/7307))
+
+### Internal / Testing Changes
+- Speech: copy lintified proto files (via synth).
+- Add clarifying comment to blacken nox target. ([#7404](https://github.com/googleapis/google-cloud-python/pull/7404))
+- Copy proto files alongside protoc versions. Remove unneeded utf-8 header.
+
+## 0.36.3
+
+01-31-2019 09:57 PST
+
+
+### New Features
+- Add 'RecognitionConfig.audio_channel_count' field via synth. ([#7240](https://github.com/googleapis/google-cloud-python/pull/7240))
+
+### Documentation
+- Modify file headers. ([#7158](https://github.com/googleapis/google-cloud-python/pull/7158))
+
+### Internal / Testing Changes
+- Add protos as an artifact to library ([#7205](https://github.com/googleapis/google-cloud-python/pull/7205))
+
+## 0.36.2
+
+01-10-2019 15:36 PST
+
+### Implementation Changes
+- Protoc-generated serialization update. ([#7106](https://github.com/googleapis/google-cloud-python/pull/7106))
+
+### Documentation
+- Regenerate speech to change quote chars in docstr.
+- Pick up stub docstring fix in GAPIC generator. ([#6982](https://github.com/googleapis/google-cloud-python/pull/6982))
+
 ## 0.36.1
 
 12-18-2018 09:46 PST

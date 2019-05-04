@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2018 Google LLC
+# Copyright 2019 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,25 +16,6 @@
 """Wrappers for protocol buffer enum types."""
 
 import enum
-
-
-class TraceSpan(object):
-    class SpanKind(enum.IntEnum):
-        """
-        Type of span. Can be used to specify additional relationships between spans
-        in addition to a parent/child relationship.
-
-        Attributes:
-          SPAN_KIND_UNSPECIFIED (int): Unspecified.
-          RPC_SERVER (int): Indicates that the span covers server-side handling of an RPC or other
-          remote network request.
-          RPC_CLIENT (int): Indicates that the span covers the client-side wrapper around an RPC or
-          other remote request.
-        """
-
-        SPAN_KIND_UNSPECIFIED = 0
-        RPC_SERVER = 1
-        RPC_CLIENT = 2
 
 
 class ListTracesRequest(object):
@@ -57,3 +38,22 @@ class ListTracesRequest(object):
         MINIMAL = 1
         ROOTSPAN = 2
         COMPLETE = 3
+
+
+class TraceSpan(object):
+    class SpanKind(enum.IntEnum):
+        """
+        Type of span. Can be used to specify additional relationships between spans
+        in addition to a parent/child relationship.
+
+        Attributes:
+          SPAN_KIND_UNSPECIFIED (int): Unspecified.
+          RPC_SERVER (int): Indicates that the span covers server-side handling of an RPC or other
+          remote network request.
+          RPC_CLIENT (int): Indicates that the span covers the client-side wrapper around an RPC or
+          other remote request.
+        """
+
+        SPAN_KIND_UNSPECIFIED = 0
+        RPC_SERVER = 1
+        RPC_CLIENT = 2

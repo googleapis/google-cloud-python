@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2018 Google LLC
+# Copyright 2019 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -91,7 +91,13 @@ class BigQueryStorageGrpcTransport(object):
             grpc.Channel: A gRPC channel object.
         """
         return google.api_core.grpc_helpers.create_channel(  # pragma: no cover
-            address, credentials=credentials, scopes=cls._OAUTH_SCOPES
+            address,
+            credentials=credentials,
+            scopes=cls._OAUTH_SCOPES,
+            options={
+                "grpc.max_send_message_length": -1,
+                "grpc.max_receive_message_length": -1,
+            }.items(),
         )
 
     @property
@@ -105,7 +111,7 @@ class BigQueryStorageGrpcTransport(object):
 
     @property
     def create_read_session(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`BigQueryStorageClient.create_read_session`.
 
         Creates a new read session. A read session divides the contents of a
         BigQuery table into one or more streams, which can then be used to read
@@ -129,7 +135,7 @@ class BigQueryStorageGrpcTransport(object):
 
     @property
     def read_rows(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`BigQueryStorageClient.read_rows`.
 
         Reads rows from the table in the format prescribed by the read session.
         Each response contains one or more table rows, up to a maximum of 10 MiB
@@ -150,7 +156,7 @@ class BigQueryStorageGrpcTransport(object):
 
     @property
     def batch_create_read_session_streams(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`BigQueryStorageClient.batch_create_read_session_streams`.
 
         Creates additional streams for a ReadSession. This API can be used to
         dynamically adjust the parallelism of a batch processing task upwards by
@@ -165,7 +171,7 @@ class BigQueryStorageGrpcTransport(object):
 
     @property
     def finalize_stream(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`BigQueryStorageClient.finalize_stream`.
 
         Triggers the graceful termination of a single stream in a ReadSession. This
         API can be used to dynamically adjust the parallelism of a batch processing
@@ -191,7 +197,7 @@ class BigQueryStorageGrpcTransport(object):
 
     @property
     def split_read_stream(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`BigQueryStorageClient.split_read_stream`.
 
         Splits a given read stream into two Streams. These streams are referred
         to as the primary and the residual of the split. The original stream can

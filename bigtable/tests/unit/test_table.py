@@ -752,6 +752,7 @@ class TestTable(unittest.TestCase):
     def test_yield_retry_rows(self):
         from google.cloud.bigtable_v2.gapic import bigtable_client
         from google.cloud.bigtable_admin_v2.gapic import bigtable_table_admin_client
+        import warnings
 
         data_api = bigtable_client.BigtableClient(mock.Mock())
         table_api = bigtable_table_admin_client.BigtableTableAdminClient(mock.Mock())
@@ -799,8 +800,14 @@ class TestTable(unittest.TestCase):
         )
 
         rows = []
-        for row in table.yield_rows(start_key=self.ROW_KEY_1, end_key=self.ROW_KEY_2):
-            rows.append(row)
+        with warnings.catch_warnings(record=True) as warned:
+            for row in table.yield_rows(
+                start_key=self.ROW_KEY_1, end_key=self.ROW_KEY_2
+            ):
+                rows.append(row)
+
+        self.assertEqual(len(warned), 1)
+        self.assertIs(warned[0].category, DeprecationWarning)
 
         result = rows[1]
         self.assertEqual(result.row_key, self.ROW_KEY_2)
@@ -810,6 +817,7 @@ class TestTable(unittest.TestCase):
         from google.cloud.bigtable_admin_v2.gapic import bigtable_table_admin_client
         from google.cloud.bigtable.row_set import RowSet
         from google.cloud.bigtable.row_set import RowRange
+        import warnings
 
         data_api = bigtable_client.BigtableClient(mock.Mock())
         table_api = bigtable_table_admin_client.BigtableTableAdminClient(mock.Mock())
@@ -866,8 +874,13 @@ class TestTable(unittest.TestCase):
             RowRange(start_key=self.ROW_KEY_1, end_key=self.ROW_KEY_2)
         )
         row_set.add_row_key(self.ROW_KEY_3)
-        for row in table.yield_rows(row_set=row_set):
-            rows.append(row)
+
+        with warnings.catch_warnings(record=True) as warned:
+            for row in table.yield_rows(row_set=row_set):
+                rows.append(row)
+
+        self.assertEqual(len(warned), 1)
+        self.assertIs(warned[0].category, DeprecationWarning)
 
         self.assertEqual(rows[0].row_key, self.ROW_KEY_1)
         self.assertEqual(rows[1].row_key, self.ROW_KEY_2)
@@ -1202,59 +1215,6 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
 
         self.assertEqual(
             client._table_data_client._inner_api_calls["mutate_rows"].call_count, 2
-        )
-        self.assertEqual(result, expected_result)
-
-    def test_callable_retry_timeout(self):
-        from google.cloud.bigtable.row import DirectRow
-        from google.cloud.bigtable.table import DEFAULT_RETRY
-        from google.cloud.bigtable_v2.gapic import bigtable_client
-        from google.cloud.bigtable_admin_v2.gapic import bigtable_table_admin_client
-
-        # Setup:
-        #   - Mutate 2 rows.
-        # Action:
-        #   - Initial attempt will mutate all 2 rows.
-        # Expectation:
-        #   - Both rows always return retryable errors.
-        #   - google.api_core.Retry should keep retrying.
-        #   - Check MutateRows is called multiple times.
-        #   - By the time deadline is reached, statuses should be
-        #       [retryable, retryable]
-
-        data_api = bigtable_client.BigtableClient(mock.Mock())
-        table_api = bigtable_table_admin_client.BigtableTableAdminClient(mock.Mock())
-        credentials = _make_credentials()
-        client = self._make_client(
-            project="project-id", credentials=credentials, admin=True
-        )
-        client._table_data_client = data_api
-        client._table_admin_client = table_api
-        instance = client.instance(instance_id=self.INSTANCE_ID)
-        table = self._make_table(self.TABLE_ID, instance)
-
-        row_1 = DirectRow(row_key=b"row_key", table=table)
-        row_1.set_cell("cf", b"col", b"value1")
-        row_2 = DirectRow(row_key=b"row_key_2", table=table)
-        row_2.set_cell("cf", b"col", b"value2")
-
-        response = self._make_responses([self.RETRYABLE_1, self.RETRYABLE_1])
-
-        # Patch the stub used by the API method.
-        inner_api_calls = client._table_data_client._inner_api_calls
-        inner_api_calls["mutate_rows"] = mock.Mock(return_value=[response])
-
-        retry = DEFAULT_RETRY.with_delay(
-            initial=0.1, maximum=0.2, multiplier=2.0
-        ).with_deadline(0.5)
-        worker = self._make_worker(client, table.name, [row_1, row_2])
-        statuses = worker(retry=retry)
-
-        result = [status.code for status in statuses]
-        expected_result = [self.RETRYABLE_1, self.RETRYABLE_1]
-
-        self.assertTrue(
-            client._table_data_client._inner_api_calls["mutate_rows"].call_count > 1
         )
         self.assertEqual(result, expected_result)
 

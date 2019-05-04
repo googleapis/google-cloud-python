@@ -31,6 +31,7 @@ v3_library = gapic.py_library(
     "v3",
     config_path="/google/monitoring/artman_monitoring.yaml",
     artman_output_name="monitoring-v3",
+    include_protos=True,
 )
 
 # don't copy nox.py, setup.py, README.rst, docs/index.rst
@@ -105,6 +106,6 @@ s.replace(
 # Add templated files
 # ----------------------------------------------------------------------------
 templated_files = common.py_library(unit_cov_level=97, cov_level=97)
-s.move(templated_files)
+s.move(templated_files, excludes=["noxfile.py"])
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)

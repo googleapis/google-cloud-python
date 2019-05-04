@@ -1,7 +1,7 @@
 Python Client for Cloud Tasks API
 =================================
 
-|alpha| |pypi| |versions|
+|GA| |pypi| |versions|
 
 `Cloud Tasks API`_: Manages the execution of large numbers of distributed
 requests.
@@ -9,14 +9,14 @@ requests.
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. |alpha| image:: https://img.shields.io/badge/support-alpha-orange.svg
-   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#alpha-support
+.. |GA| image:: https://img.shields.io/badge/support-GA-gold.svg
+   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#general-availability
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-tasks.svg
    :target: https://pypi.org/project/google-cloud-tasks/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-tasks.svg
    :target: https://pypi.org/project/google-cloud-tasks/
 .. _Cloud Tasks API: https://cloud.google.com/tasks
-.. _Client Library Documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/tasks/index.html
+.. _Client Library Documentation: https://googleapis.github.io/google-cloud-python/latest/tasks/index.html
 .. _Product Documentation:  https://cloud.google.com/tasks
 
 Quick Start
@@ -32,7 +32,7 @@ In order to use this library, you first need to go through the following steps:
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
 .. _Enable the Cloud Tasks API.:  https://console.cloud.google.com/apis/library/cloudtasks.googleapis.com
-.. _Setup Authentication.: https://googlecloudplatform.github.io/google-cloud-python/latest/core/auth.html
+.. _Setup Authentication.: https://googleapis.github.io/google-cloud-python/latest/core/auth.html
 
 Installation
 ~~~~~~~~~~~~
@@ -50,7 +50,7 @@ dependencies.
 
 Supported Python Versions
 ^^^^^^^^^^^^^^^^^^^^^^^^^
-Python >= 3.4
+Python >= 3.5
 
 Deprecated Python Versions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^

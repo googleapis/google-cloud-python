@@ -28,11 +28,13 @@ library = gapic.py_library(
     config_path="/google/cloud/websecurityscanner"
     "/artman_websecurityscanner_v1alpha.yaml",
     artman_output_name="websecurityscanner-v1alpha",
+    include_protos=True,
 )
 
 s.move(library / "google/cloud/websecurityscanner_v1alpha/proto")
 s.move(library / "google/cloud/websecurityscanner_v1alpha/gapic")
 s.move(library / "tests/unit/gapic/v1alpha")
+s.move(library / "docs/conf.py")
 
 # ----------------------------------------------------------------------------
 # Add templated files

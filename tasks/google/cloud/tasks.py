@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2018 Google LLC
+# Copyright 2019 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,8 +16,8 @@
 
 from __future__ import absolute_import
 
-from google.cloud.tasks_v2beta3 import CloudTasksClient
-from google.cloud.tasks_v2beta3 import enums
-from google.cloud.tasks_v2beta3 import types
+from google.cloud.tasks_v2 import CloudTasksClient
+from google.cloud.tasks_v2 import enums
+from google.cloud.tasks_v2 import types
 
 __all__ = ("enums", "types", "CloudTasksClient")

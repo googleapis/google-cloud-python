@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2018 Google LLC
+# Copyright 2019 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -110,7 +110,7 @@ class NotificationChannelServiceGrpcTransport(object):
 
     @property
     def list_notification_channel_descriptors(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`NotificationChannelServiceClient.list_notification_channel_descriptors`.
 
         Lists the descriptors for supported channel types. The use of descriptors
         makes it possible for new channel types to be dynamically added.
@@ -126,7 +126,7 @@ class NotificationChannelServiceGrpcTransport(object):
 
     @property
     def get_notification_channel_descriptor(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`NotificationChannelServiceClient.get_notification_channel_descriptor`.
 
         Gets a single channel descriptor. The descriptor indicates which fields
         are expected / permitted for a notification channel of the given type.
@@ -142,7 +142,7 @@ class NotificationChannelServiceGrpcTransport(object):
 
     @property
     def list_notification_channels(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`NotificationChannelServiceClient.list_notification_channels`.
 
         Lists the notification channels that have been created for the project.
 
@@ -155,7 +155,7 @@ class NotificationChannelServiceGrpcTransport(object):
 
     @property
     def get_notification_channel(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`NotificationChannelServiceClient.get_notification_channel`.
 
         Gets a single notification channel. The channel includes the relevant
         configuration details with which the channel was created. However, the
@@ -172,7 +172,7 @@ class NotificationChannelServiceGrpcTransport(object):
 
     @property
     def create_notification_channel(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`NotificationChannelServiceClient.create_notification_channel`.
 
         Creates a new notification channel, representing a single notification
         endpoint such as an email address, SMS number, or PagerDuty service.
@@ -188,7 +188,7 @@ class NotificationChannelServiceGrpcTransport(object):
 
     @property
     def update_notification_channel(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`NotificationChannelServiceClient.update_notification_channel`.
 
         Updates a notification channel. Fields not specified in the field mask
         remain unchanged.
@@ -204,7 +204,7 @@ class NotificationChannelServiceGrpcTransport(object):
 
     @property
     def delete_notification_channel(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`NotificationChannelServiceClient.delete_notification_channel`.
 
         Deletes a notification channel.
 

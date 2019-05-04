@@ -19,7 +19,7 @@ from synthtool import gcp
 
 gapic = gcp.GAPICGenerator()
 common = gcp.CommonTemplates()
-versions = ["v1beta1"]
+versions = ["v1beta1", "v1"]
 
 excludes = ["setup.py", "nox*.py", "README.rst", "docs/conf.py", "docs/index.rst"]
 
@@ -32,18 +32,19 @@ for version in versions:
         version,
         config_path=f"/google/cloud/asset/artman_cloudasset_{version}.yaml",
         artman_output_name=f"asset-{version}",
+        include_protos=True,
     )
 
     s.move(library, excludes=excludes)
 
 s.replace(
-    "google/cloud/asset_v1beta1/proto/assets_pb2.py",
+    "google/cloud/asset_v*/proto/assets_pb2.py",
     "from google.iam.v1 import policy_pb2 as",
     "from google.iam.v1 import iam_policy_pb2_grpc as",
 )
 
 s.replace(
-    "google/cloud/asset_v1beta1/proto/assets_pb2.py",
+    "google/cloud/asset_v*/proto/assets_pb2.py",
     "from google.iam.v1 import iam_policy_pb2_grpc "
     "as google_dot_iam_dot_v1_dot_policy__pb2",
     "from google.iam.v1 import iam_policy_pb2 "
@@ -51,7 +52,7 @@ s.replace(
 )
 
 s.replace(
-    "google/cloud/asset_v1beta1/proto/assets_pb2.py",
+    "google/cloud/asset_v*/proto/assets_pb2.py",
     "_ASSET.fields_by_name\['iam_policy'\].message_type "
     "= google_dot_iam_dot_v1_dot_policy__pb2._POLICY",
     "_ASSET.fields_by_name['iam_policy'].message_type = google_dot_iam_dot"
@@ -74,7 +75,7 @@ _FIXED_ASSET_DOCSTRING = """
 """
 
 s.replace(
-    "google/cloud/asset_v1beta1/proto/assets_pb2.py",
+    "google/cloud/asset_v*/proto/assets_pb2.py",
     _BORKED_ASSET_DOCSTRING,
     _FIXED_ASSET_DOCSTRING,
 )

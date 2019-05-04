@@ -15,6 +15,7 @@
 import unittest
 
 import mock
+import pytest
 
 
 class TestAccessEntry(unittest.TestCase):
@@ -149,6 +150,13 @@ class TestDatasetReference(unittest.TestCase):
         self.assertEqual(table_ref.dataset_id, "dataset_1")
         self.assertEqual(table_ref.project, "some-project-1")
         self.assertEqual(table_ref.table_id, "table_1")
+
+    def test_model(self):
+        dataset_ref = self._make_one("some-project-1", "dataset_1")
+        model_ref = dataset_ref.model("model_1")
+        self.assertEqual(model_ref.project, "some-project-1")
+        self.assertEqual(model_ref.dataset_id, "dataset_1")
+        self.assertEqual(model_ref.model_id, "model_1")
 
     def test_to_api_repr(self):
         dataset = self._make_one("project_1", "dataset_1")
@@ -363,6 +371,16 @@ class TestDataset(unittest.TestCase):
         self.assertIsNone(dataset.description)
         self.assertIsNone(dataset.friendly_name)
         self.assertIsNone(dataset.location)
+
+    def test_ctor_string(self):
+        dataset = self._make_one("some-project.some_dset")
+        self.assertEqual(dataset.project, "some-project")
+        self.assertEqual(dataset.dataset_id, "some_dset")
+
+    def test_ctor_string_wo_project_id(self):
+        with pytest.raises(ValueError):
+            # Project ID is missing.
+            self._make_one("some_dset")
 
     def test_ctor_explicit(self):
         from google.cloud.bigquery.dataset import DatasetReference, AccessEntry

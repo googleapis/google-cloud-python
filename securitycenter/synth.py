@@ -18,16 +18,19 @@ from synthtool import gcp
 
 gapic = gcp.GAPICGenerator()
 common = gcp.CommonTemplates()
+versions = ["v1beta1", "v1"]
 
 # ----------------------------------------------------------------------------
 # Generate securitycenter GAPIC layer
 # ----------------------------------------------------------------------------
-library = gapic.py_library("securitycenter", "v1beta1")
+for version in versions:
+    library = gapic.py_library("securitycenter", version, include_protos=True)
+    s.move(library / f"google/cloud/securitycenter_{version}")
+    s.move(library / f"tests/unit/gapic/{version}")
+    s.move(library / f"docs/gapic/{version}")
 
-s.move(
-    library,
-    excludes=["setup.py", "nox.py", "README.rst", "docs/index.rst", "docs/conf.py"],
-)
+# Use the highest version library to generate import alias.
+s.move(library / "google/cloud/securitycenter.py")
 
 # Add encoding header to protoc-generated files.
 # See: https://github.com/googleapis/gapic-generator/issues/2097
@@ -37,6 +40,6 @@ s.replace("**/proto/*_pb2.py", r"(^.*$\n)*", r"# -*- coding: utf-8 -*-\n\g<0>")
 # Add templated files
 # ----------------------------------------------------------------------------
 templated_files = common.py_library(unit_cov_level=97, cov_level=100)
-s.move(templated_files)
+s.move(templated_files, excludes=['noxfile.py'])
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)

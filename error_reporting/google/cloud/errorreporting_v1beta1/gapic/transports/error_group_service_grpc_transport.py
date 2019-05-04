@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2018 Google LLC
+# Copyright 2019 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -104,7 +104,7 @@ class ErrorGroupServiceGrpcTransport(object):
 
     @property
     def get_group(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`ErrorGroupServiceClient.get_group`.
 
         Get the specified group.
 
@@ -117,7 +117,7 @@ class ErrorGroupServiceGrpcTransport(object):
 
     @property
     def update_group(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`ErrorGroupServiceClient.update_group`.
 
         Replace the data for the specified group.
         Fails if the group does not exist.

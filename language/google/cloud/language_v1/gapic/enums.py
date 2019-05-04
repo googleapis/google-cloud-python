@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2018 Google LLC
+# Copyright 2019 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -33,7 +33,7 @@ class EncodingType(enum.IntEnum):
       based on the UTF-8 encoding of the input. C++ and Go are examples of
       languages that use this encoding natively.
       UTF16 (int): Encoding-dependent information (such as ``begin_offset``) is calculated
-      based on the UTF-16 encoding of the input. Java and Javascript are
+      based on the UTF-16 encoding of the input. Java and JavaScript are
       examples of languages that use this encoding natively.
       UTF32 (int): Encoding-dependent information (such as ``begin_offset``) is calculated
       based on the UTF-32 encoding of the input. Python is an example of a
@@ -44,6 +44,182 @@ class EncodingType(enum.IntEnum):
     UTF8 = 1
     UTF16 = 2
     UTF32 = 3
+
+
+class DependencyEdge(object):
+    class Label(enum.IntEnum):
+        """
+        The parse label enum for the token.
+
+        Attributes:
+          UNKNOWN (int): Unknown
+          ABBREV (int): Abbreviation modifier
+          ACOMP (int): Adjectival complement
+          ADVCL (int): Adverbial clause modifier
+          ADVMOD (int): Adverbial modifier
+          AMOD (int): Adjectival modifier of an NP
+          APPOS (int): Appositional modifier of an NP
+          ATTR (int): Attribute dependent of a copular verb
+          AUX (int): Auxiliary (non-main) verb
+          AUXPASS (int): Passive auxiliary
+          CC (int): Coordinating conjunction
+          CCOMP (int): Clausal complement of a verb or adjective
+          CONJ (int): Conjunct
+          CSUBJ (int): Clausal subject
+          CSUBJPASS (int): Clausal passive subject
+          DEP (int): Dependency (unable to determine)
+          DET (int): Determiner
+          DISCOURSE (int): Discourse
+          DOBJ (int): Direct object
+          EXPL (int): Expletive
+          GOESWITH (int): Goes with (part of a word in a text not well edited)
+          IOBJ (int): Indirect object
+          MARK (int): Marker (word introducing a subordinate clause)
+          MWE (int): Multi-word expression
+          MWV (int): Multi-word verbal expression
+          NEG (int): Negation modifier
+          NN (int): Noun compound modifier
+          NPADVMOD (int): Noun phrase used as an adverbial modifier
+          NSUBJ (int): Nominal subject
+          NSUBJPASS (int): Passive nominal subject
+          NUM (int): Numeric modifier of a noun
+          NUMBER (int): Element of compound number
+          P (int): Punctuation mark
+          PARATAXIS (int): Parataxis relation
+          PARTMOD (int): Participial modifier
+          PCOMP (int): The complement of a preposition is a clause
+          POBJ (int): Object of a preposition
+          POSS (int): Possession modifier
+          POSTNEG (int): Postverbal negative particle
+          PRECOMP (int): Predicate complement
+          PRECONJ (int): Preconjunt
+          PREDET (int): Predeterminer
+          PREF (int): Prefix
+          PREP (int): Prepositional modifier
+          PRONL (int): The relationship between a verb and verbal morpheme
+          PRT (int): Particle
+          PS (int): Associative or possessive marker
+          QUANTMOD (int): Quantifier phrase modifier
+          RCMOD (int): Relative clause modifier
+          RCMODREL (int): Complementizer in relative clause
+          RDROP (int): Ellipsis without a preceding predicate
+          REF (int): Referent
+          REMNANT (int): Remnant
+          REPARANDUM (int): Reparandum
+          ROOT (int): Root
+          SNUM (int): Suffix specifying a unit of number
+          SUFF (int): Suffix
+          TMOD (int): Temporal modifier
+          TOPIC (int): Topic marker
+          VMOD (int): Clause headed by an infinite form of the verb that modifies a noun
+          VOCATIVE (int): Vocative
+          XCOMP (int): Open clausal complement
+          SUFFIX (int): Name suffix
+          TITLE (int): Name title
+          ADVPHMOD (int): Adverbial phrase modifier
+          AUXCAUS (int): Causative auxiliary
+          AUXVV (int): Helper auxiliary
+          DTMOD (int): Rentaishi (Prenominal modifier)
+          FOREIGN (int): Foreign words
+          KW (int): Keyword
+          LIST (int): List for chains of comparable items
+          NOMC (int): Nominalized clause
+          NOMCSUBJ (int): Nominalized clausal subject
+          NOMCSUBJPASS (int): Nominalized clausal passive
+          NUMC (int): Compound of numeric modifier
+          COP (int): Copula
+          DISLOCATED (int): Dislocated relation (for fronted/topicalized elements)
+          ASP (int): Aspect marker
+          GMOD (int): Genitive modifier
+          GOBJ (int): Genitive object
+          INFMOD (int): Infinitival modifier
+          MES (int): Measure
+          NCOMP (int): Nominal complement of a noun
+        """
+
+        UNKNOWN = 0
+        ABBREV = 1
+        ACOMP = 2
+        ADVCL = 3
+        ADVMOD = 4
+        AMOD = 5
+        APPOS = 6
+        ATTR = 7
+        AUX = 8
+        AUXPASS = 9
+        CC = 10
+        CCOMP = 11
+        CONJ = 12
+        CSUBJ = 13
+        CSUBJPASS = 14
+        DEP = 15
+        DET = 16
+        DISCOURSE = 17
+        DOBJ = 18
+        EXPL = 19
+        GOESWITH = 20
+        IOBJ = 21
+        MARK = 22
+        MWE = 23
+        MWV = 24
+        NEG = 25
+        NN = 26
+        NPADVMOD = 27
+        NSUBJ = 28
+        NSUBJPASS = 29
+        NUM = 30
+        NUMBER = 31
+        P = 32
+        PARATAXIS = 33
+        PARTMOD = 34
+        PCOMP = 35
+        POBJ = 36
+        POSS = 37
+        POSTNEG = 38
+        PRECOMP = 39
+        PRECONJ = 40
+        PREDET = 41
+        PREF = 42
+        PREP = 43
+        PRONL = 44
+        PRT = 45
+        PS = 46
+        QUANTMOD = 47
+        RCMOD = 48
+        RCMODREL = 49
+        RDROP = 50
+        REF = 51
+        REMNANT = 52
+        REPARANDUM = 53
+        ROOT = 54
+        SNUM = 55
+        SUFF = 56
+        TMOD = 57
+        TOPIC = 58
+        VMOD = 59
+        VOCATIVE = 60
+        XCOMP = 61
+        SUFFIX = 62
+        TITLE = 63
+        ADVPHMOD = 64
+        AUXCAUS = 65
+        AUXVV = 66
+        DTMOD = 67
+        FOREIGN = 68
+        KW = 69
+        LIST = 70
+        NOMC = 71
+        NOMCSUBJ = 72
+        NOMCSUBJPASS = 73
+        NUMC = 74
+        COP = 75
+        DISLOCATED = 76
+        ASP = 77
+        GMOD = 78
+        GOBJ = 79
+        INFMOD = 80
+        MES = 81
+        NCOMP = 82
 
 
 class Document(object):
@@ -65,7 +241,10 @@ class Document(object):
 class Entity(object):
     class Type(enum.IntEnum):
         """
-        The type of the entity.
+        The type of the entity. For most entity types, the associated metadata
+        is a Wikipedia URL (``wikipedia_url``) and Knowledge Graph MID
+        (``mid``). The table below lists the associated fields for entities that
+        have different metadata.
 
         Attributes:
           UNKNOWN (int): Unknown
@@ -73,9 +252,43 @@ class Entity(object):
           LOCATION (int): Location
           ORGANIZATION (int): Organization
           EVENT (int): Event
-          WORK_OF_ART (int): Work of art
-          CONSUMER_GOOD (int): Consumer goods
-          OTHER (int): Other types
+          WORK_OF_ART (int): Artwork
+          CONSUMER_GOOD (int): Consumer product
+          OTHER (int): Other types of entities
+          PHONE_NUMBER (int): Phone number The metadata lists the phone number, formatted according to
+          local convention, plus whichever additional elements appear in the text:
+
+          .. raw:: html
+
+              <li><code>number</code> &ndash; the actual number, broken down into
+              sections as per local convention</li> <li><code>national_prefix</code>
+              &ndash; country code, if detected</li> <li><code>area_code</code> &ndash;
+              region or area code, if detected</li> <li><code>extension</code> &ndash;
+              phone extension (to be dialed after connection), if detected</li></ul>
+          ADDRESS (int): Address The metadata identifies the street number and locality plus
+          whichever additional elements appear in the text:
+
+          .. raw:: html
+
+              <li><code>street_number</code> &ndash; street number</li>
+              <li><code>locality</code> &ndash; city or town</li>
+              <li><code>street_name</code> &ndash; street/route name, if detected</li>
+              <li><code>postal_code</code> &ndash; postal code, if detected</li>
+              <li><code>country</code> &ndash; country, if detected</li>
+              <li><code>broad_region</code> &ndash; administrative area, such as the
+              state, if detected</li> <li><code>narrow_region</code> &ndash; smaller
+              administrative area, such as county, if detected</li>
+              <li><code>sublocality</code> &ndash; used in Asian addresses to demark a
+              district within a city, if detected</li></ul>
+          DATE (int): Date<br><br>
+          The metadata identifies the components of the date:<ul>
+          <li><code>year</code> &ndash; four digit year, if detected</li>
+          <li><code>month</code> &ndash; two digit month number, if detected</li>
+          <li><code>day</code> &ndash; two digit day number, if detected</li></ul>
+          NUMBER (int): Number<br><br>
+          The metadata is the number itself.
+          PRICE (int): Price<br><br>
+          The metadata identifies the <code>value</code> and <code>currency</code>.
         """
 
         UNKNOWN = 0
@@ -86,45 +299,30 @@ class Entity(object):
         WORK_OF_ART = 5
         CONSUMER_GOOD = 6
         OTHER = 7
+        PHONE_NUMBER = 9
+        ADDRESS = 10
+        DATE = 11
+        NUMBER = 12
+        PRICE = 13
+
+
+class EntityMention(object):
+    class Type(enum.IntEnum):
+        """
+        The supported types of mentions.
+
+        Attributes:
+          TYPE_UNKNOWN (int): Unknown
+          PROPER (int): Proper name
+          COMMON (int): Common noun (or noun compound)
+        """
+
+        TYPE_UNKNOWN = 0
+        PROPER = 1
+        COMMON = 2
 
 
 class PartOfSpeech(object):
-    class Tag(enum.IntEnum):
-        """
-        The part of speech tags enum.
-
-        Attributes:
-          UNKNOWN (int): Unknown
-          ADJ (int): Adjective
-          ADP (int): Adposition (preposition and postposition)
-          ADV (int): Adverb
-          CONJ (int): Conjunction
-          DET (int): Determiner
-          NOUN (int): Noun (common and proper)
-          NUM (int): Cardinal number
-          PRON (int): Pronoun
-          PRT (int): Particle or other function word
-          PUNCT (int): Punctuation
-          VERB (int): Verb (all tenses and modes)
-          X (int): Other: foreign words, typos, abbreviations
-          AFFIX (int): Affix
-        """
-
-        UNKNOWN = 0
-        ADJ = 1
-        ADP = 2
-        ADV = 3
-        CONJ = 4
-        DET = 5
-        NOUN = 6
-        NUM = 7
-        PRON = 8
-        PRT = 9
-        PUNCT = 10
-        VERB = 11
-        X = 12
-        AFFIX = 13
-
     class Aspect(enum.IntEnum):
         """
         The characteristic of a verb that expresses time flow during an event.
@@ -317,6 +515,42 @@ class PartOfSpeech(object):
         RECIPROCAL = 1
         NON_RECIPROCAL = 2
 
+    class Tag(enum.IntEnum):
+        """
+        The part of speech tags enum.
+
+        Attributes:
+          UNKNOWN (int): Unknown
+          ADJ (int): Adjective
+          ADP (int): Adposition (preposition and postposition)
+          ADV (int): Adverb
+          CONJ (int): Conjunction
+          DET (int): Determiner
+          NOUN (int): Noun (common and proper)
+          NUM (int): Cardinal number
+          PRON (int): Pronoun
+          PRT (int): Particle or other function word
+          PUNCT (int): Punctuation
+          VERB (int): Verb (all tenses and modes)
+          X (int): Other: foreign words, typos, abbreviations
+          AFFIX (int): Affix
+        """
+
+        UNKNOWN = 0
+        ADJ = 1
+        ADP = 2
+        ADV = 3
+        CONJ = 4
+        DET = 5
+        NOUN = 6
+        NUM = 7
+        PRON = 8
+        PRT = 9
+        PUNCT = 10
+        VERB = 11
+        X = 12
+        AFFIX = 13
+
     class Tense(enum.IntEnum):
         """
         Time reference.
@@ -355,195 +589,3 @@ class PartOfSpeech(object):
         ACTIVE = 1
         CAUSATIVE = 2
         PASSIVE = 3
-
-
-class DependencyEdge(object):
-    class Label(enum.IntEnum):
-        """
-        The parse label enum for the token.
-
-        Attributes:
-          UNKNOWN (int): Unknown
-          ABBREV (int): Abbreviation modifier
-          ACOMP (int): Adjectival complement
-          ADVCL (int): Adverbial clause modifier
-          ADVMOD (int): Adverbial modifier
-          AMOD (int): Adjectival modifier of an NP
-          APPOS (int): Appositional modifier of an NP
-          ATTR (int): Attribute dependent of a copular verb
-          AUX (int): Auxiliary (non-main) verb
-          AUXPASS (int): Passive auxiliary
-          CC (int): Coordinating conjunction
-          CCOMP (int): Clausal complement of a verb or adjective
-          CONJ (int): Conjunct
-          CSUBJ (int): Clausal subject
-          CSUBJPASS (int): Clausal passive subject
-          DEP (int): Dependency (unable to determine)
-          DET (int): Determiner
-          DISCOURSE (int): Discourse
-          DOBJ (int): Direct object
-          EXPL (int): Expletive
-          GOESWITH (int): Goes with (part of a word in a text not well edited)
-          IOBJ (int): Indirect object
-          MARK (int): Marker (word introducing a subordinate clause)
-          MWE (int): Multi-word expression
-          MWV (int): Multi-word verbal expression
-          NEG (int): Negation modifier
-          NN (int): Noun compound modifier
-          NPADVMOD (int): Noun phrase used as an adverbial modifier
-          NSUBJ (int): Nominal subject
-          NSUBJPASS (int): Passive nominal subject
-          NUM (int): Numeric modifier of a noun
-          NUMBER (int): Element of compound number
-          P (int): Punctuation mark
-          PARATAXIS (int): Parataxis relation
-          PARTMOD (int): Participial modifier
-          PCOMP (int): The complement of a preposition is a clause
-          POBJ (int): Object of a preposition
-          POSS (int): Possession modifier
-          POSTNEG (int): Postverbal negative particle
-          PRECOMP (int): Predicate complement
-          PRECONJ (int): Preconjunt
-          PREDET (int): Predeterminer
-          PREF (int): Prefix
-          PREP (int): Prepositional modifier
-          PRONL (int): The relationship between a verb and verbal morpheme
-          PRT (int): Particle
-          PS (int): Associative or possessive marker
-          QUANTMOD (int): Quantifier phrase modifier
-          RCMOD (int): Relative clause modifier
-          RCMODREL (int): Complementizer in relative clause
-          RDROP (int): Ellipsis without a preceding predicate
-          REF (int): Referent
-          REMNANT (int): Remnant
-          REPARANDUM (int): Reparandum
-          ROOT (int): Root
-          SNUM (int): Suffix specifying a unit of number
-          SUFF (int): Suffix
-          TMOD (int): Temporal modifier
-          TOPIC (int): Topic marker
-          VMOD (int): Clause headed by an infinite form of the verb that modifies a noun
-          VOCATIVE (int): Vocative
-          XCOMP (int): Open clausal complement
-          SUFFIX (int): Name suffix
-          TITLE (int): Name title
-          ADVPHMOD (int): Adverbial phrase modifier
-          AUXCAUS (int): Causative auxiliary
-          AUXVV (int): Helper auxiliary
-          DTMOD (int): Rentaishi (Prenominal modifier)
-          FOREIGN (int): Foreign words
-          KW (int): Keyword
-          LIST (int): List for chains of comparable items
-          NOMC (int): Nominalized clause
-          NOMCSUBJ (int): Nominalized clausal subject
-          NOMCSUBJPASS (int): Nominalized clausal passive
-          NUMC (int): Compound of numeric modifier
-          COP (int): Copula
-          DISLOCATED (int): Dislocated relation (for fronted/topicalized elements)
-          ASP (int): Aspect marker
-          GMOD (int): Genitive modifier
-          GOBJ (int): Genitive object
-          INFMOD (int): Infinitival modifier
-          MES (int): Measure
-          NCOMP (int): Nominal complement of a noun
-        """
-
-        UNKNOWN = 0
-        ABBREV = 1
-        ACOMP = 2
-        ADVCL = 3
-        ADVMOD = 4
-        AMOD = 5
-        APPOS = 6
-        ATTR = 7
-        AUX = 8
-        AUXPASS = 9
-        CC = 10
-        CCOMP = 11
-        CONJ = 12
-        CSUBJ = 13
-        CSUBJPASS = 14
-        DEP = 15
-        DET = 16
-        DISCOURSE = 17
-        DOBJ = 18
-        EXPL = 19
-        GOESWITH = 20
-        IOBJ = 21
-        MARK = 22
-        MWE = 23
-        MWV = 24
-        NEG = 25
-        NN = 26
-        NPADVMOD = 27
-        NSUBJ = 28
-        NSUBJPASS = 29
-        NUM = 30
-        NUMBER = 31
-        P = 32
-        PARATAXIS = 33
-        PARTMOD = 34
-        PCOMP = 35
-        POBJ = 36
-        POSS = 37
-        POSTNEG = 38
-        PRECOMP = 39
-        PRECONJ = 40
-        PREDET = 41
-        PREF = 42
-        PREP = 43
-        PRONL = 44
-        PRT = 45
-        PS = 46
-        QUANTMOD = 47
-        RCMOD = 48
-        RCMODREL = 49
-        RDROP = 50
-        REF = 51
-        REMNANT = 52
-        REPARANDUM = 53
-        ROOT = 54
-        SNUM = 55
-        SUFF = 56
-        TMOD = 57
-        TOPIC = 58
-        VMOD = 59
-        VOCATIVE = 60
-        XCOMP = 61
-        SUFFIX = 62
-        TITLE = 63
-        ADVPHMOD = 64
-        AUXCAUS = 65
-        AUXVV = 66
-        DTMOD = 67
-        FOREIGN = 68
-        KW = 69
-        LIST = 70
-        NOMC = 71
-        NOMCSUBJ = 72
-        NOMCSUBJPASS = 73
-        NUMC = 74
-        COP = 75
-        DISLOCATED = 76
-        ASP = 77
-        GMOD = 78
-        GOBJ = 79
-        INFMOD = 80
-        MES = 81
-        NCOMP = 82
-
-
-class EntityMention(object):
-    class Type(enum.IntEnum):
-        """
-        The supported types of mentions.
-
-        Attributes:
-          TYPE_UNKNOWN (int): Unknown
-          PROPER (int): Proper name
-          COMMON (int): Common noun (or noun compound)
-        """
-
-        TYPE_UNKNOWN = 0
-        PROPER = 1
-        COMMON = 2

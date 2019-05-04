@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2018 Google LLC
+# Copyright 2019 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -103,7 +103,7 @@ class CloudRedisGrpcTransport(object):
 
     @property
     def list_instances(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`CloudRedisClient.list_instances`.
 
         Lists all Redis instances owned by a project in either the specified
         location (region) or all locations.
@@ -123,7 +123,7 @@ class CloudRedisGrpcTransport(object):
 
     @property
     def get_instance(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`CloudRedisClient.get_instance`.
 
         Gets the details of a specific Redis instance.
 
@@ -136,7 +136,7 @@ class CloudRedisGrpcTransport(object):
 
     @property
     def create_instance(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`CloudRedisClient.create_instance`.
 
         Creates a Redis instance based on the specified tier and memory size.
 
@@ -161,7 +161,7 @@ class CloudRedisGrpcTransport(object):
 
     @property
     def update_instance(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`CloudRedisClient.update_instance`.
 
         Updates the metadata and configuration of a specific Redis instance.
 
@@ -178,7 +178,7 @@ class CloudRedisGrpcTransport(object):
 
     @property
     def delete_instance(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`CloudRedisClient.delete_instance`.
 
         Deletes a specific Redis instance.  Instance stops serving and data is
         deleted.
@@ -189,3 +189,55 @@ class CloudRedisGrpcTransport(object):
                 deserialized response object.
         """
         return self._stubs["cloud_redis_stub"].DeleteInstance
+
+    @property
+    def import_instance(self):
+        """Return the gRPC stub for :meth:`CloudRedisClient.import_instance`.
+
+        Import a Redis RDB snapshot file from GCS into a Redis instance.
+
+        Redis may stop serving during this operation. Instance state will be
+        IMPORTING for entire operation. When complete, the instance will contain
+        only data from the imported file.
+
+        The returned operation is automatically deleted after a few hours, so
+        there is no need to call DeleteOperation.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["cloud_redis_stub"].ImportInstance
+
+    @property
+    def export_instance(self):
+        """Return the gRPC stub for :meth:`CloudRedisClient.export_instance`.
+
+        Export Redis instance data into a Redis RDB format file in GCS.
+
+        Redis will continue serving during this operation.
+
+        The returned operation is automatically deleted after a few hours, so
+        there is no need to call DeleteOperation.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["cloud_redis_stub"].ExportInstance
+
+    @property
+    def failover_instance(self):
+        """Return the gRPC stub for :meth:`CloudRedisClient.failover_instance`.
+
+        Failover the master role to current replica node against a specific
+        STANDARD tier redis instance.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["cloud_redis_stub"].FailoverInstance

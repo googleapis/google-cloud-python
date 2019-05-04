@@ -118,6 +118,15 @@ class DocumentReference(object):
             return NotImplemented
 
     @property
+    def path(self):
+        """Database-relative for this document.
+
+        Returns:
+            str: The document's relative path.
+        """
+        return "/".join(self._path)
+
+    @property
     def _document_path(self):
         """Create and cache the full path for this document.
 
@@ -492,9 +501,9 @@ class DocumentReference(object):
                 when a change occurs
 
         Example:
-            from google.cloud import firestore
+            from google.cloud import firestore_v1beta1
 
-            db = firestore.Client()
+            db = firestore_v1beta1.Client()
             collection_ref = db.collection(u'users')
 
             def on_snapshot(document_snapshot):

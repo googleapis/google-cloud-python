@@ -17,6 +17,7 @@
 
 import os
 
+import numpy
 import pytest
 
 from google.cloud import bigquery_storage_v1beta1
@@ -78,21 +79,13 @@ def test_read_rows_to_dataframe(client, project_id):
         stream=session.streams[0]
     )
 
-    frame = client.read_rows(stream_pos).to_dataframe(session)
+    frame = client.read_rows(stream_pos).to_dataframe(
+        session, dtypes={"latitude": numpy.float16}
+    )
 
     # Station ID is a required field (no nulls), so the datatype should always
     # be integer.
     assert frame.station_id.dtype.name == "int64"
+    assert frame.latitude.dtype.name == "float16"
+    assert frame.longitude.dtype.name == "float64"
     assert frame["name"].str.startswith("Central Park").any()
-
-
-def test_split_read_stream(client, project_id, table_reference):
-    session = client.create_read_session(
-        table_reference, parent="projects/{}".format(project_id)
-    )
-
-    split = client.split_read_stream(session.streams[0])
-
-    assert split.primary_stream is not None
-    assert split.remainder_stream is not None
-    assert split.primary_stream != split.remainder_stream

@@ -204,6 +204,11 @@ class Test_DateTimeWithNanos(object):
         assert stamp.rfc3339() == "2016-12-20T21:13:47.123456Z"
 
     @staticmethod
+    def test_rfc3339_wo_nanos_w_leading_zero():
+        stamp = datetime_helpers.DatetimeWithNanoseconds(2016, 12, 20, 21, 13, 47, 1234)
+        assert stamp.rfc3339() == "2016-12-20T21:13:47.001234Z"
+
+    @staticmethod
     def test_rfc3339_w_nanos():
         stamp = datetime_helpers.DatetimeWithNanoseconds(
             2016, 12, 20, 21, 13, 47, nanosecond=123456789
@@ -211,11 +216,25 @@ class Test_DateTimeWithNanos(object):
         assert stamp.rfc3339() == "2016-12-20T21:13:47.123456789Z"
 
     @staticmethod
+    def test_rfc3339_w_nanos_w_leading_zero():
+        stamp = datetime_helpers.DatetimeWithNanoseconds(
+            2016, 12, 20, 21, 13, 47, nanosecond=1234567
+        )
+        assert stamp.rfc3339() == "2016-12-20T21:13:47.001234567Z"
+
+    @staticmethod
     def test_rfc3339_w_nanos_no_trailing_zeroes():
         stamp = datetime_helpers.DatetimeWithNanoseconds(
             2016, 12, 20, 21, 13, 47, nanosecond=100000000
         )
         assert stamp.rfc3339() == "2016-12-20T21:13:47.1Z"
+
+    @staticmethod
+    def test_rfc3339_w_nanos_w_leading_zero_and_no_trailing_zeros():
+        stamp = datetime_helpers.DatetimeWithNanoseconds(
+            2016, 12, 20, 21, 13, 47, nanosecond=1234500
+        )
+        assert stamp.rfc3339() == "2016-12-20T21:13:47.0012345Z"
 
     @staticmethod
     def test_from_rfc3339_w_invalid():

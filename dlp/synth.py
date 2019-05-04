@@ -27,7 +27,10 @@ common = gcp.CommonTemplates()
 # Generate dlp GAPIC layer
 # ----------------------------------------------------------------------------
 library = gapic.py_library(
-    "dlp", "v2", config_path="/google/privacy/dlp/artman_dlp_v2.yaml"
+    "dlp",
+    "v2",
+    config_path="/google/privacy/dlp/artman_dlp_v2.yaml",
+    include_protos=True,
 )
 
 excludes = ["README.rst", "nox.py", "setup.py", "docs/index.rst"]
@@ -47,8 +50,8 @@ s.replace(
 s.replace(
     "google/cloud/dlp_v2/proto/storage_pb2.py",
     "number regex.*\n(\s+)latex:.*\n",
-    "number regex \"(\\d\{3\}) \\d\{3\}-\\d\{4\} \"\\\n"
-    "\g<1>could be adjusted upwards if the area code is \\\n"
+    'number regex "(\\d\{3\}) \\d\{3\}-\\d\{4\} "\\\n'
+    "\g<1>could be adjusted upwards if the area code is \\\n",
 )
 
 # Fix Docstrings in google/cloud/dlp_v2/proto/storage_pb2.py
@@ -216,6 +219,13 @@ s.replace(
     "\g<13> \\\n\g<14>\n\g<15> \\\n\g<16> \\\n\g<17> \\\n\g<18> \\\n"
     "\g<19>\n\g<20> \\\n\g<21> \\\n",
 )
+
+s.replace(
+    "google/cloud/dlp_v2/proto/dlp_pb2.py",
+    r'''(\s+)__doc__ = """Attributes:''',
+    r'\g<1>__doc="""\n    Attributes:'
+)
+
 
 s.replace(
     "google/cloud/dlp_v2/proto/dlp_pb2.py",

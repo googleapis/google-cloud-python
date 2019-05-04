@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2018 Google LLC
+# Copyright 2019 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -215,24 +215,28 @@ class AssetServiceClient(object):
             >>> metadata = response.metadata()
 
         Args:
-            parent (str): Required. The relative name of the root asset. This can only be an organization
-                number (such as "organizations/123"), a project ID (such as
-                "projects/my-project-id"), or a project number (such as "projects/12345").
+            parent (str): Required. The relative name of the root asset. This can only be an
+                organization number (such as "organizations/123"), a project ID (such as
+                "projects/my-project-id"), a project number (such as "projects/12345"), or
+                a folder number (such as "folders/123").
             output_config (Union[dict, ~google.cloud.asset_v1beta1.types.OutputConfig]): Required. Output configuration indicating where the results will be output
                 to. All results will be in newline delimited JSON format.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.asset_v1beta1.types.OutputConfig`
-            read_time (Union[dict, ~google.cloud.asset_v1beta1.types.Timestamp]): Timestamp to take an asset snapshot. This can only be set to a timestamp in
-                the past or of the current time. If not specified, the current time will be
-                used. Due to delays in resource data collection and indexing, there is a
-                volatile window during which running the same query may get different
-                results.
+            read_time (Union[dict, ~google.cloud.asset_v1beta1.types.Timestamp]): Timestamp to take an asset snapshot. This can only be set to a timestamp
+                between 2018-10-02 UTC (inclusive) and the current time. If not specified,
+                the current time will be used. Due to delays in resource data collection
+                and indexing, there is a volatile window during which running the same
+                query may get different results.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.asset_v1beta1.types.Timestamp`
             asset_types (list[str]): A list of asset types of which to take a snapshot for. For example:
-                "google.compute.disk". If specified, only matching assets will be returned.
+                "google.compute.Disk". If specified, only matching assets will be
+                returned. See `Introduction to Cloud Asset
+                Inventory <https://cloud.google.com/resource-manager/docs/cloud-asset-inventory/overview>`__
+                for all supported asset types.
             content_type (~google.cloud.asset_v1beta1.types.ContentType): Asset content type. If not specified, no content but the asset name will be
                 returned.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -320,9 +324,12 @@ class AssetServiceClient(object):
                 organization number (such as "organizations/123"), a project ID (such as
                 "projects/my-project-id")", or a project number (such as "projects/12345").
             content_type (~google.cloud.asset_v1beta1.types.ContentType): Required. The content type.
-            read_time_window (Union[dict, ~google.cloud.asset_v1beta1.types.TimeWindow]): Required. The time window for the asset history. The start time is
-                required. The returned results contain all temporal assets whose time
-                window overlap with read\_time\_window.
+            read_time_window (Union[dict, ~google.cloud.asset_v1beta1.types.TimeWindow]): Optional. The time window for the asset history. Both start\_time and
+                end\_time are optional and if set, it must be after 2018-10-02 UTC. If
+                end\_time is not set, it is default to current timestamp. If start\_time
+                is not set, the snapshot of the assets at end\_time will be returned.
+                The returned results contain all temporal assets whose time window
+                overlap with read\_time\_window.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.asset_v1beta1.types.TimeWindow`

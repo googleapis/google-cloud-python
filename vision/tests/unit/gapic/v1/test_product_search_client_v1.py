@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2018 Google LLC
+# Copyright 2019 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -677,7 +677,7 @@ class TestProductSearchClient(object):
 
         # Setup Request
         name = client.product_set_path("[PROJECT]", "[LOCATION]", "[PRODUCT_SET]")
-        product = "product-309474065"
+        product = client.product_path("[PROJECT]", "[LOCATION]", "[PRODUCT]")
 
         client.add_product_to_product_set(name, product)
 
@@ -698,7 +698,7 @@ class TestProductSearchClient(object):
 
         # Setup request
         name = client.product_set_path("[PROJECT]", "[LOCATION]", "[PRODUCT_SET]")
-        product = "product-309474065"
+        product = client.product_path("[PROJECT]", "[LOCATION]", "[PRODUCT]")
 
         with pytest.raises(CustomException):
             client.add_product_to_product_set(name, product)
@@ -712,7 +712,7 @@ class TestProductSearchClient(object):
 
         # Setup Request
         name = client.product_set_path("[PROJECT]", "[LOCATION]", "[PRODUCT_SET]")
-        product = "product-309474065"
+        product = client.product_path("[PROJECT]", "[LOCATION]", "[PRODUCT]")
 
         client.remove_product_from_product_set(name, product)
 
@@ -733,7 +733,7 @@ class TestProductSearchClient(object):
 
         # Setup request
         name = client.product_set_path("[PROJECT]", "[LOCATION]", "[PRODUCT_SET]")
-        product = "product-309474065"
+        product = client.product_path("[PROJECT]", "[LOCATION]", "[PRODUCT]")
 
         with pytest.raises(CustomException):
             client.remove_product_from_product_set(name, product)

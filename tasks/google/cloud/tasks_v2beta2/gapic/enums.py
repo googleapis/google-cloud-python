@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2018 Google LLC
+# Copyright 2019 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,27 +16,6 @@
 """Wrappers for protocol buffer enum types."""
 
 import enum
-
-
-class HttpMethod(enum.IntEnum):
-    """
-    The HTTP method used to execute the task.
-
-    Attributes:
-      HTTP_METHOD_UNSPECIFIED (int): HTTP method unspecified
-      POST (int): HTTP POST
-      GET (int): HTTP GET
-      HEAD (int): HTTP HEAD
-      PUT (int): HTTP PUT
-      DELETE (int): HTTP DELETE
-    """
-
-    HTTP_METHOD_UNSPECIFIED = 0
-    POST = 1
-    GET = 2
-    HEAD = 3
-    PUT = 4
-    DELETE = 5
 
 
 class Code(enum.IntEnum):
@@ -182,6 +161,27 @@ class Code(enum.IntEnum):
     INTERNAL = 13
     UNAVAILABLE = 14
     DATA_LOSS = 15
+
+
+class HttpMethod(enum.IntEnum):
+    """
+    The HTTP method used to execute the task.
+
+    Attributes:
+      HTTP_METHOD_UNSPECIFIED (int): HTTP method unspecified
+      POST (int): HTTP POST
+      GET (int): HTTP GET
+      HEAD (int): HTTP HEAD
+      PUT (int): HTTP PUT
+      DELETE (int): HTTP DELETE
+    """
+
+    HTTP_METHOD_UNSPECIFIED = 0
+    POST = 1
+    GET = 2
+    HEAD = 3
+    PUT = 4
+    DELETE = 5
 
 
 class Queue(object):

@@ -1,7 +1,7 @@
 Python Client for Cloud Key Management Service (KMS) API
 ========================================================
 
-|alpha| |pypi| |versions|
+|GA| |pypi| |versions|
 
 `Cloud Key Management Service (KMS) API`_: Manages keys and performs
 cryptographic operations in a central cloud service, for direct use by other
@@ -10,14 +10,14 @@ cloud resources and applications.
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. |alpha| image:: https://img.shields.io/badge/support-alpha-orange.svg
-   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#alpha-support
+.. |GA| image:: https://img.shields.io/badge/support-GA-gold.svg
+   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#general-availabilityt
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-kms.svg
    :target: https://pypi.org/project/google-cloud-kms/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-kms.svg
    :target: https://pypi.org/project/google-cloud-kms/
 .. _Cloud Key Management Service (KMS) API: https://cloud.google.com/kms
-.. _Client Library Documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/kms/index.html
+.. _Client Library Documentation: https://googleapis.github.io/google-cloud-python/latest/kms/index.html
 .. _Product Documentation:  https://cloud.google.com/kms
 
 Quick Start
@@ -33,7 +33,7 @@ In order to use this library, you first need to go through the following steps:
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
 .. _Enable the Cloud Key Management Service (KMS) API.:  https://cloud.google.com/kms
-.. _Setup Authentication.: https://googlecloudplatform.github.io/google-cloud-python/latest/core/auth.html
+.. _Setup Authentication.: https://googleapis.github.io/google-cloud-python/latest/core/auth.html
 
 Installation
 ~~~~~~~~~~~~
@@ -51,7 +51,7 @@ dependencies.
 
 Supported Python Versions
 ^^^^^^^^^^^^^^^^^^^^^^^^^
-Python >= 3.4
+Python >= 3.5
 
 Deprecated Python Versions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^

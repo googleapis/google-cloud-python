@@ -29,6 +29,7 @@ for version in ["v1", "v2"]:
         version,
         config_path=f"/google/devtools/cloudtrace" f"/artman_cloudtrace_{version}.yaml",
         artman_output_name=f"trace-{version}",
+        include_protos=True,
     )
 
     s.move(library / f"google/cloud/trace_{version}")
@@ -40,6 +41,9 @@ for version in ["v1", "v2"]:
         f"from google.devtools.cloudtrace_{version}.proto import ",
         f"from google.cloud.trace_{version}.proto import ",
     )
+
+# Copy docs configuration
+s.move(library / f"docs/conf.py")
 
 # Issues exist where python files should define the source encoding
 # https://github.com/googleapis/gapic-generator/issues/2097

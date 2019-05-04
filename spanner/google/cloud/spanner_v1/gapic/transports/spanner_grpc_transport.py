@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2018 Google LLC
+# Copyright 2019 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -108,7 +108,7 @@ class SpannerGrpcTransport(object):
 
     @property
     def create_session(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`SpannerClient.create_session`.
 
         Creates a new session. A session can be used to perform transactions
         that read and/or modify data in a Cloud Spanner database. Sessions are
@@ -137,7 +137,7 @@ class SpannerGrpcTransport(object):
 
     @property
     def get_session(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`SpannerClient.get_session`.
 
         Gets a session. Returns ``NOT_FOUND`` if the session does not exist.
         This is mainly useful for determining whether a session is still alive.
@@ -151,7 +151,7 @@ class SpannerGrpcTransport(object):
 
     @property
     def list_sessions(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`SpannerClient.list_sessions`.
 
         Lists all sessions in a given database.
 
@@ -164,9 +164,11 @@ class SpannerGrpcTransport(object):
 
     @property
     def delete_session(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`SpannerClient.delete_session`.
 
-        Ends a session, releasing server resources associated with it.
+        Ends a session, releasing server resources associated with it. This will
+        asynchronously trigger cancellation of any operations that are running with
+        this session.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -177,7 +179,7 @@ class SpannerGrpcTransport(object):
 
     @property
     def execute_sql(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`SpannerClient.execute_sql`.
 
         Executes an SQL statement, returning all results in a single reply. This
         method cannot be used to return a result set larger than 10 MiB; if the
@@ -200,7 +202,7 @@ class SpannerGrpcTransport(object):
 
     @property
     def execute_streaming_sql(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`SpannerClient.execute_streaming_sql`.
 
         Like ``ExecuteSql``, except returns the result set as a stream. Unlike
         ``ExecuteSql``, there is no limit on the size of the returned result
@@ -215,8 +217,38 @@ class SpannerGrpcTransport(object):
         return self._stubs["spanner_stub"].ExecuteStreamingSql
 
     @property
+    def execute_batch_dml(self):
+        """Return the gRPC stub for :meth:`SpannerClient.execute_batch_dml`.
+
+        Executes a batch of SQL DML statements. This method allows many
+        statements to be run with lower latency than submitting them
+        sequentially with ``ExecuteSql``.
+
+        Statements are executed in order, sequentially.
+        ``ExecuteBatchDmlResponse`` will contain a ``ResultSet`` for each DML
+        statement that has successfully executed. If a statement fails, its
+        error status will be returned as part of the
+        ``ExecuteBatchDmlResponse``. Execution will stop at the first failed
+        statement; the remaining statements will not run.
+
+        ExecuteBatchDml is expected to return an OK status with a response even
+        if there was an error while processing one of the DML statements.
+        Clients must inspect response.status to determine if there were any
+        errors while processing the request.
+
+        See more details in ``ExecuteBatchDmlRequest`` and
+        ``ExecuteBatchDmlResponse``.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["spanner_stub"].ExecuteBatchDml
+
+    @property
     def read(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`SpannerClient.read`.
 
         Reads rows from the database using key lookups and scans, as a simple
         key/value style alternative to ``ExecuteSql``. This method cannot be
@@ -239,7 +271,7 @@ class SpannerGrpcTransport(object):
 
     @property
     def streaming_read(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`SpannerClient.streaming_read`.
 
         Like ``Read``, except returns the result set as a stream. Unlike
         ``Read``, there is no limit on the size of the returned result set.
@@ -255,7 +287,7 @@ class SpannerGrpcTransport(object):
 
     @property
     def begin_transaction(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`SpannerClient.begin_transaction`.
 
         Begins a new transaction. This step can often be skipped: ``Read``,
         ``ExecuteSql`` and ``Commit`` can begin a new transaction as a
@@ -270,7 +302,7 @@ class SpannerGrpcTransport(object):
 
     @property
     def commit(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`SpannerClient.commit`.
 
         Commits a transaction. The request includes the mutations to be applied
         to rows in the database.
@@ -290,7 +322,7 @@ class SpannerGrpcTransport(object):
 
     @property
     def rollback(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`SpannerClient.rollback`.
 
         Rolls back a transaction, releasing any locks it holds. It is a good
         idea to call this for any transaction that includes one or more ``Read``
@@ -309,7 +341,7 @@ class SpannerGrpcTransport(object):
 
     @property
     def partition_query(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`SpannerClient.partition_query`.
 
         Creates a set of partition tokens that can be used to execute a query
         operation in parallel. Each of the returned partition tokens can be used
@@ -332,7 +364,7 @@ class SpannerGrpcTransport(object):
 
     @property
     def partition_read(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`SpannerClient.partition_read`.
 
         Creates a set of partition tokens that can be used to execute a read
         operation in parallel. Each of the returned partition tokens can be used

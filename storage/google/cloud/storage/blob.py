@@ -20,7 +20,7 @@
                         json_api/v1/objects
 .. _customer-supplied: https://cloud.google.com/storage/docs/\
                        encryption#customer-supplied
-.. _google-resumable-media: https://googlecloudplatform.github.io/\
+.. _google-resumable-media: https://googleapis.github.io/\
                             google-resumable-media-python/latest/\
                             google.resumable_media.requests.html
 """
@@ -54,7 +54,8 @@ from google.cloud.exceptions import NotFound
 from google.api_core.iam import Policy
 from google.cloud.storage._helpers import _PropertyMixin
 from google.cloud.storage._helpers import _scalar_property
-from google.cloud.storage._signing import generate_signed_url
+from google.cloud.storage._signing import generate_signed_url_v2
+from google.cloud.storage._signing import generate_signed_url_v4
 from google.cloud.storage.acl import ACL
 from google.cloud.storage.acl import ObjectACL
 
@@ -159,7 +160,13 @@ class Blob(_PropertyMixin):
     """
 
     def __init__(
-        self, name, bucket, chunk_size=None, encryption_key=None, kms_key_name=None
+        self,
+        name,
+        bucket,
+        chunk_size=None,
+        encryption_key=None,
+        kms_key_name=None,
+        generation=None,
     ):
         name = _bytes_to_unicode(name)
         super(Blob, self).__init__(name=name)
@@ -176,6 +183,9 @@ class Blob(_PropertyMixin):
 
         if kms_key_name is not None:
             self._properties["kmsKeyName"] = kms_key_name
+
+        if generation is not None:
+            self._properties["generation"] = generation
 
     @property
     def chunk_size(self):
@@ -257,6 +267,24 @@ class Blob(_PropertyMixin):
         """
         return self.bucket.user_project
 
+    def _encryption_headers(self):
+        """Return any encryption headers needed to fetch the object.
+
+        :rtype: List(Tuple(str, str))
+        :returns: a list of tuples to be passed as headers.
+        """
+        return _get_encryption_headers(self._encryption_key)
+
+    @property
+    def _query_params(self):
+        """Default query parameters."""
+        params = {}
+        if self.generation is not None:
+            params["generation"] = self.generation
+        if self.user_project is not None:
+            params["userProject"] = self.user_project
+        return params
+
     @property
     def public_url(self):
         """The public URL for this blob.
@@ -275,14 +303,19 @@ class Blob(_PropertyMixin):
 
     def generate_signed_url(
         self,
-        expiration,
+        expiration=None,
+        api_access_endpoint=_API_ACCESS_ENDPOINT,
         method="GET",
+        content_md5=None,
         content_type=None,
-        generation=None,
         response_disposition=None,
         response_type=None,
+        generation=None,
+        headers=None,
+        query_parameters=None,
         client=None,
         credentials=None,
+        version=None,
     ):
         """Generates a signed URL for this blob.
 
@@ -305,19 +338,22 @@ class Blob(_PropertyMixin):
         accessible blobs, but don't want to require users to explicitly
         log in.
 
-        :type expiration: int, long, datetime.datetime, datetime.timedelta
-        :param expiration: When the signed URL should expire.
+        :type expiration: Union[Integer, datetime.datetime, datetime.timedelta]
+        :param expiration: Point in time when the signed URL should expire.
+
+        :type api_access_endpoint: str
+        :param api_access_endpoint: Optional URI base.
 
         :type method: str
         :param method: The HTTP verb that will be used when requesting the URL.
 
+        :type content_md5: str
+        :param content_md5: (Optional) The MD5 hash of the object referenced by
+                            ``resource``.
+
         :type content_type: str
         :param content_type: (Optional) The content type of the object
                              referenced by ``resource``.
-
-        :type generation: str
-        :param generation: (Optional) A value that indicates which generation
-                           of the resource to fetch.
 
         :type response_disposition: str
         :param response_disposition: (Optional) Content disposition of
@@ -332,6 +368,24 @@ class Blob(_PropertyMixin):
                               for the signed URL. Used to over-ride the content
                               type of the underlying blob/object.
 
+        :type generation: str
+        :param generation: (Optional) A value that indicates which generation
+                           of the resource to fetch.
+
+        :type headers: dict
+        :param headers:
+            (Optional) Additional HTTP headers to be included as part of the
+            signed URLs.  See:
+            https://cloud.google.com/storage/docs/xml-api/reference-headers
+            Requests using the signed URL *must* pass the specified header
+            (name and value) with each request for the URL.
+
+        :type query_parameters: dict
+        :param query_parameters:
+            (Optional) Additional query paramtersto be included as part of the
+            signed URLs.  See:
+            https://cloud.google.com/storage/docs/xml-api/reference-headers#query
+
         :type client: :class:`~google.cloud.storage.client.Client` or
                       ``NoneType``
         :param client: (Optional) The client to use.  If not passed, falls back
@@ -344,10 +398,24 @@ class Blob(_PropertyMixin):
                             the URL. Defaults to the credentials stored on the
                             client used.
 
+        :type version: str
+        :param version: (Optional) The version of signed credential to create.
+                        Must be one of 'v2' | 'v4'.
+
+        :raises: :exc:`ValueError` when version is invalid.
+        :raises: :exc:`TypeError` when expiration is not a valid type.
+        :raises: :exc:`AttributeError` if credentials is not an instance
+                of :class:`google.auth.credentials.Signing`.
+
         :rtype: str
         :returns: A signed URL you can use to access the resource
                   until expiration.
         """
+        if version is None:
+            version = "v2"
+        elif version not in ("v2", "v4"):
+            raise ValueError("'version' must be either 'v2' or 'v4'")
+
         resource = "/{bucket_name}/{quoted_name}".format(
             bucket_name=self.bucket.name, quoted_name=quote(self.name.encode("utf-8"))
         )
@@ -356,16 +424,24 @@ class Blob(_PropertyMixin):
             client = self._require_client(client)
             credentials = client._credentials
 
-        return generate_signed_url(
+        if version == "v2":
+            helper = generate_signed_url_v2
+        else:
+            helper = generate_signed_url_v4
+
+        return helper(
             credentials,
             resource=resource,
-            api_access_endpoint=_API_ACCESS_ENDPOINT,
             expiration=expiration,
+            api_access_endpoint=api_access_endpoint,
             method=method.upper(),
+            content_md5=content_md5,
             content_type=content_type,
             response_type=response_type,
             response_disposition=response_disposition,
             generation=generation,
+            headers=headers,
+            query_parameters=query_parameters,
         )
 
     def exists(self, client=None):
@@ -385,10 +461,8 @@ class Blob(_PropertyMixin):
         client = self._require_client(client)
         # We only need the status code (200 or not) so we seek to
         # minimize the returned payload.
-        query_params = {"fields": "name"}
-
-        if self.user_project is not None:
-            query_params["userProject"] = self.user_project
+        query_params = self._query_params
+        query_params["fields"] = "name"
 
         try:
             # We intentionally pass `_target_object=None` since fields=name
@@ -423,7 +497,9 @@ class Blob(_PropertyMixin):
                  (propagated from
                  :meth:`google.cloud.storage.bucket.Bucket.delete_blob`).
         """
-        return self.bucket.delete_blob(self.name, client=client)
+        return self.bucket.delete_blob(
+            self.name, client=client, generation=self.generation
+        )
 
     def _get_transport(self, client):
         """Return the client's transport.
@@ -1480,13 +1556,15 @@ class Blob(_PropertyMixin):
         headers = _get_encryption_headers(self._encryption_key)
         headers.update(_get_encryption_headers(source._encryption_key, source=True))
 
-        query_params = {}
+        query_params = self._query_params
+        if "generation" in query_params:
+            del query_params["generation"]
 
         if token:
             query_params["rewriteToken"] = token
 
-        if self.user_project is not None:
-            query_params["userProject"] = self.user_project
+        if source.generation:
+            query_params["sourceGeneration"] = source.generation
 
         if self.kms_key_name is not None:
             query_params["destinationKmsKeyName"] = self.kms_key_name
@@ -1533,7 +1611,7 @@ class Blob(_PropertyMixin):
             raise ValueError("Invalid storage class: %s" % (new_class,))
 
         # Update current blob's storage class prior to rewrite
-        self._patch_property('storageClass', new_class)
+        self._patch_property("storageClass", new_class)
 
         # Execute consecutive rewrite operations until operation is done
         token, _, _ = self.rewrite(self)

@@ -12,9 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import datetime
 import os
-import tempfile
 import re
+import tempfile
 import time
 import unittest
 
@@ -43,21 +44,19 @@ def _bad_copy(bad_request):
     return err_msg.startswith("No file found in request. (POST") and "copyTo" in err_msg
 
 
-retry_429 = RetryErrors(exceptions.TooManyRequests)
-retry_429_503 = RetryErrors([exceptions.TooManyRequests, exceptions.ServiceUnavailable])
+retry_429 = RetryErrors(exceptions.TooManyRequests, max_tries=6)
+retry_429_503 = RetryErrors(
+    [exceptions.TooManyRequests, exceptions.ServiceUnavailable], max_tries=6
+)
 retry_bad_copy = RetryErrors(exceptions.BadRequest, error_predicate=_bad_copy)
 
 
 def _empty_bucket(bucket):
-    """Empty a bucket of all existing blobs.
-
-    This accounts (partially) for the eventual consistency of the
-    list blobs API call.
-    """
-    for blob in bucket.list_blobs():
+    """Empty a bucket of all existing blobs (including multiple versions)."""
+    for blob in bucket.list_blobs(versions=True):
         try:
             blob.delete()
-        except exceptions.NotFound:  # eventual consistency
+        except exceptions.NotFound:
             pass
 
 
@@ -78,12 +77,15 @@ def setUpModule():
     # In the **very** rare case the bucket name is reserved, this
     # fails with a ConnectionError.
     Config.TEST_BUCKET = Config.CLIENT.bucket(bucket_name)
+    Config.TEST_BUCKET.versioning_enabled = True
     retry_429(Config.TEST_BUCKET.create)()
 
 
 def tearDownModule():
+    _empty_bucket(Config.TEST_BUCKET)
     errors = (exceptions.Conflict, exceptions.TooManyRequests)
-    retry = RetryErrors(errors, max_tries=6)
+    retry = RetryErrors(errors, max_tries=9)
+    retry(_empty_bucket)(Config.TEST_BUCKET)
     retry(Config.TEST_BUCKET.delete)(force=True)
 
 
@@ -414,6 +416,20 @@ class TestStorageWriteFiles(TestStorageFiles):
 
         # Exercise 'objects.insert' w/ userProject.
         blob.upload_from_filename(file_data["path"])
+        gen0 = blob.generation
+
+        # Upload a second generation of the blob
+        blob.upload_from_string(b"gen1")
+        gen1 = blob.generation
+
+        blob0 = with_user_project.blob("SmallFile", generation=gen0)
+        blob1 = with_user_project.blob("SmallFile", generation=gen1)
+
+        # Exercise 'objects.get' w/ generation
+        self.assertEqual(with_user_project.get_blob(blob.name).generation, gen1)
+        self.assertEqual(
+            with_user_project.get_blob(blob.name, generation=gen0).generation, gen0
+        )
 
         try:
             # Exercise 'objects.get' (metadata) w/ userProject.
@@ -421,22 +437,31 @@ class TestStorageWriteFiles(TestStorageFiles):
             blob.reload()
 
             # Exercise 'objects.get' (media) w/ userProject.
-            downloaded = blob.download_as_string()
-            self.assertEqual(downloaded, file_contents)
+            self.assertEqual(blob0.download_as_string(), file_contents)
+            self.assertEqual(blob1.download_as_string(), b"gen1")
 
             # Exercise 'objects.patch' w/ userProject.
-            blob.content_language = "en"
-            blob.patch()
-            self.assertEqual(blob.content_language, "en")
+            blob0.content_language = "en"
+            blob0.patch()
+            self.assertEqual(blob0.content_language, "en")
+            self.assertIsNone(blob1.content_language)
 
             # Exercise 'objects.update' w/ userProject.
             metadata = {"foo": "Foo", "bar": "Bar"}
-            blob.metadata = metadata
-            blob.update()
-            self.assertEqual(blob.metadata, metadata)
+            blob0.metadata = metadata
+            blob0.update()
+            self.assertEqual(blob0.metadata, metadata)
+            self.assertIsNone(blob1.metadata)
         finally:
             # Exercise 'objects.delete' (metadata) w/ userProject.
-            blob.delete()
+            blobs = with_user_project.list_blobs(prefix=blob.name, versions=True)
+            self.assertEqual([each.generation for each in blobs], [gen0, gen1])
+
+            blob0.delete()
+            blobs = with_user_project.list_blobs(prefix=blob.name, versions=True)
+            self.assertEqual([each.generation for each in blobs], [gen1])
+
+            blob1.delete()
 
     @unittest.skipUnless(USER_PROJECT, "USER_PROJECT not set in environment.")
     def test_blob_acl_w_user_project(self):
@@ -700,81 +725,204 @@ class TestStoragePseudoHierarchy(TestStorageFiles):
         self.assertEqual(iterator.prefixes, set())
 
 
-class TestStorageSignURLs(TestStorageFiles):
-    def setUp(self):
-        super(TestStorageSignURLs, self).setUp()
+class TestStorageSignURLs(unittest.TestCase):
+    BLOB_CONTENT = b"This time for sure, Rocky!"
 
+    @classmethod
+    def setUpClass(cls):
         if (
             type(Config.CLIENT._credentials)
-            is not google.oauth2.service_account.credentials
+            is not google.oauth2.service_account.Credentials
         ):
-            self.skipTest("Signing tests requires a service account credential")
+            cls.skipTest("Signing tests requires a service account credential")
 
-        logo_path = self.FILES["logo"]["path"]
-        with open(logo_path, "rb") as file_obj:
-            self.LOCAL_FILE = file_obj.read()
+        bucket_name = "gcp-signing" + unique_resource_id()
+        cls.bucket = Config.CLIENT.create_bucket(bucket_name)
+        cls.blob = cls.bucket.blob("README.txt")
+        cls.blob.upload_from_string(cls.BLOB_CONTENT)
 
-        blob = self.bucket.blob("LogoToSign.jpg")
-        blob.upload_from_string(self.LOCAL_FILE)
-        self.case_blobs_to_delete.append(blob)
-
-    def tearDown(self):
-        errors = (exceptions.TooManyRequests, exceptions.ServiceUnavailable)
+    @classmethod
+    def tearDownClass(cls):
+        _empty_bucket(cls.bucket)
+        errors = (exceptions.Conflict, exceptions.TooManyRequests)
         retry = RetryErrors(errors, max_tries=6)
-        for blob in self.case_blobs_to_delete:
-            if blob.exists():
-                retry(blob.delete)()
+        retry(cls.bucket.delete)(force=True)
 
-    def test_create_signed_read_url(self):
-        blob = self.bucket.blob("LogoToSign.jpg")
-        expiration = int(time.time() + 10)
-        signed_url = blob.generate_signed_url(
-            expiration, method="GET", client=Config.CLIENT
+    @staticmethod
+    def _morph_expiration(version, expiration):
+        if expiration is not None:
+            return expiration
+
+        if version == "v2":
+            return int(time.time()) + 10
+
+        return 10
+
+    def _create_signed_list_blobs_url_helper(
+        self, version, expiration=None, method="GET"
+    ):
+        expiration = self._morph_expiration(version, expiration)
+
+        signed_url = self.bucket.generate_signed_url(
+            expiration=expiration, method=method, client=Config.CLIENT, version=version
         )
 
         response = requests.get(signed_url)
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.content, self.LOCAL_FILE)
 
-    def test_create_signed_read_url_lowercase_method(self):
-        blob = self.bucket.blob("LogoToSign.jpg")
-        expiration = int(time.time() + 10)
+    def test_create_signed_list_blobs_url_v2(self):
+        self._create_signed_list_blobs_url_helper(version="v2")
+
+    def test_create_signed_list_blobs_url_v2_w_expiration(self):
+        now = datetime.datetime.utcnow()
+        delta = datetime.timedelta(seconds=10)
+
+        self._create_signed_list_blobs_url_helper(expiration=now + delta, version="v2")
+
+    def test_create_signed_list_blobs_url_v4(self):
+        self._create_signed_list_blobs_url_helper(version="v4")
+
+    def test_create_signed_list_blobs_url_v4_w_expiration(self):
+        now = datetime.datetime.utcnow()
+        delta = datetime.timedelta(seconds=10)
+        self._create_signed_list_blobs_url_helper(expiration=now + delta, version="v4")
+
+    def _create_signed_read_url_helper(
+        self,
+        blob_name="LogoToSign.jpg",
+        method="GET",
+        version="v2",
+        payload=None,
+        expiration=None,
+    ):
+        expiration = self._morph_expiration(version, expiration)
+
+        if payload is not None:
+            blob = self.bucket.blob(blob_name)
+            blob.upload_from_string(payload)
+        else:
+            blob = self.blob
+
         signed_url = blob.generate_signed_url(
-            expiration, method="get", client=Config.CLIENT
+            expiration=expiration, method=method, client=Config.CLIENT, version=version
         )
 
         response = requests.get(signed_url)
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.content, self.LOCAL_FILE)
+        if payload is not None:
+            self.assertEqual(response.content, payload)
+        else:
+            self.assertEqual(response.content, self.BLOB_CONTENT)
 
-    def test_create_signed_read_url_w_non_ascii_name(self):
-        blob = self.bucket.blob(u"Caf\xe9.txt")
-        payload = b"Test signed URL for blob w/ non-ASCII name"
-        blob.upload_from_string(payload)
-        self.case_blobs_to_delete.append(blob)
+    def test_create_signed_read_url_v2(self):
+        self._create_signed_read_url_helper()
 
-        expiration = int(time.time() + 10)
-        signed_url = blob.generate_signed_url(
-            expiration, method="GET", client=Config.CLIENT
+    def test_create_signed_read_url_v4(self):
+        self._create_signed_read_url_helper(version="v4")
+
+    def test_create_signed_read_url_v2_w_expiration(self):
+        now = datetime.datetime.utcnow()
+        delta = datetime.timedelta(seconds=10)
+
+        self._create_signed_read_url_helper(expiration=now + delta)
+
+    def test_create_signed_read_url_v4_w_expiration(self):
+        now = datetime.datetime.utcnow()
+        delta = datetime.timedelta(seconds=10)
+        self._create_signed_read_url_helper(expiration=now + delta, version="v4")
+
+    def test_create_signed_read_url_v2_lowercase_method(self):
+        self._create_signed_read_url_helper(method="get")
+
+    def test_create_signed_read_url_v4_lowercase_method(self):
+        self._create_signed_read_url_helper(method="get", version="v4")
+
+    def test_create_signed_read_url_v2_w_non_ascii_name(self):
+        self._create_signed_read_url_helper(
+            blob_name=u"Caf\xe9.txt",
+            payload=b"Test signed URL for blob w/ non-ASCII name",
         )
 
-        response = requests.get(signed_url)
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.content, payload)
+    def test_create_signed_read_url_v4_w_non_ascii_name(self):
+        self._create_signed_read_url_helper(
+            blob_name=u"Caf\xe9.txt",
+            payload=b"Test signed URL for blob w/ non-ASCII name",
+            version="v4",
+        )
 
-    def test_create_signed_delete_url(self):
-        blob = self.bucket.blob("LogoToSign.jpg")
-        expiration = int(time.time() + 283473274)
+    def _create_signed_delete_url_helper(self, version="v2", expiration=None):
+        expiration = self._morph_expiration(version, expiration)
+
+        blob = self.bucket.blob("DELETE_ME.txt")
+        blob.upload_from_string(b"DELETE ME!")
+
         signed_delete_url = blob.generate_signed_url(
-            expiration, method="DELETE", client=Config.CLIENT
+            expiration=expiration,
+            method="DELETE",
+            client=Config.CLIENT,
+            version=version,
         )
 
         response = requests.request("DELETE", signed_delete_url)
         self.assertEqual(response.status_code, 204)
         self.assertEqual(response.content, b"")
 
-        # Check that the blob has actually been deleted.
         self.assertFalse(blob.exists())
+
+    def test_create_signed_delete_url_v2(self):
+        self._create_signed_delete_url_helper()
+
+    def test_create_signed_delete_url_v4(self):
+        self._create_signed_delete_url_helper(version="v4")
+
+    def _signed_resumable_upload_url_helper(self, version="v2", expiration=None):
+        expiration = self._morph_expiration(version, expiration)
+        blob = self.bucket.blob("cruddy.txt")
+        payload = b"DEADBEEF"
+
+        # Initiate the upload using a signed URL.
+        signed_resumable_upload_url = blob.generate_signed_url(
+            expiration=expiration,
+            method="RESUMABLE",
+            client=Config.CLIENT,
+            version=version,
+        )
+
+        post_headers = {"x-goog-resumable": "start"}
+        post_response = requests.post(signed_resumable_upload_url, headers=post_headers)
+        self.assertEqual(post_response.status_code, 201)
+
+        # Finish uploading the body.
+        location = post_response.headers["Location"]
+        put_headers = {"content-length": str(len(payload))}
+        put_response = requests.put(location, headers=put_headers, data=payload)
+        self.assertEqual(put_response.status_code, 200)
+
+        # Download using a signed URL and verify.
+        signed_download_url = blob.generate_signed_url(
+            expiration=expiration, method="GET", client=Config.CLIENT, version=version
+        )
+
+        get_response = requests.get(signed_download_url)
+        self.assertEqual(get_response.status_code, 200)
+        self.assertEqual(get_response.content, payload)
+
+        # Finally, delete the blob using a signed URL.
+        signed_delete_url = blob.generate_signed_url(
+            expiration=expiration,
+            method="DELETE",
+            client=Config.CLIENT,
+            version=version,
+        )
+
+        delete_response = requests.delete(signed_delete_url)
+        self.assertEqual(delete_response.status_code, 204)
+
+    def test_signed_resumable_upload_url_v2(self):
+        self._signed_resumable_upload_url_helper(version="v2")
+
+    def test_signed_resumable_upload_url_v4(self):
+        self._signed_resumable_upload_url_helper(version="v4")
 
 
 class TestStorageCompose(TestStorageFiles):
@@ -1148,6 +1296,7 @@ class TestKMSIntegration(TestStorageFiles):
     @classmethod
     def setUpClass(cls):
         super(TestKMSIntegration, cls).setUpClass()
+        _empty_bucket(cls.bucket)
 
     def setUp(self):
         super(TestKMSIntegration, self).setUp()
@@ -1470,3 +1619,87 @@ class TestRetentionPolicy(unittest.TestCase):
         bucket.retention_period = None
         with self.assertRaises(exceptions.Forbidden):
             bucket.patch()
+
+
+class TestIAMConfiguration(unittest.TestCase):
+    def setUp(self):
+        self.case_buckets_to_delete = []
+
+    def tearDown(self):
+        for bucket_name in self.case_buckets_to_delete:
+            bucket = Config.CLIENT.bucket(bucket_name)
+            retry_429(bucket.delete)(force=True)
+
+    def test_new_bucket_w_bpo(self):
+        new_bucket_name = "new-w-bpo" + unique_resource_id("-")
+        self.assertRaises(
+            exceptions.NotFound, Config.CLIENT.get_bucket, new_bucket_name
+        )
+        bucket = Config.CLIENT.bucket(new_bucket_name)
+        bucket.iam_configuration.bucket_policy_only_enabled = True
+        retry_429(bucket.create)()
+        self.case_buckets_to_delete.append(new_bucket_name)
+
+        bucket_acl = bucket.acl
+        with self.assertRaises(exceptions.BadRequest):
+            bucket_acl.reload()
+
+        bucket_acl.loaded = True  # Fake that we somehow loaded the ACL
+        bucket_acl.all().grant_read()
+        with self.assertRaises(exceptions.BadRequest):
+            bucket_acl.save()
+
+        blob_name = "my-blob.txt"
+        blob = bucket.blob(blob_name)
+        payload = b"DEADBEEF"
+        blob.upload_from_string(payload)
+
+        found = bucket.get_blob(blob_name)
+        self.assertEqual(found.download_as_string(), payload)
+
+        blob_acl = blob.acl
+        with self.assertRaises(exceptions.BadRequest):
+            blob_acl.reload()
+
+        blob_acl.loaded = True  # Fake that we somehow loaded the ACL
+        blob_acl.all().grant_read()
+        with self.assertRaises(exceptions.BadRequest):
+            blob_acl.save()
+
+    def test_bpo_set_unset_preserves_acls(self):
+        new_bucket_name = "bpo-acls" + unique_resource_id("-")
+        self.assertRaises(
+            exceptions.NotFound, Config.CLIENT.get_bucket, new_bucket_name
+        )
+        bucket = retry_429(Config.CLIENT.create_bucket)(new_bucket_name)
+        self.case_buckets_to_delete.append(new_bucket_name)
+
+        blob_name = "my-blob.txt"
+        blob = bucket.blob(blob_name)
+        payload = b"DEADBEEF"
+        blob.upload_from_string(payload)
+
+        # Preserve ACLs before setting BPO
+        bucket_acl_before = list(bucket.acl)
+        blob_acl_before = list(bucket.acl)
+
+        # Set BPO
+        bucket.iam_configuration.bucket_policy_only_enabled = True
+        bucket.patch()
+
+        # While BPO is set, cannot get / set ACLs
+        with self.assertRaises(exceptions.BadRequest):
+            bucket.acl.reload()
+
+        # Clear BPO
+        bucket.iam_configuration.bucket_policy_only_enabled = False
+        bucket.patch()
+
+        # Query ACLs after clearing BPO
+        bucket.acl.reload()
+        bucket_acl_after = list(bucket.acl)
+        blob.acl.reload()
+        blob_acl_after = list(bucket.acl)
+
+        self.assertEqual(bucket_acl_before, bucket_acl_after)
+        self.assertEqual(blob_acl_before, blob_acl_after)

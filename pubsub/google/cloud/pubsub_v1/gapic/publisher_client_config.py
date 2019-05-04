@@ -2,9 +2,10 @@ config = {
     "interfaces": {
         "google.pubsub.v1.Publisher": {
             "retry_codes": {
-                "idempotent": ["DEADLINE_EXCEEDED", "UNAVAILABLE"],
-                "non_idempotent": [],
-                "one_plus_delivery": [
+                "idempotent": ["ABORTED", "UNAVAILABLE", "UNKNOWN"],
+                "non_idempotent": ["UNAVAILABLE"],
+                "none": [],
+                "publish": [
                     "ABORTED",
                     "CANCELLED",
                     "DEADLINE_EXCEEDED",
@@ -37,17 +38,17 @@ config = {
             "methods": {
                 "CreateTopic": {
                     "timeout_millis": 60000,
-                    "retry_codes_name": "idempotent",
+                    "retry_codes_name": "non_idempotent",
                     "retry_params_name": "default",
                 },
                 "UpdateTopic": {
                     "timeout_millis": 60000,
-                    "retry_codes_name": "idempotent",
+                    "retry_codes_name": "non_idempotent",
                     "retry_params_name": "default",
                 },
                 "Publish": {
                     "timeout_millis": 60000,
-                    "retry_codes_name": "one_plus_delivery",
+                    "retry_codes_name": "publish",
                     "retry_params_name": "messaging",
                     "bundling": {
                         "element_count_threshold": 10,
@@ -74,7 +75,7 @@ config = {
                 },
                 "DeleteTopic": {
                     "timeout_millis": 60000,
-                    "retry_codes_name": "idempotent",
+                    "retry_codes_name": "non_idempotent",
                     "retry_params_name": "default",
                 },
                 "SetIamPolicy": {

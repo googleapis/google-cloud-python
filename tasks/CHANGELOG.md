@@ -4,6 +4,64 @@
 
 [1]: https://pypi.org/project/google-cloud-tasks/#history
 
+## 1.0.0
+
+04-29-2019 16:35 PDT
+
+### Documentation
+- Correct docs/index.rst. ([#7808](https://github.com/googleapis/google-cloud-python/pull/7808))
+
+### Internal / Testing Changes
+- Add smoke test. ([#7808](https://github.com/googleapis/google-cloud-python/pull/7808))
+
+## 0.7.0
+
+04-15-2019 10:21 PDT
+
+
+### New Features
+- Add auth and stackdriver logging configuration (via synth). ([#7666](https://github.com/googleapis/google-cloud-python/pull/7666))
+
+### Documentation
+- Tasks: Format docstrings for enums (via synth). ([#7601](https://github.com/googleapis/google-cloud-python/pull/7601))
+
+## 0.6.0
+
+03-26-2019 13:35 PDT
+
+
+### Implementation Changes
+- Remove classifier for Python 3.4 for end-of-life. ([#7535](https://github.com/googleapis/google-cloud-python/pull/7535))
+
+### New Features
+- Generate v2. ([#7547](https://github.com/googleapis/google-cloud-python/pull/7547))
+
+## 0.5.0
+
+03-06-2019 15:03 PST
+
+
+### Implementation Changes
+- Remove unused message exports (via synth). ([#7276](https://github.com/googleapis/google-cloud-python/pull/7276))
+- Protoc-generated serialization update. ([#7096](https://github.com/googleapis/google-cloud-python/pull/7096))
+
+### New Features
+- Add 'Task.http_request' and associated message type (via synth). ([#7432](https://github.com/googleapis/google-cloud-python/pull/7432))
+- Add 'Task.dispatch_deadline' via synth. ([#7211](https://github.com/googleapis/google-cloud-python/pull/7211))
+
+### Documentation
+- Updated client library documentation URLs. ([#7307](https://github.com/googleapis/google-cloud-python/pull/7307))
+- Update copyright headers
+- Restore expanded example from PR [#7025](https://github.com/googleapis/google-cloud-python/pull/7025) after synth. ([#7062](https://github.com/googleapis/google-cloud-python/pull/7062))
+- Add working example for 'create_queue'. ([#7025](https://github.com/googleapis/google-cloud-python/pull/7025))
+- Pick up stub docstring fix in GAPIC generator. ([#6983](https://github.com/googleapis/google-cloud-python/pull/6983))
+
+### Internal / Testing Changes
+- Copy lintified proto files (via synth). ([#7471](https://github.com/googleapis/google-cloud-python/pull/7471))
+- Add clarifying comment to blacken nox target. ([#7405](https://github.com/googleapis/google-cloud-python/pull/7405))
+- Copy proto files alongside protoc versions
+- Add protos as an artifact to library ([#7205](https://github.com/googleapis/google-cloud-python/pull/7205))
+
 ## 0.4.0
 
 12-18-2018 09:50 PST

@@ -1,4 +1,4 @@
-.. include:: /../vision/README.rst
+.. include:: README.rst
 
 Using the Library
 -----------------
@@ -86,11 +86,19 @@ API. By default, you will get ``v1``, the latest stable version.
 
 
 A new beta release with additional features over the current stable version,
-spelled ``v1p2beta1``, is provided to allow you to use these new features.
+spelled ``v1p4beta1``, is provided to allow you to use these new features.
 These are expected to move into the stable release soon; until then, the
 usual beta admonishment (changes are possible, etc.) applies.
 
-An API and type reference is provided for this beta:
+.. toctree::
+    :maxdepth: 2
+
+    gapic/v1p4beta1/api
+    gapic/v1p4beta1/types
+
+Previous beta releases ``v1p3beta1`` and ``v1p2beta1`` are provided as well.
+
+An API and type reference is provided for ``v1p3beta1``:
 
 .. toctree::
     :maxdepth: 2
@@ -98,9 +106,8 @@ An API and type reference is provided for this beta:
     gapic/v1p3beta1/api
     gapic/v1p3beta1/types
 
-A previous beta release spelled ``v1p2beta1``, is provided as well.
 
-An API and type reference is provided for this beta:
+An API and type reference is provided for ``v1p2beta1``:
 
 .. toctree::
     :maxdepth: 2

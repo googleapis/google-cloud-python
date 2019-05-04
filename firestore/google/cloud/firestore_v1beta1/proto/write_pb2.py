@@ -8,14 +8,12 @@ from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
-from google.protobuf import descriptor_pb2
 
 # @@protoc_insertion_point(imports)
 
 _sym_db = _symbol_database.Default()
 
 
-from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
 from google.cloud.firestore_v1beta1.proto import (
     common_pb2 as google_dot_cloud_dot_firestore__v1beta1_dot_proto_dot_common__pb2,
 )
@@ -23,20 +21,24 @@ from google.cloud.firestore_v1beta1.proto import (
     document_pb2 as google_dot_cloud_dot_firestore__v1beta1_dot_proto_dot_document__pb2,
 )
 from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__pb2
+from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
 
 
 DESCRIPTOR = _descriptor.FileDescriptor(
     name="google/cloud/firestore_v1beta1/proto/write.proto",
     package="google.firestore.v1beta1",
     syntax="proto3",
+    serialized_options=_b(
+        "\n\034com.google.firestore.v1beta1B\nWriteProtoP\001ZAgoogle.golang.org/genproto/googleapis/firestore/v1beta1;firestore\242\002\004GCFS\252\002\036Google.Cloud.Firestore.V1Beta1\312\002\036Google\\Cloud\\Firestore\\V1beta1"
+    ),
     serialized_pb=_b(
-        '\n0google/cloud/firestore_v1beta1/proto/write.proto\x12\x18google.firestore.v1beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x31google/cloud/firestore_v1beta1/proto/common.proto\x1a\x33google/cloud/firestore_v1beta1/proto/document.proto\x1a\x1fgoogle/protobuf/timestamp.proto"\x9d\x02\n\x05Write\x12\x34\n\x06update\x18\x01 \x01(\x0b\x32".google.firestore.v1beta1.DocumentH\x00\x12\x10\n\x06\x64\x65lete\x18\x02 \x01(\tH\x00\x12@\n\ttransform\x18\x06 \x01(\x0b\x32+.google.firestore.v1beta1.DocumentTransformH\x00\x12;\n\x0bupdate_mask\x18\x03 \x01(\x0b\x32&.google.firestore.v1beta1.DocumentMask\x12@\n\x10\x63urrent_document\x18\x04 \x01(\x0b\x32&.google.firestore.v1beta1.PreconditionB\x0b\n\toperation"\xea\x03\n\x11\x44ocumentTransform\x12\x10\n\x08\x64ocument\x18\x01 \x01(\t\x12T\n\x10\x66ield_transforms\x18\x02 \x03(\x0b\x32:.google.firestore.v1beta1.DocumentTransform.FieldTransform\x1a\xec\x02\n\x0e\x46ieldTransform\x12\x12\n\nfield_path\x18\x01 \x01(\t\x12\x65\n\x13set_to_server_value\x18\x02 \x01(\x0e\x32\x46.google.firestore.v1beta1.DocumentTransform.FieldTransform.ServerValueH\x00\x12G\n\x17\x61ppend_missing_elements\x18\x06 \x01(\x0b\x32$.google.firestore.v1beta1.ArrayValueH\x00\x12\x45\n\x15remove_all_from_array\x18\x07 \x01(\x0b\x32$.google.firestore.v1beta1.ArrayValueH\x00"=\n\x0bServerValue\x12\x1c\n\x18SERVER_VALUE_UNSPECIFIED\x10\x00\x12\x10\n\x0cREQUEST_TIME\x10\x01\x42\x10\n\x0etransform_type"z\n\x0bWriteResult\x12/\n\x0bupdate_time\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12:\n\x11transform_results\x18\x02 \x03(\x0b\x32\x1f.google.firestore.v1beta1.Value"v\n\x0e\x44ocumentChange\x12\x34\n\x08\x64ocument\x18\x01 \x01(\x0b\x32".google.firestore.v1beta1.Document\x12\x12\n\ntarget_ids\x18\x05 \x03(\x05\x12\x1a\n\x12removed_target_ids\x18\x06 \x03(\x05"m\n\x0e\x44ocumentDelete\x12\x10\n\x08\x64ocument\x18\x01 \x01(\t\x12\x1a\n\x12removed_target_ids\x18\x06 \x03(\x05\x12-\n\tread_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp"m\n\x0e\x44ocumentRemove\x12\x10\n\x08\x64ocument\x18\x01 \x01(\t\x12\x1a\n\x12removed_target_ids\x18\x02 \x03(\x05\x12-\n\tread_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp"3\n\x0f\x45xistenceFilter\x12\x11\n\ttarget_id\x18\x01 \x01(\x05\x12\r\n\x05\x63ount\x18\x02 \x01(\x05\x42\xb8\x01\n\x1c\x63om.google.firestore.v1beta1B\nWriteProtoP\x01ZAgoogle.golang.org/genproto/googleapis/firestore/v1beta1;firestore\xa2\x02\x04GCFS\xaa\x02\x1eGoogle.Cloud.Firestore.V1Beta1\xca\x02\x1eGoogle\\Cloud\\Firestore\\V1beta1b\x06proto3'
+        '\n0google/cloud/firestore_v1beta1/proto/write.proto\x12\x18google.firestore.v1beta1\x1a\x31google/cloud/firestore_v1beta1/proto/common.proto\x1a\x33google/cloud/firestore_v1beta1/proto/document.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1cgoogle/api/annotations.proto"\x9d\x02\n\x05Write\x12\x34\n\x06update\x18\x01 \x01(\x0b\x32".google.firestore.v1beta1.DocumentH\x00\x12\x10\n\x06\x64\x65lete\x18\x02 \x01(\tH\x00\x12@\n\ttransform\x18\x06 \x01(\x0b\x32+.google.firestore.v1beta1.DocumentTransformH\x00\x12;\n\x0bupdate_mask\x18\x03 \x01(\x0b\x32&.google.firestore.v1beta1.DocumentMask\x12@\n\x10\x63urrent_document\x18\x04 \x01(\x0b\x32&.google.firestore.v1beta1.PreconditionB\x0b\n\toperation"\x88\x05\n\x11\x44ocumentTransform\x12\x10\n\x08\x64ocument\x18\x01 \x01(\t\x12T\n\x10\x66ield_transforms\x18\x02 \x03(\x0b\x32:.google.firestore.v1beta1.DocumentTransform.FieldTransform\x1a\x8a\x04\n\x0e\x46ieldTransform\x12\x12\n\nfield_path\x18\x01 \x01(\t\x12\x65\n\x13set_to_server_value\x18\x02 \x01(\x0e\x32\x46.google.firestore.v1beta1.DocumentTransform.FieldTransform.ServerValueH\x00\x12\x34\n\tincrement\x18\x03 \x01(\x0b\x32\x1f.google.firestore.v1beta1.ValueH\x00\x12\x32\n\x07maximum\x18\x04 \x01(\x0b\x32\x1f.google.firestore.v1beta1.ValueH\x00\x12\x32\n\x07minimum\x18\x05 \x01(\x0b\x32\x1f.google.firestore.v1beta1.ValueH\x00\x12G\n\x17\x61ppend_missing_elements\x18\x06 \x01(\x0b\x32$.google.firestore.v1beta1.ArrayValueH\x00\x12\x45\n\x15remove_all_from_array\x18\x07 \x01(\x0b\x32$.google.firestore.v1beta1.ArrayValueH\x00"=\n\x0bServerValue\x12\x1c\n\x18SERVER_VALUE_UNSPECIFIED\x10\x00\x12\x10\n\x0cREQUEST_TIME\x10\x01\x42\x10\n\x0etransform_type"z\n\x0bWriteResult\x12/\n\x0bupdate_time\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12:\n\x11transform_results\x18\x02 \x03(\x0b\x32\x1f.google.firestore.v1beta1.Value"v\n\x0e\x44ocumentChange\x12\x34\n\x08\x64ocument\x18\x01 \x01(\x0b\x32".google.firestore.v1beta1.Document\x12\x12\n\ntarget_ids\x18\x05 \x03(\x05\x12\x1a\n\x12removed_target_ids\x18\x06 \x03(\x05"m\n\x0e\x44ocumentDelete\x12\x10\n\x08\x64ocument\x18\x01 \x01(\t\x12\x1a\n\x12removed_target_ids\x18\x06 \x03(\x05\x12-\n\tread_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp"m\n\x0e\x44ocumentRemove\x12\x10\n\x08\x64ocument\x18\x01 \x01(\t\x12\x1a\n\x12removed_target_ids\x18\x02 \x03(\x05\x12-\n\tread_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp"3\n\x0f\x45xistenceFilter\x12\x11\n\ttarget_id\x18\x01 \x01(\x05\x12\r\n\x05\x63ount\x18\x02 \x01(\x05\x42\xb8\x01\n\x1c\x63om.google.firestore.v1beta1B\nWriteProtoP\x01ZAgoogle.golang.org/genproto/googleapis/firestore/v1beta1;firestore\xa2\x02\x04GCFS\xaa\x02\x1eGoogle.Cloud.Firestore.V1Beta1\xca\x02\x1eGoogle\\Cloud\\Firestore\\V1beta1b\x06proto3'
     ),
     dependencies=[
-        google_dot_api_dot_annotations__pb2.DESCRIPTOR,
         google_dot_cloud_dot_firestore__v1beta1_dot_proto_dot_common__pb2.DESCRIPTOR,
         google_dot_cloud_dot_firestore__v1beta1_dot_proto_dot_document__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,
+        google_dot_api_dot_annotations__pb2.DESCRIPTOR,
     ],
 )
 
@@ -48,16 +50,20 @@ _DOCUMENTTRANSFORM_FIELDTRANSFORM_SERVERVALUE = _descriptor.EnumDescriptor(
     file=DESCRIPTOR,
     values=[
         _descriptor.EnumValueDescriptor(
-            name="SERVER_VALUE_UNSPECIFIED", index=0, number=0, options=None, type=None
+            name="SERVER_VALUE_UNSPECIFIED",
+            index=0,
+            number=0,
+            serialized_options=None,
+            type=None,
         ),
         _descriptor.EnumValueDescriptor(
-            name="REQUEST_TIME", index=1, number=1, options=None, type=None
+            name="REQUEST_TIME", index=1, number=1, serialized_options=None, type=None
         ),
     ],
     containing_type=None,
-    options=None,
-    serialized_start=945,
-    serialized_end=1006,
+    serialized_options=None,
+    serialized_start=1103,
+    serialized_end=1164,
 )
 _sym_db.RegisterEnumDescriptor(_DOCUMENTTRANSFORM_FIELDTRANSFORM_SERVERVALUE)
 
@@ -84,7 +90,7 @@ _WRITE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -102,7 +108,7 @@ _WRITE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -120,7 +126,7 @@ _WRITE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -138,7 +144,7 @@ _WRITE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -156,14 +162,14 @@ _WRITE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -203,7 +209,7 @@ _DOCUMENTTRANSFORM_FIELDTRANSFORM = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -221,13 +227,67 @@ _DOCUMENTTRANSFORM_FIELDTRANSFORM = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="increment",
+            full_name="google.firestore.v1beta1.DocumentTransform.FieldTransform.increment",
+            index=2,
+            number=3,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="maximum",
+            full_name="google.firestore.v1beta1.DocumentTransform.FieldTransform.maximum",
+            index=3,
+            number=4,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="minimum",
+            full_name="google.firestore.v1beta1.DocumentTransform.FieldTransform.minimum",
+            index=4,
+            number=5,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
             name="append_missing_elements",
             full_name="google.firestore.v1beta1.DocumentTransform.FieldTransform.append_missing_elements",
-            index=2,
+            index=5,
             number=6,
             type=11,
             cpp_type=10,
@@ -239,13 +299,13 @@ _DOCUMENTTRANSFORM_FIELDTRANSFORM = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
             name="remove_all_from_array",
             full_name="google.firestore.v1beta1.DocumentTransform.FieldTransform.remove_all_from_array",
-            index=3,
+            index=6,
             number=7,
             type=11,
             cpp_type=10,
@@ -257,14 +317,14 @@ _DOCUMENTTRANSFORM_FIELDTRANSFORM = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[_DOCUMENTTRANSFORM_FIELDTRANSFORM_SERVERVALUE],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -278,7 +338,7 @@ _DOCUMENTTRANSFORM_FIELDTRANSFORM = _descriptor.Descriptor(
         )
     ],
     serialized_start=660,
-    serialized_end=1024,
+    serialized_end=1182,
 )
 
 _DOCUMENTTRANSFORM = _descriptor.Descriptor(
@@ -303,7 +363,7 @@ _DOCUMENTTRANSFORM = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -321,20 +381,20 @@ _DOCUMENTTRANSFORM = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[_DOCUMENTTRANSFORM_FIELDTRANSFORM],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
     serialized_start=534,
-    serialized_end=1024,
+    serialized_end=1182,
 )
 
 
@@ -360,7 +420,7 @@ _WRITERESULT = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -378,20 +438,20 @@ _WRITERESULT = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1026,
-    serialized_end=1148,
+    serialized_start=1184,
+    serialized_end=1306,
 )
 
 
@@ -417,7 +477,7 @@ _DOCUMENTCHANGE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -435,7 +495,7 @@ _DOCUMENTCHANGE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -453,20 +513,20 @@ _DOCUMENTCHANGE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1150,
-    serialized_end=1268,
+    serialized_start=1308,
+    serialized_end=1426,
 )
 
 
@@ -492,7 +552,7 @@ _DOCUMENTDELETE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -510,7 +570,7 @@ _DOCUMENTDELETE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -528,20 +588,20 @@ _DOCUMENTDELETE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1270,
-    serialized_end=1379,
+    serialized_start=1428,
+    serialized_end=1537,
 )
 
 
@@ -567,7 +627,7 @@ _DOCUMENTREMOVE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -585,7 +645,7 @@ _DOCUMENTREMOVE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -603,20 +663,20 @@ _DOCUMENTREMOVE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1381,
-    serialized_end=1490,
+    serialized_start=1539,
+    serialized_end=1648,
 )
 
 
@@ -642,7 +702,7 @@ _EXISTENCEFILTER = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -660,20 +720,20 @@ _EXISTENCEFILTER = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1492,
-    serialized_end=1543,
+    serialized_start=1650,
+    serialized_end=1701,
 )
 
 _WRITE.fields_by_name[
@@ -702,6 +762,21 @@ _DOCUMENTTRANSFORM_FIELDTRANSFORM.fields_by_name[
     "set_to_server_value"
 ].enum_type = _DOCUMENTTRANSFORM_FIELDTRANSFORM_SERVERVALUE
 _DOCUMENTTRANSFORM_FIELDTRANSFORM.fields_by_name[
+    "increment"
+].message_type = (
+    google_dot_cloud_dot_firestore__v1beta1_dot_proto_dot_document__pb2._VALUE
+)
+_DOCUMENTTRANSFORM_FIELDTRANSFORM.fields_by_name[
+    "maximum"
+].message_type = (
+    google_dot_cloud_dot_firestore__v1beta1_dot_proto_dot_document__pb2._VALUE
+)
+_DOCUMENTTRANSFORM_FIELDTRANSFORM.fields_by_name[
+    "minimum"
+].message_type = (
+    google_dot_cloud_dot_firestore__v1beta1_dot_proto_dot_document__pb2._VALUE
+)
+_DOCUMENTTRANSFORM_FIELDTRANSFORM.fields_by_name[
     "append_missing_elements"
 ].message_type = (
     google_dot_cloud_dot_firestore__v1beta1_dot_proto_dot_document__pb2._ARRAYVALUE
@@ -720,6 +795,24 @@ _DOCUMENTTRANSFORM_FIELDTRANSFORM.oneofs_by_name["transform_type"].fields.append
 )
 _DOCUMENTTRANSFORM_FIELDTRANSFORM.fields_by_name[
     "set_to_server_value"
+].containing_oneof = _DOCUMENTTRANSFORM_FIELDTRANSFORM.oneofs_by_name["transform_type"]
+_DOCUMENTTRANSFORM_FIELDTRANSFORM.oneofs_by_name["transform_type"].fields.append(
+    _DOCUMENTTRANSFORM_FIELDTRANSFORM.fields_by_name["increment"]
+)
+_DOCUMENTTRANSFORM_FIELDTRANSFORM.fields_by_name[
+    "increment"
+].containing_oneof = _DOCUMENTTRANSFORM_FIELDTRANSFORM.oneofs_by_name["transform_type"]
+_DOCUMENTTRANSFORM_FIELDTRANSFORM.oneofs_by_name["transform_type"].fields.append(
+    _DOCUMENTTRANSFORM_FIELDTRANSFORM.fields_by_name["maximum"]
+)
+_DOCUMENTTRANSFORM_FIELDTRANSFORM.fields_by_name[
+    "maximum"
+].containing_oneof = _DOCUMENTTRANSFORM_FIELDTRANSFORM.oneofs_by_name["transform_type"]
+_DOCUMENTTRANSFORM_FIELDTRANSFORM.oneofs_by_name["transform_type"].fields.append(
+    _DOCUMENTTRANSFORM_FIELDTRANSFORM.fields_by_name["minimum"]
+)
+_DOCUMENTTRANSFORM_FIELDTRANSFORM.fields_by_name[
+    "minimum"
 ].containing_oneof = _DOCUMENTTRANSFORM_FIELDTRANSFORM.oneofs_by_name["transform_type"]
 _DOCUMENTTRANSFORM_FIELDTRANSFORM.oneofs_by_name["transform_type"].fields.append(
     _DOCUMENTTRANSFORM_FIELDTRANSFORM.fields_by_name["append_missing_elements"]
@@ -782,7 +875,7 @@ Write = _reflection.GeneratedProtocolMessageType(
           A document name to delete. In the format: ``projects/{project_
           id}/databases/{database_id}/documents/{document_path}``.
       transform:
-          Applies a tranformation to a document. At most one
+          Applies a transformation to a document. At most one
           ``transform`` per document is allowed in a given request. An
           ``update`` cannot follow a ``transform`` on the same document
           in a given request.
@@ -827,6 +920,43 @@ DocumentTransform = _reflection.GeneratedProtocolMessageType(
             The transformation to apply on the field.
         set_to_server_value:
             Sets the field to the given server value.
+        increment:
+            Adds the given value to the field's current value.  This must
+            be an integer or a double value. If the field is not an
+            integer or double, or if the field does not yet exist, the
+            transformation will set the field to the given value. If
+            either of the given value or the current field value are
+            doubles, both values will be interpreted as doubles. Double
+            arithmetic and representation of double values follow IEEE 754
+            semantics. If there is positive/negative integer overflow, the
+            field is resolved to the largest magnitude positive/negative
+            integer.
+        maximum:
+            Sets the field to the maximum of its current value and the
+            given value.  This must be an integer or a double value. If
+            the field is not an integer or double, or if the field does
+            not yet exist, the transformation will set the field to the
+            given value. If a maximum operation is applied where the field
+            and the input value are of mixed types (that is - one is an
+            integer and one is a double) the field takes on the type of
+            the larger operand. If the operands are equivalent (e.g. 3 and
+            3.0), the field does not change. 0, 0.0, and -0.0 are all
+            zero. The maximum of a zero stored value and zero input value
+            is always the stored value. The maximum of any numeric value x
+            and NaN is NaN.
+        minimum:
+            Sets the field to the minimum of its current value and the
+            given value.  This must be an integer or a double value. If
+            the field is not an integer or double, or if the field does
+            not yet exist, the transformation will set the field to the
+            input value. If a minimum operation is applied where the field
+            and the input value are of mixed types (that is - one is an
+            integer and one is a double) the field takes on the type of
+            the smaller operand. If the operands are equivalent (e.g. 3
+            and 3.0), the field does not change. 0, 0.0, and -0.0 are all
+            zero. The minimum of a zero stored value and zero input value
+            is always the stored value. The minimum of any numeric value x
+            and NaN is NaN.
         append_missing_elements:
             Append the given elements in order if they are not already
             present in the current field value. If the field is not an
@@ -1019,11 +1149,5 @@ ExistenceFilter = _reflection.GeneratedProtocolMessageType(
 _sym_db.RegisterMessage(ExistenceFilter)
 
 
-DESCRIPTOR.has_options = True
-DESCRIPTOR._options = _descriptor._ParseOptions(
-    descriptor_pb2.FileOptions(),
-    _b(
-        "\n\034com.google.firestore.v1beta1B\nWriteProtoP\001ZAgoogle.golang.org/genproto/googleapis/firestore/v1beta1;firestore\242\002\004GCFS\252\002\036Google.Cloud.Firestore.V1Beta1\312\002\036Google\\Cloud\\Firestore\\V1beta1"
-    ),
-)
+DESCRIPTOR._options = None
 # @@protoc_insertion_point(module_scope)

@@ -8,7 +8,6 @@ from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
-from google.protobuf import descriptor_pb2
 
 # @@protoc_insertion_point(imports)
 
@@ -32,6 +31,9 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     name="google/cloud/vision_v1p3beta1/proto/product_search_service.proto",
     package="google.cloud.vision.v1p3beta1",
     syntax="proto3",
+    serialized_options=_b(
+        "\n!com.google.cloud.vision.v1p3beta1B\031ProductSearchServiceProtoP\001ZCgoogle.golang.org/genproto/googleapis/cloud/vision/v1p3beta1;vision\370\001\001"
+    ),
     serialized_pb=_b(
         '\n@google/cloud/vision_v1p3beta1/proto/product_search_service.proto\x12\x1dgoogle.cloud.vision.v1p3beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x32google/cloud/vision_v1p3beta1/proto/geometry.proto\x1a#google/longrunning/operations.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x17google/rpc/status.proto"\xcd\x01\n\x07Product\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x02 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x03 \x01(\t\x12\x18\n\x10product_category\x18\x04 \x01(\t\x12G\n\x0eproduct_labels\x18\x05 \x03(\x0b\x32/.google.cloud.vision.v1p3beta1.Product.KeyValue\x1a&\n\x08KeyValue\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t"\x89\x01\n\nProductSet\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x02 \x01(\t\x12.\n\nindex_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\'\n\x0bindex_error\x18\x04 \x01(\x0b\x32\x12.google.rpc.Status"p\n\x0eReferenceImage\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0b\n\x03uri\x18\x02 \x01(\t\x12\x43\n\x0e\x62ounding_polys\x18\x03 \x03(\x0b\x32+.google.cloud.vision.v1p3beta1.BoundingPoly"s\n\x14\x43reateProductRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x37\n\x07product\x18\x02 \x01(\x0b\x32&.google.cloud.vision.v1p3beta1.Product\x12\x12\n\nproduct_id\x18\x03 \x01(\t"L\n\x13ListProductsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t"i\n\x14ListProductsResponse\x12\x38\n\x08products\x18\x01 \x03(\x0b\x32&.google.cloud.vision.v1p3beta1.Product\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"!\n\x11GetProductRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"\x80\x01\n\x14UpdateProductRequest\x12\x37\n\x07product\x18\x01 \x01(\x0b\x32&.google.cloud.vision.v1p3beta1.Product\x12/\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMask"$\n\x14\x44\x65leteProductRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"\x81\x01\n\x17\x43reateProductSetRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12>\n\x0bproduct_set\x18\x02 \x01(\x0b\x32).google.cloud.vision.v1p3beta1.ProductSet\x12\x16\n\x0eproduct_set_id\x18\x03 \x01(\t"O\n\x16ListProductSetsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t"s\n\x17ListProductSetsResponse\x12?\n\x0cproduct_sets\x18\x01 \x03(\x0b\x32).google.cloud.vision.v1p3beta1.ProductSet\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"$\n\x14GetProductSetRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"\x8a\x01\n\x17UpdateProductSetRequest\x12>\n\x0bproduct_set\x18\x01 \x01(\x0b\x32).google.cloud.vision.v1p3beta1.ProductSet\x12/\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMask"\'\n\x17\x44\x65leteProductSetRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"\x91\x01\n\x1b\x43reateReferenceImageRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x46\n\x0freference_image\x18\x02 \x01(\x0b\x32-.google.cloud.vision.v1p3beta1.ReferenceImage\x12\x1a\n\x12reference_image_id\x18\x03 \x01(\t"S\n\x1aListReferenceImagesRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t"\x92\x01\n\x1bListReferenceImagesResponse\x12G\n\x10reference_images\x18\x01 \x03(\x0b\x32-.google.cloud.vision.v1p3beta1.ReferenceImage\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x17\n\x0fnext_page_token\x18\x03 \x01(\t"(\n\x18GetReferenceImageRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"+\n\x1b\x44\x65leteReferenceImageRequest\x12\x0c\n\x04name\x18\x01 \x01(\t">\n\x1d\x41\x64\x64ProductToProductSetRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0f\n\x07product\x18\x02 \x01(\t"C\n"RemoveProductFromProductSetRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0f\n\x07product\x18\x02 \x01(\t"V\n\x1fListProductsInProductSetRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t"u\n ListProductsInProductSetResponse\x12\x38\n\x08products\x18\x01 \x03(\x0b\x32&.google.cloud.vision.v1p3beta1.Product\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"2\n\x1aImportProductSetsGcsSource\x12\x14\n\x0c\x63sv_file_uri\x18\x01 \x01(\t"y\n\x1cImportProductSetsInputConfig\x12O\n\ngcs_source\x18\x01 \x01(\x0b\x32\x39.google.cloud.vision.v1p3beta1.ImportProductSetsGcsSourceH\x00\x42\x08\n\x06source"}\n\x18ImportProductSetsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12Q\n\x0cinput_config\x18\x02 \x01(\x0b\x32;.google.cloud.vision.v1p3beta1.ImportProductSetsInputConfig"\x8a\x01\n\x19ImportProductSetsResponse\x12G\n\x10reference_images\x18\x01 \x03(\x0b\x32-.google.cloud.vision.v1p3beta1.ReferenceImage\x12$\n\x08statuses\x18\x02 \x03(\x0b\x32\x12.google.rpc.Status"\x9e\x02\n\x16\x42\x61tchOperationMetadata\x12J\n\x05state\x18\x01 \x01(\x0e\x32;.google.cloud.vision.v1p3beta1.BatchOperationMetadata.State\x12/\n\x0bsubmit_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12,\n\x08\x65nd_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp"Y\n\x05State\x12\x15\n\x11STATE_UNSPECIFIED\x10\x00\x12\x0e\n\nPROCESSING\x10\x01\x12\x0e\n\nSUCCESSFUL\x10\x02\x12\n\n\x06\x46\x41ILED\x10\x03\x12\r\n\tCANCELLED\x10\x04\x32\x9f\x1b\n\rProductSearch\x12\xc2\x01\n\x10\x43reateProductSet\x12\x36.google.cloud.vision.v1p3beta1.CreateProductSetRequest\x1a).google.cloud.vision.v1p3beta1.ProductSet"K\x82\xd3\xe4\x93\x02\x45"6/v1p3beta1/{parent=projects/*/locations/*}/productSets:\x0bproduct_set\x12\xc0\x01\n\x0fListProductSets\x12\x35.google.cloud.vision.v1p3beta1.ListProductSetsRequest\x1a\x36.google.cloud.vision.v1p3beta1.ListProductSetsResponse">\x82\xd3\xe4\x93\x02\x38\x12\x36/v1p3beta1/{parent=projects/*/locations/*}/productSets\x12\xaf\x01\n\rGetProductSet\x12\x33.google.cloud.vision.v1p3beta1.GetProductSetRequest\x1a).google.cloud.vision.v1p3beta1.ProductSet">\x82\xd3\xe4\x93\x02\x38\x12\x36/v1p3beta1/{name=projects/*/locations/*/productSets/*}\x12\xce\x01\n\x10UpdateProductSet\x12\x36.google.cloud.vision.v1p3beta1.UpdateProductSetRequest\x1a).google.cloud.vision.v1p3beta1.ProductSet"W\x82\xd3\xe4\x93\x02Q2B/v1p3beta1/{product_set.name=projects/*/locations/*/productSets/*}:\x0bproduct_set\x12\xa2\x01\n\x10\x44\x65leteProductSet\x12\x36.google.cloud.vision.v1p3beta1.DeleteProductSetRequest\x1a\x16.google.protobuf.Empty">\x82\xd3\xe4\x93\x02\x38*6/v1p3beta1/{name=projects/*/locations/*/productSets/*}\x12\xb2\x01\n\rCreateProduct\x12\x33.google.cloud.vision.v1p3beta1.CreateProductRequest\x1a&.google.cloud.vision.v1p3beta1.Product"D\x82\xd3\xe4\x93\x02>"3/v1p3beta1/{parent=projects/*/locations/*}/products:\x07product\x12\xb4\x01\n\x0cListProducts\x12\x32.google.cloud.vision.v1p3beta1.ListProductsRequest\x1a\x33.google.cloud.vision.v1p3beta1.ListProductsResponse";\x82\xd3\xe4\x93\x02\x35\x12\x33/v1p3beta1/{parent=projects/*/locations/*}/products\x12\xa3\x01\n\nGetProduct\x12\x30.google.cloud.vision.v1p3beta1.GetProductRequest\x1a&.google.cloud.vision.v1p3beta1.Product";\x82\xd3\xe4\x93\x02\x35\x12\x33/v1p3beta1/{name=projects/*/locations/*/products/*}\x12\xba\x01\n\rUpdateProduct\x12\x33.google.cloud.vision.v1p3beta1.UpdateProductRequest\x1a&.google.cloud.vision.v1p3beta1.Product"L\x82\xd3\xe4\x93\x02\x46\x32;/v1p3beta1/{product.name=projects/*/locations/*/products/*}:\x07product\x12\x99\x01\n\rDeleteProduct\x12\x33.google.cloud.vision.v1p3beta1.DeleteProductRequest\x1a\x16.google.protobuf.Empty";\x82\xd3\xe4\x93\x02\x35*3/v1p3beta1/{name=projects/*/locations/*/products/*}\x12\xe1\x01\n\x14\x43reateReferenceImage\x12:.google.cloud.vision.v1p3beta1.CreateReferenceImageRequest\x1a-.google.cloud.vision.v1p3beta1.ReferenceImage"^\x82\xd3\xe4\x93\x02X"E/v1p3beta1/{parent=projects/*/locations/*/products/*}/referenceImages:\x0freference_image\x12\xb9\x01\n\x14\x44\x65leteReferenceImage\x12:.google.cloud.vision.v1p3beta1.DeleteReferenceImageRequest\x1a\x16.google.protobuf.Empty"M\x82\xd3\xe4\x93\x02G*E/v1p3beta1/{name=projects/*/locations/*/products/*/referenceImages/*}\x12\xdb\x01\n\x13ListReferenceImages\x12\x39.google.cloud.vision.v1p3beta1.ListReferenceImagesRequest\x1a:.google.cloud.vision.v1p3beta1.ListReferenceImagesResponse"M\x82\xd3\xe4\x93\x02G\x12\x45/v1p3beta1/{parent=projects/*/locations/*/products/*}/referenceImages\x12\xca\x01\n\x11GetReferenceImage\x12\x37.google.cloud.vision.v1p3beta1.GetReferenceImageRequest\x1a-.google.cloud.vision.v1p3beta1.ReferenceImage"M\x82\xd3\xe4\x93\x02G\x12\x45/v1p3beta1/{name=projects/*/locations/*/products/*/referenceImages/*}\x12\xbc\x01\n\x16\x41\x64\x64ProductToProductSet\x12<.google.cloud.vision.v1p3beta1.AddProductToProductSetRequest\x1a\x16.google.protobuf.Empty"L\x82\xd3\xe4\x93\x02\x46"A/v1p3beta1/{name=projects/*/locations/*/productSets/*}:addProduct:\x01*\x12\xc9\x01\n\x1bRemoveProductFromProductSet\x12\x41.google.cloud.vision.v1p3beta1.RemoveProductFromProductSetRequest\x1a\x16.google.protobuf.Empty"O\x82\xd3\xe4\x93\x02I"D/v1p3beta1/{name=projects/*/locations/*/productSets/*}:removeProduct:\x01*\x12\xe4\x01\n\x18ListProductsInProductSet\x12>.google.cloud.vision.v1p3beta1.ListProductsInProductSetRequest\x1a?.google.cloud.vision.v1p3beta1.ListProductsInProductSetResponse"G\x82\xd3\xe4\x93\x02\x41\x12?/v1p3beta1/{name=projects/*/locations/*/productSets/*}/products\x12\xb5\x01\n\x11ImportProductSets\x12\x37.google.cloud.vision.v1p3beta1.ImportProductSetsRequest\x1a\x1d.google.longrunning.Operation"H\x82\xd3\xe4\x93\x02\x42"=/v1p3beta1/{parent=projects/*/locations/*}/productSets:import:\x01*B\x88\x01\n!com.google.cloud.vision.v1p3beta1B\x19ProductSearchServiceProtoP\x01ZCgoogle.golang.org/genproto/googleapis/cloud/vision/v1p3beta1;vision\xf8\x01\x01\x62\x06proto3'
     ),
@@ -54,23 +56,27 @@ _BATCHOPERATIONMETADATA_STATE = _descriptor.EnumDescriptor(
     file=DESCRIPTOR,
     values=[
         _descriptor.EnumValueDescriptor(
-            name="STATE_UNSPECIFIED", index=0, number=0, options=None, type=None
+            name="STATE_UNSPECIFIED",
+            index=0,
+            number=0,
+            serialized_options=None,
+            type=None,
         ),
         _descriptor.EnumValueDescriptor(
-            name="PROCESSING", index=1, number=1, options=None, type=None
+            name="PROCESSING", index=1, number=1, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="SUCCESSFUL", index=2, number=2, options=None, type=None
+            name="SUCCESSFUL", index=2, number=2, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="FAILED", index=3, number=3, options=None, type=None
+            name="FAILED", index=3, number=3, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="CANCELLED", index=4, number=4, options=None, type=None
+            name="CANCELLED", index=4, number=4, serialized_options=None, type=None
         ),
     ],
     containing_type=None,
-    options=None,
+    serialized_options=None,
     serialized_start=3307,
     serialized_end=3396,
 )
@@ -99,7 +105,7 @@ _PRODUCT_KEYVALUE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -117,14 +123,14 @@ _PRODUCT_KEYVALUE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -155,7 +161,7 @@ _PRODUCT = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -173,7 +179,7 @@ _PRODUCT = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -191,7 +197,7 @@ _PRODUCT = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -209,7 +215,7 @@ _PRODUCT = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -227,14 +233,14 @@ _PRODUCT = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[_PRODUCT_KEYVALUE],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -266,7 +272,7 @@ _PRODUCTSET = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -284,7 +290,7 @@ _PRODUCTSET = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -302,7 +308,7 @@ _PRODUCTSET = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -320,14 +326,14 @@ _PRODUCTSET = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -359,7 +365,7 @@ _REFERENCEIMAGE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -377,7 +383,7 @@ _REFERENCEIMAGE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -395,14 +401,14 @@ _REFERENCEIMAGE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -434,7 +440,7 @@ _CREATEPRODUCTREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -452,7 +458,7 @@ _CREATEPRODUCTREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -470,14 +476,14 @@ _CREATEPRODUCTREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -509,7 +515,7 @@ _LISTPRODUCTSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -527,7 +533,7 @@ _LISTPRODUCTSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -545,14 +551,14 @@ _LISTPRODUCTSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -584,7 +590,7 @@ _LISTPRODUCTSRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -602,14 +608,14 @@ _LISTPRODUCTSRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -641,14 +647,14 @@ _GETPRODUCTREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -680,7 +686,7 @@ _UPDATEPRODUCTREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -698,14 +704,14 @@ _UPDATEPRODUCTREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -737,14 +743,14 @@ _DELETEPRODUCTREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -776,7 +782,7 @@ _CREATEPRODUCTSETREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -794,7 +800,7 @@ _CREATEPRODUCTSETREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -812,14 +818,14 @@ _CREATEPRODUCTSETREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -851,7 +857,7 @@ _LISTPRODUCTSETSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -869,7 +875,7 @@ _LISTPRODUCTSETSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -887,14 +893,14 @@ _LISTPRODUCTSETSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -926,7 +932,7 @@ _LISTPRODUCTSETSRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -944,14 +950,14 @@ _LISTPRODUCTSETSRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -983,14 +989,14 @@ _GETPRODUCTSETREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1022,7 +1028,7 @@ _UPDATEPRODUCTSETREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1040,14 +1046,14 @@ _UPDATEPRODUCTSETREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1079,14 +1085,14 @@ _DELETEPRODUCTSETREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1118,7 +1124,7 @@ _CREATEREFERENCEIMAGEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1136,7 +1142,7 @@ _CREATEREFERENCEIMAGEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1154,14 +1160,14 @@ _CREATEREFERENCEIMAGEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1193,7 +1199,7 @@ _LISTREFERENCEIMAGESREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1211,7 +1217,7 @@ _LISTREFERENCEIMAGESREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1229,14 +1235,14 @@ _LISTREFERENCEIMAGESREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1268,7 +1274,7 @@ _LISTREFERENCEIMAGESRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1286,7 +1292,7 @@ _LISTREFERENCEIMAGESRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1304,14 +1310,14 @@ _LISTREFERENCEIMAGESRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1343,14 +1349,14 @@ _GETREFERENCEIMAGEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1382,14 +1388,14 @@ _DELETEREFERENCEIMAGEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1421,7 +1427,7 @@ _ADDPRODUCTTOPRODUCTSETREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1439,14 +1445,14 @@ _ADDPRODUCTTOPRODUCTSETREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1478,7 +1484,7 @@ _REMOVEPRODUCTFROMPRODUCTSETREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1496,14 +1502,14 @@ _REMOVEPRODUCTFROMPRODUCTSETREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1535,7 +1541,7 @@ _LISTPRODUCTSINPRODUCTSETREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1553,7 +1559,7 @@ _LISTPRODUCTSINPRODUCTSETREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1571,14 +1577,14 @@ _LISTPRODUCTSINPRODUCTSETREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1610,7 +1616,7 @@ _LISTPRODUCTSINPRODUCTSETRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1628,14 +1634,14 @@ _LISTPRODUCTSINPRODUCTSETRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1667,14 +1673,14 @@ _IMPORTPRODUCTSETSGCSSOURCE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1706,14 +1712,14 @@ _IMPORTPRODUCTSETSINPUTCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1753,7 +1759,7 @@ _IMPORTPRODUCTSETSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1771,14 +1777,14 @@ _IMPORTPRODUCTSETSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1810,7 +1816,7 @@ _IMPORTPRODUCTSETSRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1828,14 +1834,14 @@ _IMPORTPRODUCTSETSRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1867,7 +1873,7 @@ _BATCHOPERATIONMETADATA = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1885,7 +1891,7 @@ _BATCHOPERATIONMETADATA = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1903,14 +1909,14 @@ _BATCHOPERATIONMETADATA = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[_BATCHOPERATIONMETADATA_STATE],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -2802,20 +2808,14 @@ BatchOperationMetadata = _reflection.GeneratedProtocolMessageType(
 _sym_db.RegisterMessage(BatchOperationMetadata)
 
 
-DESCRIPTOR.has_options = True
-DESCRIPTOR._options = _descriptor._ParseOptions(
-    descriptor_pb2.FileOptions(),
-    _b(
-        "\n!com.google.cloud.vision.v1p3beta1B\031ProductSearchServiceProtoP\001ZCgoogle.golang.org/genproto/googleapis/cloud/vision/v1p3beta1;vision\370\001\001"
-    ),
-)
+DESCRIPTOR._options = None
 
 _PRODUCTSEARCH = _descriptor.ServiceDescriptor(
     name="ProductSearch",
     full_name="google.cloud.vision.v1p3beta1.ProductSearch",
     file=DESCRIPTOR,
     index=0,
-    options=None,
+    serialized_options=None,
     serialized_start=3399,
     serialized_end=6886,
     methods=[
@@ -2826,11 +2826,8 @@ _PRODUCTSEARCH = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_CREATEPRODUCTSETREQUEST,
             output_type=_PRODUCTSET,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\002E"6/v1p3beta1/{parent=projects/*/locations/*}/productSets:\013product_set'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\002E"6/v1p3beta1/{parent=projects/*/locations/*}/productSets:\013product_set'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2840,11 +2837,8 @@ _PRODUCTSEARCH = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_LISTPRODUCTSETSREQUEST,
             output_type=_LISTPRODUCTSETSRESPONSE,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\0028\0226/v1p3beta1/{parent=projects/*/locations/*}/productSets"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\0028\0226/v1p3beta1/{parent=projects/*/locations/*}/productSets"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2854,11 +2848,8 @@ _PRODUCTSEARCH = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_GETPRODUCTSETREQUEST,
             output_type=_PRODUCTSET,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\0028\0226/v1p3beta1/{name=projects/*/locations/*/productSets/*}"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\0028\0226/v1p3beta1/{name=projects/*/locations/*/productSets/*}"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2868,11 +2859,8 @@ _PRODUCTSEARCH = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_UPDATEPRODUCTSETREQUEST,
             output_type=_PRODUCTSET,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\002Q2B/v1p3beta1/{product_set.name=projects/*/locations/*/productSets/*}:\013product_set"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\002Q2B/v1p3beta1/{product_set.name=projects/*/locations/*/productSets/*}:\013product_set"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2882,11 +2870,8 @@ _PRODUCTSEARCH = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_DELETEPRODUCTSETREQUEST,
             output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\0028*6/v1p3beta1/{name=projects/*/locations/*/productSets/*}"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\0028*6/v1p3beta1/{name=projects/*/locations/*/productSets/*}"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2896,11 +2881,8 @@ _PRODUCTSEARCH = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_CREATEPRODUCTREQUEST,
             output_type=_PRODUCT,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\002>"3/v1p3beta1/{parent=projects/*/locations/*}/products:\007product'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\002>"3/v1p3beta1/{parent=projects/*/locations/*}/products:\007product'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2910,11 +2892,8 @@ _PRODUCTSEARCH = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_LISTPRODUCTSREQUEST,
             output_type=_LISTPRODUCTSRESPONSE,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\0025\0223/v1p3beta1/{parent=projects/*/locations/*}/products"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\0025\0223/v1p3beta1/{parent=projects/*/locations/*}/products"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2924,11 +2903,8 @@ _PRODUCTSEARCH = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_GETPRODUCTREQUEST,
             output_type=_PRODUCT,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\0025\0223/v1p3beta1/{name=projects/*/locations/*/products/*}"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\0025\0223/v1p3beta1/{name=projects/*/locations/*/products/*}"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2938,11 +2914,8 @@ _PRODUCTSEARCH = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_UPDATEPRODUCTREQUEST,
             output_type=_PRODUCT,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\002F2;/v1p3beta1/{product.name=projects/*/locations/*/products/*}:\007product"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\002F2;/v1p3beta1/{product.name=projects/*/locations/*/products/*}:\007product"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2952,11 +2925,8 @@ _PRODUCTSEARCH = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_DELETEPRODUCTREQUEST,
             output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\0025*3/v1p3beta1/{name=projects/*/locations/*/products/*}"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\0025*3/v1p3beta1/{name=projects/*/locations/*/products/*}"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2966,11 +2936,8 @@ _PRODUCTSEARCH = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_CREATEREFERENCEIMAGEREQUEST,
             output_type=_REFERENCEIMAGE,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\002X"E/v1p3beta1/{parent=projects/*/locations/*/products/*}/referenceImages:\017reference_image'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\002X"E/v1p3beta1/{parent=projects/*/locations/*/products/*}/referenceImages:\017reference_image'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2980,11 +2947,8 @@ _PRODUCTSEARCH = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_DELETEREFERENCEIMAGEREQUEST,
             output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\002G*E/v1p3beta1/{name=projects/*/locations/*/products/*/referenceImages/*}"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\002G*E/v1p3beta1/{name=projects/*/locations/*/products/*/referenceImages/*}"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2994,11 +2958,8 @@ _PRODUCTSEARCH = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_LISTREFERENCEIMAGESREQUEST,
             output_type=_LISTREFERENCEIMAGESRESPONSE,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\002G\022E/v1p3beta1/{parent=projects/*/locations/*/products/*}/referenceImages"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\002G\022E/v1p3beta1/{parent=projects/*/locations/*/products/*}/referenceImages"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -3008,11 +2969,8 @@ _PRODUCTSEARCH = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_GETREFERENCEIMAGEREQUEST,
             output_type=_REFERENCEIMAGE,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\002G\022E/v1p3beta1/{name=projects/*/locations/*/products/*/referenceImages/*}"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\002G\022E/v1p3beta1/{name=projects/*/locations/*/products/*/referenceImages/*}"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -3022,11 +2980,8 @@ _PRODUCTSEARCH = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_ADDPRODUCTTOPRODUCTSETREQUEST,
             output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\002F"A/v1p3beta1/{name=projects/*/locations/*/productSets/*}:addProduct:\001*'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\002F"A/v1p3beta1/{name=projects/*/locations/*/productSets/*}:addProduct:\001*'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -3036,11 +2991,8 @@ _PRODUCTSEARCH = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_REMOVEPRODUCTFROMPRODUCTSETREQUEST,
             output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\002I"D/v1p3beta1/{name=projects/*/locations/*/productSets/*}:removeProduct:\001*'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\002I"D/v1p3beta1/{name=projects/*/locations/*/productSets/*}:removeProduct:\001*'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -3050,11 +3002,8 @@ _PRODUCTSEARCH = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_LISTPRODUCTSINPRODUCTSETREQUEST,
             output_type=_LISTPRODUCTSINPRODUCTSETRESPONSE,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\002A\022?/v1p3beta1/{name=projects/*/locations/*/productSets/*}/products"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\002A\022?/v1p3beta1/{name=projects/*/locations/*/productSets/*}/products"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -3064,11 +3013,8 @@ _PRODUCTSEARCH = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_IMPORTPRODUCTSETSREQUEST,
             output_type=google_dot_longrunning_dot_operations__pb2._OPERATION,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\002B"=/v1p3beta1/{parent=projects/*/locations/*}/productSets:import:\001*'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\002B"=/v1p3beta1/{parent=projects/*/locations/*}/productSets:import:\001*'
             ),
         ),
     ],

@@ -776,6 +776,143 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         # [END spanner_test_dml_update]
         # [END spanner_test_dml_with_mutation]
 
+    def test_transaction_batch_update_success(self):
+        # [START spanner_test_dml_with_mutation]
+        # [START spanner_test_dml_update]
+        retry = RetryInstanceState(_has_all_ddl)
+        retry(self._db.reload)()
+
+        session = self._db.session()
+        session.create()
+        self.to_delete.append(session)
+
+        with session.batch() as batch:
+            batch.delete(self.TABLE, self.ALL)
+
+        insert_statement = list(self._generate_insert_statements())[0]
+        update_statement = (
+            "UPDATE contacts SET email = @email " "WHERE contact_id = @contact_id;",
+            {"contact_id": 1, "email": "phreddy@example.com"},
+            {"contact_id": Type(code=INT64), "email": Type(code=STRING)},
+        )
+        delete_statement = (
+            "DELETE contacts WHERE contact_id = @contact_id;",
+            {"contact_id": 1},
+            {"contact_id": Type(code=INT64)},
+        )
+
+        def unit_of_work(transaction, self):
+            rows = list(transaction.read(self.TABLE, self.COLUMNS, self.ALL))
+            self.assertEqual(rows, [])
+
+            status, row_counts = transaction.batch_update(
+                [insert_statement, update_statement, delete_statement]
+            )
+            self.assertEqual(status.code, 0)  # XXX: where are values defined?
+            self.assertEqual(len(row_counts), 3)
+            for row_count in row_counts:
+                self.assertEqual(row_count, 1)
+
+        session.run_in_transaction(unit_of_work, self)
+
+        rows = list(session.read(self.TABLE, self.COLUMNS, self.ALL))
+        self._check_rows_data(rows, [])
+        # [END spanner_test_dml_with_mutation]
+        # [END spanner_test_dml_update]
+
+    def test_transaction_batch_update_and_execute_dml(self):
+        retry = RetryInstanceState(_has_all_ddl)
+        retry(self._db.reload)()
+
+        session = self._db.session()
+        session.create()
+        self.to_delete.append(session)
+
+        with session.batch() as batch:
+            batch.delete(self.TABLE, self.ALL)
+
+        insert_statements = list(self._generate_insert_statements())
+        update_statements = [
+            (
+                "UPDATE contacts SET email = @email " "WHERE contact_id = @contact_id;",
+                {"contact_id": 1, "email": "phreddy@example.com"},
+                {"contact_id": Type(code=INT64), "email": Type(code=STRING)},
+            )
+        ]
+
+        delete_statement = "DELETE contacts WHERE TRUE;"
+
+        def unit_of_work(transaction, self):
+            rows = list(transaction.read(self.TABLE, self.COLUMNS, self.ALL))
+            self.assertEqual(rows, [])
+
+            status, row_counts = transaction.batch_update(
+                insert_statements + update_statements
+            )
+            self.assertEqual(status.code, 0)  # XXX: where are values defined?
+            self.assertEqual(len(row_counts), len(insert_statements) + 1)
+            for row_count in row_counts:
+                self.assertEqual(row_count, 1)
+
+            row_count = transaction.execute_update(delete_statement)
+
+            self.assertEqual(row_count, len(insert_statements))
+
+        session.run_in_transaction(unit_of_work, self)
+
+        rows = list(session.read(self.TABLE, self.COLUMNS, self.ALL))
+        self._check_rows_data(rows, [])
+
+    def test_transaction_batch_update_w_syntax_error(self):
+        retry = RetryInstanceState(_has_all_ddl)
+        retry(self._db.reload)()
+
+        session = self._db.session()
+        session.create()
+        self.to_delete.append(session)
+
+        with session.batch() as batch:
+            batch.delete(self.TABLE, self.ALL)
+
+        insert_statement = list(self._generate_insert_statements())[0]
+        update_statement = (
+            "UPDTAE contacts SET email = @email " "WHERE contact_id = @contact_id;",
+            {"contact_id": 1, "email": "phreddy@example.com"},
+            {"contact_id": Type(code=INT64), "email": Type(code=STRING)},
+        )
+        delete_statement = (
+            "DELETE contacts WHERE contact_id = @contact_id;",
+            {"contact_id": 1},
+            {"contact_id": Type(code=INT64)},
+        )
+
+        with session.transaction() as transaction:
+            rows = list(transaction.read(self.TABLE, self.COLUMNS, self.ALL))
+            self.assertEqual(rows, [])
+
+            status, row_counts = transaction.batch_update(
+                [insert_statement, update_statement, delete_statement]
+            )
+
+        self.assertEqual(status.code, 3)  # XXX: where are values defined?
+        self.assertEqual(len(row_counts), 1)
+        for row_count in row_counts:
+            self.assertEqual(row_count, 1)
+
+    def test_transaction_batch_update_wo_statements(self):
+        from google.api_core.exceptions import InvalidArgument
+
+        retry = RetryInstanceState(_has_all_ddl)
+        retry(self._db.reload)()
+
+        session = self._db.session()
+        session.create()
+        self.to_delete.append(session)
+
+        with session.transaction() as transaction:
+            with self.assertRaises(InvalidArgument):
+                transaction.batch_update([])
+
     def test_execute_partitioned_dml(self):
         # [START spanner_test_dml_partioned_dml_update]
         retry = RetryInstanceState(_has_all_ddl)

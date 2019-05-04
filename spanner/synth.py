@@ -27,6 +27,7 @@ library = gapic.py_library(
     "v1",
     config_path="/google/spanner/artman_spanner.yaml",
     artman_output_name="spanner-v1",
+    include_protos=True,
 )
 
 s.move(library / "google/cloud/spanner_v1/proto")
@@ -72,6 +73,7 @@ library = gapic.py_library(
     "v1",
     config_path="/google/spanner/admin/instance" "/artman_spanner_admin_instance.yaml",
     artman_output_name="spanner-admin-instance-v1",
+    include_protos=True,
 )
 
 s.move(library / "google/cloud/spanner_admin_instance_v1/gapic")
@@ -105,6 +107,7 @@ library = gapic.py_library(
     "v1",
     config_path="/google/spanner/admin/database" "/artman_spanner_admin_database.yaml",
     artman_output_name="spanner-admin-database-v1",
+    include_protos=True,
 )
 
 s.move(library / "google/cloud/spanner_admin_database_v1/gapic")
@@ -130,5 +133,14 @@ s.replace(
 # ----------------------------------------------------------------------------
 templated_files = common.py_library(unit_cov_level=97, cov_level=100)
 s.move(templated_files)
+
+# Template's MANIFEST.in does not include the needed GAPIC config file.
+# See PR #6928.
+s.replace(
+    "MANIFEST.in",
+    "include README.rst LICENSE\n",
+    "include README.rst LICENSE\n"
+    "include google/cloud/spanner_v1/gapic/transports/spanner.grpc.config\n",
+)
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)

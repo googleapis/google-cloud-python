@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2018 Google LLC
+# Copyright 2019 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -23,6 +23,7 @@ from google.oauth2 import service_account
 import google.api_core.gapic_v1.client_info
 import google.api_core.gapic_v1.config
 import google.api_core.gapic_v1.method
+import google.api_core.gapic_v1.routing_header
 import google.api_core.grpc_helpers
 import google.api_core.page_iterator
 import google.api_core.path_template
@@ -224,6 +225,7 @@ class SubscriberClient(object):
         retain_acked_messages=None,
         message_retention_duration=None,
         labels=None,
+        enable_message_ordering=None,
         expiration_policy=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
@@ -237,9 +239,9 @@ class SubscriberClient(object):
         If the name is not provided in the request, the server will assign a
         random name for this subscription on the same project as the topic,
         conforming to the `resource name
-        format <https://cloud.google.com/pubsub/docs/overview#names>`__. The
-        generated name is populated in the returned Subscription object. Note
-        that for REST API requests, you must specify a name in the request.
+        format <https://cloud.google.com/pubsub/docs/admin#resource_names>`__.
+        The generated name is populated in the returned Subscription object.
+        Note that for REST API requests, you must specify a name in the request.
 
         Example:
             >>> from google.cloud import pubsub_v1
@@ -267,11 +269,11 @@ class SubscriberClient(object):
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.pubsub_v1.types.PushConfig`
-            ack_deadline_seconds (int): This value is the maximum time after a subscriber receives a message
-                before the subscriber should acknowledge the message. After message
-                delivery but before the ack deadline expires and before the message is
-                acknowledged, it is an outstanding message and will not be delivered
-                again during that time (on a best-effort basis).
+            ack_deadline_seconds (int): The approximate amount of time (on a best-effort basis) Pub/Sub waits
+                for the subscriber to acknowledge receipt before resending the message.
+                In the interval after the message is delivered and before it is
+                acknowledged, it is considered to be outstanding. During that time
+                period, the message will not be redelivered (on a best-effort basis).
 
                 For pull subscriptions, this value is used as the initial value for the
                 ack deadline. To override this value for a given message, call
@@ -290,23 +292,32 @@ class SubscriberClient(object):
             retain_acked_messages (bool): Indicates whether to retain acknowledged messages. If true, then
                 messages are not expunged from the subscription's backlog, even if they
                 are acknowledged, until they fall out of the
-                ``message_retention_duration`` window. ALPHA: This feature is part of an
-                alpha release. This API might be changed in backward-incompatible ways
-                and is not recommended for production use. It is not subject to any SLA
-                or deprecation policy.
+                ``message_retention_duration`` window. This must be true if you would
+                like to Seek to a timestamp. BETA: This feature is part of a beta
+                release. This API might be changed in backward-incompatible ways and is
+                not recommended for production use. It is not subject to any SLA or
+                deprecation policy.
             message_retention_duration (Union[dict, ~google.cloud.pubsub_v1.types.Duration]): How long to retain unacknowledged messages in the subscription's
                 backlog, from the moment a message is published. If
                 ``retain_acked_messages`` is true, then this also configures the
                 retention of acknowledged messages, and thus configures how far back in
                 time a ``Seek`` can be done. Defaults to 7 days. Cannot be more than 7
-                days or less than 10 minutes. ALPHA: This feature is part of an alpha
+                days or less than 10 minutes. BETA: This feature is part of a beta
                 release. This API might be changed in backward-incompatible ways and is
                 not recommended for production use. It is not subject to any SLA or
                 deprecation policy.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.pubsub_v1.types.Duration`
-            labels (dict[str -> str]): See <a href="/pubsub/docs/labels"> Creating and managing labels</a>.
+            labels (dict[str -> str]): See <a href="https://cloud.google.com/pubsub/docs/labels"> Creating and
+                managing labels</a>.
+            enable_message_ordering (bool): If true, messages published with the same ``ordering_key`` in
+                ``PubsubMessage`` will be delivered to the subscribers in the order in
+                which they are received by the Pub/Sub system. Otherwise, they may be
+                delivered in any order. EXPERIMENTAL: This feature is part of a closed
+                alpha release. This API might be changed in backward-incompatible ways
+                and is not recommended for production use. It is not subject to any SLA
+                or deprecation policy.
             expiration_policy (Union[dict, ~google.cloud.pubsub_v1.types.ExpirationPolicy]): A policy that specifies the conditions for this subscription's
                 expiration. A subscription is considered active as long as any connected
                 subscriber is successfully consuming messages from the subscription or
@@ -357,8 +368,22 @@ class SubscriberClient(object):
             retain_acked_messages=retain_acked_messages,
             message_retention_duration=message_retention_duration,
             labels=labels,
+            enable_message_ordering=enable_message_ordering,
             expiration_policy=expiration_policy,
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["create_subscription"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -416,6 +441,19 @@ class SubscriberClient(object):
             )
 
         request = pubsub_pb2.GetSubscriptionRequest(subscription=subscription)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("subscription", subscription)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["get_subscription"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -488,6 +526,19 @@ class SubscriberClient(object):
         request = pubsub_pb2.UpdateSubscriptionRequest(
             subscription=subscription, update_mask=update_mask
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("subscription.name", subscription.name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["update_subscription"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -568,6 +619,19 @@ class SubscriberClient(object):
         request = pubsub_pb2.ListSubscriptionsRequest(
             project=project, page_size=page_size
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("project", project)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(
@@ -638,6 +702,19 @@ class SubscriberClient(object):
             )
 
         request = pubsub_pb2.DeleteSubscriptionRequest(subscription=subscription)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("subscription", subscription)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         self._inner_api_calls["delete_subscription"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -680,9 +757,11 @@ class SubscriberClient(object):
             ack_deadline_seconds (int): The new ack deadline with respect to the time this request was sent to
                 the Pub/Sub system. For example, if the value is 10, the new ack
                 deadline will expire 10 seconds after the ``ModifyAckDeadline`` call was
-                made. Specifying zero may immediately make the message available for
-                another pull request. The minimum deadline you can specify is 0 seconds.
-                The maximum deadline you can specify is 600 seconds (10 minutes).
+                made. Specifying zero might immediately make the message available for
+                delivery to another subscriber client. This typically results in an
+                increase in the rate of message redeliveries (that is, duplicates). The
+                minimum deadline you can specify is 0 seconds. The maximum deadline you
+                can specify is 600 seconds (10 minutes).
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -715,6 +794,19 @@ class SubscriberClient(object):
             ack_ids=ack_ids,
             ack_deadline_seconds=ack_deadline_seconds,
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("subscription", subscription)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         self._inner_api_calls["modify_ack_deadline"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -784,6 +876,19 @@ class SubscriberClient(object):
         request = pubsub_pb2.AcknowledgeRequest(
             subscription=subscription, ack_ids=ack_ids
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("subscription", subscription)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         self._inner_api_calls["acknowledge"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -856,6 +961,19 @@ class SubscriberClient(object):
             max_messages=max_messages,
             return_immediately=return_immediately,
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("subscription", subscription)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["pull"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -1002,6 +1120,19 @@ class SubscriberClient(object):
         request = pubsub_pb2.ModifyPushConfigRequest(
             subscription=subscription, push_config=push_config
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("subscription", subscription)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         self._inner_api_calls["modify_push_config"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -1015,8 +1146,13 @@ class SubscriberClient(object):
         metadata=None,
     ):
         """
-        Lists the existing snapshots.<br><br>
-        <b>ALPHA:</b> This feature is part of an alpha release. This API might be
+        Lists the existing snapshots. Snapshots are used in
+        <a href="https://cloud.google.com/pubsub/docs/replay-overview">Seek</a>
+        operations, which allow
+        you to manage message acknowledgments in bulk. That is, you can set the
+        acknowledgment state of messages in an existing subscription to the state
+        captured by a snapshot.<br><br>
+        <b>BETA:</b> This feature is part of a beta release. This API might be
         changed in backward-incompatible ways and is not recommended for production
         use. It is not subject to any SLA or deprecation policy.
 
@@ -1083,6 +1219,19 @@ class SubscriberClient(object):
             )
 
         request = pubsub_pb2.ListSnapshotsRequest(project=project, page_size=page_size)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("project", project)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(
@@ -1108,8 +1257,11 @@ class SubscriberClient(object):
         metadata=None,
     ):
         """
-        Creates a snapshot from the requested subscription. ALPHA: This feature
-        is part of an alpha release. This API might be changed in
+        Creates a snapshot from the requested subscription. Snapshots are used
+        in Seek operations, which allow you to manage message acknowledgments in
+        bulk. That is, you can set the acknowledgment state of messages in an
+        existing subscription to the state captured by a snapshot. BETA: This
+        feature is part of a beta release. This API might be changed in
         backward-incompatible ways and is not recommended for production use. It
         is not subject to any SLA or deprecation policy. If the snapshot already
         exists, returns ``ALREADY_EXISTS``. If the requested subscription
@@ -1119,9 +1271,9 @@ class SubscriberClient(object):
         ``Snapshot.expire_time`` field. If the name is not provided in the
         request, the server will assign a random name for this snapshot on the
         same project as the subscription, conforming to the `resource name
-        format <https://cloud.google.com/pubsub/docs/overview#names>`__. The
-        generated name is populated in the returned Snapshot object. Note that
-        for REST API requests, you must specify a name in the request.
+        format <https://cloud.google.com/pubsub/docs/admin#resource_names>`__.
+        The generated name is populated in the returned Snapshot object. Note
+        that for REST API requests, you must specify a name in the request.
 
         Example:
             >>> from google.cloud import pubsub_v1
@@ -1147,7 +1299,8 @@ class SubscriberClient(object):
                 messages published to the subscription's topic following the successful
                 completion of the CreateSnapshot request. Format is
                 ``projects/{project}/subscriptions/{sub}``.
-            labels (dict[str -> str]): See <a href="/pubsub/docs/labels"> Creating and managing labels</a>.
+            labels (dict[str -> str]): See <a href="https://cloud.google.com/pubsub/docs/labels"> Creating and
+                managing labels</a>.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -1181,6 +1334,19 @@ class SubscriberClient(object):
         request = pubsub_pb2.CreateSnapshotRequest(
             name=name, subscription=subscription, labels=labels
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["create_snapshot"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -1194,8 +1360,13 @@ class SubscriberClient(object):
         metadata=None,
     ):
         """
-        Updates an existing snapshot.<br><br>
-        <b>ALPHA:</b> This feature is part of an alpha release. This API might be
+        Updates an existing snapshot. Snapshots are used in
+        <a href="https://cloud.google.com/pubsub/docs/replay-overview">Seek</a>
+        operations, which allow
+        you to manage message acknowledgments in bulk. That is, you can set the
+        acknowledgment state of messages in an existing subscription to the state
+        captured by a snapshot.<br><br>
+        <b>BETA:</b> This feature is part of a beta release. This API might be
         changed in backward-incompatible ways and is not recommended for production
         use. It is not subject to any SLA or deprecation policy.
         Note that certain properties of a snapshot are not modifiable.
@@ -1257,6 +1428,19 @@ class SubscriberClient(object):
         request = pubsub_pb2.UpdateSnapshotRequest(
             snapshot=snapshot, update_mask=update_mask
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("snapshot.name", snapshot.name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["update_snapshot"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -1269,8 +1453,13 @@ class SubscriberClient(object):
         metadata=None,
     ):
         """
-        Removes an existing snapshot. <br><br>
-        <b>ALPHA:</b> This feature is part of an alpha release. This API might be
+        Removes an existing snapshot. Snapshots are used in
+        <a href="https://cloud.google.com/pubsub/docs/replay-overview">Seek</a>
+        operations, which allow
+        you to manage message acknowledgments in bulk. That is, you can set the
+        acknowledgment state of messages in an existing subscription to the state
+        captured by a snapshot.<br><br>
+        <b>BETA:</b> This feature is part of a beta release. This API might be
         changed in backward-incompatible ways and is not recommended for production
         use. It is not subject to any SLA or deprecation policy.
         When the snapshot is deleted, all messages retained in the snapshot
@@ -1318,6 +1507,19 @@ class SubscriberClient(object):
             )
 
         request = pubsub_pb2.DeleteSnapshotRequest(snapshot=snapshot)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("snapshot", snapshot)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         self._inner_api_calls["delete_snapshot"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -1333,8 +1535,14 @@ class SubscriberClient(object):
     ):
         """
         Seeks an existing subscription to a point in time or to a given snapshot,
-        whichever is provided in the request.<br><br>
-        <b>ALPHA:</b> This feature is part of an alpha release. This API might be
+        whichever is provided in the request. Snapshots are used in
+        <a href="https://cloud.google.com/pubsub/docs/replay-overview">Seek</a>
+        operations, which allow
+        you to manage message acknowledgments in bulk. That is, you can set the
+        acknowledgment state of messages in an existing subscription to the state
+        captured by a snapshot. Note that both the subscription and the snapshot
+        must be on the same topic.<br><br>
+        <b>BETA:</b> This feature is part of a beta release. This API might be
         changed in backward-incompatible ways and is not recommended for production
         use. It is not subject to any SLA or deprecation policy.
 
@@ -1400,6 +1608,19 @@ class SubscriberClient(object):
         request = pubsub_pb2.SeekRequest(
             subscription=subscription, time=time, snapshot=snapshot
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("subscription", subscription)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["seek"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -1470,6 +1691,19 @@ class SubscriberClient(object):
             )
 
         request = iam_policy_pb2.SetIamPolicyRequest(resource=resource, policy=policy)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("resource", resource)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["set_iam_policy"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -1530,6 +1764,19 @@ class SubscriberClient(object):
             )
 
         request = iam_policy_pb2.GetIamPolicyRequest(resource=resource)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("resource", resource)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["get_iam_policy"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -1600,6 +1847,19 @@ class SubscriberClient(object):
         request = iam_policy_pb2.TestIamPermissionsRequest(
             resource=resource, permissions=permissions
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("resource", resource)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["test_iam_permissions"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )

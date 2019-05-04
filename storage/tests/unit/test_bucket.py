@@ -175,6 +175,110 @@ class Test_LifecycleRuleSetStorageClass(unittest.TestCase):
         self.assertEqual(dict(rule), resource)
 
 
+class Test_IAMConfiguration(unittest.TestCase):
+    @staticmethod
+    def _get_target_class():
+        from google.cloud.storage.bucket import IAMConfiguration
+
+        return IAMConfiguration
+
+    def _make_one(self, bucket, **kw):
+        return self._get_target_class()(bucket, **kw)
+
+    @staticmethod
+    def _make_bucket():
+        from google.cloud.storage.bucket import Bucket
+
+        return mock.create_autospec(Bucket, instance=True)
+
+    def test_ctor_defaults(self):
+        bucket = self._make_bucket()
+
+        config = self._make_one(bucket)
+
+        self.assertIs(config.bucket, bucket)
+        self.assertFalse(config.bucket_policy_only_enabled)
+        self.assertIsNone(config.bucket_policy_only_locked_time)
+
+    def test_ctor_explicit(self):
+        import datetime
+        import pytz
+
+        bucket = self._make_bucket()
+        now = datetime.datetime.utcnow().replace(tzinfo=pytz.UTC)
+
+        config = self._make_one(
+            bucket, bucket_policy_only_enabled=True, bucket_policy_only_locked_time=now
+        )
+
+        self.assertIs(config.bucket, bucket)
+        self.assertTrue(config.bucket_policy_only_enabled)
+        self.assertEqual(config.bucket_policy_only_locked_time, now)
+
+    def test_from_api_repr_w_empty_resource(self):
+        klass = self._get_target_class()
+        bucket = self._make_bucket()
+        resource = {}
+
+        config = klass.from_api_repr(resource, bucket)
+
+        self.assertIs(config.bucket, bucket)
+        self.assertFalse(config.bucket_policy_only_enabled)
+        self.assertIsNone(config.bucket_policy_only_locked_time)
+
+    def test_from_api_repr_w_empty_bpo(self):
+        klass = self._get_target_class()
+        bucket = self._make_bucket()
+        resource = {"bucketPolicyOnly": {}}
+
+        config = klass.from_api_repr(resource, bucket)
+
+        self.assertIs(config.bucket, bucket)
+        self.assertFalse(config.bucket_policy_only_enabled)
+        self.assertIsNone(config.bucket_policy_only_locked_time)
+
+    def test_from_api_repr_w_disabled(self):
+        klass = self._get_target_class()
+        bucket = self._make_bucket()
+        resource = {"bucketPolicyOnly": {"enabled": False}}
+
+        config = klass.from_api_repr(resource, bucket)
+
+        self.assertIs(config.bucket, bucket)
+        self.assertFalse(config.bucket_policy_only_enabled)
+        self.assertIsNone(config.bucket_policy_only_locked_time)
+
+    def test_from_api_repr_w_enabled(self):
+        import datetime
+        import pytz
+        from google.cloud._helpers import _datetime_to_rfc3339
+
+        klass = self._get_target_class()
+        bucket = self._make_bucket()
+        now = datetime.datetime.utcnow().replace(tzinfo=pytz.UTC)
+        resource = {
+            "bucketPolicyOnly": {
+                "enabled": True,
+                "lockedTime": _datetime_to_rfc3339(now),
+            }
+        }
+
+        config = klass.from_api_repr(resource, bucket)
+
+        self.assertIs(config.bucket, bucket)
+        self.assertTrue(config.bucket_policy_only_enabled)
+        self.assertEqual(config.bucket_policy_only_locked_time, now)
+
+    def test_bucket_policy_only_enabled_setter(self):
+        bucket = self._make_bucket()
+        config = self._make_one(bucket)
+
+        config.bucket_policy_only_enabled = True
+
+        self.assertTrue(config["bucketPolicyOnly"]["enabled"])
+        bucket._patch_property.assert_called_once_with("iamConfiguration", config)
+
+
 class Test_Bucket(unittest.TestCase):
     @staticmethod
     def _get_target_class():
@@ -255,6 +359,21 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(blob.chunk_size, CHUNK_SIZE)
         self.assertEqual(blob._encryption_key, KEY)
         self.assertIsNone(blob.kms_key_name)
+
+    def test_blob_w_generation(self):
+        from google.cloud.storage.blob import Blob
+
+        BUCKET_NAME = "BUCKET_NAME"
+        BLOB_NAME = "BLOB_NAME"
+        GENERATION = 123
+
+        bucket = self._make_one(name=BUCKET_NAME)
+        blob = bucket.blob(BLOB_NAME, generation=GENERATION)
+        self.assertIsInstance(blob, Blob)
+        self.assertIs(blob.bucket, bucket)
+        self.assertIs(blob.client, bucket.client)
+        self.assertEqual(blob.name, BLOB_NAME)
+        self.assertEqual(blob.generation, GENERATION)
 
     def test_blob_w_kms_key_name(self):
         from google.cloud.storage.blob import Blob
@@ -565,9 +684,27 @@ class Test_Bucket(unittest.TestCase):
         self.assertIs(blob.bucket, bucket)
         self.assertEqual(blob.name, BLOB_NAME)
         kw, = connection._requested
+        expected_qp = {"userProject": USER_PROJECT, "projection": "noAcl"}
         self.assertEqual(kw["method"], "GET")
         self.assertEqual(kw["path"], "/b/%s/o/%s" % (NAME, BLOB_NAME))
-        self.assertEqual(kw["query_params"], {"userProject": USER_PROJECT})
+        self.assertEqual(kw["query_params"], expected_qp)
+
+    def test_get_blob_hit_w_generation(self):
+        NAME = "name"
+        BLOB_NAME = "blob-name"
+        GENERATION = 1512565576797178
+        connection = _Connection({"name": BLOB_NAME, "generation": GENERATION})
+        client = _Client(connection)
+        bucket = self._make_one(name=NAME)
+        blob = bucket.get_blob(BLOB_NAME, client=client, generation=GENERATION)
+        self.assertIs(blob.bucket, bucket)
+        self.assertEqual(blob.name, BLOB_NAME)
+        self.assertEqual(blob.generation, GENERATION)
+        kw, = connection._requested
+        expected_qp = {"generation": GENERATION, "projection": "noAcl"}
+        self.assertEqual(kw["method"], "GET")
+        self.assertEqual(kw["path"], "/b/%s/o/%s" % (NAME, BLOB_NAME))
+        self.assertEqual(kw["query_params"], expected_qp)
 
     def test_get_blob_hit_with_kwargs(self):
         from google.cloud.storage.blob import _get_encryption_headers
@@ -837,6 +974,20 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(kw["path"], "/b/%s/o/%s" % (NAME, BLOB_NAME))
         self.assertEqual(kw["query_params"], {"userProject": USER_PROJECT})
 
+    def test_delete_blob_hit_with_generation(self):
+        NAME = "name"
+        BLOB_NAME = "blob-name"
+        GENERATION = 1512565576797178
+        connection = _Connection({})
+        client = _Client(connection)
+        bucket = self._make_one(client=client, name=NAME)
+        result = bucket.delete_blob(BLOB_NAME, generation=GENERATION)
+        self.assertIsNone(result)
+        kw, = connection._requested
+        self.assertEqual(kw["method"], "DELETE")
+        self.assertEqual(kw["path"], "/b/%s/o/%s" % (NAME, BLOB_NAME))
+        self.assertEqual(kw["query_params"], {"generation": GENERATION})
+
     def test_delete_blobs_empty(self):
         NAME = "name"
         connection = _Connection()
@@ -1091,6 +1242,44 @@ class Test_Bucket(unittest.TestCase):
         mock_warn.assert_called_once_with(
             bucket_module._LOCATION_SETTER_MESSAGE, DeprecationWarning, stacklevel=2
         )
+
+    def test_iam_configuration_policy_missing(self):
+        from google.cloud.storage.bucket import IAMConfiguration
+
+        NAME = "name"
+        bucket = self._make_one(name=NAME)
+
+        config = bucket.iam_configuration
+
+        self.assertIsInstance(config, IAMConfiguration)
+        self.assertIs(config.bucket, bucket)
+        self.assertFalse(config.bucket_policy_only_enabled)
+        self.assertIsNone(config.bucket_policy_only_locked_time)
+
+    def test_iam_configuration_policy_w_entry(self):
+        import datetime
+        import pytz
+        from google.cloud._helpers import _datetime_to_rfc3339
+        from google.cloud.storage.bucket import IAMConfiguration
+
+        now = datetime.datetime.utcnow().replace(tzinfo=pytz.UTC)
+        NAME = "name"
+        properties = {
+            "iamConfiguration": {
+                "bucketPolicyOnly": {
+                    "enabled": True,
+                    "lockedTime": _datetime_to_rfc3339(now),
+                }
+            }
+        }
+        bucket = self._make_one(name=NAME, properties=properties)
+
+        config = bucket.iam_configuration
+
+        self.assertIsInstance(config, IAMConfiguration)
+        self.assertIs(config.bucket, bucket)
+        self.assertTrue(config.bucket_policy_only_enabled)
+        self.assertEqual(config.bucket_policy_only_locked_time, now)
 
     def test_lifecycle_rules_getter_unknown_action_type(self):
         NAME = "name"
@@ -2384,6 +2573,173 @@ class Test_Bucket(unittest.TestCase):
             {"ifMetagenerationMatch": 1234, "userProject": user_project},
         )
 
+    def test_generate_signed_url_w_invalid_version(self):
+        expiration = "2014-10-16T20:34:37.000Z"
+        connection = _Connection()
+        client = _Client(connection)
+        bucket = self._make_one(name="bucket_name", client=client)
+        with self.assertRaises(ValueError):
+            bucket.generate_signed_url(expiration, version="nonesuch")
+
+    def _generate_signed_url_helper(
+        self,
+        version=None,
+        bucket_name="bucket-name",
+        api_access_endpoint=None,
+        method="GET",
+        content_md5=None,
+        content_type=None,
+        response_type=None,
+        response_disposition=None,
+        generation=None,
+        headers=None,
+        query_parameters=None,
+        credentials=None,
+        expiration=None,
+    ):
+        from six.moves.urllib import parse
+        from google.cloud._helpers import UTC
+        from google.cloud.storage.blob import _API_ACCESS_ENDPOINT
+
+        api_access_endpoint = api_access_endpoint or _API_ACCESS_ENDPOINT
+
+        delta = datetime.timedelta(hours=1)
+
+        if expiration is None:
+            expiration = datetime.datetime.utcnow().replace(tzinfo=UTC) + delta
+
+        connection = _Connection()
+        client = _Client(connection)
+        bucket = self._make_one(name=bucket_name, client=client)
+
+        if version is None:
+            effective_version = "v2"
+        else:
+            effective_version = version
+
+        to_patch = "google.cloud.storage.bucket.generate_signed_url_{}".format(
+            effective_version
+        )
+
+        with mock.patch(to_patch) as signer:
+            signed_uri = bucket.generate_signed_url(
+                expiration=expiration,
+                api_access_endpoint=api_access_endpoint,
+                method=method,
+                credentials=credentials,
+                headers=headers,
+                query_parameters=query_parameters,
+                version=version,
+            )
+
+        self.assertEqual(signed_uri, signer.return_value)
+
+        if credentials is None:
+            expected_creds = client._credentials
+        else:
+            expected_creds = credentials
+
+        encoded_name = bucket_name.encode("utf-8")
+        expected_resource = "/{}".format(parse.quote(encoded_name))
+        expected_kwargs = {
+            "resource": expected_resource,
+            "expiration": expiration,
+            "api_access_endpoint": api_access_endpoint,
+            "method": method.upper(),
+            "headers": headers,
+            "query_parameters": query_parameters,
+        }
+        signer.assert_called_once_with(expected_creds, **expected_kwargs)
+
+    def test_generate_signed_url_no_version_passed_warning(self):
+        self._generate_signed_url_helper()
+
+    def _generate_signed_url_v2_helper(self, **kw):
+        version = "v2"
+        self._generate_signed_url_helper(version, **kw)
+
+    def test_generate_signed_url_v2_w_defaults(self):
+        self._generate_signed_url_v2_helper()
+
+    def test_generate_signed_url_v2_w_expiration(self):
+        from google.cloud._helpers import UTC
+
+        expiration = datetime.datetime.utcnow().replace(tzinfo=UTC)
+        self._generate_signed_url_v2_helper(expiration=expiration)
+
+    def test_generate_signed_url_v2_w_endpoint(self):
+        self._generate_signed_url_v2_helper(
+            api_access_endpoint="https://api.example.com/v1"
+        )
+
+    def test_generate_signed_url_v2_w_method(self):
+        self._generate_signed_url_v2_helper(method="POST")
+
+    def test_generate_signed_url_v2_w_lowercase_method(self):
+        self._generate_signed_url_v2_helper(method="get")
+
+    def test_generate_signed_url_v2_w_content_md5(self):
+        self._generate_signed_url_v2_helper(content_md5="FACEDACE")
+
+    def test_generate_signed_url_v2_w_content_type(self):
+        self._generate_signed_url_v2_helper(content_type="text.html")
+
+    def test_generate_signed_url_v2_w_response_type(self):
+        self._generate_signed_url_v2_helper(response_type="text.html")
+
+    def test_generate_signed_url_v2_w_response_disposition(self):
+        self._generate_signed_url_v2_helper(response_disposition="inline")
+
+    def test_generate_signed_url_v2_w_generation(self):
+        self._generate_signed_url_v2_helper(generation=12345)
+
+    def test_generate_signed_url_v2_w_headers(self):
+        self._generate_signed_url_v2_helper(headers={"x-goog-foo": "bar"})
+
+    def test_generate_signed_url_v2_w_credentials(self):
+        credentials = object()
+        self._generate_signed_url_v2_helper(credentials=credentials)
+
+    def _generate_signed_url_v4_helper(self, **kw):
+        version = "v4"
+        self._generate_signed_url_helper(version, **kw)
+
+    def test_generate_signed_url_v4_w_defaults(self):
+        self._generate_signed_url_v2_helper()
+
+    def test_generate_signed_url_v4_w_endpoint(self):
+        self._generate_signed_url_v4_helper(
+            api_access_endpoint="https://api.example.com/v1"
+        )
+
+    def test_generate_signed_url_v4_w_method(self):
+        self._generate_signed_url_v4_helper(method="POST")
+
+    def test_generate_signed_url_v4_w_lowercase_method(self):
+        self._generate_signed_url_v4_helper(method="get")
+
+    def test_generate_signed_url_v4_w_content_md5(self):
+        self._generate_signed_url_v4_helper(content_md5="FACEDACE")
+
+    def test_generate_signed_url_v4_w_content_type(self):
+        self._generate_signed_url_v4_helper(content_type="text.html")
+
+    def test_generate_signed_url_v4_w_response_type(self):
+        self._generate_signed_url_v4_helper(response_type="text.html")
+
+    def test_generate_signed_url_v4_w_response_disposition(self):
+        self._generate_signed_url_v4_helper(response_disposition="inline")
+
+    def test_generate_signed_url_v4_w_generation(self):
+        self._generate_signed_url_v4_helper(generation=12345)
+
+    def test_generate_signed_url_v4_w_headers(self):
+        self._generate_signed_url_v4_helper(headers={"x-goog-foo": "bar"})
+
+    def test_generate_signed_url_v4_w_credentials(self):
+        credentials = object()
+        self._generate_signed_url_v4_helper(credentials=credentials)
+
 
 class _Connection(object):
     _delete_bucket = False
@@ -2423,6 +2779,13 @@ class _Connection(object):
 
 class _Client(object):
     def __init__(self, connection, project=None):
-        self._connection = connection
         self._base_connection = connection
         self.project = project
+
+    @property
+    def _connection(self):
+        return self._base_connection
+
+    @property
+    def _credentials(self):
+        return self._base_connection.credentials

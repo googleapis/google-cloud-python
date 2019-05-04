@@ -1,0 +1,79 @@
+{
+  "updateTime": "2019-05-01T12:21:46.013173Z",
+  "sources": [
+    {
+      "generator": {
+        "name": "artman",
+        "version": "0.17.1",
+        "dockerImage": "googleapis/artman@sha256:a40ca4dd4ef031c0ded4df4909ffdf7b3f20d29b23e682ef991eb60ba0ca6025"
+      }
+    },
+    {
+      "git": {
+        "name": "googleapis",
+        "remote": "https://github.com/googleapis/googleapis.git",
+        "sha": "316b54c401ab9bc08ed71cb362915b9e7a23bb05",
+        "internalRef": "246014263"
+      }
+    },
+    {
+      "template": {
+        "name": "python_library",
+        "origin": "synthtool.gcp",
+        "version": "2019.4.10"
+      }
+    }
+  ],
+  "destinations": [
+    {
+      "client": {
+        "source": "googleapis",
+        "apiName": "vision",
+        "apiVersion": "v1",
+        "language": "python",
+        "generator": "gapic",
+        "config": "google/cloud/vision/artman_vision_v1.yaml"
+      }
+    },
+    {
+      "client": {
+        "source": "googleapis",
+        "apiName": "vision",
+        "apiVersion": "v1p1beta1",
+        "language": "python",
+        "generator": "gapic",
+        "config": "google/cloud/vision/artman_vision_v1p1beta1.yaml"
+      }
+    },
+    {
+      "client": {
+        "source": "googleapis",
+        "apiName": "vision",
+        "apiVersion": "v1p2beta1",
+        "language": "python",
+        "generator": "gapic",
+        "config": "google/cloud/vision/artman_vision_v1p2beta1.yaml"
+      }
+    },
+    {
+      "client": {
+        "source": "googleapis",
+        "apiName": "vision",
+        "apiVersion": "v1p3beta1",
+        "language": "python",
+        "generator": "gapic",
+        "config": "google/cloud/vision/artman_vision_v1p3beta1.yaml"
+      }
+    },
+    {
+      "client": {
+        "source": "googleapis",
+        "apiName": "vision",
+        "apiVersion": "v1p4beta1",
+        "language": "python",
+        "generator": "gapic",
+        "config": "google/cloud/vision/artman_vision_v1p4beta1.yaml"
+      }
+    }
+  ]
+}

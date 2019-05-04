@@ -8,13 +8,13 @@ Python Client for Google Cloud OS Login API (unreleased)
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. _Alpha: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/README.rst
+.. _Alpha: https://github.com/googleapis/google-cloud-python/blob/master/README.rst
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-oslogin.svg
    :target: https://pypi.org/project/google-cloud-oslogin/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-oslogin.svg
    :target: https://pypi.org/project/google-cloud-oslogin/
 .. _Google Cloud OS Login API: https://cloud.google.com/os-login
-.. _Client Library Documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/oslogin/index.html
+.. _Client Library Documentation: https://googleapis.github.io/google-cloud-python/latest/oslogin/index.html
 .. _Product Documentation:  https://cloud.google.com/os-login
 
 Quick Start
@@ -30,7 +30,7 @@ In order to use this library, you first need to go through the following steps:
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
 .. _Enable the Google Cloud OS Login API.:  https://cloud.google.com/os-login
-.. _Setup Authentication.: https://googlecloudplatform.github.io/google-cloud-python/latest/core/auth.html
+.. _Setup Authentication.: https://googleapis.github.io/google-cloud-python/latest/core/auth.html
 
 Installation
 ~~~~~~~~~~~~
@@ -48,7 +48,7 @@ dependencies.
 
 Supported Python Versions
 ^^^^^^^^^^^^^^^^^^^^^^^^^
-Python >= 3.4
+Python >= 3.5
 
 Deprecated Python Versions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^

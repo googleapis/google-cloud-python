@@ -38,9 +38,12 @@ The following client libraries have **GA** support:
 
 -  `Google BigQuery`_ (`BigQuery README`_)
 -  `Google Cloud Datastore`_ (`Datastore README`_)
+-  `Google Cloud KMS`_ (`KMS README`_)
 -  `Google Cloud Natural Language`_ (`Natural Language README`_)
+-  `Google Cloud Scheduler`_ (`Scheduler README`_)
 -  `Google Cloud Spanner`_ (`Spanner README`_)
 -  `Google Cloud Storage`_ (`Storage README`_)
+-  `Google Cloud Tasks`_ (`Tasks README`_)
 -  `Google Cloud Translation`_ (`Translation README`_)
 -  `Stackdriver Logging`_ (`Logging README`_)
 
@@ -48,14 +51,20 @@ The following client libraries have **GA** support:
 .. _BigQuery README: https://github.com/googleapis/google-cloud-python/tree/master/bigquery
 .. _Google Cloud Datastore: https://pypi.org/project/google-cloud-datastore/
 .. _Datastore README: https://github.com/googleapis/google-cloud-python/tree/master/datastore
+.. _Google Cloud KMS: https://pypi.org/project/google-cloud-kms/
+.. _KMS README: https://github.com/googleapis/google-cloud-python/tree/master/kms
 .. _Google Cloud Natural Language: https://pypi.org/project/google-cloud-language/
 .. _Natural Language README: https://github.com/googleapis/google-cloud-python/tree/master/language
 .. _Google Cloud Spanner: https://pypi.org/project/google-cloud-spanner
 .. _Spanner README: https://github.com/googleapis/google-cloud-python/tree/master/spanner
 .. _Google Cloud Storage: https://pypi.org/project/google-cloud-storage/
 .. _Storage README: https://github.com/googleapis/google-cloud-python/tree/master/storage
+.. _Google Cloud Tasks: https://pypi.org/project/google-cloud-tasks/
+.. _Tasks README: https://github.com/googleapis/google-cloud-python/tree/master/tasks
 .. _Google Cloud Translation: https://pypi.org/project/google-cloud-translate/
 .. _Translation README: https://github.com/googleapis/google-cloud-python/tree/master/translate
+.. _Google Cloud Scheduler: https://pypi.org/project/google-cloud-scheduler/
+.. _Scheduler README: https://github.com/googleapis/google-cloud-python/tree/master/scheduler
 .. _Stackdriver Logging: https://pypi.org/project/google-cloud-logging/
 .. _Logging README: https://github.com/googleapis/google-cloud-python/tree/master/logging
 
@@ -107,7 +116,6 @@ The following client libraries have **alpha** support:
 -  `Google Cloud DLP`_ (`DLP README`_)
 -  `Google Cloud DNS`_ (`DNS README`_)
 -  `Google Cloud IoT`_ (`IoT README`_)
--  `Google Cloud KMS`_ (`KMS README`_)
 -  `Google Cloud Memorystore for Redis`_ (`Redis README`_)
 -  `Google Cloud Resource Manager`_ (`Resource Manager README`_)
 -  `Google Cloud Runtime Configuration`_ (`Runtime Config README`_)
@@ -136,8 +144,6 @@ The following client libraries have **alpha** support:
 .. _DNS README: https://github.com/googleapis/google-cloud-python/tree/master/dns
 .. _Google Cloud IoT: https://pypi.org/project/google-cloud-iot/
 .. _IoT README: https://github.com/googleapis/google-cloud-python/tree/master/iot
-.. _Google Cloud KMS: https://pypi.org/project/google-cloud-kms/
-.. _KMS README: https://github.com/googleapis/google-cloud-python/tree/master/kms
 .. _Google Cloud Memorystore for Redis: https://pypi.org/project/google-cloud-redis/
 .. _Redis README: https://github.com/googleapis/google-cloud-python/tree/master/redis
 .. _Google Cloud Resource Manager: https://pypi.org/project/google-cloud-resource-manager/
@@ -146,8 +152,6 @@ The following client libraries have **alpha** support:
 .. _Runtime Config README: https://github.com/googleapis/google-cloud-python/tree/master/runtimeconfig
 .. _Google Cloud Security Scanner: https://pypi.org/project/google-cloud-websecurityscanner/
 .. _Security Scanner README: https://github.com/googleapis/google-cloud-python/blob/master/websecurityscanner
-.. _Google Cloud Tasks: https://pypi.org/project/google-cloud-tasks/
-.. _Tasks README: https://github.com/googleapis/google-cloud-python/tree/master/tasks
 .. _Google Cloud Text-to-Speech: https://pypi.org/project/google-cloud-texttospeech/
 .. _Text-to-Speech README: https://github.com/googleapis/google-cloud-python/tree/master/texttospeech
 .. _Google Cloud Trace: https://pypi.org/project/google-cloud-trace/
@@ -171,9 +175,9 @@ Example Applications
 -  `getting-started-python`_ - A sample and `tutorial`_ that demonstrates how to build a complete web application using Cloud Datastore, Cloud Storage, and Cloud Pub/Sub and deploy it to Google App Engine or Google Compute Engine.
 -  `google-cloud-python-expenses-demo`_ - A sample expenses demo using Cloud Datastore and Cloud Storage
 
-.. _getting-started-python: https://github.com/googleapis/getting-started-python
+.. _getting-started-python: https://github.com/GoogleCloudPlatform/getting-started-python
 .. _tutorial: https://cloud.google.com/python
-.. _google-cloud-python-expenses-demo: https://github.com/googleapis/google-cloud-python-expenses-demo
+.. _google-cloud-python-expenses-demo: https://github.com/GoogleCloudPlatform/google-cloud-python-expenses-demo
 
 
 Authentication

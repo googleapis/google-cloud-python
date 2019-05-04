@@ -4,6 +4,29 @@
 
 [1]: https://pypi.org/project/google-cloud-language/#history
 
+## 1.2.0
+
+03-29-2019 09:53 PDT
+
+
+### Implementation Changes
+- Remove classifier for Python 3.4 for end-of-life. ([#7535](https://github.com/googleapis/google-cloud-python/pull/7535))
+- Protoc-generated serialization update. ([#7087](https://github.com/googleapis/google-cloud-python/pull/7087))
+
+### New Features
+- Add new entity types (via synth). ([#7510](https://github.com/googleapis/google-cloud-python/pull/7510))
+
+### Documentation
+- Update client library documentation URLs. ([#7307](https://github.com/googleapis/google-cloud-python/pull/7307))
+- Update copyright headers
+- Pick up stub docstring fix in GAPIC generator. ([#6975](https://github.com/googleapis/google-cloud-python/pull/6975))
+
+### Internal / Testing Changes
+- Copy lintified proto files (via synth). ([#7468](https://github.com/googleapis/google-cloud-python/pull/7468))
+- Add clarifying comment to blacken nox target. ([#7397](https://github.com/googleapis/google-cloud-python/pull/7397))
+- Copy in correct proto versions via synth. [#7257](https://github.com/googleapis/google-cloud-python/pull/7257))
+- Add protos as an artifact to library ([#7205](https://github.com/googleapis/google-cloud-python/pull/7205))
+
 ## 1.1.1
 
 12-18-2018 09:34 PST

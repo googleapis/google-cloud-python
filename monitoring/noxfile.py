@@ -45,6 +45,10 @@ def blacken(session):
     """Run black.
 
     Format code to uniform standard.
+    
+    This currently uses Python 3.6 due to the automated Kokoro run of synthtool.
+    That run uses an image that doesn't have 3.6 installed. Before updating this
+    check the state of the `gcp_ubuntu_config` we use for that Kokoro run.
     """
     session.install("black")
     session.run(
@@ -116,11 +120,19 @@ def system(session):
     session.install("-e", "../test_utils/")
     session.install("-e", ".")
 
+    # Additional setup for VPCSC system tests
+    env = {
+        "PROJECT_ID": "secure-gcp-test-project-4",
+        "GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT": os.environ.get(
+            "PROJECT_ID"
+        ),
+    }
+
     # Run py.test against the system tests.
     if system_test_exists:
-        session.run("py.test", "--quiet", system_test_path, *session.posargs)
+        session.run("py.test", "--quiet", system_test_path, env=env, *session.posargs)
     if system_test_folder_exists:
-        session.run("py.test", "--quiet", system_test_folder_path, *session.posargs)
+        session.run("py.test", "--quiet", system_test_folder_path, env=env, *session.posargs)
 
 
 @nox.session(python="3.7")

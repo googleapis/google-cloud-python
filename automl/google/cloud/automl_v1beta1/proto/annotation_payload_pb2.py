@@ -8,7 +8,6 @@ from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
-from google.protobuf import descriptor_pb2
 
 # @@protoc_insertion_point(imports)
 
@@ -20,21 +19,42 @@ from google.cloud.automl_v1beta1.proto import (
     classification_pb2 as google_dot_cloud_dot_automl__v1beta1_dot_proto_dot_classification__pb2,
 )
 from google.cloud.automl_v1beta1.proto import (
+    detection_pb2 as google_dot_cloud_dot_automl__v1beta1_dot_proto_dot_detection__pb2,
+)
+from google.cloud.automl_v1beta1.proto import (
+    tables_pb2 as google_dot_cloud_dot_automl__v1beta1_dot_proto_dot_tables__pb2,
+)
+from google.cloud.automl_v1beta1.proto import (
+    text_extraction_pb2 as google_dot_cloud_dot_automl__v1beta1_dot_proto_dot_text__extraction__pb2,
+)
+from google.cloud.automl_v1beta1.proto import (
+    text_sentiment_pb2 as google_dot_cloud_dot_automl__v1beta1_dot_proto_dot_text__sentiment__pb2,
+)
+from google.cloud.automl_v1beta1.proto import (
     translation_pb2 as google_dot_cloud_dot_automl__v1beta1_dot_proto_dot_translation__pb2,
 )
+from google.protobuf import any_pb2 as google_dot_protobuf_dot_any__pb2
 
 
 DESCRIPTOR = _descriptor.FileDescriptor(
     name="google/cloud/automl_v1beta1/proto/annotation_payload.proto",
     package="google.cloud.automl.v1beta1",
     syntax="proto3",
+    serialized_options=_b(
+        "\n\037com.google.cloud.automl.v1beta1P\001ZAgoogle.golang.org/genproto/googleapis/cloud/automl/v1beta1;automl\312\002\033Google\\Cloud\\AutoMl\\V1beta1"
+    ),
     serialized_pb=_b(
-        '\n:google/cloud/automl_v1beta1/proto/annotation_payload.proto\x12\x1bgoogle.cloud.automl.v1beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x36google/cloud/automl_v1beta1/proto/classification.proto\x1a\x33google/cloud/automl_v1beta1/proto/translation.proto"\xeb\x01\n\x11\x41nnotationPayload\x12I\n\x0btranslation\x18\x02 \x01(\x0b\x32\x32.google.cloud.automl.v1beta1.TranslationAnnotationH\x00\x12O\n\x0e\x63lassification\x18\x03 \x01(\x0b\x32\x35.google.cloud.automl.v1beta1.ClassificationAnnotationH\x00\x12\x1a\n\x12\x61nnotation_spec_id\x18\x01 \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x05 \x01(\tB\x08\n\x06\x64\x65tailB\x84\x01\n\x1f\x63om.google.cloud.automl.v1beta1P\x01ZAgoogle.golang.org/genproto/googleapis/cloud/automl/v1beta1;automl\xca\x02\x1bGoogle\\Cloud\\AutoMl\\V1beta1b\x06proto3'
+        '\n:google/cloud/automl_v1beta1/proto/annotation_payload.proto\x12\x1bgoogle.cloud.automl.v1beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x36google/cloud/automl_v1beta1/proto/classification.proto\x1a\x31google/cloud/automl_v1beta1/proto/detection.proto\x1a.google/cloud/automl_v1beta1/proto/tables.proto\x1a\x37google/cloud/automl_v1beta1/proto/text_extraction.proto\x1a\x36google/cloud/automl_v1beta1/proto/text_sentiment.proto\x1a\x33google/cloud/automl_v1beta1/proto/translation.proto\x1a\x19google/protobuf/any.proto"\x89\x05\n\x11\x41nnotationPayload\x12I\n\x0btranslation\x18\x02 \x01(\x0b\x32\x32.google.cloud.automl.v1beta1.TranslationAnnotationH\x00\x12O\n\x0e\x63lassification\x18\x03 \x01(\x0b\x32\x35.google.cloud.automl.v1beta1.ClassificationAnnotationH\x00\x12]\n\x16image_object_detection\x18\x04 \x01(\x0b\x32;.google.cloud.automl.v1beta1.ImageObjectDetectionAnnotationH\x00\x12Z\n\x14video_classification\x18\t \x01(\x0b\x32:.google.cloud.automl.v1beta1.VideoClassificationAnnotationH\x00\x12P\n\x0ftext_extraction\x18\x06 \x01(\x0b\x32\x35.google.cloud.automl.v1beta1.TextExtractionAnnotationH\x00\x12N\n\x0etext_sentiment\x18\x07 \x01(\x0b\x32\x34.google.cloud.automl.v1beta1.TextSentimentAnnotationH\x00\x12?\n\x06tables\x18\n \x01(\x0b\x32-.google.cloud.automl.v1beta1.TablesAnnotationH\x00\x12\x1a\n\x12\x61nnotation_spec_id\x18\x01 \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x05 \x01(\tB\x08\n\x06\x64\x65tailB\x84\x01\n\x1f\x63om.google.cloud.automl.v1beta1P\x01ZAgoogle.golang.org/genproto/googleapis/cloud/automl/v1beta1;automl\xca\x02\x1bGoogle\\Cloud\\AutoMl\\V1beta1b\x06proto3'
     ),
     dependencies=[
         google_dot_api_dot_annotations__pb2.DESCRIPTOR,
         google_dot_cloud_dot_automl__v1beta1_dot_proto_dot_classification__pb2.DESCRIPTOR,
+        google_dot_cloud_dot_automl__v1beta1_dot_proto_dot_detection__pb2.DESCRIPTOR,
+        google_dot_cloud_dot_automl__v1beta1_dot_proto_dot_tables__pb2.DESCRIPTOR,
+        google_dot_cloud_dot_automl__v1beta1_dot_proto_dot_text__extraction__pb2.DESCRIPTOR,
+        google_dot_cloud_dot_automl__v1beta1_dot_proto_dot_text__sentiment__pb2.DESCRIPTOR,
         google_dot_cloud_dot_automl__v1beta1_dot_proto_dot_translation__pb2.DESCRIPTOR,
+        google_dot_protobuf_dot_any__pb2.DESCRIPTOR,
     ],
 )
 
@@ -61,7 +81,7 @@ _ANNOTATIONPAYLOAD = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -79,13 +99,103 @@ _ANNOTATIONPAYLOAD = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="image_object_detection",
+            full_name="google.cloud.automl.v1beta1.AnnotationPayload.image_object_detection",
+            index=2,
+            number=4,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="video_classification",
+            full_name="google.cloud.automl.v1beta1.AnnotationPayload.video_classification",
+            index=3,
+            number=9,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="text_extraction",
+            full_name="google.cloud.automl.v1beta1.AnnotationPayload.text_extraction",
+            index=4,
+            number=6,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="text_sentiment",
+            full_name="google.cloud.automl.v1beta1.AnnotationPayload.text_sentiment",
+            index=5,
+            number=7,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="tables",
+            full_name="google.cloud.automl.v1beta1.AnnotationPayload.tables",
+            index=6,
+            number=10,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
             name="annotation_spec_id",
             full_name="google.cloud.automl.v1beta1.AnnotationPayload.annotation_spec_id",
-            index=2,
+            index=7,
             number=1,
             type=9,
             cpp_type=9,
@@ -97,13 +207,13 @@ _ANNOTATIONPAYLOAD = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
             name="display_name",
             full_name="google.cloud.automl.v1beta1.AnnotationPayload.display_name",
-            index=3,
+            index=8,
             number=5,
             type=9,
             cpp_type=9,
@@ -115,14 +225,14 @@ _ANNOTATIONPAYLOAD = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -135,8 +245,8 @@ _ANNOTATIONPAYLOAD = _descriptor.Descriptor(
             fields=[],
         )
     ],
-    serialized_start=231,
-    serialized_end=466,
+    serialized_start=470,
+    serialized_end=1119,
 )
 
 _ANNOTATIONPAYLOAD.fields_by_name[
@@ -149,6 +259,31 @@ _ANNOTATIONPAYLOAD.fields_by_name[
 ].message_type = (
     google_dot_cloud_dot_automl__v1beta1_dot_proto_dot_classification__pb2._CLASSIFICATIONANNOTATION
 )
+_ANNOTATIONPAYLOAD.fields_by_name[
+    "image_object_detection"
+].message_type = (
+    google_dot_cloud_dot_automl__v1beta1_dot_proto_dot_detection__pb2._IMAGEOBJECTDETECTIONANNOTATION
+)
+_ANNOTATIONPAYLOAD.fields_by_name[
+    "video_classification"
+].message_type = (
+    google_dot_cloud_dot_automl__v1beta1_dot_proto_dot_classification__pb2._VIDEOCLASSIFICATIONANNOTATION
+)
+_ANNOTATIONPAYLOAD.fields_by_name[
+    "text_extraction"
+].message_type = (
+    google_dot_cloud_dot_automl__v1beta1_dot_proto_dot_text__extraction__pb2._TEXTEXTRACTIONANNOTATION
+)
+_ANNOTATIONPAYLOAD.fields_by_name[
+    "text_sentiment"
+].message_type = (
+    google_dot_cloud_dot_automl__v1beta1_dot_proto_dot_text__sentiment__pb2._TEXTSENTIMENTANNOTATION
+)
+_ANNOTATIONPAYLOAD.fields_by_name[
+    "tables"
+].message_type = (
+    google_dot_cloud_dot_automl__v1beta1_dot_proto_dot_tables__pb2._TABLESANNOTATION
+)
 _ANNOTATIONPAYLOAD.oneofs_by_name["detail"].fields.append(
     _ANNOTATIONPAYLOAD.fields_by_name["translation"]
 )
@@ -160,6 +295,36 @@ _ANNOTATIONPAYLOAD.oneofs_by_name["detail"].fields.append(
 )
 _ANNOTATIONPAYLOAD.fields_by_name[
     "classification"
+].containing_oneof = _ANNOTATIONPAYLOAD.oneofs_by_name["detail"]
+_ANNOTATIONPAYLOAD.oneofs_by_name["detail"].fields.append(
+    _ANNOTATIONPAYLOAD.fields_by_name["image_object_detection"]
+)
+_ANNOTATIONPAYLOAD.fields_by_name[
+    "image_object_detection"
+].containing_oneof = _ANNOTATIONPAYLOAD.oneofs_by_name["detail"]
+_ANNOTATIONPAYLOAD.oneofs_by_name["detail"].fields.append(
+    _ANNOTATIONPAYLOAD.fields_by_name["video_classification"]
+)
+_ANNOTATIONPAYLOAD.fields_by_name[
+    "video_classification"
+].containing_oneof = _ANNOTATIONPAYLOAD.oneofs_by_name["detail"]
+_ANNOTATIONPAYLOAD.oneofs_by_name["detail"].fields.append(
+    _ANNOTATIONPAYLOAD.fields_by_name["text_extraction"]
+)
+_ANNOTATIONPAYLOAD.fields_by_name[
+    "text_extraction"
+].containing_oneof = _ANNOTATIONPAYLOAD.oneofs_by_name["detail"]
+_ANNOTATIONPAYLOAD.oneofs_by_name["detail"].fields.append(
+    _ANNOTATIONPAYLOAD.fields_by_name["text_sentiment"]
+)
+_ANNOTATIONPAYLOAD.fields_by_name[
+    "text_sentiment"
+].containing_oneof = _ANNOTATIONPAYLOAD.oneofs_by_name["detail"]
+_ANNOTATIONPAYLOAD.oneofs_by_name["detail"].fields.append(
+    _ANNOTATIONPAYLOAD.fields_by_name["tables"]
+)
+_ANNOTATIONPAYLOAD.fields_by_name[
+    "tables"
 ].containing_oneof = _ANNOTATIONPAYLOAD.oneofs_by_name["detail"]
 DESCRIPTOR.message_types_by_name["AnnotationPayload"] = _ANNOTATIONPAYLOAD
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
@@ -176,11 +341,22 @@ AnnotationPayload = _reflection.GeneratedProtocolMessageType(
   Attributes:
       detail:
           Output only . Additional information about the annotation
-          specific to the AutoML solution.
+          specific to the AutoML domain.
       translation:
           Annotation details for translation.
       classification:
           Annotation details for content or image classification.
+      image_object_detection:
+          Annotation details for image object detection.
+      video_classification:
+          Annotation details for video classification. Returned for
+          Video Classification predictions.
+      text_extraction:
+          Annotation details for text extraction.
+      text_sentiment:
+          Annotation details for text sentiment.
+      tables:
+          Annotation details for Tables.
       annotation_spec_id:
           Output only . The resource ID of the annotation spec that this
           annotation pertains to. The annotation spec comes from either
@@ -200,11 +376,5 @@ AnnotationPayload = _reflection.GeneratedProtocolMessageType(
 _sym_db.RegisterMessage(AnnotationPayload)
 
 
-DESCRIPTOR.has_options = True
-DESCRIPTOR._options = _descriptor._ParseOptions(
-    descriptor_pb2.FileOptions(),
-    _b(
-        "\n\037com.google.cloud.automl.v1beta1P\001ZAgoogle.golang.org/genproto/googleapis/cloud/automl/v1beta1;automl\312\002\033Google\\Cloud\\AutoMl\\V1beta1"
-    ),
-)
+DESCRIPTOR._options = None
 # @@protoc_insertion_point(module_scope)

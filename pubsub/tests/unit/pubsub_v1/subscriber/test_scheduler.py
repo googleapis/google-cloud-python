@@ -21,6 +21,10 @@ from six.moves import queue
 from google.cloud.pubsub_v1.subscriber import scheduler
 
 
+def test_subclasses_base_abc():
+    assert issubclass(scheduler.ThreadScheduler, scheduler.Scheduler)
+
+
 def test_constructor_defaults():
     scheduler_ = scheduler.ThreadScheduler()
 

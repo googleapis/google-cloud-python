@@ -51,6 +51,9 @@ class ClientInfo(object):
             library, generally used if the client library was not generated
             by gapic or if additional functionality was built on top of
             a gapic client library.
+        user_agent (Optional[str]): Prefix to the user agent header. This is
+            used to supply information such as application name or partner tool.
+            Recommended format: ``application-or-tool-ID/major.minor.version``.
     """
 
     def __init__(
@@ -60,18 +63,26 @@ class ClientInfo(object):
         api_core_version=_API_CORE_VERSION,
         gapic_version=None,
         client_library_version=None,
+        user_agent=None,
     ):
         self.python_version = python_version
         self.grpc_version = grpc_version
         self.api_core_version = api_core_version
         self.gapic_version = gapic_version
         self.client_library_version = client_library_version
+        self.user_agent = user_agent
 
     def to_user_agent(self):
         """Returns the user-agent string for this client info."""
+
         # Note: the order here is important as the internal metrics system
         # expects these items to be in specific locations.
-        ua = "gl-python/{python_version} "
+        ua = ""
+
+        if self.user_agent is not None:
+            ua += "{user_agent} "
+
+        ua += "gl-python/{python_version} "
 
         if self.grpc_version is not None:
             ua += "grpc/{grpc_version} "

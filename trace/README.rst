@@ -17,7 +17,7 @@ default. Trace data from other applications can be provided using this API.
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-trace.svg
    :target: https://pypi.org/project/google-cloud-trace/
 .. _Stackdriver Trace API: https://cloud.google.com/trace
-.. _Client Library Documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/trace/starting.html
+.. _Client Library Documentation: https://googleapis.github.io/google-cloud-python/latest/trace/starting.html
 .. _Product Documentation:  https://cloud.google.com/trace
 
 Quick Start
@@ -31,7 +31,7 @@ In order to use this library, you first need to go through the following steps:
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable the trace API.:  https://cloud.google.com/trace
-.. _Setup Authentication.: https://googlecloudplatform.github.io/google-cloud-python/latest/core/auth.html
+.. _Setup Authentication.: https://googleapis.github.io/google-cloud-python/latest/core/auth.html
 
 Installation
 ~~~~~~~~~~~~
@@ -49,7 +49,7 @@ dependencies.
 
 Supported Python Versions
 ^^^^^^^^^^^^^^^^^^^^^^^^^
-Python >= 3.4
+Python >= 3.5
 
 Deprecated Python Versions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^

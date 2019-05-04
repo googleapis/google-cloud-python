@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2018 Google LLC
+# Copyright 2019 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -102,7 +102,7 @@ class SubscriberGrpcTransport(object):
 
     @property
     def create_subscription(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`SubscriberClient.create_subscription`.
 
         Creates a subscription to a given topic. See the resource name rules. If
         the subscription already exists, returns ``ALREADY_EXISTS``. If the
@@ -111,9 +111,9 @@ class SubscriberGrpcTransport(object):
         If the name is not provided in the request, the server will assign a
         random name for this subscription on the same project as the topic,
         conforming to the `resource name
-        format <https://cloud.google.com/pubsub/docs/overview#names>`__. The
-        generated name is populated in the returned Subscription object. Note
-        that for REST API requests, you must specify a name in the request.
+        format <https://cloud.google.com/pubsub/docs/admin#resource_names>`__.
+        The generated name is populated in the returned Subscription object.
+        Note that for REST API requests, you must specify a name in the request.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -124,7 +124,7 @@ class SubscriberGrpcTransport(object):
 
     @property
     def get_subscription(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`SubscriberClient.get_subscription`.
 
         Gets the configuration details of a subscription.
 
@@ -137,7 +137,7 @@ class SubscriberGrpcTransport(object):
 
     @property
     def update_subscription(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`SubscriberClient.update_subscription`.
 
         Updates an existing subscription. Note that certain properties of a
         subscription, such as its topic, are not modifiable.
@@ -151,7 +151,7 @@ class SubscriberGrpcTransport(object):
 
     @property
     def list_subscriptions(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`SubscriberClient.list_subscriptions`.
 
         Lists matching subscriptions.
 
@@ -164,7 +164,7 @@ class SubscriberGrpcTransport(object):
 
     @property
     def delete_subscription(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`SubscriberClient.delete_subscription`.
 
         Deletes an existing subscription. All messages retained in the
         subscription are immediately dropped. Calls to ``Pull`` after deletion
@@ -182,7 +182,7 @@ class SubscriberGrpcTransport(object):
 
     @property
     def modify_ack_deadline(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`SubscriberClient.modify_ack_deadline`.
 
         Modifies the ack deadline for a specific message. This method is useful
         to indicate that more time is needed to process a message by the
@@ -199,7 +199,7 @@ class SubscriberGrpcTransport(object):
 
     @property
     def acknowledge(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`SubscriberClient.acknowledge`.
 
         Acknowledges the messages associated with the ``ack_ids`` in the
         ``AcknowledgeRequest``. The Pub/Sub system can remove the relevant
@@ -218,7 +218,7 @@ class SubscriberGrpcTransport(object):
 
     @property
     def pull(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`SubscriberClient.pull`.
 
         Pulls messages from the server. The server may return ``UNAVAILABLE`` if
         there are too many concurrent pull requests pending for the given
@@ -233,7 +233,7 @@ class SubscriberGrpcTransport(object):
 
     @property
     def streaming_pull(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`SubscriberClient.streaming_pull`.
 
         Establishes a stream with the server, which sends messages down to the
         client. The client streams acknowledgements and ack deadline
@@ -252,7 +252,7 @@ class SubscriberGrpcTransport(object):
 
     @property
     def modify_push_config(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`SubscriberClient.modify_push_config`.
 
         Modifies the ``PushConfig`` for a specified subscription.
 
@@ -271,10 +271,15 @@ class SubscriberGrpcTransport(object):
 
     @property
     def list_snapshots(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`SubscriberClient.list_snapshots`.
 
-        Lists the existing snapshots.<br><br>
-        <b>ALPHA:</b> This feature is part of an alpha release. This API might be
+        Lists the existing snapshots. Snapshots are used in
+        <a href="https://cloud.google.com/pubsub/docs/replay-overview">Seek</a>
+        operations, which allow
+        you to manage message acknowledgments in bulk. That is, you can set the
+        acknowledgment state of messages in an existing subscription to the state
+        captured by a snapshot.<br><br>
+        <b>BETA:</b> This feature is part of a beta release. This API might be
         changed in backward-incompatible ways and is not recommended for production
         use. It is not subject to any SLA or deprecation policy.
 
@@ -287,10 +292,13 @@ class SubscriberGrpcTransport(object):
 
     @property
     def create_snapshot(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`SubscriberClient.create_snapshot`.
 
-        Creates a snapshot from the requested subscription. ALPHA: This feature
-        is part of an alpha release. This API might be changed in
+        Creates a snapshot from the requested subscription. Snapshots are used
+        in Seek operations, which allow you to manage message acknowledgments in
+        bulk. That is, you can set the acknowledgment state of messages in an
+        existing subscription to the state captured by a snapshot. BETA: This
+        feature is part of a beta release. This API might be changed in
         backward-incompatible ways and is not recommended for production use. It
         is not subject to any SLA or deprecation policy. If the snapshot already
         exists, returns ``ALREADY_EXISTS``. If the requested subscription
@@ -300,9 +308,9 @@ class SubscriberGrpcTransport(object):
         ``Snapshot.expire_time`` field. If the name is not provided in the
         request, the server will assign a random name for this snapshot on the
         same project as the subscription, conforming to the `resource name
-        format <https://cloud.google.com/pubsub/docs/overview#names>`__. The
-        generated name is populated in the returned Snapshot object. Note that
-        for REST API requests, you must specify a name in the request.
+        format <https://cloud.google.com/pubsub/docs/admin#resource_names>`__.
+        The generated name is populated in the returned Snapshot object. Note
+        that for REST API requests, you must specify a name in the request.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -313,10 +321,15 @@ class SubscriberGrpcTransport(object):
 
     @property
     def update_snapshot(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`SubscriberClient.update_snapshot`.
 
-        Updates an existing snapshot.<br><br>
-        <b>ALPHA:</b> This feature is part of an alpha release. This API might be
+        Updates an existing snapshot. Snapshots are used in
+        <a href="https://cloud.google.com/pubsub/docs/replay-overview">Seek</a>
+        operations, which allow
+        you to manage message acknowledgments in bulk. That is, you can set the
+        acknowledgment state of messages in an existing subscription to the state
+        captured by a snapshot.<br><br>
+        <b>BETA:</b> This feature is part of a beta release. This API might be
         changed in backward-incompatible ways and is not recommended for production
         use. It is not subject to any SLA or deprecation policy.
         Note that certain properties of a snapshot are not modifiable.
@@ -330,10 +343,15 @@ class SubscriberGrpcTransport(object):
 
     @property
     def delete_snapshot(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`SubscriberClient.delete_snapshot`.
 
-        Removes an existing snapshot. <br><br>
-        <b>ALPHA:</b> This feature is part of an alpha release. This API might be
+        Removes an existing snapshot. Snapshots are used in
+        <a href="https://cloud.google.com/pubsub/docs/replay-overview">Seek</a>
+        operations, which allow
+        you to manage message acknowledgments in bulk. That is, you can set the
+        acknowledgment state of messages in an existing subscription to the state
+        captured by a snapshot.<br><br>
+        <b>BETA:</b> This feature is part of a beta release. This API might be
         changed in backward-incompatible ways and is not recommended for production
         use. It is not subject to any SLA or deprecation policy.
         When the snapshot is deleted, all messages retained in the snapshot
@@ -350,11 +368,17 @@ class SubscriberGrpcTransport(object):
 
     @property
     def seek(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`SubscriberClient.seek`.
 
         Seeks an existing subscription to a point in time or to a given snapshot,
-        whichever is provided in the request.<br><br>
-        <b>ALPHA:</b> This feature is part of an alpha release. This API might be
+        whichever is provided in the request. Snapshots are used in
+        <a href="https://cloud.google.com/pubsub/docs/replay-overview">Seek</a>
+        operations, which allow
+        you to manage message acknowledgments in bulk. That is, you can set the
+        acknowledgment state of messages in an existing subscription to the state
+        captured by a snapshot. Note that both the subscription and the snapshot
+        must be on the same topic.<br><br>
+        <b>BETA:</b> This feature is part of a beta release. This API might be
         changed in backward-incompatible ways and is not recommended for production
         use. It is not subject to any SLA or deprecation policy.
 
@@ -367,7 +391,7 @@ class SubscriberGrpcTransport(object):
 
     @property
     def set_iam_policy(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`SubscriberClient.set_iam_policy`.
 
         Sets the access control policy on the specified resource. Replaces any
         existing policy.
@@ -381,7 +405,7 @@ class SubscriberGrpcTransport(object):
 
     @property
     def get_iam_policy(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`SubscriberClient.get_iam_policy`.
 
         Gets the access control policy for a resource.
         Returns an empty policy if the resource exists and does not have a policy
@@ -396,7 +420,7 @@ class SubscriberGrpcTransport(object):
 
     @property
     def test_iam_permissions(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`SubscriberClient.test_iam_permissions`.
 
         Returns permissions that a caller has on the specified resource. If the
         resource does not exist, this will return an empty set of permissions,

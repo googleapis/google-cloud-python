@@ -8,7 +8,6 @@ from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
-from google.protobuf import descriptor_pb2
 
 # @@protoc_insertion_point(imports)
 
@@ -28,6 +27,9 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     name="google/cloud/kms_v1/proto/service.proto",
     package="google.cloud.kms.v1",
     syntax="proto3",
+    serialized_options=_b(
+        "\n\027com.google.cloud.kms.v1B\010KmsProtoP\001Z6google.golang.org/genproto/googleapis/cloud/kms/v1;kms\370\001\001\252\002\023Google.Cloud.Kms.V1\312\002\023Google\\Cloud\\Kms\\V1"
+    ),
     serialized_pb=_b(
         '\n\'google/cloud/kms_v1/proto/service.proto\x12\x13google.cloud.kms.v1\x1a\x1cgoogle/api/annotations.proto\x1a)google/cloud/kms_v1/proto/resources.proto\x1a google/protobuf/field_mask.proto\x1a\x1cgoogle/protobuf/struct.proto\x1a\x1egoogle/protobuf/wrappers.proto"L\n\x13ListKeyRingsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t"\xa0\x01\n\x15ListCryptoKeysRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t\x12P\n\x0cversion_view\x18\x04 \x01(\x0e\x32:.google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionView"\x9f\x01\n\x1cListCryptoKeyVersionsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t\x12H\n\x04view\x18\x04 \x01(\x0e\x32:.google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionView"t\n\x14ListKeyRingsResponse\x12/\n\tkey_rings\x18\x01 \x03(\x0b\x32\x1c.google.cloud.kms.v1.KeyRing\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\x12\x12\n\ntotal_size\x18\x03 \x01(\x05"z\n\x16ListCryptoKeysResponse\x12\x33\n\x0b\x63rypto_keys\x18\x01 \x03(\x0b\x32\x1e.google.cloud.kms.v1.CryptoKey\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\x12\x12\n\ntotal_size\x18\x03 \x01(\x05"\x90\x01\n\x1dListCryptoKeyVersionsResponse\x12\x42\n\x13\x63rypto_key_versions\x18\x01 \x03(\x0b\x32%.google.cloud.kms.v1.CryptoKeyVersion\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\x12\x12\n\ntotal_size\x18\x03 \x01(\x05"!\n\x11GetKeyRingRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"#\n\x13GetCryptoKeyRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"*\n\x1aGetCryptoKeyVersionRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"#\n\x13GetPublicKeyRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"k\n\x14\x43reateKeyRingRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x13\n\x0bkey_ring_id\x18\x02 \x01(\t\x12.\n\x08key_ring\x18\x03 \x01(\x0b\x32\x1c.google.cloud.kms.v1.KeyRing"s\n\x16\x43reateCryptoKeyRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x15\n\rcrypto_key_id\x18\x02 \x01(\t\x12\x32\n\ncrypto_key\x18\x03 \x01(\x0b\x32\x1e.google.cloud.kms.v1.CryptoKey"r\n\x1d\x43reateCryptoKeyVersionRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x41\n\x12\x63rypto_key_version\x18\x02 \x01(\x0b\x32%.google.cloud.kms.v1.CryptoKeyVersion"}\n\x16UpdateCryptoKeyRequest\x12\x32\n\ncrypto_key\x18\x01 \x01(\x0b\x32\x1e.google.cloud.kms.v1.CryptoKey\x12/\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMask"\x93\x01\n\x1dUpdateCryptoKeyVersionRequest\x12\x41\n\x12\x63rypto_key_version\x18\x01 \x01(\x0b\x32%.google.cloud.kms.v1.CryptoKeyVersion\x12/\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMask"X\n\x0e\x45ncryptRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x11\n\tplaintext\x18\x02 \x01(\x0c\x12%\n\x1d\x61\x64\x64itional_authenticated_data\x18\x03 \x01(\x0c"Y\n\x0e\x44\x65\x63ryptRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x12\n\nciphertext\x18\x02 \x01(\x0c\x12%\n\x1d\x61\x64\x64itional_authenticated_data\x18\x03 \x01(\x0c"R\n\x15\x41symmetricSignRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12+\n\x06\x64igest\x18\x03 \x01(\x0b\x32\x1b.google.cloud.kms.v1.Digest"<\n\x18\x41symmetricDecryptRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x12\n\nciphertext\x18\x03 \x01(\x0c"$\n\x0f\x44\x65\x63ryptResponse\x12\x11\n\tplaintext\x18\x01 \x01(\x0c"3\n\x0f\x45ncryptResponse\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x12\n\nciphertext\x18\x02 \x01(\x0c"+\n\x16\x41symmetricSignResponse\x12\x11\n\tsignature\x18\x01 \x01(\x0c".\n\x19\x41symmetricDecryptResponse\x12\x11\n\tplaintext\x18\x01 \x01(\x0c"S\n$UpdateCryptoKeyPrimaryVersionRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x1d\n\x15\x63rypto_key_version_id\x18\x02 \x01(\t".\n\x1e\x44\x65stroyCryptoKeyVersionRequest\x12\x0c\n\x04name\x18\x01 \x01(\t".\n\x1eRestoreCryptoKeyVersionRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"H\n\x06\x44igest\x12\x10\n\x06sha256\x18\x01 \x01(\x0cH\x00\x12\x10\n\x06sha384\x18\x02 \x01(\x0cH\x00\x12\x10\n\x06sha512\x18\x03 \x01(\x0cH\x00\x42\x08\n\x06\x64igest")\n\x10LocationMetadata\x12\x15\n\rhsm_available\x18\x01 \x01(\x08\x32\xcd\x1c\n\x14KeyManagementService\x12\x99\x01\n\x0cListKeyRings\x12(.google.cloud.kms.v1.ListKeyRingsRequest\x1a).google.cloud.kms.v1.ListKeyRingsResponse"4\x82\xd3\xe4\x93\x02.\x12,/v1/{parent=projects/*/locations/*}/keyRings\x12\xac\x01\n\x0eListCryptoKeys\x12*.google.cloud.kms.v1.ListCryptoKeysRequest\x1a+.google.cloud.kms.v1.ListCryptoKeysResponse"A\x82\xd3\xe4\x93\x02;\x12\x39/v1/{parent=projects/*/locations/*/keyRings/*}/cryptoKeys\x12\xd5\x01\n\x15ListCryptoKeyVersions\x12\x31.google.cloud.kms.v1.ListCryptoKeyVersionsRequest\x1a\x32.google.cloud.kms.v1.ListCryptoKeyVersionsResponse"U\x82\xd3\xe4\x93\x02O\x12M/v1/{parent=projects/*/locations/*/keyRings/*/cryptoKeys/*}/cryptoKeyVersions\x12\x88\x01\n\nGetKeyRing\x12&.google.cloud.kms.v1.GetKeyRingRequest\x1a\x1c.google.cloud.kms.v1.KeyRing"4\x82\xd3\xe4\x93\x02.\x12,/v1/{name=projects/*/locations/*/keyRings/*}\x12\x9b\x01\n\x0cGetCryptoKey\x12(.google.cloud.kms.v1.GetCryptoKeyRequest\x1a\x1e.google.cloud.kms.v1.CryptoKey"A\x82\xd3\xe4\x93\x02;\x12\x39/v1/{name=projects/*/locations/*/keyRings/*/cryptoKeys/*}\x12\xc4\x01\n\x13GetCryptoKeyVersion\x12/.google.cloud.kms.v1.GetCryptoKeyVersionRequest\x1a%.google.cloud.kms.v1.CryptoKeyVersion"U\x82\xd3\xe4\x93\x02O\x12M/v1/{name=projects/*/locations/*/keyRings/*/cryptoKeys/*/cryptoKeyVersions/*}\x12\xb9\x01\n\x0cGetPublicKey\x12(.google.cloud.kms.v1.GetPublicKeyRequest\x1a\x1e.google.cloud.kms.v1.PublicKey"_\x82\xd3\xe4\x93\x02Y\x12W/v1/{name=projects/*/locations/*/keyRings/*/cryptoKeys/*/cryptoKeyVersions/*}/publicKey\x12\x98\x01\n\rCreateKeyRing\x12).google.cloud.kms.v1.CreateKeyRingRequest\x1a\x1c.google.cloud.kms.v1.KeyRing">\x82\xd3\xe4\x93\x02\x38",/v1/{parent=projects/*/locations/*}/keyRings:\x08key_ring\x12\xad\x01\n\x0f\x43reateCryptoKey\x12+.google.cloud.kms.v1.CreateCryptoKeyRequest\x1a\x1e.google.cloud.kms.v1.CryptoKey"M\x82\xd3\xe4\x93\x02G"9/v1/{parent=projects/*/locations/*/keyRings/*}/cryptoKeys:\ncrypto_key\x12\xde\x01\n\x16\x43reateCryptoKeyVersion\x12\x32.google.cloud.kms.v1.CreateCryptoKeyVersionRequest\x1a%.google.cloud.kms.v1.CryptoKeyVersion"i\x82\xd3\xe4\x93\x02\x63"M/v1/{parent=projects/*/locations/*/keyRings/*/cryptoKeys/*}/cryptoKeyVersions:\x12\x63rypto_key_version\x12\xb8\x01\n\x0fUpdateCryptoKey\x12+.google.cloud.kms.v1.UpdateCryptoKeyRequest\x1a\x1e.google.cloud.kms.v1.CryptoKey"X\x82\xd3\xe4\x93\x02R2D/v1/{crypto_key.name=projects/*/locations/*/keyRings/*/cryptoKeys/*}:\ncrypto_key\x12\xf1\x01\n\x16UpdateCryptoKeyVersion\x12\x32.google.cloud.kms.v1.UpdateCryptoKeyVersionRequest\x1a%.google.cloud.kms.v1.CryptoKeyVersion"|\x82\xd3\xe4\x93\x02v2`/v1/{crypto_key_version.name=projects/*/locations/*/keyRings/*/cryptoKeys/*/cryptoKeyVersions/*}:\x12\x63rypto_key_version\x12\xa3\x01\n\x07\x45ncrypt\x12#.google.cloud.kms.v1.EncryptRequest\x1a$.google.cloud.kms.v1.EncryptResponse"M\x82\xd3\xe4\x93\x02G"B/v1/{name=projects/*/locations/*/keyRings/*/cryptoKeys/**}:encrypt:\x01*\x12\xa2\x01\n\x07\x44\x65\x63rypt\x12#.google.cloud.kms.v1.DecryptRequest\x1a$.google.cloud.kms.v1.DecryptResponse"L\x82\xd3\xe4\x93\x02\x46"A/v1/{name=projects/*/locations/*/keyRings/*/cryptoKeys/*}:decrypt:\x01*\x12\xd2\x01\n\x0e\x41symmetricSign\x12*.google.cloud.kms.v1.AsymmetricSignRequest\x1a+.google.cloud.kms.v1.AsymmetricSignResponse"g\x82\xd3\xe4\x93\x02\x61"\\/v1/{name=projects/*/locations/*/keyRings/*/cryptoKeys/*/cryptoKeyVersions/*}:asymmetricSign:\x01*\x12\xde\x01\n\x11\x41symmetricDecrypt\x12-.google.cloud.kms.v1.AsymmetricDecryptRequest\x1a..google.cloud.kms.v1.AsymmetricDecryptResponse"j\x82\xd3\xe4\x93\x02\x64"_/v1/{name=projects/*/locations/*/keyRings/*/cryptoKeys/*/cryptoKeyVersions/*}:asymmetricDecrypt:\x01*\x12\xd5\x01\n\x1dUpdateCryptoKeyPrimaryVersion\x12\x39.google.cloud.kms.v1.UpdateCryptoKeyPrimaryVersionRequest\x1a\x1e.google.cloud.kms.v1.CryptoKey"Y\x82\xd3\xe4\x93\x02S"N/v1/{name=projects/*/locations/*/keyRings/*/cryptoKeys/*}:updatePrimaryVersion:\x01*\x12\xd7\x01\n\x17\x44\x65stroyCryptoKeyVersion\x12\x33.google.cloud.kms.v1.DestroyCryptoKeyVersionRequest\x1a%.google.cloud.kms.v1.CryptoKeyVersion"`\x82\xd3\xe4\x93\x02Z"U/v1/{name=projects/*/locations/*/keyRings/*/cryptoKeys/*/cryptoKeyVersions/*}:destroy:\x01*\x12\xd7\x01\n\x17RestoreCryptoKeyVersion\x12\x33.google.cloud.kms.v1.RestoreCryptoKeyVersionRequest\x1a%.google.cloud.kms.v1.CryptoKeyVersion"`\x82\xd3\xe4\x93\x02Z"U/v1/{name=projects/*/locations/*/keyRings/*/cryptoKeys/*/cryptoKeyVersions/*}:restore:\x01*B\x8c\x01\n\x17\x63om.google.cloud.kms.v1B\x08KmsProtoP\x01Z6google.golang.org/genproto/googleapis/cloud/kms/v1;kms\xf8\x01\x01\xaa\x02\x13Google.Cloud.Kms.V1\xca\x02\x13Google\\Cloud\\Kms\\V1b\x06proto3'
     ),
@@ -63,7 +65,7 @@ _LISTKEYRINGSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -81,7 +83,7 @@ _LISTKEYRINGSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -99,14 +101,14 @@ _LISTKEYRINGSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -138,7 +140,7 @@ _LISTCRYPTOKEYSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -156,7 +158,7 @@ _LISTCRYPTOKEYSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -174,7 +176,7 @@ _LISTCRYPTOKEYSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -192,14 +194,14 @@ _LISTCRYPTOKEYSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -231,7 +233,7 @@ _LISTCRYPTOKEYVERSIONSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -249,7 +251,7 @@ _LISTCRYPTOKEYVERSIONSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -267,7 +269,7 @@ _LISTCRYPTOKEYVERSIONSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -285,14 +287,14 @@ _LISTCRYPTOKEYVERSIONSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -324,7 +326,7 @@ _LISTKEYRINGSRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -342,7 +344,7 @@ _LISTKEYRINGSRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -360,14 +362,14 @@ _LISTKEYRINGSRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -399,7 +401,7 @@ _LISTCRYPTOKEYSRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -417,7 +419,7 @@ _LISTCRYPTOKEYSRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -435,14 +437,14 @@ _LISTCRYPTOKEYSRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -474,7 +476,7 @@ _LISTCRYPTOKEYVERSIONSRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -492,7 +494,7 @@ _LISTCRYPTOKEYVERSIONSRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -510,14 +512,14 @@ _LISTCRYPTOKEYVERSIONSRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -549,14 +551,14 @@ _GETKEYRINGREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -588,14 +590,14 @@ _GETCRYPTOKEYREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -627,14 +629,14 @@ _GETCRYPTOKEYVERSIONREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -666,14 +668,14 @@ _GETPUBLICKEYREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -705,7 +707,7 @@ _CREATEKEYRINGREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -723,7 +725,7 @@ _CREATEKEYRINGREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -741,14 +743,14 @@ _CREATEKEYRINGREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -780,7 +782,7 @@ _CREATECRYPTOKEYREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -798,7 +800,7 @@ _CREATECRYPTOKEYREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -816,14 +818,14 @@ _CREATECRYPTOKEYREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -855,7 +857,7 @@ _CREATECRYPTOKEYVERSIONREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -873,14 +875,14 @@ _CREATECRYPTOKEYVERSIONREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -912,7 +914,7 @@ _UPDATECRYPTOKEYREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -930,14 +932,14 @@ _UPDATECRYPTOKEYREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -969,7 +971,7 @@ _UPDATECRYPTOKEYVERSIONREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -987,14 +989,14 @@ _UPDATECRYPTOKEYVERSIONREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1026,7 +1028,7 @@ _ENCRYPTREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1044,7 +1046,7 @@ _ENCRYPTREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1062,14 +1064,14 @@ _ENCRYPTREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1101,7 +1103,7 @@ _DECRYPTREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1119,7 +1121,7 @@ _DECRYPTREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1137,14 +1139,14 @@ _DECRYPTREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1176,7 +1178,7 @@ _ASYMMETRICSIGNREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1194,14 +1196,14 @@ _ASYMMETRICSIGNREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1233,7 +1235,7 @@ _ASYMMETRICDECRYPTREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1251,14 +1253,14 @@ _ASYMMETRICDECRYPTREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1290,14 +1292,14 @@ _DECRYPTRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1329,7 +1331,7 @@ _ENCRYPTRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1347,14 +1349,14 @@ _ENCRYPTRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1386,14 +1388,14 @@ _ASYMMETRICSIGNRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1425,14 +1427,14 @@ _ASYMMETRICDECRYPTRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1464,7 +1466,7 @@ _UPDATECRYPTOKEYPRIMARYVERSIONREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1482,14 +1484,14 @@ _UPDATECRYPTOKEYPRIMARYVERSIONREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1521,14 +1523,14 @@ _DESTROYCRYPTOKEYVERSIONREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1560,14 +1562,14 @@ _RESTORECRYPTOKEYVERSIONREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1599,7 +1601,7 @@ _DIGEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1617,7 +1619,7 @@ _DIGEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1635,14 +1637,14 @@ _DIGEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -1682,14 +1684,14 @@ _LOCATIONMETADATA = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -2516,20 +2518,14 @@ LocationMetadata = _reflection.GeneratedProtocolMessageType(
 _sym_db.RegisterMessage(LocationMetadata)
 
 
-DESCRIPTOR.has_options = True
-DESCRIPTOR._options = _descriptor._ParseOptions(
-    descriptor_pb2.FileOptions(),
-    _b(
-        "\n\027com.google.cloud.kms.v1B\010KmsProtoP\001Z6google.golang.org/genproto/googleapis/cloud/kms/v1;kms\370\001\001\252\002\023Google.Cloud.Kms.V1\312\002\023Google\\Cloud\\Kms\\V1"
-    ),
-)
+DESCRIPTOR._options = None
 
 _KEYMANAGEMENTSERVICE = _descriptor.ServiceDescriptor(
     name="KeyManagementService",
     full_name="google.cloud.kms.v1.KeyManagementService",
     file=DESCRIPTOR,
     index=0,
-    options=None,
+    serialized_options=None,
     serialized_start=2607,
     serialized_end=6268,
     methods=[
@@ -2540,11 +2536,8 @@ _KEYMANAGEMENTSERVICE = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_LISTKEYRINGSREQUEST,
             output_type=_LISTKEYRINGSRESPONSE,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\002.\022,/v1/{parent=projects/*/locations/*}/keyRings"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\002.\022,/v1/{parent=projects/*/locations/*}/keyRings"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2554,11 +2547,8 @@ _KEYMANAGEMENTSERVICE = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_LISTCRYPTOKEYSREQUEST,
             output_type=_LISTCRYPTOKEYSRESPONSE,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\002;\0229/v1/{parent=projects/*/locations/*/keyRings/*}/cryptoKeys"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\002;\0229/v1/{parent=projects/*/locations/*/keyRings/*}/cryptoKeys"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2568,11 +2558,8 @@ _KEYMANAGEMENTSERVICE = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_LISTCRYPTOKEYVERSIONSREQUEST,
             output_type=_LISTCRYPTOKEYVERSIONSRESPONSE,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\002O\022M/v1/{parent=projects/*/locations/*/keyRings/*/cryptoKeys/*}/cryptoKeyVersions"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\002O\022M/v1/{parent=projects/*/locations/*/keyRings/*/cryptoKeys/*}/cryptoKeyVersions"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2582,11 +2569,8 @@ _KEYMANAGEMENTSERVICE = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_GETKEYRINGREQUEST,
             output_type=google_dot_cloud_dot_kms__v1_dot_proto_dot_resources__pb2._KEYRING,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\002.\022,/v1/{name=projects/*/locations/*/keyRings/*}"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\002.\022,/v1/{name=projects/*/locations/*/keyRings/*}"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2596,11 +2580,8 @@ _KEYMANAGEMENTSERVICE = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_GETCRYPTOKEYREQUEST,
             output_type=google_dot_cloud_dot_kms__v1_dot_proto_dot_resources__pb2._CRYPTOKEY,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\002;\0229/v1/{name=projects/*/locations/*/keyRings/*/cryptoKeys/*}"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\002;\0229/v1/{name=projects/*/locations/*/keyRings/*/cryptoKeys/*}"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2610,11 +2591,8 @@ _KEYMANAGEMENTSERVICE = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_GETCRYPTOKEYVERSIONREQUEST,
             output_type=google_dot_cloud_dot_kms__v1_dot_proto_dot_resources__pb2._CRYPTOKEYVERSION,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\002O\022M/v1/{name=projects/*/locations/*/keyRings/*/cryptoKeys/*/cryptoKeyVersions/*}"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\002O\022M/v1/{name=projects/*/locations/*/keyRings/*/cryptoKeys/*/cryptoKeyVersions/*}"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2624,11 +2602,8 @@ _KEYMANAGEMENTSERVICE = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_GETPUBLICKEYREQUEST,
             output_type=google_dot_cloud_dot_kms__v1_dot_proto_dot_resources__pb2._PUBLICKEY,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\002Y\022W/v1/{name=projects/*/locations/*/keyRings/*/cryptoKeys/*/cryptoKeyVersions/*}/publicKey"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\002Y\022W/v1/{name=projects/*/locations/*/keyRings/*/cryptoKeys/*/cryptoKeyVersions/*}/publicKey"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2638,11 +2613,8 @@ _KEYMANAGEMENTSERVICE = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_CREATEKEYRINGREQUEST,
             output_type=google_dot_cloud_dot_kms__v1_dot_proto_dot_resources__pb2._KEYRING,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\0028",/v1/{parent=projects/*/locations/*}/keyRings:\010key_ring'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\0028",/v1/{parent=projects/*/locations/*}/keyRings:\010key_ring'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2652,11 +2624,8 @@ _KEYMANAGEMENTSERVICE = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_CREATECRYPTOKEYREQUEST,
             output_type=google_dot_cloud_dot_kms__v1_dot_proto_dot_resources__pb2._CRYPTOKEY,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\002G"9/v1/{parent=projects/*/locations/*/keyRings/*}/cryptoKeys:\ncrypto_key'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\002G"9/v1/{parent=projects/*/locations/*/keyRings/*}/cryptoKeys:\ncrypto_key'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2666,11 +2635,8 @@ _KEYMANAGEMENTSERVICE = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_CREATECRYPTOKEYVERSIONREQUEST,
             output_type=google_dot_cloud_dot_kms__v1_dot_proto_dot_resources__pb2._CRYPTOKEYVERSION,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\002c"M/v1/{parent=projects/*/locations/*/keyRings/*/cryptoKeys/*}/cryptoKeyVersions:\022crypto_key_version'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\002c"M/v1/{parent=projects/*/locations/*/keyRings/*/cryptoKeys/*}/cryptoKeyVersions:\022crypto_key_version'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2680,11 +2646,8 @@ _KEYMANAGEMENTSERVICE = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_UPDATECRYPTOKEYREQUEST,
             output_type=google_dot_cloud_dot_kms__v1_dot_proto_dot_resources__pb2._CRYPTOKEY,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\002R2D/v1/{crypto_key.name=projects/*/locations/*/keyRings/*/cryptoKeys/*}:\ncrypto_key"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\002R2D/v1/{crypto_key.name=projects/*/locations/*/keyRings/*/cryptoKeys/*}:\ncrypto_key"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2694,11 +2657,8 @@ _KEYMANAGEMENTSERVICE = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_UPDATECRYPTOKEYVERSIONREQUEST,
             output_type=google_dot_cloud_dot_kms__v1_dot_proto_dot_resources__pb2._CRYPTOKEYVERSION,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    "\202\323\344\223\002v2`/v1/{crypto_key_version.name=projects/*/locations/*/keyRings/*/cryptoKeys/*/cryptoKeyVersions/*}:\022crypto_key_version"
-                ),
+            serialized_options=_b(
+                "\202\323\344\223\002v2`/v1/{crypto_key_version.name=projects/*/locations/*/keyRings/*/cryptoKeys/*/cryptoKeyVersions/*}:\022crypto_key_version"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2708,11 +2668,8 @@ _KEYMANAGEMENTSERVICE = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_ENCRYPTREQUEST,
             output_type=_ENCRYPTRESPONSE,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\002G"B/v1/{name=projects/*/locations/*/keyRings/*/cryptoKeys/**}:encrypt:\001*'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\002G"B/v1/{name=projects/*/locations/*/keyRings/*/cryptoKeys/**}:encrypt:\001*'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2722,11 +2679,8 @@ _KEYMANAGEMENTSERVICE = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_DECRYPTREQUEST,
             output_type=_DECRYPTRESPONSE,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\002F"A/v1/{name=projects/*/locations/*/keyRings/*/cryptoKeys/*}:decrypt:\001*'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\002F"A/v1/{name=projects/*/locations/*/keyRings/*/cryptoKeys/*}:decrypt:\001*'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2736,11 +2690,8 @@ _KEYMANAGEMENTSERVICE = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_ASYMMETRICSIGNREQUEST,
             output_type=_ASYMMETRICSIGNRESPONSE,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\002a"\\/v1/{name=projects/*/locations/*/keyRings/*/cryptoKeys/*/cryptoKeyVersions/*}:asymmetricSign:\001*'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\002a"\\/v1/{name=projects/*/locations/*/keyRings/*/cryptoKeys/*/cryptoKeyVersions/*}:asymmetricSign:\001*'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2750,11 +2701,8 @@ _KEYMANAGEMENTSERVICE = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_ASYMMETRICDECRYPTREQUEST,
             output_type=_ASYMMETRICDECRYPTRESPONSE,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\002d"_/v1/{name=projects/*/locations/*/keyRings/*/cryptoKeys/*/cryptoKeyVersions/*}:asymmetricDecrypt:\001*'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\002d"_/v1/{name=projects/*/locations/*/keyRings/*/cryptoKeys/*/cryptoKeyVersions/*}:asymmetricDecrypt:\001*'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2764,11 +2712,8 @@ _KEYMANAGEMENTSERVICE = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_UPDATECRYPTOKEYPRIMARYVERSIONREQUEST,
             output_type=google_dot_cloud_dot_kms__v1_dot_proto_dot_resources__pb2._CRYPTOKEY,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\002S"N/v1/{name=projects/*/locations/*/keyRings/*/cryptoKeys/*}:updatePrimaryVersion:\001*'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\002S"N/v1/{name=projects/*/locations/*/keyRings/*/cryptoKeys/*}:updatePrimaryVersion:\001*'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2778,11 +2723,8 @@ _KEYMANAGEMENTSERVICE = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_DESTROYCRYPTOKEYVERSIONREQUEST,
             output_type=google_dot_cloud_dot_kms__v1_dot_proto_dot_resources__pb2._CRYPTOKEYVERSION,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\002Z"U/v1/{name=projects/*/locations/*/keyRings/*/cryptoKeys/*/cryptoKeyVersions/*}:destroy:\001*'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\002Z"U/v1/{name=projects/*/locations/*/keyRings/*/cryptoKeys/*/cryptoKeyVersions/*}:destroy:\001*'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2792,11 +2734,8 @@ _KEYMANAGEMENTSERVICE = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_RESTORECRYPTOKEYVERSIONREQUEST,
             output_type=google_dot_cloud_dot_kms__v1_dot_proto_dot_resources__pb2._CRYPTOKEYVERSION,
-            options=_descriptor._ParseOptions(
-                descriptor_pb2.MethodOptions(),
-                _b(
-                    '\202\323\344\223\002Z"U/v1/{name=projects/*/locations/*/keyRings/*/cryptoKeys/*/cryptoKeyVersions/*}:restore:\001*'
-                ),
+            serialized_options=_b(
+                '\202\323\344\223\002Z"U/v1/{name=projects/*/locations/*/keyRings/*/cryptoKeys/*/cryptoKeyVersions/*}:restore:\001*'
             ),
         ),
     ],

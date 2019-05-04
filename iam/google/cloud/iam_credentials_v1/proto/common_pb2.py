@@ -8,7 +8,6 @@ from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
-from google.protobuf import descriptor_pb2
 
 # @@protoc_insertion_point(imports)
 
@@ -23,8 +22,11 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     name="google/iam/credentials/v1/common.proto",
     package="google.iam.credentials.v1",
     syntax="proto3",
+    serialized_options=_b(
+        "\n#com.google.cloud.iam.credentials.v1B\031IAMCredentialsCommonProtoP\001ZDgoogle.golang.org/genproto/googleapis/iam/credentials/v1;credentials\370\001\001"
+    ),
     serialized_pb=_b(
-        '\n&google/iam/credentials/v1/common.proto\x12\x19google.iam.credentials.v1\x1a\x1egoogle/protobuf/duration.proto\x1a\x1fgoogle/protobuf/timestamp.proto"y\n\x1aGenerateAccessTokenRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x11\n\tdelegates\x18\x02 \x03(\t\x12\r\n\x05scope\x18\x04 \x03(\t\x12+\n\x08lifetime\x18\x07 \x01(\x0b\x32\x19.google.protobuf.Duration"d\n\x1bGenerateAccessTokenResponse\x12\x14\n\x0c\x61\x63\x63\x65ss_token\x18\x01 \x01(\t\x12/\n\x0b\x65xpire_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp"C\n\x0fSignBlobRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x11\n\tdelegates\x18\x03 \x03(\t\x12\x0f\n\x07payload\x18\x05 \x01(\x0c"7\n\x10SignBlobResponse\x12\x0e\n\x06key_id\x18\x01 \x01(\t\x12\x13\n\x0bsigned_blob\x18\x04 \x01(\x0c"B\n\x0eSignJwtRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x11\n\tdelegates\x18\x03 \x03(\t\x12\x0f\n\x07payload\x18\x05 \x01(\t"5\n\x0fSignJwtResponse\x12\x0e\n\x06key_id\x18\x01 \x01(\t\x12\x12\n\nsigned_jwt\x18\x02 \x01(\t"b\n\x16GenerateIdTokenRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x11\n\tdelegates\x18\x02 \x03(\t\x12\x10\n\x08\x61udience\x18\x03 \x01(\t\x12\x15\n\rinclude_email\x18\x04 \x01(\x08"(\n\x17GenerateIdTokenResponse\x12\r\n\x05token\x18\x01 \x01(\tB\x8b\x01\n#com.google.cloud.iam.credentials.v1B\x19IAMCredentialsCommonProtoP\x01ZDgoogle.golang.org/genproto/googleapis/iam/credentials/v1;credentials\xf8\x01\x01\x62\x06proto3'
+        '\n&google/iam/credentials/v1/common.proto\x12\x19google.iam.credentials.v1\x1a\x1egoogle/protobuf/duration.proto\x1a\x1fgoogle/protobuf/timestamp.proto"y\n\x1aGenerateAccessTokenRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x11\n\tdelegates\x18\x02 \x03(\t\x12\r\n\x05scope\x18\x04 \x03(\t\x12+\n\x08lifetime\x18\x07 \x01(\x0b\x32\x19.google.protobuf.Duration"d\n\x1bGenerateAccessTokenResponse\x12\x14\n\x0c\x61\x63\x63\x65ss_token\x18\x01 \x01(\t\x12/\n\x0b\x65xpire_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp"C\n\x0fSignBlobRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x11\n\tdelegates\x18\x03 \x03(\t\x12\x0f\n\x07payload\x18\x05 \x01(\x0c"7\n\x10SignBlobResponse\x12\x0e\n\x06key_id\x18\x01 \x01(\t\x12\x13\n\x0bsigned_blob\x18\x04 \x01(\x0c"B\n\x0eSignJwtRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x11\n\tdelegates\x18\x03 \x03(\t\x12\x0f\n\x07payload\x18\x05 \x01(\t"5\n\x0fSignJwtResponse\x12\x0e\n\x06key_id\x18\x01 \x01(\t\x12\x12\n\nsigned_jwt\x18\x02 \x01(\t"b\n\x16GenerateIdTokenRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x11\n\tdelegates\x18\x02 \x03(\t\x12\x10\n\x08\x61udience\x18\x03 \x01(\t\x12\x15\n\rinclude_email\x18\x04 \x01(\x08"(\n\x17GenerateIdTokenResponse\x12\r\n\x05token\x18\x01 \x01(\t"U\n)GenerateIdentityBindingAccessTokenRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\r\n\x05scope\x18\x02 \x03(\t\x12\x0b\n\x03jwt\x18\x03 \x01(\t"s\n*GenerateIdentityBindingAccessTokenResponse\x12\x14\n\x0c\x61\x63\x63\x65ss_token\x18\x01 \x01(\t\x12/\n\x0b\x65xpire_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.TimestampB\x8b\x01\n#com.google.cloud.iam.credentials.v1B\x19IAMCredentialsCommonProtoP\x01ZDgoogle.golang.org/genproto/googleapis/iam/credentials/v1;credentials\xf8\x01\x01\x62\x06proto3'
     ),
     dependencies=[
         google_dot_protobuf_dot_duration__pb2.DESCRIPTOR,
@@ -55,7 +57,7 @@ _GENERATEACCESSTOKENREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -73,7 +75,7 @@ _GENERATEACCESSTOKENREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -91,7 +93,7 @@ _GENERATEACCESSTOKENREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -109,14 +111,14 @@ _GENERATEACCESSTOKENREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -148,7 +150,7 @@ _GENERATEACCESSTOKENRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -166,14 +168,14 @@ _GENERATEACCESSTOKENRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -205,7 +207,7 @@ _SIGNBLOBREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -223,7 +225,7 @@ _SIGNBLOBREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -241,14 +243,14 @@ _SIGNBLOBREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -280,7 +282,7 @@ _SIGNBLOBRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -298,14 +300,14 @@ _SIGNBLOBRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -337,7 +339,7 @@ _SIGNJWTREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -355,7 +357,7 @@ _SIGNJWTREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -373,14 +375,14 @@ _SIGNJWTREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -412,7 +414,7 @@ _SIGNJWTRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -430,14 +432,14 @@ _SIGNJWTRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -469,7 +471,7 @@ _GENERATEIDTOKENREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -487,7 +489,7 @@ _GENERATEIDTOKENREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -505,7 +507,7 @@ _GENERATEIDTOKENREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -523,14 +525,14 @@ _GENERATEIDTOKENREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -562,14 +564,14 @@ _GENERATEIDTOKENRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            options=None,
+            serialized_options=None,
             file=DESCRIPTOR,
         )
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    options=None,
+    serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -578,10 +580,145 @@ _GENERATEIDTOKENRESPONSE = _descriptor.Descriptor(
     serialized_end=748,
 )
 
+
+_GENERATEIDENTITYBINDINGACCESSTOKENREQUEST = _descriptor.Descriptor(
+    name="GenerateIdentityBindingAccessTokenRequest",
+    full_name="google.iam.credentials.v1.GenerateIdentityBindingAccessTokenRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="name",
+            full_name="google.iam.credentials.v1.GenerateIdentityBindingAccessTokenRequest.name",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="scope",
+            full_name="google.iam.credentials.v1.GenerateIdentityBindingAccessTokenRequest.scope",
+            index=1,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="jwt",
+            full_name="google.iam.credentials.v1.GenerateIdentityBindingAccessTokenRequest.jwt",
+            index=2,
+            number=3,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=750,
+    serialized_end=835,
+)
+
+
+_GENERATEIDENTITYBINDINGACCESSTOKENRESPONSE = _descriptor.Descriptor(
+    name="GenerateIdentityBindingAccessTokenResponse",
+    full_name="google.iam.credentials.v1.GenerateIdentityBindingAccessTokenResponse",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="access_token",
+            full_name="google.iam.credentials.v1.GenerateIdentityBindingAccessTokenResponse.access_token",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="expire_time",
+            full_name="google.iam.credentials.v1.GenerateIdentityBindingAccessTokenResponse.expire_time",
+            index=1,
+            number=2,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=837,
+    serialized_end=952,
+)
+
 _GENERATEACCESSTOKENREQUEST.fields_by_name[
     "lifetime"
 ].message_type = google_dot_protobuf_dot_duration__pb2._DURATION
 _GENERATEACCESSTOKENRESPONSE.fields_by_name[
+    "expire_time"
+].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
+_GENERATEIDENTITYBINDINGACCESSTOKENRESPONSE.fields_by_name[
     "expire_time"
 ].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
 DESCRIPTOR.message_types_by_name[
@@ -596,6 +733,12 @@ DESCRIPTOR.message_types_by_name["SignJwtRequest"] = _SIGNJWTREQUEST
 DESCRIPTOR.message_types_by_name["SignJwtResponse"] = _SIGNJWTRESPONSE
 DESCRIPTOR.message_types_by_name["GenerateIdTokenRequest"] = _GENERATEIDTOKENREQUEST
 DESCRIPTOR.message_types_by_name["GenerateIdTokenResponse"] = _GENERATEIDTOKENRESPONSE
+DESCRIPTOR.message_types_by_name[
+    "GenerateIdentityBindingAccessTokenRequest"
+] = _GENERATEIDENTITYBINDINGACCESSTOKENREQUEST
+DESCRIPTOR.message_types_by_name[
+    "GenerateIdentityBindingAccessTokenResponse"
+] = _GENERATEIDENTITYBINDINGACCESSTOKENRESPONSE
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 GenerateAccessTokenRequest = _reflection.GeneratedProtocolMessageType(
@@ -802,12 +945,80 @@ Attributes:
 )
 _sym_db.RegisterMessage(GenerateIdTokenResponse)
 
-
-DESCRIPTOR.has_options = True
-DESCRIPTOR._options = _descriptor._ParseOptions(
-    descriptor_pb2.FileOptions(),
-    _b(
-        "\n#com.google.cloud.iam.credentials.v1B\031IAMCredentialsCommonProtoP\001ZDgoogle.golang.org/genproto/googleapis/iam/credentials/v1;credentials\370\001\001"
+GenerateIdentityBindingAccessTokenRequest = _reflection.GeneratedProtocolMessageType(
+    "GenerateIdentityBindingAccessTokenRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_GENERATEIDENTITYBINDINGACCESSTOKENREQUEST,
+        __module__="google.iam.credentials.v1.common_pb2",
+        __doc__="""
+Attributes:
+      name:
+          The resource name of the service account for which the
+          credentials are requested, in the following format:
+          ``projects/-/serviceAccounts/{ACCOUNT_EMAIL_OR_UNIQUEID}``.
+      scope:
+          Code to identify the scopes to be included in the OAuth 2.0
+          access token. See
+          https://developers.google.com/identity/protocols/googlescopes
+          for more information. At least one value required.
+      jwt:
+          Required. Input token. Must be in JWT format according to
+          RFC7523 (https://tools.ietf.org/html/rfc7523) and must have
+          'kid' field in the header. Supported signing algorithms: RS256
+          (RS512, ES256, ES512 coming soon). Mandatory payload fields
+          (along the lines of RFC 7523, section 3): - iss: issuer of the
+          token. Must provide a discovery document at $iss/.well-
+          known/openid-configuration . The document needs to be
+          formatted according to section 4.2 of the OpenID Connect
+          Discovery 1.0 specification. - iat: Issue time in seconds
+          since epoch. Must be in the past. - exp: Expiration time in
+          seconds since epoch. Must be less than 48 hours after iat. We
+          recommend to create tokens that last shorter than 6 hours to
+          improve security unless business reasons mandate longer
+          expiration times. Shorter token lifetimes are generally more
+          secure since tokens that have been exfiltrated by attackers
+          can be used for a shorter time. you can configure the maximum
+          lifetime of the incoming token in the configuration of the
+          mapper. The resulting Google token will expire within an hour
+          or at "exp", whichever is earlier. - sub: JWT subject,
+          identity asserted in the JWT. - aud: Configured in the mapper
+          policy. By default the service account email.  Claims from the
+          incoming token can be transferred into the output token
+          accoding to the mapper configuration. The outgoing claim size
+          is limited. Outgoing claims size must be less than 4kB
+          serialized as JSON without whitespace.  Example header: {
+          "alg": "RS256", "kid":
+          "92a4265e14ab04d4d228a48d10d4ca31610936f8" } Example payload:
+          { "iss": "https://accounts.google.com", "iat": 1517963104,
+          "exp": 1517966704, "aud":
+          "https://iamcredentials.googleapis.com/", "sub":
+          "113475438248934895348", "my\_claims": { "additional\_claim":
+          "value" } }
+  """,
+        # @@protoc_insertion_point(class_scope:google.iam.credentials.v1.GenerateIdentityBindingAccessTokenRequest)
     ),
 )
+_sym_db.RegisterMessage(GenerateIdentityBindingAccessTokenRequest)
+
+GenerateIdentityBindingAccessTokenResponse = _reflection.GeneratedProtocolMessageType(
+    "GenerateIdentityBindingAccessTokenResponse",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_GENERATEIDENTITYBINDINGACCESSTOKENRESPONSE,
+        __module__="google.iam.credentials.v1.common_pb2",
+        __doc__="""
+Attributes:
+      access_token:
+          The OAuth 2.0 access token.
+      expire_time:
+          Token expiration time. The expiration time is always set.
+  """,
+        # @@protoc_insertion_point(class_scope:google.iam.credentials.v1.GenerateIdentityBindingAccessTokenResponse)
+    ),
+)
+_sym_db.RegisterMessage(GenerateIdentityBindingAccessTokenResponse)
+
+
+DESCRIPTOR._options = None
 # @@protoc_insertion_point(module_scope)
