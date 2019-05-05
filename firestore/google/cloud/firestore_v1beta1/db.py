@@ -1,3 +1,18 @@
+"""Model Client for google cloud firestore,
+
+In a nutshell this library implements:
+
+* a :class:`~.firestore_v1beta1.client.db.FirestoreModel` extendable to build your model
+* FieldTypes for use in :class:`~.firestore_v1beta1.client.db.FirestoreModel` including:
+    * :class:`~.firestore_v1beta1.client.db.StringField`
+    * :class:`~.firestore_v1beta1.client.db.IntegerField`
+    * :class:`~.firestore_v1beta1.client.db.ListField`
+    * :class:`~.firestore_v1beta1.client.db.ReferenceField`
+    * :class:`~.firestore_v1beta1.client.db.JSONField`
+    * :class:`~.firestore_v1beta1.client.db.BooleanField`
+    * :class:`~.firestore_v1beta1.client.db.DateTimeField`
+"""
+
 from google.cloud.firestore_v1beta1.client import Client, DEFAULT_DATABASE
 from google.cloud.firestore_v1beta1.query import Query
 from google.cloud.firestore_v1beta1 import SERVER_TIMESTAMP
@@ -31,9 +46,15 @@ def initialize_database(project=None, credentials=None, database=DEFAULT_DATABAS
     Set the parameters to be used when connecting to firestore
 
     Args:
-        project (str): The project this model belongs to
-        credentials (str): Path to a credentials file
-        database (str): The name of the database to use
+        project (Optional[str]): The project which the client acts on behalf
+            of. If not passed, falls back to the default inferred
+            from the environment.
+        credentials (Optional[~google.auth.credentials.Credentials]): The
+            OAuth2 Credentials to use for this client. If not passed, falls
+            back to the default inferred from the environment.
+        database (Optional[str]): The database name that the client targets.
+            For now, :attr:`DEFAULT_DATABASE` (the default value) is the
+            only valid database.
     """
     os.environ["__project"] = project
     os.environ["__credentials"] = credentials
