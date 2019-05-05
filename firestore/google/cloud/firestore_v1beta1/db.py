@@ -1,8 +1,11 @@
 from google.cloud.firestore_v1beta1.client import Client, DEFAULT_DATABASE
 from google.cloud.firestore_v1beta1.query import Query
+from google.cloud.firestore_v1beta1 import SERVER_TIMESTAMP
+
+
 import os
 import json
-from datetime import datetime, date
+from datetime import datetime
 
 
 class _Field(object):
@@ -56,16 +59,18 @@ class FirestoreModel(object):
         client = FirestoreModel.__init_client__()
         self.__collection = client.collection(self.__model_name)
         self.id = None
-        self.__db_path__ = client._database_string_internal
         if "id" in data:
             self.id = data.pop("id")
         for key, value in data.items():
             if key in self.__fields:
-                if isinstance(self.__fields[key], DateTimeField) and str(value).isnumeric():
-                    value = datetime.fromtimestamp(value)
                 setattr(self, key, value)
             else:
                 raise InvalidPropertyError(key, self.__model_name)
+
+    def __database_path__(self):
+        if not self.id:
+            return None
+        return self.__collection.document(self.id)._document_path()
 
     @staticmethod
     def __init_client__():
@@ -364,7 +369,7 @@ class ReferenceField(_Field):
         value = super(ReferenceField, self).validate(value)
         if not value:
             return
-        return "projects/[PROJECT_ID]/databases/[DATABASE_ID]/documents/[DOCUMENT_PATH]"
+        return self.model.__database_path__
 
 
 class JSONField(_Field):
@@ -387,25 +392,16 @@ class BooleanField(_Field):
         super(BooleanField, self).__init__(bool, default=default, required=required)
 
 
-CURRENT_TIMESTAMP = "CURRENT_TIMESTAMP"
-
-
 class DateTimeField(_Field):
     """Holds a date time value"""
     def __init__(self, default=None, required=False):
         super(DateTimeField, self).__init__(datetime, default=default, required=required)
 
     def validate(self, value):
-        if not self.required and not self.default and value is None:
-            return
-        # Return current time, we know it's valid
-        if self.default is CURRENT_TIMESTAMP:
-            return datetime.now().timestamp()
-
-        if not all([isinstance(value, _class) for _class in [datetime, date]]):
-            raise InvalidValueError(self, value)
-
-        return value.timestamp()
+        # Return server timestamp as the value
+        if value == SERVER_TIMESTAMP:
+            return value
+        return super(DateTimeField, self).validate(value)
 
 
 class InvalidValueError(ValueError):
