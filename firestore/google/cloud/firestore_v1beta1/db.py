@@ -5,7 +5,7 @@ import json
 from datetime import datetime, date
 
 
-class _Field:
+class _Field(object):
     def __init__(self, field_type, default=None, required=False):
         self.type = field_type
         self.default = default
@@ -37,7 +37,7 @@ def initialize_database(project=None, credentials=None, database=DEFAULT_DATABAS
     os.environ["__database"] = database
 
 
-class FirestoreModel:
+class FirestoreModel(object):
     """
     An equivalent of a top-level firestore collection
 
@@ -53,8 +53,10 @@ class FirestoreModel:
         """
         self.__setup_fields()
         self.__model_name = type(self).__name__
-        self.__collection = FirestoreModel.__init_client__().collection(self.__model_name)
+        client = FirestoreModel.__init_client__()
+        self.__collection = client.collection(self.__model_name)
         self.id = None
+        self.__db_path__ = client._database_string_internal
         if "id" in data:
             self.id = data.pop("id")
         for key, value in data.items():
@@ -317,7 +319,7 @@ class FirestoreModel:
 class StringField(_Field):
     """A string field"""
     def __init__(self, default=None, length=None, required=False):
-        super().__init__(str, default=default, required=required)
+        super(StringField, self).__init__(str, default=default, required=required)
         self.length = length
 
     def validate(self, value):
@@ -327,7 +329,7 @@ class StringField(_Field):
         Raises:
              InvalidValueError: If the value doesn't meet the condition of the field
         """
-        value = super().validate(value)
+        value = super(StringField, self).validate(value)
         if self.length and value is not None and len(value) > self.length:
             raise InvalidValueError(self, value)
         return value
@@ -336,17 +338,17 @@ class StringField(_Field):
 class IntegerField(_Field):
     """An Integer field"""
     def __init__(self, default=None, required=False):
-        super().__init__(int, default=default, required=required)
+        super(IntegerField, self).__init__(int, default=default, required=required)
 
 
 class ListField(_Field):
     """A List field"""
     def __init__(self, field_type: _Field.__bases__):
-        super().__init__(list, default=[])
+        super(ListField, self).__init__(list, default=[])
         self.field_type = field_type
 
     def validate(self, value):
-        value = super().validate(value)
+        value = super(ListField, self).validate(value)
         for item in value:
             self.field_type.validate(item)
         return value
@@ -355,16 +357,23 @@ class ListField(_Field):
 class ReferenceField(_Field):
     """A field referencing another model, It's value is an id of the referenced record"""
     def __init__(self, model: FirestoreModel.__bases__, required=False):
-        super().__init__(model, required=required)
+        super(ReferenceField, self).__init__(model, required=required)
+        self.model = model
+
+    def validate(self, value):
+        value = super(ReferenceField, self).validate(value)
+        if not value:
+            return
+        return "projects/[PROJECT_ID]/databases/[DATABASE_ID]/documents/[DOCUMENT_PATH]"
 
 
 class JSONField(_Field):
     """Holds a dictionary of JSON serializable field data"""
     def __init__(self, required=False, default=None):
-        super().__init__(dict, required=required, default=default)
+        super(JSONField, self).__init__(dict, required=required, default=default)
 
     def validate(self, value):
-        value = super().validate(value)
+        value = super(JSONField, self).validate(value)
         if not value:
             return value
         # This will raise any errors if the data is not convertible to valid JSON
@@ -375,7 +384,7 @@ class JSONField(_Field):
 class BooleanField(_Field):
     """A boolean field, holds True or False"""
     def __init__(self, default=None, required=False):
-        super().__init__(bool, default=default, required=required)
+        super(BooleanField, self).__init__(bool, default=default, required=required)
 
 
 CURRENT_TIMESTAMP = "CURRENT_TIMESTAMP"
@@ -384,7 +393,7 @@ CURRENT_TIMESTAMP = "CURRENT_TIMESTAMP"
 class DateTimeField(_Field):
     """Holds a date time value"""
     def __init__(self, default=None, required=False):
-        super().__init__(datetime, default=default, required=required)
+        super(DateTimeField, self).__init__(datetime, default=default, required=required)
 
     def validate(self, value):
         if not self.required and not self.default and value is None:
