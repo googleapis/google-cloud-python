@@ -20,9 +20,10 @@ In a nutshell this library implements:
 from google.cloud.firestore_v1beta1.client import Client, DEFAULT_DATABASE
 from google.cloud.firestore_v1beta1.query import Query as FSQuery
 from google.cloud.firestore_v1beta1 import SERVER_TIMESTAMP
+from abc import ABCMeta
 import json
 from datetime import datetime
-from typing import Type
+from typing import Type, Any
 
 
 class _Field(object):
@@ -43,7 +44,7 @@ class _Field(object):
         return value
 
 
-class FirestoreModel(object):
+class FirestoreModel(object, ABCMeta):
     """Creates a firestore document under the collection [YourModel]
 
     Args:
@@ -55,11 +56,10 @@ class FirestoreModel(object):
         id (str or int): Unique id identifying this record, if auto-generated, this is not available before `put()`
     """
     def __init__(self, __parent__: Type['FirestoreModel'] = None, **data):
-        path_prefix = self.__collection_prefix(__parent__)
         self.__setup_fields()
         self.__model_name = type(self).__name__
         client = self.__init_client__()
-        self.__collection = client.collection("%s/%s" % (path_prefix, self.__model_name))
+        self.__collection = client.collection(self.__collection_path(__parent__))
         self.id = None
         if "id" in data:
             self.id = data.pop("id")
@@ -69,11 +69,12 @@ class FirestoreModel(object):
             else:
                 raise InvalidPropertyError(key, self.__model_name)
 
-    def __collection_prefix(self, __parent__):
+    @classmethod
+    def __collection_path(cls, __parent__):
         try:
-            sub_collection = self.__sub_collection__()
+            sub_collection = cls.__sub_collection__()
             if isinstance(sub_collection, str):  # In this case the subcollection is just a path
-                return sub_collection
+                return sub_collection + "/" + cls.__name__
             if not issubclass(sub_collection, FirestoreModel):
                 raise SubCollectionError("`__sub_collection__` must return a subclass of `FirestoreModel`")
             if not __parent__:  # We need to have a parent model to compare the subclass to
@@ -82,11 +83,11 @@ class FirestoreModel(object):
             if not isinstance(__parent__, sub_collection):
                 raise SubCollectionError("The __parent__ of a subcollection must be of the same instance as "
                                          "the return of `__sub_collection__`")
-            return __parent__._reference_path()
+            return __parent__._reference_path() + "/" + cls.__name__
         except NotImplementedError:
             if __parent__:
                 raise Exception("__parent__ provided in a model that doesn't provide a subcollection")
-            return ""
+            return cls.__name__
 
     def _document_path(self):
         if not self.id:
@@ -182,42 +183,45 @@ class FirestoreModel(object):
         data = self.__prepare()
         if self.id:
             self.__collection.document(self.id).set(data)
+            return
         _time, new_ref = self.__collection.add(data)
         self.id = new_ref.id
 
     @classmethod
-    def get(cls, key_id: str or int, parent: Type['FirestoreModel'] = None):
+    def get(cls, key_id: str or int, __parent__: Type['FirestoreModel'] = None):
         """
         Get a model with the given/id
 
         Args:
             key_id (str or int): A key or id of the model record
-            parent (Type[FirestoreModel]): If querying a sub collection of model, provide the parent instance
+            __parent__ (Type[FirestoreModel]): If querying a sub collection of model, provide the parent instance
 
         Returns:
             FirestoreModel: An instance of the firestore model calling get
             
             None: If the id provided doesn't exist
         """
-        document = cls.__init_client__().collection(cls.__name__).document(key_id)
+        document = cls.__init_client__().collection(cls.__collection_path(__parent__)).document(key_id)
         data = document.get()
         if not data.exists:
             return None
-        return cls(id=key_id, **data.to_dict())
+        return cls(__parent__=__parent__, id=key_id, **data.to_dict())
 
     @classmethod
-    def query(cls, offset=0, limit=0):
+    def query(cls, offset=0, limit=0, __parent__: Type['FirestoreModel'] = None):
         """
         Create a query to this model
 
         Args:
             offset (int): The position in the database where he results begin
             limit (int): Maximum number of records to return
+            __parent__ (Type[FirestoreModel]): If querying a sub collection of model, provide the parent instance
 
         Returns:
             An iterable query object
         """
-        return Query(cls, offset, limit)
+        collection_path = cls.__collection_path(__parent__)
+        return Query(cls, offset, limit, collection_path, __parent__)
 
 
 class Query(object):
@@ -225,8 +229,9 @@ class Query(object):
     Creates a query object for the specified model
     """
 
-    def __init__(self, model, offset, limit):
-        self.__collection = FirestoreModel.__init_client__().collection(model.__name__)
+    def __init__(self, model, offset, limit, path, parent):
+        self.__collection = FirestoreModel.__init_client__().collection(path)
+        self.parent = parent
         if offset:
             self.__collection.start_at(offset)
         if limit:
@@ -249,13 +254,13 @@ class Query(object):
             raise MalformedQueryError("Range filter queries i.e (<), (>), (<=) and (>=) "
                                       "can only be performed on a single field in a query")
 
-    def equal(self, field: str, value: any):
+    def equal(self, field: str, value: Any):
         """
         A query condition where field == value
 
         Args:
              field (str): The name of a field to compare
-             value (any): The value to compare from the field
+             value (Any): The value to compare from the field
 
         Returns:
             Query: A query object with this condition added
@@ -263,13 +268,13 @@ class Query(object):
         self.__collection.filter(field, "==", self.__validate_value(field, value))
         return self
 
-    def greater_than(self, field: str, value: any):
+    def greater_than(self, field: str, value: Any):
         """
         A query condition where field > value
 
         Args:
              field (str): The name of a field to compare
-             value (any): The value to compare from the field
+             value (Any): The value to compare from the field
 
         Returns:
             Query: A query object with this condition added
@@ -283,7 +288,7 @@ class Query(object):
 
         Args:
              field (str): The name of a field to compare
-             value (any): The value to compare from the field
+             value (Any): The value to compare from the field
 
         Returns:
             Query: A query object with this condition added
@@ -297,7 +302,7 @@ class Query(object):
 
         Args:
              field (str): The name of a field to compare
-             value (any): The value to compare from the field
+             value (Any): The value to compare from the field
 
         Returns:
             Query: A query object with this condition added
@@ -311,7 +316,7 @@ class Query(object):
 
         Args:
              field (str): The name of a field to compare
-             value (any): The value to compare from the field
+             value (Any): The value to compare from the field
 
         Returns:
             Query: A query object with this condition added
@@ -325,7 +330,7 @@ class Query(object):
 
         Args:
              field (str): The name of a field to compare
-             value (any): The value to compare from the field
+             value (Any): The value to compare from the field
 
         Returns:
             Query: A query object with this condition added
@@ -390,7 +395,7 @@ class Query(object):
             raise StopIteration
         doc = self.__docs[self.__cursor]
         self.__cursor += 1
-        return self.__model(id=doc.id, **doc.to_dict())
+        return self.__model(__parent__=self.parent, id=doc.id, **doc.to_dict())
 
 
 class StringField(_Field):
