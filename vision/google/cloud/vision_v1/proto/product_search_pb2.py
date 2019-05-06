@@ -400,9 +400,11 @@ ProductSearchParams = _reflection.GeneratedProtocolMessageType(
           The filtering expression. This can be used to restrict search
           results based on Product labels. We currently support an AND
           of OR of key-value expressions, where each expression within
-          an OR must have the same key.  For example, "(color = red OR
-          color = blue) AND brand = Google" is acceptable, but not
-          "(color = red OR brand = Google)" or "color: red".
+          an OR must have the same key. An '=' should be used to connect
+          the key and value.  For example, "(color = red OR color =
+          blue) AND brand = Google" is acceptable, but "(color = red OR
+          brand = Google)" is not acceptable. "color: red" is not
+          acceptable because it uses a ':' instead of an '='.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.vision.v1.ProductSearchParams)
     ),
@@ -462,8 +464,9 @@ ProductSearchResults = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       index_time:
-          Timestamp of the index which provided these results. Changes
-          made after this time are not reflected in the current results.
+          Timestamp of the index which provided these results. Products
+          added to the product set and products removed from the product
+          set after this time are not reflected in the current results.
       results:
           List of results, one for each product match.
       product_grouped_results:
