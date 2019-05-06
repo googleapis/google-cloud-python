@@ -14,7 +14,7 @@ In a nutshell this library implements:
 """
 
 from google.cloud.firestore_v1beta1.client import Client, DEFAULT_DATABASE
-from google.cloud.firestore_v1beta1.query import Query
+from google.cloud.firestore_v1beta1.query import Query as FSQuery
 from google.cloud.firestore_v1beta1 import SERVER_TIMESTAMP
 
 
@@ -156,177 +156,6 @@ class FirestoreModel(object):
             return None
         return cls(id=key_id, **data.to_dict())
 
-    class __Query(object):
-        """
-        Creates a query object for the specified model
-        """
-        def __init__(self, model, offset, limit):
-            self.__collection = FirestoreModel.__init_client__().collection(model.__name__)
-            if offset:
-                self.__collection.start_at(offset)
-            if limit:
-                self.__collection.limit(limit)
-            self.__cursor = 0
-            self.__fetched = False
-            self.__model = model
-            self.__array_contains_queries = 0
-            self.__range_filter_queries = {}
-
-        def __validate_value(self, field_name, value):
-            field = getattr(self.__model, field_name)
-            return field.validate(value)
-
-        def __add_range_filter(self, field):
-            self.__range_filter_queries[field] = True
-
-            # Range filter queries are only allowed on a single field at any given time
-            if len(self.__range_filter_queries.keys()) > 1:
-                raise MalformedQueryError("Range filter queries i.e (<), (>), (<=) and (>=) "
-                                          "can only be performed on a single field in a query")
-
-        def equal(self, field: str, value: any):
-            """
-            A query condition where field == value 
-            
-            Args:
-                 field (str): The name of a field to compare
-                 value (any): The value to compare from the field
-                 
-            Returns:
-                FirestoreModel.__Query: A query object with this condition added
-            """
-            self.__collection.filter(field, "==", self.__validate_value(field, value))
-            return self
-
-        def greater_than(self, field: str, value: any):
-            """
-            A query condition where field > value 
-
-            Args:
-                 field (str): The name of a field to compare
-                 value (any): The value to compare from the field
-
-            Returns:
-                FirestoreModel.__Query: A query object with this condition added
-            """
-            self.__add_range_filter(field)
-            self.__collection.filter(field, ">", self.__validate_value(field, value))
-
-        def less_than(self, field, value):
-            """
-            A query condition where field < value 
-
-            Args:
-                 field (str): The name of a field to compare
-                 value (any): The value to compare from the field
-
-            Returns:
-                FirestoreModel.__Query: A query object with this condition added
-            """
-            self.__add_range_filter(field)
-            self.__collection.filter(field, "<", self.__validate_value(field, value))
-
-        def greater_than_or_equal(self, field, value):
-            """
-            A query condition where field >= value 
-
-            Args:
-                 field (str): The name of a field to compare
-                 value (any): The value to compare from the field
-
-            Returns:
-                FirestoreModel.__Query: A query object with this condition added
-            """
-            self.__add_range_filter(field)
-            self.__collection.filter(field, ">=", self.__validate_value(field, value))
-
-        def less_than_or_equal(self, field, value):
-            """
-            A query condition where field <= value 
-
-            Args:
-                 field (str): The name of a field to compare
-                 value (any): The value to compare from the field
-
-            Returns:
-                FirestoreModel.__Query: A query object with this condition added
-            """
-            self.__add_range_filter(field)
-            self.__collection.filter(field, "<=", self.__validate_value(field, value))
-
-        def contains(self, field, value):
-            """
-            A query condition where `value in field`
-
-            Args:
-                 field (str): The name of a field to compare
-                 value (any): The value to compare from the field
-
-            Returns:
-                FirestoreModel.__Query: A query object with this condition added
-                 
-            Raises:
-                MalformedQueryError: If the field specified is not a ListField, or
-                   the query has more than one contains condition
-            """
-            model_field = getattr(self.__model, field)
-
-            # Don't do a contains condition in an invalid field
-            if not isinstance(model_field, ListField):
-                raise MalformedQueryError("Invalid field %s, query field for contains must be a list" % field)
-
-            # Make sure there's only on `array_contains` condition
-            self.__array_contains_queries += 1
-            if self.__array_contains_queries > 1:
-                raise MalformedQueryError("Only one `contains` clause is allowed per query")
-            self.__collection.filter(field, "array_contains", value)
-            return self
-
-        def order_by(self, field: str, direction: str = "ASC"):
-            """
-            Set an order for the query, accepts
-
-            Args:
-                field (str): The field name to order by
-                direction (str: "ASC" or "DESC"), optional:
-
-            Returns:
-                 FirestoreModel.__Query: A query object with order applied
-            """
-            if direction is not "ASC" and direction is not "DESC":
-                raise MalformedQueryError("order_by direction can only be ASC, or DESC")
-            direction = Query.ASCENDING if direction is "ASC" else Query.DESCENDING
-            self.__collection.order_by(field, direction=direction)
-            return self
-
-        def __fetch__(self):
-            self.__docs = self.__collection.get()
-            self.__fetched = True
-
-        def __iter__(self):
-            return self
-
-        def fetch(self):
-            """
-            Get the results of the query as a list
-            
-            Returns:
-                list (FirestoreModel): A list of models for the found results
-            """
-            return [model for model in self]
-
-        def __next__(self):
-            # Fetch data from db if not already done 
-            if not self.__fetched:
-                self.__fetch__()
-            # Reset the cursor if one decides to reuse the query
-            if self.__cursor == len(self.__docs):
-                self.__cursor = 0
-                raise StopIteration
-            doc = self.__docs[self.__cursor]
-            self.__cursor += 1
-            return self.__model(id=doc.id, **doc.to_dict())
-
     @classmethod
     def query(cls, offset=0, limit=0):
         """
@@ -339,7 +168,180 @@ class FirestoreModel(object):
         Returns:
             An iterable query object
         """
-        return FirestoreModel.__Query(cls, offset, limit)
+        return Query(cls, offset, limit)
+
+
+class Query(object):
+    """
+    Creates a query object for the specified model
+    """
+
+    def __init__(self, model, offset, limit):
+        self.__collection = FirestoreModel.__init_client__().collection(model.__name__)
+        if offset:
+            self.__collection.start_at(offset)
+        if limit:
+            self.__collection.limit(limit)
+        self.__cursor = 0
+        self.__fetched = False
+        self.__model = model
+        self.__array_contains_queries = 0
+        self.__range_filter_queries = {}
+
+    def __validate_value(self, field_name, value):
+        field = getattr(self.__model, field_name)
+        return field.validate(value)
+
+    def __add_range_filter(self, field):
+        self.__range_filter_queries[field] = True
+
+        # Range filter queries are only allowed on a single field at any given time
+        if len(self.__range_filter_queries.keys()) > 1:
+            raise MalformedQueryError("Range filter queries i.e (<), (>), (<=) and (>=) "
+                                      "can only be performed on a single field in a query")
+
+    def equal(self, field: str, value: any):
+        """
+        A query condition where field == value
+
+        Args:
+             field (str): The name of a field to compare
+             value (any): The value to compare from the field
+
+        Returns:
+            FirestoreModel.__Query: A query object with this condition added
+        """
+        self.__collection.filter(field, "==", self.__validate_value(field, value))
+        return self
+
+    def greater_than(self, field: str, value: any):
+        """
+        A query condition where field > value
+
+        Args:
+             field (str): The name of a field to compare
+             value (any): The value to compare from the field
+
+        Returns:
+            FirestoreModel.__Query: A query object with this condition added
+        """
+        self.__add_range_filter(field)
+        self.__collection.filter(field, ">", self.__validate_value(field, value))
+
+    def less_than(self, field, value):
+        """
+        A query condition where field < value
+
+        Args:
+             field (str): The name of a field to compare
+             value (any): The value to compare from the field
+
+        Returns:
+            FirestoreModel.__Query: A query object with this condition added
+        """
+        self.__add_range_filter(field)
+        self.__collection.filter(field, "<", self.__validate_value(field, value))
+
+    def greater_than_or_equal(self, field, value):
+        """
+        A query condition where field >= value
+
+        Args:
+             field (str): The name of a field to compare
+             value (any): The value to compare from the field
+
+        Returns:
+            FirestoreModel.__Query: A query object with this condition added
+        """
+        self.__add_range_filter(field)
+        self.__collection.filter(field, ">=", self.__validate_value(field, value))
+
+    def less_than_or_equal(self, field, value):
+        """
+        A query condition where field <= value
+
+        Args:
+             field (str): The name of a field to compare
+             value (any): The value to compare from the field
+
+        Returns:
+            FirestoreModel.__Query: A query object with this condition added
+        """
+        self.__add_range_filter(field)
+        self.__collection.filter(field, "<=", self.__validate_value(field, value))
+
+    def contains(self, field, value):
+        """
+        A query condition where `value in field`
+
+        Args:
+             field (str): The name of a field to compare
+             value (any): The value to compare from the field
+
+        Returns:
+            FirestoreModel.__Query: A query object with this condition added
+
+        Raises:
+            MalformedQueryError: If the field specified is not a ListField, or
+               the query has more than one contains condition
+        """
+        model_field = getattr(self.__model, field)
+
+        # Don't do a contains condition in an invalid field
+        if not isinstance(model_field, ListField):
+            raise MalformedQueryError("Invalid field %s, query field for contains must be a list" % field)
+
+        # Make sure there's only on `array_contains` condition
+        self.__array_contains_queries += 1
+        if self.__array_contains_queries > 1:
+            raise MalformedQueryError("Only one `contains` clause is allowed per query")
+        self.__collection.filter(field, "array_contains", value)
+        return self
+
+    def order_by(self, field: str, direction: str = "ASC"):
+        """
+        Set an order for the query, accepts
+
+        Args:
+            field (str): The field name to order by
+            direction (str: "ASC" or "DESC"), optional:
+
+        Returns:
+             FirestoreModel.__Query: A query object with order applied
+        """
+        if direction is not "ASC" and direction is not "DESC":
+            raise MalformedQueryError("order_by direction can only be ASC, or DESC")
+        direction = FSQuery.ASCENDING if direction is "ASC" else FSQuery.DESCENDING
+        self.__collection.order_by(field, direction=direction)
+        return self
+
+    def __fetch__(self):
+        self.__docs = self.__collection.get()
+        self.__fetched = True
+
+    def __iter__(self):
+        return self
+
+    def fetch(self):
+        """
+        Get the results of the query as a list
+
+        Returns:
+            list (FirestoreModel): A list of models for the found results
+        """
+        return [model for model in self]
+
+    def __next__(self):
+        # Fetch data from db if not already done
+        if not self.__fetched:
+            self.__fetch__()
+        # Reset the cursor if one decides to reuse the query
+        if self.__cursor == len(self.__docs):
+            self.__cursor = 0
+            raise StopIteration
+        doc = self.__docs[self.__cursor]
+        self.__cursor += 1
+        return self.__model(id=doc.id, **doc.to_dict())
 
 
 class StringField(_Field):
