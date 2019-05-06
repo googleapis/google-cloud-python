@@ -101,6 +101,30 @@ class FirestoreModel(object):
         database = os.environ.get("__database", DEFAULT_DATABASE)
         return Client(project=project, credentials=credentials, database=database)
 
+    @classmethod
+    def __database_props__(cls):
+        """
+        This method returns a tuple of the project, creds and database to use
+
+        TODO: Better explanation of this method
+
+        Raises:
+            NotImplementedError: Raised if this method is not overridden
+        """
+        raise NotImplementedError()
+
+    @classmethod
+    def __sub_collection__(cls):
+        """
+        If this is a sub collection of another model, or just a constant path
+
+        TODO: Better explanation of this method
+
+        Raises:
+            NotImplementedError: Raised if this method is not overridden
+        """
+        raise NotImplementedError()
+
     def __str__(self):
         return "<FirestoreModel %s>" % self.__model_name
 
