@@ -84,6 +84,17 @@ class WebSecurityScannerClient(object):
     from_service_account_json = from_service_account_file
 
     @classmethod
+    def finding_path(cls, project, scan_config, scan_run, finding):
+        """Return a fully-qualified finding string."""
+        return google.api_core.path_template.expand(
+            "projects/{project}/scanConfigs/{scan_config}/scanRuns/{scan_run}/findings/{finding}",
+            project=project,
+            scan_config=scan_config,
+            scan_run=scan_run,
+            finding=finding,
+        )
+
+    @classmethod
     def project_path(cls, project):
         """Return a fully-qualified project string."""
         return google.api_core.path_template.expand(
@@ -107,17 +118,6 @@ class WebSecurityScannerClient(object):
             project=project,
             scan_config=scan_config,
             scan_run=scan_run,
-        )
-
-    @classmethod
-    def finding_path(cls, project, scan_config, scan_run, finding):
-        """Return a fully-qualified finding string."""
-        return google.api_core.path_template.expand(
-            "projects/{project}/scanConfigs/{scan_config}/scanRuns/{scan_run}/findings/{finding}",
-            project=project,
-            scan_config=scan_config,
-            scan_run=scan_run,
-            finding=finding,
         )
 
     def __init__(

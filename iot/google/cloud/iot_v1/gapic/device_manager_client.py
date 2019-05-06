@@ -74,6 +74,17 @@ class DeviceManagerClient(object):
     from_service_account_json = from_service_account_file
 
     @classmethod
+    def device_path(cls, project, location, registry, device):
+        """Return a fully-qualified device string."""
+        return google.api_core.path_template.expand(
+            "projects/{project}/locations/{location}/registries/{registry}/devices/{device}",
+            project=project,
+            location=location,
+            registry=registry,
+            device=device,
+        )
+
+    @classmethod
     def location_path(cls, project, location):
         """Return a fully-qualified location string."""
         return google.api_core.path_template.expand(
@@ -90,17 +101,6 @@ class DeviceManagerClient(object):
             project=project,
             location=location,
             registry=registry,
-        )
-
-    @classmethod
-    def device_path(cls, project, location, registry, device):
-        """Return a fully-qualified device string."""
-        return google.api_core.path_template.expand(
-            "projects/{project}/locations/{location}/registries/{registry}/devices/{device}",
-            project=project,
-            location=location,
-            registry=registry,
-            device=device,
         )
 
     def __init__(

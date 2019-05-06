@@ -376,70 +376,145 @@ class TestClient(unittest.TestCase):
             method="GET", url=URI, data=mock.ANY, headers=mock.ANY
         )
 
-    def test_create_bucket_conflict(self):
+    def test_create_bucket_with_string_conflict(self):
         from google.cloud.exceptions import Conflict
 
-        PROJECT = "PROJECT"
-        OTHER_PROJECT = "OTHER_PROJECT"
-        CREDENTIALS = _make_credentials()
-        client = self._make_one(project=PROJECT, credentials=CREDENTIALS)
+        project = "PROJECT"
+        other_project = "OTHER_PROJECT"
+        credentials = _make_credentials()
+        client = self._make_one(project=project, credentials=credentials)
 
-        BUCKET_NAME = "bucket-name"
+        bucket_name = "bucket-name"
         URI = "/".join(
             [
                 client._connection.API_BASE_URL,
                 "storage",
                 client._connection.API_VERSION,
-                "b?project=%s" % (OTHER_PROJECT,),
+                "b?project=%s" % (other_project,),
             ]
         )
         data = {"error": {"message": "Conflict"}}
-        sent = {"name": BUCKET_NAME}
+        json_expected = {"name": bucket_name}
         http = _make_requests_session(
             [_make_json_response(data, status=http_client.CONFLICT)]
         )
         client._http_internal = http
 
         with self.assertRaises(Conflict):
-            client.create_bucket(BUCKET_NAME, project=OTHER_PROJECT)
+            client.create_bucket(bucket_name, project=other_project)
 
         http.request.assert_called_once_with(
             method="POST", url=URI, data=mock.ANY, headers=mock.ANY
         )
         json_sent = http.request.call_args_list[0][1]["data"]
-        self.assertEqual(sent, json.loads(json_sent))
+        self.assertEqual(json_expected, json.loads(json_sent))
 
-    def test_create_bucket_success(self):
+    def test_create_bucket_with_object_conflict(self):
+        from google.cloud.exceptions import Conflict
         from google.cloud.storage.bucket import Bucket
 
-        PROJECT = "PROJECT"
-        CREDENTIALS = _make_credentials()
-        client = self._make_one(project=PROJECT, credentials=CREDENTIALS)
+        project = "PROJECT"
+        other_project = "OTHER_PROJECT"
+        credentials = _make_credentials()
+        client = self._make_one(project=project, credentials=credentials)
 
-        BUCKET_NAME = "bucket-name"
+        bucket_name = "bucket-name"
+        bucket_obj = Bucket(client, bucket_name)
         URI = "/".join(
             [
                 client._connection.API_BASE_URL,
                 "storage",
                 client._connection.API_VERSION,
-                "b?project=%s" % (PROJECT,),
+                "b?project=%s" % (other_project,),
             ]
         )
-        sent = {"name": BUCKET_NAME, "billing": {"requesterPays": True}}
-        data = sent
+        data = {"error": {"message": "Conflict"}}
+        http = _make_requests_session(
+            [_make_json_response(data, status=http_client.CONFLICT)]
+        )
+        client._http_internal = http
+
+        with self.assertRaises(Conflict):
+            client.create_bucket(bucket_obj, project=other_project)
+
+        http.request.assert_called_once_with(
+            method="POST", url=URI, data=mock.ANY, headers=mock.ANY
+        )
+        json_expected = {"name": bucket_name}
+        json_sent = http.request.call_args_list[0][1]["data"]
+        self.assertEqual(json_expected, json.loads(json_sent))
+
+    def test_create_bucket_with_string_success(self):
+        from google.cloud.storage.bucket import Bucket
+
+        project = "PROJECT"
+        credentials = _make_credentials()
+        client = self._make_one(project=project, credentials=credentials)
+
+        bucket_name = "bucket-name"
+        URI = "/".join(
+            [
+                client._connection.API_BASE_URL,
+                "storage",
+                client._connection.API_VERSION,
+                "b?project=%s" % (project,),
+            ]
+        )
+        json_expected = {"name": bucket_name, "billing": {"requesterPays": True}}
+        data = json_expected
         http = _make_requests_session([_make_json_response(data)])
         client._http_internal = http
 
-        bucket = client.create_bucket(BUCKET_NAME, requester_pays=True)
+        bucket = client.create_bucket(bucket_name, requester_pays=True)
 
         self.assertIsInstance(bucket, Bucket)
-        self.assertEqual(bucket.name, BUCKET_NAME)
+        self.assertEqual(bucket.name, bucket_name)
         self.assertTrue(bucket.requester_pays)
         http.request.assert_called_once_with(
             method="POST", url=URI, data=mock.ANY, headers=mock.ANY
         )
         json_sent = http.request.call_args_list[0][1]["data"]
-        self.assertEqual(sent, json.loads(json_sent))
+        self.assertEqual(json_expected, json.loads(json_sent))
+
+    def test_create_bucket_with_object_success(self):
+        from google.cloud.storage.bucket import Bucket
+
+        project = "PROJECT"
+        credentials = _make_credentials()
+        client = self._make_one(project=project, credentials=credentials)
+
+        bucket_name = "bucket-name"
+        bucket_obj = Bucket(client, bucket_name)
+        bucket_obj.storage_class = "COLDLINE"
+        bucket_obj.requester_pays = True
+
+        URI = "/".join(
+            [
+                client._connection.API_BASE_URL,
+                "storage",
+                client._connection.API_VERSION,
+                "b?project=%s" % (project,),
+            ]
+        )
+        json_expected = {
+            "name": bucket_name,
+            "billing": {"requesterPays": True},
+            "storageClass": "COLDLINE",
+        }
+        data = json_expected
+        http = _make_requests_session([_make_json_response(data)])
+        client._http_internal = http
+
+        bucket = client.create_bucket(bucket_obj)
+
+        self.assertIsInstance(bucket, Bucket)
+        self.assertEqual(bucket.name, bucket_name)
+        self.assertTrue(bucket.requester_pays)
+        http.request.assert_called_once_with(
+            method="POST", url=URI, data=mock.ANY, headers=mock.ANY
+        )
+        json_sent = http.request.call_args_list[0][1]["data"]
+        self.assertEqual(json_expected, json.loads(json_sent))
 
     def test_list_buckets_wo_project(self):
         CREDENTIALS = _make_credentials()
