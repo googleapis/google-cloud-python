@@ -239,7 +239,7 @@ class Client(ClientWithProject):
             >>> bucket = client.get_bucket("my-bucket-name")
 
             >>> # Time passes. Another program may have modified the bucket
-                in the meantime, so you want to get the latest state.
+            ... # in the meantime, so you want to get the latest state.
             >>> bucket = client.get_bucket(bucket)  # API request.
 
         """
