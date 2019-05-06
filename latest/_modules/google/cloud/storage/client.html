@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.storage.client &#8212; google-cloud a017937 documentation</title>
+    <title>google.cloud.storage.client &#8212; google-cloud 47db1c6 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -238,28 +238,53 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">Batch</span><span class="p">(</span><span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Client.get_bucket"><a class="viewcode-back" href="../../../../storage/client.html#google.cloud.storage.client.Client.get_bucket">[docs]</a>    <span class="k">def</span> <span class="nf">get_bucket</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bucket_name</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Get a bucket by name.</span>
+<div class="viewcode-block" id="Client.get_bucket"><a class="viewcode-back" href="../../../../storage/client.html#google.cloud.storage.client.Client.get_bucket">[docs]</a>    <span class="k">def</span> <span class="nf">get_bucket</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bucket_or_name</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;API call: retrieve a bucket via a GET request.</span>
 
-<span class="sd">        If the bucket isn&#39;t found, this will raise a</span>
-<span class="sd">        :class:`google.cloud.exceptions.NotFound`.</span>
+<span class="sd">        See</span>
+<span class="sd">        https://cloud.google.com/storage/docs/json_api/v1/buckets/get</span>
 
-<span class="sd">        For example:</span>
+<span class="sd">        Args:</span>
+<span class="sd">            bucket_or_name (Union[ \</span>
+<span class="sd">                :class:`~google.cloud.storage.bucket.Bucket`, \</span>
+<span class="sd">                 str, \</span>
+<span class="sd">            ]):</span>
+<span class="sd">                The bucket resource to pass or name to create.</span>
 
-<span class="sd">        .. literalinclude:: snippets.py</span>
-<span class="sd">            :start-after: [START get_bucket]</span>
-<span class="sd">            :end-before: [END get_bucket]</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            google.cloud.storage.bucket.Bucket</span>
+<span class="sd">                The bucket matching the name provided.</span>
 
-<span class="sd">        This implements &quot;storage.buckets.get&quot;.</span>
+<span class="sd">        Raises:</span>
+<span class="sd">            google.cloud.exceptions.NotFound</span>
+<span class="sd">                If the bucket is not found.</span>
 
-<span class="sd">        :type bucket_name: str</span>
-<span class="sd">        :param bucket_name: The name of the bucket to get.</span>
+<span class="sd">        Examples:</span>
+<span class="sd">            Retrieve a bucket using a string.</span>
 
-<span class="sd">        :rtype: :class:`google.cloud.storage.bucket.Bucket`</span>
-<span class="sd">        :returns: The bucket matching the name provided.</span>
-<span class="sd">        :raises: :class:`google.cloud.exceptions.NotFound`</span>
+<span class="sd">            .. literalinclude:: snippets.py</span>
+<span class="sd">                :start-after: [START get_bucket]</span>
+<span class="sd">                :end-before: [END get_bucket]</span>
+
+<span class="sd">            Get a bucket using a resource.</span>
+
+<span class="sd">            &gt;&gt;&gt; from google.cloud import storage</span>
+<span class="sd">            &gt;&gt;&gt; client = storage.Client()</span>
+
+<span class="sd">            &gt;&gt;&gt; # Set properties on a plain resource object.</span>
+<span class="sd">            &gt;&gt;&gt; bucket = client.get_bucket(&quot;my-bucket-name&quot;)</span>
+
+<span class="sd">            &gt;&gt;&gt; # Time passes. Another program may have modified the bucket</span>
+<span class="sd">            ... # in the meantime, so you want to get the latest state.</span>
+<span class="sd">            &gt;&gt;&gt; bucket = client.get_bucket(bucket)  # API request.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">bucket</span> <span class="o">=</span> <span class="n">Bucket</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">bucket_name</span><span class="p">)</span>
+
+        <span class="n">bucket</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">bucket_or_name</span><span class="p">,</span> <span class="n">Bucket</span><span class="p">):</span>
+            <span class="n">bucket</span> <span class="o">=</span> <span class="n">bucket_or_name</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">bucket</span> <span class="o">=</span> <span class="n">Bucket</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">bucket_or_name</span><span class="p">)</span>
 
         <span class="n">bucket</span><span class="o">.</span><span class="n">reload</span><span class="p">(</span><span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">bucket</span></div>
