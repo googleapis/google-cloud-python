@@ -35,7 +35,19 @@ client_config = "google/cloud/recaptchaenterprise_v1beta1/gapic/recaptcha_enterp
 transport = "google/cloud/recaptchaenterprise_v1beta1/gapic/transports/recaptcha_enterprise_service_v1_beta1_grpc_transport.py"
 unit_test = "tests/unit/gapic/v1beta1/test_recaptcha_enterprise_service_v1_beta1_client_v1beta1.py"
 
-excludes = ["README.rst", "nox.py", "noxfile.py", "setup.py", "docs/index.rst", "docs/conf.py", "tests", client, client_config, transport, unit_test]
+excludes = [
+    "README.rst",
+    "nox.py",
+    "noxfile.py",
+    "setup.py",
+    "docs/index.rst",
+    "docs/conf.py",
+    "tests",
+    client,
+    client_config,
+    transport,
+    unit_test,
+]
 s.move(library, excludes=excludes)
 
 s.move(library / client, client.replace("_v1_beta1", ""))
@@ -52,25 +64,28 @@ s.replace(
 s.replace(
     "google/cloud/**/*.py",
     "recaptcha_enterprise_service_v1_beta1_client",
-    "recaptcha_enterprise_service_client")
+    "recaptcha_enterprise_service_client",
+)
 
 s.replace(
     "*/cloud/**/*.py",
     "RecaptchaEnterpriseServiceV1Beta1GrpcTransport",
-    "RecaptchaEnterpriseServiceGrpcTransport"
+    "RecaptchaEnterpriseServiceGrpcTransport",
 )
 
 s.replace(
     "google/cloud/**/*.py",
     "recaptcha_enterprise_service_v1_beta1_grpc_transport",
-    "recaptcha_enterprise_service_grpc_transport")
+    "recaptcha_enterprise_service_grpc_transport",
+)
 
 
 # Rename package to google-cloud-recaptcha-enterprise
 s.replace(
     "google/cloud/**/*.py",
     "google-cloud-recaptchaenterprise",
-    "google-cloud-recaptcha-enterprise")
+    "google-cloud-recaptcha-enterprise",
+)
 
 # Fix docstring issue for classes with no summary line
 s.replace(
@@ -84,6 +99,6 @@ s.replace(
 # Add templated files
 # ----------------------------------------------------------------------------
 templated_files = common.py_library(unit_cov_level=97, cov_level=100)
-s.move(templated_files, excludes=['noxfile.py'])
+s.move(templated_files, excludes=["noxfile.py"])
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
