@@ -63,7 +63,12 @@ READ_ONLY_SCOPE = "https://www.googleapis.com/auth/bigtable.data.readonly"
 def _create_gapic_client(client_class):
     def inner(self):
         if self._emulator_host is None:
-            return client_class(credentials=self._credentials, client_info=_CLIENT_INFO)
+            if self._channel is not None:
+                return client_class(channel=self._channel, client_info=_CLIENT_INFO)
+            else:
+                return client_class(
+                    credentials=self._credentials, client_info=_CLIENT_INFO
+                )
         else:
             return client_class(
                 channel=self._emulator_channel, client_info=_CLIENT_INFO
@@ -197,6 +202,8 @@ class Client(ClientWithProject):
         :returns: A BigtableClient object.
         """
         if self._table_data_client is None:
+            if self._admin and self._channel is not None:
+                raise ValueError("Client is an admin client and not a data client.")
             self._table_data_client = _create_gapic_client(bigtable_v2.BigtableClient)(
                 self
             )
