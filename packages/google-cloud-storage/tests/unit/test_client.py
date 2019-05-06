@@ -261,7 +261,7 @@ class TestClient(unittest.TestCase):
         self.assertIsInstance(batch, Batch)
         self.assertIs(batch._client, client)
 
-    def test_get_bucket_miss(self):
+    def test_get_bucket_with_string_miss(self):
         from google.cloud.exceptions import NotFound
 
         PROJECT = "PROJECT"
@@ -290,7 +290,7 @@ class TestClient(unittest.TestCase):
             method="GET", url=URI, data=mock.ANY, headers=mock.ANY
         )
 
-    def test_get_bucket_hit(self):
+    def test_get_bucket_with_string_hit(self):
         from google.cloud.storage.bucket import Bucket
 
         PROJECT = "PROJECT"
@@ -316,6 +316,68 @@ class TestClient(unittest.TestCase):
 
         self.assertIsInstance(bucket, Bucket)
         self.assertEqual(bucket.name, BUCKET_NAME)
+        http.request.assert_called_once_with(
+            method="GET", url=URI, data=mock.ANY, headers=mock.ANY
+        )
+
+    def test_get_bucket_with_object_miss(self):
+        from google.cloud.exceptions import NotFound
+        from google.cloud.storage.bucket import Bucket
+
+        project = "PROJECT"
+        credentials = _make_credentials()
+        client = self._make_one(project=project, credentials=credentials)
+
+        nonesuch = "nonesuch"
+        bucket_obj = Bucket(client, nonesuch)
+        URI = "/".join(
+            [
+                client._connection.API_BASE_URL,
+                "storage",
+                client._connection.API_VERSION,
+                "b",
+                "nonesuch?projection=noAcl",
+            ]
+        )
+        http = _make_requests_session(
+            [_make_json_response({}, status=http_client.NOT_FOUND)]
+        )
+        client._http_internal = http
+
+        with self.assertRaises(NotFound):
+            client.get_bucket(bucket_obj)
+
+        http.request.assert_called_once_with(
+            method="GET", url=URI, data=mock.ANY, headers=mock.ANY
+        )
+
+    def test_get_bucket_with_object_hit(self):
+        from google.cloud.storage.bucket import Bucket
+
+        project = "PROJECT"
+        credentials = _make_credentials()
+        client = self._make_one(project=project, credentials=credentials)
+
+        bucket_name = "bucket-name"
+        bucket_obj = Bucket(client, bucket_name)
+        URI = "/".join(
+            [
+                client._connection.API_BASE_URL,
+                "storage",
+                client._connection.API_VERSION,
+                "b",
+                "%s?projection=noAcl" % (bucket_name,),
+            ]
+        )
+
+        data = {"name": bucket_name}
+        http = _make_requests_session([_make_json_response(data)])
+        client._http_internal = http
+
+        bucket = client.get_bucket(bucket_obj)
+
+        self.assertIsInstance(bucket, Bucket)
+        self.assertEqual(bucket.name, bucket_name)
         http.request.assert_called_once_with(
             method="GET", url=URI, data=mock.ANY, headers=mock.ANY
         )
