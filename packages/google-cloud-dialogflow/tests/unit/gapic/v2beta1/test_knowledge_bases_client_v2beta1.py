@@ -1,4 +1,6 @@
-# Copyright 2018 Google LLC
+# -*- coding: utf-8 -*-
+#
+# Copyright 2019 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,6 +15,7 @@
 # limitations under the License.
 """Unit tests."""
 
+import mock
 import pytest
 
 import dialogflow_v2beta1
@@ -74,7 +77,10 @@ class TestKnowledgeBasesClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = dialogflow_v2beta1.KnowledgeBasesClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dialogflow_v2beta1.KnowledgeBasesClient()
 
         # Setup Request
         parent = client.project_path('[PROJECT]')
@@ -93,7 +99,10 @@ class TestKnowledgeBasesClient(object):
 
     def test_list_knowledge_bases_exception(self):
         channel = ChannelStub(responses=[CustomException()])
-        client = dialogflow_v2beta1.KnowledgeBasesClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dialogflow_v2beta1.KnowledgeBasesClient()
 
         # Setup request
         parent = client.project_path('[PROJECT]')
@@ -112,7 +121,10 @@ class TestKnowledgeBasesClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = dialogflow_v2beta1.KnowledgeBasesClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dialogflow_v2beta1.KnowledgeBasesClient()
 
         # Setup Request
         name = client.knowledge_base_path('[PROJECT]', '[KNOWLEDGE_BASE]')
@@ -129,7 +141,10 @@ class TestKnowledgeBasesClient(object):
     def test_get_knowledge_base_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = dialogflow_v2beta1.KnowledgeBasesClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dialogflow_v2beta1.KnowledgeBasesClient()
 
         # Setup request
         name = client.knowledge_base_path('[PROJECT]', '[KNOWLEDGE_BASE]')
@@ -147,7 +162,10 @@ class TestKnowledgeBasesClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = dialogflow_v2beta1.KnowledgeBasesClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dialogflow_v2beta1.KnowledgeBasesClient()
 
         # Setup Request
         parent = client.project_path('[PROJECT]')
@@ -165,7 +183,10 @@ class TestKnowledgeBasesClient(object):
     def test_create_knowledge_base_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = dialogflow_v2beta1.KnowledgeBasesClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dialogflow_v2beta1.KnowledgeBasesClient()
 
         # Setup request
         parent = client.project_path('[PROJECT]')
@@ -176,7 +197,10 @@ class TestKnowledgeBasesClient(object):
 
     def test_delete_knowledge_base(self):
         channel = ChannelStub()
-        client = dialogflow_v2beta1.KnowledgeBasesClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dialogflow_v2beta1.KnowledgeBasesClient()
 
         # Setup Request
         name = client.knowledge_base_path('[PROJECT]', '[KNOWLEDGE_BASE]')
@@ -192,10 +216,47 @@ class TestKnowledgeBasesClient(object):
     def test_delete_knowledge_base_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = dialogflow_v2beta1.KnowledgeBasesClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dialogflow_v2beta1.KnowledgeBasesClient()
 
         # Setup request
         name = client.knowledge_base_path('[PROJECT]', '[KNOWLEDGE_BASE]')
 
         with pytest.raises(CustomException):
             client.delete_knowledge_base(name)
+
+    def test_update_knowledge_base(self):
+        # Setup Expected Response
+        name = 'name3373707'
+        display_name = 'displayName1615086568'
+        expected_response = {'name': name, 'display_name': display_name}
+        expected_response = knowledge_base_pb2.KnowledgeBase(
+            **expected_response)
+
+        # Mock the API response
+        channel = ChannelStub(responses=[expected_response])
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dialogflow_v2beta1.KnowledgeBasesClient()
+
+        response = client.update_knowledge_base()
+        assert expected_response == response
+
+        assert len(channel.requests) == 1
+        expected_request = knowledge_base_pb2.UpdateKnowledgeBaseRequest()
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_update_knowledge_base_exception(self):
+        # Mock the API response
+        channel = ChannelStub(responses=[CustomException()])
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dialogflow_v2beta1.KnowledgeBasesClient()
+
+        with pytest.raises(CustomException):
+            client.update_knowledge_base()

@@ -1,4 +1,6 @@
-# Copyright 2018 Google LLC
+# -*- coding: utf-8 -*-
+#
+# Copyright 2019 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -21,6 +23,7 @@ from google.oauth2 import service_account
 import google.api_core.gapic_v1.client_info
 import google.api_core.gapic_v1.config
 import google.api_core.gapic_v1.method
+import google.api_core.gapic_v1.routing_header
 import google.api_core.grpc_helpers
 import google.api_core.operation
 import google.api_core.operations_v1
@@ -44,31 +47,30 @@ _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
 
 class AgentsClient(object):
     """
-    Agents are best described as Natural Language Understanding (NLU) modules
-    that transform user requests into actionable data. You can include agents
-    in your app, product, or service to determine user intent and respond to the
-    user in a natural way.
+    Agents are best described as Natural Language Understanding (NLU)
+    modules that transform user requests into actionable data. You can
+    include agents in your app, product, or service to determine user intent
+    and respond to the user in a natural way.
 
     After you create an agent, you can add ``Intents``, ``Contexts``,
-    ``Entity Types``, ``Webhooks``, and so on to
-    manage the flow of a conversation and match user input to predefined intents
-    and actions.
+    ``Entity Types``, ``Webhooks``, and so on to manage the flow of a
+    conversation and match user input to predefined intents and actions.
 
     You can create an agent using both Dialogflow Standard Edition and
-    Dialogflow Enterprise Edition. For details, see
-    `Dialogflow Editions <https://cloud.google.com/dialogflow-enterprise/docs/editions>`_.
+    Dialogflow Enterprise Edition. For details, see `Dialogflow
+    Editions <https://cloud.google.com/dialogflow-enterprise/docs/editions>`__.
 
-    You can save your agent for backup or versioning by exporting the agent by
-    using the ``ExportAgent`` method. You can import a saved
-    agent by using the ``ImportAgent`` method.
+    You can save your agent for backup or versioning by exporting the agent
+    by using the ``ExportAgent`` method. You can import a saved agent by
+    using the ``ImportAgent`` method.
 
-    Dialogflow provides several
-    `prebuilt agents <https://dialogflow.com/docs/prebuilt-agents>`_ for common
-    conversation scenarios such as determining a date and time, converting
-    currency, and so on.
+    Dialogflow provides several `prebuilt
+    agents <https://cloud.google.com/dialogflow-enterprise/docs/agents-prebuilt>`__
+    for common conversation scenarios such as determining a date and time,
+    converting currency, and so on.
 
-    For more information about agents, see the
-    `Dialogflow documentation <https://dialogflow.com/docs/agents>`__.
+    For more information about agents, see the `Dialogflow
+    documentation <https://cloud.google.com/dialogflow-enterprise/docs/agents-overview>`__.
     """
 
     SERVICE_ADDRESS = 'dialogflow.googleapis.com:443'
@@ -111,7 +113,7 @@ class AgentsClient(object):
                  transport=None,
                  channel=None,
                  credentials=None,
-                 client_config=agents_client_config.config,
+                 client_config=None,
                  client_info=None):
         """Constructor.
 
@@ -144,13 +146,19 @@ class AgentsClient(object):
                 your own client library.
         """
         # Raise deprecation warnings for things we want to go away.
-        if client_config:
+        if client_config is not None:
             warnings.warn('The `client_config` argument is deprecated.',
-                          PendingDeprecationWarning)
+                          PendingDeprecationWarning,
+                          stacklevel=2)
+        else:
+            client_config = agents_client_config.config
+
         if channel:
             warnings.warn(
                 'The `channel` argument is deprecated; use '
-                '`transport` instead.', PendingDeprecationWarning)
+                '`transport` instead.',
+                PendingDeprecationWarning,
+                stacklevel=2)
 
         # Instantiate the transport.
         # The transport is responsible for handling serialization and
@@ -175,9 +183,10 @@ class AgentsClient(object):
             )
 
         if client_info is None:
-            client_info = (
-                google.api_core.gapic_v1.client_info.DEFAULT_CLIENT_INFO)
-        client_info.gapic_version = _GAPIC_LIBRARY_VERSION
+            client_info = google.api_core.gapic_v1.client_info.ClientInfo(
+                gapic_version=_GAPIC_LIBRARY_VERSION, )
+        else:
+            client_info.gapic_version = _GAPIC_LIBRARY_VERSION
         self._client_info = client_info
 
         # Parse out the default settings for retry and timeout for each RPC
@@ -244,8 +253,22 @@ class AgentsClient(object):
                 )
 
         request = agent_pb2.GetAgentRequest(parent=parent, )
-        return self._inner_api_calls['get_agent'](
-            request, retry=retry, timeout=timeout, metadata=metadata)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [('parent', parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header)
+            metadata.append(routing_metadata)
+
+        return self._inner_api_calls['get_agent'](request,
+                                                  retry=retry,
+                                                  timeout=timeout,
+                                                  metadata=metadata)
 
     def search_agents(self,
                       parent,
@@ -256,11 +279,11 @@ class AgentsClient(object):
         """
         Returns the list of agents.
 
-        Since there is at most one conversational agent per project, this method is
-        useful primarily for listing all agents across projects the caller has
-        access to. One can achieve that with a wildcard project collection id \"-\".
-        Refer to [List
-        Sub-Collections](https://cloud.google.com/apis/design/design_patterns#list_sub-collections).
+        Since there is at most one conversational agent per project, this method
+        is useful primarily for listing all agents across projects the caller
+        has access to. One can achieve that with a wildcard project collection
+        id "-". Refer to `List
+        Sub-Collections <https://cloud.google.com/apis/design/design_patterns#list_sub-collections>`__.
 
         Example:
             >>> import dialogflow_v2
@@ -278,14 +301,14 @@ class AgentsClient(object):
             >>> # Alternatively:
             >>>
             >>> # Iterate over results one page at a time
-            >>> for page in client.search_agents(parent, options=CallOptions(page_token=INITIAL_PAGE)):
+            >>> for page in client.search_agents(parent).pages:
             ...     for element in page:
             ...         # process element
             ...         pass
 
         Args:
-            parent (str): Required. The project to list agents from.
-                Format: ``projects/<Project ID or '-'>``.
+            parent (str): Required. The project to list agents from. Format:
+                ``projects/<Project ID or '-'>``.
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
                 resource, this parameter does not affect the return value. If page
@@ -319,8 +342,8 @@ class AgentsClient(object):
                 'search_agents'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.search_agents,
                     default_retry=self._method_configs['SearchAgents'].retry,
-                    default_timeout=self._method_configs['SearchAgents']
-                    .timeout,
+                    default_timeout=self._method_configs['SearchAgents'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -328,13 +351,24 @@ class AgentsClient(object):
             parent=parent,
             page_size=page_size,
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [('parent', parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header)
+            metadata.append(routing_metadata)
+
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
-            method=functools.partial(
-                self._inner_api_calls['search_agents'],
-                retry=retry,
-                timeout=timeout,
-                metadata=metadata),
+            method=functools.partial(self._inner_api_calls['search_agents'],
+                                     retry=retry,
+                                     timeout=timeout,
+                                     metadata=metadata),
             request=request,
             items_field='agents',
             request_token_field='page_token',
@@ -350,8 +384,7 @@ class AgentsClient(object):
         """
         Trains the specified agent.
 
-        Operation <response: ``google.protobuf.Empty``,
-        metadata: [google.protobuf.Struct][google.protobuf.Struct]>
+        Operation <response: ``google.protobuf.Empty``>
 
         Example:
             >>> import dialogflow_v2
@@ -404,8 +437,22 @@ class AgentsClient(object):
                 )
 
         request = agent_pb2.TrainAgentRequest(parent=parent, )
-        operation = self._inner_api_calls['train_agent'](
-            request, retry=retry, timeout=timeout, metadata=metadata)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [('parent', parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header)
+            metadata.append(routing_metadata)
+
+        operation = self._inner_api_calls['train_agent'](request,
+                                                         retry=retry,
+                                                         timeout=timeout,
+                                                         metadata=metadata)
         return google.api_core.operation.from_gapic(
             operation,
             self.transport._operations_client,
@@ -422,8 +469,7 @@ class AgentsClient(object):
         """
         Exports the specified agent to a ZIP file.
 
-        Operation <response: ``ExportAgentResponse``,
-        metadata: [google.protobuf.Struct][google.protobuf.Struct]>
+        Operation <response: ``ExportAgentResponse``>
 
         Example:
             >>> import dialogflow_v2
@@ -446,9 +492,11 @@ class AgentsClient(object):
         Args:
             parent (str): Required. The project that the agent to export is associated with.
                 Format: ``projects/<Project ID>``.
-            agent_uri (str): Optional. The Google Cloud Storage URI to export the agent to.
-                Note: The URI must start with
-                \"gs://\". If left unspecified, the serialized agent is returned inline.
+            agent_uri (str): Optional. The `Google Cloud
+                Storage <https://cloud.google.com/storage/docs/>`__ URI to export the
+                agent to. The format of this URI must be
+                ``gs://<bucket-name>/<object-name>``. If left unspecified, the
+                serialized agent is returned inline.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -474,8 +522,8 @@ class AgentsClient(object):
                 'export_agent'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.export_agent,
                     default_retry=self._method_configs['ExportAgent'].retry,
-                    default_timeout=self._method_configs['ExportAgent']
-                    .timeout,
+                    default_timeout=self._method_configs['ExportAgent'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -483,8 +531,22 @@ class AgentsClient(object):
             parent=parent,
             agent_uri=agent_uri,
         )
-        operation = self._inner_api_calls['export_agent'](
-            request, retry=retry, timeout=timeout, metadata=metadata)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [('parent', parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header)
+            metadata.append(routing_metadata)
+
+        operation = self._inner_api_calls['export_agent'](request,
+                                                          retry=retry,
+                                                          timeout=timeout,
+                                                          metadata=metadata)
         return google.api_core.operation.from_gapic(
             operation,
             self.transport._operations_client,
@@ -506,8 +568,7 @@ class AgentsClient(object):
         Intents and entity types with the same name are replaced with the new
         versions from ImportAgentRequest.
 
-        Operation <response: ``google.protobuf.Empty``,
-        metadata: [google.protobuf.Struct][google.protobuf.Struct]>
+        Operation <response: ``google.protobuf.Empty``>
 
         Example:
             >>> import dialogflow_v2
@@ -531,23 +592,24 @@ class AgentsClient(object):
             parent (str): Required. The project that the agent to import is associated with.
                 Format: ``projects/<Project ID>``.
             agent_uri (str): The URI to a Google Cloud Storage file containing the agent to import.
-                Note: The URI must start with \"gs://\".
+                Note: The URI must start with "gs://".
             agent_content (bytes): The agent to import.
 
                 Example for how to import an agent via the command line:
 
-                curl \
-                  'https://dialogflow.googleapis.com/v2/projects/<project_name>/agent:import\
-                   -X POST \
-                   -H 'Authorization: Bearer '$(gcloud auth print-access-token) \
-                   -H 'Accept: application/json' \
-                   -H 'Content-Type: application/json' \
-                   --compressed \
-                   --data-binary \"{
-                ::
+                .. raw:: html
 
-                      'agentContent': '$(cat <agent zip file> | base64 -w 0)'
-                   }\"
+                    <pre>curl \
+                      'https://dialogflow.googleapis.com/v2/projects/&lt;project_name&gt;/agent:import\
+                       -X POST \
+                       -H 'Authorization: Bearer '$(gcloud auth application-default
+                       print-access-token) \
+                       -H 'Accept: application/json' \
+                       -H 'Content-Type: application/json' \
+                       --compressed \
+                       --data-binary "{
+                          'agentContent': '$(cat &lt;agent zip file&gt; | base64 -w 0)'
+                       }"</pre>
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -573,8 +635,8 @@ class AgentsClient(object):
                 'import_agent'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.import_agent,
                     default_retry=self._method_configs['ImportAgent'].retry,
-                    default_timeout=self._method_configs['ImportAgent']
-                    .timeout,
+                    default_timeout=self._method_configs['ImportAgent'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -590,8 +652,22 @@ class AgentsClient(object):
             agent_uri=agent_uri,
             agent_content=agent_content,
         )
-        operation = self._inner_api_calls['import_agent'](
-            request, retry=retry, timeout=timeout, metadata=metadata)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [('parent', parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header)
+            metadata.append(routing_metadata)
+
+        operation = self._inner_api_calls['import_agent'](request,
+                                                          retry=retry,
+                                                          timeout=timeout,
+                                                          metadata=metadata)
         return google.api_core.operation.from_gapic(
             operation,
             self.transport._operations_client,
@@ -612,8 +688,7 @@ class AgentsClient(object):
         Replaces the current agent version with a new one. All the intents and
         entity types in the older version are deleted.
 
-        Operation <response: ``google.protobuf.Empty``,
-        metadata: [google.protobuf.Struct][google.protobuf.Struct]>
+        Operation <response: ``google.protobuf.Empty``>
 
         Example:
             >>> import dialogflow_v2
@@ -637,23 +712,24 @@ class AgentsClient(object):
             parent (str): Required. The project that the agent to restore is associated with.
                 Format: ``projects/<Project ID>``.
             agent_uri (str): The URI to a Google Cloud Storage file containing the agent to restore.
-                Note: The URI must start with \"gs://\".
+                Note: The URI must start with "gs://".
             agent_content (bytes): The agent to restore.
 
                 Example for how to restore an agent via the command line:
 
-                curl \
-                  'https://dialogflow.googleapis.com/v2/projects/<project_name>/agent:restore\
-                   -X POST \
-                   -H 'Authorization: Bearer '$(gcloud auth print-access-token) \
-                   -H 'Accept: application/json' \
-                   -H 'Content-Type: application/json' \
-                   --compressed \
-                   --data-binary \"{
-                ::
+                .. raw:: html
 
-                       'agentContent': '$(cat <agent zip file> | base64 -w 0)'
-                   }\"
+                    <pre>curl \
+                      'https://dialogflow.googleapis.com/v2/projects/&lt;project_name&gt;/agent:restore\
+                       -X POST \
+                       -H 'Authorization: Bearer '$(gcloud auth application-default
+                       print-access-token) \
+                       -H 'Accept: application/json' \
+                       -H 'Content-Type: application/json' \
+                       --compressed \
+                       --data-binary "{
+                           'agentContent': '$(cat &lt;agent zip file&gt; | base64 -w 0)'
+                       }"</pre>
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -679,8 +755,8 @@ class AgentsClient(object):
                 'restore_agent'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.restore_agent,
                     default_retry=self._method_configs['RestoreAgent'].retry,
-                    default_timeout=self._method_configs['RestoreAgent']
-                    .timeout,
+                    default_timeout=self._method_configs['RestoreAgent'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -696,8 +772,22 @@ class AgentsClient(object):
             agent_uri=agent_uri,
             agent_content=agent_content,
         )
-        operation = self._inner_api_calls['restore_agent'](
-            request, retry=retry, timeout=timeout, metadata=metadata)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [('parent', parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header)
+            metadata.append(routing_metadata)
+
+        operation = self._inner_api_calls['restore_agent'](request,
+                                                           retry=retry,
+                                                           timeout=timeout,
+                                                           metadata=metadata)
         return google.api_core.operation.from_gapic(
             operation,
             self.transport._operations_client,

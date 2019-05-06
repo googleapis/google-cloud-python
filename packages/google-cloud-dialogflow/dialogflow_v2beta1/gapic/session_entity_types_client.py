@@ -1,4 +1,6 @@
-# Copyright 2018 Google LLC
+# -*- coding: utf-8 -*-
+#
+# Copyright 2019 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -21,6 +23,7 @@ from google.oauth2 import service_account
 import google.api_core.gapic_v1.client_info
 import google.api_core.gapic_v1.config
 import google.api_core.gapic_v1.method
+import google.api_core.gapic_v1.routing_header
 import google.api_core.grpc_helpers
 import google.api_core.page_iterator
 import google.api_core.path_template
@@ -60,12 +63,12 @@ class SessionEntityTypesClient(object):
     actionable data for your application.
 
     Session entity types are referred to as **User** entity types and are
-    entities that are built for an individual user such as
-    favorites, preferences, playlists, and so on. You can redefine a session
-    entity type at the session level.
+    entities that are built for an individual user such as favorites,
+    preferences, playlists, and so on. You can redefine a session entity
+    type at the session level.
 
-    For more information about entity types, see the
-    `Dialogflow documentation <https://dialogflow.com/docs/entities>`__.
+    For more information about entity types, see the `Dialogflow
+    documentation <https://cloud.google.com/dialogflow-enterprise/docs/entities-overview>`__.
     """
 
     SERVICE_ADDRESS = 'dialogflow.googleapis.com:443'
@@ -97,15 +100,6 @@ class SessionEntityTypesClient(object):
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def session_path(cls, project, session):
-        """Return a fully-qualified session string."""
-        return google.api_core.path_template.expand(
-            'projects/{project}/agent/sessions/{session}',
-            project=project,
-            session=session,
-        )
-
-    @classmethod
     def environment_session_path(cls, project, environment, user, session):
         """Return a fully-qualified environment_session string."""
         return google.api_core.path_template.expand(
@@ -114,16 +108,6 @@ class SessionEntityTypesClient(object):
             environment=environment,
             user=user,
             session=session,
-        )
-
-    @classmethod
-    def session_entity_type_path(cls, project, session, entity_type):
-        """Return a fully-qualified session_entity_type string."""
-        return google.api_core.path_template.expand(
-            'projects/{project}/agent/sessions/{session}/entityTypes/{entity_type}',
-            project=project,
-            session=session,
-            entity_type=entity_type,
         )
 
     @classmethod
@@ -139,11 +123,30 @@ class SessionEntityTypesClient(object):
             entity_type=entity_type,
         )
 
+    @classmethod
+    def session_path(cls, project, session):
+        """Return a fully-qualified session string."""
+        return google.api_core.path_template.expand(
+            'projects/{project}/agent/sessions/{session}',
+            project=project,
+            session=session,
+        )
+
+    @classmethod
+    def session_entity_type_path(cls, project, session, entity_type):
+        """Return a fully-qualified session_entity_type string."""
+        return google.api_core.path_template.expand(
+            'projects/{project}/agent/sessions/{session}/entityTypes/{entity_type}',
+            project=project,
+            session=session,
+            entity_type=entity_type,
+        )
+
     def __init__(self,
                  transport=None,
                  channel=None,
                  credentials=None,
-                 client_config=session_entity_types_client_config.config,
+                 client_config=None,
                  client_info=None):
         """Constructor.
 
@@ -176,13 +179,19 @@ class SessionEntityTypesClient(object):
                 your own client library.
         """
         # Raise deprecation warnings for things we want to go away.
-        if client_config:
+        if client_config is not None:
             warnings.warn('The `client_config` argument is deprecated.',
-                          PendingDeprecationWarning)
+                          PendingDeprecationWarning,
+                          stacklevel=2)
+        else:
+            client_config = session_entity_types_client_config.config
+
         if channel:
             warnings.warn(
                 'The `channel` argument is deprecated; use '
-                '`transport` instead.', PendingDeprecationWarning)
+                '`transport` instead.',
+                PendingDeprecationWarning,
+                stacklevel=2)
 
         # Instantiate the transport.
         # The transport is responsible for handling serialization and
@@ -208,9 +217,10 @@ class SessionEntityTypesClient(object):
             )
 
         if client_info is None:
-            client_info = (
-                google.api_core.gapic_v1.client_info.DEFAULT_CLIENT_INFO)
-        client_info.gapic_version = _GAPIC_LIBRARY_VERSION
+            client_info = google.api_core.gapic_v1.client_info.ClientInfo(
+                gapic_version=_GAPIC_LIBRARY_VERSION, )
+        else:
+            client_info.gapic_version = _GAPIC_LIBRARY_VERSION
         self._client_info = client_info
 
         # Parse out the default settings for retry and timeout for each RPC
@@ -253,18 +263,18 @@ class SessionEntityTypesClient(object):
             >>> # Alternatively:
             >>>
             >>> # Iterate over results one page at a time
-            >>> for page in client.list_session_entity_types(parent, options=CallOptions(page_token=INITIAL_PAGE)):
+            >>> for page in client.list_session_entity_types(parent).pages:
             ...     for element in page:
             ...         # process element
             ...         pass
 
         Args:
-            parent (str): Required. The session to list all session entity types from.
-                Format: ``projects/<Project ID>/agent/sessions/<Session ID>`` or
-                ``projects/<Project ID>/agent/environments/<Environment ID>/users/<User ID>/
-                sessions/<Session ID>``.
+            parent (str): Required. The session to list all session entity types from. Format:
+                ``projects/<Project ID>/agent/sessions/<Session ID>`` or
+                ``projects/<Project ID>/agent/environments/<Environment ID>/users/<User ID>/ sessions/<Session ID>``.
                 If ``Environment ID`` is not specified, we assume default 'draft'
-                environment. If ``User ID`` is not specified, we assume default '-' user.
+                environment. If ``User ID`` is not specified, we assume default '-'
+                user.
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
                 resource, this parameter does not affect the return value. If page
@@ -297,10 +307,10 @@ class SessionEntityTypesClient(object):
             self._inner_api_calls[
                 'list_session_entity_types'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.list_session_entity_types,
-                    default_retry=self._method_configs[
-                        'ListSessionEntityTypes'].retry,
-                    default_timeout=self._method_configs[
-                        'ListSessionEntityTypes'].timeout,
+                    default_retry=self.
+                    _method_configs['ListSessionEntityTypes'].retry,
+                    default_timeout=self.
+                    _method_configs['ListSessionEntityTypes'].timeout,
                     client_info=self._client_info,
                 )
 
@@ -308,6 +318,18 @@ class SessionEntityTypesClient(object):
             parent=parent,
             page_size=page_size,
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [('parent', parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header)
+            metadata.append(routing_metadata)
+
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(
@@ -342,11 +364,12 @@ class SessionEntityTypesClient(object):
 
         Args:
             name (str): Required. The name of the session entity type. Format:
-                ``projects/<Project ID>/agent/sessions/<Session ID>/entityTypes/<Entity Type
-                Display Name>`` or ``projects/<Project ID>/agent/environments/<Environment
-                ID>/users/<User ID>/sessions/<Session ID>/entityTypes/<Entity Type Display
-                Name>``. If ``Environment ID`` is not specified, we assume default 'draft'
-                environment. If ``User ID`` is not specified, we assume default '-' user.
+                ``projects/<Project ID>/agent/sessions/<Session ID>/entityTypes/<Entity Type Display Name>``
+                or
+                ``projects/<Project ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>/entityTypes/<Entity Type Display Name>``.
+                If ``Environment ID`` is not specified, we assume default 'draft'
+                environment. If ``User ID`` is not specified, we assume default '-'
+                user.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -371,15 +394,27 @@ class SessionEntityTypesClient(object):
             self._inner_api_calls[
                 'get_session_entity_type'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.get_session_entity_type,
-                    default_retry=self._method_configs['GetSessionEntityType']
-                    .retry,
-                    default_timeout=self._method_configs[
-                        'GetSessionEntityType'].timeout,
+                    default_retry=self._method_configs['GetSessionEntityType'].
+                    retry,
+                    default_timeout=self.
+                    _method_configs['GetSessionEntityType'].timeout,
                     client_info=self._client_info,
                 )
 
         request = session_entity_type_pb2.GetSessionEntityTypeRequest(
             name=name, )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [('name', name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header)
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls['get_session_entity_type'](
             request, retry=retry, timeout=timeout, metadata=metadata)
 
@@ -393,6 +428,9 @@ class SessionEntityTypesClient(object):
         """
         Creates a session entity type.
 
+        If the specified session entity type already exists, overrides the
+        session entity type.
+
         Example:
             >>> import dialogflow_v2beta1
             >>>
@@ -400,19 +438,20 @@ class SessionEntityTypesClient(object):
             >>>
             >>> parent = client.session_path('[PROJECT]', '[SESSION]')
             >>>
-            >>> # TODO: Initialize ``session_entity_type``:
+            >>> # TODO: Initialize `session_entity_type`:
             >>> session_entity_type = {}
             >>>
             >>> response = client.create_session_entity_type(parent, session_entity_type)
 
         Args:
-            parent (str): Required. The session to create a session entity type for.
-                Format: ``projects/<Project ID>/agent/sessions/<Session ID>`` or
-                ``projects/<Project ID>/agent/environments/<Environment ID>/users/<User ID>/
-                sessions/<Session ID>``. If ``Environment ID`` is not specified, we assume
-                default 'draft' environment. If ``User ID`` is not specified, we assume
-                default '-' user.
+            parent (str): Required. The session to create a session entity type for. Format:
+                ``projects/<Project ID>/agent/sessions/<Session ID>`` or
+                ``projects/<Project ID>/agent/environments/<Environment ID>/users/<User ID>/ sessions/<Session ID>``.
+                If ``Environment ID`` is not specified, we assume default 'draft'
+                environment. If ``User ID`` is not specified, we assume default '-'
+                user.
             session_entity_type (Union[dict, ~google.cloud.dialogflow_v2beta1.types.SessionEntityType]): Required. The session entity type to create.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.dialogflow_v2beta1.types.SessionEntityType`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -439,10 +478,10 @@ class SessionEntityTypesClient(object):
             self._inner_api_calls[
                 'create_session_entity_type'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.create_session_entity_type,
-                    default_retry=self._method_configs[
-                        'CreateSessionEntityType'].retry,
-                    default_timeout=self._method_configs[
-                        'CreateSessionEntityType'].timeout,
+                    default_retry=self.
+                    _method_configs['CreateSessionEntityType'].retry,
+                    default_timeout=self.
+                    _method_configs['CreateSessionEntityType'].timeout,
                     client_info=self._client_info,
                 )
 
@@ -450,6 +489,18 @@ class SessionEntityTypesClient(object):
             parent=parent,
             session_entity_type=session_entity_type,
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [('parent', parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header)
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls['create_session_entity_type'](
             request, retry=retry, timeout=timeout, metadata=metadata)
 
@@ -468,21 +519,24 @@ class SessionEntityTypesClient(object):
             >>>
             >>> client = dialogflow_v2beta1.SessionEntityTypesClient()
             >>>
-            >>> # TODO: Initialize ``session_entity_type``:
+            >>> # TODO: Initialize `session_entity_type`:
             >>> session_entity_type = {}
             >>>
             >>> response = client.update_session_entity_type(session_entity_type)
 
         Args:
             session_entity_type (Union[dict, ~google.cloud.dialogflow_v2beta1.types.SessionEntityType]): Required. The entity type to update. Format:
-                ``projects/<Project ID>/agent/sessions/<Session ID>/entityTypes/<Entity Type
-                Display Name>`` or ``projects/<Project ID>/agent/environments/<Environment
-                ID>/users/<User ID>/sessions/<Session ID>/entityTypes/<Entity Type Display
-                Name>``. If ``Environment ID`` is not specified, we assume default 'draft'
-                environment. If ``User ID`` is not specified, we assume default '-' user.
+                ``projects/<Project ID>/agent/sessions/<Session ID>/entityTypes/<Entity Type Display Name>``
+                or
+                ``projects/<Project ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>/entityTypes/<Entity Type Display Name>``.
+                If ``Environment ID`` is not specified, we assume default 'draft'
+                environment. If ``User ID`` is not specified, we assume default '-'
+                user.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.dialogflow_v2beta1.types.SessionEntityType`
             update_mask (Union[dict, ~google.cloud.dialogflow_v2beta1.types.FieldMask]): Optional. The mask to control which fields get updated.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.dialogflow_v2beta1.types.FieldMask`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -509,10 +563,10 @@ class SessionEntityTypesClient(object):
             self._inner_api_calls[
                 'update_session_entity_type'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.update_session_entity_type,
-                    default_retry=self._method_configs[
-                        'UpdateSessionEntityType'].retry,
-                    default_timeout=self._method_configs[
-                        'UpdateSessionEntityType'].timeout,
+                    default_retry=self.
+                    _method_configs['UpdateSessionEntityType'].retry,
+                    default_timeout=self.
+                    _method_configs['UpdateSessionEntityType'].timeout,
                     client_info=self._client_info,
                 )
 
@@ -520,6 +574,19 @@ class SessionEntityTypesClient(object):
             session_entity_type=session_entity_type,
             update_mask=update_mask,
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [('session_entity_type.name',
+                               session_entity_type.name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header)
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls['update_session_entity_type'](
             request, retry=retry, timeout=timeout, metadata=metadata)
 
@@ -543,11 +610,12 @@ class SessionEntityTypesClient(object):
 
         Args:
             name (str): Required. The name of the entity type to delete. Format:
-                ``projects/<Project ID>/agent/sessions/<Session ID>/entityTypes/<Entity Type
-                Display Name>`` or ``projects/<Project ID>/agent/environments/<Environment
-                ID>/users/<User ID>/sessions/<Session ID>/entityTypes/<Entity Type Display
-                Name>``. If ``Environment ID`` is not specified, we assume default 'draft'
-                environment. If ``User ID`` is not specified, we assume default '-' user.
+                ``projects/<Project ID>/agent/sessions/<Session ID>/entityTypes/<Entity Type Display Name>``
+                or
+                ``projects/<Project ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>/entityTypes/<Entity Type Display Name>``.
+                If ``Environment ID`` is not specified, we assume default 'draft'
+                environment. If ``User ID`` is not specified, we assume default '-'
+                user.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -569,14 +637,28 @@ class SessionEntityTypesClient(object):
             self._inner_api_calls[
                 'delete_session_entity_type'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.delete_session_entity_type,
-                    default_retry=self._method_configs[
-                        'DeleteSessionEntityType'].retry,
-                    default_timeout=self._method_configs[
-                        'DeleteSessionEntityType'].timeout,
+                    default_retry=self.
+                    _method_configs['DeleteSessionEntityType'].retry,
+                    default_timeout=self.
+                    _method_configs['DeleteSessionEntityType'].timeout,
                     client_info=self._client_info,
                 )
 
         request = session_entity_type_pb2.DeleteSessionEntityTypeRequest(
             name=name, )
-        self._inner_api_calls['delete_session_entity_type'](
-            request, retry=retry, timeout=timeout, metadata=metadata)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [('name', name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header)
+            metadata.append(routing_metadata)
+
+        self._inner_api_calls['delete_session_entity_type'](request,
+                                                            retry=retry,
+                                                            timeout=timeout,
+                                                            metadata=metadata)

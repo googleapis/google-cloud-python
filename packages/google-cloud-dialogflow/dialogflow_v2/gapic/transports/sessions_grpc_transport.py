@@ -1,4 +1,6 @@
-# Copyright 2018 Google LLC
+# -*- coding: utf-8 -*-
+#
+# Copyright 2019 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -27,7 +29,10 @@ class SessionsGrpcTransport(object):
     """
     # The scopes needed to make gRPC calls to all of the methods defined
     # in this service.
-    _OAUTH_SCOPES = ('https://www.googleapis.com/auth/cloud-platform', )
+    _OAUTH_SCOPES = (
+        'https://www.googleapis.com/auth/cloud-platform',
+        'https://www.googleapis.com/auth/dialogflow',
+    )
 
     def __init__(self,
                  channel=None,
@@ -60,6 +65,8 @@ class SessionsGrpcTransport(object):
                 credentials=credentials,
             )
 
+        self._channel = channel
+
         # gRPC uses objects called "stubs" that are bound to the
         # channel and provide a basic method for each RPC.
         self._stubs = {
@@ -90,8 +97,17 @@ class SessionsGrpcTransport(object):
         )
 
     @property
+    def channel(self):
+        """The gRPC channel used by the transport.
+
+        Returns:
+            grpc.Channel: A gRPC channel object.
+        """
+        return self._channel
+
+    @property
     def detect_intent(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`SessionsClient.detect_intent`.
 
         Processes a natural language query and returns structured, actionable data
         as a result. This method is not idempotent, because it may cause contexts
@@ -107,7 +123,7 @@ class SessionsGrpcTransport(object):
 
     @property
     def streaming_detect_intent(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`SessionsClient.streaming_detect_intent`.
 
         Processes a natural language query in audio format in a streaming fashion
         and returns structured, actionable data as a result. This method is only

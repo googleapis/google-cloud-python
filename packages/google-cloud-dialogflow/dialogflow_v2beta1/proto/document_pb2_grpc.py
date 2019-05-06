@@ -35,6 +35,16 @@ class DocumentsStub(object):
         request_serializer=google_dot_cloud_dot_dialogflow__v2beta1_dot_proto_dot_document__pb2.DeleteDocumentRequest.SerializeToString,
         response_deserializer=google_dot_longrunning_dot_operations__pb2.Operation.FromString,
         )
+    self.UpdateDocument = channel.unary_unary(
+        '/google.cloud.dialogflow.v2beta1.Documents/UpdateDocument',
+        request_serializer=google_dot_cloud_dot_dialogflow__v2beta1_dot_proto_dot_document__pb2.UpdateDocumentRequest.SerializeToString,
+        response_deserializer=google_dot_longrunning_dot_operations__pb2.Operation.FromString,
+        )
+    self.ReloadDocument = channel.unary_unary(
+        '/google.cloud.dialogflow.v2beta1.Documents/ReloadDocument',
+        request_serializer=google_dot_cloud_dot_dialogflow__v2beta1_dot_proto_dot_document__pb2.ReloadDocumentRequest.SerializeToString,
+        response_deserializer=google_dot_longrunning_dot_operations__pb2.Operation.FromString,
+        )
 
 
 class DocumentsServicer(object):
@@ -75,6 +85,27 @@ class DocumentsServicer(object):
     context.set_details('Method not implemented!')
     raise NotImplementedError('Method not implemented!')
 
+  def UpdateDocument(self, request, context):
+    """Updates the specified document.
+    Operation <response: [Document][google.cloud.dialogflow.v2beta1.Document],
+    metadata: [KnowledgeOperationMetadata][google.cloud.dialogflow.v2beta1.KnowledgeOperationMetadata]>
+    """
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details('Method not implemented!')
+    raise NotImplementedError('Method not implemented!')
+
+  def ReloadDocument(self, request, context):
+    """Reloads the specified document from its specified source, content_uri or
+    content. The previously loaded content of the document will be deleted.
+    Note: Even when the content of the document has not changed, there still
+    may be side effects because of internal implementation changes.
+    Operation <response: [Document][google.cloud.dialogflow.v2beta1.Document],
+    metadata: [KnowledgeOperationMetadata][google.cloud.dialogflow.v2beta1.KnowledgeOperationMetadata]>
+    """
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details('Method not implemented!')
+    raise NotImplementedError('Method not implemented!')
+
 
 def add_DocumentsServicer_to_server(servicer, server):
   rpc_method_handlers = {
@@ -96,6 +127,16 @@ def add_DocumentsServicer_to_server(servicer, server):
       'DeleteDocument': grpc.unary_unary_rpc_method_handler(
           servicer.DeleteDocument,
           request_deserializer=google_dot_cloud_dot_dialogflow__v2beta1_dot_proto_dot_document__pb2.DeleteDocumentRequest.FromString,
+          response_serializer=google_dot_longrunning_dot_operations__pb2.Operation.SerializeToString,
+      ),
+      'UpdateDocument': grpc.unary_unary_rpc_method_handler(
+          servicer.UpdateDocument,
+          request_deserializer=google_dot_cloud_dot_dialogflow__v2beta1_dot_proto_dot_document__pb2.UpdateDocumentRequest.FromString,
+          response_serializer=google_dot_longrunning_dot_operations__pb2.Operation.SerializeToString,
+      ),
+      'ReloadDocument': grpc.unary_unary_rpc_method_handler(
+          servicer.ReloadDocument,
+          request_deserializer=google_dot_cloud_dot_dialogflow__v2beta1_dot_proto_dot_document__pb2.ReloadDocumentRequest.FromString,
           response_serializer=google_dot_longrunning_dot_operations__pb2.Operation.SerializeToString,
       ),
   }

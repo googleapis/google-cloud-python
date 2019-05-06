@@ -33,7 +33,8 @@ class EntityTypesStub(object):
   represented by the [SessionEntityType][google.cloud.dialogflow.v2beta1.SessionEntityType] type.
 
   For more information about entity types, see the
-  [Dialogflow documentation](https://dialogflow.com/docs/entities).
+  [Dialogflow
+  documentation](https://cloud.google.com/dialogflow-enterprise/docs/entities-overview).
   """
 
   def __init__(self, channel):
@@ -121,7 +122,8 @@ class EntityTypesServicer(object):
   represented by the [SessionEntityType][google.cloud.dialogflow.v2beta1.SessionEntityType] type.
 
   For more information about entity types, see the
-  [Dialogflow documentation](https://dialogflow.com/docs/entities).
+  [Dialogflow
+  documentation](https://cloud.google.com/dialogflow-enterprise/docs/entities-overview).
   """
 
   def ListEntityTypes(self, request, context):
@@ -162,8 +164,7 @@ class EntityTypesServicer(object):
   def BatchUpdateEntityTypes(self, request, context):
     """Updates/Creates multiple entity types in the specified agent.
 
-    Operation <response: [BatchUpdateEntityTypesResponse][google.cloud.dialogflow.v2beta1.BatchUpdateEntityTypesResponse],
-    metadata: [google.protobuf.Struct][google.protobuf.Struct]>
+    Operation <response: [BatchUpdateEntityTypesResponse][google.cloud.dialogflow.v2beta1.BatchUpdateEntityTypesResponse]>
     """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')
@@ -172,16 +173,14 @@ class EntityTypesServicer(object):
   def BatchDeleteEntityTypes(self, request, context):
     """Deletes entity types in the specified agent.
 
-    Operation <response: [google.protobuf.Empty][google.protobuf.Empty],
-    metadata: [google.protobuf.Struct][google.protobuf.Struct]>
+    Operation <response: [google.protobuf.Empty][google.protobuf.Empty]>
     """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')
     raise NotImplementedError('Method not implemented!')
 
   def BatchCreateEntities(self, request, context):
-    """Creates multiple new entities in the specified entity type (extends the
-    existing collection of entries).
+    """Creates multiple new entities in the specified entity type.
 
     Operation <response: [google.protobuf.Empty][google.protobuf.Empty]>
     """
@@ -190,11 +189,11 @@ class EntityTypesServicer(object):
     raise NotImplementedError('Method not implemented!')
 
   def BatchUpdateEntities(self, request, context):
-    """Updates entities in the specified entity type (replaces the existing
-    collection of entries).
+    """Updates or creates multiple entities in the specified entity type. This
+    method does not affect entities in the entity type that aren't explicitly
+    specified in the request.
 
-    Operation <response: [google.protobuf.Empty][google.protobuf.Empty],
-    metadata: [google.protobuf.Struct][google.protobuf.Struct]>
+    Operation <response: [google.protobuf.Empty][google.protobuf.Empty]>
     """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')
@@ -203,8 +202,7 @@ class EntityTypesServicer(object):
   def BatchDeleteEntities(self, request, context):
     """Deletes entities in the specified entity type.
 
-    Operation <response: [google.protobuf.Empty][google.protobuf.Empty],
-    metadata: [google.protobuf.Struct][google.protobuf.Struct]>
+    Operation <response: [google.protobuf.Empty][google.protobuf.Empty]>
     """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')

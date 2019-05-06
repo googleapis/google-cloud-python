@@ -17,7 +17,8 @@ class SessionEntityTypesStub(object):
   entity type at the session level.
 
   For more information about entity types, see the
-  [Dialogflow documentation](https://dialogflow.com/docs/entities).
+  [Dialogflow
+  documentation](https://cloud.google.com/dialogflow-enterprise/docs/entities-overview).
   """
 
   def __init__(self, channel):
@@ -65,7 +66,8 @@ class SessionEntityTypesServicer(object):
   entity type at the session level.
 
   For more information about entity types, see the
-  [Dialogflow documentation](https://dialogflow.com/docs/entities).
+  [Dialogflow
+  documentation](https://cloud.google.com/dialogflow-enterprise/docs/entities-overview).
   """
 
   def ListSessionEntityTypes(self, request, context):
@@ -84,6 +86,9 @@ class SessionEntityTypesServicer(object):
 
   def CreateSessionEntityType(self, request, context):
     """Creates a session entity type.
+
+    If the specified session entity type already exists, overrides the
+    session entity type.
     """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')

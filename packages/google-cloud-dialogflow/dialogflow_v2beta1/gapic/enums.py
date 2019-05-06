@@ -1,4 +1,6 @@
-# Copyright 2018 Google LLC
+# -*- coding: utf-8 -*-
+#
+# Copyright 2019 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,17 +18,50 @@
 import enum
 
 
-class NullValue(enum.IntEnum):
+class AudioEncoding(enum.IntEnum):
     """
-    ``NullValue`` is a singleton enumeration to represent the null value for the
-    ``Value`` type union.
-
-     The JSON representation for ``NullValue`` is JSON ``null``.
+    Audio encoding of the audio content sent in the conversational query
+    request. Refer to the `Cloud Speech API
+    documentation <https://cloud.google.com/speech-to-text/docs/basics>`__
+    for more details.
 
     Attributes:
-      NULL_VALUE (int): Null value.
+      AUDIO_ENCODING_UNSPECIFIED (int): Not specified.
+      AUDIO_ENCODING_LINEAR_16 (int): Uncompressed 16-bit signed little-endian samples (Linear PCM).
+      AUDIO_ENCODING_FLAC (int): ```FLAC`` <https://xiph.org/flac/documentation.html>`__ (Free Lossless
+      Audio Codec) is the recommended encoding because it is lossless
+      (therefore recognition is not compromised) and requires only about half
+      the bandwidth of ``LINEAR16``. ``FLAC`` stream encoding supports 16-bit
+      and 24-bit samples, however, not all fields in ``STREAMINFO`` are
+      supported.
+      AUDIO_ENCODING_MULAW (int): 8-bit samples that compand 14-bit audio samples using G.711 PCMU/mu-law.
+      AUDIO_ENCODING_AMR (int): Adaptive Multi-Rate Narrowband codec. ``sample_rate_hertz`` must be
+      8000.
+      AUDIO_ENCODING_AMR_WB (int): Adaptive Multi-Rate Wideband codec. ``sample_rate_hertz`` must be 16000.
+      AUDIO_ENCODING_OGG_OPUS (int): Opus encoded audio frames in Ogg container
+      (`OggOpus <https://wiki.xiph.org/OggOpus>`__). ``sample_rate_hertz``
+      must be 16000.
+      AUDIO_ENCODING_SPEEX_WITH_HEADER_BYTE (int): Although the use of lossy encodings is not recommended, if a very low
+      bitrate encoding is required, ``OGG_OPUS`` is highly preferred over
+      Speex encoding. The `Speex <https://speex.org/>`__ encoding supported by
+      Dialogflow API has a header byte in each block, as in MIME type
+      ``audio/x-speex-with-header-byte``. It is a variant of the RTP Speex
+      encoding defined in `RFC 5574 <https://tools.ietf.org/html/rfc5574>`__.
+      The stream is a sequence of blocks, one block per RTP packet. Each block
+      starts with a byte containing the length of the block, in bytes,
+      followed by one or more frames of Speex data, padded to an integral
+      number of bytes (octets) as specified in RFC 5574. In other words, each
+      RTP header is replaced with a single byte containing the block length.
+      Only Speex wideband is supported. ``sample_rate_hertz`` must be 16000.
     """
-    NULL_VALUE = 0
+    AUDIO_ENCODING_UNSPECIFIED = 0
+    AUDIO_ENCODING_LINEAR_16 = 1
+    AUDIO_ENCODING_FLAC = 2
+    AUDIO_ENCODING_MULAW = 3
+    AUDIO_ENCODING_AMR = 4
+    AUDIO_ENCODING_AMR_WB = 5
+    AUDIO_ENCODING_OGG_OPUS = 6
+    AUDIO_ENCODING_SPEEX_WITH_HEADER_BYTE = 7
 
 
 class IntentView(enum.IntEnum):
@@ -43,22 +78,17 @@ class IntentView(enum.IntEnum):
     INTENT_VIEW_FULL = 1
 
 
-class SsmlVoiceGender(enum.IntEnum):
+class NullValue(enum.IntEnum):
     """
-    Gender of the voice as described in
-    `SSML voice element <https://www.w3.org/TR/speech-synthesis11/#edef_voice>`_.
+    ``NullValue`` is a singleton enumeration to represent the null value for
+    the ``Value`` type union.
+
+    The JSON representation for ``NullValue`` is JSON ``null``.
 
     Attributes:
-      SSML_VOICE_GENDER_UNSPECIFIED (int): An unspecified gender, which means that the client doesn't care which
-      gender the selected voice will have.
-      SSML_VOICE_GENDER_MALE (int): A male voice.
-      SSML_VOICE_GENDER_FEMALE (int): A female voice.
-      SSML_VOICE_GENDER_NEUTRAL (int): A gender-neutral voice.
+      NULL_VALUE (int): Null value.
     """
-    SSML_VOICE_GENDER_UNSPECIFIED = 0
-    SSML_VOICE_GENDER_MALE = 1
-    SSML_VOICE_GENDER_FEMALE = 2
-    SSML_VOICE_GENDER_NEUTRAL = 3
+    NULL_VALUE = 0
 
 
 class OutputAudioEncoding(enum.IntEnum):
@@ -81,50 +111,39 @@ class OutputAudioEncoding(enum.IntEnum):
     OUTPUT_AUDIO_ENCODING_OGG_OPUS = 3
 
 
-class AudioEncoding(enum.IntEnum):
+class SsmlVoiceGender(enum.IntEnum):
     """
-    Audio encoding of the audio content sent in the conversational query request.
-    Refer to the
-    [Cloud Speech API
-    documentation](https://cloud.google.com/speech-to-text/docs/basics) for more
-    details.
+    Gender of the voice as described in `SSML voice
+    element <https://www.w3.org/TR/speech-synthesis11/#edef_voice>`__.
 
     Attributes:
-      AUDIO_ENCODING_UNSPECIFIED (int): Not specified.
-      AUDIO_ENCODING_LINEAR_16 (int): Uncompressed 16-bit signed little-endian samples (Linear PCM).
-      AUDIO_ENCODING_FLAC (int): ```FLAC`` <https://xiph.org/flac/documentation.html>`_ (Free Lossless Audio
-      Codec) is the recommended encoding because it is lossless (therefore
-      recognition is not compromised) and requires only about half the
-      bandwidth of ``LINEAR16``. ``FLAC`` stream encoding supports 16-bit and
-      24-bit samples, however, not all fields in ``STREAMINFO`` are supported.
-      AUDIO_ENCODING_MULAW (int): 8-bit samples that compand 14-bit audio samples using G.711 PCMU/mu-law.
-      AUDIO_ENCODING_AMR (int): Adaptive Multi-Rate Narrowband codec. ``sample_rate_hertz`` must be 8000.
-      AUDIO_ENCODING_AMR_WB (int): Adaptive Multi-Rate Wideband codec. ``sample_rate_hertz`` must be 16000.
-      AUDIO_ENCODING_OGG_OPUS (int): Opus encoded audio frames in Ogg container
-      (`OggOpus <https://wiki.xiph.org/OggOpus>`_).
-      ``sample_rate_hertz`` must be 16000.
-      AUDIO_ENCODING_SPEEX_WITH_HEADER_BYTE (int): Although the use of lossy encodings is not recommended, if a very low
-      bitrate encoding is required, ``OGG_OPUS`` is highly preferred over
-      Speex encoding. The `Speex <https://speex.org/>`_ encoding supported by
-      Dialogflow API has a header byte in each block, as in MIME type
-      ``audio/x-speex-with-header-byte``.
-      It is a variant of the RTP Speex encoding defined in
-      `RFC 5574 <https://tools.ietf.org/html/rfc5574>`_.
-      The stream is a sequence of blocks, one block per RTP packet. Each block
-      starts with a byte containing the length of the block, in bytes, followed
-      by one or more frames of Speex data, padded to an integral number of
-      bytes (octets) as specified in RFC 5574. In other words, each RTP header
-      is replaced with a single byte containing the block length. Only Speex
-      wideband is supported. ``sample_rate_hertz`` must be 16000.
+      SSML_VOICE_GENDER_UNSPECIFIED (int): An unspecified gender, which means that the client doesn't care which
+      gender the selected voice will have.
+      SSML_VOICE_GENDER_MALE (int): A male voice.
+      SSML_VOICE_GENDER_FEMALE (int): A female voice.
+      SSML_VOICE_GENDER_NEUTRAL (int): A gender-neutral voice.
     """
-    AUDIO_ENCODING_UNSPECIFIED = 0
-    AUDIO_ENCODING_LINEAR_16 = 1
-    AUDIO_ENCODING_FLAC = 2
-    AUDIO_ENCODING_MULAW = 3
-    AUDIO_ENCODING_AMR = 4
-    AUDIO_ENCODING_AMR_WB = 5
-    AUDIO_ENCODING_OGG_OPUS = 6
-    AUDIO_ENCODING_SPEEX_WITH_HEADER_BYTE = 7
+    SSML_VOICE_GENDER_UNSPECIFIED = 0
+    SSML_VOICE_GENDER_MALE = 1
+    SSML_VOICE_GENDER_FEMALE = 2
+    SSML_VOICE_GENDER_NEUTRAL = 3
+
+
+class Agent(object):
+    class MatchMode(enum.IntEnum):
+        """
+        Match mode determines how intents are detected from user queries.
+
+        Attributes:
+          MATCH_MODE_UNSPECIFIED (int): Not specified.
+          MATCH_MODE_HYBRID (int): Best for agents with a small number of examples in intents and/or wide
+          use of templates syntax and composite entities.
+          MATCH_MODE_ML_ONLY (int): Can be used for agents with a large number of examples in intents,
+          especially the ones using @sys.any or very large developer entities.
+        """
+        MATCH_MODE_UNSPECIFIED = 0
+        MATCH_MODE_HYBRID = 1
+        MATCH_MODE_ML_ONLY = 2
 
 
 class Document(object):
@@ -149,24 +168,21 @@ class Document(object):
         EXTRACTIVE_QA = 2
 
 
-class KnowledgeOperationMetadata(object):
-    class State(enum.IntEnum):
+class EntityType(object):
+    class AutoExpansionMode(enum.IntEnum):
         """
-        States of the operation.
+        Represents different entity type expansion modes. Automated expansion
+        allows an agent to recognize values that have not been explicitly listed in
+        the entity (for example, new kinds of shopping list items).
 
         Attributes:
-          STATE_UNSPECIFIED (int): State unspecified.
-          PENDING (int): The operation has been created.
-          RUNNING (int): The operation is currently running.
-          DONE (int): The operation is done, either cancelled or completed.
+          AUTO_EXPANSION_MODE_UNSPECIFIED (int): Auto expansion disabled for the entity.
+          AUTO_EXPANSION_MODE_DEFAULT (int): Allows an agent to recognize values that have not been explicitly
+          listed in the entity.
         """
-        STATE_UNSPECIFIED = 0
-        PENDING = 1
-        RUNNING = 2
-        DONE = 3
+        AUTO_EXPANSION_MODE_UNSPECIFIED = 0
+        AUTO_EXPANSION_MODE_DEFAULT = 1
 
-
-class EntityType(object):
     class Kind(enum.IntEnum):
         """
         Represents kinds of entities.
@@ -182,41 +198,6 @@ class EntityType(object):
         KIND_UNSPECIFIED = 0
         KIND_MAP = 1
         KIND_LIST = 2
-
-    class AutoExpansionMode(enum.IntEnum):
-        """
-        Represents different entity type expansion modes. Automated expansion
-        allows an agent to recognize values that have not been explicitly listed in
-        the entity (for example, new kinds of shopping list items).
-
-        Attributes:
-          AUTO_EXPANSION_MODE_UNSPECIFIED (int): Auto expansion disabled for the entity.
-          AUTO_EXPANSION_MODE_DEFAULT (int): Allows an agent to recognize values that have not been explicitly
-          listed in the entity.
-        """
-        AUTO_EXPANSION_MODE_UNSPECIFIED = 0
-        AUTO_EXPANSION_MODE_DEFAULT = 1
-
-
-class SessionEntityType(object):
-    class EntityOverrideMode(enum.IntEnum):
-        """
-        The types of modifications for a session entity type.
-
-        Attributes:
-          ENTITY_OVERRIDE_MODE_UNSPECIFIED (int): Not specified. This value should be never used.
-          ENTITY_OVERRIDE_MODE_OVERRIDE (int): The collection of session entities overrides the collection of entities
-          in the corresponding developer entity type.
-          ENTITY_OVERRIDE_MODE_SUPPLEMENT (int): The collection of session entities extends the collection of entities in
-          the corresponding developer entity type.
-          Calls to ``ListSessionEntityTypes``, ``GetSessionEntityType``,
-          ``CreateSessionEntityType`` and ``UpdateSessionEntityType`` return the full
-          collection of entities from the developer entity type in the agent's
-          default language and the session entity type.
-        """
-        ENTITY_OVERRIDE_MODE_UNSPECIFIED = 0
-        ENTITY_OVERRIDE_MODE_OVERRIDE = 1
-        ENTITY_OVERRIDE_MODE_SUPPLEMENT = 2
 
 
 class Intent(object):
@@ -245,6 +226,10 @@ class Intent(object):
               can be annotated with entity types.
               TEMPLATE (int): Templates are not annotated with entity types, but they can contain
               @-prefixed entity type names as substrings.
+              Template mode has been deprecated. Example mode is the only supported
+              way to create new training phrases. If you have existing training
+              phrases that you've created in template mode, those will continue to
+              work.
             """
             TYPE_UNSPECIFIED = 0
             EXAMPLE = 1
@@ -264,71 +249,67 @@ class Intent(object):
               SKYPE (int): Skype.
               LINE (int): Line.
               VIBER (int): Viber.
-              ACTIONS_ON_GOOGLE (int): Actions on Google.
-              When using Actions on Google, you can choose one of the specific
-              Intent.Message types that mention support for Actions on Google,
-              or you can use the advanced Intent.Message.payload field.
-              The payload field provides access to AoG features not available in the
-              specific message types.
-              If using the Intent.Message.payload field, it should have a structure
-              similar to the JSON message shown here. For more information, see
-              [Actions on Google Webhook
-              Format](https://developers.google.com/actions/dialogflow/webhook)
+              ACTIONS_ON_GOOGLE (int): Actions on Google. When using Actions on Google, you can choose one of
+              the specific Intent.Message types that mention support for Actions on
+              Google, or you can use the advanced Intent.Message.payload field. The
+              payload field provides access to AoG features not available in the
+              specific message types. If using the Intent.Message.payload field, it
+              should have a structure similar to the JSON message shown here. For more
+              information, see `Actions on Google Webhook
+              Format <https://developers.google.com/actions/dialogflow/webhook>`__
+
+              .. raw:: html
               <pre>{
-                \"expectUserResponse\": true,
-                \"isSsml\": false,
-                \"noInputPrompts\": [],
-                \"richResponse\": {
-              ::
-
-                  \"items\": [
-                    {
-                      \"simpleResponse\": {
-                        \"displayText\": \"hi\",
-                        \"textToSpeech\": \"hello\"
-                      }
-                    }
-                  ],
-                  \"suggestions\": [
-                    {
-                      \"title\": \"Say this\"
-                    },
-                    {
-                      \"title\": \"or this\"
-                    }
-                  ]
-                },
-                \"systemIntent\": {
-              ::
-
-                  \"data\": {
-                    \"@type\": \"type.googleapis.com/google.actions.v2.OptionValueSpec\",
-                    \"listSelect\": {
-                      \"items\": [
+                    "expectUserResponse": true,
+                    "isSsml": false,
+                    "noInputPrompts": [],
+                    "richResponse": {
+                      "items": [
                         {
-                          \"optionInfo\": {
-                            \"key\": \"key1\",
-                            \"synonyms\": [
-                              \"key one\"
-                            ]
-                          },
-                          \"title\": \"must not be empty, but unique\"
+                          "simpleResponse": {
+                            "displayText": "hi",
+                            "textToSpeech": "hello"
+                          }
+                        }
+                      ],
+                      "suggestions": [
+                        {
+                          "title": "Say this"
                         },
                         {
-                          \"optionInfo\": {
-                            \"key\": \"key2\",
-                            \"synonyms\": [
-                              \"key two\"
-                            ]
-                          },
-                          \"title\": \"must not be empty, but unique\"
+                          "title": "or this"
                         }
                       ]
+                    },
+                    "systemIntent": {
+                      "data": {
+                        "@type": "type.googleapis.com/google.actions.v2.OptionValueSpec",
+                        "listSelect": {
+                          "items": [
+                            {
+                              "optionInfo": {
+                                "key": "key1",
+                                "synonyms": [
+                                  "key one"
+                                ]
+                              },
+                              "title": "must not be empty, but unique"
+                            },
+                            {
+                              "optionInfo": {
+                                "key": "key2",
+                                "synonyms": [
+                                  "key two"
+                                ]
+                              },
+                              "title": "must not be empty, but unique"
+                            }
+                          ]
+                        }
+                      },
+                      "intent": "actions.intent.OPTION"
                     }
-                  },
-                  \"intent\": \"actions.intent.OPTION\"
-                }
-              }</pre>
+                  }</pre>
               TELEPHONY (int): Telephony Gateway.
             """
             PLATFORM_UNSPECIFIED = 0
@@ -362,6 +343,47 @@ class KnowledgeAnswers(object):
             HIGH = 3
 
 
+class KnowledgeOperationMetadata(object):
+    class State(enum.IntEnum):
+        """
+        States of the operation.
+
+        Attributes:
+          STATE_UNSPECIFIED (int): State unspecified.
+          PENDING (int): The operation has been created.
+          RUNNING (int): The operation is currently running.
+          DONE (int): The operation is done, either cancelled or completed.
+        """
+        STATE_UNSPECIFIED = 0
+        PENDING = 1
+        RUNNING = 2
+        DONE = 3
+
+
+class SessionEntityType(object):
+    class EntityOverrideMode(enum.IntEnum):
+        """
+        The types of modifications for a session entity type.
+
+        Attributes:
+          ENTITY_OVERRIDE_MODE_UNSPECIFIED (int): Not specified. This value should be never used.
+          ENTITY_OVERRIDE_MODE_OVERRIDE (int): The collection of session entities overrides the collection of entities
+          in the corresponding developer entity type.
+          ENTITY_OVERRIDE_MODE_SUPPLEMENT (int): The collection of session entities extends the collection of entities in
+          the corresponding developer entity type.
+
+          Note: Even in this override mode calls to ``ListSessionEntityTypes``,
+          ``GetSessionEntityType``, ``CreateSessionEntityType`` and
+          ``UpdateSessionEntityType`` only return the additional entities added in
+          this session entity type. If you want to get the supplemented list,
+          please call ``EntityTypes.GetEntityType`` on the developer entity type
+          and merge.
+        """
+        ENTITY_OVERRIDE_MODE_UNSPECIFIED = 0
+        ENTITY_OVERRIDE_MODE_OVERRIDE = 1
+        ENTITY_OVERRIDE_MODE_SUPPLEMENT = 2
+
+
 class StreamingRecognitionResult(object):
     class MessageType(enum.IntEnum):
         """
@@ -370,31 +392,15 @@ class StreamingRecognitionResult(object):
         Attributes:
           MESSAGE_TYPE_UNSPECIFIED (int): Not specified. Should never be used.
           TRANSCRIPT (int): Message contains a (possibly partial) transcript.
-          END_OF_SINGLE_UTTERANCE (int): Event indicates that the server has detected the end of the user's speech
-          utterance and expects no additional speech. Therefore, the server will
-          not process additional audio (although it may subsequently return
+          END_OF_SINGLE_UTTERANCE (int): Event indicates that the server has detected the end of the user's
+          speech utterance and expects no additional speech. Therefore, the server
+          will not process additional audio (although it may subsequently return
           additional results). The client should stop sending additional audio
-          data, half-close the gRPC connection, and wait for any additional results
-          until the server closes the gRPC connection. This message is only sent if
-          ``single_utterance`` was set to ``true``, and is not used otherwise.
+          data, half-close the gRPC connection, and wait for any additional
+          results until the server closes the gRPC connection. This message is
+          only sent if ``single_utterance`` was set to ``true``, and is not used
+          otherwise.
         """
         MESSAGE_TYPE_UNSPECIFIED = 0
         TRANSCRIPT = 1
         END_OF_SINGLE_UTTERANCE = 2
-
-
-class Agent(object):
-    class MatchMode(enum.IntEnum):
-        """
-        Match mode determines how intents are detected from user queries.
-
-        Attributes:
-          MATCH_MODE_UNSPECIFIED (int): Not specified.
-          MATCH_MODE_HYBRID (int): Best for agents with a small number of examples in intents and/or wide
-          use of templates syntax and composite entities.
-          MATCH_MODE_ML_ONLY (int): Can be used for agents with a large number of examples in intents,
-          especially the ones using @sys.any or very large developer entities.
-        """
-        MATCH_MODE_UNSPECIFIED = 0
-        MATCH_MODE_HYBRID = 1
-        MATCH_MODE_ML_ONLY = 2

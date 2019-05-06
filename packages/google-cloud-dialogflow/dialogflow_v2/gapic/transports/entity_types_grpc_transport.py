@@ -1,4 +1,6 @@
-# Copyright 2018 Google LLC
+# -*- coding: utf-8 -*-
+#
+# Copyright 2019 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -28,7 +30,10 @@ class EntityTypesGrpcTransport(object):
     """
     # The scopes needed to make gRPC calls to all of the methods defined
     # in this service.
-    _OAUTH_SCOPES = ('https://www.googleapis.com/auth/cloud-platform', )
+    _OAUTH_SCOPES = (
+        'https://www.googleapis.com/auth/cloud-platform',
+        'https://www.googleapis.com/auth/dialogflow',
+    )
 
     def __init__(self,
                  channel=None,
@@ -60,6 +65,8 @@ class EntityTypesGrpcTransport(object):
                 address=address,
                 credentials=credentials,
             )
+
+        self._channel = channel
 
         # gRPC uses objects called "stubs" that are bound to the
         # channel and provide a basic method for each RPC.
@@ -97,8 +104,17 @@ class EntityTypesGrpcTransport(object):
         )
 
     @property
+    def channel(self):
+        """The gRPC channel used by the transport.
+
+        Returns:
+            grpc.Channel: A gRPC channel object.
+        """
+        return self._channel
+
+    @property
     def list_entity_types(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`EntityTypesClient.list_entity_types`.
 
         Returns the list of all entity types in the specified agent.
 
@@ -111,7 +127,7 @@ class EntityTypesGrpcTransport(object):
 
     @property
     def get_entity_type(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`EntityTypesClient.get_entity_type`.
 
         Retrieves the specified entity type.
 
@@ -124,7 +140,7 @@ class EntityTypesGrpcTransport(object):
 
     @property
     def create_entity_type(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`EntityTypesClient.create_entity_type`.
 
         Creates an entity type in the specified agent.
 
@@ -137,7 +153,7 @@ class EntityTypesGrpcTransport(object):
 
     @property
     def update_entity_type(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`EntityTypesClient.update_entity_type`.
 
         Updates the specified entity type.
 
@@ -150,7 +166,7 @@ class EntityTypesGrpcTransport(object):
 
     @property
     def delete_entity_type(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`EntityTypesClient.delete_entity_type`.
 
         Deletes the specified entity type.
 
@@ -163,12 +179,11 @@ class EntityTypesGrpcTransport(object):
 
     @property
     def batch_update_entity_types(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`EntityTypesClient.batch_update_entity_types`.
 
         Updates/Creates multiple entity types in the specified agent.
 
-        Operation <response: ``BatchUpdateEntityTypesResponse``,
-        metadata: [google.protobuf.Struct][google.protobuf.Struct]>
+        Operation <response: ``BatchUpdateEntityTypesResponse``>
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -179,12 +194,11 @@ class EntityTypesGrpcTransport(object):
 
     @property
     def batch_delete_entity_types(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`EntityTypesClient.batch_delete_entity_types`.
 
         Deletes entity types in the specified agent.
 
-        Operation <response: ``google.protobuf.Empty``,
-        metadata: [google.protobuf.Struct][google.protobuf.Struct]>
+        Operation <response: ``google.protobuf.Empty``>
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -195,10 +209,9 @@ class EntityTypesGrpcTransport(object):
 
     @property
     def batch_create_entities(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`EntityTypesClient.batch_create_entities`.
 
-        Creates multiple new entities in the specified entity type (extends the
-        existing collection of entries).
+        Creates multiple new entities in the specified entity type.
 
         Operation <response: ``google.protobuf.Empty``>
 
@@ -211,13 +224,13 @@ class EntityTypesGrpcTransport(object):
 
     @property
     def batch_update_entities(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`EntityTypesClient.batch_update_entities`.
 
-        Updates entities in the specified entity type (replaces the existing
-        collection of entries).
+        Updates or creates multiple entities in the specified entity type. This
+        method does not affect entities in the entity type that aren't
+        explicitly specified in the request.
 
-        Operation <response: ``google.protobuf.Empty``,
-        metadata: [google.protobuf.Struct][google.protobuf.Struct]>
+        Operation <response: ``google.protobuf.Empty``>
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -228,12 +241,11 @@ class EntityTypesGrpcTransport(object):
 
     @property
     def batch_delete_entities(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`EntityTypesClient.batch_delete_entities`.
 
         Deletes entities in the specified entity type.
 
-        Operation <response: ``google.protobuf.Empty``,
-        metadata: [google.protobuf.Struct][google.protobuf.Struct]>
+        Operation <response: ``google.protobuf.Empty``>
 
         Returns:
             Callable: A callable which accepts the appropriate

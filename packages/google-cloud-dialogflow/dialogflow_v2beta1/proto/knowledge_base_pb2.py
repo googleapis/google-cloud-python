@@ -7,13 +7,13 @@ from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
-from google.protobuf import descriptor_pb2
 # @@protoc_insertion_point(imports)
 
 _sym_db = _symbol_database.Default()
 
 
 from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
+from google.api import resource_pb2 as google_dot_api_dot_resource__pb2
 from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 from google.protobuf import field_mask_pb2 as google_dot_protobuf_dot_field__mask__pb2
 
@@ -22,9 +22,10 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='google/cloud/dialogflow_v2beta1/proto/knowledge_base.proto',
   package='google.cloud.dialogflow.v2beta1',
   syntax='proto3',
-  serialized_pb=_b('\n:google/cloud/dialogflow_v2beta1/proto/knowledge_base.proto\x12\x1fgoogle.cloud.dialogflow.v2beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto\"3\n\rKnowledgeBase\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x02 \x01(\t\"R\n\x19ListKnowledgeBasesRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t\"~\n\x1aListKnowledgeBasesResponse\x12G\n\x0fknowledge_bases\x18\x01 \x03(\x0b\x32..google.cloud.dialogflow.v2beta1.KnowledgeBase\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\"\'\n\x17GetKnowledgeBaseRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"t\n\x1a\x43reateKnowledgeBaseRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x46\n\x0eknowledge_base\x18\x02 \x01(\x0b\x32..google.cloud.dialogflow.v2beta1.KnowledgeBase\"9\n\x1a\x44\x65leteKnowledgeBaseRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\r\n\x05\x66orce\x18\x02 \x01(\x08\x32\xdb\x07\n\x0eKnowledgeBases\x12\xf7\x01\n\x12ListKnowledgeBases\x12:.google.cloud.dialogflow.v2beta1.ListKnowledgeBasesRequest\x1a;.google.cloud.dialogflow.v2beta1.ListKnowledgeBasesResponse\"h\x82\xd3\xe4\x93\x02\x62\x12+/v2beta1/{parent=projects/*}/knowledgeBasesZ3\x12\x31/v2beta1/{parent=projects/*/agent}/knowledgeBases\x12\xe6\x01\n\x10GetKnowledgeBase\x12\x38.google.cloud.dialogflow.v2beta1.GetKnowledgeBaseRequest\x1a..google.cloud.dialogflow.v2beta1.KnowledgeBase\"h\x82\xd3\xe4\x93\x02\x62\x12+/v2beta1/{name=projects/*/knowledgeBases/*}Z3\x12\x31/v2beta1/{name=projects/*/agent/knowledgeBases/*}\x12\x8e\x02\n\x13\x43reateKnowledgeBase\x12;.google.cloud.dialogflow.v2beta1.CreateKnowledgeBaseRequest\x1a..google.cloud.dialogflow.v2beta1.KnowledgeBase\"\x89\x01\x82\xd3\xe4\x93\x02\x82\x01\"+/v2beta1/{parent=projects/*}/knowledgeBases:\x0eknowledge_baseZC\"1/v2beta1/{parent=projects/*/agent}/knowledgeBases:\x0eknowledge_base\x12\xd4\x01\n\x13\x44\x65leteKnowledgeBase\x12;.google.cloud.dialogflow.v2beta1.DeleteKnowledgeBaseRequest\x1a\x16.google.protobuf.Empty\"h\x82\xd3\xe4\x93\x02\x62*+/v2beta1/{name=projects/*/knowledgeBases/*}Z3*1/v2beta1/{name=projects/*/agent/knowledgeBases/*}B\xb0\x01\n#com.google.cloud.dialogflow.v2beta1B\x12KnowledgeBaseProtoP\x01ZIgoogle.golang.org/genproto/googleapis/cloud/dialogflow/v2beta1;dialogflow\xf8\x01\x01\xa2\x02\x02\x44\x46\xaa\x02\x1fGoogle.Cloud.Dialogflow.V2beta1b\x06proto3')
+  serialized_options=_b('\n#com.google.cloud.dialogflow.v2beta1B\022KnowledgeBaseProtoP\001ZIgoogle.golang.org/genproto/googleapis/cloud/dialogflow/v2beta1;dialogflow\370\001\001\242\002\002DF\252\002\037Google.Cloud.Dialogflow.V2beta1'),
+  serialized_pb=_b('\n:google/cloud/dialogflow_v2beta1/proto/knowledge_base.proto\x12\x1fgoogle.cloud.dialogflow.v2beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x19google/api/resource.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto\"3\n\rKnowledgeBase\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x02 \x01(\t\"R\n\x19ListKnowledgeBasesRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t\"~\n\x1aListKnowledgeBasesResponse\x12G\n\x0fknowledge_bases\x18\x01 \x03(\x0b\x32..google.cloud.dialogflow.v2beta1.KnowledgeBase\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\"\'\n\x17GetKnowledgeBaseRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"t\n\x1a\x43reateKnowledgeBaseRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x46\n\x0eknowledge_base\x18\x02 \x01(\x0b\x32..google.cloud.dialogflow.v2beta1.KnowledgeBase\"9\n\x1a\x44\x65leteKnowledgeBaseRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\r\n\x05\x66orce\x18\x02 \x01(\x08\"\x95\x01\n\x1aUpdateKnowledgeBaseRequest\x12\x46\n\x0eknowledge_base\x18\x01 \x01(\x0b\x32..google.cloud.dialogflow.v2beta1.KnowledgeBase\x12/\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMask2\x8a\n\n\x0eKnowledgeBases\x12\xf7\x01\n\x12ListKnowledgeBases\x12:.google.cloud.dialogflow.v2beta1.ListKnowledgeBasesRequest\x1a;.google.cloud.dialogflow.v2beta1.ListKnowledgeBasesResponse\"h\x82\xd3\xe4\x93\x02\x62\x12+/v2beta1/{parent=projects/*}/knowledgeBasesZ3\x12\x31/v2beta1/{parent=projects/*/agent}/knowledgeBases\x12\xe6\x01\n\x10GetKnowledgeBase\x12\x38.google.cloud.dialogflow.v2beta1.GetKnowledgeBaseRequest\x1a..google.cloud.dialogflow.v2beta1.KnowledgeBase\"h\x82\xd3\xe4\x93\x02\x62\x12+/v2beta1/{name=projects/*/knowledgeBases/*}Z3\x12\x31/v2beta1/{name=projects/*/agent/knowledgeBases/*}\x12\x8e\x02\n\x13\x43reateKnowledgeBase\x12;.google.cloud.dialogflow.v2beta1.CreateKnowledgeBaseRequest\x1a..google.cloud.dialogflow.v2beta1.KnowledgeBase\"\x89\x01\x82\xd3\xe4\x93\x02\x82\x01\"+/v2beta1/{parent=projects/*}/knowledgeBases:\x0eknowledge_baseZC\"1/v2beta1/{parent=projects/*/agent}/knowledgeBases:\x0eknowledge_base\x12\xd4\x01\n\x13\x44\x65leteKnowledgeBase\x12;.google.cloud.dialogflow.v2beta1.DeleteKnowledgeBaseRequest\x1a\x16.google.protobuf.Empty\"h\x82\xd3\xe4\x93\x02\x62*+/v2beta1/{name=projects/*/knowledgeBases/*}Z3*1/v2beta1/{name=projects/*/agent/knowledgeBases/*}\x12\xac\x02\n\x13UpdateKnowledgeBase\x12;.google.cloud.dialogflow.v2beta1.UpdateKnowledgeBaseRequest\x1a..google.cloud.dialogflow.v2beta1.KnowledgeBase\"\xa7\x01\x82\xd3\xe4\x93\x02\xa0\x01\x32:/v2beta1/{knowledge_base.name=projects/*/knowledgeBases/*}:\x0eknowledge_baseZR2@/v2beta1/{knowledge_base.name=projects/*/agent/knowledgeBases/*}:\x0eknowledge_baseB\xb0\x01\n#com.google.cloud.dialogflow.v2beta1B\x12KnowledgeBaseProtoP\x01ZIgoogle.golang.org/genproto/googleapis/cloud/dialogflow/v2beta1;dialogflow\xf8\x01\x01\xa2\x02\x02\x44\x46\xaa\x02\x1fGoogle.Cloud.Dialogflow.V2beta1b\x06proto3')
   ,
-  dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR,google_dot_protobuf_dot_empty__pb2.DESCRIPTOR,google_dot_protobuf_dot_field__mask__pb2.DESCRIPTOR,])
+  dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR,google_dot_api_dot_resource__pb2.DESCRIPTOR,google_dot_protobuf_dot_empty__pb2.DESCRIPTOR,google_dot_protobuf_dot_field__mask__pb2.DESCRIPTOR,])
 
 
 
@@ -42,28 +43,28 @@ _KNOWLEDGEBASE = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='display_name', full_name='google.cloud.dialogflow.v2beta1.KnowledgeBase.display_name', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
   nested_types=[],
   enum_types=[
   ],
-  options=None,
+  serialized_options=None,
   is_extendable=False,
   syntax='proto3',
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=188,
-  serialized_end=239,
+  serialized_start=215,
+  serialized_end=266,
 )
 
 
@@ -80,35 +81,35 @@ _LISTKNOWLEDGEBASESREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='page_size', full_name='google.cloud.dialogflow.v2beta1.ListKnowledgeBasesRequest.page_size', index=1,
       number=2, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='page_token', full_name='google.cloud.dialogflow.v2beta1.ListKnowledgeBasesRequest.page_token', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
   nested_types=[],
   enum_types=[
   ],
-  options=None,
+  serialized_options=None,
   is_extendable=False,
   syntax='proto3',
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=241,
-  serialized_end=323,
+  serialized_start=268,
+  serialized_end=350,
 )
 
 
@@ -125,28 +126,28 @@ _LISTKNOWLEDGEBASESRESPONSE = _descriptor.Descriptor(
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='next_page_token', full_name='google.cloud.dialogflow.v2beta1.ListKnowledgeBasesResponse.next_page_token', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
   nested_types=[],
   enum_types=[
   ],
-  options=None,
+  serialized_options=None,
   is_extendable=False,
   syntax='proto3',
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=325,
-  serialized_end=451,
+  serialized_start=352,
+  serialized_end=478,
 )
 
 
@@ -163,21 +164,21 @@ _GETKNOWLEDGEBASEREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
   nested_types=[],
   enum_types=[
   ],
-  options=None,
+  serialized_options=None,
   is_extendable=False,
   syntax='proto3',
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=453,
-  serialized_end=492,
+  serialized_start=480,
+  serialized_end=519,
 )
 
 
@@ -194,28 +195,28 @@ _CREATEKNOWLEDGEBASEREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='knowledge_base', full_name='google.cloud.dialogflow.v2beta1.CreateKnowledgeBaseRequest.knowledge_base', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
   nested_types=[],
   enum_types=[
   ],
-  options=None,
+  serialized_options=None,
   is_extendable=False,
   syntax='proto3',
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=494,
-  serialized_end=610,
+  serialized_start=521,
+  serialized_end=637,
 )
 
 
@@ -232,38 +233,79 @@ _DELETEKNOWLEDGEBASEREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='force', full_name='google.cloud.dialogflow.v2beta1.DeleteKnowledgeBaseRequest.force', index=1,
       number=2, type=8, cpp_type=7, label=1,
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
   nested_types=[],
   enum_types=[
   ],
-  options=None,
+  serialized_options=None,
   is_extendable=False,
   syntax='proto3',
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=612,
-  serialized_end=669,
+  serialized_start=639,
+  serialized_end=696,
+)
+
+
+_UPDATEKNOWLEDGEBASEREQUEST = _descriptor.Descriptor(
+  name='UpdateKnowledgeBaseRequest',
+  full_name='google.cloud.dialogflow.v2beta1.UpdateKnowledgeBaseRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='knowledge_base', full_name='google.cloud.dialogflow.v2beta1.UpdateKnowledgeBaseRequest.knowledge_base', index=0,
+      number=1, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='update_mask', full_name='google.cloud.dialogflow.v2beta1.UpdateKnowledgeBaseRequest.update_mask', index=1,
+      number=2, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=699,
+  serialized_end=848,
 )
 
 _LISTKNOWLEDGEBASESRESPONSE.fields_by_name['knowledge_bases'].message_type = _KNOWLEDGEBASE
 _CREATEKNOWLEDGEBASEREQUEST.fields_by_name['knowledge_base'].message_type = _KNOWLEDGEBASE
+_UPDATEKNOWLEDGEBASEREQUEST.fields_by_name['knowledge_base'].message_type = _KNOWLEDGEBASE
+_UPDATEKNOWLEDGEBASEREQUEST.fields_by_name['update_mask'].message_type = google_dot_protobuf_dot_field__mask__pb2._FIELDMASK
 DESCRIPTOR.message_types_by_name['KnowledgeBase'] = _KNOWLEDGEBASE
 DESCRIPTOR.message_types_by_name['ListKnowledgeBasesRequest'] = _LISTKNOWLEDGEBASESREQUEST
 DESCRIPTOR.message_types_by_name['ListKnowledgeBasesResponse'] = _LISTKNOWLEDGEBASESRESPONSE
 DESCRIPTOR.message_types_by_name['GetKnowledgeBaseRequest'] = _GETKNOWLEDGEBASEREQUEST
 DESCRIPTOR.message_types_by_name['CreateKnowledgeBaseRequest'] = _CREATEKNOWLEDGEBASEREQUEST
 DESCRIPTOR.message_types_by_name['DeleteKnowledgeBaseRequest'] = _DELETEKNOWLEDGEBASEREQUEST
+DESCRIPTOR.message_types_by_name['UpdateKnowledgeBaseRequest'] = _UPDATEKNOWLEDGEBASEREQUEST
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 KnowledgeBase = _reflection.GeneratedProtocolMessageType('KnowledgeBase', (_message.Message,), dict(
@@ -271,6 +313,9 @@ KnowledgeBase = _reflection.GeneratedProtocolMessageType('KnowledgeBase', (_mess
   __module__ = 'google.cloud.dialogflow_v2beta1.proto.knowledge_base_pb2'
   ,
   __doc__ = """Represents knowledge base resource.
+  
+  Note: resource ``projects.agent.knowledgeBases`` is deprecated, please
+  use ``projects.knowledgeBases`` instead.
   
   
   Attributes:
@@ -297,8 +342,8 @@ ListKnowledgeBasesRequest = _reflection.GeneratedProtocolMessageType('ListKnowle
   
   Attributes:
       parent:
-          Required. The agent to list of knowledge bases for. Format:
-          ``projects/<Project ID>/agent``.
+          Required. The project to list of knowledge bases for. Format:
+          ``projects/<Project ID>``.
       page_size:
           Optional. The maximum number of items to return in a single
           page. By default 10 and at most 100.
@@ -355,8 +400,8 @@ CreateKnowledgeBaseRequest = _reflection.GeneratedProtocolMessageType('CreateKno
   
   Attributes:
       parent:
-          Required. The agent to create a knowledge base for. Format:
-          ``projects/<Project ID>/agent``.
+          Required. The project to create a knowledge base for. Format:
+          ``projects/<Project ID>``.
       knowledge_base:
           Required. The knowledge base to create.
   """,
@@ -384,18 +429,37 @@ DeleteKnowledgeBaseRequest = _reflection.GeneratedProtocolMessageType('DeleteKno
   ))
 _sym_db.RegisterMessage(DeleteKnowledgeBaseRequest)
 
+UpdateKnowledgeBaseRequest = _reflection.GeneratedProtocolMessageType('UpdateKnowledgeBaseRequest', (_message.Message,), dict(
+  DESCRIPTOR = _UPDATEKNOWLEDGEBASEREQUEST,
+  __module__ = 'google.cloud.dialogflow_v2beta1.proto.knowledge_base_pb2'
+  ,
+  __doc__ = """Request message for
+  [KnowledgeBases.UpdateKnowledgeBase][google.cloud.dialogflow.v2beta1.KnowledgeBases.UpdateKnowledgeBase].
+  
+  
+  Attributes:
+      knowledge_base:
+          Required. The knowledge base to update.
+      update_mask:
+          Optional. Not specified means ``update all``. Currently, only
+          ``display_name`` can be updated, an InvalidArgument will be
+          returned for attempting to update other fields.
+  """,
+  # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2beta1.UpdateKnowledgeBaseRequest)
+  ))
+_sym_db.RegisterMessage(UpdateKnowledgeBaseRequest)
 
-DESCRIPTOR.has_options = True
-DESCRIPTOR._options = _descriptor._ParseOptions(descriptor_pb2.FileOptions(), _b('\n#com.google.cloud.dialogflow.v2beta1B\022KnowledgeBaseProtoP\001ZIgoogle.golang.org/genproto/googleapis/cloud/dialogflow/v2beta1;dialogflow\370\001\001\242\002\002DF\252\002\037Google.Cloud.Dialogflow.V2beta1'))
+
+DESCRIPTOR._options = None
 
 _KNOWLEDGEBASES = _descriptor.ServiceDescriptor(
   name='KnowledgeBases',
   full_name='google.cloud.dialogflow.v2beta1.KnowledgeBases',
   file=DESCRIPTOR,
   index=0,
-  options=None,
-  serialized_start=672,
-  serialized_end=1659,
+  serialized_options=None,
+  serialized_start=851,
+  serialized_end=2141,
   methods=[
   _descriptor.MethodDescriptor(
     name='ListKnowledgeBases',
@@ -404,7 +468,7 @@ _KNOWLEDGEBASES = _descriptor.ServiceDescriptor(
     containing_service=None,
     input_type=_LISTKNOWLEDGEBASESREQUEST,
     output_type=_LISTKNOWLEDGEBASESRESPONSE,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002b\022+/v2beta1/{parent=projects/*}/knowledgeBasesZ3\0221/v2beta1/{parent=projects/*/agent}/knowledgeBases')),
+    serialized_options=_b('\202\323\344\223\002b\022+/v2beta1/{parent=projects/*}/knowledgeBasesZ3\0221/v2beta1/{parent=projects/*/agent}/knowledgeBases'),
   ),
   _descriptor.MethodDescriptor(
     name='GetKnowledgeBase',
@@ -413,7 +477,7 @@ _KNOWLEDGEBASES = _descriptor.ServiceDescriptor(
     containing_service=None,
     input_type=_GETKNOWLEDGEBASEREQUEST,
     output_type=_KNOWLEDGEBASE,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002b\022+/v2beta1/{name=projects/*/knowledgeBases/*}Z3\0221/v2beta1/{name=projects/*/agent/knowledgeBases/*}')),
+    serialized_options=_b('\202\323\344\223\002b\022+/v2beta1/{name=projects/*/knowledgeBases/*}Z3\0221/v2beta1/{name=projects/*/agent/knowledgeBases/*}'),
   ),
   _descriptor.MethodDescriptor(
     name='CreateKnowledgeBase',
@@ -422,7 +486,7 @@ _KNOWLEDGEBASES = _descriptor.ServiceDescriptor(
     containing_service=None,
     input_type=_CREATEKNOWLEDGEBASEREQUEST,
     output_type=_KNOWLEDGEBASE,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002\202\001\"+/v2beta1/{parent=projects/*}/knowledgeBases:\016knowledge_baseZC\"1/v2beta1/{parent=projects/*/agent}/knowledgeBases:\016knowledge_base')),
+    serialized_options=_b('\202\323\344\223\002\202\001\"+/v2beta1/{parent=projects/*}/knowledgeBases:\016knowledge_baseZC\"1/v2beta1/{parent=projects/*/agent}/knowledgeBases:\016knowledge_base'),
   ),
   _descriptor.MethodDescriptor(
     name='DeleteKnowledgeBase',
@@ -431,7 +495,16 @@ _KNOWLEDGEBASES = _descriptor.ServiceDescriptor(
     containing_service=None,
     input_type=_DELETEKNOWLEDGEBASEREQUEST,
     output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002b*+/v2beta1/{name=projects/*/knowledgeBases/*}Z3*1/v2beta1/{name=projects/*/agent/knowledgeBases/*}')),
+    serialized_options=_b('\202\323\344\223\002b*+/v2beta1/{name=projects/*/knowledgeBases/*}Z3*1/v2beta1/{name=projects/*/agent/knowledgeBases/*}'),
+  ),
+  _descriptor.MethodDescriptor(
+    name='UpdateKnowledgeBase',
+    full_name='google.cloud.dialogflow.v2beta1.KnowledgeBases.UpdateKnowledgeBase',
+    index=4,
+    containing_service=None,
+    input_type=_UPDATEKNOWLEDGEBASEREQUEST,
+    output_type=_KNOWLEDGEBASE,
+    serialized_options=_b('\202\323\344\223\002\240\0012:/v2beta1/{knowledge_base.name=projects/*/knowledgeBases/*}:\016knowledge_baseZR2@/v2beta1/{knowledge_base.name=projects/*/agent/knowledgeBases/*}:\016knowledge_base'),
   ),
 ])
 _sym_db.RegisterServiceDescriptor(_KNOWLEDGEBASES)

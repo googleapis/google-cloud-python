@@ -1,4 +1,6 @@
-# Copyright 2018 Google LLC
+# -*- coding: utf-8 -*-
+#
+# Copyright 2019 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,6 +15,7 @@
 # limitations under the License.
 """Unit tests."""
 
+import mock
 import pytest
 
 from google.rpc import status_pb2
@@ -77,7 +80,10 @@ class TestDocumentsClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = dialogflow_v2beta1.DocumentsClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dialogflow_v2beta1.DocumentsClient()
 
         # Setup Request
         parent = client.knowledge_base_path('[PROJECT]', '[KNOWLEDGE_BASE]')
@@ -95,7 +101,10 @@ class TestDocumentsClient(object):
 
     def test_list_documents_exception(self):
         channel = ChannelStub(responses=[CustomException()])
-        client = dialogflow_v2beta1.DocumentsClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dialogflow_v2beta1.DocumentsClient()
 
         # Setup request
         parent = client.knowledge_base_path('[PROJECT]', '[KNOWLEDGE_BASE]')
@@ -120,7 +129,10 @@ class TestDocumentsClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = dialogflow_v2beta1.DocumentsClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dialogflow_v2beta1.DocumentsClient()
 
         # Setup Request
         name = client.document_path('[PROJECT]', '[KNOWLEDGE_BASE]',
@@ -137,7 +149,10 @@ class TestDocumentsClient(object):
     def test_get_document_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = dialogflow_v2beta1.DocumentsClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dialogflow_v2beta1.DocumentsClient()
 
         # Setup request
         name = client.document_path('[PROJECT]', '[KNOWLEDGE_BASE]',
@@ -165,7 +180,10 @@ class TestDocumentsClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[operation])
-        client = dialogflow_v2beta1.DocumentsClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dialogflow_v2beta1.DocumentsClient()
 
         # Setup Request
         parent = client.knowledge_base_path('[PROJECT]', '[KNOWLEDGE_BASE]')
@@ -190,7 +208,10 @@ class TestDocumentsClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[operation])
-        client = dialogflow_v2beta1.DocumentsClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dialogflow_v2beta1.DocumentsClient()
 
         # Setup Request
         parent = client.knowledge_base_path('[PROJECT]', '[KNOWLEDGE_BASE]')
@@ -210,7 +231,10 @@ class TestDocumentsClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[operation])
-        client = dialogflow_v2beta1.DocumentsClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dialogflow_v2beta1.DocumentsClient()
 
         # Setup Request
         name = client.document_path('[PROJECT]', '[KNOWLEDGE_BASE]',
@@ -234,7 +258,10 @@ class TestDocumentsClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[operation])
-        client = dialogflow_v2beta1.DocumentsClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dialogflow_v2beta1.DocumentsClient()
 
         # Setup Request
         name = client.document_path('[PROJECT]', '[KNOWLEDGE_BASE]',
@@ -243,3 +270,69 @@ class TestDocumentsClient(object):
         response = client.delete_document(name)
         exception = response.exception()
         assert exception.errors[0] == error
+
+    def test_update_document(self):
+        # Setup Expected Response
+        name = 'name3373707'
+        done = True
+        expected_response = {'name': name, 'done': done}
+        expected_response = operations_pb2.Operation(**expected_response)
+
+        # Mock the API response
+        channel = ChannelStub(responses=[expected_response])
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dialogflow_v2beta1.DocumentsClient()
+
+        response = client.update_document()
+        assert expected_response == response
+
+        assert len(channel.requests) == 1
+        expected_request = document_pb2.UpdateDocumentRequest()
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_update_document_exception(self):
+        # Mock the API response
+        channel = ChannelStub(responses=[CustomException()])
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dialogflow_v2beta1.DocumentsClient()
+
+        with pytest.raises(CustomException):
+            client.update_document()
+
+    def test_reload_document(self):
+        # Setup Expected Response
+        name = 'name3373707'
+        done = True
+        expected_response = {'name': name, 'done': done}
+        expected_response = operations_pb2.Operation(**expected_response)
+
+        # Mock the API response
+        channel = ChannelStub(responses=[expected_response])
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dialogflow_v2beta1.DocumentsClient()
+
+        response = client.reload_document()
+        assert expected_response == response
+
+        assert len(channel.requests) == 1
+        expected_request = document_pb2.ReloadDocumentRequest()
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_reload_document_exception(self):
+        # Mock the API response
+        channel = ChannelStub(responses=[CustomException()])
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dialogflow_v2beta1.DocumentsClient()
+
+        with pytest.raises(CustomException):
+            client.reload_document()

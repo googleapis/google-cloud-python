@@ -1,4 +1,6 @@
-# Copyright 2018 Google LLC
+# -*- coding: utf-8 -*-
+#
+# Copyright 2019 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,6 +15,7 @@
 # limitations under the License.
 """Unit tests."""
 
+import mock
 import pytest
 
 from google.rpc import status_pb2
@@ -76,7 +79,10 @@ class TestIntentsClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = dialogflow_v2beta1.IntentsClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dialogflow_v2beta1.IntentsClient()
 
         # Setup Request
         parent = client.project_agent_path('[PROJECT]')
@@ -94,7 +100,10 @@ class TestIntentsClient(object):
 
     def test_list_intents_exception(self):
         channel = ChannelStub(responses=[CustomException()])
-        client = dialogflow_v2beta1.IntentsClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dialogflow_v2beta1.IntentsClient()
 
         # Setup request
         parent = client.project_agent_path('[PROJECT]')
@@ -133,7 +142,10 @@ class TestIntentsClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = dialogflow_v2beta1.IntentsClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dialogflow_v2beta1.IntentsClient()
 
         # Setup Request
         name = client.intent_path('[PROJECT]', '[INTENT]')
@@ -149,7 +161,10 @@ class TestIntentsClient(object):
     def test_get_intent_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = dialogflow_v2beta1.IntentsClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dialogflow_v2beta1.IntentsClient()
 
         # Setup request
         name = client.intent_path('[PROJECT]', '[INTENT]')
@@ -187,7 +202,10 @@ class TestIntentsClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = dialogflow_v2beta1.IntentsClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dialogflow_v2beta1.IntentsClient()
 
         # Setup Request
         parent = client.project_agent_path('[PROJECT]')
@@ -197,15 +215,18 @@ class TestIntentsClient(object):
         assert expected_response == response
 
         assert len(channel.requests) == 1
-        expected_request = intent_pb2.CreateIntentRequest(
-            parent=parent, intent=intent)
+        expected_request = intent_pb2.CreateIntentRequest(parent=parent,
+                                                          intent=intent)
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
     def test_create_intent_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = dialogflow_v2beta1.IntentsClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dialogflow_v2beta1.IntentsClient()
 
         # Setup request
         parent = client.project_agent_path('[PROJECT]')
@@ -244,7 +265,10 @@ class TestIntentsClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = dialogflow_v2beta1.IntentsClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dialogflow_v2beta1.IntentsClient()
 
         # Setup Request
         intent = {}
@@ -262,7 +286,10 @@ class TestIntentsClient(object):
     def test_update_intent_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = dialogflow_v2beta1.IntentsClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dialogflow_v2beta1.IntentsClient()
 
         # Setup request
         intent = {}
@@ -273,7 +300,10 @@ class TestIntentsClient(object):
 
     def test_delete_intent(self):
         channel = ChannelStub()
-        client = dialogflow_v2beta1.IntentsClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dialogflow_v2beta1.IntentsClient()
 
         # Setup Request
         name = client.intent_path('[PROJECT]', '[INTENT]')
@@ -288,7 +318,10 @@ class TestIntentsClient(object):
     def test_delete_intent_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = dialogflow_v2beta1.IntentsClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dialogflow_v2beta1.IntentsClient()
 
         # Setup request
         name = client.intent_path('[PROJECT]', '[INTENT]')
@@ -307,7 +340,10 @@ class TestIntentsClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[operation])
-        client = dialogflow_v2beta1.IntentsClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dialogflow_v2beta1.IntentsClient()
 
         # Setup Request
         parent = client.project_agent_path('[PROJECT]')
@@ -332,7 +368,10 @@ class TestIntentsClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[operation])
-        client = dialogflow_v2beta1.IntentsClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dialogflow_v2beta1.IntentsClient()
 
         # Setup Request
         parent = client.project_agent_path('[PROJECT]')
@@ -352,7 +391,10 @@ class TestIntentsClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[operation])
-        client = dialogflow_v2beta1.IntentsClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dialogflow_v2beta1.IntentsClient()
 
         # Setup Request
         parent = client.project_agent_path('[PROJECT]')
@@ -377,7 +419,10 @@ class TestIntentsClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[operation])
-        client = dialogflow_v2beta1.IntentsClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dialogflow_v2beta1.IntentsClient()
 
         # Setup Request
         parent = client.project_agent_path('[PROJECT]')

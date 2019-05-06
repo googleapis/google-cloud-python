@@ -18,11 +18,12 @@ class ContextsStub(object):
   [StreamingDetectIntent][google.cloud.dialogflow.v2beta1.Sessions.StreamingDetectIntent]) request,
   or as output contexts included in the returned intent.
   Contexts expire when an intent is matched, after the number of `DetectIntent`
-  requests specified by the `lifespan_count` parameter, or after 10 minutes
+  requests specified by the `lifespan_count` parameter, or after 20 minutes
   if no intents are matched for a `DetectIntent` request.
 
   For more information about contexts, see the
-  [Dialogflow documentation](https://dialogflow.com/docs/contexts).
+  [Dialogflow
+  documentation](https://cloud.google.com/dialogflow-enterprise/docs/contexts-overview).
   """
 
   def __init__(self, channel):
@@ -76,11 +77,12 @@ class ContextsServicer(object):
   [StreamingDetectIntent][google.cloud.dialogflow.v2beta1.Sessions.StreamingDetectIntent]) request,
   or as output contexts included in the returned intent.
   Contexts expire when an intent is matched, after the number of `DetectIntent`
-  requests specified by the `lifespan_count` parameter, or after 10 minutes
+  requests specified by the `lifespan_count` parameter, or after 20 minutes
   if no intents are matched for a `DetectIntent` request.
 
   For more information about contexts, see the
-  [Dialogflow documentation](https://dialogflow.com/docs/contexts).
+  [Dialogflow
+  documentation](https://cloud.google.com/dialogflow-enterprise/docs/contexts-overview).
   """
 
   def ListContexts(self, request, context):
@@ -99,6 +101,8 @@ class ContextsServicer(object):
 
   def CreateContext(self, request, context):
     """Creates a context.
+
+    If the specified context already exists, overrides the context.
     """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')

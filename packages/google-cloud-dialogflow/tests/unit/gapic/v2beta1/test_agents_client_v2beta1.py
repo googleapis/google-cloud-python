@@ -1,4 +1,6 @@
-# Copyright 2018 Google LLC
+# -*- coding: utf-8 -*-
+#
+# Copyright 2019 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,6 +15,7 @@
 # limitations under the License.
 """Unit tests."""
 
+import mock
 import pytest
 
 from google.rpc import status_pb2
@@ -87,7 +90,10 @@ class TestAgentsClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = dialogflow_v2beta1.AgentsClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dialogflow_v2beta1.AgentsClient()
 
         # Setup Request
         parent = client.project_path('[PROJECT]')
@@ -103,7 +109,10 @@ class TestAgentsClient(object):
     def test_get_agent_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = dialogflow_v2beta1.AgentsClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dialogflow_v2beta1.AgentsClient()
 
         # Setup request
         parent = client.project_path('[PROJECT]')
@@ -124,7 +133,10 @@ class TestAgentsClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = dialogflow_v2beta1.AgentsClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dialogflow_v2beta1.AgentsClient()
 
         # Setup Request
         parent = client.project_path('[PROJECT]')
@@ -142,7 +154,10 @@ class TestAgentsClient(object):
 
     def test_search_agents_exception(self):
         channel = ChannelStub(responses=[CustomException()])
-        client = dialogflow_v2beta1.AgentsClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dialogflow_v2beta1.AgentsClient()
 
         # Setup request
         parent = client.project_path('[PROJECT]')
@@ -161,7 +176,10 @@ class TestAgentsClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[operation])
-        client = dialogflow_v2beta1.AgentsClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dialogflow_v2beta1.AgentsClient()
 
         # Setup Request
         parent = client.project_path('[PROJECT]')
@@ -184,7 +202,10 @@ class TestAgentsClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[operation])
-        client = dialogflow_v2beta1.AgentsClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dialogflow_v2beta1.AgentsClient()
 
         # Setup Request
         parent = client.project_path('[PROJECT]')
@@ -204,7 +225,10 @@ class TestAgentsClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[operation])
-        client = dialogflow_v2beta1.AgentsClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dialogflow_v2beta1.AgentsClient()
 
         # Setup Request
         parent = client.project_path('[PROJECT]')
@@ -227,7 +251,10 @@ class TestAgentsClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[operation])
-        client = dialogflow_v2beta1.AgentsClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dialogflow_v2beta1.AgentsClient()
 
         # Setup Request
         parent = client.project_path('[PROJECT]')
@@ -246,7 +273,10 @@ class TestAgentsClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[operation])
-        client = dialogflow_v2beta1.AgentsClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dialogflow_v2beta1.AgentsClient()
 
         # Setup Request
         parent = client.project_path('[PROJECT]')
@@ -269,7 +299,10 @@ class TestAgentsClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[operation])
-        client = dialogflow_v2beta1.AgentsClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dialogflow_v2beta1.AgentsClient()
 
         # Setup Request
         parent = client.project_path('[PROJECT]')
@@ -288,7 +321,10 @@ class TestAgentsClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[operation])
-        client = dialogflow_v2beta1.AgentsClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dialogflow_v2beta1.AgentsClient()
 
         # Setup Request
         parent = client.project_path('[PROJECT]')
@@ -311,7 +347,10 @@ class TestAgentsClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[operation])
-        client = dialogflow_v2beta1.AgentsClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dialogflow_v2beta1.AgentsClient()
 
         # Setup Request
         parent = client.project_path('[PROJECT]')

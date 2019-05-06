@@ -1,4 +1,6 @@
-# Copyright 2018 Google LLC
+# -*- coding: utf-8 -*-
+#
+# Copyright 2019 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,6 +15,7 @@
 # limitations under the License.
 """Unit tests."""
 
+import mock
 import pytest
 
 import dialogflow_v2
@@ -74,7 +77,10 @@ class TestContextsClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = dialogflow_v2.ContextsClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dialogflow_v2.ContextsClient()
 
         # Setup Request
         parent = client.session_path('[PROJECT]', '[SESSION]')
@@ -92,7 +98,10 @@ class TestContextsClient(object):
 
     def test_list_contexts_exception(self):
         channel = ChannelStub(responses=[CustomException()])
-        client = dialogflow_v2.ContextsClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dialogflow_v2.ContextsClient()
 
         # Setup request
         parent = client.session_path('[PROJECT]', '[SESSION]')
@@ -110,7 +119,10 @@ class TestContextsClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = dialogflow_v2.ContextsClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dialogflow_v2.ContextsClient()
 
         # Setup Request
         name = client.context_path('[PROJECT]', '[SESSION]', '[CONTEXT]')
@@ -126,7 +138,10 @@ class TestContextsClient(object):
     def test_get_context_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = dialogflow_v2.ContextsClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dialogflow_v2.ContextsClient()
 
         # Setup request
         name = client.context_path('[PROJECT]', '[SESSION]', '[CONTEXT]')
@@ -143,7 +158,10 @@ class TestContextsClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = dialogflow_v2.ContextsClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dialogflow_v2.ContextsClient()
 
         # Setup Request
         parent = client.session_path('[PROJECT]', '[SESSION]')
@@ -153,15 +171,18 @@ class TestContextsClient(object):
         assert expected_response == response
 
         assert len(channel.requests) == 1
-        expected_request = context_pb2.CreateContextRequest(
-            parent=parent, context=context)
+        expected_request = context_pb2.CreateContextRequest(parent=parent,
+                                                            context=context)
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
     def test_create_context_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = dialogflow_v2.ContextsClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dialogflow_v2.ContextsClient()
 
         # Setup request
         parent = client.session_path('[PROJECT]', '[SESSION]')
@@ -179,7 +200,10 @@ class TestContextsClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = dialogflow_v2.ContextsClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dialogflow_v2.ContextsClient()
 
         # Setup Request
         context = {}
@@ -195,7 +219,10 @@ class TestContextsClient(object):
     def test_update_context_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = dialogflow_v2.ContextsClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dialogflow_v2.ContextsClient()
 
         # Setup request
         context = {}
@@ -205,7 +232,10 @@ class TestContextsClient(object):
 
     def test_delete_context(self):
         channel = ChannelStub()
-        client = dialogflow_v2.ContextsClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dialogflow_v2.ContextsClient()
 
         # Setup Request
         name = client.context_path('[PROJECT]', '[SESSION]', '[CONTEXT]')
@@ -220,7 +250,10 @@ class TestContextsClient(object):
     def test_delete_context_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = dialogflow_v2.ContextsClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dialogflow_v2.ContextsClient()
 
         # Setup request
         name = client.context_path('[PROJECT]', '[SESSION]', '[CONTEXT]')
@@ -230,7 +263,10 @@ class TestContextsClient(object):
 
     def test_delete_all_contexts(self):
         channel = ChannelStub()
-        client = dialogflow_v2.ContextsClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dialogflow_v2.ContextsClient()
 
         # Setup Request
         parent = client.session_path('[PROJECT]', '[SESSION]')
@@ -245,7 +281,10 @@ class TestContextsClient(object):
     def test_delete_all_contexts_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = dialogflow_v2.ContextsClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dialogflow_v2.ContextsClient()
 
         # Setup request
         parent = client.session_path('[PROJECT]', '[SESSION]')

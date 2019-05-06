@@ -1,4 +1,6 @@
-# Copyright 2018 Google LLC
+# -*- coding: utf-8 -*-
+#
+# Copyright 2019 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,6 +15,7 @@
 # limitations under the License.
 """Unit tests."""
 
+import mock
 import pytest
 
 import dialogflow_v2beta1
@@ -78,7 +81,10 @@ class TestSessionsClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = dialogflow_v2beta1.SessionsClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dialogflow_v2beta1.SessionsClient()
 
         # Setup Request
         session = client.session_path('[PROJECT]', '[SESSION]')
@@ -96,7 +102,10 @@ class TestSessionsClient(object):
     def test_detect_intent_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = dialogflow_v2beta1.SessionsClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dialogflow_v2beta1.SessionsClient()
 
         # Setup request
         session = client.session_path('[PROJECT]', '[SESSION]')
@@ -118,7 +127,10 @@ class TestSessionsClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[iter([expected_response])])
-        client = dialogflow_v2beta1.SessionsClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dialogflow_v2beta1.SessionsClient()
 
         # Setup Request
         session = 'session1984987798'
@@ -141,7 +153,10 @@ class TestSessionsClient(object):
     def test_streaming_detect_intent_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = dialogflow_v2beta1.SessionsClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dialogflow_v2beta1.SessionsClient()
 
         # Setup request
         session = 'session1984987798'

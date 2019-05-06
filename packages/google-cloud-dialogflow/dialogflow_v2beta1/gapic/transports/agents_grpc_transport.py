@@ -1,4 +1,6 @@
-# Copyright 2018 Google LLC
+# -*- coding: utf-8 -*-
+#
+# Copyright 2019 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -28,7 +30,10 @@ class AgentsGrpcTransport(object):
     """
     # The scopes needed to make gRPC calls to all of the methods defined
     # in this service.
-    _OAUTH_SCOPES = ('https://www.googleapis.com/auth/cloud-platform', )
+    _OAUTH_SCOPES = (
+        'https://www.googleapis.com/auth/cloud-platform',
+        'https://www.googleapis.com/auth/dialogflow',
+    )
 
     def __init__(self,
                  channel=None,
@@ -60,6 +65,8 @@ class AgentsGrpcTransport(object):
                 address=address,
                 credentials=credentials,
             )
+
+        self._channel = channel
 
         # gRPC uses objects called "stubs" that are bound to the
         # channel and provide a basic method for each RPC.
@@ -97,8 +104,17 @@ class AgentsGrpcTransport(object):
         )
 
     @property
+    def channel(self):
+        """The gRPC channel used by the transport.
+
+        Returns:
+            grpc.Channel: A gRPC channel object.
+        """
+        return self._channel
+
+    @property
     def get_agent(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`AgentsClient.get_agent`.
 
         Retrieves the specified agent.
 
@@ -111,15 +127,15 @@ class AgentsGrpcTransport(object):
 
     @property
     def search_agents(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`AgentsClient.search_agents`.
 
         Returns the list of agents.
 
-        Since there is at most one conversational agent per project, this method is
-        useful primarily for listing all agents across projects the caller has
-        access to. One can achieve that with a wildcard project collection id \"-\".
-        Refer to [List
-        Sub-Collections](https://cloud.google.com/apis/design/design_patterns#list_sub-collections).
+        Since there is at most one conversational agent per project, this method
+        is useful primarily for listing all agents across projects the caller
+        has access to. One can achieve that with a wildcard project collection
+        id "-". Refer to `List
+        Sub-Collections <https://cloud.google.com/apis/design/design_patterns#list_sub-collections>`__.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -130,13 +146,11 @@ class AgentsGrpcTransport(object):
 
     @property
     def train_agent(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`AgentsClient.train_agent`.
 
         Trains the specified agent.
 
-
-        Operation <response: ``google.protobuf.Empty``,
-        metadata: [google.protobuf.Struct][google.protobuf.Struct]>
+        Operation <response: ``google.protobuf.Empty``>
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -147,13 +161,11 @@ class AgentsGrpcTransport(object):
 
     @property
     def export_agent(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`AgentsClient.export_agent`.
 
         Exports the specified agent to a ZIP file.
 
-
-        Operation <response: ``ExportAgentResponse``,
-        metadata: [google.protobuf.Struct][google.protobuf.Struct]>
+        Operation <response: ``ExportAgentResponse``>
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -164,7 +176,7 @@ class AgentsGrpcTransport(object):
 
     @property
     def import_agent(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`AgentsClient.import_agent`.
 
         Imports the specified agent from a ZIP file.
 
@@ -172,9 +184,7 @@ class AgentsGrpcTransport(object):
         Intents and entity types with the same name are replaced with the new
         versions from ImportAgentRequest.
 
-
-        Operation <response: ``google.protobuf.Empty``,
-        metadata: [google.protobuf.Struct][google.protobuf.Struct]>
+        Operation <response: ``google.protobuf.Empty``>
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -185,16 +195,14 @@ class AgentsGrpcTransport(object):
 
     @property
     def restore_agent(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`AgentsClient.restore_agent`.
 
         Restores the specified agent from a ZIP file.
 
         Replaces the current agent version with a new one. All the intents and
         entity types in the older version are deleted.
 
-
-        Operation <response: ``google.protobuf.Empty``,
-        metadata: [google.protobuf.Struct][google.protobuf.Struct]>
+        Operation <response: ``google.protobuf.Empty``>
 
         Returns:
             Callable: A callable which accepts the appropriate

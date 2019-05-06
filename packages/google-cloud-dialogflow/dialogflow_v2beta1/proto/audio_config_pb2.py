@@ -8,7 +8,6 @@ from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
-from google.protobuf import descriptor_pb2
 # @@protoc_insertion_point(imports)
 
 _sym_db = _symbol_database.Default()
@@ -21,10 +20,58 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='google/cloud/dialogflow_v2beta1/proto/audio_config.proto',
   package='google.cloud.dialogflow.v2beta1',
   syntax='proto3',
-  serialized_pb=_b('\n8google/cloud/dialogflow_v2beta1/proto/audio_config.proto\x12\x1fgoogle.cloud.dialogflow.v2beta1\x1a\x1cgoogle/api/annotations.proto\"k\n\x14VoiceSelectionParams\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x45\n\x0bssml_gender\x18\x02 \x01(\x0e\x32\x30.google.cloud.dialogflow.v2beta1.SsmlVoiceGender\"\xb8\x01\n\x16SynthesizeSpeechConfig\x12\x15\n\rspeaking_rate\x18\x01 \x01(\x01\x12\r\n\x05pitch\x18\x02 \x01(\x01\x12\x16\n\x0evolume_gain_db\x18\x03 \x01(\x01\x12\x1a\n\x12\x65\x66\x66\x65\x63ts_profile_id\x18\x05 \x03(\t\x12\x44\n\x05voice\x18\x04 \x01(\x0b\x32\x35.google.cloud.dialogflow.v2beta1.VoiceSelectionParams\"\xd7\x01\n\x11OutputAudioConfig\x12L\n\x0e\x61udio_encoding\x18\x01 \x01(\x0e\x32\x34.google.cloud.dialogflow.v2beta1.OutputAudioEncoding\x12\x19\n\x11sample_rate_hertz\x18\x02 \x01(\x05\x12Y\n\x18synthesize_speech_config\x18\x03 \x01(\x0b\x32\x37.google.cloud.dialogflow.v2beta1.SynthesizeSpeechConfig*\x8d\x01\n\x0fSsmlVoiceGender\x12!\n\x1dSSML_VOICE_GENDER_UNSPECIFIED\x10\x00\x12\x1a\n\x16SSML_VOICE_GENDER_MALE\x10\x01\x12\x1c\n\x18SSML_VOICE_GENDER_FEMALE\x10\x02\x12\x1d\n\x19SSML_VOICE_GENDER_NEUTRAL\x10\x03*\xa4\x01\n\x13OutputAudioEncoding\x12%\n!OUTPUT_AUDIO_ENCODING_UNSPECIFIED\x10\x00\x12#\n\x1fOUTPUT_AUDIO_ENCODING_LINEAR_16\x10\x01\x12\x1d\n\x19OUTPUT_AUDIO_ENCODING_MP3\x10\x02\x12\"\n\x1eOUTPUT_AUDIO_ENCODING_OGG_OPUS\x10\x03\x42\xae\x01\n#com.google.cloud.dialogflow.v2beta1B\x10\x41udioConfigProtoP\x01ZIgoogle.golang.org/genproto/googleapis/cloud/dialogflow/v2beta1;dialogflow\xf8\x01\x01\xa2\x02\x02\x44\x46\xaa\x02\x1fGoogle.Cloud.Dialogflow.V2beta1b\x06proto3')
+  serialized_options=_b('\n#com.google.cloud.dialogflow.v2beta1B\020AudioConfigProtoP\001ZIgoogle.golang.org/genproto/googleapis/cloud/dialogflow/v2beta1;dialogflow\370\001\001\242\002\002DF\252\002\037Google.Cloud.Dialogflow.V2beta1'),
+  serialized_pb=_b('\n8google/cloud/dialogflow_v2beta1/proto/audio_config.proto\x12\x1fgoogle.cloud.dialogflow.v2beta1\x1a\x1cgoogle/api/annotations.proto\"\xb1\x01\n\x10InputAudioConfig\x12\x46\n\x0e\x61udio_encoding\x18\x01 \x01(\x0e\x32..google.cloud.dialogflow.v2beta1.AudioEncoding\x12\x19\n\x11sample_rate_hertz\x18\x02 \x01(\x05\x12\x15\n\rlanguage_code\x18\x03 \x01(\t\x12\x14\n\x0cphrase_hints\x18\x04 \x03(\t\x12\r\n\x05model\x18\x07 \x01(\t\"k\n\x14VoiceSelectionParams\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x45\n\x0bssml_gender\x18\x02 \x01(\x0e\x32\x30.google.cloud.dialogflow.v2beta1.SsmlVoiceGender\"\xb8\x01\n\x16SynthesizeSpeechConfig\x12\x15\n\rspeaking_rate\x18\x01 \x01(\x01\x12\r\n\x05pitch\x18\x02 \x01(\x01\x12\x16\n\x0evolume_gain_db\x18\x03 \x01(\x01\x12\x1a\n\x12\x65\x66\x66\x65\x63ts_profile_id\x18\x05 \x03(\t\x12\x44\n\x05voice\x18\x04 \x01(\x0b\x32\x35.google.cloud.dialogflow.v2beta1.VoiceSelectionParams\"\xd7\x01\n\x11OutputAudioConfig\x12L\n\x0e\x61udio_encoding\x18\x01 \x01(\x0e\x32\x34.google.cloud.dialogflow.v2beta1.OutputAudioEncoding\x12\x19\n\x11sample_rate_hertz\x18\x02 \x01(\x05\x12Y\n\x18synthesize_speech_config\x18\x03 \x01(\x0b\x32\x37.google.cloud.dialogflow.v2beta1.SynthesizeSpeechConfig*\xfb\x01\n\rAudioEncoding\x12\x1e\n\x1a\x41UDIO_ENCODING_UNSPECIFIED\x10\x00\x12\x1c\n\x18\x41UDIO_ENCODING_LINEAR_16\x10\x01\x12\x17\n\x13\x41UDIO_ENCODING_FLAC\x10\x02\x12\x18\n\x14\x41UDIO_ENCODING_MULAW\x10\x03\x12\x16\n\x12\x41UDIO_ENCODING_AMR\x10\x04\x12\x19\n\x15\x41UDIO_ENCODING_AMR_WB\x10\x05\x12\x1b\n\x17\x41UDIO_ENCODING_OGG_OPUS\x10\x06\x12)\n%AUDIO_ENCODING_SPEEX_WITH_HEADER_BYTE\x10\x07*\x8d\x01\n\x0fSsmlVoiceGender\x12!\n\x1dSSML_VOICE_GENDER_UNSPECIFIED\x10\x00\x12\x1a\n\x16SSML_VOICE_GENDER_MALE\x10\x01\x12\x1c\n\x18SSML_VOICE_GENDER_FEMALE\x10\x02\x12\x1d\n\x19SSML_VOICE_GENDER_NEUTRAL\x10\x03*\xa4\x01\n\x13OutputAudioEncoding\x12%\n!OUTPUT_AUDIO_ENCODING_UNSPECIFIED\x10\x00\x12#\n\x1fOUTPUT_AUDIO_ENCODING_LINEAR_16\x10\x01\x12\x1d\n\x19OUTPUT_AUDIO_ENCODING_MP3\x10\x02\x12\"\n\x1eOUTPUT_AUDIO_ENCODING_OGG_OPUS\x10\x03\x42\xae\x01\n#com.google.cloud.dialogflow.v2beta1B\x10\x41udioConfigProtoP\x01ZIgoogle.golang.org/genproto/googleapis/cloud/dialogflow/v2beta1;dialogflow\xf8\x01\x01\xa2\x02\x02\x44\x46\xaa\x02\x1fGoogle.Cloud.Dialogflow.V2beta1b\x06proto3')
   ,
   dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR,])
 
+_AUDIOENCODING = _descriptor.EnumDescriptor(
+  name='AudioEncoding',
+  full_name='google.cloud.dialogflow.v2beta1.AudioEncoding',
+  filename=None,
+  file=DESCRIPTOR,
+  values=[
+    _descriptor.EnumValueDescriptor(
+      name='AUDIO_ENCODING_UNSPECIFIED', index=0, number=0,
+      serialized_options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='AUDIO_ENCODING_LINEAR_16', index=1, number=1,
+      serialized_options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='AUDIO_ENCODING_FLAC', index=2, number=2,
+      serialized_options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='AUDIO_ENCODING_MULAW', index=3, number=3,
+      serialized_options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='AUDIO_ENCODING_AMR', index=4, number=4,
+      serialized_options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='AUDIO_ENCODING_AMR_WB', index=5, number=5,
+      serialized_options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='AUDIO_ENCODING_OGG_OPUS', index=6, number=6,
+      serialized_options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='AUDIO_ENCODING_SPEEX_WITH_HEADER_BYTE', index=7, number=7,
+      serialized_options=None,
+      type=None),
+  ],
+  containing_type=None,
+  serialized_options=None,
+  serialized_start=818,
+  serialized_end=1069,
+)
+_sym_db.RegisterEnumDescriptor(_AUDIOENCODING)
+
+AudioEncoding = enum_type_wrapper.EnumTypeWrapper(_AUDIOENCODING)
 _SSMLVOICEGENDER = _descriptor.EnumDescriptor(
   name='SsmlVoiceGender',
   full_name='google.cloud.dialogflow.v2beta1.SsmlVoiceGender',
@@ -33,25 +80,25 @@ _SSMLVOICEGENDER = _descriptor.EnumDescriptor(
   values=[
     _descriptor.EnumValueDescriptor(
       name='SSML_VOICE_GENDER_UNSPECIFIED', index=0, number=0,
-      options=None,
+      serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
       name='SSML_VOICE_GENDER_MALE', index=1, number=1,
-      options=None,
+      serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
       name='SSML_VOICE_GENDER_FEMALE', index=2, number=2,
-      options=None,
+      serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
       name='SSML_VOICE_GENDER_NEUTRAL', index=3, number=3,
-      options=None,
+      serialized_options=None,
       type=None),
   ],
   containing_type=None,
-  options=None,
-  serialized_start=638,
-  serialized_end=779,
+  serialized_options=None,
+  serialized_start=1072,
+  serialized_end=1213,
 )
 _sym_db.RegisterEnumDescriptor(_SSMLVOICEGENDER)
 
@@ -64,29 +111,37 @@ _OUTPUTAUDIOENCODING = _descriptor.EnumDescriptor(
   values=[
     _descriptor.EnumValueDescriptor(
       name='OUTPUT_AUDIO_ENCODING_UNSPECIFIED', index=0, number=0,
-      options=None,
+      serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
       name='OUTPUT_AUDIO_ENCODING_LINEAR_16', index=1, number=1,
-      options=None,
+      serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
       name='OUTPUT_AUDIO_ENCODING_MP3', index=2, number=2,
-      options=None,
+      serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
       name='OUTPUT_AUDIO_ENCODING_OGG_OPUS', index=3, number=3,
-      options=None,
+      serialized_options=None,
       type=None),
   ],
   containing_type=None,
-  options=None,
-  serialized_start=782,
-  serialized_end=946,
+  serialized_options=None,
+  serialized_start=1216,
+  serialized_end=1380,
 )
 _sym_db.RegisterEnumDescriptor(_OUTPUTAUDIOENCODING)
 
 OutputAudioEncoding = enum_type_wrapper.EnumTypeWrapper(_OUTPUTAUDIOENCODING)
+AUDIO_ENCODING_UNSPECIFIED = 0
+AUDIO_ENCODING_LINEAR_16 = 1
+AUDIO_ENCODING_FLAC = 2
+AUDIO_ENCODING_MULAW = 3
+AUDIO_ENCODING_AMR = 4
+AUDIO_ENCODING_AMR_WB = 5
+AUDIO_ENCODING_OGG_OPUS = 6
+AUDIO_ENCODING_SPEEX_WITH_HEADER_BYTE = 7
 SSML_VOICE_GENDER_UNSPECIFIED = 0
 SSML_VOICE_GENDER_MALE = 1
 SSML_VOICE_GENDER_FEMALE = 2
@@ -96,6 +151,65 @@ OUTPUT_AUDIO_ENCODING_LINEAR_16 = 1
 OUTPUT_AUDIO_ENCODING_MP3 = 2
 OUTPUT_AUDIO_ENCODING_OGG_OPUS = 3
 
+
+
+_INPUTAUDIOCONFIG = _descriptor.Descriptor(
+  name='InputAudioConfig',
+  full_name='google.cloud.dialogflow.v2beta1.InputAudioConfig',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='audio_encoding', full_name='google.cloud.dialogflow.v2beta1.InputAudioConfig.audio_encoding', index=0,
+      number=1, type=14, cpp_type=8, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='sample_rate_hertz', full_name='google.cloud.dialogflow.v2beta1.InputAudioConfig.sample_rate_hertz', index=1,
+      number=2, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='language_code', full_name='google.cloud.dialogflow.v2beta1.InputAudioConfig.language_code', index=2,
+      number=3, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='phrase_hints', full_name='google.cloud.dialogflow.v2beta1.InputAudioConfig.phrase_hints', index=3,
+      number=4, type=9, cpp_type=9, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='model', full_name='google.cloud.dialogflow.v2beta1.InputAudioConfig.model', index=4,
+      number=7, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=124,
+  serialized_end=301,
+)
 
 
 _VOICESELECTIONPARAMS = _descriptor.Descriptor(
@@ -111,28 +225,28 @@ _VOICESELECTIONPARAMS = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='ssml_gender', full_name='google.cloud.dialogflow.v2beta1.VoiceSelectionParams.ssml_gender', index=1,
       number=2, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
   nested_types=[],
   enum_types=[
   ],
-  options=None,
+  serialized_options=None,
   is_extendable=False,
   syntax='proto3',
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=123,
-  serialized_end=230,
+  serialized_start=303,
+  serialized_end=410,
 )
 
 
@@ -149,49 +263,49 @@ _SYNTHESIZESPEECHCONFIG = _descriptor.Descriptor(
       has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='pitch', full_name='google.cloud.dialogflow.v2beta1.SynthesizeSpeechConfig.pitch', index=1,
       number=2, type=1, cpp_type=5, label=1,
       has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='volume_gain_db', full_name='google.cloud.dialogflow.v2beta1.SynthesizeSpeechConfig.volume_gain_db', index=2,
       number=3, type=1, cpp_type=5, label=1,
       has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='effects_profile_id', full_name='google.cloud.dialogflow.v2beta1.SynthesizeSpeechConfig.effects_profile_id', index=3,
       number=5, type=9, cpp_type=9, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='voice', full_name='google.cloud.dialogflow.v2beta1.SynthesizeSpeechConfig.voice', index=4,
       number=4, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
   nested_types=[],
   enum_types=[
   ],
-  options=None,
+  serialized_options=None,
   is_extendable=False,
   syntax='proto3',
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=233,
-  serialized_end=417,
+  serialized_start=413,
+  serialized_end=597,
 )
 
 
@@ -208,47 +322,94 @@ _OUTPUTAUDIOCONFIG = _descriptor.Descriptor(
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='sample_rate_hertz', full_name='google.cloud.dialogflow.v2beta1.OutputAudioConfig.sample_rate_hertz', index=1,
       number=2, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='synthesize_speech_config', full_name='google.cloud.dialogflow.v2beta1.OutputAudioConfig.synthesize_speech_config', index=2,
       number=3, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
   nested_types=[],
   enum_types=[
   ],
-  options=None,
+  serialized_options=None,
   is_extendable=False,
   syntax='proto3',
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=420,
-  serialized_end=635,
+  serialized_start=600,
+  serialized_end=815,
 )
 
+_INPUTAUDIOCONFIG.fields_by_name['audio_encoding'].enum_type = _AUDIOENCODING
 _VOICESELECTIONPARAMS.fields_by_name['ssml_gender'].enum_type = _SSMLVOICEGENDER
 _SYNTHESIZESPEECHCONFIG.fields_by_name['voice'].message_type = _VOICESELECTIONPARAMS
 _OUTPUTAUDIOCONFIG.fields_by_name['audio_encoding'].enum_type = _OUTPUTAUDIOENCODING
 _OUTPUTAUDIOCONFIG.fields_by_name['synthesize_speech_config'].message_type = _SYNTHESIZESPEECHCONFIG
+DESCRIPTOR.message_types_by_name['InputAudioConfig'] = _INPUTAUDIOCONFIG
 DESCRIPTOR.message_types_by_name['VoiceSelectionParams'] = _VOICESELECTIONPARAMS
 DESCRIPTOR.message_types_by_name['SynthesizeSpeechConfig'] = _SYNTHESIZESPEECHCONFIG
 DESCRIPTOR.message_types_by_name['OutputAudioConfig'] = _OUTPUTAUDIOCONFIG
+DESCRIPTOR.enum_types_by_name['AudioEncoding'] = _AUDIOENCODING
 DESCRIPTOR.enum_types_by_name['SsmlVoiceGender'] = _SSMLVOICEGENDER
 DESCRIPTOR.enum_types_by_name['OutputAudioEncoding'] = _OUTPUTAUDIOENCODING
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
+
+InputAudioConfig = _reflection.GeneratedProtocolMessageType('InputAudioConfig', (_message.Message,), dict(
+  DESCRIPTOR = _INPUTAUDIOCONFIG,
+  __module__ = 'google.cloud.dialogflow_v2beta1.proto.audio_config_pb2'
+  ,
+  __doc__ = """Instructs the speech recognizer how to process the audio content.
+  
+  
+  Attributes:
+      audio_encoding:
+          Required. Audio encoding of the audio content to process.
+      sample_rate_hertz:
+          Required. Sample rate (in Hertz) of the audio content sent in
+          the query. Refer to `Cloud Speech API documentation
+          <https://cloud.google.com/speech-to-text/docs/basics>`__ for
+          more details.
+      language_code:
+          Required. The language of the supplied audio. Dialogflow does
+          not do translations. See `Language Support
+          <https://cloud.google.com/dialogflow-
+          enterprise/docs/reference/language>`__ for a list of the
+          currently supported language codes. Note that queries in the
+          same session do not necessarily need to specify the same
+          language.
+      phrase_hints:
+          Optional. The collection of phrase hints which are used to
+          boost accuracy of speech recognition. Refer to `Cloud Speech
+          API documentation <https://cloud.google.com/speech-to-
+          text/docs/basics#phrase-hints>`__ for more details.
+      model:
+          Optional. Which Speech model to select for the given request.
+          Select the model best suited to your domain to get best
+          results. If a model is not explicitly specified, then we auto-
+          select a model based on the parameters in the
+          InputAudioConfig. If enhanced speech model is enabled for the
+          agent and an enhanced version of the specified model for the
+          language does not exist, then the speech is recognized using
+          the standard version of the specified model. Refer to `Cloud
+          Speech API documentation <https://cloud.google.com/speech-to-
+          text/docs/basics#select-model>`__ for more details.
+  """,
+  # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2beta1.InputAudioConfig)
+  ))
+_sym_db.RegisterMessage(InputAudioConfig)
 
 VoiceSelectionParams = _reflection.GeneratedProtocolMessageType('VoiceSelectionParams', (_message.Message,), dict(
   DESCRIPTOR = _VOICESELECTIONPARAMS,
@@ -340,6 +501,5 @@ OutputAudioConfig = _reflection.GeneratedProtocolMessageType('OutputAudioConfig'
 _sym_db.RegisterMessage(OutputAudioConfig)
 
 
-DESCRIPTOR.has_options = True
-DESCRIPTOR._options = _descriptor._ParseOptions(descriptor_pb2.FileOptions(), _b('\n#com.google.cloud.dialogflow.v2beta1B\020AudioConfigProtoP\001ZIgoogle.golang.org/genproto/googleapis/cloud/dialogflow/v2beta1;dialogflow\370\001\001\242\002\002DF\252\002\037Google.Cloud.Dialogflow.V2beta1'))
+DESCRIPTOR._options = None
 # @@protoc_insertion_point(module_scope)

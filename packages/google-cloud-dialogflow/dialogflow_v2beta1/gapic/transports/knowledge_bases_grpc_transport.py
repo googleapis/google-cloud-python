@@ -1,4 +1,6 @@
-# Copyright 2018 Google LLC
+# -*- coding: utf-8 -*-
+#
+# Copyright 2019 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -27,7 +29,10 @@ class KnowledgeBasesGrpcTransport(object):
     """
     # The scopes needed to make gRPC calls to all of the methods defined
     # in this service.
-    _OAUTH_SCOPES = ('https://www.googleapis.com/auth/cloud-platform', )
+    _OAUTH_SCOPES = (
+        'https://www.googleapis.com/auth/cloud-platform',
+        'https://www.googleapis.com/auth/dialogflow',
+    )
 
     def __init__(self,
                  channel=None,
@@ -60,6 +65,8 @@ class KnowledgeBasesGrpcTransport(object):
                 credentials=credentials,
             )
 
+        self._channel = channel
+
         # gRPC uses objects called "stubs" that are bound to the
         # channel and provide a basic method for each RPC.
         self._stubs = {
@@ -91,8 +98,17 @@ class KnowledgeBasesGrpcTransport(object):
         )
 
     @property
+    def channel(self):
+        """The gRPC channel used by the transport.
+
+        Returns:
+            grpc.Channel: A gRPC channel object.
+        """
+        return self._channel
+
+    @property
     def list_knowledge_bases(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`KnowledgeBasesClient.list_knowledge_bases`.
 
         Returns the list of all knowledge bases of the specified agent.
 
@@ -105,7 +121,7 @@ class KnowledgeBasesGrpcTransport(object):
 
     @property
     def get_knowledge_base(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`KnowledgeBasesClient.get_knowledge_base`.
 
         Retrieves the specified knowledge base.
 
@@ -118,7 +134,7 @@ class KnowledgeBasesGrpcTransport(object):
 
     @property
     def create_knowledge_base(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`KnowledgeBasesClient.create_knowledge_base`.
 
         Creates a knowledge base.
 
@@ -131,7 +147,7 @@ class KnowledgeBasesGrpcTransport(object):
 
     @property
     def delete_knowledge_base(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`KnowledgeBasesClient.delete_knowledge_base`.
 
         Deletes the specified knowledge base.
 
@@ -141,3 +157,16 @@ class KnowledgeBasesGrpcTransport(object):
                 deserialized response object.
         """
         return self._stubs['knowledge_bases_stub'].DeleteKnowledgeBase
+
+    @property
+    def update_knowledge_base(self):
+        """Return the gRPC stub for :meth:`KnowledgeBasesClient.update_knowledge_base`.
+
+        Updates the specified knowledge base.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs['knowledge_bases_stub'].UpdateKnowledgeBase

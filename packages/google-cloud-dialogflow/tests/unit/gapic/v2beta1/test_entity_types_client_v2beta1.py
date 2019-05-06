@@ -1,4 +1,6 @@
-# Copyright 2018 Google LLC
+# -*- coding: utf-8 -*-
+#
+# Copyright 2019 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,6 +15,7 @@
 # limitations under the License.
 """Unit tests."""
 
+import mock
 import pytest
 
 from google.rpc import status_pb2
@@ -77,7 +80,10 @@ class TestEntityTypesClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = dialogflow_v2beta1.EntityTypesClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dialogflow_v2beta1.EntityTypesClient()
 
         # Setup Request
         parent = client.project_agent_path('[PROJECT]')
@@ -96,7 +102,10 @@ class TestEntityTypesClient(object):
 
     def test_list_entity_types_exception(self):
         channel = ChannelStub(responses=[CustomException()])
-        client = dialogflow_v2beta1.EntityTypesClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dialogflow_v2beta1.EntityTypesClient()
 
         # Setup request
         parent = client.project_agent_path('[PROJECT]')
@@ -114,7 +123,10 @@ class TestEntityTypesClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = dialogflow_v2beta1.EntityTypesClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dialogflow_v2beta1.EntityTypesClient()
 
         # Setup Request
         name = client.entity_type_path('[PROJECT]', '[ENTITY_TYPE]')
@@ -130,7 +142,10 @@ class TestEntityTypesClient(object):
     def test_get_entity_type_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = dialogflow_v2beta1.EntityTypesClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dialogflow_v2beta1.EntityTypesClient()
 
         # Setup request
         name = client.entity_type_path('[PROJECT]', '[ENTITY_TYPE]')
@@ -147,7 +162,10 @@ class TestEntityTypesClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = dialogflow_v2beta1.EntityTypesClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dialogflow_v2beta1.EntityTypesClient()
 
         # Setup Request
         parent = client.project_agent_path('[PROJECT]')
@@ -165,7 +183,10 @@ class TestEntityTypesClient(object):
     def test_create_entity_type_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = dialogflow_v2beta1.EntityTypesClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dialogflow_v2beta1.EntityTypesClient()
 
         # Setup request
         parent = client.project_agent_path('[PROJECT]')
@@ -183,7 +204,10 @@ class TestEntityTypesClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = dialogflow_v2beta1.EntityTypesClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dialogflow_v2beta1.EntityTypesClient()
 
         # Setup Request
         entity_type = {}
@@ -200,7 +224,10 @@ class TestEntityTypesClient(object):
     def test_update_entity_type_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = dialogflow_v2beta1.EntityTypesClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dialogflow_v2beta1.EntityTypesClient()
 
         # Setup request
         entity_type = {}
@@ -210,7 +237,10 @@ class TestEntityTypesClient(object):
 
     def test_delete_entity_type(self):
         channel = ChannelStub()
-        client = dialogflow_v2beta1.EntityTypesClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dialogflow_v2beta1.EntityTypesClient()
 
         # Setup Request
         name = client.entity_type_path('[PROJECT]', '[ENTITY_TYPE]')
@@ -225,7 +255,10 @@ class TestEntityTypesClient(object):
     def test_delete_entity_type_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = dialogflow_v2beta1.EntityTypesClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dialogflow_v2beta1.EntityTypesClient()
 
         # Setup request
         name = client.entity_type_path('[PROJECT]', '[ENTITY_TYPE]')
@@ -244,7 +277,10 @@ class TestEntityTypesClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[operation])
-        client = dialogflow_v2beta1.EntityTypesClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dialogflow_v2beta1.EntityTypesClient()
 
         # Setup Request
         parent = client.project_agent_path('[PROJECT]')
@@ -269,7 +305,10 @@ class TestEntityTypesClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[operation])
-        client = dialogflow_v2beta1.EntityTypesClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dialogflow_v2beta1.EntityTypesClient()
 
         # Setup Request
         parent = client.project_agent_path('[PROJECT]')
@@ -288,7 +327,10 @@ class TestEntityTypesClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[operation])
-        client = dialogflow_v2beta1.EntityTypesClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dialogflow_v2beta1.EntityTypesClient()
 
         # Setup Request
         parent = client.project_agent_path('[PROJECT]')
@@ -314,7 +356,10 @@ class TestEntityTypesClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[operation])
-        client = dialogflow_v2beta1.EntityTypesClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dialogflow_v2beta1.EntityTypesClient()
 
         # Setup Request
         parent = client.project_agent_path('[PROJECT]')
@@ -334,7 +379,10 @@ class TestEntityTypesClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[operation])
-        client = dialogflow_v2beta1.EntityTypesClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dialogflow_v2beta1.EntityTypesClient()
 
         # Setup Request
         parent = client.entity_type_path('[PROJECT]', '[ENTITY_TYPE]')
@@ -359,7 +407,10 @@ class TestEntityTypesClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[operation])
-        client = dialogflow_v2beta1.EntityTypesClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dialogflow_v2beta1.EntityTypesClient()
 
         # Setup Request
         parent = client.entity_type_path('[PROJECT]', '[ENTITY_TYPE]')
@@ -379,7 +430,10 @@ class TestEntityTypesClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[operation])
-        client = dialogflow_v2beta1.EntityTypesClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dialogflow_v2beta1.EntityTypesClient()
 
         # Setup Request
         parent = client.entity_type_path('[PROJECT]', '[ENTITY_TYPE]')
@@ -404,7 +458,10 @@ class TestEntityTypesClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[operation])
-        client = dialogflow_v2beta1.EntityTypesClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dialogflow_v2beta1.EntityTypesClient()
 
         # Setup Request
         parent = client.entity_type_path('[PROJECT]', '[ENTITY_TYPE]')
@@ -424,7 +481,10 @@ class TestEntityTypesClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[operation])
-        client = dialogflow_v2beta1.EntityTypesClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dialogflow_v2beta1.EntityTypesClient()
 
         # Setup Request
         parent = client.entity_type_path('[PROJECT]', '[ENTITY_TYPE]')
@@ -449,7 +509,10 @@ class TestEntityTypesClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[operation])
-        client = dialogflow_v2beta1.EntityTypesClient(channel=channel)
+        patch = mock.patch('google.api_core.grpc_helpers.create_channel')
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dialogflow_v2beta1.EntityTypesClient()
 
         # Setup Request
         parent = client.entity_type_path('[PROJECT]', '[ENTITY_TYPE]')

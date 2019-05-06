@@ -1,4 +1,6 @@
-# Copyright 2018 Google LLC
+# -*- coding: utf-8 -*-
+#
+# Copyright 2019 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -28,7 +30,10 @@ class IntentsGrpcTransport(object):
     """
     # The scopes needed to make gRPC calls to all of the methods defined
     # in this service.
-    _OAUTH_SCOPES = ('https://www.googleapis.com/auth/cloud-platform', )
+    _OAUTH_SCOPES = (
+        'https://www.googleapis.com/auth/cloud-platform',
+        'https://www.googleapis.com/auth/dialogflow',
+    )
 
     def __init__(self,
                  channel=None,
@@ -60,6 +65,8 @@ class IntentsGrpcTransport(object):
                 address=address,
                 credentials=credentials,
             )
+
+        self._channel = channel
 
         # gRPC uses objects called "stubs" that are bound to the
         # channel and provide a basic method for each RPC.
@@ -97,8 +104,17 @@ class IntentsGrpcTransport(object):
         )
 
     @property
+    def channel(self):
+        """The gRPC channel used by the transport.
+
+        Returns:
+            grpc.Channel: A gRPC channel object.
+        """
+        return self._channel
+
+    @property
     def list_intents(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`IntentsClient.list_intents`.
 
         Returns the list of all intents in the specified agent.
 
@@ -111,7 +127,7 @@ class IntentsGrpcTransport(object):
 
     @property
     def get_intent(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`IntentsClient.get_intent`.
 
         Retrieves the specified intent.
 
@@ -124,7 +140,7 @@ class IntentsGrpcTransport(object):
 
     @property
     def create_intent(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`IntentsClient.create_intent`.
 
         Creates an intent in the specified agent.
 
@@ -137,7 +153,7 @@ class IntentsGrpcTransport(object):
 
     @property
     def update_intent(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`IntentsClient.update_intent`.
 
         Updates the specified intent.
 
@@ -150,9 +166,9 @@ class IntentsGrpcTransport(object):
 
     @property
     def delete_intent(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`IntentsClient.delete_intent`.
 
-        Deletes the specified intent.
+        Deletes the specified intent and its direct or indirect followup intents.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -163,7 +179,7 @@ class IntentsGrpcTransport(object):
 
     @property
     def batch_update_intents(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`IntentsClient.batch_update_intents`.
 
         Updates/Creates multiple intents in the specified agent.
 
@@ -178,7 +194,7 @@ class IntentsGrpcTransport(object):
 
     @property
     def batch_delete_intents(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`IntentsClient.batch_delete_intents`.
 
         Deletes intents in the specified agent.
 

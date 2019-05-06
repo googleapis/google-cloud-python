@@ -18,12 +18,12 @@ config = {
             },
             "methods": {
                 "DetectIntent": {
-                    "timeout_millis": 220000,
+                    "timeout_millis": 230000,
                     "retry_codes_name": "non_idempotent",
                     "retry_params_name": "default"
                 },
                 "StreamingDetectIntent": {
-                    "timeout_millis": 220000,
+                    "timeout_millis": 230000,
                     "retry_codes_name": "non_idempotent",
                     "retry_params_name": "default"
                 }

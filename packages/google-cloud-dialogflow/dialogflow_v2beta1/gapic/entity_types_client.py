@@ -1,4 +1,6 @@
-# Copyright 2018 Google LLC
+# -*- coding: utf-8 -*-
+#
+# Copyright 2019 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -21,6 +23,7 @@ from google.oauth2 import service_account
 import google.api_core.gapic_v1.client_info
 import google.api_core.gapic_v1.config
 import google.api_core.gapic_v1.method
+import google.api_core.gapic_v1.routing_header
 import google.api_core.grpc_helpers
 import google.api_core.operation
 import google.api_core.operations_v1
@@ -57,27 +60,27 @@ class EntityTypesClient(object):
     actionable data for your application.
 
     When you define an entity, you can also include synonyms that all map to
-    that entity. For example, \"soft drink\", \"soda\", \"pop\", and so on.
+    that entity. For example, "soft drink", "soda", "pop", and so on.
 
     There are three types of entities:
 
-    *   **System** - entities that are defined by the Dialogflow API for common
-        data types such as date, time, currency, and so on. A system entity is
-        represented by the `EntityType` type.
+    -  **System** - entities that are defined by the Dialogflow API for
+       common data types such as date, time, currency, and so on. A system
+       entity is represented by the ``EntityType`` type.
 
-    *   **Developer** - entities that are defined by you that represent
-        actionable data that is meaningful to your application. For example,
-        you could define a `pizza.sauce` entity for red or white pizza sauce,
-        a `pizza.cheese` entity for the different types of cheese on a pizza,
-        a `pizza.topping` entity for different toppings, and so on. A developer
-        entity is represented by the `EntityType` type.
+    -  **Developer** - entities that are defined by you that represent
+       actionable data that is meaningful to your application. For example,
+       you could define a ``pizza.sauce`` entity for red or white pizza
+       sauce, a ``pizza.cheese`` entity for the different types of cheese on
+       a pizza, a ``pizza.topping`` entity for different toppings, and so
+       on. A developer entity is represented by the ``EntityType`` type.
 
-    *   **User** - entities that are built for an individual user such as
-        favorites, preferences, playlists, and so on. A user entity is
-        represented by the [SessionEntityType][google.cloud.dialogflow.v2beta1.SessionEntityType] type.
+    -  **User** - entities that are built for an individual user such as
+       favorites, preferences, playlists, and so on. A user entity is
+       represented by the ``SessionEntityType`` type.
 
-    For more information about entity types, see the
-    `Dialogflow documentation <https://dialogflow.com/docs/entities>`__.
+    For more information about entity types, see the `Dialogflow
+    documentation <https://cloud.google.com/dialogflow-enterprise/docs/entities-overview>`__.
     """
 
     SERVICE_ADDRESS = 'dialogflow.googleapis.com:443'
@@ -109,14 +112,6 @@ class EntityTypesClient(object):
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def project_agent_path(cls, project):
-        """Return a fully-qualified project_agent string."""
-        return google.api_core.path_template.expand(
-            'projects/{project}/agent',
-            project=project,
-        )
-
-    @classmethod
     def entity_type_path(cls, project, entity_type):
         """Return a fully-qualified entity_type string."""
         return google.api_core.path_template.expand(
@@ -125,11 +120,19 @@ class EntityTypesClient(object):
             entity_type=entity_type,
         )
 
+    @classmethod
+    def project_agent_path(cls, project):
+        """Return a fully-qualified project_agent string."""
+        return google.api_core.path_template.expand(
+            'projects/{project}/agent',
+            project=project,
+        )
+
     def __init__(self,
                  transport=None,
                  channel=None,
                  credentials=None,
-                 client_config=entity_types_client_config.config,
+                 client_config=None,
                  client_info=None):
         """Constructor.
 
@@ -162,13 +165,19 @@ class EntityTypesClient(object):
                 your own client library.
         """
         # Raise deprecation warnings for things we want to go away.
-        if client_config:
+        if client_config is not None:
             warnings.warn('The `client_config` argument is deprecated.',
-                          PendingDeprecationWarning)
+                          PendingDeprecationWarning,
+                          stacklevel=2)
+        else:
+            client_config = entity_types_client_config.config
+
         if channel:
             warnings.warn(
                 'The `channel` argument is deprecated; use '
-                '`transport` instead.', PendingDeprecationWarning)
+                '`transport` instead.',
+                PendingDeprecationWarning,
+                stacklevel=2)
 
         # Instantiate the transport.
         # The transport is responsible for handling serialization and
@@ -194,9 +203,10 @@ class EntityTypesClient(object):
             )
 
         if client_info is None:
-            client_info = (
-                google.api_core.gapic_v1.client_info.DEFAULT_CLIENT_INFO)
-        client_info.gapic_version = _GAPIC_LIBRARY_VERSION
+            client_info = google.api_core.gapic_v1.client_info.ClientInfo(
+                gapic_version=_GAPIC_LIBRARY_VERSION, )
+        else:
+            client_info.gapic_version = _GAPIC_LIBRARY_VERSION
         self._client_info = client_info
 
         # Parse out the default settings for retry and timeout for each RPC
@@ -239,19 +249,19 @@ class EntityTypesClient(object):
             >>> # Alternatively:
             >>>
             >>> # Iterate over results one page at a time
-            >>> for page in client.list_entity_types(parent, options=CallOptions(page_token=INITIAL_PAGE)):
+            >>> for page in client.list_entity_types(parent).pages:
             ...     for element in page:
             ...         # process element
             ...         pass
 
         Args:
-            parent (str): Required. The agent to list all entity types from.
-                Format: ``projects/<Project ID>/agent``.
+            parent (str): Required. The agent to list all entity types from. Format:
+                ``projects/<Project ID>/agent``.
             language_code (str): Optional. The language to list entity synonyms for. If not specified,
-                the agent's default language is used.
-                [More than a dozen
-                languages](https://dialogflow.com/docs/reference/language) are supported.
-                Note: languages must be enabled in the agent, before they can be used.
+                the agent's default language is used. `Many
+                languages <https://cloud.google.com/dialogflow-enterprise/docs/reference/language>`__
+                are supported. Note: languages must be enabled in the agent before they
+                can be used.
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
                 resource, this parameter does not affect the return value. If page
@@ -284,10 +294,10 @@ class EntityTypesClient(object):
             self._inner_api_calls[
                 'list_entity_types'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.list_entity_types,
-                    default_retry=self._method_configs[
-                        'ListEntityTypes'].retry,
-                    default_timeout=self._method_configs['ListEntityTypes']
-                    .timeout,
+                    default_retry=self._method_configs['ListEntityTypes'].
+                    retry,
+                    default_timeout=self._method_configs['ListEntityTypes'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -296,6 +306,18 @@ class EntityTypesClient(object):
             language_code=language_code,
             page_size=page_size,
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [('parent', parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header)
+            metadata.append(routing_metadata)
+
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(
@@ -329,13 +351,13 @@ class EntityTypesClient(object):
             >>> response = client.get_entity_type(name)
 
         Args:
-            name (str): Required. The name of the entity type.
-                Format: ``projects/<Project ID>/agent/entityTypes/<EntityType ID>``.
-            language_code (str): Optional. The language to retrieve entity synonyms for. If not specified,
-                the agent's default language is used.
-                [More than a dozen
-                languages](https://dialogflow.com/docs/reference/language) are supported.
-                Note: languages must be enabled in the agent, before they can be used.
+            name (str): Required. The name of the entity type. Format:
+                ``projects/<Project ID>/agent/entityTypes/<EntityType ID>``.
+            language_code (str): Optional. The language to retrieve entity synonyms for. If not
+                specified, the agent's default language is used. `Many
+                languages <https://cloud.google.com/dialogflow-enterprise/docs/reference/language>`__
+                are supported. Note: languages must be enabled in the agent before they
+                can be used.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -361,8 +383,8 @@ class EntityTypesClient(object):
                 'get_entity_type'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.get_entity_type,
                     default_retry=self._method_configs['GetEntityType'].retry,
-                    default_timeout=self._method_configs['GetEntityType']
-                    .timeout,
+                    default_timeout=self._method_configs['GetEntityType'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -370,8 +392,22 @@ class EntityTypesClient(object):
             name=name,
             language_code=language_code,
         )
-        return self._inner_api_calls['get_entity_type'](
-            request, retry=retry, timeout=timeout, metadata=metadata)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [('name', name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header)
+            metadata.append(routing_metadata)
+
+        return self._inner_api_calls['get_entity_type'](request,
+                                                        retry=retry,
+                                                        timeout=timeout,
+                                                        metadata=metadata)
 
     def create_entity_type(self,
                            parent,
@@ -390,22 +426,23 @@ class EntityTypesClient(object):
             >>>
             >>> parent = client.project_agent_path('[PROJECT]')
             >>>
-            >>> # TODO: Initialize ``entity_type``:
+            >>> # TODO: Initialize `entity_type`:
             >>> entity_type = {}
             >>>
             >>> response = client.create_entity_type(parent, entity_type)
 
         Args:
-            parent (str): Required. The agent to create a entity type for.
-                Format: ``projects/<Project ID>/agent``.
+            parent (str): Required. The agent to create a entity type for. Format:
+                ``projects/<Project ID>/agent``.
             entity_type (Union[dict, ~google.cloud.dialogflow_v2beta1.types.EntityType]): Required. The entity type to create.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.dialogflow_v2beta1.types.EntityType`
-            language_code (str): Optional. The language of entity synonyms defined in ``entity_type``. If not
-                specified, the agent's default language is used.
-                [More than a dozen
-                languages](https://dialogflow.com/docs/reference/language) are supported.
-                Note: languages must be enabled in the agent, before they can be used.
+            language_code (str): Optional. The language of entity synonyms defined in ``entity_type``. If
+                not specified, the agent's default language is used. `Many
+                languages <https://cloud.google.com/dialogflow-enterprise/docs/reference/language>`__
+                are supported. Note: languages must be enabled in the agent before they
+                can be used.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -430,10 +467,10 @@ class EntityTypesClient(object):
             self._inner_api_calls[
                 'create_entity_type'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.create_entity_type,
-                    default_retry=self._method_configs[
-                        'CreateEntityType'].retry,
-                    default_timeout=self._method_configs['CreateEntityType']
-                    .timeout,
+                    default_retry=self._method_configs['CreateEntityType'].
+                    retry,
+                    default_timeout=self._method_configs['CreateEntityType'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -442,8 +479,22 @@ class EntityTypesClient(object):
             entity_type=entity_type,
             language_code=language_code,
         )
-        return self._inner_api_calls['create_entity_type'](
-            request, retry=retry, timeout=timeout, metadata=metadata)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [('parent', parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header)
+            metadata.append(routing_metadata)
+
+        return self._inner_api_calls['create_entity_type'](request,
+                                                           retry=retry,
+                                                           timeout=timeout,
+                                                           metadata=metadata)
 
     def update_entity_type(self,
                            entity_type,
@@ -460,22 +511,23 @@ class EntityTypesClient(object):
             >>>
             >>> client = dialogflow_v2beta1.EntityTypesClient()
             >>>
-            >>> # TODO: Initialize ``entity_type``:
+            >>> # TODO: Initialize `entity_type`:
             >>> entity_type = {}
             >>>
             >>> response = client.update_entity_type(entity_type)
 
         Args:
             entity_type (Union[dict, ~google.cloud.dialogflow_v2beta1.types.EntityType]): Required. The entity type to update.
-                Format: ``projects/<Project ID>/agent/entityTypes/<EntityType ID>``.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.dialogflow_v2beta1.types.EntityType`
-            language_code (str): Optional. The language of entity synonyms defined in ``entity_type``. If not
-                specified, the agent's default language is used.
-                [More than a dozen
-                languages](https://dialogflow.com/docs/reference/language) are supported.
-                Note: languages must be enabled in the agent, before they can be used.
+            language_code (str): Optional. The language of entity synonyms defined in ``entity_type``. If
+                not specified, the agent's default language is used. `Many
+                languages <https://cloud.google.com/dialogflow-enterprise/docs/reference/language>`__
+                are supported. Note: languages must be enabled in the agent before they
+                can be used.
             update_mask (Union[dict, ~google.cloud.dialogflow_v2beta1.types.FieldMask]): Optional. The mask to control which fields get updated.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.dialogflow_v2beta1.types.FieldMask`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -502,10 +554,10 @@ class EntityTypesClient(object):
             self._inner_api_calls[
                 'update_entity_type'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.update_entity_type,
-                    default_retry=self._method_configs[
-                        'UpdateEntityType'].retry,
-                    default_timeout=self._method_configs['UpdateEntityType']
-                    .timeout,
+                    default_retry=self._method_configs['UpdateEntityType'].
+                    retry,
+                    default_timeout=self._method_configs['UpdateEntityType'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -514,8 +566,22 @@ class EntityTypesClient(object):
             language_code=language_code,
             update_mask=update_mask,
         )
-        return self._inner_api_calls['update_entity_type'](
-            request, retry=retry, timeout=timeout, metadata=metadata)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [('entity_type.name', entity_type.name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header)
+            metadata.append(routing_metadata)
+
+        return self._inner_api_calls['update_entity_type'](request,
+                                                           retry=retry,
+                                                           timeout=timeout,
+                                                           metadata=metadata)
 
     def delete_entity_type(self,
                            name,
@@ -535,8 +601,8 @@ class EntityTypesClient(object):
             >>> client.delete_entity_type(name)
 
         Args:
-            name (str): Required. The name of the entity type to delete.
-                Format: ``projects/<Project ID>/agent/entityTypes/<EntityType ID>``.
+            name (str): Required. The name of the entity type to delete. Format:
+                ``projects/<Project ID>/agent/entityTypes/<EntityType ID>``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -558,16 +624,30 @@ class EntityTypesClient(object):
             self._inner_api_calls[
                 'delete_entity_type'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.delete_entity_type,
-                    default_retry=self._method_configs[
-                        'DeleteEntityType'].retry,
-                    default_timeout=self._method_configs['DeleteEntityType']
-                    .timeout,
+                    default_retry=self._method_configs['DeleteEntityType'].
+                    retry,
+                    default_timeout=self._method_configs['DeleteEntityType'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
         request = entity_type_pb2.DeleteEntityTypeRequest(name=name, )
-        self._inner_api_calls['delete_entity_type'](
-            request, retry=retry, timeout=timeout, metadata=metadata)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [('name', name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header)
+            metadata.append(routing_metadata)
+
+        self._inner_api_calls['delete_entity_type'](request,
+                                                    retry=retry,
+                                                    timeout=timeout,
+                                                    metadata=metadata)
 
     def batch_update_entity_types(
             self,
@@ -582,8 +662,7 @@ class EntityTypesClient(object):
         """
         Updates/Creates multiple entity types in the specified agent.
 
-        Operation <response: ``BatchUpdateEntityTypesResponse``,
-        metadata: [google.protobuf.Struct][google.protobuf.Struct]>
+        Operation <response: ``BatchUpdateEntityTypesResponse``>
 
         Example:
             >>> import dialogflow_v2beta1
@@ -609,16 +688,18 @@ class EntityTypesClient(object):
             entity_type_batch_uri (str): The URI to a Google Cloud Storage file containing entity types to update
                 or create. The file format can either be a serialized proto (of
                 EntityBatch type) or a JSON object. Note: The URI must start with
-                \"gs://\".
-            entity_type_batch_inline (Union[dict, ~google.cloud.dialogflow_v2beta1.types.EntityTypeBatch]): The collection of entity type to update or create.
+                "gs://".
+            entity_type_batch_inline (Union[dict, ~google.cloud.dialogflow_v2beta1.types.EntityTypeBatch]): The collection of entity types to update or create.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.dialogflow_v2beta1.types.EntityTypeBatch`
-            language_code (str): Optional. The language of entity synonyms defined in ``entity_types``. If not
-                specified, the agent's default language is used.
-                [More than a dozen
-                languages](https://dialogflow.com/docs/reference/language) are supported.
-                Note: languages must be enabled in the agent, before they can be used.
+            language_code (str): Optional. The language of entity synonyms defined in ``entity_types``.
+                If not specified, the agent's default language is used. `Many
+                languages <https://cloud.google.com/dialogflow-enterprise/docs/reference/language>`__
+                are supported. Note: languages must be enabled in the agent before they
+                can be used.
             update_mask (Union[dict, ~google.cloud.dialogflow_v2beta1.types.FieldMask]): Optional. The mask to control which fields get updated.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.dialogflow_v2beta1.types.FieldMask`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -645,10 +726,10 @@ class EntityTypesClient(object):
             self._inner_api_calls[
                 'batch_update_entity_types'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.batch_update_entity_types,
-                    default_retry=self._method_configs[
-                        'BatchUpdateEntityTypes'].retry,
-                    default_timeout=self._method_configs[
-                        'BatchUpdateEntityTypes'].timeout,
+                    default_retry=self.
+                    _method_configs['BatchUpdateEntityTypes'].retry,
+                    default_timeout=self.
+                    _method_configs['BatchUpdateEntityTypes'].timeout,
                     client_info=self._client_info,
                 )
 
@@ -666,6 +747,18 @@ class EntityTypesClient(object):
             language_code=language_code,
             update_mask=update_mask,
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [('parent', parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header)
+            metadata.append(routing_metadata)
+
         operation = self._inner_api_calls['batch_update_entity_types'](
             request, retry=retry, timeout=timeout, metadata=metadata)
         return google.api_core.operation.from_gapic(
@@ -685,8 +778,7 @@ class EntityTypesClient(object):
         """
         Deletes entity types in the specified agent.
 
-        Operation <response: ``google.protobuf.Empty``,
-        metadata: [google.protobuf.Struct][google.protobuf.Struct]>
+        Operation <response: ``google.protobuf.Empty``>
 
         Example:
             >>> import dialogflow_v2beta1
@@ -695,7 +787,7 @@ class EntityTypesClient(object):
             >>>
             >>> parent = client.project_agent_path('[PROJECT]')
             >>>
-            >>> # TODO: Initialize ``entity_type_names``:
+            >>> # TODO: Initialize `entity_type_names`:
             >>> entity_type_names = []
             >>>
             >>> response = client.batch_delete_entity_types(parent, entity_type_names)
@@ -710,8 +802,8 @@ class EntityTypesClient(object):
             >>> metadata = response.metadata()
 
         Args:
-            parent (str): Required. The name of the agent to delete all entities types for. Format:
-                ``projects/<Project ID>/agent``.
+            parent (str): Required. The name of the agent to delete all entities types for.
+                Format: ``projects/<Project ID>/agent``.
             entity_type_names (list[str]): Required. The names entity types to delete. All names must point to the
                 same agent as ``parent``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -738,10 +830,10 @@ class EntityTypesClient(object):
             self._inner_api_calls[
                 'batch_delete_entity_types'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.batch_delete_entity_types,
-                    default_retry=self._method_configs[
-                        'BatchDeleteEntityTypes'].retry,
-                    default_timeout=self._method_configs[
-                        'BatchDeleteEntityTypes'].timeout,
+                    default_retry=self.
+                    _method_configs['BatchDeleteEntityTypes'].retry,
+                    default_timeout=self.
+                    _method_configs['BatchDeleteEntityTypes'].timeout,
                     client_info=self._client_info,
                 )
 
@@ -749,6 +841,18 @@ class EntityTypesClient(object):
             parent=parent,
             entity_type_names=entity_type_names,
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [('parent', parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header)
+            metadata.append(routing_metadata)
+
         operation = self._inner_api_calls['batch_delete_entity_types'](
             request, retry=retry, timeout=timeout, metadata=metadata)
         return google.api_core.operation.from_gapic(
@@ -766,8 +870,7 @@ class EntityTypesClient(object):
                               timeout=google.api_core.gapic_v1.method.DEFAULT,
                               metadata=None):
         """
-        Creates multiple new entities in the specified entity type (extends the
-        existing collection of entries).
+        Creates multiple new entities in the specified entity type.
 
         Operation <response: ``google.protobuf.Empty``>
 
@@ -778,7 +881,7 @@ class EntityTypesClient(object):
             >>>
             >>> parent = client.entity_type_path('[PROJECT]', '[ENTITY_TYPE]')
             >>>
-            >>> # TODO: Initialize ``entities``:
+            >>> # TODO: Initialize `entities`:
             >>> entities = []
             >>>
             >>> response = client.batch_create_entities(parent, entities)
@@ -795,14 +898,15 @@ class EntityTypesClient(object):
         Args:
             parent (str): Required. The name of the entity type to create entities in. Format:
                 ``projects/<Project ID>/agent/entityTypes/<Entity Type ID>``.
-            entities (list[Union[dict, ~google.cloud.dialogflow_v2beta1.types.Entity]]): Required. The collection of entities to create.
+            entities (list[Union[dict, ~google.cloud.dialogflow_v2beta1.types.Entity]]): Required. The entities to create.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.dialogflow_v2beta1.types.Entity`
-            language_code (str): Optional. The language of entity synonyms defined in ``entities``. If not
-                specified, the agent's default language is used.
-                [More than a dozen
-                languages](https://dialogflow.com/docs/reference/language) are supported.
-                Note: languages must be enabled in the agent, before they can be used.
+            language_code (str): Optional. The language of entity synonyms defined in ``entities``. If
+                not specified, the agent's default language is used. `Many
+                languages <https://cloud.google.com/dialogflow-enterprise/docs/reference/language>`__
+                are supported. Note: languages must be enabled in the agent before they
+                can be used.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -827,10 +931,10 @@ class EntityTypesClient(object):
             self._inner_api_calls[
                 'batch_create_entities'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.batch_create_entities,
-                    default_retry=self._method_configs[
-                        'BatchCreateEntities'].retry,
-                    default_timeout=self._method_configs['BatchCreateEntities']
-                    .timeout,
+                    default_retry=self._method_configs['BatchCreateEntities'].
+                    retry,
+                    default_timeout=self.
+                    _method_configs['BatchCreateEntities'].timeout,
                     client_info=self._client_info,
                 )
 
@@ -839,6 +943,18 @@ class EntityTypesClient(object):
             entities=entities,
             language_code=language_code,
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [('parent', parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header)
+            metadata.append(routing_metadata)
+
         operation = self._inner_api_calls['batch_create_entities'](
             request, retry=retry, timeout=timeout, metadata=metadata)
         return google.api_core.operation.from_gapic(
@@ -857,11 +973,11 @@ class EntityTypesClient(object):
                               timeout=google.api_core.gapic_v1.method.DEFAULT,
                               metadata=None):
         """
-        Updates entities in the specified entity type (replaces the existing
-        collection of entries).
+        Updates or creates multiple entities in the specified entity type. This
+        method does not affect entities in the entity type that aren't
+        explicitly specified in the request.
 
-        Operation <response: ``google.protobuf.Empty``,
-        metadata: [google.protobuf.Struct][google.protobuf.Struct]>
+        Operation <response: ``google.protobuf.Empty``>
 
         Example:
             >>> import dialogflow_v2beta1
@@ -870,7 +986,7 @@ class EntityTypesClient(object):
             >>>
             >>> parent = client.entity_type_path('[PROJECT]', '[ENTITY_TYPE]')
             >>>
-            >>> # TODO: Initialize ``entities``:
+            >>> # TODO: Initialize `entities`:
             >>> entities = []
             >>>
             >>> response = client.batch_update_entities(parent, entities)
@@ -885,17 +1001,19 @@ class EntityTypesClient(object):
             >>> metadata = response.metadata()
 
         Args:
-            parent (str): Required. The name of the entity type to update the entities in. Format:
-                ``projects/<Project ID>/agent/entityTypes/<Entity Type ID>``.
-            entities (list[Union[dict, ~google.cloud.dialogflow_v2beta1.types.Entity]]): Required. The collection of new entities to replace the existing entities.
+            parent (str): Required. The name of the entity type to update or create entities in.
+                Format: ``projects/<Project ID>/agent/entityTypes/<Entity Type ID>``.
+            entities (list[Union[dict, ~google.cloud.dialogflow_v2beta1.types.Entity]]): Required. The entities to update or create.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.dialogflow_v2beta1.types.Entity`
-            language_code (str): Optional. The language of entity synonyms defined in ``entities``. If not
-                specified, the agent's default language is used.
-                [More than a dozen
-                languages](https://dialogflow.com/docs/reference/language) are supported.
-                Note: languages must be enabled in the agent, before they can be used.
+            language_code (str): Optional. The language of entity synonyms defined in ``entities``. If
+                not specified, the agent's default language is used. `Many
+                languages <https://cloud.google.com/dialogflow-enterprise/docs/reference/language>`__
+                are supported. Note: languages must be enabled in the agent before they
+                can be used.
             update_mask (Union[dict, ~google.cloud.dialogflow_v2beta1.types.FieldMask]): Optional. The mask to control which fields get updated.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.dialogflow_v2beta1.types.FieldMask`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -922,10 +1040,10 @@ class EntityTypesClient(object):
             self._inner_api_calls[
                 'batch_update_entities'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.batch_update_entities,
-                    default_retry=self._method_configs[
-                        'BatchUpdateEntities'].retry,
-                    default_timeout=self._method_configs['BatchUpdateEntities']
-                    .timeout,
+                    default_retry=self._method_configs['BatchUpdateEntities'].
+                    retry,
+                    default_timeout=self.
+                    _method_configs['BatchUpdateEntities'].timeout,
                     client_info=self._client_info,
                 )
 
@@ -935,6 +1053,18 @@ class EntityTypesClient(object):
             language_code=language_code,
             update_mask=update_mask,
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [('parent', parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header)
+            metadata.append(routing_metadata)
+
         operation = self._inner_api_calls['batch_update_entities'](
             request, retry=retry, timeout=timeout, metadata=metadata)
         return google.api_core.operation.from_gapic(
@@ -954,8 +1084,7 @@ class EntityTypesClient(object):
         """
         Deletes entities in the specified entity type.
 
-        Operation <response: ``google.protobuf.Empty``,
-        metadata: [google.protobuf.Struct][google.protobuf.Struct]>
+        Operation <response: ``google.protobuf.Empty``>
 
         Example:
             >>> import dialogflow_v2beta1
@@ -964,7 +1093,7 @@ class EntityTypesClient(object):
             >>>
             >>> parent = client.entity_type_path('[PROJECT]', '[ENTITY_TYPE]')
             >>>
-            >>> # TODO: Initialize ``entity_values``:
+            >>> # TODO: Initialize `entity_values`:
             >>> entity_values = []
             >>>
             >>> response = client.batch_delete_entities(parent, entity_values)
@@ -984,11 +1113,11 @@ class EntityTypesClient(object):
             entity_values (list[str]): Required. The canonical ``values`` of the entities to delete. Note that
                 these are not fully-qualified names, i.e. they don't start with
                 ``projects/<Project ID>``.
-            language_code (str): Optional. The language of entity synonyms defined in ``entities``. If not
-                specified, the agent's default language is used.
-                [More than a dozen
-                languages](https://dialogflow.com/docs/reference/language) are supported.
-                Note: languages must be enabled in the agent, before they can be used.
+            language_code (str): Optional. The language of entity synonyms defined in ``entities``. If
+                not specified, the agent's default language is used. `Many
+                languages <https://cloud.google.com/dialogflow-enterprise/docs/reference/language>`__
+                are supported. Note: languages must be enabled in the agent before they
+                can be used.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -1013,10 +1142,10 @@ class EntityTypesClient(object):
             self._inner_api_calls[
                 'batch_delete_entities'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.batch_delete_entities,
-                    default_retry=self._method_configs[
-                        'BatchDeleteEntities'].retry,
-                    default_timeout=self._method_configs['BatchDeleteEntities']
-                    .timeout,
+                    default_retry=self._method_configs['BatchDeleteEntities'].
+                    retry,
+                    default_timeout=self.
+                    _method_configs['BatchDeleteEntities'].timeout,
                     client_info=self._client_info,
                 )
 
@@ -1025,6 +1154,18 @@ class EntityTypesClient(object):
             entity_values=entity_values,
             language_code=language_code,
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [('parent', parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header)
+            metadata.append(routing_metadata)
+
         operation = self._inner_api_calls['batch_delete_entities'](
             request, retry=retry, timeout=timeout, metadata=metadata)
         return google.api_core.operation.from_gapic(

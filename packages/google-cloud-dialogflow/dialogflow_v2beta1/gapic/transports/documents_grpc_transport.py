@@ -1,4 +1,6 @@
-# Copyright 2018 Google LLC
+# -*- coding: utf-8 -*-
+#
+# Copyright 2019 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -28,7 +30,10 @@ class DocumentsGrpcTransport(object):
     """
     # The scopes needed to make gRPC calls to all of the methods defined
     # in this service.
-    _OAUTH_SCOPES = ('https://www.googleapis.com/auth/cloud-platform', )
+    _OAUTH_SCOPES = (
+        'https://www.googleapis.com/auth/cloud-platform',
+        'https://www.googleapis.com/auth/dialogflow',
+    )
 
     def __init__(self,
                  channel=None,
@@ -60,6 +65,8 @@ class DocumentsGrpcTransport(object):
                 address=address,
                 credentials=credentials,
             )
+
+        self._channel = channel
 
         # gRPC uses objects called "stubs" that are bound to the
         # channel and provide a basic method for each RPC.
@@ -97,8 +104,17 @@ class DocumentsGrpcTransport(object):
         )
 
     @property
+    def channel(self):
+        """The gRPC channel used by the transport.
+
+        Returns:
+            grpc.Channel: A gRPC channel object.
+        """
+        return self._channel
+
+    @property
     def list_documents(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`DocumentsClient.list_documents`.
 
         Returns the list of all documents of the knowledge base.
 
@@ -111,7 +127,7 @@ class DocumentsGrpcTransport(object):
 
     @property
     def get_document(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`DocumentsClient.get_document`.
 
         Retrieves the specified document.
 
@@ -124,12 +140,12 @@ class DocumentsGrpcTransport(object):
 
     @property
     def create_document(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`DocumentsClient.create_document`.
 
         Creates a new document.
 
-        Operation <response: ``Document``,
-        metadata: [KnowledgeOperationMetadata][google.cloud.dialogflow.v2beta1.KnowledgeOperationMetadata]>
+        Operation <response: ``Document``, metadata:
+        ``KnowledgeOperationMetadata``>
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -140,12 +156,12 @@ class DocumentsGrpcTransport(object):
 
     @property
     def delete_document(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`DocumentsClient.delete_document`.
 
         Deletes the specified document.
 
-        Operation <response: ``google.protobuf.Empty``,
-        metadata: [KnowledgeOperationMetadata][google.cloud.dialogflow.v2beta1.KnowledgeOperationMetadata]>
+        Operation <response: ``google.protobuf.Empty``, metadata:
+        ``KnowledgeOperationMetadata``>
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -153,3 +169,35 @@ class DocumentsGrpcTransport(object):
                 deserialized response object.
         """
         return self._stubs['documents_stub'].DeleteDocument
+
+    @property
+    def update_document(self):
+        """Return the gRPC stub for :meth:`DocumentsClient.update_document`.
+
+        Updates the specified document. Operation <response: ``Document``,
+        metadata: ``KnowledgeOperationMetadata``>
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs['documents_stub'].UpdateDocument
+
+    @property
+    def reload_document(self):
+        """Return the gRPC stub for :meth:`DocumentsClient.reload_document`.
+
+        Reloads the specified document from its specified source, content\_uri
+        or content. The previously loaded content of the document will be
+        deleted. Note: Even when the content of the document has not changed,
+        there still may be side effects because of internal implementation
+        changes. Operation <response: ``Document``, metadata:
+        ``KnowledgeOperationMetadata``>
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs['documents_stub'].ReloadDocument

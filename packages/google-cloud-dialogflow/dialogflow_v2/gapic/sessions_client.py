@@ -1,4 +1,6 @@
-# Copyright 2018 Google LLC
+# -*- coding: utf-8 -*-
+#
+# Copyright 2019 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,6 +22,7 @@ from google.oauth2 import service_account
 import google.api_core.gapic_v1.client_info
 import google.api_core.gapic_v1.config
 import google.api_core.gapic_v1.method
+import google.api_core.gapic_v1.routing_header
 import google.api_core.grpc_helpers
 import google.api_core.path_template
 import grpc
@@ -29,6 +32,7 @@ from dialogflow_v2.gapic import sessions_client_config
 from dialogflow_v2.gapic.transports import sessions_grpc_transport
 from dialogflow_v2.proto import agent_pb2
 from dialogflow_v2.proto import agent_pb2_grpc
+from dialogflow_v2.proto import audio_config_pb2
 from dialogflow_v2.proto import context_pb2
 from dialogflow_v2.proto import context_pb2_grpc
 from dialogflow_v2.proto import entity_type_pb2
@@ -51,9 +55,8 @@ _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
 class SessionsClient(object):
     """
     A session represents an interaction with a user. You retrieve user input
-    and pass it to the ``DetectIntent`` (or
-    ``StreamingDetectIntent``) method to determine
-    user intent and respond.
+    and pass it to the ``DetectIntent`` (or ``StreamingDetectIntent``)
+    method to determine user intent and respond.
     """
 
     SERVICE_ADDRESS = 'dialogflow.googleapis.com:443'
@@ -97,7 +100,7 @@ class SessionsClient(object):
                  transport=None,
                  channel=None,
                  credentials=None,
-                 client_config=sessions_client_config.config,
+                 client_config=None,
                  client_info=None):
         """Constructor.
 
@@ -130,13 +133,19 @@ class SessionsClient(object):
                 your own client library.
         """
         # Raise deprecation warnings for things we want to go away.
-        if client_config:
+        if client_config is not None:
             warnings.warn('The `client_config` argument is deprecated.',
-                          PendingDeprecationWarning)
+                          PendingDeprecationWarning,
+                          stacklevel=2)
+        else:
+            client_config = sessions_client_config.config
+
         if channel:
             warnings.warn(
                 'The `channel` argument is deprecated; use '
-                '`transport` instead.', PendingDeprecationWarning)
+                '`transport` instead.',
+                PendingDeprecationWarning,
+                stacklevel=2)
 
         # Instantiate the transport.
         # The transport is responsible for handling serialization and
@@ -162,9 +171,10 @@ class SessionsClient(object):
             )
 
         if client_info is None:
-            client_info = (
-                google.api_core.gapic_v1.client_info.DEFAULT_CLIENT_INFO)
-        client_info.gapic_version = _GAPIC_LIBRARY_VERSION
+            client_info = google.api_core.gapic_v1.client_info.ClientInfo(
+                gapic_version=_GAPIC_LIBRARY_VERSION, )
+        else:
+            client_info.gapic_version = _GAPIC_LIBRARY_VERSION
         self._client_info = client_info
 
         # Parse out the default settings for retry and timeout for each RPC
@@ -185,6 +195,7 @@ class SessionsClient(object):
                       session,
                       query_input,
                       query_params=None,
+                      output_audio_config=None,
                       input_audio=None,
                       retry=google.api_core.gapic_v1.method.DEFAULT,
                       timeout=google.api_core.gapic_v1.method.DEFAULT,
@@ -202,32 +213,38 @@ class SessionsClient(object):
             >>>
             >>> session = client.session_path('[PROJECT]', '[SESSION]')
             >>>
-            >>> # TODO: Initialize ``query_input``:
+            >>> # TODO: Initialize `query_input`:
             >>> query_input = {}
             >>>
             >>> response = client.detect_intent(session, query_input)
 
         Args:
             session (str): Required. The name of the session this query is sent to. Format:
-                ``projects/<Project ID>/agent/sessions/<Session ID>``. It's up to the API
-                caller to choose an appropriate session ID. It can be a random number or
-                some type of user identifier (preferably hashed). The length of the session
-                ID must not exceed 36 bytes.
+                ``projects/<Project ID>/agent/sessions/<Session ID>``. It's up to the
+                API caller to choose an appropriate session ID. It can be a random
+                number or some type of user identifier (preferably hashed). The length
+                of the session ID must not exceed 36 bytes.
             query_input (Union[dict, ~google.cloud.dialogflow_v2.types.QueryInput]): Required. The input specification. It can be set to:
 
                 1.  an audio config
-                ::
-
                     which instructs the speech recognizer how to process the speech audio,
 
                 2.  a conversational query in the form of text, or
 
                 3.  an event that specifies which intent to trigger.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.dialogflow_v2.types.QueryInput`
             query_params (Union[dict, ~google.cloud.dialogflow_v2.types.QueryParameters]): Optional. The parameters of this query.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.dialogflow_v2.types.QueryParameters`
+            output_audio_config (Union[dict, ~google.cloud.dialogflow_v2.types.OutputAudioConfig]): Optional. Instructs the speech synthesizer how to generate the output
+                audio. If this field is not set and agent-level speech synthesizer is not
+                configured, no output audio is generated.
+
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.dialogflow_v2.types.OutputAudioConfig`
             input_audio (bytes): Optional. The natural language speech audio to be processed. This field
                 should be populated iff ``query_input`` is set to an input audio config.
                 A single request can contain up to 1 minute of speech audio data.
@@ -256,8 +273,8 @@ class SessionsClient(object):
                 'detect_intent'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.detect_intent,
                     default_retry=self._method_configs['DetectIntent'].retry,
-                    default_timeout=self._method_configs['DetectIntent']
-                    .timeout,
+                    default_timeout=self._method_configs['DetectIntent'].
+                    timeout,
                     client_info=self._client_info,
                 )
 
@@ -265,10 +282,25 @@ class SessionsClient(object):
             session=session,
             query_input=query_input,
             query_params=query_params,
+            output_audio_config=output_audio_config,
             input_audio=input_audio,
         )
-        return self._inner_api_calls['detect_intent'](
-            request, retry=retry, timeout=timeout, metadata=metadata)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [('session', session)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header)
+            metadata.append(routing_metadata)
+
+        return self._inner_api_calls['detect_intent'](request,
+                                                      retry=retry,
+                                                      timeout=timeout,
+                                                      metadata=metadata)
 
     def streaming_detect_intent(
             self,
@@ -288,10 +320,10 @@ class SessionsClient(object):
             >>>
             >>> client = dialogflow_v2.SessionsClient()
             >>>
-            >>> # TODO: Initialize ``session``:
+            >>> # TODO: Initialize `session`:
             >>> session = ''
             >>>
-            >>> # TODO: Initialize ``query_input``:
+            >>> # TODO: Initialize `query_input`:
             >>> query_input = {}
             >>> request = {'session': session, 'query_input': query_input}
             >>>
@@ -327,10 +359,10 @@ class SessionsClient(object):
             self._inner_api_calls[
                 'streaming_detect_intent'] = google.api_core.gapic_v1.method.wrap_method(
                     self.transport.streaming_detect_intent,
-                    default_retry=self._method_configs['StreamingDetectIntent']
-                    .retry,
-                    default_timeout=self._method_configs[
-                        'StreamingDetectIntent'].timeout,
+                    default_retry=self.
+                    _method_configs['StreamingDetectIntent'].retry,
+                    default_timeout=self.
+                    _method_configs['StreamingDetectIntent'].timeout,
                     client_info=self._client_info,
                 )
 

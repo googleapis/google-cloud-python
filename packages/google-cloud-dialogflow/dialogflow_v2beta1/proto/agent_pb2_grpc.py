@@ -26,12 +26,14 @@ class AgentsStub(object):
   agent by using the [ImportAgent][google.cloud.dialogflow.v2beta1.Agents.ImportAgent] method.
 
   Dialogflow provides several
-  [prebuilt agents](https://dialogflow.com/docs/prebuilt-agents) for common
-  conversation scenarios such as determining a date and time, converting
-  currency, and so on.
+  [prebuilt
+  agents](https://cloud.google.com/dialogflow-enterprise/docs/agents-prebuilt)
+  for common conversation scenarios such as determining a date and time,
+  converting currency, and so on.
 
   For more information about agents, see the
-  [Dialogflow documentation](https://dialogflow.com/docs/agents).
+  [Dialogflow
+  documentation](https://cloud.google.com/dialogflow-enterprise/docs/agents-overview).
   """
 
   def __init__(self, channel):
@@ -93,12 +95,14 @@ class AgentsServicer(object):
   agent by using the [ImportAgent][google.cloud.dialogflow.v2beta1.Agents.ImportAgent] method.
 
   Dialogflow provides several
-  [prebuilt agents](https://dialogflow.com/docs/prebuilt-agents) for common
-  conversation scenarios such as determining a date and time, converting
-  currency, and so on.
+  [prebuilt
+  agents](https://cloud.google.com/dialogflow-enterprise/docs/agents-prebuilt)
+  for common conversation scenarios such as determining a date and time,
+  converting currency, and so on.
 
   For more information about agents, see the
-  [Dialogflow documentation](https://dialogflow.com/docs/agents).
+  [Dialogflow
+  documentation](https://cloud.google.com/dialogflow-enterprise/docs/agents-overview).
   """
 
   def GetAgent(self, request, context):
@@ -125,8 +129,7 @@ class AgentsServicer(object):
     """Trains the specified agent.
 
 
-    Operation <response: [google.protobuf.Empty][google.protobuf.Empty],
-    metadata: [google.protobuf.Struct][google.protobuf.Struct]>
+    Operation <response: [google.protobuf.Empty][google.protobuf.Empty]>
     """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')
@@ -136,8 +139,7 @@ class AgentsServicer(object):
     """Exports the specified agent to a ZIP file.
 
 
-    Operation <response: [ExportAgentResponse][google.cloud.dialogflow.v2beta1.ExportAgentResponse],
-    metadata: [google.protobuf.Struct][google.protobuf.Struct]>
+    Operation <response: [ExportAgentResponse][google.cloud.dialogflow.v2beta1.ExportAgentResponse]>
     """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')
@@ -151,8 +153,7 @@ class AgentsServicer(object):
     versions from ImportAgentRequest.
 
 
-    Operation <response: [google.protobuf.Empty][google.protobuf.Empty],
-    metadata: [google.protobuf.Struct][google.protobuf.Struct]>
+    Operation <response: [google.protobuf.Empty][google.protobuf.Empty]>
     """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')
@@ -165,8 +166,7 @@ class AgentsServicer(object):
     entity types in the older version are deleted.
 
 
-    Operation <response: [google.protobuf.Empty][google.protobuf.Empty],
-    metadata: [google.protobuf.Struct][google.protobuf.Struct]>
+    Operation <response: [google.protobuf.Empty][google.protobuf.Empty]>
     """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')

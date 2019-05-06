@@ -23,12 +23,12 @@ versions = ['v2beta1', 'v2']
 
 
 for version in versions:
-    library = gapic.py_library('dialogflow', version)
+    library = gapic.py_library('dialogflow', version, include_protos=True)
 
     s.move(
         library,
         excludes=[
-            'google/**/*', 'setup.py', 'README.rst', 'docs/index.rst', 'nox.py'])
+            'google/**/*', 'setup.py', 'README.rst', 'docs/index.rst', 'docs/conf.py', 'nox.py'])
     s.move(
         library / f'google/cloud/dialogflow_{version}',
         f'dialogflow_{version}')
@@ -54,22 +54,12 @@ for version in versions:
         "(Returns:\n\s+)([a-zA-Z]+Client:)",
         f"\g<1>dialogflow_{version}.\g<2>")
 
+    # Incorrectly formatted "raw" directive content block.
     s.replace(
-        code_paths,
-        '(`Dialogflow documentation <.*?>`)_\.',
-        '\g<1>__.')
-
-    # Unexpected Indentation: https://github.com/googleapis/gapic-generator/issues/2157
-    # For now strip this example.
-    s.replace(f'dialogflow_{version}/gapic/agents_client.py',
-              'Example for.*\n\s+<pre>.*\n(.*\n)+?.*?</pre>', '')
-    
-    # Some docstrings have oddly placed literal markers 
-    s.replace(
-        [f'dialogflow_{version}/gapic/entity_types_client.py',
-         f'dialogflow_{version}/gapic/intents_client.py'],
-        "^\s+::\n\n", 
-        "")
+        f'dialogflow_{version}/gapic/agents_client.py',
+        '(\s+).. raw:: html\s+<pre>curl',
+        '\g<1>.. raw:: html\g<1>    <pre>curl',
+    )
 
 # Some files are missing the appropriate utf-8 header
 # -*- coding: utf-8 -*-

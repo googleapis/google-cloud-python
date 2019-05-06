@@ -22,7 +22,7 @@ class IntentsStub(object):
   *   **Contexts** - provide additional context for intent analysis. For
   example, if an intent is related to an object in your application that
   plays music, you can provide a context to determine when to match the
-  intent if the user input is “turn it off”.  You can include a context
+  intent if the user input is "turn it off". You can include a context
   that matches the intent when there is previous user input of
   "play music", and not when there is previous user input of
   "turn on the light".
@@ -38,7 +38,8 @@ class IntentsStub(object):
   Dialogflow API agent to better match intents.
 
   For more information about intents, see the
-  [Dialogflow documentation](https://dialogflow.com/docs/intents).
+  [Dialogflow
+  documentation](https://cloud.google.com/dialogflow-enterprise/docs/intents-overview).
   """
 
   def __init__(self, channel):
@@ -99,7 +100,7 @@ class IntentsServicer(object):
   *   **Contexts** - provide additional context for intent analysis. For
   example, if an intent is related to an object in your application that
   plays music, you can provide a context to determine when to match the
-  intent if the user input is “turn it off”.  You can include a context
+  intent if the user input is "turn it off". You can include a context
   that matches the intent when there is previous user input of
   "play music", and not when there is previous user input of
   "turn on the light".
@@ -115,7 +116,8 @@ class IntentsServicer(object):
   Dialogflow API agent to better match intents.
 
   For more information about intents, see the
-  [Dialogflow documentation](https://dialogflow.com/docs/intents).
+  [Dialogflow
+  documentation](https://cloud.google.com/dialogflow-enterprise/docs/intents-overview).
   """
 
   def ListIntents(self, request, context):
@@ -147,7 +149,7 @@ class IntentsServicer(object):
     raise NotImplementedError('Method not implemented!')
 
   def DeleteIntent(self, request, context):
-    """Deletes the specified intent.
+    """Deletes the specified intent and its direct or indirect followup intents.
     """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')

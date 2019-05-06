@@ -18,19 +18,22 @@ class AgentsStub(object):
 
   You can create an agent using both Dialogflow Standard Edition and
   Dialogflow Enterprise Edition. For details, see
-  [Dialogflow Editions](/dialogflow-enterprise/docs/editions).
+  [Dialogflow
+  Editions](https://cloud.google.com/dialogflow-enterprise/docs/editions).
 
   You can save your agent for backup or versioning by exporting the agent by
   using the [ExportAgent][google.cloud.dialogflow.v2.Agents.ExportAgent] method. You can import a saved
   agent by using the [ImportAgent][google.cloud.dialogflow.v2.Agents.ImportAgent] method.
 
   Dialogflow provides several
-  [prebuilt agents](https://dialogflow.com/docs/prebuilt-agents) for common
-  conversation scenarios such as determining a date and time, converting
-  currency, and so on.
+  [prebuilt
+  agents](https://cloud.google.com/dialogflow-enterprise/docs/agents-prebuilt)
+  for common conversation scenarios such as determining a date and time,
+  converting currency, and so on.
 
   For more information about agents, see the
-  [Dialogflow documentation](https://dialogflow.com/docs/agents).
+  [Dialogflow
+  documentation](https://cloud.google.com/dialogflow-enterprise/docs/agents-overview).
   """
 
   def __init__(self, channel):
@@ -84,19 +87,22 @@ class AgentsServicer(object):
 
   You can create an agent using both Dialogflow Standard Edition and
   Dialogflow Enterprise Edition. For details, see
-  [Dialogflow Editions](/dialogflow-enterprise/docs/editions).
+  [Dialogflow
+  Editions](https://cloud.google.com/dialogflow-enterprise/docs/editions).
 
   You can save your agent for backup or versioning by exporting the agent by
   using the [ExportAgent][google.cloud.dialogflow.v2.Agents.ExportAgent] method. You can import a saved
   agent by using the [ImportAgent][google.cloud.dialogflow.v2.Agents.ImportAgent] method.
 
   Dialogflow provides several
-  [prebuilt agents](https://dialogflow.com/docs/prebuilt-agents) for common
-  conversation scenarios such as determining a date and time, converting
-  currency, and so on.
+  [prebuilt
+  agents](https://cloud.google.com/dialogflow-enterprise/docs/agents-prebuilt)
+  for common conversation scenarios such as determining a date and time,
+  converting currency, and so on.
 
   For more information about agents, see the
-  [Dialogflow documentation](https://dialogflow.com/docs/agents).
+  [Dialogflow
+  documentation](https://cloud.google.com/dialogflow-enterprise/docs/agents-overview).
   """
 
   def GetAgent(self, request, context):
@@ -122,8 +128,7 @@ class AgentsServicer(object):
   def TrainAgent(self, request, context):
     """Trains the specified agent.
 
-    Operation <response: [google.protobuf.Empty][google.protobuf.Empty],
-    metadata: [google.protobuf.Struct][google.protobuf.Struct]>
+    Operation <response: [google.protobuf.Empty][google.protobuf.Empty]>
     """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')
@@ -132,8 +137,7 @@ class AgentsServicer(object):
   def ExportAgent(self, request, context):
     """Exports the specified agent to a ZIP file.
 
-    Operation <response: [ExportAgentResponse][google.cloud.dialogflow.v2.ExportAgentResponse],
-    metadata: [google.protobuf.Struct][google.protobuf.Struct]>
+    Operation <response: [ExportAgentResponse][google.cloud.dialogflow.v2.ExportAgentResponse]>
     """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')
@@ -146,8 +150,7 @@ class AgentsServicer(object):
     Intents and entity types with the same name are replaced with the new
     versions from ImportAgentRequest.
 
-    Operation <response: [google.protobuf.Empty][google.protobuf.Empty],
-    metadata: [google.protobuf.Struct][google.protobuf.Struct]>
+    Operation <response: [google.protobuf.Empty][google.protobuf.Empty]>
     """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')
@@ -159,8 +162,7 @@ class AgentsServicer(object):
     Replaces the current agent version with a new one. All the intents and
     entity types in the older version are deleted.
 
-    Operation <response: [google.protobuf.Empty][google.protobuf.Empty],
-    metadata: [google.protobuf.Struct][google.protobuf.Struct]>
+    Operation <response: [google.protobuf.Empty][google.protobuf.Empty]>
     """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')

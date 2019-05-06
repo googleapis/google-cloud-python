@@ -1,4 +1,6 @@
-# Copyright 2018 Google LLC
+# -*- coding: utf-8 -*-
+#
+# Copyright 2019 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -27,7 +29,10 @@ class ContextsGrpcTransport(object):
     """
     # The scopes needed to make gRPC calls to all of the methods defined
     # in this service.
-    _OAUTH_SCOPES = ('https://www.googleapis.com/auth/cloud-platform', )
+    _OAUTH_SCOPES = (
+        'https://www.googleapis.com/auth/cloud-platform',
+        'https://www.googleapis.com/auth/dialogflow',
+    )
 
     def __init__(self,
                  channel=None,
@@ -60,6 +65,8 @@ class ContextsGrpcTransport(object):
                 credentials=credentials,
             )
 
+        self._channel = channel
+
         # gRPC uses objects called "stubs" that are bound to the
         # channel and provide a basic method for each RPC.
         self._stubs = {
@@ -90,8 +97,17 @@ class ContextsGrpcTransport(object):
         )
 
     @property
+    def channel(self):
+        """The gRPC channel used by the transport.
+
+        Returns:
+            grpc.Channel: A gRPC channel object.
+        """
+        return self._channel
+
+    @property
     def list_contexts(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`ContextsClient.list_contexts`.
 
         Returns the list of all contexts in the specified session.
 
@@ -104,7 +120,7 @@ class ContextsGrpcTransport(object):
 
     @property
     def get_context(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`ContextsClient.get_context`.
 
         Retrieves the specified context.
 
@@ -117,9 +133,11 @@ class ContextsGrpcTransport(object):
 
     @property
     def create_context(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`ContextsClient.create_context`.
 
         Creates a context.
+
+        If the specified context already exists, overrides the context.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -130,7 +148,7 @@ class ContextsGrpcTransport(object):
 
     @property
     def update_context(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`ContextsClient.update_context`.
 
         Updates the specified context.
 
@@ -143,7 +161,7 @@ class ContextsGrpcTransport(object):
 
     @property
     def delete_context(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`ContextsClient.delete_context`.
 
         Deletes the specified context.
 
@@ -156,7 +174,7 @@ class ContextsGrpcTransport(object):
 
     @property
     def delete_all_contexts(self):
-        """Return the gRPC stub for {$apiMethod.name}.
+        """Return the gRPC stub for :meth:`ContextsClient.delete_all_contexts`.
 
         Deletes all active contexts in the specified session.
 

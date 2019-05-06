@@ -1,4 +1,6 @@
-# Copyright 2018 Google LLC
+# -*- coding: utf-8 -*-
+#
+# Copyright 2019 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,7 +19,6 @@ import sys
 
 from google.api_core.protobuf_helpers import get_messages
 
-from google.api import http_pb2
 from dialogflow_v2beta1.proto import agent_pb2
 from dialogflow_v2beta1.proto import audio_config_pb2
 from dialogflow_v2beta1.proto import context_pb2
@@ -30,7 +31,6 @@ from dialogflow_v2beta1.proto import session_pb2
 from dialogflow_v2beta1.proto import webhook_pb2
 from google.longrunning import operations_pb2
 from google.protobuf import any_pb2
-from google.protobuf import descriptor_pb2
 from google.protobuf import empty_pb2
 from google.protobuf import field_mask_pb2
 from google.protobuf import struct_pb2
@@ -38,10 +38,8 @@ from google.rpc import status_pb2
 from google.type import latlng_pb2
 
 _shared_modules = [
-    http_pb2,
     operations_pb2,
     any_pb2,
-    descriptor_pb2,
     empty_pb2,
     field_mask_pb2,
     struct_pb2,

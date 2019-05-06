@@ -7,13 +7,13 @@ from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
-from google.protobuf import descriptor_pb2
 # @@protoc_insertion_point(imports)
 
 _sym_db = _symbol_database.Default()
 
 
 from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
+from google.api import resource_pb2 as google_dot_api_dot_resource__pb2
 from google.longrunning import operations_pb2 as google_dot_longrunning_dot_operations__pb2
 from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 from google.protobuf import field_mask_pb2 as google_dot_protobuf_dot_field__mask__pb2
@@ -24,9 +24,10 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='google/cloud/dialogflow_v2/proto/agent.proto',
   package='google.cloud.dialogflow.v2',
   syntax='proto3',
-  serialized_pb=_b('\n,google/cloud/dialogflow_v2/proto/agent.proto\x12\x1agoogle.cloud.dialogflow.v2\x1a\x1cgoogle/api/annotations.proto\x1a#google/longrunning/operations.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto\x1a\x1cgoogle/protobuf/struct.proto\"\xfd\x02\n\x05\x41gent\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x02 \x01(\t\x12\x1d\n\x15\x64\x65\x66\x61ult_language_code\x18\x03 \x01(\t\x12 \n\x18supported_language_codes\x18\x04 \x03(\t\x12\x11\n\ttime_zone\x18\x05 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x06 \x01(\t\x12\x12\n\navatar_uri\x18\x07 \x01(\t\x12\x16\n\x0e\x65nable_logging\x18\x08 \x01(\x08\x12?\n\nmatch_mode\x18\t \x01(\x0e\x32+.google.cloud.dialogflow.v2.Agent.MatchMode\x12 \n\x18\x63lassification_threshold\x18\n \x01(\x02\"V\n\tMatchMode\x12\x1a\n\x16MATCH_MODE_UNSPECIFIED\x10\x00\x12\x15\n\x11MATCH_MODE_HYBRID\x10\x01\x12\x16\n\x12MATCH_MODE_ML_ONLY\x10\x02\"!\n\x0fGetAgentRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\"L\n\x13SearchAgentsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t\"b\n\x14SearchAgentsResponse\x12\x31\n\x06\x61gents\x18\x01 \x03(\x0b\x32!.google.cloud.dialogflow.v2.Agent\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\"#\n\x11TrainAgentRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\"7\n\x12\x45xportAgentRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x11\n\tagent_uri\x18\x02 \x01(\t\"L\n\x13\x45xportAgentResponse\x12\x13\n\tagent_uri\x18\x01 \x01(\tH\x00\x12\x17\n\ragent_content\x18\x02 \x01(\x0cH\x00\x42\x07\n\x05\x61gent\"[\n\x12ImportAgentRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x13\n\tagent_uri\x18\x02 \x01(\tH\x00\x12\x17\n\ragent_content\x18\x03 \x01(\x0cH\x00\x42\x07\n\x05\x61gent\"\\\n\x13RestoreAgentRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x13\n\tagent_uri\x18\x02 \x01(\tH\x00\x12\x17\n\ragent_content\x18\x03 \x01(\x0cH\x00\x42\x07\n\x05\x61gent2\xee\x06\n\x06\x41gents\x12\x81\x01\n\x08GetAgent\x12+.google.cloud.dialogflow.v2.GetAgentRequest\x1a!.google.cloud.dialogflow.v2.Agent\"%\x82\xd3\xe4\x93\x02\x1f\x12\x1d/v2/{parent=projects/*}/agent\x12\x9f\x01\n\x0cSearchAgents\x12/.google.cloud.dialogflow.v2.SearchAgentsRequest\x1a\x30.google.cloud.dialogflow.v2.SearchAgentsResponse\",\x82\xd3\xe4\x93\x02&\x12$/v2/{parent=projects/*}/agent:search\x12\x8a\x01\n\nTrainAgent\x12-.google.cloud.dialogflow.v2.TrainAgentRequest\x1a\x1d.google.longrunning.Operation\".\x82\xd3\xe4\x93\x02(\"#/v2/{parent=projects/*}/agent:train:\x01*\x12\x8d\x01\n\x0b\x45xportAgent\x12..google.cloud.dialogflow.v2.ExportAgentRequest\x1a\x1d.google.longrunning.Operation\"/\x82\xd3\xe4\x93\x02)\"$/v2/{parent=projects/*}/agent:export:\x01*\x12\x8d\x01\n\x0bImportAgent\x12..google.cloud.dialogflow.v2.ImportAgentRequest\x1a\x1d.google.longrunning.Operation\"/\x82\xd3\xe4\x93\x02)\"$/v2/{parent=projects/*}/agent:import:\x01*\x12\x90\x01\n\x0cRestoreAgent\x12/.google.cloud.dialogflow.v2.RestoreAgentRequest\x1a\x1d.google.longrunning.Operation\"0\x82\xd3\xe4\x93\x02*\"%/v2/{parent=projects/*}/agent:restore:\x01*B\x99\x01\n\x1e\x63om.google.cloud.dialogflow.v2B\nAgentProtoP\x01ZDgoogle.golang.org/genproto/googleapis/cloud/dialogflow/v2;dialogflow\xf8\x01\x01\xa2\x02\x02\x44\x46\xaa\x02\x1aGoogle.Cloud.Dialogflow.V2b\x06proto3')
+  serialized_options=_b('\n\036com.google.cloud.dialogflow.v2B\nAgentProtoP\001ZDgoogle.golang.org/genproto/googleapis/cloud/dialogflow/v2;dialogflow\370\001\001\242\002\002DF\252\002\032Google.Cloud.Dialogflow.V2'),
+  serialized_pb=_b('\n,google/cloud/dialogflow_v2/proto/agent.proto\x12\x1agoogle.cloud.dialogflow.v2\x1a\x1cgoogle/api/annotations.proto\x1a\x19google/api/resource.proto\x1a#google/longrunning/operations.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto\x1a\x1cgoogle/protobuf/struct.proto\"\xfd\x02\n\x05\x41gent\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x02 \x01(\t\x12\x1d\n\x15\x64\x65\x66\x61ult_language_code\x18\x03 \x01(\t\x12 \n\x18supported_language_codes\x18\x04 \x03(\t\x12\x11\n\ttime_zone\x18\x05 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x06 \x01(\t\x12\x12\n\navatar_uri\x18\x07 \x01(\t\x12\x16\n\x0e\x65nable_logging\x18\x08 \x01(\x08\x12?\n\nmatch_mode\x18\t \x01(\x0e\x32+.google.cloud.dialogflow.v2.Agent.MatchMode\x12 \n\x18\x63lassification_threshold\x18\n \x01(\x02\"V\n\tMatchMode\x12\x1a\n\x16MATCH_MODE_UNSPECIFIED\x10\x00\x12\x15\n\x11MATCH_MODE_HYBRID\x10\x01\x12\x16\n\x12MATCH_MODE_ML_ONLY\x10\x02\"!\n\x0fGetAgentRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\"L\n\x13SearchAgentsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t\"b\n\x14SearchAgentsResponse\x12\x31\n\x06\x61gents\x18\x01 \x03(\x0b\x32!.google.cloud.dialogflow.v2.Agent\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\"#\n\x11TrainAgentRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\"7\n\x12\x45xportAgentRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x11\n\tagent_uri\x18\x02 \x01(\t\"L\n\x13\x45xportAgentResponse\x12\x13\n\tagent_uri\x18\x01 \x01(\tH\x00\x12\x17\n\ragent_content\x18\x02 \x01(\x0cH\x00\x42\x07\n\x05\x61gent\"[\n\x12ImportAgentRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x13\n\tagent_uri\x18\x02 \x01(\tH\x00\x12\x17\n\ragent_content\x18\x03 \x01(\x0cH\x00\x42\x07\n\x05\x61gent\"\\\n\x13RestoreAgentRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x13\n\tagent_uri\x18\x02 \x01(\tH\x00\x12\x17\n\ragent_content\x18\x03 \x01(\x0cH\x00\x42\x07\n\x05\x61gent2\xee\x06\n\x06\x41gents\x12\x81\x01\n\x08GetAgent\x12+.google.cloud.dialogflow.v2.GetAgentRequest\x1a!.google.cloud.dialogflow.v2.Agent\"%\x82\xd3\xe4\x93\x02\x1f\x12\x1d/v2/{parent=projects/*}/agent\x12\x9f\x01\n\x0cSearchAgents\x12/.google.cloud.dialogflow.v2.SearchAgentsRequest\x1a\x30.google.cloud.dialogflow.v2.SearchAgentsResponse\",\x82\xd3\xe4\x93\x02&\x12$/v2/{parent=projects/*}/agent:search\x12\x8a\x01\n\nTrainAgent\x12-.google.cloud.dialogflow.v2.TrainAgentRequest\x1a\x1d.google.longrunning.Operation\".\x82\xd3\xe4\x93\x02(\"#/v2/{parent=projects/*}/agent:train:\x01*\x12\x8d\x01\n\x0b\x45xportAgent\x12..google.cloud.dialogflow.v2.ExportAgentRequest\x1a\x1d.google.longrunning.Operation\"/\x82\xd3\xe4\x93\x02)\"$/v2/{parent=projects/*}/agent:export:\x01*\x12\x8d\x01\n\x0bImportAgent\x12..google.cloud.dialogflow.v2.ImportAgentRequest\x1a\x1d.google.longrunning.Operation\"/\x82\xd3\xe4\x93\x02)\"$/v2/{parent=projects/*}/agent:import:\x01*\x12\x90\x01\n\x0cRestoreAgent\x12/.google.cloud.dialogflow.v2.RestoreAgentRequest\x1a\x1d.google.longrunning.Operation\"0\x82\xd3\xe4\x93\x02*\"%/v2/{parent=projects/*}/agent:restore:\x01*B\x99\x01\n\x1e\x63om.google.cloud.dialogflow.v2B\nAgentProtoP\x01ZDgoogle.golang.org/genproto/googleapis/cloud/dialogflow/v2;dialogflow\xf8\x01\x01\xa2\x02\x02\x44\x46\xaa\x02\x1aGoogle.Cloud.Dialogflow.V2b\x06proto3')
   ,
-  dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR,google_dot_longrunning_dot_operations__pb2.DESCRIPTOR,google_dot_protobuf_dot_empty__pb2.DESCRIPTOR,google_dot_protobuf_dot_field__mask__pb2.DESCRIPTOR,google_dot_protobuf_dot_struct__pb2.DESCRIPTOR,])
+  dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR,google_dot_api_dot_resource__pb2.DESCRIPTOR,google_dot_longrunning_dot_operations__pb2.DESCRIPTOR,google_dot_protobuf_dot_empty__pb2.DESCRIPTOR,google_dot_protobuf_dot_field__mask__pb2.DESCRIPTOR,google_dot_protobuf_dot_struct__pb2.DESCRIPTOR,])
 
 
 
@@ -38,21 +39,21 @@ _AGENT_MATCHMODE = _descriptor.EnumDescriptor(
   values=[
     _descriptor.EnumValueDescriptor(
       name='MATCH_MODE_UNSPECIFIED', index=0, number=0,
-      options=None,
+      serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
       name='MATCH_MODE_HYBRID', index=1, number=1,
-      options=None,
+      serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
       name='MATCH_MODE_ML_ONLY', index=2, number=2,
-      options=None,
+      serialized_options=None,
       type=None),
   ],
   containing_type=None,
-  options=None,
-  serialized_start=532,
-  serialized_end=618,
+  serialized_options=None,
+  serialized_start=559,
+  serialized_end=645,
 )
 _sym_db.RegisterEnumDescriptor(_AGENT_MATCHMODE)
 
@@ -70,70 +71,70 @@ _AGENT = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='display_name', full_name='google.cloud.dialogflow.v2.Agent.display_name', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='default_language_code', full_name='google.cloud.dialogflow.v2.Agent.default_language_code', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='supported_language_codes', full_name='google.cloud.dialogflow.v2.Agent.supported_language_codes', index=3,
       number=4, type=9, cpp_type=9, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='time_zone', full_name='google.cloud.dialogflow.v2.Agent.time_zone', index=4,
       number=5, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='description', full_name='google.cloud.dialogflow.v2.Agent.description', index=5,
       number=6, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='avatar_uri', full_name='google.cloud.dialogflow.v2.Agent.avatar_uri', index=6,
       number=7, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='enable_logging', full_name='google.cloud.dialogflow.v2.Agent.enable_logging', index=7,
       number=8, type=8, cpp_type=7, label=1,
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='match_mode', full_name='google.cloud.dialogflow.v2.Agent.match_mode', index=8,
       number=9, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='classification_threshold', full_name='google.cloud.dialogflow.v2.Agent.classification_threshold', index=9,
       number=10, type=2, cpp_type=6, label=1,
       has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -141,14 +142,14 @@ _AGENT = _descriptor.Descriptor(
   enum_types=[
     _AGENT_MATCHMODE,
   ],
-  options=None,
+  serialized_options=None,
   is_extendable=False,
   syntax='proto3',
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=237,
-  serialized_end=618,
+  serialized_start=264,
+  serialized_end=645,
 )
 
 
@@ -165,21 +166,21 @@ _GETAGENTREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
   nested_types=[],
   enum_types=[
   ],
-  options=None,
+  serialized_options=None,
   is_extendable=False,
   syntax='proto3',
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=620,
-  serialized_end=653,
+  serialized_start=647,
+  serialized_end=680,
 )
 
 
@@ -196,35 +197,35 @@ _SEARCHAGENTSREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='page_size', full_name='google.cloud.dialogflow.v2.SearchAgentsRequest.page_size', index=1,
       number=2, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='page_token', full_name='google.cloud.dialogflow.v2.SearchAgentsRequest.page_token', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
   nested_types=[],
   enum_types=[
   ],
-  options=None,
+  serialized_options=None,
   is_extendable=False,
   syntax='proto3',
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=655,
-  serialized_end=731,
+  serialized_start=682,
+  serialized_end=758,
 )
 
 
@@ -241,28 +242,28 @@ _SEARCHAGENTSRESPONSE = _descriptor.Descriptor(
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='next_page_token', full_name='google.cloud.dialogflow.v2.SearchAgentsResponse.next_page_token', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
   nested_types=[],
   enum_types=[
   ],
-  options=None,
+  serialized_options=None,
   is_extendable=False,
   syntax='proto3',
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=733,
-  serialized_end=831,
+  serialized_start=760,
+  serialized_end=858,
 )
 
 
@@ -279,21 +280,21 @@ _TRAINAGENTREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
   nested_types=[],
   enum_types=[
   ],
-  options=None,
+  serialized_options=None,
   is_extendable=False,
   syntax='proto3',
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=833,
-  serialized_end=868,
+  serialized_start=860,
+  serialized_end=895,
 )
 
 
@@ -310,28 +311,28 @@ _EXPORTAGENTREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='agent_uri', full_name='google.cloud.dialogflow.v2.ExportAgentRequest.agent_uri', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
   nested_types=[],
   enum_types=[
   ],
-  options=None,
+  serialized_options=None,
   is_extendable=False,
   syntax='proto3',
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=870,
-  serialized_end=925,
+  serialized_start=897,
+  serialized_end=952,
 )
 
 
@@ -348,21 +349,21 @@ _EXPORTAGENTRESPONSE = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='agent_content', full_name='google.cloud.dialogflow.v2.ExportAgentResponse.agent_content', index=1,
       number=2, type=12, cpp_type=9, label=1,
       has_default_value=False, default_value=_b(""),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
   nested_types=[],
   enum_types=[
   ],
-  options=None,
+  serialized_options=None,
   is_extendable=False,
   syntax='proto3',
   extension_ranges=[],
@@ -371,8 +372,8 @@ _EXPORTAGENTRESPONSE = _descriptor.Descriptor(
       name='agent', full_name='google.cloud.dialogflow.v2.ExportAgentResponse.agent',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=927,
-  serialized_end=1003,
+  serialized_start=954,
+  serialized_end=1030,
 )
 
 
@@ -389,28 +390,28 @@ _IMPORTAGENTREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='agent_uri', full_name='google.cloud.dialogflow.v2.ImportAgentRequest.agent_uri', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='agent_content', full_name='google.cloud.dialogflow.v2.ImportAgentRequest.agent_content', index=2,
       number=3, type=12, cpp_type=9, label=1,
       has_default_value=False, default_value=_b(""),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
   nested_types=[],
   enum_types=[
   ],
-  options=None,
+  serialized_options=None,
   is_extendable=False,
   syntax='proto3',
   extension_ranges=[],
@@ -419,8 +420,8 @@ _IMPORTAGENTREQUEST = _descriptor.Descriptor(
       name='agent', full_name='google.cloud.dialogflow.v2.ImportAgentRequest.agent',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=1005,
-  serialized_end=1096,
+  serialized_start=1032,
+  serialized_end=1123,
 )
 
 
@@ -437,28 +438,28 @@ _RESTOREAGENTREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='agent_uri', full_name='google.cloud.dialogflow.v2.RestoreAgentRequest.agent_uri', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='agent_content', full_name='google.cloud.dialogflow.v2.RestoreAgentRequest.agent_content', index=2,
       number=3, type=12, cpp_type=9, label=1,
       has_default_value=False, default_value=_b(""),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
+      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
   nested_types=[],
   enum_types=[
   ],
-  options=None,
+  serialized_options=None,
   is_extendable=False,
   syntax='proto3',
   extension_ranges=[],
@@ -467,8 +468,8 @@ _RESTOREAGENTREQUEST = _descriptor.Descriptor(
       name='agent', full_name='google.cloud.dialogflow.v2.RestoreAgentRequest.agent',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=1098,
-  serialized_end=1190,
+  serialized_start=1125,
+  serialized_end=1217,
 )
 
 _AGENT.fields_by_name['match_mode'].enum_type = _AGENT_MATCHMODE
@@ -518,10 +519,10 @@ Agent = _reflection.GeneratedProtocolMessageType('Agent', (_message.Message,), d
           Required. The name of this agent.
       default_language_code:
           Required. The default language of the agent as a language tag.
-          See `Language Support
-          <https://dialogflow.com/docs/reference/language>`__ for a list
-          of the currently supported language codes. This field cannot
-          be set by the ``Update`` method.
+          See `Language Support <https://cloud.google.com/dialogflow-
+          enterprise/docs/reference/language>`__ for a list of the
+          currently supported language codes. This field cannot be set
+          by the ``Update`` method.
       supported_language_codes:
           Optional. The list of all languages supported by this agent
           (except for the ``default_language_code``).
@@ -535,8 +536,8 @@ Agent = _reflection.GeneratedProtocolMessageType('Agent', (_message.Message,), d
       avatar_uri:
           Optional. The URI of the agent's avatar. Avatars are used
           throughout the Dialogflow console and in the self-hosted `Web
-          Demo <https://dialogflow.com/docs/integrations/web-demo>`__
-          integration.
+          Demo <https://cloud.google.com/dialogflow-
+          enterprise/docs/integrations/web-demo>`__ integration.
       enable_logging:
           Optional. Determines whether this agent should log
           conversation queries.
@@ -548,7 +549,7 @@ Agent = _reflection.GeneratedProtocolMessageType('Agent', (_message.Message,), d
           variety in matched natural language inputs for your agent, you
           can tune the machine learning classification threshold. If the
           returned score value is less than the threshold value, then a
-          fallback intent is be triggered or, if there are no fallback
+          fallback intent will be triggered or, if there are no fallback
           intents defined, no intent will be triggered. The score values
           range from 0.0 (completely uncertain) to 1.0 (completely
           certain). If set to 0.0, the default of 0.3 is used.
@@ -647,9 +648,11 @@ ExportAgentRequest = _reflection.GeneratedProtocolMessageType('ExportAgentReques
           Required. The project that the agent to export is associated
           with. Format: ``projects/<Project ID>``.
       agent_uri:
-          Optional. The Google Cloud Storage URI to export the agent to.
-          Note: The URI must start with "gs://". If left unspecified,
-          the serialized agent is returned inline.
+          Optional. The `Google Cloud Storage
+          <https://cloud.google.com/storage/docs/>`__ URI to export the
+          agent to. The format of this URI must be ``gs://<bucket-
+          name>/<object-name>``. If left unspecified, the serialized
+          agent is returned inline.
   """,
   # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2.ExportAgentRequest)
   ))
@@ -672,13 +675,15 @@ ExportAgentResponse = _reflection.GeneratedProtocolMessageType('ExportAgentRespo
           ``ExportAgentRequest``.
       agent_content:
           The exported agent.  Example for how to export an agent to a
-          zip file via a command line:  | curl |
-          'https://dialogflow.googleapis.com/v2/projects//agent:export'
-          | -X POST | -H 'Authorization: Bearer '$(gcloud auth print-
-          access-token) | -H 'Accept: application/json' | -H 'Content-
-          Type: application/json' | --compressed | --data-binary '{}' |
-          \| grep agentContent \| sed -e 's/.*"agentContent":
-          "([^"]*)".\*/`\1`/' | \| base64 --decode >
+          zip file via a command line:  .. raw:: html     <pre>curl \
+          'https://dialogflow.googleapis.com/v2/projects/&lt;project_nam
+          e&gt;/agent:export'\      -X POST \      -H 'Authorization:
+          Bearer '$(gcloud auth application-default      print-access-
+          token) \      -H 'Accept: application/json' \      -H
+          'Content-Type: application/json' \      --compressed \
+          --data-binary '{}' \    | grep agentContent | sed -e
+          's/.*"agentContent": "\([^"]*\)".*/\1/' \    | base64 --decode
+          > &lt;agent zip file&gt;</pre>
   """,
   # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2.ExportAgentResponse)
   ))
@@ -703,12 +708,14 @@ ImportAgentRequest = _reflection.GeneratedProtocolMessageType('ImportAgentReques
           import. Note: The URI must start with "gs://".
       agent_content:
           The agent to import.  Example for how to import an agent via
-          the command line:  | curl |
-          'https://dialogflow.googleapis.com/v2/projects//agent:import |
-          -X POST | -H 'Authorization: Bearer '`(gcloud auth
-          print-access-token) \    -H 'Accept: application/json' \    -H
-          'Content-Type: application/json' \    --compressed \
-          --data-binary "{  'agentContent': '`\ (cat \| base64 -w 0)' }"
+          the command line:  .. raw:: html     <pre>curl \      'https:/
+          /dialogflow.googleapis.com/v2/projects/&lt;project_name&gt;/ag
+          ent:import\       -X POST \       -H 'Authorization: Bearer
+          '$(gcloud auth application-default       print-access-token) \
+          -H 'Accept: application/json' \       -H 'Content-Type:
+          application/json' \       --compressed \       --data-binary
+          "{          'agentContent': '$(cat &lt;agent zip file&gt; |
+          base64 -w 0)'       }"</pre>
   """,
   # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2.ImportAgentRequest)
   ))
@@ -733,29 +740,30 @@ RestoreAgentRequest = _reflection.GeneratedProtocolMessageType('RestoreAgentRequ
           restore. Note: The URI must start with "gs://".
       agent_content:
           The agent to restore.  Example for how to restore an agent via
-          the command line:  | curl |
-          'https://dialogflow.googleapis.com/v2/projects//agent:restore
-          | -X POST | -H 'Authorization: Bearer '`(gcloud auth
-          print-access-token) \    -H 'Accept: application/json' \    -H
-          'Content-Type: application/json' \    --compressed \
-          --data-binary "{  'agentContent': '`\ (cat \| base64 -w 0)' }"
+          the command line:  .. raw:: html     <pre>curl \      'https:/
+          /dialogflow.googleapis.com/v2/projects/&lt;project_name&gt;/ag
+          ent:restore\       -X POST \       -H 'Authorization: Bearer
+          '$(gcloud auth application-default       print-access-token) \
+          -H 'Accept: application/json' \       -H 'Content-Type:
+          application/json' \       --compressed \       --data-binary
+          "{           'agentContent': '$(cat &lt;agent zip file&gt; |
+          base64 -w 0)'       }"</pre>
   """,
   # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2.RestoreAgentRequest)
   ))
 _sym_db.RegisterMessage(RestoreAgentRequest)
 
 
-DESCRIPTOR.has_options = True
-DESCRIPTOR._options = _descriptor._ParseOptions(descriptor_pb2.FileOptions(), _b('\n\036com.google.cloud.dialogflow.v2B\nAgentProtoP\001ZDgoogle.golang.org/genproto/googleapis/cloud/dialogflow/v2;dialogflow\370\001\001\242\002\002DF\252\002\032Google.Cloud.Dialogflow.V2'))
+DESCRIPTOR._options = None
 
 _AGENTS = _descriptor.ServiceDescriptor(
   name='Agents',
   full_name='google.cloud.dialogflow.v2.Agents',
   file=DESCRIPTOR,
   index=0,
-  options=None,
-  serialized_start=1193,
-  serialized_end=2071,
+  serialized_options=None,
+  serialized_start=1220,
+  serialized_end=2098,
   methods=[
   _descriptor.MethodDescriptor(
     name='GetAgent',
@@ -764,7 +772,7 @@ _AGENTS = _descriptor.ServiceDescriptor(
     containing_service=None,
     input_type=_GETAGENTREQUEST,
     output_type=_AGENT,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002\037\022\035/v2/{parent=projects/*}/agent')),
+    serialized_options=_b('\202\323\344\223\002\037\022\035/v2/{parent=projects/*}/agent'),
   ),
   _descriptor.MethodDescriptor(
     name='SearchAgents',
@@ -773,7 +781,7 @@ _AGENTS = _descriptor.ServiceDescriptor(
     containing_service=None,
     input_type=_SEARCHAGENTSREQUEST,
     output_type=_SEARCHAGENTSRESPONSE,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002&\022$/v2/{parent=projects/*}/agent:search')),
+    serialized_options=_b('\202\323\344\223\002&\022$/v2/{parent=projects/*}/agent:search'),
   ),
   _descriptor.MethodDescriptor(
     name='TrainAgent',
@@ -782,7 +790,7 @@ _AGENTS = _descriptor.ServiceDescriptor(
     containing_service=None,
     input_type=_TRAINAGENTREQUEST,
     output_type=google_dot_longrunning_dot_operations__pb2._OPERATION,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002(\"#/v2/{parent=projects/*}/agent:train:\001*')),
+    serialized_options=_b('\202\323\344\223\002(\"#/v2/{parent=projects/*}/agent:train:\001*'),
   ),
   _descriptor.MethodDescriptor(
     name='ExportAgent',
@@ -791,7 +799,7 @@ _AGENTS = _descriptor.ServiceDescriptor(
     containing_service=None,
     input_type=_EXPORTAGENTREQUEST,
     output_type=google_dot_longrunning_dot_operations__pb2._OPERATION,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002)\"$/v2/{parent=projects/*}/agent:export:\001*')),
+    serialized_options=_b('\202\323\344\223\002)\"$/v2/{parent=projects/*}/agent:export:\001*'),
   ),
   _descriptor.MethodDescriptor(
     name='ImportAgent',
@@ -800,7 +808,7 @@ _AGENTS = _descriptor.ServiceDescriptor(
     containing_service=None,
     input_type=_IMPORTAGENTREQUEST,
     output_type=google_dot_longrunning_dot_operations__pb2._OPERATION,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002)\"$/v2/{parent=projects/*}/agent:import:\001*')),
+    serialized_options=_b('\202\323\344\223\002)\"$/v2/{parent=projects/*}/agent:import:\001*'),
   ),
   _descriptor.MethodDescriptor(
     name='RestoreAgent',
@@ -809,7 +817,7 @@ _AGENTS = _descriptor.ServiceDescriptor(
     containing_service=None,
     input_type=_RESTOREAGENTREQUEST,
     output_type=google_dot_longrunning_dot_operations__pb2._OPERATION,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002*\"%/v2/{parent=projects/*}/agent:restore:\001*')),
+    serialized_options=_b('\202\323\344\223\002*\"%/v2/{parent=projects/*}/agent:restore:\001*'),
   ),
 ])
 _sym_db.RegisterServiceDescriptor(_AGENTS)
