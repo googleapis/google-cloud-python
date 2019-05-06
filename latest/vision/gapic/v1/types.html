@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Types for Cloud Vision API Client &#8212; google-cloud 47db1c6 documentation</title>
+    <title>Types for Cloud Vision API Client &#8212; google-cloud 774cdb3 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -72,6 +72,69 @@ ProductSet.  Format is:
 </dd></dl>
 
 <dl class="class">
+<dt id="google.cloud.vision_v1.types.AnnotateFileRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.vision_v1.types.</code><code class="descname">AnnotateFileRequest</code><a class="headerlink" href="#google.cloud.vision_v1.types.AnnotateFileRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>A request to annotate one single file, e.g. a PDF, TIFF or GIF file.</p>
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.AnnotateFileRequest.input_config">
+<code class="descname">input_config</code><a class="headerlink" href="#google.cloud.vision_v1.types.AnnotateFileRequest.input_config" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. Information about the input file.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.AnnotateFileRequest.features">
+<code class="descname">features</code><a class="headerlink" href="#google.cloud.vision_v1.types.AnnotateFileRequest.features" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. Requested features.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.AnnotateFileRequest.image_context">
+<code class="descname">image_context</code><a class="headerlink" href="#google.cloud.vision_v1.types.AnnotateFileRequest.image_context" title="Permalink to this definition">#</a></dt>
+<dd><p>Additional context that may accompany the image(s) in the
+file.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.AnnotateFileRequest.pages">
+<code class="descname">pages</code><a class="headerlink" href="#google.cloud.vision_v1.types.AnnotateFileRequest.pages" title="Permalink to this definition">#</a></dt>
+<dd><p>Pages of the file to perform image annotation.  Pages starts
+from 1, we assume the first page of the file is page 1. At
+most 5 pages are supported per request. Pages can be negative.
+Page 1 means the first page. Page 2 means the second page.
+Page -1 means the last page. Page -2 means the second to the
+last page.  If the file is GIF instead of PDF or TIFF, page
+refers to GIF frames.  If this field is empty, by default the
+service performs image annotation for the first 5 pages of the
+file.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">features</code></dt>
+<dd><p>Field google.cloud.vision.v1.AnnotateFileRequest.features</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">image_context</code></dt>
+<dd><p>Field google.cloud.vision.v1.AnnotateFileRequest.image_context</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">input_config</code></dt>
+<dd><p>Field google.cloud.vision.v1.AnnotateFileRequest.input_config</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">pages</code></dt>
+<dd><p>Field google.cloud.vision.v1.AnnotateFileRequest.pages</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="google.cloud.vision_v1.types.AnnotateFileResponse">
 <em class="property">class </em><code class="descclassname">google.cloud.vision_v1.types.</code><code class="descname">AnnotateFileResponse</code><a class="headerlink" href="#google.cloud.vision_v1.types.AnnotateFileResponse" title="Permalink to this definition">#</a></dt>
 <dd><p>Response to a single file annotation request. A file may contain one or
@@ -90,6 +153,12 @@ generated.</p>
 </dd></dl>
 
 <dl class="attribute">
+<dt id="google.cloud.vision_v1.types.AnnotateFileResponse.total_pages">
+<code class="descname">total_pages</code><a class="headerlink" href="#google.cloud.vision_v1.types.AnnotateFileResponse.total_pages" title="Permalink to this definition">#</a></dt>
+<dd><p>This field gives the total number of pages in the file.</p>
+</dd></dl>
+
+<dl class="attribute">
 <dt>
 <code class="descname">input_config</code></dt>
 <dd><p>Field google.cloud.vision.v1.AnnotateFileResponse.input_config</p>
@@ -101,13 +170,20 @@ generated.</p>
 <dd><p>Field google.cloud.vision.v1.AnnotateFileResponse.responses</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">total_pages</code></dt>
+<dd><p>Field google.cloud.vision.v1.AnnotateFileResponse.total_pages</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.vision_v1.types.AnnotateImageRequest">
 <em class="property">class </em><code class="descclassname">google.cloud.vision_v1.types.</code><code class="descname">AnnotateImageRequest</code><a class="headerlink" href="#google.cloud.vision_v1.types.AnnotateImageRequest" title="Permalink to this definition">#</a></dt>
 <dd><p>Request for performing Google Cloud Vision API tasks over a
-user-provided image, with user-requested features.</p>
+user-provided image, with user-requested features, and with context
+information.</p>
 <dl class="attribute">
 <dt id="google.cloud.vision_v1.types.AnnotateImageRequest.image">
 <code class="descname">image</code><a class="headerlink" href="#google.cloud.vision_v1.types.AnnotateImageRequest.image" title="Permalink to this definition">#</a></dt>
@@ -453,6 +529,95 @@ AsyncBatchAnnotateFilesRequest.</p>
 <dt>
 <code class="descname">responses</code></dt>
 <dd><p>Field google.cloud.vision.v1.AsyncBatchAnnotateFilesResponse.responses</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.vision_v1.types.AsyncBatchAnnotateImagesRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.vision_v1.types.</code><code class="descname">AsyncBatchAnnotateImagesRequest</code><a class="headerlink" href="#google.cloud.vision_v1.types.AsyncBatchAnnotateImagesRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request for async image annotation for a list of images.</p>
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.AsyncBatchAnnotateImagesRequest.requests">
+<code class="descname">requests</code><a class="headerlink" href="#google.cloud.vision_v1.types.AsyncBatchAnnotateImagesRequest.requests" title="Permalink to this definition">#</a></dt>
+<dd><p>Individual image annotation requests for this batch.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.AsyncBatchAnnotateImagesRequest.output_config">
+<code class="descname">output_config</code><a class="headerlink" href="#google.cloud.vision_v1.types.AsyncBatchAnnotateImagesRequest.output_config" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The desired output location and metadata (e.g.
+format).</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">output_config</code></dt>
+<dd><p>Field google.cloud.vision.v1.AsyncBatchAnnotateImagesRequest.output_config</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">requests</code></dt>
+<dd><p>Field google.cloud.vision.v1.AsyncBatchAnnotateImagesRequest.requests</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.vision_v1.types.AsyncBatchAnnotateImagesResponse">
+<em class="property">class </em><code class="descclassname">google.cloud.vision_v1.types.</code><code class="descname">AsyncBatchAnnotateImagesResponse</code><a class="headerlink" href="#google.cloud.vision_v1.types.AsyncBatchAnnotateImagesResponse" title="Permalink to this definition">#</a></dt>
+<dd><p>Response to an async batch image annotation request.</p>
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.AsyncBatchAnnotateImagesResponse.output_config">
+<code class="descname">output_config</code><a class="headerlink" href="#google.cloud.vision_v1.types.AsyncBatchAnnotateImagesResponse.output_config" title="Permalink to this definition">#</a></dt>
+<dd><p>The output location and metadata from
+AsyncBatchAnnotateImagesRequest.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">output_config</code></dt>
+<dd><p>Field google.cloud.vision.v1.AsyncBatchAnnotateImagesResponse.output_config</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.vision_v1.types.BatchAnnotateFilesRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.vision_v1.types.</code><code class="descname">BatchAnnotateFilesRequest</code><a class="headerlink" href="#google.cloud.vision_v1.types.BatchAnnotateFilesRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>A list of requests to annotate files using the BatchAnnotateFiles API.</p>
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.BatchAnnotateFilesRequest.requests">
+<code class="descname">requests</code><a class="headerlink" href="#google.cloud.vision_v1.types.BatchAnnotateFilesRequest.requests" title="Permalink to this definition">#</a></dt>
+<dd><p>The list of file annotation requests. Right now we support
+only one AnnotateFileRequest in BatchAnnotateFilesRequest.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">requests</code></dt>
+<dd><p>Field google.cloud.vision.v1.BatchAnnotateFilesRequest.requests</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.vision_v1.types.BatchAnnotateFilesResponse">
+<em class="property">class </em><code class="descclassname">google.cloud.vision_v1.types.</code><code class="descname">BatchAnnotateFilesResponse</code><a class="headerlink" href="#google.cloud.vision_v1.types.BatchAnnotateFilesResponse" title="Permalink to this definition">#</a></dt>
+<dd><p>A list of file annotation responses.</p>
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.BatchAnnotateFilesResponse.responses">
+<code class="descname">responses</code><a class="headerlink" href="#google.cloud.vision_v1.types.BatchAnnotateFilesResponse.responses" title="Permalink to this definition">#</a></dt>
+<dd><p>The list of file annotation responses, each response
+corresponding to each AnnotateFileRequest in
+BatchAnnotateFilesRequest.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">responses</code></dt>
+<dd><p>Field google.cloud.vision.v1.BatchAnnotateFilesResponse.responses</p>
 </dd></dl>
 
 </dd></dl>
@@ -906,8 +1071,7 @@ image.</p>
 <dt id="google.cloud.vision_v1.types.CropHint.bounding_poly">
 <code class="descname">bounding_poly</code><a class="headerlink" href="#google.cloud.vision_v1.types.CropHint.bounding_poly" title="Permalink to this definition">#</a></dt>
 <dd><p>The bounding polygon for the crop region. The coordinates of
-the bounding box are in the original image’s scale, as
-returned in <code class="docutils literal notranslate"><span class="pre">ImageParams</span></code>.</p>
+the bounding box are in the original image’s scale.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1230,13 +1394,12 @@ entity.</p>
 <dt id="google.cloud.vision_v1.types.FaceAnnotation.bounding_poly">
 <code class="descname">bounding_poly</code><a class="headerlink" href="#google.cloud.vision_v1.types.FaceAnnotation.bounding_poly" title="Permalink to this definition">#</a></dt>
 <dd><p>The bounding polygon around the face. The coordinates of the
-bounding box are in the original image’s scale, as returned in
-<code class="docutils literal notranslate"><span class="pre">ImageParams</span></code>. The bounding box is computed to “frame” the
-face in accordance with human expectations. It is based on the
-landmarker results. Note that one or more x and/or y
-coordinates may not be generated in the <code class="docutils literal notranslate"><span class="pre">BoundingPoly</span></code> (the
-polygon will be unbounded) if only a partial face appears in
-the image to be annotated.</p>
+bounding box are in the original image’s scale. The bounding
+box is computed to “frame” the face in accordance with human
+expectations. It is based on the landmarker results. Note that
+one or more x and/or y coordinates may not be generated in the
+<code class="docutils literal notranslate"><span class="pre">BoundingPoly</span></code> (the polygon will be unbounded) if only a
+partial face appears in the image to be annotated.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1532,17 +1695,25 @@ objects can be specified in the <code class="docutils literal notranslate"><span
 <dl class="attribute">
 <dt id="google.cloud.vision_v1.types.GcsDestination.uri">
 <code class="descname">uri</code><a class="headerlink" href="#google.cloud.vision_v1.types.GcsDestination.uri" title="Permalink to this definition">#</a></dt>
-<dd><p>Google Cloud Storage URI where the results will be stored.
-Results will be in JSON format and preceded by its
-corresponding input URI. This field can either represent a
-single file, or a prefix for multiple outputs. Prefixes must
-end in a <code class="docutils literal notranslate"><span class="pre">/</span></code>.  Examples:  -  File: gs://bucket-
-name/filename.json -  Prefix: gs://bucket-name/prefix/here/ -
-File: gs://bucket-name/prefix/here  If multiple outputs, each
-response is still AnnotateFileResponse, each of which contains
-some subset of the full list of AnnotateImageResponse.
-Multiple outputs can happen if, for example, the output JSON
-is too large and overflows into multiple sharded files.</p>
+<dd><p>Google Cloud Storage URI prefix where the results will be
+stored. Results will be in JSON format and preceded by its
+corresponding input URI prefix. This field can either
+represent a gcs file prefix or gcs directory. In either case,
+the uri should be unique because in order to get all of the
+output files, you will need to do a wildcard gcs search on the
+uri prefix you provide.  Examples:  -  File Prefix:
+gs://bucket-name/here/filenameprefix The output files    will
+be created in gs://bucket-name/here/ and the names of the
+output    files will begin with “filenameprefix”.  -
+Directory Prefix: gs://bucket-name/some/location/ The output
+files    will be created in gs://bucket-name/some/location/
+and the names of    the output files could be anything because
+there was no filename    prefix specified.  If multiple
+outputs, each response is still AnnotateFileResponse, each of
+which contains some subset of the full list of
+AnnotateImageResponse. Multiple outputs can happen if, for
+example, the output JSON is too large and overflows into
+multiple sharded files.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -2017,10 +2188,27 @@ line of the csv, starting from line 0.</p>
 </dd></dl>
 
 <dl class="attribute">
+<dt id="google.cloud.vision_v1.types.InputConfig.content">
+<code class="descname">content</code><a class="headerlink" href="#google.cloud.vision_v1.types.InputConfig.content" title="Permalink to this definition">#</a></dt>
+<dd><p>File content, represented as a stream of bytes. Note: As with
+all <code class="docutils literal notranslate"><span class="pre">bytes</span></code> fields, protobuffers use a pure binary
+representation, whereas JSON representations use base64.
+Currently, this field only works for BatchAnnotateFiles
+requests. It does not work for AsyncBatchAnnotateFiles
+requests.</p>
+</dd></dl>
+
+<dl class="attribute">
 <dt id="google.cloud.vision_v1.types.InputConfig.mime_type">
 <code class="descname">mime_type</code><a class="headerlink" href="#google.cloud.vision_v1.types.InputConfig.mime_type" title="Permalink to this definition">#</a></dt>
 <dd><p>The type of the file. Currently only “application/pdf” and
 “image/tiff” are supported. Wildcards are not supported.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">content</code></dt>
+<dd><p>Field google.cloud.vision.v1.InputConfig.content</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -3018,9 +3206,11 @@ only consider the first category, and either “homegoods”,
 <dd><p>The filtering expression. This can be used to restrict search
 results based on Product labels. We currently support an AND
 of OR of key-value expressions, where each expression within
-an OR must have the same key.  For example, “(color = red OR
-color = blue) AND brand = Google” is acceptable, but not
-“(color = red OR brand = Google)” or “color: red”.</p>
+an OR must have the same key. An ‘=’ should be used to connect
+the key and value.  For example, “(color = red OR color =
+blue) AND brand = Google” is acceptable, but “(color = red OR
+brand = Google)” is not acceptable. “color: red” is not
+acceptable because it uses a ‘:’ instead of an ‘=’.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -3056,8 +3246,9 @@ color = blue) AND brand = Google” is acceptable, but not
 <dl class="attribute">
 <dt id="google.cloud.vision_v1.types.ProductSearchResults.index_time">
 <code class="descname">index_time</code><a class="headerlink" href="#google.cloud.vision_v1.types.ProductSearchResults.index_time" title="Permalink to this definition">#</a></dt>
-<dd><p>Timestamp of the index which provided these results. Changes
-made after this time are not reflected in the current results.</p>
+<dd><p>Timestamp of the index which provided these results. Products
+added to the product set and products removed from the product
+set after this time are not reflected in the current results.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -3198,8 +3389,9 @@ Must be at most 4096 characters long.</p>
 <code class="descname">index_time</code><a class="headerlink" href="#google.cloud.vision_v1.types.ProductSet.index_time" title="Permalink to this definition">#</a></dt>
 <dd><p>Output only. The time at which this ProductSet was last
 indexed. Query results will reflect all updates before this
-time. If this ProductSet has never been indexed, this field is
-0.  This field is ignored when creating a ProductSet.</p>
+time. If this ProductSet has never been indexed, this
+timestamp is the default value “1970-01-01T00:00:00Z”.  This
+field is ignored when creating a ProductSet.</p>
 </dd></dl>
 
 <dl class="attribute">
