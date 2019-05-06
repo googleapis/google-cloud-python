@@ -236,9 +236,10 @@ class Client(ClientWithProject):
             >>> client = storage.Client()
 
             >>> # Set properties on a plain resource object.
-            >>> bucket = storage.Bucket("my-bucket-name")
+            >>> bucket = client.get_bucket("my-bucket-name")
 
-            >>> # Pass that resource object to the client.
+            >>> # Time passes. Another program may have modified the bucket
+                in the meantime, so you want to get the latest state.
             >>> bucket = client.get_bucket(bucket)  # API request.
 
         """
