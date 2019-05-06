@@ -16,11 +16,9 @@ In a nutshell this library implements:
 from google.cloud.firestore_v1beta1.client import Client, DEFAULT_DATABASE
 from google.cloud.firestore_v1beta1.query import Query as FSQuery
 from google.cloud.firestore_v1beta1 import SERVER_TIMESTAMP
-
-
-import os
 import json
 from datetime import datetime
+from typing import Type
 
 
 class _Field(object):
@@ -41,26 +39,6 @@ class _Field(object):
         return value
 
 
-def initialize_database(project=None, credentials=None, database=DEFAULT_DATABASE):
-    """
-    Set the parameters to be used when connecting to firestore
-
-    Args:
-        project (Optional[str]): The project which the client acts on behalf
-            of. If not passed, falls back to the default inferred
-            from the environment.
-        credentials (Optional[~google.auth.credentials.Credentials]): The
-            OAuth2 Credentials to use for this client. If not passed, falls
-            back to the default inferred from the environment.
-        database (Optional[str]): The database name that the client targets.
-            For now, :attr:`DEFAULT_DATABASE` (the default value) is the
-            only valid database.
-    """
-    os.environ["__project"] = project
-    os.environ["__credentials"] = credentials
-    os.environ["__database"] = database
-
-
 class FirestoreModel(object):
     """
     An equivalent of a top-level firestore collection
@@ -68,17 +46,20 @@ class FirestoreModel(object):
     Attributes:
         id (str or int): Unique id identifying this record, if auto-generated, this is not available before `put()`
     """
-    def __init__(self, **data):
+    def __init__(self, __parent__: Type['FirestoreModel'] = None, **data):
         """
         Creates a firestore document under the collection __model_name
 
         Args:
+            __parent__ Optional(Type[FirestoreModel]): If this is a sub-collection of another model,
+                give an instance of the parent
             **data (kwargs): Values for fields in the new record, e.g User(name="Bob")
         """
+        path_prefix = self.__collection_prefix(__parent__)
         self.__setup_fields()
         self.__model_name = type(self).__name__
-        client = FirestoreModel.__init_client__()
-        self.__collection = client.collection(self.__model_name)
+        client = self.__init_client__()
+        self.__collection = client.collection("%s/%s" % (path_prefix, self.__model_name))
         self.id = None
         if "id" in data:
             self.id = data.pop("id")
@@ -88,17 +69,37 @@ class FirestoreModel(object):
             else:
                 raise InvalidPropertyError(key, self.__model_name)
 
-    def __database_path__(self):
+    def __collection_prefix(self, __parent__):
+        try:
+            sub_collection = self.__sub_collection__()
+            if not __parent__:
+                raise Exception()  # TODO: Raise a clearer exception as to the reason for this
+            if not isinstance(__parent__, sub_collection):
+                raise Exception()  # TODO: Explain why
+            return __parent__._reference_path()
+        except NotImplementedError:
+            if __parent__:
+                raise Exception()  # TODO: Raise a clearer exception why this failed
+            return ""
+
+    def _document_path(self):
         if not self.id:
             return None
+        # Get's the absolute path: `projects/{project_id}/databases/{database_id}/documents/{document_path}
         return self.__collection.document(self.id)._document_path()
 
-    @staticmethod
-    def __init_client__():
-        # These values are stored in ENV in db.initialize_database()
-        project = os.environ.get("__project", None)
-        credentials = os.environ.get("__credentials", None)
-        database = os.environ.get("__database", DEFAULT_DATABASE)
+    def _reference_path(self):
+        if not self.id:
+            return None
+        # Get's the reference relative to the database
+        return self.__collection.document(self.id).path()
+
+    @classmethod
+    def __init_client__(cls):
+        try:
+            project, credentials, database = cls.__database_props__()
+        except NotImplementedError:
+            project, credentials, database = (None, None, DEFAULT_DATABASE)
         return Client(project=project, credentials=credentials, database=database)
 
     @classmethod
@@ -162,19 +163,20 @@ class FirestoreModel(object):
         self.id = new_ref.id
 
     @classmethod
-    def get(cls, key_id: str or int):
+    def get(cls, key_id: str or int, parent=None):
         """
         Get a model with the given/id
 
         Args:
             key_id (str or int): A key or id of the model record
+            parent (FirestoreModel.__bases__): If querying a sub collection of model, provide the parent instance
 
         Returns:
             FirestoreModel: An instance of the firestore model calling get
             
             None: If the id provided doesn't exist
         """
-        document = FirestoreModel.__init_client__().collection(cls.__name__).document(key_id)
+        document = cls.__init_client__().collection(cls.__name__).document(key_id)
         data = document.get()
         if not data.exists:
             return None
@@ -233,7 +235,7 @@ class Query(object):
              value (any): The value to compare from the field
 
         Returns:
-            FirestoreModel.__Query: A query object with this condition added
+            Query: A query object with this condition added
         """
         self.__collection.filter(field, "==", self.__validate_value(field, value))
         return self
@@ -247,7 +249,7 @@ class Query(object):
              value (any): The value to compare from the field
 
         Returns:
-            FirestoreModel.__Query: A query object with this condition added
+            Query: A query object with this condition added
         """
         self.__add_range_filter(field)
         self.__collection.filter(field, ">", self.__validate_value(field, value))
@@ -261,7 +263,7 @@ class Query(object):
              value (any): The value to compare from the field
 
         Returns:
-            FirestoreModel.__Query: A query object with this condition added
+            Query: A query object with this condition added
         """
         self.__add_range_filter(field)
         self.__collection.filter(field, "<", self.__validate_value(field, value))
@@ -275,7 +277,7 @@ class Query(object):
              value (any): The value to compare from the field
 
         Returns:
-            FirestoreModel.__Query: A query object with this condition added
+            Query: A query object with this condition added
         """
         self.__add_range_filter(field)
         self.__collection.filter(field, ">=", self.__validate_value(field, value))
@@ -289,7 +291,7 @@ class Query(object):
              value (any): The value to compare from the field
 
         Returns:
-            FirestoreModel.__Query: A query object with this condition added
+            Query: A query object with this condition added
         """
         self.__add_range_filter(field)
         self.__collection.filter(field, "<=", self.__validate_value(field, value))
@@ -303,7 +305,7 @@ class Query(object):
              value (any): The value to compare from the field
 
         Returns:
-            FirestoreModel.__Query: A query object with this condition added
+            Query: A query object with this condition added
 
         Raises:
             MalformedQueryError: If the field specified is not a ListField, or
@@ -331,7 +333,7 @@ class Query(object):
             direction (str: "ASC" or "DESC"), optional:
 
         Returns:
-             FirestoreModel.__Query: A query object with order applied
+             Query: A query object with order applied
         """
         if direction is not "ASC" and direction is not "DESC":
             raise MalformedQueryError("order_by direction can only be ASC, or DESC")
@@ -351,7 +353,7 @@ class Query(object):
         Get the results of the query as a list
 
         Returns:
-            list (FirestoreModel): A list of models for the found results
+            list (Type[FirestoreModel]): A list of models for the found results
         """
         return [model for model in self]
 
@@ -395,7 +397,7 @@ class IntegerField(_Field):
 
 class ListField(_Field):
     """A List field"""
-    def __init__(self, field_type: _Field.__bases__):
+    def __init__(self, field_type: Type[_Field]):
         super(ListField, self).__init__(list, default=[])
         self.field_type = field_type
 
@@ -408,7 +410,7 @@ class ListField(_Field):
 
 class ReferenceField(_Field):
     """A field referencing another model, It's value is an id of the referenced record"""
-    def __init__(self, model: FirestoreModel.__bases__, required=False):
+    def __init__(self, model: Type[FirestoreModel], required=False):
         super(ReferenceField, self).__init__(model, required=required)
         self.model = model
 
