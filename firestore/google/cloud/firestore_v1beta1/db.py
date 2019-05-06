@@ -1,4 +1,8 @@
-"""Model Client for google cloud firestore,
+"""
+A class that inherits from :class:`~.firestore_v1beta1.client.db.FirestoreModel` represents a structure of documents
+stored in cloud firestore. Applications define model classes to indicate the structure of their entities,
+then instantiate those model classes to create entities. All model classes must inherit (directly or indirectly) from
+:class:`~.firestore_v1beta1.client.db.FirestoreModel`.
 
 In a nutshell this library implements:
 
@@ -40,21 +44,17 @@ class _Field(object):
 
 
 class FirestoreModel(object):
-    """
-    An equivalent of a top-level firestore collection
+    """Creates a firestore document under the collection [YourModel]
+
+    Args:
+        __parent__ Optional(Type[FirestoreModel]): If this is a sub-collection of another model,
+            give an instance of the parent
+        **data (kwargs): Values for fields in the new record, e.g User(name="Bob")
 
     Attributes:
         id (str or int): Unique id identifying this record, if auto-generated, this is not available before `put()`
     """
     def __init__(self, __parent__: Type['FirestoreModel'] = None, **data):
-        """
-        Creates a firestore document under the collection __model_name
-
-        Args:
-            __parent__ Optional(Type[FirestoreModel]): If this is a sub-collection of another model,
-                give an instance of the parent
-            **data (kwargs): Values for fields in the new record, e.g User(name="Bob")
-        """
         path_prefix = self.__collection_prefix(__parent__)
         self.__setup_fields()
         self.__model_name = type(self).__name__
@@ -72,14 +72,20 @@ class FirestoreModel(object):
     def __collection_prefix(self, __parent__):
         try:
             sub_collection = self.__sub_collection__()
-            if not __parent__:
-                raise Exception()  # TODO: Raise a clearer exception as to the reason for this
+            if isinstance(sub_collection, str):  # In this case the subcollection is just a path
+                return sub_collection
+            if not issubclass(sub_collection, FirestoreModel):
+                raise SubCollectionError("`__sub_collection__` must return a subclass of `FirestoreModel`")
+            if not __parent__:  # We need to have a parent model to compare the subclass to
+                raise SubCollectionError("Variable `__parent__` is required to initialize a sub-collection")
+            # We expect the parent to be an instance of the model returned
             if not isinstance(__parent__, sub_collection):
-                raise Exception()  # TODO: Explain why
+                raise SubCollectionError("The __parent__ of a subcollection must be of the same instance as "
+                                         "the return of `__sub_collection__`")
             return __parent__._reference_path()
         except NotImplementedError:
             if __parent__:
-                raise Exception()  # TODO: Raise a clearer exception why this failed
+                raise Exception("__parent__ provided in a model that doesn't provide a subcollection")
             return ""
 
     def _document_path(self):
@@ -105,24 +111,41 @@ class FirestoreModel(object):
     @classmethod
     def __database_props__(cls):
         """
-        This method returns a tuple of the project, creds and database to use
+        Override this method if you are not working on App Engine environment or any other case where you need to
+        the `Project`, `Credentials` and the `database` that the model is going to use
 
-        TODO: Better explanation of this method
+        .. note::
+            This is a classmethod and therefore should be overridden as such, i.e. must be decorated with `@classmethod`
+
+        Returns:
+            (Project, Credentials, database): A tuple of `Project`, `Credentials` and `database` in that order
 
         Raises:
-            NotImplementedError: Raised if this method is not overridden
+            NotImplementedError: Raised if this method is not overridden, You don't need to override this method if
+                you're already in an authorized environment e.g. App Engine or Firebase Admin
         """
         raise NotImplementedError()
 
     @classmethod
     def __sub_collection__(cls):
         """
-        If this is a sub collection of another model, or just a constant path
+        Override this method this is a sub collection of another model, or just a constant path
 
-        TODO: Better explanation of this method
+        .. note::
+            This is a classmethod and therefore should be overridden as such, i.e. must be decorated with `@classmethod`
+
+        Returns:
+            String: A path representing a collection if you don't want your Model to be on the root of the current
+                database, e.g In a shared database: `sales`
+
+            Type[Firestore]: A :class:`~.firestore_v1beta1.client.db.FirestoreModel` class where each document in this
+                model is a subcollection of a record in the returned
+                :class:`~.firestore_v1beta1.client.db.FirestoreModel`. e.g If you have a `User` model and each `User`
+                has a collection of `Notes`. The model `Notes` would return `User`
 
         Raises:
-            NotImplementedError: Raised if this method is not overridden
+            NotImplementedError: Raised if this method is not overridden. You don't need to implement this method if
+                your model is not a subcollection
         """
         raise NotImplementedError()
 
@@ -163,13 +186,13 @@ class FirestoreModel(object):
         self.id = new_ref.id
 
     @classmethod
-    def get(cls, key_id: str or int, parent=None):
+    def get(cls, key_id: str or int, parent: Type['FirestoreModel'] = None):
         """
         Get a model with the given/id
 
         Args:
             key_id (str or int): A key or id of the model record
-            parent (FirestoreModel.__bases__): If querying a sub collection of model, provide the parent instance
+            parent (Type[FirestoreModel]): If querying a sub collection of model, provide the parent instance
 
         Returns:
             FirestoreModel: An instance of the firestore model calling get
@@ -481,3 +504,12 @@ class InvalidPropertyError(Exception):
 
     def __str__(self):
         return "InvalidPropertyError: %s not found in model %s" % (self.prop_name, self.model_name)
+
+
+class SubCollectionError(Exception):
+    """Raised when conditions of a subcollection are not met"""
+    def __init__(self, message):
+        self.message = message
+
+    def __str__(self):
+        return "SubCollectionError: %s" % self.message
