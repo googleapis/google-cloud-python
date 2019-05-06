@@ -111,6 +111,10 @@ class Query(object):
             any matching documents will be included in the result set.
             When the query is formed, the document values
             will be used in the order given by ``orders``.
+        all_descendants (Optional[bool]): When false, selects only collections
+            that are immediate children of the `parent` specified in the
+            containing `RunQueryRequest`. When true, selects all descendant
+            collections.
     """
 
     ASCENDING = "ASCENDING"
@@ -128,6 +132,7 @@ class Query(object):
         offset=None,
         start_at=None,
         end_at=None,
+        all_descendants=False,
     ):
         self._parent = parent
         self._projection = projection
@@ -137,6 +142,7 @@ class Query(object):
         self._offset = offset
         self._start_at = start_at
         self._end_at = end_at
+        self._all_descendants = all_descendants
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
@@ -150,6 +156,7 @@ class Query(object):
             and self._offset == other._offset
             and self._start_at == other._start_at
             and self._end_at == other._end_at
+            and self._all_descendants == other._all_descendants
         )
 
     @property
@@ -203,6 +210,7 @@ class Query(object):
             offset=self._offset,
             start_at=self._start_at,
             end_at=self._end_at,
+            all_descendants=self._all_descendants,
         )
 
     def where(self, field_path, op_string, value):
@@ -270,6 +278,7 @@ class Query(object):
             offset=self._offset,
             start_at=self._start_at,
             end_at=self._end_at,
+            all_descendants=self._all_descendants,
         )
 
     @staticmethod
@@ -321,6 +330,7 @@ class Query(object):
             offset=self._offset,
             start_at=self._start_at,
             end_at=self._end_at,
+            all_descendants=self._all_descendants,
         )
 
     def limit(self, count):
@@ -346,6 +356,7 @@ class Query(object):
             offset=self._offset,
             start_at=self._start_at,
             end_at=self._end_at,
+            all_descendants=self._all_descendants,
         )
 
     def offset(self, num_to_skip):
@@ -372,6 +383,7 @@ class Query(object):
             offset=num_to_skip,
             start_at=self._start_at,
             end_at=self._end_at,
+            all_descendants=self._all_descendants,
         )
 
     def _cursor_helper(self, document_fields, before, start):
@@ -418,6 +430,7 @@ class Query(object):
             "orders": self._orders,
             "limit": self._limit,
             "offset": self._offset,
+            "all_descendants": self._all_descendants,
         }
         if start:
             query_kwargs["start_at"] = cursor_pair
@@ -679,7 +692,7 @@ class Query(object):
             "select": projection,
             "from": [
                 query_pb2.StructuredQuery.CollectionSelector(
-                    collection_id=self._parent.id
+                    collection_id=self._parent.id, all_descendants=self._all_descendants
                 )
             ],
             "where": self._filters_pb(),
@@ -739,9 +752,14 @@ class Query(object):
         )
 
         for response in response_iterator:
-            snapshot = _query_response_to_snapshot(
-                response, self._parent, expected_prefix
-            )
+            if self._all_descendants:
+                snapshot = _collection_group_query_response_to_snapshot(
+                    response, self._parent
+                )
+            else:
+                snapshot = _query_response_to_snapshot(
+                    response, self._parent, expected_prefix
+                )
             if snapshot is not None:
                 yield snapshot
 
@@ -958,6 +976,35 @@ def _query_response_to_snapshot(response_pb, collection, expected_prefix):
 
     document_id = _helpers.get_doc_id(response_pb.document, expected_prefix)
     reference = collection.document(document_id)
+    data = _helpers.decode_dict(response_pb.document.fields, collection._client)
+    snapshot = document.DocumentSnapshot(
+        reference,
+        data,
+        exists=True,
+        read_time=response_pb.read_time,
+        create_time=response_pb.document.create_time,
+        update_time=response_pb.document.update_time,
+    )
+    return snapshot
+
+
+def _collection_group_query_response_to_snapshot(response_pb, collection):
+    """Parse a query response protobuf to a document snapshot.
+
+    Args:
+        response_pb (google.cloud.proto.firestore.v1.\
+            firestore_pb2.RunQueryResponse): A
+        collection (~.firestore_v1.collection.CollectionReference): A
+            reference to the collection that initiated the query.
+
+    Returns:
+        Optional[~.firestore.document.DocumentSnapshot]: A
+        snapshot of the data returned in the query. If ``response_pb.document``
+        is not set, the snapshot will be :data:`None`.
+    """
+    if not response_pb.HasField("document"):
+        return None
+    reference = collection._client.document(response_pb.document.name)
     data = _helpers.decode_dict(response_pb.document.fields, collection._client)
     snapshot = document.DocumentSnapshot(
         reference,

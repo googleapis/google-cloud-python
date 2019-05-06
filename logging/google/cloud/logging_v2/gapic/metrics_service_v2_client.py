@@ -77,17 +77,17 @@ class MetricsServiceV2Client(object):
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def project_path(cls, project):
-        """Return a fully-qualified project string."""
-        return google.api_core.path_template.expand(
-            "projects/{project}", project=project
-        )
-
-    @classmethod
     def metric_path(cls, project, metric):
         """Return a fully-qualified metric string."""
         return google.api_core.path_template.expand(
             "projects/{project}/metrics/{metric}", project=project, metric=metric
+        )
+
+    @classmethod
+    def project_path(cls, project):
+        """Return a fully-qualified project string."""
+        return google.api_core.path_template.expand(
+            "projects/{project}", project=project
         )
 
     def __init__(
