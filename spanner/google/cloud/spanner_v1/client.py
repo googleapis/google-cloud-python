@@ -95,9 +95,17 @@ class Client(ClientWithProject):
                         client. If not provided, defaults to the Google
                         Application Default Credentials.
 
+    :type client_info: :class:`google.api_core.client_info.ClientInfo`
+    :param client_info:
+        (Optional) The client info used to send a user-agent string along with
+        API requests. If ``None``, then default info will be used. Generally,
+        you only need to set this if you're developing your own library or
+        partner tool.
+
     :type user_agent: str
-    :param user_agent: (Optional) The user agent to be used with API request.
-                       Defaults to :const:`DEFAULT_USER_AGENT`.
+    :param user_agent:
+        (Deprecated) The user agent to be used with API request.
+        Not used.  Defaults to :const:`DEFAULT_USER_AGENT`.
 
     :raises: :class:`ValueError <exceptions.ValueError>` if both ``read_only``
              and ``admin`` are :data:`True`
@@ -110,13 +118,20 @@ class Client(ClientWithProject):
     SCOPE = (SPANNER_ADMIN_SCOPE,)
     """The scopes required for Google Cloud Spanner."""
 
-    def __init__(self, project=None, credentials=None, user_agent=DEFAULT_USER_AGENT):
+    def __init__(
+        self,
+        project=None,
+        credentials=None,
+        client_info=client_info,
+        user_agent=DEFAULT_USER_AGENT,
+    ):
         # NOTE: This API has no use for the _http argument, but sending it
         #       will have no impact since the _http() @property only lazily
         #       creates a working HTTP object.
         super(Client, self).__init__(
             project=project, credentials=credentials, _http=None
         )
+        self._client_info = client_info
         self.user_agent = user_agent
 
     @property
@@ -153,7 +168,7 @@ class Client(ClientWithProject):
         """Helper for session-related API calls."""
         if self._instance_admin_api is None:
             self._instance_admin_api = InstanceAdminClient(
-                credentials=self.credentials, client_info=_CLIENT_INFO
+                credentials=self.credentials, client_info=self._client_info
             )
         return self._instance_admin_api
 
@@ -162,7 +177,7 @@ class Client(ClientWithProject):
         """Helper for session-related API calls."""
         if self._database_admin_api is None:
             self._database_admin_api = DatabaseAdminClient(
-                credentials=self.credentials, client_info=_CLIENT_INFO
+                credentials=self.credentials, client_info=self._client_info
             )
         return self._database_admin_api
 

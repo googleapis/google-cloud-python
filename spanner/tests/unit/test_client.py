@@ -49,13 +49,22 @@ class TestClient(unittest.TestCase):
         return self._get_target_class()(*args, **kwargs)
 
     def _constructor_test_helper(
-        self, expected_scopes, creds, user_agent=None, expected_creds=None
+        self,
+        expected_scopes,
+        creds,
+        user_agent=None,
+        expected_creds=None,
+        client_info=None,
     ):
         from google.cloud.spanner_v1 import client as MUT
 
         user_agent = user_agent or MUT.DEFAULT_USER_AGENT
+        client_info = client_info or MUT._CLIENT_INFO
         client = self._make_one(
-            project=self.PROJECT, credentials=creds, user_agent=user_agent
+            project=self.PROJECT,
+            credentials=creds,
+            user_agent=user_agent,
+            client_info=client_info,
         )
 
         expected_creds = expected_creds or creds.with_scopes.return_value
@@ -67,6 +76,7 @@ class TestClient(unittest.TestCase):
 
         self.assertEqual(client.project, self.PROJECT)
         self.assertEqual(client.user_agent, user_agent)
+        self.assertIs(client._client_info, client_info)
 
     def test_constructor_default_scopes(self):
         from google.cloud.spanner_v1 import client as MUT
@@ -85,6 +95,14 @@ class TestClient(unittest.TestCase):
             expected_scopes, creds, user_agent=CUSTOM_USER_AGENT
         )
 
+    def test_constructor_custom_client_info(self):
+        from google.cloud.spanner_v1 import client as MUT
+
+        client_info = mock.Mock()
+        expected_scopes = (MUT.SPANNER_ADMIN_SCOPE,)
+        creds = _make_credentials()
+        self._constructor_test_helper(expected_scopes, creds, client_info=client_info)
+
     def test_constructor_implicit_credentials(self):
         creds = _make_credentials()
 
@@ -102,10 +120,13 @@ class TestClient(unittest.TestCase):
         self._constructor_test_helper(expected_scopes, creds)
 
     def test_instance_admin_api(self):
-        from google.cloud.spanner_v1.client import _CLIENT_INFO, SPANNER_ADMIN_SCOPE
+        from google.cloud.spanner_v1.client import SPANNER_ADMIN_SCOPE
 
         credentials = _make_credentials()
-        client = self._make_one(project=self.PROJECT, credentials=credentials)
+        client_info = mock.Mock()
+        client = self._make_one(
+            project=self.PROJECT, credentials=credentials, client_info=client_info
+        )
         expected_scopes = (SPANNER_ADMIN_SCOPE,)
 
         inst_module = "google.cloud.spanner_v1.client.InstanceAdminClient"
@@ -119,16 +140,19 @@ class TestClient(unittest.TestCase):
         self.assertIs(again, api)
 
         instance_admin_client.assert_called_once_with(
-            credentials=credentials.with_scopes.return_value, client_info=_CLIENT_INFO
+            credentials=credentials.with_scopes.return_value, client_info=client_info
         )
 
         credentials.with_scopes.assert_called_once_with(expected_scopes)
 
     def test_database_admin_api(self):
-        from google.cloud.spanner_v1.client import _CLIENT_INFO, SPANNER_ADMIN_SCOPE
+        from google.cloud.spanner_v1.client import SPANNER_ADMIN_SCOPE
 
         credentials = _make_credentials()
-        client = self._make_one(project=self.PROJECT, credentials=credentials)
+        client_info = mock.Mock()
+        client = self._make_one(
+            project=self.PROJECT, credentials=credentials, client_info=client_info
+        )
         expected_scopes = (SPANNER_ADMIN_SCOPE,)
 
         db_module = "google.cloud.spanner_v1.client.DatabaseAdminClient"
@@ -142,7 +166,7 @@ class TestClient(unittest.TestCase):
         self.assertIs(again, api)
 
         database_admin_client.assert_called_once_with(
-            credentials=credentials.with_scopes.return_value, client_info=_CLIENT_INFO
+            credentials=credentials.with_scopes.return_value, client_info=client_info
         )
 
         credentials.with_scopes.assert_called_once_with(expected_scopes)
