@@ -54,7 +54,7 @@ def _make_connection(*responses):
     from google.cloud.exceptions import NotFound
 
     mock_conn = mock.create_autospec(google.cloud.bigquery._http.Connection)
-    mock_conn.USER_AGENT = "testing 1.2.3"
+    mock_conn.user_agent = "testing 1.2.3"
     mock_conn.api_request.side_effect = list(responses) + [NotFound("miss")]
     return mock_conn
 
@@ -2752,7 +2752,7 @@ class TestClient(unittest.TestCase):
             + "/jobs?uploadType=resumable"
         )
         self.assertEqual(upload.upload_url, upload_url)
-        expected_headers = _get_upload_headers(conn.USER_AGENT)
+        expected_headers = _get_upload_headers(conn.user_agent)
         self.assertEqual(upload._headers, expected_headers)
         self.assertFalse(upload.finished)
         self.assertEqual(upload._chunk_size, _DEFAULT_CHUNKSIZE)
@@ -2830,7 +2830,7 @@ class TestClient(unittest.TestCase):
             + b"\r\n"
             + b"--==0==--"
         )
-        headers = _get_upload_headers(conn.USER_AGENT)
+        headers = _get_upload_headers(conn.user_agent)
         headers["content-type"] = b'multipart/related; boundary="==0=="'
         fake_transport.request.assert_called_once_with(
             "POST", upload_url, data=payload, headers=headers
@@ -4518,7 +4518,9 @@ class TestClient(unittest.TestCase):
             self.assertIsNone(rows[2].age, msg=repr(table))
 
     def test_list_rows_error(self):
-        client = self._make_one()
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
 
         # neither Table nor tableReference
         with self.assertRaises(TypeError):
