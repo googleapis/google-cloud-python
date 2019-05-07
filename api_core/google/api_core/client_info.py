@@ -18,13 +18,20 @@ Client information is used to send information about the calling client,
 such as the library and Python version, to API services.
 """
 
-from google.api_core import client_info
+import platform
+
+import pkg_resources
+
+_PY_VERSION = platform.python_version()
+_API_CORE_VERSION = pkg_resources.get_distribution("google-api-core").version
+
+try:
+    _GRPC_VERSION = pkg_resources.get_distribution("grpcio").version
+except pkg_resources.DistributionNotFound:  # pragma: NO COVER
+    _GRPC_VERSION = None
 
 
-METRICS_METADATA_KEY = "x-goog-api-client"
-
-
-class ClientInfo(client_info.ClientInfo):
+class ClientInfo(object):
     """Client information used to generate a user-agent for API calls.
 
     This user-agent information is sent along with API calls to allow the
@@ -47,9 +54,43 @@ class ClientInfo(client_info.ClientInfo):
             Recommended format: ``application-or-tool-ID/major.minor.version``.
     """
 
-    def to_grpc_metadata(self):
-        """Returns the gRPC metadata for this client info."""
-        return (METRICS_METADATA_KEY, self.to_user_agent())
+    def __init__(
+        self,
+        python_version=_PY_VERSION,
+        grpc_version=_GRPC_VERSION,
+        api_core_version=_API_CORE_VERSION,
+        gapic_version=None,
+        client_library_version=None,
+        user_agent=None,
+    ):
+        self.python_version = python_version
+        self.grpc_version = grpc_version
+        self.api_core_version = api_core_version
+        self.gapic_version = gapic_version
+        self.client_library_version = client_library_version
+        self.user_agent = user_agent
 
+    def to_user_agent(self):
+        """Returns the user-agent string for this client info."""
 
-DEFAULT_CLIENT_INFO = ClientInfo()
+        # Note: the order here is important as the internal metrics system
+        # expects these items to be in specific locations.
+        ua = ""
+
+        if self.user_agent is not None:
+            ua += "{user_agent} "
+
+        ua += "gl-python/{python_version} "
+
+        if self.grpc_version is not None:
+            ua += "grpc/{grpc_version} "
+
+        ua += "gax/{api_core_version} "
+
+        if self.gapic_version is not None:
+            ua += "gapic/{gapic_version} "
+
+        if self.client_library_version is not None:
+            ua += "gccl/{client_library_version} "
+
+        return ua.format(**self.__dict__).strip()

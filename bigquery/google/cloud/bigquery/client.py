@@ -128,7 +128,7 @@ class Client(ClientWithProject):
         default_query_job_config (google.cloud.bigquery.job.QueryJobConfig):
             (Optional) Default ``QueryJobConfig``.
             Will be merged into job configs passed into the ``query`` method.
-        client_info (google.api_core.gapic_v1.client_info.ClientInfo):
+        client_info (google.api_core.client_info.ClientInfo):
             The client info used to send a user-agent string along with API
             requests. If ``None``, then default info will be used. Generally,
             you only need to set this if you're developing your own library
@@ -1363,7 +1363,7 @@ class Client(ClientWithProject):
         """
         chunk_size = _DEFAULT_CHUNKSIZE
         transport = self._http
-        headers = _get_upload_headers(self._connection.USER_AGENT)
+        headers = _get_upload_headers(self._connection.user_agent)
         upload_url = _RESUMABLE_URL_TEMPLATE.format(project=self.project)
         # TODO: modify ResumableUpload to take a retry.Retry object
         # that it can use for the initial RPC.
@@ -1409,7 +1409,7 @@ class Client(ClientWithProject):
             msg = _READ_LESS_THAN_SIZE.format(size, len(data))
             raise ValueError(msg)
 
-        headers = _get_upload_headers(self._connection.USER_AGENT)
+        headers = _get_upload_headers(self._connection.user_agent)
 
         upload_url = _MULTIPART_URL_TEMPLATE.format(project=self.project)
         upload = MultipartUpload(upload_url, headers=headers)
