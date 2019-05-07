@@ -29,9 +29,7 @@ class TestConnection(unittest.TestCase):
 
     def test_extra_headers(self):
         import requests
-
         from google.cloud import _http as base_http
-        from google.cloud.storage import _http as MUT
 
         http = mock.create_autospec(requests.Session, instance=True)
         response = requests.Response()
