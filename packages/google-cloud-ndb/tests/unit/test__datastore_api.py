@@ -25,6 +25,8 @@ from google.cloud.ndb import key as key_module
 from google.cloud.ndb import _options
 from google.cloud.ndb import tasklets
 
+from tests.unit import utils
+
 
 class TestStub:
     @staticmethod
@@ -929,6 +931,80 @@ class Test_datastore_commit:
 
         request = datastore_pb2.CommitRequest.return_value
         assert api.Commit.future.called_once_with(request)
+
+
+@pytest.mark.usefixtures("in_context")
+def test_allocate():
+    options = _options.Options()
+    future = _api.allocate(["one", "two"], options)
+    batch = _api._get_batch(_api._AllocateIdsBatch, options)
+    assert batch.keys == ["one", "two"]
+    assert batch.futures == future._dependencies
+
+
+@pytest.mark.usefixtures("in_context")
+class Test_AllocateIdsBatch:
+    @staticmethod
+    def test_constructor():
+        options = _options.Options()
+        batch = _api._AllocateIdsBatch(options)
+        assert batch.options is options
+        assert batch.keys == []
+        assert batch.futures == []
+
+    @staticmethod
+    def test_add():
+        options = _options.Options()
+        batch = _api._AllocateIdsBatch(options)
+        future = batch.add(["key1", "key2"])
+        assert batch.keys == ["key1", "key2"]
+        assert batch.futures == future._dependencies
+
+    @staticmethod
+    @mock.patch("google.cloud.ndb._datastore_api._datastore_allocate_ids")
+    def test_idle_callback(_datastore_allocate_ids):
+        options = _options.Options()
+        batch = _api._AllocateIdsBatch(options)
+        batch.add(
+            [
+                key_module.Key("SomeKind", None)._key,
+                key_module.Key("SomeKind", None)._key,
+            ]
+        )
+        key_pbs = [key.to_protobuf() for key in batch.keys]
+        batch.idle_callback()
+        _datastore_allocate_ids.assert_called_once_with(
+            key_pbs, retries=None, timeout=None
+        )
+        rpc = _datastore_allocate_ids.return_value
+        rpc.add_done_callback.assert_called_once_with(
+            batch.allocate_ids_callback
+        )
+
+    @staticmethod
+    @mock.patch("google.cloud.ndb._datastore_api._datastore_allocate_ids")
+    def test_allocate_ids_callback(_datastore_allocate_ids):
+        options = _options.Options()
+        batch = _api._AllocateIdsBatch(options)
+        batch.futures = futures = [tasklets.Future(), tasklets.Future()]
+        rpc = utils.future_result(
+            mock.Mock(keys=["key1", "key2"], spec=("key",))
+        )
+        batch.allocate_ids_callback(rpc)
+        results = [future.result() for future in futures]
+        assert results == ["key1", "key2"]
+
+    @staticmethod
+    @mock.patch("google.cloud.ndb._datastore_api._datastore_allocate_ids")
+    def test_allocate_ids_callback_w_exception(_datastore_allocate_ids):
+        options = _options.Options()
+        batch = _api._AllocateIdsBatch(options)
+        batch.futures = futures = [tasklets.Future(), tasklets.Future()]
+        error = Exception("spurious error")
+        rpc = tasklets.Future()
+        rpc.set_exception(error)
+        batch.allocate_ids_callback(rpc)
+        assert [future.exception() for future in futures] == [error, error]
 
 
 @pytest.mark.usefixtures("in_context")

@@ -258,3 +258,16 @@ def test_delete_entity_in_transaction_then_rollback(ds_entity):
         ndb.transaction(delete_entity)
 
     assert key.get().foo == 42
+
+
+@pytest.mark.usefixtures("client_context")
+def test_allocate_ids():
+    class SomeKind(ndb.Model):
+        pass
+
+    keys = SomeKind.allocate_ids(5)
+    assert len(keys) == 5
+
+    for key in keys:
+        assert key.id()
+        assert key.get() is None

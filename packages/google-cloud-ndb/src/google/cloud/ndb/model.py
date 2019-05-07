@@ -3959,6 +3959,7 @@ class Model(metaclass=MetaModel):
     @_options.Options.options
     def _put(
         self,
+        *,
         retries=None,
         timeout=None,
         deadline=None,
@@ -3976,6 +3977,10 @@ class Model(metaclass=MetaModel):
         attribute is set to the new, complete key.
 
         Args:
+            retries (int): Number of times to retry this operation in the case
+                of transient server errors. Operation will potentially be tried
+                up to ``retries`` + 1 times. Set to ``0`` to try operation only
+                once, with no retries.
             timeout (float): Override the gRPC timeout, in seconds.
             deadline (float): DEPRECATED: Synonym for ``timeout``.
             force_writes (bool): Specifies whether a write request should
@@ -4006,6 +4011,7 @@ class Model(metaclass=MetaModel):
     @_options.Options.options
     def _put_async(
         self,
+        *,
         retries=None,
         timeout=None,
         deadline=None,
@@ -4023,6 +4029,10 @@ class Model(metaclass=MetaModel):
         attribute is set to the new, complete key.
 
         Args:
+            retries (int): Number of times to retry this operation in the case
+                of transient server errors. Operation will potentially be tried
+                up to ``retries`` + 1 times. Set to ``0`` to try operation only
+                once, with no retries.
             timeout (float): Override the gRPC timeout, in seconds.
             deadline (float): DEPRECATED: Synonym for ``timeout``.
             force_writes (bool): Specifies whether a write request should
@@ -4132,6 +4142,142 @@ class Model(metaclass=MetaModel):
 
     query = _query
 
+    @classmethod
+    @_options.Options.options
+    def _allocate_ids(
+        cls,
+        size=None,
+        max=None,
+        parent=None,
+        *,
+        retries=None,
+        timeout=None,
+        deadline=None,
+        force_writes=None,
+        use_cache=None,
+        use_memcache=None,
+        use_datastore=None,
+        memcache_timeout=None,
+        max_memcache_items=None,
+        _options=None,
+    ):
+        """Allocates a range of key IDs for this model class.
+
+        Args:
+            size (int): Number of IDs to allocate. Must be specified.
+            max (int): Maximum ID to allocated. This feature is no longer
+                supported. You must always specify ``size``.
+            parent (key.Key): Parent key for which the IDs will be allocated.
+            retries (int): Number of times to retry this operation in the case
+                of transient server errors. Operation will potentially be tried
+                up to ``retries`` + 1 times. Set to ``0`` to try operation only
+                once, with no retries.
+            timeout (float): Override the gRPC timeout, in seconds.
+            deadline (float): DEPRECATED: Synonym for ``timeout``.
+            force_writes (bool): Specifies whether a write request should
+                succeed even if the app is read-only. (This only applies to
+                user controlled read-only periods.)
+            use_cache (bool): Specifies whether to store entities in in-process
+                cache; overrides in-process cache policy for this operation.
+            use_memcache (bool): Specifies whether to store entities in
+                memcache; overrides memcache policy for this operation.
+            use_datastore (bool): Specifies whether to store entities in
+                Datastore; overrides Datastore policy for this operation.
+            memcache_timeout (int): Maximum lifetime for entities in memcache;
+                overrides memcache timeout policy for this operation.
+            max_memcache_items (int): Maximum batch size for the auto-batching
+                feature of the Context memcache methods. For example, with the
+                default size of max_memcache_items (100), up to 100 memcache
+                set operations will be combined into a single set_multi
+                operation.
+
+        Returns:
+            tuple(key.Key): Keys for the newly allocated IDs.
+        """
+        future = cls._allocate_ids_async(size, max, parent, _options=_options)
+        return future.result()
+
+    allocate_ids = _allocate_ids
+
+    @classmethod
+    @tasklets.tasklet
+    @_options.Options.options
+    def _allocate_ids_async(
+        cls,
+        size=None,
+        max=None,
+        parent=None,
+        *,
+        retries=None,
+        timeout=None,
+        deadline=None,
+        force_writes=None,
+        use_cache=None,
+        use_memcache=None,
+        use_datastore=None,
+        memcache_timeout=None,
+        max_memcache_items=None,
+        _options=None,
+    ):
+        """Allocates a range of key IDs for this model class.
+
+        Args:
+            size (int): Number of IDs to allocate. Must be specified.
+            max (int): Maximum ID to allocated. This feature is no longer
+                supported. You must always specify ``size``.
+            parent (key.Key): Parent key for which the IDs will be allocated.
+            retries (int): Number of times to retry this operation in the case
+                of transient server errors. Operation will potentially be tried
+                up to ``retries`` + 1 times. Set to ``0`` to try operation only
+                once, with no retries.
+            timeout (float): Override the gRPC timeout, in seconds.
+            deadline (float): DEPRECATED: Synonym for ``timeout``.
+            force_writes (bool): Specifies whether a write request should
+                succeed even if the app is read-only. (This only applies to
+                user controlled read-only periods.)
+            use_cache (bool): Specifies whether to store entities in in-process
+                cache; overrides in-process cache policy for this operation.
+            use_memcache (bool): Specifies whether to store entities in
+                memcache; overrides memcache policy for this operation.
+            use_datastore (bool): Specifies whether to store entities in
+                Datastore; overrides Datastore policy for this operation.
+            memcache_timeout (int): Maximum lifetime for entities in memcache;
+                overrides memcache timeout policy for this operation.
+            max_memcache_items (int): Maximum batch size for the auto-batching
+                feature of the Context memcache methods. For example, with the
+                default size of max_memcache_items (100), up to 100 memcache
+                set operations will be combined into a single set_multi
+                operation.
+
+        Returns:
+            tasklets.Future: Eventural result is ``tuple(key.Key)``: Keys for
+                the newly allocated IDs.
+        """
+        if max:
+            raise NotImplementedError(
+                "The 'max' argument to 'allocate_ids' is no longer supported. "
+                "There is no support for it in the Google Datastore backend "
+                "service."
+            )
+
+        if not size:
+            raise TypeError("Must pass non-zero 'size' to 'allocate_ids'")
+
+        kind = cls._get_kind()
+        keys = [
+            key_module.Key(kind, None, parent=parent)._key for _ in range(size)
+        ]
+        key_pbs = yield _datastore_api.allocate(keys, _options)
+        keys = tuple(
+            (
+                key_module.Key._from_ds_key(helpers.key_from_protobuf(key_pb))
+                for key_pb in key_pbs
+            )
+        )
+        return keys
+
+    allocate_ids_async = _allocate_ids_async
+
 
 class Expando(Model):
     __slots__ = ()
@@ -4167,6 +4313,7 @@ def non_transactional(*args, **kwargs):
 @_options.ReadOptions.options
 def get_multi_async(
     keys,
+    *,
     read_consistency=None,
     read_policy=None,
     transaction=None,
@@ -4227,6 +4374,7 @@ def get_multi_async(
 @_options.ReadOptions.options
 def get_multi(
     keys,
+    *,
     read_consistency=None,
     read_policy=None,
     transaction=None,
@@ -4289,6 +4437,7 @@ def get_multi(
 @_options.Options.options
 def put_multi_async(
     entities,
+    *,
     retries=None,
     timeout=None,
     deadline=None,
@@ -4303,6 +4452,10 @@ def put_multi_async(
     """Stores a sequence of Model instances.
 
     Args:
+        retries (int): Number of times to retry this operation in the case
+            of transient server errors. Operation will potentially be tried
+            up to ``retries`` + 1 times. Set to ``0`` to try operation only
+            once, with no retries.
         entities (List[:class:`~google.cloud.ndb.model.Model`]): A sequence
             of models to store.
         timeout (float): Override the gRPC timeout, in seconds.
@@ -4333,6 +4486,7 @@ def put_multi_async(
 @_options.Options.options
 def put_multi(
     entities,
+    *,
     retries=None,
     timeout=None,
     deadline=None,
@@ -4349,6 +4503,10 @@ def put_multi(
     Args:
         entities (List[:class:`~google.cloud.ndb.model.Model`]): A sequence
             of models to store.
+        retries (int): Number of times to retry this operation in the case
+            of transient server errors. Operation will potentially be tried
+            up to ``retries`` + 1 times. Set to ``0`` to try operation only
+            once, with no retries.
         timeout (float): Override the gRPC timeout, in seconds.
         deadline (float): DEPRECATED: Synonym for ``timeout``.
         force_writes (bool): Specifies whether a write request should
@@ -4378,6 +4536,7 @@ def put_multi(
 @_options.Options.options
 def delete_multi_async(
     keys,
+    *,
     retries=None,
     timeout=None,
     deadline=None,
@@ -4392,6 +4551,10 @@ def delete_multi_async(
     """Deletes a sequence of keys.
 
     Args:
+        retries (int): Number of times to retry this operation in the case
+            of transient server errors. Operation will potentially be tried
+            up to ``retries`` + 1 times. Set to ``0`` to try operation only
+            once, with no retries.
         keys (Sequence[:class:`~google.cloud.ndb.key.Key`]): A sequence of
             keys.
         timeout (float): Override the gRPC timeout, in seconds.
@@ -4422,6 +4585,7 @@ def delete_multi_async(
 @_options.Options.options
 def delete_multi(
     keys,
+    *,
     retries=None,
     timeout=None,
     deadline=None,
@@ -4438,6 +4602,10 @@ def delete_multi(
     Args:
         keys (Sequence[:class:`~google.cloud.ndb.key.Key`]): A sequence of
             keys.
+        retries (int): Number of times to retry this operation in the case
+            of transient server errors. Operation will potentially be tried
+            up to ``retries`` + 1 times. Set to ``0`` to try operation only
+            once, with no retries.
         timeout (float): Override the gRPC timeout, in seconds.
         deadline (float): DEPRECATED: Synonym for ``timeout``.
         force_writes (bool): Specifies whether a write request should

@@ -715,6 +715,7 @@ class Key:
     @_options.ReadOptions.options
     def get(
         self,
+        *,
         read_consistency=None,
         read_policy=None,
         transaction=None,
@@ -776,6 +777,7 @@ class Key:
     @_options.ReadOptions.options
     def get_async(
         self,
+        *,
         read_consistency=None,
         read_policy=None,
         transaction=None,
@@ -840,6 +842,7 @@ class Key:
     @_options.Options.options
     def delete(
         self,
+        *,
         retries=None,
         timeout=None,
         deadline=None,
@@ -891,6 +894,7 @@ class Key:
     @_options.Options.options
     def delete_async(
         self,
+        *,
         retries=None,
         timeout=None,
         deadline=None,
@@ -1154,7 +1158,7 @@ def _parse_from_ref(
     urlsafe=None,
     app=None,
     namespace=None,
-    **kwargs
+    **kwargs,
 ):
     """Construct a key from a Reference.
 

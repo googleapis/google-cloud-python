@@ -174,6 +174,9 @@ with context as client.context():
 - The `produce_cursors` query option is deprecated. Datastore always returns
   cursors, where it can, and NDB always makes them available when possible.
   This option can be passed in but it will be ignored.
+- The `max` argument to `Model.allocate_ids` and `Model.allocate_ids_async` is
+  no longer supported. The Google Datastore API does not support setting a
+  maximum ID, a feature that GAE Datastore presumably had.
 
 ## Privatization
 

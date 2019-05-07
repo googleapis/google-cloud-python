@@ -15,6 +15,7 @@
 """Support for options."""
 
 import functools
+import inspect
 import itertools
 import logging
 
@@ -42,12 +43,54 @@ class Options:
 
     @classmethod
     def options(cls, wrapped):
+        # If there are any positional arguments, get their names
+        slots = set(cls.slots())
+        signature = inspect.signature(wrapped)
+        positional = [
+            name
+            for name, parameter in signature.parameters.items()
+            if parameter.kind
+            in (parameter.POSITIONAL_ONLY, parameter.POSITIONAL_OR_KEYWORD)
+        ]
+
+        # We need for any non-option arguments to come before any option
+        # arguments
+        in_options = False
+        for name in positional:
+            if name in slots:
+                in_options = True
+
+            elif in_options and name != "_options":
+                raise TypeError(
+                    "All positional non-option arguments must precede option "
+                    "arguments in function signature."
+                )
+
         @functools.wraps(wrapped)
-        def wrapper(arg, **kwargs):
-            _options = kwargs.get("_options")
+        def wrapper(*args, **kwargs):
+            pass_args = []
+            kw_options = {}
+
+            # Process positional args
+            for name, value in zip(positional, args):
+                if name in slots:
+                    kw_options[name] = value
+
+                else:
+                    pass_args.append(value)
+
+            # Process keyword args
+            for name in slots:
+                if name not in kw_options:
+                    kw_options[name] = kwargs.pop(name, None)
+
+            # If another function that uses options is delegating to this one,
+            # we'll already have options.
+            _options = kwargs.pop("_options", None)
             if not _options:
-                _options = cls(**kwargs)
-            return wrapped(arg, _options=_options)
+                _options = cls(**kw_options)
+
+            return wrapped(*pass_args, _options=_options, **kwargs)
 
         return wrapper
 

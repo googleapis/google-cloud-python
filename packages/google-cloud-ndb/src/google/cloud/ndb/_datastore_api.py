@@ -207,7 +207,7 @@ class _LookupBatch:
             tasklets.Future: A future for the eventual result.
         """
         todo_key = key.to_protobuf().SerializeToString()
-        future = tasklets.Future(info="add({})".format(key))
+        future = tasklets.Future(info="Lookup({})".format(key))
         self.todo.setdefault(todo_key, []).append(future)
         return future
 
@@ -788,6 +788,78 @@ def _datastore_commit(mutations, transaction, retries=None, timeout=None):
     return make_call("Commit", request, retries=retries, timeout=timeout)
 
 
+def allocate(keys, options):
+    """Allocate ids for incomplete keys.
+
+    Args:
+        key (key.Key): The incomplete key.
+        options (_options.Options): The options for the request.
+
+    Returns:
+        tasklets.Future: A future for the key completed with the allocated id.
+    """
+    batch = _get_batch(_AllocateIdsBatch, options)
+    return batch.add(keys)
+
+
+class _AllocateIdsBatch:
+    """Batch for AllocateIds requests.
+
+    Not related to batch used by transactions to allocate ids for upserts
+    before comitting, although they do both eventually call
+    ``_datastore_allocate_ids``.
+
+    Args:
+        options (_options.Options): The options for the request. Calls with
+            different options will be placed in different batches.
+    """
+
+    def __init__(self, options):
+        self.options = options
+        self.keys = []
+        self.futures = []
+
+    def add(self, keys):
+        """Add incomplete keys to batch to allocate.
+
+        Args:
+            keys (list(datastore.key)): Allocate ids for these keys.
+
+        Returns:
+            tasklets.Future: A future for the eventual keys completed with
+                allocated ids.
+        """
+        futures = []
+        for key in keys:
+            future = tasklets.Future(info="AllocateIds({})".format(key))
+            futures.append(future)
+            self.keys.append(key)
+
+        self.futures.extend(futures)
+        return tasklets._MultiFuture(futures)
+
+    def idle_callback(self):
+        """Perform a Datastore AllocateIds request on all batched keys."""
+        key_pbs = [key.to_protobuf() for key in self.keys]
+        rpc = _datastore_allocate_ids(
+            key_pbs, retries=self.options.retries, timeout=self.options.timeout
+        )
+        rpc.add_done_callback(self.allocate_ids_callback)
+
+    def allocate_ids_callback(self, rpc):
+        """Process the results of a call to AllocateIds."""
+        # If RPC has resulted in an exception, propagate that exception to all
+        # waiting futures.
+        exception = rpc.exception()
+        if exception is not None:
+            for future in self.futures:
+                future.set_exception(exception)
+            return
+
+        for key, future in zip(rpc.result().keys, self.futures):
+            future.set_result(key)
+
+
 def _datastore_allocate_ids(keys, retries=None, timeout=None):
     """Calls ``AllocateIds`` on Datastore.
 
@@ -801,7 +873,7 @@ def _datastore_allocate_ids(keys, retries=None, timeout=None):
             :data:`None` is passed, will use :data:`_DEFAULT_TIMEOUT`.
 
     Returns:
-        tasklets.Tasklet: A future for
+        tasklets.Future: A future for
             :class:`google.cloud.datastore_v1.datastore_pb2.AllocateIdsResponse`
     """
     client = context_module.get_context().client

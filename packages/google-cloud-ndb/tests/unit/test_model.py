@@ -22,6 +22,7 @@ from google.cloud import datastore
 from google.cloud.datastore import entity as entity_module
 from google.cloud.datastore import helpers
 from google.cloud.datastore_v1 import types as ds_types
+from google.cloud.datastore_v1.proto import entity_pb2
 import pytest
 
 from google.cloud.ndb import _datastore_types
@@ -31,11 +32,12 @@ from google.cloud.ndb import model
 from google.cloud.ndb import _options
 from google.cloud.ndb import query as query_module
 from google.cloud.ndb import tasklets
-import tests.unit.utils
+
+from tests.unit import utils
 
 
 def test___all__():
-    tests.unit.utils.verify___all__(model)
+    utils.verify___all__(model)
 
 
 def test_Key():
@@ -3007,6 +3009,91 @@ class TestModel:
         assert isinstance(query, query_module.Query)
         assert query.kind == "Simple"
         assert query.filters == query_module.FilterNode("x", "=", 1)
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    @unittest.mock.patch("google.cloud.ndb.model._datastore_api")
+    def test_allocate_ids(_datastore_api):
+        completed = [
+            entity_pb2.Key(
+                partition_id=entity_pb2.PartitionId(project_id="testing"),
+                path=[entity_pb2.Key.PathElement(kind="Simple", id=21)],
+            ),
+            entity_pb2.Key(
+                partition_id=entity_pb2.PartitionId(project_id="testing"),
+                path=[entity_pb2.Key.PathElement(kind="Simple", id=42)],
+            ),
+        ]
+        _datastore_api.allocate.return_value = utils.future_result(completed)
+
+        class Simple(model.Model):
+            pass
+
+        keys = Simple.allocate_ids(2)
+        assert keys == (
+            key_module.Key("Simple", 21),
+            key_module.Key("Simple", 42),
+        )
+
+        call_keys, call_options = _datastore_api.allocate.call_args[0]
+        call_keys = [key_module.Key._from_ds_key(key) for key in call_keys]
+        assert call_keys == [
+            key_module.Key("Simple", None),
+            key_module.Key("Simple", None),
+        ]
+        assert call_options == _options.Options()
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_allocate_ids_with_max():
+        class Simple(model.Model):
+            pass
+
+        with pytest.raises(NotImplementedError):
+            Simple.allocate_ids(max=6)
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_allocate_ids_no_args():
+        class Simple(model.Model):
+            pass
+
+        with pytest.raises(TypeError):
+            Simple.allocate_ids()
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    @unittest.mock.patch("google.cloud.ndb.model._datastore_api")
+    def test_allocate_ids_async(_datastore_api):
+        completed = [
+            entity_pb2.Key(
+                partition_id=entity_pb2.PartitionId(project_id="testing"),
+                path=[entity_pb2.Key.PathElement(kind="Simple", id=21)],
+            ),
+            entity_pb2.Key(
+                partition_id=entity_pb2.PartitionId(project_id="testing"),
+                path=[entity_pb2.Key.PathElement(kind="Simple", id=42)],
+            ),
+        ]
+        _datastore_api.allocate.return_value = utils.future_result(completed)
+
+        class Simple(model.Model):
+            pass
+
+        future = Simple.allocate_ids_async(2)
+        keys = future.result()
+        assert keys == (
+            key_module.Key("Simple", 21),
+            key_module.Key("Simple", 42),
+        )
+
+        call_keys, call_options = _datastore_api.allocate.call_args[0]
+        call_keys = [key_module.Key._from_ds_key(key) for key in call_keys]
+        assert call_keys == [
+            key_module.Key("Simple", None),
+            key_module.Key("Simple", None),
+        ]
+        assert call_options == _options.Options()
 
 
 class Test_entity_from_protobuf:

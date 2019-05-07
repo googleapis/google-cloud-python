@@ -123,6 +123,39 @@ class TestOptions:
         ]
         assert items == [("bar", "app"), ("retries", 8)]
 
+    @staticmethod
+    def test_options():
+        @MyOptions.options
+        def hi(mom, foo=None, retries=None, *, timeout=None, _options=None):
+            return mom, _options
+
+        assert hi("mom", "bar", 23, timeout=42) == (
+            "mom",
+            MyOptions(foo="bar", retries=23, timeout=42),
+        )
+
+    @staticmethod
+    def test_options_bad_signature():
+        def hi(foo, mom):
+            pass
+
+        with pytest.raises(TypeError):
+            MyOptions.options(hi)
+
+        hi("mom", "!")  # coverage
+
+    @staticmethod
+    def test_options_delegated():
+        @MyOptions.options
+        def hi(mom, foo=None, retries=None, *, timeout=None, _options=None):
+            return mom, _options
+
+        options = MyOptions(foo="bar", retries=23, timeout=42)
+        assert hi("mom", "baz", 24, timeout=43, _options=options) == (
+            "mom",
+            options,
+        )
+
 
 class TestReadOptions:
     @staticmethod
