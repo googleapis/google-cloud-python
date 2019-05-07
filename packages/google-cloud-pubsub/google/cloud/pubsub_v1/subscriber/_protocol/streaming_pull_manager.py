@@ -262,7 +262,11 @@ class StreamingPullManager(object):
         _LOGGER.debug("Sent request(s) over unary RPC.")
 
     def send(self, request):
-        """Queue a request to be sent to the RPC."""
+        """Queue a request to be sent to the RPC.
+
+        If a RetryError occurs, the manager shutdown is triggered, and the
+        error is re-raised.
+        """
         if self._UNARY_REQUESTS:
             try:
                 self._send_unary_request(request)
@@ -272,6 +276,17 @@ class StreamingPullManager(object):
                     "non-fatal as stream requests are best-effort.",
                     exc_info=True,
                 )
+            except exceptions.RetryError as exc:
+                _LOGGER.debug(
+                    "RetryError while sending unary RPC. Waiting on a transient "
+                    "error resolution for too long, will now trigger shutdown.",
+                    exc_info=False,
+                )
+                # The underlying channel has been suffering from a retryable error
+                # for too long, time to give up and shut the streaming pull down.
+                self._on_rpc_done(exc)
+                raise
+
         else:
             self._rpc.send(request)
 

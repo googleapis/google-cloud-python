@@ -245,7 +245,7 @@ def test_send_unary_empty():
     manager._client.modify_ack_deadline.assert_not_called()
 
 
-def test_send_unary_error(caplog):
+def test_send_unary_api_call_error(caplog):
     caplog.set_level(logging.DEBUG)
 
     manager = make_manager()
@@ -257,6 +257,24 @@ def test_send_unary_error(caplog):
     manager.send(types.StreamingPullRequest(ack_ids=["ack_id1", "ack_id2"]))
 
     assert "The front fell off" in caplog.text
+
+
+def test_send_unary_retry_error(caplog):
+    caplog.set_level(logging.DEBUG)
+
+    manager, _, _, _, _, _ = make_running_manager()
+    manager._UNARY_REQUESTS = True
+
+    error = exceptions.RetryError(
+        "Too long a transient error", cause=Exception("Out of time!")
+    )
+    manager._client.acknowledge.side_effect = error
+
+    with pytest.raises(exceptions.RetryError):
+        manager.send(types.StreamingPullRequest(ack_ids=["ack_id1", "ack_id2"]))
+
+    assert "RetryError while sending unary RPC" in caplog.text
+    assert "signaled streaming pull manager shutdown" in caplog.text
 
 
 def test_send_streaming():
