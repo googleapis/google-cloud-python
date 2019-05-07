@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery.client &#8212; google-cloud 247244a documentation</title>
+    <title>google.cloud.bigquery.client &#8212; google-cloud fc3b22e documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -164,7 +164,7 @@
 <span class="sd">        default_query_job_config (google.cloud.bigquery.job.QueryJobConfig):</span>
 <span class="sd">            (Optional) Default ``QueryJobConfig``.</span>
 <span class="sd">            Will be merged into job configs passed into the ``query`` method.</span>
-<span class="sd">        client_info (google.api_core.gapic_v1.client_info.ClientInfo):</span>
+<span class="sd">        client_info (google.api_core.client_info.ClientInfo):</span>
 <span class="sd">            The client info used to send a user-agent string along with API</span>
 <span class="sd">            requests. If ``None``, then default info will be used. Generally,</span>
 <span class="sd">            you only need to set this if you&#39;re developing your own library</span>
@@ -1399,7 +1399,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">chunk_size</span> <span class="o">=</span> <span class="n">_DEFAULT_CHUNKSIZE</span>
         <span class="n">transport</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_http</span>
-        <span class="n">headers</span> <span class="o">=</span> <span class="n">_get_upload_headers</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">USER_AGENT</span><span class="p">)</span>
+        <span class="n">headers</span> <span class="o">=</span> <span class="n">_get_upload_headers</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">user_agent</span><span class="p">)</span>
         <span class="n">upload_url</span> <span class="o">=</span> <span class="n">_RESUMABLE_URL_TEMPLATE</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">)</span>
         <span class="c1"># TODO: modify ResumableUpload to take a retry.Retry object</span>
         <span class="c1"># that it can use for the initial RPC.</span>
@@ -1445,7 +1445,7 @@
             <span class="n">msg</span> <span class="o">=</span> <span class="n">_READ_LESS_THAN_SIZE</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
-        <span class="n">headers</span> <span class="o">=</span> <span class="n">_get_upload_headers</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">USER_AGENT</span><span class="p">)</span>
+        <span class="n">headers</span> <span class="o">=</span> <span class="n">_get_upload_headers</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">user_agent</span><span class="p">)</span>
 
         <span class="n">upload_url</span> <span class="o">=</span> <span class="n">_MULTIPART_URL_TEMPLATE</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">)</span>
         <span class="n">upload</span> <span class="o">=</span> <span class="n">MultipartUpload</span><span class="p">(</span><span class="n">upload_url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
