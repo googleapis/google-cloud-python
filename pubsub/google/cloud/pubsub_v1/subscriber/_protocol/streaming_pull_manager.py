@@ -443,12 +443,27 @@ class StreamingPullManager(object):
             for message in response.received_messages
         ]
         self._dispatcher.modify_ack_deadline(items)
+
+        lease_requests = []
+
         for received_message in response.received_messages:
             message = google.cloud.pubsub_v1.subscriber.message.Message(
-                received_message.message, received_message.ack_id, self._scheduler.queue
+                received_message.message,
+                received_message.ack_id,
+                self._scheduler.queue,
+                autolease=False,
             )
-            # TODO: Immediately lease instead of using the callback queue.
+            lease_requests.append(
+                requests.LeaseRequest(ack_id=message.ack_id, byte_size=message.size)
+            )
             self._scheduler.schedule(self._callback, message)
+
+        # TODO: Since the number of received messages can cause an overflow of
+        # the leaser, we need to assure that only a portion of them are actually
+        # leased (and their callbacks scheduled). The rest need to be kept in an
+        # internal buffer until the leaser again has enough room to accept them.
+        self.leaser.add(lease_requests)
+        self.maybe_pause_consumer()
 
     def _should_recover(self, exception):
         """Determine if an error on the RPC stream should be recovered.
