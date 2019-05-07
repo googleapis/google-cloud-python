@@ -187,13 +187,17 @@ class FirestoreModel(object, ABCMeta):
         _time, new_ref = self.__collection.add(data)
         self.id = new_ref.id
 
+    def delete(self):
+        pass  # TODO: Implement delete, otherwise what's the point
+
     @classmethod
-    def get(cls, key_id: str or int, __parent__: Type['FirestoreModel'] = None):
+    def get(cls, key_id: str or int or list, __parent__: Type['FirestoreModel'] = None):
         """
         Get a model with the given/id
 
         Args:
-            key_id (str or int): A key or id of the model record
+            key_id (str or int or list): A key or id of the model record, when a list is provided, `get` returns a list
+                models
             __parent__ (Type[FirestoreModel]): If querying a sub collection of model, provide the parent instance
 
         Returns:
