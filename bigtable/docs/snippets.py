@@ -335,14 +335,11 @@ def test_bigtable_list_tables():
 
 
 def test_bigtable_delete_cluster():
-    # [START bigtable_delete_cluster]
     from google.cloud.bigtable import Client
 
     client = Client(admin=True)
     instance = client.instance(INSTANCE_ID)
     cluster_id = "clus-my-" + unique_resource_id("-")
-    # [END bigtable_delete_cluster]
-
     cluster = instance.cluster(
         cluster_id,
         location_id=ALT_LOCATION_ID,
@@ -354,7 +351,12 @@ def test_bigtable_delete_cluster():
     operation.result(timeout=1000)
 
     # [START bigtable_delete_cluster]
+    from google.cloud.bigtable import Client
+
+    client = Client(admin=True)
+    instance = client.instance(INSTANCE_ID)
     cluster_to_delete = instance.cluster(cluster_id)
+
     cluster_to_delete.delete()
     # [END bigtable_delete_cluster]
     assert not cluster_to_delete.exists()
