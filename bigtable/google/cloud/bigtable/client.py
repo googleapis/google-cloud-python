@@ -202,8 +202,13 @@ class Client(ClientWithProject):
         :returns: A BigtableClient object.
         """
         if self._table_data_client is None:
-            if self._admin and self._channel is not None:
-                raise ValueError("Client is an admin client and not a data client.")
+            if self._channel is not None and (
+                self._table_admin_client is not None
+                or self._instance_admin_client is not None
+            ):
+                raise ValueError(
+                    "Same channel cannot be used for an Admin client and Data client."
+                )
             self._table_data_client = _create_gapic_client(bigtable_v2.BigtableClient)(
                 self
             )
@@ -228,6 +233,10 @@ class Client(ClientWithProject):
         if self._table_admin_client is None:
             if not self._admin:
                 raise ValueError("Client is not an admin client.")
+            elif self._channel is not None and self._table_data_client is not None:
+                raise ValueError(
+                    "Same channel cannot be used for an Admin client and Data client."
+                )
             self._table_admin_client = _create_gapic_client(
                 bigtable_admin_v2.BigtableTableAdminClient
             )(self)
@@ -252,6 +261,10 @@ class Client(ClientWithProject):
         if self._instance_admin_client is None:
             if not self._admin:
                 raise ValueError("Client is not an admin client.")
+            elif self._channel is not None and self._table_data_client is not None:
+                raise ValueError(
+                    "Same channel cannot be used for an Admin client and Data client."
+                )
             self._instance_admin_client = _create_gapic_client(
                 bigtable_admin_v2.BigtableInstanceAdminClient
             )(self)
