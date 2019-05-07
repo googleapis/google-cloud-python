@@ -25,15 +25,21 @@ from google.cloud.logging.sink import Sink
 from google.cloud.logging.metric import Metric
 
 
-_CLIENT_INFO = _http.CLIENT_INFO_TEMPLATE.format(__version__)
-
-
 class Connection(_http.JSONConnection):
     """A connection to Google Stackdriver Logging via the JSON REST API.
 
     :type client: :class:`~google.cloud.logging.client.Client`
     :param client: The client that owns the current connection.
+
+    :type client_info: :class:`~google.api_core.client_info.ClientInfo`
+    :param client_info: (Optional) instance used to generate user agent.
     """
+
+    def __init__(self, client, client_info=None):
+        super(Connection, self).__init__(client, client_info)
+
+        self._client_info.gapic_version = __version__
+        self._client_info.client_library_version = __version__
 
     API_BASE_URL = "https://logging.googleapis.com"
     """The base of the API call URL."""
@@ -43,8 +49,6 @@ class Connection(_http.JSONConnection):
 
     API_URL_TEMPLATE = "{api_base_url}/{api_version}{path}"
     """A template for the URL of a particular API call."""
-
-    _EXTRA_HEADERS = {_http.CLIENT_INFO_HEADER: _CLIENT_INFO}
 
 
 class _LoggingAPI(object):
