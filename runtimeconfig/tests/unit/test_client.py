@@ -38,7 +38,6 @@ class TestClient(unittest.TestCase):
         from google.cloud.runtimeconfig._http import Connection
 
         PROJECT = "PROJECT"
-        CONFIG_NAME = "config_name"
         http = object()
         creds = _make_credentials()
 
@@ -53,7 +52,6 @@ class TestClient(unittest.TestCase):
         from google.cloud.runtimeconfig._http import Connection
 
         PROJECT = "PROJECT"
-        CONFIG_NAME = "config_name"
         http = object()
         creds = _make_credentials()
         client_info = ClientInfo()
