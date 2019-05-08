@@ -18,7 +18,6 @@ import mock
 
 
 class Test_make_report_error_api(unittest.TestCase):
-
     @staticmethod
     def _call_fut(client):
         from google.cloud.error_reporting._gapic import make_report_error_api
