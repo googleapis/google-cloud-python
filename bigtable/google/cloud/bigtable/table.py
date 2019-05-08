@@ -52,6 +52,7 @@ _MAX_BULK_MUTATIONS = 100000
 VIEW_NAME_ONLY = enums.Table.View.NAME_ONLY
 _MAX_THREAD_LIMIT = 10
 
+
 class _BigtableRetryableError(Exception):
     """Retry-able error expected by the default retry strategy."""
 
@@ -476,7 +477,7 @@ class Table(object):
         )
         return self.read_rows(**kwargs)
 
-    def mutate_rows(self, batches, retry=DEFAULT_RETRY):
+    def mutate_rows(self, rows, retry=DEFAULT_RETRY):
         """Mutates multiple rows in bulk.
 
         For example:
@@ -511,10 +512,13 @@ class Table(object):
                   corresponding to success or failure of each row mutation
                   sent. These will be in the same order as the `rows`.
         """
+
+        mutate_batcher = self.mutations_batcher()
+        mutate_batcher.mutate_rows(rows)
         retryable_mutate_rows = _RetryableMutateRowsWorker(
             self._instance._client,
             self.name,
-            batches,
+            mutate_batcher.batches,
             app_profile_id=self._app_profile_id,
             timeout=self.mutation_timeout,
         )
@@ -747,9 +751,11 @@ class _RetryableMutateRowsWorker(object):
                    match the number of rows that were retried
         """
         batch = self.batches[batch_index]
+
         responses_statuses = self.responses_statuses[batch_index]
         retryable_rows = []
         index_into_all_rows = []
+
         for index, status in enumerate(responses_statuses):
             if self._is_retryable(status):
                 retryable_rows.append(batch[index])

@@ -123,7 +123,6 @@ class MutationsBatcher(object):
         """
         for row in rows:
             self.mutate(row)
-        self.table.mutate_rows(self.batches)
 
     def flush(self):
         """ Sends the current. batch to Cloud Bigtable.
@@ -136,8 +135,7 @@ class MutationsBatcher(object):
         """
         if len(self.rows) != 0:
             self.batches.append(self.rows)
+            self.table.mutate_rows(self.rows)
             self.total_mutation_count = 0
             self.total_size = 0
             self.rows = []
-
-
