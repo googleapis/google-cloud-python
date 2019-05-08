@@ -2260,8 +2260,6 @@ class TestTimePartitioning(unittest.TestCase):
         self.assertTrue(time_partitioning.require_partition_filter)
 
     def test_from_api_repr_empty(self):
-        from google.cloud.bigquery.table import TimePartitioningType
-
         klass = self._get_target_class()
 
         # Even though there are required properties according to the API
@@ -2288,8 +2286,6 @@ class TestTimePartitioning(unittest.TestCase):
         self.assertIsNone(time_partitioning.require_partition_filter)
 
     def test_from_api_repr_doesnt_override_type(self):
-        from google.cloud.bigquery.table import TimePartitioningType
-
         klass = self._get_target_class()
         api_repr = {"type": "HOUR"}
         time_partitioning = klass.from_api_repr(api_repr)
