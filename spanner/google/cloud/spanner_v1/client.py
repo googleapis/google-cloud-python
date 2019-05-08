@@ -95,7 +95,7 @@ class Client(ClientWithProject):
                         client. If not provided, defaults to the Google
                         Application Default Credentials.
 
-    :type client_info: :class:`google.api_core.client_info.ClientInfo`
+    :type client_info: :class:`google.api_core.gapic_v1.client_info.ClientInfo`
     :param client_info:
         (Optional) The client info used to send a user-agent string along with
         API requests. If ``None``, then default info will be used. Generally,
