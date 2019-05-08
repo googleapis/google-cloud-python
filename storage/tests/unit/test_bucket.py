@@ -742,7 +742,10 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(kw["path"], "/b/%s/o" % NAME)
         self.assertEqual(kw["query_params"], {"projection": "noAcl"})
 
-    def test_list_blobs_w_all_arguments_and_user_project(self):
+    @mock.patch("warnings.warn")
+    def test_list_blobs_w_all_arguments_and_user_project(self, mock_warn):
+        from google.cloud.storage import bucket as bucket_module
+
         NAME = "name"
         USER_PROJECT = "user-project-123"
         MAX_RESULTS = 10
@@ -781,19 +784,9 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(kw["method"], "GET")
         self.assertEqual(kw["path"], "/b/%s/o" % NAME)
         self.assertEqual(kw["query_params"], EXPECTED)
-
-    def test_list_blobs(self):
-        NAME = "name"
-        connection = _Connection({"items": []})
-        client = _Client(connection)
-        bucket = self._make_one(client=client, name=NAME)
-        iterator = bucket.list_blobs()
-        blobs = list(iterator)
-        self.assertEqual(blobs, [])
-        kw, = connection._requested
-        self.assertEqual(kw["method"], "GET")
-        self.assertEqual(kw["path"], "/b/%s/o" % NAME)
-        self.assertEqual(kw["query_params"], {"projection": "noAcl"})
+        mock_warn.assert_called_once_with(
+            bucket_module._LIST_BLOBS_FIELDS_MESSAGE, DeprecationWarning, stacklevel=2
+        )
 
     def test_list_notifications(self):
         from google.cloud.storage.notification import BucketNotification

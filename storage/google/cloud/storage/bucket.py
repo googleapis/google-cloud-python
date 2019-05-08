@@ -47,6 +47,10 @@ _LOCATION_SETTER_MESSAGE = (
     "valid before the bucket is created. Instead, pass the location "
     "to `Bucket.create`."
 )
+_LIST_BLOBS_FIELDS_MESSAGE = (
+    "The 'fields' argument to 'Bucket.list_blobs' is deprecated, and "
+    "likely broken:  please don't use it."
+)
 _API_ACCESS_ENDPOINT = "https://storage.googleapis.com"
 
 
@@ -780,6 +784,8 @@ class Bucket(_PropertyMixin):
             extra_params["versions"] = versions
 
         if fields is not None:
+            warnings.warn(
+                _LIST_BLOBS_FIELDS_MESSAGE, DeprecationWarning, stacklevel=2)
             extra_params["fields"] = fields
 
         if self.user_project is not None:
