@@ -23,9 +23,11 @@ In the hierarchy of API concepts
 * a :class:`~.firestore_v1.client.Client` owns a
   :class:`~.firestore_v1.document.DocumentReference`
 """
+from google.api_core.gapic_v1 import client_info
 from google.cloud.client import ClientWithProject
 
 from google.cloud.firestore_v1 import _helpers
+from google.cloud.firestore_v1 import __version__
 from google.cloud.firestore_v1 import query
 from google.cloud.firestore_v1 import types
 from google.cloud.firestore_v1.batch import WriteBatch
@@ -47,6 +49,7 @@ _BAD_DOC_TEMPLATE = (
 )
 _ACTIVE_TXN = "There is already an active transaction."
 _INACTIVE_TXN = "There is no active transaction."
+_CLIENT_INFO = client_info.ClientInfo(client_library_version=__version__)
 
 
 class Client(ClientWithProject):
@@ -67,6 +70,11 @@ class Client(ClientWithProject):
         database (Optional[str]): The database name that the client targets.
             For now, :attr:`DEFAULT_DATABASE` (the default value) is the
             only valid database.
+        client_info (Optional[google.api_core.client_info.ClientInfo]):
+            The client info used to send a user-agent string along with API
+            requests. If ``None``, then default info will be used. Generally,
+            you only need to set this if you're developing your own library
+            or partner tool.
     """
 
     SCOPE = (
@@ -79,13 +87,20 @@ class Client(ClientWithProject):
     _database_string_internal = None
     _rpc_metadata_internal = None
 
-    def __init__(self, project=None, credentials=None, database=DEFAULT_DATABASE):
+    def __init__(
+        self,
+        project=None,
+        credentials=None,
+        database=DEFAULT_DATABASE,
+        client_info=_CLIENT_INFO,
+    ):
         # NOTE: This API has no use for the _http argument, but sending it
         #       will have no impact since the _http() @property only lazily
         #       creates a working HTTP object.
         super(Client, self).__init__(
             project=project, credentials=credentials, _http=None
         )
+        self._client_info = client_info
         self._database = database
 
     @property
@@ -98,7 +113,7 @@ class Client(ClientWithProject):
         """
         if self._firestore_api_internal is None:
             self._firestore_api_internal = firestore_client.FirestoreClient(
-                credentials=self._credentials
+                credentials=self._credentials, client_info=self._client_info
             )
 
         return self._firestore_api_internal
