@@ -23,7 +23,7 @@ import test_utils.system
 from google.cloud import datastore
 from google.cloud import ndb
 
-from . import KIND
+from tests.system import KIND
 
 
 @pytest.mark.usefixtures("client_context")
@@ -271,3 +271,18 @@ def test_allocate_ids():
     for key in keys:
         assert key.id()
         assert key.get() is None
+
+
+@pytest.mark.usefixtures("client_context")
+def test_get_by_id(ds_entity):
+    class SomeKind(ndb.Model):
+        foo = ndb.IntegerProperty()
+
+    entity_id = test_utils.system.unique_resource_id()
+    ds_entity(KIND, entity_id, foo=42)
+
+    key = ndb.Key(KIND, entity_id)
+    assert key.get().foo == 42
+
+    entity = SomeKind.get_by_id(entity_id)
+    assert entity.foo == 42

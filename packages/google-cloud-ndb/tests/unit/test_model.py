@@ -3095,6 +3095,89 @@ class TestModel:
         ]
         assert call_options == _options.Options()
 
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    @unittest.mock.patch("google.cloud.ndb.model.key_module")
+    def test_get_by_id(key_module):
+        entity = object()
+        key = key_module.Key.return_value
+        key.get_async.return_value = utils.future_result(entity)
+
+        class Simple(model.Model):
+            pass
+
+        assert Simple.get_by_id(1) is entity
+        key_module.Key.assert_called_once_with("Simple", 1, parent=None)
+        key.get_async.assert_called_once_with(_options=_options.ReadOptions())
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    @unittest.mock.patch("google.cloud.ndb.model.key_module")
+    def test_get_by_id_w_parent_project_namespace(key_module):
+        entity = object()
+        key = key_module.Key.return_value
+        key.get_async.return_value = utils.future_result(entity)
+
+        class Simple(model.Model):
+            pass
+
+        assert (
+            Simple.get_by_id(1, parent="foo", project="baz", namespace="bar")
+            is entity
+        )
+
+        key_module.Key.assert_called_once_with(
+            "Simple", 1, parent="foo", namespace="bar", app="baz"
+        )
+
+        key.get_async.assert_called_once_with(_options=_options.ReadOptions())
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    @unittest.mock.patch("google.cloud.ndb.model.key_module")
+    def test_get_by_id_w_app(key_module):
+        entity = object()
+        key = key_module.Key.return_value
+        key.get_async.return_value = utils.future_result(entity)
+
+        class Simple(model.Model):
+            pass
+
+        assert Simple.get_by_id(1, app="baz") is entity
+
+        key_module.Key.assert_called_once_with(
+            "Simple", 1, parent=None, app="baz"
+        )
+
+        key.get_async.assert_called_once_with(_options=_options.ReadOptions())
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_get_by_id_w_app_and_project():
+        class Simple(model.Model):
+            pass
+
+        with pytest.raises(TypeError):
+            Simple.get_by_id(1, app="baz", project="bar")
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    @unittest.mock.patch("google.cloud.ndb.model.key_module")
+    def test_get_by_id_async(key_module):
+        entity = object()
+        key = key_module.Key.return_value
+        key.get_async.return_value = utils.future_result(entity)
+
+        class Simple(model.Model):
+            pass
+
+        future = Simple.get_by_id_async(1)
+        assert future.result() is entity
+
+        key_module.Key.assert_called_once_with("Simple", 1, parent=None)
+
+        key.get_async.assert_called_once_with(_options=_options.ReadOptions())
+
 
 class Test_entity_from_protobuf:
     @staticmethod

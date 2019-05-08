@@ -4278,6 +4278,184 @@ class Model(metaclass=MetaModel):
 
     allocate_ids_async = _allocate_ids_async
 
+    @classmethod
+    @_options.ReadOptions.options
+    def _get_by_id(
+        cls,
+        id,
+        parent=None,
+        namespace=None,
+        project=None,
+        app=None,
+        *,
+        read_consistency=None,
+        read_policy=None,
+        transaction=None,
+        retries=None,
+        timeout=None,
+        deadline=None,
+        force_writes=None,
+        use_cache=None,
+        use_memcache=None,
+        use_datastore=None,
+        memcache_timeout=None,
+        max_memcache_items=None,
+        _options=None,
+    ):
+        """Get an instance of Model class by ID.
+
+        This really just a shorthand for ``Key(cls, id, ....).get()``.
+
+        Args:
+            id (Union[int, str]): ID of the entity to load.
+            parent (Optional[key.Key]): Key for the parent of the entity to
+                load.
+            namespace (Optional[str]): Namespace for the entity to load. If not
+                passed, uses the client's value.
+            project (Optional[str]): Project id for the entity to load. If not
+                passed, uses the client's value.
+            app (str): DEPRECATED: Synonym for `project`.
+            read_consistency: Set this to ``ndb.EVENTUAL`` if, instead of
+                waiting for the Datastore to finish applying changes to all
+                returned results, you wish to get possibly-not-current results
+                faster. You can't do this if using a transaction.
+            read_policy: DEPRECATED: Synonym for ``read_consistency``.
+            transaction (bytes): Any results returned will be consistent with
+                the Datastore state represented by this transaction id.
+                Defaults to the currently running transaction. Cannot be used
+                with ``read_consistency=ndb.EVENTUAL``.
+            retries (int): Number of times to retry this operation in the case
+                of transient server errors. Operation will potentially be tried
+                up to ``retries`` + 1 times. Set to ``0`` to try operation only
+                once, with no retries.
+            timeout (float): Override the gRPC timeout, in seconds.
+            deadline (float): DEPRECATED: Synonym for ``timeout``.
+            force_writes (bool): Specifies whether a write request should
+                succeed even if the app is read-only. (This only applies to
+                user controlled read-only periods.)
+            use_cache (bool): Specifies whether to store entities in in-process
+                cache; overrides in-process cache policy for this operation.
+            use_memcache (bool): Specifies whether to store entities in
+                memcache; overrides memcache policy for this operation.
+            use_datastore (bool): Specifies whether to store entities in
+                Datastore; overrides Datastore policy for this operation.
+            memcache_timeout (int): Maximum lifetime for entities in memcache;
+                overrides memcache timeout policy for this operation.
+            max_memcache_items (int): Maximum batch size for the auto-batching
+                feature of the Context memcache methods. For example, with the
+                default size of max_memcache_items (100), up to 100 memcache
+                set operations will be combined into a single set_multi
+                operation.
+
+        Returns:
+            tuple[key.Key]: Keys for the newly allocated IDs.
+        """
+        return cls._get_by_id_async(
+            id,
+            parent=parent,
+            namespace=namespace,
+            project=project,
+            app=app,
+            _options=_options,
+        ).result()
+
+    get_by_id = _get_by_id
+
+    @classmethod
+    @_options.ReadOptions.options
+    def _get_by_id_async(
+        cls,
+        id,
+        parent=None,
+        namespace=None,
+        project=None,
+        app=None,
+        *,
+        read_consistency=None,
+        read_policy=None,
+        transaction=None,
+        retries=None,
+        timeout=None,
+        deadline=None,
+        force_writes=None,
+        use_cache=None,
+        use_memcache=None,
+        use_datastore=None,
+        memcache_timeout=None,
+        max_memcache_items=None,
+        _options=None,
+    ):
+        """Get an instance of Model class by ID.
+
+        This is the asynchronous version of :meth:`_get_by_id`.
+
+        Arg:
+            id (Union[int, str]): ID of the entity to load.
+            parent (Optional[key.Key]): Key for the parent of the entity to
+                load.
+            namespace (Optional[str]): Namespace for the entity to load. If not
+                passed, uses the client's value.
+            project (Optional[str]): Project id for the entity to load. If not
+                passed, uses the client's value.
+            app (str): DEPRECATED: Synonym for `project`.
+            read_consistency: Set this to ``ndb.EVENTUAL`` if, instead of
+                waiting for the Datastore to finish applying changes to all
+                returned results, you wish to get possibly-not-current results
+                faster. You can't do this if using a transaction.
+            read_policy: DEPRECATED: Synonym for ``read_consistency``.
+            transaction (bytes): Any results returned will be consistent with
+                the Datastore state represented by this transaction id.
+                Defaults to the currently running transaction. Cannot be used
+                with ``read_consistency=ndb.EVENTUAL``.
+            retries (int): Number of times to retry this operation in the case
+                of transient server errors. Operation will potentially be tried
+                up to ``retries`` + 1 times. Set to ``0`` to try operation only
+                once, with no retries.
+            timeout (float): Override the gRPC timeout, in seconds.
+            deadline (float): DEPRECATED: Synonym for ``timeout``.
+            force_writes (bool): Specifies whether a write request should
+                succeed even if the app is read-only. (This only applies to
+                user controlled read-only periods.)
+            use_cache (bool): Specifies whether to store entities in in-process
+                cache; overrides in-process cache policy for this operation.
+            use_memcache (bool): Specifies whether to store entities in
+                memcache; overrides memcache policy for this operation.
+            use_datastore (bool): Specifies whether to store entities in
+                Datastore; overrides Datastore policy for this operation.
+            memcache_timeout (int): Maximum lifetime for entities in memcache;
+                overrides memcache timeout policy for this operation.
+            max_memcache_items (int): Maximum batch size for the auto-batching
+                feature of the Context memcache methods. For example, with the
+                default size of max_memcache_items (100), up to 100 memcache
+                set operations will be combined into a single set_multi
+                operation.
+
+        Returns:
+            tasklets.Future: tuple[key.Key]: Keys for the newly allocated IDs.
+        """
+        if app:
+            if project:
+                raise TypeError(
+                    "Can't pass 'app' and 'project' arguments together."
+                )
+
+            project = app
+
+        # Key class is weird about keyword args. If you want it to use defaults
+        # you have to not pass them at all.
+        key_args = {}
+
+        if project:
+            key_args["app"] = project
+
+        if namespace:
+            key_args["namespace"] = namespace
+
+        key = key_module.Key(cls._get_kind(), id, parent=parent, **key_args)
+        return key.get_async(_options=_options)
+
+    get_by_id_async = _get_by_id_async
+
 
 class Expando(Model):
     __slots__ = ()
