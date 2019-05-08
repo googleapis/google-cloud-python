@@ -2259,6 +2259,22 @@ class TestTimePartitioning(unittest.TestCase):
         self.assertEqual(time_partitioning.expiration_ms, 10000)
         self.assertTrue(time_partitioning.require_partition_filter)
 
+    def test_from_api_repr_empty(self):
+        from google.cloud.bigquery.table import TimePartitioningType
+
+        klass = self._get_target_class()
+
+        # Even though there are required properties according to the API
+        # specification, sometimes time partitioning is populated as an empty
+        # object. See internal bug 131167013.
+        api_repr = {}
+        time_partitioning = klass.from_api_repr(api_repr)
+
+        self.assertIsNone(time_partitioning.type_)
+        self.assertIsNone(time_partitioning.field)
+        self.assertIsNone(time_partitioning.expiration_ms)
+        self.assertIsNone(time_partitioning.require_partition_filter)
+
     def test_from_api_repr_minimal(self):
         from google.cloud.bigquery.table import TimePartitioningType
 
@@ -2270,6 +2286,14 @@ class TestTimePartitioning(unittest.TestCase):
         self.assertIsNone(time_partitioning.field)
         self.assertIsNone(time_partitioning.expiration_ms)
         self.assertIsNone(time_partitioning.require_partition_filter)
+
+    def test_from_api_repr_doesnt_override_type(self):
+        from google.cloud.bigquery.table import TimePartitioningType
+
+        klass = self._get_target_class()
+        api_repr = {"type": "HOUR"}
+        time_partitioning = klass.from_api_repr(api_repr)
+        self.assertEqual(time_partitioning.type_, "HOUR")
 
     def test_from_api_repr_explicit(self):
         from google.cloud.bigquery.table import TimePartitioningType
