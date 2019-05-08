@@ -61,19 +61,12 @@ class TestClient(unittest.TestCase):
         kwargs = {}
 
         if client_info is not None:
-            kwargs['client_info'] = expected_client_info = client_info
+            kwargs["client_info"] = expected_client_info = client_info
         else:
             expected_client_info = MUT._CLIENT_INFO
 
-        if user_agent is not None:
-            kwargs['user_agent'] = expected_user_agent = user_agent
-        else:
-            expected_user_agent = MUT.DEFAULT_USER_AGENT
-
         client = self._make_one(
-            project=self.PROJECT,
-            credentials=creds,
-            **kwargs
+            project=self.PROJECT, credentials=creds, user_agent=user_agent, **kwargs
         )
 
         expected_creds = expected_creds or creds.with_scopes.return_value
@@ -85,7 +78,7 @@ class TestClient(unittest.TestCase):
 
         self.assertEqual(client.project, self.PROJECT)
         self.assertIs(client._client_info, expected_client_info)
-        self.assertEqual(client.user_agent, expected_user_agent)
+        self.assertEqual(client.user_agent, user_agent)
 
     def test_constructor_default_scopes(self):
         from google.cloud.spanner_v1 import client as MUT
@@ -94,7 +87,8 @@ class TestClient(unittest.TestCase):
         creds = _make_credentials()
         self._constructor_test_helper(expected_scopes, creds)
 
-    def test_constructor_custom_user_agent_and_timeout(self):
+    @mock.patch("warnings.warn")
+    def test_constructor_custom_user_agent_and_timeout(self, mock_warn):
         from google.cloud.spanner_v1 import client as MUT
 
         CUSTOM_USER_AGENT = "custom-application"
@@ -102,6 +96,9 @@ class TestClient(unittest.TestCase):
         creds = _make_credentials()
         self._constructor_test_helper(
             expected_scopes, creds, user_agent=CUSTOM_USER_AGENT
+        )
+        mock_warn.assert_called_once_with(
+            MUT._USER_AGENT_DEPRECATED, DeprecationWarning, stacklevel=2
         )
 
     def test_constructor_custom_client_info(self):
@@ -185,14 +182,11 @@ class TestClient(unittest.TestCase):
         # Make sure it "already" is scoped.
         credentials.requires_scopes = False
 
-        client = self._make_one(
-            project=self.PROJECT, credentials=credentials, user_agent=self.USER_AGENT
-        )
+        client = self._make_one(project=self.PROJECT, credentials=credentials)
 
         new_client = client.copy()
         self.assertIs(new_client._credentials, client._credentials)
         self.assertEqual(new_client.project, client.project)
-        self.assertEqual(new_client.user_agent, client.user_agent)
 
     def test_credentials_property(self):
         credentials = _make_credentials()
