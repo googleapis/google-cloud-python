@@ -46,9 +46,7 @@ class TestConnection(unittest.TestCase):
 
     def test_extra_headers(self):
         import requests
-
         from google.cloud import _http as base_http
-        from google.cloud.dns import _http as MUT
 
         http = mock.create_autospec(requests.Session, instance=True)
         response = requests.Response()
@@ -65,8 +63,8 @@ class TestConnection(unittest.TestCase):
 
         expected_headers = {
             "Accept-Encoding": "gzip",
-            base_http.CLIENT_INFO_HEADER: MUT._CLIENT_INFO,
-            "User-Agent": conn.USER_AGENT,
+            base_http.CLIENT_INFO_HEADER: conn.user_agent,
+            "User-Agent": conn.user_agent,
         }
         expected_uri = conn.build_api_url("/rainbow")
         http.request.assert_called_once_with(
