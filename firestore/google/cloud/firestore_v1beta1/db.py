@@ -194,27 +194,24 @@ class FirestoreModel(object, ABCMeta):
         self.__del__()
 
     @classmethod
-    def get(cls, key_id: str or int or list, __parent__: Type['FirestoreModel'] = None):
+    def get(cls, id: str or int, __parent__: Type['FirestoreModel'] = None):
         """
-        Get a model with the given/id
+        Get a model with the given id
 
         Args:
-            key_id (str or int or list): A key or id of the model record, when a list is provided, `get` returns a list
+            id (str or int): A key or id of the model record, when a list is provided, `get` returns a list
                 models
             __parent__ (Type[FirestoreModel]): If querying a sub collection of model, provide the parent instance
 
         Returns:
             FirestoreModel: An instance of the firestore model calling get
-            
             None: If the id provided doesn't exist
         """
-        if isinstance(key_id, list):
-            return [cls.get(key, __parent__=__parent__) for key in key_id]
-        document = cls.__init_client__().collection(cls.__collection_path(__parent__)).document(key_id)
+        document = cls.__init_client__().collection(cls.__collection_path(__parent__)).document(id)
         data = document.get()
         if not data.exists:
             return None
-        return cls(__parent__=__parent__, id=key_id, **data.to_dict())
+        return cls(__parent__=__parent__, id=id, **data.to_dict())
 
     @classmethod
     def query(cls, offset=0, limit=0, __parent__: Type['FirestoreModel'] = None):
