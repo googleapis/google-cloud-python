@@ -121,6 +121,7 @@ class Client(ClientWithProject):
             project=project, credentials=credentials, _http=_http
         )
         self._connection = Connection(self, client_info=client_info)
+        self._client_info = client_info
         if _use_grpc is None:
             self._use_grpc = _USE_GRPC
         else:

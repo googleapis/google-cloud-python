@@ -63,6 +63,7 @@ class TestClient(unittest.TestCase):
             project=self.PROJECT, credentials=creds, client_info=client_info
         )
         self.assertEqual(client.project, self.PROJECT)
+        self.assertIs(client._client_info, client_info)
         self.assertIsInstance(client._connection, Connection)
         self.assertIs(client._connection._client_info, client_info)
 
