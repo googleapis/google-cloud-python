@@ -241,13 +241,13 @@ class Query(object):
     """
 
     def __init__(self, model, offset, limit, path, parent):
-        self.__collection = FirestoreModel.__init_client__().collection(path)
+        collection = FirestoreModel.__init_client__().collection(path)
+        self.__query = collection
         self.parent = parent
         if offset:
-            self.__collection.start_at(offset)
+            self.__query = self.__query.offset(offset)
         if limit:
-            self.__collection.limit(limit)
-        self.__cursor = 0
+            self.__query = self.__query.limit(limit)
         self.__fetched = False
         self.__model = model
         self.__array_contains_queries = 0
@@ -276,7 +276,7 @@ class Query(object):
         Returns:
             Query: A query object with this condition added
         """
-        self.__collection.filter(field, "==", self.__validate_value(field, value))
+        self.__query = self.__query.filter(field, "==", self.__validate_value(field, value))
         return self
 
     def greater_than(self, field: str, value: Any):
@@ -291,7 +291,7 @@ class Query(object):
             Query: A query object with this condition added
         """
         self.__add_range_filter(field)
-        self.__collection.filter(field, ">", self.__validate_value(field, value))
+        self.__query = self.__query.filter(field, ">", self.__validate_value(field, value))
 
     def less_than(self, field, value):
         """
@@ -305,7 +305,7 @@ class Query(object):
             Query: A query object with this condition added
         """
         self.__add_range_filter(field)
-        self.__collection.filter(field, "<", self.__validate_value(field, value))
+        self.__query = self.__query.filter(field, "<", self.__validate_value(field, value))
 
     def greater_than_or_equal(self, field, value):
         """
@@ -319,7 +319,7 @@ class Query(object):
             Query: A query object with this condition added
         """
         self.__add_range_filter(field)
-        self.__collection.filter(field, ">=", self.__validate_value(field, value))
+        self.__query = self.__query.filter(field, ">=", self.__validate_value(field, value))
 
     def less_than_or_equal(self, field, value):
         """
@@ -333,7 +333,7 @@ class Query(object):
             Query: A query object with this condition added
         """
         self.__add_range_filter(field)
-        self.__collection.filter(field, "<=", self.__validate_value(field, value))
+        self.__query = self.__query.filter(field, "<=", self.__validate_value(field, value))
 
     def contains(self, field, value):
         """
@@ -360,7 +360,7 @@ class Query(object):
         self.__array_contains_queries += 1
         if self.__array_contains_queries > 1:
             raise MalformedQueryError("Only one `contains` clause is allowed per query")
-        self.__collection.filter(field, "array_contains", value)
+        self.__query = self.__query.filter(field, "array_contains", value)
         return self
 
     def order_by(self, field: str, direction: str = "ASC"):
@@ -377,11 +377,11 @@ class Query(object):
         if direction is not "ASC" and direction is not "DESC":
             raise MalformedQueryError("order_by direction can only be ASC, or DESC")
         direction = FSQuery.ASCENDING if direction is "ASC" else FSQuery.DESCENDING
-        self.__collection.order_by(field, direction=direction)
+        self.__query = self.__query.order_by(field, direction=direction)
         return self
 
     def __fetch(self):
-        self.__docs = self.__collection.get()
+        self.__docs = self.__query.stream()
         self.__fetched = True
 
     def __iter__(self):
@@ -400,12 +400,7 @@ class Query(object):
         # Fetch data from db if not already done
         if not self.__fetched:
             self.__fetch()
-        # Reset the cursor if one decides to reuse the query
-        if self.__cursor == len(self.__docs):
-            self.__cursor = 0
-            raise StopIteration
-        doc = self.__docs[self.__cursor]
-        self.__cursor += 1
+        doc = self.__docs.__next__()
         return self.__model(__parent__=self.parent, id=doc.id, **doc.to_dict())
 
 
