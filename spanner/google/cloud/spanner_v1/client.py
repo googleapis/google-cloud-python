@@ -23,6 +23,7 @@ In the hierarchy of API concepts
 * a :class:`~google.cloud.spanner_v1.instance.Instance` owns a
   :class:`~google.cloud.spanner_v1.database.Database`
 """
+import warnings
 
 from google.api_core.gapic_v1 import client_info
 
@@ -36,7 +37,6 @@ from google.cloud.spanner_admin_instance_v1.gapic.instance_admin_client import (
 
 # pylint: enable=line-too-long
 
-from google.cloud._http import DEFAULT_USER_AGENT
 from google.cloud.client import ClientWithProject
 from google.cloud.spanner_v1 import __version__
 from google.cloud.spanner_v1._helpers import _metadata_with_prefix
@@ -45,6 +45,10 @@ from google.cloud.spanner_v1.instance import Instance
 
 _CLIENT_INFO = client_info.ClientInfo(client_library_version=__version__)
 SPANNER_ADMIN_SCOPE = "https://www.googleapis.com/auth/spanner.admin"
+_USER_AGENT_DEPRECATED = (
+    "The 'user_agent' argument to 'Client' is deprecated / unused. "
+    "Please pass an appropriate 'client_info' instead."
+)
 
 
 class InstanceConfig(object):
@@ -95,9 +99,17 @@ class Client(ClientWithProject):
                         client. If not provided, defaults to the Google
                         Application Default Credentials.
 
+    :type client_info: :class:`google.api_core.gapic_v1.client_info.ClientInfo`
+    :param client_info:
+        (Optional) The client info used to send a user-agent string along with
+        API requests. If ``None``, then default info will be used. Generally,
+        you only need to set this if you're developing your own library or
+        partner tool.
+
     :type user_agent: str
-    :param user_agent: (Optional) The user agent to be used with API request.
-                       Defaults to :const:`DEFAULT_USER_AGENT`.
+    :param user_agent:
+        (Deprecated) The user agent to be used with API request.
+        Not used.
 
     :raises: :class:`ValueError <exceptions.ValueError>` if both ``read_only``
              and ``admin`` are :data:`True`
@@ -105,19 +117,26 @@ class Client(ClientWithProject):
 
     _instance_admin_api = None
     _database_admin_api = None
+    user_agent = None
     _SET_PROJECT = True  # Used by from_service_account_json()
 
     SCOPE = (SPANNER_ADMIN_SCOPE,)
     """The scopes required for Google Cloud Spanner."""
 
-    def __init__(self, project=None, credentials=None, user_agent=DEFAULT_USER_AGENT):
+    def __init__(
+        self, project=None, credentials=None, client_info=_CLIENT_INFO, user_agent=None
+    ):
         # NOTE: This API has no use for the _http argument, but sending it
         #       will have no impact since the _http() @property only lazily
         #       creates a working HTTP object.
         super(Client, self).__init__(
             project=project, credentials=credentials, _http=None
         )
-        self.user_agent = user_agent
+        self._client_info = client_info
+
+        if user_agent is not None:
+            warnings.warn(_USER_AGENT_DEPRECATED, DeprecationWarning, stacklevel=2)
+            self.user_agent = user_agent
 
     @property
     def credentials(self):
@@ -153,7 +172,7 @@ class Client(ClientWithProject):
         """Helper for session-related API calls."""
         if self._instance_admin_api is None:
             self._instance_admin_api = InstanceAdminClient(
-                credentials=self.credentials, client_info=_CLIENT_INFO
+                credentials=self.credentials, client_info=self._client_info
             )
         return self._instance_admin_api
 
@@ -162,7 +181,7 @@ class Client(ClientWithProject):
         """Helper for session-related API calls."""
         if self._database_admin_api is None:
             self._database_admin_api = DatabaseAdminClient(
-                credentials=self.credentials, client_info=_CLIENT_INFO
+                credentials=self.credentials, client_info=self._client_info
             )
         return self._database_admin_api
 
@@ -175,11 +194,7 @@ class Client(ClientWithProject):
         :rtype: :class:`.Client`
         :returns: A copy of the current client.
         """
-        return self.__class__(
-            project=self.project,
-            credentials=self._credentials,
-            user_agent=self.user_agent,
-        )
+        return self.__class__(project=self.project, credentials=self._credentials)
 
     def list_instance_configs(self, page_size=None, page_token=None):
         """List available instance configurations for the client's project.
