@@ -376,6 +376,9 @@ class PartialRowsData(object):
         self.rows = {}
         self._state = self.STATE_NEW_ROW
 
+        # Flag to stop iteration, for any reason not related to self.retry()
+        self.stop = False
+
     @property
     def state(self):
         """State machine state.
@@ -427,6 +430,8 @@ class PartialRowsData(object):
 
     def _read_next_response(self):
         """Helper for :meth:`__iter__`."""
+        if self.stop:
+            raise StopIteration
         return self.retry(self._read_next, on_error=self._on_error)()
 
     def __iter__(self):
