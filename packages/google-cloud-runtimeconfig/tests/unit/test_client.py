@@ -33,15 +33,46 @@ class TestClient(unittest.TestCase):
     def _make_one(self, *args, **kw):
         return self._get_target_class()(*args, **kw)
 
+    def test_ctor_wo_client_info(self):
+        from google.cloud._http import ClientInfo
+        from google.cloud.runtimeconfig._http import Connection
+
+        PROJECT = "PROJECT"
+        http = object()
+        creds = _make_credentials()
+
+        client = self._make_one(project=PROJECT, credentials=creds, _http=http)
+        self.assertIsInstance(client._connection, Connection)
+        self.assertIs(client._credentials, creds)
+        self.assertIs(client._http_internal, http)
+        self.assertIsInstance(client._connection._client_info, ClientInfo)
+
+    def test_ctor_w_client_info(self):
+        from google.cloud._http import ClientInfo
+        from google.cloud.runtimeconfig._http import Connection
+
+        PROJECT = "PROJECT"
+        http = object()
+        creds = _make_credentials()
+        client_info = ClientInfo()
+
+        client = self._make_one(
+            project=PROJECT, credentials=creds, _http=http, client_info=client_info
+        )
+        self.assertIsInstance(client._connection, Connection)
+        self.assertIs(client._credentials, creds)
+        self.assertIs(client._http_internal, http)
+        self.assertIs(client._connection._client_info, client_info)
+
     def test_config(self):
         PROJECT = "PROJECT"
         CONFIG_NAME = "config_name"
         creds = _make_credentials()
 
-        client_obj = self._make_one(project=PROJECT, credentials=creds)
-        new_config = client_obj.config(CONFIG_NAME)
+        client = self._make_one(project=PROJECT, credentials=creds)
+        new_config = client.config(CONFIG_NAME)
         self.assertEqual(new_config.name, CONFIG_NAME)
-        self.assertIs(new_config._client, client_obj)
+        self.assertIs(new_config._client, client)
         self.assertEqual(new_config.project, PROJECT)
         self.assertEqual(
             new_config.full_name, "projects/%s/configs/%s" % (PROJECT, CONFIG_NAME)
