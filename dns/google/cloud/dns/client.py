@@ -43,16 +43,23 @@ class Client(ClientWithProject):
                   ``credentials`` for the current object.
                   This parameter should be considered private, and could
                   change in the future.
+
+    :type client_info: :class:`~google.api_core.client_info.ClientInfo`
+    :param client_info:
+        The client info used to send a user-agent string along with API
+        requests. If ``None``, then default info will be used. Generally,
+        you only need to set this if you're developing your own library
+        or partner tool.
     """
 
     SCOPE = ("https://www.googleapis.com/auth/ndev.clouddns.readwrite",)
     """The scopes required for authenticating as a Cloud DNS consumer."""
 
-    def __init__(self, project=None, credentials=None, _http=None):
+    def __init__(self, project=None, credentials=None, _http=None, client_info=None):
         super(Client, self).__init__(
             project=project, credentials=credentials, _http=_http
         )
-        self._connection = Connection(self)
+        self._connection = Connection(self, client_info=client_info)
 
     def quotas(self):
         """Return DNS quotas for the project associated with this client.
