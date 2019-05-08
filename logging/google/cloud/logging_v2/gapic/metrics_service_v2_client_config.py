@@ -2,7 +2,7 @@ config = {
     "interfaces": {
         "google.logging.v2.MetricsServiceV2": {
             "retry_codes": {
-                "idempotent": ["DEADLINE_EXCEEDED", "INTERNAL", "UNAVAILABLE"],
+                "idempotent": ["INTERNAL", "UNAVAILABLE"],
                 "non_idempotent": [],
             },
             "retry_params": {
