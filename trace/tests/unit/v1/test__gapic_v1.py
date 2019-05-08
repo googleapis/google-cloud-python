@@ -17,8 +17,6 @@ import unittest
 
 import mock
 
-from google.api_core import grpc_helpers
-
 
 class Test__TraceAPI(unittest.TestCase):
     project = "PROJECT"
@@ -49,9 +47,7 @@ class Test__TraceAPI(unittest.TestCase):
 
     def test_patch_traces(self):
         from google.cloud.trace_v1.gapic import trace_service_client
-        from google.cloud.trace_v1.proto.trace_pb2 import TraceSpan, Trace, Traces
         from google.cloud.trace.v1._gapic import _traces_mapping_to_pb
-        from google.cloud._helpers import _datetime_to_pb_timestamp
 
         trace_id = "test_trace_id"
         span_id = 1234
@@ -136,7 +132,70 @@ class Test__TraceAPI(unittest.TestCase):
         )
 
 
-class Test__parse_trace_pb(unittest.TestCase):
+class _TracePbBase(object):
+    project = u"PROJECT"
+    trace_id = u"test_trace_id"
+    span_id = 1234
+    span_name = u"test_span_name"
+    start_time = "2017-06-24T00:12:50.369990Z"
+    end_time = "2017-06-24T00:13:39.633255Z"
+    start_seconds = 1498263170
+    start_nanos = 369990000
+    end_seconds = 1498263219
+    end_nanos = 633255000
+
+    @classmethod
+    def _make_trace_pb(cls):
+        from google.cloud.trace_v1.proto.trace_pb2 import Trace
+        from google.cloud.trace_v1.proto.trace_pb2 import TraceSpan
+        from google.protobuf.timestamp_pb2 import Timestamp
+
+        start_time_pb = Timestamp(seconds=cls.start_seconds, nanos=cls.start_nanos)
+        end_time_pb = Timestamp(seconds=cls.end_seconds, nanos=cls.end_nanos)
+
+        span_pb = TraceSpan(
+            span_id=cls.span_id,
+            name=cls.span_name,
+            start_time=start_time_pb,
+            end_time=end_time_pb,
+        )
+
+        return Trace(project_id=cls.project, trace_id=cls.trace_id, spans=[span_pb])
+
+    @classmethod
+    def _expected_json(cls):
+        return {
+            "projectId": cls.project,
+            "traceId": cls.trace_id,
+            "spans": [
+                {
+                    "spanId": str(cls.span_id),
+                    "name": cls.span_name,
+                    "startTime": cls.start_time,
+                    "endTime": cls.end_time,
+                }
+            ],
+        }
+
+
+class Test__item_to_mapping(unittest.TestCase, _TracePbBase):
+    @staticmethod
+    def _call_fut(*args, **kwargs):
+        from google.cloud.trace.v1._gapic import _item_to_mapping
+
+        return _item_to_mapping(*args, **kwargs)
+
+    def test_registered_type(self):
+        iterator = object()
+        trace_pb = self._make_trace_pb()
+
+        parsed_json = self._call_fut(iterator, trace_pb)
+
+        expected_result = self._expected_json()
+        self.assertEqual(parsed_json, expected_result)
+
+
+class Test__parse_trace_pb(unittest.TestCase, _TracePbBase):
     @staticmethod
     def _call_fut(*args, **kwargs):
         from google.cloud.trace.v1._gapic import _parse_trace_pb
@@ -144,48 +203,12 @@ class Test__parse_trace_pb(unittest.TestCase):
         return _parse_trace_pb(*args, **kwargs)
 
     def test_registered_type(self):
-        from google.cloud.trace_v1.proto.trace_pb2 import TraceSpan, Trace
-        from google.protobuf.timestamp_pb2 import Timestamp
+        trace_pb = self._make_trace_pb()
 
-        project = u"PROJECT"
-        trace_id = u"test_trace_id"
-        span_id = 1234
-        span_name = u"test_span_name"
-        start_time = "2017-06-24T00:12:50.369990Z"
-        end_time = "2017-06-24T00:13:39.633255Z"
-        start_seconds = 1498263170
-        start_nanos = 369990000
-        end_seconds = 1498263219
-        end_nanos = 633255000
+        parsed_json = self._call_fut(trace_pb)
 
-        start_time_pb = Timestamp(seconds=start_seconds, nanos=start_nanos)
-        end_time_pb = Timestamp(seconds=end_seconds, nanos=end_nanos)
-
-        span_pb = TraceSpan(
-            span_id=span_id,
-            name=span_name,
-            start_time=start_time_pb,
-            end_time=end_time_pb,
-        )
-
-        trace_pb = Trace(project_id=project, trace_id=trace_id, spans=[span_pb])
-
-        parse_result = self._call_fut(trace_pb)
-
-        expected_result = {
-            "projectId": project,
-            "traceId": trace_id,
-            "spans": [
-                {
-                    "spanId": str(span_id),
-                    "name": span_name,
-                    "startTime": start_time,
-                    "endTime": end_time,
-                }
-            ],
-        }
-
-        self.assertEqual(parse_result, expected_result)
+        expected_result = self._expected_json()
+        self.assertEqual(parsed_json, expected_result)
 
     @mock.patch("google.cloud.trace.v1._gapic.MessageToDict", side_effect=TypeError)
     def test_unregistered_type(self, msg_to_dict_mock):
