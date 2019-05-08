@@ -52,19 +52,28 @@ class TestClient(unittest.TestCase):
         self,
         expected_scopes,
         creds,
-        user_agent=None,
         expected_creds=None,
         client_info=None,
+        user_agent=None,
     ):
         from google.cloud.spanner_v1 import client as MUT
 
-        user_agent = user_agent or MUT.DEFAULT_USER_AGENT
-        client_info = client_info or MUT._CLIENT_INFO
+        kwargs = {}
+
+        if client_info is not None:
+            kwargs['client_info'] = expected_client_info = client_info
+        else:
+            expected_client_info = MUT._CLIENT_INFO
+
+        if user_agent is not None:
+            kwargs['user_agent'] = expected_user_agent = user_agent
+        else:
+            expected_user_agent = MUT.DEFAULT_USER_AGENT
+
         client = self._make_one(
             project=self.PROJECT,
             credentials=creds,
-            user_agent=user_agent,
-            client_info=client_info,
+            **kwargs
         )
 
         expected_creds = expected_creds or creds.with_scopes.return_value
@@ -75,8 +84,8 @@ class TestClient(unittest.TestCase):
             creds.with_scopes.assert_called_once_with(expected_scopes)
 
         self.assertEqual(client.project, self.PROJECT)
-        self.assertEqual(client.user_agent, user_agent)
-        self.assertIs(client._client_info, client_info)
+        self.assertIs(client._client_info, expected_client_info)
+        self.assertEqual(client.user_agent, expected_user_agent)
 
     def test_constructor_default_scopes(self):
         from google.cloud.spanner_v1 import client as MUT

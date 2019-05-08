@@ -122,7 +122,7 @@ class Client(ClientWithProject):
         self,
         project=None,
         credentials=None,
-        client_info=client_info,
+        client_info=_CLIENT_INFO,
         user_agent=DEFAULT_USER_AGENT,
     ):
         # NOTE: This API has no use for the _http argument, but sending it
