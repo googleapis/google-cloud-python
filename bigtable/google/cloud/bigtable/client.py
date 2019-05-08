@@ -63,12 +63,7 @@ READ_ONLY_SCOPE = "https://www.googleapis.com/auth/bigtable.data.readonly"
 def _create_gapic_client(client_class):
     def inner(self):
         if self._emulator_host is None:
-            if self._channel is not None:
-                return client_class(channel=self._channel, client_info=_CLIENT_INFO)
-            else:
-                return client_class(
-                    credentials=self._credentials, client_info=_CLIENT_INFO
-                )
+            return client_class(credentials=self._credentials, client_info=_CLIENT_INFO)
         else:
             return client_class(
                 channel=self._emulator_channel, client_info=_CLIENT_INFO
@@ -209,9 +204,14 @@ class Client(ClientWithProject):
                 raise ValueError(
                     "Same channel cannot be used for an Admin client and Data client."
                 )
-            self._table_data_client = _create_gapic_client(bigtable_v2.BigtableClient)(
-                self
-            )
+            if self._channel is not None:
+                self._table_data_client = bigtable_v2.BigtableClient(
+                    channel=self._channel, client_info=_CLIENT_INFO
+                )
+            else:
+                self._table_data_client = bigtable_v2.BigtableClient(
+                    credentials=self._credentials, client_info=_CLIENT_INFO
+                )
         return self._table_data_client
 
     @property
@@ -237,9 +237,14 @@ class Client(ClientWithProject):
                 raise ValueError(
                     "Same channel cannot be used for an Admin client and Data client."
                 )
-            self._table_admin_client = _create_gapic_client(
-                bigtable_admin_v2.BigtableTableAdminClient
-            )(self)
+            if self._channel is not None:
+                self._table_admin_client = bigtable_admin_v2.BigtableTableAdminClient(
+                    channel=self._channel, client_info=_CLIENT_INFO
+                )
+            else:
+                self._table_admin_client = bigtable_admin_v2.BigtableTableAdminClient(
+                    credentials=self._credentials, client_info=_CLIENT_INFO
+                )
         return self._table_admin_client
 
     @property
@@ -265,9 +270,14 @@ class Client(ClientWithProject):
                 raise ValueError(
                     "Same channel cannot be used for an Admin client and Data client."
                 )
-            self._instance_admin_client = _create_gapic_client(
-                bigtable_admin_v2.BigtableInstanceAdminClient
-            )(self)
+            if self._channel is not None:
+                self._instance_admin_client = bigtable_admin_v2.BigtableInstanceAdminClient(
+                    channel=self._channel, client_info=_CLIENT_INFO
+                )
+            else:
+                self._instance_admin_client = bigtable_admin_v2.BigtableInstanceAdminClient(
+                    credentials=self._credentials, client_info=_CLIENT_INFO
+                )
         return self._instance_admin_client
 
     def instance(self, instance_id, display_name=None, instance_type=None, labels=None):

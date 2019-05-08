@@ -218,6 +218,56 @@ class TestClient(unittest.TestCase):
         table_admin_client = client.table_admin_client
         self.assertIsInstance(table_admin_client, BigtableTableAdminClient)
 
+    def test_table_admin_client_table_data_client_w_admin_flag_channel(self):
+        import warnings
+        from google.cloud.bigtable_admin_v2 import BigtableTableAdminClient
+
+        channel = mock.Mock()
+        client = self._make_one(project=self.PROJECT, channel=channel, admin=True)
+
+        with warnings.catch_warnings():
+            table_admin_client = client.table_admin_client
+
+        self.assertIsInstance(table_admin_client, BigtableTableAdminClient)
+        table_data_client = None
+        with self.assertRaises(ValueError):
+            table_data_client = client.table_data_client
+        self.assertIsNone(table_data_client)
+        self.assertIsNone(client._table_data_client)
+
+    def test_instance_admin_client_table_data_client_w_admin_flag_channel(self):
+        import warnings
+        from google.cloud.bigtable_admin_v2 import BigtableInstanceAdminClient
+
+        channel = mock.Mock()
+        client = self._make_one(project=self.PROJECT, channel=channel, admin=True)
+
+        with warnings.catch_warnings():
+            instance_admin_client = client.instance_admin_client
+
+        self.assertIsInstance(instance_admin_client, BigtableInstanceAdminClient)
+        table_data_client = None
+        with self.assertRaises(ValueError):
+            table_data_client = client.table_data_client
+        self.assertIsNone(table_data_client)
+        self.assertIsNone(client._table_data_client)
+
+    def test_instance_admin_client_table_admin_client_w_admin_flag_channel(self):
+        import warnings
+        from google.cloud.bigtable_admin_v2 import BigtableInstanceAdminClient
+        from google.cloud.bigtable_admin_v2 import BigtableTableAdminClient
+
+        channel = mock.Mock()
+        client = self._make_one(project=self.PROJECT, channel=channel, admin=True)
+
+        with warnings.catch_warnings():
+            instance_admin_client = client.instance_admin_client
+        self.assertIsInstance(instance_admin_client, BigtableInstanceAdminClient)
+
+        with warnings.catch_warnings():
+            table_admin_client = client.table_admin_client
+        self.assertIsInstance(table_admin_client, BigtableTableAdminClient)
+
     def test_table_admin_client_initialized(self):
         credentials = _make_credentials()
         client = self._make_one(
