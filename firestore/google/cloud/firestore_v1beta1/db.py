@@ -10,6 +10,8 @@ In a nutshell this library implements:
 * FieldTypes for use in :class:`~.firestore_v1beta1.client.db.FirestoreModel` including:
     * :class:`~.firestore_v1beta1.client.db.StringField`
     * :class:`~.firestore_v1beta1.client.db.IntegerField`
+    * :class:`~.firestore_v1beta1.client.db.FloatingPointNumberField`
+    * :class:`~.firestore_v1beta1.client.db.BytesField`
     * :class:`~.firestore_v1beta1.client.db.ListField`
     * :class:`~.firestore_v1beta1.client.db.ReferenceField`
     * :class:`~.firestore_v1beta1.client.db.JSONField`
@@ -22,7 +24,7 @@ from google.cloud.firestore_v1beta1.query import Query as FSQuery
 from google.cloud.firestore_v1beta1 import SERVER_TIMESTAMP
 from abc import ABCMeta
 import json
-from datetime import datetime
+from datetime import datetime, date
 from typing import Type, Any
 
 
@@ -402,18 +404,14 @@ class Query(object):
 
 
 class StringField(_Field):
-    """A string field"""
+    """
+    A string field
+    """
     def __init__(self, default=None, length=None, required=False):
         super(StringField, self).__init__(str, default=default, required=required)
         self.length = length
 
     def validate(self, value):
-        """
-        Validates that the value provided conforms with the given field
-
-        Raises:
-             InvalidValueError: If the value doesn't meet the condition of the field
-        """
         value = super(StringField, self).validate(value)
         if self.length and value is not None and len(value) > self.length:
             raise InvalidValueError(self, value)
@@ -421,9 +419,21 @@ class StringField(_Field):
 
 
 class IntegerField(_Field):
-    """An Integer field"""
+    """This field stores a 64-bit signed integer"""
     def __init__(self, default=None, required=False):
         super(IntegerField, self).__init__(int, default=default, required=required)
+
+
+class FloatingPointNumberField(_Field):
+    """Stores a 64-bit double precision floating number"""
+    def __init__(self, default=None, required=False):
+        super(FloatingPointNumberField, self).__init__((float, int), default=default, required=required)
+
+
+class BytesField(_Field):
+    """Stores values as bytes, can be used to save a blob"""
+    def __init__(self, default=None, required=False):
+        super(BytesField, self).__init__(bytes, default=default, required=required)
 
 
 class ListField(_Field):
@@ -440,7 +450,7 @@ class ListField(_Field):
 
 
 class ReferenceField(_Field):
-    """A field referencing another model, It's value is an id of the referenced record"""
+    """A field referencing another model"""
     def __init__(self, model: Type[FirestoreModel], required=False):
         super(ReferenceField, self).__init__(model, required=required)
         self.model = model
@@ -455,7 +465,7 @@ class ReferenceField(_Field):
 class JSONField(_Field):
     """Holds a dictionary of JSON serializable field data"""
     def __init__(self, required=False, default=None):
-        super(JSONField, self).__init__(dict, required=required, default=default)
+        super(JSONField, self).__init__((dict, list), required=required, default=default)
 
     def validate(self, value):
         value = super(JSONField, self).validate(value)
@@ -475,7 +485,7 @@ class BooleanField(_Field):
 class DateTimeField(_Field):
     """Holds a date time value"""
     def __init__(self, default=None, required=False):
-        super(DateTimeField, self).__init__(datetime, default=default, required=required)
+        super(DateTimeField, self).__init__((datetime, date), default=default, required=required)
 
     def validate(self, value):
         # Return server timestamp as the value
