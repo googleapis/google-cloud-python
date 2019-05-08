@@ -784,8 +784,7 @@ class Bucket(_PropertyMixin):
             extra_params["versions"] = versions
 
         if fields is not None:
-            warnings.warn(
-                _LIST_BLOBS_FIELDS_MESSAGE, DeprecationWarning, stacklevel=2)
+            warnings.warn(_LIST_BLOBS_FIELDS_MESSAGE, DeprecationWarning, stacklevel=2)
             extra_params["fields"] = fields
 
         if self.user_project is not None:
