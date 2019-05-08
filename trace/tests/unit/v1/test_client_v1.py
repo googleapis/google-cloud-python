@@ -36,10 +36,22 @@ class TestClient(unittest.TestCase):
     def _make_one(self, *args, **kw):
         return self._get_target_class()(*args, **kw)
 
-    def test_constructor(self):
+    def test_constructor_defaults(self):
+        from google.api_core.gapic_v1.client_info import ClientInfo
+
         credentials = _make_credentials()
         client = self._make_one(project=self.project, credentials=credentials)
         self.assertEqual(client.project, self.project)
+        self.assertIsInstance(client._client_info, ClientInfo)
+
+    def test_constructor_explicit(self):
+        credentials = _make_credentials()
+        client_info = mock.Mock()
+        client = self._make_one(
+            project=self.project, credentials=credentials, client_info=client_info
+        )
+        self.assertEqual(client.project, self.project)
+        self.assertIs(client._client_info, client_info)
 
     def test_trace_api(self):
         clients = []

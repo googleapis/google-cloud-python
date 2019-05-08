@@ -178,7 +178,7 @@ def make_trace_api(client):
         proper configurations.
     """
     generated = trace_service_client.TraceServiceClient(
-        credentials=client._credentials, client_info=_CLIENT_INFO
+        credentials=client._credentials, client_info=client._client_info
     )
     return _TraceAPI(generated, client)
 
