@@ -275,7 +275,7 @@ class Test_make_trace_api(unittest.TestCase):
         client = mock.Mock(spec=["_credentials", "_client_info"])
 
         patch_api = mock.patch(
-            "google.cloud.trace._gapic.trace_service_client.TraceServiceClient",
+            "google.cloud.trace._gapic.trace_service_client.TraceServiceClient"
         )
 
         with patch_api as patched:

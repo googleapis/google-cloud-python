@@ -23,7 +23,6 @@ from google.rpc import status_pb2 as google_dot_rpc_dot_status__pb2
 from google.protobuf import wrappers_pb2 as google_dot_protobuf_dot_wrappers__pb2
 
 
-
 class _TraceAPI(object):
     """
     Wrapper to help mapping trace-related APIs.
