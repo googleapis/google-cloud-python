@@ -231,9 +231,8 @@ class TestDatabase(_BaseTest):
         self.assertEqual(database.name, expected_name)
 
     def test_spanner_api_property_w_scopeless_creds(self):
-        from google.cloud.spanner_v1.database import _CLIENT_INFO
-
         client = _Client()
+        client_info = client._client_info = mock.Mock()
         credentials = client.credentials = object()
         instance = _Instance(self.INSTANCE_NAME, client=client)
         pool = _Pool()
@@ -251,12 +250,12 @@ class TestDatabase(_BaseTest):
         self.assertIs(again, api)
 
         spanner_client.assert_called_once_with(
-            credentials=credentials, client_info=_CLIENT_INFO
+            credentials=credentials, client_info=client_info
         )
 
     def test_spanner_api_w_scoped_creds(self):
         import google.auth.credentials
-        from google.cloud.spanner_v1.database import _CLIENT_INFO, SPANNER_DATA_SCOPE
+        from google.cloud.spanner_v1.database import SPANNER_DATA_SCOPE
 
         class _CredentialsWithScopes(google.auth.credentials.Scoped):
             def __init__(self, scopes=(), source=None):
@@ -271,6 +270,7 @@ class TestDatabase(_BaseTest):
 
         expected_scopes = (SPANNER_DATA_SCOPE,)
         client = _Client()
+        client_info = client._client_info = mock.Mock()
         credentials = client.credentials = _CredentialsWithScopes()
         instance = _Instance(self.INSTANCE_NAME, client=client)
         pool = _Pool()
@@ -290,7 +290,7 @@ class TestDatabase(_BaseTest):
         self.assertEqual(len(spanner_client.call_args_list), 1)
         called_args, called_kw = spanner_client.call_args
         self.assertEqual(called_args, ())
-        self.assertEqual(called_kw["client_info"], _CLIENT_INFO)
+        self.assertEqual(called_kw["client_info"], client_info)
         scoped = called_kw["credentials"]
         self.assertEqual(scoped._scopes, expected_scopes)
         self.assertIs(scoped._source, credentials)
