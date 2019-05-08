@@ -70,7 +70,7 @@ class Client(ClientWithProject):
         database (Optional[str]): The database name that the client targets.
             For now, :attr:`DEFAULT_DATABASE` (the default value) is the
             only valid database.
-        client_info (Optional[google.api_core.client_info.ClientInfo]):
+        client_info (Optional[google.api_core.gapic_v1.client_info.ClientInfo]):
             The client info used to send a user-agent string along with API
             requests. If ``None``, then default info will be used. Generally,
             you only need to set this if you're developing your own library

@@ -102,7 +102,7 @@ class Client(ClientWithProject):
                   interact with the Instance Admin or Table Admin APIs. This
                   requires the :const:`ADMIN_SCOPE`. Defaults to :data:`False`.
 
-    :type: client_info: :class:`google.api_core.client_info.ClientInfo`
+    :type: client_info: :class:`google.api_core.gapic_v1.client_info.ClientInfo`
     :param client_info:
         The client info used to send a user-agent string along with API
         requests. If ``None``, then default info will be used. Generally,
