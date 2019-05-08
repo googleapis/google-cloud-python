@@ -43,10 +43,28 @@ class TestClient(unittest.TestCase):
     def _make_one(self, *args, **kw):
         return self._get_target_class()(*args, **kw)
 
-    def test_ctor(self):
+    def test_ctor_defaults(self):
+        from google.cloud._http import ClientInfo
+        from google.cloud.logging._http import Connection
+
         creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds)
         self.assertEqual(client.project, self.PROJECT)
+        self.assertIsInstance(client._connection, Connection)
+        self.assertIsInstance(client._connection._client_info, ClientInfo)
+
+    def test_ctor_explicit(self):
+        from google.cloud._http import ClientInfo
+        from google.cloud.logging._http import Connection
+
+        creds = _make_credentials()
+        client_info = ClientInfo()
+        client = self._make_one(
+            project=self.PROJECT, credentials=creds, client_info=client_info
+        )
+        self.assertEqual(client.project, self.PROJECT)
+        self.assertIsInstance(client._connection, Connection)
+        self.assertIs(client._connection._client_info, client_info)
 
     def test_logging_api_wo_gapic(self):
         from google.cloud.logging._http import _LoggingAPI
