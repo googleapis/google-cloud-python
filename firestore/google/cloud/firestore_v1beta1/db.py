@@ -122,7 +122,7 @@ class FirestoreModel(object, ABCMeta):
             (Project, Credentials, database): A tuple of `Project`, `Credentials` and `database` in that order
 
         Raises:
-            NotImplementedError: Raised if this method is not overridden, You don't need to override this method if
+            NotImplementedError: Raised if this method is not overridden, You don't need to implement this method if
                 you're already in an authorized environment e.g. App Engine or Firebase Admin
         """
         raise NotImplementedError()
@@ -188,7 +188,10 @@ class FirestoreModel(object, ABCMeta):
         self.id = new_ref.id
 
     def delete(self):
-        pass  # TODO: Implement delete, otherwise what's the point
+        """Delete the document connected to this model from firestore"""
+        if self.id:
+            self.__collection.document(self.id).delete()
+        self.__del__()
 
     @classmethod
     def get(cls, key_id: str or int or list, __parent__: Type['FirestoreModel'] = None):
@@ -205,6 +208,8 @@ class FirestoreModel(object, ABCMeta):
             
             None: If the id provided doesn't exist
         """
+        if isinstance(key_id, list):
+            return [cls.get(key, __parent__=__parent__) for key in key_id]
         document = cls.__init_client__().collection(cls.__collection_path(__parent__)).document(key_id)
         data = document.get()
         if not data.exists:
@@ -217,7 +222,7 @@ class FirestoreModel(object, ABCMeta):
         Create a query to this model
 
         Args:
-            offset (int): The position in the database where he results begin
+            offset (int): The position in the database where the results begin
             limit (int): Maximum number of records to return
             __parent__ (Type[FirestoreModel]): If querying a sub collection of model, provide the parent instance
 
@@ -230,7 +235,9 @@ class FirestoreModel(object, ABCMeta):
 
 class Query(object):
     """
-    Creates a query object for the specified model
+    A  query object is returned when you call :class:`~.firestore_v1beta1.client.db.FirestoreModel`.query().
+    You can iterate over the query to get the results of your query one by one. Each item is an instance of a
+    :class:`~.firestore_v1beta1.client.db.FirestoreModel`
     """
 
     def __init__(self, model, offset, limit, path, parent):
@@ -373,7 +380,7 @@ class Query(object):
         self.__collection.order_by(field, direction=direction)
         return self
 
-    def __fetch__(self):
+    def __fetch(self):
         self.__docs = self.__collection.get()
         self.__fetched = True
 
@@ -392,7 +399,7 @@ class Query(object):
     def __next__(self):
         # Fetch data from db if not already done
         if not self.__fetched:
-            self.__fetch__()
+            self.__fetch()
         # Reset the cursor if one decides to reuse the query
         if self.__cursor == len(self.__docs):
             self.__cursor = 0
