@@ -51,6 +51,13 @@ class Client(ClientWithProject):
                   ``credentials`` for the current object.
                   This parameter should be considered private, and could
                   change in the future.
+
+    :type client_info: :class:`~google.api_core.client_info.ClientInfo`
+    :param client_info:
+        The client info used to send a user-agent string along with API
+        requests. If ``None``, then default info will be used. Generally,
+        you only need to set this if you're developing your own library
+        or partner tool.
     """
 
     SCOPE = (
@@ -60,7 +67,7 @@ class Client(ClientWithProject):
     )
     """The scopes required for authenticating as a Cloud Storage consumer."""
 
-    def __init__(self, project=_marker, credentials=None, _http=None):
+    def __init__(self, project=_marker, credentials=None, _http=None, client_info=None):
         self._base_connection = None
         if project is None:
             no_project = True
@@ -74,7 +81,7 @@ class Client(ClientWithProject):
         )
         if no_project:
             self.project = None
-        self._connection = Connection(self)
+        self._connection = Connection(self, client_info=client_info)
         self._batch_stack = _LocalStack()
 
     @classmethod

@@ -60,50 +60,70 @@ class TestClient(unittest.TestCase):
         return self._get_target_class()(*args, **kw)
 
     def test_ctor_connection_type(self):
+        from google.cloud._http import ClientInfo
         from google.cloud.storage._http import Connection
 
         PROJECT = "PROJECT"
-        CREDENTIALS = _make_credentials()
+        credentials = _make_credentials()
 
-        client = self._make_one(project=PROJECT, credentials=CREDENTIALS)
+        client = self._make_one(project=PROJECT, credentials=credentials)
 
         self.assertEqual(client.project, PROJECT)
         self.assertIsInstance(client._connection, Connection)
-        self.assertIs(client._connection.credentials, CREDENTIALS)
+        self.assertIs(client._connection.credentials, credentials)
         self.assertIsNone(client.current_batch)
         self.assertEqual(list(client._batch_stack), [])
+        self.assertIsInstance(client._connection._client_info, ClientInfo)
 
     def test_ctor_wo_project(self):
         from google.cloud.storage._http import Connection
 
         PROJECT = "PROJECT"
-        CREDENTIALS = _make_credentials()
+        credentials = _make_credentials()
 
         ddp_patch = mock.patch(
             "google.cloud.client._determine_default_project", return_value=PROJECT
         )
 
         with ddp_patch:
-            client = self._make_one(credentials=CREDENTIALS)
+            client = self._make_one(credentials=credentials)
 
         self.assertEqual(client.project, PROJECT)
         self.assertIsInstance(client._connection, Connection)
-        self.assertIs(client._connection.credentials, CREDENTIALS)
+        self.assertIs(client._connection.credentials, credentials)
         self.assertIsNone(client.current_batch)
         self.assertEqual(list(client._batch_stack), [])
 
     def test_ctor_w_project_explicit_none(self):
         from google.cloud.storage._http import Connection
 
-        CREDENTIALS = _make_credentials()
+        credentials = _make_credentials()
 
-        client = self._make_one(project=None, credentials=CREDENTIALS)
+        client = self._make_one(project=None, credentials=credentials)
 
         self.assertIsNone(client.project)
         self.assertIsInstance(client._connection, Connection)
-        self.assertIs(client._connection.credentials, CREDENTIALS)
+        self.assertIs(client._connection.credentials, credentials)
         self.assertIsNone(client.current_batch)
         self.assertEqual(list(client._batch_stack), [])
+
+    def test_ctor_w_client_info(self):
+        from google.cloud._http import ClientInfo
+        from google.cloud.storage._http import Connection
+
+        credentials = _make_credentials()
+        client_info = ClientInfo()
+
+        client = self._make_one(
+            project=None, credentials=credentials, client_info=client_info
+        )
+
+        self.assertIsNone(client.project)
+        self.assertIsInstance(client._connection, Connection)
+        self.assertIs(client._connection.credentials, credentials)
+        self.assertIsNone(client.current_batch)
+        self.assertEqual(list(client._batch_stack), [])
+        self.assertIs(client._connection._client_info, client_info)
 
     def test_create_anonymous_client(self):
         from google.auth.credentials import AnonymousCredentials
