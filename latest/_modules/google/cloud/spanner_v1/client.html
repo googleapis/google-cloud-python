@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.spanner_v1.client &#8212; google-cloud 953ba1d documentation</title>
+    <title>google.cloud.spanner_v1.client &#8212; google-cloud f900a08 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -59,6 +59,7 @@
 <span class="sd">* a :class:`~google.cloud.spanner_v1.instance.Instance` owns a</span>
 <span class="sd">  :class:`~google.cloud.spanner_v1.database.Database`</span>
 <span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
 
 <span class="kn">from</span> <span class="nn">google.api_core.gapic_v1</span> <span class="k">import</span> <span class="n">client_info</span>
 
@@ -72,7 +73,6 @@
 
 <span class="c1"># pylint: enable=line-too-long</span>
 
-<span class="kn">from</span> <span class="nn">google.cloud._http</span> <span class="k">import</span> <span class="n">DEFAULT_USER_AGENT</span>
 <span class="kn">from</span> <span class="nn">google.cloud.client</span> <span class="k">import</span> <span class="n">ClientWithProject</span>
 <span class="kn">from</span> <span class="nn">google.cloud.spanner_v1</span> <span class="k">import</span> <span class="n">__version__</span>
 <span class="kn">from</span> <span class="nn">google.cloud.spanner_v1._helpers</span> <span class="k">import</span> <span class="n">_metadata_with_prefix</span>
@@ -81,6 +81,10 @@
 
 <span class="n">_CLIENT_INFO</span> <span class="o">=</span> <span class="n">client_info</span><span class="o">.</span><span class="n">ClientInfo</span><span class="p">(</span><span class="n">client_library_version</span><span class="o">=</span><span class="n">__version__</span><span class="p">)</span>
 <span class="n">SPANNER_ADMIN_SCOPE</span> <span class="o">=</span> <span class="s2">&quot;https://www.googleapis.com/auth/spanner.admin&quot;</span>
+<span class="n">_USER_AGENT_DEPRECATED</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s2">&quot;The &#39;user_agent&#39; argument to &#39;Client&#39; is deprecated / unused. &quot;</span>
+    <span class="s2">&quot;Please pass an appropriate &#39;client_info&#39; instead.&quot;</span>
+<span class="p">)</span>
 
 
 <div class="viewcode-block" id="InstanceConfig"><a class="viewcode-back" href="../../../../spanner/client-api.html#google.cloud.spanner_v1.client.InstanceConfig">[docs]</a><span class="k">class</span> <span class="nc">InstanceConfig</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -131,9 +135,17 @@
 <span class="sd">                        client. If not provided, defaults to the Google</span>
 <span class="sd">                        Application Default Credentials.</span>
 
+<span class="sd">    :type client_info: :class:`google.api_core.gapic_v1.client_info.ClientInfo`</span>
+<span class="sd">    :param client_info:</span>
+<span class="sd">        (Optional) The client info used to send a user-agent string along with</span>
+<span class="sd">        API requests. If ``None``, then default info will be used. Generally,</span>
+<span class="sd">        you only need to set this if you&#39;re developing your own library or</span>
+<span class="sd">        partner tool.</span>
+
 <span class="sd">    :type user_agent: str</span>
-<span class="sd">    :param user_agent: (Optional) The user agent to be used with API request.</span>
-<span class="sd">                       Defaults to :const:`DEFAULT_USER_AGENT`.</span>
+<span class="sd">    :param user_agent:</span>
+<span class="sd">        (Deprecated) The user agent to be used with API request.</span>
+<span class="sd">        Not used.</span>
 
 <span class="sd">    :raises: :class:`ValueError &lt;exceptions.ValueError&gt;` if both ``read_only``</span>
 <span class="sd">             and ``admin`` are :data:`True`</span>
@@ -141,19 +153,26 @@
 
     <span class="n">_instance_admin_api</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">_database_admin_api</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">user_agent</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">_SET_PROJECT</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># Used by from_service_account_json()</span>
 
     <span class="n">SCOPE</span> <span class="o">=</span> <span class="p">(</span><span class="n">SPANNER_ADMIN_SCOPE</span><span class="p">,)</span>
     <span class="sd">&quot;&quot;&quot;The scopes required for Google Cloud Spanner.&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">user_agent</span><span class="o">=</span><span class="n">DEFAULT_USER_AGENT</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">client_info</span><span class="o">=</span><span class="n">_CLIENT_INFO</span><span class="p">,</span> <span class="n">user_agent</span><span class="o">=</span><span class="kc">None</span>
+    <span class="p">):</span>
         <span class="c1"># NOTE: This API has no use for the _http argument, but sending it</span>
         <span class="c1">#       will have no impact since the _http() @property only lazily</span>
         <span class="c1">#       creates a working HTTP object.</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">Client</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
             <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="n">credentials</span><span class="p">,</span> <span class="n">_http</span><span class="o">=</span><span class="kc">None</span>
         <span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">user_agent</span> <span class="o">=</span> <span class="n">user_agent</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_client_info</span> <span class="o">=</span> <span class="n">client_info</span>
+
+        <span class="k">if</span> <span class="n">user_agent</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="n">_USER_AGENT_DEPRECATED</span><span class="p">,</span> <span class="ne">DeprecationWarning</span><span class="p">,</span> <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">user_agent</span> <span class="o">=</span> <span class="n">user_agent</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">credentials</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -189,7 +208,7 @@
         <span class="sd">&quot;&quot;&quot;Helper for session-related API calls.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instance_admin_api</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_instance_admin_api</span> <span class="o">=</span> <span class="n">InstanceAdminClient</span><span class="p">(</span>
-                <span class="n">credentials</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">credentials</span><span class="p">,</span> <span class="n">client_info</span><span class="o">=</span><span class="n">_CLIENT_INFO</span>
+                <span class="n">credentials</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">credentials</span><span class="p">,</span> <span class="n">client_info</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client_info</span>
             <span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instance_admin_api</span>
 
@@ -198,7 +217,7 @@
         <span class="sd">&quot;&quot;&quot;Helper for session-related API calls.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_database_admin_api</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_database_admin_api</span> <span class="o">=</span> <span class="n">DatabaseAdminClient</span><span class="p">(</span>
-                <span class="n">credentials</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">credentials</span><span class="p">,</span> <span class="n">client_info</span><span class="o">=</span><span class="n">_CLIENT_INFO</span>
+                <span class="n">credentials</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">credentials</span><span class="p">,</span> <span class="n">client_info</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client_info</span>
             <span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_database_admin_api</span>
 
@@ -211,11 +230,7 @@
 <span class="sd">        :rtype: :class:`.Client`</span>
 <span class="sd">        :returns: A copy of the current client.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span>
-            <span class="n">project</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">,</span>
-            <span class="n">credentials</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_credentials</span><span class="p">,</span>
-            <span class="n">user_agent</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">user_agent</span><span class="p">,</span>
-        <span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_credentials</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Client.list_instance_configs"><a class="viewcode-back" href="../../../../spanner/gapic/v1/api.html#google.cloud.spanner_v1.client.Client.list_instance_configs">[docs]</a>    <span class="k">def</span> <span class="nf">list_instance_configs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">page_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">page_token</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;List available instance configurations for the client&#39;s project.</span>
