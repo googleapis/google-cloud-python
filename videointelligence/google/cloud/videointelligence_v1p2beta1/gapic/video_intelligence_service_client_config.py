@@ -1,10 +1,7 @@
 config = {
     "interfaces": {
         "google.cloud.videointelligence.v1p2beta1.VideoIntelligenceService": {
-            "retry_codes": {
-                "idempotent": ["DEADLINE_EXCEEDED", "UNAVAILABLE"],
-                "non_idempotent": [],
-            },
+            "retry_codes": {"idempotent": ["UNAVAILABLE"], "non_idempotent": []},
             "retry_params": {
                 "default": {
                     "initial_retry_delay_millis": 1000,
