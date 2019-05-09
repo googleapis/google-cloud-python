@@ -4,6 +4,20 @@
 
 [1]: https://pypi.org/project/google-api-core/#history
 
+## 1.10.0
+
+04-29-2019 10:12 PDT
+
+### Implementation Changes
+
+- Append leading zeros for nanosecond precision DateTimes
+  ([#7663](https://github.com/googleapis/google-cloud-python/pull/7663))
+
+### New Features
+
+- Add `user_agent` property to `ClientInfo`
+  ([#7799](https://github.com/googleapis/google-cloud-python/pull/7799))
+
 ## 1.9.0
 
 04-05-2019 10:38 PDT

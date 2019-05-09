@@ -415,6 +415,10 @@ class KeyManagementServiceGrpcTransport(object):
         resource does not exist, this will return an empty set of permissions,
         not a NOT\_FOUND error.
 
+        Note: This operation is designed to be used for building
+        permission-aware UIs and command-line tools, not for authorization
+        checking. This operation may "fail open" without warning.
+
         Returns:
             Callable: A callable which accepts the appropriate
                 deserialized request object and returns a

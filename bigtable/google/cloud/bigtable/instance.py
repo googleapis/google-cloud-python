@@ -36,7 +36,7 @@ _INSTANCE_NAME_RE = re.compile(
 )
 
 _INSTANCE_CREATE_WARNING = """
-Use of `instance.create({0}, {1}, {2})` will be depricated.
+Use of `instance.create({0}, {1}, {2})` will be deprecated.
 Please replace with
 `cluster = instance.cluster({0}, {1}, {2})`
 `instance.create(clusters=[cluster])`."""

@@ -86,13 +86,6 @@ class AlertPolicyServiceClient(object):
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def project_path(cls, project):
-        """Return a fully-qualified project string."""
-        return google.api_core.path_template.expand(
-            "projects/{project}", project=project
-        )
-
-    @classmethod
     def alert_policy_path(cls, project, alert_policy):
         """Return a fully-qualified alert_policy string."""
         return google.api_core.path_template.expand(
@@ -109,6 +102,13 @@ class AlertPolicyServiceClient(object):
             project=project,
             alert_policy=alert_policy,
             condition=condition,
+        )
+
+    @classmethod
+    def project_path(cls, project):
+        """Return a fully-qualified project string."""
+        return google.api_core.path_template.expand(
+            "projects/{project}", project=project
         )
 
     def __init__(

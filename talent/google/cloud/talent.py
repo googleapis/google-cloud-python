@@ -16,12 +16,12 @@
 
 from __future__ import absolute_import
 
+from google.cloud.talent_v4beta1 import ApplicationServiceClient
 from google.cloud.talent_v4beta1 import CompanyServiceClient
 from google.cloud.talent_v4beta1 import CompletionClient
 from google.cloud.talent_v4beta1 import EventServiceClient
 from google.cloud.talent_v4beta1 import JobServiceClient
 from google.cloud.talent_v4beta1 import ProfileServiceClient
-from google.cloud.talent_v4beta1 import ResumeServiceClient
 from google.cloud.talent_v4beta1 import TenantServiceClient
 from google.cloud.talent_v4beta1 import enums
 from google.cloud.talent_v4beta1 import types
@@ -29,11 +29,11 @@ from google.cloud.talent_v4beta1 import types
 __all__ = (
     "enums",
     "types",
+    "ApplicationServiceClient",
     "CompanyServiceClient",
     "CompletionClient",
     "EventServiceClient",
     "JobServiceClient",
     "ProfileServiceClient",
-    "ResumeServiceClient",
     "TenantServiceClient",
 )

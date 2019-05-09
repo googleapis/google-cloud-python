@@ -23,6 +23,7 @@ from google.oauth2 import service_account
 import google.api_core.gapic_v1.client_info
 import google.api_core.gapic_v1.config
 import google.api_core.gapic_v1.method
+import google.api_core.gapic_v1.routing_header
 import google.api_core.grpc_helpers
 import google.api_core.page_iterator
 import google.api_core.path_template
@@ -31,6 +32,9 @@ import grpc
 from google.cloud.talent_v4beta1.gapic import company_service_client_config
 from google.cloud.talent_v4beta1.gapic import enums
 from google.cloud.talent_v4beta1.gapic.transports import company_service_grpc_transport
+from google.cloud.talent_v4beta1.proto import application_pb2
+from google.cloud.talent_v4beta1.proto import application_service_pb2
+from google.cloud.talent_v4beta1.proto import application_service_pb2_grpc
 from google.cloud.talent_v4beta1.proto import company_pb2
 from google.cloud.talent_v4beta1.proto import company_service_pb2
 from google.cloud.talent_v4beta1.proto import company_service_pb2_grpc
@@ -71,17 +75,20 @@ class CompanyServiceClient(object):
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def project_path(cls, project):
-        """Return a fully-qualified project string."""
+    def company_path(cls, project, tenant, company):
+        """Return a fully-qualified company string."""
         return google.api_core.path_template.expand(
-            "projects/{project}", project=project
+            "projects/{project}/tenants/{tenant}/companies/{company}",
+            project=project,
+            tenant=tenant,
+            company=company,
         )
 
     @classmethod
-    def company_path(cls, project, company):
-        """Return a fully-qualified company string."""
+    def tenant_path(cls, project, tenant):
+        """Return a fully-qualified tenant string."""
         return google.api_core.path_template.expand(
-            "projects/{project}/companies/{company}", project=project, company=company
+            "projects/{project}/tenants/{tenant}", project=project, tenant=tenant
         )
 
     def __init__(
@@ -199,7 +206,7 @@ class CompanyServiceClient(object):
             >>>
             >>> client = talent_v4beta1.CompanyServiceClient()
             >>>
-            >>> parent = client.project_path('[PROJECT]')
+            >>> parent = client.tenant_path('[PROJECT]', '[TENANT]')
             >>>
             >>> # TODO: Initialize `company`:
             >>> company = {}
@@ -209,10 +216,13 @@ class CompanyServiceClient(object):
         Args:
             parent (str): Required.
 
-                Resource name of the project under which the company is created.
+                Resource name of the tenant under which the company is created.
 
-                The format is "projects/{project\_id}", for example,
-                "projects/api-test-project".
+                The format is "projects/{project\_id}/tenants/{tenant\_id}", for
+                example, "projects/api-test-project/tenant/foo".
+
+                Tenant id is optional and a default tenant is created if unspecified,
+                for example, "projects/api-test-project".
             company (Union[dict, ~google.cloud.talent_v4beta1.types.Company]): Required.
 
                 The company to be created.
@@ -252,6 +262,19 @@ class CompanyServiceClient(object):
         request = company_service_pb2.CreateCompanyRequest(
             parent=parent, company=company
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["create_company"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -271,7 +294,7 @@ class CompanyServiceClient(object):
             >>>
             >>> client = talent_v4beta1.CompanyServiceClient()
             >>>
-            >>> name = client.company_path('[PROJECT]', '[COMPANY]')
+            >>> name = client.company_path('[PROJECT]', '[TENANT]', '[COMPANY]')
             >>>
             >>> response = client.get_company(name)
 
@@ -280,8 +303,12 @@ class CompanyServiceClient(object):
 
                 The resource name of the company to be retrieved.
 
-                The format is "projects/{project\_id}/companies/{company\_id}", for
-                example, "projects/api-test-project/companies/foo".
+                The format is
+                "projects/{project\_id}/tenants/{tenant\_id}/companies/{company\_id}",
+                for example, "projects/api-test-project/tenants/foo/companies/bar".
+
+                Tenant id is optional and the default tenant is used if unspecified, for
+                example, "projects/api-test-project/companies/bar".
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -313,6 +340,19 @@ class CompanyServiceClient(object):
             )
 
         request = company_service_pb2.GetCompanyRequest(name=name)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["get_company"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -388,6 +428,19 @@ class CompanyServiceClient(object):
         request = company_service_pb2.UpdateCompanyRequest(
             company=company, update_mask=update_mask
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("company.name", company.name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["update_company"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -408,7 +461,7 @@ class CompanyServiceClient(object):
             >>>
             >>> client = talent_v4beta1.CompanyServiceClient()
             >>>
-            >>> name = client.company_path('[PROJECT]', '[COMPANY]')
+            >>> name = client.company_path('[PROJECT]', '[TENANT]', '[COMPANY]')
             >>>
             >>> client.delete_company(name)
 
@@ -417,8 +470,12 @@ class CompanyServiceClient(object):
 
                 The resource name of the company to be deleted.
 
-                The format is "projects/{project\_id}/companies/{company\_id}", for
-                example, "projects/api-test-project/companies/foo".
+                The format is
+                "projects/{project\_id}/tenants/{tenant\_id}/companies/{company\_id}",
+                for example, "projects/api-test-project/tenants/foo/companies/bar".
+
+                Tenant id is optional and the default tenant is used if unspecified, for
+                example, "projects/api-test-project/companies/bar".
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -447,6 +504,19 @@ class CompanyServiceClient(object):
             )
 
         request = company_service_pb2.DeleteCompanyRequest(name=name)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         self._inner_api_calls["delete_company"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -468,7 +538,7 @@ class CompanyServiceClient(object):
             >>>
             >>> client = talent_v4beta1.CompanyServiceClient()
             >>>
-            >>> parent = client.project_path('[PROJECT]')
+            >>> parent = client.tenant_path('[PROJECT]', '[TENANT]')
             >>>
             >>> # Iterate over all results
             >>> for element in client.list_companies(parent):
@@ -487,10 +557,13 @@ class CompanyServiceClient(object):
         Args:
             parent (str): Required.
 
-                Resource name of the project under which the company is created.
+                Resource name of the tenant under which the company is created.
 
-                The format is "projects/{project\_id}", for example,
-                "projects/api-test-project".
+                The format is "projects/{project\_id}/tenants/{tenant\_id}", for
+                example, "projects/api-test-project/tenant/foo".
+
+                Tenant id is optional and the default tenant is used if unspecified, for
+                example, "projects/api-test-project".
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
                 resource, this parameter does not affect the return value. If page
@@ -540,6 +613,19 @@ class CompanyServiceClient(object):
         request = company_service_pb2.ListCompaniesRequest(
             parent=parent, page_size=page_size, require_open_jobs=require_open_jobs
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(

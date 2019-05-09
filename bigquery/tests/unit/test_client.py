@@ -22,6 +22,7 @@ import json
 import unittest
 
 import mock
+import requests
 import six
 from six.moves import http_client
 import pytest
@@ -37,6 +38,7 @@ except (ImportError, AttributeError):  # pragma: NO COVER
     pyarrow = None
 
 import google.api_core.exceptions
+from google.api_core.gapic_v1 import client_info
 import google.cloud._helpers
 from google.cloud.bigquery.dataset import DatasetReference
 
@@ -52,7 +54,7 @@ def _make_connection(*responses):
     from google.cloud.exceptions import NotFound
 
     mock_conn = mock.create_autospec(google.cloud.bigquery._http.Connection)
-    mock_conn.USER_AGENT = "testing 1.2.3"
+    mock_conn.user_agent = "testing 1.2.3"
     mock_conn.api_request.side_effect = list(responses) + [NotFound("miss")]
     return mock_conn
 
@@ -95,6 +97,16 @@ class TestClient(unittest.TestCase):
 
     def _make_one(self, *args, **kw):
         return self._get_target_class()(*args, **kw)
+
+    def _make_table_resource(self):
+        return {
+            "id": "%s:%s:%s" % (self.PROJECT, self.DS_ID, self.TABLE_ID),
+            "tableReference": {
+                "projectId": self.PROJECT,
+                "datasetId": self.DS_ID,
+                "tableId": self.TABLE_ID,
+            },
+        }
 
     def test_ctor_defaults(self):
         from google.cloud.bigquery._http import Connection
@@ -869,14 +881,7 @@ class TestClient(unittest.TestCase):
         path = "projects/%s/datasets/%s/tables" % (self.PROJECT, self.DS_ID)
         creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds)
-        resource = {
-            "id": "%s:%s:%s" % (self.PROJECT, self.DS_ID, self.TABLE_ID),
-            "tableReference": {
-                "projectId": self.PROJECT,
-                "datasetId": self.DS_ID,
-                "tableId": self.TABLE_ID,
-            },
-        }
+        resource = self._make_table_resource()
         conn = client._connection = _make_connection(resource)
         table = Table(self.TABLE_REF)
         table.time_partitioning = TimePartitioning()
@@ -907,15 +912,8 @@ class TestClient(unittest.TestCase):
         path = "projects/%s/datasets/%s/tables" % (self.PROJECT, self.DS_ID)
         creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds)
-        resource = {
-            "id": "%s:%s:%s" % (self.PROJECT, self.DS_ID, self.TABLE_ID),
-            "tableReference": {
-                "projectId": self.PROJECT,
-                "datasetId": self.DS_ID,
-                "tableId": self.TABLE_ID,
-            },
-            "newAlphaProperty": "unreleased property",
-        }
+        resource = self._make_table_resource()
+        resource["newAlphaProperty"] = "unreleased property"
         conn = client._connection = _make_connection(resource)
         table = Table(self.TABLE_REF)
         table._properties["newAlphaProperty"] = "unreleased property"
@@ -945,14 +943,7 @@ class TestClient(unittest.TestCase):
         path = "projects/%s/datasets/%s/tables" % (self.PROJECT, self.DS_ID)
         creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds)
-        resource = {
-            "id": "%s:%s:%s" % (self.PROJECT, self.DS_ID, self.TABLE_ID),
-            "tableReference": {
-                "projectId": self.PROJECT,
-                "datasetId": self.DS_ID,
-                "tableId": self.TABLE_ID,
-            },
-        }
+        resource = self._make_table_resource()
         conn = client._connection = _make_connection(resource)
         table = Table(self.TABLE_REF)
         table.encryption_configuration = EncryptionConfiguration(
@@ -983,14 +974,7 @@ class TestClient(unittest.TestCase):
         path = "projects/%s/datasets/%s/tables" % (self.PROJECT, self.DS_ID)
         creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds)
-        resource = {
-            "id": "%s:%s:%s" % (self.PROJECT, self.DS_ID, self.TABLE_ID),
-            "tableReference": {
-                "projectId": self.PROJECT,
-                "datasetId": self.DS_ID,
-                "tableId": self.TABLE_ID,
-            },
-        }
+        resource = self._make_table_resource()
         conn = client._connection = _make_connection(resource)
         table = Table(self.TABLE_REF)
         table.time_partitioning = TimePartitioning(expiration_ms=100)
@@ -1021,31 +1005,28 @@ class TestClient(unittest.TestCase):
         query = "SELECT * from %s:%s" % (self.DS_ID, self.TABLE_ID)
         creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds)
-        resource = {
-            "id": "%s:%s:%s" % (self.PROJECT, self.DS_ID, self.TABLE_ID),
-            "tableReference": {
-                "projectId": self.PROJECT,
-                "datasetId": self.DS_ID,
-                "tableId": self.TABLE_ID,
-            },
-            "schema": {
-                "fields": [
-                    {
-                        "name": "full_name",
-                        "type": "STRING",
-                        "mode": "REQUIRED",
-                        "description": None,
-                    },
-                    {
-                        "name": "age",
-                        "type": "INTEGER",
-                        "mode": "REQUIRED",
-                        "description": None,
-                    },
-                ]
-            },
-            "view": {"query": query},
-        }
+        resource = self._make_table_resource()
+        resource.update(
+            {
+                "schema": {
+                    "fields": [
+                        {
+                            "name": "full_name",
+                            "type": "STRING",
+                            "mode": "REQUIRED",
+                            "description": None,
+                        },
+                        {
+                            "name": "age",
+                            "type": "INTEGER",
+                            "mode": "REQUIRED",
+                            "description": None,
+                        },
+                    ]
+                },
+                "view": {"query": query},
+            }
+        )
         schema = [
             SchemaField("full_name", "STRING", mode="REQUIRED"),
             SchemaField("age", "INTEGER", mode="REQUIRED"),
@@ -1099,18 +1080,15 @@ class TestClient(unittest.TestCase):
         path = "projects/%s/datasets/%s/tables" % (self.PROJECT, self.DS_ID)
         creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds)
-        resource = {
-            "id": "%s:%s:%s" % (self.PROJECT, self.DS_ID, self.TABLE_ID),
-            "tableReference": {
-                "projectId": self.PROJECT,
-                "datasetId": self.DS_ID,
-                "tableId": self.TABLE_ID,
-            },
-            "externalDataConfiguration": {
-                "sourceFormat": SourceFormat.CSV,
-                "autodetect": True,
-            },
-        }
+        resource = self._make_table_resource()
+        resource.update(
+            {
+                "externalDataConfiguration": {
+                    "sourceFormat": SourceFormat.CSV,
+                    "autodetect": True,
+                }
+            }
+        )
         conn = client._connection = _make_connection(resource)
         table = Table(self.TABLE_REF)
         ec = ExternalConfig("CSV")
@@ -1147,14 +1125,7 @@ class TestClient(unittest.TestCase):
         path = "projects/%s/datasets/%s/tables" % (self.PROJECT, self.DS_ID)
         creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds)
-        resource = {
-            "id": "%s:%s:%s" % (self.PROJECT, self.DS_ID, self.TABLE_ID),
-            "tableReference": {
-                "projectId": self.PROJECT,
-                "datasetId": self.DS_ID,
-                "tableId": self.TABLE_ID,
-            },
-        }
+        resource = self._make_table_resource()
         conn = client._connection = _make_connection(resource)
 
         got = client.create_table(self.TABLE_REF)
@@ -1177,14 +1148,7 @@ class TestClient(unittest.TestCase):
         path = "projects/%s/datasets/%s/tables" % (self.PROJECT, self.DS_ID)
         creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds)
-        resource = {
-            "id": "%s:%s:%s" % (self.PROJECT, self.DS_ID, self.TABLE_ID),
-            "tableReference": {
-                "projectId": self.PROJECT,
-                "datasetId": self.DS_ID,
-                "tableId": self.TABLE_ID,
-            },
-        }
+        resource = self._make_table_resource()
         conn = client._connection = _make_connection(resource)
 
         got = client.create_table(
@@ -1209,14 +1173,7 @@ class TestClient(unittest.TestCase):
         path = "projects/%s/datasets/%s/tables" % (self.PROJECT, self.DS_ID)
         creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds)
-        resource = {
-            "id": "%s:%s:%s" % (self.PROJECT, self.DS_ID, self.TABLE_ID),
-            "tableReference": {
-                "projectId": self.PROJECT,
-                "datasetId": self.DS_ID,
-                "tableId": self.TABLE_ID,
-            },
-        }
+        resource = self._make_table_resource()
         conn = client._connection = _make_connection(resource)
 
         got = client.create_table("{}.{}".format(self.DS_ID, self.TABLE_ID))
@@ -1266,14 +1223,7 @@ class TestClient(unittest.TestCase):
         get_path = "/projects/{}/datasets/{}/tables/{}".format(
             self.PROJECT, self.DS_ID, self.TABLE_ID
         )
-        resource = {
-            "id": "%s:%s:%s" % (self.PROJECT, self.DS_ID, self.TABLE_ID),
-            "tableReference": {
-                "projectId": self.PROJECT,
-                "datasetId": self.DS_ID,
-                "tableId": self.TABLE_ID,
-            },
-        }
+        resource = self._make_table_resource()
         creds = _make_credentials()
         client = self._make_one(
             project=self.PROJECT, credentials=creds, location=self.LOCATION
@@ -1365,19 +1315,44 @@ class TestClient(unittest.TestCase):
         creds = _make_credentials()
         http = object()
         client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
-        resource = {
-            "id": "%s:%s:%s" % (self.PROJECT, self.DS_ID, self.TABLE_ID),
-            "tableReference": {
-                "projectId": self.PROJECT,
-                "datasetId": self.DS_ID,
-                "tableId": self.TABLE_ID,
-            },
-        }
+        resource = self._make_table_resource()
         conn = client._connection = _make_connection(resource)
         table = client.get_table(self.TABLE_REF)
 
         conn.api_request.assert_called_once_with(method="GET", path="/%s" % path)
         self.assertEqual(table.table_id, self.TABLE_ID)
+
+    def test_get_table_sets_user_agent(self):
+        creds = _make_credentials()
+        http = mock.create_autospec(requests.Session)
+        mock_response = http.request(
+            url=mock.ANY, method=mock.ANY, headers=mock.ANY, data=mock.ANY
+        )
+        http.reset_mock()
+        mock_response.status_code = 200
+        mock_response.json.return_value = self._make_table_resource()
+        user_agent_override = client_info.ClientInfo(user_agent="my-application/1.2.3")
+        client = self._make_one(
+            project=self.PROJECT,
+            credentials=creds,
+            client_info=user_agent_override,
+            _http=http,
+        )
+
+        client.get_table(self.TABLE_REF)
+
+        expected_user_agent = user_agent_override.to_user_agent()
+        http.request.assert_called_once_with(
+            url=mock.ANY,
+            method="GET",
+            headers={
+                "X-Goog-API-Client": expected_user_agent,
+                "Accept-Encoding": "gzip",
+                "User-Agent": expected_user_agent,
+            },
+            data=mock.ANY,
+        )
+        self.assertIn("my-application/1.2.3", expected_user_agent)
 
     def test_update_dataset_w_invalid_field(self):
         from google.cloud.bigquery.dataset import Dataset
@@ -1542,34 +1517,31 @@ class TestClient(unittest.TestCase):
         )
         description = "description"
         title = "title"
-        resource = {
-            "id": "%s:%s:%s" % (self.PROJECT, self.DS_ID, self.TABLE_ID),
-            "tableReference": {
-                "projectId": self.PROJECT,
-                "datasetId": self.DS_ID,
-                "tableId": self.TABLE_ID,
-            },
-            "schema": {
-                "fields": [
-                    {
-                        "name": "full_name",
-                        "type": "STRING",
-                        "mode": "REQUIRED",
-                        "description": None,
-                    },
-                    {
-                        "name": "age",
-                        "type": "INTEGER",
-                        "mode": "REQUIRED",
-                        "description": None,
-                    },
-                ]
-            },
-            "etag": "etag",
-            "description": description,
-            "friendlyName": title,
-            "labels": {"x": "y"},
-        }
+        resource = self._make_table_resource()
+        resource.update(
+            {
+                "schema": {
+                    "fields": [
+                        {
+                            "name": "full_name",
+                            "type": "STRING",
+                            "mode": "REQUIRED",
+                            "description": None,
+                        },
+                        {
+                            "name": "age",
+                            "type": "INTEGER",
+                            "mode": "REQUIRED",
+                            "description": None,
+                        },
+                    ]
+                },
+                "etag": "etag",
+                "description": description,
+                "friendlyName": title,
+                "labels": {"x": "y"},
+            }
+        )
         schema = [
             SchemaField("full_name", "STRING", mode="REQUIRED"),
             SchemaField("age", "INTEGER", mode="REQUIRED"),
@@ -1629,15 +1601,8 @@ class TestClient(unittest.TestCase):
             self.DS_ID,
             self.TABLE_ID,
         )
-        resource = {
-            "id": "%s:%s:%s" % (self.PROJECT, self.DS_ID, self.TABLE_ID),
-            "tableReference": {
-                "projectId": self.PROJECT,
-                "datasetId": self.DS_ID,
-                "tableId": self.TABLE_ID,
-            },
-            "newAlphaProperty": "unreleased property",
-        }
+        resource = self._make_table_resource()
+        resource["newAlphaProperty"] = "unreleased property"
         creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds)
         conn = client._connection = _make_connection(resource)
@@ -1664,15 +1629,8 @@ class TestClient(unittest.TestCase):
             self.DS_ID,
             self.TABLE_ID,
         )
-        resource = {
-            "id": "%s:%s:%s" % (self.PROJECT, self.DS_ID, self.TABLE_ID),
-            "tableReference": {
-                "projectId": self.PROJECT,
-                "datasetId": self.DS_ID,
-                "tableId": self.TABLE_ID,
-            },
-            "view": {"useLegacySql": True},
-        }
+        resource = self._make_table_resource()
+        resource["view"] = {"useLegacySql": True}
         creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds)
         conn = client._connection = _make_connection(resource)
@@ -1723,18 +1681,15 @@ class TestClient(unittest.TestCase):
             SchemaField("full_name", "STRING", mode="REQUIRED"),
             SchemaField("age", "INTEGER", mode="REQUIRED"),
         ]
-        resource = {
-            "id": "%s:%s:%s" % (self.PROJECT, self.DS_ID, self.TABLE_ID),
-            "tableReference": {
-                "projectId": self.PROJECT,
-                "datasetId": self.DS_ID,
-                "tableId": self.TABLE_ID,
-            },
-            "schema": schema_resource,
-            "view": {"query": query, "useLegacySql": True},
-            "location": location,
-            "expirationTime": _millis(exp_time),
-        }
+        resource = self._make_table_resource()
+        resource.update(
+            {
+                "schema": schema_resource,
+                "view": {"query": query, "useLegacySql": True},
+                "location": location,
+                "expirationTime": _millis(exp_time),
+            }
+        )
         creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds)
         conn = client._connection = _make_connection(resource)
@@ -1771,28 +1726,18 @@ class TestClient(unittest.TestCase):
             self.DS_ID,
             self.TABLE_ID,
         )
-        resource1 = {
-            "id": "%s:%s:%s" % (self.PROJECT, self.DS_ID, self.TABLE_ID),
-            "tableReference": {
-                "projectId": self.PROJECT,
-                "datasetId": self.DS_ID,
-                "tableId": self.TABLE_ID,
-            },
-            "schema": {
-                "fields": [
-                    {"name": "full_name", "type": "STRING", "mode": "REQUIRED"},
-                    {"name": "age", "type": "INTEGER", "mode": "REQUIRED"},
-                ]
-            },
-        }
-        resource2 = {
-            "id": "%s:%s:%s" % (self.PROJECT, self.DS_ID, self.TABLE_ID),
-            "tableReference": {
-                "projectId": self.PROJECT,
-                "datasetId": self.DS_ID,
-                "tableId": self.TABLE_ID,
-            },
-        }
+        resource1 = self._make_table_resource()
+        resource1.update(
+            {
+                "schema": {
+                    "fields": [
+                        {"name": "full_name", "type": "STRING", "mode": "REQUIRED"},
+                        {"name": "age", "type": "INTEGER", "mode": "REQUIRED"},
+                    ]
+                }
+            }
+        )
+        resource2 = self._make_table_resource()
         creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds)
         conn = client._connection = _make_connection(resource1, resource2)
@@ -1826,25 +1771,10 @@ class TestClient(unittest.TestCase):
             self.DS_ID,
             self.TABLE_ID,
         )
-        resource1 = {
-            "id": "%s:%s:%s" % (self.PROJECT, self.DS_ID, self.TABLE_ID),
-            "tableReference": {
-                "projectId": self.PROJECT,
-                "datasetId": self.DS_ID,
-                "tableId": self.TABLE_ID,
-            },
-            "description": description,
-            "friendlyName": title,
-        }
-        resource2 = {
-            "id": "%s:%s:%s" % (self.PROJECT, self.DS_ID, self.TABLE_ID),
-            "tableReference": {
-                "projectId": self.PROJECT,
-                "datasetId": self.DS_ID,
-                "tableId": self.TABLE_ID,
-            },
-            "description": None,
-        }
+        resource1 = self._make_table_resource()
+        resource1.update({"description": description, "friendlyName": title})
+        resource2 = self._make_table_resource()
+        resource2["description"] = None
         creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds)
         conn = client._connection = _make_connection(resource1, resource2)
@@ -2822,7 +2752,7 @@ class TestClient(unittest.TestCase):
             + "/jobs?uploadType=resumable"
         )
         self.assertEqual(upload.upload_url, upload_url)
-        expected_headers = _get_upload_headers(conn.USER_AGENT)
+        expected_headers = _get_upload_headers(conn.user_agent)
         self.assertEqual(upload._headers, expected_headers)
         self.assertFalse(upload.finished)
         self.assertEqual(upload._chunk_size, _DEFAULT_CHUNKSIZE)
@@ -2900,7 +2830,7 @@ class TestClient(unittest.TestCase):
             + b"\r\n"
             + b"--==0==--"
         )
-        headers = _get_upload_headers(conn.USER_AGENT)
+        headers = _get_upload_headers(conn.user_agent)
         headers["content-type"] = b'multipart/related; boundary="==0=="'
         fake_transport.request.assert_called_once_with(
             "POST", upload_url, data=payload, headers=headers
@@ -4588,7 +4518,9 @@ class TestClient(unittest.TestCase):
             self.assertIsNone(rows[2].age, msg=repr(table))
 
     def test_list_rows_error(self):
-        client = self._make_one()
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
 
         # neither Table nor tableReference
         with self.assertRaises(TypeError):
@@ -5161,3 +5093,183 @@ class TestClientUpload(object):
 
         with pytest.raises(ValueError):
             client._do_multipart_upload(file_obj, {}, file_obj_len + 1, None)
+
+    def test_schema_from_json_with_file_path(self):
+        from google.cloud.bigquery.schema import SchemaField
+
+        file_content = """[
+          {
+            "description": "quarter",
+            "mode": "REQUIRED",
+            "name": "qtr",
+            "type": "STRING"
+          },
+          {
+            "description": "sales representative",
+            "mode": "NULLABLE",
+            "name": "rep",
+            "type": "STRING"
+          },
+          {
+            "description": "total sales",
+            "mode": "NULLABLE",
+            "name": "sales",
+            "type": "FLOAT"
+          }
+        ]"""
+
+        expected = [
+            SchemaField("qtr", "STRING", "REQUIRED", "quarter"),
+            SchemaField("rep", "STRING", "NULLABLE", "sales representative"),
+            SchemaField("sales", "FLOAT", "NULLABLE", "total sales"),
+        ]
+
+        client = self._make_client()
+        mock_file_path = "/mocked/file.json"
+
+        if six.PY2:
+            open_patch = mock.patch(
+                "__builtin__.open", mock.mock_open(read_data=file_content)
+            )
+        else:
+            open_patch = mock.patch(
+                "builtins.open", new=mock.mock_open(read_data=file_content)
+            )
+
+        with open_patch as _mock_file:
+            actual = client.schema_from_json(mock_file_path)
+            _mock_file.assert_called_once_with(mock_file_path)
+            # This assert is to make sure __exit__ is called in the context
+            # manager that opens the file in the function
+            _mock_file().__exit__.assert_called_once()
+
+        assert expected == actual
+
+    def test_schema_from_json_with_file_object(self):
+        from google.cloud.bigquery.schema import SchemaField
+
+        file_content = """[
+          {
+            "description": "quarter",
+            "mode": "REQUIRED",
+            "name": "qtr",
+            "type": "STRING"
+          },
+          {
+            "description": "sales representative",
+            "mode": "NULLABLE",
+            "name": "rep",
+            "type": "STRING"
+          },
+          {
+            "description": "total sales",
+            "mode": "NULLABLE",
+            "name": "sales",
+            "type": "FLOAT"
+          }
+        ]"""
+
+        expected = [
+            SchemaField("qtr", "STRING", "REQUIRED", "quarter"),
+            SchemaField("rep", "STRING", "NULLABLE", "sales representative"),
+            SchemaField("sales", "FLOAT", "NULLABLE", "total sales"),
+        ]
+
+        client = self._make_client()
+
+        if six.PY2:
+            fake_file = io.BytesIO(file_content)
+        else:
+            fake_file = io.StringIO(file_content)
+
+        actual = client.schema_from_json(fake_file)
+
+        assert expected == actual
+
+    def test_schema_to_json_with_file_path(self):
+        from google.cloud.bigquery.schema import SchemaField
+
+        file_content = [
+            {
+                "description": "quarter",
+                "mode": "REQUIRED",
+                "name": "qtr",
+                "type": "STRING",
+            },
+            {
+                "description": "sales representative",
+                "mode": "NULLABLE",
+                "name": "rep",
+                "type": "STRING",
+            },
+            {
+                "description": "total sales",
+                "mode": "NULLABLE",
+                "name": "sales",
+                "type": "FLOAT",
+            },
+        ]
+
+        schema_list = [
+            SchemaField("qtr", "STRING", "REQUIRED", "quarter"),
+            SchemaField("rep", "STRING", "NULLABLE", "sales representative"),
+            SchemaField("sales", "FLOAT", "NULLABLE", "total sales"),
+        ]
+
+        client = self._make_client()
+        mock_file_path = "/mocked/file.json"
+
+        if six.PY2:
+            open_patch = mock.patch("__builtin__.open", mock.mock_open())
+        else:
+            open_patch = mock.patch("builtins.open", mock.mock_open())
+
+        with open_patch as mock_file, mock.patch("json.dump") as mock_dump:
+            client.schema_to_json(schema_list, mock_file_path)
+            mock_file.assert_called_once_with(mock_file_path, mode="w")
+            # This assert is to make sure __exit__ is called in the context
+            # manager that opens the file in the function
+            mock_file().__exit__.assert_called_once()
+            mock_dump.assert_called_with(
+                file_content, mock_file.return_value, indent=2, sort_keys=True
+            )
+
+    def test_schema_to_json_with_file_object(self):
+        from google.cloud.bigquery.schema import SchemaField
+
+        file_content = [
+            {
+                "description": "quarter",
+                "mode": "REQUIRED",
+                "name": "qtr",
+                "type": "STRING",
+            },
+            {
+                "description": "sales representative",
+                "mode": "NULLABLE",
+                "name": "rep",
+                "type": "STRING",
+            },
+            {
+                "description": "total sales",
+                "mode": "NULLABLE",
+                "name": "sales",
+                "type": "FLOAT",
+            },
+        ]
+
+        schema_list = [
+            SchemaField("qtr", "STRING", "REQUIRED", "quarter"),
+            SchemaField("rep", "STRING", "NULLABLE", "sales representative"),
+            SchemaField("sales", "FLOAT", "NULLABLE", "total sales"),
+        ]
+
+        if six.PY2:
+            fake_file = io.BytesIO()
+        else:
+            fake_file = io.StringIO()
+
+        client = self._make_client()
+
+        client.schema_to_json(schema_list, fake_file)
+        assert file_content == json.loads(fake_file.getvalue())

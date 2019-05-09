@@ -18,8 +18,8 @@
 import mock
 import pytest
 
-from google.cloud import talent_v4beta1
-from google.cloud.talent_v4beta1.proto import resume_service_pb2
+from google.cloud import phishingprotection_v1beta1
+from google.cloud.phishingprotection_v1beta1.proto import phishingprotection_pb2
 
 
 class MultiCallableStub(object):
@@ -58,45 +58,46 @@ class CustomException(Exception):
     pass
 
 
-class TestResumeServiceClient(object):
-    def test_parse_resume(self):
+class TestPhishingProtectionServiceClient(object):
+    def test_report_phishing(self):
         # Setup Expected Response
-        raw_text = "rawText503586532"
-        expected_response = {"raw_text": raw_text}
-        expected_response = resume_service_pb2.ParseResumeResponse(**expected_response)
+        expected_response = {}
+        expected_response = phishingprotection_pb2.ReportPhishingResponse(
+            **expected_response
+        )
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = talent_v4beta1.ResumeServiceClient()
+            client = phishingprotection_v1beta1.PhishingProtectionServiceClient()
 
         # Setup Request
         parent = client.project_path("[PROJECT]")
-        resume = b"45"
+        uri = "uri116076"
 
-        response = client.parse_resume(parent, resume)
+        response = client.report_phishing(parent, uri)
         assert expected_response == response
 
         assert len(channel.requests) == 1
-        expected_request = resume_service_pb2.ParseResumeRequest(
-            parent=parent, resume=resume
+        expected_request = phishingprotection_pb2.ReportPhishingRequest(
+            parent=parent, uri=uri
         )
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
-    def test_parse_resume_exception(self):
+    def test_report_phishing_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = talent_v4beta1.ResumeServiceClient()
+            client = phishingprotection_v1beta1.PhishingProtectionServiceClient()
 
         # Setup request
         parent = client.project_path("[PROJECT]")
-        resume = b"45"
+        uri = "uri116076"
 
         with pytest.raises(CustomException):
-            client.parse_resume(parent, resume)
+            client.report_phishing(parent, uri)

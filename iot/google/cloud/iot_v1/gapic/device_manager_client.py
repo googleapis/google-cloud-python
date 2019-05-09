@@ -74,6 +74,17 @@ class DeviceManagerClient(object):
     from_service_account_json = from_service_account_file
 
     @classmethod
+    def device_path(cls, project, location, registry, device):
+        """Return a fully-qualified device string."""
+        return google.api_core.path_template.expand(
+            "projects/{project}/locations/{location}/registries/{registry}/devices/{device}",
+            project=project,
+            location=location,
+            registry=registry,
+            device=device,
+        )
+
+    @classmethod
     def location_path(cls, project, location):
         """Return a fully-qualified location string."""
         return google.api_core.path_template.expand(
@@ -90,17 +101,6 @@ class DeviceManagerClient(object):
             project=project,
             location=location,
             registry=registry,
-        )
-
-    @classmethod
-    def device_path(cls, project, location, registry, device):
-        """Return a fully-qualified device string."""
-        return google.api_core.path_template.expand(
-            "projects/{project}/locations/{location}/registries/{registry}/devices/{device}",
-            project=project,
-            location=location,
-            registry=registry,
-            device=device,
         )
 
     def __init__(
@@ -1334,8 +1334,7 @@ class DeviceManagerClient(object):
 
         Args:
             resource (str): REQUIRED: The resource for which the policy is being specified.
-                ``resource`` is usually specified as a path. For example, a Project
-                resource is specified as ``projects/{project}``.
+                See the operation documentation for the appropriate value for this field.
             policy (Union[dict, ~google.cloud.iot_v1.types.Policy]): REQUIRED: The complete policy to be applied to the ``resource``. The
                 size of the policy is limited to a few 10s of KB. An empty policy is a
                 valid policy but certain Cloud Platform services (such as Projects)
@@ -1414,8 +1413,7 @@ class DeviceManagerClient(object):
 
         Args:
             resource (str): REQUIRED: The resource for which the policy is being requested.
-                ``resource`` is usually specified as a path. For example, a Project
-                resource is specified as ``projects/{project}``.
+                See the operation documentation for the appropriate value for this field.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -1491,8 +1489,7 @@ class DeviceManagerClient(object):
 
         Args:
             resource (str): REQUIRED: The resource for which the policy detail is being requested.
-                ``resource`` is usually specified as a path. For example, a Project
-                resource is specified as ``projects/{project}``.
+                See the operation documentation for the appropriate value for this field.
             permissions (list[str]): The set of permissions to check for the ``resource``. Permissions with
                 wildcards (such as '*' or 'storage.*') are not allowed. For more
                 information see `IAM

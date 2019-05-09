@@ -16,12 +16,12 @@
 
 import google.api_core.grpc_helpers
 
-from google.cloud.talent_v4beta1.proto import resume_service_pb2_grpc
+from google.cloud.phishingprotection_v1beta1.proto import phishingprotection_pb2_grpc
 
 
-class ResumeServiceGrpcTransport(object):
+class PhishingProtectionServiceGrpcTransport(object):
     """gRPC transport class providing stubs for
-    google.cloud.talent.v4beta1 ResumeService API.
+    google.cloud.phishingprotection.v1beta1 PhishingProtectionServiceV1Beta1 API.
 
     The transport provides access to the raw gRPC stubs,
     which can be used to take advantage of advanced
@@ -30,13 +30,13 @@ class ResumeServiceGrpcTransport(object):
 
     # The scopes needed to make gRPC calls to all of the methods defined
     # in this service.
-    _OAUTH_SCOPES = (
-        "https://www.googleapis.com/auth/cloud-platform",
-        "https://www.googleapis.com/auth/jobs",
-    )
+    _OAUTH_SCOPES = ("https://www.googleapis.com/auth/cloud-platform",)
 
     def __init__(
-        self, channel=None, credentials=None, address="jobs.googleapis.com:443"
+        self,
+        channel=None,
+        credentials=None,
+        address="phishingprotection.googleapis.com:443",
     ):
         """Instantiate the transport class.
 
@@ -67,11 +67,15 @@ class ResumeServiceGrpcTransport(object):
         # gRPC uses objects called "stubs" that are bound to the
         # channel and provide a basic method for each RPC.
         self._stubs = {
-            "resume_service_stub": resume_service_pb2_grpc.ResumeServiceStub(channel)
+            "phishing_protection_service_v1_beta1_stub": phishingprotection_pb2_grpc.PhishingProtectionServiceV1Beta1Stub(
+                channel
+            )
         }
 
     @classmethod
-    def create_channel(cls, address="jobs.googleapis.com:443", credentials=None):
+    def create_channel(
+        cls, address="phishingprotection.googleapis.com:443", credentials=None
+    ):
         """Create and return a gRPC channel object.
 
         Args:
@@ -99,42 +103,20 @@ class ResumeServiceGrpcTransport(object):
         return self._channel
 
     @property
-    def parse_resume(self):
-        """Return the gRPC stub for :meth:`ResumeServiceClient.parse_resume`.
+    def report_phishing(self):
+        """Return the gRPC stub for :meth:`PhishingProtectionServiceClient.report_phishing`.
 
-        Parses a resume into a ``Profile``. The API attempts to fill out the
-        following profile fields if present within the resume:
-
-        -  personNames
-        -  addresses
-        -  emailAddress
-        -  phoneNumbers
-        -  personalUris
-        -  employmentRecords
-        -  educationRecords
-        -  skills
-
-        Note that some attributes in these fields may not be populated if
-        they're not present within the resume or unrecognizable by the resume
-        parser.
-
-        This API does not save the resume or profile. To create a profile from
-        this resume, clients need to call the CreateProfile method again with
-        the profile returned.
-
-        The following list of formats are supported:
-
-        -  PDF
-        -  TXT
-        -  DOC
-        -  RTF
-        -  DOCX
-        -  PNG (only when ``ParseResumeRequest.enable_ocr`` is set to ``true``,
-           otherwise an error is thrown)
+        Reports a URI suspected of containing phishing content to be reviewed.
+        Once the report review is completed, if its result verifies the
+        existince of malicious phishing content, the site will be added the to
+        `Google's Social Engineering
+        lists <https://support.google.com/webmasters/answer/6350487/>`__ in
+        order to protect users that could get exposed to this threat in the
+        future.
 
         Returns:
             Callable: A callable which accepts the appropriate
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["resume_service_stub"].ParseResume
+        return self._stubs["phishing_protection_service_v1_beta1_stub"].ReportPhishing

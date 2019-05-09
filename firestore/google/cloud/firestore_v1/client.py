@@ -23,9 +23,12 @@ In the hierarchy of API concepts
 * a :class:`~.firestore_v1.client.Client` owns a
   :class:`~.firestore_v1.document.DocumentReference`
 """
+from google.api_core.gapic_v1 import client_info
 from google.cloud.client import ClientWithProject
 
 from google.cloud.firestore_v1 import _helpers
+from google.cloud.firestore_v1 import __version__
+from google.cloud.firestore_v1 import query
 from google.cloud.firestore_v1 import types
 from google.cloud.firestore_v1.batch import WriteBatch
 from google.cloud.firestore_v1.collection import CollectionReference
@@ -46,6 +49,7 @@ _BAD_DOC_TEMPLATE = (
 )
 _ACTIVE_TXN = "There is already an active transaction."
 _INACTIVE_TXN = "There is no active transaction."
+_CLIENT_INFO = client_info.ClientInfo(client_library_version=__version__)
 
 
 class Client(ClientWithProject):
@@ -66,6 +70,11 @@ class Client(ClientWithProject):
         database (Optional[str]): The database name that the client targets.
             For now, :attr:`DEFAULT_DATABASE` (the default value) is the
             only valid database.
+        client_info (Optional[google.api_core.gapic_v1.client_info.ClientInfo]):
+            The client info used to send a user-agent string along with API
+            requests. If ``None``, then default info will be used. Generally,
+            you only need to set this if you're developing your own library
+            or partner tool.
     """
 
     SCOPE = (
@@ -78,13 +87,20 @@ class Client(ClientWithProject):
     _database_string_internal = None
     _rpc_metadata_internal = None
 
-    def __init__(self, project=None, credentials=None, database=DEFAULT_DATABASE):
+    def __init__(
+        self,
+        project=None,
+        credentials=None,
+        database=DEFAULT_DATABASE,
+        client_info=_CLIENT_INFO,
+    ):
         # NOTE: This API has no use for the _http argument, but sending it
         #       will have no impact since the _http() @property only lazily
         #       creates a working HTTP object.
         super(Client, self).__init__(
             project=project, credentials=credentials, _http=None
         )
+        self._client_info = client_info
         self._database = database
 
     @property
@@ -97,7 +113,7 @@ class Client(ClientWithProject):
         """
         if self._firestore_api_internal is None:
             self._firestore_api_internal = firestore_client.FirestoreClient(
-                credentials=self._credentials
+                credentials=self._credentials, client_info=self._client_info
             )
 
         return self._firestore_api_internal
@@ -179,6 +195,31 @@ class Client(ClientWithProject):
 
         return CollectionReference(*path, client=self)
 
+    def collection_group(self, collection_id):
+        """
+        Creates and returns a new Query that includes all documents in the
+        database that are contained in a collection or subcollection with the
+        given collection_id.
+
+        .. code-block:: python
+
+            >>> query = firestore.collection_group('mygroup')
+
+        @param {string} collectionId Identifies the collections to query over.
+        Every collection or subcollection with this ID as the last segment of its
+        path will be included. Cannot contain a slash.
+        @returns {Query} The created Query.
+        """
+        if "/" in collection_id:
+            raise ValueError(
+                "Invalid collection_id "
+                + collection_id
+                + ". Collection IDs must not contain '/'."
+            )
+
+        collection = self.collection(collection_id)
+        return query.Query(collection, all_descendants=True)
+
     def document(self, *document_path):
         """Get a reference to a document in a collection.
 
@@ -214,6 +255,13 @@ class Client(ClientWithProject):
             path = document_path[0].split(_helpers.DOCUMENT_PATH_DELIMITER)
         else:
             path = document_path
+
+        # DocumentReference takes a relative path. Strip the database string if present.
+        base_path = self._database_string + "/documents/"
+        joined_path = _helpers.DOCUMENT_PATH_DELIMITER.join(path)
+        if joined_path.startswith(base_path):
+            joined_path = joined_path[len(base_path) :]
+        path = joined_path.split(_helpers.DOCUMENT_PATH_DELIMITER)
 
         return DocumentReference(*path, client=self)
 

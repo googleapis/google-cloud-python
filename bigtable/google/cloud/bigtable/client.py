@@ -63,10 +63,12 @@ READ_ONLY_SCOPE = "https://www.googleapis.com/auth/bigtable.data.readonly"
 def _create_gapic_client(client_class):
     def inner(self):
         if self._emulator_host is None:
-            return client_class(credentials=self._credentials, client_info=_CLIENT_INFO)
+            return client_class(
+                credentials=self._credentials, client_info=self._client_info
+            )
         else:
             return client_class(
-                channel=self._emulator_channel, client_info=_CLIENT_INFO
+                channel=self._emulator_channel, client_info=self._client_info
             )
 
     return inner
@@ -100,6 +102,13 @@ class Client(ClientWithProject):
                   interact with the Instance Admin or Table Admin APIs. This
                   requires the :const:`ADMIN_SCOPE`. Defaults to :data:`False`.
 
+    :type: client_info: :class:`google.api_core.gapic_v1.client_info.ClientInfo`
+    :param client_info:
+        The client info used to send a user-agent string along with API
+        requests. If ``None``, then default info will be used. Generally,
+        you only need to set this if you're developing your own library
+        or partner tool.
+
     :type channel: :instance: grpc.Channel
     :param channel (grpc.Channel): (Optional) DEPRECATED:
             A ``Channel`` instance through which to make calls.
@@ -115,7 +124,13 @@ class Client(ClientWithProject):
     _instance_admin_client = None
 
     def __init__(
-        self, project=None, credentials=None, read_only=False, admin=False, channel=None
+        self,
+        project=None,
+        credentials=None,
+        read_only=False,
+        admin=False,
+        client_info=_CLIENT_INFO,
+        channel=None,
     ):
         if read_only and admin:
             raise ValueError(
@@ -126,6 +141,7 @@ class Client(ClientWithProject):
         #       It **may** use those scopes in ``with_scopes_if_required``.
         self._read_only = bool(read_only)
         self._admin = bool(admin)
+        self._client_info = client_info
         self._emulator_host = os.getenv(BIGTABLE_EMULATOR)
         self._emulator_channel = None
 
