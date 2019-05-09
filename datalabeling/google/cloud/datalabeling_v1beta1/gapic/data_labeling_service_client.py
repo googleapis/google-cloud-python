@@ -83,10 +83,13 @@ class DataLabelingServiceClient(object):
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def project_path(cls, project):
-        """Return a fully-qualified project string."""
+    def annotated_dataset_path(cls, project, dataset, annotated_dataset):
+        """Return a fully-qualified annotated_dataset string."""
         return google.api_core.path_template.expand(
-            "projects/{project}", project=project
+            "projects/{project}/datasets/{dataset}/annotatedDatasets/{annotated_dataset}",
+            project=project,
+            dataset=dataset,
+            annotated_dataset=annotated_dataset,
         )
 
     @classmethod
@@ -99,20 +102,20 @@ class DataLabelingServiceClient(object):
         )
 
     @classmethod
+    def data_item_path(cls, project, dataset, data_item):
+        """Return a fully-qualified data_item string."""
+        return google.api_core.path_template.expand(
+            "projects/{project}/datasets/{dataset}/dataItems/{data_item}",
+            project=project,
+            dataset=dataset,
+            data_item=data_item,
+        )
+
+    @classmethod
     def dataset_path(cls, project, dataset):
         """Return a fully-qualified dataset string."""
         return google.api_core.path_template.expand(
             "projects/{project}/datasets/{dataset}", project=project, dataset=dataset
-        )
-
-    @classmethod
-    def annotated_dataset_path(cls, project, dataset, annotated_dataset):
-        """Return a fully-qualified annotated_dataset string."""
-        return google.api_core.path_template.expand(
-            "projects/{project}/datasets/{dataset}/annotatedDatasets/{annotated_dataset}",
-            project=project,
-            dataset=dataset,
-            annotated_dataset=annotated_dataset,
         )
 
     @classmethod
@@ -127,22 +130,19 @@ class DataLabelingServiceClient(object):
         )
 
     @classmethod
-    def data_item_path(cls, project, dataset, data_item):
-        """Return a fully-qualified data_item string."""
-        return google.api_core.path_template.expand(
-            "projects/{project}/datasets/{dataset}/dataItems/{data_item}",
-            project=project,
-            dataset=dataset,
-            data_item=data_item,
-        )
-
-    @classmethod
     def instruction_path(cls, project, instruction):
         """Return a fully-qualified instruction string."""
         return google.api_core.path_template.expand(
             "projects/{project}/instructions/{instruction}",
             project=project,
             instruction=instruction,
+        )
+
+    @classmethod
+    def project_path(cls, project):
+        """Return a fully-qualified project string."""
+        return google.api_core.path_template.expand(
+            "projects/{project}", project=project
         )
 
     def __init__(
