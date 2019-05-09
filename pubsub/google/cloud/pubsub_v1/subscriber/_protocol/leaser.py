@@ -64,30 +64,32 @@ class Leaser(object):
 
     def add(self, items):
         """Add messages to be managed by the leaser."""
-        for item in items:
-            # Add the ack ID to the set of managed ack IDs, and increment
-            # the size counter.
-            if item.ack_id not in self._leased_messages:
-                self._leased_messages[item.ack_id] = _LeasedMessage(
-                    added_time=time.time(), size=item.byte_size
-                )
-                self._bytes += item.byte_size
-            else:
-                _LOGGER.debug("Message %s is already lease managed", item.ack_id)
+        with self._operational_lock:
+            for item in items:
+                # Add the ack ID to the set of managed ack IDs, and increment
+                # the size counter.
+                if item.ack_id not in self._leased_messages:
+                    self._leased_messages[item.ack_id] = _LeasedMessage(
+                        added_time=time.time(), size=item.byte_size
+                    )
+                    self._bytes += item.byte_size
+                else:
+                    _LOGGER.debug("Message %s is already lease managed", item.ack_id)
 
     def remove(self, items):
         """Remove messages from lease management."""
-        # Remove the ack ID from lease management, and decrement the
-        # byte counter.
-        for item in items:
-            if self._leased_messages.pop(item.ack_id, None) is not None:
-                self._bytes -= item.byte_size
-            else:
-                _LOGGER.debug("Item %s was not managed.", item.ack_id)
+        with self._operational_lock:
+            # Remove the ack ID from lease management, and decrement the
+            # byte counter.
+            for item in items:
+                if self._leased_messages.pop(item.ack_id, None) is not None:
+                    self._bytes -= item.byte_size
+                else:
+                    _LOGGER.debug("Item %s was not managed.", item.ack_id)
 
-        if self._bytes < 0:
-            _LOGGER.debug("Bytes was unexpectedly negative: %d", self._bytes)
-            self._bytes = 0
+            if self._bytes < 0:
+                _LOGGER.debug("Bytes was unexpectedly negative: %d", self._bytes)
+                self._bytes = 0
 
     def maintain_leases(self):
         """Maintain all of the leases being managed.

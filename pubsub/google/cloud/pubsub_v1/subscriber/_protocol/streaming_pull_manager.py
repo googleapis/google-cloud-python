@@ -121,6 +121,7 @@ class StreamingPullManager(object):
         # but not yet added to the lease management (and not sent to user callback),
         # because the FlowControl limits have been hit.
         self._messages_on_hold = queue.Queue()
+        self._pause_resume_lock = threading.Lock()
 
         # The threads created in ``.open()``.
         self._dispatcher = None
@@ -217,10 +218,13 @@ class StreamingPullManager(object):
 
     def maybe_pause_consumer(self):
         """Check the current load and pause the consumer if needed."""
-        if self.load >= 1.0:
-            if self._consumer is not None and not self._consumer.is_paused:
-                _LOGGER.debug("Message backlog over load at %.2f, pausing.", self.load)
-                self._consumer.pause()
+        with self._pause_resume_lock:
+            if self.load >= 1.0:
+                if self._consumer is not None and not self._consumer.is_paused:
+                    _LOGGER.debug(
+                        "Message backlog over load at %.2f, pausing.", self.load
+                    )
+                    self._consumer.pause()
 
     def maybe_resume_consumer(self):
         """Check the load and held messages and resume the consumer if needed.
@@ -228,26 +232,27 @@ class StreamingPullManager(object):
         If there are messages held internally, release those messages before
         resuming the consumer. That will avoid leaser overload.
         """
-        # If we have been paused by flow control, check and see if we are
-        # back within our limits.
-        #
-        # In order to not thrash too much, require us to have passed below
-        # the resume threshold (80% by default) of each flow control setting
-        # before restarting.
-        if self._consumer is None or not self._consumer.is_paused:
-            return
+        with self._pause_resume_lock:
+            # If we have been paused by flow control, check and see if we are
+            # back within our limits.
+            #
+            # In order to not thrash too much, require us to have passed below
+            # the resume threshold (80% by default) of each flow control setting
+            # before restarting.
+            if self._consumer is None or not self._consumer.is_paused:
+                return
 
-        _LOGGER.debug("Current load: %.2f", self.load)
+            _LOGGER.debug("Current load: %.2f", self.load)
 
-        # Before maybe resuming the background consumer, release any messages
-        # currently on hold, if the current load allows for it.
-        self._maybe_release_messages()
+            # Before maybe resuming the background consumer, release any messages
+            # currently on hold, if the current load allows for it.
+            self._maybe_release_messages()
 
-        if self.load < self.flow_control.resume_threshold:
-            _LOGGER.debug("Current load is %.2f, resuming consumer.", self.load)
-            self._consumer.resume()
-        else:
-            _LOGGER.debug("Did not resume, current load is %.2f.", self.load)
+            if self.load < self.flow_control.resume_threshold:
+                _LOGGER.debug("Current load is %.2f, resuming consumer.", self.load)
+                self._consumer.resume()
+            else:
+                _LOGGER.debug("Did not resume, current load is %.2f.", self.load)
 
     def _maybe_release_messages(self):
         """Release (some of) the held messages if the current load allows for it.
