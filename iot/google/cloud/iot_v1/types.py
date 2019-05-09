@@ -28,6 +28,7 @@ from google.protobuf import empty_pb2
 from google.protobuf import field_mask_pb2
 from google.protobuf import timestamp_pb2
 from google.rpc import status_pb2
+from google.type import expr_pb2
 
 _shared_modules = [
     iam_policy_pb2,
@@ -37,6 +38,7 @@ _shared_modules = [
     field_mask_pb2,
     timestamp_pb2,
     status_pb2,
+    expr_pb2,
 ]
 
 _local_modules = [device_manager_pb2, resources_pb2]
